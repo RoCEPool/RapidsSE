@@ -1,6 +1,6 @@
 
 // Source file: ../queries/joinTests/2waySelf-1.sql
 // Result file: none
-select count(*) from ${testName}_manufacturer m left join ${testName}_returnitems r on m.m_mfgkey = r.m_mfgkey and r.r_condition = 'five' join ${testName}_returnitems r2 on m.m_orderkey = r.l_orderkey and r2.r_condition = 'two' and r.r_returndate >= timestamp '2013-12-01 12:00:00' and r.r_returndate <= timestamp '2013-12-20 12:00:00';
+select count(*) from ${testName2}_manufacturer m left join ${testName2}_returnitems r on m.m_mfgkey = r.m_mfgkey and r.r_condition = 'five' join ${testName2}_returnitems r2 on m.m_orderkey = r.l_orderkey and r2.r_condition = 'two' and r.r_returndate >= timestamp '2013-12-01 12:00:00' and r.r_returndate <= timestamp '2013-12-20 12:00:00';
 failure: 'Result file missing'
 

@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create table t1
-create table ${testName}_t1 (
+create table ${testName2}_t1 (
   jA  INTEGER NOT NULL,
   jB  INTEGER NOT NULL,
   jC  VARCHAR(10) NOT NULL,
@@ -11,33 +11,33 @@ create table ${testName}_t1 (
 );
 success
 
-create index T1_idx1 on ${testName}_t1 (jA, jC);
+create index T1_idx1 on ${testName2}_t1 (jA, jC);
 success
 
-load ${testName}_t1 "../DATA/Select/rangeCombo.csv";
+load ${testName2}_t1 "../DATA/Select/rangeCombo.csv";
 success
 
-select * from ${testName}_t1;
+select * from ${testName2}_t1;
 rows: 5
 
-select * from ${testName}_t1 where jA <= 2;
+select * from ${testName2}_t1 where jA <= 2;
 rows: 2
 
-select * from ${testName}_t1 where jC <= 2;
+select * from ${testName2}_t1 where jC <= 2;
 rows: 5
 
-select * from ${testName}_t1 where jA >= 4 and jC >= 'ddd';
+select * from ${testName2}_t1 where jA >= 4 and jC >= 'ddd';
 rows:
   (4,14,'ddd',' mood')
   (5,15,'eee',' boat')
 
-select * from ${testName}_t1 where jA = 4 and jC = 'ddd';
+select * from ${testName2}_t1 where jA = 4 and jC = 'ddd';
 rows:
   (4,14,'ddd',' mood')
 
 CLEANUP {
 
-  drop table ${testName}_t1;
+  drop table ${testName2}_t1;
   mute
 
   bye;

@@ -7,7 +7,7 @@ select
   s_name,
   count(*) as numwait
 
-  from ${TestName}_Supplier, ${TestName}_LineItem l1, ${TestName}_Orders, ${TestName}_Nation
+  from ${testName2}_Supplier, ${testName2}_LineItem l1, ${testName2}_Orders, ${testName2}_Nation
 
  where     s_suppkey        = l1.l_suppkey
        and o_orderkey       = l1.l_orderkey
@@ -17,7 +17,7 @@ select
 
              ( select *
 
-                 from ${TestName}_LineItem l2
+                 from ${testName2}_LineItem l2
 
                 where     L2.L_ORDERKEY =  L1.L_ORDERKEY
                       and L2.L_SUPPKEY  <> L1.L_SUPPKEY )
@@ -25,7 +25,7 @@ select
 
              ( select *
 
-                 from ${TestName}_LineItem l3
+                 from ${testName2}_LineItem l3
 
                 where     L3.L_ORDERKEY    =  L1.L_ORDERKEY
                       and L3.L_SUPPKEY     <> L1.L_SUPPKEY
@@ -46,7 +46,7 @@ select
   s_nationkey,
   s_name
 
-  from ${TestName}_Supplier, ${TestName}_LineItem l1, ${TestName}_Orders
+  from ${testName2}_Supplier, ${testName2}_LineItem l1, ${testName2}_Orders
 
  where     s_suppkey        = l1.l_suppkey
        and o_orderkey       = l1.l_orderkey
@@ -56,7 +56,7 @@ select
 
              ( select *
 
-                 from ${TestName}_LineItem l2
+                 from ${testName2}_LineItem l2
 
                 where     L2.L_ORDERKEY =  L1.L_ORDERKEY
                       and L2.L_SUPPKEY  <> L1.L_SUPPKEY )
@@ -64,7 +64,7 @@ select
 
              ( select *
 
-                 from ${TestName}_LineItem l3
+                 from ${testName2}_LineItem l3
 
                 where     L3.L_ORDERKEY    =  L1.L_ORDERKEY
                       and L3.L_SUPPKEY     <> L1.L_SUPPKEY
@@ -85,7 +85,7 @@ select
   s_name,
   count(*) as numwait
 
-  from ${TestName}_Supplier, ${TestName}_LineItem l1, ${TestName}_Orders, ${TestName}_Nation
+  from ${testName2}_Supplier, ${testName2}_LineItem l1, ${testName2}_Orders, ${testName2}_Nation
 
  where     s_suppkey        = l1.l_suppkey
        and o_orderkey       = l1.l_orderkey
@@ -95,7 +95,7 @@ select
 
              ( select *
 
-                 from ${TestName}_LineItem l2
+                 from ${testName2}_LineItem l2
 
                 where     L2.L_ORDERKEY =  L1.L_ORDERKEY
                       and L2.L_SUPPKEY  <> L1.L_SUPPKEY )
@@ -103,7 +103,7 @@ select
 
              ( select *
 
-                 from ${TestName}_LineItem l3
+                 from ${testName2}_LineItem l3
 
                 where     L3.L_ORDERKEY    =  L1.L_ORDERKEY
                       and L3.L_SUPPKEY     <> L1.L_SUPPKEY
@@ -127,7 +127,7 @@ begin
       | pulse once
       | stageMarker2100
     stage stageMarker2100 on all partitions :
-      scan rapidsse public ${TestName}_Lineitem
+      scan rapidsse public ${testName2}_Lineitem
       | filter " type BOOLEAN  $1 %1 ==  $3 %2 !=  and  "
       | project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
       | combined 0
@@ -146,7 +146,7 @@ begin
       | pulse once
       | stageMarker2106
     stage stageMarker2106 on all partitions :
-      scan rapidsse public ${TestName}_Lineitem
+      scan rapidsse public ${testName2}_Lineitem
       | filter " type BOOLEAN  $1 %1 ==  $3 %2 !=  and  $13 $12 >  and  "
       | project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
       | combined 0
@@ -162,18 +162,18 @@ begin
     | pulse once
     | stageMarker2112
   stage stageMarker2112 on all partitions :
-    scan rapidsse public ${TestName}_Supplier
+    scan rapidsse public ${testName2}_Supplier
     | stageMarker2115 broadcast
   stage stageMarker2115 on all partitions :
-    scan rapidsse public ${TestName}_Lineitem
+    scan rapidsse public ${testName2}_Lineitem
     | abstractJoin "CROSS true  "
     | stageMarker2118 broadcast
   stage stageMarker2118 on all partitions :
-    scan rapidsse public ${testName}_orders
+    scan rapidsse public ${testName2}_orders
     | abstractJoin "CROSS true  "
     | stageMarker2121 broadcast
   stage stageMarker2121 on all partitions :
-    scan rapidsse public ${testName}_nation
+    scan rapidsse public ${testName2}_nation
     | abstractJoin "CROSS true  "
     | stageMarker2124
   stage stageMarker2124 on all partitions :
@@ -207,14 +207,14 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public ${TestName}_Lineitem
+    scan rapidsse public ${testName2}_Lineitem
     | filter " type BOOLEAN  $13 $12 > "
     | project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_SUPPKEY $3 "
     | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin ${TestName}_Lineitem IxL_ORDERKEY "BOUND $I1 L_ORDERKEY =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 L_ORDERKEY =="
     | filter " type BOOLEAN  L_SUPPKEY L_SUPPKEY  != "
     | gbyAgg " groupBy type integer L_ORDERKEY ,
                        type integer L_SUPPKEY
@@ -224,21 +224,21 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexJoin ${TestName}_Orders IxO_ORDERKEY "BOUND $I1 L_ORDERKEY =="
+    indexJoin ${testName2}_Orders IxO_ORDERKEY "BOUND $I1 L_ORDERKEY =="
     | filter " type BOOLEAN  O_ORDERSTATUS 'F'  == "
     | project " type INTEGER as L_SUPPKEY L_SUPPKEY "
     | combined 0
     | next
 
   stage S03 on all partitions :
-    indexJoin ${TestName}_Supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+    indexJoin ${testName2}_Supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
     | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as S_NAME S_NAME "
     //| hash "type INTEGER S_NATIONKEY"
     | combined 0
     | next //hashcast
 
   stage S04 on all partitions :
-    indexJoin ${TestName}_Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    indexJoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | filter " type BOOLEAN N_NAME 'SAUDI ARABIA' ==  "
     | gbyAgg " groupBy  type VARCHAR as S_NAME $2 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
     | combined 0

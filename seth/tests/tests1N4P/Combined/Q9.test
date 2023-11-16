@@ -5,7 +5,7 @@
 trackMemory;
 success;
 
-create table ${testName}_part (
+create table ${testName2}_part (
 	 P_PARTKEY           INTEGER       NOT NULL,
 	 P_NAME              VARCHAR(55)   NOT NULL,
 	 P_MFGR              CHAR(25)      NOT NULL,
@@ -18,13 +18,13 @@ create table ${testName}_part (
 );
 success
 
-create index IxP_PARTKEY   ON ${TestName}_Part   (P_PARTKEY);
+create index IxP_PARTKEY   ON ${testName2}_Part   (P_PARTKEY);
 success
 
-load ${testName}_part "../TPCH/SF_0001/part.csv";
+load ${testName2}_part "../TPCH/SF_0001/part.csv";
 success
 
-create table ${testName}_partsupp (
+create table ${testName2}_partsupp (
 	PS_PARTKEY      INTEGER       NOT NULL,
 	PS_SUPPKEY      INTEGER       NOT NULL,
 	PS_AVAILQTY     INTEGER       NOT NULL,
@@ -33,13 +33,13 @@ create table ${testName}_partsupp (
 );
 success
 
-create index IxPS_PARTKEY ON ${testName}_partsupp(PS_PARTKEY);
+create index IxPS_PARTKEY ON ${testName2}_partsupp(PS_PARTKEY);
 success
 
-load ${testName}_partsupp "../TPCH/SF_0001/partsupp.csv";
+load ${testName2}_partsupp "../TPCH/SF_0001/partsupp.csv";
 success
 
-create table ${testName}_orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -52,13 +52,13 @@ create table ${testName}_orders (
 );
 success
 
-create index IxO_ORDERKEY  ON ${testName}_orders(O_ORDERKEY);
+create index IxO_ORDERKEY  ON ${testName2}_orders(O_ORDERKEY);
 success
 
-load ${testName}_orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
 success
 
-create table ${testName}_lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -78,10 +78,10 @@ create table ${testName}_lineitem (
 );
 success
 
-create index IxL_PARTKEY ON ${testName}_lineitem(L_PARTKEY);
+create index IxL_PARTKEY ON ${testName2}_lineitem(L_PARTKEY);
 success
 
-load ${testName}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 /optimise_passthru 
@@ -94,7 +94,7 @@ begin
     | next
 
   stage Gs_PART on all partitions :
-    indexScan ${testName}_part IxP_PARTKEY "UBOUND $I1 12000  <"
+    indexScan ${testName2}_part IxP_PARTKEY "UBOUND $I1 12000  <"
     //| filter  1 " type BOOLEAN P_PARTKEY 12000  <  "
     | project "
       type INTEGER as _partkey P_PARTKEY"
@@ -102,7 +102,7 @@ begin
     | Gj_PARTSUPP broadcast
 
   stage Gj_PARTSUPP on all partitions :
-    indexJoin ${testName}_partsupp IxPS_PARTKEY "bound $I1 _partkey =="
+    indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 _partkey =="
     | project "
       type INTEGER as _partkey _partkey ,
       type INTEGER as ps_suppkey PS_SUPPKEY ,
@@ -111,7 +111,7 @@ begin
     | next broadcast
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin ${testName}_lineitem IxL_PARTKEY "bound $I1 _partkey =="
+    indexJoin ${testName2}_lineitem IxL_PARTKEY "bound $I1 _partkey =="
     | filter "type BOOLEAN L_SUPPKEY ps_suppkey =="
     | project "
       type INTEGER as _orderkey L_ORDERKEY ,
@@ -124,7 +124,7 @@ begin
     | next hashCast
 
   stage Gj_ORDERS on all partitions :
-    indexJoin ${testName}_orders IxO_ORDERKEY "bound $I1 _orderkey =="
+    indexJoin ${testName2}_orders IxO_ORDERKEY "bound $I1 _orderkey =="
     | project "
       type TIMESTAMP as l_orderdate O_ORDERDATE ,
       type DECIMAL as l_quantity L_QUANTITY ,
@@ -168,16 +168,16 @@ rows: 1126
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table ${testName}_part;
+drop table ${testName2}_part;
 success
 
-drop table ${testName}_partsupp;
+drop table ${testName2}_partsupp;
 success
 
-drop table ${testName}_orders;
+drop table ${testName2}_orders;
 success
 
-drop table ${testName}_lineitem;
+drop table ${testName2}_lineitem;
 success
 
 MemoryLeaks;
@@ -185,16 +185,16 @@ rows: 0
 
 CLEANUP {
 
-  drop table ${testName}_part;
+  drop table ${testName2}_part;
   mute
 
-  drop table ${testName}_partsupp;
+  drop table ${testName2}_partsupp;
   mute
 
-  drop table ${testName}_orders;
+  drop table ${testName2}_orders;
   mute
 
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

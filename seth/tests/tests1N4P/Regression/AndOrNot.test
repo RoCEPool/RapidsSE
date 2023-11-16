@@ -3,7 +3,7 @@
 // Result file: ../queries/AndOrNot/results/aon6.res
 /*
 // TODO: ENABLE WHEN HASHJOINS
-select count(*) from ${testName}_table1 a, ${testName}_table9 b where colb1 = 'green' or colb9= 'blue' and a.ucol = b.ucol;
+select count(*) from ${testName2}_table1 a, ${testName2}_table9 b where colb1 = 'green' or colb9= 'blue' and a.ucol = b.ucol;
 rows:
   (2502)
 */
@@ -12,14 +12,14 @@ rows:
 // Result file: ../queries/AndOrNot/results/aon11.res
 /*
 // TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
-select count(*) from ${testName}_table1, ${testName}_table9 where ${testName}_table1.ucol = ${testName}_table9.ucol and not colb1 ='green' or not colb9='green';
+select count(*) from ${testName2}_table1, ${testName2}_table9 where ${testName2}_table1.ucol = ${testName2}_table9.ucol and not colb1 ='green' or not colb9='green';
 rows:
   (47304)
 */
 
 // Source file: ../queries/AndOrNot/raon4.sql
 // Result file: ../queries/AndOrNot/results/aon4.res
-select pcol1, pcol9, colb1, colb9 from ${testName}_table1 join ${testName}_table9 on colb1 = colb9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
+select pcol1, pcol9, colb1, colb9 from ${testName2}_table1 join ${testName2}_table9 on colb1 = colb9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
 ordered rows:
   (3, 3, 'green', 'green')
 
@@ -27,20 +27,20 @@ ordered rows:
 // Result file: ../queries/AndOrNot/results/aon13.res
 /*
 // TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
-select count(*) from ${testName}_table1, ${testName}_table9 where ${testName}_table1.ucol = ${testName}_table9.ucol and not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue');
+select count(*) from ${testName2}_table1, ${testName2}_table9 where ${testName2}_table1.ucol = ${testName2}_table9.ucol and not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue');
 rows:
   (45887)
 */
 
 // Source file: ../queries/AndOrNot/raon12.sql
 // Result file: ../queries/AndOrNot/results/aon12.res
-select count(*) from ${testName}_table1, ${testName}_table9 where ${testName}_table1.ucol = ${testName}_table9.ucol and not (colb1 ='green' or colb9='green');
+select count(*) from ${testName2}_table1, ${testName2}_table9 where ${testName2}_table1.ucol = ${testName2}_table9.ucol and not (colb1 ='green' or colb9='green');
 rows:
   (45)
 
 // Source file: ../queries/AndOrNot/raon1.sql
 // Result file: ../queries/AndOrNot/results/aon1.res
-select pcol1, colb1, ucol, ucolvc from ${testName}_table1 where colb1 = 'green' or colb1 = 'blue' order by pcol1;
+select pcol1, colb1, ucol, ucolvc from ${testName2}_table1 where colb1 = 'green' or colb1 = 'blue' order by pcol1;
 ordered rows:
   (2, 'green', 30, 'uuu')
   (3, 'green', 976, 'qqq')
@@ -54,14 +54,14 @@ ordered rows:
 
 // Source file: ../queries/AndOrNot/raon14.sql
 // Result file: ../queries/AndOrNot/results/aon14.res
-select count(*) from ${testName}_table1, ${testName}_table9 where ${testName}_table1.ucol = ${testName}_table9.ucol and (not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue'));
+select count(*) from ${testName2}_table1, ${testName2}_table9 where ${testName2}_table1.ucol = ${testName2}_table9.ucol and (not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue'));
 rows:
   (51)
 
 
 // Source file: ../queries/AndOrNot/raon3.sql
 // Result file: ../queries/AndOrNot/results/aon3.res
-select pcol1, pcol9, colb1, colb9 from ${testName}_table1 join ${testName}_table9 on colb1 = colb9 where colb1='green' or colb9='blue' order by pcol1;
+select pcol1, pcol9, colb1, colb9 from ${testName2}_table1 join ${testName2}_table9 on colb1 = colb9 where colb1='green' or colb9='blue' order by pcol1;
 //ordered rows:
 rows:
   (2, 3, 'green', 'green')
@@ -220,20 +220,20 @@ rows:
 
 // Source file: ../queries/AndOrNot/raon15.sql
 // Result file: ../queries/AndOrNot/results/aon15.res
-select count(*) from ${testName}_table1, ${testName}_table9 where ${testName}_table1.ucol = ${testName}_table9.ucol and (not (colb1 ='green' or colb9='green') and not (colb1 = 'blue' or colb9 = 'blue'));
+select count(*) from ${testName2}_table1, ${testName2}_table9 where ${testName2}_table1.ucol = ${testName2}_table9.ucol and (not (colb1 ='green' or colb9='green') and not (colb1 = 'blue' or colb9 = 'blue'));
 rows:
   (39)
 
 // Source file: ../queries/AndOrNot/raon7.sql
 // Result file: ../queries/AndOrNot/results/aon7.res
-select count(*) from ${testName}_table1 where not (colb1 LIKE 'bl%' or colb1 LIKE 'BL%' );
+select count(*) from ${testName2}_table1 where not (colb1 LIKE 'bl%' or colb1 LIKE 'BL%' );
 rows:
   (84)
 
 
 // Source file: ../queries/AndOrNot/raon5.sql
 // Result file: ../queries/AndOrNot/results/aon5.res
-select pcol1, pcol9, colb1, colb9 from ${testName}_table1 a, ${testName}_table9 b where (colb1 = 'green' or colb9= 'blue') and a.ucol = b.ucol order by pcol1;
+select pcol1, pcol9, colb1, colb9 from ${testName2}_table1 a, ${testName2}_table9 b where (colb1 = 'green' or colb9= 'blue') and a.ucol = b.ucol order by pcol1;
 ordered rows:
   (2, 256, 'green', 'orange')
   (10, 26, 'TEAL', 'blue')
@@ -242,26 +242,26 @@ ordered rows:
 
 // Source file: ../queries/AndOrNot/raon9.sql
 // Result file: ../queries/AndOrNot/results/aon9.res
-select count(*) from ${testName}_table1 where not colb1 in ('blue', 'black', 'BLUE', 'BLACK');
+select count(*) from ${testName2}_table1 where not colb1 in ('blue', 'black', 'BLUE', 'BLACK');
 rows:
   (84)
 
 
 // Source file: ../queries/AndOrNot/raon10.sql
 // Result file: ../queries/AndOrNot/results/aon10.res
-select count(*) from ${testName}_table1 join ${testName}_table9 on pcol1 = pcol9 where not colb1 ='green' and not colb9='green';
+select count(*) from ${testName2}_table1 join ${testName2}_table9 on pcol1 = pcol9 where not colb1 ='green' and not colb9='green';
 rows:
   (91)
 
 // Source file: ../queries/AndOrNot/raon8.sql
 // Result file: ../queries/AndOrNot/results/aon8.res
-select count(*) from ${testName}_table1 where not colb1 LIKE 'bl%' or not colb1 LIKE 'BL%' ;
+select count(*) from ${testName2}_table1 where not colb1 LIKE 'bl%' or not colb1 LIKE 'BL%' ;
 rows:
   (100)
 
 // Source file: ../queries/AndOrNot/raon2.sql
 // Result file: ../queries/AndOrNot/results/aon2.res
-select pcol1, pcol9, colb1, colb9 from ${testName}_table1 join ${testName}_table9 on pcol1 = pcol9 where colb1='green' or colb9='blue' order by pcol1;
+select pcol1, pcol9, colb1, colb9 from ${testName2}_table1 join ${testName2}_table9 on pcol1 = pcol9 where colb1='green' or colb9='blue' order by pcol1;
 ordered rows:
   (1, 1, 'PINK', 'blue')
   (2, 2, 'green', 'maroon')

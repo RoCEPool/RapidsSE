@@ -10,7 +10,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Create various tables that can be joined
-create table ${testName}_Region (
+create table ${testName2}_Region (
 	 R_REGIONKEY       INTEGER      NOT NULL,
 	 R_NAME            CHAR(25)     NOT NULL,
 	 R_COMMENT         VARCHAR(152)
@@ -19,10 +19,10 @@ tablesize 1
 ;
 success
 
-load ${testName}_Region "../DATA/TPCH/region.tbl" ;
+load ${testName2}_Region "../DATA/TPCH/region.tbl" ;
 success
 
-create table ${testName}_Nation (
+create table ${testName2}_Nation (
 	 N_NATIONKEY       INTEGER      NOT NULL,
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
@@ -32,10 +32,10 @@ tablesize 1
 ;
 success
 
-load ${testName}_Nation "../DATA/TPCH/nation.tbl" ;
+load ${testName2}_Nation "../DATA/TPCH/nation.tbl" ;
 success
 
-create table ${testName}_Supplier (
+create table ${testName2}_Supplier (
 	 S_SUPPKEY       INTEGER       NOT NULL,
 	 S_NAME          CHAR(25)      NOT NULL,
 	 S_ADDRESS       VARCHAR(40)   NOT NULL,
@@ -48,10 +48,10 @@ tablesize 2
 ;
 success
 
-load ${testName}_Supplier "../DATA/TPCH/supplier_2k.tbl" ;
+load ${testName2}_Supplier "../DATA/TPCH/supplier_2k.tbl" ;
 success
 
-create table ${testName}_Partsupp (
+create table ${testName2}_Partsupp (
 	PS_PARTKEY      INTEGER       NOT NULL,
 	PS_SUPPKEY      INTEGER       NOT NULL,
 	PS_AVAILQTY     INTEGER       NOT NULL,
@@ -62,25 +62,25 @@ tablesize 131
 ;
 success
 
-load ${testName}_Partsupp "../DATA/TPCH/partsupp_2k.tbl" ;
+load ${testName2}_Partsupp "../DATA/TPCH/partsupp_2k.tbl" ;
 success
 
-CREATE TABLE ${testName}_t1 (colA INTEGER, colB VARCHAR, colC DECIMAL, colD BOOLEAN);
+CREATE TABLE ${testName2}_t1 (colA INTEGER, colB VARCHAR, colC DECIMAL, colD BOOLEAN);
 success
 
-load ${testName}_t1 "../DATA/Transliterate/broadcast_t1.csv" ;
+load ${testName2}_t1 "../DATA/Transliterate/broadcast_t1.csv" ;
 success
 
-CREATE TABLE ${testName}_t2 (colA INTEGER, colB VARCHAR, colC DECIMAL, colX DATE, colY TIME, colZ TIMESTAMP);
+CREATE TABLE ${testName2}_t2 (colA INTEGER, colB VARCHAR, colC DECIMAL, colX DATE, colY TIME, colZ TIMESTAMP);
 success
 
-load ${testName}_t2 "../DATA/Transliterate/broadcast_t2.csv" ;
+load ${testName2}_t2 "../DATA/Transliterate/broadcast_t2.csv" ;
 success
 
-CREATE TABLE ${testName}_t3 (colA INTEGER, colB VARCHAR, colC DECIMAL);
+CREATE TABLE ${testName2}_t3 (colA INTEGER, colB VARCHAR, colC DECIMAL);
 success
 
-load ${testName}_t3 "../DATA/Transliterate/broadcast_t3.csv" ;
+load ${testName2}_t3 "../DATA/Transliterate/broadcast_t3.csv" ;
 success
 
 trackmemory;
@@ -95,8 +95,8 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -- Join 2 tables
 SELECT n_regionkey, n_name, r_regionkey, r_name
-FROM ${testName}_Region
-JOIN ${testName}_Nation ON r_regionkey = n_regionkey;
+FROM ${testName2}_Region
+JOIN ${testName2}_Nation ON r_regionkey = n_regionkey;
 rows:
  (2,'VIETNAM',2,'ASIA')
  (0,'KENYA',0,'AFRICA')
@@ -127,40 +127,40 @@ rows:
  (3,'GERMANY',3,'EUROPE')
  (4,'EGYPT',4,'MIDDLE EAST')
 
-SELECT n_name, r_name FROM ${testName}_Region, ${testName}_Nation;
+SELECT n_name, r_name FROM ${testName2}_Region, ${testName2}_Nation;
 rows: 125
 
 -- Join 3 tables
 SELECT n_name, r_name, s_name
-FROM ${testName}_Region
-JOIN ${testName}_Nation ON r_regionkey = n_regionkey
-JOIN ${testName}_Supplier ON s_nationkey = n_nationkey;
+FROM ${testName2}_Region
+JOIN ${testName2}_Nation ON r_regionkey = n_regionkey
+JOIN ${testName2}_Supplier ON s_nationkey = n_nationkey;
 rows: 2000
 
-SELECT n_name, r_name, s_name FROM ${testName}_Region, ${testName}_Nation, ${testName}_Supplier;
+SELECT n_name, r_name, s_name FROM ${testName2}_Region, ${testName2}_Nation, ${testName2}_Supplier;
 rows: 250000
 
 -- Join 4 tables
 SELECT n_name, r_name, s_name, ps_partkey
-FROM ${testName}_Region
-JOIN ${testName}_Nation ON r_regionkey = n_regionkey
-JOIN ${testName}_Supplier ON s_nationkey = n_nationkey
-JOIN ${testName}_Partsupp ON ps_suppkey = s_suppkey;
+FROM ${testName2}_Region
+JOIN ${testName2}_Nation ON r_regionkey = n_regionkey
+JOIN ${testName2}_Supplier ON s_nationkey = n_nationkey
+JOIN ${testName2}_Partsupp ON ps_suppkey = s_suppkey;
 rows: 1999
 
 /*
 LOW_MEMORY
 SELECT n_name, r_name, s_name, ps_suppkey
-FROM ${testName}_Region, ${testName}_Nation, ${testName}_Supplier, ${testName}_Partsupp;
+FROM ${testName2}_Region, ${testName2}_Nation, ${testName2}_Supplier, ${testName2}_Partsupp;
 rows: (*,'explainPlan',
 'StatementMarker: select
-» queryText: "SELECT n_name, r_name, s_name, ps_suppkey FROM ${testName}_Region, ${testName}_Nation, ${testName}_Supplier, ${testName}_Partsupp"
+» queryText: "SELECT n_name, r_name, s_name, ps_suppkey FROM ${testName2}_Region, ${testName2}_Nation, ${testName2}_Supplier, ${testName2}_Partsupp"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.${testName}_Nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.${testName}_Region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.${testName}_Supplier.s_name ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.${testName}_Partsupp.ps_suppkey ; Ordinal Expr = $16)
+   » column: (Expr = rapidsse.public.${testName2}_Nation.n_name ; Ordinal Expr = $5)
+   » column: (Expr = rapidsse.public.${testName2}_Region.r_name ; Ordinal Expr = $2)
+   » column: (Expr = rapidsse.public.${testName2}_Supplier.s_name ; Ordinal Expr = $9)
+   » column: (Expr = rapidsse.public.${testName2}_Partsupp.ps_suppkey ; Ordinal Expr = $16)
 
 -> -> abstractJoinOp
       » join type: Cross Join
@@ -178,23 +178,23 @@ rows: (*,'explainPlan',
             » ordinal predicate: (true)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName}_Region)
+               » table: (rapidsse.public.${testName2}_Region)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName}_Nation)
+               » table: (rapidsse.public.${testName2}_Nation)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName}_Supplier)
+            » table: (rapidsse.public.${testName2}_Supplier)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_Partsupp)'
+         » table: (rapidsse.public.${testName2}_Partsupp)'
 )
 */
 
 -- Self join, one table with an alias
-SELECT ${testName}_Nation.n_name, n2.n_regionkey
-FROM ${testName}_Nation
-JOIN ${testName}_Nation n2 ON ${testName}_Nation.n_nationkey = n2.n_regionkey;
+SELECT ${testName2}_Nation.n_name, n2.n_regionkey
+FROM ${testName2}_Nation
+JOIN ${testName2}_Nation n2 ON ${testName2}_Nation.n_nationkey = n2.n_regionkey;
 rows:
   ('BRAZIL',2)
   ('ALGERIA',0)
@@ -225,14 +225,14 @@ rows:
   ('CANADA',3)
   ('EGYPT',4)
 
-SELECT ${testName}_Nation.n_name, n2.n_regionkey
-FROM ${testName}_Nation, ${testName}_Nation n2;
+SELECT ${testName2}_Nation.n_name, n2.n_regionkey
+FROM ${testName2}_Nation, ${testName2}_Nation n2;
 rows:  625
 
 -- Self join, both tables with aliases
 SELECT n1.n_name, n2.n_regionkey
-FROM ${testName}_Nation n1
-JOIN ${testName}_Nation n2 ON n1.n_nationkey = n2.n_regionkey;
+FROM ${testName2}_Nation n1
+JOIN ${testName2}_Nation n2 ON n1.n_nationkey = n2.n_regionkey;
 rows: 
   ('ALGERIA',0)
    ('ALGERIA',0)
@@ -264,14 +264,14 @@ rows:
    ('ARGENTINA',1)
       
 SELECT n1.n_name, n2.n_regionkey
-FROM ${testName}_Nation n1, ${testName}_Nation n2;
+FROM ${testName2}_Nation n1, ${testName2}_Nation n2;
 rows: 625
 
 -- Self join amongst other joined tables
 SELECT n1.n_name, n2.n_regionkey, r_name
-FROM ${testName}_Nation n1
-JOIN ${testName}_Nation n2 ON n1.n_nationkey = n2.n_regionkey
-JOIN ${testName}_Region ON n1.n_regionkey = r_regionkey;
+FROM ${testName2}_Nation n1
+JOIN ${testName2}_Nation n2 ON n1.n_nationkey = n2.n_regionkey
+JOIN ${testName2}_Region ON n1.n_regionkey = r_regionkey;
 rows: 
    ('ARGENTINA',1,'AMERICA')
    ('ARGENTINA',1,'AMERICA')
@@ -302,9 +302,9 @@ rows:
 
 -- Same as previous but with a different table separating the two instances of the first table
 SELECT n1.n_name, n2.n_regionkey, r_name
-FROM ${testName}_Nation n1
-JOIN ${testName}_Region ON n1.n_regionkey = r_regionkey
-JOIN ${testName}_Nation n2 ON n2.n_regionkey = r_regionkey;
+FROM ${testName2}_Nation n1
+JOIN ${testName2}_Region ON n1.n_regionkey = r_regionkey
+JOIN ${testName2}_Nation n2 ON n2.n_regionkey = r_regionkey;
 rows: 125
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -314,8 +314,8 @@ rows: 125
 -- explicit join types:
   -- inner join
 SELECT n_name, r_name
-FROM ${testName}_Region
-INNER JOIN ${testName}_Nation ON r_regionkey = n_regionkey;
+FROM ${testName2}_Region
+INNER JOIN ${testName2}_Nation ON r_regionkey = n_regionkey;
 rows: 
    ('VIETNAM','ASIA')
    ('KENYA','AFRICA')
@@ -348,33 +348,33 @@ rows:
 
   -- cross join
 SELECT n_name, r_name
-FROM ${testName}_Region
-CROSS JOIN ${testName}_Nation;
+FROM ${testName2}_Region
+CROSS JOIN ${testName2}_Nation;
 rows: 125
 
 /*
   -- left outer join
 EXPLAIN SELECT n_name, r_name
-FROM ${testName}_Region
-LEFT OUTER JOIN ${testName}_Nation ON r_regionkey = n_regionkey;
+FROM ${testName2}_Region
+LEFT OUTER JOIN ${testName2}_Nation ON r_regionkey = n_regionkey;
 rows: (*,'explainPlan',
 'StatementMarker: select
-» queryText: "SELECT n_name, r_name FROM ${testName}_Region LEFT OUTER JOIN ${testName}_Nation ON r_regionkey = n_regionkey"
+» queryText: "SELECT n_name, r_name FROM ${testName2}_Region LEFT OUTER JOIN ${testName2}_Nation ON r_regionkey = n_regionkey"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.${testName}_Nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.${testName}_Region.r_name ; Ordinal Expr = $2)
+   » column: (Expr = rapidsse.public.${testName2}_Nation.n_name ; Ordinal Expr = $5)
+   » column: (Expr = rapidsse.public.${testName2}_Region.r_name ; Ordinal Expr = $2)
 
 -> -> abstractJoinOp
       » join type: Left Outer Join
-      » predicate: (rapidsse.public.${testName}_Region.r_regionkey = rapidsse.public.${testName}_Nation.n_regionkey)
+      » predicate: (rapidsse.public.${testName2}_Region.r_regionkey = rapidsse.public.${testName2}_Nation.n_regionkey)
       » ordinal predicate: ($1 = $6)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_Region)
+         » table: (rapidsse.public.${testName2}_Region)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_Nation)'
+         » table: (rapidsse.public.${testName2}_Nation)'
 )
 
 */
@@ -382,34 +382,34 @@ rows: (*,'explainPlan',
 -- Implicit join types ("JOIN" vs ",")
   -- implicit inner join with the JOIN keyword
 SELECT n_name, r_name, s_name
-FROM ${testName}_Region
-JOIN ${testName}_Nation ON r_regionkey = n_regionkey
-JOIN ${testName}_Supplier ON s_nationkey = n_nationkey;
+FROM ${testName2}_Region
+JOIN ${testName2}_Nation ON r_regionkey = n_regionkey
+JOIN ${testName2}_Supplier ON s_nationkey = n_nationkey;
 rows: 2000
 
   -- implicit cross join with the comma table-separator
 SELECT n_name, r_name, s_name
-FROM ${testName}_Region, ${testName}_Nation, ${testName}_Supplier;
+FROM ${testName2}_Region, ${testName2}_Nation, ${testName2}_Supplier;
 rows: 250000
 
   -- mixed implicit join types (1)
 SELECT n_name, r_name, s_name
-FROM ${testName}_Region
-JOIN ${testName}_Nation ON r_regionkey = n_regionkey
-, ${testName}_Supplier;
+FROM ${testName2}_Region
+JOIN ${testName2}_Nation ON r_regionkey = n_regionkey
+, ${testName2}_Supplier;
 rows: 50000
 
   -- mixed implicit join types (2)
 SELECT n_name, r_name, s_name
-FROM ${testName}_Region, ${testName}_Nation
-JOIN ${testName}_Supplier ON s_nationkey = n_nationkey;
+FROM ${testName2}_Region, ${testName2}_Nation
+JOIN ${testName2}_Supplier ON s_nationkey = n_nationkey;
 rows: 10000
 
 -- Validate columns returned:
   -- Inner/cross/outer joins return all columns
 SELECT *
-FROM ${testName}_t1
-INNER JOIN ${testName}_t2 ON ${testName}_t1.colA = ${testName}_t2.colA;
+FROM ${testName2}_t1
+INNER JOIN ${testName2}_t2 ON ${testName2}_t1.colA = ${testName2}_t2.colA;
 rows: 
   (1,'T1-ROW1',10.23,true,1,'T2-ROW1',10.23,*,*,*)
   (3,'T1-ROW3',null,true,3,'T2-ROW3',278.45,*,*,*)
@@ -420,8 +420,8 @@ rows:
 
 
 SELECT *
-FROM ${testName}_t1
-CROSS JOIN ${testName}_t2;
+FROM ${testName2}_t1
+CROSS JOIN ${testName2}_t2;
 rows: 
   (1,'T1-ROW1',10.23,true,1,'T2-ROW1',10.23,*,*,*)
   (1,'T1-ROW1',10.23,true,2,'T1-ROW2',11.32,*,*,*)
@@ -490,34 +490,34 @@ rows:
 
 /*
 EXPLAIN SELECT *
-FROM ${testName}_t1
-LEFT OUTER JOIN ${testName}_t2 ON ${testName}_t1.colA = ${testName}_t2.colA;
+FROM ${testName2}_t1
+LEFT OUTER JOIN ${testName2}_t2 ON ${testName2}_t1.colA = ${testName2}_t2.colA;
 rows: (*,'explainPlan',
 'StatementMarker: select
-» queryText: "SELECT * FROM ${testName}_t1 LEFT OUTER JOIN ${testName}_t2 ON ${testName}_t1.colA = ${testName}_t2.colA"
+» queryText: "SELECT * FROM ${testName2}_t1 LEFT OUTER JOIN ${testName2}_t2 ON ${testName2}_t1.colA = ${testName2}_t2.colA"
 
 -> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.${testName}_t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.${testName}_t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.${testName}_t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.${testName}_t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.${testName}_t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.${testName}_t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.${testName}_t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.${testName}_t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.${testName}_t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.${testName}_t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapidsse.public.${testName2}_t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapidsse.public.${testName2}_t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapidsse.public.${testName2}_t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapidsse.public.${testName2}_t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapidsse.public.${testName2}_t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapidsse.public.${testName2}_t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapidsse.public.${testName2}_t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapidsse.public.${testName2}_t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapidsse.public.${testName2}_t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapidsse.public.${testName2}_t2.colZ ; Ordinal Expr = $10)
 
 -> -> abstractJoinOp
       » join type: Left Outer Join
-      » predicate: (rapidsse.public.${testName}_t1.colA = rapidsse.public.${testName}_t2.colA)
+      » predicate: (rapidsse.public.${testName2}_t1.colA = rapidsse.public.${testName2}_t2.colA)
       » ordinal predicate: ($1 = $5)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_t1)
+         » table: (rapidsse.public.${testName2}_t1)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_t2)'
+         » table: (rapidsse.public.${testName2}_t2)'
 )
 */
 
@@ -528,8 +528,8 @@ rows: (*,'explainPlan',
 -- JOIN USING
   -- Single USING column
 SELECT *
-FROM ${testName}_t1
-JOIN ${testName}_t2 USING (colB);
+FROM ${testName2}_t1
+JOIN ${testName2}_t2 USING (colB);
 rows:
   (null,'T1-ROW2',11.32,false,2,'T1-ROW2',11.32,*,*,*)
   (7,'T1-ROW7',10.23,null,7,'T1-ROW7',null,*,*,*)
@@ -537,25 +537,25 @@ rows:
 
   -- Multiple USING 2 columns
 SELECT *
-FROM ${testName}_t1
-JOIN ${testName}_t2 USING (colB, colC);
+FROM ${testName2}_t1
+JOIN ${testName2}_t2 USING (colB, colC);
 rows:
   (null,'T1-ROW2',11.32,false,2,'T1-ROW2',11.32,*,*,*)
   (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
   -- Multiple USING 3 columns
 SELECT *
-FROM ${testName}_t1
-JOIN ${testName}_t2 USING (colB, colC, colA);
+FROM ${testName2}_t1
+JOIN ${testName2}_t2 USING (colB, colC, colA);
 rows:
   (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*)
 
 
 -- Mixed JOIN ON and JOIN USING
 SELECT *
-FROM ${testName}_t1
-JOIN ${testName}_t2 USING (colB, colC)
-JOIN ${testName}_t3 ON (${testName}_t1.colA = ${testName}_t3.colC);
+FROM ${testName2}_t1
+JOIN ${testName2}_t2 USING (colB, colC)
+JOIN ${testName2}_t3 ON (${testName2}_t1.colA = ${testName2}_t3.colC);
 rows:
   (8,'T1-ROW8',13.24,false,8,'T1-ROW8',13.24,*,*,*,8,'T3-ROW8',8.00)
 
@@ -571,24 +571,24 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  drop table ${testName}_Nation ;
+  drop table ${testName2}_Nation ;
   mute
 
-  drop table ${testName}_Region ;
+  drop table ${testName2}_Region ;
   mute
 
-  drop table ${testName}_Supplier ;
+  drop table ${testName2}_Supplier ;
   mute
 
-  drop table ${testName}_Partsupp ;
+  drop table ${testName2}_Partsupp ;
   mute
 
-  drop table ${testName}_t1 ;
+  drop table ${testName2}_t1 ;
   mute
 
-  drop table ${testName}_t2;
+  drop table ${testName2}_t2;
   mute
 
-  drop table ${testName}_t3;
+  drop table ${testName2}_t3;
   mute
 }

@@ -8,7 +8,7 @@
   success
 
   // (1) create a table
-  create table ${testName}_bolTbl (
+  create table ${testName2}_bolTbl (
     bol_col1   BOOLEAN     NOT NULL,
     vch_col2   VARCHAR(32) NOT NULL,
     int_col3   INTEGER     NOT NULL,
@@ -21,15 +21,15 @@
   success
 
   // create indexes
-  create index bol_idx1 on ${testName}_bolTbl (bol_col1);
+  create index bol_idx1 on ${testName2}_bolTbl (bol_col1);
   success
 
   // create indexes
-  create index bol_idx2 on ${testName}_bolTbl (bol_col8);
+  create index bol_idx2 on ${testName2}_bolTbl (bol_col8);
   success
 
   // drop the table
-  drop table ${testName}_bolTbl;
+  drop table ${testName2}_bolTbl;
   success
 
   // drop the table
@@ -44,7 +44,7 @@
 CLEANUP {
   
   // drop the table
-  drop table ${testName}_bolTbl;
+  drop table ${testName2}_bolTbl;
   mute
   
   bye;

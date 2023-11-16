@@ -1,139 +1,139 @@
 /*----------------------------------------------------------------------------*/
-/* regrLoadData -- load ${testName}_data                                                  */
+/* regrLoadData -- load ${testName2}_data                                                  */
 /*----------------------------------------------------------------------------*/
 
-// load ${testName}_data into the tables
-load ${testName}_TABLE1 "../DATA/Load/tbl1data.csv" ;
+// load ${testName2}_data into the tables
+load ${testName2}_TABLE1 "../DATA/Load/tbl1data.csv" ;
 success
 
-load ${testName}_TABLE2 "../DATA/Load/tbl2data.csv" ;
+load ${testName2}_TABLE2 "../DATA/Load/tbl2data.csv" ;
 success
 
-load ${testName}_TABLE3 "../DATA/Load/tbl3data.csv" ;
+load ${testName2}_TABLE3 "../DATA/Load/tbl3data.csv" ;
 success
 
-load ${testName}_TABLE4 "../DATA/Load/tbl4data.csv" ;
+load ${testName2}_TABLE4 "../DATA/Load/tbl4data.csv" ;
 success
 
-load ${testName}_TABLE5 "../DATA/Load/tbl5data.csv" ;
+load ${testName2}_TABLE5 "../DATA/Load/tbl5data.csv" ;
 success
 
-load ${testName}_TABLE6 "../DATA/Load/tbl6data.csv" ;
+load ${testName2}_TABLE6 "../DATA/Load/tbl6data.csv" ;
 success
 
-load ${testName}_TABLE7 "../DATA/Load/tbl7data.csv" ;
+load ${testName2}_TABLE7 "../DATA/Load/tbl7data.csv" ;
 success
 
-load ${testName}_TABLE8 "../DATA/Load/tbl8data.csv" ;
+load ${testName2}_TABLE8 "../DATA/Load/tbl8data.csv" ;
 success
 
-load ${testName}_TABLE9 "../DATA/Load/tbl9data.csv" ;
+load ${testName2}_TABLE9 "../DATA/Load/tbl9data.csv" ;
 success
 
-load ${testName}_ORDERS "../DATA/Load/orders.csv" ;
+load ${testName2}_ORDERS "../DATA/Load/orders.csv" ;
 success
 
-load ${testName}_LINEITEM "../DATA/Load/lineitem.csv" ;
+load ${testName2}_LINEITEM "../DATA/Load/lineitem.csv" ;
 success
 
-load ${testName}_CUSTOMERH "../DATA/Load/customer.csv" ;
+load ${testName2}_CUSTOMERH "../DATA/Load/customer.csv" ;
 success
 
-load ${testName}_PARTSUPP "../DATA/Load/partsupp.csv"
+load ${testName2}_PARTSUPP "../DATA/Load/partsupp.csv"
   <record_ends> = "\r\n";
 success
 
-load ${testName}_PART "../DATA/Load/part.csv" ;
+load ${testName2}_PART "../DATA/Load/part.csv" ;
 success
 
-load ${testName}_SHIPPING "../DATA/Load/shipping.csv" ;
+load ${testName2}_SHIPPING "../DATA/Load/shipping.csv" ;
 success
 
-load ${testName}_SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
+load ${testName2}_SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
 success
 
-load ${testName}_SUPPLIER "../DATA/Load/supplier.csv" ;
+load ${testName2}_SUPPLIER "../DATA/Load/supplier.csv" ;
 success
 
-load ${testName}_MANUFACTURER "../DATA/Load/manufacturer.csv";
+load ${testName2}_MANUFACTURER "../DATA/Load/manufacturer.csv";
 success
 
-load ${testName}_NATION "../DATA/Load/nation.csv"
+load ${testName2}_NATION "../DATA/Load/nation.csv"
   <record_ends> = "\r\n";;
 success
 
-load ${testName}_REGION "../DATA/Load/region.csv" ;
+load ${testName2}_REGION "../DATA/Load/region.csv" ;
 success
 
-load ${testName}_RETURNITEMS "../DATA/Load/returnitems.csv";
+load ${testName2}_RETURNITEMS "../DATA/Load/returnitems.csv";
 success
 
 CLEANUP {
   
-  drop table ${testName}_table1;
+  drop table ${testName2}_table1;
   mute
 
-  drop table ${testName}_table2;
+  drop table ${testName2}_table2;
   mute
   
-  drop table ${testName}_table3;
+  drop table ${testName2}_table3;
   mute
   
-  drop table ${testName}_table4;
+  drop table ${testName2}_table4;
   mute
   
-  drop table ${testName}_table5;
+  drop table ${testName2}_table5;
   mute
   
-  drop table ${testName}_table6;
+  drop table ${testName2}_table6;
   mute
   
-  drop table ${testName}_table7;
+  drop table ${testName2}_table7;
   mute
   
-  drop table ${testName}_table8;
+  drop table ${testName2}_table8;
   mute
   
-  drop table ${testName}_table9;
+  drop table ${testName2}_table9;
   mute
   
-  drop table ${testName}_orders;
+  drop table ${testName2}_orders;
   mute
   
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
   
-  drop table ${testName}_customerh;
+  drop table ${testName2}_customerh;
   mute
   
-  drop table ${testName}_partsupp;
+  drop table ${testName2}_partsupp;
   mute
   
-  drop table ${testName}_part;
+  drop table ${testName2}_part;
   mute
   
-  drop table ${testName}_shipping;
+  drop table ${testName2}_shipping;
   mute
   
-  drop table ${testName}_shipaddress;
+  drop table ${testName2}_shipaddress;
   mute
   
-  drop table ${testName}_supplier;
+  drop table ${testName2}_supplier;
   mute
   
-  drop table ${testName}_manufacturer;
+  drop table ${testName2}_manufacturer;
   mute
   
-  drop table ${testName}_nation;
+  drop table ${testName2}_nation;
   mute
   
-  drop table ${testName}_region;
+  drop table ${testName2}_region;
   mute
   
-  drop table ${testName}_returnitems;
+  drop table ${testName2}_returnitems;
   mute
 
-  drop table ${testName}_limitRow;
+  drop table ${testName2}_limitRow;
   mute
 
   bye;

@@ -11,7 +11,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table ${testName}_nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -19,7 +19,7 @@ create table ${testName}_nation (
 );
 success
 
-create table ${testName}_t1 (
+create table ${testName2}_t1 (
 	 col1       INTEGER NOT NULL,
 	 col2       DECIMAL NOT NULL,
 	 col3       FLOAT NOT NULL,
@@ -35,7 +35,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- No change to non-aggregate expressions
-EXPLAIN STAGE aggregateSplit SELECT n_nationkey FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT n_nationkey FROM ${testName2}_nation;
 rows:
 (*,'aggregateSplit','
 ∆ mainSubquery
@@ -47,15 +47,15 @@ rows:
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> tableScanOp
          » location: all partitions
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 
 -- No change to simple aggregates
-EXPLAIN STAGE aggregateSplit SELECT SUM(n_nationkey) FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT SUM(n_nationkey) FROM ${testName2}_nation;
 rows:
 ( *, 'aggregateSplit','
 ∆ mainSubquery
@@ -68,7 +68,7 @@ rows:
 
 -> -> projectOp
       » location: origin
-      » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+      » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
 
 -> -> -> stageMarker
          » location: all nodes
@@ -76,22 +76,22 @@ rows:
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> stageMarker
                » location: all partitions
                » routing: local node
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
-                     » table: (rapidsse.public.${testName}_nation)'
+                     » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- AVG() is split into a SUM and a COUNT
-EXPLAIN STAGE aggregateSplit SELECT AVG(n_nationkey) FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT AVG(n_nationkey) FROM ${testName2}_nation;
 rows:
 (*,'aggregateSplit','
 ∆ mainSubquery
@@ -103,7 +103,7 @@ rows:
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = (CAST(SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) AS DECIMAL)) / (CAST(SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey))) AS DECIMAL)) ; Ordinal Expr = (CAST($2 AS DECIMAL)) / (CAST($1 AS DECIMAL)))
+      » column: (Expr = (CAST(SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) AS DECIMAL)) / (CAST(SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey))) AS DECIMAL)) ; Ordinal Expr = (CAST($2 AS DECIMAL)) / (CAST($1 AS DECIMAL)))
 
 -> -> -> stageMarker
          » location: origin
@@ -111,8 +111,8 @@ rows:
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -120,25 +120,25 @@ rows:
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
-                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
-                        » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = COUNT(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)'
+                           » table: (rapidsse.public.${testName2}_nation)'
 )
 
 
 -- A compound aggregate expression is split   /1
-EXPLAIN STAGE aggregateSplit SELECT SUM(n_nationkey)/COUNT(n_nationkey) FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT SUM(n_nationkey)/COUNT(n_nationkey) FROM ${testName2}_nation;
 rows:
 (*,'aggregateSplit','
 ∆ mainSubquery
@@ -150,7 +150,7 @@ rows:
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = (SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)))) / (SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)))) ; Ordinal Expr = $2 / $1)
+      » column: (Expr = (SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)))) / (SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)))) ; Ordinal Expr = $2 / $1)
 
 -> -> -> stageMarker
          » location: origin
@@ -158,8 +158,8 @@ rows:
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -167,25 +167,25 @@ rows:
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = COUNT(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)'
+                           » table: (rapidsse.public.${testName2}_nation)'
 )
 
 
 -- A compound aggregate expression is split   /2
-EXPLAIN STAGE aggregateSplit SELECT SUM(n_nationkey) + COUNT(n_nationkey) FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT SUM(n_nationkey) + COUNT(n_nationkey) FROM ${testName2}_nation;
 rows:
 (*,'aggregateSplit','
 ∆ mainSubquery
@@ -197,7 +197,7 @@ rows:
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = (SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)))) ; Ordinal Expr = $2 + $1)
+      » column: (Expr = (SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)))) ; Ordinal Expr = $2 + $1)
 
 -> -> -> stageMarker
          » location: origin
@@ -205,8 +205,8 @@ rows:
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -214,25 +214,25 @@ rows:
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = COUNT(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)'
+                           » table: (rapidsse.public.${testName2}_nation)'
 )
 
 
 -- Grouped aggregations are split with AggregateOps
-EXPLAIN STAGE aggregateSplit SELECT SUM(n_nationkey) + COUNT(n_nationkey) FROM ${testName}_nation GROUP BY n_regionkey;
+EXPLAIN STAGE aggregateSplit SELECT SUM(n_nationkey) + COUNT(n_nationkey) FROM ${testName2}_nation GROUP BY n_regionkey;
 rows:
 (*, 'aggregateSplit','
 ∆ mainSubquery
@@ -244,15 +244,15 @@ rows:
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = (SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)))) ; Ordinal Expr = $1)
+      » column: (Expr = (SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)))) ; Ordinal Expr = $1)
 
 -> -> -> stageMarker
          » location: origin
          » routing: unicast
 
 -> -> -> -> projectOp
-            » column: (Expr = (SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)))) ; Ordinal Expr = $3 + $2)
-            » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $1)
+            » column: (Expr = (SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)))) ; Ordinal Expr = $3 + $2)
+            » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> stageMarker
                » location: origin
@@ -260,10 +260,10 @@ rows:
 
 -> -> -> -> -> -> aggregateOp
                   » location: origin
-                  » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
-                  » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
-                  » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
-                  » group by: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+                  » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+                  » group by: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all nodes
@@ -271,24 +271,24 @@ rows:
 
 -> -> -> -> -> -> -> -> aggregateOp
                         » location: all nodes
-                        » column: (Expr = SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
-                        » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
-                        » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
-                        » group by: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
+                        » column: (Expr = SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+                        » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+                        » group by: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> -> -> -> -> stageMarker
                            » location: all partitions
                            » routing: local node
 
 -> -> -> -> -> -> -> -> -> -> aggregateOp
-                              » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-                              » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
-                              » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
-                              » group by: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
+                              » column: (Expr = COUNT(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+                              » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                              » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+                              » group by: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> -> -> -> -> -> -> tableScanOp
                                  » location: all partitions
-                                 » table: (rapidsse.public.${testName}_nation)'
+                                 » table: (rapidsse.public.${testName2}_nation)'
 )
 
 
@@ -298,7 +298,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- cast of an aggregate is split /1
-EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) AS DECIMAL) FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) AS DECIMAL) FROM ${testName2}_nation;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -309,7 +309,7 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = CAST($1 AS DECIMAL))
+      » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = CAST($1 AS DECIMAL))
 
 -> -> -> stageMarker
          » location: origin
@@ -317,7 +317,7 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -325,22 +325,22 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)')
+                           » table: (rapidsse.public.${testName2}_nation)')
 
 
 -- cast of an aggregate is split /2
-EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) AS DECIMAL) FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) AS DECIMAL) FROM ${testName2}_nation;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -351,7 +351,7 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = 1.0 + (CAST(SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST($1 AS DECIMAL)))
+      » column: (Expr = 1.0 + (CAST(SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST($1 AS DECIMAL)))
 
 -> -> -> stageMarker
          » location: origin
@@ -359,7 +359,7 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -367,22 +367,22 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)')
+                           » table: (rapidsse.public.${testName2}_nation)')
 
 
 -- cast of an aggregate is split /3
-EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) + 1 AS DECIMAL) FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) + 1 AS DECIMAL) FROM ${testName2}_nation;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -393,7 +393,7 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = 1.0 + (CAST((SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)))) + 1 AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST($1 + 1 AS DECIMAL)))
+      » column: (Expr = 1.0 + (CAST((SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)))) + 1 AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST($1 + 1 AS DECIMAL)))
 
 -> -> -> stageMarker
          » location: origin
@@ -401,7 +401,7 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -409,22 +409,22 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)')
+                           » table: (rapidsse.public.${testName2}_nation)')
 
 
 -- cast of an aggregate is split /4
-EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) + 1 + SUM(n_regionkey) AS DECIMAL) FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) + 1 + SUM(n_regionkey) AS DECIMAL) FROM ${testName2}_nation;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -435,7 +435,7 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = 1.0 + (CAST(((SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)))) + 1) + (SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_regionkey)))) AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST(($2 + 1) + $1 AS DECIMAL)))
+      » column: (Expr = 1.0 + (CAST(((SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)))) + 1) + (SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_regionkey)))) AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST(($2 + 1) + $1 AS DECIMAL)))
 
 -> -> -> stageMarker
          » location: origin
@@ -443,8 +443,8 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_regionkey))) ; Ordinal Expr = SUM($1))
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_regionkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -452,24 +452,24 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_regionkey)) ; Ordinal Expr = SUM($1))
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_regionkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)')
+                           » table: (rapidsse.public.${testName2}_nation)')
 
 
 -- cast of a grouped aggregate is split
-EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) AS DECIMAL) FROM ${testName}_nation GROUP BY n_regionkey;
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) AS DECIMAL) FROM ${testName2}_nation GROUP BY n_regionkey;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -480,15 +480,15 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = $1)
+      » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = $1)
 
 -> -> -> stageMarker
          » location: origin
          » routing: unicast
 
 -> -> -> -> projectOp
-            » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL))
-            » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $1)
+            » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL))
+            » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> stageMarker
                » location: origin
@@ -496,9 +496,9 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> aggregateOp
                   » location: origin
-                  » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $2)
-                  » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
-                  » group by: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $2)
+                  » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+                  » group by: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all nodes
@@ -506,26 +506,26 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> -> -> aggregateOp
                         » location: all nodes
-                        » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
-                        » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $2)
-                        » group by: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $2)
+                        » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $2)
+                        » group by: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> -> -> stageMarker
                            » location: all partitions
                            » routing: local node
 
 -> -> -> -> -> -> -> -> -> -> aggregateOp
-                              » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
-                              » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
-                              » group by: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
+                              » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                              » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+                              » group by: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> -> -> -> -> -> -> tableScanOp
                                  » location: all partitions
-                                 » table: (rapidsse.public.${testName}_nation)')
+                                 » table: (rapidsse.public.${testName2}_nation)')
 
 
 -- cast of one aggregate in a compound aggregate expression is split
-EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(col1) AS DECIMAL) * 1.0 + MAX(col2) FROM ${testName}_t1;
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(col1) AS DECIMAL) * 1.0 + MAX(col2) FROM ${testName2}_t1;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -536,7 +536,7 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = ((CAST(SUM(SUM(SUM(rapidsse.public.${testName}_t1.col1))) AS DECIMAL)) * 1.0) + (MAX(MAX(MAX(rapidsse.public.${testName}_t1.col2)))) ; Ordinal Expr = ((CAST($2 AS DECIMAL)) * 1.0) + $1)
+      » column: (Expr = ((CAST(SUM(SUM(SUM(rapidsse.public.${testName2}_t1.col1))) AS DECIMAL)) * 1.0) + (MAX(MAX(MAX(rapidsse.public.${testName2}_t1.col2)))) ; Ordinal Expr = ((CAST($2 AS DECIMAL)) * 1.0) + $1)
 
 -> -> -> stageMarker
          » location: origin
@@ -544,8 +544,8 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = MAX(MAX(MAX(rapidsse.public.${testName}_t1.col2))) ; Ordinal Expr = MAX($1))
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_t1.col1))) ; Ordinal Expr = SUM($2))
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.${testName2}_t1.col2))) ; Ordinal Expr = MAX($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_t1.col1))) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -553,24 +553,24 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = MAX(MAX(rapidsse.public.${testName}_t1.col2)) ; Ordinal Expr = MAX($1))
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_t1.col1)) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = MAX(MAX(rapidsse.public.${testName2}_t1.col2)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_t1.col1)) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = MAX(rapidsse.public.${testName}_t1.col2) ; Ordinal Expr = MAX($2))
-                        » column: (Expr = SUM(rapidsse.public.${testName}_t1.col1) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = MAX(rapidsse.public.${testName2}_t1.col2) ; Ordinal Expr = MAX($2))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_t1.col1) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_t1)')
+                           » table: (rapidsse.public.${testName2}_t1)')
 
 
 -- cast of two individual aggregates in a compound aggregate expression is split
-EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(col1) AS DECIMAL) * 1.0 + CAST(COUNT(col1) AS DECIMAL) FROM ${testName}_t1;
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(col1) AS DECIMAL) * 1.0 + CAST(COUNT(col1) AS DECIMAL) FROM ${testName2}_t1;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -581,7 +581,7 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = ((CAST(SUM(SUM(SUM(rapidsse.public.${testName}_t1.col1))) AS DECIMAL)) * 1.0) + (CAST(SUM(SUM(COUNT(rapidsse.public.${testName}_t1.col1))) AS DECIMAL)) ; Ordinal Expr = ((CAST($2 AS DECIMAL)) * 1.0) + (CAST($1 AS DECIMAL)))
+      » column: (Expr = ((CAST(SUM(SUM(SUM(rapidsse.public.${testName2}_t1.col1))) AS DECIMAL)) * 1.0) + (CAST(SUM(SUM(COUNT(rapidsse.public.${testName2}_t1.col1))) AS DECIMAL)) ; Ordinal Expr = ((CAST($2 AS DECIMAL)) * 1.0) + (CAST($1 AS DECIMAL)))
 
 -> -> -> stageMarker
          » location: origin
@@ -589,8 +589,8 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName}_t1.col1))) ; Ordinal Expr = SUM($1))
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_t1.col1))) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName2}_t1.col1))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_t1.col1))) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -598,24 +598,24 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName}_t1.col1)) ; Ordinal Expr = SUM($1))
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_t1.col1)) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName2}_t1.col1)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_t1.col1)) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = COUNT(rapidsse.public.${testName}_t1.col1) ; Ordinal Expr = COUNT($1))
-                        » column: (Expr = SUM(rapidsse.public.${testName}_t1.col1) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = COUNT(rapidsse.public.${testName2}_t1.col1) ; Ordinal Expr = COUNT($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_t1.col1) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_t1)')
+                           » table: (rapidsse.public.${testName2}_t1)')
 
 
 -- cast of a whole compound aggregate expression is split
-EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) + COUNT(n_nationkey) AS DECIMAL) * 1.0 FROM ${testName}_nation;
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) + COUNT(n_nationkey) AS DECIMAL) * 1.0 FROM ${testName2}_nation;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -626,7 +626,7 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = (CAST((SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)))) AS DECIMAL)) * 1.0 ; Ordinal Expr = (CAST($2 + $1 AS DECIMAL)) * 1.0)
+      » column: (Expr = (CAST((SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)))) AS DECIMAL)) * 1.0 ; Ordinal Expr = (CAST($2 + $1 AS DECIMAL)) * 1.0)
 
 -> -> -> stageMarker
          » location: origin
@@ -634,8 +634,8 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
-            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -643,24 +643,24 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
-                  » column: (Expr = SUM(SUM(rapidsse.public.${testName}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = SUM($2))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-                        » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = COUNT(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+                        » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)')
+                           » table: (rapidsse.public.${testName2}_nation)')
 
 
 -- SUBSTRING
-EXPLAIN STAGE aggregatesplit SELECT SUBSTR(MAX(n_name), 0, 1) FROM ${testName}_nation;
+EXPLAIN STAGE aggregatesplit SELECT SUBSTR(MAX(n_name), 0, 1) FROM ${testName2}_nation;
 rows: (*,'aggregateSplit','
 ∆ mainSubquery
   » table alias: __subquery0002
@@ -671,7 +671,7 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = SUBSTRING((MAX(MAX(MAX(rapidsse.public.${testName}_nation.n_name)))), 0, 1) ; Ordinal Expr = SUBSTRING($1, 0, 1))
+      » column: (Expr = SUBSTRING((MAX(MAX(MAX(rapidsse.public.${testName2}_nation.n_name)))), 0, 1) ; Ordinal Expr = SUBSTRING($1, 0, 1))
 
 -> -> -> stageMarker
          » location: origin
@@ -679,7 +679,7 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> projectOp
             » location: origin
-            » column: (Expr = MAX(MAX(MAX(rapidsse.public.${testName}_nation.n_name))) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.${testName2}_nation.n_name))) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> -> stageMarker
                » location: all nodes
@@ -687,22 +687,22 @@ rows: (*,'aggregateSplit','
 
 -> -> -> -> -> -> projectOp
                   » location: all nodes
-                  » column: (Expr = MAX(MAX(rapidsse.public.${testName}_nation.n_name)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MAX(MAX(rapidsse.public.${testName2}_nation.n_name)) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions
                      » routing: local node
 
 -> -> -> -> -> -> -> -> projectOp
-                        » column: (Expr = MAX(rapidsse.public.${testName}_nation.n_name) ; Ordinal Expr = MAX($2))
+                        » column: (Expr = MAX(rapidsse.public.${testName2}_nation.n_name) ; Ordinal Expr = MAX($2))
 
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
-                           » table: (rapidsse.public.${testName}_nation)')
+                           » table: (rapidsse.public.${testName2}_nation)')
 
 // TODO: enable when columnrefs are supported in LIKE patterns and escape expressions
 -- LIKE
-//EXPLAIN STAGE aggregatesplit SELECT MIN(n_name) LIKE MAX(n_name) FROM ${testName}_nation;
+//EXPLAIN STAGE aggregatesplit SELECT MIN(n_name) LIKE MAX(n_name) FROM ${testName2}_nation;
 //rows: (*,'aggregateSplit','
 //∆ mainSubquery
 //  » table alias: __subquery0002
@@ -713,7 +713,7 @@ rows: (*,'aggregateSplit','
 //   » routing: unicast
 //
 //-> -> projectOp
-//      » column: (Expr = (MIN(MIN(MIN(rapidsse.public.${testName}_nation.n_name)))) LIKE (MAX(MAX(MAX(rapidsse.public.${testName}_nation.n_name)))) ; Ordinal Expr = $2 LIKE $1)
+//      » column: (Expr = (MIN(MIN(MIN(rapidsse.public.${testName2}_nation.n_name)))) LIKE (MAX(MAX(MAX(rapidsse.public.${testName2}_nation.n_name)))) ; Ordinal Expr = $2 LIKE $1)
 //
 //-> -> -> stageMarker
 //         » location: origin
@@ -721,8 +721,8 @@ rows: (*,'aggregateSplit','
 //
 //-> -> -> -> projectOp
 //            » location: origin
-//            » column: (Expr = MAX(MAX(MAX(rapidsse.public.${testName}_nation.n_name))) ; Ordinal Expr = MAX($1))
-//            » column: (Expr = MIN(MIN(MIN(rapidsse.public.${testName}_nation.n_name))) ; Ordinal Expr = MIN($2))
+//            » column: (Expr = MAX(MAX(MAX(rapidsse.public.${testName2}_nation.n_name))) ; Ordinal Expr = MAX($1))
+//            » column: (Expr = MIN(MIN(MIN(rapidsse.public.${testName2}_nation.n_name))) ; Ordinal Expr = MIN($2))
 //
 //-> -> -> -> -> stageMarker
 //               » location: all nodes
@@ -730,20 +730,20 @@ rows: (*,'aggregateSplit','
 //
 //-> -> -> -> -> -> projectOp
 //                  » location: all nodes
-//                  » column: (Expr = MAX(MAX(rapidsse.public.${testName}_nation.n_name)) ; Ordinal Expr = MAX($1))
-//                  » column: (Expr = MIN(MIN(rapidsse.public.${testName}_nation.n_name)) ; Ordinal Expr = MIN($2))
+//                  » column: (Expr = MAX(MAX(rapidsse.public.${testName2}_nation.n_name)) ; Ordinal Expr = MAX($1))
+//                  » column: (Expr = MIN(MIN(rapidsse.public.${testName2}_nation.n_name)) ; Ordinal Expr = MIN($2))
 //
 //-> -> -> -> -> -> -> stageMarker
 //                     » location: all partitions
 //                     » routing: local node
 //
 //-> -> -> -> -> -> -> -> projectOp
-//                        » column: (Expr = MAX(rapidsse.public.${testName}_nation.n_name) ; Ordinal Expr = MAX($2))
-//                        » column: (Expr = MIN(rapidsse.public.${testName}_nation.n_name) ; Ordinal Expr = MIN($2))
+//                        » column: (Expr = MAX(rapidsse.public.${testName2}_nation.n_name) ; Ordinal Expr = MAX($2))
+//                        » column: (Expr = MIN(rapidsse.public.${testName2}_nation.n_name) ; Ordinal Expr = MIN($2))
 //
 //-> -> -> -> -> -> -> -> -> tableScanOp
 //                           » location: all partitions
-//                           » table: (rapidsse.public.${testName}_nation)')
+//                           » table: (rapidsse.public.${testName2}_nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
@@ -757,9 +757,9 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  drop table ${testName}_nation ;
+  drop table ${testName2}_nation ;
   mute
 
-  drop table ${testName}_t1 ;
+  drop table ${testName2}_t1 ;
   mute
 }

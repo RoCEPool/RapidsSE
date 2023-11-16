@@ -7,20 +7,20 @@ trackMemory;
 success
 
 // (1) create a table
-create table ${testName}_uniFlt (
+create table ${testName2}_uniFlt (
   flt_col FLOAT NOT NULL
 );
 success
 
-load ${testName}_uniFlt "../FASTLOAD/Data/uniFlt.csv" ;
+load ${testName2}_uniFlt "../FASTLOAD/Data/uniFlt.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_uniFlt;
+select * from ${testName2}_uniFlt;
 rows: 48
 
 // check data
-select * from ${testName}_uniFlt;
+select * from ${testName2}_uniFlt;
 rows:
   (0.0)
   (0.1)
@@ -72,7 +72,7 @@ rows:
   (-1234e4)
 
 // drop the table
-drop table ${testName}_uniFlt;
+drop table ${testName2}_uniFlt;
 success
 
 // get memory leaks
@@ -81,7 +81,7 @@ rows: 0
 
 CLEANUP {
   // drop the table
-  drop table ${testName}_uniFlt;
+  drop table ${testName2}_uniFlt;
   mute
   
   bye;

@@ -4,7 +4,7 @@
 
 // create the table
 
-create table ${testName}_terminator_cr (
+create table ${testName2}_terminator_cr (
   c1 integer,
   c2 varchar,
   c3 varchar,
@@ -13,26 +13,26 @@ create table ${testName}_terminator_cr (
 success
 
 // load data into the table with default formatter settings
-Load ${testName}_terminator_cr "../DATA/Load/terminatorLarge_cr.csv"
+Load ${testName2}_terminator_cr "../DATA/Load/terminatorLarge_cr.csv"
   <record_ends> = "\r";
 success
 
 // create index
-create index idx on ${testName}_terminator_cr(c1);
+create index idx on ${testName2}_terminator_cr(c1);
 success
 
 // fetch
-predicateFetch ${testName}_terminator_cr "c1 1 =";
+predicateFetch ${testName2}_terminator_cr "c1 1 =";
 rows:
   (1, 'This is terminatoed by <CR>');
 
 // fetch
-select * from ${testName}_terminator_cr;
+select * from ${testName2}_terminator_cr;
 rows: 6895
 
 CLEANUP {
   
-  drop table ${testName}_terminator_cr;
+  drop table ${testName2}_terminator_cr;
   mute
 
   bye;

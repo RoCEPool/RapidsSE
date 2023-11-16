@@ -7,7 +7,7 @@ trackMemory;
 success
 
 // (1) create a table
-create table ${testName}_IntTbl (
+create table ${testName2}_IntTbl (
   int_col1  INTEGER NOT NULL,
   vch_col2  VARCHAR(32) NOT NULL,
   vch_col3  VARCHAR(32) NOT NULL,
@@ -16,55 +16,55 @@ create table ${testName}_IntTbl (
 success
 
 // create indexes
-create index int_idx1 on ${testName}_IntTbl (int_col1);
+create index int_idx1 on ${testName2}_IntTbl (int_col1);
 success
 
-create index int_idx2 on ${testName}_IntTbl (int_col4);
+create index int_idx2 on ${testName2}_IntTbl (int_col4);
 success
 
 // check existence of index
-lsidx ${testName}_IntTbl;
+lsidx ${testName2}_IntTbl;
 rows:
   ('int_idx1', false, false)
   ('int_idx2', false, false)
 
 // check columns of index
-lsidxcol ${testName}_IntTbl int_idx1;
+lsidxcol ${testName2}_IntTbl int_idx1;
 rows:
   ('int_col1', 'INTEGER', 19, 0, false, true)
 
 // check columns of index
-lsidxcol ${testName}_IntTbl int_idx2;
+lsidxcol ${testName2}_IntTbl int_idx2;
 rows:
   ('int_col4', 'INTEGER', 19, 0, true, false)
 
-Load ${testName}_IntTbl "../DATA/Datums/integer.csv" ;
+Load ${testName2}_IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows
-select * from ${testName}_IntTbl;
+select * from ${testName2}_IntTbl;
 rows: 101
 
 // dump index int_idx1
-dumpidx ${testName}_IntTbl int_idx1;
+dumpidx ${testName2}_IntTbl int_idx1;
 success
 
 // dump index int_idx2
-dumpidx ${testName}_IntTbl int_idx2;
+dumpidx ${testName2}_IntTbl int_idx2;
 success
 
 // fetch
-predicateFetch ${testName}_intTbl "int_col1 13 =";
+predicateFetch ${testName2}_intTbl "int_col1 13 =";
 rows:
  (13,'one three',113,null)
 
 // fetch
-predicateFetch ${testName}_intTbl "int_col1 14 =";
+predicateFetch ${testName2}_intTbl "int_col1 14 =";
 rows:
   (14,'one four',114,null)
 
 // drop the table
-drop table ${testName}_IntTbl;
+drop table ${testName2}_IntTbl;
 success
 
 // get memory leaks
@@ -74,7 +74,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table ${testName}_IntTbl;
+  drop table ${testName2}_IntTbl;
   mute
   
   bye;

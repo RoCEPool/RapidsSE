@@ -7,20 +7,20 @@ trackMemory;
 success
 
 // (1) create a table
-create table ${testName}_uniVch (
+create table ${testName2}_uniVch (
   vch_col VARCHAR(500) NOT NULL
 );
 success
 
-load ${testName}_uniVch "../FASTLOAD/Data/uniVch.csv" ;
+load ${testName2}_uniVch "../FASTLOAD/Data/uniVch.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_uniVch;
+select * from ${testName2}_uniVch;
 rows: 53
 
 // check data
-select * from ${testName}_uniVch;
+select * from ${testName2}_uniVch;
 rows:
   ('a')
   ('ab')
@@ -77,7 +77,7 @@ rows:
   ('A')
 
 // drop the table
-//drop table ${testName}_uniVch;
+//drop table ${testName2}_uniVch;
 //success
 
 // get memory leaks
@@ -86,7 +86,7 @@ rows: 0
 
 CLEANUP {
   // drop the table
-  //drop table ${testName}_uniVch;
+  //drop table ${testName2}_uniVch;
   //mute
   
   bye;

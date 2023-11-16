@@ -13,7 +13,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01 +  <= and"
     | aggreg " type decimal as revenue_p ) $6 $7 * sum "
@@ -33,7 +33,7 @@ failure contains: "no such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table ${TestName}_LineItem
+create table ${testName2}_LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -62,7 +62,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and"
     | aggreg "type decimal as partitionRevenue ) $6 $7 * sum "
@@ -81,7 +81,7 @@ rows:
  (null)
 
 //------------------------------------------------------------------------------
-load ${testName}_lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
     | combined 0
     | stageC
@@ -112,7 +112,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01 +  <= and"
     | combined 0
@@ -133,7 +133,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 .06 0.01 - >= $7 0.06 0.01 +  <= and"
     | combined 0
@@ -154,7 +154,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
     | combined 0
@@ -174,7 +174,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
     | combined 0
@@ -199,7 +199,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
      | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
      | filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
      | combined 0
@@ -223,7 +223,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
     | combined 0
@@ -248,7 +248,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
     | aggreg " type decimal as partitionRevenue ) $6 $7 * sum"
@@ -274,7 +274,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and and and"
     | aggreg " type decimal as partitionRevenue ) $6 $7 * sum"
     | combined 0
@@ -299,7 +299,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
     | combined 0
     | stageC
@@ -324,7 +324,7 @@ begin
    start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lineitem
+    scan ${testName2}_lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
     | aggreg " type decimal as revenuePart ) $6 $7 * sum "
     | combined 0
@@ -343,7 +343,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table ${testName}_lineitem;
+drop table ${testName2}_lineitem;
 success;
 
 MemoryLeaks;
@@ -351,7 +351,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

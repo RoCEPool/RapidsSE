@@ -11,14 +11,14 @@ CREATE CONNECTION 'c2';
 USE 'c1';
 
 -- First ensure that the table 'foo' doesn't exist to start with.
-drop table ${testName}_foo;
+drop table ${testName2}_foo;
 mute
 
 -- Create the table and index.
-create table ${testName}_foo (col0 integer, col1 varchar);
+create table ${testName2}_foo (col0 integer, col1 varchar);
 success
 
-create index fooIdx on ${testName}_foo (col0);
+create index fooIdx on ${testName2}_foo (col0);
 success
 
 
@@ -27,13 +27,13 @@ USE 'c2';
 
 lstbl;
 rows:
-  ('${testName}_foo')
+  ('${testName2}_foo')
 
-lsidx ${testName}_foo;
+lsidx ${testName2}_foo;
 rows:
   ('fooIdx',false,false)
 
-lsidxcol ${testName}_foo fooIdx;
+lsidxcol ${testName2}_foo fooIdx;
 rows:
   ('col0', 'INTEGER', 19, 0, true, true)
 
@@ -42,7 +42,7 @@ rows:
 -- Go back to connection c1 and drop the table
 USE 'c1';
 
-drop table ${testName}_foo;
+drop table ${testName2}_foo;
 success
 
 
@@ -52,7 +52,7 @@ USE 'c2';
 lstbl;
 rows: 0
 
-lsidx ${testName}_foo;
+lsidx ${testName2}_foo;
 failure contains: 'Table does not exist'
 
 
@@ -66,6 +66,6 @@ DROP CONNECTION 'c2';
 
 
 CLEANUP {
-  drop table ${testName}_foo;
+  drop table ${testName2}_foo;
   mute
 }

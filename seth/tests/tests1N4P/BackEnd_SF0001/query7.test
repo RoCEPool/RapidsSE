@@ -15,12 +15,12 @@ from (
        extract(year from l_shipdate) as l_year,
        l_extendedprice * (1 - l_discount) as volume
      from
-       ${testName}_supplier,
-       ${testName}_lineitem,
-       ${testName}_orders,
-       ${testName}_customer,
-       ${testName}_nation n1,
-       ${testName}_nation n2
+       ${testName2}_supplier,
+       ${testName2}_lineitem,
+       ${testName2}_orders,
+       ${testName2}_customer,
+       ${testName2}_nation n1,
+       ${testName2}_nation n2
      where
        s_suppkey = l_suppkey
        and o_orderkey = l_orderkey
@@ -56,12 +56,12 @@ from (
        extract(year from l_shipdate) as l_year,
        l_extendedprice * (1 - l_discount) as volume
      from
-       ${testName}_supplier,
-       ${testName}_lineitem,
-       ${testName}_orders,
-       ${testName}_customer,
-       ${testName}_nation n1,
-       ${testName}_nation n2
+       ${testName2}_supplier,
+       ${testName2}_lineitem,
+       ${testName2}_orders,
+       ${testName2}_customer,
+       ${testName2}_nation n1,
+       ${testName2}_nation n2
      where
        s_suppkey = l_suppkey
        and o_orderkey = l_orderkey
@@ -106,12 +106,12 @@ from (
        extract(year from l_shipdate) as l_year,
        l_extendedprice * (1 - l_discount) as volume
      from
-       ${testName}_supplier,
-       ${testName}_lineitem,
-       ${testName}_orders,
-       ${testName}_customer,
-       ${testName}_nation n1,
-       ${testName}_nation n2
+       ${testName2}_supplier,
+       ${testName2}_lineitem,
+       ${testName2}_orders,
+       ${testName2}_customer,
+       ${testName2}_nation n1,
+       ${testName2}_nation n2
      where
        s_suppkey = l_suppkey
        and o_orderkey = l_orderkey
@@ -141,26 +141,26 @@ from (
        | pulse once
        | stageMarker2182
      stage stageMarker2182 on all partitions :
-       scan rapidsse public ${testName}_supplier
+       scan rapidsse public ${testName2}_supplier
        | stageMarker2185 broadcast
      stage stageMarker2185 on all partitions :
-       scan rapidsse public ${testName}_lineitem
+       scan rapidsse public ${testName2}_lineitem
        | abstractJoin " true  "
        | stageMarker2188 broadcast
      stage stageMarker2188 on all partitions :
-       scan rapidsse public ${testName}_orders
+       scan rapidsse public ${testName2}_orders
        | abstractJoin " true  "
        | stageMarker2191 broadcast
      stage stageMarker2191 on all partitions :
-       scan rapidsse public ${testName}_customer
+       scan rapidsse public ${testName2}_customer
        | abstractJoin " true  "
        | stageMarker2194 broadcast
      stage stageMarker2194 on all partitions :
-       scan rapidsse public ${testName}_nation
+       scan rapidsse public ${testName2}_nation
        | abstractJoin " true  "
        | stageMarker2197 broadcast
      stage stageMarker2197 on all partitions :
-       scan rapidsse public ${testName}_nation
+       scan rapidsse public ${testName2}_nation
        | abstractJoin " true  "
        | stageMarker2200
      stage stageMarker2200 on all partitions :
@@ -215,20 +215,20 @@ begin
      | next
 
    stage S01 on all partitions :
-     scan ${testName}_customer
+     scan ${testName2}_customer
      | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY"
      | combined 0
      | next
 
   stage S02 on all partitions :
-    indexJoin ${testName}_nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    indexJoin ${testName2}_nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | filter "type BOOLEAN N_NAME 'FRANCE' == N_NAME 'GERMANY' == OR"
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as N2_N_NAME N_NAME"
     | combined 0
     | next
 
    stage S03 on all partitions :
-     indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+     indexJoin ${testName2}_orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
      | project "type integer as O_ORDERKEY O_ORDERKEY ,
                 type VARCHAR as N2_N_NAME N2_N_NAME"
      | hash "type INTEGER O_ORDERKEY"
@@ -236,7 +236,7 @@ begin
      | next hashcast
 
    stage S04 on all partitions :
-     indexJoin ${TestName}_LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+     indexJoin ${testName2}_LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
      | filter "type BOOLEAN } DATE '1995-01-01'  DATE '1996-12-31' L_SHIPDATE between"
      | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
                 type VARCHAR as N2_N_NAME N2_N_NAME ,
@@ -247,7 +247,7 @@ begin
      | next hashcast
 
    stage S05 on all partitions :
-     indexJoin ${TestName}_Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
+     indexJoin ${testName2}_Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
      | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                 type VARCHAR as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR L_YEAR ,
@@ -256,7 +256,7 @@ begin
      | next
 
    stage S06 on all partitions :
-     indexJoin ${TestName}_Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
+     indexJoin ${testName2}_Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
      | filter "type BOOLEAN N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and
                             N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
      | project "type VARCHAR as N1_N_NAME N_NAME ,
@@ -325,25 +325,25 @@ begin
     | next
 
   stage stageA on all partitions :
-    indexScan ${TestName}_LineItem IxL_SHIPDATE  "LBOUND DATE '1995-01-01' >= UBOUND  DATE '1996-12-31' <="
+    indexScan ${testName2}_LineItem IxL_SHIPDATE  "LBOUND DATE '1995-01-01' >= UBOUND  DATE '1996-12-31' <="
     | project " type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER as L_SUPPKEY L_SUPPKEY  , type INTEGER as L_YEAR L_SHIPDATE extract_year , type DECIMAL as volume L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * "
     | combined 0
     | next broadcast
 
   stage stageB on all partitions :
-    indexJoin ${testName}_orders IxO_ORDERKEY "BOUND $I1 L_ORDERKEY =="
+    indexJoin ${testName2}_orders IxO_ORDERKEY "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
     | combined 0
     | next
 
  stage stageMarkerC on all partitions :
-   indexJoin ${testName}_customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+   indexJoin ${testName2}_customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
    | project " type INTEGER as C_NATIONKEY C_NATIONKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
    | combined 0
    | next
 
  stage stageMarkerB on all partitions :
-   indexJoin ${testName}_nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+   indexJoin ${testName2}_nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
    | filter "type BOOLEAN N_NAME 'FRANCE' == N_NAME 'GERMANY' == OR"
    | project "type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N2_N_NAME N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
    | hash "type INTEGER L_SUPPKEY "
@@ -351,13 +351,13 @@ begin
    | next hashcast
 
  stage Gj_SUPPLIER on all partitions :
-   indexJoin ${TestName}_Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
+   indexJoin ${testName2}_Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
    | project "type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
    | combined 0
    | next
 
  stage stageMarkerB on all partitions :
-   indexJoin ${TestName}_Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
+   indexJoin ${testName2}_Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
    | filter "type BOOLEAN N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
    | project "type VARCHAR as N1_N_NAME N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
    | combined 0
@@ -396,7 +396,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan      ${TestName}_Orders
+    scan      ${testName2}_Orders
     | project   "   type INTEGER as C0_O_CUSTKEY $2
                   , type INTEGER as C1_O_ORDERKEY $1 "
     | hash      "type INTEGER $2"
@@ -404,7 +404,7 @@ begin
     | next      hashcast
 
   stage S02 on all partitions :
-    indexJoin ${TestName}_Lineitem IxL_ORDERKEY " BOUND $I1 $2 == "
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY " BOUND $I1 $2 == "
     | filter    " type BOOLEAN } DATE '1995-01-01' DATE '1996-12-31' $13 between "
     | combined 0
     | next
@@ -420,7 +420,7 @@ begin
     | next      hashcast
 
   stage S04 on all partitions :
-    indexJoin ${TestName}_Customer IxC_CUSTKEY " BOUND $I1 $5 == "
+    indexJoin ${testName2}_Customer IxC_CUSTKEY " BOUND $I1 $5 == "
     | combined 0
     | next
 
@@ -435,7 +435,7 @@ begin
     | next      hashcast
 
   stage S06 on all partitions :
-    indexJoin ${TestName}_Supplier IxS_SUPPKEY " BOUND $I1 $5 == "
+    indexJoin ${testName2}_Supplier IxS_SUPPKEY " BOUND $I1 $5 == "
     | combined 0
     | next
 
@@ -449,7 +449,7 @@ begin
     | next
 
   stage S08 on all partitions :
-    indexJoin ${testName}_nation IxN_NATIONKEY " BOUND $I1 $5 == "
+    indexJoin ${testName2}_nation IxN_NATIONKEY " BOUND $I1 $5 == "
     | combined 0
     | next
 
@@ -463,7 +463,7 @@ begin
     | next
 
   stage S10 on all partitions :
-    indexJoin ${testName}_nation IxN_NATIONKEY " BOUND $I1 $5 == "
+    indexJoin ${testName2}_nation IxN_NATIONKEY " BOUND $I1 $5 == "
     | combined 0
     | next
 

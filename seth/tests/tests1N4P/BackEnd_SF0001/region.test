@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table ${testName}_region (
+create table ${testName2}_region (
 R_REGIONKEY       INTEGER NOT NULL,
 R_NAME            CHAR(25) NOT NULL,
 R_COMMENT         VARCHAR(152)
@@ -15,19 +15,19 @@ success
 
 //------------------------------------------------------------------------------
 // create the indexes
-CREATE INDEX IxR_REGIONKEY ON ${testName}_region(R_REGIONKEY);
+CREATE INDEX IxR_REGIONKEY ON ${testName2}_region(R_REGIONKEY);
 affected: 0
 
 
 -----------------------------------------------------------------------
 // load the table
-loadReplicated ${testName}_region "../TPCH/SF_0001/region.csv";
+loadReplicated ${testName2}_region "../TPCH/SF_0001/region.csv";
 success
 
-//select count(*) from ${testName}_region;
+//select count(*) from ${testName2}_region;
 //rows: (5)
 
-compactidx ${testName}_region IxR_REGIONKEY;
+compactidx ${testName2}_region IxR_REGIONKEY;
 success
 
 

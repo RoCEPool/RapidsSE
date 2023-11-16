@@ -7,20 +7,20 @@ trackMemory;
 success
 
 // (1) create a table
-create table ${testName}_uniDte (
+create table ${testName2}_uniDte (
   dte_col DATE NOT NULL
 );
 success
 
-load ${testName}_uniDte "../FASTLOAD/Data/uniDte.csv" ;
+load ${testName2}_uniDte "../FASTLOAD/Data/uniDte.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_uniDte;
+select * from ${testName2}_uniDte;
 rows: 24
 
 // check data
-select * from ${testName}_uniDte;
+select * from ${testName2}_uniDte;
 rows:
   ('1961-01-01')
   ('1961-02-01')
@@ -48,7 +48,7 @@ rows:
   ('1971-12-31')
 
 // drop the table
-drop table ${testName}_uniDte;
+drop table ${testName2}_uniDte;
 success
 
 // get memory leaks
@@ -57,7 +57,7 @@ rows: 0
 
 CLEANUP {
   // drop the table
-  drop table ${testName}_uniDte;
+  drop table ${testName2}_uniDte;
   mute
   
   bye;

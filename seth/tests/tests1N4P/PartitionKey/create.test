@@ -7,135 +7,135 @@ trackMemory;
 success
 
 -- create a table
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 success
 
 -- check columns of partition key
-lsPtncol ${testName}_createT1;
+lsPtncol ${testName2}_createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
 
 -- drop the table
-drop table ${testName}_createT1;
+drop table ${testName2}_createT1;
 success
 
 -- check existence of partition key
-lsPtncol ${testName}_createT1;
+lsPtncol ${testName2}_createT1;
 failure contains: 'Table does not exist'
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition ;
 failure contains: 'invalid command'
 
 -- check existence of partition key
-lsPtncol ${testName}_createT1;
+lsPtncol ${testName2}_createT1;
 failure contains: 'Table does not exist'
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by;
 failure contains: 'invalid command'
 
 -- check existence of partition key
-lsPtncol ${testName}_createT1;
+lsPtncol ${testName2}_createT1;
 failure contains: 'Table does not exist'
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by (;
 failure contains: 'invalid command'
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by ();
 failure contains: 'invalid command'
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by );
 failure contains: 'invalid command'
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by key;
 failure contains: 'invalid command'
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (xyz);
 failure contains: 'invalid partition key'
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (key);
 success
 
 -- check existence of partition key
-lsPtncol ${testName}_createT1;
+lsPtncol ${testName2}_createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
 
 -- drop the table
-drop table ${testName}_createT1;
+drop table ${testName2}_createT1;
 success
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (name);
 success
 
 -- check existence of partition key
-lsPtncol ${testName}_createT1;
+lsPtncol ${testName2}_createT1;
 rows:
   ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
-drop table ${testName}_createT1;
+drop table ${testName2}_createT1;
 success
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (key, name);
 success
 
 -- check existence of partition key
-lsPtncol ${testName}_createT1;
+lsPtncol ${testName2}_createT1;
 rows:
  ('key','INTEGER',19,0,false,true)
  ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
-drop table ${testName}_createT1;
+drop table ${testName2}_createT1;
 success
 
-create table ${testName}_createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (name, key);
 success
 
 -- check existence of partition key
-lsPtncol ${testName}_createT1;
+lsPtncol ${testName2}_createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
   ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
-drop table ${testName}_createT1;
+drop table ${testName2}_createT1;
 success
 
 // get memory leaks
@@ -148,7 +148,7 @@ CLEANUP {
 
   -- Ensure that table  ('keyIdx') is dropped.
   -- We can set the expected result to mute if we don't want to see any warnings.
-  drop table ${testName}_createT1;
+  drop table ${testName2}_createT1;
   mute
 
   bye;

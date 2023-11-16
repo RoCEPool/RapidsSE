@@ -10,7 +10,7 @@
 trackmemory;
 success
 
-CREATE TABLE ${testName}_nation (
+CREATE TABLE ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE ${testName}_nation (
 );
 success
 
-load ${testName}_nation "../DATA/TPCH/nation.tbl" ;
+load ${testName2}_nation "../DATA/TPCH/nation.tbl" ;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -26,7 +26,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Extract from a columnRef
-SELECT SUBSTRING(n_name, 1, 2) FROM ${testName}_nation;
+SELECT SUBSTRING(n_name, 1, 2) FROM ${testName2}_nation;
 rows:
  ('AL')
  ('AR')
@@ -55,7 +55,7 @@ rows:
  ('UN')
 
 // Extract from a columnRef
-SELECT SUBSTRING(n_name, 1, 2), n_name FROM ${testName}_nation;
+SELECT SUBSTRING(n_name, 1, 2), n_name FROM ${testName2}_nation;
 rows:
  ('AL','ALGERIA')
  ('AR','ARGENTINA')
@@ -84,7 +84,7 @@ rows:
  ('UN','UNITED STATES')
 
 // Extract from a literal
-SELECT SUBSTRING('abcdef', 1, 2) FROM ${testName}_nation;
+SELECT SUBSTRING('abcdef', 1, 2) FROM ${testName2}_nation;
 rows:
  ('ab')
  ('ab')
@@ -115,11 +115,11 @@ rows:
 
 // Extract from a subquery
 //TODO: FIX WHEN SUBQUERIES
-//SELECT SUBSTRING((SELECT n_name FROM ${testName}_nation LIMIT 1), 1, 2) FROM ${testName}_nation;
+//SELECT SUBSTRING((SELECT n_name FROM ${testName2}_nation LIMIT 1), 1, 2) FROM ${testName2}_nation;
 
 
 // Extract from a boolean
-SELECT SUBSTRING(true, 1, 2) FROM ${testName}_nation;
+SELECT SUBSTRING(true, 1, 2) FROM ${testName2}_nation;
 rows:
  ('TR')
  ('TR')
@@ -149,7 +149,7 @@ rows:
 
 
 // Extract from a null
-SELECT SUBSTRING(NULL, 1, 2) FROM ${testName}_nation;
+SELECT SUBSTRING(NULL, 1, 2) FROM ${testName2}_nation;
 rows:
  (null)
  (null)
@@ -179,7 +179,7 @@ rows:
 
 
 // Extract with a null      FROM argument
-SELECT SUBSTRING(n_name, NULL, 2) FROM ${testName}_nation;
+SELECT SUBSTRING(n_name, NULL, 2) FROM ${testName2}_nation;
 rows:
  (null)
  (null)
@@ -208,7 +208,7 @@ rows:
  (null)
 
 // Extract with a null      LENGTH argument
-SELECT SUBSTRING(n_name, 1, NULL) FROM ${testName}_nation;
+SELECT SUBSTRING(n_name, 1, NULL) FROM ${testName2}_nation;
 rows:
  (null)
  (null)
@@ -237,15 +237,15 @@ rows:
  (null)
 
 // Extract with a NULL FROM argument
-SELECT SUBSTRING (n_name, NULL, 2) FROM ${testName}_nation LIMIT 1;
+SELECT SUBSTRING (n_name, NULL, 2) FROM ${testName2}_nation LIMIT 1;
 rows: (NULL)
 
 // Extract with a NULL LENGTH argument
-SELECT SUBSTRING (n_name, 1, NULL) FROM ${testName}_nation LIMIT 1;
+SELECT SUBSTRING (n_name, 1, NULL) FROM ${testName2}_nation LIMIT 1;
 rows: (NULL)
 
 // start position as 0 (assumes 1)
-SELECT SUBSTRING(n_name, 0, 2) FROM ${testName}_nation;
+SELECT SUBSTRING(n_name, 0, 2) FROM ${testName2}_nation;
 rows:
  ('A')
  ('A')
@@ -274,7 +274,7 @@ rows:
  ('U')
 
 // Leave off the length parameter
-SELECT SUBSTRING(n_name, 1) FROM ${testName}_nation;
+SELECT SUBSTRING(n_name, 1) FROM ${testName2}_nation;
 rows:
  ('ALGERIA')
  ('ARGENTINA')
@@ -303,7 +303,7 @@ rows:
  ('UNITED STATES')
 
 // Leave off the length parameter
-SELECT n_name, SUBSTRING(n_name, 2) FROM ${testName}_nation;
+SELECT n_name, SUBSTRING(n_name, 2) FROM ${testName2}_nation;
 rows:
  ('ALGERIA','LGERIA')
  ('ARGENTINA','RGENTINA')
@@ -333,18 +333,18 @@ rows:
 
 
 // Test that a zero length returns an empty string
-SELECT SUBSTRING(n_name, 1, 0) FROM ${testName}_nation LIMIT 1;
+SELECT SUBSTRING(n_name, 1, 0) FROM ${testName2}_nation LIMIT 1;
 rows: ('')
 
 // craete table
-create table ${testName}_substringTbl(a varchar,b char);
+create table ${testName2}_substringTbl(a varchar,b char);
 success
 
 // load the table
-load ${testName}_substringTbl "../DATA/Expressions/subString.csv";
+load ${testName2}_substringTbl "../DATA/Expressions/subString.csv";
 success
 
-select * from ${testName}_substringTbl where substr(a,1,1)='A';
+select * from ${testName2}_substringTbl where substr(a,1,1)='A';
 rows:
  ('A'    ,*)
  ('A01'  ,*)
@@ -354,7 +354,7 @@ rows:
  ('A0201',*)
  ('A0202',*)
 
-select substring(a,4,2),a from ${testName}_substringTbl;
+select substring(a,4,2),a from ${testName2}_substringTbl;
 rows:
  (''    ,'A')
  (''    ,'A01')
@@ -372,7 +372,7 @@ rows:
  ('02'  ,'B0202')
  (null, null)
 
-select substring(a,4,1),substring(a,4,2) from ${testName}_substringTbl;
+select substring(a,4,1),substring(a,4,2) from ${testName2}_substringTbl;
 rows:
  ('' , '')
  ('' , '')
@@ -390,7 +390,7 @@ rows:
  ('0', '02')
  (null, null)
 
-select substring(a,2) from ${testName}_substringTbl where substring(a,2)!='';
+select substring(a,2) from ${testName2}_substringTbl where substring(a,2)!='';
 rows:
  ('01')
  ('0101')
@@ -405,7 +405,7 @@ rows:
  ('0201')
  ('0202')
 
-select a from ${testName}_substringTbl where substring(a,4,1) != '' and substring(a,4,2) != '01';
+select a from ${testName2}_substringTbl where substring(a,4,1) != '' and substring(a,4,2) != '01';
 rows:
  ('A0102')
  ('A0202')
@@ -413,7 +413,7 @@ rows:
  ('B0102')
  ('B0202')
 
-select a, substring(a,4) from ${testName}_substringTbl;
+select a, substring(a,4) from ${testName2}_substringTbl;
 rows:
  ('A','')
  ('A01','')
@@ -431,7 +431,7 @@ rows:
  ('B0202','02')
  (null,null)
 
-select a,max(b) from ${testName}_substringTbl group by a;
+select a,max(b) from ${testName2}_substringTbl group by a;
 rows:
  (null,'the development team will work on issues from the Backlog and issues will end up in one of the 3 green states')
  ('0B0101',null)
@@ -449,7 +449,7 @@ rows:
  ('B0201','Please refer to the attached document (either in PDF or in Keynote format)')
  ('B0202','The new workflow gives the test team better visibility of issues that need to be actioned as well as the responsibility for validating fixes and acknowledging/closing bugs')
 
-select a,substring(a,1,100) from ${testName}_substringTbl;
+select a,substring(a,1,100) from ${testName2}_substringTbl;
 rows:
  ('A','A')
  ('A01','A01')
@@ -467,68 +467,68 @@ rows:
  ('B0202','B0202')
  (null,null)
 
-select SUBSTRING('ABCDEFGHI',3,3) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',3,3) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('CDE')
 
-select SUBSTRING('ABCDEFGHI',6,3) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',6,3) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('FGH' )
 
-select SUBSTRING('ABCDEFGHI',0,5) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',0,5) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('ABCD')
 
-select SUBSTRING('ABCDEFGHI',1,5) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',1,5) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('ABCDE')
 
-select SUBSTRING('ABCDEFGHI',-4,5) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',-4,5) from ${testName2}_substringTbl where a = 'A';
  failure contains: 'EC_SEMANTIC_ERROR'
 
-select SUBSTRING('ABCDEFGHI',15,5) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',15,5) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('');
 
-select SUBSTRING('ABCDEFGHI',null,5) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',null,5) from ${testName2}_substringTbl where a = 'A';
 rows:
  (NULL)
 
-select SUBSTRING('ABCDEFGHI',1,50) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',1,50) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('ABCDEFGHI')
 
-select SUBSTRING('ABCDEFGHI',3) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',3) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('CDEFGHI')
 
-select SUBSTRING('ABCDEFGHI',6) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',6) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('FGHI' )
 
-select SUBSTRING('ABCDEFGHI',0) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',0) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('ABCDEFGHI')
 
-select SUBSTRING('ABCDEFGHI',1) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',1) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('ABCDEFGHI')
 
-select SUBSTRING('ABCDEFGHI',-4) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',-4) from ${testName2}_substringTbl where a = 'A';
  failure contains: 'EC_SEMANTIC_ERROR'
 
-select SUBSTRING('ABCDEFGHI',15) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',15) from ${testName2}_substringTbl where a = 'A';
 rows:
  ('');
 
-select SUBSTRING('ABCDEFGHI',null) from ${testName}_substringTbl where a = 'A';
+select SUBSTRING('ABCDEFGHI',null) from ${testName2}_substringTbl where a = 'A';
 rows:
  (NULL)
 
-drop table ${testName}_nation;
+drop table ${testName2}_nation;
 success
 
-drop table ${testName}_substringTbl;
+drop table ${testName2}_substringTbl;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -543,7 +543,7 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE ${testName}_nation;
+  DROP TABLE ${testName2}_nation;
   mute
 
   DROP TABLE substring;

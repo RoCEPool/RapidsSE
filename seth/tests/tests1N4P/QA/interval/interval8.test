@@ -1,22 +1,22 @@
 
-create table ${testName}_interval8(a date,b timestamp,c decimal,d integer,e float,h varchar,i char(10),j boolean,k timestamp);
+create table ${testName2}_interval8(a date,b timestamp,c decimal,d integer,e float,h varchar,i char(10),j boolean,k timestamp);
 success
-load ${testName}_interval8 "../DATA/QA/interval/interval8.csv";
+load ${testName2}_interval8 "../DATA/QA/interval/interval8.csv";
 success
 
-select a,b,c,d from ${testName}_interval8 i where a+interval '21:04:00.123' hour to second=b;
+select a,b,c,d from ${testName2}_interval8 i where a+interval '21:04:00.123' hour to second=b;
 rows:
 (date '2022-03-07',timestamp '2022-03-07 21:04:00.123',234.56,1)
 (date '2010-10-05',timestamp '2010-10-05 21:04:00.123',3333.98,3)
 
 
-select a,b,c,d from ${testName}_interval8 i where k+interval '21:04:00.123' hour to second=b;
+select a,b,c,d from ${testName2}_interval8 i where k+interval '21:04:00.123' hour to second=b;
 rows:
 (date '2022-03-07',timestamp '2022-03-07 21:04:00.123',234.56,1)
 (date '2010-10-05',timestamp '2010-10-05 21:04:00.123',3333.98,3)
 
 
-select a,b,c,d from ${testName}_interval8 i where a+interval '2 12:59:00.000' day to second=b;
+select a,b,c,d from ${testName2}_interval8 i where a+interval '2 12:59:00.000' day to second=b;
 rows:
 (date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2)
 (date '2023-01-29',timestamp '2023-01-31 12:59:00.000',1.65,4)
@@ -24,7 +24,7 @@ rows:
 
 /*
 // TODO: NOT IMPLEMENTED
-select substring(cast(a-interval '2' day as varchar),1,4),sum(c),count(1) cn from ${testName}_interval8 i 
+select substring(cast(a-interval '2' day as varchar),1,4),sum(c),count(1) cn from ${testName2}_interval8 i
 group by substring(cast(a-interval '2' day as varchar),1,4)
 having substring(cast(a-interval '2' day as varchar),1,4)>='2020'
 order by substring(cast(a-interval '2' day as varchar),1,4),cn;
@@ -35,15 +35,15 @@ ordered rows:
 ('2023',1.65,1)
 
 
-select i.a,i.b,i.c,i.d,i2.a,i2.b,i2.c,i2.d from ${testName}_interval8 i join ${testName}_interval8 i2 on i.a+interval '2 12:59:00.000' day to second=i2.b;
+select i.a,i.b,i.c,i.d,i2.a,i2.b,i2.c,i2.d from ${testName2}_interval8 i join ${testName2}_interval8 i2 on i.a+interval '2 12:59:00.000' day to second=i2.b;
 rows:
 (date '2022-02-27',timestamp '2022-03-01 12:59:00.000',1551.36,5,date '2022-02-27',timestamp '2022-03-01 12:59:00.000',1551.36,5)
 (date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2,date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2)
 (date '2023-01-29',timestamp '2023-01-31 12:59:00.000',1.65,4,date '2023-01-29',timestamp '2023-01-31 12:59:00.000',1.65,4)
 
 select i.a,i.b,i.c,i.d,i2.a,i2.b,i2.c,i2.d 
-from ${testName}_interval8 i 
-join ${testName}_interval8 i2 
+from ${testName2}_interval8 i
+join ${testName2}_interval8 i2
 on substring(cast(i.a as varchar),1,7)=substring(cast(i2.b-interval '1' month as varchar),1,7);
 rows:
 (date '2022-02-27',timestamp '2022-03-01 12:59:00.000',1551.36,5,date '2022-03-07',timestamp '2022-03-07 21:04:00.123',234.56,1)
@@ -54,26 +54,26 @@ rows:
 (date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2,date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2)
 */
 
-select i.*,c+interval '1' year from ${testName}_interval8 i;
+select i.*,c+interval '1' year from ${testName2}_interval8 i;
 failure contains: "EC_SEMANTIC_ERROR;"
-select i.*,d+interval '1-2' year to month from ${testName}_interval8 i;
+select i.*,d+interval '1-2' year to month from ${testName2}_interval8 i;
 failure contains: "EC_SEMANTIC_ERROR;"
-select i.*,e+interval '1' day from ${testName}_interval8 i;
+select i.*,e+interval '1' day from ${testName2}_interval8 i;
 failure contains: "EC_SEMANTIC_ERROR;"
-select i.*,h+interval '1 2' day to hour from ${testName}_interval8 i;
+select i.*,h+interval '1 2' day to hour from ${testName2}_interval8 i;
 failure contains: "EC_SEMANTIC_ERROR;"
-select i.*,i+interval '1 2:3:4' day to second from ${testName}_interval8 i;
+select i.*,i+interval '1 2:3:4' day to second from ${testName2}_interval8 i;
 failure contains: "EC_SEMANTIC_ERROR;"
-select i.*,j+interval '1:2:12' hour to second from ${testName}_interval8 i;
+select i.*,j+interval '1:2:12' hour to second from ${testName2}_interval8 i;
 failure contains: "EC_SEMANTIC_ERROR;"
 
 
-drop table ${testName}_interval8;
+drop table ${testName2}_interval8;
 success
 
 CLEANUP {
 
-  drop table ${testName}_interval8;
+  drop table ${testName2}_interval8;
   mute
 
   bye;

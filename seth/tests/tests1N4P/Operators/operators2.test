@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create a table
-create table ${testName}_orders (
+create table ${testName2}_orders (
   O_ORDERKEY        INTEGER NOT NULL,
   O_CUSTKEY         INTEGER NOT NULL,
   O_ORDERSTATUS     CHAR(1) NOT NULL,
@@ -17,35 +17,35 @@ create table ${testName}_orders (
 success
 
 // create indexes
-create index orders_idx1 on ${testName}_orders (O_ORDERKEY);
+create index orders_idx1 on ${testName2}_orders (O_ORDERKEY);
 success
 
 // check existence of index
-lsidx ${testName}_orders;
+lsidx ${testName2}_orders;
 rows:
 ('orders_idx1', false, false)
 
-load ${testName}_orders "../DATA/tpch/orders10k.csv" ;
+load ${testName2}_orders "../DATA/tpch/orders10k.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_orders;
+select * from ${testName2}_orders;
 rows: 10000
 
-dynamic scan ${testName}_orders | output;
+dynamic scan ${testName2}_orders | output;
 rows: 10000
 
-dynamic scan ${testName}_orders | limit 1 | output;
+dynamic scan ${testName2}_orders | limit 1 | output;
 rows : 1
 
-dynamic predicateFetch ${testName}_orders orders_idx1 | output;
+dynamic predicateFetch ${testName2}_orders orders_idx1 | output;
 rows: 10000
 
-dynamic predicateFetch ${testName}_orders orders_idx1 | limit 5000 | output;
+dynamic predicateFetch ${testName2}_orders orders_idx1 | limit 5000 | output;
 rows: 5000
 
 // drop the table
-drop table ${testName}_orders;
+drop table ${testName2}_orders;
 success
 
 // check existence of table
@@ -55,7 +55,7 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table ${testName}_orders;
+  drop table ${testName2}_orders;
   mute
 
   bye;

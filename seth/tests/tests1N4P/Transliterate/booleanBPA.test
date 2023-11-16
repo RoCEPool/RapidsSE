@@ -10,7 +10,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table ${testName}_datums (
+create table ${testName2}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -34,7 +34,7 @@ success
 bpa;
 success
 
-load ${testName}_datums "../DATA/Transliterate/date.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/date.csv" ;
 failure contains: "invalid rows"
 reap;
 success
@@ -42,7 +42,7 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 from ${testName}_datums;
+select bol_col2 from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -62,7 +62,7 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 AND TRUE from ${testName}_datums;
+select bol_col2 AND TRUE from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -82,7 +82,7 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 AND FALSE from ${testName}_datums;
+select bol_col2 AND FALSE from ${testName2}_datums;
 rows:
 (FALSE)
 (FALSE)
@@ -102,7 +102,7 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 OR TRUE from ${testName}_datums;
+select bol_col2 OR TRUE from ${testName2}_datums;
 rows:
 (TRUE)
 (TRUE)
@@ -122,7 +122,7 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 OR FALSE from ${testName}_datums;
+select bol_col2 OR FALSE from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -142,7 +142,7 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select NOT bol_col2 from ${testName}_datums;
+select NOT bol_col2 from ${testName2}_datums;
 rows:
 (TRUE)
 (NULL)
@@ -163,7 +163,7 @@ success
 
 /*
 //------------------------------------------------------------------------------
-select bol_col2 XOR TRUE from ${testName}_datums;
+select bol_col2 XOR TRUE from ${testName2}_datums;
 rows:
 (TRUE)
 (NULL)
@@ -179,7 +179,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select bol_col2 XOR FALSE from ${testName}_datums;
+select bol_col2 XOR FALSE from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -194,7 +194,7 @@ rows:
 (TRUE)
 */
 //------------------------------------------------------------------------------
-select bol_col2 AND bol_col3 from ${testName}_datums;
+select bol_col2 AND bol_col3 from ${testName2}_datums;
 rows:
 (FALSE)
 (FALSE)
@@ -214,87 +214,7 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 AND bol_col3 OR bol_col2 from ${testName}_datums;
-rows:
-(FALSE)
-(NULL)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(FALSE)
-(TRUE)
-(TRUE)
-
-reap;
-success
-bpa;
-success
-
-//------------------------------------------------------------------------------
-select NOT(bol_col2 AND bol_col3) from ${testName}_datums;
-rows:
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-
-reap;
-success
-bpa;
-success
-
-//------------------------------------------------------------------------------
-select NOT(bol_col2 OR bol_col3) from ${testName}_datums;
-rows:
-(TRUE)
-(NULL)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(TRUE)
-(FALSE)
-(FALSE)
-
-reap;
-success
-bpa;
-success
-
-//------------------------------------------------------------------------------
-select NOT bol_col2 AND NOT bol_col3 from ${testName}_datums;
-rows:
-(TRUE)
-(NULL)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(TRUE)
-(FALSE)
-(FALSE)
-
-reap;
-success
-bpa;
-success
-
-//------------------------------------------------------------------------------
-select bol_col2 AND (NOT bol_col3 OR bol_col3) from ${testName}_datums;
+select bol_col2 AND bol_col3 OR bol_col2 from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -314,7 +234,87 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 AND (bol_col3 OR bol_col3) from ${testName}_datums;
+select NOT(bol_col2 AND bol_col3) from ${testName2}_datums;
+rows:
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+
+reap;
+success
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select NOT(bol_col2 OR bol_col3) from ${testName2}_datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+reap;
+success
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select NOT bol_col2 AND NOT bol_col3 from ${testName2}_datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+reap;
+success
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 AND (NOT bol_col3 OR bol_col3) from ${testName2}_datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+
+reap;
+success
+bpa;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 AND (bol_col3 OR bol_col3) from ${testName2}_datums;
 rows:
 (FALSE)
 (FALSE)
@@ -335,7 +335,7 @@ bpa;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 OR bol_col3 OR bol_col2 from ${testName}_datums;
+select bol_col2 OR bol_col3 OR bol_col2 from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -356,7 +356,7 @@ success
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table ${testName}_datums;
+drop table ${testName2}_datums;
 success;
 reap;
 success
@@ -368,7 +368,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table ${testName}_datums;
+  drop table ${testName2}_datums;
   mute
 
   bye;

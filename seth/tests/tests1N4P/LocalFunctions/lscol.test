@@ -3,11 +3,11 @@
 /*----------------------------------------------------------------------------*/
 
 // list columns of a non-existent table
-lscol ${testName}_lstTbl;
+lscol ${testName2}_lstTbl;
 failure contains: 'Table does not exist'
 
 // list all the functions
-create table ${testName}_lstTbl (
+create table ${testName2}_lstTbl (
   bol_col1   BOOLEAN     NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
@@ -20,7 +20,7 @@ create table ${testName}_lstTbl (
 success
 
 // list columns of the table
-lscol ${testName}_lstTbl;
+lscol ${testName2}_lstTbl;
 rows:
   ('bol_col1','BOOLEAN',0,0,false,true)
   ('vch_col2','VARCHAR',32,0,false,false)
@@ -36,7 +36,7 @@ cf ..;
 success
 
 // list columns
-lscol ${testName}_lstTbl;
+lscol ${testName2}_lstTbl;
 failure contains: 'not in tables'
 
 // change folder
@@ -44,7 +44,7 @@ cf tables;
 success
 
 // list columns of the table
-lscol ${testName}_lstTbl;
+lscol ${testName2}_lstTbl;
 rows:
   ('bol_col1','BOOLEAN',0,0,false,true)
   ('vch_col2','VARCHAR',32,0,false,false)
@@ -56,12 +56,12 @@ rows:
   ('bol_col8','BOOLEAN',0,0,true,false)
 
 // drop the table
-drop table ${testName}_lstTbl;
+drop table ${testName2}_lstTbl;
 success
 
 CLEANUP {
   
-  drop table ${testName}_lstTbl;
+  drop table ${testName2}_lstTbl;
   mute
   
   bye;

@@ -11,15 +11,15 @@ anidx;
 failure contains: "invalid command"
 
 // invalid
-anidx ${testName}_IntTbl;
+anidx ${testName2}_IntTbl;
 failure contains: "invalid command"
 
 // Table does not exist
-anidx ${testName}_IntTbl int_idx1;
+anidx ${testName2}_IntTbl int_idx1;
 failure contains: "Table does not exist"
 
 // (1) create a table
-create table ${testName}_IntTbl (
+create table ${testName2}_IntTbl (
   int_col1  INTEGER NOT NULL,
   vch_col2  VARCHAR(32) NOT NULL,
   vch_col3  VARCHAR(32) NOT NULL,
@@ -28,23 +28,23 @@ create table ${testName}_IntTbl (
 success
 
 // invalid
-anidx ${testName}_IntTbl;
+anidx ${testName2}_IntTbl;
 failure contains: "invalid command"
 
 // no such index
-anidx ${testName}_IntTbl int_idx1;
+anidx ${testName2}_IntTbl int_idx1;
 failure contains: "no such index"
 
 // create indexes
-create index int_idx1 on ${testName}_IntTbl (int_col1);
+create index int_idx1 on ${testName2}_IntTbl (int_col1);
 success
 
 // invalid
-anidx ${testName}_IntTbl;
+anidx ${testName2}_IntTbl;
 failure contains: "invalid command"
 
 // invalid
-anidx ${testName}_IntTbl idx1 idx2;
+anidx ${testName2}_IntTbl idx1 idx2;
 failure contains: "invalid command"
 
 // invalid
@@ -52,22 +52,22 @@ anidx x int_idx1;
 failure contains: "Table does not exist"
 
 // success
-anidx ${testName}_IntTbl int_idx1;
+anidx ${testName2}_IntTbl int_idx1;
 rows: 4
 
-load ${testName}_IntTbl "../DATA/Datums/integer.csv" ;
+load ${testName2}_IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows
-select * from ${testName}_IntTbl;
+select * from ${testName2}_IntTbl;
 rows: 101
 
 // success
-anidx ${testName}_IntTbl int_idx1;
+anidx ${testName2}_IntTbl int_idx1;
 rows: 4
 
 // drop the table
-drop table ${testName}_IntTbl;
+drop table ${testName2}_IntTbl;
 success
 
 // get memory leaks
@@ -77,7 +77,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table ${testName}_IntTbl;
+  drop table ${testName2}_IntTbl;
   mute
   
   bye;

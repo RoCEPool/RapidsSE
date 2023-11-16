@@ -5,7 +5,7 @@
 trackMemory;
 success;
 
-create table ${testName}_lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,13 +25,13 @@ create table ${testName}_lineitem (
 );
 success
 
-create index IxL_ORDERKEY  ON ${TestName}_Lineitem (L_ORDERKEY)  ;
+create index IxL_ORDERKEY  ON ${testName2}_Lineitem (L_ORDERKEY)  ;
 success;
 
-load ${testName}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-create table ${testName}_customer (
+create table ${testName2}_customer (
 	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
 	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
 	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
@@ -43,13 +43,13 @@ create table ${testName}_customer (
 );
 success
 
-create index IxC_CUSTKEY  ON ${TestName}_Customer (C_CUSTKEY)   ;
+create index IxC_CUSTKEY  ON ${testName2}_Customer (C_CUSTKEY)   ;
 success
 
-load ${testName}_customer "../TPCH/SF_0001/customer.csv";
+load ${testName2}_customer "../TPCH/SF_0001/customer.csv";
 success
 
-create table ${testName}_orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -62,10 +62,10 @@ create table ${testName}_orders (
 ) partition by (O_CUSTKEY);
 success
 
-create index IxO_CUSTKEY  ON ${testName}_orders  (O_CUSTKEY)  ;
+create index IxO_CUSTKEY  ON ${testName2}_orders  (O_CUSTKEY)  ;
 success
 
-load ${TestName}_Orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_Orders "../TPCH/SF_0001/orders.csv";
 success
 
 // TODO V2 : ORDAGG
@@ -80,14 +80,14 @@ begin
     | next
 
   stage Gs_CUSTOMER on all partitions :
-    indexScan ${TestName}_Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    indexScan ${testName2}_Customer IxC_CUSTKEY "LBOUND $I1 0 >="
     | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
     | project expr type INTEGER as _custkey C_CUSTKEY
     | combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
-    indexJoin ${TestName}_Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
+    indexJoin ${testName2}_Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
     | filter "type BOOLEAN O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
     | project "type INTEGER as _orderkey O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
@@ -97,7 +97,7 @@ begin
     | next hashcast
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin ${TestName}_Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
     | ordAgg expr ordgroupby type INTEGER _orderkey
         aggregates type INTEGER as _orderkey $K1 ,
@@ -129,13 +129,13 @@ rows: 10
 //------------------------------------------------------------------------------
 // drop the tables
 
-drop table ${testName}_customer;
+drop table ${testName2}_customer;
 success
 
-drop table ${testName}_orders;
+drop table ${testName2}_orders;
 success
 
-drop table ${testName}_lineitem;
+drop table ${testName2}_lineitem;
 success
 
 MemoryLeaks;
@@ -143,13 +143,13 @@ rows: 0
 
 CLEANUP {
 
-  drop table ${testName}_customer;
+  drop table ${testName2}_customer;
   mute
 
-  drop table ${testName}_orders;
+  drop table ${testName2}_orders;
   mute
 
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

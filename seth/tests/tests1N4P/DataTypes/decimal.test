@@ -8,7 +8,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table ${testName}_datums (
+create table ${testName2}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -28,11 +28,11 @@ create table ${testName}_datums (
 );
 success
 
-load ${testName}_datums "../DATA/DataTypes/dataTypes.csv" ;
+load ${testName2}_datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select 0.0 < dec_col7 from ${testName}_datums;
+select 0.0 < dec_col7 from ${testName2}_datums;
 rows:
   (true)
   (true)
@@ -49,11 +49,11 @@ rows:
   (true)
 
 //------------------------------------------------------------------------------
-select dec_col7/0 from ${testName}_datums;
+select dec_col7/0 from ${testName2}_datums;
 failure contains: 'divide by zero'
 
 //------------------------------------------------------------------------------
-select 0.0 > dec_col7 from ${testName}_datums;
+select 0.0 > dec_col7 from ${testName2}_datums;
 rows:
   (false)
   (false)
@@ -70,7 +70,7 @@ rows:
   (false)
 
 //------------------------------------------------------------------------------
-select 0.0 < dec_col6 from ${testName}_datums;
+select 0.0 < dec_col6 from ${testName2}_datums;
 rows:
   (true)
   (true)
@@ -87,7 +87,7 @@ rows:
   (true)
 
 //------------------------------------------------------------------------------
-select 0.0 > dec_col6 from ${testName}_datums;
+select 0.0 > dec_col6 from ${testName2}_datums;
 rows:
   (false)
   (false)
@@ -104,26 +104,26 @@ rows:
   (false)
 
 //------------------------------------------------------------------------------
-select dec_col6 from ${testName}_datums where dec_col6 != null;
+select dec_col6 from ${testName2}_datums where dec_col6 != null;
 rows: 0
 
-select dec_col6 from ${testName}_datums where dec_col6 = null;
+select dec_col6 from ${testName2}_datums where dec_col6 = null;
 rows: 0
 
-select dec_col6 from ${testName}_datums where dec_col6 > null;
+select dec_col6 from ${testName2}_datums where dec_col6 > null;
 rows: 0
 
-select dec_col6 from ${testName}_datums where dec_col6 >= null;
+select dec_col6 from ${testName2}_datums where dec_col6 >= null;
 rows: 0
 
-select dec_col6 from ${testName}_datums where dec_col6 < null;
+select dec_col6 from ${testName2}_datums where dec_col6 < null;
 rows: 0
 
-select dec_col6 from ${testName}_datums where dec_col6 <= null;
+select dec_col6 from ${testName2}_datums where dec_col6 <= null;
 rows: 0
 
 //------------------------------------------------------------------------------
-select dec_col6 from ${testName}_datums order by dec_col6;
+select dec_col6 from ${testName2}_datums order by dec_col6;
 rows:
   (null)
   (null)
@@ -140,7 +140,7 @@ rows:
   (4001.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 from ${testName}_datums where dec_col6 > 47.04;
+select dec_col6 from ${testName2}_datums where dec_col6 > 47.04;
 rows:
   (477.04)
   (477.04)
@@ -149,12 +149,12 @@ rows:
   (4001.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 from ${testName}_datums where dec_col6 = 47.04;
+select dec_col6 from ${testName2}_datums where dec_col6 = 47.04;
 rows:
   (47.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 from ${testName}_datums where dec_col6 = 41.04;
+select dec_col6 from ${testName2}_datums where dec_col6 = 41.04;
 rows:
   (41.04)
   (41.04)
@@ -162,7 +162,7 @@ rows:
   (41.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 from ${testName}_datums where dec_col6 >= 41.04 order by dec_col6;
+select dec_col6 from ${testName2}_datums where dec_col6 >= 41.04 order by dec_col6;
 rows:
   (41.04)
   (41.04)
@@ -176,7 +176,7 @@ rows:
   (4001.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 from ${testName}_datums where dec_col6 <= 41.04 order by dec_col6;
+select dec_col6 from ${testName2}_datums where dec_col6 <= 41.04 order by dec_col6;
 rows:
   (23.04)
   (41.04)
@@ -185,7 +185,7 @@ rows:
   (41.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 * 10.10 from ${testName}_datums;
+select dec_col6 * 10.10 from ${testName2}_datums;
 rows:
   (414.50)
   (414.50)
@@ -202,7 +202,7 @@ rows:
   (414.50)
 
 //------------------------------------------------------------------------------
-select dec_col6 + 1.44 from ${testName}_datums order by dec_col6;
+select dec_col6 + 1.44 from ${testName2}_datums order by dec_col6;
 rows:
   (null)
   (null)
@@ -218,58 +218,58 @@ rows:
   (478.48)
   (4002.48)
 
-select 820.12 + 12.346 from ${testName}_datums;
+select 820.12 + 12.346 from ${testName2}_datums;
 contains rows:
  (832.466)
 
-select 820.1278 + 12.3 from ${testName}_datums;
+select 820.1278 + 12.3 from ${testName2}_datums;
 contains rows:
   (832.4278)
 
-select 820.12 + 12.35 from ${testName}_datums;
+select 820.12 + 12.35 from ${testName2}_datums;
 contains rows:
   (832.47)
 
 //------------------------------------------------------------------------------
-select 820.12 - 12.346 from ${testName}_datums;
+select 820.12 - 12.346 from ${testName2}_datums;
 contains rows:
   (807.774)
 
-select 820.1278 - 12.3 from ${testName}_datums;
+select 820.1278 - 12.3 from ${testName2}_datums;
 contains rows:
   (807.8278)
 
-select 820.12 - 12.35 from ${testName}_datums;
+select 820.12 - 12.35 from ${testName2}_datums;
 contains rows:
   (807.77)
 
 //------------------------------------------------------------------------------
-select 820.12 / 12.346 from ${testName}_datums;
+select 820.12 / 12.346 from ${testName2}_datums;
 contains rows:
   (66.428)
 
-select 820.1278 / 12.3 from ${testName}_datums;
+select 820.1278 / 12.3 from ${testName2}_datums;
 contains rows:
   (66.6771)
 
-select 820.12 / 12.35 from ${testName}_datums;
+select 820.12 / 12.35 from ${testName2}_datums;
 contains rows:
   (66.41)
 
 //------------------------------------------------------------------------------
-select 820.12 * 12.346 from ${testName}_datums;
+select 820.12 * 12.346 from ${testName2}_datums;
 contains rows:
   (10125.202)
 
-select 820.1278 * 12.3 from ${testName}_datums;
+select 820.1278 * 12.3 from ${testName2}_datums;
 contains rows:
   (10087.5719)
 
-select 820.12 * 12.35 from ${testName}_datums;
+select 820.12 * 12.35 from ${testName2}_datums;
 contains rows:
   (10128.48)
 
-select cast (dec_col6 as varchar)  , cast (dec_col7 as varchar) from ${testName}_datums order by dec_col6;
+select cast (dec_col6 as varchar)  , cast (dec_col7 as varchar) from ${testName2}_datums order by dec_col6;
 rows:
   (null,'10.04')
   (null,'10.04')
@@ -286,59 +286,59 @@ rows:
   ('4001.04','1041.04')
 
 // exception : /0
-select dec_col6/0 from ${testName}_datums;
+select dec_col6/0 from ${testName2}_datums;
 failure contains: 'divide by zero'
 
 // aggregates : sum
-select sum(dec_col6) from ${testName}_datums;
+select sum(dec_col6) from ${testName2}_datums;
 rows: (6143.44)
 
-select 10.44 + sum(dec_col6) from ${testName}_datums;
+select 10.44 + sum(dec_col6) from ${testName2}_datums;
 rows: (6153.88)
 
-select sum(dec_col6) + 10.44 from ${testName}_datums;
+select sum(dec_col6) + 10.44 from ${testName2}_datums;
 rows: (6153.88)
 
-select sum(10.1 + dec_col6) from ${testName}_datums;
+select sum(10.1 + dec_col6) from ${testName2}_datums;
 rows: (6254.54)
 
-select sum(dec_col6 + 10.1) from ${testName}_datums;
+select sum(dec_col6 + 10.1) from ${testName2}_datums;
 rows: (6254.54)
 
-select sum(dec_col6 + dec_col6) from ${testName}_datums;
+select sum(dec_col6 + dec_col6) from ${testName2}_datums;
 rows: (12286.88)
 
-select sum(dec_col6) + sum(dec_col6) from ${testName}_datums;
+select sum(dec_col6) + sum(dec_col6) from ${testName2}_datums;
 rows: (12286.88)
 
 // aggregates : min
 
-select min(dec_col6) from ${testName}_datums;
+select min(dec_col6) from ${testName2}_datums;
 rows: (23.04)
 
-select 10.3 + min(dec_col6) from ${testName}_datums;
+select 10.3 + min(dec_col6) from ${testName2}_datums;
 rows: (33.34)
 
-select min(dec_col6) + 10.3 from ${testName}_datums;
+select min(dec_col6) + 10.3 from ${testName2}_datums;
 rows: (33.34)
 
-select min(10 + dec_col6) from ${testName}_datums;
+select min(10 + dec_col6) from ${testName2}_datums;
 rows: (33.04)
 
-select min(dec_col6 + 10) from ${testName}_datums;
+select min(dec_col6 + 10) from ${testName2}_datums;
 rows: (33.04)
 
-select min(dec_col6 + dec_col6) from ${testName}_datums;
+select min(dec_col6 + dec_col6) from ${testName2}_datums;
 rows: (46.08)
 
-select min(dec_col6) + min(dec_col6) from ${testName}_datums;
+select min(dec_col6) + min(dec_col6) from ${testName2}_datums;
 rows: (46.08)
 
 /*
 
 //------------------------------------------------------------------------------
 // create table
-create table ${testName}_datums (
+create table ${testName2}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -358,10 +358,10 @@ create table ${testName}_datums (
 );
 success
 
-load ${testName}_datums "../DATA/DataTypes/dataTypesOver.csv" ;
+load ${testName2}_datums "../DATA/DataTypes/dataTypesOver.csv" ;
 success
 
-select flt_col8 from ${testName}_datums order by flt_col8;
+select flt_col8 from ${testName2}_datums order by flt_col8;
 rows:
    (null)
    (0.22)
@@ -378,7 +378,7 @@ rows:
    (10.22)
 
 //------------------------------------------------------------------------------
-select cast(int_col0 as float) from ${testName}_datums order by int_col0;
+select cast(int_col0 as float) from ${testName2}_datums order by int_col0;
 rows:
   (null)
   (0)
@@ -395,12 +395,12 @@ rows:
   (9223372036854775806)
 
 //------------------------------------------------------------------------------
-select flt_col8 + 2 from ${testName}_datums;
+select flt_col8 + 2 from ${testName2}_datums;
 failure contains: "OVERFLOW"
 
 */
 // drop the table
-drop table ${testName}_datums;
+drop table ${testName2}_datums;
 success
 
 // get memory leaks
@@ -410,7 +410,7 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table ${testName}_datums;
+  drop table ${testName2}_datums;
   mute
 
   bye;

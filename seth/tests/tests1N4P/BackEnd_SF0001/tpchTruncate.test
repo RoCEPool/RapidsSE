@@ -2,28 +2,28 @@
 -- tpch truncate tables (SF1)
 -------------------------------------------------------------------------------
 
-truncate ${testName}_customer;
+truncate ${testName2}_customer;
 success
 
-truncate ${testName}_supplier;
+truncate ${testName2}_supplier;
 success
 
-truncate ${testName}_orders;
+truncate ${testName2}_orders;
 success
 
-truncate ${testName}_partsupp;
+truncate ${testName2}_partsupp;
 success
 
-truncate ${testName}_part;
+truncate ${testName2}_part;
 success
 
-truncate ${testName}_region;
+truncate ${testName2}_region;
 success
 
-truncate ${testName}_lineitem;
+truncate ${testName2}_lineitem;
 success
 
-truncate ${testName}_nation;
+truncate ${testName2}_nation;
 success
 
 CLEANUP {

@@ -7,20 +7,20 @@ trackMemory;
 success
 
 // (1) create a table
-create table ${testName}_uniBol (
+create table ${testName2}_uniBol (
   bol_col BOOLEAN NOT NULL
 );
 success
 
-load ${testName}_uniBol "../FASTLOAD/Data/uniBol.csv" ;
+load ${testName2}_uniBol "../FASTLOAD/Data/uniBol.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_uniBol;
+select * from ${testName2}_uniBol;
 rows: 4
 
 // check data
-select * from ${testName}_uniBol;
+select * from ${testName2}_uniBol;
 rows:
   (true)
   (false)
@@ -28,7 +28,7 @@ rows:
   (true)
 
 // drop the table)
-drop table ${testName}_uniBol;
+drop table ${testName2}_uniBol;
 success
 
 // get memory leaks)
@@ -37,7 +37,7 @@ rows: 0
 
 CLEANUP {
   // drop the table)
-  drop table ${testName}_uniBol;
+  drop table ${testName2}_uniBol;
   mute
   
   bye;

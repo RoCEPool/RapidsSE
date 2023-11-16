@@ -1,7 +1,7 @@
 
 // Source file: ../queries/functions/upper/rupper5.sql
 // Result file: ../queries/functions/upper/results/upper5.res
-select colb1, upper(right(colb1,3)) from ${testName}_table1 where colb1 = 'black';
+select colb1, upper(right(colb1,3)) from ${testName2}_table1 where colb1 = 'black';
 rows:
   ('black', 'ACK')
   ('black', 'ACK')
@@ -10,7 +10,7 @@ rows:
 
 // Source file: ../queries/functions/upper/rupper2.sql
 // Result file: ../queries/functions/upper/results/upper2.res
-select colb1, upper(colb1) from ${testName}_table1 where colb1 = 'green';
+select colb1, upper(colb1) from ${testName2}_table1 where colb1 = 'green';
 rows:
   ('green', 'GREEN')
   ('green', 'GREEN')
@@ -21,13 +21,13 @@ rows:
 
 // Source file: ../queries/functions/upper/rnupper1.sql
 // Result file: ../queries/functions/upper/results/nupper1.res
-select upper(cola1) from ${testName}_table1 where pcol1 < 10;
+select upper(cola1) from ${testName2}_table1 where pcol1 < 10;
 failure: 'Type mismatch in UPPER'
 
 
 // Source file: ../queries/functions/upper/rupper7.sql
 // Result file: ../queries/functions/upper/results/upper7.res
-select colb1, ucolvc, pcol1 from ${testName}_table1 where upper(colb1) = 'BLACK' order by colb1 desc, pcol1;
+select colb1, ucolvc, pcol1 from ${testName2}_table1 where upper(colb1) = 'BLACK' order by colb1 desc, pcol1;
 ordered rows:
   ('black', 'mmm', 4)
   ('black', 'bbb', 62)
@@ -44,7 +44,7 @@ ordered rows:
 
 // Source file: ../queries/functions/upper/rupper4.sql
 // Result file: ../queries/functions/upper/results/upper4.res
-select colb1, upper(left(colb1,3)) from ${testName}_table1 where colb1 = 'black';
+select colb1, upper(left(colb1,3)) from ${testName2}_table1 where colb1 = 'black';
 rows:
   ('black', 'BLA')
   ('black', 'BLA')
@@ -53,7 +53,7 @@ rows:
 
 // Source file: ../queries/functions/upper/rupper3.sql
 // Result file: ../queries/functions/upper/results/upper3.res
-select colb1, upper(colb1) from ${testName}_table1 where colb1 = 'GREEN';
+select colb1, upper(colb1) from ${testName2}_table1 where colb1 = 'GREEN';
 rows:
   ('GREEN', 'GREEN')
   ('GREEN', 'GREEN')
@@ -65,14 +65,14 @@ rows:
 
 // Source file: ../queries/functions/upper/rupper1.sql
 // Result file: ../queries/functions/upper/results/upper1.res
-select upper('mary had a little lamb') from ${testName}_table1 limit 1;
+select upper('mary had a little lamb') from ${testName2}_table1 limit 1;
 rows:
   ('MARY HAD A LITTLE LAMB')
 
 
 // Source file: ../queries/functions/upper/rupper9.sql
 // Result file: ../queries/functions/upper/results/upper9.res
-select upCase, regCase from (select upper(colb1) as upCase, colb1 as regCase from ${testName}_table1 where pcol1 < 15) as outQry order by regCase desc;
+select upCase, regCase from (select upper(colb1) as upCase, colb1 as regCase from ${testName2}_table1 where pcol1 < 15) as outQry order by regCase desc;
 ordered rows:
   ('RED', 'red')
   ('PEACH', 'peach')
@@ -93,7 +93,7 @@ ordered rows:
 
 // Source file: ../queries/functions/upper/rupper8.sql
 // Result file: ../queries/functions/upper/results/upper8.res
-select colb1, ucolvc, pcol1 from ${testName}_table1 where upper(colb1) = 'VIOLET' or upper(colb1) = 'YELLOW' order by colb1 desc, ucolvc, pcol1;
+select colb1, ucolvc, pcol1 from ${testName2}_table1 where upper(colb1) = 'VIOLET' or upper(colb1) = 'YELLOW' order by colb1 desc, ucolvc, pcol1;
 ordered rows:
   ('yellow', 'nnn', 19)
   ('violet', 'ddd', 37)
@@ -108,7 +108,7 @@ ordered rows:
 
 // Source file: ../queries/functions/upper/rupper10.sql
 // Result file: ../queries/functions/upper/results/upper10.res
-select upper(a.colb1), a.colb1, upper(b.colb2), b.colb2, upper(c.ucolvc), c.ucolvc from ${testName}_table1 a join ${testName}_table2 b on pcol1 = pcol2 join ${testName}_table5 c on pcol1 = pcol5 where upper(a.colb1) = 'WHITE' and upper(b.colb2) = 'TEAL' order by a.colb1;
+select upper(a.colb1), a.colb1, upper(b.colb2), b.colb2, upper(c.ucolvc), c.ucolvc from ${testName2}_table1 a join ${testName2}_table2 b on pcol1 = pcol2 join ${testName2}_table5 c on pcol1 = pcol5 where upper(a.colb1) = 'WHITE' and upper(b.colb2) = 'TEAL' order by a.colb1;
 ordered rows:
   ('WHITE', 'WHITE', 'TEAL', 'TEAL', 'VVV', 'vvv')
   ('WHITE', 'WHITE', 'TEAL', 'teal', 'KKK', 'kkk')
@@ -116,7 +116,7 @@ ordered rows:
 
 // Source file: ../queries/functions/upper/rupper6.sql
 // Result file: ../queries/functions/upper/results/upper6.res
-select colb1, upper(substring(colb1,3,3)) from ${testName}_table1 where colb1 = 'maroon';
+select colb1, upper(substring(colb1,3,3)) from ${testName2}_table1 where colb1 = 'maroon';
 rows:
   ('maroon', 'ROO')
   ('maroon', 'ROO')

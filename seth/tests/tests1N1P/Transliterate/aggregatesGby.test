@@ -15,7 +15,7 @@ success
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table ${testName}_nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -23,10 +23,10 @@ create table ${testName}_nation (
 );
 success
 
-load ${testName}_nation "../DATA/Transliterate/nationAggGby.tbl";
+load ${testName2}_nation "../DATA/Transliterate/nationAggGby.tbl";
 success
 
-SELECT n_nationkey, min(N_REGIONKEY) FROM ${testName}_nation GROUP BY n_nationkey;
+SELECT n_nationkey, min(N_REGIONKEY) FROM ${testName2}_nation GROUP BY n_nationkey;
 rows:
   (0,0)
   (1,1)
@@ -37,7 +37,7 @@ rows:
   (6,2)
   (7,4)
 
-SELECT n_nationkey, min(N_REGIONKEY), max(N_REGIONKEY) FROM ${testName}_nation GROUP BY n_nationkey;
+SELECT n_nationkey, min(N_REGIONKEY), max(N_REGIONKEY) FROM ${testName2}_nation GROUP BY n_nationkey;
 rows:
   (0,0,0)
   (1,1,1)
@@ -48,7 +48,7 @@ rows:
   (6,2,4)
   (7,4,4)
 
-SELECT n_nationkey, SUM(n_regionkey) FROM ${testName}_nation group by n_nationkey;
+SELECT n_nationkey, SUM(n_regionkey) FROM ${testName2}_nation group by n_nationkey;
 rows:
   (0,0)
   (1,1)
@@ -59,7 +59,7 @@ rows:
   (6,9)
   (7,4)
 
-SELECT n_nationkey, 2*(n_nationkey + 1), SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_nationkey;
+SELECT n_nationkey, 2*(n_nationkey + 1), SUM(n_regionkey) FROM ${testName2}_nation GROUP BY n_nationkey;
 rows:
   (0,2,0)
   (1,4,1)
@@ -70,7 +70,7 @@ rows:
   (6,14,9)
   (7,16,4)
 
-SELECT n_nationkey, 3 + SUM(n_regionkey) FROM ${testName}_nation group by n_nationkey;
+SELECT n_nationkey, 3 + SUM(n_regionkey) FROM ${testName2}_nation group by n_nationkey;
 rows:
   (0,3)
   (1,4)
@@ -81,7 +81,7 @@ rows:
   (6,12)
   (7,7)
 
-SELECT n_nationkey, SUM(n_regionkey) + 3 FROM ${testName}_nation group by n_nationkey;
+SELECT n_nationkey, SUM(n_regionkey) + 3 FROM ${testName2}_nation group by n_nationkey;
 rows:
   (0,3)
   (1,4)
@@ -92,7 +92,7 @@ rows:
   (6,12)
   (7,7)
 
-SELECT n_nationkey, count(N_REGIONKEY) FROM ${testName}_nation GROUP BY n_nationkey;
+SELECT n_nationkey, count(N_REGIONKEY) FROM ${testName2}_nation GROUP BY n_nationkey;
 rows:
   (0,2)
   (1,1)
@@ -103,7 +103,7 @@ rows:
   (6,3)
   (7,1)
 
-SELECT n_nationkey, SUM(n_regionkey + 3) FROM ${testName}_nation group by n_nationkey;
+SELECT n_nationkey, SUM(n_regionkey + 3) FROM ${testName2}_nation group by n_nationkey;
 rows:
   (0,6)
   (1,4)
@@ -118,7 +118,7 @@ rows:
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-drop table ${testName}_nation;
+drop table ${testName2}_nation;
 success
 
 memoryleaks;
@@ -129,6 +129,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE ${testName}_nation;
+  DROP TABLE ${testName2}_nation;
   mute
 }

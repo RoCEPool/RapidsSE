@@ -6,12 +6,12 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-select * from ${testName}_lineitem limit 4;
+select * from ${testName2}_lineitem limit 4;
 failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table ${testName}_lineitem
+create table ${testName2}_lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -33,24 +33,24 @@ create table ${testName}_lineitem
 success
 
 //------------------------------------------------------------------------------
-select * from ${testName}_lineitem limit 4;
+select * from ${testName2}_lineitem limit 4;
 rows: 0
 
 // load data
-load ${testName}_lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-select * from ${testName}_lineitem limit 4;
+select * from ${testName2}_lineitem limit 4;
 rows: 4
 
 //------------------------------------------------------------------------------
-select * from ${testName}_lineitem limit 7;
+select * from ${testName2}_lineitem limit 7;
 rows: 7
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table ${testName}_lineitem;
+drop table ${testName2}_lineitem;
 success;
 
 MemoryLeaks;
@@ -58,7 +58,7 @@ rows: 0
 
 CLEANUP {
   
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
   
   bye;

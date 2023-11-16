@@ -7,11 +7,11 @@ trackMemory;
 success
 
 // (1) create an index (syntax error)
-create index on ${testName}_T1 (key);
+create index on ${testName2}_T1 (key);
 failure contains: 'invalid command'
 
 // (2) create an index (syntax error)
-create index idx ${testName}_T1 (key);
+create index idx ${testName2}_T1 (key);
 failure contains: 'invalid command'
 
 // (3) create an index (syntax error)
@@ -19,36 +19,36 @@ create index idx on (key);
 failure contains: 'invalid command'
 
 // (4) create an index (syntax error)
-//create idx on ${testName}_T1 (key);
+//create idx on ${testName2}_T1 (key);
 //failure contains: 'invalid command'
 
 //! ALKA : come back to next few tests
 //! should be invalid command
 // (5) create an index (syntax error)
-create index idx on ${testName}_T1;
+create index idx on ${testName2}_T1;
 failure contains: 'Table does not exist'
 
 // (6) create an index (syntax error)
-create index idx on ${testName}_T1(;
+create index idx on ${testName2}_T1(;
 failure contains: 'Table does not exist'
 
 // (7) create an index (syntax error)
-create index idx on ${testName}_T1();
+create index idx on ${testName2}_T1();
 failure contains: 'Table does not exist'
 
 // (8) create an index (syntax error)
-create index idx on ${testName}_T1(key) junk;
+create index idx on ${testName2}_T1(key) junk;
 failure contains: 'Table does not exist'
 
 // create a table
-create table ${testName}_T1 (
+create table ${testName2}_T1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 success
 
 // create an index
-create index Idx on ${testName}_T1 (key);
+create index Idx on ${testName2}_T1 (key);
 affected: 0
 
 // check idx with incorrect params
@@ -56,61 +56,61 @@ lsidx;
 failure contains: 'invalid command'
                        
 // check idx with incorrect params
-lsidx ${testName}_T1 ${testName}_T2;
+lsidx ${testName2}_T1 ${testName2}_T2;
 failure contains: 'invalid command'
 
 // check idx with incorrect params
-lsidx ${testName}_T2 ${testName}_T1;
+lsidx ${testName2}_T2 ${testName2}_T1;
 failure contains: 'invalid command'
                        
 // check idx of invalid table
-lsidx ${testName}_T2;
+lsidx ${testName2}_T2;
 failure contains: 'Table does not exist'
 
 // check lidx when not in tables
 cf ~;
 success
 
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 failure contains: 'not in tables'
 
 cf "~tables";
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
   ('Idx', false, false)
 
 // check columns of invalid table
-lsidxcol ${testName}_T2 Idx;
+lsidxcol ${testName2}_T2 Idx;
 failure contains: 'Table does not exist'
 
 // check columns of invalid index
-lsidxcol ${testName}_T1 Idx2;
+lsidxcol ${testName2}_T1 Idx2;
 failure contains: 'no such index'
 
 // check columns of index when not in tables
 cf ~;
 success
 
-lsidxcol ${testName}_T1 Idx1;
+lsidxcol ${testName2}_T1 Idx1;
 failure contains: 'not in tables'
 
 cf "~tables";
 success
 
 // check columns of index
-lsidxcol ${testName}_T1 Idx;
+lsidxcol ${testName2}_T1 Idx;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
 
 // drop the index
-drop index ${testName}_T1 Idx;
+drop index ${testName2}_T1 Idx;
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows: 0
 
 // create index where table does not exist
@@ -122,11 +122,11 @@ rows:
   ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows: 0
 
 // create index where key does not exist
-create index Idx on ${testName}_T1 (noKey);
+create index Idx on ${testName2}_T1 (noKey);
 failure contains: 'invalid index column'
 
 pwf;
@@ -134,52 +134,52 @@ rows:
   ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows: 0
 
 // create index once
-create index Idx1 on ${testName}_T1 (key);
+create index Idx1 on ${testName2}_T1 (key);
 affected: 0
 
 // create same index again
-create index Idx1 on ${testName}_T1 (key);
+create index Idx1 on ${testName2}_T1 (key);
 failure contains: 'index exists'
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
  ('Idx1', false, false)
 
 // create another index with same column
-create index Idx2 on ${testName}_T1 (key);
+create index Idx2 on ${testName2}_T1 (key);
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
  ('Idx1',false,false)
  ('Idx2',false,false)
 
 // create index with two columns
-create index Idx3 on ${testName}_T1 (key, name);
+create index Idx3 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows: 3
 
 // check columns of Idx3
-lsidxcol ${testName}_T1 Idx3;
+lsidxcol ${testName2}_T1 Idx3;
 rows:
  ('key', 'INTEGER', 19, 0, false, true)
  ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
-create index Idx4 on ${testName}_T1 (key, name);
+create index Idx4 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
  ('Idx1',false,false)
  ('Idx2',false,false)
@@ -187,17 +187,17 @@ rows:
  ('Idx4',false,false)
 
 // check columns of Idx4
-lsidxcol ${testName}_T1 Idx4;
+lsidxcol ${testName2}_T1 Idx4;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
   ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
-create index Idx5 on ${testName}_T1 (key, name);
+create index Idx5 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
 ('Idx1',false,false)
 ('Idx2',false,false)
@@ -206,17 +206,17 @@ rows:
 ('Idx5',false,false)
 
 // check columns of Idx5
-lsidxcol ${testName}_T1 Idx5;
+lsidxcol ${testName2}_T1 Idx5;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
   ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
-create index Idx6 on ${testName}_T1 (key, name);
+create index Idx6 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
 ('Idx1',false,false)
 ('Idx2',false,false)
@@ -226,17 +226,17 @@ rows:
 ('Idx6',false,false)
 
 // check columns of Idx4
-lsidxcol ${testName}_T1 Idx6;
+lsidxcol ${testName2}_T1 Idx6;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
   ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
-create index Idx7 on ${testName}_T1 (key, name);
+create index Idx7 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
 ('Idx1',false,false)
 ('Idx2',false,false)
@@ -247,17 +247,17 @@ rows:
 ('Idx7',false,false)
 
 // check columns of Idx7
-lsidxcol ${testName}_T1 Idx7;
+lsidxcol ${testName2}_T1 Idx7;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
   ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
-create index Idx8 on ${testName}_T1 (key, name);
+create index Idx8 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
 ('Idx1',false,false)
 ('Idx2',false,false)
@@ -269,16 +269,16 @@ rows:
 ('Idx8',false,false)
 
 // check columns of Idx8
-lsidxcol ${testName}_T1 Idx8;
+lsidxcol ${testName2}_T1 Idx8;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
   ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
-create index Idx9 on ${testName}_T1 (key, name);
+create index Idx9 on ${testName2}_T1 (key, name);
 success
 
-drop table ${testName}_T1;
+drop table ${testName2}_T1;
 success
 
 // get memory leaks
@@ -288,7 +288,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table ${testName}_T1;
+  drop table ${testName2}_T1;
   mute
 
   bye;

@@ -123,67 +123,67 @@ rows: 0
 
 CLEANUP {
 
-  drop table ${testName}_TABLE1;
+  drop table ${testName2}_TABLE1;
   mute
 
-  drop table ${testName}_TABLE2;
+  drop table ${testName2}_TABLE2;
   mute
 
-  drop table ${testName}_TABLE3;
+  drop table ${testName2}_TABLE3;
   mute
 
-  drop table ${testName}_TABLE4;
+  drop table ${testName2}_TABLE4;
   mute
 
-  drop table ${testName}_TABLE5;
+  drop table ${testName2}_TABLE5;
   mute
 
-  drop table ${testName}_TABLE6;
+  drop table ${testName2}_TABLE6;
   mute
 
-  drop table ${testName}_TABLE7;
+  drop table ${testName2}_TABLE7;
   mute
 
-  drop table ${testName}_TABLE8;
+  drop table ${testName2}_TABLE8;
   mute
 
-  drop table ${testName}_TABLE9;
+  drop table ${testName2}_TABLE9;
   mute
 
-  drop table ${testName}_CUSTOMERH;
+  drop table ${testName2}_CUSTOMERH;
   mute
 
-  drop table ${testName}_ORDERS;
+  drop table ${testName2}_ORDERS;
   mute
 
-  drop table ${testName}_LINEITEM;
+  drop table ${testName2}_LINEITEM;
   mute
 
-  drop table ${testName}_PART;
+  drop table ${testName2}_PART;
   mute
 
-  drop table ${testName}_SUPPLIER;
+  drop table ${testName2}_SUPPLIER;
   mute
 
-  drop table ${testName}_PARTSUPP;
+  drop table ${testName2}_PARTSUPP;
   mute
 
-  drop table ${testName}_NATION;
+  drop table ${testName2}_NATION;
   mute
 
-  drop table ${testName}_REGION;
+  drop table ${testName2}_REGION;
   mute
 
-  drop table ${testName}_SHIPPING;
+  drop table ${testName2}_SHIPPING;
   mute
 
-  drop table ${testName}_SHIPADDRESS;
+  drop table ${testName2}_SHIPADDRESS;
   mute
 
-  drop table ${testName}_MANUFACTURER;
+  drop table ${testName2}_MANUFACTURER;
   mute
 
-  drop table ${testName}_RETURNITEMS;
+  drop table ${testName2}_RETURNITEMS;
   mute
 
   bye;

@@ -4,7 +4,7 @@
 
 // create the table
 
-create table ${testName}_terminator_cr (
+create table ${testName2}_terminator_cr (
   c1 integer,
   c2 varchar not null,
   c3 varchar
@@ -12,26 +12,26 @@ create table ${testName}_terminator_cr (
 success
 
 // load data into the table with default formatter settings
-load ${testName}_terminator_cr "../DATA/Load/terminatorSmallNull_cr.csv"
+load ${testName2}_terminator_cr "../DATA/Load/terminatorSmallNull_cr.csv"
   record_ends "\n"
 ;
 failure contains: '1 invalid'
 
 // create index
-create index idx on ${testName}_terminator_cr(c1);
+create index idx on ${testName2}_terminator_cr(c1);
 success
 
 // fetch
-predicateFetch ${testName}_terminator_cr "c1 1 =";
+predicateFetch ${testName2}_terminator_cr "c1 1 =";
 rows: 2533
 
 // fetch
-select * from ${testName}_terminator_cr;
+select * from ${testName2}_terminator_cr;
 rows: 2533
 
 CLEANUP {
   
-  drop table ${testName}_terminator_cr;
+  drop table ${testName2}_terminator_cr;
   mute
 
   bye;

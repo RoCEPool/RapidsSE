@@ -5,7 +5,7 @@
 trackMemory;
 success;
 
-create table ${testName}_lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,7 +25,7 @@ create table ${testName}_lineitem (
 );
 success
 
-load ${testName}_lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 /optimise_passthru 
@@ -36,7 +36,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public ${TestName}_LineItem
+     scan rapidsse public ${testName2}_LineItem
      | project " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
        type VARCHAR L_COMMENT"
      | combined 0
@@ -66,7 +66,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public ${TestName}_LineItem
+     scan rapidsse public ${testName2}_LineItem
      | project " type INTEGER $1 , type VARCHAR $15 ,
        type VARCHAR L_COMMENT"
      | combined 0
@@ -96,7 +96,7 @@ begin
     | pulse once
     | stageA
   stage stageA on all partitions :
-    scan rapidsse public ${testName}_lineitem
+    scan rapidsse public ${testName2}_lineitem
     | filter " type BOOLEAN  L_ORDERKEY 2  >=  "
     | project " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as L_QUANTITY L_QUANTITY "
     | combined 0
@@ -120,7 +120,7 @@ begin
     | pulse once
     | stageA
   stage stageA on all partitions :
-    scan rapidsse public ${testName}_lineitem
+    scan rapidsse public ${testName2}_lineitem
     | filter " type BOOLEAN  $1 2  >=  "
     | project " type INTEGER $1 , type DECIMAL $5 "
     | combined 0
@@ -144,7 +144,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public ${TestName}_LineItem
+     scan rapidsse public ${testName2}_LineItem
      | filter "type BOOLEAN L_ORDERKEY 2 >="
      | project "type INTEGER L_ORDERKEY , type INTEGER L_PARTKEY , type VARCHAR L_COMMENT"
      | combined 0
@@ -168,7 +168,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public ${TestName}_LineItem
+     scan rapidsse public ${testName2}_LineItem
      | filter "type BOOLEAN $1 2 >="
      | project "type INTEGER $1 , type INTEGER $2 , type VARCHAR $16"
      | combined 0
@@ -192,7 +192,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public ${TestName}_LineItem
+     scan rapidsse public ${testName2}_LineItem
      | filter " type BOOLEAN L_ORDERKEY 2 <"
      | project " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
        type VARCHAR L_COMMENT"
@@ -219,7 +219,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public ${TestName}_LineItem
+     scan rapidsse public ${testName2}_LineItem
      | filter " type BOOLEAN $1 2 <"
      | project " type INTEGER $1 , type VARCHAR $15 ,
        type VARCHAR L_COMMENT"
@@ -246,7 +246,7 @@ begin
     | pulse once
     | stageA
   stage stageA on all partitions :
-    scan rapidsse public ${TestName}_LineItem
+    scan rapidsse public ${testName2}_LineItem
     | filter "type BOOLEAN L_ORDERKEY 2 >="
     | aggreg "type INTEGER as SUM1 ) L_ORDERKEY sum , type INTEGER as SUM2 ) L_PARTKEY sum"
     | combined 0
@@ -275,7 +275,7 @@ begin
     | pulse once
     | stageA
   stage stageA on all partitions :
-    scan rapidsse public ${TestName}_LineItem
+    scan rapidsse public ${testName2}_LineItem
     | filter "type BOOLEAN $1 2 >="
     | aggreg "type INTEGER ) $1 sum , type INTEGER ) $2 sum"
     | combined 0
@@ -304,7 +304,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public ${TestName}_LineItem
+     scan rapidsse public ${testName2}_LineItem
      | project " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE"
      | combined 0
      | stageLast
@@ -329,7 +329,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table ${testName}_lineitem;
+drop table ${testName2}_lineitem;
 success
 
 MemoryLeaks;
@@ -337,7 +337,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // create the tables
-create table ${testName}_TABLE1 (
+create table ${testName2}_TABLE1 (
   pcol1   INTEGER NOT NULL,
   tcol1   INTEGER NOT NULL,
   cola1   INTEGER,
@@ -18,7 +18,7 @@ create table ${testName}_TABLE1 (
 );
 success
 
-create table ${testName}_TABLE2 (
+create table ${testName2}_TABLE2 (
   pcol2   INTEGER NOT NULL,
   scol2   INTEGER NOT NULL,
   cola2   INTEGER,
@@ -29,7 +29,7 @@ create table ${testName}_TABLE2 (
 );
 success
 
-create table ${testName}_TABLE3 (
+create table ${testName2}_TABLE3 (
   pcol3   INTEGER NOT NULL,
   scol3   INTEGER NOT NULL,
   tcol3   INTEGER NOT NULL,
@@ -43,7 +43,7 @@ create table ${testName}_TABLE3 (
 );
 success
 
-create table ${testName}_TABLE4 (
+create table ${testName2}_TABLE4 (
   pcol4   INTEGER NOT NULL,
   scol4   INTEGER NOT NULL,
   ucol    INTEGER,
@@ -55,7 +55,7 @@ create table ${testName}_TABLE4 (
 );
 success
 
-create table ${testName}_TABLE5 (
+create table ${testName2}_TABLE5 (
   pcol5   INTEGER NOT NULL,
   tcol5   INTEGER NOT NULL,
   cola5   INTEGER,
@@ -66,7 +66,7 @@ create table ${testName}_TABLE5 (
 );
 success
 
-create table ${testName}_TABLE6 (
+create table ${testName2}_TABLE6 (
   pcol6   INTEGER NOT NULL,
   scol6   INTEGER NOT NULL,
   tcol6   INTEGER NOT NULL,
@@ -76,7 +76,7 @@ create table ${testName}_TABLE6 (
 );
 success
 
-create table ${testName}_TABLE7 (
+create table ${testName2}_TABLE7 (
   pcol7   INTEGER NOT NULL,
   scol7   INTEGER NOT NULL,
   cola7   INTEGER,
@@ -88,7 +88,7 @@ create table ${testName}_TABLE7 (
 );
 success
 
-create table ${testName}_TABLE8 (
+create table ${testName2}_TABLE8 (
   pcol8   INTEGER NOT NULL,
   tcol8   INTEGER NOT NULL,
   cola8   INTEGER,
@@ -100,7 +100,7 @@ create table ${testName}_TABLE8 (
 );
 success
 
-create table ${testName}_TABLE9 (
+create table ${testName2}_TABLE9 (
   pcol9   INTEGER NOT NULL,
   scol9   INTEGER NOT NULL,
   tcol9   INTEGER NOT NULL,
@@ -114,7 +114,7 @@ create table ${testName}_TABLE9 (
 );
 success
 
-create table ${testName}_CUSTOMERH (
+create table ${testName2}_CUSTOMERH (
   c_custkey INTEGER NOT NULL,
   c_name VARCHAR(25),
   c_address VARCHAR(40),
@@ -126,7 +126,7 @@ create table ${testName}_CUSTOMERH (
 );
 success
 
-create table ${testName}_ORDERS (
+create table ${testName2}_ORDERS (
   o_orderkey INTEGER NOT NULL,
   o_custkey INTEGER NOT NULL,
   o_orderstatus VARCHAR(1),
@@ -141,7 +141,7 @@ create table ${testName}_ORDERS (
 );
 success
 
-create table ${testName}_LINEITEM (
+create table ${testName2}_LINEITEM (
   l_orderkey INTEGER NOT NULL,
   l_partkey INTEGER NOT NULL,
   l_suppkey INTEGER NOT NULL,
@@ -161,7 +161,7 @@ create table ${testName}_LINEITEM (
 );
 success
 
-create table ${testName}_PART (
+create table ${testName2}_PART (
   p_partkey INTEGER NOT NULL,
   p_name VARCHAR(55),
   p_mfgr VARCHAR(25),
@@ -174,7 +174,7 @@ create table ${testName}_PART (
 );
 success
 
-create table ${testName}_SUPPLIER (
+create table ${testName2}_SUPPLIER (
   s_suppkey INTEGER NOT NULL,
   s_name VARCHAR(25),
   s_address VARCHAR(40),
@@ -185,7 +185,7 @@ create table ${testName}_SUPPLIER (
 );
 success
 
-create table ${testName}_PARTSUPP (
+create table ${testName2}_PARTSUPP (
   ps_partkey INTEGER NOT NULL,
   ps_suppkey INTEGER NOT NULL,
   ps_availqty INTEGER,
@@ -194,7 +194,7 @@ create table ${testName}_PARTSUPP (
 );
 success
 
-create table ${testName}_NATION (
+create table ${testName2}_NATION (
   n_nationkey INTEGER NOT NULL,
   n_name VARCHAR(25),
   n_regionkey INTEGER NOT NULL,
@@ -202,14 +202,14 @@ create table ${testName}_NATION (
 );
 success
 
-create table ${testName}_REGION (
+create table ${testName2}_REGION (
   r_regionkey INTEGER NOT NULL,
   r_name VARCHAR(25),
   r_comment VARCHAR(152)
 );
 success
 
-create table ${testName}_SHIPPING (
+create table ${testName2}_SHIPPING (
   sh_shipkey INTEGER NOT NULL,
   sh_shipmode VARCHAR(10),
   sh_shipdate TIMESTAMP,
@@ -221,7 +221,7 @@ create table ${testName}_SHIPPING (
 );
 success
 
-create table ${testName}_SHIPADDRESS (
+create table ${testName2}_SHIPADDRESS (
   sa_orderkey INTEGER NOT NULL,
   sa_shipline INTEGER NOT NULL,
   sa_address VARCHAR(75),
@@ -235,7 +235,7 @@ create table ${testName}_SHIPADDRESS (
 );
 success
 
-create table ${testName}_MANUFACTURER (
+create table ${testName2}_MANUFACTURER (
   m_orderkey INTEGER NOT NULL,
   m_partkey INTEGER NOT NULL,
   m_mfgkey INTEGER NOT NULL,
@@ -247,7 +247,7 @@ create table ${testName}_MANUFACTURER (
 );
 success
 
-create table ${testName}_RETURNITEMS (
+create table ${testName2}_RETURNITEMS (
   l_orderkey INTEGER NOT NULL,
   l_linenumber INTEGER NOT NULL,
   m_mfgkey INTEGER NOT NULL,
@@ -263,177 +263,177 @@ create table ${testName}_RETURNITEMS (
 success
 
 // load data into the tables
-Load ${testName}_TABLE1 "../DATA/Load/tbl1data.csv" ;
+Load ${testName2}_TABLE1 "../DATA/Load/tbl1data.csv" ;
 success
 
-Load ${testName}_TABLE2 "../DATA/Load/tbl2data.csv" ;
+Load ${testName2}_TABLE2 "../DATA/Load/tbl2data.csv" ;
 success
 
-Load ${testName}_TABLE3 "../DATA/Load/tbl3data.csv" ;
+Load ${testName2}_TABLE3 "../DATA/Load/tbl3data.csv" ;
 success
 
-Load ${testName}_TABLE4 "../DATA/Load/tbl4data.csv" ;
+Load ${testName2}_TABLE4 "../DATA/Load/tbl4data.csv" ;
 success
 
-Load ${testName}_TABLE5 "../DATA/Load/tbl5data.csv" ;
+Load ${testName2}_TABLE5 "../DATA/Load/tbl5data.csv" ;
 success
 
-Load ${testName}_TABLE6 "../DATA/Load/tbl6data.csv" ;
+Load ${testName2}_TABLE6 "../DATA/Load/tbl6data.csv" ;
 success
 
-Load ${testName}_TABLE7 "../DATA/Load/tbl7data.csv" ;
+Load ${testName2}_TABLE7 "../DATA/Load/tbl7data.csv" ;
 success
 
-Load ${testName}_TABLE8 "../DATA/Load/tbl8data.csv" ;
+Load ${testName2}_TABLE8 "../DATA/Load/tbl8data.csv" ;
 success
 
-Load ${testName}_TABLE9 "../DATA/Load/tbl9data.csv" ;
+Load ${testName2}_TABLE9 "../DATA/Load/tbl9data.csv" ;
 success
 
-Load ${testName}_ORDERS "../DATA/Load/orders.csv" ;
+Load ${testName2}_ORDERS "../DATA/Load/orders.csv" ;
 success
 
-Load ${testName}_LINEITEM "../DATA/Load/lineitem.csv" ;
+Load ${testName2}_LINEITEM "../DATA/Load/lineitem.csv" ;
 success
 
-Load ${testName}_CUSTOMERH "../DATA/Load/customer.csv" ;
+Load ${testName2}_CUSTOMERH "../DATA/Load/customer.csv" ;
 success
 
-Load ${testName}_PARTSUPP "../DATA/Load/partsupp.csv"
+Load ${testName2}_PARTSUPP "../DATA/Load/partsupp.csv"
   <record_ends> = "\r\n";
 success
 
-Load ${testName}_PART "../DATA/Load/part.csv" ;
+Load ${testName2}_PART "../DATA/Load/part.csv" ;
 success
 
-Load ${testName}_SHIPPING "../DATA/Load/shipping.csv" ;
+Load ${testName2}_SHIPPING "../DATA/Load/shipping.csv" ;
 success
 
-Load ${testName}_SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
+Load ${testName2}_SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
 success
 
-Load ${testName}_SUPPLIER "../DATA/Load/supplier.csv" ;
+Load ${testName2}_SUPPLIER "../DATA/Load/supplier.csv" ;
 success
 
-Load ${testName}_MANUFACTURER "../DATA/Load/manufacturer.csv";
+Load ${testName2}_MANUFACTURER "../DATA/Load/manufacturer.csv";
 success
 
-Load ${testName}_NATION "../DATA/Load/nation.csv"
+Load ${testName2}_NATION "../DATA/Load/nation.csv"
   <record_ends> = "\r\n";;
 success
 
-Load ${testName}_REGION "../DATA/Load/region.csv" ;
+Load ${testName2}_REGION "../DATA/Load/region.csv" ;
 success
 
-Load ${testName}_RETURNITEMS "../DATA/Load/returnitems.csv";
+Load ${testName2}_RETURNITEMS "../DATA/Load/returnitems.csv";
 success
 
 // tests row limits
-create table ${testName}_LIMITROW (col0 VARCHAR(20000));
+create table ${testName2}_LIMITROW (col0 VARCHAR(20000));
 success
 
-//load ${testName}_LIMITROW "../seth/tests/load/largeRow1.csv";
+//load ${testName2}_LIMITROW "../seth/tests/load/largeRow1.csv";
 //success
 
-//predicateFetch ${testName}_LIMITROW;
+//predicateFetch ${testName2}_LIMITROW;
 //rows: 0
 
-//Load ${testName}_LIMITROW "../DATA/Load/largeRow2.csv";
-Load ${testName}_LIMITROW "../DATA/Load/largeRow4000B.csv";
+//Load ${testName2}_LIMITROW "../DATA/Load/largeRow2.csv";
+Load ${testName2}_LIMITROW "../DATA/Load/largeRow4000B.csv";
 //failure contains: '1 invalid'
 success;
 
-select * from ${testName}_LIMITROW;
+select * from ${testName2}_LIMITROW;
 rows: 1
 
-//Load ${testName}_LIMITROW "../DATA/Load/largeRow3.csv";
-Load ${testName}_LIMITROW "../DATA/Load/largeRow4000B.csv";
+//Load ${testName2}_LIMITROW "../DATA/Load/largeRow3.csv";
+Load ${testName2}_LIMITROW "../DATA/Load/largeRow4000B.csv";
 //failure contains: '1 invalid'
 success;
 
-select * from ${testName}_LIMITROW;
+select * from ${testName2}_LIMITROW;
 rows: 2
 
 /*
-load ${testName}_LIMITROW "../DATA/Load/15KRow.csv";
+load ${testName2}_LIMITROW "../DATA/Load/15KRow.csv";
 
-predicateFetch ${testName}_LIMITROW;
+predicateFetch ${testName2}_LIMITROW;
 rows: 1
 
-load ${testName}_LIMITROW "../DATA/Load/16KRow.csv";
+load ${testName2}_LIMITROW "../DATA/Load/16KRow.csv";
 
-predicateFetch ${testName}_LIMITROW;
+predicateFetch ${testName2}_LIMITROW;
 rows: 2
 */
-drop table ${testName}_LIMITROW;
+drop table ${testName2}_LIMITROW;
 success
 
 CLEANUP {
   
-  drop table ${testName}_TABLE1;
+  drop table ${testName2}_TABLE1;
   mute
 
-  drop table ${testName}_TABLE2;
+  drop table ${testName2}_TABLE2;
   mute
   
-  drop table ${testName}_TABLE3;
+  drop table ${testName2}_TABLE3;
   mute
   
-  drop table ${testName}_TABLE4;
+  drop table ${testName2}_TABLE4;
   mute
   
-  drop table ${testName}_TABLE5;
+  drop table ${testName2}_TABLE5;
   mute
   
-  drop table ${testName}_TABLE6;
+  drop table ${testName2}_TABLE6;
   mute
   
-  drop table ${testName}_TABLE7;
+  drop table ${testName2}_TABLE7;
   mute
   
-  drop table ${testName}_TABLE8;
+  drop table ${testName2}_TABLE8;
   mute
   
-  drop table ${testName}_TABLE9;
+  drop table ${testName2}_TABLE9;
   mute
   
-  drop table ${testName}_ORDERS;
+  drop table ${testName2}_ORDERS;
   mute
   
-  drop table ${testName}_LINEITEM;
+  drop table ${testName2}_LINEITEM;
   mute
   
-  drop table ${testName}_CUSTOMERH;
+  drop table ${testName2}_CUSTOMERH;
   mute
   
-  drop table ${testName}_PARTSUPP;
+  drop table ${testName2}_PARTSUPP;
   mute
   
-  drop table ${testName}_PART;
+  drop table ${testName2}_PART;
   mute
   
-  drop table ${testName}_SHIPPING;
+  drop table ${testName2}_SHIPPING;
   mute
   
-  drop table ${testName}_SHIPADDRESS;
+  drop table ${testName2}_SHIPADDRESS;
   mute
   
-  drop table ${testName}_SUPPLIER;
+  drop table ${testName2}_SUPPLIER;
   mute
   
-  drop table ${testName}_MANUFACTURER;
+  drop table ${testName2}_MANUFACTURER;
   mute
   
-  drop table ${testName}_NATION;
+  drop table ${testName2}_NATION;
   mute
   
-  drop table ${testName}_REGION;
+  drop table ${testName2}_REGION;
   mute
   
-  drop table ${testName}_RETURNITEMS;
+  drop table ${testName2}_RETURNITEMS;
   mute
 
-  drop table ${testName}_LIMITROW;
+  drop table ${testName2}_LIMITROW;
   mute
 
   bye;

@@ -5,25 +5,25 @@
 trackMemory;
 success;
 
-create table ${testName}_lt (
+create table ${testName2}_lt (
   L_KEY   INTEGER NOT NULL,
   L_NAME  VARCHAR(32) NOT NULL
 );
 success
 
-load ${testName}_lt "../DATA/Joins/leftTable.csv" ;
+load ${testName2}_lt "../DATA/Joins/leftTable.csv" ;
 success
 
-create table ${testName}_rt (
+create table ${testName2}_rt (
   R_KEY   INTEGER NOT NULL,
   R_NAME  VARCHAR(32) NOT NULL
 );
 success
 
-create index ri on ${testName}_rt(r_key);
+create index ri on ${testName2}_rt(r_key);
 success
 
-load ${testName}_rt "../DATA/Joins/rightTable.csv" ;
+load ${testName2}_rt "../DATA/Joins/rightTable.csv" ;
 success
 
 
@@ -34,9 +34,9 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lt
+    scan ${testName2}_lt
     | filter " type BOOLEAN  L_KEY 2 <= "
-    | indexJoin ${testName}_rt ri "BOUND $I1 $1 == "
+    | indexJoin ${testName2}_rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -57,9 +57,9 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lt
+    scan ${testName2}_lt
     | filter " type BOOLEAN  L_KEY 2 < "
-    | indexJoin ${testName}_rt ri "BOUND $I1 $1 == "
+    | indexJoin ${testName2}_rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -79,9 +79,9 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lt
+    scan ${testName2}_lt
     | filter " type BOOLEAN  L_KEY 2 >= "
-    | indexJoin ${testName}_rt ri "BOUND $I1 $1 == "
+    | indexJoin ${testName2}_rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -98,9 +98,9 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_lt
+    scan ${testName2}_lt
     | filter " type BOOLEAN  L_KEY 2 >= "
-    | indexJoin ${testName}_rt ri "BOUND $I1 $1 == "
+    | indexJoin ${testName2}_rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -109,10 +109,10 @@ end ;
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table ${testName}_lt;
+drop table ${testName2}_lt;
 success
 
-drop table ${testName}_rt;
+drop table ${testName2}_rt;
 success
 
 MemoryLeaks;
@@ -120,10 +120,10 @@ rows: 0
 
 CLEANUP {
 
-  //drop table ${testName}_lt;
+  //drop table ${testName2}_lt;
   //mute
 
-  //drop table ${testName}_rt;
+  //drop table ${testName2}_rt;
   //mute
 
   bye;

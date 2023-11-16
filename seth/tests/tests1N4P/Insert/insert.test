@@ -3,37 +3,37 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create a table
-create table ${testName}_T1 (
+create table ${testName2}_T1 (
   col0   integer not null,
   col1   varchar(32) not null
 );
 success
 
 // (2) create an index on the table
-create index idx on ${testName}_T1 (col0);
+create index idx on ${testName2}_T1 (col0);
 success
 
 // check existence of index
-lsidx ${testName}_T1;
+lsidx ${testName2}_T1;
 rows:
   ('idx', false, false)
 
 // check columns of index
-lsidxcol ${testName}_T1 idx;
+lsidxcol ${testName2}_T1 idx;
 rows:
   ('col0', 'INTEGER', 19, 0, false, true)
 
 // (3) now load some data into the table
-load ${testName}_T1 "../seth/tests/Insert/insert.csv" ;
+load ${testName2}_T1 "../seth/tests/Insert/insert.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_T1;
+select * from ${testName2}_T1;
 rows: 12
 
 // (4) insert some rows into the table
 
-begin insert ${testName}_T1;
+begin insert ${testName2}_T1;
 success
 
 insert row "1,abcdef";
@@ -70,14 +70,14 @@ end insert;
 success
 
 // check no of rows
-select * from ${testName}_T1;
+select * from ${testName2}_T1;
 rows: 22
 
 insert row "21,null";
 failure: 'Table does not exist'
 
 // (5) insert some invalid row
-begin insert ${testName}_T1;
+begin insert ${testName2}_T1;
 success
 
 insert row "21,null";
@@ -90,12 +90,12 @@ end insert;
 success
 
 // check no of rows
-select * from ${testName}_T1;
+select * from ${testName2}_T1;
 rows: 23
 
 CLEANUP {
 
-  drop table ${testName}_T1;
+  drop table ${testName2}_T1;
   mute
 
   bye;

@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // First, ensure that the table foo does not exist.
-drop table ${testName}_foo;
+drop table ${testName2}_foo;
 mute
 
 
@@ -17,34 +17,34 @@ LOOP FOR 5 SECONDS {
   -- or looping forever:  LOOP
 
 
-  create table ${testName}_foo (col0 integer, col1 varchar);
+  create table ${testName2}_foo (col0 integer, col1 varchar);
   success
 
   lstbl;
   rows:
-    ('${testName}_foo')
+    ('${testName2}_foo')
 
-  create index fooIdx on ${testName}_foo (col0);
+  create index fooIdx on ${testName2}_foo (col0);
   success
 
-  lsidx ${testName}_foo;
+  lsidx ${testName2}_foo;
   rows:
     ('fooIdx',false,false)
 
-  lsidxcol ${testName}_foo fooIdx;
+  lsidxcol ${testName2}_foo fooIdx;
   rows:
     ('col0', 'INTEGER', 19, 0, true, true)
 
-  drop index ${testName}_foo fooIdx;
+  drop index ${testName2}_foo fooIdx;
   success
 
-  drop table ${testName}_foo;
+  drop table ${testName2}_foo;
   success
 
 } -- end of loop
 
 
 CLEANUP {
-  drop table ${testName}_foo;
+  drop table ${testName2}_foo;
   mute
 }

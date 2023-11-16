@@ -1,7 +1,7 @@
 
 // Source file: ../queries/functions/extract/rextract3.sql
 // Result file: ../queries/functions/extract/results/extract3.res
-select colc1, extract(year from colc1) from ${testName}_table1 where ucol / 5 between 50 and 100;
+select colc1, extract(year from colc1) from ${testName2}_table1 where ucol / 5 between 50 and 100;
 rows:
   (TIMESTAMP '2015-01-11 00:00:00.0', 2015)
   (TIMESTAMP '2015-01-13 00:00:00.0', 2015)
@@ -29,14 +29,14 @@ rows:
 
 // Source file: ../queries/functions/extract/rextract1.sql
 // Result file: ../queries/functions/extract/results/extract1.res
-select extract(year from timestamp '2013-01-19 08:12:15') from ${testName}_table1 where pcol1 < 1;
+select extract(year from timestamp '2013-01-19 08:12:15') from ${testName2}_table1 where pcol1 < 1;
 rows:
   (2013)
 
 
 // Source file: ../queries/functions/extract/rextract5.sql
 // Result file: ../queries/functions/extract/results/extract5.res
-select colc1, extract(hour from colc1) from ${testName}_table1 where cola1 between 23 and 37 order by colc1;
+select colc1, extract(hour from colc1) from ${testName2}_table1 where cola1 between 23 and 37 order by colc1;
 ordered rows:
   (TIMESTAMP '2015-06-07 00:00:00.0', 0)
   (TIMESTAMP '2015-11-25 00:00:00.0', 0)
@@ -44,7 +44,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract13.sql
 // Result file: ../queries/functions/extract/results/extract13.res
-select colb1, colc1, extract(day from colc1) * 10 from ${testName}_table1 where extract(day from colc1) * 10 > 100 and colb1 in ('black', 'BLACK', 'blue', 'BLUE') order by colb1, colc1;
+select colb1, colc1, extract(day from colc1) * 10 from ${testName2}_table1 where extract(day from colc1) * 10 > 100 and colb1 in ('black', 'BLACK', 'blue', 'BLUE') order by colb1, colc1;
 ordered rows:
   ('BLACK', TIMESTAMP '2015-01-16 00:00:00.0', 160)
   ('BLACK', TIMESTAMP '2015-06-25 00:00:00.0', 250)
@@ -57,7 +57,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract6.sql
 // Result file: ../queries/functions/extract/results/extract6.res
-select colc1, extract(minute from colc1) from ${testName}_table1 where colb1 in ('orange','pink', 'PINK', 'GREEN');
+select colc1, extract(minute from colc1) from ${testName2}_table1 where colb1 in ('orange','pink', 'PINK', 'GREEN');
 rows:
   (TIMESTAMP '2015-01-11 00:00:00.0', 0)
   (TIMESTAMP '2015-01-16 00:00:00.0', 0)
@@ -81,7 +81,7 @@ rows:
 
 // Source file: ../queries/functions/extract/rextract2.sql
 // Result file: ../queries/functions/extract/results/extract2.res
-select colc1, extract(month from colc1) from ${testName}_table1 where ucolvc in ('jjj','hhh','nnn','vvv') order by colc1;
+select colc1, extract(month from colc1) from ${testName2}_table1 where ucolvc in ('jjj','hhh','nnn','vvv') order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-29 00:00:00.0', 1)
   (TIMESTAMP '2015-04-20 00:00:00.0', 4)
@@ -99,7 +99,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract10.sql
 // Result file: ../queries/functions/extract/results/extract10.res
-select colc1, extract(month from colc1), extract(month from colc1) * colf1, colf1 from ${testName}_table1 where colf1 <= 12 and ucolvc in ('hhh','lll','mmm','nnn') order by colc1;
+select colc1, extract(month from colc1), extract(month from colc1) * colf1, colf1 from ${testName2}_table1 where colf1 <= 12 and ucolvc in ('hhh','lll','mmm','nnn') order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-07 00:00:00.0', 1, 3, 3)
   (TIMESTAMP '2015-01-16 00:00:00.0', 1, 1, 1)
@@ -120,7 +120,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract9.sql
 // Result file: ../queries/functions/extract/results/extract9.res
-select colc1, extract(month from colc1), extract(month from colc1) - colf1, colf1 from ${testName}_table1 where colf1 <= 12 and ucolvc in ('hhh','lll','mmm','nnn') order by colc1;
+select colc1, extract(month from colc1), extract(month from colc1) - colf1, colf1 from ${testName2}_table1 where colf1 <= 12 and ucolvc in ('hhh','lll','mmm','nnn') order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-07 00:00:00.0', 1, -2, 3)
   (TIMESTAMP '2015-01-16 00:00:00.0', 1, 0, 1)
@@ -141,7 +141,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract8.sql
 // Result file: ../queries/functions/extract/results/extract8.res
-select colc1, extract(month from colc1), extract(month from colc1) + colf1, colf1 from ${testName}_table1 where colf1 <= 12 and ucolvc in ('fff','iii','jjj','qqq','www') order by colc1;
+select colc1, extract(month from colc1), extract(month from colc1) + colf1, colf1 from ${testName2}_table1 where colf1 <= 12 and ucolvc in ('fff','iii','jjj','qqq','www') order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-13 00:00:00.0', 1, 3, 2)
   (TIMESTAMP '2015-01-16 00:00:00.0', 1, 5, 4)
@@ -161,7 +161,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract14.sql
 // Result file: ../queries/functions/extract/results/extract14.res
-select colb1, colc1, extract(day from colc1) from ${testName}_table1 where colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1);
+select colb1, colc1, extract(day from colc1) from ${testName2}_table1 where colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1);
 // changed to unordered because column duplicates in the column being ordered
 unordered rows:
   ('green',  TIMESTAMP '2015-02-01 00:00:00.0', 1)
@@ -182,7 +182,7 @@ unordered rows:
 
 // Source file: ../queries/functions/extract/rextract11.sql
 // Result file: ../queries/functions/extract/results/extract11.res
-select colc1, extract(month from colc1), extract(month from colc1) * colf1, colf1 from ${testName}_table1 where colf1 <= 12 and ucolvc in ('hhh','lll','mmm','nnn') order by colc1;
+select colc1, extract(month from colc1), extract(month from colc1) * colf1, colf1 from ${testName2}_table1 where colf1 <= 12 and ucolvc in ('hhh','lll','mmm','nnn') order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-07 00:00:00.0', 1, 3, 3)
   (TIMESTAMP '2015-01-16 00:00:00.0', 1, 1, 1)
@@ -203,7 +203,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract4.sql
 // Result file: ../queries/functions/extract/results/extract4.res
-select colc1, extract(day from colc1) from ${testName}_table1 where cole1 between 0 and 20.0 order by colc1;
+select colc1, extract(day from colc1) from ${testName2}_table1 where cole1 between 0 and 20.0 order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-13 00:00:00.0', 13)
   (TIMESTAMP '2015-01-16 00:00:00.0', 16)
@@ -222,7 +222,7 @@ ordered rows:
 // Result file: ../queries/functions/extract/results/extract15.res
 // TODO: ENABLE WHEN HASH JOINS
 /*
-select colb1, extract(month from colc1), colb2, extract(month from colc2) from ${testName}_table1 join ${testName}_table2 on extract(month from colc1) = extract(month from colc2) where extract(month from colc1) in (5, 7, 9) and colb1 like ('%ea%') order by colb1, colb2;
+select colb1, extract(month from colc1), colb2, extract(month from colc2) from ${testName2}_table1 join ${testName2}_table2 on extract(month from colc1) = extract(month from colc2) where extract(month from colc1) in (5, 7, 9) and colb1 like ('%ea%') order by colb1, colb2;
 
 ordered rows:
   ('peach', 5, 'GREEN', 5)
@@ -250,7 +250,7 @@ ordered rows:
 // Source file: ../queries/functions/extract/rextract12.sql
 // Result file: ../queries/functions/extract/results/extract12.res
 // ALKA: added colc1 in orderby beacuse duplicate columns colb1, seth gets confuesd in matching
-select colb1, colc1 from ${testName}_table1 where extract(month from colc1) between 3 and 5 order by colb1 desc, colc1;
+select colb1, colc1 from ${testName2}_table1 where extract(month from colc1) between 3 and 5 order by colb1 desc, colc1;
 ordered rows:
   ('teal', TIMESTAMP '2015-03-06 00:00:00.0')
   ('tan', TIMESTAMP '2015-03-11 00:00:00.0')
@@ -279,7 +279,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract12.sql
 // Result file: ../queries/functions/extract/results/extract12.res
-select colb1, colc1 from ${testName}_table1 where extract(month from colc1) between 3 and 5 order by colb1;
+select colb1, colc1 from ${testName2}_table1 where extract(month from colc1) between 3 and 5 order by colb1;
 // unordered because duplicates
 unordered rows:
   ('BLACK'  , TIMESTAMP '2015-04-01 00:00:00')
@@ -312,7 +312,7 @@ unordered rows:
 // Result file: ../queries/functions/extract/results/extract7.res
 // TODO: ENABLE WHEN UPPER
 /*
-select colc1, extract(second from colc1) from ${testName}_table1 where upper(colb1) = 'PINK' order by colc1;
+select colc1, extract(second from colc1) from ${testName2}_table1 where upper(colb1) = 'PINK' order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-16 00:00:00.0', 0)
   (TIMESTAMP '2015-01-30 00:00:00.0', 0)
@@ -325,7 +325,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract7.sql
 // Result file: ../queries/functions/extract/results/extract7.res
-select colc1, extract(second from colc1) from ${testName}_table1 where colb1 = 'PINK' or colb1 = 'pink' order by colc1;
+select colc1, extract(second from colc1) from ${testName2}_table1 where colb1 = 'PINK' or colb1 = 'pink' order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-16 00:00:00.0', 0)
   (TIMESTAMP '2015-01-30 00:00:00.0', 0)

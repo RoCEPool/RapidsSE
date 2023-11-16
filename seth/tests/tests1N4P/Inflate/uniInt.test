@@ -7,20 +7,20 @@ trackMemory;
 success
 
 // (1) create a table
-create table ${testName}_uniInt (
+create table ${testName2}_uniInt (
   int_col  INTEGER NOT NULL
 );
 success
 
-load ${testName}_uniInt "../FASTLOAD/Data/uniInt.csv" ;
+load ${testName2}_uniInt "../FASTLOAD/Data/uniInt.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_uniInt;
+select * from ${testName2}_uniInt;
 rows: 166
 
 // check data
-select * from ${testName}_uniInt;
+select * from ${testName2}_uniInt;
 rows:
 (0)
 (1)
@@ -191,7 +191,7 @@ rows:
 
 
 // drop the table
-drop table ${testName}_uniInt;
+drop table ${testName2}_uniInt;
 success
 
 // get memory leaks
@@ -200,7 +200,7 @@ rows: 0
 
 CLEANUP {
   // drop the table
-  drop table ${testName}_uniInt;
+  drop table ${testName2}_uniInt;
   mute
   
   bye;

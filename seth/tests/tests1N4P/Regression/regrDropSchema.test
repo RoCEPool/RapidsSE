@@ -2,132 +2,132 @@
 /* regrDropSchema -- drop schema                                              */
 /*----------------------------------------------------------------------------*/
 
- drop table ${testName}_table1;
+ drop table ${testName2}_table1;
  success
 
- drop table ${testName}_table2;
+ drop table ${testName2}_table2;
  success
 
- drop table ${testName}_table3;
+ drop table ${testName2}_table3;
  success
 
- drop table ${testName}_table4;
+ drop table ${testName2}_table4;
  success
 
- drop table ${testName}_table5;
+ drop table ${testName2}_table5;
  success
 
- drop table ${testName}_table6;
+ drop table ${testName2}_table6;
  success
 
- drop table ${testName}_table7;
+ drop table ${testName2}_table7;
  success
 
- drop table ${testName}_table8;
+ drop table ${testName2}_table8;
  success
 
- drop table ${testName}_table9;
+ drop table ${testName2}_table9;
  success
 
- drop table ${testName}_orders;
+ drop table ${testName2}_orders;
  success
 
- drop table ${testName}_lineitem;
+ drop table ${testName2}_lineitem;
  success
 
- drop table ${testName}_customerh;
+ drop table ${testName2}_customerh;
  success
 
- drop table ${testName}_partsupp;
+ drop table ${testName2}_partsupp;
  success
 
- drop table ${testName}_part;
+ drop table ${testName2}_part;
  success
 
- drop table ${testName}_shipping;
+ drop table ${testName2}_shipping;
  success
 
- drop table ${testName}_shipaddress;
+ drop table ${testName2}_shipaddress;
  success
 
- drop table ${testName}_supplier;
+ drop table ${testName2}_supplier;
  success
 
- drop table ${testName}_manufacturer;
+ drop table ${testName2}_manufacturer;
  success
 
- drop table ${testName}_nation;
+ drop table ${testName2}_nation;
  success
 
- drop table ${testName}_region;
+ drop table ${testName2}_region;
  success
 
- drop table ${testName}_returnitems;
+ drop table ${testName2}_returnitems;
  success
 
 CLEANUP {
   
-  drop table ${testName}_table1;
+  drop table ${testName2}_table1;
   mute
 
-  drop table ${testName}_table2;
+  drop table ${testName2}_table2;
   mute
   
-  drop table ${testName}_table3;
+  drop table ${testName2}_table3;
   mute
   
-  drop table ${testName}_table4;
+  drop table ${testName2}_table4;
   mute
   
-  drop table ${testName}_table5;
+  drop table ${testName2}_table5;
   mute
   
-  drop table ${testName}_table6;
+  drop table ${testName2}_table6;
   mute
   
-  drop table ${testName}_table7;
+  drop table ${testName2}_table7;
   mute
   
-  drop table ${testName}_table8;
+  drop table ${testName2}_table8;
   mute
   
-  drop table ${testName}_table9;
+  drop table ${testName2}_table9;
   mute
   
-  drop table ${testName}_orders;
+  drop table ${testName2}_orders;
   mute
   
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
   
-  drop table ${testName}_customerh;
+  drop table ${testName2}_customerh;
   mute
   
-  drop table ${testName}_partsupp;
+  drop table ${testName2}_partsupp;
   mute
   
-  drop table ${testName}_part;
+  drop table ${testName2}_part;
   mute
   
-  drop table ${testName}_shipping;
+  drop table ${testName2}_shipping;
   mute
   
-  drop table ${testName}_shipaddress;
+  drop table ${testName2}_shipaddress;
   mute
   
-  drop table ${testName}_supplier;
+  drop table ${testName2}_supplier;
   mute
   
-  drop table ${testName}_manufacturer;
+  drop table ${testName2}_manufacturer;
   mute
   
-  drop table ${testName}_nation;
+  drop table ${testName2}_nation;
   mute
   
-  drop table ${testName}_region;
+  drop table ${testName2}_region;
   mute
   
-  drop table ${testName}_returnitems;
+  drop table ${testName2}_returnitems;
   mute
 
   bye;

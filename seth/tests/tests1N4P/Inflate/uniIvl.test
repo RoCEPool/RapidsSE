@@ -7,20 +7,20 @@ trackMemory;
 success
 
 // (1) create a table
-create table ${testName}_uniIvl (
+create table ${testName2}_uniIvl (
   ivl_col INTERVAL NOT NULL
 );
 success
 
-load ${testName}_uniIvl "../FASTLOAD/Data/uniIvl.csv" ;
+load ${testName2}_uniIvl "../FASTLOAD/Data/uniIvl.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_uniIvl;
+select * from ${testName2}_uniIvl;
 rows: 101
 
 // check data
-select * from ${testName}_uniIvl;
+select * from ${testName2}_uniIvl;
 rows:
   (0.000000)
   (1.001000)
@@ -125,7 +125,7 @@ rows:
   (100.100000)
 
 // drop the table
-drop table ${testName}_uniIvl;
+drop table ${testName2}_uniIvl;
 success
 
 // get memory leaks
@@ -134,7 +134,7 @@ rows: 0
 
 CLEANUP {
   // drop the table
-  drop table ${testName}_uniIvl;
+  drop table ${testName2}_uniIvl;
   mute
   
   bye;

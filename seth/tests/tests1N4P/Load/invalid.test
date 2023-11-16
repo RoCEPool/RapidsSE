@@ -11,7 +11,7 @@ load;
 failure contains: 'invalid command'
 
 // incomplete load command
-load ${testName}_t1;
+load ${testName2}_t1;
 failure contains: 'invalid command'
 
 // incomplete load command
@@ -19,10 +19,10 @@ load "../DATA/Load/null.csv";
 failure contains: 'invalid command'
 
 // load non-existent table T1
-load ${testName}_t1 "../DATA/Load/null.csv" ;
+load ${testName2}_t1 "../DATA/Load/null.csv" ;
 failure contains: 'Table does not exist'
 
-create table ${testName}_t1 (
+create table ${testName2}_t1 (
   col_id       INTEGER,
   col_vch      VARCHAR(25),
   col_int      INTEGER
@@ -30,15 +30,15 @@ create table ${testName}_t1 (
 success
 
 // create an index
-create index idx on ${testName}_t1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with invalid file
-load ${testName}_t1 "no-such-file" ;
+load ${testName2}_t1 "no-such-file" ;
 failure contains: 'File does not exist'
 
 // drop the table
-drop table ${testName}_t1;
+drop table ${testName2}_t1;
 success
 
 //MemoryLeaks;
@@ -46,7 +46,7 @@ success
 
 CLEANUP {
   
-  drop table ${testName}_t1;
+  drop table ${testName2}_t1;
   mute
 
   bye;

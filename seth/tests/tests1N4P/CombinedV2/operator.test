@@ -5,7 +5,7 @@
 trackMemory;
 success;
 
-create table ${TestName}_Nation (
+create table ${testName2}_Nation (
 	 N_NATIONKEY       INTEGER      NOT NULL,
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
@@ -13,26 +13,26 @@ create table ${TestName}_Nation (
 );
 success
 
-create index IxN_NATIONKEY on ${testName}_nation (n_nationkey);
+create index IxN_NATIONKEY on ${testName2}_nation (n_nationkey);
 success
 
-load ${testName}_nation "../DATA/TPCH/nation.tbl";
+load ${testName2}_nation "../DATA/TPCH/nation.tbl";
 success
 
-create table ${TestName}_Region (
+create table ${testName2}_Region (
 	 R_REGIONKEY       INTEGER      NOT NULL,
 	 R_NAME            CHAR(25)     NOT NULL,
 	 R_COMMENT         VARCHAR(152)
 );
 success
 
-create index IxR_REGIONKEY on ${TestName}_Region (R_REGIONKEY);
+create index IxR_REGIONKEY on ${testName2}_Region (R_REGIONKEY);
 success
 
-create index IxR_NAME on ${TestName}_Region (R_NAME);
+create index IxR_NAME on ${testName2}_Region (R_NAME);
 success
 
-load ${TestName}_Region "../DATA/TPCH/region.tbl";
+load ${testName2}_Region "../DATA/TPCH/region.tbl";
 success
 
 //------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ begin
     | pulse once
     | stageMarker0559
   stage stageMarker0559 on all partitions :
-    scan rapidsse public ${TestName}_Nation
+    scan rapidsse public ${testName2}_Nation
     | filter " type BOOLEAN  $1 2  <  "
     | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
     | combined 0
@@ -74,7 +74,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan ${TestName}_Nation IxN_NATIONKEY "UBOUND $I1 2 < "
+    indexScan ${testName2}_Nation IxN_NATIONKEY "UBOUND $I1 2 < "
     | project   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
     | combined 0
     | next
@@ -100,7 +100,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan ${TestName}_Nation IxN_NATIONKEY "LBOUND $I1 2 > "
+    indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 > "
     | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
     | combined  0
     | next hashcast
@@ -145,7 +145,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan ${TestName}_Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
+    indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
     | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
     | combined 0
     | next
@@ -176,14 +176,14 @@ begin
    | next
 
   stage S01 on all partitions :
-     scan      ${TestName}_Nation
+     scan      ${testName2}_Nation
    | project "type INTEGER N_NATIONKEY , type VARCHAR N_NAME , type INTEGER N_REGIONKEY"
    | hash "type INTEGER $3"
    | combined 0
    | next hashcast
 
   stage S02 on all partitions :
-     indexJoin ${TestName}_Region IxR_REGIONKEY " BOUND $I1 $3 == "
+     indexJoin ${testName2}_Region IxR_REGIONKEY " BOUND $I1 $3 == "
    | combined 0
    | next
 
@@ -235,13 +235,13 @@ pipeline _unnamed_
     | next
 
   stage S02 on all partitions :
-    indexScan ${TestName}_Nation IxN_NATIONKEY "LBOUND $I1 14 >"
+    indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 14 >"
     | hash "type INTEGER $3"
     | combined 0
     | next hashcast
 
   stage S03 on all partitions :
-    indexJoin ${TestName}_Region IxR_REGIONKEY " BOUND $I1 $3 == "
+    indexJoin ${testName2}_Region IxR_REGIONKEY " BOUND $I1 $3 == "
     | combined  0
     | next
 
@@ -273,13 +273,13 @@ pipeline _unnamed_
     | next
 
   stage S02 on all partitions :
-    indexScan ${TestName}_Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
+    indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
     | hash "type INTEGER $3"
     | combined 0
     | next hashcast
 
   stage S03 on all partitions :
-    indexJoin ${TestName}_Region IxR_REGIONKEY " BOUND $I1 $3 == "
+    indexJoin ${testName2}_Region IxR_REGIONKEY " BOUND $I1 $3 == "
     | combined  0
     | next
 
@@ -307,14 +307,14 @@ begin
    | next
 
  stage S01 on all partitions :
-     scan ${TestName}_Nation
+     scan ${testName2}_Nation
    | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
    | hash "type INTEGER $3"
    | combined  0
    | next hashcast
 
  stage S02 on all partitions :
-     keyExists ${TestName}_Region IxR_REGIONKEY
+     keyExists ${testName2}_Region IxR_REGIONKEY
               " BOUND $I1 $3 == "
               "type BOOLEAN R_REGIONKEY N_NATIONKEY =="
    | combined  0
@@ -343,14 +343,14 @@ rows:
     | next
 
   stage S01 on all partitions :
-      scan ${TestName}_Nation
+      scan ${testName2}_Nation
     | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
     | hash "type INTEGER $3"
     | combined  0
     | next hashcast
 
   stage S02 on all partitions :
-      keyExists ${TestName}_Region IxR_REGIONKEY
+      keyExists ${testName2}_Region IxR_REGIONKEY
                " BOUND $I1 $3 == "
                "type BOOLEAN R_NAME 'ASIA' =="
     | combined  0
@@ -382,7 +382,7 @@ begin
     | pulse once
     | next
   stage S01 on all partitions :
-    scan rapidsse public ${TestName}_Nation
+    scan rapidsse public ${testName2}_Nation
     | filter " type BOOLEAN  $1 5  <  "
     | aggreg " type INTEGER )  $1 sum  "
     | combined 0
@@ -416,7 +416,7 @@ begin
    | pulse once
    | next
  stage S01 on all partitions :
-   scan rapidsse public ${TestName}_Nation
+   scan rapidsse public ${testName2}_Nation
    | aggreg " type VARCHAR )  $2 max  "
    | combined 0
    | next
@@ -449,7 +449,7 @@ begin
    | next
 
  stage S02 on all partitions :
-   scan rapidsse public ${TestName}_Nation
+   scan rapidsse public ${testName2}_Nation
    | gbyagg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
    | combined 0
    | next
@@ -489,7 +489,7 @@ rows:
      | next
 
    stage S02 on all partitions :
-     scan rapidsse public ${TestName}_Nation
+     scan rapidsse public ${testName2}_Nation
      | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
      | combined 0
      | next
@@ -530,7 +530,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public ${TestName}_Nation
+    scan rapidsse public ${testName2}_Nation
     | gbyAgg " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
     | combined 0
     | next
@@ -590,7 +590,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public ${TestName}_Nation
+    scan rapidsse public ${testName2}_Nation
     | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
     | combined 0
     | next
@@ -645,7 +645,7 @@ begin
    | next
 
  stage S01 on all partitions :
-   scan rapidsse public ${TestName}_Nation
+   scan rapidsse public ${testName2}_Nation
    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
    | sort " type INTEGER as n_nationkey $1 ASC  "
    | combined 0
@@ -696,7 +696,7 @@ begin
    | next
 
  stage S01 on all partitions :
-   scan rapidsse public ${TestName}_Nation
+   scan rapidsse public ${testName2}_Nation
    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
    | sort " type VARCHAR as n_name $2 ASC  "
    | combined 0
@@ -735,13 +735,13 @@ rows:
   (21,'VIETNAM')
 
 
-create table ${TESTNAME}_L (l_int_col0 integer);
-create table ${TESTNAME}_R(r_int_col0 integer, r_vch_col1 varchar);
-create index L_idx on ${TESTNAME}_L(l_int_col0);
-create index R_idx on ${TESTNAME}_R(r_int_col0);
+create table ${testName2}_L (l_int_col0 integer);
+create table ${testName2}_R(r_int_col0 integer, r_vch_col1 varchar);
+create index L_idx on ${testName2}_L(l_int_col0);
+create index R_idx on ${testName2}_R(r_int_col0);
 
-load ${TESTNAME}_L "../DATA/Joins/L.csv";
-load ${TESTNAME}_R "../DATA/Joins/R.csv";
+load ${testName2}_L "../DATA/Joins/L.csv";
+load ${testName2}_R "../DATA/Joins/R.csv";
 
 //------------------------------------------------------------------------------
 // LEFT OUTER JOIN
@@ -756,8 +756,8 @@ begin
     | pulse once
     | next
   stage stageMarker0142 on all partitions :
-    scan rapidsse public ${TESTNAME}_L
-    | indexJoin ${TESTNAME}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 =="
+    scan rapidsse public ${testName2}_L
+    | indexJoin ${testName2}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 =="
     | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
@@ -779,8 +779,8 @@ begin
     | pulse once
     | next
   stage stageMarker0142 on all partitions :
-    indexScan ${TESTNAME}_L L_idx "LBOUND $I1 2 >"
-    | indexJoin ${TESTNAME}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
+    indexScan ${testName2}_L L_idx "LBOUND $I1 2 >"
+    | indexJoin ${testName2}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
     | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
@@ -794,7 +794,7 @@ rows: 39
 //------------------------------------------------------------------------------
 // HASH CAST
 //------------------------------------------------------------------------------
-create table ${testName}_lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -814,7 +814,7 @@ create table ${testName}_lineitem (
 );
 success
 
-create table ${testName}_orders (
+create table ${testName2}_orders (
 O_ORDERKEY        INTEGER NOT NULL,
 O_CUSTKEY         INTEGER NOT NULL,
 O_ORDERSTATUS     CHAR(1) NOT NULL,
@@ -827,16 +827,16 @@ O_COMMENT         VARCHAR(79) NOT NULL
 ) ;
 success
 
-create index IxL_ORDERKEY  on ${TestName}_Lineitem (L_ORDERKEY);
+create index IxL_ORDERKEY  on ${testName2}_Lineitem (L_ORDERKEY);
 success
 
-create index IxO_ORDERKEY  on ${TestName}_Orders   (O_ORDERKEY);
+create index IxO_ORDERKEY  on ${testName2}_Orders   (O_ORDERKEY);
 success
 
-load ${testName}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-load ${testName}_orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
 success
 
 /optimise_passthru
@@ -849,14 +849,14 @@ begin
     | next
 
   stage S01 on all partitions :
-      scan      ${TestName}_Lineitem
+      scan      ${testName2}_Lineitem
     | project "type INTEGER $1"
     | hash "type INTEGER $1"
     | combined  0
     | next hashcast
 
   stage S02 on all partitions :
-      indexJoin ${testName}_orders IxO_ORDERKEY " BOUND $I1 $1 == "
+      indexJoin ${testName2}_orders IxO_ORDERKEY " BOUND $I1 $1 == "
     | project "type INTEGER $1 , type INTEGER $2"
     | combined  0
     | next
@@ -873,22 +873,22 @@ rows: 5996
 //------------------------------------------------------------------------------
 // drop the tables
 
-drop table ${TESTNAME}_L;
+drop table ${testName2}_L;
 success
 
-drop table ${TESTNAME}_R;
+drop table ${testName2}_R;
 success
 
-drop table ${testName}_nation;
+drop table ${testName2}_nation;
 success
 
-drop table ${testName}_region;
+drop table ${testName2}_region;
 success
 
-drop table ${testName}_lineitem;
+drop table ${testName2}_lineitem;
 success
 
-drop table ${testName}_orders;
+drop table ${testName2}_orders;
 success
 
 MemoryLeaks;
@@ -896,22 +896,22 @@ rows: 0
 
 CLEANUP {
 
-  drop table ${TESTNAME}_L;
+  drop table ${testName2}_L;
   success
 
-  drop table ${TESTNAME}_R;
+  drop table ${testName2}_R;
   success
 
-  drop table ${testName}_nation;
+  drop table ${testName2}_nation;
   mute
 
-  drop table ${testName}_region;
+  drop table ${testName2}_region;
   mute
 
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
-  drop table ${testName}_orders;
+  drop table ${testName2}_orders;
   mute
 
   bye;

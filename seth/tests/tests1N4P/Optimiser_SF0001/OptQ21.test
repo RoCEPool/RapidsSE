@@ -6,10 +6,10 @@
 select
   s_name,
   count(*) as numwait from
-  ${testName}_supplier,
-  ${testName}_lineitem l1,
-  ${testName}_orders,
-  ${testName}_nation
+  ${testName2}_supplier,
+  ${testName2}_lineitem l1,
+  ${testName2}_orders,
+  ${testName2}_nation
 where
   s_suppkey = l1.l_suppkey
   and o_orderkey = l1.l_orderkey
@@ -19,7 +19,7 @@ where
     select
     *
     from
-    ${testName}_lineitem l2
+    ${testName2}_lineitem l2
     where
     l2.l_orderkey = l1.l_orderkey
     and l2.l_suppkey <> l1.l_suppkey
@@ -28,7 +28,7 @@ where
     select
     *
     from
-    ${testName}_lineitem l3
+    ${testName2}_lineitem l3
     where
     l3.l_orderkey = l1.l_orderkey
     and l3.l_suppkey <> l1.l_suppkey

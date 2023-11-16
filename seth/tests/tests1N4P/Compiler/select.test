@@ -11,10 +11,10 @@
 
 
 -- Select a non-existent table
-SELECT col1 from ${testName}_badTable;
-failure contains: 'No such table: ${testName}_badTable'
+SELECT col1 from ${testName2}_badTable;
+failure contains: 'No such table: ${testName2}_badTable'
 
-CREATE TABLE ${testName}_selectsyntax1 (
+CREATE TABLE ${testName2}_selectsyntax1 (
   col1 INTEGER,
   col2 VARCHAR(32),
   col3 INTEGER
@@ -22,106 +22,106 @@ CREATE TABLE ${testName}_selectsyntax1 (
 success
 
 -- Select an existing table by tablename only
-SELECT col1, col2, col3 FROM ${testName}_selectsyntax1;
+SELECT col1, col2, col3 FROM ${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing table by schemaName.tableName
-SELECT col1, col2, col3 FROM public.${testName}_selectsyntax1;
+SELECT col1, col2, col3 FROM public.${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing table by catalogName.schemaName.tableName
-SELECT col1, col2, col3 FROM rapidsse.public.${testName}_selectsyntax1;
+SELECT col1, col2, col3 FROM rapidsse.public.${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing table but use an incorrect schema
-SELECT col1, col2, col3 FROM badSchema.${testName}_selectsyntax1;
-failure contains: 'No such table: badSchema.${testName}_selectsyntax1'
+SELECT col1, col2, col3 FROM badSchema.${testName2}_selectsyntax1;
+failure contains: 'No such table: badSchema.${testName2}_selectsyntax1'
 
 -- Select an existing table but use an incorrect schema
-SELECT col1, col2, col3 FROM rapidsse.badSchema.${testName}_selectsyntax1;
-failure contains: 'No such table: rapidsse.badSchema.${testName}_selectsyntax1'
+SELECT col1, col2, col3 FROM rapidsse.badSchema.${testName2}_selectsyntax1;
+failure contains: 'No such table: rapidsse.badSchema.${testName2}_selectsyntax1'
 
 -- Select an existing table but use an incorrect catalog
-SELECT col1, col2, col3 FROM badCatalog.public.${testName}_selectsyntax1;
-failure contains: 'No such table: badCatalog.public.${testName}_selectsyntax1'
+SELECT col1, col2, col3 FROM badCatalog.public.${testName2}_selectsyntax1;
+failure contains: 'No such table: badCatalog.public.${testName2}_selectsyntax1'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Resolving column names
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Select a non-existant column
-SELECT bad, col2 FROM ${testName}_selectsyntax1;
+SELECT bad, col2 FROM ${testName2}_selectsyntax1;
 failure contains: 'No such column: bad'
 
-SELECT col1, bad FROM ${testName}_selectsyntax1;
+SELECT col1, bad FROM ${testName2}_selectsyntax1;
 failure contains: 'No such column: bad'
 
-SELECT col1, bad, col2 FROM ${testName}_selectsyntax1;
+SELECT col1, bad, col2 FROM ${testName2}_selectsyntax1;
 failure contains: 'No such column: bad'
 
 
 -- Select an existing column by columnName only
-SELECT col1 FROM ${testName}_selectsyntax1;
+SELECT col1 FROM ${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing column by tableName.columnName
-SELECT ${testName}_selectsyntax1.col1 FROM ${testName}_selectsyntax1;
+SELECT ${testName2}_selectsyntax1.col1 FROM ${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing column by schemaName.tableName.columnName
-SELECT public.${testName}_selectsyntax1.col1 FROM ${testName}_selectsyntax1;
+SELECT public.${testName2}_selectsyntax1.col1 FROM ${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing column by catalogName.schemaName.tableName.columnName
-SELECT rapidsse.public.${testName}_selectsyntax1.col1 FROM ${testName}_selectsyntax1;
+SELECT rapidsse.public.${testName2}_selectsyntax1.col1 FROM ${testName2}_selectsyntax1;
 rows: 0
 
 -- Select *
-SELECT * FROM ${testName}_selectsyntax1;
+SELECT * FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2', 'col3']
 
 -- Select *,*
-SELECT *, * FROM ${testName}_selectsyntax1;
+SELECT *, * FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2', 'col3', 'col1', 'col2', 'col3']
 
 -- Select *, col1
-SELECT *, col1 FROM ${testName}_selectsyntax1;
+SELECT *, col1 FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2', 'col3', 'col1']
 
 -- Select col1, *
-SELECT *, col1 FROM ${testName}_selectsyntax1;
+SELECT *, col1 FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2', 'col3', 'col1']
 
 -- Select catalog.schema.table.*
-SELECT rapidsse.public.${testName}_selectsyntax1.* FROM ${testName}_selectsyntax1;
+SELECT rapidsse.public.${testName2}_selectsyntax1.* FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2', 'col3']
 
 -- Select schema.table.*
-SELECT public.${testName}_selectsyntax1.* FROM ${testName}_selectsyntax1;
+SELECT public.${testName2}_selectsyntax1.* FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2', 'col3']
 
 -- Select table.*
-SELECT ${testName}_selectsyntax1.* FROM ${testName}_selectsyntax1;
+SELECT ${testName2}_selectsyntax1.* FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2', 'col3']
 
 -- Select badTable.*
-SELECT ${testName}_badTable.* FROM ${testName}_selectsyntax1;
-failure contains: 'Column wildcard does not resolve to any tables in the query: ${testName}_badTable.*'
+SELECT ${testName2}_badTable.* FROM ${testName2}_selectsyntax1;
+failure contains: 'Column wildcard does not resolve to any tables in the query: ${testName2}_badTable.*'
 
 -- Select catalog.badSchema.table.*
-SELECT badSchema.${testName}_selectsyntax1.*, col1 FROM ${testName}_selectsyntax1;
-failure contains: 'Column wildcard does not resolve to any tables in the query: badSchema.${testName}_selectsyntax1.*'
+SELECT badSchema.${testName2}_selectsyntax1.*, col1 FROM ${testName2}_selectsyntax1;
+failure contains: 'Column wildcard does not resolve to any tables in the query: badSchema.${testName2}_selectsyntax1.*'
 
 -- Select badCatalog.schema.table.*
-SELECT badCatalog.public.${testName}_selectsyntax1.*, col1 FROM ${testName}_selectsyntax1;
-failure contains: 'Column wildcard does not resolve to any tables in the query: badCatalog.public.${testName}_selectsyntax1.*'
+SELECT badCatalog.public.${testName2}_selectsyntax1.*, col1 FROM ${testName2}_selectsyntax1;
+failure contains: 'Column wildcard does not resolve to any tables in the query: badCatalog.public.${testName2}_selectsyntax1.*'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -129,29 +129,29 @@ failure contains: 'Column wildcard does not resolve to any tables in the query: 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- table name case insensitivity
-SELECT * FROM ${TESTNAME}_SELECTSYNTAX1;
+SELECT * FROM ${testName2}_SELECTSYNTAX1;
 rows: 0
 
-SELECT * FROM ${testName}_selectsyntax1;
+SELECT * FROM ${testName2}_selectsyntax1;
 rows: 0
 
--- select…from ${TestName}_SelectSyntax1
-SELECT * FROM ${TestName}_SelectSyntax1;
+-- select…from ${testName2}_SelectSyntax1
+SELECT * FROM ${testName2}_SelectSyntax1;
 rows: 0
 
 /*
 -- column name case insensitivity
-SELECT COL1, col2 FROM ${testName}_selectsyntax1;
+SELECT COL1, col2 FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2']
 
 -- select column…
-SELECT col1, col2 FROM ${testName}_selectsyntax1;
+SELECT col1, col2 FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2']
 
 -- select CoLuMn…
-SELECT CoL1, col2 FROM ${testName}_selectsyntax1;
+SELECT CoL1, col2 FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2']
 */
@@ -168,7 +168,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  drop table ${testName}_selectsyntax1;
+  drop table ${testName2}_selectsyntax1;
   mute
 
   bye;

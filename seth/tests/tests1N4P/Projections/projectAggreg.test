@@ -6,12 +6,12 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-select sum(L_QUANTITY) from ${testName}_lineitem;
+select sum(L_QUANTITY) from ${testName2}_lineitem;
 failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table ${testName}_lineitem
+create table ${testName2}_lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -33,64 +33,64 @@ create table ${testName}_lineitem
 success
 
 // load data
-load ${testName}_lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-select sum(L_DISCOUNT) from ${testName}_lineitem;
+select sum(L_DISCOUNT) from ${testName2}_lineitem;
 rows:
   (0.71)
 
 //------------------------------------------------------------------------------
-select sum(L_QUANTITY) from ${testName}_lineitem;
+select sum(L_QUANTITY) from ${testName2}_lineitem;
 rows:
   (299.00)
 
 //------------------------------------------------------------------------------
-select sum(L_ORDERKEY) from ${testName}_lineitem;
+select sum(L_ORDERKEY) from ${testName2}_lineitem;
 rows:
   (17)
 
 //------------------------------------------------------------------------------
-select sum(L_LINENUMBER) from ${testName}_lineitem;
+select sum(L_LINENUMBER) from ${testName2}_lineitem;
 rows:
  (28)
 
 //------------------------------------------------------------------------------
-select sum(L_LINENUMBER), sum(L_ORDERKEY) from ${testName}_lineitem;
+select sum(L_LINENUMBER), sum(L_ORDERKEY) from ${testName2}_lineitem;
 rows:
  (28,17)
 
 //------------------------------------------------------------------------------
-select count(L_ORDERKEY) from ${testName}_lineitem;
+select count(L_ORDERKEY) from ${testName2}_lineitem;
 rows:
  (10)
 
 //------------------------------------------------------------------------------
-select count(L_ORDERKEY) from ${testName}_lineitem;
+select count(L_ORDERKEY) from ${testName2}_lineitem;
 rows:
  (10)
 
 //------------------------------------------------------------------------------
-select 1 + sum(L_ORDERKEY) from ${testName}_lineitem;
+select 1 + sum(L_ORDERKEY) from ${testName2}_lineitem;
 rows:
  (18)
 
 //------------------------------------------------------------------------------
 // sum($1) + 1
-select sum(L_ORDERKEY) + 1 from ${testName}_lineitem;
+select sum(L_ORDERKEY) + 1 from ${testName2}_lineitem;
 rows:
  (18)
 
 //------------------------------------------------------------------------------
 // sum(1+$1)
-select sum(L_ORDERKEY+ 1) from ${testName}_lineitem;
+select sum(L_ORDERKEY+ 1) from ${testName2}_lineitem;
 rows:
  (27)
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table ${testName}_lineitem;
+drop table ${testName2}_lineitem;
 success;
 
 MemoryLeaks;
@@ -98,7 +98,7 @@ rows: 0
 
 CLEANUP {
   
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
   
   bye;

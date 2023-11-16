@@ -7,7 +7,7 @@ trackMemory;
 success
 
 // (1) create a table
-create table ${testName}_nulTbl (
+create table ${testName2}_nulTbl (
   bol_col1   BOOLEAN,
   vch_col2   VARCHAR(32),
   int_col3   INTEGER,
@@ -19,15 +19,15 @@ create table ${testName}_nulTbl (
 );
 success
 
-Load ${testName}_nulTbl "../DATA/Datums/nulls.csv" ;
+Load ${testName2}_nulTbl "../DATA/Datums/nulls.csv" ;
 success
 
 // check no of rows
-select * from ${testName}_nulTbl;
+select * from ${testName2}_nulTbl;
 rows: 50
 
 // drop the table
-drop table ${testName}_nulTbl;
+drop table ${testName2}_nulTbl;
 success
 
 // check existence of table
@@ -41,7 +41,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table ${testName}_nulTbl;
+  drop table ${testName2}_nulTbl;
   mute
   
   bye;

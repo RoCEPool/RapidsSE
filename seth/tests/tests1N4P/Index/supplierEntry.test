@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table ${testName}_supplier (
+create table ${testName2}_supplier (
 S_SUPPKEY       INTEGER NOT NULL,
 S_NAME          VARCHAR(25) NOT NULL,
 S_ADDRESS       VARCHAR(40) NOT NULL,
@@ -15,747 +15,747 @@ S_COMMENT       VARCHAR(101) NOT NULL
 success
 
 // load the table
-load ${testName}_supplier "../TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
+load ${testName2}_supplier "../TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
 success
 
 //------------------------------------------------------------------------------
 // create an index on suppkey
-create index idx on ${testName}_supplier (S_SUPPKEY);
+create index idx on ${testName2}_supplier (S_SUPPKEY);
 affected: 0
 
 // check existence of index
-lsidx ${testName}_supplier;
+lsidx ${testName2}_supplier;
 rows:
   ('idx',false,false)
 
 // check columns of index
-lsidxcol ${testName}_supplier idx;
+lsidxcol ${testName2}_supplier idx;
 rows:
   ('S_SUPPKEY', 'INTEGER', 19, 0, false, true)
 
-compactidx ${testName}_supplier idx;
+compactidx ${testName2}_supplier idx;
 success
 
 //------------------------------------------------------------------------------
 // exact key fetches
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 5 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 5 ==";
 rows: (5,'Supplier#000000005',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 10 =";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 10 =";
 rows: (10,'Supplier#000000010',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 22 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 22 ==";
 rows: (22,'Supplier#000000022',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9972 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9972 ==";
 rows: (9972,'Supplier#000009972',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9973 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9973 ==";
 rows: (9973,'Supplier#000009973',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9974 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9974 ==";
 rows: (9974,'Supplier#000009974',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9975 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9975 ==";
 rows: (9975,'Supplier#000009975',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9976 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9976 ==";
 rows: (9976,'Supplier#000009976',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9977 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9977 ==";
 rows: (9977,'Supplier#000009977',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9978 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9978 ==";
 rows: (9978,'Supplier#000009978',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9979 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9979 ==";
 rows: (9979,'Supplier#000009979',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9980 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9980 ==";
 rows: (9980,'Supplier#000009980',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9981 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9981 ==";
 rows: (9981,'Supplier#000009981',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9982 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9982 ==";
 rows: (9982,'Supplier#000009982',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9983 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9983 ==";
 rows: (9983,'Supplier#000009983',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9984 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9984 ==";
 rows: (9984,'Supplier#000009984',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 ==";
 rows: (9985,'Supplier#000009985',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9986 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9986 ==";
 rows: (9986,'Supplier#000009986',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9987 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9987 ==";
 rows: (9987,'Supplier#000009987',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9988 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9988 ==";
 rows: (9988,'Supplier#000009988',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9989 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9989 ==";
 rows: (9989,'Supplier#000009989',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9990 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9990 ==";
 rows: (9990,'Supplier#000009990',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9991 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9991 ==";
 rows: (9991,'Supplier#000009991',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9992 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9992 ==";
 rows: (9992,'Supplier#000009992',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9993 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9993 ==";
 rows: (9993,'Supplier#000009993',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9994 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9994 ==";
 rows: (9994,'Supplier#000009994',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9995 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9995 ==";
 rows: (9995,'Supplier#000009995',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9996 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9996 ==";
 rows: (9996,'Supplier#000009996',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9997 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9997 ==";
 rows: (9997,'Supplier#000009997',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9998 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9998 ==";
 rows: (9998,'Supplier#000009998',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9999 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9999 ==";
 rows: (9999,'Supplier#000009999',...)
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 10000 ==";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 10000 ==";
 rows: (10000,'Supplier#000010000',...)
 
 //------------------------------------------------------------------------------
 // lower bound key fetches
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 >=";
 rows: 16
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 >";
 rows: 15
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9971 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9971 >=";
 rows: 30
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9971 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9971 >";
 rows: 29
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9972 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9972 >=";
 rows: 29
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9972 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9972 >";
 rows: 28
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9973 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9973 >=";
 rows: 28
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9973 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9973 >";
 rows: 27
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9974 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9974 >=";
 rows: 27
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9974 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9974 >";
 rows: 26
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9975 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9975 >=";
 rows: 26
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9976 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9976 >=";
 rows: 25
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9976 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9976 >";
 rows: 24
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9977 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9977 >=";
 rows: 24
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9977 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9977 >";
 rows: 23
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9978 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9978 >=";
 rows: 23
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9978 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9978 >";
 rows: 22
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9979 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9979 >=";
 rows: 22
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9979 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9979 >";
 rows: 21
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9980 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9980 >=";
 rows: 21
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9980 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9980 >";
 rows: 20
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9981 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9981 >=";
 rows: 20
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9981 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9981 >";
 rows: 19
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9982 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9982 >=";
 rows: 19
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9982 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9982 >";
 rows: 18
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9983 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9983 >=";
 rows: 18
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9983 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9983 >";
 rows: 17
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9984 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9984 >=";
 rows: 17
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9984 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9984 >";
 rows: 16
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 >=";
 rows: 16
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 >";
 rows: 15
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9986 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9986 >=";
 rows: 15
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9986 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9986 >";
 rows: 14
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9987 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9987 >=";
 rows: 14
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9987 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9987 >";
 rows: 13
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9988 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9988 >=";
 rows: 13
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9989 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9989 >=";
 rows: 12
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9989 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9989 >";
 rows: 11
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9990 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9990 >=";
 rows: 11
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9990 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9990 >";
 rows: 10
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9991 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9991 >=";
 rows: 10
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9991 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9991 >";
 rows: 9
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9992 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9992 >=";
 rows: 9
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9992 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9992 >";
 rows: 8
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9993 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9993 >=";
 rows: 8
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9993 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9993 >";
 rows: 7
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9994 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9994 >=";
 rows: 7
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9994 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9994 >";
 rows: 6
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9995 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9995 >=";
 rows: 6
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9995 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9995 >";
 rows: 5
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9996 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9996 >=";
 rows: 5
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9996 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9996 >";
 rows: 4
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9997 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9997 >=";
 rows: 4
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9997 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9997 >";
 rows: 3
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9998 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9998 >=";
 rows: 3
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9998 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9998 >";
 rows: 2
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9999 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9999 >=";
 rows: 2
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9999 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9999 >";
 rows: 1
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 10000 >=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 10000 >=";
 rows: 1
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 10000 >";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 10000 >";
 rows: 0
 
 
 //------------------------------------------------------------------------------
 // upper bound key fetches
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 <=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 <=";
 rows: 9985
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 <";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 <";
 rows: 9984
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9971 <=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9971 <=";
 rows: 9971
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9971 <";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9971 <";
 rows: 9970
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9972 <=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9972 <=";
 rows: 9972
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9972 <";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9972 <";
 rows: 9971
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9973 <=";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9973 <=";
 rows: 9973
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9973 <";
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9973 <";
 rows: 9972
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9974 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9974 <= " ;
 rows: 9974
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9974 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9974 < " ;
 rows: 9973
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9975 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9975 <= " ;
 rows: 9975
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9975 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9975 < " ;
 rows: 9974
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9976 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9976 <= " ;
 rows: 9976
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9976 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9976 < " ;
 rows: 9975
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9977 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9977 <= " ;
 rows: 9977
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9977 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9977 < " ;
 rows: 9976
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9978 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9978 <= " ;
 rows: 9978
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9978 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9978 < " ;
 rows: 9977
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9979 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9979 <= " ;
 rows: 9979
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9979 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9979 < " ;
 rows: 9978
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9980 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9980 <= " ;
 rows: 9980
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9980 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9980 < " ;
 rows: 9979
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9981 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9981 <= " ;
 rows: 9981
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9981 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9981 < " ;
 rows: 9980
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9982 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9982 <= " ;
 rows: 9982
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9982 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9982 < " ;
 rows: 9981
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9983 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9983 <= " ;
 rows: 9983
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9983 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9983 < " ;
 rows: 9982
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9984 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9984 <= " ;
 rows: 9984
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9984 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9984 < " ;
 rows: 9983
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 <= " ;
 rows: 9985
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9985 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9985 < " ;
 rows: 9984
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9986 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9986 <= " ;
 rows: 9986
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9986 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9986 < " ;
 rows: 9985
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9987 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9987 <= " ;
 rows: 9987
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9987 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9987 < " ;
 rows: 9986
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9988 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9988 <= " ;
 rows: 9988
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9988 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9988 < " ;
 rows: 9987
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9989 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9989 <= " ;
 rows: 9989
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9989 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9989 < " ;
 rows: 9988
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9990 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9990 <= " ;
 rows: 9990
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9990 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9990 < " ;
 rows: 9989
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9991 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9991 <= " ;
 rows: 9991
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9991 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9991 < " ;
 rows: 9990
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9992 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9992 <= " ;
 rows: 9992
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9992 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9992 < " ;
 rows: 9991
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9993 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9993 <= " ;
 rows: 9993
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9993 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9993 < " ;
 rows: 9992
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9994 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9994 <= " ;
 rows: 9994
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9994 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9994 < " ;
 rows: 9993
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9995 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9995 <= " ;
 rows: 9995
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9995 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9995 < " ;
 rows: 9994
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9996 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9996 <= " ;
 rows: 9996
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9996 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9996 < " ;
 rows: 9995
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9997 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9997 <= " ;
 rows: 9997
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9997 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9997 < " ;
 rows: 9996
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9998 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9998 <= " ;
 rows: 9998
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9998 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9998 < " ;
 rows: 9997
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9999 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9999 <= " ;
 rows: 9999
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 9999 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 9999 < " ;
 rows: 9998
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 10000 <= " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 10000 <= " ;
 rows: 10000
 
-predicateFetch ${testName}_supplier "S_SUPPKEY 10000 < " ;
+predicateFetch ${testName2}_supplier "S_SUPPKEY 10000 < " ;
 rows: 9999
 
 
 //------------------------------------------------------------------------------
 // range fetches
 
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 1995 <= and";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 1995 <= and";
 rows: 0
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier  "s_suppkey 9972 > s_suppkey 9982 < and";
+predicateFetch ${testName2}_supplier  "s_suppkey 9972 > s_suppkey 9982 < and";
 rows: 9
 
-predicateFetch ${testName}_supplier  "s_suppkey 9972 >= s_suppkey 9982 < and";
+predicateFetch ${testName2}_supplier  "s_suppkey 9972 >= s_suppkey 9982 < and";
 rows: 10
 
-predicateFetch ${testName}_supplier  "s_suppkey 9972 >= s_suppkey 9982 < and";
+predicateFetch ${testName2}_supplier  "s_suppkey 9972 >= s_suppkey 9982 < and";
 rows: 10
 
-predicateFetch ${testName}_supplier  "s_suppkey 9972 >= s_suppkey 9982 <= and";
+predicateFetch ${testName2}_supplier  "s_suppkey 9972 >= s_suppkey 9982 <= and";
 rows: 11
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9985 > s_suppkey  9987 < and";
+predicateFetch ${testName2}_supplier "s_suppkey 9985 > s_suppkey  9987 < and";
 rows: 1
 
-predicateFetch ${testName}_supplier "s_suppkey 9985 >= s_suppkey  9987 < and";
+predicateFetch ${testName2}_supplier "s_suppkey 9985 >= s_suppkey  9987 < and";
 rows: 2
 
-predicateFetch ${testName}_supplier "s_suppkey 9985 > s_suppkey  9987 <= and";
+predicateFetch ${testName2}_supplier "s_suppkey 9985 > s_suppkey  9987 <= and";
 rows: 2
 
-predicateFetch ${testName}_supplier "s_suppkey 9985 >= s_suppkey  9987 <= and";
+predicateFetch ${testName2}_supplier "s_suppkey 9985 >= s_suppkey  9987 <= and";
 rows: 3
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 > s_suppkey 10000 < AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 > s_suppkey 10000 < AND";
 rows: 27
 
-predicateFetch ${testName}_supplier "s_suppkey 9972 > s_suppkey 10000 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 > s_suppkey 10000 <= AND";
 rows: 28
 
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 10000 < AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 10000 < AND";
 rows: 28
 
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 10000 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 10000 <= AND";
 rows: 29
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 > s_suppkey 9999 < AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 > s_suppkey 9999 < AND";
 rows: 26
 
-predicateFetch ${testName}_supplier "s_suppkey 9972 > s_suppkey 9999 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 > s_suppkey 9999 <= AND";
 rows: 27
 
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9999 < AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9999 < AND";
 rows: 27
 
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9999 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9999 <= AND";
 rows: 28
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9998 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9998 <= AND";
 rows: 27
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9997 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9997 <= AND";
 rows: 26
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9996 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9996 <= AND";
 rows: 25
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9995 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9995 <= AND";
 rows: 24
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9994 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9994 <= AND";
 rows: 23
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9993 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9993 <= AND";
 rows: 22
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9992 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9992 <= AND";
 rows: 21
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9991 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9991 <= AND";
 rows: 20
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9990 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9990 <= AND";
 rows: 19
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9989 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9989 <= AND";
 rows: 18
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9988 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9988 <= AND";
 rows: 17
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9987 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9987 <= AND";
 rows: 16
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9986 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9986 <= AND";
 rows: 15
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9985 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9985 <= AND";
 rows: 14
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9984 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9984 <= AND";
 rows: 13
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9983 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9983 <= AND";
 rows: 12
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9982 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9982 <= AND";
 rows: 11
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9981 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9981 <= AND";
 rows: 10
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9980 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9980 <= AND";
 rows: 9
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9979 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9979 <= AND";
 rows: 8
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9978 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9978 <= AND";
 rows: 7
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9977 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9977 <= AND";
 rows: 6
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9976 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9976 <= AND";
 rows: 5
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9975 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9975 <= AND";
 rows: 4
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9974 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9974 <= AND";
 rows: 3
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9973 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9973 <= AND";
 rows: 2
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9972 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9972 <= AND";
 rows: 1
 
 //------------------------------------------------------
-predicateFetch ${testName}_supplier "s_suppkey 9972 >= s_suppkey 9971 <= AND";
+predicateFetch ${testName2}_supplier "s_suppkey 9972 >= s_suppkey 9971 <= AND";
 rows: 0
 
 // drop the index idx;
-drop index ${testName}_supplier idx;
+drop index ${testName2}_supplier idx;
 success
 
 //------------------------------------------------------------------------------
 // create an index on nationkey
-create index idx on ${testName}_supplier (S_NATIONKEY);
+create index idx on ${testName2}_supplier (S_NATIONKEY);
 affected: 0
 
 // check existence of index
-lsidx ${testName}_supplier;
+lsidx ${testName2}_supplier;
 rows:
 ('idx',false,false)
 
 // check columns of index
-lsidxcol ${testName}_supplier idx;
+lsidxcol ${testName2}_supplier idx;
 rows:
 ('S_NATIONKEY', 'INTEGER', 19, 0, false, false)
 
 //------------------------------------------------------------------------------
 // exact key fetches
 
-predicateFetch ${testName}_supplier "s_nationkey 10 ==";
+predicateFetch ${testName2}_supplier "s_nationkey 10 ==";
 rows: 393
 
-predicateFetch ${testName}_supplier "s_nationkey 40 ==";
+predicateFetch ${testName2}_supplier "s_nationkey 40 ==";
 rows:  0
 
-predicateFetch ${testName}_supplier "s_nationkey 22 ==";
+predicateFetch ${testName2}_supplier "s_nationkey 22 ==";
 rows: 401
 
 //------------------------------------------------------------------------------
 // lower bound key fetches
 
-predicateFetch ${testName}_supplier "s_nationkey 10 >=";
+predicateFetch ${testName2}_supplier "s_nationkey 10 >=";
 rows: 5945
 
-predicateFetch ${testName}_supplier "s_nationkey 40 >=";
+predicateFetch ${testName2}_supplier "s_nationkey 40 >=";
 rows: 0
 
-predicateFetch ${testName}_supplier "s_nationkey 22 >=";
+predicateFetch ${testName2}_supplier "s_nationkey 22 >=";
 rows: 1184
 
 //------------------------------------------------------------------------------
 // upper bound key fetches
 
-predicateFetch ${testName}_supplier "s_nationkey 10 <=";
+predicateFetch ${testName2}_supplier "s_nationkey 10 <=";
 rows: 4448
 
-predicateFetch ${testName}_supplier "s_nationkey 40 <=";
+predicateFetch ${testName2}_supplier "s_nationkey 40 <=";
 rows: 10000
 
-predicateFetch ${testName}_supplier "s_nationkey 22 <=";
+predicateFetch ${testName2}_supplier "s_nationkey 22 <=";
 rows: 9217
 
 //------------------------------------------------------------------------------
 // range fetches
 
-predicateFetch ${testName}_supplier  "s_nationkey 10 >= s_nationkey 22 <= and";
+predicateFetch ${testName2}_supplier  "s_nationkey 10 >= s_nationkey 22 <= and";
 rows: 5162
 
-predicateFetch ${testName}_supplier "s_nationkey 22 >= s_nationkey  40 <= and";
+predicateFetch ${testName2}_supplier "s_nationkey 22 >= s_nationkey  40 <= and";
 rows: 1184
 
-predicateFetch ${testName}_supplier "s_nationkey 40 >= s_nationkey 10 <= and";
+predicateFetch ${testName2}_supplier "s_nationkey 40 >= s_nationkey 10 <= and";
 rows: 0
 
 // drop the index idx;
-drop index ${testName}_supplier idx;
+drop index ${testName2}_supplier idx;
 success
 
 // now drop the table
-drop table ${testName}_supplier;
+drop table ${testName2}_supplier;
 success
 
 CLEANUP {
 
-  drop table ${testName}_supplier;
+  drop table ${testName2}_supplier;
   mute
 
   bye;

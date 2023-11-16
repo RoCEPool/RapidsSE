@@ -8,7 +8,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table ${testName}_nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -24,592 +24,592 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // YM interval arithmetic /1 (same type)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR + INTERVAL ''2'' YEAR FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR + INTERVAL ''2'' YEAR FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR + INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR + INTERVAL ''2'' YEAR) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // YM interval arithmetic /2 (same type, with negative)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL -'2' YEAR FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL -'2' YEAR FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR + INTERVAL -''2'' YEAR FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR + INTERVAL -''2'' YEAR FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR + INTERVAL -''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR + INTERVAL -''2'' YEAR) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
          
 // YM interval arithmetic /3 (mixed types)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR + INTERVAL ''2'' MONTH FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR + INTERVAL ''2'' MONTH FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR + INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1'' YEAR + INTERVAL ''2'' MONTH) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // DT interval arithmetic of same type /1
-EXPLAIN WITH_TYPES SELECT INTERVAL '1' MINUTE + INTERVAL '2' MINUTE FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1' MINUTE + INTERVAL '2' MINUTE FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE + INTERVAL ''2'' MINUTE FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE + INTERVAL ''2'' MINUTE FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE + INTERVAL ''2'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE + INTERVAL ''2'' MINUTE) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // DT interval arithmetic of same type /2
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2:3'' HOUR TO SECOND + INTERVAL ''4:5:6'' HOUR TO SECOND FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1:2:3'' HOUR TO SECOND + INTERVAL ''4:5:6'' HOUR TO SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2:3'' HOUR TO SECOND + INTERVAL ''4:5:6'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''1:2:3'' HOUR TO SECOND + INTERVAL ''4:5:6'' HOUR TO SECOND) ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // DT interval arithmetic of mixed types /1
-EXPLAIN WITH_TYPES SELECT INTERVAL '1' MINUTE + INTERVAL '2' SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1' MINUTE + INTERVAL '2' SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE + INTERVAL ''2'' SECOND FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE + INTERVAL ''2'' SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE + INTERVAL ''2'' SECOND ; Ordinal Expr = INTERVAL ''1'' MINUTE + INTERVAL ''2'' SECOND) ; type: INTERVAL MINUTE TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
          
 // DT interval arithmetic of mixed types /2
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR + INTERVAL '3' SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR + INTERVAL '3' SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1 2'' DAY TO HOUR + INTERVAL ''3'' SECOND FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1 2'' DAY TO HOUR + INTERVAL ''3'' SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1 2'' DAY TO HOUR + INTERVAL ''3'' SECOND ; Ordinal Expr = INTERVAL ''1 2'' DAY TO HOUR + INTERVAL ''3'' SECOND) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Cannot mix YM and DT intervals /1
-EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL '2' DAY FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL '2' DAY FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (INTERVAL YEAR + INTERVAL DAY) in expression (INTERVAL ''1'' YEAR + INTERVAL ''2'' DAY)'
 
 // Cannot mix YM and DT intervals /2
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '2' MONTH FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '2' MONTH FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Can mix YM and DT intervals if there is a valid intermediate result
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY + DATE '2023-02-16' + INTERVAL '10-11' YEAR TO MONTH FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY + DATE '2023-02-16' + INTERVAL '10-11' YEAR TO MONTH FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' DAY + DATE ''2023-02-16'' + INTERVAL ''10-11'' YEAR TO MONTH FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''30'' DAY + DATE ''2023-02-16'' + INTERVAL ''10-11'' YEAR TO MONTH FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH ; Ordinal Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Cannot mix YM and DT intervals if the intermediate result is in the wrong order.
-EXPLAIN SELECT INTERVAL '30' DAY + INTERVAL '10-11' YEAR TO MONTH + DATE '2023-02-16' FROM ${testName}_nation;
+EXPLAIN SELECT INTERVAL '30' DAY + INTERVAL '10-11' YEAR TO MONTH + DATE '2023-02-16' FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Interval multiplication /1 (integer)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH * 2 FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH * 2 FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH * 2 ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH * 2) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Interval multiplication /2 (decimal)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2.0 FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2.0 FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Interval multiplication /3 (float)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2e0 FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2e0 FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Interval multiplication /4 (integer first)
-EXPLAIN WITH_TYPES SELECT 2 * INTERVAL '1' YEAR FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT 2 * INTERVAL '1' YEAR FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT 2 * INTERVAL ''1'' YEAR FROM ${testName}_nation"
+   » queryText: "SELECT 2 * INTERVAL ''1'' YEAR FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = 2 * INTERVAL ''1'' YEAR ; Ordinal Expr = 2 * INTERVAL ''1'' YEAR) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Interval multiplication /5 (decimal first)
-EXPLAIN WITH_TYPES SELECT 2.0 * INTERVAL '1' YEAR FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT 2.0 * INTERVAL '1' YEAR FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Interval multiplication /4 (float first)
-EXPLAIN WITH_TYPES SELECT 2e0 * INTERVAL '1' YEAR FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT 2e0 * INTERVAL '1' YEAR FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Interval division /1 (integer)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH / 2 FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH / 2 FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH / 2 FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH / 2 FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH / 2 ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH / 2) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Interval division /2 (decimal)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH / 2.0 FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH / 2.0 FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Interval division /3 (float)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH / 2e0 FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH / 2e0 FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Interval division /4 (interval cannot be denominator)
-EXPLAIN WITH_TYPES SELECT 2 / INTERVAL '1-2' YEAR TO MONTH FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT 2 / INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Date subtraction gives an interval days
-EXPLAIN WITH_TYPES SELECT DATE '2000-03-31' - DATE '2000-02-28' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT DATE '2000-03-31' - DATE '2000-02-28' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT DATE ''2000-03-31'' - DATE ''2000-02-28'' FROM ${testName}_nation"
+   » queryText: "SELECT DATE ''2000-03-31'' - DATE ''2000-02-28'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = DATE ''2000-03-31'' - DATE ''2000-02-28'' ; Ordinal Expr = DATE ''2000-03-31'' - DATE ''2000-02-28'') ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Time subtraction
-EXPLAIN WITH_TYPES SELECT TIME '14:30:55' - TIME '04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIME '14:30:55' - TIME '04:30:56' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT TIME ''14:30:55'' - TIME ''04:30:56'' FROM ${testName}_nation"
+   » queryText: "SELECT TIME ''14:30:55'' - TIME ''04:30:56'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = TIME ''14:30:55'' - TIME ''04:30:56'' ; Ordinal Expr = TIME ''14:30:55'' - TIME ''04:30:56'') ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
          
 // Timestamp subtraction
-EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-03-31 14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-03-31 14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT TIMESTAMP ''2000-03-31 14:30:55'' - TIMESTAMP ''2000-02-28 04:30:56'' FROM ${testName}_nation"
+   » queryText: "SELECT TIMESTAMP ''2000-03-31 14:30:55'' - TIMESTAMP ''2000-02-28 04:30:56'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-03-31 14:30:55'' - TIMESTAMP ''2000-02-28 04:30:56'' ; Ordinal Expr = TIMESTAMP ''2000-03-31 14:30:55'' - TIMESTAMP ''2000-02-28 04:30:56'') ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Cannot subtract dates and times
-EXPLAIN WITH_TYPES SELECT DATE '2000-03-31' - TIME '04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT DATE '2000-03-31' - TIME '04:30:56' FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Cannot subtract times and dates
-EXPLAIN WITH_TYPES SELECT TIME '04:30:56' - DATE '2000-03-31' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIME '04:30:56' - DATE '2000-03-31' FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Subtract dates and timestamp
-EXPLAIN WITH_TYPES SELECT DATE '2000-03-31' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT DATE '2000-03-31' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT DATE ''2000-03-31'' - TIMESTAMP ''2000-02-28 04:30:56'' FROM ${testName}_nation"
+   » queryText: "SELECT DATE ''2000-03-31'' - TIMESTAMP ''2000-02-28 04:30:56'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-03-31 00:00:00'' - TIMESTAMP ''2000-02-28 04:30:56'' ; Ordinal Expr = TIMESTAMP ''2000-03-31 00:00:00'' - TIMESTAMP ''2000-02-28 04:30:56'') ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Subtract times and timestamp
-EXPLAIN WITH_TYPES SELECT TIME '14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIME '14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Interval YM + date
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH + DATE '2000-02-28' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH + DATE '2000-02-28' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH + DATE ''2000-02-28'' FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH + DATE ''2000-02-28'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH + DATE ''2000-02-28'') ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Date + Interval YM
-EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1-2'' YEAR TO MONTH FROM ${testName}_nation"
+   » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1-2'' YEAR TO MONTH FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1-2'' YEAR TO MONTH ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1-2'' YEAR TO MONTH) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
          
 // Interval DT + date
-EXPLAIN WITH_TYPES SELECT INTERVAL '1' DAY + DATE '2000-02-28' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1' DAY + DATE '2000-02-28' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' DAY + DATE ''2000-02-28'' FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1'' DAY + DATE ''2000-02-28'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Date + Interval DT
-EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1' DAY FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1' DAY FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1'' DAY FROM ${testName}_nation"
+   » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1'' DAY FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
          
 // Interval DT (with h/m/s) + date
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + DATE '2000-02-28' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + DATE '2000-02-28' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1 2:3:4.5'' DAY TO SECOND + DATE ''2000-02-28'' FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1 2:3:4.5'' DAY TO SECOND + DATE ''2000-02-28'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + DATE ''2000-02-28'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Date + Interval DT (with h/m/s)
-EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.5'' DAY TO SECOND FROM ${testName}_nation"
+   » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.5'' DAY TO SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 
 
 // Interval YM + time (invalid)
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH + TIME '04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH + TIME '04:30:56' FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Time + Interval YM (invalid)
-EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Interval Day + time
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR + TIME '04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR + TIME '04:30:56' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'' FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'' ; Ordinal Expr = INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'') ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Time + Interval Day
-EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1 2' DAY TO HOUR FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1 2' DAY TO HOUR FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR FROM ${testName}_nation"
+   » queryText: "SELECT TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR ; Ordinal Expr = TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Interval HMS + time
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2:3'' HOUR TO SECOND + TIME ''04:30:56'' FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1:2:3'' HOUR TO SECOND + TIME ''04:30:56'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2:3'' HOUR TO SECOND + TIME ''04:30:56'' ; Ordinal Expr = INTERVAL ''1:2:3'' HOUR TO SECOND + TIME ''04:30:56'') ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
          
 // Time + Interval HMS
-EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1:2:3' HOUR TO SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1:2:3' HOUR TO SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT TIME ''04:30:56'' + INTERVAL ''1:2:3'' HOUR TO SECOND FROM ${testName}_nation"
+   » queryText: "SELECT TIME ''04:30:56'' + INTERVAL ''1:2:3'' HOUR TO SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = TIME ''04:30:56'' + INTERVAL ''1:2:3'' HOUR TO SECOND ; Ordinal Expr = TIME ''04:30:56'' + INTERVAL ''1:2:3'' HOUR TO SECOND) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
          
 // Time + Interval HMS (with fractional seconds)
-EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT TIME ''04:30:56'' + INTERVAL ''1:2:3.456'' HOUR TO SECOND FROM ${testName}_nation"
+   » queryText: "SELECT TIME ''04:30:56'' + INTERVAL ''1:2:3.456'' HOUR TO SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = TIME ''04:30:56'' + INTERVAL ''1:2:3.456000'' HOUR TO SECOND ; Ordinal Expr = TIME ''04:30:56'' + INTERVAL ''1:2:3.456000'' HOUR TO SECOND) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 
 // Interval YM + timestamp
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH + TIMESTAMP '2000-02-28 04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH + TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH + TIMESTAMP ''2000-02-28 04:30:56'' FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH + TIMESTAMP ''2000-02-28 04:30:56'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH + TIMESTAMP ''2000-02-28 04:30:56'' ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH + TIMESTAMP ''2000-02-28 04:30:56'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Timestamp + Interval YM
-EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1-2'' YEAR TO MONTH FROM ${testName}_nation"
+   » queryText: "SELECT TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1-2'' YEAR TO MONTH FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1-2'' YEAR TO MONTH ; Ordinal Expr = TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1-2'' YEAR TO MONTH) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Interval DT + timestamp
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1 2:3:4.5'' DAY TO SECOND + TIMESTAMP ''2000-02-28 04:30:56'' FROM ${testName}_nation"
+   » queryText: "SELECT INTERVAL ''1 2:3:4.5'' DAY TO SECOND + TIMESTAMP ''2000-02-28 04:30:56'' FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + TIMESTAMP ''2000-02-28 04:30:56'' ; Ordinal Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + TIMESTAMP ''2000-02-28 04:30:56'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Timestamp + Interval DT
-EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1 2:3:4.5'' DAY TO SECOND FROM ${testName}_nation"
+   » queryText: "SELECT TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1 2:3:4.5'' DAY TO SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 
 // Interval negation /1
-EXPLAIN WITH_TYPES SELECT -INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT -INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT -INTERVAL ''1 2:3:4.5'' DAY TO SECOND FROM ${testName}_nation"
+   » queryText: "SELECT -INTERVAL ''1 2:3:4.5'' DAY TO SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = -INTERVAL ''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = -INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Interval negation /2
-EXPLAIN WITH_TYPES SELECT -INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT -INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT -INTERVAL -''1 2:3:4.5'' DAY TO SECOND FROM ${testName}_nation"
+   » queryText: "SELECT -INTERVAL -''1 2:3:4.5'' DAY TO SECOND FROM ${testName2}_nation"
 
 -> -> projectOp
       » column: (Expr = -INTERVAL -''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = -INTERVAL -''1 2:3:4.500000'' DAY TO SECOND) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName}_nation)')
+         » table: (rapidsse.public.${testName2}_nation)')
 
 // Interval modulus (single field only) - invalid
-EXPLAIN WITH_TYPES SELECT INTERVAL '10' DAY % 3 FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '10' DAY % 3 FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Interval modulus (multiple fields) - invalid
-EXPLAIN WITH_TYPES SELECT INTERVAL '10 9' DAY TO HOUR % 3 FROM ${testName}_nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '10 9' DAY TO HOUR % 3 FROM ${testName2}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
@@ -626,6 +626,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE ${testName}_nation;
+  DROP TABLE ${testName2}_nation;
   mute
 }

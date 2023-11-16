@@ -2,7 +2,7 @@
 /* spaces -- leading and trailing spaces tests                                */
 /*----------------------------------------------------------------------------*/
 
-create table ${testName}_t1 (
+create table ${testName2}_t1 (
   col_id       INTEGER,
   col_vch      VARCHAR(50),
   col_int      INTEGER
@@ -10,18 +10,18 @@ create table ${testName}_t1 (
 success
 
 // create an index
-create index idx on ${testName}_t1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-Load ${testName}_t1 "../DATA/Load/spaces.csv" ;
+Load ${testName2}_t1 "../DATA/Load/spaces.csv" ;
 success
 
 // predicateFetch rows
-select * from ${testName}_t1;
+select * from ${testName2}_t1;
 rows: 4
 
-select * from ${testName}_t1;
+select * from ${testName2}_t1;
 rows:
   (1,'   3 leading',3)
   (2,'3 leading',3)
@@ -29,10 +29,10 @@ rows:
   (4,'   3 leading,2 trailing  ',3)
 
 // drop the table
-drop table ${testName}_t1;
+drop table ${testName2}_t1;
 success
 
-create table ${testName}_t1 (
+create table ${testName2}_t1 (
   col_id       INTEGER,
   col_vch      VARCHAR(50),
   col_int      INTEGER
@@ -40,19 +40,19 @@ create table ${testName}_t1 (
 success
 
 // create an index
-create index idx on ${testName}_t1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-Load ${testName}_t1 "../DATA/Load/spaces_enclosedBy.csv"
+Load ${testName2}_t1 "../DATA/Load/spaces_enclosedBy.csv"
   <enclosed_by_leading> =  "'" ;
 success
 
 // predicateFetch rows
-select * from ${testName}_t1;
+select * from ${testName2}_t1;
 rows: 4
 
-select * from ${testName}_t1;
+select * from ${testName2}_t1;
 rows:
   (1,'   3 leading',3)
   (2,'3 leading',3)
@@ -60,10 +60,10 @@ rows:
   (4,'   3 leading,2 trailing  ',3)
 
 // drop the table
-drop table ${testName}_t1;
+drop table ${testName2}_t1;
 success
 
-create table ${testName}_t1 (
+create table ${testName2}_t1 (
   col_id       INTEGER,
   col_vch      VARCHAR(25),
   col_int      INTEGER
@@ -71,20 +71,20 @@ create table ${testName}_t1 (
 success
 
 // create an index
-create index idx on ${testName}_t1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-Load ${testName}_t1 "../DATA/Load/spaces_enclosedByCurly.csv"
+Load ${testName2}_t1 "../DATA/Load/spaces_enclosedByCurly.csv"
   <enclosed_by_leading> =  "{"
   <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows
-select * from ${testName}_t1;
+select * from ${testName2}_t1;
 rows: 4
 
-select * from ${testName}_t1;
+select * from ${testName2}_t1;
 rows:
   (1,'   3 leading',3)
   (2,'3 leading',3)
@@ -92,12 +92,12 @@ rows:
   (4,'   3 leading,2 trailing  ',3)
 
 // drop the table
-//drop table ${testName}_t1;
+//drop table ${testName2}_t1;
 //success
 
 CLEANUP {
   
-  drop table ${testName}_t1;
+  drop table ${testName2}_t1;
   mute
 
   bye;

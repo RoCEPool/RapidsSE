@@ -4,43 +4,43 @@
 trackMemory;
 success
 
-create table ${testName}_A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 10000;
+create table ${testName2}_A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 10000;
 success
-create table ${testName}_B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 10000;
+create table ${testName2}_B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 10000;
 success
-create table ${testName}_C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
-success
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-create index A_COL0  on ${testName}_A (A_COL0  );
-success
-create index A_COL1  on ${testName}_A (A_COL1  );
-success
-create index A_COL2  on ${testName}_A (A_COL2  );
-success
-
-create index B_COL0  on ${testName}_B (B_COL0  );
-success
-create index B_COL1  on ${testName}_B (B_COL1  );
-success
-create index B_COL2  on ${testName}_B (B_COL2  );
-success
-
-create index B_COL0  on ${testName}_C (C_COL0  );
-success
-create index B_COL1  on ${testName}_C (C_COL1  );
-success
-create index B_COL2  on ${testName}_C (C_COL2  );
+create table ${testName2}_C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-load ${testName}_A "../DATA/Select/select.csv";
+create index A_COL0  on ${testName2}_A (A_COL0  );
 success
-load ${testName}_B "../DATA/Select/select.csv";
+create index A_COL1  on ${testName2}_A (A_COL1  );
 success
-load ${testName}_C "../DATA/Select/select.csv";
+create index A_COL2  on ${testName2}_A (A_COL2  );
+success
+
+create index B_COL0  on ${testName2}_B (B_COL0  );
+success
+create index B_COL1  on ${testName2}_B (B_COL1  );
+success
+create index B_COL2  on ${testName2}_B (B_COL2  );
+success
+
+create index B_COL0  on ${testName2}_C (C_COL0  );
+success
+create index B_COL1  on ${testName2}_C (C_COL1  );
+success
+create index B_COL2  on ${testName2}_C (C_COL2  );
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load ${testName2}_A "../DATA/Select/select.csv";
+success
+load ${testName2}_B "../DATA/Select/select.csv";
+success
+load ${testName2}_C "../DATA/Select/select.csv";
 success
 
 /********************************************************************************
@@ -53,9 +53,9 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 
 Join Permutations:
@@ -71,16 +71,16 @@ Expected join order:
 
 /joinOrder
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
-rows: ('${testName}_C UNICAST ${testName}_B UNICAST ${testName}_A, 0, 10001000')
+rows: ('${testName2}_C UNICAST ${testName2}_B UNICAST ${testName2}_A, 0, 10001000')
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 rows: (138)
 
@@ -94,9 +94,9 @@ rows: (138)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL1
  ;
 
 Join Permutations:                                         Network Total                  Unicast Total
@@ -112,16 +112,16 @@ Expected join order:
 
 /joinOrder
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL1
  ;
-rows: ('${testName}_C BROADCAST ${testName}_B HASHCAST ${testName}_A, 10004000, 0')
+rows: ('${testName2}_C BROADCAST ${testName2}_B HASHCAST ${testName2}_A, 10004000, 0')
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL1
  ;
 rows: (61)
 
@@ -135,9 +135,9 @@ rows: (61)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL0
  ;
 
 Join Permutations:                                     Network Total                 Unicast Total
@@ -150,21 +150,21 @@ Expected join order:
   Either C->B->A
 
 ********************************************************************************/
-/weaved select * from ${testName}_A;
+/weaved select * from ${testName2}_A;
 rows: 12
 
 /joinOrder
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL0
  ;
-rows: ('${testName}_C BROADCAST ${testName}_B UNICAST ${testName}_A, 4000, 10000000')
+rows: ('${testName2}_C BROADCAST ${testName2}_B UNICAST ${testName2}_A, 4000, 10000000')
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL0
  ;
 rows: (73)
 
@@ -178,9 +178,9 @@ rows: (73)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL1
  ;
 
 Join Permutations:                                      Network Total                 Unicast Total
@@ -196,16 +196,16 @@ Expected join order:
 
 /joinOrder
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL1
  ;
-rows: ('${testName}_C BROADCAST ${testName}_B UNICAST ${testName}_A, 4000, 1000000')
+rows: ('${testName2}_C BROADCAST ${testName2}_B UNICAST ${testName2}_A, 4000, 1000000')
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL1
  ;
 rows: (65)
 
@@ -219,9 +219,9 @@ rows: (65)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 
 Join Permutations:
@@ -237,17 +237,17 @@ Expected join order:
 ********************************************************************************/
 /joinOrder
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 
-rows: ('${testName}_C UNICAST ${testName}_B UNICAST ${testName}_A, 0, 10001000')
+rows: ('${testName2}_C UNICAST ${testName2}_B UNICAST ${testName2}_A, 0, 10001000')
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL0 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL0 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 
 rows: (73)
@@ -262,9 +262,9 @@ rows: (73)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 
 Join Permutations:                                        Network Total                Unicast Total
@@ -278,16 +278,16 @@ Expected join order:
 ********************************************************************************/
 /joinOrder
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
-rows: ('${testName}_A HASHCAST ${testName}_B UNICAST ${testName}_C, 10000, 100000000')
+rows: ('${testName2}_A HASHCAST ${testName2}_B UNICAST ${testName2}_C, 10000, 100000000')
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL0
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL0
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 rows: (61)
 
@@ -301,9 +301,9 @@ rows: (61)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 
 Join Permutations:                                      Network Total             , Unicast Total
@@ -318,16 +318,16 @@ Expected join order:
 ********************************************************************************/
 /joinOrder
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
-rows: ('${testName}_A BROADCAST ${testName}_B UNICAST ${testName}_C, 40000, 100000000')
+rows: ('${testName2}_A BROADCAST ${testName2}_B UNICAST ${testName2}_C, 40000, 100000000')
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL0 = ${testName}_C.C_COL0
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL0 = ${testName2}_C.C_COL0
  ;
 rows: (65)
 
@@ -341,9 +341,9 @@ rows: (65)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL1
  ;
 
 Join Permutations:                                          Network Total                     Unicast Total
@@ -358,36 +358,36 @@ Expected join order:
 
 /joinOrder
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL1
  ;
-rows: ('${testName}_C BROADCAST ${testName}_B BROADCAST ${testName}_A, 40004000, 0')
+rows: ('${testName2}_C BROADCAST ${testName2}_B BROADCAST ${testName2}_A, 40004000, 0')
 
 select count(*)
-  from ${testName}_A
-   join ${testName}_B on ${testName}_A.A_COL1 = ${testName}_B.B_COL1
-   join ${testName}_C on ${testName}_B.B_COL1 = ${testName}_C.C_COL1
+  from ${testName2}_A
+   join ${testName2}_B on ${testName2}_A.A_COL1 = ${testName2}_B.B_COL1
+   join ${testName2}_C on ${testName2}_B.B_COL1 = ${testName2}_C.C_COL1
  ;
 rows: (42)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-drop table ${testName}_A;
-drop table ${testName}_B;
-drop table ${testName}_C;
+drop table ${testName2}_A;
+drop table ${testName2}_B;
+drop table ${testName2}_C;
 
 MemoryLeaks;
 rows: 0
 
 CLEANUP {
 
-  drop table ${testName}_A;
+  drop table ${testName2}_A;
   mute
 
-  drop table ${testName}_B;
+  drop table ${testName2}_B;
   mute
 
-  drop table ${testName}_C;
+  drop table ${testName2}_C;
   mute
 
   bye;

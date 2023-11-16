@@ -1,7 +1,7 @@
 
 // Source file: ../queries/functions/right/rright10.sql
 // Result file: ../queries/functions/right/results/right10.res
-select right(concat(colb1,ucolvc),7) as TwoCols from ${testName}_table1 where pcol1 < 20 order by TwoCols;
+select right(concat(colb1,ucolvc),7) as TwoCols from ${testName2}_table1 where pcol1 < 20 order by TwoCols;
 ordered rows:
   ('HITEhhh')
   ('LLOWxxx')
@@ -27,7 +27,7 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rright2.sql
 // Result file: ../queries/functions/right/results/right2.res
-select right(colb1,4) from ${testName}_table1 where ucolvc = 'bbb' order by pcol1;
+select right(colb1,4) from ${testName2}_table1 where ucolvc = 'bbb' order by pcol1;
 ordered rows:
   ('aqua')
   ('ange')
@@ -38,7 +38,7 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rright5.sql
 // Result file: ../queries/functions/right/results/right5.res
-select a.colb1, a.ucolvc, b.colb5, b.ucolvc, c.colb3 from ${testName}_table1 a join ${testName}_table5 b on pcol1 = pcol5 join ${testName}_table3 c on pcol1 = pcol3 where right(a.colb1,3) = right(c.colb3,3) order by a.colb1, b.ucolvc, colb5, a.ucolvc, colb3;
+select a.colb1, a.ucolvc, b.colb5, b.ucolvc, c.colb3 from ${testName2}_table1 a join ${testName2}_table5 b on pcol1 = pcol5 join ${testName2}_table3 c on pcol1 = pcol3 where right(a.colb1,3) = right(c.colb3,3) order by a.colb1, b.ucolvc, colb5, a.ucolvc, colb3;
 ordered rows:
   ('BLUE', 'nnn', 'pink', 'qqq', 'BLUE')
   ('PINK', 'ppp', 'pink', 'ddd', 'PINK')
@@ -57,13 +57,13 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rnright1.sql
 // Result file: ../queries/functions/right/results/nright1.res
-select ucolvc, ucol from (select right(ucolvc,3), ucol from ${testName}_table4 where right(ucolvc,3) = 'nee' or right(ucolvc,3) = 'GRE') as a order by ucol;
+select ucolvc, ucol from (select right(ucolvc,3), ucol from ${testName2}_table4 where right(ucolvc,3) = 'nee' or right(ucolvc,3) = 'GRE') as a order by ucol;
 failure: 'Undefined column: UCOLVC'
 
 
 // Source file: ../queries/functions/right/rright12.sql
 // Result file: ../queries/functions/right/results/right12.res
-select right(colb9,4), pcol9, colb9 from ${testName}_table9 where pcol9 > 219 and pcol9 < 245 order by colb9, pcol9;
+select right(colb9,4), pcol9, colb9 from ${testName2}_table9 where pcol9 > 219 and pcol9 < 245 order by colb9, pcol9;
 ordered rows:
   (NULL, 220, NULL)
   (NULL, 239, NULL)
@@ -94,20 +94,20 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rnright5.sql
 // Result file: ../queries/functions/right/results/nright5.res
-select ucolvc, ucol from (select right(ucolvc,3), ucol from ${testName}_table4 where right(colb4,3) = 'gre' or right(colb4,3) = 'GRE') as a order by ucol;
+select ucolvc, ucol from (select right(ucolvc,3), ucol from ${testName2}_table4 where right(colb4,3) = 'gre' or right(colb4,3) = 'GRE') as a order by ucol;
 failure: 'Undefined column: UCOLVC'
 
 
 // Source file: ../queries/functions/right/rright1.sql
 // Result file: ../queries/functions/right/results/right1.res
-select right('Today is Wednesday, May 27th', 7) from ${testName}_table1 limit 1;
+select right('Today is Wednesday, May 27th', 7) from ${testName2}_table1 limit 1;
 rows:
   ('ay 27th')
 
 
 // Source file: ../queries/functions/right/rright8.sql
 // Result file: ../queries/functions/right/results/right8.res
-select right(colb1,0.34), colb1 from ${testName}_table1 where ucolvc = 'aaa' order by pcol1, colb1;
+select right(colb1,0.34), colb1 from ${testName2}_table1 where ucolvc = 'aaa' order by pcol1, colb1;
 ordered rows:
   ('', 'maroon')
   ('', 'orange')
@@ -116,7 +116,7 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rright9.sql
 // Result file: ../queries/functions/right/results/right9.res
-select x, ucol from (select  right(ucolvc,3) as x, ucol from ${testName}_table4 where right(colb4,3) = 'een') as a order by ucol;
+select x, ucol from (select  right(ucolvc,3) as x, ucol from ${testName2}_table4 where right(colb4,3) = 'een') as a order by ucol;
 ordered rows:
   ('ggg', 51)
   ('uuu', 63)
@@ -138,7 +138,7 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rright7.sql
 // Result file: ../queries/functions/right/results/right7.res
-select colb1, right(colb1,3.4) from ${testName}_table1 where colb1 = 'green';
+select colb1, right(colb1,3.4) from ${testName2}_table1 where colb1 = 'green';
 rows:
   ('green', 'een')
   ('green', 'een')
@@ -149,7 +149,7 @@ rows:
 
 // Source file: ../queries/functions/right/rright4.sql
 // Result file: ../queries/functions/right/results/right4.res
-select colb1, ucolvc from ${testName}_table1 where right(colb1,3) = 'ack' OR right(colb1,3) = 'ACK' order by colb1, ucolvc;
+select colb1, ucolvc from ${testName2}_table1 where right(colb1,3) = 'ack' OR right(colb1,3) = 'ACK' order by colb1, ucolvc;
 ordered rows:
   ('BLACK', 'bbb')
   ('BLACK', 'ccc')
@@ -166,19 +166,19 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rnright4.sql
 // Result file: ../queries/functions/right/results/nright4.res
- select colb1, right(cold1, 3) from ${testName}_table1 where ucolvc = 'hhh';
+ select colb1, right(cold1, 3) from ${testName2}_table1 where ucolvc = 'hhh';
 failure: 'Type mismatch in RIGHT'
 
 
 // Source file: ../queries/functions/right/rnright3.sql
 // Result file: ../queries/functions/right/results/nright3.res
-select colb1, right(colb1) from ${testName}_table1 where colb1 = 'indigo';
+select colb1, right(colb1) from ${testName2}_table1 where colb1 = 'indigo';
 failure: 'Wrong number of arguments given to the function RIGHT(). Expected 2 but got 1 arguments instead.'
 
 
 // Source file: ../queries/functions/right/rright6.sql
 // Result file: ../queries/functions/right/results/right6.res
-select a.colb1, a.ucolvc, b.colb5, b.ucolvc, c.colb3 from ${testName}_table1 a join ${testName}_table5 b on pcol1 = pcol5 join ${testName}_table3 c on pcol1 = pcol3 where right(a.colb1,3) < right(c.colb3,2) and pcol1 < 5 order by a.colb1, c.colb3;
+select a.colb1, a.ucolvc, b.colb5, b.ucolvc, c.colb3 from ${testName2}_table1 a join ${testName2}_table5 b on pcol1 = pcol5 join ${testName2}_table3 c on pcol1 = pcol3 where right(a.colb1,3) < right(c.colb3,2) and pcol1 < 5 order by a.colb1, c.colb3;
 ordered rows:
   ('PINK', 'qqq', 'YELLOW', 'rrr', 'BLUE')
   ('PINK', 'qqq', 'YELLOW', 'rrr', 'WHITE')
@@ -200,7 +200,7 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rright11.sql
 // Result file: ../queries/functions/right/results/right11.res
-select right(x,2), ucol from (select  right(ucolvc,3) as x, ucol from ${testName}_table4 where right(colb4,3) = 'lue') as a order by ucol;
+select right(x,2), ucol from (select  right(ucolvc,3) as x, ucol from ${testName2}_table4 where right(colb4,3) = 'lue') as a order by ucol;
 ordered rows:
   ('qq', 28)
   ('cc', 46)
@@ -223,7 +223,7 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rright3.sql
 // Result file: ../queries/functions/right/results/right3.res
-select right(a.colb1,3), right(b.ucolvc,2) from ${testName}_table1 a join ${testName}_table4 b using (ucolvc) where pcol1 < 7 and pcol4 > 450 order by a.colb1, b.ucolvc;
+select right(a.colb1,3), right(b.ucolvc,2) from ${testName2}_table1 a join ${testName2}_table4 b using (ucolvc) where pcol1 < 7 and pcol4 > 450 order by a.colb1, b.ucolvc;
 ordered rows:
   ('INK', 'qq')
   ('INK', 'uu')
@@ -242,13 +242,13 @@ ordered rows:
 
 // Source file: ../queries/functions/right/rnright2.sql
 // Result file: ../queries/functions/right/results/nright2.res
-select colb1, right(colb1,-5) from ${testName}_table1 where ucolvc = 'uuu';
+select colb1, right(colb1,-5) from ${testName2}_table1 where ucolvc = 'uuu';
 failure: 'Invalid argument for RIGHT function - length cannot be negative.'
 
 
 // Source file: ../queries/functions/right/rright13.sql
 // Result file: ../queries/functions/right/results/right13.res
-select right(substring(colb9,1,5),3), colb9 from ${testName}_table9 where pcol9 > 219 and pcol9 < 245 order by colb9, pcol9;
+select right(substring(colb9,1,5),3), colb9 from ${testName2}_table9 where pcol9 > 219 and pcol9 < 245 order by colb9, pcol9;
 ordered rows:
   (NULL, NULL)
   (NULL, NULL)

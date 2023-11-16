@@ -13,16 +13,16 @@ select
   o_totalprice,
   sum(l_quantity)
 from
-  ${testName}_orders,
-  ${testName}_customer,
-  ${testName}_lineitem
+  ${testName2}_orders,
+  ${testName2}_customer,
+  ${testName2}_lineitem
 where
   o_orderkey in
     (
     select
       l_orderkey
     from
-      ${testName}_lineitem
+      ${testName2}_lineitem
     group by
       l_orderkey
     having

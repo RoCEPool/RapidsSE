@@ -26,13 +26,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_orders
+    scan ${testName2}_orders
     | hash "type INTEGER $1"
     | combined 0
     | stageC hashcast
 
   stage stageC on all partitions :
-    indexJoin ${testName}_lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
+    indexJoin ${testName2}_lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -58,13 +58,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan ${testName}_orders
+    scan ${testName2}_orders
     | hash "type INTEGER $1"
     | combined 0
     | stageC hashcast
 
   stage stageC on all partitions :
-    indexJoin ${testName}_lineitem IxL_ORDERKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName2}_lineitem IxL_ORDERKEY "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 

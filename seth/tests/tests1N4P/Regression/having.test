@@ -1,7 +1,7 @@
 
 // Source file: ../queries/having/rnhaving1.sql
 // Result file: none
-select sum(cola1) as SumOf, colb1 from ${testName}_table1 group by colb1 having SumOf > 500 order by colb1;
+select sum(cola1) as SumOf, colb1 from ${testName2}_table1 group by colb1 having SumOf > 500 order by colb1;
 ordered rows:
  (2270,'BLACK')
  (547,'BLUE')
@@ -25,7 +25,7 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving2.sql
 // Result file: ../queries/having/results/having2.res
-select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName}_table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
 ordered rows:
   (62, 128.00, 'BLACK', 'ttt')
   (243, 132.00, 'ORANGE', 'nnn')
@@ -52,7 +52,7 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving3.sql
 // Result file: ../queries/having/results/having3.res
-select sum(cola1), avg(ucol), colb1, ucolvc from ${testName}_table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
+select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
 ordered rows:
   (95, 662, 'GREEN', 'aaa')
   (235, 158, 'black', 'bbb')
@@ -64,7 +64,7 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving4.sql
 // Result file: ../queries/having/results/having4.res
-select sum(cola1), avg(ucol), colb1, ucolvc from ${testName}_table1 group by colb1, ucolvc having colb1 = 'black' order by colb1, ucolvc;
+select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' order by colb1, ucolvc;
 ordered rows:
   (235, 158, 'black', 'bbb')
   (5, 123, 'black', 'iii')
@@ -73,14 +73,14 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving5.sql
 // Result file: ../queries/having/results/having5.res
-select sum(cola1) as SumOf, colb1 from ${testName}_table1 group by colb1 having colb1 like 'bl%' order by colb1;
+select sum(cola1) as SumOf, colb1 from ${testName2}_table1 group by colb1 having colb1 like 'bl%' order by colb1;
 ordered rows:
   (364, 'black')
   (660, 'blue')
 
 // Source file: ../queries/having/rhaving1.sql
 // Result file: ../queries/having/results/having1.res
-select sum(cola1), colb1 from ${testName}_table1 group by colb1 having sum(cola1) > 500 order by colb1;
+select sum(cola1), colb1 from ${testName2}_table1 group by colb1 having sum(cola1) > 500 order by colb1;
 ordered rows:
   (2270, 'BLACK')
   (547, 'BLUE')
@@ -102,7 +102,7 @@ ordered rows:
   (1217, 'teal')
   (812, 'violet')
 
-select sum(cola1) as SumOf, colb1 from ${testName}_table1 group by colb1 having sum(cola1) > 500;
+select sum(cola1) as SumOf, colb1 from ${testName2}_table1 group by colb1 having sum(cola1) > 500;
 rows:
   (2270,'BLACK')
   (547,'BLUE')
@@ -126,7 +126,7 @@ rows:
 
 // Source file: ../queries/having/rhaving2.sql
 // Result file: ../queries/having/results/having2.res
-select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName}_table1 group by colb1, ucolvc having avg(ucol) < 200;
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200;
 rows:
   (62, 128.00, 'BLACK', 'ttt')
   (243, 132.00, 'ORANGE', 'nnn')
@@ -153,7 +153,7 @@ rows:
 
 // Source file: ../queries/having/rhaving3.sql
 // Result file: ../queries/having/results/having3.res
-select sum(cola1), avg(ucol), colb1, ucolvc from ${testName}_table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa';
+select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa';
 rows:
   (95, 662, 'GREEN', 'aaa')
   (235, 158, 'black', 'bbb')
@@ -164,7 +164,7 @@ rows:
 
 // Source file: ../queries/having/rhaving4.sql
 // Result file: ../queries/having/results/having4.res
-select sum(cola1), avg(ucol), colb1, ucolvc from ${testName}_table1 group by colb1, ucolvc having colb1 = 'black';
+select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black';
 rows:
   (235, 158, 'black', 'bbb')
   (5, 123, 'black', 'iii')
@@ -172,14 +172,14 @@ rows:
 
 // Source file: ../queries/having/rhaving5.sql
 // Result file: ../queries/having/results/having5.res
-select sum(cola1) as SumOf, colb1 from ${testName}_table1 group by colb1 having colb1 like 'bl%';
+select sum(cola1) as SumOf, colb1 from ${testName2}_table1 group by colb1 having colb1 like 'bl%';
 rows:
   (364, 'black')
   (660, 'blue')
 
 // Source file: ../queries/having/rhaving1.sql
 // Result file: ../queries/having/results/having1.res
-select sum(cola1), colb1 from ${testName}_table1 group by colb1 having sum(cola1) > 500;
+select sum(cola1), colb1 from ${testName2}_table1 group by colb1 having sum(cola1) > 500;
 rows:
   (2270, 'BLACK')
   (547, 'BLUE')

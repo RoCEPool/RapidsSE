@@ -91,28 +91,28 @@ INCLUDE 'schemaDrop.test';
 
 CLEANUP {
 
-  drop table ${testName}_customer;
+  drop table ${testName2}_customer;
   mute
 
-  drop table ${testName}_supplier;
+  drop table ${testName2}_supplier;
   mute
 
-  drop table ${testName}_orders;
+  drop table ${testName2}_orders;
   mute
 
-  drop table ${testName}_partsupp;
+  drop table ${testName2}_partsupp;
   mute
 
-  drop table ${testName}_part;
+  drop table ${testName2}_part;
   mute
 
-  drop table ${testName}_region;
+  drop table ${testName2}_region;
   mute
 
-  drop table ${testName}_lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
-  drop table ${testName}_nation;
+  drop table ${testName2}_nation;
   mute
 
   bye;

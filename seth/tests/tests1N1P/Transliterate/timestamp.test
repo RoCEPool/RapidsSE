@@ -4,7 +4,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table ${testName}_datums (
+create table ${testName2}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -24,26 +24,26 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load ${testName}_datums "../DATA/Transliterate/timestamp.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/timestamp.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02';
+select tsp_col12 from ${testName2}_datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02';
 rows:
 (TIMESTAMP '1972-01-01 12:00:59')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 > TIMESTAMP '1978-01-01 10:45:50';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 > TIMESTAMP '1978-01-01 10:45:50';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 > TIMESTAMP '1940-01-01 10:45:50';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 > TIMESTAMP '1940-01-01 10:45:50';
 rows:
 (TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 > TIMESTAMP '1940-01-01 10:45:50';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 > TIMESTAMP '1940-01-01 10:45:50';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
@@ -56,7 +56,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 > TIMESTAMP '1944-01-01 12:00:50' OR tsp_col13 > TIMESTAMP '1978-01-01 10:45:10';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 > TIMESTAMP '1944-01-01 12:00:50' OR tsp_col13 > TIMESTAMP '1978-01-01 10:45:10';
 rows:
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
 (TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
@@ -65,7 +65,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 >= TIMESTAMP '1972-01-01 10:30:10';
+select tsp_col12 from ${testName2}_datums where tsp_col12 >= TIMESTAMP '1972-01-01 10:30:10';
 rows:
 (TIMESTAMP '1972-01-01 12:00:01')
 (TIMESTAMP '1972-01-01 12:00:02')
@@ -73,13 +73,13 @@ rows:
 (TIMESTAMP '1972-01-01 10:30:10')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 >= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 >= TIMESTAMP '1940-01-01 10:45:50';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 >= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 >= TIMESTAMP '1940-01-01 10:45:50';
 rows:
 (TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
 (TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 >= TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 >= TIMESTAMP '1940-01-01 10:45:50';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 >= TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 >= TIMESTAMP '1940-01-01 10:45:50';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
@@ -92,7 +92,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02';
+select tsp_col12 from ${testName2}_datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05')
 (TIMESTAMP '1972-01-01 12:00:01')
@@ -104,12 +104,12 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 <= TIMESTAMP '1940-01-01 10:45:50';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 <= TIMESTAMP '1940-01-01 10:45:50';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 <= TIMESTAMP '1978-01-01 10:45:10';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 <= TIMESTAMP '1978-01-01 10:45:10';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
@@ -118,7 +118,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 <= TIMESTAMP '1978-01-01 10:45:10';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 <= TIMESTAMP '1978-01-01 10:45:10';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
@@ -132,7 +132,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:01';
+select tsp_col12 from ${testName2}_datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:01';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05')
 (TIMESTAMP '1941-01-01 00:00:00')
@@ -144,7 +144,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 != TIMESTAMP '1978-01-01 10:45:10';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 != TIMESTAMP '1978-01-01 10:45:10';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
@@ -154,7 +154,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 != TIMESTAMP '1978-01-01 10:45:10';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 != TIMESTAMP '1978-01-01 10:45:10';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
@@ -168,30 +168,30 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 = TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 = TIMESTAMP '1978-01-01 10:45:10';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 = TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 = TIMESTAMP '1978-01-01 10:45:10';
 rows:
 (TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
 (TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 = TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 = TIMESTAMP '1978-01-01 10:45:10';
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 = TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 = TIMESTAMP '1978-01-01 10:45:10';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 = tsp_col13;
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 = tsp_col13;
 rows:
 (TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
 (TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 > tsp_col13;
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 > tsp_col13;
 rows:
 0
 
 /*
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 < tsp_col13;
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 < tsp_col13;
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
@@ -202,13 +202,13 @@ rows:
 */
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 >= tsp_col13;
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 >= tsp_col13;
 rows:
 (TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
 (TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 <= tsp_col13;
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 <= tsp_col13;
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
@@ -220,7 +220,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12,tsp_col13 from ${testName}_datums where tsp_col12 != tsp_col13;
+select tsp_col12,tsp_col13 from ${testName2}_datums where tsp_col12 != tsp_col13;
 rows:
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
@@ -230,13 +230,13 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 > tsp_col13 AND tsp_col12 = tsp_col13;
+select tsp_col12 from ${testName2}_datums where tsp_col12 > tsp_col13 AND tsp_col12 = tsp_col13;
 rows:
 0
 
 /*
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 < tsp_col13 AND tsp_col12 != tsp_col13;
+select tsp_col12 from ${testName2}_datums where tsp_col12 < tsp_col13 AND tsp_col12 != tsp_col13;
 rows:
 (TIMESTAMP '1941-01-01 00:00:05')
 (TIMESTAMP '1972-01-01 12:00:01')
@@ -247,7 +247,7 @@ rows:
 */
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 = tsp_col13 OR tsp_col12 <= tsp_col13;
+select tsp_col12 from ${testName2}_datums where tsp_col12 = tsp_col13 OR tsp_col12 <= tsp_col13;
 rows:
 (TIMESTAMP '1941-01-01 00:00:05')
 (TIMESTAMP '1972-01-01 12:00:01')
@@ -259,29 +259,29 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55')
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 = tsp_col13 OR tsp_col12 >= tsp_col13;
+select tsp_col12 from ${testName2}_datums where tsp_col12 = tsp_col13 OR tsp_col12 >= tsp_col13;
 rows:
 (TIMESTAMP '1943-01-01 00:00:10')
 (TIMESTAMP '1972-01-01 10:30:10')
 
 //------------------------------------------------------------------------------
-select min(tsp_col12) from ${testName}_datums;
+select min(tsp_col12) from ${testName2}_datums;
 rows:
 (TIMESTAMP '1941-01-01 00:00:00')
 
 //------------------------------------------------------------------------------
-select max(tsp_col12) from ${testName}_datums;
+select max(tsp_col12) from ${testName2}_datums;
 rows:
 (TIMESTAMP '1972-01-01 12:00:59')
 
 //------------------------------------------------------------------------------
-select count(tsp_col12) from ${testName}_datums;
+select count(tsp_col12) from ${testName2}_datums;
 rows:
 (9)
 
 /*
 //------------------------------------------------------------------------------
-select vch_col15 , min(tsp_col12) from ${testName}_datums group by vch_col15;
+select vch_col15 , min(tsp_col12) from ${testName2}_datums group by vch_col15;
 rows:
 (null,null)
 (TIMESTAMP 'yellow',TIMESTAMP '1944-01-01 12:00:50')
@@ -292,7 +292,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select vch_col15 , max(tsp_col12) from ${testName}_datums group by vch_col15;
+select vch_col15 , max(tsp_col12) from ${testName2}_datums group by vch_col15;
 rows:
 (null,null)
 (TIMESTAMP 'yellow',TIMESTAMP '1944-01-01 12:00:50')
@@ -302,7 +302,7 @@ rows:
 (TIMESTAMP 'orange',TIMESTAMP '1972-01-01 10:30:10')
 
 //------------------------------------------------------------------------------
-select vch_col15 , count(tsp_col12) from ${testName}_datums group by vch_col15;
+select vch_col15 , count(tsp_col12) from ${testName2}_datums group by vch_col15;
 rows:
 (null,0)
 (TIMESTAMP 'yellow',1)
@@ -315,7 +315,7 @@ rows:
 ////////////////////----------Less than < Tests ---------------------///////////////////////////////////////////
 /*
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 < TIMESTAMP '1972-01-01 12:00:02';
+select tsp_col12 from ${testName2}_datums where tsp_col12 < TIMESTAMP '1972-01-01 12:00:02';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05')
 (TIMESTAMP '1972-01-01 12:00:01')
@@ -326,7 +326,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55')
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 < TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 < TIMESTAMP '1978-01-01 10:45:50';
+select tsp_col12 from ${testName2}_datums where tsp_col12 < TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 < TIMESTAMP '1978-01-01 10:45:50';
 rows:
 (TIMESTAMP '1941-01-01 00:00:05')
 (TIMESTAMP '1943-01-01 00:00:10')
@@ -335,7 +335,7 @@ rows:
 (TIMESTAMP '1944-01-01 12:00:55')
 
 //------------------------------------------------------------------------------
-select tsp_col12 from ${testName}_datums where tsp_col12 < tsp_col13;
+select tsp_col12 from ${testName2}_datums where tsp_col12 < tsp_col13;
 rows:
 (TIMESTAMP '1941-01-01 00:00:05')
 (TIMESTAMP '1972-01-01 12:00:01')
@@ -346,7 +346,7 @@ rows:
 
 // TO BE RUN UNDER 1 NODE - 1 PARTITION
 //------------------------------------------------------------------------------
-select tsp_col12 , min(tsp_col13) from ${testName}_datums group by tsp_col12;
+select tsp_col12 , min(tsp_col13) from ${testName2}_datums group by tsp_col12;
 rows:
 (null,TIMESTAMP '1972-01-01 10:30:25')
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
@@ -360,7 +360,7 @@ rows:
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
  
 //------------------------------------------------------------------------------
-select tsp_col12 , max(tsp_col13) from ${testName}_datums group by tsp_col12;
+select tsp_col12 , max(tsp_col13) from ${testName2}_datums group by tsp_col12;
 rows:
 (null,TIMESTAMP '1972-01-01 10:30:25')
 (TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
@@ -374,7 +374,7 @@ rows:
 (TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
 
 //------------------------------------------------------------------------------
-select tsp_col12 , count(tsp_col13) from ${testName}_datums group by tsp_col12;
+select tsp_col12 , count(tsp_col13) from ${testName2}_datums group by tsp_col12;
 rows:
 (null,1)
 (TIMESTAMP '1941-01-01 00:00:05',1)
@@ -391,7 +391,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table ${testName}_datums;
+drop table ${testName2}_datums;
 success;
 
 memoryleaks;
@@ -399,7 +399,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table ${testName}_datums;
+  drop table ${testName2}_datums;
   mute
 
   bye;
