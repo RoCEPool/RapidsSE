@@ -186,8 +186,6 @@ rows:
   (10,135)
   (20,1)
 
-// TODO V2 : ORDAGG
-/*
 /optimise_passthru 
 pipeline Query13
 begin
@@ -240,6 +238,8 @@ rows:
   (10,135)
   (20,1)
 
+// TODO V2 : ORDAGG
+/*
 /optimise_passthru 
 pipeline Query13
 begin
@@ -294,7 +294,11 @@ begin
    (9,11)
    (10,135)
    (20,1)
+*/
 
+// TODO V2 (_ray178)
+// The fused project in S02 should include the columns required by the constraint
+/*
 /optimise_passthru 
 pipeline Query13
 begin
