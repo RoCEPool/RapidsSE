@@ -316,6 +316,7 @@ namespace STORE
     Stz* szCardNm(void);
     Cast xCast(void);
     void vCast(Card* pCard_arg);
+    void vCast(TypeId xTypeId);
     void vCheckCorrectness(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
