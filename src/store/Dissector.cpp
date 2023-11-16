@@ -1334,13 +1334,14 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card_Constraint* p_constraint = new Card_Constraint;
+  Cast xCast;
+  xCast.m_xTypeId = xPopTypeId(p_rpnExpr);
 
-  TypeId xTypeId = xPopTypeId(p_rpnExpr);
+  Card_Constraint* p_constraint = new Card_Constraint;
 
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
 
-  p_rpnCalc->vCast_typeId(xTypeId);
+  p_rpnCalc->vCast(xCast);
 
   p_constraint->vAppendChild(p_rpnCalc);
 
@@ -1390,7 +1391,8 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_expr->pSymbol()->vFacets(&xSymbol_expCol);
   }
 
-	TypeId xTypeId = this->xPopTypeId(p_rpnExpr);
+  Cast xCast;
+	xCast.m_xTypeId = this->xPopTypeId(p_rpnExpr);
 
 
   // [ AS <as> ]
@@ -1412,12 +1414,12 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
   p_expr->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->vCast_typeId(xTypeId);
-  p_expr->vCast_typeId(xTypeId);
+  p_rpnCalc->vCast(xCast);
+  p_expr->vCast(xCast);
 
   if (bIsKeyExpr && p_expr->pSub_rpnCalc()->nChildCards() == 1) {
     Card_Term* p_term_0 = p_expr->pGet_term0();
-    p_term_0->vCast_typeId(xTypeId);
+    p_term_0->vCast(xCast);
   }
 
   // [ AS <as> ]
@@ -1500,11 +1502,12 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
   delete p_card_type;
 
   Card_Term* p_term1 = _pCard_Term(p_rpnExpr->pPopChild());
-	TypeId xTypeId = Symbol::xTo_TypeId(p_term1->szFacet(SF_NONE));
+  Cast xCast;
+  xCast.m_xTypeId = Symbol::xTo_TypeId(p_term1->szFacet(SF_NONE));
   delete p_term1;
 
   Card_Term* p_term_hsh = _pCard_Term(p_rpnExpr->pPopChild());
-  p_term_hsh->vCast_typeId(xTypeId);
+  p_term_hsh->vCast(xCast);
   p_hshCol->vAppendChild(p_term_hsh);
 
   return p_hshCol;
