@@ -20,7 +20,6 @@ namespace STORE
     static Card_BoolPred* pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg);
 
     void vBump_expCol(i8 p_conj, bool bSkipFoldExpr=false);
-    Cast xCast(void);
     bool bContains(Symbol* pGivenSymbol);
     void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
     void vCorrect_expCol(Card_Emit* p_arriving);

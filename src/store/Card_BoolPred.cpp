@@ -227,16 +227,6 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get typeID                                                                 */
-/*----------------------------------------------------------------------------*/
-Cast Card_BoolPred::xCast(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  return pSymbol()->xCast();
-}
-
-/*----------------------------------------------------------------------------*/
 /* does this boolPred contain given symbol?                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bContains(Symbol* pGivenSymbol)

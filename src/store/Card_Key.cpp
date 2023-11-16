@@ -96,18 +96,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cast information                                                       */
-/*----------------------------------------------------------------------------*/
-Cast Card_Key::xCast(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Cast xCast = pSymbol()->xCast();
-
-  return xCast;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Key::bIsEqual(Card_Key* p_key_arg)

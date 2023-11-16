@@ -23,7 +23,6 @@ namespace STORE
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
-    Cast xCast(void);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
