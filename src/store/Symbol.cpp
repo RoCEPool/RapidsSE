@@ -1559,22 +1559,8 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_EXP_COL == pSymbol_arg->xaFacet[0].m_eFacet) {
-    vFacet_Exp_Col(pSymbol_arg->xaFacet[0].m_sChrSeq);
-  }
-
+  m_xCast = pSymbol_arg->m_xCast;
   vFacetConcat(pSymbol_arg);
-
-  m_xCast.m_xTypeId = pSymbol_arg->m_xCast.m_xTypeId;
-
-  if (SF_EXP_COL == xaFacet[0].m_eFacet)
-    RASSERT(Symbol::bIs_Exp_Col(xaFacet[0].m_sChrSeq));
-
-  if (SF_TBL_COL == xaFacet[0].m_eFacet)
-    RASSERT(Symbol::bIs_Tbl_Col(xaFacet[0].m_sChrSeq));
-
-  if (pSymbol_arg->bHasFacets())
-    RASSERT(bHasFacets());
 }
 
 /*----------------------------------------------------------------------------*/
