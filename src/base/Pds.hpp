@@ -54,7 +54,7 @@ namespace BASE
 
     // public:
     Row*            pAllotRow(void);
-    Row*            pAllotRowFull(void** aaStzSet);
+    Row*            pAllotRowFull(char** aaStzSet);
     Row*            pCopyRow(Row* pRow);
 		Row*            pCopyRowArray(i8* pRowArray);
     void*           aAllotStzSet(void);

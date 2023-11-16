@@ -29,15 +29,8 @@ extern "C" void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorC
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_TubAllotRowPds(void* pTub, void** aazStrArea, i8* piErrorCode) {
+extern "C" void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* piErrorCode) {
   return Tub::aAllotRowPds((Tub*)pTub, aazStrArea, piErrorCode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy a new row                                                            */
-/*----------------------------------------------------------------------------*/
-extern "C" void vExtern_TubCopyRow(void* pTub, void* pRowSrc, i8* piErrorCode) {
-  return Tub::vCopyRowArray((Tub*)pTub, (i8*)pRowSrc, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +152,7 @@ void* Tub::aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode)
 /*----------------------------------------------------------------------------*/
 /* allot a new row in a pds                                                   */
 /*----------------------------------------------------------------------------*/
-void* Tub::aAllotRowPds(Tub* pTub, void** aazStrArea, i8* piErrorCode)
+void* Tub::aAllotRowPds(Tub* pTub, char** aazStrArea, i8* piErrorCode)
 {
   _static_
 
@@ -189,38 +182,6 @@ void* Tub::aAllotRowPds(Tub* pTub, void** aazStrArea, i8* piErrorCode)
   catch (LowMemory xLowMemory) {
     *piErrorCode = EC_LOW_MEMORY;
     return nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* Copy row                                                                   */
-/*----------------------------------------------------------------------------*/
-void Tub::vCopyRowArray(Tub *pTub, i8 *pRowCellArray, i8 *piErrorCode)
-{
-  _static_
-
-  try {
-    RASSERT(CN_TUB == pTub->eGetClassNo());
-    RowPix* pRowPix = pTub->pRowPix();
-
-    Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
-
-    if (! pPdsRowBuffer) {
-      pPdsRowBuffer = new Pds(pRowPix);
-      pTub->vAddBuffer(pPdsRowBuffer);
-    }
-
-    Row* pRowDst = pPdsRowBuffer->pCopyRowArray(pRowCellArray);
-    if (pRowDst == nullptr) {
-      pPdsRowBuffer = new Pds(pRowPix);
-      pTub->vAddBuffer(pPdsRowBuffer);
-      pRowDst = pPdsRowBuffer->pCopyRowArray(pRowCellArray);
-      RASSERT(pRowDst);
-    }
-  }
-  catch (LowMemory xLowMemory) {
-    *piErrorCode = EC_LOW_MEMORY;
-    return;
   }
 }
 

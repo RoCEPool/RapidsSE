@@ -33,8 +33,8 @@ extern "C" void* aExtern_PotAllotRow(void* pPot, i8 iKeyHash, char** aazStrArea,
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_PotCopyRow(void* pPot, i8 iKeyHash, void* pRowSrc, i8* piErrorCode) {
-  return Pot::vCopyRowArray((Pot*)pPot, iKeyHash, (i8*)pRowSrc, piErrorCode);
+extern "C" void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
+  return Pot::aAllotRowPds((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@ void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-void Pot::vCopyRowArray(Pot* pPot, i8 iKeyHash, i8* pRowSrc, i8* piErrorCode)
+void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
 {
   _static_
 
@@ -168,24 +168,23 @@ void Pot::vCopyRowArray(Pot* pPot, i8 iKeyHash, i8* pRowSrc, i8* piErrorCode)
       pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
     }
 
-    // new a row in row buffer (new another row buffer if necessary)
-    aDstRow = pPdsRowBuffer->pCopyRowArray(pRowSrc);
+    // new a row in pds row buffer (new another pds row buffer if necessary)
+    aDstRow = pPdsRowBuffer->pAllotRowFull(aazStrArea);
     if (! aDstRow) {
       pPdsRowBuffer = new Pds(pRowPix);
       pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
-      //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-      aDstRow = pPdsRowBuffer->pCopyRowArray(pRowSrc);
-      ASSERT(aDstRow);
+      aDstRow = pPdsRowBuffer->pAllotRowFull(aazStrArea);
+      RASSERT(aDstRow);
     }
 
     pPdsRowBuffer->vLglPtn(tLglPtn);
 
-    return;
+    return aDstRow->aCellArray();;
 
   }
   catch (LowMemory xLowMemory) {
     *piErrorCode = EC_LOW_MEMORY;
-    return;
+    return nullptr;
   }
 }
 

@@ -199,7 +199,7 @@ Pds::~Pds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Allot a row                                                                */
+/* Allot a row and the string set space. Don't init the string set space      */
 /*----------------------------------------------------------------------------*/
 Row* Pds::pAllotRow(void)
 {
@@ -240,7 +240,7 @@ Row* Pds::pAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* Allot a row and the string set space. Init the string set space and return addr */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pAllotRowFull(void** aaStzSet)
+Row* Pds::pAllotRowFull(char** aaStzSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -272,7 +272,7 @@ Row* Pds::pAllotRowFull(void** aaStzSet)
       vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
       return nullptr;
     }
-    *aaStzSet = m_aStzSet;
+    *aaStzSet = (char*)m_aStzSet;
 
     RASSERT(m_oRowPix.m_bInitialised);
 

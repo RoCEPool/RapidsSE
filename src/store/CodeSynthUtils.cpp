@@ -575,28 +575,13 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
   if (StrLib::bContains(sLine->azStr(), "__EXTERN_ALLOTROW__()")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",
-                                 "aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode)");
+                                 "aExtern_TubAllotRowPds((void*)aDynamicT->m_pTub,&azStringDyn,&aDynamicT->m_iErrorCode)");
       RASSERT(bResult);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",
-                                 "aExtern_PotAllotRow((void*)aDynamicT->m_pPot,iKeyHash,&aDynamicT->m_xRowInfoPO.m_acStrArea,&aDynamicT->m_iErrorCode)");
-
-      RASSERT(bResult);
-    }
-  }
-
-  if (StrLib::bContains(sLine->azStr(), "__EXTERN_COPYROW__()")) {
-    if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_COPYROW__()",
-                                 "vExtern_TubCopyRow((void*)aDynamicT->m_pTub,(void*)aDynamicT->m_xRowInfoIT.m_aRowCellArray,&aDynamicT->m_iErrorCode)");
-      RASSERT(bResult);
-    }
-    else {
-      RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_COPYROW__()",
-                                 "vExtern_PotCopyRow((void*)aDynamicT->m_pPot,iKeyHash,(void*)aDynamicT->m_xRowInfoIT.m_aRowCellArray,&aDynamicT->m_iErrorCode)");
+                                 "aExtern_PotAllotRowPds((void*)aDynamicT->m_pPot,iKeyHash,&azStringDyn,&aDynamicT->m_iErrorCode)");
 
       RASSERT(bResult);
     }

@@ -33,7 +33,7 @@ namespace STORE
   public:
 
     static void* aAllotRow(Pot* pPot, i8 iKeyHsh, char** aazStrArea, i8* piErrorCode);
-    static void  vCopyRowArray(Pot* pPot, i8 iKeyHsh, i8* pRowSrc, i8* piErrorCode);
+    static void* aAllotRowPds(Pot* pPot, i8 iKeyHsh, char** aazStrArea, i8* piErrorCode);
     static void  vRowStrSize(Pot* pPot, i8 iKeyHsh, i8 nRowStrSize);
     static void  vRepair(Object* pObject);
     static void  vSetRowPix(Pot* pPot, RowPix* pRowPix);

@@ -41,7 +41,7 @@ extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__
 extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 
 extern void* aExtern_PotAllotRow(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
-extern void  vExtern_PotCopyRow(void* pPot, i8 iKeyHash, void* pRowSrc, i8* piErrorCode) __attribute__((weak_import));
+extern void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
 extern void  vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_PotRowPix(void* pPot, void* pRowPix) __attribute__((weak_import));
 
@@ -53,8 +53,7 @@ extern i8    iExtern_StrLibWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc
 extern i8    iExtern_StrLibWordFlipSize(char* psSrc) __attribute__((weak_import));
 
 extern void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
-extern void* aExtern_TubAllotRowPds(void* pTub, void** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
-extern void  vExtern_TubCopyRow(void* pTub, void* pRowSrc, i8* piErrorCode) __attribute__((weak_import));
+extern void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
 extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_TubRowPix(void* pTub, void* pRowPix) __attribute__((weak_import));
 
