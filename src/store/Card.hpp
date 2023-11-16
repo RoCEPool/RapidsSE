@@ -405,6 +405,8 @@ namespace STORE
     bool bSymbolMatches(Symbol* pSymbol_arg);
     bool bSymbolMatches(Card* pCard_arg);
 
+    TypeId xTypeId(void);
+
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

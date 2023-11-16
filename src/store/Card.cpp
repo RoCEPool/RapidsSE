@@ -1649,6 +1649,18 @@ bool Card::bSymbolMatches(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get typeId information                                                     */
+/*----------------------------------------------------------------------------*/
+TypeId Card::xTypeId(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  TypeId xTypeId = pSymbol()->xCast().m_xTypeId;
+
+  return xTypeId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find sub card with given symbol and replace                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
