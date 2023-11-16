@@ -602,14 +602,14 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
   // todo: [ray A 145]
   char cTblSyn = bIsCard(CK_TABLE) ? pSymbol()->cSF_char() : pSub_table()->pSymbol()->cSF_char();
 
-  i8 i_Expr = p_emit->nExpr() + 1;
+  i8 iExpCol = p_emit->nExpr() + 1;
 
   i8 nCols = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr_Column =
-        Card_Expr::pCraft_expr_Column(pColumn, cTblSyn, i_Expr++ ,i_Col + 1);
+        Card_Expr::pCraft_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
 
     p_emit->vAppendChild(p_expr_Column);
   }

@@ -148,13 +148,13 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* craft an expr for given column                                             */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCraft_expr_Column(Column *pColumn, char cTblSyn,
-                                         i8 iExpr, i8 iCol)
+Card_Expr* Card_Expr::pCraft_expr_Column(Column *pColumn, i8 iExpCol,
+                                         char cTblSyn, i8 iColOdn)
 {
   _static_
 
   Card_Expr* p_expr_Column = new Card_Expr;
-  Symbol xSymbol(SF_EXP_COL, iExpr);
+  Symbol xSymbol(SF_EXP_COL, iExpCol);
   p_expr_Column->pSymbol()->vFacets(&xSymbol);
 
   TypeId xTypeId = pColumn->xColumnTypeId();
@@ -166,7 +166,7 @@ Card_Expr* Card_Expr::pCraft_expr_Column(Column *pColumn, char cTblSyn,
   p_rpnCalc->vCast_typeId(xTypeId);
   p_expr_Column->vCast_typeId(xTypeId);
 
-  Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iCol);
+  Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iColOdn);
   p_rpnCalc->vAppendChild(p_term);
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
