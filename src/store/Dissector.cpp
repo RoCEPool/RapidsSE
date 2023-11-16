@@ -1340,7 +1340,7 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
 
-  p_rpnCalc->pSymbol()->vCast(xTypeId);
+  p_rpnCalc->vCast_typeId(xTypeId);
 
   p_constraint->vAppendChild(p_rpnCalc);
 
@@ -1412,12 +1412,12 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
   p_expr->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->vCast(xTypeId);
-  p_expr->pSymbol()->vCast(xTypeId);
+  p_rpnCalc->vCast_typeId(xTypeId);
+  p_expr->vCast_typeId(xTypeId);
 
   if (bIsKeyExpr && p_expr->pSub_rpnCalc()->nChildCards() == 1) {
     Card_Term* p_term_0 = p_expr->pGet_term0();
-    p_term_0->pSymbol()->vCast(xTypeId);
+    p_term_0->vCast_typeId(xTypeId);
   }
 
   // [ AS <as> ]
@@ -1504,7 +1504,7 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
   delete p_term1;
 
   Card_Term* p_term_hsh = _pCard_Term(p_rpnExpr->pPopChild());
-  p_term_hsh->pSymbol()->vCast(xTypeId);
+  p_term_hsh->vCast_typeId(xTypeId);
   p_hshCol->vAppendChild(p_term_hsh);
 
   return p_hshCol;
@@ -1571,7 +1571,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
     p_key->vAppendChild(p_expr);
 
     if (1 == p_key->nChildCards())
-      p_key->pSymbol()->vCast(p_expr->xCast());
+      p_key->vCast(p_expr->xCast());
   }
 
   return p_key;

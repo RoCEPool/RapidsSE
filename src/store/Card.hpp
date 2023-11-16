@@ -316,7 +316,8 @@ namespace STORE
     Stz* szCardNm(void);
     Cast xCast(void);
     void vCast(Card* pCard_arg);
-    void vCast(TypeId xTypeId);
+    void vCast(Cast xCast);
+    void vCast_typeId(TypeId xTypeId);
     void vCheckCorrectness(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
@@ -327,6 +328,7 @@ namespace STORE
     void vConjRot(eRC eConjRot);
     void vConjRotClearRecursive(void);
     Stz* szCoord(void);
+    eCT  eCTVal(void);
 
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
     void  vDumpShort(const char* azFunc, Stz* szTitle);

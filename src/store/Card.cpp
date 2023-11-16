@@ -470,7 +470,19 @@ void Card::vCast(Card* pCard_arg)
 /*----------------------------------------------------------------------------*/
 /* set type of symbol                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vCast(TypeId xTypeId)
+void Card::vCast(Cast xCast)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  //pCard_arg->vDump(__func__);
+
+  m_xSymbol.vCast(xCast);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vCast_typeId(TypeId xTypeId)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -556,7 +568,7 @@ void Card::vConjForm(eFC eConjForm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear all m_eConjForm                                                          */
+/* clear all m_eConjForm                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vConjFormClearRecursive(void)
 {
@@ -613,6 +625,16 @@ Stz* Card::szCoord(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return (Stz*)md_Coord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get eCT                                                                    */
+/*----------------------------------------------------------------------------*/
+eCT Card::eCTVal(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return xCast().m_xTypeId.eCTVal();
 }
 
 /*----------------------------------------------------------------------------*/

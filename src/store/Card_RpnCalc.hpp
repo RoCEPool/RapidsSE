@@ -23,7 +23,6 @@ namespace STORE
     void vCorrect_expCol(Card_Emit* p_arriving);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypeId_expCol(CardIter* pCI);
-    void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstStmCol(void);

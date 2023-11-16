@@ -168,34 +168,6 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(! pCI->G.p_subSet);
-
-  Card_SubSet* p_subSet = new Card_SubSet;
-
-  // an rpnCalc is a linear sequence of terms, some of which are columns
-  for (Kid x_term(this); x_term.bEach(CK_TERM); /**/) {
-
-     if (!x_term.p_term()->bIsColSym())
-      continue;
-
-    Card_Term* p_term_ColSym = x_term.p_term();
-
-    Card_Expr* p_expr_ColSym = new Card_Expr(p_term_ColSym->pSymbol());
-    p_expr_ColSym->pSymbol()->vCast(p_term_ColSym->xTypeId());
-
-    p_subSet->vAppendChild(p_expr_ColSym);
-  }
-
-  pCI->G.p_subSet = p_subSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* return first key col in this rpn sequence                                  */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_RpnCalc::pFirstColSym(void)

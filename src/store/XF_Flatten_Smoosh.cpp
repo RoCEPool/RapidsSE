@@ -141,7 +141,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
 
   Card_Term* p_term_sqarg = (new Card_Term) ->SYM(SF_TBL_COL, pCI->Sqy.m_sSqyArg);
-  p_term_sqarg->pSymbol()->vCast(p_term_found->xTypeId());
+  p_term_sqarg->vCast(p_term_found);
   //p_term_sqarg->vDump();
 
 
