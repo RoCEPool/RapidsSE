@@ -128,7 +128,6 @@ namespace STORE
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-
     void vDump(void);
 
     eRO  eEvalRlnOp(void);
@@ -146,9 +145,7 @@ namespace STORE
     void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
-
     void vFacets_To_String(String* pString);
-
     bool bFacetIs(eSF eFacet_arg);
 
     bool bHasFacet(eSF eFacet);
@@ -157,11 +154,8 @@ namespace STORE
     bool bHasProperties(void);
     bool bHasType(void);
 
-    bool bIdenticalFacets(Symbol* pSymbol_arg);
-
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
-
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
     bool bIs_As(void);              // AS
     bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
@@ -248,16 +242,12 @@ namespace STORE
 
     void Y_vAll(Symbol* pSymbol_arg);
     void Y_vCut(Stz* szPpyNm);
-//  char Y_cGet(i8 i_Ppy);
-//  char Y_cGet(Stz* szPptNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
     Object* Y_pGet(i8 i_Ppy);
     Object* Y_pGet(Stz* szPpyNm);
     Stz* Y_szGet(i8 i_Ppy);
     Stz* Y_szGet(Stz* szPpyNm);
-    Ppy  Y_xGet(i8 i_Ppy);
-    Ppy  Y_xGet(Stz* szPpyNm);
     bool Y_bHas(Stz* szPpyNm);
     i8   Y_nPpy(void);
     Stz* Y_szPpyNm(i8 i_Ppy);

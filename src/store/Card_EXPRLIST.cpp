@@ -340,8 +340,12 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       //p_expr->vDump(__func__,"GBYAGG"_Stz);
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      TypeId xTypeId = p_expr->xTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -356,8 +360,12 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      TypeId xTypeId = p_expr->xTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -372,8 +380,12 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-			TypeId xTypeId = p_expr->xTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -389,8 +401,12 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-			TypeId xTypeId = p_expr->xTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -406,8 +422,12 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-			TypeId xTypeId = p_expr->xTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -437,9 +457,13 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // stream def column
 
-		TypeId xTypeId = p_expr->xTypeId();
+		Cast xCast = p_expr->xCast();
 
-    pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+    pStreamDef->vAddColumn(sColNm,
+                           xCast.m_xTypeId,
+                           xCast.m_nTypeLength,
+                           xCast.m_nTypeScale,
+                           xCast.m_bTypeNullable);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // col map (gbyagg) column

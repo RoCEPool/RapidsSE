@@ -146,7 +146,11 @@ eDM StreamDefBase::eDatum(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vAddColumn(Stz* sColumnNm, TypeId xTypeId, i8 iColumnLength, i8 iColumnScale)
+void StreamDefBase::vAddColumn(Stz* sColumnNm,
+                               TypeId xTypeId,
+                               i8 iColumnLength,
+                               i8 iColumnScale,
+                               bool bColumnNullable)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -155,6 +159,7 @@ void StreamDefBase::vAddColumn(Stz* sColumnNm, TypeId xTypeId, i8 iColumnLength,
   m_xaColumn[m_nColumns].vColumnTypeId(xTypeId);
   m_xaColumn[m_nColumns].vColumnLength(iColumnLength);
   m_xaColumn[m_nColumns].vColumnScale(iColumnScale);
+  m_xaColumn[m_nColumns].vIsNullable(bColumnNullable);
   m_xaColumn[m_nColumns].vDatum(Column::eDatum(xTypeId.eCTVal()));
 
   m_nColumns++;

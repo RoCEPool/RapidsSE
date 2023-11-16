@@ -1490,8 +1490,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_DIRECTION:   vFacet_Direction(szChrSeq);   break;
     case SF_ELSE:        vFacet_Else(szChrSeq);        break;
     case SF_ENDIF:       vFacet_EndIf(szChrSeq);       break;
-    case SF_EXP_COL:
-      vFacet_Exp_Col(szChrSeq);     break;
+    case SF_EXP_COL:     vFacet_Exp_Col(szChrSeq);     break;
     case SF_FLD_NM:      vFacet_Fld_Nm(szChrSeq);      break;
     case SF_FLT_LIT:     vFacet_Flt_Lit(szChrSeq);     break;
     case SF_GROUPBY:     vFacet_GroupBy(szChrSeq);     break;
@@ -1642,26 +1641,6 @@ bool Symbol::bHasType(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_xCast.m_xTypeId.bIsValid();
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this symbol have identical facets with given arg?                     */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIdenticalFacets(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (pSymbol_arg->nFacets() != m_nFacets)
-    return false;
-
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    Facet* aFacet_this = this->aFacet(i_Facet);
-    Facet* aFacet_that = pSymbol_arg->aFacet(i_Facet);
-    if (! bSame(aFacet_this,aFacet_that))
-      return false;
-  }
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3059,41 +3038,6 @@ Stz* Symbol::Y_szGet(Stz* szPpyNm)
 
   return szPpy;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Ppy Symbol::Y_xGet(i8 i_Ppy)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Ppy xPpy;
-
-  if (! m_pProperties)
-    return xPpy;
-
-  xPpy = m_pProperties->szValue(i_Ppy);
-
-  return xPpy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Ppy Symbol::Y_xGet(Stz* szPpyNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Ppy xPpy;
-
-  if (! m_pProperties)
-    return xPpy;
-
-  xPpy = m_pProperties->szValue(szPpyNm);
-
-  return xPpy;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* has given property ?                                                       */
