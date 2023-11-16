@@ -920,6 +920,9 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
   // get the ordered groupBy aggregate expr from OpDef
   Stz* sOrdAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
+	// get the key map
+	KeyMap* pKeyMap = pOpDef->m_pKeyMap;
+
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
@@ -936,6 +939,33 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 
 	// set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
+
+	// set the colMap (key information)
+
+	// set the keyMap (key information)
+	pOpSketch->vCopyKeyMap(pKeyMap);
+
+	/*
+pOpSketch->m_pColMap = new ColMap;
+
+pOpSketch->m_pColMap->m_nCols = 1;
+pOpSketch->m_pColMap->m_axCols[0].m_i_EmittedCol = 0;
+
+
+class ColKey : public Object
+{
+		static const i8 C_COLKEY = 128;
+
+public:
+i8 m_nCols;
+
+struct {
+		i8   m_i_EmittedCol;  // emitted column $n
+		i8   m_i_Cell;        // cell (base 0) of key
+
+} m_axCols[C_COLKEY];
+
+*/
 
 	// generate the expression stacks
 	pOpSketch->vGenerateExprStacks(sOrdAggExpr);
@@ -1101,7 +1131,7 @@ OpSketch* Stencil::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   Stz* sGbyAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the columns required
-  ColMap* pColsMap = pOpDef->m_pColMap_gbyAgg;
+  ColMap* pColMap = pOpDef->m_pColMap_gbyAgg;
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -1127,7 +1157,7 @@ OpSketch* Stencil::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the colsMap (payload information)
-  pOpSketch->vCopyColMap(pColsMap);
+  pOpSketch->vCopyColMap(pColMap);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sGbyAggExpr);

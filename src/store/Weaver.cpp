@@ -492,7 +492,7 @@ void Weaver::vArg_hash(String* psOpArgs, Card_Hash* pCard_Hash)
   Card_Term* p_term = pCard_Hash->pSub_term();
 
   psOpArgs->vCatSprint("\"type %s %s\""_Stz,
-                       aCT[p_term->xTypeId().eCTVal()],
+                       aCT[p_term->eCTVal()],
                        p_term->szFacet(SF_NONE));
 }
 

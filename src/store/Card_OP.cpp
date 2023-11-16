@@ -815,7 +815,7 @@ void Card_OP::vRpn_hash(String* psRpnExpr, Card_Hash* p_hash)
   Card_Term* p_term = p_hash->pSub_term();
 
   psRpnExpr->vCatSprint("type %s %s"_Stz,
-                        aCT[p_term->xTypeId().eCTVal()],
+                        aCT[p_term->eCTVal()],
                         p_term->szFacet(SF_NONE));
 }
 
@@ -1412,7 +1412,7 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   psRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[p_rpnCalc->xTypeId().eCTVal()]);
+                        aCT[p_rpnCalc->eCTVal()]);
 
   if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
     RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));

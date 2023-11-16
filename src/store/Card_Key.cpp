@@ -102,7 +102,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(CT_NONE != this->xTypeId().eCTVal());
+  RASSERT(CT_NONE != this->eCTVal());
 
   if (xTypeId() != p_key_arg->xTypeId())
     return false;

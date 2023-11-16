@@ -358,7 +358,7 @@ void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  s32 sType_short = szCT_char[xTypeId().eCTVal()];
+  s32 sType_short = szCT_char[eCTVal()];
 
   pRibbon->vSprintSnippet(false,"%c%c%s%lld]%s %s"_Stz,
                           cMark1(),

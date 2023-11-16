@@ -69,7 +69,7 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
-  RASSERT(CT_NONE != pExpr_corr->xTypeId().eCTVal());
+  RASSERT(CT_NONE != pExpr_corr->eCTVal());
 
   Card_Expr*    p_expr_gby = new Card_Expr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
@@ -92,7 +92,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 {
   _static_
 
-  RASSERT(CT_NONE != p_expr_gby->xTypeId().eCTVal());
+  RASSERT(CT_NONE != p_expr_gby->eCTVal());
 
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
@@ -121,7 +121,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   //p_expr->vDump();
 
-  RASSERT(CT_NONE != p_expr->xTypeId().eCTVal());
+  RASSERT(CT_NONE != p_expr->eCTVal());
 
   Symbol xSymbol_Dn(SF_EXP_COL, i_Col);
 
@@ -444,7 +444,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // primary facet
 
-  s32 sType_short = szCT_char[pSymbol->xTypeId().eCTVal()];
+  s32 sType_short = szCT_char[eCTVal()];
   i8 i_Facet = pSymbol->i_Facet(SF_EXP_COL);
 
   if (C_UNKNOWN != i_Facet) {
