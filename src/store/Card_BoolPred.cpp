@@ -56,7 +56,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 {
   _static_
 
-  p_rpnCalc_arg->vDump(__func__,"RPNCALC_ARG"_Stz);
+  //p_rpnCalc_arg->vDump(__func__,"RPNCALC_ARG"_Stz);
 
   Card_BoolPred* p_boolPred_new = new Card_BoolPred;
 
@@ -85,9 +85,9 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 
   while (Card_Term* p_term_rpn = _pCard_Term(p_rpnCalc_arg->pPopChild())) {
 
-    p_boolPred_new->vDump(__func__,"BOOLPRED_NEW"_Stz);
-    pStack_conj->vDump(__func__, "STACK_OP"_Stz);
-    pStack_term->vDump(__func__,"STACK_TERM"_Stz);
+//    p_boolPred_new->vDump(__func__,"BOOLPRED_NEW"_Stz);
+//    pStack_conj->vDump(__func__, "STACK_OP"_Stz);
+//    pStack_term->vDump(__func__,"STACK_TERM"_Stz);
 
     eTE eTerm_rpn = p_term_rpn->eEvalTerm();
     switch (eTerm_rpn) {

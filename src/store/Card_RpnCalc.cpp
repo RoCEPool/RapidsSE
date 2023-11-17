@@ -165,6 +165,9 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
 
     xTerm.p_term()->vCast(p_rpnCalc_found);
   }
+
+  if (bIsScalarCol())
+    vCast(pGetTerm(0)->xCast());
 }
 
 /*----------------------------------------------------------------------------*/
