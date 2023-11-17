@@ -514,7 +514,6 @@ contains rows:
   (  21,4.34)
 
 // TODO V2 : ORDAGG
-/*
 // multi-column ordagg with multi-col indexscan
 /optimise_passthru 
 pipeline Q
@@ -563,7 +562,6 @@ contains rows:
  (1493,193,35.00)
  (1495,95,59.00)
  (1495,195,28.00)
-*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

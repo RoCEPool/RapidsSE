@@ -472,6 +472,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
         if (m_eSketchKind == SK_ORDAGG && iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
+				//else
+				//  m_pOrdAggStack->vPushStz("_ASSIGN(bKeyMatch)"_Stz);
       }
       else if (ePreExp == PE_GKY) {
         vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL);
@@ -534,6 +536,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       iGbyCols++;
 
       if (m_eSketchKind == SK_ORDAGG) {
+				m_pOrdAggStack->vPushStz("_ASSIGN(bKeyMatch)"_Stz);
         if (iGbyCols == 2 || (iGbyCols > 2 && iGbyCols % 2))
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aDynamicT->m_iErrorCode)"_Stz);
       }
@@ -2042,8 +2045,8 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         sPush = aFM[eMacro_Eq[eDatum][eDatum]];
         sPush.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
         m_pOrdAggStack->vPushStz(sPush);
-				sPush.vSprint("_ASSIGN(bKeyMatch)\n"_Stz);
-				m_pOrdAggStack->vPushStz(sPush);
+				//sPush.vSprint("_ASSIGN(bKeyMatch)\n"_Stz);
+				//m_pOrdAggStack->vPushStz(sPush);
         break;
       }
 
