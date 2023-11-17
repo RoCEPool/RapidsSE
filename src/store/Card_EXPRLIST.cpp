@@ -320,8 +320,8 @@ void Card_EXPRLIST::vShortForm(String* pString)
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
 StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
-                                         Card_Key* p_key,
-                                         Card* p_OP)
+                                       Card_Key* p_key,
+                                       Card* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -483,6 +483,33 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
   }
 
   return pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the casts of this exprList                                          */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vUpdate_cast(Card_EXPRLIST *p_exprList_ref)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vDump(__func__,"vUpdate_cast"_Stz);
+  p_exprList_ref->vDump(__func__,"p_exprList_ref"_Stz);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card_Expr* p_expr_this = xKid.p_expr();
+    if (!p_expr_this->bIsScalarCol())
+      continue;
+
+    Symbol* pSymbol = p_expr_this->pSymbol();
+
+    Card_Expr* p_expr_ref = p_exprList_ref->pFind_expr_Matches(pSymbol);
+
+    if (p_expr_ref) {
+      p_expr_this->vCast(p_expr_ref->xCast());
+      p_expr_this->pSub_rpnCalc()->vCast(p_expr_ref->xCast());
+      p_expr_this->pSub_rpnCalc()->pGetTerm(0)->vCast(p_expr_ref->xCast());
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

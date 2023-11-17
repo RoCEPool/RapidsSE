@@ -25,6 +25,7 @@ namespace STORE
     void vEnsureTypeId_expCol(CardIter* pCI);
     Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
+    Symbol* pFirstNmdCol(void);
     Symbol* pFirstStmCol(void);
     Symbol* pFirstTblCol(void);
     Card_Term* pGetTerm(i8 i_Term);

@@ -196,6 +196,21 @@ Symbol* Card_RpnCalc::pFirstKeyCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return first key col in this rpn sequence                                  */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_RpnCalc::pFirstNmdCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->bIsNmdCol())
+      return xKid.p_term()->pSymbol();
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* return first stmCol in this rpn sequence                                   */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_RpnCalc::pFirstStmCol(void)
@@ -360,13 +375,14 @@ void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   s32 sType_short = szCT_char[eCTVal()];
 
-  pRibbon->vSprintSnippet(false,"%c%c%s%lld]%s %s"_Stz,
+  pRibbon->vSprintSnippet(false,"%c%c%s%lld]%s %s%lld"_Stz,
                           cMark1(),
                           cMark2(),
                           Stz::szDots(iDepth - 1),
                           m_i_Child,
                           szCardNm(),
-                          sType_short.szStz());
+                          sType_short.szStz(),
+                          m_xSymbol.xCast().m_nTypeLength);
 }
 
 /*----------------------------------------------------------------------------*/

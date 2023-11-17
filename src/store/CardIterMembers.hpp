@@ -102,7 +102,7 @@ namespace STORE
     Card_IndexNm *       p_indexNm;
     Card_IndexScan *     p_indexScan;
     Card_Inflate *       p_inflate;
-    Card_Injectable *      p_injected;
+    Card_Injectable *      p_injectable;
 
     Card_JoinCast *      p_joinCast;
     Card_JoinEstimate *  p_joinEstimate;

@@ -294,6 +294,18 @@ Symbol* Card_Expr::pFirst_keyCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first key col                                                          */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pFirst_nmdCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* p_nmdCol = pSub_rpnCalc()->pFirstNmdCol();
+
+  return p_nmdCol;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get first tbl col                                                          */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_Expr::pFirst_tblCol(void)
@@ -498,15 +510,18 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
   i8 i_Facet = pSymbol->i_Facet(SF_EXP_COL);
 
   if (C_UNKNOWN != i_Facet) {
-    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s~%lld"_Stz,
+    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
                             cMark1(),
                             cMark2(),
                             Stz::szDots(iDepth - 1),
                             m_i_Child,
                             szCardNm(),
                             szFacet(SF_EXP_COL),
+
+                            i_Facet,
                             sType_short.szStz(),
-                            i_Facet);
+                            pSymbol->xCast().m_nTypeLength
+                            );
   }
   else {
 //    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s"_Stz,

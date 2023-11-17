@@ -35,7 +35,7 @@ namespace STORE
     eTE  eEvalTerm(void);
     i8   iGetOdn(void);
     char cGetTblSyn(void);
-    bool bIsColNm(void);    // name
+    bool bIsNmdCol(void);    // name
     bool bIsColSym(void);   // $n or $c.n
     bool bIsKeyCol(void);   // $Kn
     bool bIsSqyPrm(void);   // %n

@@ -322,11 +322,11 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 /*----------------------------------------------------------------------------*/
 /* is this term a column-name ?                                               */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsColNm(void)
+bool Card_Term::bIsNmdCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bIs_Nmd_Col())
+  if (pSymbol()->bHasFacet(SF_NMD_COL))
     return true;
 
   return false;
@@ -417,10 +417,11 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 
       if (aFacet->m_sChrSeq.bSame("$1"_Stz))
         vDebugPoint();
-      pRibbon->vSprintSnippet(true,"%s~%lld%s"_Stz,
+      pRibbon->vSprintSnippet(true,"%s~%lld%s%lld"_Stz,
                               aFacet->m_sChrSeq.azChar(),
                               i_Facet,
-                              sType_short.szStz());
+                              sType_short.szStz(),
+                              m_xSymbol.xCast().m_nTypeLength);
     }
   }
 

@@ -1383,7 +1383,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_INDEXSCAN:        return G.p_indexScan;
     case CK_INFLATE:          return G.p_inflate;
-    case CK_INJECTABLE:         return G.p_injected;
+    case CK_INJECTABLE:         return G.p_injectable;
 
     case CK_JOINCAST:         return G.p_joinCast;
     case CK_JOINESTIMATE:     return G.p_joinEstimate;
@@ -1617,7 +1617,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXNM:          G.p_indexNm           = _pCard_IndexNm(pCard); break;
     case CK_INDEXSCAN:        G.p_indexScan         = _pCard_IndexScan(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_INJECTABLE:       G.p_injected          = _pCard_Injectable(pCard); break;
+    case CK_INJECTABLE:       G.p_injectable          = _pCard_Injectable(pCard); break;
     case CK_INFLATE:          G.p_inflate           = _pCard_Inflate(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
 
@@ -1856,7 +1856,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_indexNm          = nullptr;
   G.p_indexScan        = nullptr;
   G.p_inflate          = nullptr;
-  G.p_injected         = nullptr;
+  G.p_injectable         = nullptr;
 
   G.p_joinCast         = nullptr;
   G.p_joinOrder        = nullptr;
@@ -2639,7 +2639,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_INDEXNM:      G.p_indexNm->vValidate(this, iDepth, pCard);  break;
       case CK_INDEXSCAN:    G.p_indexScan->vValidate(this, iDepth, pCard);  break;
       case CK_INFLATE:      G.p_inflate->vValidate(this, iDepth, pCard);  break;
-      case CK_INJECTABLE:     G.p_injected->vValidate(this, iDepth, pCard);  break;
+      case CK_INJECTABLE:     G.p_injectable->vValidate(this, iDepth, pCard);  break;
 
       case CK_JOINCAST:     G.p_joinCast->vValidate(this, iDepth, pCard);  break;
       case CK_JOINESTIMATE: G.p_joinEstimate->vValidate(this, iDepth, pCard);  break;

@@ -33,6 +33,7 @@ namespace STORE
     void vEnsureTypeId_expCol(CardIter* pCI);
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
+    Symbol* pFirst_nmdCol(void);
     Symbol* pFirst_tblCol(void);
     Symbol* pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
