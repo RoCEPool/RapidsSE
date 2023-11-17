@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* _ray179                                                                   */
+/*============================================================================*/
+
+// NOTE: Optimiser crashes during validation
+
+// QA/interval/intervalA.test (line 13)
+
+create table interval6(a date,b timestamp,c time);
+load interval6 "../DATA/QA/interval/interval6.csv";
+
+/weaved
+/optimiser_trace
+/pipeline_Def
+select a+interval '1' month,count(*) from interval6 group by a+interval '1' month;
+
+/*
+rows:
+  (date '2023-02-28',1)
+  (date '2023-05-30',1)
+  (date '2023-03-28',1)
+  (date '2000-03-29',1)
+  (date '2000-02-29',2)
+  (date '2021-12-12',1)
+  (date '2000-03-28',1)
+*/
+
+drop tbale interval6;
