@@ -1182,7 +1182,7 @@ OpSketch* Stencil::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   Stz* sSortExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the columns required
-  ColMap* pColsMap = pOpDef->m_pColMap_sort;
+  ColMap* pColMap = pOpDef->m_pColMap_sort;
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -1208,7 +1208,7 @@ OpSketch* Stencil::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the colsMap (payload information)
-  pOpSketch->vCopyColMap(pColsMap);
+  pOpSketch->vCopyColMap(pColMap);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sSortExpr);
