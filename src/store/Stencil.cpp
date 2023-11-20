@@ -242,9 +242,22 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// generate the code for inflateRow before handling the current operator
+//		if (!bInflateGenerated) {
+//
+//			m_eHandlerKind = HK_ROWBUFFER;
+//			m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
+//
+//			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//			pOpSketch = pSketchInflateRow(pStageDef, pOpDef);
+//			vAppend(pOpSketch);
+//
+//			bInflateGenerated = true;
+//			m_ePreviousStencil = SR_IT;
+//		}
+
 		if (!bInflateGenerated) {
 
-			m_eHandlerKind = HK_ROWBUFFER;
+			m_eHandlerKind = HK_PDSROWBUFFER;
 			m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

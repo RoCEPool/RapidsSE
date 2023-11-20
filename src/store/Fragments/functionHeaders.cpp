@@ -121,6 +121,9 @@ int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
   return 0;
 }
 
+//function-__FUNCTION_PDSROW__
+
+// marker-start
 /*--------------------------------------------------------------------*/
 /* flattened function -- PDSROWBUFFER HANDLER                         */
 /*--------------------------------------------------------------------*/

@@ -3788,9 +3788,28 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
     }
 
     case CN_PDS: {
-      Pds* pPds = _pPds(pOperand);
-      delete pPds;
-      break;
+			Pds* pPdsRowBuffer = _pPds(pOperand);
+			// permanent row buffers not to be deleted
+			if (pPdsRowBuffer->bIsPermanent()) {
+				// ensure the output queue flag is set to false
+
+				// if the output queue flag is false, then this rowbuffer
+				// is not part of m_pOutputQueue in Output.cpp
+				// someone is trying to delete it, but since it is permanent
+				// we only need to drop the hashmapentry lock
+				if(! pPdsRowBuffer->bOutputQueued())
+					AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+
+				// if the output queue flag is true, then this rowbuffer
+				// should not have any locks on it
+
+				pPdsRowBuffer->vOutputQueued(false);
+				RASSERT( ! AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
+				break;
+			}
+
+			//pPdsRowBuffer->vDecidedDelete();
+			break;
     }
 
     case CN_PLANOPERAND: {
@@ -3803,7 +3822,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       delete pProfile;
       break;
     }
-      
+
     case CN_ROWBUFFER: {
       RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
       // permanent row buffers not to be deleted

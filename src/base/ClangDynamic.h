@@ -58,6 +58,9 @@ struct Dynamic_T
   // rowBuffer T
   void* m_aRowBuffer;
 
+	// pdsRowBuffer T
+	void* m_aPdsRowBuffer;
+
   // expression stack
   i8 m_aW[256];
 

@@ -40,6 +40,8 @@ extern void vExtern_RunningHash(i8* piKeyHash, i8 iMixVal) __attribute__((weak_i
 extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
 extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 
+extern void* aExtern_PdsRowBufferCellArray(void* aPdsRowBuffer, i8 iRow) __attribute__((weak_import));
+
 extern void* aExtern_PotAllotRow(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
 extern void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
 extern void  vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) __attribute__((weak_import));

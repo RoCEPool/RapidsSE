@@ -1170,6 +1170,7 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, b
 			else
 			  szFunction = "vIndexScanEnd";
       break;
+			/*
     case HK_PDSROWBUFFER:
       if (bHasOrdAgg) {
         if (bHasIndexInflate)
@@ -1183,7 +1184,9 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, b
         else
           szFunction = "vInflatePdsRowEnd";
       }
+      */
     case HK_ROWBUFFER:
+		case HK_PDSROWBUFFER:
 			if (bHasOrdAgg) {
 				if (bHasIndexInflate)
 					szFunction = "vInflateRowIndexEnd_OA";
@@ -1291,12 +1294,15 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
     case HK_CRWBUFFER:
       szFunction = "vCrwContinue";
       break;
+			/*
     case HK_PDSROWBUFFER:
       if (bHasIndexInflate)
         szFunction = "vPdsRowIndexContinue";
       else
         szFunction = "vPdsRowContinue";
       break;
+      */
+		case HK_PDSROWBUFFER:
     case HK_ROWBUFFER:
       if (bHasIndexInflate)
         szFunction = "vRowIndexContinue";
