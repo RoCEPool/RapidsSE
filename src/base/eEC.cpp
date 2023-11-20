@@ -171,6 +171,7 @@ Stz* aEC[EC_ENUMS] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
+  /* EC_MAX_IDENTIFIER_NAME_LENGTH    */ (Stz*)"max identifier name length allowed is 255 bytes",
   /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 255 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
   /* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"max column name length allowed is 255 bytes",
@@ -464,6 +465,7 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_LOW_MEMORY                    */ (Stz*)"EC_LOW_MEMORY",
 
   /* _M_ */
+  /* EC_MAX_IDENTIFIER_NAME_LENGTH    */ (Stz*)"EC_MAX_IDENTIFIER_NAME_LENGTH",
   /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"EC_MAX_INDEX_NAME_LENGTH",
   /* EC_MAX_INDEXES                   */ (Stz*)"EC_MAX_INDEXES",
   /* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"EC_MAX_COLUMN_NAME_LENGTH",
@@ -765,6 +767,7 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
+  /* EC_MAX_IDENTIFIER_NAME_LENGTH    */ (Stz*)"max identifier name length allowed is 255 bytes",
   /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 255 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
   /* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"max column name length allowed is 255 bytes",

@@ -260,7 +260,8 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
 
       // set the job name as the pipeline names
       s256 sPipelineName;
-      vCleanString(pCtx->statementChoice()->pipelineCmd()->pipelineName, sPipelineName);
+      vCleanString(pCtx->statementChoice()->pipelineCmd()->pipelineName,
+                   sPipelineName, EC_MAX_IDENTIFIER_NAME_LENGTH);
       m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, sPipelineName);
       // fall out
 
@@ -449,8 +450,8 @@ antlrcpp::Any CommandParser::visitAnidxCmd(Parser::sqlParser::AnidxCmdContext *p
   // Add command parameters
   s256 sTableName;
   s256 sIndexName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName, EC_MAX_INDEX_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
@@ -465,7 +466,7 @@ antlrcpp::Any CommandParser::visitAntblCmd(Parser::sqlParser::AntblCmdContext *p
 {
   // Add command parameters
   s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
@@ -483,7 +484,7 @@ antlrcpp::Any CommandParser::visitBpaCmd(Parser::sqlParser::BpaCmdContext *pCtx)
     Stz* szAnalysisType;
     s256 sBuf;
 
-    vCleanString(pCtx->type, sBuf);
+    vCleanString(pCtx->type, sBuf, EC_MAX_IDENTIFIER_NAME_LENGTH);
     szAnalysisType = sBuf.szStz();
 
     m_pArgValues->vAppendToken(szAnalysisType, TN_STRING);
@@ -529,8 +530,8 @@ antlrcpp::Any CommandParser::visitCompactIdxCmd(Parser::sqlParser::CompactIdxCmd
   // Add command parameters
   s256 sTableName;
   s256 sIndexName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName, EC_MAX_INDEX_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
@@ -545,7 +546,7 @@ antlrcpp::Any CommandParser::visitCountCmd(Parser::sqlParser::CountCmdContext *p
 {
   // Add command parameters
   s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
@@ -561,7 +562,7 @@ antlrcpp::Any CommandParser::visitCreateIndexCmd(Parser::sqlParser::CreateIndexC
 
   // First append a token for the table name
   s256 sIndexName;
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName, EC_MAX_INDEX_NAME_LENGTH);
   m_pArgValues->vAppendToken(sIndexName, TN_STRING);
 
   // Now reconstitute a string for the rest of the statement.
@@ -637,7 +638,7 @@ antlrcpp::Any CommandParser::visitCreateTableCmd(Parser::sqlParser::CreateTableC
 
   // First append a token for the table name
   s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
   m_pArgValues->vAppendToken(sTableName, TN_STRING);
 
   // Now reconstitute a string for the rest of the statement.
@@ -672,7 +673,7 @@ antlrcpp::Any CommandParser::visitDocolCmd(Parser::sqlParser::DocolCmdContext* p
   // Add command parameters
   s256 sCommand;
 
-  vCleanString(pCtx->identifier(), sCommand);
+  vCleanString(pCtx->identifier(), sCommand, EC_MAX_IDENTIFIER_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sCommand.szStz(), TN_STRING);
 
@@ -689,7 +690,7 @@ antlrcpp::Any CommandParser::visitDloadCmd(Parser::sqlParser::DloadCmdContext *p
   s256 sFilePath;
   s256 sPathTag;
 
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
   // There can be one or more file paths. These need to be added as tags
@@ -697,7 +698,7 @@ antlrcpp::Any CommandParser::visitDloadCmd(Parser::sqlParser::DloadCmdContext *p
   i8 i = 0;
   for (auto pStrLitCtx : pCtx->stringLiteral()) {
     sPathTag.vSprint("<path%lld>"_Stz, i);
-    vCleanString(pStrLitCtx, sFilePath);
+    vCleanString(pStrLitCtx, sFilePath, EC_MAX_IDENTIFIER_NAME_LENGTH);
     m_pCurStmtTagSet->vAppend(sPathTag.szStz(), sFilePath.szStz());
     ++i;
   }
@@ -721,8 +722,8 @@ antlrcpp::Any CommandParser::visitDropIndexCmd(Parser::sqlParser::DropIndexCmdCo
   s256 sTableName;
   s256 sIndexName;
 
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName, EC_MAX_INDEX_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
@@ -737,7 +738,7 @@ antlrcpp::Any CommandParser::visitDropTableCmd(Parser::sqlParser::DropTableCmdCo
 {
   // Add command parameters
   s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
@@ -768,8 +769,8 @@ antlrcpp::Any CommandParser::visitExportCmd(Parser::sqlParser::ExportCmdContext*
   s256 sTableName;
   s256 sFilePath;
 
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->filePath->start, sFilePath);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
+  vCleanString(pCtx->filePath->start, sFilePath, EC_MAX_IDENTIFIER_NAME_LENGTH);
   ASSERT(pCtx->filePath->children.size() == 1);
 
   m_pArgValues->vAppendToken(sTableName, TN_STRING);
@@ -784,10 +785,10 @@ antlrcpp::Any CommandParser::visitFileCmd(Parser::sqlParser::FileCmdContext *pCt
 {
   s256 sFilePath;
   if (pCtx->identifier()) {
-    vCleanString(pCtx->identifier(), sFilePath);
+    vCleanString(pCtx->identifier(), sFilePath, EC_MAX_IDENTIFIER_NAME_LENGTH);
   } else {
     ASSERT(pCtx->stringLiteral());
-    vCleanString(pCtx->stringLiteral(), sFilePath);
+    vCleanString(pCtx->stringLiteral(), sFilePath, EC_MAX_IDENTIFIER_NAME_LENGTH);
   }
 
   // Handle an empty path
@@ -891,8 +892,8 @@ antlrcpp::Any CommandParser::visitLoadCmd(Parser::sqlParser::LoadCmdContext *pCt
   s256 sTableName;
   s256 sFilePath;
 
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->filePath, sFilePath);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
+  vCleanString(pCtx->filePath, sFilePath, EC_MAX_IDENTIFIER_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
@@ -913,7 +914,7 @@ antlrcpp::Any CommandParser::visitLoadOption(Parser::sqlParser::LoadOptionContex
   s256 sOptionValue;
 
   vCleanTag(pCtx->loadOptionKeys()->start, sOptionName);
-  vCleanString(pCtx->loadValue, sOptionValue);
+  vCleanString(pCtx->loadValue, sOptionValue, EC_MAX_IDENTIFIER_NAME_LENGTH);
 
   // load option should be lower case
   sOptionName.vToLower();
@@ -932,8 +933,8 @@ antlrcpp::Any CommandParser::visitLoadReplicatedCmd(Parser::sqlParser::LoadRepli
   s256 sTableName;
   s256 sFilePath;
 
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->filePath, sFilePath);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
+  vCleanString(pCtx->filePath, sFilePath, EC_MAX_IDENTIFIER_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
@@ -972,7 +973,7 @@ antlrcpp::Any CommandParser::visitLscolCmd(Parser::sqlParser::LscolCmdContext *p
 {
   // Add command parameters
   s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
@@ -985,7 +986,7 @@ antlrcpp::Any CommandParser::visitLsidxCmd(Parser::sqlParser::LsidxCmdContext *p
 {
   // Add command parameters
   s256 sIdentifier;
-  vCleanString(pCtx->tableName()->identifier(), sIdentifier);
+  vCleanString(pCtx->tableName()->identifier(), sIdentifier, EC_MAX_TABLE_NAME_LENGTH);
   m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
@@ -999,8 +1000,8 @@ antlrcpp::Any CommandParser::visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdCont
   // Add command parameters
   s256 sTableName;
   s256 sIndexName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName, EC_MAX_INDEX_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
@@ -1015,7 +1016,7 @@ antlrcpp::Any CommandParser::visitLsptncolCmd(Parser::sqlParser::LsptncolCmdCont
 {
   // Add command parameters
   s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
@@ -1071,8 +1072,8 @@ antlrcpp::Any CommandParser::visitSzidxCmd(Parser::sqlParser::SzidxCmdContext *p
   s256 sTableName;
   s256 sIndexName;
 
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName, EC_MAX_INDEX_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
@@ -1087,7 +1088,7 @@ antlrcpp::Any CommandParser::visitSztblCmd(Parser::sqlParser::SztblCmdContext *p
 {
   // Add command parameters
   s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
@@ -1111,7 +1112,7 @@ antlrcpp::Any CommandParser::visitTruncateCmd(Parser::sqlParser::TruncateCmdCont
 {
   // Add command parameters
   s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
@@ -1127,10 +1128,10 @@ antlrcpp::Any CommandParser::visitUnloadCmd(Parser::sqlParser::UnloadCmdContext 
   s256 sFilePrefix;
 
   if (pCtx->identifier()) {
-    vCleanString(pCtx->identifier(), sFilePrefix);
+    vCleanString(pCtx->identifier(), sFilePrefix, EC_MAX_IDENTIFIER_NAME_LENGTH);
   } else {
     ASSERT(pCtx->stringLiteral());
-    vCleanString(pCtx->stringLiteral(), sFilePrefix);
+    vCleanString(pCtx->stringLiteral(), sFilePrefix, EC_MAX_IDENTIFIER_NAME_LENGTH);
   }
 
   // Handle an empty path
@@ -1278,46 +1279,46 @@ Text* CommandParser::pCleanString(antlr4::Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* Clean up a string literal. Returned string is written to the given buffer  */
 /*----------------------------------------------------------------------------*/
-void CommandParser::vCleanString(Parser::sqlParser::StringLiteralContext *pCtx, s256& sBuf)
+void CommandParser::vCleanString(Parser::sqlParser::StringLiteralContext *pCtx, s256& sBuf, eEC eLenErr)
 {
   if (!pCtx) {
     return;
   }
 
   std::string idStr = pCtx->getText();
-  vCleanString(idStr, sBuf);
+  vCleanString(idStr, sBuf, eLenErr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Clean up a string literal. Returned string is written to the given buffer  */
 /*----------------------------------------------------------------------------*/
-void CommandParser::vCleanString(Parser::sqlParser::IdentifierContext *pCtx, s256& sBuf)
+void CommandParser::vCleanString(Parser::sqlParser::IdentifierContext *pCtx, s256& sBuf, eEC eLenErr)
 {
   if (!pCtx) {
     return;
   }
 
   std::string idStr = pCtx->getText();
-  vCleanString(idStr, sBuf);
+  vCleanString(idStr, sBuf, eLenErr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Clean up a string literal. Returned string is written to the given buffer  */
 /*----------------------------------------------------------------------------*/
-void CommandParser::vCleanString(antlr4::Token* pToken, s256& sBuf)
+void CommandParser::vCleanString(antlr4::Token* pToken, s256& sBuf, eEC eLenErr)
 {
   if (!pToken) {
     return;
   }
 
   std::string sStr = pToken->getText();
-  vCleanString(sStr, sBuf);
+  vCleanString(sStr, sBuf, eLenErr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Clean up a string literal. Returned string is written to the given buffer  */
 /*----------------------------------------------------------------------------*/
-void CommandParser::vCleanString(std::string& sStr, s256& sBuf)
+void CommandParser::vCleanString(std::string& sStr, s256& sBuf, eEC eLenErr)
 {
   i8 len = sStr.length();
 
@@ -1326,7 +1327,11 @@ void CommandParser::vCleanString(std::string& sStr, s256& sBuf)
   }
 
   // Ensure that the string is short enough to fit in the buffer
-  RASSERT(len < sBuf.nSpace());
+  if (len >= sBuf.nSpace()) {
+    Parser::SemanticException::vThrow(eLenErr,
+                                      ": \"%s\""_Stz,
+                                      sStr.c_str());
+  }
 
   // Remove single quotes
   if (sStr.at(0) == '\'' && sStr.at(len - 1) == '\'') {

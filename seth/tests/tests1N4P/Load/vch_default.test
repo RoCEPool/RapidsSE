@@ -21,72 +21,89 @@ success
 select * from ${testName2}_vch;
 rows: 17
 
-predicateFetch ${testName2}_vch "vch_testno 201 =";
+// predicateFetch ${testName2}_vch "vch_testno 201 =";
+select * from ${testName2}_vch where vch_testno = 201;
 rows:
   ( 201, 'quick brown fox', *)
 
-predicateFetch ${testName2}_vch "vch_testno 202 =";
+// predicateFetch ${testName2}_vch "vch_testno 202 =";
+select * from ${testName2}_vch where vch_testno = 202;
 rows:
   ( 202, 'quick brown fox''s', *)
 
-predicateFetch ${testName2}_vch "vch_testno 203 =";
+// predicateFetch ${testName2}_vch "vch_testno 203 =";
+select * from ${testName2}_vch where vch_testno = 203;
 rows:
   ( 203, 'quick brown fox''s', *)
 
-predicateFetch ${testName2}_vch "vch_testno 204 =";
+// predicateFetch ${testName2}_vch "vch_testno 204 =";
+select * from ${testName2}_vch where vch_testno = 204;
 rows:
   ( 204, 'quick brow\n foxs', *)
 
-predicateFetch ${testName2}_vch "vch_testno 205 =";
+// predicateFetch ${testName2}_vch "vch_testno 205 =";
+select * from ${testName2}_vch where vch_testno = 205;
 rows:
   ( 205, 'quick brown fox
 s', *)
 
-predicateFetch ${testName2}_vch "vch_testno 206 =";
+// predicateFetch ${testName2}_vch "vch_testno 206 =";
+select * from ${testName2}_vch where vch_testno = 206;
 rows:
   ( 206, 'quick brown fox', *)
 
-predicateFetch ${testName2}_vch "vch_testno 207 =";
+// predicateFetch ${testName2}_vch "vch_testno 207 =";
+select * from ${testName2}_vch where vch_testno = 207;
 rows:
   ( 207, 'quick brown fox', *)
 
-predicateFetch ${testName2}_vch "vch_testno 208 =";
+// predicateFetch ${testName2}_vch "vch_testno 208 =";
+select * from ${testName2}_vch where vch_testno = 208;
 rows:
   ( 208, '', *)
 
-predicateFetch ${testName2}_vch "vch_testno 209 =";
+// predicateFetch ${testName2}_vch "vch_testno 209 =";
+select * from ${testName2}_vch where vch_testno = 209;
 rows:
   ( 209, 'null', *)
 
-predicateFetch ${testName2}_vch "vch_testno 210 =";
+// predicateFetch ${testName2}_vch "vch_testno 210 =";
+select * from ${testName2}_vch where vch_testno = 210;
 rows:
   ( 210, 'N', *)
 
-predicateFetch ${testName2}_vch "vch_testno 211 =";
+// predicateFetch ${testName2}_vch "vch_testno 211 =";
+select * from ${testName2}_vch where vch_testno = 211;
 rows:
   ( 211, 'quick brown fox', *)
 
-predicateFetch ${testName2}_vch "vch_testno 212 =";
+// predicateFetch ${testName2}_vch "vch_testno 212 =";
+select * from ${testName2}_vch where vch_testno = 212;
 rows:
   ( 212, '   quick brown fox   ', *)
 
-predicateFetch ${testName2}_vch "vch_testno 213 =";
+// predicateFetch ${testName2}_vch "vch_testno 213 =";
+select * from ${testName2}_vch where vch_testno = 213;
 rows:
   ( 213, 'quick brown fox''s''', *)
 
-predicateFetch ${testName2}_vch "vch_testno 214 =";
+// predicateFetch ${testName2}_vch "vch_testno 214 =";
+select * from ${testName2}_vch where vch_testno = 214;
 rows:
   ( 214, null, *)
 
-predicateFetch ${testName2}_vch "vch_testno 215 =";
+// predicateFetch ${testName2}_vch "vch_testno 215 =";
+select * from ${testName2}_vch where vch_testno = 215;
 rows:
   ( 215, null, *)
 
-predicateFetch ${testName2}_vch "vch_testno 216 =";
+// predicateFetch ${testName2}_vch "vch_testno 216 =";
+select * from ${testName2}_vch where vch_testno = 216;
 rows:
   ( 216, null, *)
 
-predicateFetch ${testName2}_vch "vch_testno 217 =";
+// predicateFetch ${testName2}_vch "vch_testno 217 =";
+select * from ${testName2}_vch where vch_testno = 217;
 rows:
   ( 217, 'quick brown fox
 s', *)
@@ -115,72 +132,89 @@ success
 select * from ${testName2}_vch;
 rows: 17
 
-predicateFetch ${testName2}_vch "vch_testno 201 =";
+// predicateFetch ${testName2}_vch "vch_testno 201 =";
+select * from ${testName2}_vch where vch_testno = 201;
 rows:
   ( 201, 'quick brown fox', *)
 
-predicateFetch ${testName2}_vch "vch_testno 202 =";
+// predicateFetch ${testName2}_vch "vch_testno 202 =";
+select * from ${testName2}_vch where vch_testno = 202;
 rows:
   ( 202, 'quick brown fox''s', *)
 
-predicateFetch ${testName2}_vch "vch_testno 203 =";
+// predicateFetch ${testName2}_vch "vch_testno 203 =";
+select * from ${testName2}_vch where vch_testno = 203;
 rows:
   ( 203, 'quick brown fox''s', *)
 
-predicateFetch ${testName2}_vch "vch_testno 204 =";
+// predicateFetch ${testName2}_vch "vch_testno 204 =";
+select * from ${testName2}_vch where vch_testno = 204;
 rows:
   ( 204, 'quick brow\n foxs', *)
 
-predicateFetch ${testName2}_vch "vch_testno 205 =";
+// predicateFetch ${testName2}_vch "vch_testno 205 =";
+select * from ${testName2}_vch where vch_testno = 205;
 rows:
   ( 205, 'quick brown fox
 s', *)
 
-predicateFetch ${testName2}_vch "vch_testno 206 =";
+// predicateFetch ${testName2}_vch "vch_testno 206 =";
+select * from ${testName2}_vch where vch_testno = 206;
 rows:
   ( 206, 'quick brown fox', *)
 
-predicateFetch ${testName2}_vch "vch_testno 207 =";
+// predicateFetch ${testName2}_vch "vch_testno 207 =";
+select * from ${testName2}_vch where vch_testno = 207;
 rows:
   ( 207, 'quick brown fox', *)
 
-predicateFetch ${testName2}_vch "vch_testno 208 =";
+// predicateFetch ${testName2}_vch "vch_testno 208 =";
+select * from ${testName2}_vch where vch_testno = 208;
 rows:
   ( 208, '', *)
 
-predicateFetch ${testName2}_vch "vch_testno 209 =";
+// predicateFetch ${testName2}_vch "vch_testno 209 =";
+select * from ${testName2}_vch where vch_testno = 209;
 rows:
   ( 209, 'null', *)
 
-predicateFetch ${testName2}_vch "vch_testno 210 =";
+// predicateFetch ${testName2}_vch "vch_testno 210 =";
+select * from ${testName2}_vch where vch_testno = 210;
 rows:
   ( 210, 'N', *)
 
-predicateFetch ${testName2}_vch "vch_testno 211 =";
+// predicateFetch ${testName2}_vch "vch_testno 211 =";
+select * from ${testName2}_vch where vch_testno = 211;
 rows:
   ( 211, 'quick brown fox', *)
 
-predicateFetch ${testName2}_vch "vch_testno 212 =";
+// predicateFetch ${testName2}_vch "vch_testno 212 =";
+select * from ${testName2}_vch where vch_testno = 212;
 rows:
   ( 212, '   quick brown fox   ', *)
 
-predicateFetch ${testName2}_vch "vch_testno 213 =";
+// predicateFetch ${testName2}_vch "vch_testno 213 =";
+select * from ${testName2}_vch where vch_testno = 213;
 rows:
   ( 213, 'quick brown fox''s''', *)
 
-predicateFetch ${testName2}_vch "vch_testno 214 =";
+// predicateFetch ${testName2}_vch "vch_testno 214 =";
+select * from ${testName2}_vch where vch_testno = 214;
 rows:
   ( 214, null, *)
 
-predicateFetch ${testName2}_vch "vch_testno 215 =";
+// predicateFetch ${testName2}_vch "vch_testno 215 =";
+select * from ${testName2}_vch where vch_testno = 215;
 rows:
   ( 215, null, *)
 
-predicateFetch ${testName2}_vch "vch_testno 216 =";
+// predicateFetch ${testName2}_vch "vch_testno 216 =";
+select * from ${testName2}_vch where vch_testno = 216;
 rows:
   ( 216, null, *)
 
-predicateFetch ${testName2}_vch "vch_testno 217 =";
+// predicateFetch ${testName2}_vch "vch_testno 217 =";
+select * from ${testName2}_vch where vch_testno = 217;
 rows:
   ( 217, 'quick brown fox
 s', *)

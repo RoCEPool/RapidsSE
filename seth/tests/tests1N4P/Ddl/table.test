@@ -213,13 +213,13 @@ failure contains: 'invalid command'
 create table ${testName2}_T1& (
   c1   INTEGER NOT NULL
 );
-failure contains: 'EC_SYNTAX_ERROR; Line: 1; Column: 15; token recognition error at: ''&'''
+failure contains: 'token recognition error at: ''&'''
 
 // (14) try create table t1 with invalid column name
 create table ${testName2}_T1 (
   c1&  INTEGER NOT NULL
 );
-failure contains: 'EC_SYNTAX_ERROR; Line: 2; Column: 4; token recognition error at: ''&'''
+failure contains: 'token recognition error at: ''&'''
 
 // (15) try create table t1 with invalid column type
 create table ${testName2}_T1 (

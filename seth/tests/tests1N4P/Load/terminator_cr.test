@@ -21,12 +21,14 @@ create index idx on ${testName2}_terminator_cr(c1);
 success
 
 // fetch
-predicateFetch ${testName2}_terminator_cr "c1 1 =";
+// predicateFetch ${testName2}_terminator_cr "c1 1 =";
+select * from ${testName2}_terminator_cr where c1 = 1;
 rows:
   (1, 'A', 'This is terminated by <CR>')
 
 // fetch
-predicateFetch ${testName2}_terminator_cr "c1 2 =";
+// predicateFetch ${testName2}_terminator_cr "c1 2 =";
+select * from ${testName2}_terminator_cr where c1 = 2;
 rows:
   (2, 'A', 'Also terminated by <CR>')
 

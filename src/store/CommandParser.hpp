@@ -104,10 +104,10 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     static Text* pCleanId(Parser::sqlParser::IdentifierContext* pCtx);
     static Text* pCleanString(Parser::sqlParser::StringLiteralContext* pCtx);
     static Text* pCleanString(antlr4::Token* pToken);
-    static void  vCleanString(Parser::sqlParser::StringLiteralContext* pCtx, s256& sBuf);
-    static void  vCleanString(Parser::sqlParser::IdentifierContext* pCtx, s256& sBuf);
-    static void  vCleanString(antlr4::Token* pToken, s256& sBuf);
-    static void  vCleanString(std::string& sStr, s256& sBuf);
+    static void  vCleanString(Parser::sqlParser::StringLiteralContext* pCtx, s256& sBuf, eEC eLenErr);
+    static void  vCleanString(Parser::sqlParser::IdentifierContext* pCtx, s256& sBuf, eEC eLenErr);
+    static void  vCleanString(antlr4::Token* pToken, s256& sBuf, eEC eLenErr);
+    static void  vCleanString(std::string& sStr, s256& sBuf, eEC eLenErr);
     static void  vCleanTag(Parser::sqlParser::TagNameContext* pCtx, s256& sBuf);
     static void  vCleanTag(antlr4::Token* pToken, s256& sBuf);
     static i8    iCleanInt(Parser::sqlParser::SignedIntegerLiteralContext* pCtx);

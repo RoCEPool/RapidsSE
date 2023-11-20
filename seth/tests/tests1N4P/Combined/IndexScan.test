@@ -20,7 +20,7 @@ begin
   stage stageC on origin :
     output | sink | stageA
 end ;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE; Table does not exist'
 
 // create a table
 create table ${testName2}_lineitem (
@@ -267,7 +267,7 @@ begin
     | stageStart
 end ;
 
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE; Table does not exist'
 
 create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,

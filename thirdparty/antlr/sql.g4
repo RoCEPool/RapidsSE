@@ -211,7 +211,8 @@ insertCmd         : (WITH withQuery (',' withQuery)*)?
 loadCmd           : LOAD tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
 loadReplicatedCmd : LOADREPLICATED tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
 loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=stringLiteral ;
-loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT | RECORD_ENDS ;
+loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT | RECORD_ENDS
+                    | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING | RECORD_TERMINATOR ;
 logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
 lscolCmd          : LSCOL tableName ;
 lsidxCmd          : LSIDX tableName ;
@@ -611,7 +612,7 @@ nonReservedWord   :
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYE | BYTE | BYTES
                   | CATALOG | CHARS | COMPACTIDX | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD | DOCOL
-                  | ECHO | ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
+                  | ECHO | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING |ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
@@ -623,7 +624,7 @@ nonReservedWord   :
                   | OBJECTS | OFF | OFFSET | ORIGIN
                   | PARTITIONS | PATHS | PIPELINE | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | RECORD_ENDS | REFERENCE | REGIONS | REPLICATED | ROWSIZE
+                  | RECORD_ENDS | RECORD_TERMINATOR | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
@@ -697,6 +698,8 @@ DOCOL                 : D O C O L;
 DROP                  : D R O P;
 ECHO                  : E C H O;
 ELSE                  : E L S E;
+ENCLOSED_BY_LEADING   : E N C L O S E D '_' B Y '_' L E A D I N G;
+ENCLOSED_BY_TRAILING  : E N C L O S E D '_' B Y '_' T R A I L I N G;
 END                   : E N D;
 ESCAPE                : E S C A P E;
 ESCAPE_CHAR           : E S C A P E '_' C H A R;
@@ -794,6 +797,7 @@ PRIMARY               : P R I M A R Y;
 QUARTER               : Q U A R T E R;
 QUARTERS              : Q U A R T E R S;
 RECORD_ENDS           : R E C O R D '_' E N D S;
+RECORD_TERMINATOR     : R E C O R D '_' T E R M I N A T O R;
 RECURSIVE             : R E C U R S I V E;
 REFERENCE             : R E F E R E N C E;
 REGIONS               : R E G I O N S;

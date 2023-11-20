@@ -223,7 +223,7 @@ bool Procedure::bTranslateToPipeline(Stz* szProcedureName,
   pPrdTxtVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
   pPrdTxtVec->vInsertToken(i_InsTkn++,C_TAG_STMT,TN_NAME);
   pPrdTxtVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
-  pPrdTxtVec->vInsertToken(i_InsTkn++,szOrigStmt,TN_STRING);
+  pPrdTxtVec->vInsertToken(i_InsTkn++,szOrigStmt,TN_NAME);
   pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

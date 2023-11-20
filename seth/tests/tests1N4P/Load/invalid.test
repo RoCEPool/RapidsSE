@@ -8,15 +8,15 @@
 
 // incomplete load command
 load;
-failure contains: 'invalid command'
+failure contains: "mismatched input ';'"
 
 // incomplete load command
 load ${testName2}_t1;
-failure contains: 'invalid command'
+failure contains: 'EC_SYNTAX_ERROR'
 
 // incomplete load command
 load "../DATA/Load/null.csv";
-failure contains: 'invalid command'
+failure contains: 'EC_SYNTAX_ERROR'
 
 // load non-existent table T1
 load ${testName2}_t1 "../DATA/Load/null.csv" ;
