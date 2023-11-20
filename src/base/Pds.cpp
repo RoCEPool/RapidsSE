@@ -12,6 +12,14 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get address of cell array of row                                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_PdsRowBufferCellArray(void* pPdsRowBuffer, i8 iRow)
+{
+  return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Pds* BASE::_pPds(void* aAddress)
@@ -197,6 +205,27 @@ Pds::~Pds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get address of cell array of row                                           */
+/*----------------------------------------------------------------------------*/
+void* Pds::aGetCellArray(Pds* pPdsRowBuffer, i8 iRow)
+{
+  _static_
+
+  iRow += 1;
+  SkipListBlock* pSkipListBlock = pPdsRowBuffer->pFind(&iRow);
+  if (pSkipListBlock == nullptr) {
+    return nullptr;
+  }
+
+  // Calculate the address of the Row
+  // <(i8)key><Row>
+  Row* pRow = aAdd<Row*>(pSkipListBlock->aItem(), sizeof(m_iSynthRowKey));
+
+  return (void*)pRow->aCellArray();
+}
+
 void Pds::vRepair(Object* pObject)
 {
   _static_

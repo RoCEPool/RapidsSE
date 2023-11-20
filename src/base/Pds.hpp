@@ -52,6 +52,7 @@ namespace BASE
     Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix = nullptr);
     ~Pds(void) noexcept(false);
 
+    static void* aGetCellArray(Pds* pPdsRowBuffer, i8 iRow);
     static void vRepair(Object* pObject);
 
     // public:
