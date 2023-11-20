@@ -4,7 +4,7 @@
 /*  (original Query)
 
 select sum(l_extendedprice * (1 - l_discount) ) as revenue
-     from lineitem, part
+     from ${testName2}_lineitem, ${testName2}_part
      where ( p_partkey = l_partkey
      and p_brand = 'Brand#12'
      and p_container in ( 'SM CASE', 'M BOX', 'SM PACK', 'SM PKG')
@@ -36,7 +36,7 @@ select sum(l_extendedprice * (1 - l_discount) ) as revenue
 /*
 EXPLAIN STAGE TRANSLITERATE
 select sum(l_extendedprice * (1 - l_discount) ) as revenue
-     from lineitem, part
+     from ${testName2}_lineitem, ${testName2}_part
      where ( p_partkey = l_partkey
      and p_brand = 'Brand#12'
      and p_container in ( 'SM CASE', 'M BOX', 'SM PACK', 'SM PKG')
@@ -60,7 +60,7 @@ select sum(l_extendedprice * (1 - l_discount) ) as revenue
      and l_shipinstruct = 'DELIVER IN PERSON' );
 
 
-select * from part
+select * from ${testName2}_part
      where (p_brand = 'Brand#12'
      and p_container in ( 'SM CASE', 'M BOX', 'SM PACK', 'SM PKG')
      and p_size between 1 and 5
@@ -85,10 +85,10 @@ begin
     | pulse once
     | stageMarker2359
   stage stageMarker2359 on all partitions :
-    scan rapidsse public LineItem
+    scan rapidsse public ${testName2}_LineItem
     | stageMarker2362 broadcast
   stage stageMarker2362 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName2}_part
     | abstractJoin "CROSS true  "
     | stageMarker2365
   stage stageMarker2365 on all partitions :
@@ -121,13 +121,13 @@ pipeline unamed
      | pulse once
      | stageMarker2359
    stage stageMarker2359 on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | hash "type INTEGER l_partkey"
      | combined 0
      | next hashcast
 
    stage stageMarker2362 on all partitions :
-     indexJoin part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
+     indexJoin ${testName2}_part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
      | filter " type BOOLEAN
                   $20 'Brand#12'  == }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL CAST  <=  and  }  1  5  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and
                   $20 'Brand#23'  == }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL CAST  <=  and  }  1  10  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or
@@ -166,7 +166,7 @@ pipeline unamed
      | next
 
    stage stageMarker2359 on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | filter "type BOOLEAN l_quantity 1.00 >= l_quantity 30.00 <= and
                }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
                 L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and"
@@ -176,7 +176,7 @@ pipeline unamed
      | next hashcast
 
    stage stageMarker2362 on all partitions :
-     indexJoin part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
+     indexJoin ${testName2}_part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
      | project " type INTEGER as l_partkey l_partkey , type DECIMAL as l_quantity l_quantity , type DECIMAL as l_discount l_discount , type DECIMAL as l_extendedprice l_extendedprice  , type VARCHAR as l_shipmode l_shipmode , type VARCHAR as l_shipinstruct l_shipinstruct ,
                  type INTEGER as p_size p_size , type VARCHAR as p_brand p_brand , type varchar as p_container p_container"
      | filter " type BOOLEAN
@@ -238,7 +238,7 @@ begin
    | next
 
  stage S01 on all partitions :
-   scan rapidsse public part
+   scan rapidsse public ${testName2}_part
    | filter " type BOOLEAN P_BRAND 'Brand#12'  ==
                 } 'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
                 }  1  5  P_SIZE between  and
@@ -255,7 +255,7 @@ begin
    | next broadcast
 
  stage S02 on all partitions :
-   indexJoin lineitem IxL_PARTKEY "BOUND $I1 p_partkey ==" //J1
+   indexJoin ${testName2}_lineitem IxL_PARTKEY "BOUND $I1 p_partkey ==" //J1
    | project " type INTEGER as L_PARTKEY l_partkey ,
                type DECIMAL as L_QUANTITY L_QUANTITY ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,

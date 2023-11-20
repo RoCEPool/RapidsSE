@@ -390,7 +390,6 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
   i8 i_Col = 0;
   i8 i_ColPL = 0;
-  i8 i_DupCtr = 1;
   i8 iGbyCols = 0;
   i8 iGkyCols = 0;
   eDM eCastType = DM_NONE;
@@ -448,18 +447,18 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // set working ExprStack to normal expstack
       if (ePreExp == PE_GBY) {
         // push assign column
-        vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL);
         iGbyCols++;
 
         if (m_eSketchKind == SK_ORDAGG && iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
       else if (ePreExp == PE_GKY) {
-        vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL);
         iGkyCols++;
       }
       else {
-        vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL);
         i_Col++;
         i_ColPL++;
       }
@@ -511,7 +510,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       RASSERT(ePreExp == PE_GBY);
 
       // push assign column
-      vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
+      vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL);
       iGbyCols++;
 
       if (m_eSketchKind == SK_ORDAGG) {
@@ -575,7 +574,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
       // push upperBound assign column
       if (bUpperBound)
-        vPushAssignCol(pExprStack, ePreExp, i_Col, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, i_Col, i_ColPL);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the lower bound  stack
@@ -593,7 +592,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
       // push lowerBound assign column
       if (bLowerBound)
-        vPushAssignCol(pExprStack, ePreExp, i_Col, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, i_Col, i_ColPL);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the upper bound stack
@@ -628,7 +627,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       if (sDollar[0] == '$') {
         char *sNext = (char*)(pTkn->szChars() + 1);
         if (StrLib::bIsDigit(sNext[0])) {
-          vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn);
+          vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn, bConstraint);
           continue;
         }
         else {
@@ -637,7 +636,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
           }
           char *sNextDigit = (char*)(pTkn->szChars() + 2);
           if (StrLib::bIsDigit(sNextDigit[0])) {
-            vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn);
+            vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn, bConstraint);
             continue;
           }
         }
@@ -818,7 +817,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -829,7 +828,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       //eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, DM_INT, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, DM_INT, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -840,7 +839,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -851,7 +850,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -862,7 +861,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -873,7 +872,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -1078,7 +1077,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_VCH);
     }
     else {
-      vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn);
+      vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn, bConstraint);
     }
 
   }
@@ -1089,7 +1088,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
   //RASSERT(pExprStack == m_pExprStack);
 
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
-    vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr, bConstraint);
+    vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, bConstraint);
 
 
 #ifdef WITH_DEBUG_VERSION
@@ -1316,10 +1315,9 @@ void OpSketch::vInitAgg(ePE ePreExp)
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8 i_Col, i8 i_ColPL, i8& i_DupCtr) {
+void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8 i_Col, i8 i_ColPL) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
-  UNUSED(i_DupCtr);
 
   s256 sStructColumn;
   s256 sOperation;
@@ -1599,7 +1597,7 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
 /*----------------------------------------------------------------------------*/
 /* push column                                                                */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamDef* pStreamDef, Token* pTkn) {
+void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamDef* pStreamDef, Token* pTkn, bool bConstraint) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1634,7 +1632,7 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   }
 
   // if column nullable generate null check expressions
-  if (pColumn->bIsNullable()) {
+  if ( ! bConstraint && pColumn->bIsNullable() ) {
     sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
     m_pNullStack->vPushStz(sOperation);
     sOperation.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
@@ -1819,7 +1817,7 @@ void OpSketch::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp, Token* pTkn) {
+void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp, Token* pTkn, bool bConstaint) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1906,7 +1904,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
 
   // if column nullable generate null check expressions
-  if (pColumn->bIsNullable()) {
+  if ( ! bConstaint && pColumn->bIsNullable() ) {
     sPush.vSprint("_PSH_COL(p%s->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], sColumn.azChar());
     m_pNullStack->vPushStz(sPush);
     sPush.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
@@ -1972,10 +1970,9 @@ void OpSketch::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push assign column on the exprStack                                        */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr, bool bConstraint) {
+void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL,  bool bConstraint) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
-  UNUSED(i_DupCtr);
 
   s256 sPush;
   s256 sColumn;
@@ -1990,9 +1987,6 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
   switch(m_eSketchKind) {
 
     case SK_AGGREG:
-      // make the column name
-      //vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
       if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
         if (pColumn->eColumnType() == CT_VARCHAR)
           sPush.vSprint("_COPYSTR_IFTRUE(aDynamicT->m_xRowInfoAT.m_acStrArea, p%s->%s.m_iAsI8)\n"_Stz,

@@ -8,7 +8,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Cross Join
 select o_orderkey, avg(l_extendedprice)
-  from Orders, Lineitem
+  from ${testName2}_Orders, ${testName2}_Lineitem
  where
        O_ORDERKEY = L_ORDERKEY
    and o_orderkey < 100
@@ -24,10 +24,10 @@ rows: 56
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 4-way Join
 select count(*)
-  from Customer,
-       Orders,
-       Lineitem,
-       Supplier
+  from ${testName2}_Customer,
+       ${testName2}_Orders,
+       ${testName2}_Lineitem,
+       ${testName2}_Supplier
  where C_CUSTKEY  = O_CUSTKEY
    and L_ORDERKEY = O_ORDERKEY
    and L_SUPPKEY  = S_SUPPKEY
@@ -37,8 +37,8 @@ rows: (5996)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + Project + Filter
 select p_partkey, p_mfgr, ps_suppkey, ps_supplycost
-  from Part,
-       PartSupp
+  from ${testName2}_Part,
+       ${testName2}_PartSupp
  where p_partkey  = ps_partkey
    and p_brand = 'Brand#44'
    and p_size < 10;
@@ -55,8 +55,8 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + Project + Filter
 select ps_supplycost, p_mfgr, ps_suppkey, p_partkey
-  from Part,
-       PartSupp
+  from ${testName2}_Part,
+       ${testName2}_PartSupp
  where p_partkey  = ps_partkey
    and p_brand = 'Brand#44'
    and p_size < 10;
@@ -73,8 +73,8 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + gbyAgg + Filter
 select sum(ps_supplycost)
-  from Part,
-       PartSupp
+  from ${testName2}_Part,
+       ${testName2}_PartSupp
  where p_partkey  = ps_partkey
    and p_brand = 'Brand#44'
    and p_size < 10;
@@ -84,8 +84,8 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + AggGby + Filter
 select p_partkey, sum(ps_supplycost)
-  from Part,
-       PartSupp
+  from ${testName2}_Part,
+       ${testName2}_PartSupp
  where p_partkey  = ps_partkey
    and p_brand = 'Brand#44'
    and p_size < 10
@@ -98,8 +98,8 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + AggGby + Filter
 select sum(ps_supplycost), p_partkey
-  from Part,
-       PartSupp
+  from ${testName2}_Part,
+       ${testName2}_PartSupp
  where p_partkey  = ps_partkey
    and p_brand = 'Brand#44'
    and p_size < 10

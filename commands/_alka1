@@ -2,132 +2,43 @@
 /* _alka1                                                                     */
 /*============================================================================*/
 
-create table part (
-  P_PARTKEY           INTEGER NOT NULL,
-  P_NAME              VARCHAR(55) NOT NULL,
-  P_MFGR              CHAR(25) NOT NULL,
-  P_BRAND             CHAR(10) NOT NULL,
-  P_TYPE              VARCHAR(25) NOT NULL,
-  P_SIZE              INTEGER NOT NULL,
-  P_CONTAINER         CHAR(10) NOT NULL,
-  P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
-  P_COMMENT           VARCHAR(23) NOT NULL
-);
-
-//------------------------------------------------------------------------------
-load part "../TPCH/SF_0001/part.csv";
-
-create table LineItem
-(
- L_ORDERKEY      INTEGER       NOT NULL,
- L_PARTKEY       INTEGER       NOT NULL,
- L_SUPPKEY       INTEGER       NOT NULL,
- L_LINENUMBER    INTEGER       NOT NULL,
- L_QUANTITY      DECIMAL(15,2) NOT NULL,
- L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
- L_DISCOUNT      DECIMAL(15,2) NOT NULL,
- L_TAX           DECIMAL(15,2) NOT NULL,
- L_RETURNFLAG    CHAR(1)       NOT NULL,
- L_LINESTATUS    CHAR(1)       NOT NULL,
- L_SHIPDATE      DATE NOT      NULL,
- L_COMMITDATE    DATE NOT      NULL,
- L_RECEIPTDATE   DATE NOT      NULL,
- L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
- L_SHIPMODE      CHAR(10)      NOT NULL,
- L_COMMENT       VARCHAR(44)   NOT NULL
- );
-
-
- load lineitem "../DATA/TPCH/lineitem10.csv";
-
-
-create table datums (
-  int_col0   INTEGER NOT NULL,
-  int_col1   INTEGER,
-  bol_col2   BOOLEAN,
-  bol_col3   BOOLEAN,
-  dte_col4   DATE,
-  dte_col5   DATE,
-  dec_col6   DECIMAL(19,2),
-  dec_col7   DECIMAL(19,2),
-  flt_col8   FLOAT,
-  flt_col9   FLOAT,
-  tme_col10  TIME,
-  tme_col11  TIME,
-  tsp_col12  TIMESTAMP,
-  tsp_col13  TIMESTAMP,
-  vch_col14  VARCHAR(32),
-  vch_col15  VARCHAR(32)
-);
-
-load datums "../DATA/Transliterate/groupBy.csv" ;
-
-create table Nation (
-	 N_NATIONKEY       INTEGER      NOT NULL,
-	 N_NAME            CHAR(25)     NOT NULL,
-	 N_REGIONKEY       INTEGER      NOT NULL,
-	 N_COMMENT         VARCHAR(152)
-);
-
-//------------------------------------------------------------------------------
+_nation;
 load nation "../DATA/TPCH/nation.tbl";
 
-create index IxN_NATIONKEY on nation (n_nationkey);
 
-create table Region (
-	 R_REGIONKEY       INTEGER      NOT NULL,
-	 R_NAME            CHAR(25)     NOT NULL,
-	 R_COMMENT         VARCHAR(152)
-);
-
-create index IxR_REGIONKEY on Region (R_REGIONKEY);
-
-create index IxR_NAME on Region (R_NAME);
-
-load Region "../DATA/TPCH/region.tbl";
-
-
- /*
-/weaved
-/keepCodeFile
-///useCodeFile = '_unnamed__NODE1_2'
 /pipeline_def
- SELECT n_regionkey , n_name FROM nation  where n_regionkey < 2 ;
-
-
- (0 ,'ALGERIA')
-  (1 ,'ARGENTINA')
-  (1 ,'BRAZIL')
-  (1 ,'CANADA')
-  (0 ,'ETHIOPIA')
-  (0 ,'KENYA')
-  (0 ,'MOROCCO')
-  (0 ,'MOZAMBIQUE')
-  (1 ,'PERU')
-  (1 ,'UNITED STATES')
-  */
-
+/weaved
+/transliterated
+/keepCodeFile
+/pipelineName="XYZ"
+SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from nation where n_nationkey = 2;
 
 /*
-  /transliterated
-  /weaved
-  /keepCodeFile
-  ///useCodeFile = '_unnamed__NODE1_2'
-  /pipeline_def
-   SELECT n_regionkey +1 , n_name FROM nation;
+create table interval1(a timestamp);
+load interval1 "../DATA/QA/interval/interval1.csv";
+
+/weaved
+/transliterated
+/pipeline_def
+SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-01-19 23:58:19.123' FROM interval1;
+
+explain stage transliterate
+SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+
+/weaved
+SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
 
 
-   /transliterated
-     /weaved
-     /keepCodeFile
-     ///useCodeFile = '_unnamed__NODE1_2'
-     /pipeline_def
-   select p_mfgr, p_brand,  count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
-   */
+explain stage transliterate
+SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
 
-   /transliterated
-     /weaved
-     /keepCodeFile
-     ///useCodeFile = '_unnamed__NODE1_2'
-     /pipeline_def
-      SELECT n_regionkey , n_name FROM nation , region where n_regionkey = r_regionkey;
+/weaved
+SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
+
+explain stage transliterate
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
+
+/weaved
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
+
+*/

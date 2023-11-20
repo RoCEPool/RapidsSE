@@ -15,7 +15,7 @@ success
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -23,7 +23,7 @@ create table nation (
 );
 success
 
-load nation "../DATA/Transliterate/nationAgg.tbl";
+load ${testName2}_nation "../DATA/Transliterate/nationAgg.tbl";
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -31,7 +31,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- basic select of columnRef 
-SELECT n_name FROM nation;
+SELECT n_name FROM ${testName2}_nation;
 rows: 
   ('BRAZIL')
   ('INDIA')
@@ -65,7 +65,7 @@ rows:
   ('GERMANY')
 
 -- basic select of aggregation
-SELECT SUM(n_regionkey) FROM nation;
+SELECT SUM(n_regionkey) FROM ${testName2}_nation;
 rows: 
   (53)
 
@@ -75,7 +75,7 @@ rows:
 -- and we see CANADA once as the 2 rows with CANADA have the same nationKey
 -- and are on the same partition.
 /*
-SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
+SELECT n_name, SUM(n_regionkey) FROM ${testName2}_nation GROUP BY n_name;
 rows:
   ('KENYA',0)
   ('MOROCCO',0)
@@ -108,7 +108,7 @@ rows:
 
 
 -- basic select of two columnRefs with both in GROUP BY. No aggregation
-SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
+SELECT n_name, n_nationkey FROM ${testName2}_nation GROUP BY n_name, n_nationkey;
 rows:
  ('KENYA',14)
  ('MOROCCO',15)
@@ -145,7 +145,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- projected ColumnRef is superset of GROUP BY expr
-SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM ${testName2}_nation GROUP BY n_nationkey;
 rows:
   (30,0)
   (32,0)
@@ -179,7 +179,7 @@ rows:
 -- projected ColumnRef is equal to GROUP BY expr
 /*
 ALKA: UNCOMMENT
-SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
+SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM ${testName2}_nation GROUP BY 2*(n_nationkey + 1);
 rows:
  (30,0)
  (32,0)
@@ -210,7 +210,7 @@ rows:
 */
 -- select expr is a superset of group by expr
 /*
-SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
+SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM ${testName2}_nation GROUP BY n_nationkey + n_regionkey;
 rows:
  (1,0)
  (1,0)
@@ -248,11 +248,11 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
 -- Basic HAVING clause
-SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+SELECT n_name, SUM(n_nationkey) FROM ${testName2}_nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
 rows:
 
 -- HAVING clause with aggregate not in select list
-SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
+SELECT n_name FROM ${testName2}_nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
 rows:
 
 
@@ -261,11 +261,11 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 */
 
-SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
+SELECT 1 FROM ${testName2}_nation HAVING SUM(n_nationkey) > 0;
 rows:
  (1)
 
-SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
+SELECT SUM(n_nationkey) from ${testName2}_nation HAVING SUM(n_nationkey) > 0;
 rows:
  (329)
 
@@ -273,7 +273,7 @@ rows:
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-drop table nation;
+drop table ${testName2}_nation;
 success
 
 memoryleaks;
@@ -284,6 +284,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE nation;
+  DROP TABLE ${testName2}_nation;
     mute
 }

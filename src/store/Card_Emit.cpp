@@ -110,17 +110,17 @@ Card_Emit* Card_Emit::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vCorrectStmCol(Card_Emit* p_emitted_prior)
+void Card_Emit::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     if (Card_BoolPred* p_boolPred = xKid.p_expr()->pSub_boolPred())
-      p_boolPred->vCorrectStmCol(p_emitted_prior);
+      p_boolPred->vCorrect_expCol(p_arriving);
     else
     if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
-      p_rpnCalc->vCorrectStmCol(p_emitted_prior);
+      p_rpnCalc->vCorrect_expCol(p_arriving);
   }
 }
 
@@ -159,7 +159,10 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol))
           continue;
 
-        p_needed->vAppendChild(p_expr_key->pClone());
+        Card_Expr* p_expr_cloned = p_expr_key->pClone();
+        p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
+
+        p_needed->vAppendChild(p_expr_cloned);
       }
       else
       if (xCI_rpnCalc.p_term()->bIsColSym()) {
@@ -195,8 +198,12 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
           if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
             continue;
 
-          if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
-            p_needed->vAppendChild(p_expr_col->pClone());
+          if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term())) {
+            Card_Expr *p_expr_cloned = p_expr_col->pClone();
+            p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
+            p_expr_cloned->vDump(__func__,"CLONED"_Stz);
+            p_needed->vAppendChild(p_expr_cloned);
+          }
         }
       }
     }
@@ -209,22 +216,6 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   //p_needed->vDump();
 
   return p_needed;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Emit::vDedupe_as(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-    Card_As* p_as = xProjection.p_expr()->pSub_as();
-
-    p_as->SYM(SF_ITM_COL, xProjection.i_Child(), p_as->pSymbol());
-  }
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,12 +264,12 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypes_For_stmCol(pCI);
+    xKid.p_expr()->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,8 +358,8 @@ void Card_Emit::vMapColumns(CardIter* pCI)
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
     pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
-    if (Symbol* pSymbol_stmCol_projection = p_expr_projection->pFirstStmCol()) {
-      i_Cell_payload = pSymbol_stmCol_projection->iSF_ordinal() - nExpr_key;
+    if (Symbol* pSymbol_expCol_projection = p_expr_projection->pFirst_expCol()) {
+      i_Cell_payload = pSymbol_expCol_projection->iSF_ordinal() - nExpr_key;
       p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
       p_expr_projection->pSymbol()->Y_vSet(P_Payload);
       p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
@@ -452,7 +443,7 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (p_term->pSymbol()->bIs_Stm_Col()) {
+  if (p_term->pSymbol()->bIs_Exp_Col()) {
     Card_Expr *p_expr_prior = this->pGet_expr(p_term->pSymbol());
     return p_expr_prior;
   }

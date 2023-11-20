@@ -24,11 +24,11 @@ namespace STORE
     static void vItemStrip_colNm(CardIter* pCI);
 
     void vBumpKeyCol(i8 nBy=1);
-    void vBump_stmCol(i8 nBy= 1);
+    void vBump_expCol(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
-     void vEnsureTypeFor_stmCol(CardIter* pCI);
-    void vCorrectStmCol(Card_Emit* p_emitted_prior);
+     void vEnsureTypeId_expCol(CardIter* pCI);
+    void vCorrect_expCol(Card_Emit* p_arriving);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
@@ -39,14 +39,14 @@ namespace STORE
     bool bIsColSym(void);   // $n or $c.n
     bool bIsKeyCol(void);   // $Kn
     bool bIsSqyPrm(void);   // %n
-    bool bIsStmCol(void);   // $n
+    bool bIs_expCol(void);   // $n
     bool bIsTblCol(void);   // $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     void vShortForm(String* pString, Stz* szSep);
 
-    void vX_stmCol_To_tblCol(CardIter* pCI);
-    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_expCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

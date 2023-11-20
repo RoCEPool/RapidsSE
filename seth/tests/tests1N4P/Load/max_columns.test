@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // create the table
-create table max_columns (
+create table ${testName2}_max_columns (
 
   c_testno     INTEGER NOT NULL,
 
@@ -174,13 +174,13 @@ create table max_columns (
 );
 success
 
-load max_columns "../DATA/Load/max_150_columns_varchar100.csv" ;
+load ${testName2}_max_columns "../DATA/Load/max_150_columns_varchar100.csv" ;
 success
 
-drop table max_columns;
+drop table ${testName2}_max_columns;
 
 // create the table
-create table max_columns (
+create table ${testName2}_max_columns (
 
   c_testno     INTEGER NOT NULL,
 
@@ -251,15 +251,15 @@ create table max_columns (
   c_field059   VARCHAR(254)
 );
 
-load max_columns "../DATA/Load/max_60_columns_varchar254.csv" ;
+load ${testName2}_max_columns "../DATA/Load/max_60_columns_varchar254.csv" ;
 success
 
-drop table max_columns;
+drop table ${testName2}_max_columns;
 success
 
 CLEANUP {
   
-  drop table max_columns;
+  drop table ${testName2}_max_columns;
   mute
 
   bye;

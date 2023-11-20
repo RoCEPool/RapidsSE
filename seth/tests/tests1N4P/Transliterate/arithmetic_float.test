@@ -4,7 +4,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -24,11 +24,11 @@ create table datums (
 );
 success
 
-load datums "../DATA/Transliterate/float.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/float.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select flt_col8 from datums;
+select flt_col8 from ${testName2}_datums;
 rows:
   (50.31e0)
   (33.1e0)
@@ -43,7 +43,7 @@ rows:
   (102.132e0)
 
 //------------------------------------------------------------------------------
-select flt_col9 + 1 from datums;
+select flt_col9 + 1 from ${testName2}_datums;
 rows:
   (32.456e0)
   (109.456e0)
@@ -58,7 +58,7 @@ rows:
   (269.296e0)
 
 //------------------------------------------------------------------------------
-select flt_col9 / 16 from datums;
+select flt_col9 / 16 from ${testName2}_datums;
 rows:
  (1.966000e0)
  (4.646500e0)
@@ -73,12 +73,12 @@ rows:
  (14.681812e0)
 
 //------------------------------------------------------------------------------
-select flt_col9 * 16 from datums where flt_col8 = 5;
+select flt_col9 * 16 from ${testName2}_datums where flt_col8 = 5;
 rows:
   0
 
 //------------------------------------------------------------------------------
-select (flt_col9 +65)/ 11 from datums;
+select (flt_col9 +65)/ 11 from ${testName2}_datums;
 rows:
  (8.768727e0)
  (12.667636e0)
@@ -93,7 +93,7 @@ rows:
  (27.2644e0)
 
 //------------------------------------------------------------------------------
-select (flt_col9 / 11) + 65 from datums;
+select (flt_col9 / 11) + 65 from ${testName2}_datums;
 rows:
  (69.9382e0)
  (135.696909e0)
@@ -110,7 +110,7 @@ rows:
 //------------------------------------------------------------------------------
 /*
 // TODO: FIX
-select (flt_col9 / 74) - 65 + (-62 * 32) - 1 from datums;
+select (flt_col9 / 74) - 65 + (-62 * 32) - 1 from ${testName2}_datums;
 rows:
   (-2049.57e0)
   (-2048.53e0)
@@ -125,7 +125,7 @@ rows:
   (-2046.37e0)
 
 //------------------------------------------------------------------------------
-select flt_col9 - 74 - 65 + (-62 * 32) - 1 from datums;
+select flt_col9 - 74 - 65 + (-62 * 32) - 1 from ${testName2}_datums;
 rows:
   (-2092.54e0)
   (-2015.54e0)
@@ -140,7 +140,7 @@ rows:
   (-1855.7e0)
 
 //------------------------------------------------------------------------------
-select ((-flt_col9 * 3) + ( 37 / 6 - 33)) * 43 from datums;
+select ((-flt_col9 * 3) + ( 37 / 6 - 33)) * 43 from ${testName2}_datums;
 
 rows:
   (-5218.82e0)
@@ -157,7 +157,7 @@ rows:
 */
 
 //------------------------------------------------------------------------------
-select flt_col9 + flt_col8 from datums;
+select flt_col9 + flt_col8 from ${testName2}_datums;
 rows:
   (81.766e0)
   (141.556e0)
@@ -173,7 +173,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select flt_col9 - flt_col8 from datums;
+select flt_col9 - flt_col8 from ${testName2}_datums;
 rows:
   (-18.854e0)
   (75.356e0)
@@ -189,7 +189,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select (flt_col9 / flt_col8 - flt_col9) * 20 from datums;
+select (flt_col9 / flt_col8 - flt_col9) * 20 from ${testName2}_datums;
 rows:
  (-980.116673e0)
  (5.51435e+04)
@@ -205,28 +205,28 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select count(flt_col8) , sum(flt_col8) , avg(flt_col8) from datums;
+select count(flt_col8) , sum(flt_col8) , avg(flt_col8) from ${testName2}_datums;
 rows:
   (10,1308.102e0,130.8102e0)
 
 //------------------------------------------------------------------------------
-select count(flt_col9) , sum(flt_col9) , avg(flt_col9) from datums;
+select count(flt_col9) , sum(flt_col9) , avg(flt_col9) from ${testName2}_datums;
 rows:
   (11,4217.981e0,383.452818e0)
 
 //------------------------------------------------------------------------------
-select count(flt_col9) , sum(flt_col9) , avg(flt_col9)+2 from datums;
+select count(flt_col9) , sum(flt_col9) , avg(flt_col9)+2 from ${testName2}_datums;
 rows:
   (11,4217.981e0,385.452818e0)
 
 //------------------------------------------------------------------------------
-select count(flt_col9) , sum(flt_col9+22) , avg(flt_col9+22) from datums;
+select count(flt_col9) , sum(flt_col9+22) , avg(flt_col9+22) from ${testName2}_datums;
 rows:
   (11,4459.981e0,405.452818e0)
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 memoryleaks;
@@ -234,7 +234,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName2}_datums;
   mute
 
   bye;

@@ -1,0 +1,117 @@
+/*----------------------------------------------------------------------------*/
+/* gbyAgg.test -- Group by aggregate tests                                    */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+
+
+// create a table
+create table ${testName2}_nation (
+N_NATIONKEY       INTEGER NOT NULL,
+N_NAME            CHAR(25) NOT NULL,
+N_REGIONKEY       INTEGER NOT NULL,
+N_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE INDEX IxN_NATIONKEY ON ${testName2}_nation(N_NATIONKEY);
+success
+
+load ${testName2}_nation "../TPCH/SF_0001/nation.csv";
+success
+
+/optimise_passthru
+pipeline _unnamed_
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    indexScan ${testName2}_nation IxN_NATIONKEY
+              " LBOUND $I1 3 > "
+    | project "type INTEGER $1 , type INTEGER $3"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    ordAgg    " OrdGroupBy
+                  type INTEGER as C0_n_nationkey $1
+                aggregates
+                  type INTEGER as C0_COL1 $K1
+                , type INTEGER as C1_COL2 ) $2 max "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    gbyAgg    " groupBy
+                  type INTEGER as C0_n_nationkey $1
+                aggregates
+                  type INTEGER as C0_COL1 $K1
+                , type INTEGER as C1_COL2 ) $2 max "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg    " groupBy
+                  type INTEGER as C0_n_nationkey $1
+                aggregates
+                  type INTEGER as C0_COL1 $K1
+                , type INTEGER as C1_COL2 ) $2 max "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+rows:
+ (4,4)
+ (5,0)
+ (6,3)
+ (7,3)
+ (8,2)
+ (9,2)
+ (10,4)
+ (11,4)
+ (12,2)
+ (13,4)
+ (14,0)
+ (15,0)
+ (16,0)
+ (17,1)
+ (18,2)
+ (19,3)
+ (20,4)
+ (21,2)
+ (22,3)
+ (23,3)
+ (24,1)
+
+// drop the table
+drop table ${testName2}_nation;
+
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  // drop the table
+  drop table ${testName2}_nation;
+  mute
+  
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

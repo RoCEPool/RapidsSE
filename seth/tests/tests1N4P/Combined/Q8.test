@@ -5,7 +5,7 @@
 trackmemory force;
 success;
 
-create table customer (
+create table ${testName2}_customer (
 	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
 	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
 	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
@@ -17,10 +17,10 @@ create table customer (
 );
 success
 
-create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+create index IxC_CUSTKEY   ON ${testName2}_Customer (C_CUSTKEY)   ;
 success
 
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -40,10 +40,10 @@ create table lineitem (
 );
 success
 
-create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_ORDERKEY  ON ${testName2}_Lineitem (L_ORDERKEY)  ;
 success;
 
-create table nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER      NOT NULL,
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
@@ -51,13 +51,13 @@ create table nation (
 ) replicated tablesize 1;
 success
 
-create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+create index IxN_NATIONKEY ON ${testName2}_Nation   (N_NATIONKEY) ;
 success
 
-create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
+create index IxN_REGIONKEY ON ${testName2}_Nation   (N_REGIONKEY) ;
 success
 
-create table orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -70,10 +70,10 @@ create table orders (
 ) partition by (O_CUSTKEY);
 success
 
-create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+create index IxO_CUSTKEY   ON ${testName2}_Orders   (O_CUSTKEY)   ;
 success
 
-create table part (
+create table ${testName2}_part (
 	 P_PARTKEY           INTEGER       NOT NULL,
 	 P_NAME              VARCHAR(55)   NOT NULL,
 	 P_MFGR              CHAR(25)      NOT NULL,
@@ -85,9 +85,9 @@ create table part (
 	 P_COMMENT           VARCHAR(23)   NOT NULL
 );
 success
-create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+create index IxP_PARTKEY   ON ${testName2}_Part     (P_PARTKEY)   ;
 
-create table supplier (
+create table ${testName2}_supplier (
 	 S_SUPPKEY       INTEGER       NOT NULL,
 	 S_NAME          CHAR(25)      NOT NULL,
 	 S_ADDRESS       VARCHAR(40)   NOT NULL,
@@ -98,35 +98,35 @@ create table supplier (
 );
 success
 
-create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+create index IxS_SUPPKEY   ON ${testName2}_Supplier (S_SUPPKEY)   ;
 success
 
-create table region (
+create table ${testName2}_region (
 	 R_REGIONKEY       INTEGER NOT NULL,
 	 R_NAME            CHAR(25) NOT NULL,
 	 R_COMMENT         VARCHAR(152)
 ) replicated tablesize 1;
 success
 
-create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+create index IxR_REGIONKEY ON ${testName2}_Region   (R_REGIONKEY) ;
 success
 
-load Customer "../TPCH/SF_0001/customer.csv" ;
+load ${testName2}_Customer "../TPCH/SF_0001/customer.csv" ;
 success
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-load Orders   "../TPCH/SF_0001/orders.csv";
+load ${testName2}_Orders   "../TPCH/SF_0001/orders.csv";
 success
 
-load Supplier "../TPCH/SF_0001/supplier.csv";
+load ${testName2}_Supplier "../TPCH/SF_0001/supplier.csv";
 success
 
-load Region "../TPCH/SF_0001/region.csv";
+load ${testName2}_Region "../TPCH/SF_0001/region.csv";
 success
 
-load Nation "../TPCH/SF_0001/nation.csv";
+load ${testName2}_Nation "../TPCH/SF_0001/nation.csv";
 success
 
 /optimise_passthru 
@@ -140,7 +140,7 @@ begin
 
   // ∀ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
   stage Gj_CUSTOMER on all partitions :
-    scan Customer
+    scan ${testName2}_Customer
     | filter
         "C_NATIONKEY 6 == C_NATIONKEY 7 == or"
     | project expr
@@ -153,7 +153,7 @@ begin
 
   // ∀ ORDERS /O_CUSTKEY/ π _custkey
   stage Gj_ORDERS on all partitions :
-    indexJoin Orders IxO_CUSTKEY expr bound $I1 _custkey ==
+    indexJoin ${testName2}_Orders IxO_CUSTKEY expr bound $I1 _custkey ==
     | project expr
         type INTEGER as _orderkey   O_ORDERKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
@@ -165,7 +165,7 @@ begin
 
   // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
   stage Gs_LINEITEM on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
     | filter
         "L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
          L_SHIPDATE timestamp '1996-12-31 00:00:00' <
@@ -181,7 +181,7 @@ begin
 
   // ⋈ SUPPLIER /C_SUPPKEY/
   stage Gj_SUPPLIER on all partitions :
-    indexJoin Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    indexJoin ${testName2}_Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
     | filter
         "C_NATIONKEY 6 == S_NATIONKEY 7 == and
          C_NATIONKEY 7 == S_NATIONKEY 6 == and or"
@@ -217,25 +217,25 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
-drop table customer;
+drop table ${testName2}_customer;
 success
 
-//drop table nation;
+//drop table ${testName2}_nation;
 //success
 
-drop table orders;
+drop table ${testName2}_orders;
 success
 
-drop table part;
+drop table ${testName2}_part;
 success
 
-drop table supplier;
+drop table ${testName2}_supplier;
 success
 
-//drop table region;
+//drop table ${testName2}_region;
 //success
 
 MemoryLeaks;
@@ -243,25 +243,25 @@ rows: 0
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
-  drop table customer;
+  drop table ${testName2}_customer;
   mute
 
-  //drop table nation;
+  //drop table ${testName2}_nation;
   //mute
 
-  drop table orders;
+  drop table ${testName2}_orders;
   mute
 
-  drop table part;
+  drop table ${testName2}_part;
   mute
 
-  drop table supplier;
+  drop table ${testName2}_supplier;
   mute
 
-  //drop table region;
+  //drop table ${testName2}_region;
   //mute
 
   bye;

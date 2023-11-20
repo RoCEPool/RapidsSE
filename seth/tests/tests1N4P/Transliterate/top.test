@@ -3,7 +3,7 @@ trackmemory force;
 success
 
 //------------------------------------------------------------------------------
-create table LineItem
+create table ${testName2}_Lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -24,10 +24,10 @@ create table LineItem
  );
 success
 
-CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+CREATE INDEX IxL_ORDERKEY ON ${testName2}_Lineitem(L_ORDERKEY);
 success
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_Lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 //------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    indexScan ${testName2}_Lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | project " type integer as orderkey l_orderkey "
     | top "type integer orderkey" 2
     | combined 0
@@ -63,7 +63,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table lineitem;
+drop table ${testName2}_Lineitem;
 success;
 
 memoryleaks;
@@ -71,7 +71,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName2}_Lineitem;
   mute
 
   bye;

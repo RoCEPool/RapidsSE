@@ -3,7 +3,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
 int_col0   INTEGER,
 int_col1   INTEGER,
 bol_col2   BOOLEAN,
@@ -23,11 +23,11 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/date.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/date.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 from datums;
+select bol_col2 from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -41,7 +41,7 @@ rows:
 (TRUE)
 (TRUE)
 
-select bol_col2 from datums where bol_col2='true';
+select bol_col2 from ${testName2}_datums where bol_col2='true';
 rows:
 (TRUE)
 (TRUE)
@@ -49,7 +49,7 @@ rows:
 (TRUE)
 (TRUE)
 
-select bol_col2 from datums where bol_col2='false';
+select bol_col2 from ${testName2}_datums where bol_col2='false';
 rows:
 (FALSE)
 (FALSE)
@@ -58,7 +58,7 @@ rows:
 (FALSE)
 
 //------------------------------------------------------------------------------
-select bol_col2 AND TRUE from datums;
+select bol_col2 AND TRUE from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -73,7 +73,7 @@ rows:
 (TRUE)
 
 //------------------------------------------------------------------------------
-select bol_col2 AND FALSE from datums;
+select bol_col2 AND FALSE from ${testName2}_datums;
 rows:
 (FALSE)
 (FALSE)
@@ -88,7 +88,7 @@ rows:
 (FALSE)
 
 //------------------------------------------------------------------------------
-select bol_col2 OR TRUE from datums;
+select bol_col2 OR TRUE from ${testName2}_datums;
 rows:
 (TRUE)
 (TRUE)
@@ -103,7 +103,7 @@ rows:
 (TRUE)
 
 //------------------------------------------------------------------------------
-select bol_col2 OR FALSE from datums;
+select bol_col2 OR FALSE from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -118,7 +118,7 @@ rows:
 (TRUE)
  
 //------------------------------------------------------------------------------
-select NOT bol_col2 from datums;
+select NOT bol_col2 from ${testName2}_datums;
 rows:
 (TRUE)
 (NULL)
@@ -133,7 +133,7 @@ rows:
 (FALSE)
 /*
 //------------------------------------------------------------------------------
-select bol_col2 XOR TRUE from datums;
+select bol_col2 XOR TRUE from ${testName2}_datums;
 rows:
 (TRUE)
 (NULL)
@@ -149,7 +149,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select bol_col2 XOR FALSE from datums;
+select bol_col2 XOR FALSE from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -164,7 +164,7 @@ rows:
 (TRUE)
 */
 //------------------------------------------------------------------------------
-select bol_col2 AND bol_col3 from datums;
+select bol_col2 AND bol_col3 from ${testName2}_datums;
 rows:
 (FALSE)
 (FALSE)
@@ -179,67 +179,7 @@ rows:
 (FALSE)
 
 //------------------------------------------------------------------------------
-select bol_col2 AND bol_col3 OR bol_col2 from datums;
-rows:
-(FALSE)
-(NULL)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(FALSE)
-(TRUE)
-(TRUE)
-
-//------------------------------------------------------------------------------
-select NOT(bol_col2 AND bol_col3) from datums;
-rows:
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-
-//------------------------------------------------------------------------------
-select NOT(bol_col2 OR bol_col3) from datums;
-rows:
-(TRUE)
-(NULL)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(TRUE)
-(FALSE)
-(FALSE)
-
-//------------------------------------------------------------------------------
-select NOT bol_col2 AND NOT bol_col3 from datums;
-rows:
-(TRUE)
-(NULL)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(TRUE)
-(FALSE)
-(FALSE)
-
-//------------------------------------------------------------------------------
-select bol_col2 AND (NOT bol_col3 OR bol_col3) from datums;
+select bol_col2 AND bol_col3 OR bol_col2 from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -254,7 +194,67 @@ rows:
 (TRUE)
 
 //------------------------------------------------------------------------------
-select bol_col2 AND (bol_col3 OR bol_col3) from datums;
+select NOT(bol_col2 AND bol_col3) from ${testName2}_datums;
+rows:
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+
+//------------------------------------------------------------------------------
+select NOT(bol_col2 OR bol_col3) from ${testName2}_datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+//------------------------------------------------------------------------------
+select NOT bol_col2 AND NOT bol_col3 from ${testName2}_datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+//------------------------------------------------------------------------------
+select bol_col2 AND (NOT bol_col3 OR bol_col3) from ${testName2}_datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+
+//------------------------------------------------------------------------------
+select bol_col2 AND (bol_col3 OR bol_col3) from ${testName2}_datums;
 rows:
 (FALSE)
 (FALSE)
@@ -269,7 +269,7 @@ rows:
 (FALSE)
 
 //------------------------------------------------------------------------------
-select bol_col2 OR bol_col3 OR bol_col2 from datums;
+select bol_col2 OR bol_col3 OR bol_col2 from ${testName2}_datums;
 rows:
 (FALSE)
 (NULL)
@@ -285,7 +285,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 memoryleaks;
@@ -293,7 +293,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName2}_datums;
   mute
 
   bye;

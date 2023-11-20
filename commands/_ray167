@@ -11,7 +11,6 @@ __TPCH_SCHEMA;
 
 Optimiser crashes
 
-*/
 
 /optimiser_trace
 /transliterated
@@ -62,5 +61,239 @@ order by
   n_name,
   s_name,
   p_partkey;
+*/
 
+/optimise_passthru
+/pipeline_def
+pipeline _ray167
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+     scan      nation
+    | project   "   type INTEGER as C0_N_NATIONKEY $1
+                , type INTEGER as C1_N_REGIONKEY $3 "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+    indexJoin region IxR_REGIONKEY " BOUND $I1 $2 == "
+    | filter    " type BOOLEAN $4 'AFRICA' == "
+    | dynamic
+    | next
+
+  stage S03 on all partitions :
+    project   " type INTEGER as C0_N_NATIONKEY $1 "
+    |  dynamic
+    | next
+
+  stage S04 on all partitions :
+    indexJoin Supplier IxS_NATIONKEY " BOUND $I1 $1 == "
+    |  dynamic
+    | next
+
+  stage S05 on all partitions :
+    project   " type INTEGER as C0_S_SUPPKEY $2 "
+    | dynamic
+    | next      broadcast
+
+  stage S06 on all partitions :
+    indexJoin PartSupp IxPS_SUPPKEY " BOUND $I1 $1 == "
+    | dynamic
+    | next
+
+  stage S07 on all partitions :
+    project   "   type INTEGER as C0_COL0 $2
+                , type DECIMAL as C1_PS_SUPPLYCOST $5 "
+    | dynamic
+    | next
+
+  stage S08 on all partitions :
+    gbyAgg    " groupBy
+                  type INTEGER $1
+                aggregates
+                  type INTEGER as C0__SQCRLKEY_ $K1
+                , type DECIMAL as C1_COL1 ) $2 min "
+    |  dynamic
+    | next
+
+  stage S09 on all nodes :
+    gbyAgg    " groupBy
+                  type INTEGER $1
+                aggregates
+                  type INTEGER as C0__SQCRLKEY_ $K1
+                , type DECIMAL as C1_COL1 ) $2 min "
+    | dynamic
+    | next
+
+  stage S10 on origin :
+    gbyAgg    " groupBy
+                  type INTEGER $1
+                aggregates
+                  type INTEGER as C0__SQCRLKEY_ $K1
+                , type DECIMAL as C1_COL1 ) $2 min "
+    |  dynamic
+    | next      broadcast
+
+  stage S11 on all partitions :
+    indexJoin PartSupp IxPS_PARTKEY " BOUND $I1 "
+    | filter    " type BOOLEAN $6 $2 == "
+    |  dynamic
+    | next
+/*
+  stage S12 on all partitions :
+  //  project   "   type INTEGER as C0_PS_PARTKEY $3
+  //              , type INTEGER as C1_PS_SUPPKEY $4 "
+  //| hash      "type INTEGER $1"
+      dynamic
+    | next      hashcast
+
+    /*
+  stage S13 on all partitions :
+  //  indexJoin Supplier IxS_SUPPKEY " BOUND $I1 $2 == "
+      dynamic
+    | next
+
+  stage S14 on all partitions :
+  //  project   "   type DECIMAL as C0_S_ACCTBAL $8
+  //              , type VARCHAR as C1_S_NAME $4
+  //              , type VARCHAR as C2_S_ADDRESS $5
+  //              , type VARCHAR as C3_S_PHONE $7
+  //              , type VARCHAR as C4_S_COMMENT $9
+  //              , type INTEGER as C5_PS_PARTKEY $1
+  //              , type INTEGER as C6_S_NATIONKEY $6 "
+      dynamic
+    | next
+
+  stage S15 on all partitions :
+  //  indexJoin nation IxN_NATIONKEY " BOUND $I1 $7 == "
+      dynamic
+    | next
+
+  stage S16 on all partitions :
+  //  project   "   type DECIMAL as C0_S_ACCTBAL $1
+  //              , type VARCHAR as C1_S_NAME $2
+  //              , type VARCHAR as C2_N_NAME $9
+  //              , type VARCHAR as C3_S_ADDRESS $3
+  //              , type VARCHAR as C4_S_PHONE $4
+  //              , type VARCHAR as C5_S_COMMENT $5
+  //              , type INTEGER as C6_PS_PARTKEY $6
+  //              , type INTEGER as C7_N_REGIONKEY $10 "
+      dynamic
+    | next
+
+  stage S17 on all partitions :
+  //  indexJoin region IxR_REGIONKEY " BOUND $I1 $8 == "
+  //| filter    " type BOOLEAN $10 'AFRICA' == "
+      dynamic
+    | next
+
+  stage S18 on all partitions :
+  //  project   "   type DECIMAL as C0_S_ACCTBAL $1
+  //              , type VARCHAR as C1_S_NAME $2
+
+~~TextBlock[1] : 1726 bytes
+  //              , type VARCHAR as C2_N_NAME $3
+  //              , type VARCHAR as C3_S_ADDRESS $4
+  //              , type VARCHAR as C4_S_PHONE $5
+  //              , type VARCHAR as C5_S_COMMENT $6
+  //              , type INTEGER as C6_PS_PARTKEY $7 "
+      dynamic
+    | next      broadcast
+
+  stage S19 on all partitions :
+  //  indexJoin Part IxP_PARTKEY " BOUND $I1 $1 == "
+  //| filter    " type BOOLEAN } $13 20 == $12 '%STEEL' 6 matchTrailing and $8 $7 == and "
+      dynamic
+    | next
+
+  stage S20 on all partitions :
+  //  project   "   type DECIMAL as C0_s_acctbal $1
+  //              , type VARCHAR as C1_s_name $2
+  //              , type VARCHAR as C2_n_name $3
+  //              , type INTEGER as C3_p_partkey $8
+  //              , type VARCHAR as C4_p_mfgr $10
+  //              , type VARCHAR as C5_s_address $4
+  //              , type VARCHAR as C6_s_phone $5
+  //              , type VARCHAR as C7_s_comment $6 "
+      dynamic
+    | next
+
+  stage S21 on all partitions :
+  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR as C1_n_name $3 ASC , type VARCHAR as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
+      dynamic
+    | next
+
+  stage S22 on all nodes :
+  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR as C1_n_name $3 ASC , type VARCHAR as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
+      dynamic
+    | next
+
+  stage S23 on origin :
+  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR as C1_n_name $3 ASC , type VARCHAR as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
+      dynamic
+    | next
+*/
+  stage S24 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+/*
+StageDef: [10] S11 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] crossJoin SQ0.43]
+         : StreamDef_arriving 0x204860b00040
+            Col [ 0] : $ 1        C0__SQCRLKEY_ ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 1] : $ 2              C1_COL1 ( DECIMAL length=-1 scale=-1)  NULLABLE  ASCENDING
+         : StreamDef_emitted 0x204878000040
+            Col [ 0] : $ 1        C0__SQCRLKEY_ ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 1] : $ 2              C1_COL1 ( DECIMAL length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 2] : $ 3        C2_PS_PARTKEY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 3] : $ 4        C3_PS_SUPPKEY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 4] : $ 5       C4_PS_AVAILQTY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 5] : $ 6     C5_PS_SUPPLYCOST ( DECIMAL length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 6] : $ 7        C6_PS_COMMENT ( VARCHAR length=-1 scale=-1)  NULLABLE  ASCENDING
+         : Index_indexJoin 0x20488326a040
+            IndexDef IxPS_PARTKEY NoDescending
+              Column 00 PS_PARTKEY type INTEGER length 19 scale 0 datum INTEGER not null partitionKey
+         : ColPpg 0x20485ef30040
+             nArriving 3
+             m_axCol[0] : m_i_CellIn [1] -> m_i_StructCell [1] $2 ($2 $2)
+             m_axCol[1] : m_i_CellIn [0] -> m_i_StructCell [0] $1 ($K1 $K1)
+         : ColInj 0x204860250040
+             nCrwCols 5
+             m_axCol[0] : m_i_CrwCol [0] -> m_i_StructCell [2] C2_PS_PARTKEY ($b.1 PS_PARTKEY)
+             m_axCol[1] : m_i_CrwCol [1] -> m_i_StructCell [3] C3_PS_SUPPKEY ($b.2 PS_SUPPKEY)
+             m_axCol[2] : m_i_CrwCol [2] -> m_i_StructCell [4] C4_PS_AVAILQTY ($b.3 PS_AVAILQTY)
+             m_axCol[3] : m_i_CrwCol [3] -> m_i_StructCell [5] C5_PS_SUPPLYCOST ($b.4 PS_SUPPLYCOST)
+             m_axCol[4] : m_i_CrwCol [4] -> m_i_StructCell [6] C6_PS_COMMENT ($b.5 PS_COMMENT)
+      ArgDef: [0] tableNm PartSupp
+      ArgDef: [1] indexNm PartSupp
+      ArgDef: [2] expr  BOUND $I1
+    OpDef: [1] filter SQ0.44]
+         : StreamDef_arriving 0x20485eb00040
+            Col [ 0] : $ 1        C0__SQCRLKEY_ ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 1] : $ 2              C1_COL1 ( DECIMAL length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 2] : $ 3        C2_PS_PARTKEY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 3] : $ 4        C3_PS_SUPPKEY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 4] : $ 5       C4_PS_AVAILQTY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 5] : $ 6     C5_PS_SUPPLYCOST ( DECIMAL length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 6] : $ 7        C6_PS_COMMENT ( VARCHAR length=-1 scale=-1)  NULLABLE  ASCENDING
+         : StreamDef_emitted 0x20487eb00040
+            Col [ 0] : $ 1        C0__SQCRLKEY_ ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 1] : $ 2              C1_COL1 ( DECIMAL length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 2] : $ 3        C2_PS_PARTKEY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 3] : $ 4        C3_PS_SUPPKEY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 4] : $ 5       C4_PS_AVAILQTY ( INTEGER length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 5] : $ 6     C5_PS_SUPPLYCOST ( DECIMAL length=-1 scale=-1)  NULLABLE  ASCENDING
+            Col [ 6] : $ 7        C6_PS_COMMENT ( VARCHAR length=-1 scale=-1)  NULLABLE  ASCENDING
+      ArgDef: [0] expr  type BOOLEAN $6 $2 ==
+*/
 _tpchDrop;

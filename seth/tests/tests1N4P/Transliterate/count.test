@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER,
   int_col1  INTEGER,
   bol_col2   BOOLEAN,
@@ -24,67 +24,67 @@ create table datums (
 );
 success
 
-load datums "../DATA/Datums/datums.csv" ;
+load ${testName2}_datums "../DATA/Datums/datums.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select count(*) from datums;
+select count(*) from ${testName2}_datums;
 rows:
  (10)
 
 //------------------------------------------------------------------------------
-select count(int_col0) from datums;
+select count(int_col0) from ${testName2}_datums;
 rows:
  (10)
 
 //------------------------------------------------------------------------------
-select count(int_col1) from datums;
+select count(int_col1) from ${testName2}_datums;
 rows:
  (9)
 
 //------------------------------------------------------------------------------
-select count(dte_col4) from datums;
+select count(dte_col4) from ${testName2}_datums;
 rows:
  (9)
 
 //------------------------------------------------------------------------------
-select count(flt_col8) from datums;
+select count(flt_col8) from ${testName2}_datums;
 rows:
  (9)
 
 //------------------------------------------------------------------------------
-select count(dec_col6) from datums;
+select count(dec_col6) from ${testName2}_datums;
 rows:
  (8)
 
 //------------------------------------------------------------------------------
-select count(tme_col10) from datums;
+select count(tme_col10) from ${testName2}_datums;
 rows:
  (9)
 
 //------------------------------------------------------------------------------
-select count(tsp_col12) from datums;
+select count(tsp_col12) from ${testName2}_datums;
 rows:
   (9)
 
 //------------------------------------------------------------------------------
-select count(vch_col14) from datums;
+select count(vch_col14) from ${testName2}_datums;
 rows:
   (9)
 
 //------------------------------------------------------------------------------
-select count(vch_col15) from datums;
+select count(vch_col15) from ${testName2}_datums;
 rows:
   (10)
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 CLEANUP {
   
-  drop table datums;
+  drop table ${testName2}_datums;
   mute
   
   bye;

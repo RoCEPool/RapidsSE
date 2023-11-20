@@ -26,9 +26,39 @@ function errorExit() {
 ### Main Script                                                             ###
 ###############################################################################
 
-BUCKET="s3://rapids-cloud-init"
-SCRIPT="cloud-init.sh"
+RELEASE="unknown"
+if [ -f "/etc/system-release" ]; then
+  SYSREL="$(cat "/etc/system-release")"
 
+  case "${SYSREL}" in
+    "Amazon Linux release 2023 "*)
+      RELEASE="AL2023"
+      ;;
+
+    "Amazon Linux release 2 "*)
+      RELEASE="AL2"
+      ;;
+
+    *)
+      RELEASE="AL2"
+      ;;
+  esac
+fi
+
+BUCKET="s3://rapids-cloud-init"
+SCRIPT="cloud-init.${RELEASE}.sh"
+
+# Set the package manager
+PKGMAN="yum"
+if ! which yum &>/dev/null; then
+  PKGMAN="dnf"
+  if ! which dnf &>/dev/null; then
+    PKGMAN="apt"
+    if ! which apt &>/dev/null; then
+      errorExit "Could not find a supported package manager. Tried yum, dnf and apt."
+    fi
+  fi
+fi
 
 # Set up any pre-requisites
 # Note that we retry any network operations as these can fail or timeout for
@@ -37,7 +67,7 @@ SCRIPT="cloud-init.sh"
 
 if ! which aws; then
   # AWS CLI needs curl and unzip
-  while ! yum install -y curl unzip; do
+  while ! "${PKGMAN}" install -y curl unzip; do
     sleep 1
   done
 

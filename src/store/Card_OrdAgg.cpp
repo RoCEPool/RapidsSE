@@ -90,7 +90,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmCol(pCI->Flux.m_pArriving);
+  vCorrect_expCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 
@@ -116,7 +116,7 @@ void Card_OrdAgg::vUpdate_emitted(CardIter* pCI)
 
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
     if (pCI->Flux.m_pArriving) {
-      pCI->G.p_key->vTypes_For_stmCol(pCI);
+      pCI->G.p_key->vEnsureTypeId_expCol(pCI);
       pCI->G.p_key->vRenumberAll_expr();
     }
   }
@@ -124,7 +124,7 @@ void Card_OrdAgg::vUpdate_emitted(CardIter* pCI)
   if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
 
     if (pCI->Flux.m_pArriving) {
-      pCI->G.p_emit->vEnsureTypes_For_stmCol(pCI);
+      pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
       pCI->G.p_emit->vRenumberAll_expr();
     }
 

@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+static const i8 C_MAX_COLUMN_NAME_LENGTH = 256; // max column name length including null terminator
 static const i8 C_MAX_COLUMNS       = 64;     // max columns per table
 static const i8 C_MAX_CONN_RETRIES  = 5;      // max connection retries on node failure
 static const i8 C_MAX_DECKS         = 256;
@@ -32,11 +33,12 @@ static const i8 C_MAX_REGS          = 128;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 64;    // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 1024;
+static const i8 C_MAX_SQL_NAME_LENGTH = 256; // max sql name length including null terminator
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STREAMS       = 256;
 static const i8 C_MAX_STREAM_ORDER  = 8;
-static const i8 C_MAX_TABLE_NAME_LENGTH  = 32; // max table name length including null terminator
-static const i8 C_MAX_INDEX_NAME_LENGTH  = 32; // max index name length including null terminator
+static const i8 C_MAX_TABLE_NAME_LENGTH  = 256; // max table name length including null terminator
+static const i8 C_MAX_INDEX_NAME_LENGTH  = 256; // max index name length including null terminator
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 static const i8 C_MAX_VERTEXES      = 256;

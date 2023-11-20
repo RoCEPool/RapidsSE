@@ -8,10 +8,10 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNICAST+HASHCAST+HASHCAST
 select count(*)
-  from Customer,
-       Orders,
-       Lineitem,
-       Supplier
+  from ${testName2}_Customer,
+       ${testName2}_Orders,
+       ${testName2}_Lineitem,
+       ${testName2}_Supplier
  where C_CUSTKEY  = O_CUSTKEY
    and L_ORDERKEY = O_ORDERKEY
    and L_SUPPKEY  = S_SUPPKEY;
@@ -21,10 +21,10 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST+UNICAST+BROADCAST
 select count(*)
-  from Lineitem,
-       PartSupp,
-       Part,
-       Supplier
+  from ${testName2}_Lineitem,
+       ${testName2}_PartSupp,
+       ${testName2}_Part,
+       ${testName2}_Supplier
  where P_PARTKEY = PS_PARTKEY
    and L_SUPPKEY  = PS_SUPPKEY
    and PS_SUPPKEY = S_SUPPKEY;
@@ -34,10 +34,10 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST+BROADCAST+HASHCAST
 select count(*)
-  from Part,
-       Lineitem,
-       PartSupp,
-       Supplier
+  from ${testName2}_Part,
+       ${testName2}_Lineitem,
+       ${testName2}_PartSupp,
+       ${testName2}_Supplier
  where P_PARTKEY = L_PARTKEY
    and L_SUPPKEY  = PS_SUPPKEY
    and PS_SUPPKEY = S_SUPPKEY;

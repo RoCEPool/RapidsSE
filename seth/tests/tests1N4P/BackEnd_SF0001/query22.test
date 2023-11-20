@@ -6,15 +6,15 @@
 select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
      from (
        select c_custkey, substring(c_phone from 1 for 2) as cntrycode, c_acctbal
-       from customer
+       from ${testName2}_customer
        where substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
            and c_acctbal >
              ( select avg(c_acctbal)
-               from customer
+               from ${testName2}_customer
                where c_acctbal > 0.00
                      and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
                      and not exists (
-                                      select * from orders where o_custkey = c_custkey )
+                                      select * from ${testName2}_orders where o_custkey = c_custkey )
                                     ) as custsale
      group by cntrycode
      order by cntrycode;
@@ -31,15 +31,15 @@ EXPLAIN STAGE TRANSLITERATE
 select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
      from (
        select substring(c_phone from 1 for 2) as cntrycode, c_acctbal
-       from customer
+       from ${testName2}_customer
        where substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
            and c_acctbal >
              ( select avg(c_acctbal)
-               from customer
+               from ${testName2}_customer
                where c_acctbal > 0.00
                      and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
                      and not exists (
-                                      select * from orders where o_custkey = c_custkey )
+                                      select * from ${testName2}_orders where o_custkey = c_custkey )
                                     ) as custsale
      group by cntrycode
      order by cntrycode;
@@ -54,7 +54,7 @@ begin
       | pulse once
       | stageMarker1075
     stage stageMarker1075 on all partitions :
-      scan rapidsse public orders
+      scan rapidsse public ${testName2}_orders
       | filter " type BOOLEAN  $2 %1 ==  "
       | project " type INTEGER as O_ORDERKEY $1 , type INTEGER as O_CUSTKEY $2 , type VARCHAR as O_ORDERSTATUS $3 , type DECIMAL as O_TOTALPRICE $4 , type DATE as O_ORDERDATE $5 , type VARCHAR as O_ORDERPRIORITY $6 , type VARCHAR as O_CLERK $7 , type INTEGER as O_SHIPPRIORITY $8 , type VARCHAR as O_COMMENT $9 "
       | combined 0
@@ -72,7 +72,7 @@ begin
       | pulse once
       | stageMarker1081
     stage stageMarker1081 on all partitions :
-      scan rapidsse public Customer
+      scan rapidsse public ${testName2}_Customer
       | filter " type BOOLEAN  $6 0.00  >  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  and  "
       | aggreg " type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
       | combined 0
@@ -102,7 +102,7 @@ begin
       | pulse once
       | stageMarker1093
     stage stageMarker1093 on all partitions :
-      scan rapidsse public Customer
+      scan rapidsse public ${testName2}_Customer
       | filter " type BOOLEAN  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  $6 __subquery0003  >  and  $1 __subquery0005  exists  not  and  "
       | project " type VARCHAR as cntrycode $5 1  2  substring3  , type DECIMAL as c_acctbal $6 "
       | combined 0
@@ -150,7 +150,7 @@ begin
     | next
 
   stage S02 on all partitions :
-    scan Customer
+    scan ${testName2}_Customer
     | filter " type BOOLEAN  C_ACCTBAL 0.00  >
                }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
     | aggreg " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
@@ -173,7 +173,7 @@ begin
     | next broadcast
 
   stage S06 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "bound $I1"
+    indexJoin ${testName2}_Customer IxC_CUSTKEY "bound $I1"
     | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in
               C_ACCTBAL acctbal  >  and "
     | project " type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as cntrycode C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL C_ACCTBAL "
@@ -181,7 +181,7 @@ begin
     | next
 
   stage S07 on all partitions :
-    keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+    keyExists ${testName2}_ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                    "type BOOLEAN O_CUSTKEY 0 >"
     | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
     | combined 0

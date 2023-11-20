@@ -17,7 +17,7 @@ success
    avg(l_discount)                                     as avg_disc,
    count(*)                                            as count_order
 
- from LineItem
+ from ${testName2}_LineItem
 
  where l_shipdate <= DATE '1998-09-01'
 

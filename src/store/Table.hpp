@@ -18,8 +18,8 @@ namespace STORE
   class Table : public Operand
   {
   private:
-    s32 m_sTableNm; // table name (leave for the moment)
-    eTT m_eKind;    // table kind
+    s256 m_sTableNm; // table name (leave for the moment)
+    eTT  m_eKind;    // table kind
   
     Location   m_oLocation;   // logical location of table
     StreamDef* m_pStreamDef;  // table stream def

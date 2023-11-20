@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card_CONDITION.hpp"
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 
 namespace STORE
 {
@@ -21,19 +21,14 @@ namespace STORE
     static void vIndividuate_filter(CardIter* pCI);
     static Card_Filter* pNew(Card_Constraint* p_constraint);
 
-    void vAddConj(Card_CONJUNCTION *p_PRED);
 
     void vComputeProjection(CardIter* pCI); // prototype
-    void vCorrectStmCol(Card_Emit* p_emitted_prior);
-
-    i8 nCullConj(Stz* szWithMark);
-
+    void vCorrect_expCol(Card_Emit* p_arriving);
+    i8 nCullMarked_rlnConj(Stz* szWithMark);
     void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_update(CardIter* pCI);
-
+    void vExtend_rlnConj(Card_RlnConj *p_rlnConj);
     bool bIsEmpty(void);
-
-
     void vUpdate_emitted(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

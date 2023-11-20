@@ -3,57 +3,57 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 success
 
 // create an index
-create index keyIdx on createT1 (key);
+create index keyIdx on ${testName2}_createT1 (key);
 affected: 0
 
 // check existence of index
-lsidx createT1;
+lsidx ${testName2}_createT1;
 rows:
   ('keyIdx',false,false)
 
 // check columns of index
-lsidxcol createT1 keyIdx;
+lsidxcol ${testName2}_createT1 keyIdx;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
 
 // sz of index
-szidx createT1 keyidx;
+szidx ${testName2}_createT1 keyidx;
 rows: 1
 
 // lwrsel
-predicateFetch createT1 "key 10 >=";
+predicateFetch ${testName2}_createT1 "key 10 >=";
 rows: 0
 
 // uprsel
-predicateFetch createT1 "key 10 <=";
+predicateFetch ${testName2}_createT1 "key 10 <=";
 rows: 0
 
 // keysel
-predicateFetch createT1 "key 10 =";
+predicateFetch ${testName2}_createT1 "key 10 =";
 rows: 0
 
 // rgesel
-predicateFetch createT1 "key 10 >= key 20 <= AND";
+predicateFetch ${testName2}_createT1 "key 10 >= key 20 <= AND";
 rows: 0
 
 // drop the index keyIdx;
-drop index createT1 keyIdx;
+drop index ${testName2}_createT1 keyIdx;
 success
 
 // now drop the table
-drop table createT1;
+drop table ${testName2}_createT1;
 success
 
 CLEANUP {
 
-  drop table createT1;
+  drop table ${testName2}_createT1;
   mute
 
   bye;

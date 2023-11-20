@@ -76,13 +76,13 @@
 : EV_I_COUNT_handler            \handler STANDARD_PIPEOUT ;
 : EV_I_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_FORKCOMMAND_handler      \handler STANDARD_PIPEOUT ;
+: EV_I_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
 : EV_I_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
 : EV_I_PAGEINREQUEST_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_PATH_handler             \handler STANDARD_PIPEOUT ;
 : EV_I_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_PROMPTOUT_handler        \handler STANDARD_PIPEOUT ;
-: EV_I_RETURNPIPELINE_handler   \handler STANDARD_PIPEOUT ;
 : EV_I_SEEKOFFSETS_handler      \handler STANDARD_PIPEOUT ;
 : EV_I_TOTALUNITS_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_WARNINGS_handler         \handler STANDARD_PIPEOUT ;
@@ -472,18 +472,17 @@
 
   abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
   abnormalHandler EV_I_COMMAND          [op].handler!
-  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
   abnormalHandler EV_I_FORKCOMMAND      [op].handler!
+  abnormalHandler EV_I_LOADRESULT       [op].handler!
   abnormalHandler EV_I_LOCKSTATS        [op].handler!
   abnormalHandler EV_I_NODEINFO         [op].handler!
   abnormalHandler EV_I_PAGEINREQUEST    [op].handler!
   abnormalHandler EV_I_PATH             [op].handler!
   abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
   abnormalHandler EV_I_PROMPTOUT        [op].handler!
-  abnormalHandler EV_I_RETURNPIPELINE   [op].handler!
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
 
@@ -500,18 +499,17 @@
 
   abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
   abnormalHandler EV_I_COMMAND          [op].handler!
-  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
   abnormalHandler EV_I_FORKCOMMAND      [op].handler!
+  abnormalHandler EV_I_LOADRESULT       [op].handler!
   abnormalHandler EV_I_LOCKSTATS        [op].handler!
   abnormalHandler EV_I_NODEINFO         [op].handler!
   abnormalHandler EV_I_PAGEINREQUEST    [op].handler!
   abnormalHandler EV_I_PATH             [op].handler!
   abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
   abnormalHandler EV_I_PROMPTOUT        [op].handler!
-  abnormalHandler EV_I_RETURNPIPELINE   [op].handler!
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
   abnormalHandler EV_I_WARNINGS         [op].handler!

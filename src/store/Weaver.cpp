@@ -316,28 +316,28 @@ void Weaver::vOp(Card* pCard, bool bCommented)
 
   switch (eCard) {
 
-    case CK_ABSJOIN:      vArgAbsJoin      (sOpArgs,_pCard_AbsJoin(pCard));      break;
-    case CK_AGGREG:       vArgAggreg       (sOpArgs,_pCard_Aggreg(pCard));       break;
-    case CK_CAST:         vArgCast         (sOpArgs,_pCard_Cast(pCard));         break;
-    case CK_CROSSJOIN:    vArgCrossJoin    (sOpArgs,_pCard_CrossJoin(pCard));    break;
-    case CK_FILTER:       vArgFilter       (sOpArgs,_pCard_Filter(pCard));       break;
-    case CK_GBYAGG:       vArgGbyAgg       (sOpArgs,_pCard_GbyAgg(pCard));       break;
-    case CK_HASH:         vArgHash         (sOpArgs,_pCard_Hash(pCard));         break;
-    case CK_HAVING:       vArgHaving       (sOpArgs,_pCard_Having(pCard));       break;
-    case CK_INDEXJOIN:    vArgIndexJoin    (sOpArgs,_pCard_IndexJoin(pCard));    break;
-    case CK_INDEXSCAN:    vArgIndexScan    (sOpArgs,_pCard_IndexScan(pCard));    break;
-    case CK_INFLATE:      vArgInflate      (sOpArgs,_pCard_Inflate(pCard));      break;
-    case CK_KEYEXISTS:    vArgKeyExists    (sOpArgs,_pCard_KeyExists(pCard));    break;
-    case CK_KEYNOTEXISTS: vArgKeyNotExists (sOpArgs,_pCard_KeyNotExists(pCard)); break;
-    case CK_LIMIT:        vArgLimit        (sOpArgs,_pCard_Limit(pCard));        break;
-    case CK_ORDAGG:       vArgOrdAgg       (sOpArgs,_pCard_OrdAgg(pCard));       break;
-    case CK_PROJECT:      vArgProject      (sOpArgs,_pCard_Project(pCard));      break;
-    case CK_SCAN:         vArgScan         (sOpArgs,_pCard_Scan(pCard));         break;
-    case CK_SEND:         vArgSend         (sOpArgs,_pCard_Send(pCard));         break;
-    case CK_SORT:         vArgSort         (sOpArgs,_pCard_Sort(pCard));         break;
-    case CK_TABLE:        vArgTable        (sOpArgs,_pCard_Table(pCard));        break;
-    case CK_TOP:          vArgTop          (sOpArgs,_pCard_Top(pCard));          break;
-    case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
+    case CK_ABSJOIN:      vArg_absJoin      (sOpArgs,_pCard_AbsJoin(pCard));      break;
+    case CK_AGGREG:       vArg_aggreg       (sOpArgs,_pCard_Aggreg(pCard));       break;
+    case CK_CAST:         vArg_cast         (sOpArgs,_pCard_Cast(pCard));         break;
+    case CK_CROSSJOIN:    vArg_crossJoin    (sOpArgs,_pCard_CrossJoin(pCard));    break;
+    case CK_FILTER:       vArg_filter       (sOpArgs,_pCard_Filter(pCard));       break;
+    case CK_GBYAGG:       vArg_gbyAgg       (sOpArgs,_pCard_GbyAgg(pCard));       break;
+    case CK_HASH:         vArg_hash         (sOpArgs,_pCard_Hash(pCard));         break;
+    case CK_HAVING:       vArg_having       (sOpArgs,_pCard_Having(pCard));       break;
+    case CK_INDEXJOIN:    vArg_indexJoin    (sOpArgs,_pCard_IndexJoin(pCard));    break;
+    case CK_INDEXSCAN:    vArg_indexScan    (sOpArgs,_pCard_IndexScan(pCard));    break;
+    case CK_INFLATE:      vArg_inflate      (sOpArgs,_pCard_Inflate(pCard));      break;
+    case CK_KEYEXISTS:    vArg_keyExists    (sOpArgs,_pCard_KeyExists(pCard));    break;
+    case CK_KEYNOTEXISTS: vArg_keyNotExists (sOpArgs,_pCard_KeyNotExists(pCard)); break;
+    case CK_LIMIT:        vArg_limit        (sOpArgs,_pCard_Limit(pCard));        break;
+    case CK_ORDAGG:       vArg_ordAgg       (sOpArgs,_pCard_OrdAgg(pCard));       break;
+    case CK_PROJECT:      vArg_project      (sOpArgs,_pCard_Project(pCard));      break;
+    case CK_SCAN:         vArg_scan         (sOpArgs,_pCard_Scan(pCard));         break;
+    case CK_SEND:         vArg_send         (sOpArgs,_pCard_Send(pCard));         break;
+    case CK_SORT:         vArg_sort         (sOpArgs,_pCard_Sort(pCard));         break;
+    case CK_TABLE:        vArg_table        (sOpArgs,_pCard_Table(pCard));        break;
+    case CK_TOP:          vArg_top          (sOpArgs,_pCard_Top(pCard));          break;
+    case CK_WHERE:        vArg_where        (sOpArgs,_pCard_Where(pCard));        break;
 
     default:
       vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
@@ -380,7 +380,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
 /*----------------------------------------------------------------------------*/
 /* weave : abstractJoin " 1 "                                                 */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgAbsJoin(String* psOpArgs, Card_AbsJoin*   pCard_AbsJoin)
+void Weaver::vArg_absJoin(String* psOpArgs, Card_AbsJoin*   pCard_AbsJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   UNUSED(pCard_AbsJoin);
@@ -392,7 +392,7 @@ void Weaver::vArgAbsJoin(String* psOpArgs, Card_AbsJoin*   pCard_AbsJoin)
 /*----------------------------------------------------------------------------*/
 /* weave : aggreg <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgAggreg(String* psOpArgs, Card_Aggreg* pCard_Aggreg)
+void Weaver::vArg_aggreg(String* psOpArgs, Card_Aggreg* pCard_Aggreg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -408,7 +408,7 @@ void Weaver::vArgAggreg(String* psOpArgs, Card_Aggreg* pCard_Aggreg)
 /*----------------------------------------------------------------------------*/
 /* weave :next ?                                                              */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgCast(String* psOpArgs, Card_Cast* pCard_Next)
+void Weaver::vArg_cast(String* psOpArgs, Card_Cast* pCard_Next)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -419,7 +419,7 @@ void Weaver::vArgCast(String* psOpArgs, Card_Cast* pCard_Next)
 /*----------------------------------------------------------------------------*/
 /* weave : indexJoin <compiled> <tableNm> <indexNm> <expr>                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgCrossJoin(String* psOpArgs, Card_CrossJoin* pCard_CrossJoin)
+void Weaver::vArg_crossJoin(String* psOpArgs, Card_CrossJoin* pCard_CrossJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -442,7 +442,7 @@ void Weaver::vArgCrossJoin(String* psOpArgs, Card_CrossJoin* pCard_CrossJoin)
 /*----------------------------------------------------------------------------*/
 /* weave : filter <expr>                                                      */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgFilter(String* psOpArgs, Card_Filter* pCard_Filter)
+void Weaver::vArg_filter(String* psOpArgs, Card_Filter* pCard_Filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -460,7 +460,7 @@ void Weaver::vArgFilter(String* psOpArgs, Card_Filter* pCard_Filter)
 /*----------------------------------------------------------------------------*/
 /* weave : aggGby <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgGbyAgg(String* psOpArgs, Card_GbyAgg* pCard_AggGby)
+void Weaver::vArg_gbyAgg(String* psOpArgs, Card_GbyAgg* pCard_AggGby)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -480,7 +480,7 @@ void Weaver::vArgGbyAgg(String* psOpArgs, Card_GbyAgg* pCard_AggGby)
 /*----------------------------------------------------------------------------*/
 /* weave : hash  <expr>                                                       */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgHash(String* psOpArgs, Card_Hash* pCard_Hash)
+void Weaver::vArg_hash(String* psOpArgs, Card_Hash* pCard_Hash)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -492,14 +492,14 @@ void Weaver::vArgHash(String* psOpArgs, Card_Hash* pCard_Hash)
   Card_Term* p_term = pCard_Hash->pSub_term();
 
   psOpArgs->vCatSprint("\"type %s %s\""_Stz,
-                       aCT[p_term->pSymbol()->eColType()],
+                       aCT[p_term->pSymbol()->xTypeId().eCTVal()],
                        p_term->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : having  <expr>                                                     */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgHaving(String* psOpArgs, Card_Having* pCard_Having)
+void Weaver::vArg_having(String* psOpArgs, Card_Having* pCard_Having)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -515,7 +515,7 @@ void Weaver::vArgHaving(String* psOpArgs, Card_Having* pCard_Having)
 /*----------------------------------------------------------------------------*/
 /* weave : indexJoin <compiled> <tableNm> <indexNm> <expr>                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgIndexJoin(String* psOpArgs, Card_IndexJoin* pCard_IndexJoin)
+void Weaver::vArg_indexJoin(String* psOpArgs, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -548,7 +548,7 @@ void Weaver::vArgIndexJoin(String* psOpArgs, Card_IndexJoin* pCard_IndexJoin)
 /*----------------------------------------------------------------------------*/
 /* weave : indexScan <compiled> <tableNm> <indexNm> <expr>                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgIndexScan(String* psOpArgs, Card_IndexScan* pCard_IndexScan)
+void Weaver::vArg_indexScan(String* psOpArgs, Card_IndexScan* pCard_IndexScan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -575,7 +575,7 @@ void Weaver::vArgIndexScan(String* psOpArgs, Card_IndexScan* pCard_IndexScan)
 /*----------------------------------------------------------------------------*/
 /* weave : inflate <tableNm>                                                  */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgInflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
+void Weaver::vArg_inflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -603,7 +603,7 @@ void Weaver::vArgInflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
 /*----------------------------------------------------------------------------*/
 /* weave : keyExists <tableNm> <indexNm> <keyExpr> <expr>                     */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgKeyExists(String* psOpArgs, Card_KeyExists* pCard_KeyExists)
+void Weaver::vArg_keyExists(String* psOpArgs, Card_KeyExists* pCard_KeyExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -629,7 +629,7 @@ void Weaver::vArgKeyExists(String* psOpArgs, Card_KeyExists* pCard_KeyExists)
 /*----------------------------------------------------------------------------*/
 /* weave : keyNotExists <tableNm> <indexNm> <keyExpr> <expr>                  */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgKeyNotExists(String* psOpArgs, Card_KeyNotExists* pCard_KeyNotExists)
+void Weaver::vArg_keyNotExists(String* psOpArgs, Card_KeyNotExists* pCard_KeyNotExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -655,7 +655,7 @@ void Weaver::vArgKeyNotExists(String* psOpArgs, Card_KeyNotExists* pCard_KeyNotE
 /*----------------------------------------------------------------------------*/
 /* weave : limit <compiled> <rows>                                            */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgLimit(String* psOpArgs, Card_Limit* pCard_Limit)
+void Weaver::vArg_limit(String* psOpArgs, Card_Limit* pCard_Limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -672,7 +672,7 @@ void Weaver::vArgLimit(String* psOpArgs, Card_Limit* pCard_Limit)
 /*----------------------------------------------------------------------------*/
 /* weave : ordagg <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgOrdAgg(String* psOpArgs, Card_OrdAgg* pCard_OrdAgg)
+void Weaver::vArg_ordAgg(String* psOpArgs, Card_OrdAgg* pCard_OrdAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -688,7 +688,7 @@ void Weaver::vArgOrdAgg(String* psOpArgs, Card_OrdAgg* pCard_OrdAgg)
 /*----------------------------------------------------------------------------*/
 /* weave : project <compiled> <expr>                                          */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgProject(String* psOpArgs, Card_Project* pCard_Project)
+void Weaver::vArg_project(String* psOpArgs, Card_Project* pCard_Project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -704,7 +704,7 @@ void Weaver::vArgProject(String* psOpArgs, Card_Project* pCard_Project)
 /*----------------------------------------------------------------------------*/
 /* weave : scan <tableNm>                                                     */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgScan(String* psOpArgs, Card_Scan* pCard_Scan)
+void Weaver::vArg_scan(String* psOpArgs, Card_Scan* pCard_Scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -725,7 +725,7 @@ void Weaver::vArgScan(String* psOpArgs, Card_Scan* pCard_Scan)
 /*----------------------------------------------------------------------------*/
 /* weave :send ?                                                              */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgSend(String* psOpArgs, Card_Send* pCard_send)
+void Weaver::vArg_send(String* psOpArgs, Card_Send* pCard_send)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -750,7 +750,7 @@ void Weaver::vArgSend(String* psOpArgs, Card_Send* pCard_send)
 /*----------------------------------------------------------------------------*/
 /* weave : sort ???                                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgSort(String* psOpArgs, Card_Sort* pCard_Sort)
+void Weaver::vArg_sort(String* psOpArgs, Card_Sort* pCard_Sort)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -766,7 +766,7 @@ void Weaver::vArgSort(String* psOpArgs, Card_Sort* pCard_Sort)
 /*----------------------------------------------------------------------------*/
 /* weave : table <tableNm>                                                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgTable(String* psOpArgs, Card_Table* pCard_Table)
+void Weaver::vArg_table(String* psOpArgs, Card_Table* pCard_Table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -784,7 +784,7 @@ void Weaver::vArgTable(String* psOpArgs, Card_Table* pCard_Table)
 /*----------------------------------------------------------------------------*/
 /* weave : top <expr> <count>                                                 */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgTop(String* psOpArgs, Card_Top* pCard_op)
+void Weaver::vArg_top(String* psOpArgs, Card_Top* pCard_op)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -802,7 +802,7 @@ void Weaver::vArgTop(String* psOpArgs, Card_Top* pCard_op)
 /*----------------------------------------------------------------------------*/
 /* weave : where <expr>                                                       */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgWhere(String* psOpArgs, Card_Where* pCard_Where)
+void Weaver::vArg_where(String* psOpArgs, Card_Where* pCard_Where)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -829,7 +829,7 @@ void Weaver::vConcat_cmd(Stz* aFormat, ...)
 
   va_start(xVarArgs,aFormat);
 
-  vConcat_cmd_vargs(aFormat, xVarArgs);
+  vConcat_cmd_vArg_s(aFormat, xVarArgs);
   
   va_end(xVarArgs);
 }
@@ -837,7 +837,7 @@ void Weaver::vConcat_cmd(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* concat formatted string                                                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vConcat_cmd_vargs(Stz* aFormat, va_list xArgs)
+void Weaver::vConcat_cmd_vArg_s(Stz* aFormat, va_list xArgs)
 {
   static char caFormatted[C_1MB] = {'\0'};
 

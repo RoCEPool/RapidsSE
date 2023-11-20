@@ -4,10 +4,10 @@
 /*  (original Query)
 
 select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
-     from customer, orders, lineitem
+     from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem
      where o_orderkey in (
      select l_orderkey
-     from lineitem
+     from ${testName2}_lineitem
      group by l_orderkey having
      sum(l_quantity) > 300 )
      and c_custkey = o_custkey
@@ -17,10 +17,10 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
 
 // changed 300 to 100 for SF0001
 select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
-     from customer, orders, lineitem
+     from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem
      where o_orderkey in (
      select l_orderkey
-     from lineitem
+     from ${testName2}_lineitem
      group by l_orderkey having
      sum(l_quantity) > 100 )
      and c_custkey = o_custkey
@@ -38,10 +38,10 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
 
 EXPLAIN STAGE TRANSLITERATE
 select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
-     from customer, orders, lineitem
+     from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem
      where o_orderkey in (
      select l_orderkey
-     from lineitem
+     from ${testName2}_lineitem
      group by l_orderkey having
      sum(l_quantity) > 100 )
      and c_custkey = o_custkey
@@ -58,7 +58,7 @@ begin
       | pulse once
       | stageMarker1264
     stage stageMarker1264 on all partitions :
-      scan rapidsse public LineItem
+      scan rapidsse public ${testName2}_LineItem
       | gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $5 sum  "
       | combined 0
       | stageMarker1267
@@ -89,14 +89,14 @@ begin
     | pulse once
     | stageMarker1276
   stage stageMarker1276 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName2}_customer
     | stageMarker1279 broadcast
   stage stageMarker1279 on all partitions :
-    scan rapidsse public orders
+    scan rapidsse public ${testName2}_orders
     | abstractJoin "CROSS true  "
     | stageMarker1282 broadcast
   stage stageMarker1282 on all partitions :
-    scan rapidsse public LineItem
+    scan rapidsse public ${testName2}_LineItem
     | abstractJoin "CROSS true  "
     | stageMarker1285
   stage stageMarker1285 on all partitions :
@@ -130,14 +130,14 @@ begin
      | next
 
    stage S01 on all partitions :
-      indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+      indexscan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
      | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
      | filter  " type BOOLEAN  SUM_QTY 100.00  >  "
      | combined 0
      | next broadcast
 
    stage S02 on all partitions :
-     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+     indexJoin ${testName2}_orders IxO_ORDERKEY "bound $I1 $1 =="
      | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -147,7 +147,7 @@ begin
      | next
 
    stage S03 on all partitions :
-     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
+     indexJoin ${testName2}_customer IxC_CUSTKEY "bound $I1 $1 =="
      | project "type VARCHAR as C_NAME C_NAME ,
                 type INTEGER as C_CUSTKEY C_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -329,14 +329,14 @@ begin
      | next
 
    stage S01 on all partitions :
-      indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+      indexscan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
      | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
      | filter  " type BOOLEAN  SUM_QTY 100.00  >  "
      | combined 0
      | next broadcast
 
    stage S02 on all partitions :
-     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+     indexJoin ${testName2}_orders IxO_ORDERKEY "bound $I1 $1 =="
      | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -346,7 +346,7 @@ begin
      | next
 
    stage S03 on all partitions :
-     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
+     indexJoin ${testName2}_customer IxC_CUSTKEY "bound $I1 $1 =="
      | project "type VARCHAR as C_NAME C_NAME ,
                 type INTEGER as C_CUSTKEY C_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,

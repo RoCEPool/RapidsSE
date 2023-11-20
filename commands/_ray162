@@ -36,7 +36,7 @@ begin
       | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY"
       | combined 0
       | next
-
+z
   stage S02 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as N_REGIONKEY N_REGIONKEY"

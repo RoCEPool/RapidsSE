@@ -9,7 +9,7 @@ namespace STORE {
   class MetaGet : public Operand
   {
   private:
-    s32 m_sTableName;
+    s256 m_sTableName;
 
     // must be last
     Footer m_xFooter;
@@ -18,14 +18,14 @@ namespace STORE {
     void* operator new(size_t);
     void  operator delete(void*);
 
-    MetaGet(s32 sTableNm);
+    MetaGet(s256 sTableNm);
     MetaGet(void);
     ~MetaGet(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
-    void vTableName(s32 sTblNm) { m_sTableName = sTblNm;}
-    s32 sTableName(void) { return m_sTableName;}
+    void vTableName(s256 sTblNm) { m_sTableName = sTblNm;}
+    s256 sTableName(void) { return m_sTableName;}
 
     Footer* aFooter(void);
   };

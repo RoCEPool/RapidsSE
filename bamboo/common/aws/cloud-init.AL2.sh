@@ -403,7 +403,7 @@ EOF
     {
       echo
       echo 'TEXLIVEDIR="/usr/local/texlive"'
-      echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
+      echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux:${TEXLIVEDIR}/bin/aarch64-linux"'
       echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
       echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
       echo
@@ -480,6 +480,9 @@ EOF
   echo
   echo "*** Installing Sphinx ***"
   echo
+  # Sphinx dependency, urllib3, has issues on AmazonLinux2 when it's version is >= 2.0.
+  # So install an older version.
+  sudo -H -u "${OS_USER}" python3 -m pip install --user -U 'urllib3<2.0'
   sudo -H -u "${OS_USER}" python3 -m pip install --user -U sphinx
 
   # ----------------------------------------------------------------------------------------

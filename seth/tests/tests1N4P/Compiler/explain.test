@@ -6,7 +6,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -21,7 +21,7 @@ success
 //  Simple explain
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT n_nationkey FROM nation;
+EXPLAIN SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   (*, 'explainPlan','
 ∆ mainSubquery
@@ -29,13 +29,13 @@ rows:
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_nationkey FROM nation"
+   » queryText: "SELECT n_nationkey FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)' )
+         » table: (rapidsse.public.${testName2}_nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Explain with errors
@@ -46,7 +46,7 @@ failure contains: 'No such table: badTable'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Explain format
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-EXPLAIN FORMAT PRETTY SELECT n_nationkey FROM nation;
+EXPLAIN FORMAT PRETTY SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( *, 'explainPlan','
 ∆ mainSubquery
@@ -54,13 +54,13 @@ rows:
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_nationkey FROM nation"
+   » queryText: "SELECT n_nationkey FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)' )
+         » table: (rapidsse.public.${testName2}_nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Explain single stage
@@ -68,21 +68,21 @@ rows:
 
 -- Explain single stage (nums)
 
-EXPLAIN STAGE 2 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 2 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 2, 'nameValidate',  * )
 
 
 -- Explain single stage (names)
 
-EXPLAIN STAGE nameValidate SELECT n_nationkey FROM nation;
+EXPLAIN STAGE nameValidate SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 2, 'nameValidate',  * )
 
 
 -- Explain single stage (names, case insensitive)
 
-EXPLAIN STAGE NAMEVALIDATE SELECT n_nationkey FROM nation;
+EXPLAIN STAGE NAMEVALIDATE SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 2, 'nameValidate',  * )
 
@@ -93,7 +93,7 @@ rows:
 
 -- Explain multiple single stages (num)
 
-EXPLAIN STAGE 1,3 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1,3 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 3, 'exprValidate',  * )
@@ -101,7 +101,7 @@ rows:
 
 -- (mixed order)
 
-EXPLAIN STAGE 3,1 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 3,1 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 3, 'exprValidate',  * )
@@ -109,7 +109,7 @@ rows:
 
 -- Explain multiple single stages (names)
 
-EXPLAIN STAGE parser, exprValidate SELECT n_nationkey FROM nation;
+EXPLAIN STAGE parser, exprValidate SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 3, 'exprValidate',  * )
@@ -117,7 +117,7 @@ rows:
 
 -- (mixed order)
 
-EXPLAIN STAGE exprValidate, parser SELECT n_nationkey FROM nation;
+EXPLAIN STAGE exprValidate, parser SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 3, 'exprValidate',  * )
@@ -125,7 +125,7 @@ rows:
 
 -- Explain multiple single stages (mixed)
 
-EXPLAIN STAGE 1, exprValidate SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1, exprValidate SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 3, 'exprValidate',  * )
@@ -137,13 +137,13 @@ rows:
 
 -- Explain stage range (nums)
 
-EXPLAIN STAGE 1-3 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1-3 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
 
-EXPLAIN STAGE 1 TO 3 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1 TO 3 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
@@ -152,13 +152,13 @@ rows:
 
 -- Explain stage range (names)
 
-EXPLAIN STAGE parser-exprValidate SELECT n_nationkey FROM nation;
+EXPLAIN STAGE parser-exprValidate SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
 
-EXPLAIN STAGE parser TO exprValidate SELECT n_nationkey FROM nation;
+EXPLAIN STAGE parser TO exprValidate SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
@@ -167,14 +167,14 @@ rows:
 
 -- Explain stage range (mixed)
 
-EXPLAIN STAGE 1-exprValidate SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1-exprValidate SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
 
 
-EXPLAIN STAGE parser-3 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE parser-3 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
@@ -187,7 +187,7 @@ rows:
 
 -- Explain multiple stage ranges (nums)
 
-EXPLAIN STAGE 1-2, 4-5 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1-2, 4-5 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
@@ -197,7 +197,7 @@ rows:
 
 -- Explain multiple stage ranges (names)
 
-EXPLAIN STAGE parser-nameValidate, setOpValidate-explainPlan SELECT n_nationkey FROM nation;
+EXPLAIN STAGE parser-nameValidate, setOpValidate-explainPlan SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1,  'parser',           * )
   ( 2,  'nameValidate',     * )
@@ -212,7 +212,7 @@ rows:
 
 -- Explain multiple stage ranges (mixed)
 
-EXPLAIN STAGE 1-nameValidate, setOpValidate-5 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1-nameValidate, setOpValidate-5 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
@@ -222,14 +222,14 @@ rows:
 
 -- Explain multiple overlapping stage ranges
 
-EXPLAIN STAGE 1-3, 2-4 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1-3, 2-4 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
   ( 4, 'setOpValidate', * )
 
-EXPLAIN STAGE parser-exprValidate, nameValidate-setOpValidate SELECT n_nationkey FROM nation;
+EXPLAIN STAGE parser-exprValidate, nameValidate-setOpValidate SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
@@ -241,7 +241,7 @@ rows:
 // Explain all stages
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN STAGE * SELECT n_nationkey FROM nation;
+EXPLAIN STAGE * SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   (  1, 'parser',           * )
   (  2, 'nameValidate',     * )
@@ -260,7 +260,7 @@ rows:
   ( 15, 'aggregateSplit',   * )
   ( 16, 'transliterate',    * )
 
-EXPLAIN STAGE ALL SELECT n_nationkey FROM nation;
+EXPLAIN STAGE ALL SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   (  1, 'parser',           * )
   (  2, 'nameValidate',     * )
@@ -286,16 +286,16 @@ rows:
 
 -- Explain invalid stage (nums)
 
-EXPLAIN STAGE -1 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE -1 SELECT n_nationkey FROM ${testName2}_nation;
 failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 14; extraneous input '-'"
 
-EXPLAIN STAGE 1000 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1000 SELECT n_nationkey FROM ${testName2}_nation;
 rows: 0
 
 
 -- Explain invalid stage (names)
 
-EXPLAIN STAGE badStageName SELECT n_nationkey FROM nation;
+EXPLAIN STAGE badStageName SELECT n_nationkey FROM ${testName2}_nation;
 rows: 0
 
 
@@ -305,29 +305,29 @@ rows: 0
 
 -- Explain invalid stage range (nums)
 
-EXPLAIN STAGE 3-1 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 3-1 SELECT n_nationkey FROM ${testName2}_nation;
 rows: 0
 
-EXPLAIN STAGE 1-1000 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1-1000 SELECT n_nationkey FROM ${testName2}_nation;
 rows: 16
 
 
 -- Explain invalid stage range (names)
-EXPLAIN STAGE exprValidate-parser SELECT n_nationkey FROM nation;
+EXPLAIN STAGE exprValidate-parser SELECT n_nationkey FROM ${testName2}_nation;
 rows: 0
 
-EXPLAIN STAGE parser-badStageName SELECT n_nationkey FROM nation;
+EXPLAIN STAGE parser-badStageName SELECT n_nationkey FROM ${testName2}_nation;
 rows: 16
 
-EXPLAIN STAGE badStageName-explainPlan SELECT n_nationkey FROM nation;
+EXPLAIN STAGE badStageName-explainPlan SELECT n_nationkey FROM ${testName2}_nation;
 rows: 0
 
 -- Explain invalid stage range (mixed)
 
-EXPLAIN STAGE badStageName-5 SELECT n_nationkey FROM nation;
+EXPLAIN STAGE badStageName-5 SELECT n_nationkey FROM ${testName2}_nation;
 rows: 0
 
-EXPLAIN STAGE 1000-explainPlan SELECT n_nationkey FROM nation;
+EXPLAIN STAGE 1000-explainPlan SELECT n_nationkey FROM ${testName2}_nation;
 rows: 0
 
 
@@ -335,7 +335,7 @@ rows: 0
 // Explain of an explain
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN EXPLAIN SELECT n_nationkey FROM nation;
+EXPLAIN EXPLAIN SELECT n_nationkey FROM ${testName2}_nation;
 rows:
 ( *, 'explainPlan','
 ∆ mainSubquery
@@ -343,7 +343,7 @@ rows:
   » correlated columns: (none)
 
 -> statementMarker: explain
-   » queryText: "EXPLAIN SELECT n_nationkey FROM nation"
+   » queryText: "EXPLAIN SELECT n_nationkey FROM ${testName2}_nation"
 
 -> -> explainOp
       » stageRangeList: explainPlan
@@ -354,23 +354,23 @@ rows:
          » correlated columns: (none)
 
 -> -> -> -> statementMarker: select
-            » queryText: "SELECT n_nationkey FROM nation"
+            » queryText: "SELECT n_nationkey FROM ${testName2}_nation"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.nation)')
+                  » table: (rapidsse.public.${testName2}_nation)')
 
 
-EXPLAIN stage 1-3 EXPLAIN SELECT n_nationkey FROM nation;
+EXPLAIN stage 1-3 EXPLAIN SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
 
 
-EXPLAIN stage 1-3 EXPLAIN STAGE 2-4 SELECT n_nationkey FROM nation;
+EXPLAIN stage 1-3 EXPLAIN STAGE 2-4 SELECT n_nationkey FROM ${testName2}_nation;
 rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
@@ -389,6 +389,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE nation;
+  DROP TABLE ${testName2}_nation;
   mute
 }

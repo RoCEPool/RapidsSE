@@ -7,7 +7,7 @@ trackmemory force;
 success
 
 // (1) create a table
-create table OpTable1 (
+create table ${testName2}_OpTable1 (
   jidx_key   INTEGER     NOT NULL,
   jidx_name  VARCHAR(32) NOT NULL,
   jidx_100   INTEGER     NOT NULL,
@@ -20,23 +20,23 @@ create table OpTable1 (
 success
 
 // create indexes
-create index OpTable1_idx on OpTable1 (jidx_key);
+create index OpTable1_idx on ${testName2}_OpTable1 (jidx_key);
 success
 
 // check existence of index
-lsidx OpTable1;
+lsidx ${testName2}_OpTable1;
 rows:
 ('OpTable1_idx', false, false)
 
-load OpTable1 "../DATA/Operators/operators1_1.csv" ;
+load ${testName2}_OpTable1 "../DATA/Operators/operators1_1.csv" ;
 success
 
 // check no of rows
-select * from  OpTable1;
+select * from  ${testName2}_OpTable1;
 rows: 26
 
 // (1) create a table
-create table OpTable2 (
+create table ${testName2}_OpTable2 (
   jidx_key_2   INTEGER     NOT NULL,
   jidx_name_2  VARCHAR(32) NOT NULL,
   jidx_100_2   INTEGER     NOT NULL,
@@ -49,32 +49,32 @@ create table OpTable2 (
 success
 
 // create indexes
-create index OpTable2_idx on OpTable2 (jidx_key_2);
+create index OpTable2_idx on ${testName2}_OpTable2 (jidx_key_2);
 success
 
 // check existence of index
-lsidx OpTable2;
+lsidx ${testName2}_OpTable2;
 rows:
 ('OpTable2_idx', false, false)
 
-load OpTable2 "../DATA/Operators/operators1_2.csv" ;
+load ${testName2}_OpTable2 "../DATA/Operators/operators1_2.csv" ;
 success
 
 // check no of rows
-select * from  OpTable2;
+select * from  ${testName2}_OpTable2;
 rows: 21
 
 // scan error
-select * from  OpTableXXX;
+select * from  ${testName2}_OpTableXXX;
 failure contains: 'No such table'
 
 
 // scan failure
-select * from  OpTableXXX;
+select * from  ${testName2}_OpTableXXX;
 failure contains: 'No such table'
 
 // scan
-select * from OpTable1;
+select * from ${testName2}_OpTable1;
 rows:
   (  0, 'zero'    , 1001, 0, 0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
   (  1, 'one'     , 101, 1,  1, 1.001001e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -104,7 +104,7 @@ rows:
   ( 25, 'twofive' , 125, 5, 25, 1.025025e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
 // scan
-select * from  OpTable2;
+select * from  ${testName2}_OpTable2;
 rows:
  (21,'twoone',    121,1,21,1021.021000e0, TIMESTAMP '1921-01-01 00:00:00', DATE '1921-01-01')
  (27,'twoseven',  127,7,27,1027.027000e0, TIMESTAMP '1927-01-01 00:00:00', DATE '1927-01-01')
@@ -130,11 +130,11 @@ rows:
 
 
 // drop the table
-drop table OpTable1;
+drop table ${testName2}_OpTable1;
 success
 
 // drop the table
-drop table OpTable2;
+drop table ${testName2}_OpTable2;
 success
 
 // check existence of table
@@ -148,11 +148,11 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table OpTable1;
+  drop table ${testName2}_OpTable1;
   mute
 
   // drop the table
-  drop table OpTable2;
+  drop table ${testName2}_OpTable2;
   mute
 
   bye;

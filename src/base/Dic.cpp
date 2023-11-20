@@ -344,7 +344,7 @@ Word* Dic::pFindWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  if (szWordNm->nLength() > 31)
+  if (szWordNm->nLength() > C_MAX_SQL_NAME_LENGTH - 1)
     return nullptr;
 
   Task* pThisTask = AM::pThisTLSTask();
@@ -373,7 +373,7 @@ Word* Dic::pFindWord(Word* pSearchWord, Stz* szWordNm)
 
   bool bTrace = false;
 
-  if (szWordNm->nLength() > 31)
+  if (szWordNm->nLength() > C_MAX_SQL_NAME_LENGTH - 1)
     return nullptr;
 
   m_okLock.vGrabRead();

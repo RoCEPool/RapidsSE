@@ -7,7 +7,7 @@ trackmemory force;
 success
 
 // (1) create a table
-create table lineitem_100 (
+create table ${testName2}_lineitem_100 (
    L_ORDERKEY      INTEGER       NOT NULL,
    L_PARTKEY       INTEGER       NOT NULL,
    L_SUPPKEY       INTEGER       NOT NULL,
@@ -27,15 +27,15 @@ create table lineitem_100 (
 );
 success
 
-load lineitem_100 "../FASTLOAD/Data/lineitem_100.csv" ;
+load ${testName2}_lineitem_100 "../FASTLOAD/Data/lineitem_100.csv" ;
 success
 
 // check no of rows
-select * from lineitem_100;
+select * from ${testName2}_lineitem_100;
 rows: 100
 
 // check data
-select * from lineitem_100;
+select * from ${testName2}_lineitem_100;
 rows:
   (1,1551894,76910,1,17,33078.94,0.04,0.02,'N','O','1996-03-13','1996-02-12','1996-03-22','DELIVER IN PERSON','TRUCK','egular courts above the')
   (1,673091,73092,2,36,38306.16,0.09,0.06,'N','O','1996-04-12','1996-02-28','1996-04-20','TAKE BACK RETURN','MAIL','ly final dependencies: slyly bold ')
@@ -139,7 +139,7 @@ rows:
   (98,447057,47058,3,14,14056.42,0.05,0.02,'A','F','1994-12-30','1994-11-22','1995-01-27','COLLECT COD','AIR', 'cajole furiously. blithely ironic ideas ')
 
 // drop the table
-//drop table lineitem_100;
+//drop table ${testName2}_lineitem_100;
 //success
 
 // get memory leaks
@@ -148,7 +148,7 @@ rows:
 
 CLEANUP {
   // drop the table
-  //drop table lineitem_100;
+  //drop table ${testName2}_lineitem_100;
   //mute
   
   bye;

@@ -264,7 +264,7 @@ public:
   void vColumnLengthFetch(void);
   void vColumnNameFetch(void);
   void vColumnScaleFetch(void);
-  void vColumnTypeFetch(void);
+  void vColumnTypeIdFetch(void);
 
   // command processor
   void vCommandBlankLine(void);
@@ -2015,7 +2015,6 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefLftIsNull(void);
   void vStreamDefLftName(void);
   void vStreamDefLftNew(void);
-  void vStreamDefLftNewToCsv(void);
   void vStreamDefLftParse(void);
   void vStreamDefLftPipeIn(void);
   void vStreamDefLftPrint(void);
@@ -2025,7 +2024,6 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefLftSet(void);
 
   // stream definition (out)
-  void vStreamDefOutAddColumn(void);
   void vStreamDefOutDelete(void);
   void vStreamDefOutDuplicate(void);
   void vStreamDefOutGet(void);

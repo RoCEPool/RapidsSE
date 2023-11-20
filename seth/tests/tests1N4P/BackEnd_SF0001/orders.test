@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table orders (
+create table ${testName2}_orders (
 O_ORDERKEY        INTEGER NOT NULL,
 O_CUSTKEY         INTEGER NOT NULL,
 O_ORDERSTATUS     CHAR(1) NOT NULL,
@@ -18,33 +18,33 @@ success
 
 //------------------------------------------------------------------------------
 // create an index on O_CUSTKEY
-CREATE INDEX IxO_CUSTKEY ON orders(O_CUSTKEY);
+CREATE INDEX IxO_CUSTKEY ON ${testName2}_orders(O_CUSTKEY);
 affected: 0
 
 //------------------------------------------------------------------------------
 // create an index on O_ORDERKEY
-create index IxO_ORDERKEY  ON Orders  (O_ORDERKEY)  ;
+create index IxO_ORDERKEY  ON ${testName2}_Orders  (O_ORDERKEY)  ;
 affected: 0
 
 //------------------------------------------------------------------------------
 // create an index on O_ORDERDATE
-create index IxO_ORDERDATE  ON Orders  (O_ORDERDATE)  ;
+create index IxO_ORDERDATE  ON ${testName2}_Orders  (O_ORDERDATE)  ;
 affected: 0
 
 // load the table
-load orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
 success
 
-select count(*) from orders;
+select count(*) from ${testName2}_orders;
 rows: (1500)
 
-compactidx orders IxO_CUSTKEY;
+compactidx ${testName2}_orders IxO_CUSTKEY;
 success
 
-compactidx orders IxO_ORDERKEY;
+compactidx ${testName2}_orders IxO_ORDERKEY;
 success
 
-compactidx orders IxO_ORDERDATE;
+compactidx ${testName2}_orders IxO_ORDERDATE;
 success
 
 CLEANUP {

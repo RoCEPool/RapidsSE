@@ -10,7 +10,7 @@ success
 //success
 
 // (1) create table Q1
-create table Q1 (
+create table ${testName2}_Q1 (
   jA  INTEGER,
   jB  INTEGER,
   jC  INTEGER,
@@ -19,74 +19,74 @@ create table Q1 (
 );
 success
 
-create index idx on Q1 (jA);
+create index idx on ${testName2}_Q1 (jA);
 success
 
-load Q1 "../DATA/Queries/L0_SingleBuffer.csv";
+load ${testName2}_Q1 "../DATA/Queries/L0_SingleBuffer.csv";
 success
 
-//dumpidx Q1 idx2;
-//failure contains: 'no such index'
+// dumpidx ${testName2}_Q1 idx2;
+// failure contains: 'no such index'
 
-//dumpidx Q2 idx;
-//failure contains: 'Table does not exist'
+// dumpidx ${testName2}_Q2 idx;
+// failure contains: 'Table does not exist'
 
-//dumpidx Q1 idx;
-//success
+// dumpidx ${testName2}_Q1 idx;
+// success
 
-//vfyidx Q2 idx;
-//failure contains: 'Table does not exist'
+// vfyidx ${testName2}_Q2 idx;
+// failure contains: 'Table does not exist'
 
-//vfyidx Q1 idx2;
-//failure contains: 'no such index'
+// vfyidx ${testName2}_Q1 idx2;
+// failure contains: 'no such index'
 
-//vfyidx Q1 idx;
-//rows:
-//(*,'Q1','idx','Valid')
+// vfyidx ${testName2}_Q1 idx;
+// rows:
+// (*,'${testName2}_Q1','idx','Valid')
 
 //------------------------------------------------------------------------------
 // SCAN
-select * from Q1;
+select * from ${testName2}_Q1;
 rows: 5
 
 //------------------------------------------------------------------------------
 // EXACT KEYS for index on jA
 
-predicateFetch Q1 "jA -2 ==" ;
+predicateFetch ${testName2}_Q1 "jA -2 ==" ;
 rows:
   (-2,*,*,*,*)
 
-predicateFetch Q1 "jA 1 ==" ;
+predicateFetch ${testName2}_Q1 "jA 1 ==" ;
 rows:
   (1,*,*,*,*)
 
-predicateFetch Q1 "jA 2 ==" ;
+predicateFetch ${testName2}_Q1 "jA 2 ==" ;
 rows:
   (2,*,*,*,*)
 
-predicateFetch Q1 "jA 3 ==";
+predicateFetch ${testName2}_Q1 "jA 3 ==";
 rows:
   (3,*,*,*,*)
 
 //------------------------------------------------------------------------------
 // UPPER BOUND KEYS with < for index on jA
 
-predicateFetch Q1 "jA -2 <" ;
+predicateFetch ${testName2}_Q1 "jA -2 <" ;
 rows:
  (null,*,*,*,*)
 
-predicateFetch Q1 "jA 1 <" ;
+predicateFetch ${testName2}_Q1 "jA 1 <" ;
 rows:
 (null,*,*,*,*)
  (-2,*,*,*,*)
 
-predicateFetch Q1 "jA 2 <" ;
+predicateFetch ${testName2}_Q1 "jA 2 <" ;
 rows:
  (null,*,*,*,*)
 (-2,*,*,*,*)
  (1,*,*,*,*)
 
-predicateFetch Q1 "jA 3 <";
+predicateFetch ${testName2}_Q1 "jA 3 <";
 rows:
  (null,*,*,*,*)
  (-2,*,*,*,*)
@@ -97,64 +97,64 @@ rows:
 //------------------------------------------------------------------------------
 // UPPER BOUND KEYS with <= for index on jA
 
-predicateFetch Q1 "jA -2 <=" ;
+predicateFetch ${testName2}_Q1 "jA -2 <=" ;
 rows: 2
 
-predicateFetch Q1 "jA 1 <=" ;
+predicateFetch ${testName2}_Q1 "jA 1 <=" ;
 rows: 3
 
-predicateFetch Q1 "jA 2 <=" ;
+predicateFetch ${testName2}_Q1 "jA 2 <=" ;
 rows: 4
 
-predicateFetch Q1 "jA 3 <=";
+predicateFetch ${testName2}_Q1 "jA 3 <=";
 rows: 5
 
 
 //------------------------------------------------------------------------------
 // LOWER BOUND KEYS with > for index on jA
 
-predicateFetch Q1 "jA -2 >" ;
+predicateFetch ${testName2}_Q1 "jA -2 >" ;
 rows: 3
 
-predicateFetch Q1 "jA 1 >" ;
+predicateFetch ${testName2}_Q1 "jA 1 >" ;
 rows: 2
 
-predicateFetch Q1 "jA 2 >" ;
+predicateFetch ${testName2}_Q1 "jA 2 >" ;
 rows: 1
 
-predicateFetch Q1 "jA 3 >";
+predicateFetch ${testName2}_Q1 "jA 3 >";
 rows: 0
 
 
 //------------------------------------------------------------------------------
 // LOWER BOUND KEYS with >= for index on jA
 
-predicateFetch Q1 "jA -2 >=";
+predicateFetch ${testName2}_Q1 "jA -2 >=";
 rows: 4
 
-predicateFetch Q1 "jA 1 >=" ;
+predicateFetch ${testName2}_Q1 "jA 1 >=" ;
 rows: 3
 
-predicateFetch Q1 "jA 2 >=" ;
+predicateFetch ${testName2}_Q1 "jA 2 >=" ;
 rows: 2
 
-predicateFetch Q1 "jA 3 >=";
+predicateFetch ${testName2}_Q1 "jA 3 >=";
 rows: 1
 
 
 //------------------------------------------------------------------------------
 // RANGE for index on jA
 
-predicateFetch Q1 "jA -2 > jA 3 < and";
+predicateFetch ${testName2}_Q1 "jA -2 > jA 3 < and";
 rows: 2
 
-predicateFetch Q1 "jA -2 > jA 3 <= and" ;
+predicateFetch ${testName2}_Q1 "jA -2 > jA 3 <= and" ;
 rows: 3
 
-predicateFetch Q1 "jA 2 >= jA 1 < and" ;
+predicateFetch ${testName2}_Q1 "jA 2 >= jA 1 < and" ;
 rows: 0
 
-drop table Q1;
+drop table ${testName2}_Q1;
 success
 
 //indexEntries 0;
@@ -166,7 +166,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table Q1;
+  drop table ${testName2}_Q1;
   mute
 
 //  indexEntries 0;

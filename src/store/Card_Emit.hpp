@@ -22,12 +22,11 @@ namespace STORE
     void vAdjust_Wrt_key(Card_Key* p_key);
 
     Card_Emit* pClone(void);
-    void vCorrectStmCol(Card_Emit* p_emitted_prior);
+    void vCorrect_expCol(Card_Emit* p_arriving);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
-    void vDedupe_as(void);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
-    void vEnsureTypes_For_stmCol(CardIter* pCI);
+    void vEnsureTypeId_expCol(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     bool bIsCompound(void);
     bool bIsLiterals(void);

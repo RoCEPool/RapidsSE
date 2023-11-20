@@ -278,13 +278,24 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
     sAliasName = szAliasName;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
-  eCT eType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
-  sPipeline->vCatSprint(
-      " type %s"
-      ""_Stz,
-      aCT[eType]);
+  eCT eCTType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
+	TypeId xTypeId = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot);
+	//vTrace("TypeId %s %lld %s\n"_Stz, xTypeId.szTypeName(), xTypeId.iIdVal(), aIV_field2[xTypeId.eIVVal()]);
+
+	if (eCTType == CT_INTERVAL_YM || eCTType == CT_INTERVAL_DT) {
+		sPipeline->vCatSprint(
+			" type %s"
+			""_Stz,
+			aIV_field2[xTypeId.eIVVal()]);
+	}
+	else {
+		sPipeline->vCatSprint(
+			" type %s"
+			""_Stz,
+			aCT[eCTType]);
+	}
 
   if ( ! szAliasName) {
     if (ColumnRef::bIsOfType(pExprNode)) {

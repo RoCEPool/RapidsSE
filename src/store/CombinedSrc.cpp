@@ -1542,7 +1542,7 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage)
       sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s}\n };\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
-                    pColumn->eColumnType(),
+                    pColumn->xColumnTypeId().iIdVal(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
                     pColumn->bIsNullable() ? "true" : "false",
@@ -1552,7 +1552,7 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage)
       sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s},\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
-                    pColumn->eColumnType(),
+										pColumn->xColumnTypeId().iIdVal(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
                     pColumn->bIsNullable() ? "true" : "false",
@@ -1583,7 +1583,7 @@ void CombinedSrc::vAppendCodeIndexCols(OpSketch* pOpSketch)
       sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s}\n   };\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
-                    pColumn->eColumnType(),
+										pColumn->xColumnTypeId().iIdVal(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
                     pColumn->bIsNullable() ? "true" : "false",
@@ -1593,7 +1593,7 @@ void CombinedSrc::vAppendCodeIndexCols(OpSketch* pOpSketch)
       sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s},\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
-                    pColumn->eColumnType(),
+										pColumn->xColumnTypeId().iIdVal(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
                     pColumn->bIsNullable() ? "true" : "false",
@@ -1646,9 +1646,6 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
     bool bIsPayload = pOpSketch->bIsPayload(i_Col);
 
     if (bIsPayload) {
-
-      // make the column name
-      //vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_Cell);
 
 			switch (pColumn->eColumnType()) {
 

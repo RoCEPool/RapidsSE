@@ -89,11 +89,12 @@ void XF_Prolog_Validate_Board::vValidate(void)
 
       case CK_STAGE:
         //p_scan = nullptr;
-        p_OP   = nullptr;
+        //p_OP   = nullptr;
         break;
 
       default:
-        p_OP = m_pCI->G.p_OP;
+        if (m_pCI->G.p_OP)
+          p_OP = m_pCI->G.p_OP;
         break;
     }
   }

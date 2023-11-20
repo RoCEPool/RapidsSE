@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 /*  (original Query)
   select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
-     from part, supplier, partsupp, nation, region
+     from ${testName2}_part, ${testName2}_supplier, ${testName2}_partsupp, ${testName2}_nation, ${testName2}_region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
       and p_size = 15
@@ -14,7 +14,7 @@
       and ps_supplycost =
       (
       select min(ps_supplycost)
-      from partsupp, supplier, nation, region
+      from ${testName2}_partsupp, ${testName2}_supplier, ${testName2}_nation, ${testName2}_region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
       and s_nationkey = n_nationkey
@@ -28,7 +28,7 @@
 
 // for SF0001 changed %BRASS to %STEEL, p_size = 15 to p_size = 20, r_name EUROPE to AFRICA
 select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
-     from part, supplier, partsupp, nation, region
+     from ${testName2}_part, ${testName2}_supplier, ${testName2}_partsupp, ${testName2}_nation, ${testName2}_region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
       and p_size = 20
@@ -38,7 +38,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and r_name = 'AFRICA'
       and ps_supplycost = (
       select min(ps_supplycost)
-      from partsupp, supplier, nation, region
+      from ${testName2}_partsupp, ${testName2}_supplier, ${testName2}_nation, ${testName2}_region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
       and s_nationkey = n_nationkey
@@ -58,7 +58,7 @@ verified
 /*
 EXPLAIN STAGE TRANSLITERATE
 select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
-     from part, supplier, partsupp, nation, region
+     from ${testName2}_part, ${testName2}_supplier, ${testName2}_partsupp, ${testName2}_nation, ${testName2}_region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
       and p_size = 15
@@ -68,7 +68,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and r_name = 'EUROPE'
       and ps_supplycost = (
       select min(ps_supplycost)
-      from partsupp, supplier, nation, region
+      from ${testName2}_partsupp, ${testName2}_supplier, ${testName2}_nation, ${testName2}_region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
       and s_nationkey = n_nationkey
@@ -77,7 +77,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
        order by s_acctbal asc, n_name, s_name, p_partkey limit 100;
 
 select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
-     from part, supplier, partsupp, nation, region
+     from ${testName2}_part, ${testName2}_supplier, ${testName2}_partsupp, ${testName2}_nation, ${testName2}_region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
       and p_size = 15
@@ -87,7 +87,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and r_name = 'AFRICA'
       and ps_supplycost = (
       select min(ps_supplycost)
-      from partsupp, supplier, nation, region
+      from ${testName2}_partsupp, ${testName2}_supplier, ${testName2}_nation, ${testName2}_region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
       and s_nationkey = n_nationkey
@@ -105,18 +105,18 @@ begin
       | pulse once
       | stageMarker6128
     stage stageMarker6128 on all partitions :
-      scan rapidsse public partsupp
+      scan rapidsse public ${testName2}_partsupp
       | stageMarker6131 broadcast
     stage stageMarker6131 on all partitions :
-      scan rapidsse public supplier
+      scan rapidsse public ${testName2}_supplier
       | abstractJoin "CROSS true  "
       | stageMarker6134 broadcast
     stage stageMarker6134 on all partitions :
-      scan rapidsse public nation
+      scan rapidsse public ${testName2}_nation
       | abstractJoin "CROSS true  "
       | stageMarker6137 broadcast
     stage stageMarker6137 on all partitions :
-      scan rapidsse public region
+      scan rapidsse public ${testName2}_region
       | abstractJoin "CROSS true  "
       | stageMarker6140
     stage stageMarker6140 on all partitions :
@@ -146,22 +146,22 @@ begin
       | pulse once
       | stageMarker3382
     stage stageMarker3382 on all partitions :
-      scan rapidsse public part
+      scan rapidsse public ${testName2}_part
       | stageMarker3385 broadcast
     stage stageMarker3385 on all partitions :
-      scan rapidsse public supplier
+      scan rapidsse public ${testName2}_supplier
       | abstractJoin "CROSS true  "
       | stageMarker3388 broadcast
     stage stageMarker3388 on all partitions :
-      scan rapidsse public partsupp
+      scan rapidsse public ${testName2}_partsupp
       | abstractJoin "CROSS true  "
       | stageMarker3391 broadcast
     stage stageMarker3391 on all partitions :
-      scan rapidsse public nation
+      scan rapidsse public ${testName2}_nation
       | abstractJoin "CROSS true  "
       | stageMarker3394 broadcast
     stage stageMarker3394 on all partitions :
-      scan rapidsse public region
+      scan rapidsse public ${testName2}_region
       | abstractJoin "CROSS true  "
       | stageMarker3397
     stage stageMarker3397 on all partitions :
@@ -199,7 +199,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan partsupp IxPS_PARTKEY "LBOUND $I1 0 >="
+    indexscan ${testName2}_partsupp IxPS_PARTKEY "LBOUND $I1 0 >="
     | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
                 type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                 type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
@@ -208,7 +208,7 @@ begin
     | next hashcast
 
   stage S02 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    indexJoin ${testName2}_supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
@@ -222,7 +222,7 @@ begin
     | next
 
   stage S03 on all partitions :
-    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    indexJoin ${testName2}_nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
@@ -238,7 +238,7 @@ begin
     | next
 
   stage S04 on all partitions :
-    indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
+    indexJoin ${testName2}_region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
     | filter " type BOOLEAN  R_NAME 'AFRICA'  == "
     | gbyAgg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
                  aggregates
@@ -283,7 +283,7 @@ begin
     | next hashcast
 
   stage S07 on all partitions :
-    indexJoin part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
+    indexJoin ${testName2}_part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
     | filter " type BOOLEAN  }  P_TYPE '%STEEL'  6 matchTrailing
              P_SIZE 20 == and"
     | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
@@ -340,14 +340,14 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan part
+    scan ${testName2}_part
     | filter " type BOOLEAN  }  P_TYPE '%STEEL'  6 matchTrailing P_SIZE 20 == and"
     | project " type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    indexJoin ${testName2}_partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project " type INTEGER as P_PARTKEY P_PARTKEY ,
                 type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                 type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
@@ -356,7 +356,7 @@ begin
     | next hashcast
 
   stage S03 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    indexJoin ${testName2}_supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
@@ -365,7 +365,7 @@ begin
     | next
 
   stage S04 on all partitions :
-    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    indexJoin ${testName2}_nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
@@ -374,7 +374,7 @@ begin
     | next
 
   stage S05 on all partitions :
-    indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
+    indexJoin ${testName2}_region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
     | filter " type BOOLEAN  R_NAME 'AFRICA'  == "
     | gbyAgg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
@@ -398,7 +398,7 @@ begin
     | next hashcast
 
   stage S08 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    indexJoin ${testName2}_partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | filter "type BOOLEAN PS_SUPPLYCOST_MIN PS_SUPPLYCOST =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY"
@@ -406,7 +406,7 @@ begin
     | next
 
   stage S09 on all partitions :
-    indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
+    indexJoin ${testName2}_part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project " type INTEGER as P_PARTKEY P_PARTKEY ,
                 type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                 type VARCHAR as P_MFGR P_MFGR"
@@ -415,7 +415,7 @@ begin
     | next hashcast
 
   stage S10 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    indexJoin ${testName2}_supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
     | project " type INTEGER as S_NATIONKEY S_NATIONKEY ,
                 type DECIMAL as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR as S_NAME S_NAME ,
@@ -428,7 +428,7 @@ begin
     | next
 
   stage S11 on all partitions :
-    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    indexJoin ${testName2}_nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR as S_NAME S_NAME ,
                 type VARCHAR as N_NAME N_NAME ,

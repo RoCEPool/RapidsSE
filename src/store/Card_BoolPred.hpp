@@ -3,13 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_CONJUNCTION.hpp"
-#include "Card_TERMLIST.hpp"
+#include "Card_CONJSUBROOT.hpp"
 #include "Card_Correlation.hpp"
 
 namespace STORE
 {
-  class Card_BoolPred : public Card_TERMLIST
+  class Card_BoolPred : public Card_CONJSUBROOT
   {  
   public:
     void* operator new(size_t);
@@ -18,41 +17,36 @@ namespace STORE
     Card_BoolPred(void);
    ~Card_BoolPred(void) noexcept(false);
 
-    Card_RlnConj* pCmpConj_whichCallsSubQuery(CardIter* pCI);
-    void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
-    eCT  eColumnType(void);
-    Card_CONJUNCTION* pConj_root(void);
-    bool bContains(Symbol* pSymbol_arg);
-    void vCopyMarkedConjToTable(CardIter* pCI);
-    void vCorrectStmCol(Card_Emit* p_emitted_prior);
-    i8 nCullConj(Stz* szWithMark);
-    bool bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);
-    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsureTypesFor_stmCol(CardIter* pCI);
-    Card_CONJUNCTION* pFindRemove_conj_corr(void);
+    static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCalc_arg);
+
+    void vBump_expCol(i8 p_conj, bool bSkipFoldExpr=false);
+    bool bContains(Symbol* pGivenSymbol);
+    void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
+    void vCorrect_expCol(Card_Emit* p_arriving);
+    i8   nCullMarked_rlnConj(Stz* szWithMark);
+    bool bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark);
+    void vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn);
+    void vEnsureTypeId_expCol(CardIter* pCI);
+    void vExtend_andConj(Card_RlnConj *p_rlnConj);
+    Card_RlnConj * pFind_rlnConj(Stz* szWithPpy);
+    Card_RlnConj* pFind_rlnConj_With_sqyCall(CardIter* pCI);
+    bool bHas_term(Symbol* pWithSymbol);
     bool bIsBraced(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
-    bool bHasTerm(Symbol* pSymbol);
-    void vMarkWrt_table(CardIter* pCI);
-    void vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION* p_conj);
-    void vPushConj(Card_CONJUNCTION* p_conj_toBeAdded);
-    void vRemove_conj(Card_CONJUNCTION* p_conj);
+    void vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark);
+    void vOntoRpnExpr(String* psRpnExpr);
+    void vRemove_rlnConj(Card_RlnConj *p_rlnConj);
+    Card_CONJ* pRoot_conj(void);
     void vShortForm(String* pString);
-
-    bool bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked);
-    bool bYank_conj(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_conj_yanked);
-
-    void vX_stmCol_To_tblCol(CardIter* p_conj);
-    void vX_tblCol_To_stmCol(CardIter* p_conj);
-
-
-    eCT  eColType(void);
+    TypeId xTypeId(void);
+    Card_RlnConj * pYank_rlnConj(Stz* szWithMark);
+    void vX_expCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
-
   };
 
   Card_BoolPred* _pCard_BoolPred(void* aAddr);

@@ -11,7 +11,7 @@
 trackmemory force;
 success
 
-create table nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -19,7 +19,7 @@ create table nation (
 );
 success
 
-load nation "../DATA/TPCH/nation.tbl" ;
+load ${testName2}_nation "../DATA/TPCH/nation.tbl" ;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -27,46 +27,46 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // YM interval arithmetic /1 (same type)
-SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '3' YEAR)
 
 // YM interval arithmetic /2 (same type, with negative)
-SELECT INTERVAL '1' YEAR + INTERVAL -'2' YEAR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR + INTERVAL -'2' YEAR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'1' YEAR)
          
 // YM interval arithmetic /3 (mixed types)
-SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '1-2' YEAR TO MONTH)
 
 // YM interval arithmetic /4 (max)
-SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '15' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '15' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '6004799503160661-3' YEAR TO MONTH)
 
 // YM interval arithmetic /5 (overflow)
-SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '25' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '6004799503160660' YEAR + INTERVAL '25' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_INTERVAL_OUT_OF_RANGE'
 
 // DT interval arithmetic of same type /1
-SELECT INTERVAL '1' MINUTE + INTERVAL '2' MINUTE FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' MINUTE + INTERVAL '2' MINUTE FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '3' MINUTE)
 
 // DT interval arithmetic of same type /2
-SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '5:7:9' HOUR TO SECOND)
 
 // DT interval arithmetic of mixed types /1
-SELECT INTERVAL '1' MINUTE + INTERVAL '2' SECOND FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' MINUTE + INTERVAL '2' SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '1:2' MINUTE TO SECOND)
          
 // DT interval arithmetic of mixed types /2
-SELECT INTERVAL '1 2' DAY TO HOUR + INTERVAL '3' SECOND FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1 2' DAY TO HOUR + INTERVAL '3' SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '1 2:0:3' DAY TO SECOND)
 
@@ -75,37 +75,37 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // YM interval arithmetic /1 (same type)
-SELECT INTERVAL '1' YEAR - INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR - INTERVAL '2' YEAR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'1' YEAR)
 
 // YM interval arithmetic /2 (same type, with negative)
-SELECT INTERVAL '1' YEAR - INTERVAL -'2' YEAR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR - INTERVAL -'2' YEAR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '3' YEAR)
 
 // YM interval arithmetic /3 (mixed types)
-SELECT INTERVAL '1' YEAR - INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR - INTERVAL '2' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '0-10' YEAR TO MONTH)
 
 // DT interval arithmetic of same type /1
-SELECT INTERVAL '1' MINUTE - INTERVAL '2' MINUTE FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' MINUTE - INTERVAL '2' MINUTE FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'1' MINUTE)
 
 // DT interval arithmetic of same type /2
-SELECT INTERVAL '1:2:3' HOUR TO SECOND - INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1:2:3' HOUR TO SECOND - INTERVAL '4:5:6' HOUR TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'3:3:3' HOUR TO SECOND)
 
 // DT interval arithmetic of mixed types /1
-SELECT INTERVAL '1' MINUTE - INTERVAL '2' SECOND FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' MINUTE - INTERVAL '2' SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '0:58' MINUTE TO SECOND)
 
 // DT interval arithmetic of mixed types /2
-SELECT INTERVAL '1 2' DAY TO HOUR - INTERVAL '3' SECOND FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1 2' DAY TO HOUR - INTERVAL '3' SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '1 1:59:57' DAY TO SECOND)
 
@@ -114,123 +114,123 @@ rows:
 //  Interval + Date
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-select date '2023-02-13' + interval -'1' year from nation where n_nationkey = 2;
+select date '2023-02-13' + interval -'1' year from ${testName2}_nation where n_nationkey = 2;
 rows:
  (DATE '2022-02-13')
 
-select date '2023-02-13' + interval -'1-2' year to month from nation where n_nationkey = 2;
+select date '2023-02-13' + interval -'1-2' year to month from ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2021-12-13')
 
-select date '2023-02-13' + interval '-1' year from nation where n_nationkey = 2;
+select date '2023-02-13' + interval '-1' year from ${testName2}_nation where n_nationkey = 2;
 rows:
  (DATE '2022-02-13')
 
-select date '2023-02-13' + interval '-1-2' year to month from nation where n_nationkey = 2;
+select date '2023-02-13' + interval '-1-2' year to month from ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2021-12-13')
 
 // Interval YM + date
-SELECT INTERVAL '1-2' YEAR TO MONTH + DATE '2000-02-28' FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH + DATE '2000-02-28' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2001-04-28')
 
 // Date + Interval YM
-SELECT DATE '2000-02-28' + INTERVAL '1-2' YEAR TO MONTH FROM nation where n_nationkey = 2;
+SELECT DATE '2000-02-28' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2001-04-28')
 
 // Date + Interval YM
-SELECT DATE '2000-02-28' + INTERVAL '1' MONTH FROM nation where n_nationkey = 2;
+SELECT DATE '2000-02-28' + INTERVAL '1' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2000-03-28')
 
 // TODO: ALKA
 /*
 // Interval DT + date
-SELECT INTERVAL '1' DAY + DATE '2000-02-28' FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1' DAY + DATE '2000-02-28' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2000-02-29')
 
 // Date + Interval DT
-SELECT DATE '2000-02-28' + INTERVAL '1' DAY FROM nation where n_nationkey = 2;
+SELECT DATE '2000-02-28' + INTERVAL '1' DAY FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2000-02-29')
 
 // Date + Interval -DT
-SELECT DATE '2000-02-28' + INTERVAL '-1' DAY FROM nation where n_nationkey = 2;
+SELECT DATE '2000-02-28' + INTERVAL '-1' DAY FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2000-02-27')
 
-SELECT INTERVAL '30' day +  DATE '2023-02-16' from nation where n_nationkey = 2;
+SELECT INTERVAL '30' day +  DATE '2023-02-16' from ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2023-03-18')
 
-SELECT DATE '2023-02-16'+ INTERVAL '30' day + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
+SELECT DATE '2023-02-16'+ INTERVAL '30' day + INTERVAL '10-11' year to month from ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2034-02-18')
 
-SELECT INTERVAL '30' day + DATE '2023-02-16' + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
+SELECT INTERVAL '30' day + DATE '2023-02-16' + INTERVAL '10-11' year to month from ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2034-02-18')
 
 */
 
-SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
+SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2034-01-16')
 
 
-SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
+SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2034-01-16')
 
-SELECT INTERVAL '132-5' year to month + DATE '2023-02-13' FROM nation where n_nationkey = 2;
+SELECT INTERVAL '132-5' year to month + DATE '2023-02-13' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (DATE '2155-07-13')
 
-SELECT DATE '2023-02-13' + INTERVAL '132-5' year to month FROM nation where n_nationkey = 2;
+SELECT DATE '2023-02-13' + INTERVAL '132-5' year to month FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (DATE '2155-07-13')
 
-SELECT DATE '2023-02-13' + INTERVAL '134-5' year to month FROM nation where n_nationkey = 2;
+SELECT DATE '2023-02-13' + INTERVAL '134-5' year to month FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_DATE_OUT_OF_RANGE'
 
-SELECT INTERVAL '134-5' year to month + DATE '2023-02-13' FROM nation where n_nationkey = 2;
+SELECT INTERVAL '134-5' year to month + DATE '2023-02-13' FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_DATE_OUT_OF_RANGE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval + time
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT time '00:00:00' + INTERVAL '31' HOUR  FROM nation where n_nationkey = 2;
+SELECT time '00:00:00' + INTERVAL '31' HOUR  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (TIME '07:00:00')
 
-SELECT time '06:23:10' - INTERVAL '31' HOUR  FROM nation where n_nationkey = 2;
+SELECT time '06:23:10' - INTERVAL '31' HOUR  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (TIME '23:23:10')
 
 // Interval HMS + time
-SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIME '05:32:59')
 
 // Time + Interval HMS
-SELECT TIME '04:30:56' + INTERVAL '1:2:3' HOUR TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIME '04:30:56' + INTERVAL '1:2:3' HOUR TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIME '05:32:59')
 
 // Time + Interval HMS (with fractional seconds)
-SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (TIME '05:32:59.456')
 
-SELECT TIME '23:59:01' + INTERVAL '28' HOUR  FROM nation where n_nationkey = 2;
+SELECT TIME '23:59:01' + INTERVAL '28' HOUR  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIME '03:59:01')
 
-SELECT INTERVAL '28' HOUR + TIME '23:59:01' FROM nation where n_nationkey = 2;
+SELECT INTERVAL '28' HOUR + TIME '23:59:01' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (TIME '03:59:01')
 
@@ -239,7 +239,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Time subtraction
-SELECT TIME '14:30:55' - TIME '04:30:56' FROM nation where n_nationkey = 2;
+SELECT TIME '14:30:55' - TIME '04:30:56' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '9:59:59' HOUR TO SECOND)
 
@@ -247,19 +247,19 @@ rows:
 //  Time - Interval
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT TIME '23:59:01' - INTERVAL '28' HOUR  FROM nation where n_nationkey = 2;
+SELECT TIME '23:59:01' - INTERVAL '28' HOUR  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIME '19:59:01')
 
-SELECT TIME '23:59:01' - INTERVAL '-28' HOUR  FROM nation where n_nationkey = 2;
+SELECT TIME '23:59:01' - INTERVAL '-28' HOUR  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIME '03:59:01')
 
-SELECT TIME '23:59:01' - INTERVAL '8:3' HOUR TO MINUTE  FROM nation where n_nationkey = 2;
+SELECT TIME '23:59:01' - INTERVAL '8:3' HOUR TO MINUTE  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIME '15:56:01')
 
-SELECT TIME '23:59:01' - INTERVAL '-3:2:1' HOUR TO SECOND  FROM nation where n_nationkey = 2;
+SELECT TIME '23:59:01' - INTERVAL '-3:2:1' HOUR TO SECOND  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIME '03:01:02')
 
@@ -268,12 +268,12 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Interval negation /1
-SELECT -INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT -INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'1 2:3:4.500000' DAY TO SECOND)
 
 // Interval negation /2
-SELECT -INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT -INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '1 2:3:4.500000' DAY TO SECOND)
 
@@ -282,15 +282,15 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Timestamp + Interval DT
-SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-29 06:34:00.500000')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-27 02:27:51.500000')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL -'1 2:3:4' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL -'1 2:3:4' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-27 02:27:52')
 
@@ -300,29 +300,29 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Interval DT + timestamp
-SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-29 06:34:00.500000')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-29 06:34:00.500000')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL -'1 2:3:4.4' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL -'1 2:3:4.4' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows: 
   (TIMESTAMP '2000-02-27 02:27:51.600000')
 
-SELECT INTERVAL -'1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+SELECT INTERVAL -'1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-27 02:27:51.500000')
 
 // Interval YM + timestamp
-SELECT INTERVAL '1-2' YEAR TO MONTH + TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH + TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2001-04-28 04:30:56')
 
 // Timestamp + Interval YM
-SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2001-04-28 04:30:56')
 
@@ -331,32 +331,32 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Timestamp - Interval DT
-SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-27 02:27:51.500000')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-29 06:34:00.500000')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL '1 2:3:5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL '1 2:3:5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-27 02:27:51')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL '1 2:3:57' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL '1 2:3:57' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-27 02:26:59')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL -'1 2:3:5.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL -'1 2:3:5.5' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2000-02-29 06:34:01.500000')
 
 // Timestamp - Interval YM
-SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL '1-2' YEAR TO MONTH FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '1998-12-28 04:30:56')
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL -'1-2' YEAR TO MONTH FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' - INTERVAL -'1-2' YEAR TO MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (TIMESTAMP '2001-04-28 04:30:56')
 
@@ -365,11 +365,11 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Timestamp subtraction
-SELECT TIMESTAMP '2000-03-31 14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-03-31 14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '32 9:59:59' DAY TO SECOND)
 
-SELECT TIMESTAMP '2000-02-28 04:30:56' - TIMESTAMP '2000-03-31 14:30:55' FROM nation where n_nationkey = 2;
+SELECT TIMESTAMP '2000-02-28 04:30:56' - TIMESTAMP '2000-03-31 14:30:55' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'32 9:59:59' DAY TO SECOND)
 
@@ -378,7 +378,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Subtract dates and timestamp
-SELECT DATE '2000-03-31' - TIMESTAMP '2000-02-28 04:30:56' FROM nation where n_nationkey = 2;
+SELECT DATE '2000-03-31' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '31 19:29:4' DAY TO SECOND)
 
@@ -386,49 +386,49 @@ rows:
 //  Date - Date
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Date subtraction gives an interval days
-SELECT DATE '2000-03-31' - DATE '2000-02-28' FROM nation where n_nationkey = 2;
+SELECT DATE '2000-03-31' - DATE '2000-02-28' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (INTERVAL '32' DAY)
 
-SELECT DATE '2000-02-28' - DATE '2000-03-31' FROM nation where n_nationkey = 2;
+SELECT DATE '2000-02-28' - DATE '2000-03-31' FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (INTERVAL -'32' DAY)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Date - Interval (DAY)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SELECT DATE '2000-03-31' - INTERVAL '3' DAY FROM nation where n_nationkey = 2;
+SELECT DATE '2000-03-31' - INTERVAL '3' DAY FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (TIMESTAMP '2000-03-28 00:00:00')
 
-SELECT DATE '2000-02-28' - INTERVAL '3' DAY FROM nation where n_nationkey = 2;
+SELECT DATE '2000-02-28' - INTERVAL '3' DAY FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (TIMESTAMP '2000-02-25 00:00:00')
 
-select DATE '2023-01-01' - INTERVAL '1' MONTH from  nation where n_nationkey = 2;
+select DATE '2023-01-01' - INTERVAL '1' MONTH from  ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2022-12-01')
 
-select date '2023-04-13' - interval '1-4' YEAR TO MONTH from nation where n_nationkey = 2;
+select date '2023-04-13' - interval '1-4' YEAR TO MONTH from ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2021-12-13')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Date - Interval (YEAR MONTH)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SELECT DATE '2000-03-31' - INTERVAL '3' YEAR FROM nation where n_nationkey = 2;
+SELECT DATE '2000-03-31' - INTERVAL '3' YEAR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (DATE '1997-03-31')
 
-SELECT DATE '2000-02-28' - INTERVAL '3' MONTH FROM nation where n_nationkey = 2;
+SELECT DATE '2000-02-28' - INTERVAL '3' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (DATE '1999-11-28')
 
-SELECT DATE '2023-01-01' - INTERVAL '1' MONTH FROM nation where n_nationkey = 2;
+SELECT DATE '2023-01-01' - INTERVAL '1' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2022-12-01')
 
-SELECT DATE '2023-04-13' - interval '1-4' YEAR TO MONTH FROM nation where n_nationkey = 2;
+SELECT DATE '2023-04-13' - interval '1-4' YEAR TO MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (DATE '2021-12-13')
 
@@ -436,64 +436,64 @@ rows:
 //  Interval * Integer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3  FROM nation where n_nationkey = 2;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (INTERVAL -'15:20.367036' MINUTE TO SECOND)
 
 // Interval multiplication /1 (integer)
-SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '2-4' YEAR TO MONTH)
 
 // Interval multiplication /4 (integer first)
-SELECT 2 * INTERVAL '1' YEAR FROM nation where n_nationkey = 2;
+SELECT 2 * INTERVAL '1' YEAR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '2' YEAR)
 
 // Interval multiplication /1 (integer)
-SELECT INTERVAL '1 2' DAY TO HOUR * 2 FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1 2' DAY TO HOUR * 2 FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '2 4' DAY TO HOUR)
 
-SELECT INTERVAL '1 2' DAY TO HOUR * -2 FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1 2' DAY TO HOUR * -2 FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'2 4' DAY TO HOUR)
 
-SELECT -2 * INTERVAL '1 2' DAY TO HOUR FROM nation where n_nationkey = 2;
+SELECT -2 * INTERVAL '1 2' DAY TO HOUR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'2 4' DAY TO HOUR)
 
-SELECT 5*INTERVAL '17' MONTH FROM nation where n_nationkey = 2;
+SELECT 5*INTERVAL '17' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '85' MONTH)
 
 // SE-305
-//SELECT 5*INTERVAL '17' MONTH FROM nation where n_nationkey = 2;
+//SELECT 5*INTERVAL '17' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 //rows :
 //  (INTERVAL '7-1' YEAR TO MONTH)
 
 // Interval multiplication /4 (integer first)
-SELECT 2 * INTERVAL '32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT 2 * INTERVAL '32 9:59:59' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (INTERVAL '64 19:59:58' DAY TO SECOND)
 
-SELECT 2 * INTERVAL -'32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+SELECT 2 * INTERVAL -'32 9:59:59' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (INTERVAL -'64 19:59:58' DAY TO SECOND)
 
-SELECT INTERVAL '1' YEAR * -3 from nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR * -3 from ${testName2}_nation where n_nationkey = 2;
 rows :
   (INTERVAL -'3' YEAR)
 
-SELECT -3 * INTERVAL '1' YEAR from nation where n_nationkey = 2;
+SELECT -3 * INTERVAL '1' YEAR from ${testName2}_nation where n_nationkey = 2;
 rows :
   (INTERVAL -'3' YEAR)
 
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3 from nation where n_nationkey = 2;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3 from ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL -'15:20.367036' MINUTE TO SECOND)
 
-//SELECT INTERVAL '1' SECOND * 1  from nation where n_nationkey = 2;
+//SELECT INTERVAL '1' SECOND * 1  from ${testName2}_nation where n_nationkey = 2;
 //rows:
 //  (INTERVAL '1' SECOND)
 
@@ -502,46 +502,46 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Interval division /1 (integer)
-SELECT INTERVAL '1-2' YEAR TO MONTH / 2 FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH / 2 FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (INTERVAL '0-7' YEAR TO MONTH)
 
 // Interval division /2 (integer)
-SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / 2 FROM nation where n_nationkey = 2;
+SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / 2 FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (INTERVAL -'16 4:59:59.500000' DAY TO SECOND)
 
-SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / -2 FROM nation where n_nationkey = 2;
+SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / -2 FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '16 4:59:59.500000' DAY TO SECOND)
 
-SELECT INTERVAL '9' YEAR / -3 from nation where n_nationkey = 2;
+SELECT INTERVAL '9' YEAR / -3 from ${testName2}_nation where n_nationkey = 2;
 rows :
   (INTERVAL -'3' YEAR)
 
-SELECT INTERVAL -'9' YEAR / -3 from nation where n_nationkey = 2;
+SELECT INTERVAL -'9' YEAR / -3 from ${testName2}_nation where n_nationkey = 2;
 rows :
   (INTERVAL '3' YEAR)
 
-SELECT INTERVAL -'9' YEAR / 3 from nation where n_nationkey = 2;
+SELECT INTERVAL -'9' YEAR / 3 from ${testName2}_nation where n_nationkey = 2;
 rows :
   (INTERVAL -'3' YEAR)
 
-SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR / -3 from ${testName2}_nation where n_nationkey = 2;
 rows :
   (INTERVAL '0' YEAR)
 
-//SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
+//SELECT INTERVAL '1' YEAR / -3 from ${testName2}_nation where n_nationkey = 2;
 //rows :
 //  (INTERVAL -'4' MONTH)
 
-SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/0 FROM nation where n_nationkey = 2;
+SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/0 FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_DIVIDE_BY_ZERO'
 
-SELECT INTERVAL '1' YEAR / 0 from nation where n_nationkey = 2;
+SELECT INTERVAL '1' YEAR / 0 from ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_DIVIDE_BY_ZERO'
 
-SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from nation where n_nationkey = 2;
+SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from ${testName2}_nation where n_nationkey = 2;
 rows:
   (INTERVAL '3 4:5' DAY TO MINUTE)
 
@@ -550,40 +550,40 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Interval year-month
-SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '2' YEAR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (true)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '15' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '15' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (true)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '14' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '14' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (true)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '13' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '13' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (false)
 
 // Interval day-second
 SELECT INTERVAL -'32 9:59:59' DAY TO SECOND BETWEEN INTERVAL -'32 9' DAY TO HOUR
-   AND INTERVAL -'32 10:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+   AND INTERVAL -'32 10:59:59' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (false)
 
 SELECT INTERVAL '32 9:59:59' DAY TO SECOND BETWEEN INTERVAL '32 8' DAY TO HOUR
-   AND INTERVAL '32 10:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+   AND INTERVAL '32 10:59:59' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (true)
 
 SELECT INTERVAL '32 9:58' DAY TO MINUTE BETWEEN INTERVAL '32 9:58:59' DAY TO SECOND
-   AND INTERVAL '32 10:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
+   AND INTERVAL '32 10:59:59' DAY TO SECOND FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (false)
 
 SELECT INTERVAL '32 9' DAY TO HOUR BETWEEN INTERVAL '32 8' DAY TO HOUR
-   AND INTERVAL '32 11' DAY TO HOUR FROM nation where n_nationkey = 2;
+   AND INTERVAL '32 11' DAY TO HOUR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (true)
 
@@ -592,28 +592,28 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Interval year-month
-SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '1' YEAR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '1' YEAR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (true)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '14' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '14' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (true)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '14' MONTH FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '14' MONTH FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (false)
 
 // Interval day-second
-SELECT INTERVAL '32 9' DAY TO HOUR < INTERVAL '32 8' DAY TO HOUR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '32 9' DAY TO HOUR < INTERVAL '32 8' DAY TO HOUR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (false)
 
-SELECT INTERVAL '32 9' DAY TO HOUR != INTERVAL '32 9' DAY TO HOUR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '32 9' DAY TO HOUR != INTERVAL '32 9' DAY TO HOUR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (false)
 
-SELECT INTERVAL '32 9' DAY TO HOUR = INTERVAL '32 9' DAY TO HOUR FROM nation where n_nationkey = 2;
+SELECT INTERVAL '32 9' DAY TO HOUR = INTERVAL '32 9' DAY TO HOUR FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (true)
 
@@ -622,40 +622,40 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // year-month
-SELECT INTERVAL '1-2' YEAR TO MONTH in (INTERVAL '1-3' YEAR TO MONTH, INTERVAL '1-2' YEAR TO MONTH) FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH in (INTERVAL '1-3' YEAR TO MONTH, INTERVAL '1-2' YEAR TO MONTH) FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (true)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH in (INTERVAL '1' YEAR , INTERVAL '14' MONTH) FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH in (INTERVAL '1' YEAR , INTERVAL '14' MONTH) FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (true)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH in (INTERVAL '1' YEAR , INTERVAL -'14' MONTH) FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH in (INTERVAL '1' YEAR , INTERVAL -'14' MONTH) FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (false)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH in (INTERVAL '1' YEAR , INTERVAL '15' MONTH) FROM nation where n_nationkey = 2;
+SELECT INTERVAL '1-2' YEAR TO MONTH in (INTERVAL '1' YEAR , INTERVAL '15' MONTH) FROM ${testName2}_nation where n_nationkey = 2;
 rows:
  (false)
 
 // date-time
 SELECT INTERVAL '31 5' DAY TO HOUR in (INTERVAL '32 8' DAY TO HOUR , INTERVAL '32 9' DAY TO HOUR)
-  FROM nation where n_nationkey = 2;
+  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (false)
 
 SELECT INTERVAL '31 5' DAY TO HOUR in (INTERVAL '32 8' DAY TO HOUR , INTERVAL '32 9' DAY TO HOUR , INTERVAL '31 5' DAY TO HOUR)
-  FROM nation where n_nationkey = 2;
+  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (true)
 
 SELECT INTERVAL '9' HOUR in (INTERVAL '32 8' DAY TO HOUR , INTERVAL '540' MINUTE)
-  FROM nation where n_nationkey = 2;
+  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (true)
 
 SELECT INTERVAL '9' HOUR in (INTERVAL '32 8' DAY TO HOUR , INTERVAL '360' HOUR, INTERVAL -'360' HOUR)
-  FROM nation where n_nationkey = 2;
+  FROM ${testName2}_nation where n_nationkey = 2;
 rows:
   (false)
 
@@ -664,13 +664,13 @@ rows:
 // NB: We add zero to these so they aren't short-circuited in the SQL compiler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT CAST(1 + 0  AS INTERVAL YEAR) FROM nation where n_nationkey = 2;
+SELECT CAST(1 + 0  AS INTERVAL YEAR) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(1.0 + 0  AS INTERVAL DAY) FROM nation where n_nationkey = 2;
+SELECT CAST(1.0 + 0  AS INTERVAL DAY) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(1.0e1 + 0 AS INTERVAL DAY) FROM nation where n_nationkey = 2;
+SELECT CAST(1.0e1 + 0 AS INTERVAL DAY) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -678,51 +678,51 @@ failure contains: 'EC_NOT_IMPLEMENTED'
 // NB: We add zero to these so they aren't short-circuited in the SQL compiler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as INTEGER) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as INTEGER) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as DECIMAL) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as DECIMAL) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(INTERVAL '9' YEAR + INTERVAL '0' YEAR as FLOAT) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' YEAR + INTERVAL '0' YEAR as FLOAT) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Min of Interval
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT MIN(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+SELECT MIN(INTERVAL '9' HOUR) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Max of Interval
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT MIN(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+SELECT MIN(INTERVAL '9' HOUR) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Sum of Interval
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT SUM(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+SELECT SUM(INTERVAL '9' HOUR) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Avg of Interval
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT AVG(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
+SELECT AVG(INTERVAL '9' HOUR) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-drop table nation;
+drop table ${testName2}_nation;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval in where clause
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table TABLE4 (
+create table ${testName2}_TABLE4 (
   pcol4   INTEGER NOT NULL,
   scol4   INTEGER NOT NULL,
   ucol    INTEGER,
@@ -734,16 +734,16 @@ create table TABLE4 (
 );
 success
 
-Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+Load ${testName2}_TABLE4 "../DATA/Load/tbl4data.csv" ;
 success
 
-SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  TABLE4 where INTERVAL '1' MONTH + colc4 > DATE '2015-11-26';
+SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  ${testName2}_TABLE4 where INTERVAL '1' MONTH + colc4 > DATE '2015-11-26';
 rows: 84
 
-drop table TABLE4;
+drop table ${testName2}_TABLE4;
 success
 
-create table TABLE4 (
+create table ${testName2}_TABLE4 (
   pcol4   INTEGER NOT NULL,
   scol4   INTEGER NOT NULL,
   ucol    INTEGER,
@@ -755,18 +755,18 @@ create table TABLE4 (
 );
 success
 
-Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+Load ${testName2}_TABLE4 "../DATA/Load/tbl4data.csv" ;
 success
 
 // ALKA: TO DO
-//SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  TABLE4 where colc4 + INTERVAL '1' MONTH  > TIMESTAMP '2015-11-26 00:00:00';
+//SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  ${testName2}_TABLE4 where colc4 + INTERVAL '1' MONTH  > TIMESTAMP '2015-11-26 00:00:00';
 //rows: 84
 
 // ALKA: TO DO
-//SELECT colc4 , INTERVAL '1' MONTH + colc4 FROM  TABLE4 where INTERVAL '1' MONTH + colc4 > TIMESTAMP '2015-11-26 00:00:00';
+//SELECT colc4 , INTERVAL '1' MONTH + colc4 FROM  ${testName2}_TABLE4 where INTERVAL '1' MONTH + colc4 > TIMESTAMP '2015-11-26 00:00:00';
 //rows: 84
 
-drop table TABLE4;
+drop table ${testName2}_TABLE4;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -781,10 +781,10 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE nation;
+  DROP TABLE ${testName2}_nation;
   mute
 
-  DROP TABLE table4;
+  DROP TABLE ${testName2}_table4;
   mute
 
 }

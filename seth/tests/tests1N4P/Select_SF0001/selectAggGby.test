@@ -5,7 +5,7 @@ trackmemory force;
 success
 
 // scan +aggGby
-select count(*) from nation group by n_regionkey;
+select count(*) from ${testName2}_nation group by n_regionkey;
 rows:
   (5)
   (5)
@@ -14,7 +14,7 @@ rows:
   (5)
 
 // scan +aggGby
-select n_regionkey, count(*) from nation group by n_regionkey;
+select n_regionkey, count(*) from ${testName2}_nation group by n_regionkey;
 rows:
   (3, 5)
   (4, 5)
@@ -23,7 +23,7 @@ rows:
   (1, 5)
 
 // scan +aggGby
-select count(*), n_regionkey from nation group by n_regionkey;
+select count(*), n_regionkey from ${testName2}_nation group by n_regionkey;
 rows:
   (5, 3)
   (5, 4)
@@ -33,7 +33,7 @@ rows:
 
 
 // scan + filter + aggGby
-select n_regionkey, min(n_nationkey), max(n_name) from nation group by n_regionkey;
+select n_regionkey, min(n_nationkey), max(n_name) from ${testName2}_nation group by n_regionkey;
 rows:
   (0,0,'MOZAMBIQUE')
   (1,1,'UNITED STATES')
@@ -42,7 +42,7 @@ rows:
   (4,4,'SAUDI ARABIA')
 
 // scan + filter + aggGby + sort
-select n_regionkey, min(n_nationkey), max(n_name) from nation group by n_regionkey order by n_regionKey;
+select n_regionkey, min(n_nationkey), max(n_name) from ${testName2}_nation group by n_regionkey order by n_regionKey;
 ordered rows:
   (0,0,'MOZAMBIQUE')
   (1,1,'UNITED STATES')
@@ -52,7 +52,7 @@ ordered rows:
 
 
 // scan + aggGby
-select min(n_nationkey), n_regionkey, max(n_name) from nation group by n_regionkey;
+select min(n_nationkey), n_regionkey, max(n_name) from ${testName2}_nation group by n_regionkey;
 rows:
  (0,0,'MOZAMBIQUE')
  (1,1,'UNITED STATES')
@@ -61,7 +61,7 @@ rows:
  (4,4,'SAUDI ARABIA')
 
 // scan + aggGby + sort
-select min(n_nationkey), n_regionkey, max(n_name) from nation group by n_regionkey order by n_regionKey;
+select min(n_nationkey), n_regionkey, max(n_name) from ${testName2}_nation group by n_regionkey order by n_regionKey;
 rows:
  (0,0,'MOZAMBIQUE')
  (1,1,'UNITED STATES')
@@ -70,42 +70,42 @@ rows:
  (4,4,'SAUDI ARABIA')
 
 // scan + filter + aggGby
-select n_regionkey, count(*) from nation where n_name < 'E' group by n_regionkey;
+select n_regionkey, count(*) from ${testName2}_nation where n_name < 'E' group by n_regionkey;
 rows:
   (0,1)
   (1,3)
   (2,1)
 
 // scan + filter + aggGby
-select n_regionkey, min(n_name), max(n_nationkey) from nation where n_name < 'E' group by n_regionkey;
+select n_regionkey, min(n_name), max(n_nationkey) from ${testName2}_nation where n_name < 'E' group by n_regionkey;
 rows:
  (0,'ALGERIA',0)
  (1,'ARGENTINA',3)
  (2,'CHINA',18)
 
 // scan + filter + aggGby
-select min(n_name), n_regionkey, max(n_nationkey) from nation where n_name < 'E' group by n_regionkey;
+select min(n_name), n_regionkey, max(n_nationkey) from ${testName2}_nation where n_name < 'E' group by n_regionkey;
 rows:
  ('ALGERIA',0,0)
  ('ARGENTINA',1,3)
  ('CHINA',2,18)
 
 // scan + filter + aggGby
-select min(n_name), max(n_nationkey), n_regionkey from nation where n_name < 'E' group by n_regionkey;
+select min(n_name), max(n_nationkey), n_regionkey from ${testName2}_nation where n_name < 'E' group by n_regionkey;
 rows:
  ('ALGERIA',0,0)
  ('ARGENTINA',3,1)
  ('CHINA',18,2)
 
 // scan + filter + aggGby + filter
-select min(n_name), max(n_nationkey), n_regionkey from nation where n_name < 'E' group by n_regionkey order by n_regionkey;
+select min(n_name), max(n_nationkey), n_regionkey from ${testName2}_nation where n_name < 'E' group by n_regionkey order by n_regionkey;
 ordered rows:
  ('ALGERIA',0,0)
  ('ARGENTINA',3,1)
  ('CHINA',18,2)
 
 // scan + filter + aggGby + filter
-select P_MFGR, count(*) from part where p_size < 5 group by P_MFGR order by P_MFGR;
+select P_MFGR, count(*) from ${testName2}_part where p_size < 5 group by P_MFGR order by P_MFGR;
 ordered rows:
  ('Manufacturer#1',2)
  ('Manufacturer#2',5)
@@ -114,7 +114,7 @@ ordered rows:
  ('Manufacturer#5',6)
 
 // scan + filter + aggGby + filter
-select p_mfgr, p_brand,  count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
+select p_mfgr, p_brand,  count(*) from ${testName2}_part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
 rows:
  ('Manufacturer#1','Brand#13',1)
  ('Manufacturer#1','Brand#11',1)
@@ -132,7 +132,7 @@ rows:
  ('Manufacturer#5','Brand#52',2)
 
 // scan + filter + aggGby + filter
-select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_brand, p_mfgr;
+select p_brand, p_mfgr, count(*) from ${testName2}_part where p_size < 5 group by p_mfgr, p_brand order by p_brand, p_mfgr;
 ordered rows:
  ('Brand#11','Manufacturer#1',1)
  ('Brand#13','Manufacturer#1',1)
@@ -150,7 +150,7 @@ ordered rows:
  ('Brand#55','Manufacturer#5',2)
 
 // scan + filter + aggGby + filter
-select count(*) as cnt, p_brand, p_mfgr from part where p_size < 5 group by p_mfgr, p_brand order by cnt, p_brand, p_mfgr;
+select count(*) as cnt, p_brand, p_mfgr from ${testName2}_part where p_size < 5 group by p_mfgr, p_brand order by cnt, p_brand, p_mfgr;
 ordered rows:
  (1,'Brand#11','Manufacturer#1')
  (1,'Brand#13','Manufacturer#1')
@@ -168,14 +168,14 @@ ordered rows:
  (2,'Brand#55','Manufacturer#5')
 
 // indexScan + filter + aggGby + filter
-select P_MFGR, count(*) from part where p_partkey < 5 group by P_MFGR order by P_MFGR;
+select P_MFGR, count(*) from ${testName2}_part where p_partkey < 5 group by P_MFGR order by P_MFGR;
 ordered rows:
  ('Manufacturer#1',2)
  ('Manufacturer#3',1)
  ('Manufacturer#4',1)
 
 // indexScan + filter + aggGby + filter
-select p_mfgr, p_brand,  count(*) from part where p_partkey < 15 group by p_mfgr, p_brand order by p_mfgr, p_brand;
+select p_mfgr, p_brand,  count(*) from ${testName2}_part where p_partkey < 15 group by p_mfgr, p_brand order by p_mfgr, p_brand;
 ordered rows:
  ('Manufacturer#1','Brand#11',1)
  ('Manufacturer#1','Brand#13',3)
@@ -191,7 +191,7 @@ ordered rows:
  ('Manufacturer#5','Brand#55',1)
 
 // indexScan + filter + aggGby + filter
-select p_brand, p_mfgr, count(*) from part where p_partkey < 15 group by p_mfgr, p_brand order by p_brand, p_mfgr;
+select p_brand, p_mfgr, count(*) from ${testName2}_part where p_partkey < 15 group by p_mfgr, p_brand order by p_brand, p_mfgr;
 ordered rows:
  ('Brand#11','Manufacturer#1',1)
  ('Brand#13','Manufacturer#1',3)
@@ -207,7 +207,7 @@ ordered rows:
  ('Brand#55','Manufacturer#5',1)
 
 // indexScan + filter + aggGby + filter
-select count(*) as cnt, p_brand, p_mfgr from part where p_partkey < 15 group by p_mfgr, p_brand order by cnt, p_brand, p_mfgr;
+select count(*) as cnt, p_brand, p_mfgr from ${testName2}_part where p_partkey < 15 group by p_mfgr, p_brand order by cnt, p_brand, p_mfgr;
 ordered rows:
  (1,'Brand#11','Manufacturer#1')
  (1,'Brand#24','Manufacturer#2')

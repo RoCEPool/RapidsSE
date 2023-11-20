@@ -111,7 +111,7 @@ bool SeApi::bIsKnownTableNm(Stz* szTableNm)
   // get dictionary stack
   DicStack* pDicStack = pTask->pDicStack();
   
-  s32 sWordNm;
+  s256 sWordNm;
   sWordNm = szTableNm;
 
   Word* pWord = pDicStack->pFindWord(sWordNm);
@@ -138,7 +138,7 @@ bool SeApi::bIsKnownTableColumnNm(Stz* szTableNm, Stz* szColumnNm)
   // get dictionary
   Dic* pDic = pDicStack->pTop();
 
-  s32 sWordNm;
+  s256 sWordNm;
   sWordNm = szTableNm;
 
   Word* pPackageWord = pDic->pFindWord(sWordNm);
@@ -187,7 +187,7 @@ void SeApi::vPrintAllColumnsOfTable(Stz* szTableNm)
   // get dictionary
   Dic* pDic = pDicStack->pTop();
 
-  s32 sWordNm;
+  s256 sWordNm;
   sWordNm = szTableNm;
 
   Word* pPackageWord = pDic->pFindWord(sWordNm);

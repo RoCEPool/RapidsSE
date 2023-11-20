@@ -2,7 +2,7 @@
 /* emptyString -- empty string tests                                          */
 /*----------------------------------------------------------------------------*/
 /*
-create table T1 (
+create table ${testName2}_t1 (
   col_id       INTEGER,
   col_vch      VARCHAR(15),
   col_int      INTEGER
@@ -10,30 +10,30 @@ create table T1 (
 success
 
 // create an index
-create index idx on T1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-load T1 "../DATA/Load/emptyString1.csv" ;
+load ${testName2}_t1 "../DATA/Load/emptyString1.csv" ;
 success
 
 // predicateFetch rows
-select * from T1;
+select * from ${testName2}_t1;
 rows: 2
 
-predicateFetch T1 "col_id 1 =";
+predicateFetch ${testName2}_t1 "col_id 1 =";
 rows:
   (1,'''''',3)
 
-predicateFetch T1 "col_id 2 =";
+predicateFetch ${testName2}_t1 "col_id 2 =";
 rows:
   (2,null,3)
 
 // drop the table
-drop table T1;
+drop table ${testName2}_t1;
 success
 
-create table T1 (
+create table ${testName2}_t1 (
   col_id       INTEGER,
   col_vch      VARCHAR(15),
   col_int      INTEGER
@@ -41,33 +41,33 @@ create table T1 (
 success
 
 // create an ndex
-create index idx on T1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load table T1 with <enclosed_by_leading> =  '
-//load T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'" ;
+//load ${testName2}_t1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'" ;
 
-load T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'";
+load ${testName2}_t1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'";
 success
 
 // predicateFetch rows
-select * from T1;
+select * from ${testName2}_t1;
 rows: 2
 
-predicateFetch T1 "col_id 1 =";
+predicateFetch ${testName2}_t1 "col_id 1 =";
 rows:
   (1,'',3)
 
-predicateFetch T1 "col_id 2 =";
+predicateFetch ${testName2}_t1 "col_id 2 =";
 rows:
   (2,null,3)
 
 // drop the table
-drop table T1;
+drop table ${testName2}_t1;
 success
 */
 
-create table T1 (
+create table ${testName2}_t1 (
 col_id       INTEGER,
 col_vch      VARCHAR(15),
 col_int      INTEGER
@@ -75,59 +75,59 @@ col_int      INTEGER
 success
 
 // create an ndex
-create index idx on T1 (col_id) ;
+create index idx on ${testName2}_t1 (col_id) ;
 success
 
 // load table T1
-Load T1 "../DATA/Load/emptyString2.csv"
+Load ${testName2}_t1 "../DATA/Load/emptyString2.csv"
   <enclosed_by_leading> = "{"
   <enclosed_by_trailing> = "}"
 ;
 success
 
 // predicateFetch rows
-select * from T1;
+select * from ${testName2}_t1;
 rows: 2
 
-predicateFetch T1 "col_id 1 =";
+predicateFetch ${testName2}_t1 "col_id 1 =";
 rows:
   (1,'',3)
 
-predicateFetch T1 "col_id 2 =";
+predicateFetch ${testName2}_t1 "col_id 2 =";
 rows:
   (2,null,3)
 
-export T1 "/tmp/T1.csv";
+export ${testName2}_t1 "/tmp/${testName2}_t1.csv";
 success
 
-truncate T1;
+truncate ${testName2}_t1;
 success
 
-select * from T1;
+select * from ${testName2}_t1;
 rows: 0
 
-load T1 "/tmp/T1.csv";
+load ${testName2}_t1 "/tmp/${testName2}_t1.csv";
 success
 
-select * from T1;
+select * from ${testName2}_t1;
 rows: 2
 
 //! RAY TO UNCOMMENT ONCE enclosedBy glitch is fixed
-//predicateFetch T1 "col_id 1 =";
+//predicateFetch ${testName2}_t1 "col_id 1 =";
 //rows:
 //  (1,'',3)
 
-//predicateFetch T1 "col_id 2 =";
+//predicateFetch ${testName2}_t1 "col_id 2 =";
 //rows:
 //  (2,null,3)
 
 // drop the table
-drop table T1;
+drop table ${testName2}_t1;
 success
 
 CLEANUP {
   
-  drop table T1;
+  drop table ${testName2}_t1;
   mute
 
   bye;

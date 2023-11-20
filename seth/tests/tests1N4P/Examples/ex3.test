@@ -4,7 +4,7 @@
 
 
 -- First ensure that the table 'foo' doesn't exist to start with.
-drop table foo;
+drop table ${testName2}_foo;
 mute
 
 
@@ -18,13 +18,13 @@ CREATE 2 THREADS {
   
   lstbl;
   rows: 
-    ('foo')
+    ('${testName2}_foo')
 
-  lsidx foo;
+  lsidx ${testName2}_foo;
   rows:
     ('fooIdx',false,false)
 
-  lsidxcol foo fooIdx;
+  lsidxcol ${testName2}_foo fooIdx;
   rows:
     ('col0', 'INTEGER', 19, 0, true, true)
 
@@ -38,10 +38,10 @@ CREATE 2 THREADS {
 }
 
 -- The main thread keeps running commands from here after creating the child threads..
-create table foo (col0 integer, col1 varchar);
+create table ${testName2}_foo (col0 integer, col1 varchar);
 success
 
-create index fooIdx on foo (col0);
+create index fooIdx on ${testName2}_foo (col0);
 success
 
 -- Unblocks child threads who will verify existence of the table and index.
@@ -51,13 +51,13 @@ SYNCHRONIZE;
 -- Main thread waits until child threads indicate that they are done verifying table.
 SYNCHRONIZE;
 
-drop table foo;
+drop table ${testName2}_foo;
 success
 
 -- Child threads are blocked waiting for the table to be dropped.
 SYNCHRONIZE;
 
 CLEANUP {
-  drop table foo;
+  drop table ${testName2}_foo;
   mute
 }

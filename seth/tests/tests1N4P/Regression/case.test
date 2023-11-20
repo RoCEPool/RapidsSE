@@ -3,7 +3,7 @@
 // Result file: ../queries/case/results/case19.res
 /*
 // TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES) --- SYNTAX ERROR
-select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, a.cola4;
+select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from ${testName2}_table4 a join ${testName2}_table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, a.cola4;
 ordered rows:
   ('gold', 'lll', 0, 'www', false)
   ('RED', 'aaa', 0, 'www', false)
@@ -25,7 +25,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase22.sql
 // Result file: ../queries/case/results/case22.res
-select ucolvc, cola1, colg1, cola1/colg1 from table1 where cola1 / case when colg1 <= 0 then null else colg1 end > 5 order by cola1;
+select ucolvc, cola1, colg1, cola1/colg1 from ${testName2}_table1 where cola1 / case when colg1 <= 0 then null else colg1 end > 5 order by cola1;
 ordered rows:
   ('qqq', 93, 13, 7)
   ('rrr', 224, 14, 16)
@@ -40,7 +40,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase7.sql
 // Result file: ../queries/case/results/case7.res
-select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 end from table3 where colb3 like 'gre%' order by pcol3, colc3 limit 10;
+select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 end from ${testName2}_table3 where colb3 like 'gre%' order by pcol3, colc3 limit 10;
 ordered rows:
   ('grey', TIMESTAMP '2015-06-19 00:00:00.0', 359, NULL)
   ('green', TIMESTAMP '2015-07-30 00:00:00.0', 211, NULL)
@@ -56,7 +56,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase4.sql
 // Result file: ../queries/case/results/case4.res
-select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end, colf1 from table1 where colf1 >= 12 order by colf1, ucolvc;
+select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end, colf1 from ${testName2}_table1 where colf1 >= 12 order by colf1, ucolvc;
 ordered rows:
   ('bbb', 'high small int', 12)
   ('ccc', 'high small int', 12)
@@ -89,7 +89,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase4.sql
 // Result file: ../queries/case/results/case4.res
-select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end, colf1 from table1 where colf1 >= 12;
+select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end, colf1 from ${testName2}_table1 where colf1 >= 12;
 unordered rows:
   ('bbb', 'high small int', 12)
   ('ccc', 'high small int', 12)
@@ -122,7 +122,7 @@ unordered rows:
 
 // Source file: ../queries/case/rcase14.sql
 // Result file: ../queries/case/results/case14.res
-select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' when a.colb1 = c.colb4 then 'its a match' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where colb4 in ('black','BLACK','BLUE','blue','pink') order by a.cola1, colb1;
+select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' when a.colb1 = c.colb4 then 'its a match' end from ${testName2}_table1 a join ${testName2}_table2 b on a.cola1 = b.cola2 join ${testName2}_table4 c on a.cola1 = c.cola4 where colb4 in ('black','BLACK','BLUE','blue','pink') order by a.cola1, colb1;
 ordered rows:
   (136.01,110.85,1.23,'maroon','peach','blue','over 1')
   (99.46,31.84,3.12,'blue','GREEN','pink','over 1')
@@ -132,7 +132,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase2.sql
 // Result file: ../queries/case/results/case2.res
-select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from table1 order by colg1, ucolvc;
+select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from ${testName2}_table1 order by colg1, ucolvc;
 ordered rows:
   ('sss', 'Very small int', -170)
   ('mmm', 'Very small int', -167)
@@ -237,7 +237,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase2.sql
 // Result file: ../queries/case/results/case2.res
-select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from table1;
+select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from ${testName2}_table1;
 unordered rows:
   ('sss', 'Very small int', -170)
   ('mmm', 'Very small int', -167)
@@ -342,7 +342,7 @@ unordered rows:
 
 // Source file: ../queries/case/rcase8.sql
 // Result file: ../queries/case/results/case8.res
-select colb1, cole1, case when cole1 > 33.0 and cole1 <72.0 then cole1 /.5 end from table1 where colb1 not like '%ea%' order by pcol1 limit 20;
+select colb1, cole1, case when cole1 > 33.0 and cole1 <72.0 then cole1 /.5 end from ${testName2}_table1 where colb1 not like '%ea%' order by pcol1 limit 20;
 ordered rows:
   ('grey',   5.34, NULL)
   ('PINK',  74.59, NULL)
@@ -369,15 +369,15 @@ ordered rows:
 // Result file: ../queries/case/results/ncase1.res
 // TODO: NOT SURE WHAT THIS IS
 /*
-select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then (select b.cola1 from table1 where pcol1 = 5;) when b.colh8 = 1 then (select b.cola1 from table1 where pcol1 = 10;) when b.colh8 is null then (select b.cola1 from table1 where pcol1 = 15;) end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
+select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then (select b.cola1 from ${testName2}_table1 where pcol1 = 5;) when b.colh8 = 1 then (select b.cola1 from ${testName2}_table1 where pcol1 = 10;) when b.colh8 is null then (select b.cola1 from ${testName2}_table1 where pcol1 = 15;) end as TorF from ${testName2}_table4 a join ${testName2}_table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
 failure contains: 'EC_SYNTAX_ERROR'
 */
 
 // Source file: ../queries/case/rcase16.sql
 // Result file: ../queries/case/results/case16.res
 // order by has an ambiguous column.SE compiler gives appropriate error
-//select a.colb1, a.ucolvc, case b.coli8 when 'true' then '1' when 'false' then '0' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where a.colb1 like '%le%' order by TorF, ucolvc;
-select a.colb1, a.ucolvc, case b.coli8 when 'true' then '1' when 'false' then '0' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where a.colb1 like '%le%' order by TorF, a.ucolvc;
+//select a.colb1, a.ucolvc, case b.coli8 when 'true' then '1' when 'false' then '0' end as TorF from ${testName2}_table1 a join ${testName2}_table8 b on a.pcol1 = b.pcol8 where a.colb1 like '%le%' order by TorF, ucolvc;
+select a.colb1, a.ucolvc, case b.coli8 when 'true' then '1' when 'false' then '0' end as TorF from ${testName2}_table1 a join ${testName2}_table8 b on a.pcol1 = b.pcol8 where a.colb1 like '%le%' order by TorF, a.ucolvc;
 ordered rows:
   ('violet', 'ddd', 0)
   ('violet', 'yyy', 0)
@@ -389,7 +389,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase23.sql
 // Result file: ../queries/case/results/case23.res
-select colb1, cola1, colf1 from table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 and colb1 in ('orange','violet','purple') order by cola1;
+select colb1, cola1, colf1 from ${testName2}_table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 and colb1 in ('orange','violet','purple') order by cola1;
 ordered rows:
   ('purple', 58, 12)
   ('violet', 78, 2)
@@ -403,7 +403,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase9.sql
 // Result file: ../queries/case/results/case9.res
-select colb1, cole1, case when cole1 > 33.0 and cole1 < 72.0 or cole1 > 84.0 and cole1 < 86.0 then cole1 /.5 end from table1 where cole1 between 30.5 and 89.0 order by cole1, colb1;
+select colb1, cole1, case when cole1 > 33.0 and cole1 < 72.0 or cole1 > 84.0 and cole1 < 86.0 then cole1 /.5 end from ${testName2}_table1 where cole1 between 30.5 and 89.0 order by cole1, colb1;
 ordered rows:
   ('yellow', 30.69, NULL)
   ('violet', 32.13, NULL)
@@ -444,7 +444,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase17.sql
 // Result file: ../queries/case/results/case17.res
-select a.colb1, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from table1 a join table8 b on a.pcol1 = b.pcol8 where b.ucolvc = 'www' order by TorF, colb1;
+select a.colb1, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from ${testName2}_table1 a join ${testName2}_table8 b on a.pcol1 = b.pcol8 where b.ucolvc = 'www' order by TorF, colb1;
 ordered rows:
   ('brown', 'ooo', 0, 'www', false)
   ('tan', 'qqq', 0, 'www', false)
@@ -452,7 +452,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase1.sql
 // Result file: ../queries/case/results/case1.res
-select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from table1 order by pcol1;
+select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from ${testName2}_table1 order by pcol1;
 ordered rows:
   ('lll', 'Very small int', -152)
   ('qqq', 'biggest small int', 39)
@@ -558,7 +558,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase1.sql
 // Result file: ../queries/case/results/case1.res
-select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from table1;
+select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from ${testName2}_table1;
 unordered rows:
   ('lll', 'Very small int', -152)
   ('qqq', 'biggest small int', 39)
@@ -663,7 +663,7 @@ unordered rows:
 
 // Source file: ../queries/case/rcase11.sql
 // Result file: ../queries/case/results/case11.res
-select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when a.colc1 >= '2015-01-01 01:00:00' and a.colc1 <= '2015-03-31 23:00:00' then 'case3' when b.colb4 <> 'indigo' then 'case4' else 'no case match' end from table1 a join table4 b on a.cola1 = b.cola4 where b.cola4 between 100 and 135 order by a.cola1, b.colb4;
+select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when a.colc1 >= '2015-01-01 01:00:00' and a.colc1 <= '2015-03-31 23:00:00' then 'case3' when b.colb4 <> 'indigo' then 'case4' else 'no case match' end from ${testName2}_table1 a join ${testName2}_table4 b on a.cola1 = b.cola4 where b.cola4 between 100 and 135 order by a.cola1, b.colb4;
 ordered rows:
   (102, 102, 'gold', TIMESTAMP '2015-05-12 00:00:00.0', 'white', 'case4')
   (124, 124, 'black', TIMESTAMP '2015-01-07 00:00:00.0', 'GREEN', 'case2')
@@ -676,7 +676,7 @@ ordered rows:
 // Result file: ../queries/case/results/case6.res
 //TODO: ENABLE WHEN OFFSET
 /*
-select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 end from table3 order by pcol3, colb3 limit 10 offset 12;
+select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 end from ${testName2}_table3 order by pcol3, colb3 limit 10 offset 12;
 ordered rows:
   ('ORANGE', TIMESTAMP '2015-08-05 00:00:00.0', 12, 1)
   ('PINK', TIMESTAMP '2015-06-16 00:00:00.0', 92, 9)
@@ -692,7 +692,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase6.sql
 // Result file: ../queries/case/results/case6.res
-select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 end from table3 order by pcol3, colb3, colc3 limit 10;
+select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 end from ${testName2}_table3 order by pcol3, colb3, colc3 limit 10;
 ordered rows:
    ('BLUE'   , TIMESTAMP '2015-07-15 00:00:00', 188, NULL)
    ('WHITE'  , TIMESTAMP '2015-02-04 00:00:00', 210, NULL)
@@ -707,7 +707,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase12.sql
 // Result file: ../queries/case/results/case12.res
-select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when a.colc1 >= '2015-01-01 01:00:00' and a.colc1 <= '2015-03-31 23:00:00' then 'case3' when b.colb4 <> 'indigo' then 'case4' else 'no case match' end as CSTMT from table1 a join table4 b on a.cola1 = b.cola4 where cola1 > 400 order by CSTMT, b.colb4, a.cola1;
+select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when a.colc1 >= '2015-01-01 01:00:00' and a.colc1 <= '2015-03-31 23:00:00' then 'case3' when b.colb4 <> 'indigo' then 'case4' else 'no case match' end as CSTMT from ${testName2}_table1 a join ${testName2}_table4 b on a.cola1 = b.cola4 where cola1 > 400 order by CSTMT, b.colb4, a.cola1;
 // since duplicates seth gives error if not in order as expected
 //ordered rows:
 rows:
@@ -742,7 +742,7 @@ rows:
 
 // Source file: ../queries/case/rcase5.sql
 // Result file: ../queries/case/results/case5.res
-select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 else cola3 end from table3  order by pcol3, colb3, colc3 limit 10;
+select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 else cola3 end from ${testName2}_table3  order by pcol3, colb3, colc3 limit 10;
 ordered rows:
   ('BLUE', TIMESTAMP '2015-07-15 00:00:00.0', 188, 188)
   ('WHITE', TIMESTAMP '2015-02-04 00:00:00.0', 210, 210)
@@ -758,7 +758,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase10.sql
 // Result file: ../queries/case/results/case10.res
-select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when b.colb4 <> 'ccc' then 'case3' else 'no case match' end from table1 a join table4 b on a.cola1 = b.cola4 where b.cola4 between 50 and 75 order by a.cola1, b.colb4;
+select a.cola1, b.cola4, a.colb1, a.colc1, b.colb4, case when a.cola1 > 50 and a.cola1 < 75 then 'case1' when a.colb1 = 'black' then 'case2' when b.colb4 <> 'ccc' then 'case3' else 'no case match' end from ${testName2}_table1 a join ${testName2}_table4 b on a.cola1 = b.cola4 where b.cola4 between 50 and 75 order by a.cola1, b.colb4;
 ordered rows:
   (55, 55, 'TEAL', TIMESTAMP '2015-08-10 00:00:00.0', 'aqua', 'case1')
   (56, 56, 'brown', TIMESTAMP '2015-07-24 00:00:00.0', 'PURPLE', 'case1')
@@ -770,7 +770,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase21.sql
 // Result file: ../queries/case/results/case21.res
-select ucolvc, cola1, colg1, cola1/colg1 from table1 where cola1 / case when colg1 <= 0 then null else colg1 end > 5 order by cola1;
+select ucolvc, cola1, colg1, cola1/colg1 from ${testName2}_table1 where cola1 / case when colg1 <= 0 then null else colg1 end > 5 order by cola1;
 ordered rows:
   ('qqq', 93, 13, 7)
   ('rrr', 224, 14, 16)
@@ -786,13 +786,13 @@ ordered rows:
 
 // Source file: ../queries/case/case26.sql
 // Result file: none
-select colb1, cola1, colf1 from table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 order by cola1;
+select colb1, cola1, colf1 from ${testName2}_table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 order by cola1;
 //failure: 'Result file missing'
 rows: 91
 
 // Source file: ../queries/case/case26.sql
 // Result file: none
-select colb1, cola1, colf1 from table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 order by cola1;
+select colb1, cola1, colf1 from ${testName2}_table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 order by cola1;
 //failure: 'Result file missing'
 contains rows:
  ('black',  5, 14)
@@ -803,7 +803,7 @@ contains rows:
 
 // Source file: ../queries/case/rcase13.sql
 // Result file: ../queries/case/results/case13.res
-select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where cole1 > 81.5 order by colb1, colb2, colb4;
+select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' end from ${testName2}_table1 a join ${testName2}_table2 b on a.cola1 = b.cola2 join ${testName2}_table4 c on a.cola1 = c.cola4 where cole1 > 81.5 order by colb1, colb2, colb4;
 ordered rows:
   (129.73,26.55,4.89,'BLACK','peach','RED','over 1')
   (135.50,54.96,2.47,'TEAL','ORANGE','pink','over 1')
@@ -822,7 +822,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase18.sql
 // Result file: ../queries/case/results/case18.res
-select colb8, ucolvc, colh8, case when colh8 = 0 then 'false' when colh8 = 1 then 'true' when colh8 is null then 'neither' end from table8 where ucolvc = 'www' order by colb8, pcol8;
+select colb8, ucolvc, colh8, case when colh8 = 0 then 'false' when colh8 = 1 then 'true' when colh8 is null then 'neither' end from ${testName2}_table8 where ucolvc = 'www' order by colb8, pcol8;
 ordered rows:
   ('BLACK', 'www', 1, true)
   ('BLACK', 'www', 0, false)
@@ -844,7 +844,7 @@ ordered rows:
 
 // Source file: ../queries/case/rncase2.sql
 // Result file: ../queries/case/results/ncase2.res
-select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case b.colh8 when 1 then 'true' when 0 then 'false' when is null then 'neither' end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
+select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case b.colh8 when 1 then 'true' when 0 then 'false' when is null then 'neither' end as TorF from ${testName2}_table4 a join ${testName2}_table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
 failure contains: 'EC_SYNTAX_ERROR'
 
 
@@ -852,7 +852,7 @@ failure contains: 'EC_SYNTAX_ERROR'
 // Result file: ../queries/case/results/case20.res
 /*
 // TODO: ALKA TO FIX
-select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then b.cola8 / 2 when b.colh8 = 1 then (b.cola8 * 2) / 5 when b.colh8 is null then b.cola8 end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
+select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then b.cola8 / 2 when b.colh8 = 1 then (b.cola8 * 2) / 5 when b.colh8 is null then b.cola8 end as TorF from ${testName2}_table4 a join ${testName2}_table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
 ordered rows:
   ('peach', 'www', 1, 'www', 2)
   ('RED', 'aaa', 0, 'www', 3)
@@ -876,7 +876,7 @@ ordered rows:
 // Result file: ../queries/case/results/case15.res
 /*
 // TODO: ENABLE WHEN UPPER/LOWER
-select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case  when a.colb1 = c.colb4 then 'its a match' when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where colb1 != upper('black') or colb1 != lower('BLACK') and cola1 > 90 order by cola1, pcol1, colb1, colb2, colb4;
+select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case  when a.colb1 = c.colb4 then 'its a match' when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' end from ${testName2}_table1 a join ${testName2}_table2 b on a.cola1 = b.cola2 join ${testName2}_table4 c on a.cola1 = c.cola4 where colb1 != upper('black') or colb1 != lower('BLACK') and cola1 > 90 order by cola1, pcol1, colb1, colb2, colb4;
 ordered rows:
   (136.010000000000, 57.310000000000, 2.3732, 'maroon', 'peach', 'RED', 'over 1')
   (136.010000000000, 110.850000000000, 1.2270, 'maroon', 'peach', 'blue', 'over 1')
@@ -908,7 +908,7 @@ ordered rows:
 
 // Source file: ../queries/case/rcase3.sql
 // Result file: ../queries/case/results/case3.res
-select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end as HowBig, colf1 from table1 where ucolvc in ('hhh','jjj','eee','ssss') order by colf1, ucolvc, HowBig;
+select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end as HowBig, colf1 from ${testName2}_table1 where ucolvc in ('hhh','jjj','eee','ssss') order by colf1, ucolvc, HowBig;
 ordered rows:
   ('eee', 'biggest small int', 1)
   ('eee', 'biggest small int', 1)

@@ -4490,13 +4490,13 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OI_COUNT:          eOperand = EV_I_COUNT;          break;
         case OI_EXECERRORS:     eOperand = EV_I_EXECERRORS;     break;
         case OI_FORKCOMMAND:    eOperand = EV_I_FORKCOMMAND;    break;
+        case OI_LOADRESULT:     eOperand = EV_I_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = EV_I_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = EV_I_NODEINFO;       break;
         case OI_PAGEINREQUEST:  eOperand = EV_I_PAGEINREQUEST;  break;
         case OI_PATH:           eOperand = EV_I_PATH;           break;
         case OI_PROGRESSUNITS:  eOperand = EV_I_PROGRESSUNITS;  break;
         case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;
-        case OI_RETURNPIPELINE: eOperand = EV_I_RETURNPIPELINE; break;
         case OI_SEEKOFFSETS:    eOperand = EV_I_SEEKOFFSETS;    break;
         case OI_TOTALUNITS:     eOperand = EV_I_TOTALUNITS;     break;
         case OI_WARNINGS:       eOperand = EV_I_WARNINGS;       break;

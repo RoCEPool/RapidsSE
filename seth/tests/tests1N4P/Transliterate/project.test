@@ -3,12 +3,12 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-select l_discount from lineitem;
-failure contains: "No such table: lineitem"
+select l_discount from ${testName2}_lineitem;
+failure contains: "No such table: ${testName2}_lineitem"
 
 //------------------------------------------------------------------------------
-// create table lineitem
-create table LineItem
+// create table ${testName2}_lineitem
+create table ${testName2}_lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -30,15 +30,15 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-select l_discount from lineitem;
+select l_discount from ${testName2}_lineitem;
 rows: 0
 
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-select l_partkey from lineitem;
+select l_partkey from ${testName2}_lineitem;
 rows:
   (1551894)
   (673091)
@@ -52,7 +52,7 @@ rows:
   (1284483)
 
 //------------------------------------------------------------------------------
-select l_discount from lineitem;
+select l_discount from ${testName2}_lineitem;
 rows:
   (0.04)
   (0.09)
@@ -66,7 +66,7 @@ rows:
   (0.06)
 
 //------------------------------------------------------------------------------
-select l_returnflag from lineitem;
+select l_returnflag from ${testName2}_lineitem;
 rows:
   ('N')
   ('N')
@@ -80,7 +80,7 @@ rows:
   ('A')
 
 //------------------------------------------------------------------------------
-select l_shipdate from lineitem;
+select l_shipdate from ${testName2}_lineitem;
 rows:
  (DATE '1993-11-09')
  (DATE '1994-02-02')
@@ -94,7 +94,7 @@ rows:
  (DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-select l_comment from lineitem;
+select l_comment from ${testName2}_lineitem;
 rows:
   ('egular courts above the')
   ('ly final dependencies: slyly bold ')
@@ -108,7 +108,7 @@ rows:
   ('nal foxes wake. ')
 
 //------------------------------------------------------------------------------
-select 2 as a, l_shipdate as b from lineitem;
+select 2 as a, l_shipdate as b from ${testName2}_lineitem;
 rows:
   (2, DATE '1993-11-09')
   (2, DATE '1994-02-02')
@@ -123,7 +123,7 @@ rows:
 
 //------------------------------------------------------------------------------
 /*
-select  l_shipdate, l_extendedPrice * 2.0 , l_extendedPrice from lineitem;
+select  l_shipdate, l_extendedPrice * 2.0 , l_extendedPrice from ${testName2}_lineitem;
 rows:
  (DATE '1993-11-09',141644.30,70822.15)
  (DATE '1994-02-02',172167.30,86083.65)
@@ -140,7 +140,7 @@ rows:
 //------------------------------------------------------------------------------
 //ALKA: UMCOMMENT (DECIMAL)
 /*
-select l_extendedPrice, l_discount, l_extendedPrice * l_discount from lineitem;
+select l_extendedPrice, l_discount, l_extendedPrice * l_discount from ${testName2}_lineitem;
 rows:
  (33078.94,0.04,1323.15)
  (38306.16,0.09,3447.55)
@@ -155,7 +155,7 @@ rows:
 */
 
 //------------------------------------------------------------------------------
-select l_orderkey, l_comment, l_shipdate, l_discount, l_orderkey from lineitem;
+select l_orderkey, l_comment, l_shipdate, l_discount, l_orderkey from ${testName2}_lineitem;
 rows:
   (3,' unusual accounts. eve',DATE '1993-11-09',0.10,3)
   (3,'ongside of the furiously brave acco',DATE '1994-02-02',0.06,3)
@@ -170,12 +170,12 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success;
 
 CLEANUP {
   
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
   
   bye;

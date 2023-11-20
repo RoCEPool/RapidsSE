@@ -67,11 +67,11 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
   //
   pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
 
-  // delete any SF_STM_COL facet with SF_TBL_COL of this op's table
+  // delete any SF_EXP_COL facet with SF_TBL_COL of this op's table
   pCI->G.p_emit = pCI->G.p_stream->pSub_emit();
   pCI->G.p_table = pCI->G.p_OP->pSub_table();
   char cTblSyn = pCI->G.p_table->pSymbol()->cSF_tblSyn();
-  pCI->G.p_emit->vDeleteFacetIf(SF_STM_COL,SF_TBL_COL,cTblSyn);
+  pCI->G.p_emit->vDeleteFacetIf(SF_EXP_COL, SF_TBL_COL, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/

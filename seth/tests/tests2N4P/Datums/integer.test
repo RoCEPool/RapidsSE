@@ -7,7 +7,7 @@ trackmemory force;
 success
 
 // (1) create a table
-create table IntTbl (
+create table ${testName2}_IntTbl (
   int_col1  INTEGER NOT NULL,
   vch_col2  VARCHAR(32) NOT NULL,
   vch_col3  VARCHAR(32) NOT NULL,
@@ -16,181 +16,181 @@ create table IntTbl (
 success
 
 // create indexes
-create index int_idx1 on IntTbl (int_col1);
+create index int_idx1 on ${testName2}_IntTbl (int_col1);
 success
 
-create index int_idx2 on IntTbl (int_col4);
+create index int_idx2 on ${testName2}_IntTbl (int_col4);
 success
 
 // check existence of index
-lsidx IntTbl;
+lsidx ${testName2}_IntTbl;
 rows:
   ('int_idx1', false, false)
   ('int_idx2', false, false)
 
 // check columns of index
-lsidxcol IntTbl int_idx1;
+lsidxcol ${testName2}_IntTbl int_idx1;
 rows:
   ('int_col1', 'INTEGER', 19, 0, false, true)
 
 // check columns of index
-lsidxcol IntTbl int_idx2;
+lsidxcol ${testName2}_IntTbl int_idx2;
 rows:
   ('int_col4', 'INTEGER', 19, 0, true, false)
 
-load IntTbl "../DATA/Datums/integer.csv" ;
+load ${testName2}_IntTbl "../DATA/Datums/integer.csv" ;
 warning contains: '16 rows were invalid'
 
 // check no of rows
-select * from IntTbl;
+select * from ${testName2}_IntTbl;
 rows: 101
 
 // dump index int_idx1
-//dumpidx IntTbl int_idx1;
-//success
+// dumpidx ${testName2}_IntTbl int_idx1;
+// success
 
 // dump index int_idx2
-//dumpidx IntTbl int_idx2;
-//success
+// dumpidx ${testName2}_IntTbl int_idx2;
+// success
 
 /*
-partitionScan IntTbl 0;
+partitionScan ${testName2}_IntTbl 0;
 rows: 10
 
-partitionScan IntTbl 1;
+partitionScan ${testName2}_IntTbl 1;
 rows: 15
 
-partitionScan IntTbl 2;
+partitionScan ${testName2}_IntTbl 2;
 rows: 13
 
-partitionScan IntTbl 3;
+partitionScan ${testName2}_IntTbl 3;
 rows: 6
 
-partitionScan IntTbl 4;
+partitionScan ${testName2}_IntTbl 4;
 rows: 13
 
-partitionScan IntTbl 5;
+partitionScan ${testName2}_IntTbl 5;
 rows: 16
 
-partitionScan IntTbl 6;
+partitionScan ${testName2}_IntTbl 6;
 rows: 17
 
-partitionScan IntTbl 7;
+partitionScan ${testName2}_IntTbl 7;
 rows: 11
 */
 
 // fetch
-//predicateFetch intTbl "int_col1 13 =";
-SELECT * FROM intTbl WHERE int_col1 = 13;
+// predicateFetch ${testName2}_IntTbl "int_col1 13 =";
+SELECT * FROM ${testName2}_intTbl WHERE int_col1 = 13;
 rows:
   (13,'one three',113,null)
 
 // fetch
-//predicateFetch intTbl "int_col1 14 =";
-SELECT * FROM intTbl WHERE int_col1 = 14;
+// predicateFetch ${testName2}_IntTbl "int_col1 14 =";
+SELECT * FROM ${testName2}_intTbl WHERE int_col1 = 14;
 rows:
   (14,'one four',114,null)
 
-export IntTbl "/tmp/integer.csv";
+export ${testName2}_IntTbl "/tmp/integer.csv";
 success
 
-truncate IntTbl;
+truncate ${testName2}_IntTbl;
 success
 
-select * from IntTbl;
+select * from ${testName2}_IntTbl;
 rows: 0
 
 /*
-partitionScan IntTbl 0;
+partitionScan ${testName2}_IntTbl 0;
 rows: 0
 
-partitionScan IntTbl 1;
+partitionScan ${testName2}_IntTbl 1;
 rows: 0
 
-partitionScan IntTbl 2;
+partitionScan ${testName2}_IntTbl 2;
 rows: 0
 
-partitionScan IntTbl 3;
+partitionScan ${testName2}_IntTbl 3;
 rows: 0
 
-partitionScan IntTbl 4;
+partitionScan ${testName2}_IntTbl 4;
 rows: 0
 
-partitionScan IntTbl 5;
+partitionScan ${testName2}_IntTbl 5;
 rows: 0
 
-partitionScan IntTbl 6;
+partitionScan ${testName2}_IntTbl 6;
 rows: 0
 
-partitionScan IntTbl 7;
+partitionScan ${testName2}_IntTbl 7;
 rows: 0
 */
 
 // fetch
-//predicateFetch intTbl "int_col1 13 =";
-SELECT * FROM intTbl WHERE int_col1 = 13;
+// predicateFetch ${testName2}_IntTbl "int_col1 13 =";
+SELECT * FROM ${testName2}_intTbl WHERE int_col1 = 13;
 rows: 0
 
 // fetch
-//predicateFetch intTbl "int_col1 14 =";
-SELECT * FROM intTbl WHERE int_col1 = 14;
+// predicateFetch ${testName2}_IntTbl "int_col1 14 =";
+SELECT * FROM ${testName2}_intTbl WHERE int_col1 = 14;
 rows: 0
 
 // load from exported file
-load IntTbl "/tmp/integer.csv" ;
+load ${testName2}_IntTbl "/tmp/integer.csv" ;
 success
 
 // check no of rows
-select * from IntTbl;
+select * from ${testName2}_IntTbl;
 rows: 101
 
 // dump index int_idx1
-//dumpidx IntTbl int_idx1;
-//success
+// dumpidx ${testName2}_IntTbl int_idx1;
+// success
 
 // dump index int_idx2
-//dumpidx IntTbl int_idx2;
-//success
+// dumpidx ${testName2}_IntTbl int_idx2;
+// success
 
 /*
-partitionScan IntTbl 0;
+partitionScan ${testName2}_IntTbl 0;
 rows: 10
 
-partitionScan IntTbl 1;
+partitionScan ${testName2}_IntTbl 1;
 rows: 15
 
-partitionScan IntTbl 2;
+partitionScan ${testName2}_IntTbl 2;
 rows: 12
 
-partitionScan IntTbl 3;
+partitionScan ${testName2}_IntTbl 3;
 rows: 7
 
-partitionScan IntTbl 4;
+partitionScan ${testName2}_IntTbl 4;
 rows: 13
 
-partitionScan IntTbl 5;
+partitionScan ${testName2}_IntTbl 5;
 rows: 16
 
-partitionScan IntTbl 6;
+partitionScan ${testName2}_IntTbl 6;
 rows: 17
 
-partitionScan IntTbl 7;
+partitionScan ${testName2}_IntTbl 7;
 rows: 11
 */
 
 //! RAY TO UNCOMMENT ONCE enclosedBy glitch is fixed
 // fetch
-//predicateFetch intTbl "int_col1 13 =";
+//predicateFetch ${testName2}_IntTbl "int_col1 13 =";
 //rows:
 //  (13,'one three',113,null)
 
 // fetch
-//predicateFetch intTbl "int_col1 14 =";
+//predicateFetch ${testName2}_IntTbl "int_col1 14 =";
 //rows:
 //  (14,'one four',114,null)
 
 // drop the table
-drop table IntTbl;
+drop table ${testName2}_IntTbl;
 success
 
 // get memory leaks
@@ -200,7 +200,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table IntTbl;
+  drop table ${testName2}_IntTbl;
   mute
   
   bye;

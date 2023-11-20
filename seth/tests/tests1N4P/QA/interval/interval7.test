@@ -1,10 +1,10 @@
 
-create table interval6(a date,b timestamp,c time);
+create table ${testName2}_interval6(a date,b timestamp,c time);
 success
-load interval6 "../DATA/QA/interval/interval6.csv";
+load ${testName2}_interval6 "../DATA/QA/interval/interval6.csv";
 success
 
-select a,a-interval '1' year from interval6;
+select a,a-interval '1' year from ${testName2}_interval6;
 rows:
 (date '2023-01-31',date  '2022-01-31')
 (date '2000-01-29',date  '1999-01-29')
@@ -15,7 +15,7 @@ rows:
 (date '2000-01-31',date  '1999-01-31')
 (date '2021-11-12',date  '2020-11-12')
 
-select a,a-interval '2' month from interval6;
+select a,a-interval '2' month from ${testName2}_interval6;
 rows:
 (date '2023-01-31',date '2022-11-30')
 (date '2000-01-29',date '1999-11-29')
@@ -27,7 +27,7 @@ rows:
 (date '2021-11-12',date '2021-09-12')
 
 
-select a,a-interval '13' month from interval6;
+select a,a-interval '13' month from ${testName2}_interval6;
 rows:
 (date '2023-01-31',date '2021-12-31')
 (date '2000-01-29',date '1998-12-29')
@@ -38,7 +38,7 @@ rows:
 (date '2000-01-31',date '1998-12-31')
 (date '2021-11-12',date '2020-10-12')
 
-select a,a-interval '30' day from interval6;
+select a,a-interval '30' day from ${testName2}_interval6;
 rows:
 (date '2023-01-31',date '2023-01-01')
 (date '2000-01-29',date '1999-12-30')
@@ -50,7 +50,7 @@ rows:
 (date '2021-11-12',date '2021-10-13')
 
 
-select a,a-interval '31' hour from interval6;
+select a,a-interval '31' hour from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-29 17:00:00')
 (date '2000-01-29',timestamp '2000-01-27 17:00:00')
@@ -61,7 +61,7 @@ rows:
 (date '2000-01-31',timestamp '2000-01-29 17:00:00')
 (date '2021-11-12',timestamp '2021-11-10 17:00:00')
 
-select a,a-interval '31' minute from interval6;
+select a,a-interval '31' minute from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-30 23:29:00')
 (date '2000-01-29',timestamp '2000-01-28 23:29:00')
@@ -72,7 +72,7 @@ rows:
 (date '2000-01-31',timestamp '2000-01-30 23:29:00')
 (date '2021-11-12',timestamp '2021-11-11 23:29:00')
 
-select a,a-interval '4000' second from interval6;
+select a,a-interval '4000' second from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-30 22:53:20')
 (date '2000-01-29',timestamp '2000-01-28 22:53:20')
@@ -83,7 +83,7 @@ rows:
 (date '2000-01-31',timestamp '2000-01-30 22:53:20')
 (date '2021-11-12',timestamp '2021-11-11 22:53:20')
 
-select a,a-interval '1-2' year to month from interval6;
+select a,a-interval '1-2' year to month from ${testName2}_interval6;
 rows:
 (date '2023-01-31',date '2021-11-30')
 (date '2000-01-29',date '1998-11-29')
@@ -94,7 +94,7 @@ rows:
 (date '2000-01-31',date '1998-11-30')
 (date '2021-11-12',date '2020-09-12')
 
-select a,a-interval '1 2' day to hour from interval6;
+select a,a-interval '1 2' day to hour from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-29 22:00:00')
 (date '2000-01-29',timestamp '2000-01-27 22:00:00')
@@ -105,7 +105,7 @@ rows:
 (date '2000-01-31',timestamp '2000-01-29 22:00:00')
 (date '2021-11-12',timestamp '2021-11-10 22:00:00')
 
-select a,a-interval '1 23:59' day to minute from interval6;
+select a,a-interval '1 23:59' day to minute from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-29 00:01:00')
 (date '2000-01-29',timestamp '2000-01-27 00:01:00')
@@ -116,7 +116,7 @@ rows:
 (date '2000-01-31',timestamp '2000-01-29 00:01:00')
 (date '2021-11-12',timestamp '2021-11-10 00:01:00')
 
-select a,a-interval '1 23:59:02' day to second from interval6;
+select a,a-interval '1 23:59:02' day to second from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-29 00:00:58')
 (date '2000-01-29',timestamp '2000-01-27 00:00:58')
@@ -128,7 +128,7 @@ rows:
 (date '2021-11-12',timestamp '2021-11-10 00:00:58')
 
 
-select a,a-interval '3:59' hour to minute from interval6;
+select a,a-interval '3:59' hour to minute from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-30 20:01:00')
 (date '2000-01-29',timestamp '2000-01-28 20:01:00')
@@ -140,7 +140,7 @@ rows:
 (date '2021-11-12',timestamp '2021-11-11 20:01:00')
 
 
-select a,a-interval '3:59:08' hour to second from interval6;
+select a,a-interval '3:59:08' hour to second from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-30 20:00:52')
 (date '2000-01-29',timestamp '2000-01-28 20:00:52')
@@ -151,7 +151,7 @@ rows:
 (date '2000-01-31',timestamp '2000-01-30 20:00:52')
 (date '2021-11-12',timestamp '2021-11-11 20:00:52')
 
-select a,a-interval '59:08' minute to second from interval6;
+select a,a-interval '59:08' minute to second from ${testName2}_interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-30 23:00:52')
 (date '2000-01-29',timestamp '2000-01-28 23:00:52')
@@ -162,7 +162,7 @@ rows:
 (date '2000-01-31',timestamp '2000-01-30 23:00:52')
 (date '2021-11-12',timestamp '2021-11-11 23:00:52')
 
-select b,b-interval '1' year from interval6;
+select b,b-interval '1' year from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '1999-02-28 23:00:00')
 (timestamp '2000-02-28 23:59:00',timestamp '1999-02-28 23:59:00')
@@ -173,7 +173,7 @@ rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2021-12-31 01:00:23')
 (timestamp '2018-07-28 19:38:23',timestamp '2017-07-28 19:38:23')
 
-select b,b-interval '13' month from interval6;
+select b,b-interval '13' month from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '1999-01-28 23:00:00')
 (timestamp '2000-02-28 23:59:00',timestamp '1999-01-28 23:59:00')
@@ -186,7 +186,7 @@ rows:
 
 
 
-select b,b-interval '31' day from interval6;
+select b,b-interval '31' day from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-01-28 23:00:00')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-01-28 23:59:00')
@@ -197,7 +197,7 @@ rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-11-30 01:00:23')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-06-27 19:38:23')
 
-select b,b-interval '31' hour from interval6;
+select b,b-interval '31' hour from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 16:00:00')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 16:59:00')
@@ -208,7 +208,7 @@ rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 18:00:23')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 12:38:23')
 
-select b,b-interval '31' minute from interval6;
+select b,b-interval '31' minute from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 22:29:00')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 23:28:00')
@@ -219,7 +219,7 @@ rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-31 00:29:23')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 19:07:23')
 
-select b,b-interval '4000' second from interval6;
+select b,b-interval '4000' second from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 21:53:20')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 22:52:20')
@@ -232,7 +232,7 @@ rows:
 
 
 
-select b,b-interval '1-2' year to month from interval6;
+select b,b-interval '1-2' year to month from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '1998-12-28 23:00:00')
 (timestamp '2000-02-28 23:59:00',timestamp '1998-12-28 23:59:00')
@@ -245,7 +245,7 @@ rows:
 
 
 
-select b,b-interval '1 2' day to hour from interval6;
+select b,b-interval '1 2' day to hour from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 21:00:00')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 21:59:00')
@@ -258,7 +258,7 @@ rows:
 
 
 
-select b,b-interval '1 23:59' day to minute from interval6;
+select b,b-interval '1 23:59' day to minute from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-26 23:01:00')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 00:00:00')
@@ -269,7 +269,7 @@ rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 01:01:23')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-26 19:39:23')
 
-select b,b-interval '1 23:59:02' day to second from interval6;
+select b,b-interval '1 23:59:02' day to second from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-26 23:00:58')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-26 23:59:58')
@@ -281,7 +281,7 @@ rows:
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-26 19:39:21')
 
 
-select b,b-interval '3:59' hour to minute from interval6;
+select b,b-interval '3:59' hour to minute from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 19:01:00')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 20:00:00')
@@ -293,7 +293,7 @@ rows:
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 15:39:23')
 
 
-select b,b-interval '3:59:08' hour to second from interval6;
+select b,b-interval '3:59:08' hour to second from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 19:00:52')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 19:59:52')
@@ -305,7 +305,7 @@ rows:
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 15:39:15')
 
 
-select b,b-interval '59:08' minute to second from interval6;
+select b,b-interval '59:08' minute to second from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 22:00:52')
 (timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 22:59:52')
@@ -316,7 +316,7 @@ rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-31 00:01:15')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 18:39:15')
 
-select b,b + interval '3-4' year to month -interval '1 23:59:02' day to second from interval6;
+select b,b + interval '3-4' year to month -interval '1 23:59:02' day to second from ${testName2}_interval6;
 rows:
 (timestamp '2000-02-28 23:00:00',timestamp '2003-06-26 23:00:58')
 (timestamp '2000-02-28 23:59:00',timestamp '2003-06-26 23:59:58')
@@ -330,7 +330,7 @@ rows:
 
 // TODO: (CHINA) SYNTAX ERROR: test in incorrect
 /*
-select c,c-interval '1' year from interval6;
+select c,c-interval '1' year from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '00:00:00')
 (time '20:54:58',time '20:54:58')
@@ -342,7 +342,7 @@ rows:
 (time '13:36:09',time '13:36:09')
 
 
-select c,c-interval '13' month from interval6;
+select c,c-interval '13' month from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '00:00:00')
 (time '20:54:58',time '20:54:58')
@@ -354,7 +354,7 @@ rows:
 (time '13:36:09',time '13:36:09')
 
 
-select c,c-interval '31' day from interval6;
+select c,c-interval '31' day from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '00:00:00')
 (time '20:54:58',time '20:54:58')
@@ -366,7 +366,7 @@ rows:
 (time '13:36:09',time '13:36:09')
 */
 
-select c,c-interval '31' hour from interval6;
+select c,c-interval '31' hour from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '17:00:00')
 (time '20:54:58',time '13:54:58')
@@ -378,7 +378,7 @@ rows:
 (time '13:36:09',time '06:36:09')
 
 
-select c,c-interval '31' minute from interval6;
+select c,c-interval '31' minute from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '23:29:00')
 (time '20:54:58',time '20:23:58')
@@ -390,7 +390,7 @@ rows:
 (time '13:36:09',time '13:05:09')
 
 
-select c,c-interval '4000' second from interval6;
+select c,c-interval '4000' second from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '22:53:20')
 (time '20:54:58',time '19:48:18')
@@ -403,7 +403,7 @@ rows:
 
 // TODO: (CHINA) SYNTAX ERROR: test in incorrect
 /*
-select c,c-interval '1-2' year to month from interval6;
+select c,c-interval '1-2' year to month from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '00:00:00')
 (time '20:54:58',time '20:54:58')
@@ -415,7 +415,7 @@ rows:
 (time '13:36:09',time '13:36:09')
 
 
-select c,c-interval '1 2' day to hour from interval6;
+select c,c-interval '1 2' day to hour from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '22:00:00')
 (time '20:54:58',time '18:54:58')
@@ -427,7 +427,7 @@ rows:
 (time '13:36:09',time '11:36:09')
 
 
-select c,c-interval '1 23:59' day to minute from interval6;
+select c,c-interval '1 23:59' day to minute from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '00:01:00')
 (time '20:54:58',time '20:55:58')
@@ -439,7 +439,7 @@ rows:
 (time '13:36:09',time '13:37:09')
 
 
-select c,c-interval '1 23:59:02' day to second from interval6;
+select c,c-interval '1 23:59:02' day to second from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '00:00:58')
 (time '20:54:58',time '20:55:56')
@@ -451,7 +451,7 @@ rows:
 (time '13:36:09',time '13:37:07')
 */
 
-select c,c-interval '3:59' hour to minute from interval6;
+select c,c-interval '3:59' hour to minute from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '20:01:00')
 (time '20:54:58',time '16:55:58')
@@ -463,7 +463,7 @@ rows:
 (time '13:36:09',time '09:37:09')
 
 
-select c,c-interval '3:59:08' hour to second from interval6;
+select c,c-interval '3:59:08' hour to second from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '20:00:52')
 (time '20:54:58',time '16:55:50')
@@ -475,7 +475,7 @@ rows:
 (time '13:36:09',time '09:37:01')
 
 
-select c,c-interval '59:08' minute to second from interval6;
+select c,c-interval '59:08' minute to second from ${testName2}_interval6;
 rows:
 (time '00:00:00',time '23:00:52')
 (time '20:54:58',time '19:55:50')
@@ -487,7 +487,7 @@ rows:
 (time '13:36:09',time '12:37:01')
 
 
-select a,a-interval '1-12' year to month from interval6;
+select a,a-interval '1-12' year to month from ${testName2}_interval6;
 unordered rows: 
   ( DATE '2000-02-28', DATE '1998-02-28' )
   ( DATE '2000-02-29', DATE '1998-02-28' )
@@ -497,7 +497,7 @@ unordered rows:
   ( DATE '2000-01-29', DATE '1998-01-29' )
   ( DATE '2023-04-30', DATE '2021-04-30' )
   ( DATE '2023-01-31', DATE '2021-01-31' )
-select a,a-interval '1-13' year to month from interval6;
+select a,a-interval '1-13' year to month from ${testName2}_interval6;
 unordered rows:
 (date '2000-02-28',date '1998-01-28')
 (date '2023-01-31',date '2020-12-31')
@@ -508,7 +508,7 @@ unordered rows:
 (date '2000-01-31',date '1997-12-31')
 (date '2021-11-12',date '2019-10-12')
 
-select a,a-interval '-1-11' year to month from interval6;
+select a,a-interval '-1-11' year to month from ${testName2}_interval6;
 unordered rows:
 (date '2000-02-28',date '2002-01-28')
 (date '2023-01-31',date '2024-12-31')
@@ -519,14 +519,14 @@ unordered rows:
 (date '2000-01-31',date '2001-12-31')
 (date '2021-11-12',date '2023-10-12')
 
-select a,a-interval '1-6.5' year to month from interval6;
+select a,a-interval '1-6.5' year to month from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select a,a-interval 't-6' year to month from interval6;
+select a,a-interval 't-6' year to month from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select a,a-interval '1-d' year to month from interval6;
+select a,a-interval '1-d' year to month from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
-select b,b-interval '1 59:08' day to minute from interval6;
+select b,b-interval '1 59:08' day to minute from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-02-25 12:51:00')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-25 11:52:00')
@@ -537,7 +537,7 @@ unordered rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-27 13:52:23')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-25 08:30:23')
 
-select b,b-interval '-1 59:08:02' day to second from interval6;
+select b,b-interval '-1 59:08:02' day to second from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-03-04 11:07:02')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-03-03 10:08:02')
@@ -548,11 +548,11 @@ unordered rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2023-01-03 12:08:25')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-08-01 06:46:25')
 
-select b,b-interval 't 59:08:02' day to second from interval6;
+select b,b-interval 't 59:08:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1.5 59:08:02' day to second from interval6;
+select b,b-interval '1.5 59:08:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 24:08:02' day to second from interval6;
+select b,b-interval '1 24:08:02' day to second from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-02-26 23:50:58')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-26 22:51:58')
@@ -563,7 +563,7 @@ unordered rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 00:52:21')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-26 19:30:21')
 
-select b,b-interval '1 25:08:02' day to second from interval6;
+select b,b-interval '1 25:08:02' day to second from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-02-26 22:50:58')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-26 21:51:58')
@@ -574,17 +574,17 @@ unordered rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-28 23:52:21')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-26 18:30:21')
 
-select b,b-interval '1 -3:08:02' day to second from interval6;
+select b,b-interval '1 -3:08:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 d:08:02' day to second from interval6;
+select b,b-interval '1 d:08:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 t:08:02' day to second from interval6;
+select b,b-interval '1 t:08:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 4.5:08:02' day to second from interval6;
+select b,b-interval '1 4.5:08:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 1:-8:02' day to second from interval6;
+select b,b-interval '1 1:-8:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 1:60:02' day to second from interval6;
+select b,b-interval '1 1:60:02' day to second from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 21:58:58')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 20:59:58')
@@ -595,7 +595,7 @@ unordered rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 23:00:21')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 17:38:21')
 
-select b,b-interval '1 1:61:02' day to second from interval6;
+select b,b-interval '1 1:61:02' day to second from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 21:57:58')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 20:58:58')
@@ -606,15 +606,15 @@ unordered rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 22:59:21')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 17:37:21')
 
-select b,b-interval '1 1:d:02' day to second from interval6;
+select b,b-interval '1 1:d:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 1:t:02' day to second from interval6;
+select b,b-interval '1 1:t:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 1:7.5:02' day to second from interval6;
+select b,b-interval '1 1:7.5:02' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 1:7:-2' day to second from interval6;
+select b,b-interval '1 1:7:-2' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 1:7:60' day to second from interval6;
+select b,b-interval '1 1:7:60' day to second from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 22:51:00')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 21:52:00')
@@ -625,7 +625,7 @@ unordered rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 23:52:23')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 18:30:23')
 
-select b,b-interval '1 1:7:61' day to second from interval6;
+select b,b-interval '1 1:7:61' day to second from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 22:50:59')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 21:51:59')
@@ -636,11 +636,11 @@ unordered rows:
 (timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 23:52:22')
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 18:30:22')
 
-select b,b-interval '1 1:7:d' day to second from interval6;
+select b,b-interval '1 1:7:d' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 1:7:t' day to second from interval6;
+select b,b-interval '1 1:7:t' day to second from ${testName2}_interval6;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select b,b-interval '1 1:7:5.5' day to second from interval6;
+select b,b-interval '1 1:7:5.5' day to second from ${testName2}_interval6;
 unordered rows: 
 (timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 22:51:54.500')
 (timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 21:52:54.500')
@@ -652,12 +652,12 @@ unordered rows:
 (timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 18:31:17.500')
 
 
-drop table interval6;
+drop table ${testName2}_interval6;
 success
 
 CLEANUP {
 
-  drop table interval6;
+  drop table ${testName2}_interval6;
   mute
 
   bye;

@@ -6,9 +6,11 @@
 #include "BASE.h"
 
 #include "eAL.h"
+#include "eFC.h"
 #include "eGC.h"
 #include "ePB.h"
 #include "eQO.h"
+#include "eRC.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eXK.h"
@@ -36,7 +38,7 @@ namespace STORE
   class Card_Clause;
   class Card_RlnConj;
   class Card_Combined;
-  class Card_CONJUNCTION;
+  class Card_CONJ;
   class Card_Constraint;
   class Card_CorrCols;
   class Card_Correlation;
@@ -226,11 +228,13 @@ extern Stz* MARK_AT;
 extern Stz* MARK_BLANK;
 extern Stz* MARK_CHANGED;
 extern Stz* MARK_COMPARE;
+extern Stz* MARK_ENUM;
 extern Stz* MARK_DELETED;
 extern Stz* MARK_DUPLICATE;
 extern Stz* MARK_FOUND;
 extern Stz* MARK_NOT;
 extern Stz* MARK_OR;
+extern Stz* MARK_PREDICATE;
 extern Stz* MARK_UNVALID;
 extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
@@ -241,6 +245,9 @@ namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;
   static const bool C_TERMINATE_RECURSION = false;
+
+  static const bool C_LEFT_ORIENTATION  = true;
+  static const bool C_RIGHT_ORIENTATION = false;
 
   class Card : public Object
              , public ChildCards
@@ -259,6 +266,8 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
+    eFC     m_eConjForm;  // form of conjunction
+    eRC     m_eConjRot;   // rotation of conjunction
 
     i8 md__SeqNo;
     i8 md__FirstDetected;
@@ -308,9 +317,16 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     void vColType(Card* pCard_arg);
+    eFC  eConjForm(void);
+    void vConjForm(eFC eConjForm);
+    void vConjFormClearRecursive(void);
+    eRC  eConjRot(void);
+    void vConjRot(eRC eConjRot);
+    void vConjRotClearRecursive(void);
     Stz* szCoord(void);
 
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
+    void  vDumpShort(const char* azFunc, Stz* szTitle);
     Card* pDupCard(void);
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
@@ -337,6 +353,8 @@ namespace STORE
 
     i8   iItemise(void);
     void vItemise(i8 iItemise);
+
+    void vMark(Stz* szMark1, Stz* szMark2);
 
     bool bMark1(Stz* szArg);
     char cMark1(void);
@@ -378,20 +396,23 @@ namespace STORE
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
-    bool bSymbol_Same(Symbol* pSymbol);
-    bool bSameSymbol(Card* pArg);
-
-    Symbol* pSymbol(bool bIgnore=false);
-    Symbol* pSymbol_AS(void);
+    Symbol* pSymbol(void);
+    bool bSymbolMatches(Symbol* pSymbol_arg);
+    bool bSymbolMatches(Card* pCard_arg);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
+    void vValidate_hasChildren(void);
+    void vValidate_hasType(void);
     void vValidate_mayHave(i8 /*eCK*/ iCard_first, ...);
     eCK  eValidate_mustEither(i8 /*eCK*/ iCard_first, ...);
     void vValidate_mustHave(i8 /*eCK*/ iCard_first, ...);
+    eCK  eValidate_mustSome(i8 /*eCK*/ iCard_first, ...);
+    void vValidate_noChildren(void);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
+    eCK  eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
 
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);
@@ -415,7 +436,6 @@ namespace STORE
 
     Card_Address*       pSub_address(void);
     Card_Aggreg*        pSub_aggreg(void);
-    Card_As*            pSub_as(void);
     Card_BoolPred*      pSub_boolPred(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
@@ -435,7 +455,7 @@ namespace STORE
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Decision*      pSub_decision(void);
     Card_Direction*     pSub_direction(void);
-    Card_Emit*       pSub_emit(void);
+    Card_Emit*          pSub_emit(void);
     Card_Expr*          pSub_expr(void);
     Card_FiltPred*      pSub_filtPred(void);
     Card_FiltPredList*  pSub_filtPredList(void);
@@ -453,7 +473,7 @@ namespace STORE
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
     Card_Inflate*       pSub_inflate(void);
-    Card_Injectable*      pSub_injected(void);
+    Card_Injectable*    pSub_injectable(void);
     Card_JoinCast*      pSub_joinCast(void);
     Card_JoinEstimate*  pSub_joinEstimate(void);
     Card_Key*           pSub_key(void);

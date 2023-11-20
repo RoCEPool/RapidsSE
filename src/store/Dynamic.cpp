@@ -180,8 +180,8 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   // index scan T
   m_xDynamicT.m_xIndexInfoT.m_bInitialize = true;
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cTableName,32,CN_BYTES_T);
-  MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cIndexName,32,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cTableName,C_MAX_TABLE_NAME_LENGTH,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cIndexName,C_MAX_INDEX_NAME_LENGTH,CN_BYTES_T);
 #else
   m_xDynamicT.m_xIndexInfoT.m_cTableName[0] = '\0';
   m_xDynamicT.m_xIndexInfoT.m_cIndexName[0] = '\0';
@@ -203,8 +203,8 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoJ.m_bInitialize = true;
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_xDynamicT.m_xIndexInfoJ.m_cTableName,32,CN_BYTES_T);
-  MemLib::vZero(m_xDynamicT.m_xIndexInfoJ.m_cIndexName,32,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoJ.m_cTableName,C_MAX_TABLE_NAME_LENGTH,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoJ.m_cIndexName,C_MAX_INDEX_NAME_LENGTH,CN_BYTES_T);
 #else
   m_xDynamicT.m_xIndexInfoJ.m_cTableName[0] = '\0';
   m_xDynamicT.m_xIndexInfoJ.m_cIndexName[0] = '\0';
@@ -227,8 +227,8 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoPL.m_bInitialize = true;
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_xDynamicT.m_xIndexInfoPL.m_cTableName,32,CN_BYTES_T);
-  MemLib::vZero(m_xDynamicT.m_xIndexInfoPL.m_cIndexName,32,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoPL.m_cTableName,C_MAX_TABLE_NAME_LENGTH,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoPL.m_cIndexName,C_MAX_INDEX_NAME_LENGTH,CN_BYTES_T);
 #else
   m_xDynamicT.m_xIndexInfoPL.m_cTableName[0] = '\0';
   m_xDynamicT.m_xIndexInfoPL.m_cIndexName[0] = '\0';

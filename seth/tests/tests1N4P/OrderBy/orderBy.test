@@ -7,7 +7,7 @@ trackMemory;
 success
 
 //------------------------------------------------------------------------------
-create table Nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER      NOT NULL,
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
@@ -16,11 +16,11 @@ create table Nation (
 success
 
 //------------------------------------------------------------------------------
-load nation "../TPCH/SF_0001/nation.csv";
+load ${testName2}_nation "../TPCH/SF_0001/nation.csv";
 success
 
 //------------------------------------------------------------------------------
-SELECT n_regionkey , n_name FROM nation  where n_regionkey < 2 order by n_name, n_regionKey;
+SELECT n_regionkey , n_name FROM ${testName2}_nation  where n_regionkey < 2 order by n_name, n_regionKey;
 rows:
  (0 ,'ALGERIA')
  (1 ,'ARGENTINA')
@@ -33,7 +33,7 @@ rows:
  (1 ,'PERU')
  (1 ,'UNITED STATES')
 
-SELECT n_name, n_regionkey FROM nation  where n_regionkey < 2 order by n_name, n_regionKey;
+SELECT n_name, n_regionkey FROM ${testName2}_nation  where n_regionkey < 2 order by n_name, n_regionKey;
 rows:
  ('ALGERIA',0)
  ('ARGENTINA',1)
@@ -47,7 +47,7 @@ rows:
  ('UNITED STATES',1)
 
 //------------------------------------------------------------------------------
-SELECT  n_name, n_regionkey FROM nation order by n_name, n_regionKey limit 5;
+SELECT  n_name, n_regionkey FROM ${testName2}_nation order by n_name, n_regionKey limit 5;
 rows:
  ('ALGERIA',0)
  ('ARGENTINA',1)
@@ -56,7 +56,7 @@ rows:
  ('CHINA',2)
 
 //------------------------------------------------------------------------------
-SELECT n_regionkey , COUNT(n_nationkey) FROM nation GROUP BY n_regionkey order by n_regionkey;
+SELECT n_regionkey , COUNT(n_nationkey) FROM ${testName2}_nation GROUP BY n_regionkey order by n_regionkey;
 rows:
  (0,5)
  (1,5)
@@ -124,7 +124,7 @@ rows:
   (108.456000e+00,54.228000e+00)
 
 // drop the tables
-drop table nation;
+drop table ${testName2}_nation;
 success
 
 drop table datums;
@@ -137,7 +137,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table nation;
+  drop table ${testName2}_nation;
   mute
 
   drop table datums;

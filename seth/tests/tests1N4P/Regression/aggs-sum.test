@@ -1,7 +1,7 @@
 
 // Source file: ../queries/aggs/sum/rsum2.sql
 // Result file: ../queries/aggs/sum/results/sum2.res
-select sum(cold1) from table1;
+select sum(cold1) from ${testName2}_table1;
 rows:
   //(12401.079999999998)
   (1.240108e+04)
@@ -9,20 +9,20 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum8.sql
 // Result file: ../queries/aggs/sum/results/sum8.res
-select sum(cola1) + sum(cole1) from table1;
+select sum(cola1) + sum(cole1) from ${testName2}_table1;
 rows:
   (31906.12);
 
 
 // Source file: ../queries/aggs/sum/rnsum4.sql
 // Result file: ../queries/aggs/sum/results/nsum4.res
-select sum(avg( cola1 + colf1 + colg1 )) from table1;
+select sum(avg( cola1 + colf1 + colg1 )) from ${testName2}_table1;
 failure contains: 'Nested aggregate expressions are not permitted'
 
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
-select colb1, sum(cola1) + 0.38 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
+select colb1, sum(cola1) + 0.38 from ${testName2}_table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 2270.38)
   ('BLUE', 547.38)
@@ -47,7 +47,7 @@ ordered rows:
 //TODO: FIX WHEN OPTIMISE (separate cast to a different stage)
 // backend unable to handle aggregate and cast in same projection
 /*
-select colb1, sum(cola1) + 0.38 from table1 where colb1 < 'indigo' group by colb1;
+select colb1, sum(cola1) + 0.38 from ${testName2}_table1 where colb1 < 'indigo' group by colb1;
 ordered rows:
   ('BLACK', 2270.38)
   ('BLUE', 547.38)
@@ -70,7 +70,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
-select colb1, sum(cola1) from table1 where colb1 < 'indigo' group by colb1;
+select colb1, sum(cola1) from ${testName2}_table1 where colb1 < 'indigo' group by colb1;
 ordered rows:
   ('BLACK', 2270)
   ('BLUE', 547)
@@ -92,7 +92,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum1.sql
 // Result file: ../queries/aggs/sum/results/sum1.res
-select sum(cola1) from table1;
+select sum(cola1) from ${testName2}_table1;
 rows:
   (24782)
 
@@ -101,27 +101,27 @@ rows:
 // Result file: ../queries/aggs/sum/results/rsum23.res
 //TODO: WHEN OPTIMISER (JOINS AND SUBQUERIES AND UPPER)
 /*
-select x, y from (select sum(cola1) as x, colb1 as y from table1 where colb1 = upper('pink') group by colb1) as OuterQry;
+select x, y from (select sum(cola1) as x, colb1 as y from ${testName2}_table1 where colb1 = upper('pink') group by colb1) as OuterQry;
 rows:
   (1268, 'PINK')
 */
 
 // Source file: ../queries/aggs/sum/rsum22.sql
 // Result file: ../queries/aggs/sum/results/rsum22.res
-select x, y from (select sum(colf1) as x, sum(colg9) as y from table1 join table9 using (ucol)) as TwoTbs;
+select x, y from (select sum(colf1) as x, sum(colg9) as y from ${testName2}_table1 join ${testName2}_table9 using (ucol)) as TwoTbs;
 rows:
   (379,393)
  // (NULL, NULL)
 
 // Source file: ../queries/aggs/sum/rnsum1.sql
 // Result file: ../queries/aggs/sum/results/nsum1.res
-select colb9, ucolvc from table9 where sum(colf9) > 0 group by colb9, ucolvc;
+select colb9, ucolvc from ${testName2}_table9 where sum(colf9) > 0 group by colb9, ucolvc;
 //failure: 'Invalid aggregate expression in WHERE predicate'
 failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/aggs/sum/rsum20.sql
 // Result file: ../queries/aggs/sum/results/sum20.res
-select colb1, sum(cold1) - 750 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) - 750 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
  ('BLACK',4.501199999e+02)
  ('BLUE',-5.893000000e+02)
@@ -133,7 +133,7 @@ ordered rows:
   ('GREEN', 92.09999999999991)
 */
 
-select colb1, sum(cold1) - 750 from table1 where colb1 < 'INDIGO' group by colb1;
+select colb1, sum(cold1) - 750 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1;
 unordered rows:
   //('BLACK', 4.501200e+02)
   ('BLACK', 4.50119999e+02)
@@ -143,7 +143,7 @@ unordered rows:
 
 // Source file: ../queries/aggs/sum/rnsum5.sql
 // Result file: ../queries/aggs/sum/results/nsum5.res
-select colb1, sum(null) from table1 group by colb1;
+select colb1, sum(null) from ${testName2}_table1 group by colb1;
 rows:
   ('BLACK',null)
   ('BLUE',null)
@@ -177,14 +177,14 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum5.sql
 // Result file: ../queries/aggs/sum/results/sum5.res
-select sum(colg1) from table1;
+select sum(colg1) from ${testName2}_table1;
 rows:
   (-285)
 
 
 // Source file: ../queries/aggs/sum/rsum18.sql
 // Result file: ../queries/aggs/sum/results/sum18.res
-select colb1, sum(cold1) + -20 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) + -20 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
  ('BLACK',1.180120000e+03)
  ('BLUE',1.407000000e+02)
@@ -199,7 +199,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum18.sql
 // Result file: ../queries/aggs/sum/results/sum18.res
-select colb1, sum(cold1) + -20 from table1 where colb1 < 'INDIGO' group by colb1;
+select colb1, sum(cold1) + -20 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1;
 unordered rows:
   ('BLACK', 1180.12e0)
   ('BLUE', 140.7)
@@ -208,7 +208,7 @@ unordered rows:
 
 // Source file: ../queries/aggs/sum/rsum15.sql
 // Result file: ../queries/aggs/sum/results/sum15.res
-select colb1, sum(cold1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) / 4 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
  ('BLACK',3.000300000e+02)
  ('BLUE',4.017500000e+01)
@@ -223,7 +223,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum15.sql
 // Result file: ../queries/aggs/sum/results/sum15.res
-select colb1, sum(cold1) / 4 from table1 where colb1 < 'INDIGO' group by colb1;
+select colb1, sum(cold1) / 4 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1;
 rows:
   ('BLACK', 300.03e0)
   ('BLUE', 40.175e0)
@@ -232,14 +232,14 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum7.sql
 // Result file: ../queries/aggs/sum/results/sum7.res
-select sum(cola1) + sum(cold1) from table1;
+select sum(cola1) + sum(cold1) from ${testName2}_table1;
 rows:
   (37183.08)
 
 
 // Source file: ../queries/aggs/sum/rsum11.sql
 // Result file: ../queries/aggs/sum/results/sum11.res
-select colb1, sum(cola1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cola1) / 4 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 567)
   ('BLUE', 136)
@@ -247,7 +247,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum11.sql
 // Result file: ../queries/aggs/sum/results/sum11.res
-select colb1, sum(cola1) / 4 from table1 where colb1 < 'INDIGO' group by colb1;
+select colb1, sum(cola1) / 4 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1;
 rows:
   ('BLACK', 567)
   ('BLUE', 136)
@@ -255,7 +255,7 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum13.sql
 // Result file: ../queries/aggs/sum/results/sum13.res
-select colb1, sum(cola1) - 44.5 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
+select colb1, sum(cola1) - 44.5 from ${testName2}_table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 2225.50)
   ('BLUE', 502.50)
@@ -279,7 +279,7 @@ ordered rows:
 // Result file: ../queries/aggs/sum/results/sum13.res
 //TODO: EANBLE WHEN OPTIMISER (CAST & AGG)
 /*
-select colb1, sum(cola1) - 44.5 from table1 where colb1 < 'indigo' group by colb1;
+select colb1, sum(cola1) - 44.5 from ${testName2}_table1 where colb1 < 'indigo' group by colb1;
 ordered rows:
   ('BLACK', 2225.5)
   ('BLUE', 502.5)
@@ -302,7 +302,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum17.sql
 // Result file: ../queries/aggs/sum/results/sum17.res
-select colb1, sum(cold1) - -500 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) - -500 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
   ('BLACK',1.700120000e+03)
   ('BLUE',6.607000000e+02)
@@ -310,7 +310,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum17.sql
 // Result file: ../queries/aggs/sum/results/sum17.res
-select colb1, sum(cold1) - -500 from table1 where colb1 < 'INDIGO' group by colb1;
+select colb1, sum(cold1) - -500 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1;
 ordered rows:
   ('BLACK', 1700.120e0)
   ('BLUE', 660.7)
@@ -320,14 +320,14 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rnsum3.sql
 // Result file: ../queries/aggs/sum/results/nsum3.res
-select colb1, sum(colc1) from table1 group by colb1;
+select colb1, sum(colc1) from ${testName2}_table1 group by colb1;
 failure contains: 'EC_SEMANTIC_ERROR'
 //failure: 'Incorrect argument type in SUM'
 
 
 // Source file: ../queries/aggs/sum/rsum12.sql
 // Result file: ../queries/aggs/sum/results/sum12.res
-select colb1, sum(cola1) * 4 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
+select colb1, sum(cola1) * 4 from ${testName2}_table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 9080)
   ('BLUE', 2188)
@@ -349,7 +349,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum12.sql
 // Result file: ../queries/aggs/sum/results/sum12.res
-select colb1, sum(cola1) * 4 from table1 where colb1 < 'indigo' group by colb1;
+select colb1, sum(cola1) * 4 from ${testName2}_table1 where colb1 < 'indigo' group by colb1;
 rows:
   ('BLACK', 9080)
   ('BLUE', 2188)
@@ -371,14 +371,14 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum10.sql
 // Result file: ../queries/aggs/sum/results/sum10.res
-select sum(cola1 + ucol) from table1;
+select sum(cola1 + ucol) from ${testName2}_table1;
 rows:
   (73808)
 
 
 // Source file: ../queries/aggs/sum/rsum19.sql
 // Result file: ../queries/aggs/sum/results/sum19.res
-select colb1, sum(cold1) - 500 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) - 500 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
   //('BLACK',7.001200000e+02)
   ('BLACK',7.001199999e+02)
@@ -388,7 +388,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum19.sql
 // Result file: ../queries/aggs/sum/results/sum19.res
-select colb1, sum(cold1) - 500 from table1 where colb1 < 'INDIGO' group by colb1;
+select colb1, sum(cold1) - 500 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1;
 rows:
   //('BLACK', 700.12e0)
   ('BLACK', 700.11999e0)
@@ -398,21 +398,21 @@ rows:
 
 // Source file: ../queries/aggs/sum/rnsum2.sql
 // Result file: ../queries/aggs/sum/results/nsum2.res
-select colb9 from table9 where ucol between sum(cold9) and sum(cole9);
+select colb9 from ${testName2}_table9 where ucol between sum(cold9) and sum(cole9);
 failure contains: 'EC_SEMANTIC_ERROR'
 //failure: 'Invalid aggregate expression in WHERE predicate'
 
 
 // Source file: ../queries/aggs/sum/rsum3.sql
 // Result file: ../queries/aggs/sum/results/sum3.res
-select sum(cole1) from table1;
+select sum(cole1) from ${testName2}_table1;
 rows:
   (7124.12e0)
 
 
 // Source file: ../queries/aggs/sum/rsum16.sql
 // Result file: ../queries/aggs/sum/results/sum16.res
-select colb1, sum(cold1) * 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) * 4 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
   ('BLACK',4.800480000e+03)
   ('BLUE',6.428000000e+02)
@@ -421,7 +421,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum16.sql
 // Result file: ../queries/aggs/sum/results/sum16.res
-select colb1, sum(cold1) * 4 from table1 where colb1 < 'INDIGO' group by colb1;
+select colb1, sum(cold1) * 4 from ${testName2}_table1 where colb1 < 'INDIGO' group by colb1;
 rows:
   ('BLACK', 4800.48e0)
   ('BLUE', 642.8e0)
@@ -432,7 +432,7 @@ rows:
 // Result file: ../queries/aggs/sum/results/sum21.res
 //TODO: EANBLE WHEN ABS
 /*
-select sum(abs(colf9)) from table9;
+select sum(abs(colf9)) from ${testName2}_table9;
 rows:
   (3624)
 */
@@ -440,21 +440,21 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum21.sql
 // Result file: ../queries/aggs/sum/results/sum21.res
-select sum(colf9) from table9;
+select sum(colf9) from ${testName2}_table9;
 rows:
   (308)
 
 
 // Source file: ../queries/aggs/sum/rsum9.sql
 // Result file: ../queries/aggs/sum/results/sum9.res
-select sum(colf1) + sum(colf1) from table1;
+select sum(colf1) + sum(colf1) from ${testName2}_table1;
 rows:
   (1580)
 
 
 // Source file: ../queries/aggs/sum/rsum6.sql
 // Result file: ../queries/aggs/sum/results/sum6.res
-select colb1, sum(cola1) from table1 where colb1 < 'gre' group by colb1 order by colb1;
+select colb1, sum(cola1) from ${testName2}_table1 where colb1 < 'gre' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 2270)
   ('BLUE', 547)
@@ -474,7 +474,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum6.sql
 // Result file: ../queries/aggs/sum/results/sum6.res
-select colb1, sum(cola1) from table1 where colb1 < 'gre' group by colb1;
+select colb1, sum(cola1) from ${testName2}_table1 where colb1 < 'gre' group by colb1;
 rows:
   ('BLACK', 2270)
   ('BLUE', 547)
@@ -495,7 +495,7 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum4.sql
 // Result file: ../queries/aggs/sum/results/sum4.res
-select sum(colf1) from table1;
+select sum(colf1) from ${testName2}_table1;
 rows:
   (790)
 

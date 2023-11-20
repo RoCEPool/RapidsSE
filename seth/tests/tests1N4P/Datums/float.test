@@ -7,7 +7,7 @@ trackmemory force;
 success
 
 // (1) create a table
-create table fltTbl (
+create table ${testName2}_fltTbl (
   flt_col1  FLOAT       NOT NULL,
   vch_col1  VARCHAR(32) NOT NULL,
   int_col3  INTEGER     NOT NULL,
@@ -17,49 +17,49 @@ create table fltTbl (
 );
 
 // create indexes
-create index flt_idx1 on fltTbl (flt_col1);
+create index flt_idx1 on ${testName2}_fltTbl (flt_col1);
 success
 
-create index flt_idx2 on fltTbl (flt_col6);
+create index flt_idx2 on ${testName2}_fltTbl (flt_col6);
 success
 
 // check existence of index
-lsidx fltTbl;
+lsidx ${testName2}_fltTbl;
 rows:
 ('flt_idx1', false, false)
 ('flt_idx2', false, false)
 
 // check columns of index
-lsidxcol fltTbl flt_idx1;
+lsidxcol ${testName2}_fltTbl flt_idx1;
 rows:
 ('flt_col1', 'FLOAT', 19, 0, false, true)
 
 // check columns of index
-lsidxcol fltTbl flt_idx2;
+lsidxcol ${testName2}_fltTbl flt_idx2;
 rows:
 ('flt_col6', 'FLOAT', 19, 0, true, false)
 
-Load fltTbl "../DATA/Datums/float.csv" ;
+Load ${testName2}_fltTbl "../DATA/Datums/float.csv" ;
 failure contains: '15 rows were invalid'
 
 // check no of rows
-select * from fltTbl;
+select * from ${testName2}_fltTbl;
 rows: 101
 
 // dump index flt_idx1
-//dumpidx fltTbl flt_idx1;
+// dumpidx ${testName2}_fltTbl flt_idx1;
 
 // dump index flt_idx2
-//dumpidx fltTbl flt_idx2;
+// dumpidx ${testName2}_fltTbl flt_idx2;
 
 // fetch
-//predicateFetch fltTbl "flt_col1 1011.011 =";
-SELECT * FROM fltTbl WHERE flt_col1 = 1011.011;
+predicateFetch ${testName2}_fltTbl "flt_col1 1011.011 =";
+SELECT * FROM ${testName2}_fltTbl WHERE flt_col1 = 1011.011;
 rows:
   (1011.01e0,'oneone',111,1,11.01,null)
 
 // drop the table
-drop table fltTbl;
+drop table ${testName2}_fltTbl;
 success
 
 // check existence of table
@@ -73,7 +73,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table fltTbl;
+  drop table ${testName2}_fltTbl;
   mute
   
   bye;

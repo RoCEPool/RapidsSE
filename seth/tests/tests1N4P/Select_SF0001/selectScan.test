@@ -5,15 +5,15 @@ trackmemory force;
 success
 
 // scan
-/weaved select * from nation;
+/weaved select * from ${testName2}_nation;
 rows: 25
 
 // scan + project
-/weaved select n_name , n_regionkey from nation;
+/weaved select n_name , n_regionkey from ${testName2}_nation;
 rows: 25
 
 // scan + filter + project
-/weaved select n_name , n_regionkey from nation where n_name < 'E';
+/weaved select n_name , n_regionkey from ${testName2}_nation where n_name < 'E';
 rows:
   ('ALGERIA', 0)
   ('ARGENTINA', 1)
@@ -22,7 +22,7 @@ rows:
   ('CHINA', 2)
 
 // scan + filter + project + sort
-/weaved select n_name , n_regionkey from nation where n_name < 'E' order by n_name;
+/weaved select n_name , n_regionkey from ${testName2}_nation where n_name < 'E' order by n_name;
 ordered rows:
  ('ALGERIA', 0)
  ('ARGENTINA', 1)
@@ -31,7 +31,7 @@ ordered rows:
  ('CHINA', 2)
 
 // scan + filter + project + sort + limit
-/weaved select n_name , n_nationkey from nation where n_name < 'E' order by n_name limit 2;
+/weaved select n_name , n_nationkey from ${testName2}_nation where n_name < 'E' order by n_name limit 2;
 ordered rows:
  ('ALGERIA', 0)
  ('ARGENTINA', 1)

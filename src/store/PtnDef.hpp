@@ -37,7 +37,7 @@ namespace STORE
     static void vPostRecv(void* aShardDef);
     static void vRepair(Object* pObject);
 
-    void    vAddColumn(Stz* sColumnNm, eCT eColumnType,
+    void    vAddColumn(Stz* sColumnNm, TypeId xTypeId,
                        i8 iColumnLength, i8 iColumnScale);
     void    vAsString(String* pString);
     i8      nColumns(void);

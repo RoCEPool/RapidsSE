@@ -38,26 +38,26 @@ success
 lscat;
 rows: ('rapidsse')
 
-create catalog myCatalog;
+create catalog ${testName2}_myCatalog;
 success
 
 lscat;
 rows:
   ('rapidsse')
-  ('myCatalog')
+  ('${testName2}_myCatalog')
 
-drop catalog myCatalog;
+drop catalog ${testName2}_myCatalog;
 success
 
-create catalog myCatalog;
+create catalog ${testName2}_myCatalog;
 success
 
 lscat;
 rows:
   ('rapidsse')
-  ('myCatalog')
+  ('${testName2}_myCatalog')
 
-cf myCatalog;
+cf ${testName2}_myCatalog;
 success
 
 cf schemas;
@@ -73,10 +73,10 @@ pwf;
 rows: ('/catalogs/boray/tenants/')
 
 //! ALKA ENABLE once empty folder test in place
-//drop catalog myCatalog;
+//drop catalog ${testName2}_myCatalog;
 //failure contains: 'folder not empty'
 
-cf myCatalog;
+cf ${testName2}_myCatalog;
 success
 
 cf schemas;
@@ -89,7 +89,7 @@ cf ..;
 success
 
 pwf;
-rows: ('/myCatalog/catalogs/boray/tenants/')
+rows: ('/${testName2}_myCatalog/catalogs/boray/tenants/')
 
 cf ..;
 success
@@ -97,7 +97,7 @@ success
 pwf;
 rows: ('/catalogs/boray/tenants/')
 
-drop catalog myCatalog;
+drop catalog ${testName2}_myCatalog;
 success
 
 cf "~tables";
@@ -113,7 +113,7 @@ rows: 0
 
 CLEANUP {
   
-  drop catalog myCatalog;
+  drop catalog ${testName2}_myCatalog;
   mute
   
   cf "~tables";

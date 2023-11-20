@@ -81,12 +81,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     i_Col++;
 
     pCI->G.p_expr = _pCard_Expr(pCI->G.p_emit->pGetChild(i_expr_projection));
-    if (pCI->G.p_expr->pSymbol()->bMatches(SF_STM_COL,"$1"_Stz))
-      continue;
-
-    pCI->G.p_as = pCI->G.p_expr->pSub_as();
-
-    if (pCI->G.p_as->pSymbol_AS()->bIs_Sqy_Rsl())
+    if (pCI->G.p_expr->pSymbol()->bMatches(SF_EXP_COL, "$1"_Stz))
       continue;
 
    // pCI->vPrintBoard(__LINE__);
@@ -143,24 +138,16 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
-//    if (! p_expr_needed->pGet_term(0)->bIsTblCol()) {
-//      this->vDump(__func__ );
-//      pCI->Flux.m_pArriving->vDump(__func__);
-//      p_expr_needed->vDump(__func__);
-//      NEVER_REACH;
-//      //continue;
-//    }
-
     if (! pCI->Flux.m_pArriving->pContains(p_expr_needed))
       continue;
 
     Card_Expr* p_expr_clone = p_expr_needed->pClone();
 
-    if (! p_expr_clone->pSub_as()) {
-      Card_As* p_as_new = (new Card_As) ->SYM(SF_NMD_COL, p_emit_early->nChildCards());
-      p_expr_clone->vAppendChild(p_as_new);
+    if (! p_expr_clone->pSymbol()->bHasFacet(SF_NMD_COL)) {
+      Symbol oSymbol_nmdCol;
+      oSymbol_nmdCol.vFacet(SF_NMD_COL, p_emit_early->nChildCards());
+      p_expr_clone->pSymbol()->vAppendFacet(oSymbol_nmdCol.aFacet(SF_NMD_COL));
     }
-
     p_emit_early->vAppendChild(p_expr_clone);
   }
 
@@ -168,18 +155,6 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
   p_emit_early->vRenumberAll_expr();
 
   return p_emit_early;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dedupe as                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vDedupe_as(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vDedupe_as();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,7 +218,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmCol(pCI->Flux.m_pArriving);
+  vCorrect_expCol(pCI->Flux.m_pArriving);
 
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
@@ -274,14 +249,14 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->vAppendChild(pCI->Sqy.m_pExpr_fold->pSub_as()->pDupCardRecursive());
+  pCI->G.p_expr->pSymbol()->vAppendFacets(pCI->Sqy.m_pExpr_fold->pSymbol());
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppendChild(pCI->G.p_rpnCalc);
   pCI->G.p_expr->vColType(pCI->G.p_rpnCalc);
 
-  Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
-  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_stmCol1);
+  Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
+  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
 
   pCI->G.p_rpnCalc->vAppendChild(pCI->G.p_term);
 
@@ -354,7 +329,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmCol(pCI->Flux.m_pArriving);
+  vCorrect_expCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 

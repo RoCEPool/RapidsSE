@@ -9,18 +9,18 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 select l_orderkey, sum(l_quantity)
-  from lineitem
+  from ${testName2}_lineitem
   group by l_orderkey
   having sum(l_quantity) > (select avg(l_quantity)
-                              from lineitem)
+                              from ${testName2}_lineitem)
 ;
 rows: 1496
 
 select l_orderkey, sum(l_quantity)
-  from lineitem
+  from ${testName2}_lineitem
   group by l_orderkey
   having sum(l_quantity) < (select avg(l_quantity)
-                              from lineitem)
+                              from ${testName2}_lineitem)
 ;
 rows:
  (330,21.00)
@@ -31,10 +31,10 @@ rows:
 //TODO: INCORRECT RESULT
 /*
 select l_orderkey, sum(l_quantity), sum(l_extendedPrice)
-  from lineitem
+  from ${testName2}_lineitem
   group by l_orderkey
   having sum(l_quantity) < (select avg(l_quantity)
-                              from lineitem)
+                              from ${testName2}_lineitem)
     and sum(l_extendedPrice) > 23000.0
 ;
 rows:
@@ -46,10 +46,10 @@ rows:
 //TODO: INVALID COMMAND
 /*
 select l_orderkey, sum(l_quantity)
-  from lineitem
+  from ${testName2}_lineitem
   group by l_orderkey
   having sum(l_quantity) < (select avg(l_quantity)
-                              from lineitem)
+                              from ${testName2}_lineitem)
     and sum(l_extendedPrice) > 23000.0
 ;
 rows:
@@ -62,9 +62,9 @@ rows:
 // TODO: COMPILER
 /*
 select l_orderkey, sum(l_quantity)
-  from lineitem
+  from ${testName2}_lineitem
   group by l_orderkey
-  having avg(l_quantity) < (select l_quantity from lineitem)
+  having avg(l_quantity) < (select l_quantity from ${testName2}_lineitem)
 ;
 failure contains: 'INVALID'
 */
@@ -72,22 +72,22 @@ failure contains: 'INVALID'
 //TODO: CRASHING
 /*
 select l_orderkey, sum(l_quantity)
-  from lineitem
+  from ${testName2}_lineitem
   group by l_orderkey
   having avg(l_quantity) < (select max(l_quantity)
-                              from lineitem)
+                              from ${testName2}_lineitem)
 ;
 rows: 1500
 */
 
 select PS_PARTKEY,
        sum(ps_supplycost * ps_availqty) as value
-  from partsupp, supplier
+  from ${testName2}_partsupp, ${testName2}_supplier
  where PS_SUPPKEY = S_SUPPKEY
  group by PS_PARTKEY
 having sum(ps_supplycost * ps_availqty) >
          (select sum(ps_supplycost * ps_availqty) * 0.000001
-            from partsupp, supplier
+            from ${testName2}_partsupp, ${testName2}_supplier
            where PS_SUPPKEY = S_SUPPKEY)
 ;
 rows: 200
@@ -95,12 +95,12 @@ rows: 200
 
 select PS_PARTKEY,
        sum(ps_supplycost * ps_availqty) as value
-  from partsupp, supplier
+  from ${testName2}_partsupp, ${testName2}_supplier
  where PS_SUPPKEY = S_SUPPKEY
  group by PS_PARTKEY
 having sum(ps_supplycost * ps_availqty) <=
          (select sum(ps_supplycost * ps_availqty) * 0.000001
-            from partsupp, supplier
+            from ${testName2}_partsupp, ${testName2}_supplier
            where PS_SUPPKEY = S_SUPPKEY)
 ;
 rows : 0
@@ -112,7 +112,7 @@ rows : 0
 // _r_FORM_A / _r_FOLD_10_F (Q7,8,9)
 select count(*)
   from (select *
-          from orders, lineitem
+          from ${testName2}_orders, ${testName2}_lineitem
          where O_ORDERKEY = L_ORDERKEY)
 ;
 rows:
@@ -120,11 +120,11 @@ rows:
 
 select O_ORDERKEY, O_CUSTKEY
     from ( select O_ORDERKEY, O_CUSTKEY
-             from orders
-             join lineitem on O_ORDERKEY = L_ORDERKEY) as table1,
-         Customer
-   where table1.O_CUSTKEY = Customer.C_CUSTKEY
-   and Customer.C_CUSTKEY < 4
+             from ${testName2}_orders
+             join ${testName2}_lineitem on O_ORDERKEY = L_ORDERKEY) as table1,
+         ${testName2}_customer
+   where table1.O_CUSTKEY = ${testName2}_customer.C_CUSTKEY
+   and ${testName2}_customer.C_CUSTKEY < 4
 ;
 
 /*
@@ -135,20 +135,20 @@ select O_ORDERKEY, O_CUSTKEY
 
 //_r_FOLD_20_W_A_C_ro (Q2,Q17)
 select sum(l_extendedprice)
-  from lineitem, part
+  from ${testName2}_lineitem, ${testName2}_part
  where P_PARTKEY = L_PARTKEY
    and l_quantity < (select avg(l_quantity)
-                       from lineitem
+                       from ${testName2}_lineitem
                       where L_PARTKEY = P_PARTKEY)
 ;
 rows: (58019519.91)
 
 //_r_FORM_1 (Q2)
  select p_partkey, ps_suppkey
-   from part, partsupp
+   from ${testName2}_part, ${testName2}_partsupp
   where P_PARTKEY = PS_PARTKEY
     and PS_SUPPKEY = (select min(ps_suppkey)
-                        from partsupp
+                        from ${testName2}_partsupp
                        where P_PARTKEY = PS_PARTKEY)
  ;
 rows:
@@ -191,21 +191,21 @@ rows:
 
 //_r_FORM_4
 select sum(l_extendedprice)
-  from lineitem, part
+  from ${testName2}_lineitem, ${testName2}_part
  where P_PARTKEY = L_PARTKEY
    and l_quantity < (select avg(l_quantity)
-                       from lineitem
+                       from ${testName2}_lineitem
                       where L_PARTKEY = P_PARTKEY)
 ;
 rows:
  (58019519.91)
 
 select count(*)
- from Lineitem, Part, PartSupp
+ from ${testName2}_lineitem, ${testName2}_part, ${testName2}_partsupp
 where P_PARTKEY  = L_PARTKEY
   and PS_PARTKEY = P_PARTKEY
   and l_quantity < (select avg(l_quantity)
-                      from lineitem
+                      from ${testName2}_lineitem
                      where L_PARTKEY = P_PARTKEY)
 ;
 
@@ -217,9 +217,9 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FORM_2
 select count(*)
-  from orders
+  from ${testName2}_orders
  where exists (select *
-                 from lineitem
+                 from ${testName2}_lineitem
                 where L_ORDERKEY = O_ORDERKEY)
 ;
 
@@ -231,9 +231,9 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FOLD_50_W_L_C_E (Q4)
 select count(*)
-  from orders
+  from ${testName2}_orders
  where exists (select *
-                 from lineitem
+                 from ${testName2}_lineitem
                 where L_ORDERKEY = O_ORDERKEY
                   and l_commitdate < l_receiptdate)
 ;
@@ -246,10 +246,10 @@ rows:
  // _r_FORM_3
  //_r_FOLD_60_W_L_NC_NI (Q16)
  select count(*)
-   from partsupp, part
+   from ${testName2}_partsupp, ${testName2}_part
   where P_PARTKEY = PS_PARTKEY
     and PS_SUPPKEY not in (select S_SUPPKEY
-                             from supplier
+                             from ${testName2}_supplier
                             where s_comment like '%Customer%Complaints%')
  ;
  rows:
@@ -260,11 +260,11 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _r_FORM_5
 select sum(l_quantity)
-  from customer, orders, lineitem
+  from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem
  where C_CUSTKEY  = O_CUSTKEY
    and O_ORDERKEY = L_ORDERKEY
    and O_ORDERKEY in (select L_ORDERKEY
-                       from lineitem
+                       from ${testName2}_lineitem
                       group by L_ORDERKEY
                      having sum(l_quantity) > 100)
 ;
@@ -273,10 +273,10 @@ rows:
 
 // _r_FOLD_30_W_A_NC_I (Q18)
 select count(*)
-  from orders, lineitem
+  from ${testName2}_orders, ${testName2}_lineitem
  where O_ORDERKEY = L_ORDERKEY
    and O_ORDERKEY in (select L_ORDERKEY
-                        from lineitem
+                        from ${testName2}_lineitem
                        group by L_ORDERKEY
                       having sum(l_quantity) > 100)
 ;
@@ -291,12 +291,12 @@ rows:
 
 select PS_PARTKEY,
        sum(ps_supplycost * ps_availqty) as value
-  from partsupp, supplier
+  from ${testName2}_partsupp, ${testName2}_supplier
  where PS_SUPPKEY = S_SUPPKEY
  group by PS_PARTKEY
 having sum(ps_supplycost * ps_availqty) >
          (select sum(ps_supplycost * ps_availqty) * 0.000001
-            from partsupp, supplier
+            from ${testName2}_partsupp, ${testName2}_supplier
            where PS_SUPPKEY = S_SUPPKEY)
 ;
 rows: 200

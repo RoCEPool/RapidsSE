@@ -51,7 +51,7 @@ namespace STORE
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
-    bool bIsSubQueryNm(Stz* szSubQueryNm);
+    bool bIsSqyNm(Stz* szSqyNm);
     Optimiser* pOptimiser(void);
 
     bool bPastPhase(CardIter* pCI, eOH ePhase);

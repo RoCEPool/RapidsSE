@@ -27,8 +27,6 @@ namespace STORE
     void vComputeProjection(CardIter* pCI); // prototype
     Card_Emit* pCraft_emit_early(CardIter* pCI);
 
-    void vDedupe_as(void);
-
     void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_given_leaf(CardIter* pCI);

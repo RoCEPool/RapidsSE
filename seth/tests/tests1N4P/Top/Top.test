@@ -8,7 +8,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -28,16 +28,16 @@ create table lineitem (
 );
 success
 
-create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_ORDERKEY  ON ${testName2}_lineitem (L_ORDERKEY)  ;
 success
 
-create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
+create index IxL_SHIPDATE  ON ${testName2}_lineitem (l_SHIPDATE)  ;
 success
 
-create index IxL_ORDER_PART ON lineitem(L_ORDERKEY, L_PARTKEY);
+create index IxL_ORDER_PART ON ${testName2}_lineitem(L_ORDERKEY, L_PARTKEY);
 success
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 /pipeline_def
@@ -49,7 +49,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | project "type INTEGER $1 , type DATE $11"
     | top "type DATE $2" 2
     | combined 0
@@ -80,7 +80,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | project "type INTEGER $1 , type DATE $11"
     | top "type INTEGER $1" 2
     | combined 0
@@ -105,7 +105,7 @@ rows:
 */
 
 // drop the table
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
 // get memory leaks
@@ -115,7 +115,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
   
   bye;
