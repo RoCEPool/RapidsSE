@@ -67,6 +67,7 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_OPTIMISER"_Stz,
   
   /*  */ "LR_PARCEL"_Stz,
+  /*  */ "LR_PDS"_Stz,
 	/*  */ "LR_PDSCURSOR"_Stz,
   /*  */ "LR_PATHIDENTIFIER"_Stz,
   /*  */ "LR_PIPEIN"_Stz,

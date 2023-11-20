@@ -1170,6 +1170,19 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, b
 			else
 			  szFunction = "vIndexScanEnd";
       break;
+    case HK_PDSROWBUFFER:
+      if (bHasOrdAgg) {
+        if (bHasIndexInflate)
+          szFunction = "vInflatePdsRowIndexEnd_OA";
+        else
+          szFunction = "vInflatePdsRowEnd_OA";
+      }
+      else {
+        if (bHasIndexInflate)
+          szFunction = "vInflatePdsRowIndexEnd";
+        else
+          szFunction = "vInflatePdsRowEnd";
+      }
     case HK_ROWBUFFER:
 			if (bHasOrdAgg) {
 				if (bHasIndexInflate)
@@ -1231,6 +1244,10 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
       szFunction = "__FUNCTION_INDEX__";
       sFunSignature = "iIndexHandler_";
       break;
+    case HK_PDSROWBUFFER:
+      szFunction = "__FUNCTION_PDSROW__";
+      sFunSignature = "iPdsRowHandler_";
+      break;
     case HK_ROWBUFFER:
       szFunction = "__FUNCTION_ROW__";
       sFunSignature = "iRowHandler_";
@@ -1273,6 +1290,12 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   switch(eHandlerKind) {
     case HK_CRWBUFFER:
       szFunction = "vCrwContinue";
+      break;
+    case HK_PDSROWBUFFER:
+      if (bHasIndexInflate)
+        szFunction = "vPdsRowIndexContinue";
+      else
+        szFunction = "vPdsRowContinue";
       break;
     case HK_ROWBUFFER:
       if (bHasIndexInflate)

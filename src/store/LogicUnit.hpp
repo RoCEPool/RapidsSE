@@ -137,6 +137,7 @@ namespace STORE
 
     REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
+    REG<Pds,            CN_PDS           > m_xpPds;
     REG<PdsCursor,      CN_PDSCURSOR     > m_xpPdsCursor;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
@@ -208,6 +209,7 @@ namespace STORE
 
     bool (*m_afFun0)(void*);
     bool (*m_afFun1)(void*);
+    bool (*m_afFun1_)(void*);
     bool (*m_afFun2)(void*);
     bool (*m_afFun3)(void*);
     bool (*m_afFun4)(void*);

@@ -52,6 +52,8 @@ namespace BASE
     Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix = nullptr);
     ~Pds(void) noexcept(false);
 
+    static void vRepair(Object* pObject);
+
     // public:
     Row*            pAllotRow(void);
     Row*            pAllotRowFull(char** aaStzSet);

@@ -594,6 +594,10 @@ void vDdlLockAssertNone(void);
   void vFun1Get(void);
   void vFun1Set(void);
   void vFun1Setup(void);
+  void vFun1_Call(void);
+  void vFun1_Get(void);
+  void vFun1_Set(void);
+  void vFun1_Setup(void);
   void vFun2Call(void);
   void vFun2Get(void);
   void vFun2IsNotNull(void);
@@ -1630,6 +1634,11 @@ void vJobIdLastJobIdFetch(void);
   void vParcelReset(void);
   void vParcelSendOut(void);
   void vParcelSet(void);
+
+  // pds
+  void vPdsGet(void);
+  void vPdsDelete(void);
+  void vPdsSet(void);
 
   // pds Cursor
   void vPdsCursorGet(void);
