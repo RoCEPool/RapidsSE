@@ -513,7 +513,6 @@ contains rows:
   ( 393,4.33)
   (  21,4.34)
 
-// TODO V2 : ORDAGG
 // multi-column ordagg with multi-col indexscan
 /optimise_passthru 
 pipeline Q

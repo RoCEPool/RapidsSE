@@ -132,12 +132,12 @@ begin
    stage S01 on all partitions :
       indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
      | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
-     | filter  " type BOOLEAN  SUM_QTY 100.00  >  "
      | combined 0
      | next broadcast
 
    stage S02 on all partitions :
-     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+     filter  " type BOOLEAN  SUM_QTY 100.00  >  "
+     | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
      | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -331,12 +331,12 @@ begin
    stage S01 on all partitions :
       indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
      | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
-     | filter  " type BOOLEAN  SUM_QTY 100.00  >  "
      | combined 0
      | next broadcast
 
    stage S02 on all partitions :
-     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+     filter  " type BOOLEAN  SUM_QTY 100.00  >  "
+     | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
      | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
