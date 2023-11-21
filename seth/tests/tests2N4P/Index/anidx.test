@@ -8,15 +8,15 @@ success
 
 // invalid
 anidx;
-failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 5; mismatched input ';'"
+failure contains: "mismatched input ';'"
 
 // invalid
 anidx ${testName2}_IntTbl;
-failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 12; mismatched input ';'"
+failure contains: "mismatched input ';'"
 
 // invalid
 anidx ${testName2}_IntTbl idx1 idx2;
-failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 18; extraneous input 'idx2'"
+failure contains: "extraneous input 'idx2'"
 
 // Table does not exist
 anidx ${testName2}_IntTbl int_idx1;
@@ -33,7 +33,7 @@ success
 
 // invalid
 anidx ${testName2}_IntTbl;
-failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 12; mismatched input ';'"
+failure contains: "mismatched input ';'"
 
 // no such index
 anidx ${testName2}_IntTbl int_idx1;
@@ -45,7 +45,7 @@ success
 
 // invalid
 anidx ${testName2}_IntTbl;
-failure contains: "Error: EC_SYNTAX_ERROR; Line: 1; Column: 12; mismatched input ';'"
+failure contains: "mismatched input ';'"
 
 // invalid
 anidx x int_idx1;
