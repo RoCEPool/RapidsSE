@@ -652,6 +652,33 @@ i8 iEosPLPotTub(Dynamic_T* aDynamicT) {
   return 0;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- iEosPLPotTub_pds --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosPLPotTub_pds
+i8 iEosPLPotTub_pds(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+  RowInfo __ROW_INFO_TO__;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate a row from the tub/pot
+#ifdef WITH_CLANG
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+#endif
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+    return 0;
+  }
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
+
+  // marker-end
+  L_Return:
+  return 0;
+}
+
 // NOTE: con be combined with iEosPayLoadTub
 
 /*----------------------------------------------------------------------------*/
@@ -979,6 +1006,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
   char* szSrcStz;
   char* szDstStz;
+  char* azStringDyn;
 
   void* amCellAddress;
 
@@ -997,9 +1025,9 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     iElemSize += 8;
   }
   else {
-    szDstStz = __ROW_INFO_TO__.m_acStrArea;
+    szDstStz = azStringDyn + 16;
 
-		i8 iDstBufLen = __ROW_INFO_TO__.m_nStringAreaSize;
+		i8 iDstBufLen = *(i8*)(azStringDyn + 8);
 
 #ifdef WITH_CLANG
     nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, iDstBufLen, szSrcStz);
@@ -1010,16 +1038,11 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 #endif
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
 
-    iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
+    iOffset = nDifference(amCellAddress, azStringDyn);
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
-    // update the tub string size
-    i8 iDstLen = strlen(szDstStz) + 1;
-		__ROW_INFO_TO__.m_nStringAreaSize -= nSrcSize;
-		__ROW_INFO_TO__.m_acStrArea += iDstLen;
-#ifdef WITH_CLANG
-    __EXTERN_ROWSTRSIZE__;
-#endif
+    // update String_d address to point to the next String_d in the StringSet
+    azStringDyn = azStringDyn + iDstBufLen + 32;
 
     iElemSize += nSrcSize;
   }
@@ -1273,6 +1296,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 
   char* szSrcStz;
   char* szDstStz;
+  char* azStringDyn;
   m8* amCellAddress;
 
 	RowInfo __ROW_INFO_TO__;
@@ -1302,7 +1326,8 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      nSrcSize = strlen(szSrcStz) + 1;
 
      // get the destination string
-     szDstStz = __ROW_INFO_TO__.m_acStrArea;
+     szDstStz = azStringDyn + 16;
+     i8* piMaxLen = (i8*)(azStringDyn + 8);
 
 		 char *d = szDstStz;
 		 const char *s = (char*)szSrcStz;
@@ -1315,14 +1340,11 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 
      // copy the source to the destination
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
-     iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
+     iOffset = nDifference(amCellAddress, azStringDyn);
      p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
-     // update the tub string size
-     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
-#ifdef WITH_CLANG
-     __EXTERN_ROWSTRSIZE__;
-#endif
+     // update String_d address to point to the next String_d in the StringSet
+     azStringDyn = azStringDyn + *piMaxLen + 32;
   }
 
   // marker-end

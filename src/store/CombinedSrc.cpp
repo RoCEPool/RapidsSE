@@ -771,7 +771,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 							vAppendCodeFragment(pOpSketch, "vEosPotTubLimit"_Stz);
 						}
 
-						vAppendCodeFragment(pOpSketch, "iEosPLPotTub"_Stz);
+						vAppendCodeFragment(pOpSketch, "iEosPLPotTub_pds"_Stz);
 						vAppendCodeToTubCols(pOpSketch);
 						vAppendCodeFragment(pOpSketch, "vEosPLPotTubEnd"_Stz);
 					}

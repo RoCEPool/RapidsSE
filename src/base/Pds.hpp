@@ -20,6 +20,7 @@ namespace BASE
     i8 m_nPaddingPerBlk; // Size of padding for each Skip List Block
     u2 m_uFreeListRootOffset;
     i8 m_iFreeListEntries; // Number of free entries available (Does not include dummy root node)
+//    Decider m_oDecider;
 
     CompareFunc m_fpCompare;  // compare function
 
@@ -61,6 +62,7 @@ namespace BASE
     Row*            pCopyRow(Row* pRow);
 		Row*            pCopyRowArray(i8* pRowArray);
     void*           aAllotStzSet(void);
+    void            vDecidedDelete(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
     void            vDumpInUseList(void);

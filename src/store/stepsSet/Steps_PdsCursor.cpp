@@ -20,6 +20,7 @@ void Step::vAddSteps_PdsCursor(void)
   vAddStep("PdsCursor[].currIsNotNull"_Stz  ,     &Step::vPdsCursorCurrIsNotNull);
   vAddStep("PdsCursor[].next"_Stz,                &Step::vPdsCursorNext);
   vAddStep("PdsCursor[].set"_Stz  ,               &Step::vPdsCursorSet);
+  vAddStep("PdsCursor[].delete"_Stz  ,             &Step::vPdsCursorDelete);
 }
 /*----------------------------------------------------------------------------*/
 /* PdsCursor[].getItemAddr -- get the start addr of the item in this pds block */
@@ -83,6 +84,19 @@ void Step::vPdsCursorSet(void)
   ENTRY();
 
   m_pLogicUnit->m_xpPdsCursor = _pPdsCursor(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PdsCursor[].delete -- delete the cursor                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsCursorDelete(void)
+{
+  ENTRY();
+
+  m_pLogicUnit->m_xpPdsCursor->m_pPds = nullptr;
+  m_pLogicUnit->m_xpPdsCursor.vDeleteComponent();
 
   EXIT();
 }

@@ -3808,7 +3808,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
 				break;
 			}
 
-			//pPdsRowBuffer->vDecidedDelete();
+			pPdsRowBuffer->vDecidedDelete();
 			break;
     }
 

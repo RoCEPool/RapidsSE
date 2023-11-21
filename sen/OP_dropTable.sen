@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_StartMarker
 
-  STD_NORMALFORK_WAIT_TAG "select * from uniqueTable;" NestedSql[]
+  //STD_NORMALFORK_WAIT_TAG "select * from uniqueTable;" NestedSql[]
   0 locals| errorCode |
 
   PipeIn[].pipeOut
@@ -36,8 +36,8 @@
   PipeIn[].delete
 
   // pipeout an EOSMARKER
-  //Marker[].newEosMarker
-  //Marker[].pipeOut
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -53,11 +53,11 @@
 
   // if received all child exits then pipeout END
   //   else wait till all child exits have been received
-  LogicUnit[].RcvdChildExit@ if
+  //LogicUnit[].RcvdChildExit@ if
      PipeIn[].pipeout
-  else
-    PipeIn[].delete
-  then
+  //else
+  //  PipeIn[].delete
+  //then
 
   true
 ;

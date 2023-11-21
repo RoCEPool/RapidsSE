@@ -1646,6 +1646,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsCursorCurrIsNotNull(void);
   void vPdsCursorNext(void);
   void vPdsCursorSet(void);
+  void vPdsCursorDelete(void);
 
   // reg Pipein
   void vPipeinBide(void);

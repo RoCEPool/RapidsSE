@@ -526,9 +526,9 @@ bool Output::bProcessOperand(Operand* pOperand)
         m_ixRowsProcessed += pPds->nItems();
         vTrace("\n"_Stz);
         pPds->vPrintRows(nullptr, nullptr);
-      } else {
-        AM::vDeleteOperand(pOperand, nullptr);
       }
+      AM::vDeleteOperand(pOperand, nullptr);
+
       break;
     }
 

@@ -41,7 +41,7 @@ void Step::vPdsDelete(void)
 
   AM::vDeleteOperand(*m_pLogicUnit->m_xpPds,nullptr);
 
-  m_pLogicUnit->m_xpRowBuffer = nullptr;
+  m_pLogicUnit->m_xpPds = nullptr;
 
   EXIT();
 }

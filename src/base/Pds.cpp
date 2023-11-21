@@ -453,6 +453,24 @@ void* Pds::aAllotStzSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete this Pds buffer                                                     */
+/*----------------------------------------------------------------------------*/
+void Pds::vDecidedDelete(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+//  i8 nAcksWereRemaining;
+//
+//  if (m_oDecider.bDecAndDecide(nAcksWereRemaining)) {
+//
+//    m_bDeletable = true;
+
+    delete this;
+    // dont touch this pointer
+//  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove key from in use skip list and move to free list                     */
 /*----------------------------------------------------------------------------*/
 bool Pds::bDelete(void* pKey)
@@ -945,6 +963,8 @@ void Pds::vPrintRows(File* pFilePtr, Stz* szLabel)
     hvRecord->vPrintAsRow(szLabel);
     pCursor->vNext();
   }
+  pCursor->m_pPds = nullptr;
+  delete pCursor;
 }
 
 /*----------------------------------------------------------------------------*/
