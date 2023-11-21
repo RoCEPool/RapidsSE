@@ -142,6 +142,9 @@ enum eEC // error codes
   EC_INVALID_FLOAT_FORMAT,          // SQL Compiler Subsystem
   EC_INVALID_INTEGER_FORMAT,        // SQL Compiler Subsystem
   EC_INVALID_INTERFACE,
+  EC_INVALID_LOAD_OPT_DATE_FORMAT,
+  EC_INVALID_LOAD_OPT_ENCL_TRAILING,
+  EC_INVALID_LOAD_OPT_RECORD_ENDS,
   EC_INVALID_LIMIT_VALUE,           // SQL Compiler Subsystem
   EC_INVALID_OFFSET_VALUE,          // SQL Compiler Subsystem
   EC_INVALID_PARAMETER,

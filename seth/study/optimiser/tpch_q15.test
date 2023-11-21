@@ -4,7 +4,7 @@
 
 LOG 'TPC-H Q15...';
 
-trackMemory;
+trackMemory force;
 success
 
 create table revenue (supplier_no, total_revenue) as

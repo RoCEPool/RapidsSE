@@ -939,7 +939,7 @@ namespace OBLIQUE
     static Stz* szEnumText(i8 i_EnumGroup, i8 i_Enum);
   
   
-    static bool bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet);
+    static eEC bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet);
   
   
   

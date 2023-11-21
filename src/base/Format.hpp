@@ -47,7 +47,7 @@ namespace BASE
     void vSet(Format* pFmt);
     void vShow(void);
 
-    bool bExtractDateFormat(Stz* dateFormat);
+    bool bExtractDateFormat(Stz* dateFormat, String* psErrMsg);
     void vEnclosedBy_Leading(char c);
     void vEnclosedBy_Trailing(char c);
     void vEscapeChar(char c);

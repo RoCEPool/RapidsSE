@@ -211,7 +211,7 @@ void Format::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* extract the date separator                                                 */
 /*----------------------------------------------------------------------------*/
-bool Format::bExtractDateFormat(Stz* dateFormat)
+bool Format::bExtractDateFormat(Stz* dateFormat, String* psErrMsg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
@@ -224,8 +224,10 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
          (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
          (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-         (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+         (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+      psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
       return false;
+    }
     
     // extract format separator
     Stz* pSeparator= dateFormat + i_Offset++;
@@ -237,17 +239,23 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       // FORMAT should be YYYY-MM-DD
       // expect another M
       if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'M'))
+           (*(dateFormat + i_Offset++)->azChar() != 'M')) {
+        psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       // expect DD
       if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'D') )
+           (*(dateFormat + i_Offset++)->azChar() != 'D') ) {
+        psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_YYYY;
       m_eDateComponent[1] = DC_MM;
@@ -259,17 +267,23 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       // FORMAT should be YYYY-DD-MM
       // expect DD
       if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'D'))
+           (*(dateFormat + i_Offset++)->azChar() != 'D')) {
+        psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       // expect MM
       if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'M') )
+           (*(dateFormat + i_Offset++)->azChar() != 'M') ) {
+        psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_YYYY;
       m_eDateComponent[1] = DC_DD;
@@ -282,8 +296,10 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     
     // expect MM
     if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-        (*(dateFormat + i_Offset++)->azChar() != 'M') )
+        (*(dateFormat + i_Offset++)->azChar() != 'M') ) {
+      psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
       return false;
+    }
     
     // extract format separator
     Stz* pSeparator= dateFormat + i_Offset++;
@@ -297,17 +313,23 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-          (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+        psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       // expect DD
       if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-          (*(dateFormat + i_Offset++)->azChar() != 'D') )
+          (*(dateFormat + i_Offset++)->azChar() != 'D') ) {
+        psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_MM;
       m_eDateComponent[1] = DC_YYYY;
@@ -317,19 +339,25 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       // FORMAT should be MM-DD-YYYY
       // expect DD
       if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-          (*(dateFormat + i_Offset++)->azChar() != 'D'))
+          (*(dateFormat + i_Offset++)->azChar() != 'D')) {
+        psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       // expect YYYY
       if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-          (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+        psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_MM;
       m_eDateComponent[1] = DC_DD;
@@ -342,8 +370,10 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     
     // expect DD
     if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-         (*(dateFormat + i_Offset++)->azChar() != 'D') )
+         (*(dateFormat + i_Offset++)->azChar() != 'D') ) {
+      psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
       return false;
+    }
     
     // extract format separator
     Stz* pSeparator= dateFormat + i_Offset++;
@@ -355,19 +385,25 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       // FORMAT should be DD-MM-YYYY
       // expect another M
       if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'M') )
+           (*(dateFormat + i_Offset++)->azChar() != 'M') ) {
+        psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
-      
+      }
+
       // expect YYYY
       if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
            (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
            (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+        psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_DD;
       m_eDateComponent[1] = DC_MM;
@@ -380,16 +416,22 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
            (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
            (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+        psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'M'))
+           (*(dateFormat + i_Offset++)->azChar() != 'M')) {
+        psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_DD;
       m_eDateComponent[1] = DC_YYYY;
@@ -397,8 +439,10 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       
     }
   }
-  else
+  else {
+    psErrMsg->vCopy("Unrecognised or unsupported date format"_Stz);
     return false;
+  }
 
   m_bIsSetDateComponent = true;
   m_bIsSetDateSeparator = true;

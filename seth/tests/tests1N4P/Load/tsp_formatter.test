@@ -15,44 +15,44 @@ success
 //------------------------------------------------------------------------------
 // Load data into the table with incorrect formatters
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD.MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DD.MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "XX-DD-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "XX-DD-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YY-DD-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YY-DD-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYY-DD-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYY-DD-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-XX-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-XX-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DX-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DX-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-XM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DD-XM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-MX" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DD-MX" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY/DD-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY/DD-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM-YYYD" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "DD-MM-YYYD" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-MM-YYYD" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "MM-MM-YYYD" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-DD/YYYYY" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "MM-DD/YYYYY" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM/YYYYY" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "DD-MM/YYYYY" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
 //------------------------------------------------------------------------------
 // Load data into the table with inserts (default formatter)
@@ -144,35 +144,43 @@ success
 select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch ${testName2}_tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch ${testName2}_tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch ${testName2}_tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch ${testName2}_tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch ${testName2}_tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch ${testName2}_tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
 ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 */
@@ -199,35 +207,43 @@ success
 select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch ${testName2}_tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch ${testName2}_tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch ${testName2}_tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch ${testName2}_tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch ${testName2}_tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch ${testName2}_tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
@@ -254,35 +270,43 @@ success
 select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch ${testName2}_tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
 ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch ${testName2}_tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
 ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch ${testName2}_tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
 ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch ${testName2}_tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
 ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
 ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch ${testName2}_tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch ${testName2}_tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
@@ -308,35 +332,43 @@ success
 select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch ${testName2}_tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
 ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch ${testName2}_tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
 ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch ${testName2}_tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
 ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch ${testName2}_tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
 ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
 ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch ${testName2}_tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch ${testName2}_tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
@@ -362,35 +394,43 @@ success
 select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch ${testName2}_tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch ${testName2}_tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch ${testName2}_tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch ${testName2}_tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch ${testName2}_tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch ${testName2}_tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
@@ -416,35 +456,43 @@ success
 select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch ${testName2}_tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch ${testName2}_tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch ${testName2}_tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch ${testName2}_tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch ${testName2}_tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch ${testName2}_tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
@@ -471,35 +519,43 @@ success
 select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch ${testName2}_tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
 ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch ${testName2}_tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
 ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch ${testName2}_tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
 ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch ${testName2}_tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
 ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
 ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
 ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch ${testName2}_tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
 ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch ${testName2}_tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
@@ -525,35 +581,43 @@ success
 select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch ${testName2}_tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch ${testName2}_tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch ${testName2}_tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch ${testName2}_tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch ${testName2}_tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch ${testName2}_tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch ${testName2}_tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 

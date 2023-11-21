@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : toKeyHshRow_sf_StartMarker \handler
 
+  0 locals| eError |
+
   // pipeout the (StartMarker)
   PipeIn[].pipeOut
 
@@ -16,11 +18,17 @@
   <tableNm> op__table if
 
     // create a ToRow using Table[].streamDef
-    toKeyHshRow[].new
+    toKeyHshRow[].new to eError
 
-    // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
-    Table[] StreamDefOut[].newFromTable
-    StreamDefOut[].pipeOut
+    eError EC_NONE == if
+      // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
+      Table[] StreamDefOut[].newFromTable
+      StreamDefOut[].pipeOut
+
+    else
+      eError op__execErr
+    then
+
   then
 
   // find the __affectedRows table def

@@ -5278,11 +5278,12 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 /*----------------------------------------------------------------------------*/
 /* set format from given tag set                                              */
 /*----------------------------------------------------------------------------*/
-bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
+eEC AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 {
   s32 sTagValue;
   i8 iTagValue;
   i8 i_Tag;
+  s2K sErrMsg;
 
   // - - - - - - - - - - - - - - - - - - - - -
   // C_RECORD_TERMINATOR
@@ -5305,7 +5306,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     if (sTagValue.nLength() == 1) {
       if (cRecordEnds == '0') {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
       else if (cRecordEnds == '\n') {
         pFormat->vLineEnd(LE_NL);
@@ -5315,7 +5316,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
       }
       else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
     }
     // record_ends is 2 characters
@@ -5327,9 +5328,12 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
       else if (sTagValue.bSame("\\n"_Stz)) {
         pFormat->vLineEnd(LE_NL);
       }
+      else if (sTagValue.bSame("\r\n"_Stz)) {
+        pFormat->vLineEnd(LE_CRNL);
+      }
       else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
     }
     else if (sTagValue.nLength() == 4) {
@@ -5337,12 +5341,12 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
         pFormat->vLineEnd(LE_CRNL);
       } else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
     }
     else {
       vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-      return false;
+      return EC_INVALID_LOAD_OPT_RECORD_ENDS;
     }
   }
   
@@ -5381,7 +5385,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     if (!pFormat->bIsSetEnclosedBy_Leading()) {
       if (! AM::bMetadata())
         vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
-      return false;
+      return EC_INVALID_LOAD_OPT_ENCL_TRAILING;
     }
     pFormat->vEnclosedBy_Trailing(*sTagValue.azChar());
     if (pFormat->cEnclosedBy_Trailing() == '0')
@@ -5397,10 +5401,10 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     // extract date format
-    if ( ! pFormat->bExtractDateFormat(sTagValue.szStz()) ) {
+    if ( ! pFormat->bExtractDateFormat(sTagValue.szStz(), sErrMsg) ) {
       if ( ! AM::bMetadata())
-        vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
-      return false;
+        vTrace("Invalid load : %s\n"_Stz, sErrMsg.szStz());
+      return EC_INVALID_LOAD_OPT_DATE_FORMAT;
     }
   }
   
@@ -5409,9 +5413,13 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   i_Tag = pTagSet->i_Find(C_TAG_LD_ESCAPE_CHAR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->vEscapeChar(*sTagValue.azChar());
-    if (pFormat->cEscapeChar() == '0')
+    if (sTagValue.bSame("\\0"_Stz)) {
       pFormat->vEscapeChar('\0');
+    } else {
+      pFormat->vEscapeChar(*sTagValue.azChar());
+      if (pFormat->cEscapeChar() == '0')
+        pFormat->vEscapeChar('\0');
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5423,7 +5431,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     pFormat->vMaxErrors(iTagValue);
   }
         
-  return true;
+  return EC_NONE;
 }
 
 

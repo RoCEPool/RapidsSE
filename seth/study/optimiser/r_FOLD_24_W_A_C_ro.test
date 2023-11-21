@@ -4,7 +4,7 @@
 
 LOG 'r_FOLD_24_W_A_C_ro...';
 
-trackMemory;
+trackMemory force;
 success
 
 

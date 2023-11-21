@@ -143,6 +143,9 @@ Stz* aEC[EC_ENUMS] =
   /* EC_INVALID_FLOAT_FORMAT          */ (Stz*)"EC_INVALID_FLOAT_FORMAT",       // SQL Compiler Subsystem
   /* EC_INVALID_INTEGER_FORMAT        */ (Stz*)"EC_INVALID_INTEGER_FORMAT",     // SQL Compiler Subsystem
   /* EC_INVALID_INTERFACE             */ (Stz*)"invalid interface",
+  /* EC_INVALID_LOAD_OPT_DATE_FORMAT  */ (Stz*)"EC_INVALID_LOAD_OPT_DATE_FORMAT",
+  /* EC_INVALID_LOAD_OPT_ENCL_TRAILING*/ (Stz*)"EC_INVALID_LOAD_OPT_ENCL_TRAILING",
+  /* EC_INVALID_LOAD_OPT_RECORD_ENDS  */ (Stz*)"EC_INVALID_LOAD_OPT_RECORD_ENDS",
   /* EC_INVALID_LIMIT_VALUE           */ (Stz*)"EC_INVALID_LIMIT_VALUE",        // SQL Compiler Subsystem
   /* EC_INVALID_OFFSET_VALUE          */ (Stz*)"EC_INVALID_OFFSET_VALUE",       // SQL Compiler Subsystem
   /* EC_INVALID_PARAMETER             */ (Stz*)"invalid parameter",
@@ -437,6 +440,9 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_INVALID_FLOAT_FORMAT          */ (Stz*)"EC_INVALID_FLOAT_FORMAT",           // SQL Compiler Subsystem
   /* EC_INVALID_INTEGER_FORMAT        */ (Stz*)"EC_INVALID_INTEGER_FORMAT",         // SQL Compiler Subsystem
   /* EC_INVALID_INTERFACE             */ (Stz*)"EC_INVALID_INTERFACE",
+  /* EC_INVALID_LOAD_OPT_DATE_FORMAT  */ (Stz*)"EC_INVALID_LOAD_OPT_DATE_FORMAT",
+  /* EC_INVALID_LOAD_OPT_ENCL_TRAILING*/ (Stz*)"EC_INVALID_LOAD_OPT_ENCL_TRAILING",
+  /* EC_INVALID_LOAD_OPT_RECORD_ENDS  */ (Stz*)"EC_INVALID_LOAD_OPT_RECORD_ENDS",
   /* EC_INVALID_LIMIT_VALUE           */ (Stz*)"EC_INVALID_LIMIT_VALUE",            // SQL Compiler Subsystem
   /* EC_INVALID_OFFSET_VALUE          */ (Stz*)"EC_INVALID_OFFSET_VALUE",           // SQL Compiler Subsystem
   /* EC_INVALID_PARAMETER             */ (Stz*)"EC_INVALID_PARAMETER",
@@ -739,6 +745,9 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_INVALID_FLOAT_FORMAT          */ (Stz*)"Invalid format of floating point literal",    // SQL Compiler Subsystem
   /* EC_INVALID_INTEGER_FORMAT        */ (Stz*)"Invalid format of integer literal",           // SQL Compiler Subsystem
   /* EC_INVALID_INTERFACE             */ (Stz*)"invalid interface",
+  /* EC_INVALID_LOAD_OPT_DATE_FORMAT  */ (Stz*)"Invalid load option DATE_FORMAT",
+  /* EC_INVALID_LOAD_OPT_ENCL_TRAILING*/ (Stz*)"Invalid load option ENCLOSED_BY_TRAILING",
+  /* EC_INVALID_LOAD_OPT_RECORD_ENDS  */ (Stz*)"Invalid load option RECORD_ENDS",
   /* EC_INVALID_LIMIT_VALUE           */ (Stz*)"LIMIT value must be >= 0",                    // SQL Compiler Subsystem
   /* EC_INVALID_OFFSET_VALUE          */ (Stz*)"OFFSET value must be >= 0",                   // SQL Compiler Subsystem
   /* EC_INVALID_PARAMETER             */ (Stz*)"invalid parameter",

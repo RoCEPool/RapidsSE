@@ -4,7 +4,7 @@
 
 LOG 'TPC-H Q7...';
 
-trackMemory;
+trackMemory force;
 success
 
 /pipelineName = "OptQ7"

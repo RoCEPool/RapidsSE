@@ -4,7 +4,7 @@
 
 LOG 'TPC-H Q16...';
 
-trackMemory;
+trackMemory force;
 success
 
 //NOTE:  count distinct -> count

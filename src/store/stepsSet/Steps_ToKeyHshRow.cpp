@@ -156,7 +156,7 @@ void Step::vToKeyHshRowFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[].new -- new ToKeyHshRow                                       */
+/* ToKeyHshRow[].new -- new ToKeyHshRow, pushes an error code (EC_NONE=success)*/
 /*----------------------------------------------------------------------------*/
 void Step::vToKeyHshRowNew(void)
 {
@@ -170,15 +170,18 @@ void Step::vToKeyHshRowNew(void)
 
   Format* pFmt = new Format;
 
-  bool b = AM::bFormatSetFromTagSet(pFmt,pJobTags);
-  UNUSED(b);
+  eEC eErrCode = AM::bFormatSetFromTagSet(pFmt,pJobTags);
 
-  StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
+  if (eErrCode == EC_NONE) {
+    StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
+    ToKeyHshRow* pToKeyHshRow = new ToKeyHshRow(pStreamDef,pFmt);
+    m_pLogicUnit->m_xpToKeyHshRow = pToKeyHshRow;
+    m_pDataStack->vPushInt(EC_NONE);
 
-  ToKeyHshRow* pToKeyHshRow = new ToKeyHshRow(pStreamDef,pFmt);
-      
-  m_pLogicUnit->m_xpToKeyHshRow = pToKeyHshRow;
-  
+  } else {
+    m_pDataStack->vPushInt(eErrCode);
+  }
+
   delete pFmt;
   
   EXIT();
