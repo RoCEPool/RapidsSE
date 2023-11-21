@@ -5321,10 +5321,21 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     // record_ends is 2 characters
     else if (sTagValue.nLength() == 2) {
       
-      if (sTagValue.bSame("\r\n"_Stz)) {
-        pFormat->vLineEnd(LE_CRNL);
+      if (sTagValue.bSame("\\r"_Stz)) {
+        pFormat->vLineEnd(LE_CR);
+      }
+      else if (sTagValue.bSame("\\n"_Stz)) {
+        pFormat->vLineEnd(LE_NL);
       }
       else {
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return false;
+      }
+    }
+    else if (sTagValue.nLength() == 4) {
+      if (sTagValue.bSame("\\r\\n"_Stz)) {
+        pFormat->vLineEnd(LE_CRNL);
+      } else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
         return false;
       }
