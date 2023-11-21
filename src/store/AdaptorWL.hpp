@@ -152,7 +152,7 @@ namespace STORE
 
     // Helpers
     bool bQueryInProgress();
-    i8   eToWLType(eCT eColType);
+    i8   xIdToWLType(TypeId xId);
     i8   nRowsToSend(i8 iRowsInBuf);
     void vCreateAndAddRow(
         std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row>* pRowList,

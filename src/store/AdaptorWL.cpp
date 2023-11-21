@@ -676,26 +676,27 @@ void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
     Column* pColumn = pStreamDef->pGetColumn(i);
 
     // Convert the SE eCT type to a wireline type
-    eCT eColType = pColumn->eColumnType();
-    i8 iWLType = eToWLType(eColType);
+    TypeId xTypeId = pColumn->xColumnTypeId();
+    i8 iWLType = xIdToWLType(xTypeId);
+//    i8 iWLType = eToWLType(eColType);
     DataType::type eWLType = (DataType::type) iWLType;
 
     if (iWLType < 0) {
       eEC eErrCode = EC_WL_INTERNAL_ERROR;
 
-      if (eColType < CT_NONE || eColType > CT_ENUMS) {
+      if (!xTypeId.bIsValid()) {
         Stz* szErrMsg = "Error: %s: Could not convert internal type %d to a wireline type"_Stz;
         vSerialiseErrorResponse(eErrCode,
                                 szErrMsg,
                                 aErrorMsg[eErrCode],
-                                eColType);
+                                xTypeId.iIdVal());
 
       } else {
         Stz* szErrMsg = "Error: %s: Could not convert internal type %s to a wireline type"_Stz;
         vSerialiseErrorResponse(eErrCode,
                                 szErrMsg,
                                 aErrorMsg[eErrCode],
-                                aCT[eColType]);
+                                xTypeId.szTypeName());
       }
 
       m_pStmtCtx->vGotError(true);
@@ -1973,11 +1974,14 @@ bool AdaptorWL::bQueryInProgress()
 
 
 /*----------------------------------------------------------------------------*/
-/* Convert an eCT to a wireline data type (DataType::type)                    */
+/* Convert a TypeId to a wireline data type (DataType::type)                  */
 /* We return as an i8 because we can't forward declare this enum in the hpp.  */
 /*----------------------------------------------------------------------------*/
-i8 AdaptorWL::eToWLType(eCT eColType)
+i8 AdaptorWL::xIdToWLType(TypeId xId)
 {
+  eCT eColType = xId.eCTVal();
+  eIV eIvlType;
+
   switch (eColType) {
     case CT_NONE:         return -1;
     case CT_BOOLEAN:      return DataType::BOOLEAN;
@@ -1986,8 +1990,35 @@ i8 AdaptorWL::eToWLType(eCT eColType)
     case CT_DECIMAL:      return DataType::DECIMAL;
     case CT_FLOAT:        return DataType::FLOAT;
     case CT_INTEGER:      return DataType::BIGINT;
-    case CT_INTERVAL_DT:  return DataType::INTERVAL_DAY_TO_SECOND;  // TODO: Needs to change and be a specific interval type
-    case CT_INTERVAL_YM:  return DataType::INTERVAL_YEAR_TO_MONTH;  // TODO: Needs to change and be a specific interval type
+
+    case CT_INTERVAL_DT:  // falls through
+    case CT_INTERVAL_YM:
+      eIvlType = xId.eIVVal();
+
+      switch (eIvlType) {
+        case IV_NONE:                         NEVER_REACH
+        case IV_SUBCATEGORY_YEARMONTH_START:  NEVER_REACH
+        case IV_YEAR:               return DataType::INTERVAL_YEAR;
+        case IV_MONTH:              return DataType::INTERVAL_MONTH;
+        case IV_YEAR_TO_MONTH:      return DataType::INTERVAL_YEAR_TO_MONTH;
+        case IV_SUBCATEGORY_YEARMONTH_END:    NEVER_REACH
+        case IV_SUBCATEGORY_DAYTIME_START:    NEVER_REACH
+        case IV_DAY:                return DataType::INTERVAL_DAY;
+        case IV_HOUR:               return DataType::INTERVAL_HOUR;
+        case IV_MINUTE:             return DataType::INTERVAL_MINUTE;
+        case IV_SECOND:             return DataType::INTERVAL_SECOND;
+        case IV_DAY_TO_HOUR:        return DataType::INTERVAL_DAY_TO_HOUR;
+        case IV_DAY_TO_MINUTE:      return DataType::INTERVAL_DAY_TO_MINUTE;
+        case IV_DAY_TO_SECOND:      return DataType::INTERVAL_DAY_TO_SECOND;
+        case IV_HOUR_TO_MINUTE:     return DataType::INTERVAL_HOUR_TO_MINUTE;
+        case IV_HOUR_TO_SECOND:     return DataType::INTERVAL_HOUR_TO_SECOND;
+        case IV_MINUTE_TO_SECOND:   return DataType::INTERVAL_MINUTE_TO_SECOND;
+        case IV_SUBCATEGORY_DAYTIME_END:    NEVER_REACH
+        case IV_ENUMS:                      NEVER_REACH
+        default:                            NEVER_REACH
+      }
+      NEVER_REACH
+
     case CT_TIME:         return DataType::TIME;
     case CT_TIMESTAMP:    return DataType::TIMESTAMP;
     case CT_VARCHAR:      return DataType::VARCHAR;
@@ -2109,26 +2140,132 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         xColumnWL.__set_bigintVal(iVal);
         break;
 
-      case DM_IVD:  // day-time
-        // TODO: We actually need to set the specific interval type and then only set the fields that matter.
-        wDtm = iVal;
-        xIntervalWL.__set_type(IntervalType::type::DAY_TO_SECOND);
-        xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
-        xIntervalWL.__set_day((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M));
-        xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
-        xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
-        xIntervalWL.__set_second((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
-        xIntervalWL.__set_nanoseconds((i8) (wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
-        xColumnWL.__set_intervalVal(xIntervalWL);
-        break;
-
+      case DM_IVD:  // day-time, falls through
       case DM_IVY:  // year-month
-        // TODO: We actually need to set the specific interval type and then only set the fields that matter.
+        // We need to set the specific interval type and then only set the fields that matter.
         wDtm = iVal;
-        xIntervalWL.__set_type(IntervalType::type::YEAR_TO_MONTH);
+
         xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
-        xIntervalWL.__set_year((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
-        xIntervalWL.__set_month((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12);
+
+        switch (wDtm.m_wIvl.T.m_xIvl.m_eType) {
+          case IV_NONE:                         NEVER_REACH
+          case IV_SUBCATEGORY_YEARMONTH_START:  NEVER_REACH
+
+          case IV_YEAR:
+            xIntervalWL.__set_type(IntervalType::type::YEAR);
+            xIntervalWL.__set_year((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
+            xIntervalWL.__set_month((i8) 0);
+            break;
+
+          case IV_MONTH:
+            xIntervalWL.__set_type(IntervalType::type::MONTH);
+            xIntervalWL.__set_year((i8) 0);
+            xIntervalWL.__set_month((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths);
+            break;
+
+          case IV_YEAR_TO_MONTH:
+            xIntervalWL.__set_type(IntervalType::type::YEAR_TO_MONTH);
+            xIntervalWL.__set_year((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
+            xIntervalWL.__set_month((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12);
+            break;
+
+          case IV_SUBCATEGORY_YEARMONTH_END:    NEVER_REACH
+          case IV_SUBCATEGORY_DAYTIME_START:    NEVER_REACH
+
+          case IV_DAY:
+            xIntervalWL.__set_type(IntervalType::type::DAY);
+            xIntervalWL.__set_day((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M));
+            xIntervalWL.__set_hour((i8) 0);
+            xIntervalWL.__set_minute((i8) 0);
+            xIntervalWL.__set_second((i8) 0);
+            xIntervalWL.__set_nanoseconds((i8) 0);
+            break;
+
+          case IV_HOUR:
+            xIntervalWL.__set_type(IntervalType::type::HOUR);
+            xIntervalWL.__set_day((i8) 0);
+            xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_HR * C_1M));
+            xIntervalWL.__set_minute((i8) 0);
+            xIntervalWL.__set_second((i8) 0);
+            xIntervalWL.__set_nanoseconds((i8) 0);
+            break;
+
+          case IV_MINUTE:
+            xIntervalWL.__set_type(IntervalType::type::MINUTE);
+            xIntervalWL.__set_day((i8) 0);
+            xIntervalWL.__set_hour((i8) 0);
+            xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_MIN * C_1M));
+            xIntervalWL.__set_second((i8) 0);
+            xIntervalWL.__set_nanoseconds((i8) 0);
+            break;
+
+          case IV_SECOND:
+            xIntervalWL.__set_type(IntervalType::type::SECOND);
+            xIntervalWL.__set_day((i8) 0);
+            xIntervalWL.__set_hour((i8) 0);
+            xIntervalWL.__set_minute((i8) 0);
+            xIntervalWL.__set_second((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / C_1M);
+            xIntervalWL.__set_nanoseconds((i8) (wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
+            break;
+
+          case IV_DAY_TO_HOUR:
+            xIntervalWL.__set_type(IntervalType::type::DAY_TO_HOUR);
+            xIntervalWL.__set_day((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros    / (C_SECS_PER_DAY * C_1M));
+            xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
+            xIntervalWL.__set_minute((i8) 0);
+            xIntervalWL.__set_second((i8) 0);
+            xIntervalWL.__set_nanoseconds((i8) 0);
+            break;
+
+          case IV_DAY_TO_MINUTE:
+            xIntervalWL.__set_type(IntervalType::type::DAY_TO_MINUTE);
+            xIntervalWL.__set_day((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros    / (C_SECS_PER_DAY * C_1M));
+            xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
+            xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
+            xIntervalWL.__set_second((i8) 0);
+            xIntervalWL.__set_nanoseconds((i8) 0);
+            break;
+
+          case IV_DAY_TO_SECOND:
+            xIntervalWL.__set_type(IntervalType::type::DAY_TO_SECOND);
+            xIntervalWL.__set_day((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros    / (C_SECS_PER_DAY * C_1M));
+            xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
+            xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
+            xIntervalWL.__set_second((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
+            xIntervalWL.__set_nanoseconds((i8) (wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
+            break;
+
+          case IV_HOUR_TO_MINUTE:
+            xIntervalWL.__set_type(IntervalType::type::HOUR_TO_MINUTE);
+            xIntervalWL.__set_day((i8) 0);
+            xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   / (C_SECS_PER_HR * C_1M));
+            xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
+            xIntervalWL.__set_second((i8) 0);
+            xIntervalWL.__set_nanoseconds((i8) 0);
+            break;
+
+          case IV_HOUR_TO_SECOND:
+            xIntervalWL.__set_type(IntervalType::type::HOUR_TO_SECOND);
+            xIntervalWL.__set_day((i8) 0);
+            xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   / (C_SECS_PER_HR * C_1M));
+            xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
+            xIntervalWL.__set_second((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
+            xIntervalWL.__set_nanoseconds((i8) (wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
+            break;
+
+          case IV_MINUTE_TO_SECOND:
+            xIntervalWL.__set_type(IntervalType::type::MINUTE_TO_SECOND);
+            xIntervalWL.__set_day((i8) 0);
+            xIntervalWL.__set_hour((i8) 0);
+            xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_MIN * C_1M));
+            xIntervalWL.__set_second((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
+            xIntervalWL.__set_nanoseconds((i8) (wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
+            break;
+
+          case IV_SUBCATEGORY_DAYTIME_END:      NEVER_REACH
+          case IV_ENUMS:                        NEVER_REACH
+        }
+
         xColumnWL.__set_intervalVal(xIntervalWL);
         break;
 
