@@ -125,6 +125,7 @@ namespace STORE
 		void vCopyColPpg(ColPpg* pColPpg);
 		void vCopyKeyMap(KeyMap* pKeyMap);
 
+		void vCopyConstraintStack(TypedStack* pConstraintStack);
     void vCopyInitStack(TypedStack* pInitStack);
 
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);

@@ -945,33 +945,20 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 	// set the keyMap (key information)
 	pOpSketch->vCopyKeyMap(pKeyMap);
 
-	/*
-pOpSketch->m_pColMap = new ColMap;
-
-pOpSketch->m_pColMap->m_nCols = 1;
-pOpSketch->m_pColMap->m_axCols[0].m_i_EmittedCol = 0;
-
-
-class ColKey : public Object
-{
-		static const i8 C_COLKEY = 128;
-
-public:
-i8 m_nCols;
-
-struct {
-		i8   m_i_EmittedCol;  // emitted column $n
-		i8   m_i_Cell;        // cell (base 0) of key
-
-} m_axCols[C_COLKEY];
-
-*/
-
-	// generate the expression stacks
+	// generate the expression stack
 	pOpSketch->vGenerateExprStacks(sOrdAggExpr);
 
-//	pOpSketch->vGenerateExprStacks("ORDGROUPBY type integer as C0_l_orderkey $1\n"
-//																 " aggregates type integer as C0_l_orderkey $K1 , type decimal as C1_COL2 )  $5 sum"_Stz);
+	// generate the having cluase constraint expression stack
+	if ( pOpDef->pArgDef_constraint() ) {
+
+		// get having constraint from OP
+		Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
+
+		pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
+	}
+
+	// for testing
+	//pOpSketch->vGenerateExprStacks(" type BOOLEAN C1_TOTAL 100.00  >  "_Stz, true /* constraint */);
 
   return pOpSketch;
 }
@@ -1342,6 +1329,13 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pH
     // copy the colMap
     pOpSketch->vCopyColMap(pLastOp->m_pColMap);
   }
+
+	if (pLastOp->eSketchKind() == SK_ORDAGG) {
+
+		// copy the constraint expression stack
+		if (pLastOp->m_pConstraintStack->nValues())
+		pOpSketch->vCopyConstraintStack(pLastOp->m_pConstraintStack);
+	}
 
   // set the labels in the opSketch
   sLabel = "L_AddRowToTubPot"_Stz;

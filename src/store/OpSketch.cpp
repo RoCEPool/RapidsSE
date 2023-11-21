@@ -304,6 +304,21 @@ bool OpSketch::bIsEmittedColPayload(i8 i_emittedCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy the ConstraintStack                                                   */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vCopyConstraintStack(TypedStack* pConstraintStack)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	TypeValueArea xTypeValueArea;
+
+	for (i8 i = pConstraintStack->nValues() - 1; i >= 0; i--) {
+		pConstraintStack->vPeekTypeValueArea(i, &xTypeValueArea);
+		m_pConstraintStack->vPushStz(xTypeValueArea.szStz());
+	}
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy the InitStack                                                         */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vCopyInitStack(TypedStack* pInitStack)
@@ -1115,103 +1130,103 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
 
 #ifdef WITH_DEBUG_VERSION
-//  TypeValueArea* pTypedCell;
-//	i8 nExpr;
-//
-//  vTrace("\n*****************************************************\n"_Stz);
-//  vTrace("* OP SKETCH: %15s                        *\n"_Stz, aSK[m_eSketchKind]);
-//  vTrace("*****************************************************\n"_Stz);
-//
-//  // dump the TypeStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("EXPRTYPE STACK:\n"_Stz);
-//  nExpr = pExprType->nItems() - 1;
-//
-//  while ( nExpr >= 0) {
-//    eDM eType = (eDM)pExprType->iPeek(nExpr--);
-//    vTrace("%s\n"_Stz, aDM[eType]);
-//  }
-//
-//  // dump the ExprStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("EXPRSTACK:\n"_Stz);
-//  nExpr = m_pExprStack->nValues() - 1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-// // dump the ConstraintStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("CONSTRAINTSTACK:\n"_Stz);
-//  nExpr = m_pConstraintStack->nValues() - 1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pConstraintStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//  // dump the NullStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("NULLSTACK:\n"_Stz);
-//  nExpr = m_pNullStack ? m_pNullStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pNullStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//  // dump the InitStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("INITSTACK:\n"_Stz);
-//  nExpr = m_pInitStack ? m_pInitStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pInitStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//  // dump the LowerStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("LOWERSTACK:\n"_Stz);
-//  nExpr = m_pLowerStack ? m_pLowerStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pLowerStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//  // dump the UpperStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("UPPERSTACK:\n"_Stz);
-//  nExpr = m_pUpperStack ? m_pUpperStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//  vTrace("--------------------------------------\n"_Stz);
-//
-//  // dump the m_pGbyStack stack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("GROUPBYSTACK:\n"_Stz);
-//  nExpr = m_pGbyStack ? m_pGbyStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//	// dump the m_pOrdAggStack stack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("ORDAGGSTACK:\n"_Stz);
-//  nExpr = m_pOrdAggStack ? m_pOrdAggStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pOrdAggStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
+  TypeValueArea* pTypedCell;
+	i8 nExpr;
+
+  vTrace("\n*****************************************************\n"_Stz);
+  vTrace("* OP SKETCH: %15s                        *\n"_Stz, aSK[m_eSketchKind]);
+  vTrace("*****************************************************\n"_Stz);
+
+  // dump the TypeStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("EXPRTYPE STACK:\n"_Stz);
+  nExpr = pExprType->nItems() - 1;
+
+  while ( nExpr >= 0) {
+    eDM eType = (eDM)pExprType->iPeek(nExpr--);
+    vTrace("%s\n"_Stz, aDM[eType]);
+  }
+
+  // dump the ExprStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("EXPRSTACK:\n"_Stz);
+  nExpr = m_pExprStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+ // dump the ConstraintStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("CONSTRAINTSTACK:\n"_Stz);
+  nExpr = m_pConstraintStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pConstraintStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the NullStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("NULLSTACK:\n"_Stz);
+  nExpr = m_pNullStack ? m_pNullStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pNullStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the InitStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("INITSTACK:\n"_Stz);
+  nExpr = m_pInitStack ? m_pInitStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pInitStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the LowerStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("LOWERSTACK:\n"_Stz);
+  nExpr = m_pLowerStack ? m_pLowerStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pLowerStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the UpperStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("UPPERSTACK:\n"_Stz);
+  nExpr = m_pUpperStack ? m_pUpperStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+  vTrace("--------------------------------------\n"_Stz);
+
+  // dump the m_pGbyStack stack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("GROUPBYSTACK:\n"_Stz);
+  nExpr = m_pGbyStack ? m_pGbyStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+	// dump the m_pOrdAggStack stack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("ORDAGGSTACK:\n"_Stz);
+  nExpr = m_pOrdAggStack ? m_pOrdAggStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pOrdAggStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
 
 #endif
 
@@ -1634,7 +1649,7 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   if ( ! pColumn ) {
     if(m_eSketchKind == SK_SEMIJOIN || m_eSketchKind == SK_ANTIJOIN )
       pColumn = m_pStreamDefRht->pFindColumn(pTkn->szChars());
-    else if (m_eSketchKind == SK_INDEXJOIN) {
+    else if (m_eSketchKind == SK_INDEXJOIN || m_eSketchKind == SK_ORDAGG) {
       pColumn = m_pStreamDefOut->pFindColumn(pTkn->szChars());
     }
   }
@@ -2028,6 +2043,11 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       if (ePreExp == PE_GKY) {
         break;
       }
+
+			if ( bConstraint) {
+				pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
+				break;
+			}
 
       if (ePreExp == PE_GBY) {
         //sPush.vSprint("_ASSIGN(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
@@ -2429,6 +2449,11 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
     case SK_AGGREG:
     case SK_GBYAGG:
 		case SK_ORDAGG:
+			if (bConstraint) {
+				RASSERT(m_eSketchKind == SK_ORDAGG);
+				return m_pConstraintStack;
+			}
+
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;
@@ -2437,12 +2462,6 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
         return m_pGbyStack;
 
       return m_pInitStack;
-
-//    case SK_ORDAGG:
-//      if (ePreExp == PE_GBY)
-//        return m_pGbyStack;
-//      else
-//        return m_pExprStack;
 
     case SK_FILTER:
     case SK_INDEXSCAN:
