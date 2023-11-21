@@ -531,7 +531,6 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
-  StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
 	// get the colInj
 	ColInj* pColInj = pOpDef->m_pColInj;
@@ -555,10 +554,9 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
-  // HACK-OPTIMISER
   // set the streamDefRht
   Table* pTable = pIndex->pTable();
-  pStreamDefRht = pTable->pStreamDef();
+  StreamDef* pStreamDefRht = pTable->pStreamDef();
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
@@ -821,14 +819,9 @@ OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   // get join constraint from OP
   Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
 
-  // get the streamDefLft
+  // get the streamDefLft and streamDefOut
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
-
-  //HACK-OPTIMISER
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
-
-  //HACK-OPTIMISER
-  StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
   // get the index
   Index *pIndex = pOpDef->m_pIndex_indexSemi;
@@ -837,11 +830,10 @@ OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   // generate the code for the semi-join
   pOpSketch = new OpSketch(pStageDef, i_Op, sJoinExpr, m_eHandlerKind, SK_SEMIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
 
-  //HACK-OPTIMISER
   // set the streamDefRht
   // pOpSketch->vStreamDefRht(pStreamDefRht);
   Table* pTable = pIndex->pTable();
-  pStreamDefRht = pTable->pStreamDef();
+  StreamDef* pStreamDefRht = pTable->pStreamDef();
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
@@ -1025,9 +1017,6 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
 
-  //HACK-OPTIMISER
-  StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
-
   // get the index
   Index *pIndex = pOpDef->m_pIndex_indexSemi;
 
@@ -1035,11 +1024,9 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   // generate the code for the semi-join
   pOpSketch = new OpSketch(pStageDef, i_Op, sJoinExpr, m_eHandlerKind, SK_ANTIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
 
-  //HACK-OPTIMISER
   // set the streamDefRht
-  // pOpSketch->vStreamDefRht(pStreamDefRht);
   Table* pTable = pIndex->pTable();
-  pStreamDefRht = pTable->pStreamDef();
+	StreamDef* pStreamDefRht = pTable->pStreamDef();
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
