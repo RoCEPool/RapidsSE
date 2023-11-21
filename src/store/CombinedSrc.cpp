@@ -565,6 +565,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         break;
 
       case SK_INFLATE_ROW:
+/*
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // open the inflateRow code fragments file
         bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/InflateRow.cpp"_Stz);
@@ -589,6 +590,30 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the inflateRow code fragments file
         pOperatorFile->vClose();
+*/
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// open the inflateRow code fragments file
+				bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/InflateRow.cpp"_Stz);
+				RASSERT ( bOpened );
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// new ROWBUFFER handler
+				vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// operator stub
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// append to stencil
+				vAppendStencilTo(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "vInflatePdsRowBegin"_Stz, pOperatorFile);
+				vAppendCodeInflateRowCols(pOpSketch, "vInflatePdsRowCol"_Stz, pOperatorFile);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// close the inflateRow code fragments file
+				pOperatorFile->vClose();
 
         break;
 

@@ -368,6 +368,9 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
   ( ((byte*)addr1 >= (byte*)addr2) \
     ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
 
+#define C_HEADER_SIZE 8
+#define C_STRAREA_SIZE 8
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

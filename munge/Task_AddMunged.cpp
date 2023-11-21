@@ -26627,7 +26627,7 @@ void Task::vAddMunged(Task* )
     "    //[op].stageNm@ \"finding functions for stage %v\" str.format .\n"
     "\n"
     "    \"iCrwHandler_\" [op].stageNm@ str.cat LibInfo[].find to Fun0[]\n"
-    "    \"iPdsHandler_\" [op].stageNm@ str.cat LibInfo[].find to Fun1_[]\n"
+    "    \"iPdsRowHandler_\" [op].stageNm@ str.cat LibInfo[].find to Fun1_[]\n"
     "    \"iRowHandler_\" [op].stageNm@ str.cat LibInfo[].find to Fun1[]\n"
     "    \"iIndexHandler_\" [op].stageNm@ str.cat LibInfo[].find to Fun2[]\n"
     "    \"iEosHandler_\" [op].stageNm@ str.cat LibInfo[].find to Fun3[]\n"
