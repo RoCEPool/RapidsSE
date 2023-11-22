@@ -23,7 +23,7 @@ CREATE INDEX IxP_PARTKEY ON ${testName2}_part(p_partkey);
 affected: 0
 
 // load the table
-load ${testName2}_part "../TPCH/SF_0001/part.csv";
+load ${testName2}_part "../TPCH/SF_0001/part.tbl";
 success
 
 select count(*) from ${testName2}_part;

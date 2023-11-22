@@ -26,7 +26,7 @@ create index IxC_NATIONKEY ON ${testName2}_customer (C_NATIONKEY)  ;
 affected: 0
 
 // load the table
-load ${testName2}_customer "../TPCH/SF_0001/customer.csv";
+load ${testName2}_customer "../TPCH/SF_0001/customer.tbl";
 success
 
 select count(*) from ${testName2}_customer;

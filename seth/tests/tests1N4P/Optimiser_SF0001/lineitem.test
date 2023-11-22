@@ -42,7 +42,7 @@ create index IxL_RECEIPTDATE  ON ${testName2}_lineitem (L_RECEIPTDATE)  ;
 affected: 0
 
 // load the table
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 select count(*) from ${testName2}_lineitem;

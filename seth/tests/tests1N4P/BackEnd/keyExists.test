@@ -59,13 +59,13 @@ create index IxL_ORDERKEY on ${testName2}_LINEITEM (L_ORDERKEY);
 success
 
 
-load ${testName2}_customer           "../TPCH/SF_0001/customer.csv" ;
+load ${testName2}_customer           "../TPCH/SF_0001/customer.tbl" ;
 success
 
-load ${testName2}_orders             "../TPCH/SF_0001/orders.csv" ;
+load ${testName2}_orders             "../TPCH/SF_0001/orders.tbl" ;
 success
 
-load ${testName2}_lineitem           "../TPCH/SF_0001/lineitem.csv" ;
+load ${testName2}_lineitem           "../TPCH/SF_0001/lineitem.tbl" ;
 success
 
 //------------------------------------------------------------------------------

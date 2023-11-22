@@ -34,7 +34,7 @@ create index IxO_ORDERDATE  ON Orders  (O_ORDERDATE)  ;
 affected: 0
 
 // load the table
-load orders "../TPCH/SF_0001/orders.csv";
+load orders "../TPCH/SF_0001/orders.tbl";
 success
 
 select count(*) from orders;

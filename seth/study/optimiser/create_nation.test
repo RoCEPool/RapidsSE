@@ -25,7 +25,7 @@ CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);
 affected: 0
 
 // load the table
-loadReplicated nation "../TPCH/SF_0001/nation.csv";
+loadReplicated nation "../TPCH/SF_0001/nation.tbl";
 success
 
 //select count(*) from nation;

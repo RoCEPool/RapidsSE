@@ -44,7 +44,7 @@ create index IxL_RECEIPTDATE  ON Lineitem (L_RECEIPTDATE)  ;
 affected: 0
 
 // load the table
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 select count(*) from lineitem;

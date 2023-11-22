@@ -27,7 +27,7 @@ affected: 0
 
 -----------------------------------------------------------------------
 // load the table
-load supplier "../TPCH/SF_0001/supplier.csv";
+load supplier "../TPCH/SF_0001/supplier.tbl";
 success
 
 select count(*) from supplier;

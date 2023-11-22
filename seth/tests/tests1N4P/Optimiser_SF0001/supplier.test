@@ -25,7 +25,7 @@ affected: 0
 
 -----------------------------------------------------------------------
 // load the table
-load ${testName2}_supplier "../TPCH/SF_0001/supplier.csv";
+load ${testName2}_supplier "../TPCH/SF_0001/supplier.tbl";
 success
 
 select count(*) from ${testName2}_supplier;

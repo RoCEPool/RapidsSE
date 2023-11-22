@@ -34,7 +34,7 @@ affected: 0
 //------------------------------------------------------------------------------
 // load the table
 
-load customer "../TPCH/SF_0001/customer.csv";
+load customer "../TPCH/SF_0001/customer.tbl";
 success
 
 

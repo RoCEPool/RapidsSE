@@ -28,7 +28,7 @@ success
 create index IxL_SHIPDATE ON ${testName2}_Lineitem (L_SHIPDATE)   ;
 success;
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 /optimise_passthru 

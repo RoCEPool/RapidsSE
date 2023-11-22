@@ -27,7 +27,7 @@ success
 CREATE INDEX IxL_ORDERKEY ON ${testName2}_Lineitem(L_ORDERKEY);
 success
 
-load ${testName2}_Lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_Lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 //------------------------------------------------------------------------------------

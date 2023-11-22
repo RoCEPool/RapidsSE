@@ -41,10 +41,10 @@ create table ${testName2}_part (
 );
 success
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
-load ${testName2}_part "../TPCH/SF_0001/part.csv";
+load ${testName2}_part "../TPCH/SF_0001/part.tbl";
 success
 
 /optimise_passthru 

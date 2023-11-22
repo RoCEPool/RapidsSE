@@ -28,7 +28,7 @@ success
 create index IxL_ORDERKEY  ON ${testName2}_Lineitem (L_ORDERKEY)  ;
 success;
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 create table ${testName2}_customer (
@@ -46,7 +46,7 @@ success
 create index IxC_CUSTKEY  ON ${testName2}_Customer (C_CUSTKEY)   ;
 success
 
-load ${testName2}_customer "../TPCH/SF_0001/customer.csv";
+load ${testName2}_customer "../TPCH/SF_0001/customer.tbl";
 success
 
 create table ${testName2}_orders (
@@ -65,7 +65,7 @@ success
 create index IxO_CUSTKEY  ON ${testName2}_orders  (O_CUSTKEY)  ;
 success
 
-load ${testName2}_Orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_Orders "../TPCH/SF_0001/orders.tbl";
 success
 
 /optimise_passthru 

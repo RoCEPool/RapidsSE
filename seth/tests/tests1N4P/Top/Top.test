@@ -37,7 +37,7 @@ success
 create index IxL_ORDER_PART ON ${testName2}_lineitem(L_ORDERKEY, L_PARTKEY);
 success
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 /pipeline_def
