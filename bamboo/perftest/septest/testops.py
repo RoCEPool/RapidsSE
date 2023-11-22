@@ -12,13 +12,12 @@ LOG = logging.getLogger(__name__)
 
 C_GENERAL_SSH_TIMEOUT_SEC = 60
 
-C_JDBC_DRIVER_DIR = pathlib.Path("../../seth/bin")
-C_JDBC_DRIVER_GLOB = "rapidsse-jdbc-*.*.*.jar"
+C_JDBC_DRIVER_DIR = pathlib.Path("../../shell")
+C_JDBC_DRIVER_GLOB = "sejdbc-*.*.*.jar"
 
 # Cached path to the found JDBC driver
 C_JDBC_DRIVER: pathlib.Path = None
-C_JDBC_URL_FMT = 'jdbc:rapidsse:{0}/bin/rapidsse?extraargs="--name {1} ' \
-                 '--sen {0}/sen --commands {0}/commands --appendTrace"'
+C_JDBC_URL_FMT = 'jdbc:se://localhost:{0}'
 
 C_PERF_TESTS_DIR = "perftests"
 C_SUPPORT_FILES_DIR = f"{C_PERF_TESTS_DIR}/supportFiles"
@@ -126,7 +125,7 @@ def write_jmeter_property_file(host: str, cluster_cfg: ClusterConfig):
     Generates a JMeter user property file and writes it to the node
     """
 
-    jdbc_url = C_JDBC_URL_FMT.format(cluster_cfg.get_dir(), cluster_cfg.get_first_node_name())
+    jdbc_url = C_JDBC_URL_FMT.format(cluster_cfg.get_external_port())
 
     lines = [
         "# Classpath to find the RapidsSE JDBC driver",

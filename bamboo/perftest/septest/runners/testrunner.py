@@ -280,16 +280,8 @@ class TestRunner:
         # Where did we copy the jmeter properties file to?
         jmeter_properties_path = testops.get_remote_jmeter_property_file_path(self.cluster_config)
         log_file_path = self.__remote_test_log_file_path()
-        rapidsse_bin_dir = f"{self.cluster_config.get_dir()}/bin"
 
-        # We need to run jmeter from the <install>/bin directory so that the JDBC driver
-        # can invoke the SE prompt and the SE prompt can find libRapidsSE.so.
-        # We need to set the LD_LIBRARY_PATH so that the rapidsse binary can find the libRapidsSE.so.
-        # If we tried to run this on MacOS then we would need to run jmeter from the
-        # <install_dir>/bin directory because the rapidsse executable has a dependency on
-        # the file "../bin/libRapidsse.dylib"
-        jmeter_command = f"cd {self.remote_test_dir} && " \
-                         f"export JVM_ARGS=\"-Dnashorn.args=--no-deprecation-warning\" && " \
+        jmeter_command = f"export JVM_ARGS=\"-Dnashorn.args=--no-deprecation-warning\" && " \
                          f"{C_JMETER_BINARY} -n " \
                          f"-p {jmeter_properties_path} " \
                          f"-t {self.remote_test_file} " \
