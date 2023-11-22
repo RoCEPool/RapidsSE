@@ -3,12 +3,12 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -28,11 +28,11 @@ create table datums (
 );
 success
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
+load ${testName2}_datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select null from datums;
+select null from ${testName2}_datums;
 rows:
   (null)
   (null)
@@ -48,7 +48,7 @@ rows:
   (null)
   (null)
 
-select cast(null as boolean) from datums;
+select cast(null as boolean) from ${testName2}_datums;
 rows:
   (null)
   (null)
@@ -64,7 +64,7 @@ rows:
   (null)
   (null)
 
-select cast(null as char) from datums;
+select cast(null as char) from ${testName2}_datums;
 rows:
   (null)
   (null)
@@ -80,7 +80,7 @@ rows:
   (null)
   (null)
 
-select cast(null as decimal) from datums;
+select cast(null as decimal) from ${testName2}_datums;
 rows:
   (null)
   (null)
@@ -96,7 +96,7 @@ rows:
   (null)
   (null)
 
-select cast(null as integer) from datums;
+select cast(null as integer) from ${testName2}_datums;
 rows:
   (null)
   (null)
@@ -112,7 +112,7 @@ rows:
   (null)
   (null)
 
-drop table datums;
+drop table ${testName2}_datums;
 success
 
 // get memory leaks
@@ -122,7 +122,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table datums;
+  drop table ${testName2}_datums;
   mute
   
   bye;

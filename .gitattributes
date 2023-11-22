@@ -21,3 +21,4 @@
 ThirdParty/tcc/bin/ filter=lfs diff=lfs merge=lfs -text
 ThirdParty/tcc/lib/ filter=lfs diff=lfs merge=lfs -text
 *.oplx filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text

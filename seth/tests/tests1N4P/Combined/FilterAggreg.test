@@ -2,10 +2,10 @@
 -- Filter-Aggregate --- combined 0 Operators
 --------------------------------------------------------------------------------
 
-//trackMemory;
+//trackmemory force;
 //success;
 
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,7 +25,7 @@ create table lineitem (
 );
 success
 
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 /optimise_passthru 
@@ -36,7 +36,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | gbyAgg " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
                   aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY ) L_QUANTITY sum "
      | combined 0
@@ -69,7 +69,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | gbyAgg " groupBy type INTEGER $1
        aggregates type INTEGER $K1 , type DECIMAL ) $5 sum "
      | combined 0
@@ -103,7 +103,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | filter " type BOOLEAN  L_ORDERKEY 2  >=  "
      | gbyAgg " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
                   aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY ) L_QUANTITY sum"
@@ -131,7 +131,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
 //MemoryLeaks;
@@ -139,7 +139,7 @@ success
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

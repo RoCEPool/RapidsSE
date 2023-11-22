@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* it_logMsg.sen -- Define __logMsg table                                     */
+/*============================================================================*/
+
+" it_logMsg.sen" .verbose
+
+: start::it_logMsg
+
+  // C_TDEF_LOGMSG
+  
+  STD_BOOTFORK_TAG
+  "
+  define table __logMsg (
+    tsp            TIMESTAMP      NOT NULL ,
+    message        VARCHAR        NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

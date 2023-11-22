@@ -68,6 +68,17 @@ TaskList::TaskList(eQK eKind)
 TaskList::~TaskList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  Task* pTask;
+  vGrabLock();
+  while ((pTask = pPopTask()) != nullptr) {
+
+    pTask->vGrabTaskLock((Stz *) __func__);
+    pTask->vState(TS_DELETING);
+    pTask->vDropTaskLock((Stz *) __func__);
+
+    delete pTask;
+  }
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,6 +180,25 @@ i8 TaskList::nTasks(void)
   i8 nTasks = ListNL_t<Task>::nItems();
 
   return nTasks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* repair                                                                     */
+/*----------------------------------------------------------------------------*/
+void TaskList::vRepairList(Object* pObject)
+{
+  _static_
+  TaskList* pTaskList = _pTaskList(pObject);
+  Task* pTask;
+
+  pTaskList->vGrabLock();
+  while ((pTask = pTaskList->pPopTask()) != nullptr) {
+    pTask->vState(TS_DELETING);
+    delete pTask;
+  }
+  pTaskList->vDropLock();
+
+  delete pTaskList;
 }
 
 /*----------------------------------------------------------------------------*/

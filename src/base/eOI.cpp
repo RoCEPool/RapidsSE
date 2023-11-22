@@ -7,11 +7,14 @@
 Stz* aOI[OI_ENUMS]
 {
   /*  0 */ "OI_NONE"_Stz,
-
+  
+  /*    */ "OI_AFFECTEDROWS"_Stz,
+  /*    */ "OI_CALLPIPELINE"_Stz,
   /*    */ "OI_COMMAND"_Stz,
   /*    */ "OI_COMPILEERRORS"_Stz,
   /*    */ "OI_COUNT"_Stz,
   /*    */ "OI_EXECERRORS"_Stz,
+  /*    */ "OI_FORKCOMMAND"_Stz,
   /*    */ "OI_LOADRESULT"_Stz,
   /*    */ "OI_LOCKSTATS"_Stz,
   /*    */ "OI_NODEINFO"_Stz,
@@ -21,6 +24,7 @@ Stz* aOI[OI_ENUMS]
   /*    */ "OI_PROMPTOUT"_Stz,
   /*    */ "OI_SEEKOFFSETS"_Stz,
   /*    */ "OI_TOTALUNITS"_Stz,
+  /*    */ "OI_WARNINGS"_Stz,
 
 //  /*    */ "OI_ENUMS"_Stz,
 };

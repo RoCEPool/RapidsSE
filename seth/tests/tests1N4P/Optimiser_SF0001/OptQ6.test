@@ -1,13 +1,13 @@
 --------------------------------------------------------------------------------
 -- tpch query6 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 /*
 select
   sum(l_extendedprice*l_discount) as revenue
 from
-  lineitem
+  ${testName2}_lineitem
 where
   l_shipdate >= DATE '1994-01-01'
   and l_shipdate < DATE '1995-01-01'
@@ -20,7 +20,7 @@ where
 select
   sum(l_extendedprice*l_discount) as revenue
 from
-  lineitem
+  ${testName2}_lineitem
 where
   l_shipdate >= DATE '1994-01-01'
   and l_shipdate < DATE '1995-01-01'

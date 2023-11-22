@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- tpch query10 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 /pipelineName = "OptQ10"
@@ -15,10 +15,10 @@ select
   c_phone,
   c_comment
 from
-  customer,
-  orders,
-  lineitem,
-  nation
+  ${testName2}_customer,
+  ${testName2}_orders,
+  ${testName2}_lineitem,
+  ${testName2}_nation
 where
   c_custkey = o_custkey
   and l_orderkey = o_orderkey

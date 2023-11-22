@@ -3,61 +3,61 @@
 /*----------------------------------------------------------------------------*/
 
 // create the tables
-create table tsp (
+create table ${testName2}_tsp (
 tsp_key    INTEGER     NOT NULL,
 tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-create index idx on tsp (tsp_key);
+create index idx on ${testName2}_tsp (tsp_key);
 success
 
 //------------------------------------------------------------------------------
 // Load data into the table with incorrect formatters
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD.MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DD.MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "XX-DD-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "XX-DD-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YY-DD-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YY-DD-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYY-DD-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYY-DD-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-XX-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-XX-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DX-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DX-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-XM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DD-XM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-MX" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DD-MX" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY/DD-MM" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY/DD-MM" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM-YYYD" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "DD-MM-YYYD" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-MM-YYYD" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "MM-MM-YYYD" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-DD/YYYYY" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "MM-DD/YYYYY" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM/YYYYY" ;
-failure contains: 'invalid command'
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "DD-MM/YYYYY" ;
+failure contains: 'Invalid load option DATE_FORMAT'
 
 //------------------------------------------------------------------------------
 // Load data into the table with inserts (default formatter)
 /*
-begin insert tsp;
+begin insert ${testName2}_tsp;
 success
 
 insert row "1,1901-02-03 01:01:01";
@@ -141,428 +141,492 @@ success
 end insert;
 success
 
-select * from tsp;
+select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
 ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 */
 
-drop table tsp;
+drop table ${testName2}_tsp;
 success
 
 //------------------------------------------------------------------------------
 // Load data into the table with default formatter settings
 
 // create the tables
-create table tsp (
+create table ${testName2}_tsp (
   tsp_key    INTEGER     NOT NULL,
   tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-Load tsp "../DATA/Load/tsp_YYYY-MM-DD.csv" ;
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-MM-DD.csv" ;
 success
 
-create index idx on tsp (tsp_key);
+create index idx on ${testName2}_tsp (tsp_key);
 success
 
-select * from tsp;
+select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table ${testName2}_tsp;
 success
 
 //------------------------------------------------------------------------------
 // Load data into the table with default formatter settings
 
 // create the tables
-create table tsp (
+create table ${testName2}_tsp (
   tsp_key    INTEGER     NOT NULL,
   tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
 
-Load tsp "../DATA/Load/tsp_YYYY-MM-DD.csv" <date_format> = "YYYY-MM-DD";
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-MM-DD.csv" <date_format> = "YYYY-MM-DD";
 success
 
-create index idx on tsp (tsp_key);
+create index idx on ${testName2}_tsp (tsp_key);
 success
 
-select * from tsp;
+select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
 ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
 ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
 ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
 ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
 ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table ${testName2}_tsp;
 success
 
 //------------------------------------------------------------------------------
 // Load data into the table with DATE FORMAT YYYY-DD-MM
 // create the tables
 
-create table tsp (
+create table ${testName2}_tsp (
   tsp_key    INTEGER     NOT NULL,
   tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" <date_format> = "YYYY-DD-MM";
+Load ${testName2}_tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" <date_format> = "YYYY-DD-MM";
 success
 
-create index idx on tsp (tsp_key);
+create index idx on ${testName2}_tsp (tsp_key);
 success
 
-select * from tsp;
+select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
 ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
 ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
 ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
 ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
 ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table ${testName2}_tsp;
 success
 
 //------------------------------------------------------------------------------
 // Load data into the table with DATE FORMAT DD-YYYY-MM
 // create the tables
 
-create table tsp (
+create table ${testName2}_tsp (
 tsp_key    INTEGER     NOT NULL,
 tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-Load tsp "../DATA/Load/tsp_DD-YYYY-MM.csv" <date_format> = "DD-YYYY-MM";
+Load ${testName2}_tsp "../DATA/Load/tsp_DD-YYYY-MM.csv" <date_format> = "DD-YYYY-MM";
 success
 
-create index idx on tsp (tsp_key);
+create index idx on ${testName2}_tsp (tsp_key);
 success
 
-select * from tsp;
+select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table ${testName2}_tsp;
 success
 
 //------------------------------------------------------------------------------
 // Load data into the table with DATE FORMAT DD-MM-YYYY
 // create the tables
 
-create table tsp (
+create table ${testName2}_tsp (
 tsp_key    INTEGER     NOT NULL,
 tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-Load tsp "../DATA/Load/tsp_DD-MM-YYYY.csv" <date_format> = "DD-MM-YYYY";
+Load ${testName2}_tsp "../DATA/Load/tsp_DD-MM-YYYY.csv" <date_format> = "DD-MM-YYYY";
 success
 
-create index idx on tsp (tsp_key);
+create index idx on ${testName2}_tsp (tsp_key);
 success
 
-select * from tsp;
+select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table ${testName2}_tsp;
 success
 
 //------------------------------------------------------------------------------
 // Load data into the table with DATE FORMAT MM/DD/YYYY
 // create the tables
 
-create table tsp (
+create table ${testName2}_tsp (
   tsp_key    INTEGER     NOT NULL,
   tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-Load tsp "../DATA/Load/tsp_MM-DD-YYYY_backslash.csv"
+Load ${testName2}_tsp "../DATA/Load/tsp_MM-DD-YYYY_backslash.csv"
   <date_format> = "MM/DD/YYYY";
 success
 
-create index idx on tsp (tsp_key);
+create index idx on ${testName2}_tsp (tsp_key);
 success
 
-select * from tsp;
+select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
 ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
 ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
 ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
 ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
 ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
 ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
 ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table ${testName2}_tsp;
 success
 
 //------------------------------------------------------------------------------
 // Load data into the table with DATE FORMAT MM/YYYY/DD
 // create the tables
 
-create table tsp (
+create table ${testName2}_tsp (
   tsp_key    INTEGER     NOT NULL,
   tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-Load tsp "../DATA/Load/tsp_MM-YYYY-DD_backslash.csv" <date_format> = "MM/YYYY/DD";
+Load ${testName2}_tsp "../DATA/Load/tsp_MM-YYYY-DD_backslash.csv" <date_format> = "MM/YYYY/DD";
 success
 
-create index idx on tsp (tsp_key);
+create index idx on ${testName2}_tsp (tsp_key);
 success
 
-select * from tsp;
+select * from ${testName2}_tsp;
 rows: 26
 
-predicateFetch tsp "tsp_key 8 =";
+// predicateFetch ${testName2}_tsp "tsp_key 8 =";
+select * from ${testName2}_tsp where tsp_key = 8;
 rows:
   ( 8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-predicateFetch tsp "tsp_key 9 =";
+// predicateFetch ${testName2}_tsp "tsp_key 9 =";
+select * from ${testName2}_tsp where tsp_key = 9;
 rows:
   ( 9, TIMESTAMP '1909-10-11 09:09:09')
 
-predicateFetch tsp "tsp_key 10 =";
+// predicateFetch ${testName2}_tsp "tsp_key 10 =";
+select * from ${testName2}_tsp where tsp_key = 10;
 rows:
   ( 10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-predicateFetch tsp "tsp_key 15 =";
+// predicateFetch ${testName2}_tsp "tsp_key 15 =";
+select * from ${testName2}_tsp where tsp_key = 15;
 rows:
   ( 15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-predicateFetch tsp "tsp_key 16 =";
+// predicateFetch ${testName2}_tsp "tsp_key 16 =";
+select * from ${testName2}_tsp where tsp_key = 16;
 rows:
   ( 16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-predicateFetch tsp "tsp_key 17 =";
+// predicateFetch ${testName2}_tsp "tsp_key 17 =";
+select * from ${testName2}_tsp where tsp_key = 17;
 rows:
   ( 17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-predicateFetch tsp "tsp_key 18 =";
+// predicateFetch ${testName2}_tsp "tsp_key 18 =";
+select * from ${testName2}_tsp where tsp_key = 18;
 rows:
   ( 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-predicateFetch tsp "tsp_key 26 =";
+// predicateFetch ${testName2}_tsp "tsp_key 26 =";
+select * from ${testName2}_tsp where tsp_key = 26;
 rows:
   ( 26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table ${testName2}_tsp;
 success
 
 CLEANUP {
   
-  drop table tsp;
+  drop table ${testName2}_tsp;
   mute
 
   bye;

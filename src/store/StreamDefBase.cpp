@@ -699,11 +699,6 @@ void StreamDefBase::vToMetadata(String* psMetadata)
   
   psMetadata->vCopy("metadata: ("_Stz);
   
-  i8 i_DefSet = 0;
-    
-  if (i_DefSet != 0)
-    psMetadata->vConcat(","_Stz);
-
   for (i8 i_DefColumn = 0; i_DefColumn < m_nColumns; i_DefColumn++) {
 
     if (i_DefColumn != 0)

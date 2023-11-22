@@ -9,17 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_init ( -- )
 
-  NS_ACTIVE [grid].thisNodeNo@ [grid].findNodeByNo node.state!
+  "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
-  [args].verbose if
-    [grid].thisNodeNo@ "receiver running on node %v" .printf
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  "<ansNode>" [job].tagSet@ tagSet.hasName assert
-
-  <ansNode> >int >ptr node.recvSocket@ to Socket[]
+  <ansSocket> >int >ptr socket::copy to Socket[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,30 +19,24 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_recvNext
 
-  nullptr to recvWL[]
+  Socket[].object.isNotNull not assert
 
-  Socket[].recvObject
+  // The received object is saved in Socket[].object
+  Socket[].recvWLMsg
 
   Socket[].success@ not if
+    false
     exit
   then
 
-  Socket[].object@\clear to recvWL[]
-
-  Socket[].success@
-;
-
-/*----------------------------------------------------------------------------*/
-/* recv loop: receive a job (possibly with operand), dispatch it              */
-/*----------------------------------------------------------------------------*/
-: recvWL_dispatch ( -- )
-
-  // null object (low memory)
-  recvWL[].isNull if
-    exit
+  Socket[].object.isNotNull if
+    Socket[].object@ payloadObj::size@ "RecvWL: Piping out payload received of %v bytes" .printf
+    Socket[].object@\clear [op].pipeout
+    Socket[].success@
+  else
+    // null object (low memory or socket closed)
+    false
   then
-
-  recvWL[] recvWL[] object.postRecvWord@ execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -68,8 +54,6 @@
       exit
     then
 
-    recvWL_dispatch
-
   again
 ;
 
@@ -81,15 +65,32 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_StartMarker \handler
 
-  "Receiver Demon Started" .boot
+  "recvWL_StartMarker - EV_M_START" .verbose
 
   // initialise
   recvWL_init
 
+  // Pass the start marker on to other operators
+  PipeIn[]\clear [op].pipeout
+
   // loop, receiving and executing jobs
   recvWL_loop
 
-  HAZARD
+  // If we get here then there was a problem receiving the next message from the client.
+  "recvWL_StartMarker: piping out error marker" .
+  EC_WL_SOCKET_CLOSED op__execErr
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CLEANING ...                                              */
+/*----------------------------------------------------------------------------*/
+: recvWL_CLEANING \handler
+
+  "in recvWL_CLEANING" .verbose
+
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -101,27 +102,10 @@
 
   op__topology
 
-  find: recvWL_StartMarker EV_M_START [op].handler!
+  find: recvWL_StartMarker EV_M_START     [op].handler!
+  find: recvWL_CLEANING    EV_M_CLEANING  [op].handler!
 
-  // get the pipeline job of the operator
-  [op].job@ locals| pPipelineJob |
-
-  // peek to see if any operand
-  begin
-    Pipein[].peek
-  not while
-    "receiver waiting for STARTMARKER..." .verbose
-    2 thread::sleepMsec
-  repeat
-
-  assert::stack_0
-
-  // pop operand from queue into PipeIn[]
-  PipeIn[].peek assert
-  PipeIn[].next
-
-  // execute the operator's handler for the operand
-  PipeIn[].kind [op].handler@ execute
+  op__loop
 
   _lu_finalise_
 

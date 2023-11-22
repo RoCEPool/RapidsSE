@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* it_memoryLeaks.sen -- Define __memoryLeaksInfo table                       */
+/*============================================================================*/
+
+" it_memoryLeaks.sen" .verbose
+
+: start::it_memoryLeaks
+
+  // C_TDEF_MEMORYLEAKS
+  
+  STD_BOOTFORK_TAG
+  "
+  define table __memoryLeaks (
+    objectName   VARCHAR NOT NULL ,
+    objectCount  INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

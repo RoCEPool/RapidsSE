@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* it_bpaRegions.sen -- Define __bpaRegions table                             */
+/*============================================================================*/
+
+" it_bpaRegions.sen" .verbose
+
+: start::it_bpaRegions
+
+  // C_TDEF_BPAREGIONS
+  
+  STD_BOOTFORK_TAG
+  "
+  define table __bpaRegions (
+    heapType      VARCHAR NOT NULL ,
+    heapSize      VARCHAR NOT NULL ,
+    chunkSizeKb   INTEGER NOT NULL ,
+    numBuffers    INTEGER NOT NULL ,
+    sumBuffersKb  INTEGER NOT NULL ,
+    chunksAlloc   INTEGER NOT NULL ,
+    chunksFree    INTEGER NOT NULL ,
+    sumChunksKb   INTEGER NOT NULL ,
+    wastageKb     INTEGER NOT NULL ,
+    wastagePct    INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

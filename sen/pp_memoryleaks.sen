@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* pp_memoryleaks.sen -- define memoryleaks related procedures                */
+/*============================================================================*/
+
+" pp_memoryleaks.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* memoryleaks related procedures                                             */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Memoryleaks" .verbose
+
+: start::defProc_Memoryleaks
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // memoryleaks
+
+  STD_PATH_TAG
+  "
+  procedure memoryleaks
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on origin :
+      memoryleaks | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  procedure::add
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

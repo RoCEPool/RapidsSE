@@ -3,24 +3,24 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // (1) create a table
-create table uniInt (
+create table ${testName2}_uniInt (
   int_col  INTEGER NOT NULL
 );
 success
 
-load uniInt "../FASTLOAD/Data/uniInt.csv" ;
+load ${testName2}_uniInt "../FASTLOAD/Data/uniInt.csv" ;
 success
 
 // check no of rows
-select * from uniInt;
+select * from ${testName2}_uniInt;
 rows: 166
 
 // check data
-select * from uniInt;
+select * from ${testName2}_uniInt;
 rows:
 (0)
 (1)
@@ -190,17 +190,17 @@ rows:
 (-4611686018427390000)
 
 
-// drop the table)
-drop table uniInt;
+// drop the table
+drop table ${testName2}_uniInt;
 success
 
-// get memory leaks)
+// get memory leaks
 memoryLeaks;
 rows: 0
 
 CLEANUP {
-  // drop the table)
-  drop table uniInt;
+  // drop the table
+  drop table ${testName2}_uniInt;
   mute
   
   bye;

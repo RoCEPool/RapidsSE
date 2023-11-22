@@ -39,7 +39,8 @@ public:
   char m_acNodeName[64];     // cluster-wide unique name (IP+port)
   i8   m_iNodeId;            // this node id
   char m_acAddr[32];         // IP address of where it is running
-  i4   m_iPort;              // Port number for SE
+  i4   m_iPort;              // Internal Port number for SE
+  i4   m_iPortWL;            // Wireline Port number for SE
 
   i8   m_iSincePosixEpoch;   //
   char m_acRegionName[32];   // name of shared memory region

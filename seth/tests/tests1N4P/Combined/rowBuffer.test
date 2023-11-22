@@ -2,10 +2,10 @@
 -- Scan --- Combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,7 +25,7 @@ create table lineitem (
 );
 success
 
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | project "type integer as L_ORDERKEY L_ORDERKEY ,
                   type DECIMAL as L_QUANTITY L_QUANTITY ,
                   type DATE    as L_SHIPDATE L_SHIPDATE ,
@@ -68,7 +68,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                   type DECIMAL as L_QUANTITY L_QUANTITY ,
                   type DATE    as L_SHIPDATE L_SHIPDATE ,
@@ -96,7 +96,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                   type DECIMAL as L_QUANTITY L_QUANTITY ,
                   type DATE    as L_SHIPDATE L_SHIPDATE ,
@@ -127,7 +127,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                   type DECIMAL as L_QUANTITY L_QUANTITY ,
                   type DATE    as L_SHIPDATE L_SHIPDATE ,
@@ -150,7 +150,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
 MemoryLeaks;

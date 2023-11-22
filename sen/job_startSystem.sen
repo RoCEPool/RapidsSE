@@ -23,6 +23,7 @@
   
   start::defProc_NextHB
   start::defProc_Dload
+  start::defProc_disconnect
   start::defProc_Export
   start::defProc_File
   start::defProc_Elasticity
@@ -33,11 +34,20 @@
   start::defProc_ScanTables
   start::defProc_JobRep
   start::defProc_SqlCompiler
+  start::defProc_Trackmemory
+  start::defProc_Memoryleaks
+  start::defProc_Bpa
+  start::defProc_Noop
+  start::defProc_SleepCmd
+  start::defProc_LogMsg
 
   // define the system tables
   "define the iternal system tables" .verbose
+  start::it_affectedRows
   start::it_analyzeIndex
   start::it_analyzeTable
+  start::it_bpaObjects
+  start::it_bpaRegions
   start::it_callPipeline
   start::it_columnDefs
   start::it_command
@@ -59,12 +69,13 @@
   start::it_listIndex
   start::it_listNodes
   start::it_listPartitions
-  start::it_loadResult
   start::it_lockStats
+  start::it_logMsg
   start::it_lookupCatalog
   start::it_lookupIndex
   start::it_lookupSchema
   start::it_lookupTable
+  start::it_memoryLeaks
   start::it_memoryLog
   start::it_nodeInfo
   start::it_operandLog
@@ -89,7 +100,7 @@
   start::it_totalUnits
   start::it_verifyIndex
   start::it_verifyTable
-
+  start::it_warnings
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //
@@ -201,6 +212,14 @@
     AM::DEMON::tConnectDemonJobId!
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // spawn answer demon for wireline (WL) Adaptor
+  STD_DEMONFORK_TAG answerWL_procText api::forkDemon not if
+    "Error Code %v" .printf
+  else
+    AM::DEMON::tAnswerWLDemonJobId!
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -67,6 +67,8 @@ namespace STORE
     Locks         m_oLocks;
     MarkerMgr*    m_pMarkerMgr;
     Numbering*    m_pNumbering;
+    ObjectSnapshot* m_pSnapshotAtTrackingMemory;  // object delta reporting
+    ObjectSnapshot* m_pSnapshotAtMemoryLeaks;     // object delta reporting
     Atomic        m_nxOperands;
     Atomic        m_ixQueryNo;
     i8            m_iQuit;
@@ -91,6 +93,7 @@ namespace STORE
     Word*         m_pWordRoot;
 
     JobId         m_tAnswerDemonJobId;
+    JobId         m_tAnswerWLDemonJobId;
     JobId         m_tCollectDemonJobId;
     JobId         m_tConnectorDemonJobId;
     JobId         m_tEventDemonJobId;

@@ -88,6 +88,7 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Table.hpp"
+#include "RowCounts.hpp"
 
 #include "Node.hpp"
 #include "Node_I.hpp"
@@ -106,6 +107,7 @@
 
 #include "Exemplar.hpp"
 
+#include "CommandParser.hpp"
 #include "InternalTables.hpp"
 
 #include "Job.hpp"
@@ -357,6 +359,10 @@
 
 using namespace Parser;
 
+#include "PayloadObj.hpp"
+#include "QueryContext.hpp"
+#include "StatementContext.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */
 /*----------------------------------------------------------------------------*/
@@ -369,7 +375,7 @@ SizeHeap gxaSizeHeap[]
   {CN__A__,                     'A' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_ACCESSPATH,               sizeof(AccessPath),             HT_T_MEDIUM  , FILL },
   {CN_ACTION,                   sizeof(Action),                 HT_T_TINY    , FILL },
-  {CN_ADAPTORWL,                sizeof(AdaptorWL),              HT_T_TINY    , FILL },
+  {CN_ADAPTORWL,                sizeof(AdaptorWL),              HT_T_MEDIUM ,  FILL },
   {CN_AGGTIMER,                 sizeof(AggTimer),               HT_T_TINY    , FILL },
   {CN_AM,                       0,                              HT_INVALID   , FILL },
   {CN_ANSWERWL,                 sizeof(AnswerWL),               HT_T_TINY    , FILL },
@@ -414,6 +420,7 @@ SizeHeap gxaSizeHeap[]
   {CN_COLPPG,                   sizeof(ColPpg),                   HT_T_MEDIUM  , FILL },
   {CN_COLUMN,                   sizeof(Column),                   HT_T_TINY    , FILL },
   {CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
+  {CN_COMMANDPARSER,            sizeof(CommandParser),            HT_V_LARGE   , FILL },
   {CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,     FILL },
   {CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
   {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
@@ -587,6 +594,8 @@ SizeHeap gxaSizeHeap[]
   {CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    , FILL },
   {CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  , FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
+  { CN_PAYLOADLIST,              sizeof(PayloadList),        HT_T_TINY    ,FILL },
+  { CN_PAYLOADOBJ,               sizeof(WLP::PayloadObj),    HT_T_LARGE   ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
   { CN_PDS,                      sizeof(Pds),                HT_T_LARGE   , FILL },
@@ -622,6 +631,7 @@ SizeHeap gxaSizeHeap[]
   {CN_PTRVAL,               sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
 
   { CN__Q__,                     'Q' - ('A' - 1),                HT_INVALID   , FILL },
+  { CN_QUERYCONTEXT,             sizeof(WLP::QueryContext),      HT_V_TINY    , FILL },
   { CN_QUERYNODE,                sizeof(QueryNode),              HT_V_TINY    , FILL },
   { CN_QUERYNODELIST,            sizeof(QueryNodeList),          HT_T_TINY    , FILL },
   { CN_QUERYNODESTACK,           sizeof(QueryNodeStack),         HT_T_MEDIUM  , FILL },
@@ -646,6 +656,7 @@ SizeHeap gxaSizeHeap[]
   { CN_ROWBOX,                   0,                          HT_INVALID   ,FILL },
   { CN_ROWBUFFER,                sizeof(RowBuffer),          HT_T_LARGE   ,FILL },
   { CN_ROWCOMPACTOR,             sizeof(RowCompactor),       HT_T_SMALL   ,FILL },
+  { CN_ROWCOUNTS,                sizeof(RowCounts),          HT_T_TINY   ,FILL },
   { CN_ROWONCE,                  sizeof(RowOnce),            HT_T_TINY    ,FILL },
   { CN_ROWPIX,                   sizeof(RowPix),             HT_T_MEDIUM  ,FILL },
   { CN_ROWSINGLE,                sizeof(RowSingle),          HT_T_MEDIUM  ,FILL },
@@ -713,6 +724,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STAGESPEC,                sizeof(StageSpec),          HT_T_TINY    ,FILL },
   { CN_STARTER,                  sizeof(Starter),            HT_T_TINY    ,FILL },
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
+  { CN_STATEMENTCONTEXT,         sizeof(WLP::StatementContext),HT_T_MEDIUM  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
   { CN_STENCIL,                  sizeof(Stencil),            HT_T_LARGE   ,FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,FILL },

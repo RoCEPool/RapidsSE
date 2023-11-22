@@ -42,10 +42,9 @@ Port::Port(Object* pIsFor)
   m_iSocketFd = C_UNKNOWN;
   m_bBlocking = true;
   
-  MemLib::vZero(m__Padding,sizeof(m__Padding),CN_PORT);
-  
-  vAddrInit(&m_xServAddr,nullptr,0);
-  
+  vAddrInit(&m_xServerAddr, nullptr, 0);
+  vAddrInit(&m_xClientAddr,nullptr,0);
+
   m_bSuccess = false;
   
   m_nSends = 0;
@@ -76,11 +75,9 @@ Port::Port(Object* pIsFor, int iSocketId)
   m_pIsFor    = pIsFor;
   m_iSocketFd = iSocketId;
   m_bBlocking = true;
-  
-  
-  MemLib::vZero(m__Padding,sizeof(m__Padding),CN_PORT);
-  
-  vAddrInit(&m_xServAddr,nullptr,0);
+
+  vAddrInit(&m_xServerAddr, nullptr, 0);
+  vAddrInit(&m_xClientAddr,nullptr,0);
   
   m_bSuccess = false;
 
@@ -97,6 +94,40 @@ Port::Port(Object* pIsFor, int iSocketId)
   
   ++ gixSocket;
   
+  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Port::Port(Object* pIsFor, int iSocketId, Port* pFromPort)
+    : Resource(CN_SOCKET,pIsFor)
+    , m_okLock(this)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+
+  m_pIsFor    = pIsFor;
+  m_iSocketFd = iSocketId;
+  m_bBlocking = true;
+
+  MemLib::vCopy(&m_xServerAddr, &(pFromPort->m_xServerAddr), sizeof(m_xServerAddr), CN_PORT);
+  MemLib::vCopy(&m_xClientAddr, &(pFromPort->m_xClientAddr), sizeof(m_xClientAddr), CN_PORT);
+
+  m_bSuccess = false;
+
+  m_nSends = 0;
+  m_nBytesSent = 0;
+
+  m_nRecvs = 0;
+  m_nBytesRcvd = 0;
+
+  m_pTotup = new Totup;
+  m_pWhyTot = new Totup;
+
+  _checkInitialised_(CN_PORT);
+
+  ++ gixSocket;
+
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
@@ -165,11 +196,8 @@ void Port::vRepair(Object* pObject)
 bool Port::bAcceptClient(int& iSocketId, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
-  
   roSysCall.vClear();
-  
-  sockaddr_in xClientAddr;
-  
+
   socklen_t iSize = sizeof(struct sockaddr_in);
   
 #ifdef WITH_STATISTICS_COUNTERS
@@ -177,13 +205,19 @@ bool Port::bAcceptClient(int& iSocketId, SysCall& roSysCall)
 #endif
   
   iSocketId = accept(m_iSocketFd
-                         ,(struct sockaddr*)&xClientAddr
+                         ,(struct sockaddr*)&m_xClientAddr
                          ,&iSize
                          );
   if (C_UNKNOWN == iSocketId) {
     roSysCall.vError(errno);
     return false;
   }
+
+  vTrace("Client connected on %s:%d from %s:%d\n"_Stz,
+         inet_ntoa(this->m_xServerAddr.sin_addr),
+         ntohs(this->m_xServerAddr.sin_port),
+         inet_ntoa(this->m_xClientAddr.sin_addr),
+         ntohs(this->m_xClientAddr.sin_port));
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
@@ -250,7 +284,7 @@ bool Port::bClose(SysCall& roSysCall)
   
   int iError = shutdown(m_iSocketFd, SHUT_RDWR);
   
-  if (iError && ENOTCONN != errno) {
+  if (iError && ENOTCONN != errno && EBADF != errno) {
     roSysCall.vError(errno);
     return false;
   }
@@ -260,7 +294,7 @@ bool Port::bClose(SysCall& roSysCall)
 #endif
   
   iError = close(m_iSocketFd);
-  if (iError) {
+  if (iError && EBADF != errno) {   // cater for closing a previously closed fd
     roSysCall.vError(errno);
     return false;
   }
@@ -386,8 +420,7 @@ bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
   int iResult;
   int iOpt = 1;
   int iBacklogOf4 = 4;
-  sockaddr_in xThisServerAddr;
-  
+
   roSysCall.vClear();
   
   /*
@@ -411,7 +444,7 @@ bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) initialize the server sockaddr_in structure
   
-  vAddrInit(&xThisServerAddr,i4PortNo);
+  vAddrInit(&m_xServerAddr, i4PortNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a socket end-point
@@ -452,8 +485,8 @@ bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
   // refer: https://hea-www.harvard.edu/~fine/Tech/addrinuse.html
 
   iResult = bind(m_iSocketFd
-                 ,(struct sockaddr*)&xThisServerAddr
-                 ,sizeof(xThisServerAddr)
+                 ,(struct sockaddr*)&(m_xServerAddr)
+                 ,sizeof(m_xServerAddr)
                  );
 
   if (iResult != 0) {
@@ -845,8 +878,8 @@ bool Port::bBytesSend(void* aBytes, i8 nBytes, SysCall& roSysCall)
                          ,aBytes
                          ,nBytes
                          ,0
-                         ,(struct sockaddr*)&m_xServAddr
-                         ,sizeof(m_xServAddr)
+                         ,(struct sockaddr*)&m_xServerAddr
+                         ,sizeof(m_xServerAddr)
                          );
   
   if (C_UNKNOWN == nSentBytes)

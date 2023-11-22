@@ -358,22 +358,22 @@ bool Literal::bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces)
     // skip over token null
     *aazCrs = (*aazCrs) + 4;
   }
-  else if (**aazCrs     == pFmt->m_cEscapeChar &&
+  else if (**aazCrs     == pFmt->cEscapeChar() &&
            *(*aazCrs+1) == 'N') {
     // skip over \N
     *aazCrs = (*aazCrs) + 2;
   }
-  else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading  &&
-           *(*aazCrs+1) == pFmt->m_cEscapeChar          &&
+  else if (**aazCrs     == pFmt->cEnclosedBy_Leading()  &&
+           *(*aazCrs+1) == pFmt->cEscapeChar()          &&
            *(*aazCrs+2) == 'N'                          &&
-           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing) {
+           *(*aazCrs+3) == pFmt->cEnclosedBy_Trailing()) {
     // skip over '\N' or [\N]
     *aazCrs = (*aazCrs) + 4;
   }
-  else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading    &&
+  else if (**aazCrs    == pFmt->cEnclosedBy_Leading()    &&
            ((*(*aazCrs+1) == 'N' || *(*aazCrs+1) == 'n') &&
             (0 == StrLib::iCompare(*aazCrs+2, "ULL", 3, C_NO_CASE))) &&
-           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing) {
+           *(*aazCrs+5) == pFmt->cEnclosedBy_Trailing()) {
     // skip over 'NULL'
     *aazCrs = (*aazCrs) + 6;
   }
@@ -407,7 +407,7 @@ bool Literal::bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces)
 /*----------------------------------------------------------------------------*/
 bool Literal::bIsEnclosedString(char** aazCrs, Format* pFmt)
 {
-  if (! pFmt->m_cEnclosedBy_Leading)
+  if (! pFmt->cEnclosedBy_Leading())
     return false;
 
   char *aStart = *aazCrs;
@@ -417,7 +417,7 @@ bool Literal::bIsEnclosedString(char** aazCrs, Format* pFmt)
     (*aazCrs)++;
 
   // is it an enclosed varchar?
-  if (**aazCrs == pFmt->m_cEnclosedBy_Leading) {
+  if (**aazCrs == pFmt->cEnclosedBy_Leading()) {
     (*aazCrs)++;
     return true;
   }
@@ -433,7 +433,7 @@ bool Literal::bIsEnclosedString(char** aazCrs, Format* pFmt)
 bool Literal::bIsThereFieldData(char* aSrc, Format* pFmt)
 {
   if ( ! *aSrc
-      || *aSrc == pFmt->m_cFieldDelimiter
+      || *aSrc == pFmt->cFieldDelimiter()
       || *aSrc == C_NL
       || *aSrc == C_CR
       )
@@ -458,16 +458,16 @@ bool Literal::bValidFieldEnd(char* aSrc, Format* pFmt)
   // test for explicit field separator
   
   // valid field end if we've encounter the field delimiter
-  if (*aSrc == pFmt->m_cFieldDelimiter)
+  if (*aSrc == pFmt->cFieldDelimiter())
     return true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit Literal terminator
   
-  if (pFmt->m_cRecordTerminator) {
+  if (pFmt->cRecordTerminator()) {
     
     // not a valid field end if expected Literal terminator is not seen
-    if (*aSrc != pFmt->m_cRecordTerminator)
+    if (*aSrc != pFmt->cRecordTerminator())
       return false;
     
     // test we see the Literal end after the Literal termintor
@@ -489,7 +489,7 @@ bool Literal::bValidFieldEnd(char* aSrc, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 bool Literal::bValidRecordEnd(char* aSrc, Format* pFmt)
 {
-  switch (pFmt->m_eLineEnd) {
+  switch (pFmt->eLineEnd()) {
       
     case LE_NL: // test for \n
       if (C_NL == *aSrc)

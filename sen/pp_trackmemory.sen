@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* pp_trackmemory.sen -- define trackmemory related procedures                */
+/*============================================================================*/
+
+" pp_trackmemory.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* trackmemory related procedures                                             */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Trackmemory" .verbose
+
+: start::defProc_Trackmemory
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // trackmemory
+
+  STD_PATH_TAG
+  "
+  procedure trackmemory
+    parameters $force
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on origin :
+      trackmemory $force | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  procedure::add
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

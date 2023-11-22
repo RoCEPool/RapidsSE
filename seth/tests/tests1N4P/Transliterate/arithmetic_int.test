@@ -1,10 +1,10 @@
 
-trackmemory;
+trackmemory force;
 success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
 int_col0   INTEGER,
 int_col1   INTEGER,
 bol_col2   BOOLEAN,
@@ -24,11 +24,11 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/datums.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/datums.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select int_col0 from datums;
+select int_col0 from ${testName2}_datums;
 rows:
 (1)
 (2)
@@ -44,44 +44,44 @@ rows:
 (12)
 (13)
 
-select * from datums where int_col1 between NULL and 5;
+select * from ${testName2}_datums where int_col1 between NULL and 5;
 rows: 0
 
-select * from datums where int_col1 between 5 and null;
+select * from ${testName2}_datums where int_col1 between 5 and null;
 rows: 0
 
 //------------------------------------------------------------------------------
-select int_col1 + 1 from datums where int_col0 = 11;
+select int_col1 + 1 from ${testName2}_datums where int_col0 = 11;
 rows:
 (-9223372036854775805)
 
 //------------------------------------------------------------------------------
-//select int_col1 - 1 from datums where int_col0 = 11;
+//select int_col1 - 1 from ${testName2}_datums where int_col0 = 11;
 //rows:
 //ERROR: Overflow
 
 //------------------------------------------------------------------------------
-//select int_col1 + 1 from datums where int_col0 = 12;
+//select int_col1 + 1 from ${testName2}_datums where int_col0 = 12;
 //rows:
 //ERROR: Overflow
 
 //------------------------------------------------------------------------------
-select int_col1 - 1 from datums where int_col0 = 12;
+select int_col1 - 1 from ${testName2}_datums where int_col0 = 12;
 rows:
 (9223372036854775805)
 
 //------------------------------------------------------------------------------
-//select int_col1 * 16 from datums;
+//select int_col1 * 16 from ${testName2}_datums;
 //rows:
 //ERROR:  Overflow
 
 //------------------------------------------------------------------------------
-//select int_col1 * 16 from datums where int_col0 =! 12;
+//select int_col1 * 16 from ${testName2}_datums where int_col0 =! 12;
 //rows:
 //ERROR:  Overflow
 
 //------------------------------------------------------------------------------
-select int_col1 * 16 from datums where int_col0 != 12 and int_col0 != 11;
+select int_col1 * 16 from ${testName2}_datums where int_col0 != 12 and int_col0 != 11;
 rows:
 (16000)
 (32000)
@@ -96,22 +96,22 @@ rows:
 (0)
 
 //------------------------------------------------------------------------------
-//select int_col1 * 16 from datums where int_col0 = 12;
+//select int_col1 * 16 from ${testName2}_datums where int_col0 = 12;
 //rows:
 //ERROR:  Overflow
 
 //------------------------------------------------------------------------------
-//select int_col1 * 16 from datums where int_col0 = 11;
+//select int_col1 * 16 from ${testName2}_datums where int_col0 = 11;
 //rows:
 //ERROR:  Overflow
 
 //------------------------------------------------------------------------------
-select int_col1 * 16 from datums where int_col0 =13;
+select int_col1 * 16 from ${testName2}_datums where int_col0 =13;
 rows:
 (0)
 
 //------------------------------------------------------------------------------
-select int_col1 / 16 from datums where int_col0 != 12 and int_col0 != 11;
+select int_col1 / 16 from ${testName2}_datums where int_col0 != 12 and int_col0 != 11;
 rows:
 (62)
 (125)
@@ -126,22 +126,22 @@ rows:
 (0)
 
 //------------------------------------------------------------------------------
-//select int_col1 / 16 from datums where int_col0 = 12;
+//select int_col1 / 16 from ${testName2}_datums where int_col0 = 12;
 //rows:
 //ERROR:  Overflow
 
 //------------------------------------------------------------------------------
-//select int_col1 / 16 from datums where int_col0 = 11;
+//select int_col1 / 16 from ${testName2}_datums where int_col0 = 11;
 //rows:
 //ERROR:  Overflow
 
 //------------------------------------------------------------------------------
-select int_col1 / 16 from datums where int_col0 =13;
+select int_col1 / 16 from ${testName2}_datums where int_col0 =13;
 rows:
 (0)
 
 //------------------------------------------------------------------------------
-select int_col1 % 11 from datums where int_col0 != 12 and int_col0 != 11;
+select int_col1 % 11 from ${testName2}_datums where int_col0 != 12 and int_col0 != 11;
 rows:
 (10)
 (9)
@@ -156,27 +156,27 @@ rows:
 (0)
 
 //------------------------------------------------------------------------------
-select int_col1 % 16 from datums where int_col0 = 12;
+select int_col1 % 16 from ${testName2}_datums where int_col0 = 12;
 rows:
 (14)   // 15
 
 //------------------------------------------------------------------------------
-select int_col1 % 16 from datums where int_col0 = 11;
+select int_col1 % 16 from ${testName2}_datums where int_col0 = 11;
 rows:
 (-14)   //0
 
 //------------------------------------------------------------------------------
-select int_col1 % 16 from datums where int_col0 =13;
+select int_col1 % 16 from ${testName2}_datums where int_col0 =13;
 rows:
 (0)
 
 //------------------------------------------------------------------------------
-select int_col1 / 0 from datums where int_col0 = 13;
+select int_col1 / 0 from ${testName2}_datums where int_col0 = 13;
 failure contains: 'divide by zero'
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 memoryleaks;
@@ -184,7 +184,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName2}_datums;
   mute
 
   bye;

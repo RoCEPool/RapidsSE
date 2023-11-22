@@ -2,16 +2,16 @@
 -- filter tests
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT >= 0.04;
+select * from ${testName2}_lineitem where L_DISCOUNT >= 0.04;
 failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table LineItem
+create table ${testName2}_LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -33,15 +33,15 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT >= 0.04;
+select * from ${testName2}_lineitem where L_DISCOUNT >= 0.04;
 rows: 0
 
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT >= 0.04;
+select * from ${testName2}_lineitem where L_DISCOUNT >= 0.04;
 rows:
   (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
   (1,673091,73092,2,36.00,38306.16,0.09,*,*,*,*,*,*,*,*,*)
@@ -54,7 +54,7 @@ rows:
   (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT > 0.04;
+select * from ${testName2}_lineitem where L_DISCOUNT > 0.04;
 rows:
 (1,673091,73092,2,36.00,38306.16,0.09,*,*,*,*,*,*,*,*,*)
 (1,636998,36999,3,8.00,15479.68,0.10,*,*,*,*,*,*,*,*,*)
@@ -66,42 +66,42 @@ rows:
 (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT < 0.04;
+select * from ${testName2}_lineitem where L_DISCOUNT < 0.04;
 rows:
   (2,1061698,11719,1,38.00,63066.32,0.00,*,*,*,*,*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT >= 0.04 and  L_DISCOUNT <= 0.06;
+select * from ${testName2}_lineitem where L_DISCOUNT >= 0.04 and  L_DISCOUNT <= 0.06;
 rows:
   (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
   (3,42970,17971,1,45.00,86083.65,0.06,*,*,*,*,*,*,*,*,*)
   (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT < 0.04 and  L_DISCOUNT > 0.06;
+select * from ${testName2}_lineitem where L_DISCOUNT < 0.04 and  L_DISCOUNT > 0.06;
 rows: 0
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT >= 0.05 - 0.01 and  L_DISCOUNT <= 0.05 + 0.01;
+select * from ${testName2}_lineitem where L_DISCOUNT >= 0.05 - 0.01 and  L_DISCOUNT <= 0.05 + 0.01;
 rows:
   (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
   (3,42970,17971,1,45.00,86083.65,0.06,*,*,*,*,*,*,*,*,*)
   (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT >= 0.04 and L_DISCOUNT <= 0.06 and L_QUANTITY < 24;
+select * from ${testName2}_lineitem where L_DISCOUNT >= 0.04 and L_DISCOUNT <= 0.06 and L_QUANTITY < 24;
 rows:
   (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
   (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_DISCOUNT >= 0.04 and L_DISCOUNT <= 0.06 and L_QUANTITY < 24;
+select * from ${testName2}_lineitem where L_DISCOUNT >= 0.04 and L_DISCOUNT <= 0.06 and L_QUANTITY < 24;
 rows:
   (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
   (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_SHIPDATE >= DATE '1994-01-01';
+select * from ${testName2}_lineitem where L_SHIPDATE >= DATE '1994-01-01';
 rows:
  (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',*,*,*,*,*)
  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',*,*,*,*,*)
@@ -114,19 +114,19 @@ rows:
  (1,156345,6348,6,32.00,44842.88,0.07,0.02,'N','O',DATE '1996-01-30',*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_SHIPDATE < DATE '1994-01-01';
+select * from ${testName2}_lineitem where L_SHIPDATE < DATE '1994-01-01';
 rows:
  (3,190355,65359,2,49.00,70822.15,0.10,0.00,'R','F',DATE '1993-11-09',*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_SHIPDATE < DATE '1995-01-01';
+select * from ${testName2}_lineitem where L_SHIPDATE < DATE '1995-01-01';
 rows:
  (3,190355,65359,2,49.00,70822.15,0.10,0.00,'R','F',DATE '1993-11-09',*,*,*,*,*)
  (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',*,*,*,*,*)
  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_SHIPDATE >= DATE '1995-01-01';
+select * from ${testName2}_lineitem where L_SHIPDATE >= DATE '1995-01-01';
 rows:
  (1,1551894,76910,1,17.00,33078.94,0.04,0.02,'N','O',DATE '1996-03-13',*,*,*,*,*)
  (1,673091,73092,2,36.00,38306.16,0.09,0.06,'N','O',DATE '1996-04-12',*,*,*,*,*)
@@ -137,13 +137,13 @@ rows:
  (2,1061698,11719,1,38.00,63066.32,0.00,0.05,'N','O',DATE '1997-01-28',*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where L_SHIPDATE >= DATE '1994-01-01' and L_SHIPDATE < DATE '1995-01-01';
+select * from ${testName2}_lineitem where L_SHIPDATE >= DATE '1994-01-01' and L_SHIPDATE < DATE '1995-01-01';
 rows:
  (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',*,*,*,*,*)
  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where 2 > 1;
+select * from ${testName2}_lineitem where 2 > 1;
 rows:
  (3,190355,65359,2,49.00,70822.15,0.10,0.00,'R','F',DATE '1993-11-09',*,*,*,*,*)
  (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',*,*,*,*,*)
@@ -157,12 +157,12 @@ rows:
  (1,156345,6348,6,32.00,44842.88,0.07,0.02,'N','O',DATE '1996-01-30',*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where 2 < 1;
+select * from ${testName2}_lineitem where 2 < 1;
 rows: 0
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success;
 
 MemoryLeaks;
@@ -170,7 +170,7 @@ rows: 0
 
 CLEANUP {
   
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
   
   bye;

@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* it_bpaObjects.sen -- Define __bpaObjects table                             */
+/*============================================================================*/
+
+" it_bpaObjects.sen" .verbose
+
+: start::it_bpaObjects
+
+  // C_TDEF_BPAOBJECTS
+  
+  STD_BOOTFORK_TAG
+  "
+  define table __bpaObjects (
+    heapType    VARCHAR NOT NULL ,
+    heapSize    VARCHAR NOT NULL ,
+    className   VARCHAR NOT NULL ,
+    objCount    INTEGER NOT NULL ,
+    classSize   INTEGER NOT NULL ,
+    objectSum   INTEGER NOT NULL ,
+    sumMag      VARCHAR NOT NULL ,
+    blockUsePct INTEGER NOT NULL ,
+    changeHeap  BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

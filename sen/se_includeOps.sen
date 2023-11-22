@@ -27,10 +27,12 @@ assert::stack_0
   "OP_analyzeIndex.sen"         include
   "OP_analyzeTable.sen"         include
   "OP_answerSE.sen"             include
+  "OP_answerWL.sen"             include
 
 "b" .verbose
 
   "OP_bloat.sen"                include
+  "OP_bpa.sen"                  include
   "OP_bufferGen.sen"            include
 
 "c" .verbose
@@ -61,6 +63,7 @@ assert::stack_0
   "OP_debug.sen"                include
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
+  "OP_disconnect.sen"           include
   "OP_docol.sen"                include
   "OP_dropCatalog.sen"          include
   "OP_dropIndex.sen"            include
@@ -145,9 +148,11 @@ assert::stack_0
   "OP_listTenants.sen"          include
   "OP_locks.sen"                include
   "OP_locksReset.sen"           include
+  "OP_log.sen"                  include
 
 "m" .verbose
 
+  "OP_memoryleaks.sen"          include
   "OP_metaGet.sen"              include
   "OP_metaRecv.sen"             include
   "OP_metaScan.sen"             include
@@ -187,7 +192,6 @@ assert::stack_0
   "OP_ping.sen"                 include
   "OP_populateIndex.sen"        include
   "OP_postProject.sen"          include
-  "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include
   "OP_projValidation.sen"       include
@@ -204,6 +208,7 @@ assert::stack_0
   "OP_rdCsvCyclic.sen"          include
   "OP_recurring.sen"            include
   "OP_recvSE.sen"               include
+  "OP_recvWL.sen"               include
   "OP_refTmrReset.sen"          include
   "OP_reload.sen"               include
   "OP_removeNode.sen"           include
@@ -217,6 +222,7 @@ assert::stack_0
   "OP_scan.sen"                 include
   "OP_segViolation.sen"         include
   "OP_sendSE.sen"               include
+  "OP_sendWL.sen"               include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include
   "OP_sigfpe.sen"               include
@@ -260,6 +266,7 @@ assert::stack_0
   "OP_top.sen"                  include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include
+  "OP_trackmemory.sen"          include
   "OP_transliterate.sen"        include
   "OP_truncateIndex.sen"        include
   "OP_truncateTable.sen"        include

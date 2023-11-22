@@ -2,10 +2,10 @@
 -- KEYEXISTS tests --- CO-PARTITIONED
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
-create table LineItem
+create table ${testName2}_LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -26,7 +26,7 @@ create table LineItem
  );
 success
 
-create table orders (
+create table ${testName2}_orders (
 O_ORDERKEY        INTEGER NOT NULL,
 O_CUSTKEY         INTEGER NOT NULL,
 O_ORDERSTATUS     CHAR(1) NOT NULL,
@@ -40,7 +40,7 @@ O_COMMENT         VARCHAR(79) NOT NULL
 success
 
 // create a table
-create table customer (
+create table ${testName2}_customer (
 C_CUSTKEY       INTEGER NOT NULL,
 C_NAME          VARCHAR(25) NOT NULL,
 C_ADDRESS       VARCHAR(40) NOT NULL,
@@ -52,20 +52,20 @@ C_COMMENT       VARCHAR(117) NOT NULL
 );
 success
 
-create index IxO_CUSTKEY on ORDERS (O_CUSTKEY);
+create index IxO_CUSTKEY on ${testName2}_ORDERS (O_CUSTKEY);
 success
 
-create index IxL_ORDERKEY on LINEITEM (L_ORDERKEY);
+create index IxL_ORDERKEY on ${testName2}_LINEITEM (L_ORDERKEY);
 success
 
 
-load customer           "../TPCH/SF_0001/customer.csv" ;
+load ${testName2}_customer           "../TPCH/SF_0001/customer.csv" ;
 success
 
-load orders             "../TPCH/SF_0001/orders.csv" ;
+load ${testName2}_orders             "../TPCH/SF_0001/orders.csv" ;
 success
 
-load lineitem           "../TPCH/SF_0001/lineitem.csv" ;
+load ${testName2}_lineitem           "../TPCH/SF_0001/lineitem.csv" ;
 success
 
 //------------------------------------------------------------------------------
@@ -80,8 +80,8 @@ begin
       | next
 
     stage S02 on all partitions :
-      scan rapidsse public Customer
-      | keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+      scan rapidsse public ${testName2}_Customer
+      | keyExists ${testName2}_ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                          "type BOOLEAN O_ORDERSTATUS 'O' =="
       | project " type INTEGER as O_CUSTKEY C_CUSTKEY "
       | combined 0
@@ -105,8 +105,8 @@ begin
       | next
 
     stage S02 on all partitions :
-      scan rapidsse public Customer
-      | keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+      scan rapidsse public ${testName2}_Customer
+      | keyExists ${testName2}_ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                          "type BOOLEAN O_ORDERSTATUS 'F' =="
       | project " type INTEGER as O_CUSTKEY C_CUSTKEY "
       | combined 0
@@ -129,13 +129,13 @@ begin
       | next
 
     stage S01 on all partitions :
-      scan rapidsse public orders
+      scan rapidsse public ${testName2}_orders
       | hash "type INTEGER O_ORDERKEY"
       | combined 0
       | next hashcast
 
    stage S02 on all partitions :
-     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+     keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
               "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
      | combined 0
      | next
@@ -159,8 +159,8 @@ begin
       | next
 
     stage S02 on all partitions :
-      scan rapidsse public Customer
-      | keyNotExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+      scan rapidsse public ${testName2}_Customer
+      | keyNotExists ${testName2}_ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                          "type BOOLEAN O_ORDERSTATUS 'O' =="
       | project " type INTEGER as O_CUSTKEY C_CUSTKEY "
       | combined 0
@@ -183,13 +183,13 @@ begin
       | next
 
    stage S01 on all partitions :
-      scan rapidsse public orders
+      scan rapidsse public ${testName2}_orders
       | hash "type INTEGER O_ORDERKEY"
       | combined 0
       | next hashcast
 
     stage S02 on all partitions :
-     keyNotExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+     keyNotExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                   "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
       | combined 0
       | next
@@ -204,13 +204,13 @@ rows: 30
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
-drop table orders;
+drop table ${testName2}_orders;
 success
 
-drop table customer;
+drop table ${testName2}_customer;
 success
 
 MemoryLeaks;
@@ -218,13 +218,13 @@ rows: 0
 
 CLEANUP {
   
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
-  drop table orders;
+  drop table ${testName2}_orders;
   mute
 
-  drop table customer;
+  drop table ${testName2}_customer;
   mute
 
   bye;

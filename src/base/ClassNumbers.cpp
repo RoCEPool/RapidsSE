@@ -83,6 +83,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
 		/* */ "COLPPG"_Stz,               // CN_COLPPG
     /* */ "COLUMN"_Stz,               // CN_COLUMN
     /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
+    /* */ "COMMANDPARSER"_Stz,          // CN_COMMANDPARSER
     /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
     /* */ "CORRELATEDJOIN"_Stz,       // CN_CORRELATEDJOIN
     /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
@@ -256,6 +257,8 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "PARCEL"_Stz,               // CN_PARCEL
     /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
     /* */ "PATHVEC"_Stz,              // CN_PATHVEC
+    /* */ "PAYLOADLIST"_Stz,          // CN_PAYLOADLIST
+    /* */ "PAYLOADOBJ"_Stz,           // CN_PAYLOADOBJ
     /* */ "PAYSTR"_Stz,               // CN_PATHSTR
     /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
     /* */ "PDS"_Stz,                  // CN_PDS
@@ -291,6 +294,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "PTRVAL"_Stz,               // CN_PTRVAL
 
     /* */ "_Q__"_Stz,                 // CN__Q__
+    /* */ "QUERYCONTEXT"_Stz,         // CN_QUERYCONTEXT
     /* */ "QUERYNODE"_Stz,            // CN_QUERYNODE
     /* */ "QUERYNODELIST"_Stz,        // CN_QUERYNODELIST
     /* */ "QUERYNODESTACK"_Stz,       // CN_QUERYNODESTACK
@@ -315,6 +319,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "ROWBOX"_Stz,               // CN_ROWBOX
     /* */ "ROWBUFFER"_Stz,            // CN_ROWBUFFER
     /* */ "ROWCOMPACTOR"_Stz,         // CN_ROWCOMPACTOR
+    /* */ "ROWCOUNTS"_Stz,            // CN_ROWCOUNTS
     /* */ "ROWONCE"_Stz,              // CN_ROWONCE
     /* */ "ROWPIX"_Stz,               // CN_ROWPIX
     /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE
@@ -382,6 +387,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
     /* */ "STARTER"_Stz,              // CN_STARTER
     /* */ "STATEMENT"_Stz,            // CN_STATEMENT
+    /* */ "STATEMENTCONTEXT"_Stz,     // CN_STATEMENTCONTEXT
     /* */ "STATS"_Stz,                // CN_STATS
     /* */ "STENCIL_V2"_Stz,           // CN_STENCIL_V2
     /* */ "STEP"_Stz,                 // CN_STEP

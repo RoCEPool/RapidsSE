@@ -277,9 +277,16 @@ void Thread::vLoop_dedicated(void)
   Scheduler::vTaskApi_BeginExecutingDedicated(this);
   
   m_eThreadState = HS_ASSIGNED;
-  
-  while (m_pTask && (m_pTask->pOp() || m_pTask->pJob()))
+
+  // Most dedicated threads never leave this while loop, except OP_recvWL
+  while ( m_pTask &&
+          (m_pTask->pOp() || m_pTask->pJob()) &&
+          m_pTask->eTransition() != TR_RETIRE_THIS_TASK )
     m_pTask->vTaskLoop();
+
+  // A task executing on a dedicated thread can potentially exit and retire.
+  // Example being OP_recvWL (socket receiver from wireline clients).
+  Scheduler::vTaskSelf_LoopTransition(m_pTask,this);
 
   Scheduler::vThread_EndThreadLoop(this);
 

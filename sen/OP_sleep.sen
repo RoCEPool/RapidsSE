@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : sleep_sleep \handler
 
-  "sleeping" .
-  <nSeconds> >int [task].sleepSsec
-  "awake" .
+  // "sleeping" .
+  <nMillis> >int [task].sleepMsec
+  // "awake" .
 
   PipeIn[].pipeOut
   
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: sleep :: sleep <nSeconds> ;
+cmdSyntax: sleep :: sleep <nMillis> ;
 
 : sleep_cmdTags _cmdTags tagCopy: op_tags
   tags{

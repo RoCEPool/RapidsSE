@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // track memory
-trackMemory;
+trackmemory force;
 success
 
 pwf;
@@ -23,37 +23,37 @@ lsten;
 rows: ('boray')
 
 // create a tenant
-create tenant myTenant;
+create tenant ${testName2}_myTenant;
 success
 
 // list tenants
 lsten;
 rows:
-  ('myTenant')
+  ('${testName2}_myTenant')
   ('boray')
 
 // drop the tenant
-drop tenant myTenant;
+drop tenant ${testName2}_myTenant;
 success
 
 // create tenant againt
-create tenant myTenant;
+create tenant ${testName2}_myTenant;
 success
 
 // list tenants
 lsten;
 rows:
-  ('myTenant')
+  ('${testName2}_myTenant')
   ('boray')
 
 // cf to myTenant
-cf myTenant;
+cf ${testName2}_myTenant;
 success
 
 // pwf
 pwf;
 rows:
-  ('/myTenant/tenants/')
+  ('/${testName2}_myTenant/tenants/')
 
 // cf to catalogs
 cf catalogs;
@@ -62,7 +62,7 @@ success
 // pwf
 pwf;
 rows:
-('/catalogs/myTenant/tenants/')
+('/catalogs/${testName2}_myTenant/tenants/')
 
 // create a table
 create catalog myCatalog;
@@ -74,23 +74,23 @@ success
 
 //! ALKA ENABLE once empty folder test in place
 // drop a tenant when it has a catalog under it
-//drop tenant myTenant;
+//drop tenant ${testName2}_myTenant;
 //failure contains: 'folder is not empty'
 
 // cf to myTenant
-cf myTenant;
+cf ${testName2}_myTenant;
 success
 
 pwf;
 rows:
-  ('/myTenant/tenants/')
+  ('/${testName2}_myTenant/tenants/')
 
 cf catalogs;
 success
 
 pwf;
 rows:
-  ('/catalogs/myTenant/tenants/')
+  ('/catalogs/${testName2}_myTenant/tenants/')
 
 // now drop the catalog
 drop catalog myCatalog;
@@ -102,7 +102,7 @@ success
 
 pwf;
 rows:
-('/myTenant/tenants/')
+('/${testName2}_myTenant/tenants/')
 
 // cf back to tenants
 cf ..;
@@ -113,7 +113,7 @@ rows:
 ('/tenants/')
 
 // now drop the tenant
-drop tenant myTenant;
+drop tenant ${testName2}_myTenant;
 success
 
 cf "~tables";
@@ -129,7 +129,7 @@ rows: 0
 
 CLEANUP {
   
-  drop tenant myTenant;
+  drop tenant ${testName2}_myTenant;
   mute
   
   cf "~tables";

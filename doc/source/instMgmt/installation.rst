@@ -124,7 +124,7 @@ Configuring the Firewall
 ````````````````````````
 Each RapidsSE node communicates with other RapidsSE nodes via TCP/IP and
 UDP/IP sockets. RapidsSE uses one TCP/IP socket to accept connections from
-clients (e.g. via the JDBC driver) and one TCP/IP socket to accept connections
+clients (e.g. via the :ref:`JDBC driver <jdbcDriverInterface>`) and one TCP/IP socket to accept connections
 from other RapidsSE nodes in the cluster. It also uses one UDP/IP socket to
 send and receive periodic heartbeat messages that convey status and health
 information about the cluster.

@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER,
   int_col1  INTEGER,
   bol_col2   BOOLEAN,
@@ -24,77 +24,77 @@ create table datums (
 );
 success
 
-load datums "../DATA/Datums/datums.csv" ;
+load ${testName2}_datums "../DATA/Datums/datums.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select min(int_col0) from datums;
+select min(int_col0) from ${testName2}_datums;
 rows:
  (1)
 
 //------------------------------------------------------------------------------
-select max(int_col0) from datums;
+select max(int_col0) from ${testName2}_datums;
 rows:
  (10)
 
 //------------------------------------------------------------------------------
-select min(dte_col4) from datums;
+select min(dte_col4) from ${testName2}_datums;
 rows:
  (DATE '1941-01-01')
 
 //------------------------------------------------------------------------------
-select max(dte_col4) from datums;
+select max(dte_col4) from ${testName2}_datums;
 rows:
  (DATE '2155-01-19')
 
 //------------------------------------------------------------------------------
-select min(dec_col6) from datums;
+select min(dec_col6) from ${testName2}_datums;
 rows:
  (23.04)
 
 //------------------------------------------------------------------------------
-select max(dec_col6) from datums;
+select max(dec_col6) from ${testName2}_datums;
 rows:
   (4001.04)
 
 //------------------------------------------------------------------------------
-select min(flt_col8) from datums;
+select min(flt_col8) from ${testName2}_datums;
 rows:
  (0.22)
 
 //------------------------------------------------------------------------------
-select max(flt_col8) from datums;
+select max(flt_col8) from ${testName2}_datums;
 rows:
  (10.22)
 
 //------------------------------------------------------------------------------
-select min(tme_col10) from datums;
+select min(tme_col10) from ${testName2}_datums;
 rows:
  (TIME '10:23:31')
 
 //------------------------------------------------------------------------------
-select max(tme_col10) from datums;
+select max(tme_col10) from ${testName2}_datums;
 rows:
  (TIME '11:23:31')
 
 //------------------------------------------------------------------------------
-select min(tsp_col12) from datums;
+select min(tsp_col12) from ${testName2}_datums;
 rows:
  (TIMESTAMP '1941-01-01 00:00:00')
 
 //------------------------------------------------------------------------------
-select max(tsp_col12) from datums;
+select max(tsp_col12) from ${testName2}_datums;
 rows:
  (TIMESTAMP '1972-01-01 12:00:00')
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 CLEANUP {
   
-  drop table datums;
+  drop table ${testName2}_datums;
   mute
   
   bye;

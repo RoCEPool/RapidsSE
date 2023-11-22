@@ -2,10 +2,10 @@
 -- Query1 --- Combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,13 +25,13 @@ create table lineitem (
 );
 success
 
-create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_ORDERKEY  ON ${testName2}_Lineitem (L_ORDERKEY)  ;
 success;
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-create table orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -44,7 +44,7 @@ create table orders (
 );
 success
 
-load Orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_Orders "../TPCH/SF_0001/orders.csv";
 success
 
 /optimise_passthru 
@@ -57,12 +57,12 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-    | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+    | keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                          "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
@@ -108,9 +108,9 @@ rows:
 
 //------------------------------------------------------------------------------
 // creates orders partitioned on custkey
-drop table orders;
+drop table ${testName2}_orders;
 
-create table orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -123,7 +123,7 @@ create table orders (
 ) partition by (O_CUSTKEY);
 success
 
-load Orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_Orders "../TPCH/SF_0001/orders.csv";
 success
 
 /optimise_passthru
@@ -136,7 +136,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                                  O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
@@ -146,7 +146,7 @@ begin
     | next hashcast
 
    stage Gs_LINEITEM on all partitions :
-     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+     keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | gbyAgg expr groupby type VARCHAR O_ORDERPRIORITY
                     aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
@@ -188,10 +188,10 @@ rows:
 //------------------------------------------------------------------------------
 // drop the tables
 
-drop table orders;
+drop table ${testName2}_orders;
 success
 
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
 MemoryLeaks;
@@ -199,10 +199,10 @@ rows: 0
 
 CLEANUP {
 
-  drop table orders;
+  drop table ${testName2}_orders;
   mute
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

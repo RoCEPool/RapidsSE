@@ -2,10 +2,10 @@
 -- IndexJoin --- combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
-create table T1 (
+create table ${testName2}_T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -13,7 +13,7 @@ create table T1 (
 );
 success
 
-create table T2 (
+create table ${testName2}_T2 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -21,13 +21,13 @@ create table T2 (
 );
 success
 
-create index T2_a on T2(a);
+create index T2_a on ${testName2}_T2(a);
 success
 
-load T1 "../DATA/Joins/T1.csv" ;
+load ${testName2}_T1 "../DATA/Joins/T1.csv" ;
 success
 
-load T2 "../DATA/Joins/T2.csv" ;
+load ${testName2}_T2 "../DATA/Joins/T2.csv" ;
 success
 
 
@@ -40,8 +40,8 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
-    | indexJoin T2 T2_a "BOUND $I1 a =="
+    scan ${testName2}_T1
+    | indexJoin ${testName2}_T2 T2_a "BOUND $I1 a =="
     | combined 0
     | stageD
 
@@ -57,23 +57,23 @@ rows:
  (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
 
-drop table T1;
+drop table ${testName2}_T1;
 success
 
-drop table T2;
+drop table ${testName2}_T2;
 success
 
 --------------------------------------------------------------------------------
-create table L (l_int_col0 integer);
+create table ${testName2}_L (l_int_col0 integer);
 success
 
-load L "../DATA/Joins/L.csv";
+load ${testName2}_L "../DATA/Joins/L.csv";
 success
 
-create table R(r_int_col0 integer, r_vch_col1 varchar);
+create table ${testName2}_R(r_int_col0 integer, r_vch_col1 varchar);
 success
 
-create index R_idx on R(r_int_col0);
+create index R_idx on ${testName2}_R(r_int_col0);
 success
 
 // join
@@ -85,8 +85,8 @@ begin
     | pulse once
     | next
   stage stageMarker0142 on all partitions :
-    scan rapidsse public L
-    | indexJoin R R_idx " BOUND $I1 l_int_col0 ==" //J1
+    scan rapidsse public ${testName2}_L
+    | indexJoin ${testName2}_R R_idx " BOUND $I1 l_int_col0 ==" //J1
     | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
@@ -106,8 +106,8 @@ begin
     | pulse once
     | next
   stage stageMarker0142 on all partitions :
-    scan rapidsse public L
-    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
+    scan rapidsse public ${testName2}_L
+    | indexJoin ${testName2}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
     | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
@@ -130,7 +130,7 @@ rows:
  (6,null,null)
  (7,null,null)
 
-load R "../DATA/Joins/R.csv";
+load ${testName2}_R "../DATA/Joins/R.csv";
 success
 
 // join
@@ -142,8 +142,8 @@ begin
     | pulse once
     | next
   stage stageMarker0142 on all partitions :
-    scan rapidsse public L
-    | indexJoin R R_idx " BOUND $I1 l_int_col0 ==" //J1
+    scan rapidsse public ${testName2}_L
+    | indexJoin ${testName2}_R R_idx " BOUND $I1 l_int_col0 ==" //J1
     | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
@@ -207,8 +207,8 @@ begin
     | pulse once
     | next
   stage stageMarker0142 on all partitions :
-    scan rapidsse public L
-    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
+    scan rapidsse public ${testName2}_L
+    | indexJoin ${testName2}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
     | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
@@ -267,14 +267,14 @@ rows:
  (5,5,'b')
  (5,5,'a')
 
-drop table L;
+drop table ${testName2}_L;
 success
 
-drop table R;
+drop table ${testName2}_R;
 success
 
 // create a table
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -294,10 +294,10 @@ create table lineitem (
 );
 success
 
-create index lineitem_part ON lineitem(L_PARTKEY);
+create index lineitem_part ON ${testName2}_lineitem(L_PARTKEY);
 success
 
-create table orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -310,10 +310,10 @@ create table orders (
 );
 success
 
-create index orders_orderkey on orders (O_ORDERKEY);
+create index orders_orderkey on ${testName2}_orders (O_ORDERKEY);
 success
 
-create table part (
+create table ${testName2}_part (
 	 P_PARTKEY           INTEGER       NOT NULL,
 	 P_NAME              VARCHAR(55)   NOT NULL,
 	 P_MFGR              CHAR(25)      NOT NULL,
@@ -335,8 +335,8 @@ begin
     | pulse once
     | stageMarker0374
   stage stageMarker0374 on all partitions :
-    scan lineitem
-    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    scan ${testName2}_lineitem
+    | indexJoin ${testName2}_Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY O_ORDERKEY ,
                   type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | combined 0
@@ -347,7 +347,7 @@ begin
     | stageStart
 end ;
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 // no data in orders
@@ -359,8 +359,8 @@ begin
     | pulse once
     | stageMarker0374
   stage stageMarker0374 on all partitions :
-    scan lineitem
-    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    scan ${testName2}_lineitem
+    | indexJoin ${testName2}_Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY O_ORDERKEY ,
                   type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | combined 0
@@ -373,10 +373,10 @@ end ;
 
 rows: 0
 
-load orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
 success
 
-load part "../TPCH/SF_0001/part.csv";
+load ${testName2}_part "../TPCH/SF_0001/part.csv";
 success
 
 /optimise_passthru 
@@ -387,8 +387,8 @@ begin
     | pulse once
     | stageMarker0374
   stage stageMarker0374 on all partitions :
-    scan lineitem
-    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    scan ${testName2}_lineitem
+    | indexJoin ${testName2}_Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY O_ORDERKEY ,
                   type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | combined 0
@@ -409,8 +409,8 @@ begin
     | pulse once
     | stageMarker0374
   stage stageMarker0374 on all partitions :
-    scan lineitem
-    | indexJoin Orders Orders_Orderkey "BOUND $I1 L_ORDERKEY =="
+    scan ${testName2}_lineitem
+    | indexJoin ${testName2}_Orders Orders_Orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
@@ -432,9 +432,9 @@ begin
     | pulse once
     | stageMarker0374
   stage stageMarker0374 on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | filter " type BOOLEAN  L_ORDERKEY 1480  >  "
-    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexJoin ${testName2}_Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | filter " type BOOLEAN  O_CUSTKEY 140  >  "
     | combined 0
@@ -455,9 +455,9 @@ begin
     | pulse once
     | stageMarker0374
   stage stageMarker0374 on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | filter " type BOOLEAN  L_ORDERKEY 1480  >  "
-    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexJoin ${testName2}_Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | combined 0
     | stageLast
@@ -478,13 +478,13 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName2}_part
     | filter " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
     | project " type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next broadcast
   stage stageB on all partitions :
-    indexJoin lineitem lineitem_part "bound $I1 $1 =="
+    indexJoin ${testName2}_lineitem lineitem_part "bound $I1 $1 =="
     | aggreg " type integer as SUM_PARTKEY ) L_PARTKEY sum"
     | combined 0
     | next
@@ -512,13 +512,13 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName2}_part
     | filter " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
     | project " type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next broadcast
   stage stageB on all partitions :
-    indexJoin lineitem lineitem_part "bound $I1 $1 =="
+    indexJoin ${testName2}_lineitem lineitem_part "bound $I1 $1 =="
     | gbyAgg " groupBy type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
     | combined 0
     | next
@@ -549,13 +549,13 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-      scan rapidsse public part
+      scan rapidsse public ${testName2}_part
       | filter " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
       | project " type INTEGER as P_PARTKEY P_PARTKEY"
       | combined 0
       | next broadcast
   stage stageB on all partitions :
-    indexJoin lineitem lineitem_part "bound $I1 $1 =="
+    indexJoin ${testName2}_lineitem lineitem_part "bound $I1 $1 =="
     | gbyAgg " groupBy type integer P_PARTKEY
                  aggregates type INTEGER as P_PARTKEY $K1 ,
                  type DECIMAL as SUM_EXT )  L_EXTENDEDPRICE sum  ,
@@ -588,13 +588,13 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table orders;
+drop table ${testName2}_orders;
 success
 
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
-drop table part;
+drop table ${testName2}_part;
 success
 
 MemoryLeaks;
@@ -602,25 +602,25 @@ rows: 0
 
 CLEANUP {
 
-  drop table T1;
+  drop table ${testName2}_T1;
   mute
 
-  drop table T2;
+  drop table ${testName2}_T2;
   mute
 
-  drop table orders;
+  drop table ${testName2}_orders;
   mute
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
-  drop table part;
+  drop table ${testName2}_part;
   mute
 
-  drop table L;
+  drop table ${testName2}_L;
   mute
 
-  drop table R;
+  drop table ${testName2}_R;
   mute
 
   bye;

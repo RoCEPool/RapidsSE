@@ -7,7 +7,7 @@ lstbl;
 rows: 0
 
 // create a table
-create table lstTbl1 (
+create table ${testName2}_lstTbl1 (
   bol_col1   BOOLEAN     NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
@@ -22,10 +22,10 @@ success
 // list tables
 lstbl;
 rows:
-  ('lstTbl1')
+  ('${testName2}_lstTbl1')
 
 // create aanother table
-create table lstTbl2 (
+create table ${testName2}_lstTbl2 (
   bol_col1   BOOLEAN     NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
@@ -40,8 +40,8 @@ success
 // list tables
 lstbl;
 rows:
-  ('lstTbl1')
-  ('lstTbl2')
+  ('${testName2}_lstTbl1')
+  ('${testName2}_lstTbl2')
 
 /*
 // change folder
@@ -59,23 +59,23 @@ success
 // list columns of the table
 lstbl;
 rows:
-  ('lstTbl1')
-  ('lstTbl2')
+  ('${testName2}_lstTbl1')
+  ('${testName2}_lstTbl2')
 */
 // drop the tables
-drop table lstTbl1;
+drop table ${testName2}_lstTbl1;
 success
 
 // drop the tables
-drop table lstTbl2;
+drop table ${testName2}_lstTbl2;
 success
 
 CLEANUP {
   
-  drop table lstTbl1;
+  drop table ${testName2}_lstTbl1;
   mute
 
-  drop table lstTbl12;
+  drop table ${testName2}_lstTbl12;
   mute
   
   bye;

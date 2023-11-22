@@ -36,6 +36,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Api(void)
 {
+  vAddStep("api::parseCommand"_Stz,    &Step::vApiParseCommand);
+  vAddStep("api::scheduleTask"_Stz,    &Step::vApiScheduleTask);
+
   vAddStep("api::forkChild"_Stz,       &Step::vApiForkChild);
   vAddStep("api::forkDemon"_Stz,       &Step::vApiForkDemon);
   vAddStep("api::forkChild2PC"_Stz,    &Step::vApiForkChild2PC);
@@ -46,6 +49,62 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::reapableJobMetricsEnabled"_Stz,    &Step::vApiReapableJobMetricsEnabled);
   vAddStep("api::reapableJobTags@"_Stz,&Step::vApiReapableJobTagsFetch);
   vAddStep("api::spawnJob"_Stz,        &Step::vApiSpawnJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::vApiParseCommand -- Parses an external command into a list of runnable*/
+/* tasks that can be scheduled. Returns true and pushes a TaskList if it      */
+/* succeeds. Returns false and pushes an error code and error string if it    */
+/* fails.                                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vApiParseCommand(void)
+{
+  ENTRY();
+  eEC eErrCode = EC_NONE;
+  s2K sErrStr;
+
+  s48K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+
+  TaskList* pTaskList = Api::pParseCommand(sCmd.szStz(),
+                                           sCmdTagStr.szStz(),
+                                           this,
+                                           eErrCode,
+                                           sErrStr);
+
+  if (EC_NONE == eErrCode) {
+    m_pDataStack->vPushPtr(pTaskList);
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(eErrCode);
+    m_pDataStack->vPushStz(sErrStr.szStz());
+    m_pDataStack->vPushInt(false);
+  }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Schedules a task that was previously created to be run.                    */
+/*----------------------------------------------------------------------------*/
+void Step::vApiScheduleTask(void)
+{
+  ENTRY();
+
+  Task* pChildTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pChildTask);
+  ASSERT(pChildTask->eGetClassNo() == CN_TASK);
+
+  // TODO: This should be a suspending call rather than a blocking call
+  //       that is is currently. Do not call this from a non-dedicated thread.
+  eEC eChildErr = Api::eScheduleTask(pChildTask);
+  m_pDataStack->vPushInt((i8) eChildErr);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

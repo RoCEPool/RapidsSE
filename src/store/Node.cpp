@@ -22,7 +22,7 @@ __aFooterFunction(Node)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Node::Node(i8 iNodeId, Stz* szNodeNm, i8 nPtnsInNode,
-           Stz* szIpAddr, i8 iPortNo, Stz* szRegionNm)
+           Stz* szIpAddr, i8 iPortNo, i8 iPortNoWL, Stz* szRegionNm)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
@@ -32,6 +32,7 @@ Node::Node(i8 iNodeId, Stz* szNodeNm, i8 nPtnsInNode,
   m_nPtnsInNode = nPtnsInNode;
   m_sIPAddr     = szIpAddr;
   m_iPortNo     = iPortNo;
+  m_iPortNoWL   = iPortNoWL;
   m_nRetry      = C_MAX_CONN_RETRIES;
   
   m_eState      = NS_INACTIVE;
@@ -245,13 +246,23 @@ Stz* Node::szNodeNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get node port                                                              */
+/* get node internal port number                                              */
 /*----------------------------------------------------------------------------*/
 i8 Node::iPortNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   return m_iPortNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node wireline port number                                              */
+/*----------------------------------------------------------------------------*/
+i8 Node::iPortNoWL(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+
+  return m_iPortNoWL;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table nation (
+create table ${testName2}_nation (
 N_NATIONKEY       INTEGER NOT NULL,
 N_NAME            CHAR(25) NOT NULL,
 N_REGIONKEY       INTEGER NOT NULL,
@@ -16,23 +16,23 @@ success
 
 //------------------------------------------------------------------------------
 // create the indexes
-CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
+CREATE INDEX IxN_NATIONKEY ON ${testName2}_nation(N_NATIONKEY);
 affected: 0
 
-CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);
+CREATE INDEX IxN_REGIONKEY ON ${testName2}_nation(N_REGIONKEY);
 affected: 0
 
 // load the table
-loadReplicated nation "../TPCH/SF_0001/nation.csv";
+loadReplicated ${testName2}_nation "../TPCH/SF_0001/nation.csv";
 success
 
-//select count(*) from nation;
+//select count(*) from ${testName2}_nation;
 //rows: (25)
 
-compactidx nation IxN_NATIONKEY;
+compactidx ${testName2}_nation IxN_NATIONKEY;
 success
 
-compactidx nation IxN_REGIONKEY;
+compactidx ${testName2}_nation IxN_REGIONKEY;
 success
 
 CLEANUP {

@@ -4,7 +4,7 @@
 /*  (original Query)
 
   select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
-      from customer, orders, lineitem, supplier, nation, region
+      from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem, ${testName2}_supplier, ${testName2}_nation, ${testName2}_region
       where c_custkey = o_custkey
       and l_orderkey = o_orderkey
       and l_suppkey = s_suppkey
@@ -19,7 +19,7 @@
 
 // ASIA to AMERICA for SF0001 datset
 select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
-      from customer, orders, lineitem, supplier, nation, region
+      from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem, ${testName2}_supplier, ${testName2}_nation, ${testName2}_region
       where c_custkey = o_custkey
       and l_orderkey = o_orderkey
       and l_suppkey = s_suppkey
@@ -41,7 +41,7 @@ select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
 
 EXPLAIN STAGE TRANSLITERATE
 select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
-      from customer, orders, lineitem, supplier, nation, region
+      from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem, ${testName2}_supplier, ${testName2}_nation, ${testName2}_region
       where c_custkey = o_custkey
       and l_orderkey = o_orderkey
       and l_suppkey = s_suppkey
@@ -61,26 +61,26 @@ begin
     | pulse once
     | stageMarker10504
   stage stageMarker10504 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName2}_customer
     | stageMarker10507 broadcast
   stage stageMarker10507 on all partitions :
-    scan rapidsse public orders
+    scan rapidsse public ${testName2}_orders
     | abstractJoin " 1  "
     | stageMarker10510 broadcast
   stage stageMarker10510 on all partitions :
-    scan rapidsse public lineitem
+    scan rapidsse public ${testName2}_lineitem
     | abstractJoin " 1  "
     | stageMarker10513 broadcast
   stage stageMarker10513 on all partitions :
-    scan rapidsse public supplier
+    scan rapidsse public ${testName2}_supplier
     | abstractJoin " 1  "
     | stageMarker10516 broadcast
   stage stageMarker10516 on all partitions :
-    scan rapidsse public nation
+    scan rapidsse public ${testName2}_nation
     | abstractJoin " 1  "
     | stageMarker10519 broadcast
   stage stageMarker10519 on all partitions :
-    scan rapidsse public region
+    scan rapidsse public ${testName2}_region
     | abstractJoin " 1  "
     | stageMarker10522
   stage stageMarker10522 on all partitions :
@@ -115,8 +115,8 @@ end ;
 // SORT DESC TO ASC
 //------------------------------------------------------------------------------
 
-trackMemory
-success;
+trackMemory force;
+success
 
 /optimise_passthru 
 pipeline unamed
@@ -127,45 +127,45 @@ begin
     | next
 
   stage stageMarker10504 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName2}_customer
     | next //broadcast
 
   stage stageMarker10507 on all partitions :
-    //scan rapidsse public orders
+    //scan rapidsse public ${testName2}_orders
     //| abstractJoin " 1  "
-    indexJoin Orders IxO_CUSTKEY "bound $I1 C_CUSTKEY =="   // Orders - J1
+    indexJoin ${testName2}_Orders IxO_CUSTKEY "bound $I1 C_CUSTKEY =="   // Orders - J1
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker10510 on all partitions :
-    //scan rapidsse public Lineitem
+    //scan rapidsse public ${testName2}_Lineitem
     //| abstractJoin " 1  "
-    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="   // Lineitem - J2
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="   // Lineitem - J2
     | hash "type INTEGER L_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker10513 on all partitions :
-    //scan rapidsse public Supplier
+    //scan rapidsse public ${testName2}_Supplier
     //| abstractJoin " 1  "
-    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="   // Supplier - J3
+    indexJoin ${testName2}_Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="   // Supplier - J3
     | hash "type INTEGER S_NATIONKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker10516 on all partitions :
-    //scan rapidsse public nation
+    //scan rapidsse public ${testName2}_nation
     //| abstractJoin " 1  "
-    indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="   // Nation - J4
+    indexJoin ${testName2}_Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="   // Nation - J4
     | hash "type INTEGER  N_REGIONKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker10519 on all partitions :
-    //scan rapidsse public region
+    //scan rapidsse public ${testName2}_region
     //| abstractJoin " 1  "
-    indexJoin Region IxR_REGIONKEY expr "bound $I1  N_REGIONKEY =="  // REGION - J5
+    indexJoin ${testName2}_Region IxR_REGIONKEY expr "bound $I1  N_REGIONKEY =="  // REGION - J5
     | combined 0
     | next
 
@@ -220,11 +220,11 @@ begin
     | next
 
   stage stageMarker10504 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName2}_customer
     | next
 
   stage stageMarker10507 on all partitions :
-    indexJoin Orders IxO_CUSTKEY "bound $I1 C_CUSTKEY =="   // Orders - J1
+    indexJoin ${testName2}_Orders IxO_CUSTKEY "bound $I1 C_CUSTKEY =="   // Orders - J1
     | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
                             O_ORDERDATE DATE '1995-01-01'  <  and  "
     | hash "type INTEGER O_ORDERKEY"
@@ -232,26 +232,26 @@ begin
     | next hashcast
 
   stage stageMarker10510 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="   // Lineitem - J2
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="   // Lineitem - J2
     | hash "type INTEGER L_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker10513 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="   // Supplier - J3
+    indexJoin ${testName2}_Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="   // Supplier - J3
     | filter " type BOOLEAN C_NATIONKEY S_NATIONKEY == "
     | hash "type INTEGER S_NATIONKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker10516 on all partitions :
-    indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="   // Nation - J4
+    indexJoin ${testName2}_Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="   // Nation - J4
     | hash "type INTEGER  N_REGIONKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker10519 on all partitions :
-    indexJoin Region IxR_REGIONKEY expr "bound $I1  N_REGIONKEY =="  // REGION - J5
+    indexJoin ${testName2}_Region IxR_REGIONKEY expr "bound $I1  N_REGIONKEY =="  // REGION - J5
     | filter " type BOOLEAN  R_NAME 'AMERICA'  ==  "
     | combined 0
     | next
@@ -303,7 +303,7 @@ begin
     | next
 
   stage S00 on all partitions :
-    scan rapidsse public Orders
+    scan rapidsse public ${testName2}_Orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
                             O_ORDERDATE DATE '1995-01-01'  <  and  "
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
@@ -312,7 +312,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
                type INTEGER as C_NATIONKEY C_NATIONKEY"
     | hash "type INTEGER O_ORDERKEY"
@@ -320,7 +320,7 @@ begin
     | next hashcast
 
   stage S02 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
     | project "type INTEGER as C_NATIONKEY C_NATIONKEY ,
                    type INTEGER as L_SUPPKEY L_SUPPKEY ,
                    type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
@@ -330,7 +330,7 @@ begin
     | next hashcast
 
   stage S03 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
+    indexJoin ${testName2}_Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
     | filter " type BOOLEAN C_NATIONKEY S_NATIONKEY == "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
@@ -340,7 +340,7 @@ begin
     | next hashcast
 
   stage S04 on all partitions :
-    indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
+    indexJoin ${testName2}_Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type VARCHAR as N_NAME N_NAME ,
@@ -350,7 +350,7 @@ begin
     | next hashcast
 
   stage S05 on all partitions :
-    indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
+    indexJoin ${testName2}_Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
     | filter " type BOOLEAN R_NAME 'AMERICA'  ==  "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
@@ -413,7 +413,7 @@ begin
     | next
 
   stage S00 on all partitions :
-    scan rapidsse public Orders
+    scan rapidsse public ${testName2}_Orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
                             O_ORDERDATE DATE '1995-01-01'  <  and  "
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
@@ -422,7 +422,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
                type INTEGER as C_NATIONKEY C_NATIONKEY"
     | hash "type INTEGER O_ORDERKEY"
@@ -430,7 +430,7 @@ begin
     | next hashcast
 
   stage S02 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
     | project "type INTEGER as C_NATIONKEY C_NATIONKEY ,
                    type INTEGER as L_SUPPKEY L_SUPPKEY ,
                    type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
@@ -440,7 +440,7 @@ begin
     | next hashcast
 
   stage S03 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
+    indexJoin ${testName2}_Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
     | filter " type BOOLEAN C_NATIONKEY S_NATIONKEY == "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
@@ -449,7 +449,7 @@ begin
     | next
 
   stage S04 on all partitions :
-    indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
+    indexJoin ${testName2}_Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type VARCHAR as N_NAME N_NAME ,
@@ -458,7 +458,7 @@ begin
     | next
 
   stage S05 on all partitions :
-    indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
+    indexJoin ${testName2}_Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
     | filter " type BOOLEAN R_NAME 'AMERICA'  ==  "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,

@@ -7,31 +7,64 @@ grammar sql ;
 }
 
 // statement / query -----------------------------------------------------------
-statement         : (ANTLR ':')? statementChoice ';' ;
-statementChoice   :  queryStatement | explainStatement ;
-//statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
+statements        :  statement+ EOF;
+statement         :  tags statementChoice ';' ;
 
-queryStatement    : query ;
-explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
-explainOptions    : explainStageList |
-                    explainFormat    |
-                    WITH_NAMES       |
-                    WITH_TYPES;
-explainStageList  : STAGE explainRange (',' explainRange)* ;
-explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
-explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
-explainFormat     : FORMAT (PRETTY | ROW);
-statisticsStatement : (queryHint)* (STATS | STATISTICS) statementChoice ;
+statementChoice   :
+                    // Production commands below:
+                    | anidxCmd
+                    | antblCmd
+                    | compactIdxCmd
+                    | countCmd
+                    | createCmd
+//                  | deleteCmd
+                    | disconnectCmd
+                    | dloadCmd
+                    | docolCmd
+                    | dropCmd
+                    | explainCmd
+                    | exportCmd
+//                  | insertCmd
+                    | loadCmd
+                    | loadReplicatedCmd
+                    | logCmd
+                    | lscolCmd
+                    | lsidxCmd
+                    | lsidxcolCmd
+                    | lsptncolCmd
+                    | lstblCmd
+                    | pipelineCmd
+                    | queryCmd    // (select)
+                    | sleepCmd
+                    | spaceCmd
+                    | statusCmd
+                    | szidxCmd
+                    | sztblCmd
+                    | tableSizesCmd
+                    | truncateCmd
+                    | unloadCmd
+//                  | updateCmd
 
+                    // Development/debugging commands below:
+                    | trackmemoryCmd
+                    | memoryleaksCmd
+                    | bpaCmd
+                    | fileCmd
+                    | noopCmd
+                    | emptyCmd    // must always be last in this rule
+                    ;
+
+tags              : (keyOnlyTag | keyValueTag)* ;
+keyValueTag       : (('<' keyName=tagName '>') | ('/' keyName=tagName)) '=' (stringLiteral | INTEGER_LITERAL);
+keyOnlyTag        : '/' tagName |
+                    '<' tagName '>' ;
+tagName           : PLAIN_IDENTIFIER | TIME ;
+
+// query command rules ------------------------------------------------------
+queryCmd          : query ;
 query             : (queryHint)*
                     ( selectQuery
                     | setQuery
-//                    | insertQuery
-//                    | deleteQuery
-//                    | updateQuery
-//                    | createQuery
-//                    | dropQuery
-//                    | truncateQuery
                     ) ;
 
 queryHint         : HINT_START (hint)? (',' hint)* HINT_END ;
@@ -107,71 +140,193 @@ extendedJoinType  : joinType |
 
 valuesExpr        : VALUES '('valueList')' ( ',' '('valueList')' )* ;
 
-insertQuery       : (WITH withQuery (',' withQuery)*)?
+
+// other command rules ------------------------------------------------------
+
+// A
+anidxCmd          : (ANIDX | ( (ANALYZE | ANALYSE) TABLE)) tableName indexName ;
+antblCmd          : (ANTBL | ( (ANALYZE | ANALYSE) INDEX)) tableName ;
+
+// B
+bpaCmd            : BPA type=(REGIONS | OBJECTS | ALL)?;
+
+// C
+compactIdxCmd     : COMPACTIDX tableName indexName ;
+countCmd          : COUNT tableName ;
+createCmd         : createTableCmd | createIndexCmd ;
+createTableCmd    : CREATE /*reference = REFERENCE?*/ TABLE /*(IF NOT EXISTS)?*/ /*ref = tableReference*/ tableName
+                    (
+                        tableDefinition
+                      //| ( tableDefinition? AS? asSubquery (WITH noData=NO? DATA)? )
+                      //| ( columnNameList AS? asSubquery (WITH noData=NO? DATA)? )
+                    ) ;
+createIndexCmd    : CREATE UNIQUE? INDEX /*(INDEX | KEY) (IF NOT EXISTS)?*/ idxName = indexName
+                    ON /*tblName = tableReference*/ tableName
+                    /*( USING method = indexMethod )?*/
+                    '(' expr (',' expr)* ')'
+                    ;
+
+// D
+deleteCmd         : (WITH withQuery (',' withQuery)*)?
+                    DELETE FROM? ref = tableReference
+                    ( (WHERE predicate) | (FROM tableExpr) )? ;
+disconnectCmd     : DISCONNECT | BYE | EXIT_TOKEN ;   // TODO: add an optional session ID
+dloadCmd          : DLOAD tableName PATHS stringLiteral+  ( loadOption (','? loadOption)* )? ;
+docolCmd          : DOCOL identifier ;
+dropCmd           : dropTableCmd | dropIndexCmd ;
+dropTableCmd      : DROP TABLE /*(IF EXISTS)?*/ name = tableName /*tableReference*/ ;
+dropIndexCmd      : DROP INDEX /*(IF EXISTS)?*/ (
+                      (idxName = indexName ON tblName = tableName /*tableReference*/)
+                    | (tblName = tableName idxName = indexName)
+                    );
+
+// E
+emptyCmd          : ;
+
+explainCmd        : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
+explainOptions    : explainStageList |
+                    explainFormat    |
+                    WITH_NAMES       |
+                    WITH_TYPES;
+explainStageList  : STAGE explainRange (',' explainRange)* ;
+explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
+explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
+explainFormat     : FORMAT (PRETTY | ROW);
+
+exportCmd         : EXPORT tableName filePath=stringLiteral ;
+
+// F
+fileCmd           : FILE (identifier | stringLiteral) ;
+
+// G
+// H
+// I
+insertCmd         : (WITH withQuery (',' withQuery)*)?
                     INSERT INTO? ref = tableReference ( '('columnName (',' columnName)*')' )?
                     (valuesExpr | selectQuery | setQuery) ;
 
-deleteQuery       : (WITH withQuery (',' withQuery)*)?
-                    DELETE FROM? ref = tableReference
-                    ( (WHERE predicate) | (FROM tableExpr) )? ;
+// J
+// K
+// L
+loadCmd           : LOAD tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
+loadReplicatedCmd : LOADREPLICATED tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
+loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=stringLiteral ;
+loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT | RECORD_ENDS
+                    | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING | RECORD_TERMINATOR ;
+logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
+lscolCmd          : LSCOL tableName ;
+lsidxCmd          : LSIDX tableName ;
+lsidxcolCmd       : LSIDXCOL tableName indexName;
+lsptncolCmd       : LSPTNCOL tableName ;
+lstblCmd          : LSTBL;
 
-updateQuery       : (WITH withQuery (',' withQuery)*)?
+// M
+memoryleaksCmd    : MEMORYLEAKS ;
+
+// N
+noopCmd           : NOOP | NOP ;
+
+// O
+// P
+pipelineCmd       : PIPELINE pipelineName=identifier
+                    BEGIN
+                      pipelineStage+
+                    END
+                  ;
+pipelineStage     : STAGE stageName=identifier
+                    ON (ORIGIN | ALL NODES | ALL PARTITIONS) ':'
+                    pipelineOpSeq
+                  ;
+pipelineOpSeq     : pipelineOperator ( '|' pipelineOperator)* ;
+pipelineOperator  : opName=identifier ( pipelineOpParam (','? pipelineOpParam)* )? ;
+pipelineOpParam   :
+                      identifier
+                    | TYPE  | AS | SUM | AVG | MIN | MAX
+                    | ')' | '-' | '+' | '*' | '/' | '%' | '==' | PARAM_IDENTIFIER   // some reserved words and symbols
+                    | pipelineTypeNames
+                    | booleanLiteral
+                    | signedIntegerLiteral
+                    | signedDecimalLiteral
+                    | signedFloatLiteral
+                    | dateLiteral
+                    | timeLiteral
+                    | DUBLQUOTED_IDENTIFIER
+                    | DUBLQUOTED_STRING
+                    | timestampLiteral
+                    | intervalLiteral
+                    ;
+pipelineTypeNames   :   BOOLEAN
+                      | CHAR
+                      | DATE
+                      | DECIMAL
+                      | FLOAT
+                      | INTEGER
+                      | INTERVAL_DT
+                      | INTERVAL_YM
+                      | TIME
+                      | TIMESTAMP
+                      | VARCHAR
+                      | SQL_NULL
+                    ;
+
+// Q
+// R
+// S
+sleepCmd          : SLEEP integerLiteral sleepUnits?;
+sleepUnits        : seconds=( S_ONLY | SEC | SECOND | SECONDS) |
+                    millis=(MS | MILLIS | MILLISECOND | MILLISECONDS);
+spaceCmd          : SPACE ;
+statusCmd         : STATUS ;
+szidxCmd          : SZIDX tableName indexName ;
+sztblCmd          : SZTBL tableName ;
+
+// T
+tableSizesCmd     : TABLESIZES ;
+truncateCmd       : TRUNCATE (TABLE)? name = tableName /*tableReference*/ ;
+trackmemoryCmd    : TRACKMEMORY FORCE? ;
+
+// U
+updateCmd         : (WITH withQuery (',' withQuery)*)?
                     UPDATE ref = tableReference
                     SET columnName '=' expr (',' columnName '=' expr)*
                     ( (WHERE predicate) | (FROM tableExpr) )? ;
+unloadCmd         : UNLOAD (identifier | stringLiteral) ;
+
+// V
+// W
+// X
+// Y
+// Z
 
 
-createQuery           : createTableQuery | createIndexQuery ;
+// table/column definition rules ------------------------------------------------------
 
-createTableQuery      : CREATE reference = REFERENCE? TABLE (IF NOT EXISTS)? ref = tableReference
-                        (
-                            tableDefinition
-                          | ( tableDefinition? AS? asSubquery (WITH noData=NO? DATA)? )
-                          | ( columnNameList AS? asSubquery (WITH noData=NO? DATA)? )
-                        ) ;
-
-createIndexQuery      : CREATE UNIQUE? (INDEX | KEY) (IF NOT EXISTS)? idxName = indexName
-                        ON tblName = tableReference
-                        ( USING method = indexMethod )?
-                        '(' expr (',' expr)* ')'
-                        (WITH props = propertyList)?
-                        ;
-
-dropQuery         : DROP TABLE         (IF EXISTS)? name = tableReference  # dropTable
-                  | DROP (INDEX | KEY) (IF EXISTS)? idxName = indexName ON tblName = tableReference # dropIndex
-                  ;
-
-truncateQuery     : TRUNCATE (TABLE)? name = tableReference ;
-
-
-// table/column definition ------------------------------------------------------------
+// Note that CREATE TABLE statements get parsed again in StreamDefBase. So the rules
+// here must match that manual parsing.
 tableDefinition   : '('
-                        (     columnDefinition | tableConstraint | indexDefinition)
-                        (',' (columnDefinition | tableConstraint | indexDefinition))*
+                        (     columnDefinition | /*tableConstraint | indexDefinition*/)
+                        (',' (columnDefinition | /*tableConstraint | indexDefinition*/))*
                     ')'
-                    REFERENCE ?
-                    tablePartitioning?
-                    (WITH props = propertyList)?
+
+                    ( tablePartitioning | REPLICATED | ROWSIZE integerLiteral | TABLESIZE integerLiteral )*
                   ;
 
-tablePartitioning : PARTITION BY? method=(HASH | VALUE)? ON? '(' expr (',' expr)* ')' ;
+tablePartitioning : PARTITION BY '(' expr (',' expr)* ')' ;
 
 columnDefinition  : name = columnName
                     type = dataType
                     (
-                        (notNullable = NOT? nullable = SQL_NULL)
-                      | (primary = PRIMARY KEY)
-                      | (unique  = UNIQUE KEY?)
-                      | (unique  = UNIQUE mono = MONOTONIC KEY?)
+                        (notNullable = NOT /*?*/ nullable = SQL_NULL)
+//                      | (primary = PRIMARY KEY)
+//                      | (unique  = UNIQUE KEY?)
                     )*
-                    (WITH props = propertyList)?
                   ;
 
 columnNameList    : '(' columnName (',' columnName)* ')' ;
 
-tableConstraint   : (primary = PRIMARY KEY  ( expr | ('(' expr (',' expr)* ')') ))
-                  | (unique = UNIQUE? mono = MONOTONIC KEY ( expr | ('(' expr (',' expr)* ')') ))
-                  ;
+//tableConstraint   : (primary = PRIMARY KEY  ( expr | ('(' expr (',' expr)* ')') ))
+//                  | (unique = UNIQUE? mono = MONOTONIC KEY ( expr | ('(' expr (',' expr)* ')') ))
+//                  ;
 
 indexDefinition   : unique = UNIQUE? (INDEX | KEY) name = indexName?
                     ON? ( expr | ('(' expr (',' expr)* ')') )
@@ -386,7 +541,7 @@ exprHint          : (HASHKEY) ;   // The names of hints whose values must be exp
 propertyValue     : (lit = simpleLiteral | id = identifier) ;
 hintValue         : (lit = simpleLiteral | id = identifier | expression = expr) ;
 
-identifier        : IDENTIFIER | nonReservedWord ;
+identifier        : PLAIN_IDENTIFIER | BAKTIKD_IDENTIFIER | DUBLQUOTED_IDENTIFIER | nonReservedWord ;
 qualifier         : id = identifier ;
 
 precision         : integerLiteral ;
@@ -423,7 +578,7 @@ signedFloatLiteral : ('+' | neg='-')? FLOAT_LITERAL ;
 dateLiteral       : DATE str = stringLiteral ;
 timeLiteral       : TIME str = stringLiteral ;
 timestampLiteral  : TIMESTAMP stringLiteral ;
-stringLiteral     : STRING_LITERAL ;
+stringLiteral     : SINGLQUOTED_STRING | DUBLQUOTED_STRING | DUBLQUOTED_IDENTIFIER ;
 intervalLiteral   : ( yearMonthInterval | dayTimeInterval /* | looseInterval */ ) ;
 
 // looseInterval     : INTERVAL str=expr ;
@@ -449,28 +604,31 @@ dayTimeInterval   :
                   ) ;
 
 
-// lexer ------------------------------------------------------
+// ============================================================================
+// lexer ----------------------------------------------------------------------
 
 nonReservedWord   :
-                    ANTLR | ASC
-                  | BIT | BITS | BLOCK | BLOOM | BTREE | BYTE | BYTES
-                  | CATALOG | CHARS | CONCAT
-                  | DATA | DAYS | DECODE | DESC | DETAIL | DIGITS
-                  | EXPLAIN
-                  | SQL_FALSE | FEDERATION | FORMAT
+                    ANALYSE | ANALYZE | ANIDX | ANTBL | ASC
+                  | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYE | BYTE | BYTES
+                  | CATALOG | CHARS | COMPACTIDX | CONCAT
+                  | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD | DOCOL
+                  | ECHO | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING |ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
+                  | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
-                  | IF | IFNULL | INDEX
+                  | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
                   | KEY
-                  | LIMIT | LOOP
-                  | MINUTES | MONOTONIC | MONTHS
-                  | NODE | NOW
-                  | OFFSET
-                  | PLACING | PRETTY
+                  | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSIDX | LSPTNCOL | LSTBL
+                  | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
+                  | MONOTONIC | MONTHS | MS
+                  | NODE | NODES | NOOP | NOP | NOW
+                  | OBJECTS | OFF | OFFSET | ORIGIN
+                  | PARTITIONS | PATHS | PIPELINE | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | REFERENCE
-                  | SCHEMA | SECONDS | SKIPLIST | STAGE | STATS | STATISTICS
-                  | STATISTICS |SUBSTR
-                  | TEXT | TOP | TREE | TRUNCATE | TYPE | TYPEOF
+                  | RECORD_ENDS | RECORD_TERMINATOR | REFERENCE | REGIONS | REPLICATED | ROWSIZE
+                  | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
+                  | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
+                  | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
+                  | UNLOAD
                   | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
                   | XOR
@@ -478,13 +636,17 @@ nonReservedWord   :
                   ;
 
 ALL                   : A L L;
+ANALYSE               : A N A L Y S E;
+ANALYZE               : A N A L Y Z E;
 AND                   : A N D;
+ANIDX                 : A N I D X;
+ANTBL                 : A N T B L;
 ANTI                  : A N T I;      // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
-ANTLR                 : A N T L R;
 ANY                   : A N Y;
 AS                    : A S;
 ASC                   : A S C;
 AVG                   : A V G;
+BEGIN                 : B E G I N;
 BETWEEN               : B E T W E E N;
 BINARY                : B I N A R Y;
 BIT                   : B I T;
@@ -494,7 +656,9 @@ BLOCK                 : B L O C K;
 BLOOM                 : B L O O M;
 BOTH                  : B O T H;
 BOOLEAN               : B O O L E A N;
+BPA                   : B P A;
 BTREE                 : B T R E E;
+BYE                   : B Y E;
 BY                    : B Y;
 BYTE                  : B Y T E;
 BYTES                 : B Y T E S;
@@ -506,6 +670,7 @@ CHARS                 : C H A R S;
 CHARACTER             : C H A R A C T E R;
 COALESCE              : C O A L E S C E;
 COLLATE               : C O L L A T E;
+COMPACTIDX            : C O M P A C T I D X;
 CONCAT                : C O N C A T;
 CORRESPONDING         : C O R R E S P O N D I N G;
 COUNT                 : C O U N T;
@@ -517,6 +682,7 @@ CURRENT_TIMESTAMP     : C U R R E N T '_' T I M E S T A M P;
 CURRENT_USER          : C U R R E N T '_' U S E R;
 DATA                  : D A T A;
 DATE                  : D A T E;
+DATE_FORMAT           : D A T E '_' F O R M A T;
 DAY                   : D A Y;
 DAYS                  : D A Y S;
 DECIMAL               : D E C I M A L;
@@ -525,19 +691,31 @@ DELETE                : D E L E T E;
 DESC                  : D E S C;
 DETAIL                : D E T A I L;
 DIGITS                : D I G I T S ;
+DISCONNECT            : D I S C O N N E C T;
 DISTINCT              : D I S T I N C T;
+DLOAD                 : D L O A D;
+DOCOL                 : D O C O L;
 DROP                  : D R O P;
+ECHO                  : E C H O;
 ELSE                  : E L S E;
+ENCLOSED_BY_LEADING   : E N C L O S E D '_' B Y '_' L E A D I N G;
+ENCLOSED_BY_TRAILING  : E N C L O S E D '_' B Y '_' T R A I L I N G;
 END                   : E N D;
 ESCAPE                : E S C A P E;
+ESCAPE_CHAR           : E S C A P E '_' C H A R;
 EXCEPT                : E X C E P T;
 EXISTS                : E X I S T S;
+EXIT_TOKEN            : E X I T;    // Cannot use EXIT as a token name because it causes code name conflicts with exit().
 EXPLAIN               : E X P L A I N;
+EXPORT                : E X P O R T;
 EXTRACT               : E X T R A C T;
 SQL_FALSE             : F A L S E;
 FEDERATION            : F E D E R A T I O N;
+FIELD_DELIMITER       : F I E L D '_' D E L I M I T E R;
+FILE                  : F I L E;
 FLOAT                 : F L O A T;
 FOR                   : F O R;
+FORCE                 : F O R C E;
 FORMAT                : F O R M A T;
 FULL                  : F U L L;
 FROM                  : F R O M;
@@ -545,6 +723,7 @@ GROUP                 : G R O U P;
 HASH                  : H A S H;
 HASHKEY               : H A S H K E Y;
 HAVING                : H A V I N G;
+HEAP                  : H E A P;
 HOUR                  : H O U R;
 HOURS                 : H O U R S;
 IF                    : I F;
@@ -555,6 +734,8 @@ INNER                 : I N N E R;
 INSERT                : I N S E R T;
 INTEGER               : I N T E G E R;
 INTERSECT             : I N T E R S E C T;
+INTERVAL_DT           : I N T E R V A L '_' D T;
+INTERVAL_YM           : I N T E R V A L '_' Y M;
 INTERVAL              : I N T E R V A L;
 INTO                  : I N T O;
 IS                    : I S;
@@ -564,59 +745,96 @@ LEADING               : L E A D I N G;
 LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
+LOADREPLICATED        : L O A D R E P L I C A T E D;
+LOAD                  : L O A D;
+LOG                   : L O G;
 LOOP                  : L O O P;
+LSCOL                 : L S C O L;
+LSIDXCOL              : L S I D X C O L;
+LSIDX                 : L S I D X;
+LSPTNCOL              : L S P T N C O L;
+LSTBL                 : L S T B L;
 MAX                   : M A X;
+MEMORYLEAKS           : M E M O R Y L E A K S;
+MILLIS                : M I L L I S;
+MILLISECOND           : M I L L I S E C O N D;
+MILLISECONDS          : M I L L I S E C O N D S;
 MIN                   : M I N;
 MINUTE                : M I N U T E;
 MINUTES               : M I N U T E S;
 MONOTONIC             : M O N O T O N I C;
 MONTH                 : M O N T H;
 MONTHS                : M O N T H S;
+MS                    : M S;
 NATURAL               : N A T U R A L;
 NO                    : N O;
+NODES                 : N O D E S;
 NODE                  : N O D E;
+NOOP                  : N O O P;
+NOP                   : N O P;
 NOT                   : N O T;
 NOW                   : N O W;
 SQL_NULL              : N U L L;
 NULLIF                : N U L L I F;
+OBJECTS               : O B J E C T S;
+OFF                   : O F F;
 OFFSET                : O F F S E T;
 ON                    : O N;
 OR                    : O R;
 ORDER                 : O R D E R;
+ORIGIN                : O R I G I N;
 OUTER                 : O U T E R;
 OVER                  : O V E R;
 OVERLAY               : O V E R L A Y;
+PARTITIONS            : P A R T I T I O N S;
 PARTITION             : P A R T I T I O N;
+PATHS                 : P A T H S;
+PIPELINE              : P I P E L I N E;
 PLACING               : P L A C I N G;
 POSITION              : P O S I T I O N;
 PRETTY                : P R E T T Y;
 PRIMARY               : P R I M A R Y;
 QUARTER               : Q U A R T E R;
 QUARTERS              : Q U A R T E R S;
+RECORD_ENDS           : R E C O R D '_' E N D S;
+RECORD_TERMINATOR     : R E C O R D '_' T E R M I N A T O R;
 RECURSIVE             : R E C U R S I V E;
 REFERENCE             : R E F E R E N C E;
+REGIONS               : R E G I O N S;
+REPLICATED            : R E P L I C A T E D;
 RIGHT                 : R I G H T;
 ROW                   : R O W;
+ROWSIZE               : R O W S I Z E;
 SCHEMA                : S C H E M A;
+SEC                   : S E C;
 SECOND                : S E C O N D;
 SECONDS               : S E C O N D S;
 SELECT                : S E L E C T;
 SEMI                  : S E M I;      // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
 SET                   : S E T;
 SKIPLIST              : S K I P L I S T;
+SLEEP                 : S L E E P;
+SPACE                 : S P A C E;
 STAGE                 : S T A G E;
 STATS                 : S T A T S;
 STATISTICS            : S T A T I S T I C S;
+STATUS                : S T A T U S;
 SUBSTR                : S U B S T R;
 SUBSTRING             : S U B S T R I N G;
 SUM                   : S U M;
+SZIDX                 : S Z I D X;
+SZTBL                 : S Z T B L;
+S_ONLY                : S;
 TABLE                 : T A B L E;
+TABLESIZES            : T A B L E S I Z E S;
+TABLESIZE             : T A B L E S I Z E;
 TEXT                  : T E X T;
 THEN                  : T H E N;
 TIME                  : T I M E;
 TIMESTAMP             : T I M E S T A M P;
 TO                    : T O;
 TOP                   : T O P;
+TRACKMEMORY           : T R A C K M E M O R Y;
 TREE                  : T R E E;
 TRIM                  : T R I M;
 TRAILING              : T R A I L I N G;
@@ -626,6 +844,7 @@ TYPE                  : T Y P E;
 TYPEOF                : T Y P E O F;
 UNION                 : U N I O N;
 UNIQUE                : U N I Q U E;
+UNLOAD                : U N L O A D;
 UPDATE                : U P D A T E;
 USING                 : U S I N G;
 VALUE                 : V A L U E;  // Note: SQL says this should be a reserved word, but TPC-H Q11 uses it as a column alias!
@@ -679,15 +898,16 @@ fragment DIGIT        : '0' .. '9' ;
 fragment DUBLSINGL    : '\'\'' ;
 fragment DUBLDUBL     : '""' ;
 
-
-IDENTIFIER            : PLAIN_IDENTIFIER | BAKTIKD_IDENTIFIER | DUBLQUOTED_IDENTIFIER ;
-PLAIN_IDENTIFIER      : LETTER (LETTER | DIGIT | '_')* ;
+PLAIN_IDENTIFIER      : '_'* LETTER (LETTER | DIGIT | '_')* ;
 BAKTIKD_IDENTIFIER    : '`' (~[`\r\n])+ '`';
 DUBLQUOTED_IDENTIFIER : { isDublQuoteId }?  ( '"' (DUBLDUBL | ~["\r\n])+ '"' );
+PARAM_IDENTIFIER      : '$' LETTER (LETTER | DIGIT | '_')* ;
 
-STRING_LITERAL        : SINGLQUOTED_STRING | DUBLQUOTED_STRING ;
 SINGLQUOTED_STRING    : '\'' (DUBLSINGL | (~'\''))* '\'' ;
-DUBLQUOTED_STRING     : '"' (DUBLDUBL | (~'"'))* '"' ;    // NB: not matched if { isDublQuotedId }
+DUBLQUOTED_STRING     : '"' (DUBLDUBL | (~'"'))* '"' ;    // NB: this token is not matched if
+                                                          // { isDublQuotedId } is true. Instead
+                                                          // a DUBLQUOTED_IDENTIFIER will likely
+                                                          // be created.
 
 FLOAT_LITERAL         : (DECIMAL_LITERAL | DIGIT+) ('e' | 'E') ('+' | '-')? DIGIT+ ;
 DECIMAL_LITERAL       : (DIGIT+ '.' DIGIT*) | '.' DIGIT+ ;

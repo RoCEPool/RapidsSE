@@ -646,10 +646,18 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Invalid node argument Port number: %s\n"_Stz,(Stz*)argv[i_Arg]);
-        vTrace("Usage: --node <name> <ip-addr> <port>\n"_Stz);
+        vTrace("Usage: --node <name> <ip-addr> <internal_port> <wireline_port>\n"_Stz);
         return false;
       }
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
+
+      if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Invalid node argument wireline_port number: %s\n"_Stz,(Stz*)argv[i_Arg]);
+        vTrace("Usage: --node <name> <ip-addr> <internal_port> <wireline_port>\n"_Stz);
+        return false;
+      }
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_iPortNoWL    = argv[i_Arg].iToI8();
 
       i_BootNode++;
       //TODO: Arjun check if we are supposed to use i_BootNode here.
@@ -1538,10 +1546,11 @@ void CmdLineArgs::vPrintStartupInfo(void)
     vTrace("  --size %s\n"_Stz, sSizeMag.azChar());
 
     for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
-      vTrace("  --node %s %s %lld\n"_Stz,
+      vTrace("  --node %s %s %lld %lld\n"_Stz,
              m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
              m_xSysArgs.m_xNodeDefn[i_Index].m_sIPAddress.azChar(),
-             m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo);
+             m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo,
+             m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNoWL);
     }
 
     for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedHeartbeats; i_Index++) {

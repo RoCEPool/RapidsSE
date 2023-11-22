@@ -4,7 +4,7 @@
 
 LOG 'r_FOLD_52_W_L_NC_I...';
 
-trackMemory;
+trackMemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

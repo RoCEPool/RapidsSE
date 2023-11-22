@@ -3,10 +3,10 @@
 --------------------------------------------------------------------------------
 
 // test to check if memory leaks being detected correctly
-trackMemory;
+trackmemory force;
 success
 
-create table LineItem
+create table ${testName2}_lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -45,12 +45,12 @@ rows:
  ('TABLEPTNVEC',  1)
  ('WORD',  3)
 
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

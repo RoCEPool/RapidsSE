@@ -19,7 +19,7 @@
   STD_PATH_TAG
   "
   procedure add node
-    parameters $NodeNm $IpAddr $PortNo
+    parameters $NodeNm $IpAddr $PortNo $PortNoWL
   begin
 
     stage stageA on origin :
@@ -30,7 +30,7 @@
 
     stage stageB on all nodes :
 
-      addNode $NodeNm $IpAddr $PortNo
+      addNode $NodeNm $IpAddr $PortNo $PortNoWL
         | stageC
 
     stage stageC on origin :

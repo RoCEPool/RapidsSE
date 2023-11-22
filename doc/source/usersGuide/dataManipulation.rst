@@ -159,7 +159,7 @@ in parallel. It requires that the path and filename of each file to be loaded
 must exist on each node. This is the quickest way to load data into RapidsSE
 because it maximises disk throughput as well as CPU time for parsing the data.
 
-To invoke a distributed load simply execute the command below in the SE Prompt:
+To invoke a distributed load simply execute the command below in SE Shell:
 
 .. code::
 

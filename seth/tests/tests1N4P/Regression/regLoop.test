@@ -7,7 +7,7 @@ LOG 'Running regression tests in a loop.';
 
 LOOP 1 {
 
-trackMemory;
+trackmemory force;
 success;
 
 //------------------------------------------------------------------------------
@@ -123,67 +123,67 @@ rows: 0
 
 CLEANUP {
 
-  drop table TABLE1;
+  drop table ${testName2}_TABLE1;
   mute
 
-  drop table TABLE2;
+  drop table ${testName2}_TABLE2;
   mute
 
-  drop table TABLE3;
+  drop table ${testName2}_TABLE3;
   mute
 
-  drop table TABLE4;
+  drop table ${testName2}_TABLE4;
   mute
 
-  drop table TABLE5;
+  drop table ${testName2}_TABLE5;
   mute
 
-  drop table TABLE6;
+  drop table ${testName2}_TABLE6;
   mute
 
-  drop table TABLE7;
+  drop table ${testName2}_TABLE7;
   mute
 
-  drop table TABLE8;
+  drop table ${testName2}_TABLE8;
   mute
 
-  drop table TABLE9;
+  drop table ${testName2}_TABLE9;
   mute
 
-  drop table CUSTOMERH;
+  drop table ${testName2}_CUSTOMERH;
   mute
 
-  drop table ORDERS;
+  drop table ${testName2}_ORDERS;
   mute
 
-  drop table LINEITEM;
+  drop table ${testName2}_LINEITEM;
   mute
 
-  drop table PART;
+  drop table ${testName2}_PART;
   mute
 
-  drop table SUPPLIER;
+  drop table ${testName2}_SUPPLIER;
   mute
 
-  drop table PARTSUPP;
+  drop table ${testName2}_PARTSUPP;
   mute
 
-  drop table NATION;
+  drop table ${testName2}_NATION;
   mute
 
-  drop table REGION;
+  drop table ${testName2}_REGION;
   mute
 
-  drop table SHIPPING;
+  drop table ${testName2}_SHIPPING;
   mute
 
-  drop table SHIPADDRESS;
+  drop table ${testName2}_SHIPADDRESS;
   mute
 
-  drop table MANUFACTURER;
+  drop table ${testName2}_MANUFACTURER;
   mute
 
-  drop table RETURNITEMS;
+  drop table ${testName2}_RETURNITEMS;
   mute
 
   bye;

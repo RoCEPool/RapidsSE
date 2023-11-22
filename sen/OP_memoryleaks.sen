@@ -1,0 +1,167 @@
+/*============================================================================*/
+/* OP_memoryleaks.sen -- Report memory leaks                                  */
+/*============================================================================*/
+
+" OP_memoryleaks.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* Create and pipe out the stream definition                                  */
+/*----------------------------------------------------------------------------*/
+: memoryleaks_sendStreamDef
+
+  "memoryleaks_sendStreamDef" .verbose
+
+  // find the C_TDEF_MEMORYLEAKS
+  C_TDEF_MEMORYLEAKS op__tableDef_infoSet assert
+
+  // create a new streamDef
+  infoSetTable[] StreamDefLft[].new
+
+  // pipeout the streamDef
+  StreamDefLft[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: memoryleaks_DataMarker \handler
+
+//  2 trace!
+
+  //"Operand:- EV_M_DATAPULSE" .verbose
+  PipeIn[].pipeOut
+
+  // Check that we're actually tracking memory
+  AM::MEMORY::isTracking not if
+    EC_MEMORY_NOT_BEING_TRACKED op__execErr
+    true
+//    traceOff
+    exit
+  then
+
+  // We might have an option set to not free memory. In which
+  // case calling memoryleaks should not report any errors.
+  AM::MEMORY::isNotFreeing if
+    AM::MEMORY::stopTracking
+    memoryleaks_sendStreamDef   // so that the wireline protocol knows its an empty resultset
+    Marker[].newEosMarker
+    Marker[].pipeOut
+    true
+//    traceOff
+    exit
+  then
+
+  // wait for zero jobs in the Exited JOBLIST
+  begin
+    jobs::anyExitedJobs
+  while
+    200 [task].sleepMsec
+  repeat
+
+
+  // Wait for the number of active jobs to be <= threshold
+  0 locals| numAttempts |
+  12 to Counter0[]
+
+  begin
+    Counter0[] numAttempts > jobs::numActive jobs::numThreshold >= and
+  while
+    numAttempts 1 + to numAttempts
+    200 [task].sleepMsec
+  repeat
+
+  // If there are no memory leaks then we can exit. Otherwise sleep
+  // a little bit and try again until we run out of attempts.
+  0 to numAttempts
+  12 to Counter0[]
+
+  begin
+    Counter0[] numAttempts >
+  while
+    numAttempts 1 + to numAttempts
+
+    // Take the second object count snapshot
+    AM::MEMORY::leaksSnapshot
+
+    AM::MEMORY::hasMemoryLeaks not if
+      AM::MEMORY::stopTracking
+      memoryleaks_sendStreamDef   // so that the wireline protocol knows its an empty resultset
+      Marker[].newEosMarker
+      Marker[].pipeOut
+      true
+//      traceOff
+      exit
+    then
+
+    // We have memory leaks. Sleep and try again
+    200 [task].sleepMsec
+  repeat
+
+  // Time to report the memory leaks
+
+  // Create and send the stream definition. This will populate infoSetTable[].
+  memoryleaks_sendStreamDef
+
+  // create a streamSet operand
+  infoSetTable[] streamSet[].new
+
+  // Record the memory object allocations
+  infoSetTable[] StreamSet[].addMemoryLeaks if
+    StreamSet[].pipeOut
+  else
+    StreamSet[].delete
+  then
+
+  // Stop tracking memory
+  AM::MEMORY::stopTracking
+
+  Marker[].newEosMarker
+  Marker[].pipeOut
+
+  true
+//  traceOff
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for memoryleaks req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : memoryleaks_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: memoryleaks_DataMarker EV_M_DATAPULSE [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: memoryleaks :: memoryleaks ;
+
+: memoryleaks_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "track memory allocations"
+    <opEntry> = "memoryleaks_op"
+    <streamDef> = __memoryLeaks
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

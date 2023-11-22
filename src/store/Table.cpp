@@ -342,7 +342,7 @@ void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize)
 /*----------------------------------------------------------------------------*/
 /* append given buffer into replicated table                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
+void Table::vAppendBuffer_replicated(DataBuffer* pDataBuffer, i8& nRowsInserted)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
   
@@ -352,7 +352,7 @@ void Table::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
 
   pDataBuffer->vLglPtn((LglPtn)0);
 
-  pTblPtn->vAppendBuffer(pDataBuffer);
+  pTblPtn->vAppendBuffer(pDataBuffer, nRowsInserted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -972,7 +972,8 @@ bool Table::bUpdateBucket(Parcel* pParcel)
         CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
 
         TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tLglPtn().iAsI8());
-        pTablePtn->vAppendBuffer(pCrwBuffer);
+        i8 nRowsInserted = 0;
+        pTablePtn->vAppendBuffer(pCrwBuffer, nRowsInserted);
 
         break;
       }

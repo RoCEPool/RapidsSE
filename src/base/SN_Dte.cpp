@@ -42,8 +42,8 @@ i8 SN_Dte::i(char** aacCrs, Format* pFmt)
   
   if ( ! StrLib::bExtractDate2(aacCrs,
                                iYear, iMonth, iDay,
-                               pFmt->m_eDateComponent,
-                               pFmt->m_cDateSeparator) )
+                               pFmt->pDateComponents(),
+                               pFmt->cDateSeparator()) )
     THROW_USER("StrLib::bExtractDate2"_Stz);
 
   m_wDtm.m_wDte.T.m_uYearDelta  = iYear - C_YEAR_BASE;

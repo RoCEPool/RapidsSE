@@ -17,7 +17,7 @@
 #include "Crw.hpp"
 
 #include "IndexDef.hpp"
-
+#include "StreamSet.hpp"
 #include "RowInflator.hpp"
 
 #include "EnumGroups.h"
@@ -52,6 +52,7 @@
 #include "PlanOperand.hpp"
 #include "Dynamo.hpp"
 #include "Port.hpp"
+#include "Socket.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
@@ -150,18 +151,19 @@ LogicUnit::LogicUnit(void)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_ROWBUFFER)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
+,      m_xpRowCounts(this,RF_REPAIR_DELETE,     RowCounts::vRepair,      LR_ROWCOUNTS)
 
 ,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                       LR_SENDNODE)
 ,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                          LR_SENDS)
 ,         m_xpSendWL(this,RF_REPAIR_NONE,  nullptr,                         LR_SENDWL)
-,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                         LR_SOCKET)
+,         m_xpSocket(this,RF_REPAIR_DELETE, Socket::vRepair,                LR_SOCKET)
 ,          m_xpStage(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                          LR_STATS)
 ,         m_xpStream(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFLFT)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFOUT)
 ,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,  StreamDefRht::vRepair,   LR_STREAMDEFRHT)
-,      m_xpStreamSet(this,RF_REPAIR_DELETE,     StreamDef::vRepair,      LR_STREAMSET)
+,      m_xpStreamSet(this,RF_REPAIR_DELETE,     StreamSet::vRepair,      LR_STREAMSET)
 , m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
 ,        m_xpSubCall(this,RF_REPAIR_DELETE,       SubCall::vRepair,        LR_SUBCALL)
 ,        m_xpSubPipe(this,RF_NONE,         nullptr,                        LR_SUBPIPE)
@@ -171,6 +173,7 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                          LR_TABLE)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                       LR_TABLEPTN)
 ,         m_xpTagSet(this,RF_REPAIR_DELETE,        TagSet::vRepair,         LR_TAGSET)
+,       m_xpTaskList(this,RF_REPAIR_DELETE,      TaskList::vRepairList,   LR_TASKLIST)
 ,           m_xpText(this,RF_REPAIR_DELETE,          Text::vRepair,          LR_TEXT)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,         Timer::vRepair,          LR_TIMER)
 ,    m_xpToKeyHshRow(this,RF_REPAIR_DELETE,   ToKeyHshRow::vRepairList,LR_TOKEYHSHROW)

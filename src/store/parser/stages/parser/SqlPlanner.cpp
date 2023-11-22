@@ -328,7 +328,7 @@ antlrcpp::Any SqlPlanner::visitStatementChoice(sqlParser::StatementChoiceContext
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Explain node                                                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementContext *pCtx)
+antlrcpp::Any SqlPlanner::visitExplainCmd(Parser::sqlParser::ExplainCmdContext* pCtx)
 {
   // N.B. Manual visitation of children used at this level.
 

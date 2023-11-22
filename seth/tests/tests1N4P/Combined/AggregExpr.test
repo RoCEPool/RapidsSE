@@ -2,10 +2,10 @@
 -- Filter-Aggregate --- combined 0 Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,7 +25,7 @@ create table lineitem (
 );
 success
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 /optimise_passthru 
@@ -36,7 +36,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan lineitem
+     scan ${testName2}_lineitem
      | aggreg " type INTEGER as CNT ) countall"
      | combined 0
      | next
@@ -64,7 +64,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan lineitem
+     scan ${testName2}_lineitem
      | gbyAgg " groupby type INTEGER L_PARTKEY
                   aggregates
                   type INTEGER as COL0 $K1 ,
@@ -135,7 +135,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan lineitem
+     scan ${testName2}_lineitem
      | filter " type boolean l_orderkey 3 =="
      | project " type INTEGER as COL0 L_PARTKEY 2  -  4  * "
      | combined 0
@@ -153,14 +153,14 @@ pipeline unnamed
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
 MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

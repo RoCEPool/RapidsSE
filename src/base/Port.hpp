@@ -23,10 +23,8 @@ namespace BASE
     int     m_iSocketFd; // the o/s socket
     bool    m_bBlocking; // is a blocking socket
 
-    union {
-      struct sockaddr_in m_xServAddr;
-      i8 m__Padding[16];
-    };
+    struct sockaddr_in m_xServerAddr;
+    struct sockaddr_in m_xClientAddr;
   
     bool    m_bSuccess;  // success?
   
@@ -48,6 +46,7 @@ namespace BASE
     
     Port(Object* pIsFor);
     Port(Object* pIsFor, int iSocketId);
+    Port(Object* pIsFor, int iSocketId, Port* pFromPort);
    ~Port(void) noexcept(false);
   
     static void vRepair(Object* pObject);

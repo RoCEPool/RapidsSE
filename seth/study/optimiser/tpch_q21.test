@@ -4,7 +4,7 @@
 
 LOG 'TPC-H Q21...';
 
-trackMemory;
+trackMemory force;
 success
 
 /*  (original Query)

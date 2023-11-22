@@ -1,15 +1,15 @@
 --------------------------------------------------------------------------------
 -- tpch query17 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 /pipelineName = "OptQ17"
 select
   sum(l_extendedprice) / 7.0 as avg_yearly
 from
-  lineitem,
-  part
+  ${testName2}_lineitem,
+  ${testName2}_part
 where
   p_partkey = l_partkey
   and p_brand = 'Brand#23'
@@ -19,7 +19,7 @@ where
     select
       0.2 * avg(l_quantity)
     from
-      lineitem
+      ${testName2}_lineitem
     where
       l_partkey = p_partkey
     );

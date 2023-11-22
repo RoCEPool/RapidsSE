@@ -541,10 +541,11 @@ void Engine::vCheckGrid(void)
         i_Node++) {
      
      if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-       vTrace("Checking %s %s %lld\n"_Stz,
+       vTrace("Checking %s %s %lld %lld\n"_Stz,
              gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.szStz(),
              gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.szStz(),
-             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo
+             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo,
+             gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNoWL
              );
      
      if (! gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
@@ -556,8 +557,10 @@ void Engine::vCheckGrid(void)
              gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.szStz(),
              gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.szStz());
 
-     if (gxCmdLineArgs.m_xSysArgs.m_bGridTest)
+     if (gxCmdLineArgs.m_xSysArgs.m_bGridTest) {
        vTestPort(gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
+       vTestPort(gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNoWL);
+     }
    }
 
 }
@@ -604,7 +607,9 @@ void Engine::vCheckPort(void)
     vTrace("\n*\n* %lld) Testing Listening Port\n*\n"_Stz,giProgressPoint++);
   
   iPort = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[gxCmdLineArgs.m_xSysArgs.m_i_ThisNode].m_iPortNo;
-  
+  vTestPort(iPort);
+
+  iPort = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[gxCmdLineArgs.m_xSysArgs.m_i_ThisNode].m_iPortNoWL;
   vTestPort(iPort);
 }
 
@@ -627,6 +632,7 @@ void Engine::vCloseTrace(void)
       gpAttachMap->vTraceLockGrab();
 
     gpTraceFile->vClose();
+    gpTraceFile = nullptr; // To stop the next vTrace message writing to a closed file handle
 
     if(gpAttachMap)
       gpAttachMap->vTraceLockDrop();
@@ -1953,6 +1959,8 @@ void Engine::vStartSystem(void)
   // mark attachmap to be ready for connections
   gpAttachMap->vAttachMapState(C_READY);
 
+  // TODO: Spawn the wireline answer daemon here to start accepting connections from clients
+
   while (! AM::SYSTEM::bReady())
     sleep(1);
 
@@ -1999,6 +2007,7 @@ void Engine::vCreateGridOfNodes(void)
                            AM::SYSARGS::nPtnsPerNode(),
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress,
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo,
+                           gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNoWL,
                            AM::szRegionName());
 
     AM::pGrid()->vAddNode(pNode);

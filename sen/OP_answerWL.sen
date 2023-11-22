@@ -7,15 +7,15 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* spawn the receiver job (as a dedicated job)                                */
+/* spawn the wireline receiver job (as a dedicated job)                       */
 /*----------------------------------------------------------------------------*/
-: spawn_Receiver ( pAnsweredNode iConnNo -- )
+: spawn_WLReceiver ( pAcceptedSocket iConnNo -- )
 
   params| iConnNo |
-  params| pAnsweredNode |
+  params| pAcceptedSocket |
 
   // form the tag set string
-  pAnsweredNode "<ansNode> = %v " str.format
+  pAcceptedSocket "<ansSocket> = %v " str.format
   iConnNo "<connectionNo> = %v " str.format str.cat
   STD_DEMONFORK_TAG str.cat
 
@@ -27,71 +27,6 @@
     then
 ;
 
-/*----------------------------------------------------------------------------*/
-/* receive node info from node we just answered                               */
-/*----------------------------------------------------------------------------*/
-: recvNodeInfo ( pSocket -- pAnsweredNode )
-
-  to Socket[]
-
-  0 locals| pAnsweredNode |
-  0 locals| sNodeName |
-
-  // receive the node info set
-  Socket[].recvObject
-
-  Socket[].object@\clear to InfoSet[]
-
-  // get the first row from the infoset
-  InfoSet[].firstRow to infoSetRow[]
-
-  // get the 0th column from the row
-  0 infoSetRow[].getVchColumn to sNodeName
-
-  // find the node
-  sNodeName [grid].findNodeByName to pAnsweredNode
-
-  // set the receive socket in the answered node
-
-  ////////// Watch out, if node is not in the grid yet |||||
-
-  //" OP answer for " .put
-  begin
-      pAnsweredNode not
-    while
-      50 thread::sleepMsec
-      sNodeName [grid].findNodeByName to pAnsweredNode
-  repeat
-
-  pAnsweredNode not if
-    ">>>>>pAnsweredNode is null<<<<<" .
-  then
-
-  //pSocket pAnsweredNode node.recvSocket!
-
-  AM::SHOW::bConnection if
-    sNodeName "Answered %v" .printf
-  then
-
-  Socket[] pAnsweredNode node.recvSocket!
-
-  nullptr to Socket[]
-
-  // node is active
-  NS_ACTIVE pAnsweredNode node.state!
-
-  //ptnmap::adjust
-
-  //3 infoSetRow[].getIntColumn [system].started@ not and if
-  //  true [system].started!
-  //then
-
-  // delete the infoset
-  InfoSet[].delete
-
-  // return the answered node
-  pAnsweredNode
-;
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
@@ -100,17 +35,14 @@
 
   0 locals| iPort |
   0 locals| pAcceptedSocket |
-  0 locals| pAnsweredNode |
-  0 locals| pConnectorTask |
-
   0 locals| nConns |
 
-  "Answer Demon Started" .boot
+  "AnswerWL Demon Started" .boot
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node
-  [grid].thisNodeNo@ [grid].findNodeByNo node.port to iPort
+  [grid].thisNodeName@ [grid].findNodeByName node.portWL to iPort
 
   //[args].verbose if
   //  iPort "Waiting for connections on port %v" .printf
@@ -135,26 +67,12 @@
     then
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // receive node info
-
-    pAcceptedSocket recvNodeInfo to pAnsweredNode
-
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // spawn receiver task for the socket
 
     // increment connection counter
     nConns 1 + to nConns
 
-    pAnsweredNode nConns spawn_Receiver
-
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // if first socket on non-start node then start the connector task
-
-    //nConns 1 == if
-    //  [grid].thisNodeNo@ [grid].StartNode@ != if
-    //    connector::spawn to pConnectorTask
-    //  then
-    //then
+    pAcceptedSocket nConns spawn_WLReceiver
 
   again
 

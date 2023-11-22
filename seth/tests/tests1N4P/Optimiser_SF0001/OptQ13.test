@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- tpch query13 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 /pipelineName = "OptQ13"
@@ -13,7 +13,7 @@ select
                c_custkey,
                count(o_orderkey) as c_count
           from
-               customer left outer join orders
+               ${testName2}_customer left outer join ${testName2}_orders
                  on c_custkey = o_custkey
            and o_comment not like '%special%requests%'
          group by c_custkey

@@ -67,7 +67,7 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_OPTIMISER"_Stz,
   
   /*  */ "LR_PARCEL"_Stz,
-	/*  */ "LR_PDSCURSOR"_Stz,
+  /*  */ "LR_PDSCURSOR"_Stz,
   /*  */ "LR_PATHIDENTIFIER"_Stz,
   /*  */ "LR_PIPEIN"_Stz,
   /*  */ "LR_PIPELINE"_Stz,
@@ -81,7 +81,8 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_RECVWL"_Stz,
   /*  */ "LR_ROWBUFFER"_Stz,
   /*  */ "LR_ROWONCE"_Stz,
-  
+  /*  */ "LR_ROWCOUNTS"_Stz,
+
   /*  */ "LR_SENDNODE"_Stz,
   /*  */ "LR_SENDS"_Stz,
   /*  */ "LR_SENDWL"_Stz,
@@ -103,6 +104,7 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_TABLE"_Stz,
   /*  */ "LR_TABLEPTN"_Stz,
   /*  */ "LR_TAGSET"_Stz,
+  /*  */ "LR_TASKLIST"_Stz,
   /*  */ "LR_TEXT"_Stz,
   /*  */ "LR_TIMER"_Stz,
   /*  */ "LR_TINYC"_Stz,

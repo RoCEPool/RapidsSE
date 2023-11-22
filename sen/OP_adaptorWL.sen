@@ -4,40 +4,458 @@
 
 " OP_adaptorWL.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* Send any serialised wireline responses if there are any queued and waiting.*/
+/* Pushes false if the protocol/connection is unviable, otherwise true.       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_sendAnyWLResponses
+
+  0 locals| pPayloadObj |
+
+  begin
+    AdaptorWL[].hasPayloadToSend@
+
+    while
+      AdaptorWL[].nextPayloadToSend@ to pPayloadObj
+
+      pPayloadObj payloadObj::size@
+      pPayloadObj payloadObj::msgType@
+      "AdaptorWL: Piping out payload: %v : %v bytes" .printf
+
+      pPayloadObj [op].pipeOut
+    repeat
+
+  0 to pPayloadObj
+
+  // Check if the protocol is unviable (e.g. received invalid msg or in wrong sequence).
+  AdaptorWL[].protocolErrorTest if
+    "AdaptorWL: Piping out error marker" .printf
+    AdaptorWL[].protocolError@ op__execErr
+    false
+    exit
+  then
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_START ...                                                          */
+/* Parse a query into one or more tasks                                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_parseQuery params| sSmt |
+  "adaptorWL_parseQuery" .verbose
+
+  TaskList[].isNull assert
+
+  // Parse the command into one or more tasks
+  STD_NORMALFORK_TAG sSmt api::parseCommand if
+
+    // A pointer to a tasklist is now on the data stack. Save it.
+    TaskList[].set
+    AdaptorWL[].queryReceipt
+
+  else
+    // Error code and error message are on the stack. Use it to form a message
+    // to be send to the client.
+    AdaptorWL[].stmtParsingErr
+    exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* Schedule the next task, if any                                             */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_scheduleNextTask
+  "adaptorWL_scheduleNextTask" .verbose
+
+  0 locals| pNextTask |
+
+  TaskList[].isEmpty AdaptorWL[].isAbortEarly or if
+    AdaptorWL[].queryComplete
+    TaskList[].delete
+    exit
+  then
+
+  TaskList[].pop to pNextTask
+
+  pNextTask AdaptorWL[].statementToSubmit
+
+  [Op] [job].responseOp!
+  pNextTask api::scheduleTask to ErrorCode[]
+
+  // Check if there were any errors while scheduling the task.
+  // If there are errors then there are likely errors like low memory
+  // or system closed. i.e. fatal errors.
+  ErrorCode[] if
+    ErrorCode[] AdaptorWL[].stmtSubmittedErr
+    AdaptorWL[].queryComplete
+    TaskList[].delete
+    exit
+  then
+
+  AdaptorWL[].stmtSubmitted
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_START                                                     */
+/* Called when the pipeline is first started, to initialise all operators.    */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StartMarker \handler
 
-  //"adaptorWL_StartMarker- EV_M_START" .verbose
+  "adaptorWL_StartMarker - EV_M_START" .verbose
+
+  PipeIn[]\clear [op].pipeout
+
+  // Get a temporary copy of the socket so the AdaptorWL knows the client's
+  // IP and port
+  "<ansSocket>" [job].tagSet@ tagSet.hasName assert
+  <ansSocket> >int >ptr
+
+  AdaptorWL[].new
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_PAYLOAD                                                   */
+/* This is called when a wireline message has been read from the socket and   */
+/* it needs to be decoded and processed.                                      */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_Payload \handler
+
+  "adaptorWL_Payload - EV_D_PAYLOAD" .verbose
+
+  PipeIn[]\clear locals| pPayloadObj |
+
+  // Check if we previously received an error
+  AdaptorWL[].protocolErrorTest if
+    pPayloadObj payloadObj::delete
+    0 to pPayloadObj
+    true
+    exit
+  then
+
+  pPayloadObj payloadObj::size@
+  pPayloadObj payloadObj::msgType@
+  "AdaptorWL: Received payload: %v : %v bytes" .printf
+
+  // Decode the payload to a message. This might generate payloads to be sent.
+  pPayloadObj AdaptorWL[].decodePayload
+  pPayloadObj payloadObj::delete
+  0 to pPayloadObj
+
+  // Possible errors from decoding need to be sent here.
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  // Process the decoded message.
+
+  // Processing a message may generate 1 or more payloads to be sent back to the client.
+  AdaptorWL[].processWLMsg
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  // Check if there are queries to be parsed and submitted through the API
+  AdaptorWL[].hasQuery if
+    AdaptorWL[].queryStr@ adaptorWL_parseQuery
+
+    // Pipeout any payloads that were just generated so they can be sent straight away
+    adaptorWL_sendAnyWLResponses not if
+      true
+      exit
+    then
+
+    // Schedule the next task, if any
+    adaptorWL_scheduleNextTask
+
+    // Pipeout any payloads that were just generated so they can be sent straight away
+    adaptorWL_sendAnyWLResponses not if
+      true
+      exit
+    then
+
+  then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_CLIENTEVENT ...                                                       */
+/* handler for EV_I_COMPILEERRORS                                             */
+/* Called when there is an error from the SQL compiler.                       */
 /*----------------------------------------------------------------------------*/
-: adaptorWL_clientEvent \handler
+: adaptorWL_CompileErrors \handler
 
-  //"adaptorWL_StartMarker- EV_M_WIRELINE" .verbose
+  "adaptorWL_CompileErrors - EV_I_COMPILEERRORS" .verbose
 
-  AdaptorWL[].processEventA
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
+
+  AdaptorWL[].compilerError
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_APIEVENT ...                                                       */
+/* handler for EV_I_EXECERRORS                                                */
+/* Called when there is an error from a sub command but also when the         */
+/* client disconnects.                                                        */
 /*----------------------------------------------------------------------------*/
-: adaptorWL_apiEvent \handler
+: adaptorWL_ExecErrors \handler
 
-  //"adaptorWL_StartMarker- EV_M_WIRELINE" .verbose
+  "adaptorWL_ExecErrors - EV_I_EXECERRORS" .verbose
 
-  AdaptorWL[].processEventB
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
+
+  "AdaptorWL: Processing error infoset" .
+
+  adaptorWL[].executionError
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
 
   true
 ;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_I_WARNINGS                                                   */
+/* Called when there is a warning from a sub command.                         */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_Warning \handler
+
+  "adaptorWL_Warning - EV_I_WARNINGS" .verbose
+
+  PipeIn[] to InfoSet[]
+  nullptr  to PipeIn[]
+
+  adaptorWL[].executionWarning
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMDEF                                                 */
+/* Called to indicate the definition of a resultset from a query.             */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_StreamDef \handler
+
+  "adaptorWL_StreamDef - EV_D_STREAMDEF" .verbose
+
+  // Pass stream def to Adaptor. Adaptor saves it for use with row data.
+  PipeIn[]\clear AdaptorWL[].resultMetadata
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_CRWBUFFER                                                 */
+/* Called when a compact row buffer is received. CRW buffers are stored in    */
+/* tables, so these are often received when a table is scanned without        */
+/* projections.                                                               */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_CrwBuffer \handler
+
+  "adaptorWL_CrwBuffer - EV_D_CRWBUFFER" .verbose
+
+  PipeIn[] AdaptorWL[].crwBuffer
+  Pipein[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_ROWBUFFER                                                 */
+/* Called when a row buffer is received. These are projections from a query.  */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_RowBuffer \handler
+
+  "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .verbose
+
+  PipeIn[] AdaptorWL[].rowBuffer
+  Pipein[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMSET                                                 */
+/* Called when a StreamSet is received.                                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_StreamSet \handler
+
+  "adaptorWL_StreamSet - EV_D_STREAMSET" .verbose
+
+  PipeIn[] AdaptorWL[].streamSet
+  Pipein[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_I_AFFECTEDROWS                                              */
+/* Called when an affectedRows infoset is received.                           */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_AffectedRows \handler
+
+  "adaptorWL_AffectedRows - EV_I_AFFECTEDROWS" .verbose
+
+  PipeIn[] to InfoSet[]
+  nullptr  to PipeIn[]
+
+  adaptorWL[].affectedRowCount
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_X_CHILDEXIT ...                                             */
+/* Called when the submitted statement has finished being executed.           */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_ChildExit \handler
+
+  "adaptorWL_ChildExit - EV_X_CHILDEXIT" .verbose
+
+  nullptr [job].responseOp!
+  Pipein[].delete
+
+  adaptorWL[].childJobExited
+
+  // The client may have disconnected while the child job was executing. If so
+  // then an ErrorMarker[] will be set. We couldn't pipe this out until the
+  // child job has exited, so now is the time.
+  ErrorMarker[].isNotNull if
+    "adaptorWL: Piping out previously received error marker" .
+    ErrorMarker[].pipeOut
+    true
+    exit
+  then
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  // Schedule the next task, if any
+  adaptorWL_scheduleNextTask
+
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERROR                                                     */
+/* Called when an upstream operator encounters an error. Usually because the  */
+/* client has disconnected.                                                   */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_Error \handler
+
+  "adaptorWL_Error - EV_M_ERROR" .verbose
+
+  // We cannot simply pass this downstream if a statement has already been
+  // submitted through the API. Instead we will need to save the error and
+  // only re-emit it after the child job has exited.
+
+  AdaptorWL[].isChildJobActive if
+    "AdaptorWL: Saving error marker until child query has completed" .
+
+    ErrorMarker[].isNull assert
+    Pipein[]\clear ErrorMarker[].set
+    true
+
+  else
+    "AdaptorWL: Piping out error marker" .
+    EV_M_ERROR_handler
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CLEANING                                                  */
+/* Called when the pipeline is being torn down. Usually because the client has*/
+/* disconnected, or the server is disconnecting from the client.              */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_Cleaning \handler
+
+  "adaptorWL_Cleaning - EV_M_CLEANING" .verbose
+
+  EV_M_CLEANING_handler
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* entry point                                                                */
@@ -48,9 +466,19 @@
 
   op__topology
 
-
-  find: adaptorWL_StartMarker EV_M_START     [op].handler!
-//find: adaptorWL_WireLine    EV_M_WIRELINE  [op].handler!
+  find: adaptorWL_StartMarker   EV_M_START          [op].handler!
+  find: adaptorWL_Payload       EV_D_PAYLOAD        [op].handler!
+  find: adaptorWL_CompileErrors EV_I_COMPILEERRORS  [op].handler!
+  find: adaptorWL_ExecErrors    EV_I_EXECERRORS     [op].handler!
+  find: adaptorWL_Warning       EV_I_WARNINGS       [op].handler!
+  find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
+  find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
+  find: adaptorWL_StreamSet     EV_D_STREAMSET      [op].handler!
+  find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!
+  find: adaptorWL_AffectedRows  EV_I_AFFECTEDROWS   [op].handler!
+  find: adaptorWL_ChildExit     EV_X_CHILDEXIT      [op].handler!
+  find: adaptorWL_Error         EV_M_ERROR          [op].handler!
+  find: adaptorWL_Cleaning      EV_M_CLEANING       [op].handler!
 
   op__loop
 

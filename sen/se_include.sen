@@ -82,6 +82,9 @@ assert::stack_0
   "dp_connectorSE.sen"      include
   "dp_receiverSE.sen"       include
 
+  "dp_answerWL.sen"         include
+  "dp_receiverWL.sen"       include
+
   "se_includeOps.sen"       include
 
 "se_boot 3" .verbose
@@ -120,8 +123,11 @@ cmd::fillOut_allCmds
 
   "se_includePps.sen"       include
   
+  "it_affectedRows.sen"     include
   "it_analyzeIndex.sen"     include
   "it_analyzeTable.sen"     include
+  "it_bpaObjects.sen"       include
+  "it_bpaRegions.sen"       include
   "it_callPipeline.sen"     include
   "it_columnDefs.sen"       include
   "it_command.sen"          include
@@ -143,12 +149,13 @@ cmd::fillOut_allCmds
   "it_listIndex.sen"        include
   "it_listNodes.sen"        include
   "it_listPartitions.sen"   include
-  "it_loadResult.sen"       include
   "it_lockStats.sen"        include
+  "it_logMsg.sen"           include
   "it_lookupCatalog.sen"    include
   "it_lookupIndex.sen"      include
   "it_lookupSchema.sen"     include
   "it_lookupTable.sen"      include
+  "it_memoryLeaks.sen"      include
   "it_memoryLog.sen"        include
   "it_nodeInfo.sen"         include
   "it_operandLog.sen"       include
@@ -173,8 +180,9 @@ cmd::fillOut_allCmds
   "it_totalUnits.sen"       include
   "it_verifyIndex.sen"      include
   "it_verifyTable.sen"      include
+  "it_warnings.sen"         include
 
-  
+
   "job_startSystem.sen"     include // last last
 
 .\n

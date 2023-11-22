@@ -11,7 +11,8 @@
   STD_BOOTFORK_TAG
   "
   define table __command (
-    command        VARCHAR NOT NULL
+    command        VARCHAR NOT NULL ,
+    tags           VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck

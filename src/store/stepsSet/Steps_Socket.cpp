@@ -42,6 +42,8 @@
 #include "MY.hpp"
 #include "Op.hpp"
 
+#include "PayloadObj.hpp"
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -51,22 +53,30 @@ void Step::vAddSteps_Socket(void)
 {
 
   vAddStep("socket::new"_Stz,        &Step::vSocketNew);
-  
+  vAddStep("socket::copy"_Stz,       &Step::vSocketCopy);
+
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
   vAddStep("Socket[].close"_Stz,     &Step::vSocketClose);
   vAddStep("Socket[].connect"_Stz,   &Step::vSocketConnect);
+  vAddStep("Socket[].delete"_Stz,    &Step::vSocketDelete);
   vAddStep("Socket[].dropWrite"_Stz, &Step::vSocketDropWrite);
   vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
   vAddStep("Socket[].grabWrite"_Stz, &Step::vSocketGrabWrite);
   vAddStep("Socket[].isNotNull"_Stz, &Step::vSocketIsNotNull);
   vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
   vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
-  vAddStep("Socket[].object@\\clear"_Stz, &Step::vSocketObjectFetchClear);
+  vAddStep("Socket[].object@\\clear"_Stz,   &Step::vSocketObjectFetchClear);
+  vAddStep("Socket[].object.delete"_Stz,    &Step::vSocketObjectDelete);
+  vAddStep("Socket[].object.isNull"_Stz,    &Step::vSocketObjectIsNull);
+  vAddStep("Socket[].object.isNotNull"_Stz, &Step::vSocketObjectIsNotNull);
   vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
+  vAddStep("Socket[].recvWLMsg"_Stz, &Step::vSocketRecvWLMsg);
   vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
+  vAddStep("Socket[].sendWLMsg"_Stz,&Step::vSocketSendWLMsg);
   vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
+  vAddStep("Socket[].clientAddr@"_Stz,&Step::vSocketClientAddrFetch);
 
 }
 
@@ -147,16 +157,30 @@ void Step::vSocketConnect(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* socket.delete: delete and clear the socket object                          */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketDelete(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+  delete pSocket;
+  m_pLogicUnit->m_xpSocket = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* socket.dropWrite: drop socket write lock                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketDropWrite(void)
 {
   ENTRY();
-  
+
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
   pSocket->vDropWrite();
-  
+
   EXIT();
 }
 
@@ -235,6 +259,25 @@ void Step::vSocketNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* socket::copy: duplicate a socket, keeping the same file descriptor         */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketCopy(void)
+{
+  ENTRY();
+
+  SysCall oSysCall;
+  Socket* pSocket;
+
+  Socket* pOther = _pSocket(m_pDataStack->pPopPtr(__func__));
+
+  pSocket = new Socket(pOther->m_pIsFor,pOther->m_iSocketFd, pOther, true);
+
+  m_pDataStack->vPushPtr(pSocket);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Socket[].object@: fetch object                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketObjectFetch(void)
@@ -268,6 +311,55 @@ void Step::vSocketObjectFetchClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Socket[].object.delete: delete the socket object                           */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectDelete(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  Object* pObject = pSocket->pReceivedObject();
+  pSocket->vReceivedObject(nullptr);
+  delete pObject;
+
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].object.isNull: test if the socket object is null                  */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectIsNull(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  Object* pObject = pSocket->pReceivedObject();
+
+  m_pDataStack->vPushInt(pObject == nullptr ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].object.isNotNull: test if the socket object is not null           */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectIsNotNull(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  Object* pObject = pSocket->pReceivedObject();
+
+  m_pDataStack->vPushInt(pObject != nullptr ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Socket[].recvObject: recv object from a socket                             */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketRecvObject(void)
@@ -288,6 +380,24 @@ void Step::vSocketRecvObject(void)
   
   pSocket->vReceivedObject(pReceivedObject);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].recvWLMsg: recv wireline message from a socket                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketRecvWLMsg(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  RASSERT(! pSocket->pReceivedObject());
+
+  Object* pReceivedObject = pSocket->pRecvWLMsg();
+
+  pSocket->vReceivedObject(pReceivedObject);
+
   EXIT();
 }
 
@@ -315,6 +425,29 @@ void Step::vSocketSendObject(void)
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
   bool bResult = pSocket->bSendObject(pObject,oSysCall,SY_NONE);
+
+  m_pDataStack->vPushInt(bResult);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].sendWLMsg: send wireline message via a socket                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSendWLMsg(void)
+{
+  ENTRY();
+
+  WLP::PayloadObj* pPayload = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_PAYLOADOBJ == pPayload->eGetClassNo());
+  ASSERT(pPayload->iPayloadSize() > 0);
+
+  SysCall oSysCall;
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  bool bResult = pSocket->bSendWLMsg(pPayload,oSysCall,SY_NONE);
 
   m_pDataStack->vPushInt(bResult);
 
@@ -372,6 +505,23 @@ void Step::vSocketSuccessStore(void)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].clientAddr@ -- fetch client address of socket                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketClientAddrFetch(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  s256 sBuf;
+  pSocket->vClientAddr(sBuf);
+
+  m_pDataStack->vPushStz(sBuf.szStz());
+
+  EXIT();
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

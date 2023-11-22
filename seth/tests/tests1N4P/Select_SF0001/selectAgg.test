@@ -1,26 +1,26 @@
 --------------------------------------------------------------------------------
 -- selectAgg (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 // scan + aggeg
-select min(n_regionkey), max(n_name) from nation;
+select min(n_regionkey), max(n_name) from ${testName2}_nation;
 rows:
  (0,'VIETNAM')
 
 // scan + filter + gbyAgg
-select min(n_name) , max(n_nationkey) from nation;
+select min(n_name) , max(n_nationkey) from ${testName2}_nation;
 rows:
  ('ALGERIA',24)
 
 // scan + filter + gbyAgg
-select count(*) from nation where n_name < 'E';
+select count(*) from ${testName2}_nation where n_name < 'E';
 rows:
   (5)
 
 // indexscan + filter + gbyAgg
-select count(*) from nation where n_nationkey < 22;
+select count(*) from ${testName2}_nation where n_nationkey < 22;
 rows:
   (22)
 

@@ -4,6 +4,9 @@
 
 //------------------------------------------------------------------------------
 count count;
+failure contains: "mismatched input 'count'"
+
+count badTable;
 failure contains: "Table does not exist"
 
 lsidx lsidx;
@@ -11,42 +14,42 @@ failure contains: "Table does not exist"
 
 // create table with |
 create table | (i integer);
-failure contains: 'invalid command'
+failure contains: "mismatched input '|'"
 
 // create a table
-create table t (i integer);
+create table ${testName2}_t (i integer);
 success
 
 // no key
-create unique index idx on t();
-failure contains: 'invalid columns'
+create unique index idx on ${testName2}_t();
+failure contains: "mismatched input ')'"
 
 // no index
-drop index t idx;
+drop index ${testName2}_t idx;
 failure contains: 'no such index'
 
 // no table / no index
-//drop index t1 idx;
+//drop index ${testName2}_t1 idx;
 //failure contains: 'no such index'
 
 create table;
-failure contains: 'invalid command'
+failure contains: "mismatched input ';'"
 
 create index;
-failure contains: 'invalid command'
+failure contains: "mismatched input ';'"
 
 sleep;
-failure contains: 'invalid command'
+failure contains: "missing INTEGER_LITERAL at ';'"
 
 sleep a;
-failure contains: 'invalid command'
+failure contains: "mismatched input 'a' expecting INTEGER_LITERAL"
 
-drop table t;
+drop table ${testName2}_t;
 success
 
 CLEANUP {
 
-  drop table t;
+  drop table ${testName2}_t;
   mute
 
   bye;

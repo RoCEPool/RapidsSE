@@ -143,8 +143,11 @@ void Step::vTableAppendBuffer(void)
   ASSERT(! pDataBuffer->pNextItem());
   ASSERT(! pDataBuffer->pPrevItem());
 
-  pTable->vAppendBuffer_replicated(pDataBuffer);
-  
+  i8 nRowsInserted = 0;
+  pTable->vAppendBuffer_replicated(pDataBuffer, nRowsInserted);
+
+  m_pDataStack->vPushInt(nRowsInserted);
+
   EXIT();
 }
 

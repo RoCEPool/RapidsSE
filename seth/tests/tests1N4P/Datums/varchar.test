@@ -3,11 +3,11 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // (1) create a table
-create table VchTbl (
+create table ${testName2}_VchTbl (
   int_col1  INTEGER NOT NULL,
   vch_col2  VARCHAR(10)  NOT NULL,
   vch_col3  VARCHAR(32)  NOT NULL,
@@ -17,57 +17,60 @@ create table VchTbl (
 success
 
 // create index on vch_col2
-create index vch_idx1 on VchTbl (vch_col2);
+create index vch_idx1 on ${testName2}_VchTbl (vch_col2);
 affected: 0
 
 // create index on vch_col3
-create index vch_idx2 on VchTbl (vch_col3);
+create index vch_idx2 on ${testName2}_VchTbl (vch_col3);
 affected: 0
 
 // create index on vch_col5
-create index vch_idx3 on VchTbl (vch_col5);
+create index vch_idx3 on ${testName2}_VchTbl (vch_col5);
 affected: 0
 
 // check existence of index
-lsidx VchTbl;
+lsidx ${testName2}_VchTbl;
 rows:
   ('vch_idx1', false, false)
   ('vch_idx2', false, false)
   ('vch_idx3', false, false)
 
 // check columns of index
-lsidxcol VchTbl vch_idx1;
+lsidxcol ${testName2}_VchTbl vch_idx1;
 rows:
   ('vch_col2', 'VARCHAR', 10, 0, false, false)
 
 // check columns of index
-lsidxcol VchTbl vch_idx2;
+lsidxcol ${testName2}_VchTbl vch_idx2;
 rows:
   ('vch_col3', 'VARCHAR', 32, 0, false, false)
 
 // check columns of index
-lsidxcol VchTbl vch_idx3;
+lsidxcol ${testName2}_VchTbl vch_idx3;
 rows:
   ('vch_col5', 'VARCHAR', 64000, 0, true, false)
 
-Load VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
-failure contains: '2 invalid'
+Load ${testName2}_VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
+warning contains: '2 rows were invalid'
 
 // check no of rows
-select * from VchTbl;
+select * from ${testName2}_VchTbl;
 rows: 101
 
 //------------------------------------------------------------------------------
 // predicateFetch using vch_idx1
-predicateFetch VchTbl "vch_col2 'one' ==";
+// predicateFetch ${testName2}_VchTbl "vch_col2 'one' ==";
+SELECT * FROM ${testName2}_VchTbl where vch_col2 = 'one';
 rows:
   (1,'one',101,1,'abcdefghi"jklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col2 'one zero z' ==";
+// predicateFetch ${testName2}_VchTbl "vch_col2 'one zero z' ==";
+SELECT * FROM ${testName2}_VchTbl where vch_col2 = 'one zero z';
 rows:
   (100,'one zero z','200',0,'abcdefghijklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col2 'eight nine' <=";
+// predicateFetch ${testName2}_VchTbl "vch_col2 'eight nine' <=";
+SELECT * FROM ${testName2}_VchTbl where vch_col2 <= 'eight nine';
 rows:
   (2,'','102',2,'abcdef''ghijklmnopqrstuvwxyz')
   (5,'   five-ab','105',5,'abcdefghij''klmnopqrstuvwxyz')
@@ -78,7 +81,8 @@ rows:
   (88,'eight eigh','188',8,'abcdefghijklmnopqrstuvwxyz')
   (89,'eight nine','189',9,'abcdefghijklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col2 'two' >";
+// predicateFetch ${testName2}_VchTbl "vch_col2 'two' >";
+SELECT * FROM ${testName2}_VchTbl where vch_col2 > 'two';
 rows:
   (0,'zero','0',10,null)
   (20,'two zero','120',0,'abcdefghijklmnopqrstuvwxyz')
@@ -94,15 +98,18 @@ rows:
 
 //------------------------------------------------------------------------------
 // predicateFetchusing vch_idx2
-predicateFetch VchTbl "vch_col3 '101' ==";
+// predicateFetch ${testName2}_VchTbl "vch_col3 '101' ==";
+SELECT * FROM ${testName2}_VchTbl where vch_col3 = '101';
 rows:
   (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col3 '144' ==";
+// predicateFetch ${testName2}_VchTbl "vch_col3 '144' ==";
+SELECT * FROM ${testName2}_VchTbl where vch_col3 = '144';
 rows:
   (44,'four four','144',4,'abcdefghijklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col3 '120' <";
+// predicateFetch ${testName2}_VchTbl "vch_col3 '120' <";
+SELECT * FROM ${testName2}_VchTbl where vch_col3 < '120';
 rows:
   (0,'zero','0',10,null)
   (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
@@ -125,7 +132,8 @@ rows:
   (18,'one, eight','118',8,'abcdefghijklmnopqrstuvwxyz')
   (19,'one nine','119',9,'abcdefghijklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col3 '197' >";
+// predicateFetch ${testName2}_VchTbl "vch_col3 '197' >";
+SELECT * FROM ${testName2}_VchTbl where vch_col3 > '197';
 rows:
   (98,'nine eight','198',8,'abcdefghijklmnopqrstuvwxyz')
   (99,'nine nine','199',9,'abcdefghijklmnopqrstuvwxyz')
@@ -133,14 +141,17 @@ rows:
 
 //------------------------------------------------------------------------------
 // predicateFetch using vch_idx3
-predicateFetch VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' ==";
+// predicateFetch ${testName2}_VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' ==";
+SELECT * FROM ${testName2}_VchTbl where vch_col5 = 'abcdefghijklmnopqrstuvwxyz';
 rows: 85
 
-predicateFetch VchTbl "vch_col5 'abc' ==";
+// predicateFetch ${testName2}_VchTbl "vch_col5 'abc' ==";
+SELECT * FROM ${testName2}_VchTbl where vch_col5 = 'abc';
 rows:
   (16,'abcdefghij','116',6,'abc')
 
-predicateFetch VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' <";
+// predicateFetch ${testName2}_VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' <";
+SELECT * FROM ${testName2}_VchTbl where vch_col5 < 'abcdefghijklmnopqrstuvwxyz';
 rows:
   (0,'zero','0',10,null)
   (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
@@ -157,32 +168,35 @@ rows:
   (16,'abcdefghij','116',6,'abc')
 
 // dump index vch_idx1
-dumpidx vchTbl vch_idx1;
-success
+// dumpidx ${testName2}_vchTbl vch_idx1;
+// success
 
 // dump index vch_idx2
-dumpidx vchTbl vch_idx2;
-success
+// dumpidx ${testName2}_vchTbl vch_idx2;
+// success
 
 // dump index vch_idx3
-dumpidx vchTbl vch_idx3;
-success
+// dumpidx ${testName2}_vchTbl vch_idx3;
+// success
 
 // fetch
-predicateFetch VchTbl "vch_col2 'nine' =";
+// predicateFetch ${testName2}_VchTbl "vch_col2 'nine' =";
+SELECT * FROM ${testName2}_VchTbl where vch_col2 = 'nine';
 rows:
   (9,'nine','109',9,null)
 
-predicateFetch VchTbl "vch_col2 'one zero' =";
+// predicateFetch ${testName2}_VchTbl "vch_col2 'one zero' =";
+SELECT * FROM ${testName2}_VchTbl where vch_col2 = 'one zero';
 rows:
   (10,'one zero','110',0,null)
 
-predicateFetch VchTbl "vch_col5 'abc' =";
+// predicateFetch ${testName2}_VchTbl "vch_col5 'abc' =";
+SELECT * FROM ${testName2}_VchTbl where vch_col5 = 'abc';
 rows:
 (16,'abcdefghij',116,6,'abc')
 
 // drop the table
-drop table VchTbl;
+drop table ${testName2}_VchTbl;
 success
 
 // check existence of table
@@ -196,7 +210,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table VchTbl;
+  drop table ${testName2}_VchTbl;
   mute
 
   bye;

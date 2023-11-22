@@ -46,7 +46,7 @@ namespace STORE
     Table* pTable(void);
 
     void vAddIndex(IndexTree* pIndexTree);
-    void vAppendBuffer(DataBuffer* pDataBuffer);
+    void vAppendBuffer(DataBuffer* pDataBuffer, i8& nRowsInserted);
     i8   nBuffers(void);
     void vDump(void);
     BufferId oExtractBufferId(void* pItemAddr);

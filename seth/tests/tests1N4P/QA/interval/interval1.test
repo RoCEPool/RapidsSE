@@ -1,287 +1,287 @@
 
-create table interval1(a timestamp);
+create table ${testName2}_interval1(a timestamp);
 success
-load interval1 "../DATA/QA/interval/interval1.csv";
+load ${testName2}_interval1 "../DATA/QA/interval/interval1.csv";
 success
 
-select timestamp '2000-02-29 00:00:00' + interval '23' year from interval1;
+select timestamp '2000-02-29 00:00:00' + interval '23' year from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-28 00:00:00')
-select timestamp '2023-02-28 00:00:00' - interval '23' year from interval1;
+select timestamp '2023-02-28 00:00:00' - interval '23' year from ${testName2}_interval1;
 rows:
 (timestamp '2000-02-28 00:00:00')
-select timestamp '2000-01-31 00:00:00' + interval '23' year from interval1;
+select timestamp '2000-01-31 00:00:00' + interval '23' year from ${testName2}_interval1;
 rows:
 (timestamp '2023-01-31 00:00:00')
-select timestamp '2023-04-30 00:00:00' - interval '23' year from interval1;
+select timestamp '2023-04-30 00:00:00' - interval '23' year from ${testName2}_interval1;
 rows:
 (timestamp '2000-04-30 00:00:00')
-select timestamp '2023-04-30 00:00:00' + interval '1' month from interval1;
+select timestamp '2023-04-30 00:00:00' + interval '1' month from ${testName2}_interval1;
 rows:
 (timestamp '2023-05-30 00:00:00')
-select timestamp '2023-04-30 00:00:00' + interval '14' month from interval1;
+select timestamp '2023-04-30 00:00:00' + interval '14' month from ${testName2}_interval1;
 rows:
 (timestamp '2024-06-30 00:00:00')
-select timestamp '2023-04-30 00:00:00' + interval '10' month from interval1;
+select timestamp '2023-04-30 00:00:00' + interval '10' month from ${testName2}_interval1;
 rows:
 (timestamp '2024-02-29 00:00:00')
-select timestamp '2023-04-30 00:00:00' - interval '1' month from interval1;
+select timestamp '2023-04-30 00:00:00' - interval '1' month from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-30 00:00:00')
-select timestamp '2023-04-30 00:00:00' - interval '8' month from interval1;
+select timestamp '2023-04-30 00:00:00' - interval '8' month from ${testName2}_interval1;
 rows:
 (timestamp '2022-08-30 00:00:00')
-select timestamp '2023-05-31 00:00:00' - interval '6' month from interval1;
+select timestamp '2023-05-31 00:00:00' - interval '6' month from ${testName2}_interval1;
 rows:
 (timestamp '2022-11-30 00:00:00')
-select timestamp '2023-04-30 00:00:00' + interval '1-2' year to month from interval1;
+select timestamp '2023-04-30 00:00:00' + interval '1-2' year to month from ${testName2}_interval1;
 rows:
 (timestamp '2024-06-30 00:00:00')
-select timestamp '2023-07-31 00:00:00' + interval '1-2' year to month from interval1;
+select timestamp '2023-07-31 00:00:00' + interval '1-2' year to month from ${testName2}_interval1;
 rows:
 (timestamp '2024-09-30 00:00:00')
-select timestamp '2023-06-30 00:00:00' - interval '1-2' year to month from interval1;
+select timestamp '2023-06-30 00:00:00' - interval '1-2' year to month from ${testName2}_interval1;
 rows:
 (timestamp '2022-04-30 00:00:00')
-select timestamp '2023-04-30 00:00:00' - interval '1-2' year to month from interval1;
+select timestamp '2023-04-30 00:00:00' - interval '1-2' year to month from ${testName2}_interval1;
 rows:
 (timestamp '2022-02-28 00:00:00')
 
-select timestamp '2023-02-09 00:00:00' + interval '1' day from interval1;
+select timestamp '2023-02-09 00:00:00' + interval '1' day from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 00:00:00')
-select timestamp '2023-02-09 00:00:00' + interval '40' day from interval1;
+select timestamp '2023-02-09 00:00:00' + interval '40' day from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-21 00:00:00')
-select timestamp '2022-12-28 00:00:00' + interval '4' day from interval1;
+select timestamp '2022-12-28 00:00:00' + interval '4' day from ${testName2}_interval1;
 rows:
 (timestamp '2023-01-01 00:00:00')
-select timestamp '2023-02-09 00:00:00' - interval '1' day from interval1;
+select timestamp '2023-02-09 00:00:00' - interval '1' day from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-08 00:00:00')
-select timestamp '2023-02-09 00:00:00' - interval '10' day from interval1;
+select timestamp '2023-02-09 00:00:00' - interval '10' day from ${testName2}_interval1;
 rows:
 (timestamp '2023-01-30 00:00:00')
-select timestamp '2023-02-09 00:00:00' - interval '41' day from interval1;
+select timestamp '2023-02-09 00:00:00' - interval '41' day from ${testName2}_interval1;
 rows:
 (timestamp '2022-12-30 00:00:00')
 
-select timestamp '2023-02-09 16:43:12' + interval '1' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '1' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 17:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '24' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '24' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 16:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '9' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '9' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 01:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '672' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '672' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-09 16:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '696' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '696' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-10 16:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '697' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '697' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-10 17:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '8760' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '8760' hour from ${testName2}_interval1;
 rows:
 (timestamp '2024-02-09 16:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '9456' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '9456' hour from ${testName2}_interval1;
 rows:
 (timestamp '2024-03-09 16:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '9432' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '9432' hour from ${testName2}_interval1;
 rows:
 (timestamp '2024-03-08 16:43:12')
-select timestamp '2023-02-09 16:43:12' + interval '9433' hour from interval1;
+select timestamp '2023-02-09 16:43:12' + interval '9433' hour from ${testName2}_interval1;
 rows:
 (timestamp '2024-03-08 17:43:12')
-select timestamp '2022-12-31 23:59:59' + interval '1' hour from interval1;
+select timestamp '2022-12-31 23:59:59' + interval '1' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-01-01 00:59:59')
-select timestamp '2023-02-09 17:43:12' - interval '1' hour from interval1;
+select timestamp '2023-02-09 17:43:12' - interval '1' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2023-02-10 16:43:12' - interval '24' hour from interval1;
+select timestamp '2023-02-10 16:43:12' - interval '24' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2023-02-10 01:43:12' - interval '9' hour from interval1;
+select timestamp '2023-02-10 01:43:12' - interval '9' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2023-03-09 16:43:12' - interval '672' hour from interval1;
+select timestamp '2023-03-09 16:43:12' - interval '672' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2023-03-10 16:43:12' - interval '696' hour from interval1;
+select timestamp '2023-03-10 16:43:12' - interval '696' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2023-03-10 17:43:12' - interval '697' hour from interval1;
+select timestamp '2023-03-10 17:43:12' - interval '697' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2024-02-09 16:43:12' - interval '8760' hour from interval1;
+select timestamp '2024-02-09 16:43:12' - interval '8760' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2024-03-09 16:43:12' - interval '9456' hour from interval1;
+select timestamp '2024-03-09 16:43:12' - interval '9456' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2024-03-08 16:43:12' - interval '9432' hour from interval1;
+select timestamp '2024-03-08 16:43:12' - interval '9432' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2024-03-08 17:43:12' - interval '9433' hour from interval1;
+select timestamp '2024-03-08 17:43:12' - interval '9433' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-09 16:43:12')
-select timestamp '2023-01-01 00:59:59' - interval '1' hour from interval1;
+select timestamp '2023-01-01 00:59:59' - interval '1' hour from ${testName2}_interval1;
 rows:
 (timestamp '2022-12-31 23:59:59')
 
-select timestamp '2023-02-10 10:09:23' + interval '1' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '1' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:10:23')
-select timestamp '2023-02-10 10:09:23' + interval '60' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '60' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '52' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '52' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:01:23')
-select timestamp '2023-02-10 10:09:23' + interval '1440' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '1440' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-11 10:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '900' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '900' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-11 01:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '901' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '901' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-11 01:10:23')
-select timestamp '2023-02-10 10:09:23' + interval '40320' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '40320' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-10 10:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '27360' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '27360' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-01 10:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '27420' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '27420' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-01 11:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '504063' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '504063' minute from ${testName2}_interval1;
 rows:
 (timestamp '2024-01-26 11:12:23')
-select timestamp '2023-02-10 10:09:23' + interval '525600' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '525600' minute from ${testName2}_interval1;
 rows:
 (timestamp '2024-02-10 10:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '567360' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '567360' minute from ${testName2}_interval1;
 rows:
 (timestamp '2024-03-10 10:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '565920' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '565920' minute from ${testName2}_interval1;
 rows:
 (timestamp '2024-03-09 10:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '565980' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '565980' minute from ${testName2}_interval1;
 rows:
 (timestamp '2024-03-09 11:09:23')
-select timestamp '2023-02-10 10:09:23' + interval '565981' minute from interval1;
+select timestamp '2023-02-10 10:09:23' + interval '565981' minute from ${testName2}_interval1;
 rows:
 (timestamp '2024-03-09 11:10:23')
-select timestamp '2022-12-31 23:59:59' + interval '1' minute from interval1;
+select timestamp '2022-12-31 23:59:59' + interval '1' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-01-01 00:00:59')
 
 
-select timestamp '2023-02-10 10:10:23' - interval '1' minute from interval1;
+select timestamp '2023-02-10 10:10:23' - interval '1' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-02-10 11:09:23' - interval '60' minute from interval1;
+select timestamp '2023-02-10 11:09:23' - interval '60' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-02-10 11:01:23' - interval '52' minute from interval1;
+select timestamp '2023-02-10 11:01:23' - interval '52' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-02-11 10:09:23' - interval '1440' minute from interval1;
+select timestamp '2023-02-11 10:09:23' - interval '1440' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-02-11 01:09:23' - interval '900' minute from interval1;
+select timestamp '2023-02-11 01:09:23' - interval '900' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-02-11 01:10:23' - interval '901' minute from interval1;
+select timestamp '2023-02-11 01:10:23' - interval '901' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-03-10 10:09:23' - interval '40320' minute from interval1;
+select timestamp '2023-03-10 10:09:23' - interval '40320' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-03-01 10:09:23' - interval '27360' minute from interval1;
+select timestamp '2023-03-01 10:09:23' - interval '27360' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-03-01 11:09:23' - interval '27420' minute from interval1;
+select timestamp '2023-03-01 11:09:23' - interval '27420' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2024-01-26 11:12:23' - interval '504063' minute from interval1;
+select timestamp '2024-01-26 11:12:23' - interval '504063' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2024-02-10 10:09:23' - interval '525600' minute from interval1;
+select timestamp '2024-02-10 10:09:23' - interval '525600' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2024-03-10 10:09:23' - interval '567360' minute from interval1;
+select timestamp '2024-03-10 10:09:23' - interval '567360' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2024-03-09 10:09:23' - interval '565920' minute from interval1;
+select timestamp '2024-03-09 10:09:23' - interval '565920' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2024-03-09 11:09:23' - interval '565980' minute from interval1;
+select timestamp '2024-03-09 11:09:23' - interval '565980' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2024-03-09 11:10:23' - interval '565981' minute from interval1;
+select timestamp '2024-03-09 11:10:23' - interval '565981' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 10:09:23')
-select timestamp '2023-01-01 00:00:59' - interval '1' minute from interval1;
+select timestamp '2023-01-01 00:00:59' - interval '1' minute from ${testName2}_interval1;
 rows:
 (timestamp '2022-12-31 23:59:59')
 
-select timestamp '2023-02-10 11:49:23' + interval '1' second from interval1;
+select timestamp '2023-02-10 11:49:23' + interval '1' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:49:24')
-select timestamp '2023-02-10 11:49:23' + interval '120' second from interval1;
+select timestamp '2023-02-10 11:49:23' + interval '120' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:51:23')
-select timestamp '2023-02-10 11:49:23' + interval '40' second from interval1;
+select timestamp '2023-02-10 11:49:23' + interval '40' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:50:03')
-select timestamp '2023-02-10 11:49:23' + interval '3600' second from interval1;
+select timestamp '2023-02-10 11:49:23' + interval '3600' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 12:49:23')
-select timestamp '2023-02-10 11:49:23' + interval '3660' second from interval1;
+select timestamp '2023-02-10 11:49:23' + interval '3660' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 12:50:23')
-select timestamp '2023-02-10 11:49:23' + interval '3662' second from interval1;
+select timestamp '2023-02-10 11:49:23' + interval '3662' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 12:50:25')
-select timestamp '2022-12-31 23:59:59' + interval '1' second from interval1;
+select timestamp '2022-12-31 23:59:59' + interval '1' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-01-01 00:00:00')
 
-select timestamp '2023-02-10 11:49:24' - interval '1' second from interval1;
+select timestamp '2023-02-10 11:49:24' - interval '1' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:49:23')
-select timestamp '2023-02-10 11:51:23' - interval '120' second from interval1;
+select timestamp '2023-02-10 11:51:23' - interval '120' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:49:23')
-select timestamp '2023-02-10 11:50:03' - interval '40' second from interval1;
+select timestamp '2023-02-10 11:50:03' - interval '40' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:49:23')
-select timestamp '2023-02-10 12:49:23' - interval '3600' second from interval1;
+select timestamp '2023-02-10 12:49:23' - interval '3600' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:49:23')
-select timestamp '2023-02-10 12:50:23' - interval '3660' second from interval1;
+select timestamp '2023-02-10 12:50:23' - interval '3660' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:49:23')
-select timestamp '2023-02-10 12:50:25' - interval '3662' second from interval1;
+select timestamp '2023-02-10 12:50:25' - interval '3662' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-10 11:49:23')
-select timestamp '2023-01-01 00:00:00' - interval '1' second from interval1;
+select timestamp '2023-01-01 00:00:00' - interval '1' second from ${testName2}_interval1;
 rows:
 (timestamp '2022-12-31 23:59:59')
 
-drop table interval1;
+drop table ${testName2}_interval1;
 success
 
 CLEANUP {
 
-  drop table interval1;
+  drop table ${testName2}_interval1;
   mute
 
   bye;

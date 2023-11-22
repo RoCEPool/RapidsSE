@@ -12,12 +12,22 @@ fi
 
 # Copy binaries
 mkdir -p "${LAYOUT_DIR}/bin"
-cp "${ROOT_DIR}/bin/rapidsse"       "${LAYOUT_DIR}/bin"
-cp "${ROOT_DIR}/bin/se.man"         "${LAYOUT_DIR}/bin"
+cp "${ROOT_DIR}/bin/rapidsse"      "${LAYOUT_DIR}/bin"
+cp "${ROOT_DIR}/bin/se.man"        "${LAYOUT_DIR}/bin"
+
+# SE Shell
+# Note: We put seshell.sh in both the $LAYOUT_DIR and $LAYOUT_DIR/shell so that
+#       the $LAYOUT_DIR/shell directory can be copied to another machine and run
+#       as it is.
+mkdir -p "${LAYOUT_DIR}/shell"
+cp "${ROOT_DIR}/shell/"*.jar       "${LAYOUT_DIR}/shell"
+cp "${ROOT_DIR}/shell/seshell.sh"  "${LAYOUT_DIR}/shell"
+cp "${ROOT_DIR}/shell/seshell.bat" "${LAYOUT_DIR}/shell"
+cp "${ROOT_DIR}/shell/seshell.sh"  "${LAYOUT_DIR}"
 
 # commands directory
 mkdir -p "${LAYOUT_DIR}/commands"
-cp -r "${ROOT_DIR}/commands" "${LAYOUT_DIR}"
+cp -r "${ROOT_DIR}/commands"       "${LAYOUT_DIR}"
 
 # dbgen
 mkdir -p "${LAYOUT_DIR}/dbgen"
@@ -73,17 +83,17 @@ cp "${ROOT_DIR}/src/store/Fragments/vFLAT_Header.h"         "${LAYOUT_DIR}/src/s
 cp "${ROOT_DIR}/src/store/Fragments/Limit.cpp"              "${LAYOUT_DIR}/src/store/Fragments"
 
 # Bootstrap
-cp "${ROOT_DIR}/bootstrap/setup.sh"              "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/setup.fn"              "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/envCheck.fn"           "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/common.fn"             "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/cluster.config.sample" "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/startSE.sh"            "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/stopSE.sh"             "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/boot.fn"               "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/status.sh"             "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/prompt.sh"             "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/collectLogs.sh"        "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/setup.sh"               "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/setup.fn"               "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/envCheck.fn"            "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/common.fn"              "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/cluster.config.sample"  "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/startSE.sh"             "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/stopSE.sh"              "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/boot.fn"                "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/status.sh"              "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/prompt.sh"              "${LAYOUT_DIR}"
+cp "${ROOT_DIR}/bootstrap/collectLogs.sh"         "${LAYOUT_DIR}"
 # cp "${ROOT_DIR}/bootstrap/addNode.sh"            "${LAYOUT_DIR}"
 # cp "${ROOT_DIR}/bootstrap/removeNode.sh"         "${LAYOUT_DIR}"
 

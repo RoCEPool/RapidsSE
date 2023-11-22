@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- tpch query3 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 /pipelineName = "OptQ3"
@@ -10,9 +10,9 @@ select l_orderkey,
   o_orderdate,
   o_shippriority
 from
-  customer,
-  orders,
-  lineitem
+  ${testName2}_customer,
+  ${testName2}_orders,
+  ${testName2}_lineitem
 where c_mktsegment = 'BUILDING'
   and c_custkey = o_custkey
   and l_orderkey = o_orderkey

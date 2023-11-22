@@ -174,16 +174,17 @@ DEPFILES  = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
-THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated
+THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I../thirdparty/thrift/include -I../thirdparty/thrift/boost_1_80_0
 INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
-LIBS = -lc -lstdc++ -lpthread -ldl $(strip $(LINUX_LIBS) $(DARWIN_LIBS)) -lantlr4-runtime
-LIB_DIRS = -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIBS = -lc -lstdc++ -lpthread -ldl $(strip $(LINUX_LIBS) $(DARWIN_LIBS)) -lantlr4-runtime -lthrift
+LIB_DIRS = -L../thirdparty/antlr/lib -L../thirdparty/thrift/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
 ANTLR_LIB := ../thirdparty/antlr/lib/libantlr4-runtime.a
-COMPILED_LIBS := $(ANTLR_LIB)
+THRIFT_LIB := ../thirdparty/thrift/lib/libthrift.a
+COMPILED_LIBS := $(ANTLR_LIB) $(THRIFT_LIB)
 
 # A callable function for defining the file that describes whether a target
 # was built as debug or release.
@@ -193,7 +194,7 @@ targetConfigFile = $(shell echo -n "$$(dirname $1)/.$$(basename $1).lastBuildCon
 
 ###############################################################################
 ### Build Rules																														  ###
-##############################################cc#################################
+###############################################################################
 
 # The default target (because it is first)
 all : post-build
@@ -351,6 +352,11 @@ antlr : $(ANTLR_LIB)
 $(ANTLR_LIB) : 
 	+@cd ../thirdparty/antlr && env -u CPPFLAGS -u LDFLAGS $(MAKE)
 
+# Rule for building Thrift
+thrift : $(THRIFT_LIB)
+$(THRIFT_LIB) :
+	+@cd ../thirdparty/thrift && env -u CPPFLAGS -u LDFLAGS -u WARNINGS -u CFLAGS CXXFLAGS="-Wno-unused-but-set-variable" $(MAKE)
+
 # Necessary to make some of the above rules run every time.
 FORCE : 
 
@@ -361,6 +367,7 @@ distclean : clean
 	@echo "Removing 3rd-party generated libraries..."
 	@echo ""
 	+@cd ../thirdparty/antlr && $(MAKE) clean
+	+@cd ../thirdparty/thrift && $(MAKE) clean
 
 #To remove RapidsSE-generated files only
 clean :
@@ -378,4 +385,4 @@ print-% : ; @echo $* = $($*)
 .SECONDARY :
 
 # List of make targets that don't correlate to files in the filesystem.
-.PHONY : clean distclean FORCE thirdparty antlr version sql buildConfigCheck target release debug post-build main-build pre-build all
+.PHONY : clean distclean FORCE thirdparty antlr thrift version sql buildConfigCheck target release debug post-build main-build pre-build all

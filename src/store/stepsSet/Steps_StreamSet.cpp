@@ -31,6 +31,8 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+extern SizeHeap  gxaSizeHeap[];
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -39,12 +41,16 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[]"_Stz,                &Step::vStreamSetGet);
   vAddStep("StreamSet[].addAnalyzeIndex"_Stz,&Step::vStreamSetAddAnalyzeIndex);
   vAddStep("StreamSet[].addAnalyzeTable"_Stz,&Step::vStreamSetAddAnalyzeTable);
+  vAddStep("StreamSet[].addBpaObjects"_Stz,  &Step::vStreamSetAddBpaObjects);
+  vAddStep("StreamSet[].addBpaRegions"_Stz,  &Step::vStreamSetAddBpaRegions);
   vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
   vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
   vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
   vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
+  vAddStep("StreamSet[].addLogMsg"_Stz,      &Step::vStreamSetAddLogMsg);
+  vAddStep("StreamSet[].addMemoryLeaks"_Stz, &Step::vStreamSetAddMemoryLeaks);
   vAddStep("StreamSet[].addNodeHeartbeat"_Stz, &Step::vStreamSetAddNodeHeartbeat);
   vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
@@ -151,6 +157,68 @@ void Step::vStreamSetAddAnalyzeTable(void)
   //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushInt(pRow ? true : false);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addBpaObjects -- add rows about bpa object analysis            */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddBpaObjects(void)
+{
+  ENTRY();
+
+  // Get the warning infoset and definition
+  InfoSet* pWarnInfoSet = * m_pLogicUnit->m_xpInfoSet;
+  ASSERT(pWarnInfoSet);
+  ASSERT(pWarnInfoSet->eOpInfoSet() == OI_WARNINGS);
+
+  Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpInfoSetTable);
+  ASSERT(pWarnTable);
+  StreamDef* pWarnDef = pWarnTable->pStreamDef();
+  ASSERT(pWarnDef);
+
+
+  // get the streamset table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+
+  PoolHelper::vObjectSummary(pStreamSet, pStreamDef, pWarnInfoSet, pWarnDef);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addBpaRegions -- add rows about bpa region analysis            */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddBpaRegions(void)
+{
+  ENTRY();
+
+  // Get the warning infoset and definition
+  InfoSet* pWarnInfoSet = * m_pLogicUnit->m_xpInfoSet;
+  ASSERT(pWarnInfoSet);
+  ASSERT(pWarnInfoSet->eOpInfoSet() == OI_WARNINGS);
+
+  Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpInfoSetTable);
+  ASSERT(pWarnTable);
+  StreamDef* pWarnDef = pWarnTable->pStreamDef();
+  ASSERT(pWarnDef);
+
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+
+  PoolHelper::vRegionSummary(pStreamSet, pStreamDef, pWarnInfoSet, pWarnDef);
+
   EXIT();
 }
 
@@ -370,6 +438,92 @@ void Step::vStreamSetAddListPartitions(void)
   
   m_pDataStack->vPushInt(pRow ? true : false);
   
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addLogMsg -- add rows to streamSet with log message info       */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddLogMsg(void)
+{
+  ENTRY();
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the timestamp to use
+  i8 iTsp = m_pDataStack->iPopInt(__func__);
+
+  // get the log message to use
+  s2K sMsg;
+  m_pDataStack->vPopStr(sMsg, __func__ );
+
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+  ASSERT(pStreamSet);
+
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    iTsp,
+                                    sMsg.szStz(),
+                                    C_VARGS_END);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addMemoryLeaks -- add rows to streamSet with memory leak info  */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddMemoryLeaks(void)
+{
+  ENTRY();
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+
+  i8 nLeaks = 0;
+
+  ObjectSnapshot* pSnapshotThen = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnapshotNow  = AM::MEMORY::pSnapshotAtMemoryLeaks();
+
+  for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
+
+    eCN eClass = (eCN)i_Class;
+
+    if (eClass == CN_FREEPOOLBUFFER || eClass == CN_HEAPBUFFER)
+      continue;
+
+    // check if this class to be ignored for memory leak detection
+    if (gxaSizeHeap[eClass].m_bIgnoreMemoryLeak)
+      continue;
+
+    i8 nDelta = pSnapshotNow->m_nObjects[eClass] -
+                pSnapshotThen->m_nObjects[eClass];
+
+    if (nDelta <= 0)
+      continue;
+
+    ++nLeaks;
+    /*Row* pRow =*/ pStreamSet->pAllotRow(pStreamDef,
+                                          C_VARGS_BEGIN,
+                                          aCN[eClass],
+                                          nDelta,
+                                          C_VARGS_END);
+  }
+
+  m_pDataStack->vPushBol(nLeaks > 0);
+
   EXIT();
 }
 

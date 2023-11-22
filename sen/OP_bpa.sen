@@ -1,0 +1,112 @@
+/*============================================================================*/
+/* OP_bpa.sen -- Buffer Pool Analysis operator                                */
+/*============================================================================*/
+
+" OP_bpa.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: bpa_DataMarker \handler
+
+//  2 trace!
+
+  //"Operand:- EV_M_DATAPULSE" .verbose
+  PipeIn[].pipeOut
+
+
+  <bpaType> "regions" str.same if
+    // Create a warnings infoset. We may not need it.
+    C_TDEF_WARNINGS op__tableDef_infoSet assert
+    InfoSetTable[] InfoSet[].new
+    OI_WARNINGS InfoSet[].opInfoset!
+
+    // find the C_TDEF_BPAREGIONS table definition, create a streamDef and pipe it out
+    C_TDEF_BPAREGIONS op__tableDef_streamSet assert
+    streamSetTable[] StreamDefLft[].new
+    StreamDefLft[].pipeOut
+
+    // create streamset
+    streamSetTable[] streamSet[].new
+
+    // populate streamset
+    streamSetTable[] StreamSet[].addBpaRegions
+    StreamSet[].pipeOut
+
+    InfoSet[].infoRows 0 > if
+      InfoSet[].pipeOut
+    else
+      InfoSet[].delete
+    then
+
+  else <bpaType> "objects" str.same if
+    // Create a warnings infoset. We may not need it.
+    C_TDEF_WARNINGS op__tableDef_infoSet assert
+    InfoSetTable[] InfoSet[].new
+    OI_WARNINGS InfoSet[].opInfoset!
+
+    // find the C_TDEF_BPAOBJECTS table definition, create a streamDef and pipe it out
+    C_TDEF_BPAOBJECTS op__tableDef_streamSet assert
+    streamSetTable[] StreamDefLft[].new
+    StreamDefLft[].pipeOut
+
+    // create streamset
+    streamSetTable[] streamSet[].new
+
+    // populate streamset
+    streamSetTable[] StreamSet[].addBpaObjects
+    StreamSet[].pipeOut
+
+    InfoSet[].infoRows 0 > if
+      InfoSet[].pipeOut
+    else
+      InfoSet[].delete
+    then
+
+  else
+    <bpaType> EC_INVALID_PARAMETER attachmap::errorText@ "%v: %v" str.format EC_INVALID_PARAMETER op__execErrMsg
+    true
+    exit
+  then then
+
+  Marker[].newEosMarker
+  Marker[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bpa req                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : bpa_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: bpa_DataMarker EV_M_DATAPULSE [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bpa :: bpa <bpaType> ;
+
+: bpa_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "buffer pool analysis"
+    <opEntry> = "bpa_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

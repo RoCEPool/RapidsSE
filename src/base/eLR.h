@@ -80,7 +80,8 @@ enum eLR // Logic Unit Registers
   /*  */ LR_RECVWL,
   /*  */ LR_ROWBUFFER,
   /*  */ LR_ROWONCE,
-  
+  /*  */ LR_ROWCOUNTS,
+
   /*  */ LR_SENDNODE,
   /*  */ LR_SENDS,
   /*  */ LR_SENDWL,
@@ -102,6 +103,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_TABLE,
   /*  */ LR_TABLEPTN,
   /*  */ LR_TAGSET,
+  /*  */ LR_TASKLIST,
   /*  */ LR_TEXT,
   /*  */ LR_TIMER,
   /*  */ LR_TINYC,

@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 //////////////////
@@ -11,36 +11,36 @@ success
 //////////////////
 
 // (1) create table t1
-create table T1 (
+create table ${testName2}_T1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 success
 
 // (2) drop table t1
-drop table T1 ;
+drop table ${testName2}_T1 ;
 success
 
 // (3) drop a non-existent table
-drop table T1 ;
+drop table ${testName2}_T1 ;
 failure contains: 'Table does not exist'
 
 // (4) create table t1 again
-create table T1 (
+create table ${testName2}_T1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 success
 
 // (5) try create table t1 again when t1 exists
-create table T1 (
+create table ${testName2}_T1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 failure contains: 'table exists'
 
 // (6) drop table t1
-drop table T1 ;
+drop table ${testName2}_T1 ;
 success
 
 // the following crashes SE
@@ -54,14 +54,14 @@ success
 */
 
 // (8) invalid syntax (missing ',')
-create table T1 (
+create table ${testName2}_T1 (
   key   INTEGER NOT NULL 
   name  VARCHAR(32) NOT NULL
 );
-failure contains: 'invalid command'
+failure contains: 'EC_SYNTAX_ERROR; Line: 3; Column: 2; mismatched input ''name'''
 
 // (9) create table with all types
-create table T1 (
+create table ${testName2}_T1 (
   c1  boolean     NOT NULL,
   c2  date        NOT NULL, 
   c3  decimal     NOT NULL, 
@@ -75,11 +75,11 @@ create table T1 (
 success
 
 // (10) drop table
-drop table T1 ;
+drop table ${testName2}_T1 ;
 success
 
 // (9) create table with 48 columns
-create table T1 (
+create table ${testName2}_T1 (
 c0 boolean NOT NULL,
 c1 boolean NOT NULL,
 c2 boolean NOT NULL,
@@ -131,19 +131,19 @@ c47 boolean NOT NULL
 );
 success
 
-lscol T1;
+lscol ${testName2}_T1;
 rows: 48
 
-lsidx T1;
+lsidx ${testName2}_T1;
 rows: 0
 
 // (10) drop table
-drop table T1 ;
+drop table ${testName2}_T1 ;
 success
 
 /*
 // create table with 151 columns
-create table T1 (
+create table ${testName2}_T1 (
 c0 boolean NOT NULL,
 c1 boolean NOT NULL,
 c2 boolean NOT NULL,
@@ -198,40 +198,40 @@ failure contains: 'max 48 columns'
 */
 
 // (11) create table with two columns that have same name
-create table T1 (
+create table ${testName2}_T1 (
   c1   INTEGER NOT NULL, 
   c1   VARCHAR(32) NOT NULL
 );
 failure contains: 'duplicate column'
 
 // (12) try create table t1 with no columns
-create table T1 (
+create table ${testName2}_T1 (
 );
 failure contains: 'invalid command'
 
 // (13) try create table t1 with invalid table name
-create table T1& (
+create table ${testName2}_T1& (
   c1   INTEGER NOT NULL
 );
-failure contains: 'invalid command'
+failure contains: 'token recognition error at: ''&'''
 
 // (14) try create table t1 with invalid column name
-create table T1 (
+create table ${testName2}_T1 (
   c1&  INTEGER NOT NULL
 );
-failure contains: 'invalid command'
+failure contains: 'token recognition error at: ''&'''
 
 // (15) try create table t1 with invalid column type
-create table T1 (
+create table ${testName2}_T1 (
   c1  NOSUCHTYPE NOT NULL
 );
-failure contains: 'invalid command'
+failure contains: 'EC_SYNTAX_ERROR; Line: 2; Column: 6; mismatched input ''NOSUCHTYPE'''
 
 // (16) try create table t1 with invalid null
-create table T1 (
+create table ${testName2}_T1 (
                  c1  integer NOT NUKK
                  );
-failure contains: 'invalid command'
+failure contains: 'EC_SYNTAX_ERROR; Line: 2; Column: 33; mismatched input ''NUKK'' expecting SQL_NULL'
 
 ///////////
 // lscol //
@@ -242,32 +242,32 @@ lscol noTable;
 failure contains: 'Table does not exist'
 
 // (17) create table t1
-create table T1 (
+create table ${testName2}_T1 (
    key   INTEGER NOT NULL,
    name  VARCHAR(32) NOT NULL
    );
 success
 
 // move to tenants
-cf ~;
-success
-
-// lscol not in tables
-lscol T1;
-failure contains: 'not in tables'
-
-// move to tables folder
-cf "~tables";
-success
+// cf ~;
+// success
+//
+// // lscol not in tables
+// lscol ${testName2}_T1;
+// failure contains: 'not in tables'
+//
+// // move to tables folder
+// cf "~tables";
+// success
 
 // lscol
-lscol T1;
+lscol ${testName2}_T1;
 rows:
   ('key','INTEGER',19,0,false,true)
   ('name','VARCHAR',32,0,false,false)
 
 // () drop table t1
-drop table T1 ;
+drop table ${testName2}_T1 ;
 success
 
 ///////////////
@@ -279,64 +279,76 @@ lsPtncol noTable;
 failure contains: 'Table does not exist'
 
 // (17) create table t1
-create table T1 (
+create table ${testName2}_T1 (
    key   INTEGER NOT NULL,
    name  VARCHAR(32) NOT NULL
 );
 success
 
-// move to tenants
-cf ~;
-success
+// // move to tenants
+// cf ~;
+// success
+//
+// // lsPtncol not in tables
+// lsPtncol ${testName2}_T1;
+// failure contains: 'not in tables'
+//
+// // move to tables folder
+// cf "~tables";
+// success
 
-// lsPtncol not in tables
-lsPtncol T1;
-failure contains: 'not in tables'
-
-// move to tables folder
-cf "~tables";
-success
+//  // move to tenants
+//  cf ~;
+//  success
+//
+//  // lsPtncol not in tables
+//  lsPtncol T1;
+//  failure contains: 'not in tables'
+//
+//  // move to tables folder
+//  cf "~tables";
+//  success
 
 // lsPtncol
-lsPtncol T1;
+lsPtncol ${testName2}_T1;
 rows:
  ('key','INTEGER',19,0,false,true)
 
 // () drop table t1
-drop table T1 ;
+drop table ${testName2}_T1 ;
 success
 
 // (17) create table t1
-create table T1 (
+create table ${testName2}_T1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by (name);
 success
 
 // lsPtncol
-lsPtncol T1;
+lsPtncol ${testName2}_T1;
 rows:
   ('name','VARCHAR',32,0,false,true)
 
 // () drop table t1
-drop table T1 ;
+drop table ${testName2}_T1 ;
 success
 
 // (17) create table t1
-create table T1 (
+create table ${testName2}_T1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by (name, key);
 success
 
 // lsPtncol
-lsPtncol T1;
+lsPtncol ${testName2}_T1;
 rows:
   ('name','VARCHAR',32,0,false,true)
   ('key','INTEGER',19,0,false,true)
 
 // () drop table t1
-drop table T1 ;
+drop table ${testName2}_T1 ;
 success
 
 ////////////
@@ -344,29 +356,29 @@ success
 ////////////
 
 // drop invalid table
-drop table T1;
+drop table ${testName2}_T1;
 failure contains: 'Table does not exist'
 
 // create table t1
-create table T1 (
+create table ${testName2}_T1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 );
 success
 
-// move to tenants folder
-cf ~;
-success
+//  // move to tenants folder
+//  cf ~;
+//  success
+//
+//  // not in tables
+//  drop table T;
+//  failure contains: 'not in tables'
+//
+//  // move to tables
+//  cf "~tables";
+//  success
 
-// not in tables
-drop table T;
-failure contains: 'not in tables'
-
-// move to tables
-cf "~tables";
-success
-
-drop table T1;
+drop table ${testName2}_T1;
 success
 
 // get memory leaks
@@ -375,10 +387,10 @@ rows: 0
 
 CLEANUP {
 
-  cf "~tables";
-  mute
+//  cf "~tables";
+//  mute
   
-  drop table T1;
+  drop table ${testName2}_T1;
   mute
   
   bye;

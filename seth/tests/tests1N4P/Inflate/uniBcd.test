@@ -3,24 +3,24 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // (1) create a table
-create table uniBcd (
+create table ${testName2}_uniBcd (
   bcd_col  DECIMAL(15,2) NOT NULL
 );
 success
 
-load uniBcd "../FASTLOAD/Data/uniBcd.csv" ;
+load ${testName2}_uniBcd "../FASTLOAD/Data/uniBcd.csv" ;
 success
 
 // check no of rows
-select * from uniBcd;
+select * from ${testName2}_uniBcd;
 rows: 40
 
 // check data
-select * from uniBcd;
+select * from ${testName2}_uniBcd;
 rows:
   (0.00)
   (0.10)
@@ -64,7 +64,7 @@ rows:
   (-987654321.12)
 
 // drop the table)
-drop table uniBcd;
+drop table ${testName2}_uniBcd;
 success
 
 // get memory leaks)
@@ -73,7 +73,7 @@ rows: 0
 
 CLEANUP {
   // drop the table)
-  drop table uniBcd;
+  drop table ${testName2}_uniBcd;
   mute
   
   bye;

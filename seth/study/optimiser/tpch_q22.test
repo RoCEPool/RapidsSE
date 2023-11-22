@@ -4,7 +4,7 @@
 
 LOG 'TPC-H Q22...';
 
-trackMemory;
+trackMemory force;
 success
 
 

@@ -2,10 +2,10 @@
 -- Query1 --- Combined Operators
 --------------------------------------------------------------------------------
 
-//trackMemory;
+//trackmemory force;
 //success;
 
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,8 +25,8 @@ create table lineitem (
 );
 success
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
-//load lineitem "../DATA/TPCH/lineitem100.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+//load ${testName2}_lineitem "../DATA/TPCH/lineitem100.csv";
 success
 
 /optimise_passthru 
@@ -40,7 +40,7 @@ begin
 
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | filter " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
     | project " type TIMESTAMP as L_SHIPDATE  L_SHIPDATE "
     | combined 0
@@ -64,7 +64,7 @@ begin
 
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | filter " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
     | gbyAgg "
       groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
@@ -157,7 +157,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
 //MemoryLeaks;
@@ -165,7 +165,7 @@ success
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   bye;

@@ -17,11 +17,12 @@
 ### Constants                                                               ###
 ###############################################################################
 
-readonly SCRIPT_NAME=$(basename "$0")
+readonly SCRIPT_NAME="$(basename "$0")"
 readonly DIR="$(dirname "$0")"
 readonly PROJ_ROOT="${DIR}/../../.."
 readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 readonly SETH_BIN_DIR="${PROJ_ROOT}/seth/bin"
+readonly SHELL_DIR="${PROJ_ROOT}/shell"
 readonly SETH_RESULTS_DIR="${DIR}/../results"
 
 readonly COMMON_FN="${DIR}/common.fn"
@@ -209,23 +210,17 @@ fi
 readonly STATUS_SCRIPT="${INSTALL_DIR}/status.sh"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-# We need to invoke Seth against the first installed node.
-# Seth currently uses the temporary SE JDBC driver which invokes
-# the SE Prompt in order to communicate with the system.
-# We need to use the SE binary that has been installed, not
-# the binaries in this repository. We need to extract out all
-# the details from the cluster configuration.
+# We will invoke Seth against the first installed node.
+# Extract the details from the cluster configuration.
+SE_HOSTNAME="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+SE_WIRELINE_PORT="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_CLIENT_PORT_KEY}")"
 
-# Classpath of invoking SETH. SETH is not installed so we must
-# invoke it from the current repository.
-readonly CLASSPATH="${SETH_BIN_DIR}:${SETH_BIN_DIR}/*"
 
-readonly SE_BIN_DIR="${INSTALL_DIR}/bin"
-readonly SE_PATH="${SE_BIN_DIR}/rapidsse"
+# Classpath of invoking SETH and the corresponding JDBC driver (in the shell directory).
+# (yes, this will also load the SE Shell jar files, but this way is simpler).
+# SETH is not installed so we must invoke it from the current repository.
+readonly CLASSPATH="${SETH_BIN_DIR}/*:${SHELL_DIR}/*"
 
-# Arguments to the SE Prompt used by the JDBC driver used by SETH.
-# Note that --metadata and --script are automatically added.
-readonly SE_ARGS=("--name" "${FIRST_NODE_NAME}" "--munged" "--commands" "${INSTALL_DIR}/commands" "--appendTrace")
 readonly SE_LOG_FILE="${INSTALL_DIR}/se.log"
 
 # Additional arguments for SETH. Enable as required.
@@ -242,9 +237,8 @@ fi
 
 SETH_ARGS+=("-f" "${TESTLIST_FILE}")
 
-
 # The SE JDBC URL that tells the JDBC driver how to connect to SE.
-readonly URL="jdbc:rapidsse:${SE_PATH}?extraargs=${SE_ARGS[*]}"
+readonly URL="jdbc:se://${SE_HOSTNAME}:${SE_WIRELINE_PORT}"
 
 
 # Check that the cluster is running
@@ -270,7 +264,7 @@ SETH_START_TIME="$(date +%s)"
 # We run it in a subshell with "|| true" to avoid problems with set -e if
 # it returns a non-zero exit code.
 # shellcheck disable=SC2086
-( java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS[*]} || true ) &
+( java -cp "${CLASSPATH}" com.rapidsdata.seth.Seth -u "${URL}" "${SETH_ARGS[@]}" || true ) &
 SETH_PID=$!  # This will actually be the pid of the subshell
 
 # Now wait until SETH finishes running. If SE exits then it has crashed and we have an error.
@@ -291,12 +285,9 @@ do
     >&2 echo "Here are the last 250 lines of its log file:" 1>&2
     >&2 tail -n 250 "${SE_LOG_FILE}" 1>&2
 
-    # Clean up the SETH process and its subordinate SE prompt
-    SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    # Clean up the SETH process
     echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
-    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
-    echo "${SE_PROMPT_PID}" | xargs -r kill -9
     exit 1
   fi
 
@@ -325,12 +316,9 @@ do
     >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
     >&2 echo "" 1>&2
 
-    # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
-    SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    # Cleanup the SETH process. Don't worry about SE - it'll get cleaned up later.
     echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
-    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
-    kill -9 "${SE_PROMPT_PID}" || true
     exit 1
   fi
 
@@ -347,12 +335,9 @@ do
     >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
     >&2 echo "" 1>&2
 
-    # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
-    SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    # Cleanup the SETH process. Don't worry about SE - it'll get cleaned up later.
     echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
-    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
-    kill -9 "${SE_PROMPT_PID}" || true
     exit 1;
   fi
 

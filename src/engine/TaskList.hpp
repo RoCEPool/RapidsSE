@@ -31,7 +31,8 @@ namespace ENGINE
     Task*  pPopTask(void);
     void   vRemoveTask(Task* pTask);
     i8     nTasks(void);
-  
+
+    static void vRepairList(Object* pObject);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vContentDump(void);

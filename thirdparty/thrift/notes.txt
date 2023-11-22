@@ -1,0 +1,135 @@
+Notes on Thrift
+===============
+
+Boost Dependency:
+-----------------
+
+Thrift requires the Boost library to be installed so Thrift can be compiled. I was able
+to install thrift using the package managers on Mac, CentOS 7 and Ubuntu 22 without too
+many problems but I was not able to install it with yum on AmazonLinux2. This was due to some
+conflicts with libraries needed for Python that I just couldn't resolve.
+
+Since many boost libraries are header only solutions, one workaround to this was to include
+the necessary boost libraries in the repository for the purpose of compiling Thrift. The
+Boost library is huge in file size (131MB .tar.gz, over 800MB uncompressed) so I tried to
+strip out as much as possible that wasn't being used and got it down to a 12MB compressed
+file.
+
+
+MacOS Dependencies:
+-------------------
+1. The package manager Homebrew is required to help install the other dependencies.
+2. The Thrift autoconfigure script requires Bison >= 2.5. The standard bison included
+   with MacOS is 2.3. A newer version can be installed with HomeBrew via the command
+   "brew install bison". You *might* need to change the $PATH to use this HomeBrew version
+   of bison before the inbuilt MacOS bison. You can do this by adding the following command
+   to your ~/.bash_profile file:
+   export PATH="$(brew --prefix bison)/bin:$PATH"
+3. Thrift depends on headers and libraries for openssl. MacOS may provide a version of
+   openssl (libreSsl I believe), but it's headers are not found in the usual /usr/local/include
+   path. The easiest approach is to install openssl via brew so that the headers are found in
+   /usr/local/opt/openssl/include and the library in /usr/local/opt/openssl/lib. The build
+   environment will adjust the CPPFLAGS and LD_FLAGS environment variables to also search in
+   these locations.
+
+
+CentOS 7 Dependencies:
+----------------------
+1. The EPEL7 (Extra Packages for Enterprise Linux) repository must be installed in yum as
+   this provides an easier installation for additional packages.
+2. Thrift depends on headers and libraries for openssl. This can be installed with the command
+   "sudo yum install openssl-devel". If successful, there will be headers found at /usr/include/openssl.
+
+
+Ubuntu 22 Dependencies:
+-----------------------
+1. Thrift depends on headers and libraries for openssl. This can be installed with the command
+   "sudo apt-get install libssl-dev". If successful, there will be headers found at /usr/include/openssl.
+
+
+Configuring Thrift on Mac
+-------------------------
+
+The command below will build thrift and the c++ library only on MacOS.
+
+LD_FLAGS='-L/usr/local/opt/openssl/lib' CPPFLAGS='-I/usr/local/opt/openssl/include' ./configure \
+ --prefix=$(realpath .) \
+ --enable-libs \
+ --disable-tests \
+ --disable-tutorial \
+ --disable-coverage \
+ --disable-shared \
+ --enable-static \
+ --with-cpp \
+ --with-boost=boost_1_80_0 \
+ --without-java \
+ --without-kotlin \
+ --without-erlang \
+ --without-nodejs \
+ --without-nodets \
+ --without-lua \
+ --without-python \
+ --without-py3 \
+ --without-php \
+ --without-php_extension \
+ --without-dart \
+ --without-ruby \
+ --without-go \
+ --without-swift \
+ --without-rs \
+ --without-haxe \
+ --without-netstd \
+ --without-d \
+ --without-libevent \
+ --without-qt5
+
+
+Configuring Thrift on CentOS 7 and Ubuntu 22
+--------------------------------------------
+
+The command below will build thrift and the c++ library only on CentOS 7 and Ubuntu 22.
+
+./configure \
+ --prefix=$(realpath .) \
+ --enable-libs \
+ --disable-tests \
+ --disable-tutorial \
+ --disable-coverage \
+ --disable-shared \
+ --enable-static \
+ --with-cpp \
+ --with-boost=boost_1_80_0 \
+ --without-java \
+ --without-kotlin \
+ --without-erlang \
+ --without-nodejs \
+ --without-nodets \
+ --without-lua \
+ --without-python \
+ --without-py3 \
+ --without-php \
+ --without-php_extension \
+ --without-dart \
+ --without-ruby \
+ --without-go \
+ --without-swift \
+ --without-rs \
+ --without-haxe \
+ --without-netstd \
+ --without-d \
+ --without-libevent \
+ --without-qt5
+
+
+
+
+Boost:
+* Downloaded tar.gz file.
+* Removed all directories other than the boost directory.
+* Removed all other files in the root directory.
+* Removed the following subdirectories:
+  - boost/fusion
+  - boost/geometry
+  - boost/hana
+  - boost/phoenix
+  - boost/spirit

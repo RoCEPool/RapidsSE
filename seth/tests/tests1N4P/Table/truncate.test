@@ -2,18 +2,18 @@
 /* truncate table tests                                                       */
 /*----------------------------------------------------------------------------*/
 
-trackMemory;
+trackmemory force;
 success;
 
-indexEntries 200;
-success;
+//indexEntries 200;
+//success;
 
 // truncate where table does not exist
-truncate noTable;
+truncate ${testName2}_noTable;
 failure contains: 'Table does not exist'
 
 // create a table
-create table LINEITEM (
+create table ${testName2}_lineitem (
   l_orderkey INTEGER NOT NULL,
   l_partkey INTEGER NOT NULL,
   l_suppkey INTEGER NOT NULL,
@@ -35,52 +35,53 @@ success
 
 //------------------------------------------------------------------------------
 // create an index on custkey
-CREATE INDEX LINEITEM_IDX1 ON LINEITEM(l_orderkey);
+CREATE INDEX LINEITEM_IDX1 ON ${testName2}_lineitem(l_orderkey);
 affected: 0
 
 // check existence of index
-lsidx lineitem;
+lsidx ${testName2}_lineitem;
 rows:
   ("LINEITEM_IDX1",false,false)
 
 // check columns of index
-lsidxcol lineitem LINEITEM_IDX1;
+lsidxcol ${testName2}_lineitem LINEITEM_IDX1;
 rows:
   ("l_orderkey", "INTEGER", 19, 0, false, true)
 
 // truncate when table is empty
-truncate lineitem;
+truncate ${testName2}_lineitem;
 success
 
 // fetch
-select * from lineitem;
+select * from ${testName2}_lineitem;
 rows: 0
 
 // load the table
-load lineitem "../DATA/Regression/lineitem.csv";
+load ${testName2}_lineitem "../DATA/Regression/lineitem.csv";
 success
 
 // truncate the table
-truncate lineitem;
+truncate ${testName2}_lineitem;
 success
 
 // fetch
-select * from lineitem;
+select * from ${testName2}_lineitem;
 rows: 0
 
 // now drop the table
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
-indexEntries 0;
-success
+// Disabled for antlr command parser
+//indexEntries 0;
+//success
 
 memoryLeaks;
 rows: 0;
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   indexExtries 0;

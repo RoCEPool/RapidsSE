@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : toKeyHshRow_sf_StartMarker \handler
 
+  0 locals| eError |
+
   // pipeout the (StartMarker)
   PipeIn[].pipeOut
 
@@ -16,15 +18,21 @@
   <tableNm> op__table if
 
     // create a ToRow using Table[].streamDef
-    toKeyHshRow[].new
+    toKeyHshRow[].new to eError
 
-    // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
-    Table[] StreamDefOut[].newFromTable
-    StreamDefOut[].pipeOut
+    eError EC_NONE == if
+      // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
+      Table[] StreamDefOut[].newFromTable
+      StreamDefOut[].pipeOut
+
+    else
+      eError op__execErr
+    then
+
   then
 
-  // find the __loadResult table def
-  C_TDEF_LOADRESULT op__tableDef_infoSet assert
+  // find the __affectedRows table def
+  C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
 
   true
 ;
@@ -77,12 +85,14 @@
   // -- -- -- -- -- --
   // pipeout load results
   /*
-  infoSetTable[] InfoSet[].new
-  OI_LOADRESULT InfoSet[].opInfoset!
-  
-  toKeyHshRow[].counters@@ 3 InfoSet[].addRowVargs
+  ToKeyHshRow[].countersAreZero not if
+    infoSetTable[] InfoSet[].new
+    OI_AFFECTEDROWS InfoSet[].opInfoset!
 
-  InfoSet[].pipeOut
+    0 0 0 toKeyHshRow[].counters@@ 6 InfoSet[].addRowVargs
+
+    InfoSet[].pipeOut
+  then
 */
 
   // -- -- -- -- -- --

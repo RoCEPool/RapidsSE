@@ -92,6 +92,7 @@
   PipeIn[]\clear to InfoSet[]
   
   0 C_TDEF_COUNT InfoSet:getCol to Counter0[]
+  InfoSet[].delete
   
   //Counter0[] "  expecting %v commands" .printf
 

@@ -26,12 +26,33 @@ public:
   void vAccumSumStore(void);
 
   // adaptorWL
-  void vAdaptorProcessEventA(void);
-  void vAdaptorProcessEventB(void);
-  void vAdaptorWLAction1(void);
-  void vAdaptorWLAction2(void);
+  void vAdaptorWLChildJobExited(void);
+  void vAdaptorWLCompilerError(void);
+  void vAdaptorWLCrwBuffer(void);
+  void vAdaptorWLDecodePayload(void);
+  void vAdaptorWLExecutionError(void);
+  void vAdaptorWLExecutionWarning(void);
+  void vAdaptorWLAffectedRowCount(void);
   void vAdaptorWLDelete(void);
+  void vAdaptorWLHasPayloadToSendFetch(void);
+  void vAdaptorWLHasQuery(void);
+  void vAdaptorWLIsAbortEarly(void);
+  void vAdaptorWLIsChildJobActive(void);
   void vAdaptorWLNew(void);
+  void vAdaptorWLNextPayloadToSendFetch(void);
+  void vAdaptorWLProcessWLMsg(void);
+  void vAdaptorWLProtocolErrorFetch(void);
+  void vAdaptorWLProtocolErrorTest(void);
+  void vAdaptorWLQueryComplete(void);
+  void vAdaptorWLQueryReceipt(void);
+  void vAdaptorWLQueryStrPush(void);
+  void vAdaptorWLResultMetadata(void);
+  void vAdaptorWLRowBuffer(void);
+  void vAdaptorWLStatementToSubmit(void);
+  void vAdaptorWLStatementParsingError(void);
+  void vAdaptorWLStatementSubmitted(void);
+  void vAdaptorWLStatementSubmittedError(void);
+  void vAdaptorWLStreamSet(void);
 
   // AnswerWL
   void vAnswerProcessEventA(void);
@@ -63,6 +84,8 @@ public:
   // AM
   void vAM_AnswerDemonJobIdFetch(void);
   void vAM_AnswerDemonJobIdStore(void);
+  void vAM_AnswerWLDemonJobIdFetch(void);
+  void vAM_AnswerWLDemonJobIdStore(void);
   void vAM_CollectDemonJobIdFetch(void);
   void vAM_CollectDemonJobIdStore(void);
   void vAM_ConnectorDemonJobIdFetch(void);
@@ -91,6 +114,12 @@ public:
   void vAM_WakerDemonJobIdStore(void);
   void vAM_SuperDemonJobIdFetch(void);
   void vAM_SuperDemonJobIdStore(void);
+  void vAM_HasMemoryLeaks(void);
+  void vAM_IsNotFreeing(void);
+  void vAM_IsTracking(void);
+  void vAM_StopTracking(void);
+  void vAM_TakeLeaksSnapshot(void);
+  void vAM_TakeTrackingSnapshot(void);
 
   void vAM_No_Free(void);
   void vAM_Show_Boot(void);
@@ -120,10 +149,12 @@ public:
   void vApiForkChild(void);
   void vApiForkDemon(void);
   void vApiForkChild2PC(void);
+  void vApiParseCommand(void);
   void vApiReapableJobFetch(void);
   void vApiReapableIsOriginator(void);
   void vApiReapableJobMetricsEnabled(void);
   void vApiReapableJobTagsFetch(void);
+  void vApiScheduleTask(void);
   void vApiSpawnJob(void);
 
   // arrange
@@ -436,6 +467,7 @@ void vDdlLockAssertNone(void);
   void vDot(void);
   void vDotBoot(void);
   void vDotPut(void);
+  void vDotTrace(void);
   void vDotNewline(void);
   void vDotVerbose(void);
 
@@ -730,6 +762,7 @@ void vDdlLockAssertNone(void);
   void vInfoSetAddRowCount(void);
   void vInfoSetAddRowVargs(void);
   void vInfoSetAddTotalUnits(void);
+  void vInfoSetAddWarning(void);
   void vInfoSetChunkFile(void);
   void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
@@ -741,6 +774,7 @@ void vDdlLockAssertNone(void);
   void vInfoSetIsNull(void);
   void vInfoSetIsProgress(void);
   void vInfoSetIsTotalUnits(void);
+  void vInfoSetIsWarning(void);
   void vInfoSetName(void);
   void vInfoSetNew(void);
   void vInfoSetNextRow(void);
@@ -1048,12 +1082,15 @@ void vJobIdLastJobIdFetch(void);
   void vJob_SortExecute(void);
 
   // jobs
+  void vJobsAnyExited(void);
+  void vJobsNumActive(void);
   void vJobsSeeDlist(void);
   void vJobsSeeLlist(void);
   void vJobsSeeOlist(void);
   void vJobsSeePlist(void);
   void vJobsSeeRlist(void);
   void vJobsSeeSqueue(void);
+  void vJobsNumThreshold(void);
 
   // list
   void vListAddRowBuffer(void);
@@ -1277,6 +1314,7 @@ void vJobIdLastJobIdFetch(void);
   void vNodeId(void);
   void vNodePartitions(void);
   void vNodePort(void);
+  void vNodePortWL(void);
   void vNodeRecvSocketStore(void);
   void vNodeRecvSocketFetch(void);
   void vNodeSendSocketStore(void);
@@ -1518,6 +1556,9 @@ void vJobIdLastJobIdFetch(void);
   void vPtnMapPtnsInGrid(void);
   void vPtnMapSee(void);
 
+  // ptr
+  void vPtrIsNull(void);
+
   // push
   void vPushI(void);
   void vPushJ(void);
@@ -1562,6 +1603,7 @@ void vJobIdLastJobIdFetch(void);
   void vRecvWLIsNotNull(void);
   void vRecvWLIsNull(void);
   void vRecvWLSet(void);
+  void vRecvWLDelete(void);
 
   // reference timer
   void vRefTimerReset(void);
@@ -1630,6 +1672,11 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSendOut(void);
   void vParcelSet(void);
 
+  // PayloadObj
+  void vPayloadObjDelete(void);
+  void vPayloadObjSize(void);
+  void vPayloadObjMsgType(void);
+
   // pds Cursor
   void vPdsCursorGet(void);
   void vPdsCursorItemAddr(void);
@@ -1692,6 +1739,21 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferSetLglPtn(void);
   void vRowBufferToCsv(void);
   void vRowBufferOperandDump(void);
+
+  // rowCounts
+  void vRowCountsDelete(void);
+  void vRowCountsGet(void);
+  void vRowCountsIsNull(void);
+  void vRowCountsNew(void);
+  void vRowCountsAddProcessed(void);
+  void vRowCountsAddSkipped(void);
+  void vRowCountsAddInvalid(void);
+  void vRowCountsAddInserted(void);
+  void vRowCountsAddUpdated(void);
+  void vRowCountsAddDeleted(void);
+  void vRowCountsAreAllZeros(void);
+  void vRowCountsGetAllCounts(void);
+  void vRowCountsGetNumCounters(void);
 
   // rowCursor
   void vRowCursorBegin(void);
@@ -1818,18 +1880,26 @@ void vJobIdLastJobIdFetch(void);
   void vSocketClose(void);
   void vSocketConnect(void);
   void vSocketGet(void);
+  void vSocketDelete(void);
   void vSocketDropWrite(void);
   void vSocketGrabWrite(void);
   void vSocketIsNotNull(void);
   void vSocketIsNull(void);
   void vSocketObjectFetch(void);
   void vSocketObjectFetchClear(void);
+  void vSocketObjectDelete(void);
+  void vSocketObjectIsNull(void);
+  void vSocketObjectIsNotNull(void);
   void vSocketNew(void);
+  void vSocketCopy(void);
   void vSocketRecvObject(void);
+  void vSocketRecvWLMsg(void);
   void vSocketSendObject(void);
+  void vSocketSendWLMsg(void);
   void vSocketSet(void);
   void vSocketSuccessFetch(void);
   void vSocketSuccessStore(void);
+  void vSocketClientAddrFetch(void);
 
 
   // sql compiler
@@ -1979,12 +2049,16 @@ void vJobIdLastJobIdFetch(void);
   // reg stream set
   void vStreamSetAddAnalyzeIndex(void);
   void vStreamSetAddAnalyzeTable(void);
+  void vStreamSetAddBpaObjects(void);
+  void vStreamSetAddBpaRegions(void);
   void vStreamSetAddColumnDef(void);
   void vStreamSetAddGridSanity(void);
   void vStreamSetAddListContents(void);
   void vStreamSetAddListFolder(void);
   void vStreamSetAddListIndex(void);
   void vStreamSetAddListPartitions(void);
+  void vStreamSetAddLogMsg(void);
+  void vStreamSetAddMemoryLeaks(void);
   void vStreamSetAddNodeHeartbeat(void);
   void vStreamSetAddNodeStatus(void);
   void vStreamSetAddPingInfo(void);
@@ -2134,6 +2208,7 @@ void vJobIdLastJobIdFetch(void);
   void vTagSetAppendInt(void);
   void vTagSetAppendStr(void);
   void vTagSetAsStr(void);
+  void vTagSetAsSenStr(void);
   void vTagSetCopy(void);
   void vTagSetDump(void);
   void vTagSetGet(void);
@@ -2184,6 +2259,15 @@ void vJobIdLastJobIdFetch(void);
   void vTaskWait(void);
   void vTaskYield(void);
   void vTaskYield_opLoop(void);
+
+  // tasklist
+  void vTaskListGet(void);
+  void vTaskListSet(void);
+  void vTaskListDelete(void);
+  void vTaskListIsEmpty(void);
+  void vTaskListIsNull(void);
+  void vTaskListPop(void);
+
 
   // tenants
   void vTenantsDelete(void);
@@ -2285,6 +2369,8 @@ void vJobIdLastJobIdFetch(void);
 
   // time
   void vTimeCurrent(void);
+  void vTimeCurrentTsp(void);
+  void vTimeTspToStr(void);
 
   // timer
   void vTimerGet(void);
@@ -2323,6 +2409,7 @@ void vJobIdLastJobIdFetch(void);
   // toKeyHshRow
   void vToKeyHshRowCompleted(void);
   void vToKeyHshRowCountersFetch(void);
+  void vToKeyHshRowCountersZero(void);
   void vToKeyHshRowCsvToRow(void);
   void vToKeyHshRowDangling(void);
   void vToKeyHshRowDelete(void);

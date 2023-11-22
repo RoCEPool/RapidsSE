@@ -2,7 +2,7 @@
 -- unionAll tests
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 //------------------------------------------------------------------------------
@@ -15,13 +15,13 @@ pipeline unionAll
     start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
@@ -35,7 +35,7 @@ failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table LineItem
+create table ${testName2}_LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -66,13 +66,13 @@ pipeline unionAll
     start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
@@ -84,7 +84,7 @@ end ;
 failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
-create table orders (
+create table ${testName2}_orders (
    O_ORDERKEY        INTEGER       NOT NULL,  // 0)
    O_CUSTKEY         INTEGER       NOT NULL,  // 1)
    O_ORDERSTATUS     CHAR(1)       NOT NULL,  // 2)
@@ -107,13 +107,13 @@ pipeline unionAll
     start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
@@ -126,7 +126,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
@@ -139,13 +139,13 @@ pipeline unionAll
     start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
@@ -167,11 +167,11 @@ rows:
   (3)
 
 // truncate the lineitem table
-truncate lineitem;
+truncate ${testName2}_lineitem;
 success;
 
 // load the orders table
-load Orders "../DATA/TPCH/orders10.csv";
+load ${testName2}_Orders "../DATA/TPCH/orders10.csv";
 success
 
 //------------------------------------------------------------------------------
@@ -184,13 +184,13 @@ pipeline unionAll
     start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
@@ -211,7 +211,7 @@ rows:
   (34)
 
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
@@ -224,13 +224,13 @@ pipeline unionAll
     start | pulse once | stageB | stageC
 
   stage stageB on all partitions :
-    scan lineitem
+    scan ${testName2}_lineitem
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | project "type integer as orderkey $1"
     | combined 0
     | stageD
@@ -262,12 +262,12 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success;
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table orders;
+drop table ${testName2}_orders;
 success;
 
 MemoryLeaks;
@@ -275,10 +275,10 @@ rows: 0
 
 CLEANUP {
   
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
-  drop table orders;
+  drop table ${testName2}_orders;
   mute
 
   bye;

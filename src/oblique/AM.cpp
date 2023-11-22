@@ -237,6 +237,24 @@ JobId AM::DEMON::tAnswerDemonJobId(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set jobId of the answer wireline demon in AM                               */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vAnswerWLDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tAnswerWLDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the answer wireline demon in AM                               */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tAnswerWLDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tAnswerWLDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set jobId of the collect demon in AM                                       */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vCollectDemonJobId(JobId tJobId) {
@@ -604,9 +622,8 @@ i8 AM::GRID::nKnownNodes(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm,
-                       Stz* szIPAddr, i8 iPortNo,
-                       Stz* szRegionNm)
+void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
+                             i8 iPortNo, i8 iPortNoWL, Stz* szRegionNm)
 {
   _static_
   
@@ -617,7 +634,7 @@ void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm,
     if (! pDetectedNode) {
       AM::pGrid()->vAddDetectedNode(iNodeId, szNodeNm,
                                     szIPAddr, iPortNo,
-                                    szRegionNm);
+                                    iPortNoWL, szRegionNm);
     }
   }
 }
@@ -1637,6 +1654,50 @@ bool AM::MEMORY::bIsRunningLowDist(void)
   }
 
   return bIsLow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* AM::MEMORY::pSnapshotAtTrackingMemory(void)
+{
+  _static_
+
+  return gpAttachMap->m_pSnapshotAtTrackingMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+void AM::MEMORY::vSnapshotAtTrackingMemory(ObjectSnapshot* pSnapshot)
+{
+  _static_
+
+  ASSERT(!pSnapshot || !gpAttachMap->m_pSnapshotAtTrackingMemory);
+
+  gpAttachMap->m_pSnapshotAtTrackingMemory = pSnapshot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* AM::MEMORY::pSnapshotAtMemoryLeaks(void)
+{
+  _static_
+
+  return gpAttachMap->m_pSnapshotAtMemoryLeaks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+void AM::MEMORY::vSnapshotAtMemoryLeaks(ObjectSnapshot* pSnapshot)
+{
+  _static_
+
+  ASSERT(!pSnapshot || !gpAttachMap->m_pSnapshotAtMemoryLeaks);
+
+  gpAttachMap->m_pSnapshotAtMemoryLeaks = pSnapshot;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -3787,6 +3848,12 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
+    case CN_PAYLOADOBJ: {
+      WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(pOperand);
+      delete pPayloadObj;
+      break;
+    }
+
     case CN_PLANOPERAND: {
       PlanOperand* pPlanOperand = _pPlanOperand(pOperand);
       delete pPlanOperand;
@@ -4416,10 +4483,13 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
+        case OI_AFFECTEDROWS:   eOperand = EV_I_AFFECTEDROWS;   break;
+        case OI_CALLPIPELINE:   eOperand = EV_I_CALLPIPELINE;   break;
         case OI_COMMAND:        eOperand = EV_I_COMMAND;        break;
         case OI_COMPILEERRORS:  eOperand = EV_I_COMPILEERRORS;  break;
         case OI_COUNT:          eOperand = EV_I_COUNT;          break;
         case OI_EXECERRORS:     eOperand = EV_I_EXECERRORS;     break;
+        case OI_FORKCOMMAND:    eOperand = EV_I_FORKCOMMAND;    break;
         case OI_LOADRESULT:     eOperand = EV_I_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = EV_I_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = EV_I_NODEINFO;       break;
@@ -4429,6 +4499,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;
         case OI_SEEKOFFSETS:    eOperand = EV_I_SEEKOFFSETS;    break;
         case OI_TOTALUNITS:     eOperand = EV_I_TOTALUNITS;     break;
+        case OI_WARNINGS:       eOperand = EV_I_WARNINGS;       break;
         default:
           RASSERT(0);
       }
@@ -4490,6 +4561,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_OP:           eOperand = EV_D_OP;             break;
     case CN_OTHEROPERAND: eOperand = EV_D_OTHEROPERAND;   break;
     case CN_PAGINGMETRICS:eOperand = EV_D_PAGINGMETRICS;  break;
+    case CN_PAYLOADOBJ:   eOperand = EV_D_PAYLOAD;        break;
     case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = EV_D_PROFILE;        break;
     case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;
@@ -5206,20 +5278,21 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 /*----------------------------------------------------------------------------*/
 /* set format from given tag set                                              */
 /*----------------------------------------------------------------------------*/
-bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
+eEC AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 {
   s32 sTagValue;
   i8 iTagValue;
   i8 i_Tag;
+  s2K sErrMsg;
 
   // - - - - - - - - - - - - - - - - - - - - -
   // C_RECORD_TERMINATOR
   i_Tag = pTagSet->i_Find(C_TAG_LD_RECORD_TERMINATOR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cRecordTerminator = *sTagValue.azChar();
-    if (pFormat->m_cRecordTerminator == '0')
-      pFormat->m_cRecordTerminator = '\0';
+    pFormat->vRecordTerminator(*sTagValue.azChar());
+    if (pFormat->cRecordTerminator() == '0')
+      pFormat->vRecordTerminator('\0');
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5233,33 +5306,47 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     if (sTagValue.nLength() == 1) {
       if (cRecordEnds == '0') {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
       else if (cRecordEnds == '\n') {
-        pFormat->m_eLineEnd = LE_NL;
+        pFormat->vLineEnd(LE_NL);
       }
       else if (cRecordEnds == '\r') {
-        pFormat->m_eLineEnd = LE_CR;
+        pFormat->vLineEnd(LE_CR);
       }
       else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
     }
     // record_ends is 2 characters
     else if (sTagValue.nLength() == 2) {
       
-      if (sTagValue.bSame("\r\n"_Stz)) {
-        pFormat->m_eLineEnd = LE_CRNL;
+      if (sTagValue.bSame("\\r"_Stz)) {
+        pFormat->vLineEnd(LE_CR);
+      }
+      else if (sTagValue.bSame("\\n"_Stz)) {
+        pFormat->vLineEnd(LE_NL);
+      }
+      else if (sTagValue.bSame("\r\n"_Stz)) {
+        pFormat->vLineEnd(LE_CRNL);
       }
       else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
+      }
+    }
+    else if (sTagValue.nLength() == 4) {
+      if (sTagValue.bSame("\\r\\n"_Stz)) {
+        pFormat->vLineEnd(LE_CRNL);
+      } else {
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
     }
     else {
       vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-      return false;
+      return EC_INVALID_LOAD_OPT_RECORD_ENDS;
     }
   }
   
@@ -5269,11 +5356,11 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     if (sTagValue.bSame("\\t"_Stz))
-      pFormat->m_cFieldDelimiter = '\t';
+      pFormat->vFieldDelimiter('\t');
     else
-      pFormat->m_cFieldDelimiter = *sTagValue.azChar();
-    if (pFormat->m_cFieldDelimiter == '0')
-      pFormat->m_cFieldDelimiter = '\0';
+      pFormat->vFieldDelimiter(*sTagValue.azChar());
+    if (pFormat->cFieldDelimiter() == '0')
+      pFormat->vFieldDelimiter('\0');
   }
 
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5281,13 +5368,12 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   i_Tag = pTagSet->i_Find(C_TAG_LD_ENCLOSED_BY_LEADING);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cEnclosedBy_Leading = *sTagValue.azChar();
-    if (pFormat->m_cEnclosedBy_Leading == '0')
-      pFormat->m_cEnclosedBy_Leading = '\0';
+    pFormat->vEnclosedBy_Leading(*sTagValue.azChar());
+    if (pFormat->cEnclosedBy_Leading() == '0')
+      pFormat->vEnclosedBy_Leading('\0');
         
     // default set trailing same as leading
-    pFormat->m_cEnclosedBy_Trailing =
-    pFormat->m_cEnclosedBy_Leading;
+    pFormat->vEnclosedBy_Trailing(pFormat->cEnclosedBy_Leading());
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5296,14 +5382,14 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     // if trailing is specified, leading should also have been specified
-    if (pFormat->m_cEnclosedBy_Trailing == '\0') {
+    if (!pFormat->bIsSetEnclosedBy_Leading()) {
       if (! AM::bMetadata())
         vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
-      return false;
+      return EC_INVALID_LOAD_OPT_ENCL_TRAILING;
     }
-    pFormat->m_cEnclosedBy_Trailing = *sTagValue.azChar();
-    if (pFormat->m_cEnclosedBy_Trailing == '0')
-      pFormat->m_cEnclosedBy_Trailing = '\0';
+    pFormat->vEnclosedBy_Trailing(*sTagValue.azChar());
+    if (pFormat->cEnclosedBy_Trailing() == '0')
+      pFormat->vEnclosedBy_Trailing('\0');
   }
   //
   //    DATE_FORMAT='YYYY.MM.DD’
@@ -5315,10 +5401,10 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     // extract date format
-    if ( ! pFormat->bExtractDateFormat(sTagValue.szStz()) ) {
+    if ( ! pFormat->bExtractDateFormat(sTagValue.szStz(), sErrMsg) ) {
       if ( ! AM::bMetadata())
-        vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
-      return false;
+        vTrace("Invalid load : %s\n"_Stz, sErrMsg.szStz());
+      return EC_INVALID_LOAD_OPT_DATE_FORMAT;
     }
   }
   
@@ -5327,9 +5413,13 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   i_Tag = pTagSet->i_Find(C_TAG_LD_ESCAPE_CHAR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cEscapeChar = *sTagValue.azChar();
-    if (pFormat->m_cEscapeChar == '0')
-      pFormat->m_cEscapeChar = '\0';
+    if (sTagValue.bSame("\\0"_Stz)) {
+      pFormat->vEscapeChar('\0');
+    } else {
+      pFormat->vEscapeChar(*sTagValue.azChar());
+      if (pFormat->cEscapeChar() == '0')
+        pFormat->vEscapeChar('\0');
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5338,10 +5428,10 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     iTagValue = pTagSet->iValue(i_Tag);
     
-    pFormat->m_nMaxErrors = iTagValue;
+    pFormat->vMaxErrors(iTagValue);
   }
         
-  return true;
+  return EC_NONE;
 }
 
 

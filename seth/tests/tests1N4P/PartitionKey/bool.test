@@ -3,11 +3,11 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // create a table
-create table boolTable (
+create table ${testName2}_boolTable (
   key1   BOOLEAN NOT NULL,
   intVal INTEGER,
   name  VARCHAR(32) NOT NULL
@@ -15,24 +15,24 @@ create table boolTable (
 success
 
 // check columns of partition key
-lsPtncol boolTable;
+lsPtncol ${testName2}_boolTable;
 rows:
   ('key1','BOOLEAN',0,0,false,true)
 
 // create an index
-create index idx1 on boolTable (key1);
+create index idx1 on ${testName2}_boolTable (key1);
 success;
 
 // load data into the table
-load boolTable "../DATA/PartitionKey/bool.csv";
+load ${testName2}_boolTable "../DATA/PartitionKey/bool.csv";
 success
 
 // analyze table
-antbl boolTable1;
+antbl ${testName2}_boolTable1;
 failure contains: 'Table does not exist'
 
 // analyze table
-antbl boolTable;
+antbl ${testName2}_boolTable;
 rows:
  (*,*,*,0)
  (*,*,*,5)
@@ -40,7 +40,7 @@ rows:
  (*,*,*,5)
 
 // drop the table
-drop table boolTable;
+drop table ${testName2}_boolTable;
 success
 
 // get memory leaks
@@ -48,7 +48,7 @@ memoryLeaks;
 rows: 0
 
 CLEANUP {
-  drop table boolTable;
+  drop table ${testName2}_boolTable;
   mute
 
   bye;

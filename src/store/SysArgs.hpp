@@ -37,7 +37,8 @@ namespace STORE
     struct {
       s32 m_sNodeName;     // name of node
       s32 m_sIPAddress;    // ip address of node
-      i8  m_iPortNo;       // port number
+      i8  m_iPortNo;       // internal port number
+      i8  m_iPortNoWL;     // wireline port number
     } m_xNodeDefn[C_MAX_NODES];
   
     i8   m_i_ThisNode;     // this node no in the m_xNodeDefn list

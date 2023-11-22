@@ -18,6 +18,20 @@ RR_PDF_FRAG      = source/cmdRef/rr.rst.fragment
 RR_PDF_FRAG_GEN  = source/cmdRef/rrPdfFragGen.sh
 RR_COMMON_ARGS   = -suppressebnf -nofactoring -noinline -color:\#FFE270 -offset:166 -width:750
 
+# JDBC driver URL railroad diagrams
+JDBC_URL_GRAMMAR = source/interfaces/jdbcDriver/url.bnf
+JDBC_URL_OUTPUT  = source/interfaces/jdbcDriver/connectionURL
+JDBC_URL_TMP     = source/interfaces/jdbcDriver/tmp
+JDBC_URL_ZIP     = $(JDBC_URL_TMP)/url.zip
+JDBC_URL_PNG 	 = $(JDBC_URL_OUTPUT)/connectionUrl.png
+
+# SE Shell grammar railroad diagrams
+SE_SHELL_RR_GRAMMAR = source/interfaces/seShell/seShellGrammar.bnf
+SE_SHELL_RR_OUTPUT  = source/interfaces/seShell/rr
+SE_SHELL_RR_TMP     = source/interfaces/seShell/tmp
+SE_SHELL_RR_ZIP     = $(SE_SHELL_RR_TMP)/grammar_rr.zip
+SE_SHELL_RR_PNG 	= $(SE_SHELL_RR_OUTPUT)/runCommand.png
+
 # Let's work out what OS we are on
 UNAME_S := $(shell uname -s)
 
@@ -32,6 +46,16 @@ PDFTEX_PATH := $(shell dirname $(PDFTEX_PATH) 2>/dev/null)
 export PATH := $(PATH):$(PDFTEX_PATH)
 
 RST_FILES := $(shell find $(SOURCEDIR) -name "*.rst")
+
+# Wireline protocol message definitions
+WLP_MSG_DEF_DIR := $(shell realpath ../src/wlp/thrift 2>/dev/null)
+WLP_MSG_DEF_INC := messageDefinitions
+WLP_MSG_DEF_DEPS := $(shell find $(WLP_MSG_DEF_DIR)/$(WLP_MSG_DEF_INC) -name "*.thrift")
+WLP_MSG_DEF_SCRIPT := $(shell realpath source/interfaces/wireline/v5/messages/createMessagesFragment.sh 2>/dev/null)
+
+WLP_MSG_DEF_ZIP_NAME := RapidsSEWirelineMessages.zip
+WLP_MSG_DEF_ZIP_PATH := $(shell realpath source/_static 2>/dev/null)/$(WLP_MSG_DEF_ZIP_NAME)
+WLP_MSG_DEF_RST := $(shell realpath source/interfaces/wireline/v5/messages 2>/dev/null)/messages.rst.fragment
 
 
 ###############################################################################
@@ -106,12 +130,14 @@ $(RR_PDF_FRAG) : $(RR_INDEX_HTML) $(RR_PDF_FRAG_GEN)
 # Rule to generate the SVG railroad diagrams
 $(RR_INDEX_XHTML): $(RR_GRAMMAR)
 	@# Now build the version with svg images so we can just include the xhtml file
+	@echo
 	@echo "Building Command Reference railroad diagrams (SVG)"
 	@java -jar tools/rr/rr.war $(RR_COMMON_ARGS) -out:$(RR_INDEX_XHTML) "$(RR_GRAMMAR)"
 	@echo "Command Reference railroad diagrams (SVG) created at: $(RR_OUTPUT_DIR)"
 
 # Rule to generate the PDF railroad diagrams
 $(RR_INDEX_HTML): $(RR_GRAMMAR)
+	@echo
 	@echo "Building Command Reference railroad diagrams (PNG)"
 	@mkdir -p "$(RR_OUTPUT_DIR)"
 	@# First build the one with png files so the documentation can include them
@@ -119,7 +145,57 @@ $(RR_INDEX_HTML): $(RR_GRAMMAR)
 	@unzip -o -d "$(RR_OUTPUT_DIR)" "$(RR_ZIPFILE)" > /dev/null
 	@rm -f "$(RR_ZIPFILE)"
 	@echo "Command Reference railroad diagrams (PNG) created at: $(RR_OUTPUT_DIR)"
-#	@$(MAKE) railroad
+
+
+# Rule to generate the PNG JDBC URL railroad diagram
+jdbcConnectionUrl: $(JDBC_URL_PNG)
+$(JDBC_URL_PNG): $(JDBC_URL_GRAMMAR)
+	@echo
+	@echo "Building JDBC connection URL railroad diagrams (PNG)"
+	@mkdir -p "$(JDBC_URL_OUTPUT)"
+	@mkdir -p "$(JDBC_URL_TMP)"
+	@java -jar tools/rr/rr.war $(RR_COMMON_ARGS) -png -out:$(JDBC_URL_ZIP) "$(JDBC_URL_GRAMMAR)"
+	@unzip -o -d "$(JDBC_URL_TMP)" "$(JDBC_URL_ZIP)" > /dev/null
+	@# Copy *.png files to output dir. Ignore the rr-1.67.png file
+	@rm -f "$(JDBC_URL_TMP)"/diagram/rr-*.png
+	@cp "$(JDBC_URL_TMP)"/diagram/*.png "$(JDBC_URL_OUTPUT)" > /dev/null
+	@rm -rf "$(JDBC_URL_TMP)"
+	@echo "JDBC connection URL railroad diagrams (PNG) created at: $(JDBC_URL_OUTPUT)"
+
+
+# Rule to generate the PNG railroad diagram for SE Shell built-in commands
+seShellGrammar: $(SE_SHELL_RR_PNG)
+$(SE_SHELL_RR_PNG): $(SE_SHELL_RR_GRAMMAR)
+	@echo
+	@echo "Building SE Shell railroad diagrams (PNG)"
+	@mkdir -p "$(SE_SHELL_RR_OUTPUT)"
+	@mkdir -p "$(SE_SHELL_RR_TMP)"
+	@java -jar tools/rr/rr.war $(RR_COMMON_ARGS) -png -out:$(SE_SHELL_RR_ZIP) "$(SE_SHELL_RR_GRAMMAR)"
+	@unzip -o -d "$(SE_SHELL_RR_TMP)" "$(SE_SHELL_RR_ZIP)" > /dev/null
+	@# Copy *.png files to output dir. Ignore the rr-1.67.png file
+	@rm -f "$(SE_SHELL_RR_TMP)"/diagram/rr-*.png
+	@cp "$(SE_SHELL_RR_TMP)"/diagram/*.png "$(SE_SHELL_RR_OUTPUT)" > /dev/null
+	@rm -rf "$(SE_SHELL_RR_TMP)"
+	@echo "SE Shell railroad diagrams (PNG) created at: $(SE_SHELL_RR_OUTPUT)"
+
+# Rule to build the zip file containing the wireline protocol message definitions.
+# This is provided with the HTML documentation.
+wirelineMessageDefsZip: $(WLP_MSG_DEF_ZIP_PATH)
+$(WLP_MSG_DEF_ZIP_PATH):
+	@echo
+	@echo "Creating the wireline protocol message definition bundle..."
+	@cd $(WLP_MSG_DEF_DIR) && zip -q -r $(WLP_MSG_DEF_ZIP_NAME) $(WLP_MSG_DEF_INC)/*
+	@mv $(WLP_MSG_DEF_DIR)/$(WLP_MSG_DEF_ZIP_NAME) $(WLP_MSG_DEF_ZIP_PATH)
+	@echo "Wireline protocol message definition bundle created at: $(WLP_MSG_DEF_ZIP_PATH)"
+
+# Rule to build the rst fragment file containing the wireline protocol message definitions.
+# This is used by the PDF documentation.
+wirelineMessageDefsRst: $(WLP_MSG_DEF_RST)
+$(WLP_MSG_DEF_RST): $(WLP_MSG_DEF_DEPS) $(WLP_MSG_DEF_SCRIPT)
+	@echo "Creating the wireline protocol message definition rst fragment..."
+	@$(WLP_MSG_DEF_SCRIPT) "$(WLP_MSG_DEF_DIR)/$(WLP_MSG_DEF_INC)" "$(WLP_MSG_DEF_RST)"
+	@echo "Wireline protocol message definition rst fragment created at: $(WLP_MSG_DEF_RST)"
+
 
 linkcheck: checkSphinx
 	@echo "Validating links in rst files..."
@@ -131,15 +207,16 @@ version:
 	@echo "Updating version information..."
 	@./updateVersion.sh
 	@echo "done"
-	@echo
 
-html: checkSphinx version railroad
+html: checkSphinx version railroad wirelineMessageDefsZip wirelineMessageDefsRst jdbcConnectionUrl seShellGrammar
+	@echo
 	@echo "Building HTML documentation..."
 	@echo
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	@echo
 
-pdf: checkSphinx checkLatex railroad
+pdf: checkSphinx checkLatex railroad wirelineMessageDefsRst jdbcConnectionUrl seShellGrammar
+	@echo
 	@echo "Building PDF documentation..."
 	@echo
 	@LATEXMKOPTS="-interaction=nonstopmode" $(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
@@ -149,17 +226,24 @@ pdf: checkSphinx checkLatex railroad
 internal_html: export SPHINXOPTS = -t internal
 internal_html: html
 
+docclean:
+	@rm -rf "$(BUILDDIR)"
+
 clean:
 	@rm -rf "$(BUILDDIR)"
 	@rm -rf "$(RR_OUTPUT_DIR)"
 	@rm -rf "$(RR_OUTPUT_DIR)"
 	@rm -rf "$(RR_HTML_FRAG)"
 	@rm -rf "$(RR_PDF_FRAG)"
+	@rm -f  "$(WLP_MSG_DEF_ZIP_PATH)"
+	@rm -f  "$(WLP_MSG_DEF_RST)"
+	@rm -rf "$(JDBC_URL_OUTPUT)"
+	@rm -rf "$(SE_SHELL_RR_OUTPUT)"
 
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: all checkSphinx checkLatex clean help html internal_html linkcheck pdf railroad rr version
+.PHONY: all checkSphinx checkLatex clean help html internal_html jdbcConnectionUrl seShellGrammar linkcheck pdf railroad rr version
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).

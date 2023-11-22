@@ -8,6 +8,8 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+extern SizeHeap  gxaSizeHeap[];
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -15,6 +17,9 @@ void Step::vAddSteps_AM(void)
 {
   vAddStep("AM::DEMON::tAnswerDemonJobId@"_Stz,    &Step::vAM_AnswerDemonJobIdFetch);
   vAddStep("AM::DEMON::tAnswerDemonJobId!"_Stz,    &Step::vAM_AnswerDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tAnswerWLDemonJobId@"_Stz,  &Step::vAM_AnswerWLDemonJobIdFetch);
+  vAddStep("AM::DEMON::tAnswerWLDemonJobId!"_Stz,  &Step::vAM_AnswerWLDemonJobIdStore);
 
   vAddStep("AM::DEMON::tCollectDemonJobId@"_Stz,   &Step::vAM_CollectDemonJobIdFetch);
   vAddStep("AM::DEMON::tCollectDemonJobId!"_Stz,   &Step::vAM_CollectDemonJobIdStore);
@@ -57,6 +62,13 @@ void Step::vAddSteps_AM(void)
 
   vAddStep("AM::DEMON::tSuperDemonJobId@"_Stz,     &Step::vAM_SuperDemonJobIdFetch);
   vAddStep("AM::DEMON::tSuperDemonJobId!"_Stz,     &Step::vAM_SuperDemonJobIdStore);
+
+  vAddStep("AM::MEMORY::hasMemoryLeaks"_Stz,       &Step::vAM_HasMemoryLeaks);
+  vAddStep("AM::MEMORY::isNotFreeing"_Stz,         &Step::vAM_IsNotFreeing);
+  vAddStep("AM::MEMORY::isTracking"_Stz,           &Step::vAM_IsTracking);
+  vAddStep("AM::MEMORY::stopTracking"_Stz,         &Step::vAM_StopTracking);
+  vAddStep("AM::MEMORY::leaksSnapshot"_Stz,        &Step::vAM_TakeLeaksSnapshot);
+  vAddStep("AM::MEMORY::trackingSnapshot"_Stz,     &Step::vAM_TakeTrackingSnapshot);
 
   vAddStep("AM::SHOW::bBoot"_Stz,                  &Step::vAM_Show_Boot);
   vAddStep("AM::SHOW::bDir"_Stz,                   &Step::vAM_Show_Dir);
@@ -106,6 +118,33 @@ void Step::vAM_AnswerDemonJobIdStore(void)
 
   JobId tJobId = m_pDataStack->iPopInt(__func__);
   AM::DEMON::vAnswerDemonJobId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tAnswerWLDemonJobId@ -- fetch AnswerWLDemon JobId               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_AnswerWLDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tAnswerWLDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tAnswerWLDemonJobId! -- store the AnswerWLDemon JobId           */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_AnswerWLDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vAnswerWLDemonJobId(tJobId);
 
   EXIT();
 }
@@ -477,6 +516,157 @@ void Step::vAM_SuperDemonJobIdStore(void)
   JobId tJobId = m_pDataStack->iPopInt(__func__);
   AM::DEMON::vSuperDemonJobId(tJobId);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::hasMemoryLeaks -- return true if there are memory leaks        */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_HasMemoryLeaks(void)
+{
+  ENTRY();
+
+  ObjectSnapshot* pSnapshotThen = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnapshotNow  = AM::MEMORY::pSnapshotAtMemoryLeaks();
+
+  ASSERT(pSnapshotThen);
+  ASSERT(pSnapshotNow);
+
+  for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
+
+    eCN eClass = (eCN)i_Class;
+
+    if (eClass == CN_FREEPOOLBUFFER || eClass == CN_HEAPBUFFER)
+      continue;
+
+    // check if this class to be ignored for memory leak detection
+    if (gxaSizeHeap[eClass].m_bIgnoreMemoryLeak)
+      continue;
+
+    i8 nDelta = pSnapshotNow->m_nObjects[eClass] -
+                pSnapshotThen->m_nObjects[eClass];
+
+    if (nDelta > 0) {
+      m_pDataStack->vPushBol(true);
+      return;
+    }
+  }
+
+  m_pDataStack->vPushBol(false);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::isNotFreeing -- returns true if allocations aren't being freed */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_IsNotFreeing(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushBol(gpBufferPool->bDontFree() || AM::pHeaps()->m_bNoFree);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::isTracking -- returns true if allocations are being tracked    */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_IsTracking(void)
+{
+  ENTRY();
+
+  ObjectSnapshot* pSnap1 = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnap2 = AM::MEMORY::pSnapshotAtMemoryLeaks();
+
+  m_pDataStack->vPushBol(pSnap1 && pSnap2);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::stopTracking -- stop tracking memory allocations               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_StopTracking(void)
+{
+  ENTRY();
+
+  ObjectSnapshot* pSnap1 = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnap2 = AM::MEMORY::pSnapshotAtMemoryLeaks();
+  delete pSnap1;
+  delete pSnap2;
+
+  AM::MEMORY::vSnapshotAtMemoryLeaks(nullptr);
+  AM::MEMORY::vSnapshotAtTrackingMemory(nullptr);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::takeLeaksSnapshot -- track memory allocations                  */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_TakeLeaksSnapshot(void)
+{
+  ENTRY();
+
+  ObjectSnapshot* pSnapshotThen = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnapshotNow  = AM::MEMORY::pSnapshotAtMemoryLeaks();
+
+  ASSERT(pSnapshotThen);
+  ASSERT(pSnapshotNow);
+  UNUSED(pSnapshotThen);
+  UNUSED(pSnapshotNow);
+
+  pSnapshotNow->vTakeSnapshot();
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::takeTrackingSnapshot -- track memory allocations               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_TakeTrackingSnapshot(void)
+{
+  ENTRY();
+
+  bool bForce = m_pDataStack->iPopBol(__func__ );
+
+  if (AM::MEMORY::pSnapshotAtTrackingMemory() ||
+      AM::MEMORY::pSnapshotAtMemoryLeaks()) {
+
+    if (bForce) {
+      ObjectSnapshot* pSnapshot = AM::MEMORY::pSnapshotAtTrackingMemory();
+      delete pSnapshot;
+      AM::MEMORY::vSnapshotAtTrackingMemory(nullptr);
+
+      pSnapshot = AM::MEMORY::pSnapshotAtMemoryLeaks();
+      delete pSnapshot;
+      AM::MEMORY::vSnapshotAtMemoryLeaks(nullptr);
+
+      // Now carry on
+
+    } else {
+      // push error string and error code on stack
+      eEC eErr = EC_MEMORY_ALREADY_TRACKED;
+      s2K sBuf;
+      sBuf.vSprint("%s : run memoryleaks to close current analysis"_Stz, aErrorMsg[eErr]);
+
+      m_pDataStack->vPushStz(sBuf.szStz());
+      m_pDataStack->vPushInt(eErr);
+      m_pDataStack->vPushBol(false);
+      return;
+    }
+  }
+
+  // Create the object snapshots for both trackingmemory time and memoryleaks time
+  AM::MEMORY::vSnapshotAtTrackingMemory(new ObjectSnapshot);
+  AM::MEMORY::vSnapshotAtMemoryLeaks(new ObjectSnapshot);
+
+  // Now record the trackmemory object counts
+  AM::MEMORY::pSnapshotAtTrackingMemory()->vTakeSnapshot();
+
+  i8 nJobs = AM::JOBS::nJobsActive();
+  AM::JOBS::vJobsThreshold(nJobs);
+
+  m_pDataStack->vPushBol(true);
   EXIT();
 }
 

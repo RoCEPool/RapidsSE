@@ -39,7 +39,7 @@ However if this cluster initialisation fails or takes longer than 15 seconds
 is printed to the screen indicating that this has failed. The log files for
 each node in the cluster should be consulted (``se.log``).
 
-If all of the nodes start up successfully then the SE Prompt can be launched.
+If all of the nodes start up successfully then the SE Shell can be launched.
 
 A successful startup of RapidsSE looks like the following:
 
@@ -85,41 +85,28 @@ A successful stop of the cluster looks like this:
 
 
 .. index::
-   single: SE Prompt; starting & stopping
-   single: managing RapidsSE; SE Prompt
+   single: SE Shell; starting & stopping
+   single: managing RapidsSE; SE Shell
 
-.. _sePrompt:
+.. _seShell:
 
-SE Prompt
+SE Shell
 ---------
 
-The SE prompt is the current mechanism for interactively submitting commands
-into RapidsSE. The SE Prompt must be executed on one of the nodes in the
-cluster as it communicates with the node via a shared memory interface.
+The SE Shell is the current mechanism for interactively submitting commands
+into RapidsSE. SE Shell can be executed on any machine on the network, however
+if it is not executed on a machine running a RapidsSE node or if that node is
+not listening on the default port then SE Shell must be given command line
+arguments telling it which host/IP and port to connect to.
 
-The SE Prompt can be launched by navigating to the installation directory on
-any of the nodes and executing: ``./prompt.sh``
+SE Shell can be launched by navigating to the installation directory on
+any of the nodes and executing: ``./seshell.sh``
 
-SE prompt does not support up-arrow command histories, cursor word/line jumping,
-or text replacement (other than simple backspacing). The SE Prompt is intended
-to be replaced by the ``rapids-shell``.
-
-When it starts up, the SE prompt will print some internal version information
-before printing the console input marker. An example of this is shown below:
-
-.. code:: console
-
-   craig@hubble:rapidsse$ ./prompt.sh
-   RapidsSE 1.0.0 (release version, pid 3980, git 3225a7b5bb386300)
-   (c) 2020 Rapids Data Technology Co. Ltd
-   se>
-
-Commands that are submitted to the SE Prompt must be terminated with a
+Commands that are submitted through SE Shell must be terminated with a
 semicolon.
 
-Sequences of commands can also be put into a file in the ``Commands``
-subdirectory and that entire file executed by simply typing its file name.
-e.g. the file ``Commands/_demoSetup`` contains various commands for setting
-up a TPC-H demo. It can be executed from the SE Prompt by simply typing ``_demoSetup;``.
+To quit SE Shell, either enter the commands ``exit;``, ``bye;`` or ``quit;``,
+or simply press ``Control-C``.
 
-To quit the SE Prompt, either enter the command ``bye;`` or simply press ``Control-C``.
+For more detailed information, refer to the :ref:`SE Shell documentation <seShellInterface>`.
+

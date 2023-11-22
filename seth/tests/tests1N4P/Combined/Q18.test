@@ -2,10 +2,10 @@
 -- Query18 --- Combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,10 +25,10 @@ create table lineitem (
 );
 success
 
-create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+create index IxL_ORDERKEY ON ${testName2}_lineitem(L_ORDERKEY);
 success
 
-create table orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER NOT NULL,
 	 O_CUSTKEY         INTEGER NOT NULL,
 	 O_ORDERSTATUS     CHAR(1) NOT NULL,
@@ -41,10 +41,10 @@ create table orders (
 );
 success
 
-create index IxO_ORDERKEY ON orders(O_ORDERKEY);
+create index IxO_ORDERKEY ON ${testName2}_orders(O_ORDERKEY);
 success
 
-create table customer (
+create table ${testName2}_customer (
 	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
 	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
 	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
@@ -56,16 +56,16 @@ create table customer (
 );
 success
 
-create index IxC_CUSTKEY ON customer(C_CUSTKEY);
+create index IxC_CUSTKEY ON ${testName2}_customer(C_CUSTKEY);
 success
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-load orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
 success
 
-load customer "../TPCH/SF_0001/customer.csv";
+load ${testName2}_customer "../TPCH/SF_0001/customer.csv";
 success
 
 /optimise_passthru 
@@ -77,14 +77,14 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg " ordGroupBy  type integer $1 aggregates type integer $K1 , type decimal )  $5 sum  "
     | combined 0
     | next broadcast
 
   stage S02 on all partitions :
     filter " type BOOLEAN  $2 170.00  >  "
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+    | indexJoin ${testName2}_orders IxO_ORDERKEY "bound $I1 $1 =="
     | combined 0
     | next broadcast
 
@@ -94,7 +94,7 @@ begin
     | next
 
   stage S04 on all partitions :
-    indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
+    indexJoin ${testName2}_customer IxC_CUSTKEY "bound $I1 $1 =="
     | combined 0
     | next
 
@@ -150,13 +150,13 @@ contains rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
-drop table orders;
+drop table ${testName2}_orders;
 success
 
-drop table customer;
+drop table ${testName2}_customer;
 success
 
 MemoryLeaks;
@@ -164,13 +164,13 @@ rows: 0
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
-  drop table orders;
+  drop table ${testName2}_orders;
   mute
 
-  drop table customer;
+  drop table ${testName2}_customer;
   mute
 
   bye;

@@ -33,8 +33,13 @@ extern s256 gi_szaArgv[];
 
 extern i8   giProgressPoint;
 
-//#include <readline/readline.h>
-
+//#include "wlp/thrift/generated/ErrorResponse_types.h"
+//#include "wlp/thrift/generated/MessageTypes_types.h"
+//#include "thrift/protocol/TCompactProtocol.h"
+//#include "thrift/transport/TBufferTransports.h"
+//#include "BufferTransport.hpp"
+//#include "WlpHeader.hpp"
+//using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 
 #include "StreamDef.hpp"
 #include "IndexDef.hpp"
@@ -189,7 +194,37 @@ int main(int argc, char* argv[])
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+//  s1M sBuf;
+//  const u8 iBufSize = C_1M;
+//  memset(sBuf.azChar(), 0, iBufSize);
+//
+//  // Serialisation
+//  std::shared_ptr<wlp::BufferTransport> pTransport(new wlp::BufferTransport(sBuf.azChar(), iBufSize));
+//  std::shared_ptr<apache::thrift::protocol::TCompactProtocol> pProtocol(new apache::thrift::protocol::TCompactProtocol(pTransport));
+//
+//  ErrorResponse oErrorResponse;
+//  oErrorResponse.__set_errorString("abc"_Stz->azChar());
+//
+//  wlp::WlpHeader* pHeader = pTransport->pAllocHeader(MessageTypes::ErrorResponse);
+//  oErrorResponse.write(pProtocol.get());
+//  pHeader->m_iMsgSize = pTransport->iBytesWritten();
+//
+//  pTransport = nullptr;
+//  pProtocol = nullptr;
+//
+//  // Deserialisation. We know the actual size of the buffer from the header.
+//  pTransport = std::make_shared<wlp::BufferTransport>(sBuf.azChar(), (u8) pHeader->m_iMsgSize);
+//  pProtocol  = std::make_shared<apache::thrift::protocol::TCompactProtocol>(pTransport);
+//
+//  // Skip over the header byte
+//  pTransport->consume(wlp::C_WLPHEADER_SIZE);
+//  ErrorResponse oErrorResponse2;
+//  oErrorResponse2.read(pProtocol.get());
+//  ASSERT(oErrorResponse2.errorString == oErrorResponse.errorString);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   try {
     
     // force bamboo build
@@ -201,17 +236,6 @@ int main(int argc, char* argv[])
       Process::vExitStartup();
     
     // potentially run utilities
-//    if (gxCmdLineArgs.m_xSysArgs.m_bUtility) {
-//      Engine::vRunUtility(argc,(Stz**)argv);
-//      Process::vExitSuccess();
-//    }
-    
-    // temp for debugging hang in bamboo
-//    gxCmdLineArgs.m_xSysArgs.m_bDeveloper = true;
-//    gxCmdLineArgs.m_xSysArgs.m_oArgTags.vInsert(C_VB_API);
-//    gxCmdLineArgs.m_xSysArgs.m_oArgTags.vInsert(C_VB_OP);
-    // end temp
-    
     switch (gxCmdLineArgs.m_xSysArgs.m_eUtility) {
         
       case UT_APIDEMO:

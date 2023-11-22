@@ -36,6 +36,7 @@ void Step::vAddSteps_Node(void)
   vAddStep("node.id"_Stz,          &Step::vNodeId);
   vAddStep("node.partitions"_Stz,  &Step::vNodePartitions);
   vAddStep("node.port"_Stz,        &Step::vNodePort);
+  vAddStep("node.portWL"_Stz,      &Step::vNodePortWL);
   vAddStep("node.recvSocket!"_Stz, &Step::vNodeRecvSocketStore);
   vAddStep("node.recvSocket@"_Stz, &Step::vNodeRecvSocketFetch);
   vAddStep("node.sendSocket!"_Stz, &Step::vNodeSendSocketStore);
@@ -61,7 +62,8 @@ void Step::vNodeNew(void)
   s32 sIpAddr;
   m_pDataStack->vPopStr(sIpAddr,__func__);
   
-  i8 iPortNo = m_pDataStack->iPopInt(__func__);
+  i8 iPortNo   = m_pDataStack->iPopInt(__func__);
+  i8 iPortNoWL = m_pDataStack->iPopInt(__func__);
 
   i8 nKnownNodes = AM::pGrid()->nKnownNodes();
   i8 nPtnsPerNode = AM::SYSARGS::nPtnsPerNode();
@@ -71,6 +73,7 @@ void Step::vNodeNew(void)
                          nPtnsPerNode,
                          sIpAddr,
                          iPortNo,
+                         iPortNoWL,
                          AM::szRegionName());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -283,6 +286,20 @@ void Step::vNodePort(void)
   
   m_pDataStack->vPushInt(pNode->iPortNo());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.portWL -- push wireline port number of node (of a grid)               */
+/*----------------------------------------------------------------------------*/
+void Step::vNodePortWL(void)
+{
+  ENTRY();
+
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pNode->iPortNoWL());
+
   EXIT();
 }
 
