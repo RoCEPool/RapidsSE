@@ -144,7 +144,7 @@ class TestRunner:
         except errors.SshError as e:
             LOG.exception("Encountered an error while trying to notify the JMeter process to shutdown.", e)
 
-        except subprocess.TimeoutExpired as e:
+        except subprocess.TimeoutExpired:
             LOG.error(f"Timed out while trying to notify the JMeter process to shutdown ({timeout} sec).")
 
         if success and self.__wait_for_test_finish(C_TEST_FINISH_TIMEOUT):
@@ -175,7 +175,7 @@ class TestRunner:
         except errors.SshError as e:
             LOG.exception("Encountered an error while trying to forcefully stop the JMeter process.", e)
 
-        except subprocess.TimeoutExpired as e:
+        except subprocess.TimeoutExpired:
             LOG.error(f"Timed out while trying to forcefully stop the JMeter process ({timeout} sec).")
 
         if success:

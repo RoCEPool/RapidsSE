@@ -84,8 +84,8 @@ class ClusterConfig:
             f"  threads       = {self.get_threads()}\n" \
             f"  partitions    = {self.get_partitions()}\n" \
             f"  dir           = {self.get_dir()}\n" \
-            f"  internal port = {self.get_port()}\n" \
-            f"  external port = {self.get_port()}\n" \
+            f"  internal port = {self.get_internal_port()}\n" \
+            f"  external port = {self.get_external_port()}\n" \
             f"  params        = \"{self.get_params()}\""
         return s
 
