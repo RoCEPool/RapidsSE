@@ -281,7 +281,8 @@ class TestRunner:
         jmeter_properties_path = testops.get_remote_jmeter_property_file_path(self.cluster_config)
         log_file_path = self.__remote_test_log_file_path()
 
-        jmeter_command = f"export JVM_ARGS=\"-Dnashorn.args=--no-deprecation-warning\" && " \
+        jmeter_command = f"cd {self.remote_test_dir} && " \
+                         f"export JVM_ARGS=\"-Dnashorn.args=--no-deprecation-warning\" && " \
                          f"{C_JMETER_BINARY} -n " \
                          f"-p {jmeter_properties_path} " \
                          f"-t {self.remote_test_file} " \
