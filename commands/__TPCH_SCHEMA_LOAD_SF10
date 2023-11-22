@@ -2,9 +2,6 @@
 /* __TPCH_SCHEMA_LOAD_SF10 -- create and load SF10 TPC-H tables               */
 /*============================================================================*/
 
-tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf10";
-tag default <suffix>   = "csv";
-
 //                  -------------------- Scale Factor (SF) ---------------------
 // -TABLE-  -ROWS-  0.001  0.01   0.1 |    1    10   100    1K   10K  100K    1M
 // region   5           5     5     5 |    5     5     5     5     5     5     5
@@ -66,14 +63,14 @@ _          _          _          _           _              _
 
 trackMemory;
 
-_customer
-_lineitem
-_nation_replicated
-_orders_custkey
-_partsupp
-_part
-_region_replicated
-_supplier
+file _customer;
+file _lineitem;
+file _nation_replicated;
+file _orders_custkey;
+file _partsupp;
+file _part;
+file _region_replicated;
+file _supplier;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -112,14 +109,14 @@ create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/time loadReplicated region   "<tpch_dir>/region.<suffix>"   ;
-/time loadReplicated nation   "<tpch_dir>/nation.<suffix>"   ;
-/time load supplier           "<tpch_dir>/supplier.<suffix>" ;
-/time load customer           "<tpch_dir>/customer.<suffix>" ;
-/time load part               "<tpch_dir>/part.<suffix>"     ;
-/time load partsupp           "<tpch_dir>/partsupp.<suffix>" ;
-/time load orders             "<tpch_dir>/orders.<suffix>"   ;
-/time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
+/time loadReplicated region   "../TPCH/SF10/region.tbl"   ;
+/time loadReplicated nation   "../TPCH/SF10/nation.tbl"   ;
+/time load supplier           "../TPCH/SF10/supplier.tbl" ;
+/time load customer           "../TPCH/SF10/customer.tbl" ;
+/time load part               "../TPCH/SF10/part.tbl"     ;
+/time load partsupp           "../TPCH/SF10/partsupp.tbl" ;
+/time load orders             "../TPCH/SF10/orders.tbl"   ;
+/time load lineitem           "../TPCH/SF10/lineitem.tbl" ;
 
 tableSizes;
 
