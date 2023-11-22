@@ -336,7 +336,7 @@ begin
 
    stage S02 on all partitions :
      filter  " type BOOLEAN  SUM_QTY 100.00  >  "
-     | ${testName2}_ orders IxO_ORDERKEY "bound $I1 $1 =="
+     | ${testName2}_orders IxO_ORDERKEY "bound $I1 $1 =="
      | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
