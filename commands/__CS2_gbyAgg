@@ -1,7 +1,0 @@
-/*============================================================================*/
-/* __CS2: Code Synthesizer V2                                                 */
-/*============================================================================*/
-_nation
-/time load nation   "<tpch_dir>/nation.<suffix>";
-
-select n_regionKey, max(n_name) from nation group by n_regionKey;
