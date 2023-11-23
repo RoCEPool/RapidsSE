@@ -32,7 +32,7 @@
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  streamSetTable[] rowBuffer[].new
 
   Folder[] dic.lastWord dup
   iterate
@@ -51,10 +51,10 @@
       0 Table[].size number.magnitude >str
 
       // insert table size
-      sTableNm streamSetTable[] StreamSet[].addTableSizes  not if
-        StreamSet[].pipeOut
+      sTableNm streamSetTable[] rowBuffer[].addTableSizes  not if
+        rowBuffer[].pipeOut
         streamSetTable[] streamSet[].new
-        sTableNm streamSetTable[] StreamSet[].addTableSizes assert
+        sTableNm streamSetTable[] rowBuffer[].addTableSizes assert
       then
 
     then
@@ -67,7 +67,7 @@
   next
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  rowBuffer[].pipeOut
 
   true
 ;

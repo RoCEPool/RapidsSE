@@ -23,8 +23,8 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
   0 locals| iTableSize |
   Table[].size to iTableSize
@@ -32,10 +32,10 @@
   0 iTableSize number.magnitude >str iTableSize
 
   // insert index size
-  streamSetTable[] StreamSet[].addSizeTable assert
+  streamSetTable[] RowBuffer[].addSizeTable assert
 
-  // pipeout the infoset
-  StreamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;
