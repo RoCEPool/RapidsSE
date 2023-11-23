@@ -23,16 +23,17 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
+  // verify the table
   Table[].verify
 
   // insert index verify
-  Table[] streamSetTable[] StreamSet[].addVerifyTable assert
+  Table[] streamSetTable[] RowBuffer[].addVerifyTable assert
 
-  // pipeout the infoset
-  StreamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;

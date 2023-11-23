@@ -58,12 +58,12 @@ void Step::vAddSteps_StreamSet(void)
   //vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
   vAddStep("StreamSet[].addRowCount"_Stz,      &Step::vStreamSetAddRowCount);
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
-  vAddStep("StreamSet[].addSizeIndex"_Stz,     &Step::vStreamSetAddSizeIndex);
-  vAddStep("StreamSet[].addSizeTable"_Stz,     &Step::vStreamSetAddSizeTable);
+  //vAddStep("StreamSet[].addSizeIndex"_Stz,     &Step::vStreamSetAddSizeIndex);
+  //vAddStep("StreamSet[].addSizeTable"_Stz,     &Step::vStreamSetAddSizeTable);
   vAddStep("StreamSet[].addSpaceInfo"_Stz,     &Step::vStreamSetAddSpaceInfo);
-  vAddStep("StreamSet[].addTableSizes"_Stz,    &Step::vStreamSetAddTableSizes);
-  vAddStep("StreamSet[].addVerifyIndex"_Stz,   &Step::vStreamSetAddVerifyIndex);
-  vAddStep("StreamSet[].addVerifyTable"_Stz,   &Step::vStreamSetAddVerifyTable);
+  //vAddStep("StreamSet[].addTableSizes"_Stz,    &Step::vStreamSetAddTableSizes);
+  //vAddStep("StreamSet[].addVerifyIndex"_Stz,   &Step::vStreamSetAddVerifyIndex);
+  //vAddStep("StreamSet[].addVerifyTable"_Stz,   &Step::vStreamSetAddVerifyTable);
   vAddStep("StreamSet[].delete"_Stz,         &Step::vStreamSetDelete);
   vAddStep("StreamSet[].firstRow"_Stz,       &Step::vStreamSetFirstRow);
   vAddStep("StreamSet[].get"_Stz,            &Step::vStreamSetGet);
@@ -295,74 +295,6 @@ void Step::vStreamSetAddShowCluster(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addSizeIndex -- add a row to streamSet with the index size     */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddSizeIndex(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  i8 iSize = m_pDataStack->iPopInt(__func__);
-
-  s256 sSize;
-  m_pDataStack->vPopStr(sSize, __func__);
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    iSize,
-                                    sSize.azChar(),
-                                    C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addSizeTable -- add a row to streamSet with the table size     */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddSizeTable(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-
-  i8 iSize = m_pDataStack->iPopInt(__func__);
-
-  s256 sSize;
-  m_pDataStack->vPopStr(sSize, __func__);
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    iSize,
-                                    sSize.azChar(),
-                                    C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* StreamSet[].addSpaceInfo -- add a row to the streamSet with the spaceInfo  */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddSpaceInfo(void)
@@ -404,109 +336,6 @@ void Step::vStreamSetAddSpaceInfo(void)
                                     sInUseSpace.azChar(),
                                     iTotalFreeSpace,
                                     sTotalFreeSpace.azChar(),
-                                    C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addTableSizes -- add a row to streamSet with the table sizes   */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddTableSizes(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-  
-  s256 sTableName;
-  m_pDataStack->vPopStr(sTableName, __func__);
-  
-  s256 sSize;
-  m_pDataStack->vPopStr(sSize, __func__);
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    sTableName.azChar(),
-                                    sSize.azChar(),
-                                    C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addVerifyIndex -- add a row to streamSet with the index verify */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddVerifyIndex(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-  
-  // get the index
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  
-  // get the table from the index
-  Table* pTable = pIndex->pTable();
-  
-  i8 iStatus = m_pDataStack->iPopInt(__func__);
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pTable->szTableNm(),
-                                    pIndex->szIndexNm(),
-                                    iStatus ? "Valid"_Stz : "Invalid"_Stz,
-                                    C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addVerifyTable -- add a row to streamSet with the table verify */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddVerifyTable(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iStatus = m_pDataStack->iPopInt(__func__);
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pTable->szTableNm(),
-                                    iStatus ? "valid"_Stz : "invalid"_Stz,
                                     C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);

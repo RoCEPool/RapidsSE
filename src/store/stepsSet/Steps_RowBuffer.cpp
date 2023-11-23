@@ -949,11 +949,14 @@ void Step::vRowBufferAddVerifyIndex(void)
 	ENTRY();
 
 	// get the table
-	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-	StreamDef* pStreamDef = pTable->pStreamDef();
+	Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+	StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
 
 	// get the index
 	Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+
+	// get the table from the index
+	Table* pTable = pIndex->pTable();
 
 	i8 iStatus = m_pDataStack->iPopInt(__func__);
 
@@ -982,8 +985,11 @@ void Step::vRowBufferAddVerifyTable(void)
 	ENTRY();
 
 	// get the table
+	Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+	StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+
+	// get the table
 	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-	StreamDef* pStreamDef = pTable->pStreamDef();
 
 	i8 iStatus = m_pDataStack->iPopInt(__func__);
 
