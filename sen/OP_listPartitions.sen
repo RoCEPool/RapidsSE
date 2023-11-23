@@ -27,15 +27,15 @@
   StreamDefLft[].pipeOut
 
   begin
-    streamSetTable[] StreamSet[].new
+    streamSetTable[] RowBuffer[].new
     iCursor Table[].listPartition to iCursor
     
     iCursor while
       StreamSet[].pipeOut
   repeat
 
-  // pipeout the infoset
-  StreamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;

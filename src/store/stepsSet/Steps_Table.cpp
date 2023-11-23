@@ -570,7 +570,7 @@ void Step::vTableListPartition(void)
 
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
 
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
   LglPtn tLglPtn;
   tLglPtn = m_pDataStack->iPopAsInt(__func__);
@@ -584,7 +584,7 @@ void Step::vTableListPartition(void)
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
                     tLglPtn.iAsI8(),iNodeId,i_TablePtn);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       sOutput.azChar(),
                                       C_VARGS_END);
