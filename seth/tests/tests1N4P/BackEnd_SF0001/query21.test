@@ -274,8 +274,6 @@ stage S05 on all nodes :
 end ;
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

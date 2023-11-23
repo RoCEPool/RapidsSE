@@ -36,8 +36,5 @@ compactidx ${testName2}_customer IxC_CUSTKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

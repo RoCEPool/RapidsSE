@@ -91,7 +91,5 @@ rows:
   ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 CLEANUP {
-  bye;
-  mute
 }
 

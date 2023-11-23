@@ -392,8 +392,5 @@ CLEANUP {
   
   drop table ${testName2}_T1;
   mute
-  
-  bye;
-  mute
 }
 

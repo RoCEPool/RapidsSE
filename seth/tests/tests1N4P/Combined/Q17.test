@@ -137,7 +137,4 @@ CLEANUP {
 
   drop table ${testName2}_part;
   mute
-
-  bye;
-  mute
 }

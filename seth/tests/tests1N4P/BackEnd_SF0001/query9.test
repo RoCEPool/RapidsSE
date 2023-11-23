@@ -780,6 +780,4 @@ rows:
  ('UNITED KINGDOM',1992,-541653.61)
 
 CLEANUP {
-  bye;
-  mute
 }

@@ -247,9 +247,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_nation;
   mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

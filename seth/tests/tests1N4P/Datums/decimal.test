@@ -74,9 +74,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_decTbl;
   mute
-
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

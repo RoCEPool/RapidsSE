@@ -55,8 +55,5 @@ compactidx ${testName2}_lineitem IxL_SHIPDATE;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

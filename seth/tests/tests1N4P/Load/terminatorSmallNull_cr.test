@@ -33,9 +33,6 @@ CLEANUP {
   
   drop table ${testName2}_terminator_cr;
   mute
-
-  bye;
-  mute
 }
 
 

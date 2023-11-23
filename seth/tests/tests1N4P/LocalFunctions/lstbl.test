@@ -77,8 +77,5 @@ CLEANUP {
 
   drop table ${testName2}_lstTbl12;
   mute
-  
-  bye;
-  mute
 }
 

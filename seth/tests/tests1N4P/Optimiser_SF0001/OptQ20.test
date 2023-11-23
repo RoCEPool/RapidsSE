@@ -27,8 +27,6 @@ rows:
   ('Supplier#000000005','Gcdm2rJRzl5qlTVzc')
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

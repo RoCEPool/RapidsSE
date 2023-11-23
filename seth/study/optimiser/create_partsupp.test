@@ -32,8 +32,5 @@ compactidx partsupp IxPS_SUPPKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

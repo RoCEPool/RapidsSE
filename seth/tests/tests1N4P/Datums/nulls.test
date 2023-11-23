@@ -43,8 +43,5 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_nulTbl;
   mute
-  
-  bye;
-  mute
 }
 

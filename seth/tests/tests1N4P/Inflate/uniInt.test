@@ -202,9 +202,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_uniInt;
   mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

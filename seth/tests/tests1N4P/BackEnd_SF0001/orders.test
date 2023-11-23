@@ -48,8 +48,5 @@ compactidx ${testName2}_orders IxO_ORDERDATE;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

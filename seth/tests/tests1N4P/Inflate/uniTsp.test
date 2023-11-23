@@ -59,9 +59,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_UniTsp;
   mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

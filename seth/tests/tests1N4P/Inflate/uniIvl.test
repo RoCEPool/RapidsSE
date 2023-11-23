@@ -136,9 +136,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_uniIvl;
   mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,7 +14,4 @@ failure contains: "No such table"
 sleep 5000;
 
 CLEANUP {
-
-  bye;
-  mute
 }

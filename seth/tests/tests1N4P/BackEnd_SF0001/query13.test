@@ -351,6 +351,4 @@ ordered rows:
 */
 
  CLEANUP {
-   bye;
-   mute
- }
+}

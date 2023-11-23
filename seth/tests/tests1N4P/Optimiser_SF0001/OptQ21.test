@@ -43,8 +43,6 @@ order by numwait desc, s_name;
 
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

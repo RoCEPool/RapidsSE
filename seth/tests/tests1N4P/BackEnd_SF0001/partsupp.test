@@ -30,8 +30,5 @@ compactidx ${testName2}_partsupp IxPS_SUPPKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

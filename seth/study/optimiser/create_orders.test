@@ -50,8 +50,5 @@ compactidx orders IxO_ORDERDATE;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

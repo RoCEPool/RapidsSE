@@ -133,9 +133,6 @@ CLEANUP {
 
   drop table ${testName2}_limitRow;
   mute
-
-  bye;
-  mute
 }
 
 

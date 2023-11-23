@@ -57,9 +57,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_orders;
   mute
-
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

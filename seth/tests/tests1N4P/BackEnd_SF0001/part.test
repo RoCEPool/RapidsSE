@@ -33,8 +33,5 @@ compactidx ${testName2}_part IxP_PARTKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

@@ -78,9 +78,6 @@ CLEANUP {
   
   drop table ${testName2}_terminator;
   mute
-
-  bye;
-  mute
 }
 
 

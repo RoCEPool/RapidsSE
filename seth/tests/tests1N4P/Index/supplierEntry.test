@@ -757,8 +757,5 @@ CLEANUP {
 
   drop table ${testName2}_supplier;
   mute
-
-  bye;
-  mute
 }
 

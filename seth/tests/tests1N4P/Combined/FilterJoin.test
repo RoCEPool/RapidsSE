@@ -125,7 +125,4 @@ CLEANUP {
 
   //drop table ${testName2}_rt;
   //mute
-
-  bye;
-  mute
 }

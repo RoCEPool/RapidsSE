@@ -212,8 +212,5 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_VchTbl;
   mute
-
-  bye;
-  mute
 }
 

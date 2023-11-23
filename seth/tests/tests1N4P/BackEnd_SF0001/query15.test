@@ -198,8 +198,6 @@ pipeline Query15
   (9,'Supplier#000000009','1KhUgZegwM3ua7dsYmekYBsK','20-403-398-8662',-28876.51)
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

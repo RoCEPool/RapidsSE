@@ -628,9 +628,6 @@ CLEANUP {
   
   drop table ${testName2}_tsp;
   mute
-
-  bye;
-  mute
 }
 
 

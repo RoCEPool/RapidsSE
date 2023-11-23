@@ -527,8 +527,6 @@ rows:
  ('IRAN','GERMANY',1996,-14234.13)
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

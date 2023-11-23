@@ -8,7 +8,5 @@ rows:
 ('pong')
 
 CLEANUP {
-  bye;
-  mute
 }
 

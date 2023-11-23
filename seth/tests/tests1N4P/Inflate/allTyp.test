@@ -47,9 +47,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_allTyp;
   mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

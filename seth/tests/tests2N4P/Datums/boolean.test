@@ -180,8 +180,5 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_bolTbl;
   mute
-  
-  bye;
-  mute
 }
 

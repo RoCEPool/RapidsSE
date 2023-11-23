@@ -145,8 +145,5 @@ CLEANUP {
   
   cf "~tables";
   mute;
-  
-  bye;
-  mute
 }
 

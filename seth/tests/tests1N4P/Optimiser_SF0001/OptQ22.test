@@ -29,8 +29,6 @@ rows:
 
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

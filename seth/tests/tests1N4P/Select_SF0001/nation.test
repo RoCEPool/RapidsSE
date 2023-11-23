@@ -33,7 +33,5 @@ compactidx ${testName2}_nation IxN_REGIONKEY;
 success
 
 CLEANUP {
-  bye;
-  mute
 }
 
