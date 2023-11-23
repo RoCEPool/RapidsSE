@@ -29,8 +29,8 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word
@@ -45,10 +45,10 @@
     // skip definition only tables
     Table[].isInternallyDefined if
 
-    sTableNm streamSetTable[] StreamSet[].addListContents  not if
+    sTableNm streamSetTable[] RowBuffer[].addListContents  not if
       StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
-      sTableNm streamSetTable[] StreamSet[].addListContents assert
+      streamSetTable[] RowBuffer[].new
+      sTableNm streamSetTable[] RowBuffer[].addListContents assert
     then
 
 
@@ -60,7 +60,7 @@
   next
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;
