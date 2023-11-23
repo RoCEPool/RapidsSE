@@ -1722,6 +1722,30 @@ void vJobIdLastJobIdFetch(void);
 
   // row buffer
 	void vRowBufferAddAnalyzeIndex(void);
+	void vRowBufferAddAnalyzeTable(void);
+	void vRowBufferAddBpaObjects(void);
+	void vRowBufferAddBpaRegions(void);
+	void vRowBufferAddColumnDef(void);
+	void vRowBufferAddGridSanity(void);
+	void vRowBufferAddListContents(void);
+	void vRowBufferAddListFolder(void);
+	void vRowBufferAddListIndex(void);
+	void vRowBufferAddListPartitions(void);
+	void vRowBufferAddLogMsg(void);
+	void vRowBufferAddMemoryLeaks(void);
+	void vRowBufferAddNodeHeartbeat(void);
+	void vRowBufferAddNodeStatus(void);
+	void vRowBufferAddPingInfo(void);
+	void vRowBufferAddProgressUnits(void);
+	void vRowBufferAddPwfInfo(void);
+	void vRowBufferAddRowCount(void);
+	void vRowBufferAddShowCluster(void);
+	void vRowBufferAddSizeIndex(void);
+	void vRowBufferAddSizeTable(void);
+	void vRowBufferAddSpaceInfo(void);
+	void vRowBufferAddTableSizes(void);
+	void vRowBufferAddVerifyIndex(void);
+	void vRowBufferAddVerifyTable(void);
   void vRowBufferCopy(void);
   void vRowBufferDecile(void);
   void vRowBufferDelete(void);
@@ -2050,8 +2074,6 @@ void vJobIdLastJobIdFetch(void);
 
   // reg stream set
   void vStreamSetAddAnalyzeTable(void);
-  void vStreamSetAddBpaObjects(void);
-  void vStreamSetAddBpaRegions(void);
   void vStreamSetAddColumnDef(void);
   void vStreamSetAddGridSanity(void);
   void vStreamSetAddListContents(void);

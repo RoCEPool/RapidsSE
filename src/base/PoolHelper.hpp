@@ -19,7 +19,7 @@ namespace BASE
     static void vObjectDump(i8 iAfter);
     static void vObjectDump(i8 iAfter, Heap* pHeap);
     static void vObjectSummary(void);
-    static void vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
+    static void vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                                InfoSet* pWarnInfoSet, StreamDef* pWarnDef);
     static void vObjectSnapshot(ObjectSnapshot* pPoolSnapshot);
     static void vObjectValidate(void);
@@ -27,7 +27,7 @@ namespace BASE
     static void vPoolDump(void);
     static i8   iPoolFree(void);
     static void vRegionSummary(void);
-    static void vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
+    static void vRegionSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                                InfoSet* pWarnInfoSet, StreamDef* pWarnDef);
     static void vValidateEnums(void);
     static void vWordList(i8 iEpoch);

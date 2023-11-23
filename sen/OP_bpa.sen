@@ -23,15 +23,15 @@
 
     // find the C_TDEF_BPAREGIONS table definition, create a streamDef and pipe it out
     C_TDEF_BPAREGIONS op__tableDef_streamSet assert
-    streamSetTable[] StreamDefLft[].new
+    Table[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
     // create streamset
-    streamSetTable[] streamSet[].new
+    Table[] streamSet[].new
 
-    // populate streamset
-    streamSetTable[] StreamSet[].addBpaRegions
-    StreamSet[].pipeOut
+    // populate rowBuffer
+    Table[] RowBuffer[].addBpaRegions
+    RowBuffer[].pipeOut
 
     InfoSet[].infoRows 0 > if
       InfoSet[].pipeOut
@@ -47,15 +47,15 @@
 
     // find the C_TDEF_BPAOBJECTS table definition, create a streamDef and pipe it out
     C_TDEF_BPAOBJECTS op__tableDef_streamSet assert
-    streamSetTable[] StreamDefLft[].new
+    Table[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
     // create streamset
-    streamSetTable[] streamSet[].new
+    Table[] RowBuffer[].new
 
     // populate streamset
-    streamSetTable[] StreamSet[].addBpaObjects
-    StreamSet[].pipeOut
+    Table[] RowBuffer[].addBpaObjects
+    RowBuffer[].pipeOut
 
     InfoSet[].infoRows 0 > if
       InfoSet[].pipeOut

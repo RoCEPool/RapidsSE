@@ -614,7 +614,7 @@ void PoolHelper::vObjectSummary(void)
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool and heaps                            */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
+void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                                 InfoSet* pWarnInfoSet, StreamDef* pWarnDef)
 {
   _static_
@@ -650,7 +650,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "persistent"_Stz,
                                       "tiny"_Stz,
@@ -703,7 +703,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "persistent"_Stz,
                                       "small"_Stz,
@@ -757,7 +757,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "persistent"_Stz,
                                       "medium"_Stz,
@@ -811,7 +811,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "persistent"_Stz,
                                       "large"_Stz,
@@ -863,7 +863,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "transient"_Stz,
                                       "tiny"_Stz,
@@ -917,7 +917,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "transient"_Stz,
                                       "small"_Stz,
@@ -971,7 +971,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "transient"_Stz,
                                       "medium"_Stz,
@@ -1025,7 +1025,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "transient"_Stz,
                                       "large"_Stz,
@@ -1085,7 +1085,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       "bufferpool"_Stz,
                                       0,
@@ -1417,7 +1417,7 @@ void PoolHelper::vRegionSummary()
 /*----------------------------------------------------------------------------*/
 /* report on shm region                                                       */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
+void PoolHelper::vRegionSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                                 InfoSet* pWarnInfoSet, StreamDef* pWarnDef)
 {
   _static_
@@ -1440,7 +1440,7 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
   // Wastage is the size of the extra buffers that were needed when the chunks could have been packed
   // into a smaller number of buffers.
 
-  pStreamSet->pAllotRow(pStreamDef,
+	pRowBuffer->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "tiny"_Stz,
@@ -1462,7 +1462,7 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-  pStreamSet->pAllotRow(pStreamDef,
+	pRowBuffer->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "small"_Stz,
@@ -1484,7 +1484,7 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-  pStreamSet->pAllotRow(pStreamDef,
+	pRowBuffer->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "medium"_Stz,
@@ -1506,7 +1506,7 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-  pStreamSet->pAllotRow(pStreamDef,
+	pRowBuffer->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "large"_Stz,
@@ -1528,7 +1528,7 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-  pStreamSet->pAllotRow(pStreamDef,
+	pRowBuffer->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "tiny"_Stz,
@@ -1550,7 +1550,7 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-  pStreamSet->pAllotRow(pStreamDef,
+	pRowBuffer->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "small"_Stz,
@@ -1572,7 +1572,7 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-  pStreamSet->pAllotRow(pStreamDef,
+	pRowBuffer->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "medium"_Stz,
@@ -1594,7 +1594,7 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-  pStreamSet->pAllotRow(pStreamDef,
+	pRowBuffer->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "large"_Stz,
