@@ -46,7 +46,7 @@ void Step::vAddSteps_StreamSet(void)
   //vAddStep("StreamSet[].addBpaRegions"_Stz,  &Step::vStreamSetAddBpaRegions);
   //vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
   //vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
-  vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
+  //vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
   //vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder)
 	//vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
   //vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
@@ -73,36 +73,6 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addListContents -- add a row to infoset with the list contents */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddListContents(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  s256 sContents;
-  m_pDataStack->vPopStr(sContents, __func__);
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  sContents.azChar(),
-                                  C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
