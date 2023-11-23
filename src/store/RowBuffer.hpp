@@ -28,6 +28,7 @@ namespace STORE
     void  operator delete(void*);
   
     RowBuffer(void);
+		RowBuffer(StreamDef* pStreamDef);
     RowBuffer(eCN eClassNo);
     RowBuffer(eCN eClassNo, StreamDef* pStreamDef);
    ~RowBuffer(void) noexcept(false);

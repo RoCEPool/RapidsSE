@@ -1721,6 +1721,7 @@ void vJobIdLastJobIdFetch(void);
   void vResponseOpPipeout(void);
 
   // row buffer
+	void vRowBufferAddAnalyzeIndex(void);
   void vRowBufferCopy(void);
   void vRowBufferDecile(void);
   void vRowBufferDelete(void);
@@ -1731,6 +1732,7 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferIterate(void);
+  void vRowBufferNew(void);
   void vRowBufferPrint(void);
   void vRowBufferPtnId(void);
   void vRowBufferRows(void);
@@ -2047,7 +2049,6 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefRhtSet(void);
 
   // reg stream set
-  void vStreamSetAddAnalyzeIndex(void);
   void vStreamSetAddAnalyzeTable(void);
   void vStreamSetAddBpaObjects(void);
   void vStreamSetAddBpaRegions(void);

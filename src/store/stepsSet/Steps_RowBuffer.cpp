@@ -10,6 +10,9 @@
 
 #include "LogicUnit.hpp"
 #include "RowBuffer.hpp"
+#include "Index.hpp"
+#include "Table.hpp"
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -17,6 +20,7 @@
 void Step::vAddSteps_RowBuffer(void)
 {
   vAddStep("rowBuffer.operandDump"_Stz,      &Step::vRowBufferOperandDump);
+	vAddStep("RowBuffer[].addAnalyzeIndex"_Stz,&Step::vRowBufferAddAnalyzeIndex);
   vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
   vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
   vAddStep("RowBuffer[].bufferId"_Stz,       &Step::vRowBufferGetBufferIdAsAddr);
@@ -28,6 +32,7 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
   vAddStep("RowBuffer[].iterate"_Stz,        &Step::vRowBufferIterate);
+	vAddStep("RowBuffer[].new"_Stz,            &Step::vRowBufferNew);
   vAddStep("RowBuffer[].print"_Stz,          &Step::vRowBufferPrint);
   vAddStep("RowBuffer[].ptnId"_Stz,          &Step::vRowBufferPtnId);
   vAddStep("RowBuffer[].rows"_Stz,           &Step::vRowBufferRows);
@@ -54,6 +59,49 @@ void Step::vRowBufferOperandDump(void)
   pRowBuffer->vSlabReport();
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowBuffer[].addAnalyzeIndex -- add a row to the streamSet index analysis   */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddAnalyzeIndex(void)
+{
+	ENTRY();
+
+	// get the table
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the index to be analyzed
+	Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+
+	// get the tablePtn
+	i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pTable->pStreamDef();
+
+	// get the stream set
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
+
+	i8 nBuffers = 0;
+	i8 nEntries = 0;
+
+	pIndex->vAnalyze(i_TablePtn, nBuffers, nEntries);
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																		C_VARGS_BEGIN,
+																		AM::pGrid()->pThisNode()->szNodeNm(),
+																		pTable->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
+																		nBuffers,
+																		nEntries,
+																		C_VARGS_END);
+
+	//ASSERT(pRow);
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+
+	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +262,24 @@ void Step::vRowBufferIterate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBuffer[].new -- new an rowBuffer operand                                */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferNew(void)
+{
+	ENTRY();
+
+	ASSERT(m_pLogicUnit->m_xpStreamSet.bIsNull());
+
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	StreamDef* pStreamDef = pTable->pStreamDef();
+
+	m_pLogicUnit->m_xpRowBuffer = new RowBuffer(pStreamDef);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBuffer[].print -- print row buffer                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferPrint(void)
@@ -266,7 +332,7 @@ void Step::vRowBufferSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].set -- set operand                                             */
+/* RowBuffer[].setDeciderCopies -- set decider copies                         */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferSetDeciderCopies(void)
 {
@@ -280,7 +346,7 @@ void Step::vRowBufferSetDeciderCopies(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].set -- set operand                                             */
+/* RowBuffer[].setLglPtn -- set logical partition                             */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferSetLglPtn(void)
 {

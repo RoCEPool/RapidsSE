@@ -54,6 +54,27 @@ RowBuffer::RowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+RowBuffer::RowBuffer(StreamDef* pStreamDef)
+				: DataBuffer(CN_ROWBUFFER, false)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
+
+	vResolveRowPix(pStreamDef);
+
+	LogicUnit* pLogicUnit = MY::pOpLogicUnit();
+	if (pLogicUnit)
+		pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+
+	m_bDeletable = true;
+
+	m_oDecider.vSetRemaining(1);
+
+	AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 RowBuffer::RowBuffer(eCN eClassNo)
 : DataBuffer(eClassNo, false)
 {

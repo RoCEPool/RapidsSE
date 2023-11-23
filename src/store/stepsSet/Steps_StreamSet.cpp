@@ -39,7 +39,6 @@ extern SizeHeap  gxaSizeHeap[];
 void Step::vAddSteps_StreamSet(void)
 {
   vAddStep("StreamSet[]"_Stz,                &Step::vStreamSetGet);
-  vAddStep("StreamSet[].addAnalyzeIndex"_Stz,&Step::vStreamSetAddAnalyzeIndex);
   vAddStep("StreamSet[].addAnalyzeTable"_Stz,&Step::vStreamSetAddAnalyzeTable);
   vAddStep("StreamSet[].addBpaObjects"_Stz,  &Step::vStreamSetAddBpaObjects);
   vAddStep("StreamSet[].addBpaRegions"_Stz,  &Step::vStreamSetAddBpaRegions);
@@ -70,51 +69,8 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].isNull"_Stz,         &Step::vStreamSetIsNull);
   vAddStep("StreamSet[].name"_Stz,           &Step::vStreamSetName);
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
-  vAddStep("StreamSet[].nextRow"_Stz,       &Step::vStreamSetNextRow);
+  vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addAnalyzeIndex -- add a row to the streamSet index analysis   */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddAnalyzeIndex(void)
-{
-  ENTRY();
-  
-  // get the streamSet table
-  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the index to be analyzed
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  
-  // get the tablePtn
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-  
-  // get the stream set
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-
-  i8 nBuffers = 0;
-  i8 nEntries = 0;
-  
-  pIndex->vAnalyze(i_TablePtn, nBuffers, nEntries);
-
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pStreamSetTable->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
-                                    nBuffers,
-                                    nEntries,
-                                    C_VARGS_END);
-
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
