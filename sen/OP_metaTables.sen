@@ -30,10 +30,10 @@
     // skip definition only tables
     Table[].isUserCreated if
 
-      sTableNm streamSetTable[] StreamSet[].addListContents  not if
-        StreamSet[].pipeOut
-        streamSetTable[] streamSet[].new
-        sTableNm streamSetTable[] StreamSet[].addListContents assert
+      sTableNm streamSetTable[] RowBuffer[].addListContents  not if
+        RowBuffer[].pipeOut
+        streamSetTable[] RowBuffer[].new
+        sTableNm streamSetTable[] RowBuffer[].addListContents assert
       then
 
     then
@@ -44,7 +44,7 @@
   next
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;
@@ -70,7 +70,7 @@
   StreamDefLft[].pipeOut
 
   // create an StreamSet operand
-  streamSetTable[] StreamSet[].new
+  streamSetTable[] RowBuffer[].new
 
   true
 ;
