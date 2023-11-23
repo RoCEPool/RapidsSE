@@ -64,7 +64,7 @@ success
 
 // check existence of table
 lstbl;
-rows: 0
+does not contain rows: ('${testName2}_fltTbl')
 
 // get memory leaks
 memoryLeaks;

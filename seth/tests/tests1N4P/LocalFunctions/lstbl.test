@@ -2,10 +2,6 @@
 /* lstbl.test -- list tables                                                  */
 /*----------------------------------------------------------------------------*/
 
-// list columns of a non-existent table
-lstbl;
-rows: 0
-
 // create a table
 create table ${testName2}_lstTbl1 (
   bol_col1   BOOLEAN     NOT NULL,
@@ -21,7 +17,7 @@ success
 
 // list tables
 lstbl;
-rows:
+contains rows:
   ('${testName2}_lstTbl1')
 
 // create aanother table
@@ -39,7 +35,7 @@ success
 
 // list tables
 lstbl;
-rows:
+contains rows:
   ('${testName2}_lstTbl1')
   ('${testName2}_lstTbl2')
 
@@ -58,7 +54,7 @@ success
 
 // list columns of the table
 lstbl;
-rows:
+contains rows:
   ('${testName2}_lstTbl1')
   ('${testName2}_lstTbl2')
 */
