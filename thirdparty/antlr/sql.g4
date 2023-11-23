@@ -151,7 +151,7 @@ antblCmd          : (ANTBL | ( (ANALYZE | ANALYSE) INDEX)) tableName ;
 bpaCmd            : BPA type=(REGIONS | OBJECTS | ALL)?;
 
 // C
-compactIdxCmd     : COMPACTIDX tableName indexName ;
+compactIdxCmd     : (COMPACTIDX | (COMPACT INDEX)) tableName indexName ;
 countCmd          : COUNT tableName ;
 createCmd         : createTableCmd | createIndexCmd ;
 createTableCmd    : CREATE /*reference = REFERENCE?*/ TABLE /*(IF NOT EXISTS)?*/ /*ref = tableReference*/ tableName
@@ -610,7 +610,7 @@ dayTimeInterval   :
 nonReservedWord   :
                     ANALYSE | ANALYZE | ANIDX | ANTBL | ASC
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYE | BYTE | BYTES
-                  | CATALOG | CHARS | COMPACTIDX | CONCAT
+                  | CATALOG | CHARS | COMPACT | COMPACTIDX | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD | DOCOL
                   | ECHO | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING |ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
@@ -671,6 +671,7 @@ CHARACTER             : C H A R A C T E R;
 COALESCE              : C O A L E S C E;
 COLLATE               : C O L L A T E;
 COMPACTIDX            : C O M P A C T I D X;
+COMPACT               : C O M P A C T;
 CONCAT                : C O N C A T;
 CORRESPONDING         : C O R R E S P O N D I N G;
 COUNT                 : C O U N T;
