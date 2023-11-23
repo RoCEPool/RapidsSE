@@ -24,27 +24,27 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  StreamSetTable[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  StreamSetTable[] RowBuffer[].new
 
   // insert a row in the infoset for each column
   iColumns 0 do
     I Table[].column@
-    streamSetTable[] StreamSet[].addColumnDef not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
+    StreamSetTable[] RowBuffer[].addColumnDef not if
+      RowBuffer[].pipeOut
+      StreamSetTable[] RowBuffer[].new
       I Table[].column@
-      streamSetTable[] StreamSet[].addColumnDef assert
+      StreamSetTable[] RowBuffer[].addColumnDef assert
     then
   loop
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

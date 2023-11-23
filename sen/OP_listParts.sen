@@ -13,29 +13,29 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  StreamSetTable[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  streamSetTable[] streamSet[].new
+  StreamSetTable[] RowBuffer[].new
 
   // get a row per partition on this node
   [grid].ptnsPerNode 0 do
 
     I [grid].tablePtnToPtnNo
-      streamSetTable[] streamSet[].addListPartitions  not if
-        StreamSet[].pipeOut
-        streamSetTable[] streamSet[].new
+      StreamSetTable[] RowBuffer[].addListPartitions  not if
+        RowBuffer[].pipeOut
+        StreamSetTable[] RowBuffer[].new
         I [grid].tablePtnToPtnNo
-        streamSetTable[] StreamSet[].addListPartitions assert
+        StreamSetTable[] RowBuffer[].addListPartitions assert
       then
 
   loop
 
   // pipeout the infoset
-  streamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

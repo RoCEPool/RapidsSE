@@ -155,37 +155,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* verify and set folder to <tableNm> of tabledef                             */
-/*----------------------------------------------------------------------------*/
-: op__tableDef ( tableNm -- )
-
-  params| sTableNm |
-
-  // save current path
-  Path[].save
-
-  // move to default tables folder
-  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
-  str.toStrVec Path[].set
-
-  // table
-  sTableNm check::validTableAssembly assert
-
-  // move to table folder and find the table
-  sTableNm Path[].pushNamedTableFolder
-  sTableNm find execute to Table[]
-
-  // cross-check
-  Table[] assert
-
-  Path[].popNamedTableFolder
-
-  // restore path
-  Path[].restore
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* find table by given table name and set Table[]                             */
 /*----------------------------------------------------------------------------*/
 : op__table params| sTableNm |

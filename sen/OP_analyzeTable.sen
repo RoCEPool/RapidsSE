@@ -15,25 +15,25 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  Table[] StreamDefLft[].new
+  StreamSetTable[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  Table[] RowBuffer[].new
+  StreamSetTable[] RowBuffer[].new
 
   // add a row for each table ptn
   [grid].ptnsPerNode 0
   do
     // analyze table
-    I Table[] Table[] RowBuffer[].addAnalyzeTable  not if
+    I Table[] StreamSetTable[] RowBuffer[].addAnalyzeTable  not if
       RowBuffer[].pipeOut
-      Table[] RowBuffer[].new
-      I Table[] Table[] RowBuffer[].addAnalyzeTable assert
+      StreamSetTable[] RowBuffer[].new
+      I Table[] StreamSetTable[] RowBuffer[].addAnalyzeTable assert
     then
 
   loop

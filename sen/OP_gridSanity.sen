@@ -17,20 +17,11 @@
   // get the first row of the infoSet (nodeInfo)
   InfoSet[].firstRow to infoSetRow[]
 
-  // find the __nodeInfo table
-  //C_TDEF_gridSanity op__tableDef assert
-
-  // create a new stream defnition as per the nodeinfo being sent
-  //Table[] StreamDefLft[].new
-
-  // pipeout the streamDef
-  //StreamDefLft[].pipeOut
-
   // create an infoSet operand
-  Table[] RowBuffer[].new
+  StreamSetTable[] RowBuffer[].new
 
   // add nodeInfo to the infoSet
-  infoSetRow[].get Table[] RowBuffer[].addgridSanity assert
+  infoSetRow[].get StreamSetTable[] RowBuffer[].addgridSanity assert
 
   // pipeout the infoset
   RowBuffer[].pipeOut
@@ -52,10 +43,10 @@
   PipeIn[].pipeOut
 
   // find the __gridSanity table
-  C_TDEF_gridSanity op__tableDef assert
+  C_TDEF_gridSanity op__tableDef_streamSet assert
 
   // create a new stream defnition as per the nodeinfo being sent
-  Table[] StreamDefLft[].new
+  StreamSetTable[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut

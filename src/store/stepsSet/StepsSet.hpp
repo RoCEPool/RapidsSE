@@ -2073,12 +2073,7 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefRhtSet(void);
 
   // reg stream set
-  void vStreamSetAddAnalyzeTable(void);
-  void vStreamSetAddColumnDef(void);
   void vStreamSetAddListContents(void);
-  void vStreamSetAddListFolder(void);
-  void vStreamSetAddListIndex(void);
-  void vStreamSetAddListPartitions(void);
   void vStreamSetAddLogMsg(void);
   void vStreamSetAddMemoryLeaks(void);
   void vStreamSetAddNodeHeartbeat(void);

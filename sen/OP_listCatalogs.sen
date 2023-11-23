@@ -24,31 +24,31 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  StreamSetTable[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  streamSetTable[] RowBuffer[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
+  // insert a row in the rowBuffer for each word
 
   Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
     object@ word.name@
-    streamSetTable[] StreamSet[].addListContents not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
+    streamSetTable[] RowBuffer[].addListContents not if
+      RowBuffer[].pipeOut
+      streamSetTable[] RowBuffer[].new
       object@ word.name@
-      streamSetTable[] StreamSet[].addListContents assert
+      streamSetTable[] RowBuffer[].addListContents assert
     then
     object@ word.prev object!      // step backwards thru words
   next
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

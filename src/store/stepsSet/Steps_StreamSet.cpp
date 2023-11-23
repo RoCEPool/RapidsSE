@@ -39,15 +39,17 @@ extern SizeHeap  gxaSizeHeap[];
 void Step::vAddSteps_StreamSet(void)
 {
   vAddStep("StreamSet[]"_Stz,                &Step::vStreamSetGet);
-  vAddStep("StreamSet[].addAnalyzeTable"_Stz,&Step::vStreamSetAddAnalyzeTable);
+	vAddStep("StreamSet[]"_Stz,                &Step::vStreamSetGet);
+
+	//vAddStep("StreamSet[].addAnalyzeTable"_Stz,&Step::vStreamSetAddAnalyzeTable);
   //vAddStep("StreamSet[].addBpaObjects"_Stz,  &Step::vStreamSetAddBpaObjects);
   //vAddStep("StreamSet[].addBpaRegions"_Stz,  &Step::vStreamSetAddBpaRegions);
-  vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
+  //vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
   //vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
-  vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
-  vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
-  vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
+  //vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder)
+	//vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
+  //vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
   vAddStep("StreamSet[].addLogMsg"_Stz,      &Step::vStreamSetAddLogMsg);
   vAddStep("StreamSet[].addMemoryLeaks"_Stz, &Step::vStreamSetAddMemoryLeaks);
   vAddStep("StreamSet[].addNodeHeartbeat"_Stz, &Step::vStreamSetAddNodeHeartbeat);
@@ -71,82 +73,6 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addAnalyzeTable -- add a row to the streamSet table analysis   */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddAnalyzeTable(void)
-{
-  ENTRY();
-  
-  // get the streamSet table
-  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the index to be analyzed
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the tablePtn
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-  
-  // get the stream set
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  i8 nBuffers = 0;
-  i8 nRows = 0;
-  i8 njRowSize = 0;
-
-  pTable->vAnalyze(i_TablePtn, nBuffers, nRows, njRowSize);
-
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pStreamSetTable->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
-                                    nBuffers,
-                                    nRows,
-                                    C_VARGS_END);
-
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addColumnDef -- add a row to the streamSet with the column def */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddColumnDef(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pColumn->szColNm(),
-                                  aCT[pColumn->eColumnType()],
-                                  pColumn->iColumnLength(),
-                                  pColumn->iColumnScale(),
-                                  (i8)pColumn->bIsNullable(),
-                                  (i8)pColumn->bIsPtnKey(),
-                                  C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,112 +104,6 @@ void Step::vStreamSetAddListContents(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addListFolder -- add a row to infoset with the list folder     */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddListFolder(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  // get the name
-  s256 sName;
-  m_pDataStack->vPopStr(sName, __func__);
-  
-  // get the kind
-  s256 sKind;
-  m_pDataStack->vPopStr(sKind, __func__);
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  sName.azChar(),
-                                  sKind.azChar(),
-                                  C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addListIndex -- add a row to infoset with the list index       */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddListIndex(void)
-{
-  ENTRY();
-
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  // get the index
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                      pIndex->szIndexNm(),
-                                      (i8)pIndex->bIsUnique(),
-                                      (i8)pIndex->bIsPrimaryKey(),
-                                    C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addListPartitions -- add a row to infoset with the partitions  */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddListPartitions(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  LglPtn tLglPtn;
-  tLglPtn = m_pDataStack->iPopInt(__func__);
-
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Grid* pGrid = AM::pGrid();
-
-  i8 iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
-  Node* pNode = pGrid->pFindNodeById(iNodeId);
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    tLglPtn.iAsI8(),
-                                    pNode->szNodeNm(),
-                                    C_VARGS_END);
-
-
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* StreamSet[].addLogMsg -- add rows to streamSet with log message info       */
