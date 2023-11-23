@@ -43,7 +43,7 @@ void Step::vAddSteps_StreamSet(void)
   //vAddStep("StreamSet[].addBpaObjects"_Stz,  &Step::vStreamSetAddBpaObjects);
   //vAddStep("StreamSet[].addBpaRegions"_Stz,  &Step::vStreamSetAddBpaRegions);
   vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
-  vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
+  //vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
   vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
@@ -146,57 +146,6 @@ void Step::vStreamSetAddColumnDef(void)
   //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushInt(pRow ? true : false);
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addGridSanity -- add a row to the infoset with the gridSanity  */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddGridSanity(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
-  //StreamDef* pStreamDefNI = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  
-  //pNodeInfo->vDump(pStreamDefNI);
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  //Grid* pGrid = AM::pGrid();
-  
-  // get regionSize on this node
-  bool bRegionSize = false;
-  i8 iRegionSize = AM::iRegionSize();
-  if (pNodeInfo->iColVal_int(1) == iRegionSize)
-    bRegionSize = true;
-  
-  // get partitions per table for this node
-  bool bPartitions = false;
-  i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
-  if (pNodeInfo->iColVal_int(2) == nPtnsPerNode)
-    bPartitions = true;
-  
-  // check if the regionSize and partitions match
-  bool bHomogenous = false;
-  if ( bRegionSize && bPartitions )
-    bHomogenous = true;
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pNodeInfo->szColVal_ofs(0),
-                                  bHomogenous,
-                                  C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
   EXIT();
 }
 

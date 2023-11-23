@@ -2075,7 +2075,6 @@ void vJobIdLastJobIdFetch(void);
   // reg stream set
   void vStreamSetAddAnalyzeTable(void);
   void vStreamSetAddColumnDef(void);
-  void vStreamSetAddGridSanity(void);
   void vStreamSetAddListContents(void);
   void vStreamSetAddListFolder(void);
   void vStreamSetAddListIndex(void);
