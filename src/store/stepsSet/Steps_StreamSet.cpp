@@ -50,10 +50,10 @@ void Step::vAddSteps_StreamSet(void)
   //vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder)
 	//vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
   //vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
-  vAddStep("StreamSet[].addLogMsg"_Stz,      &Step::vStreamSetAddLogMsg);
+  //vAddStep("StreamSet[].addLogMsg"_Stz,      &Step::vStreamSetAddLogMsg);
   //vAddStep("StreamSet[].addMemoryLeaks"_Stz, &Step::vStreamSetAddMemoryLeaks);
-  vAddStep("StreamSet[].addNodeHeartbeat"_Stz, &Step::vStreamSetAddNodeHeartbeat);
-  vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
+  //vAddStep("StreamSet[].addNodeHeartbeat"_Stz, &Step::vStreamSetAddNodeHeartbeat);
+  //vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
   //vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
   //vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
   //vAddStep("StreamSet[].addRowCount"_Stz,      &Step::vStreamSetAddRowCount);
@@ -73,139 +73,6 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addLogMsg -- add rows to streamSet with log message info       */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddLogMsg(void)
-{
-  ENTRY();
-
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  // get the timestamp to use
-  i8 iTsp = m_pDataStack->iPopInt(__func__);
-
-  // get the log message to use
-  s2K sMsg;
-  m_pDataStack->vPopStr(sMsg, __func__ );
-
-
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  ASSERT(pStreamSet);
-
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    iTsp,
-                                    sMsg.szStz(),
-                                    C_VARGS_END);
-
-  m_pDataStack->vPushInt(pRow ? true : false);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addNodeInfo -- add a row to the streamSet with this node info  */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddNodeHeartbeat(void)
-{
-  ENTRY();
-
-  // get the table
-  Table *pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  // get the streamDef from the table
-  StreamDef *pStreamDef = pTable->pStreamDef();
-
-  StreamSet *pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-
-  Node* pThisNode = MY::pNode();
-  
-  Row *pRow = nullptr;
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-
-    if (pThisNode != *oNode_I)
-      continue;
-    
-    pRow = pStreamSet->pAllotRow(pStreamDef,
-                                 C_VARGS_BEGIN,
-                                 (*oNode_I)->szNodeNm(),
-                                 (*oNode_I)->xGetHeartbeat().m_acRegionName,
-                                 (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
-                                 (*oNode_I)->pSendSocket() ? true : false,
-                                 (*oNode_I)->pRecvSocket() ? true : false,
-                                 C_VARGS_END);
-
-    break;
-  }
-
-  // done
-  m_pDataStack->vPushInt(pRow ? true : false);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addNodeStatus -- add a row to the streamSet with node status   */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddNodeStatus(void)
-{
-  ENTRY();
-
-  // get the table
-  Table *pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  // get the streamDef from the table
-  StreamDef *pStreamDef = pTable->pStreamDef();
-
-  StreamSet *pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-
-  /* commented out, the old status command which is required to go to all nodes
-   * for each node, it gets back a row and its status.
-   * With the new model, we need a grid of the requested node,
-   * each individual node in the grid will have its own status.
-   */
-  /*
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                        C_VARGS_BEGIN,
-                        pGrid->pThisNode()->szNodeNm(),
-                        sRegionNm.azChar(),
-                        Region::bTest(sRegionNm) ? "running"_Stz : "not running"_Stz,
-                        C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  */
-  Row *pRow = nullptr;
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-
-    pRow = pStreamSet->pAllotRow(pStreamDef,
-                                 C_VARGS_BEGIN,
-                                 (*oNode_I)->szNodeNm(),
-                                 (*oNode_I)->xGetHeartbeat().m_acRegionName,
-                                 (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
-                                 (*oNode_I)->pSendSocket() ? true : false,
-                                 (*oNode_I)->pRecvSocket() ? true : false,
-                                 C_VARGS_END);
-
-    if (!pRow) {
-      // call again
-      m_pDataStack->vPushInt(oNode_I.i_Node());
-      break;
-    }
-  }
-
-  // done
-  m_pDataStack->vPushInt(pRow ? true : false);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

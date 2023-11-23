@@ -2073,9 +2073,6 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefRhtSet(void);
 
   // reg stream set
-  void vStreamSetAddLogMsg(void);
-  void vStreamSetAddNodeHeartbeat(void);
-  void vStreamSetAddNodeStatus(void);
   void vStreamSetAddProgressUnits(void);
   void vStreamSetDelete(void);
   void vStreamSetFirstRow(void);

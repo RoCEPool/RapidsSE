@@ -20,14 +20,14 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] streamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
   // add nodeStatus to the infoSet
-  streamSetTable[] streamSet[].addNodeheartbeat assert
+  streamSetTable[] RowBuffer[].addNodeheartbeat assert
 
-  // pipeout the infoset
-  streamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;
