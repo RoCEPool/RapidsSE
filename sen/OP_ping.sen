@@ -26,14 +26,14 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
   // add pingInfo to the infoSet
-  streamSetTable[] StreamSet[].addPingInfo assert
+  streamSetTable[] RowBuffer[].addPingInfo assert
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

@@ -34,14 +34,14 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
   // add pwfInfo to the infoSet
-  folder streamSetTable[]  StreamSet[].addPwfInfo assert
+  folder streamSetTable[]  RowBuffer[].addPwfInfo assert
 
-  // pipeout the infoset
-  StreamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;

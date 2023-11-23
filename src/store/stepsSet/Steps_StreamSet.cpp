@@ -54,8 +54,8 @@ void Step::vAddSteps_StreamSet(void)
   //vAddStep("StreamSet[].addMemoryLeaks"_Stz, &Step::vStreamSetAddMemoryLeaks);
   vAddStep("StreamSet[].addNodeHeartbeat"_Stz, &Step::vStreamSetAddNodeHeartbeat);
   vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
-  vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
-  vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
+  //vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
+  //vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
   vAddStep("StreamSet[].addRowCount"_Stz,      &Step::vStreamSetAddRowCount);
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
   vAddStep("StreamSet[].addSizeIndex"_Stz,     &Step::vStreamSetAddSizeIndex);
@@ -209,32 +209,6 @@ void Step::vStreamSetAddNodeStatus(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addPingInfo -- add a row to infoset with the ping response     */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddPingInfo(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  "pong"_Stz,
-                                  C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* StreamSet[].addProgressUnits -- add a row to streamSet with progressUnits  */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddProgressUnits(void)
@@ -250,36 +224,6 @@ void Step::vStreamSetAddProgressUnits(void)
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
                                   C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addStr -- add a row to streamSet with a __pwf response         */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddPwfInfo(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  s256 sString;
-  m_pDataStack->vPopStr(sString, __func__);
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    sString.azChar(),
-                                    C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
