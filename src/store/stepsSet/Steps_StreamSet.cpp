@@ -51,7 +51,7 @@ void Step::vAddSteps_StreamSet(void)
 	//vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
   //vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
   vAddStep("StreamSet[].addLogMsg"_Stz,      &Step::vStreamSetAddLogMsg);
-  vAddStep("StreamSet[].addMemoryLeaks"_Stz, &Step::vStreamSetAddMemoryLeaks);
+  //vAddStep("StreamSet[].addMemoryLeaks"_Stz, &Step::vStreamSetAddMemoryLeaks);
   vAddStep("StreamSet[].addNodeHeartbeat"_Stz, &Step::vStreamSetAddNodeHeartbeat);
   vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
@@ -106,56 +106,6 @@ void Step::vStreamSetAddLogMsg(void)
                                     C_VARGS_END);
 
   m_pDataStack->vPushInt(pRow ? true : false);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addMemoryLeaks -- add rows to streamSet with memory leak info  */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddMemoryLeaks(void)
-{
-  ENTRY();
-
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-
-  i8 nLeaks = 0;
-
-  ObjectSnapshot* pSnapshotThen = AM::MEMORY::pSnapshotAtTrackingMemory();
-  ObjectSnapshot* pSnapshotNow  = AM::MEMORY::pSnapshotAtMemoryLeaks();
-
-  for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
-
-    eCN eClass = (eCN)i_Class;
-
-    if (eClass == CN_FREEPOOLBUFFER || eClass == CN_HEAPBUFFER)
-      continue;
-
-    // check if this class to be ignored for memory leak detection
-    if (gxaSizeHeap[eClass].m_bIgnoreMemoryLeak)
-      continue;
-
-    i8 nDelta = pSnapshotNow->m_nObjects[eClass] -
-                pSnapshotThen->m_nObjects[eClass];
-
-    if (nDelta <= 0)
-      continue;
-
-    ++nLeaks;
-    /*Row* pRow =*/ pStreamSet->pAllotRow(pStreamDef,
-                                          C_VARGS_BEGIN,
-                                          aCN[eClass],
-                                          nDelta,
-                                          C_VARGS_END);
-  }
-
-  m_pDataStack->vPushBol(nLeaks > 0);
 
   EXIT();
 }

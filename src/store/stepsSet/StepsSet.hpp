@@ -2074,7 +2074,6 @@ void vJobIdLastJobIdFetch(void);
 
   // reg stream set
   void vStreamSetAddLogMsg(void);
-  void vStreamSetAddMemoryLeaks(void);
   void vStreamSetAddNodeHeartbeat(void);
   void vStreamSetAddNodeStatus(void);
   void vStreamSetAddPingInfo(void);
