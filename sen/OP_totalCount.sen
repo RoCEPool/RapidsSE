@@ -41,7 +41,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_EOS...                                                         */
+/* on EV_M_EOS...                                                             */
 /*----------------------------------------------------------------------------*/
 : totalCount_EosMarker \handler
 
@@ -54,13 +54,13 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] streamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
-  // insert row count into streamSet
-  Counter0[] streamSetTable[] StreamSet[].addRowCount assert
+  // insert row count into rowBuffer
+  Counter0[] streamSetTable[] RowBuffer[].addRowCount assert
 
-  StreamSet[].Pipeout
+  RowBuffer[].Pipeout
 
   true
 ;

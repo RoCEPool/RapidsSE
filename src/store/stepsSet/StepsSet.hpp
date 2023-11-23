@@ -2077,8 +2077,6 @@ void vJobIdLastJobIdFetch(void);
   void vStreamSetAddNodeHeartbeat(void);
   void vStreamSetAddNodeStatus(void);
   void vStreamSetAddProgressUnits(void);
-  void vStreamSetAddRowCount(void);
-  void vStreamSetAddShowCluster(void);
   void vStreamSetDelete(void);
   void vStreamSetFirstRow(void);
   void vStreamSetGet(void);

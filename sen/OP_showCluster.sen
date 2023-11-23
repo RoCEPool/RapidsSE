@@ -20,8 +20,8 @@
   StreamDefLft[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an infoSet operand
-  streamSetTable[] streamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
   0 locals| pNode |
 
@@ -30,10 +30,10 @@
   begin
     node_I[].node to pNode
 
-    pNode node.id streamSetTable[] streamSet[].addShowCluster  not if
+    pNode node.id streamSetTable[] RowBuffer[].addShowCluster  not if
       StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
-      pNode node.id streamSetTable[] StreamSet[].addShowCluster assert
+      streamSetTable[] RowBuffer[].new
+      pNode node.id streamSetTable[] RowBuffer[].addShowCluster assert
     then
 
     node_I[].next
@@ -44,8 +44,8 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipeout the infoset
-  streamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;
