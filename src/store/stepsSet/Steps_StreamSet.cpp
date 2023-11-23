@@ -60,7 +60,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
   //vAddStep("StreamSet[].addSizeIndex"_Stz,     &Step::vStreamSetAddSizeIndex);
   //vAddStep("StreamSet[].addSizeTable"_Stz,     &Step::vStreamSetAddSizeTable);
-  vAddStep("StreamSet[].addSpaceInfo"_Stz,     &Step::vStreamSetAddSpaceInfo);
+  //vAddStep("StreamSet[].addSpaceInfo"_Stz,     &Step::vStreamSetAddSpaceInfo);
   //vAddStep("StreamSet[].addTableSizes"_Stz,    &Step::vStreamSetAddTableSizes);
   //vAddStep("StreamSet[].addVerifyIndex"_Stz,   &Step::vStreamSetAddVerifyIndex);
   //vAddStep("StreamSet[].addVerifyTable"_Stz,   &Step::vStreamSetAddVerifyTable);
@@ -286,57 +286,6 @@ void Step::vStreamSetAddShowCluster(void)
                                   pNode->iPortNo(),
                                   (i8)(pNode->pSendSocket() ? true : false),
                                   C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addSpaceInfo -- add a row to the streamSet with the spaceInfo  */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddSpaceInfo(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
-  Grid* pGrid = AM::pGrid();
-  
-  i8 iTotalSpace = AM::POOL::iTotalSpace();
-  i8 iInUseSpace = AM::POOL::iUsedSpace();
-  i8 iFreeSpace  = AM::POOL::iFreeSpace();
-  
-  i8 iFreeSpaceInPool = PoolHelper::iPoolFree();
-  i8 iTotalFreeSpace  = iFreeSpace + iFreeSpaceInPool;
-  
-  s256 sTotalSpace;
-  MagLib::vByteMag(iTotalSpace, 0, sTotalSpace);
-  
-  s256 sInUseSpace;
-  MagLib::vByteMag(iInUseSpace, 0, sInUseSpace);
-  
-  s256 sTotalFreeSpace;
-  MagLib::vByteMag(iTotalFreeSpace, 0, sTotalFreeSpace);
-  
-  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    iTotalSpace,
-                                    sTotalSpace.azChar(),
-                                    iInUseSpace,
-                                    sInUseSpace.azChar(),
-                                    iTotalFreeSpace,
-                                    sTotalFreeSpace.azChar(),
-                                    C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   

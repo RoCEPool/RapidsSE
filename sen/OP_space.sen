@@ -21,14 +21,14 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] streamSet[].new
+  // create an rowBuffer operand
+  streamSetTable[] RowBuffer[].new
 
   // add spaceInfo to the infoSet
-  streamSetTable[] streamSet[].addSpaceInfo assert
+  streamSetTable[] RowBuffer[].addSpaceInfo assert
 
   // pipeout the infoset
-  streamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;
