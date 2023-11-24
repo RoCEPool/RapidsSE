@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "eBT.h"
 #include "RowSingle.hpp"
 #include "Tub.hpp"
 
@@ -17,6 +18,7 @@ namespace STORE
   {
   protected:
 
+		eBT     m_eBufferType;
     bool    m_bDeletable;
     Decider m_oDecider;
   
@@ -46,6 +48,8 @@ namespace STORE
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
     Row* pAllotRow(Row* pRow);
 
+		void vBufferType(eBT eBufferType);
+    eBT  eBufferType(void);
     void vDeciderCopies(i8 nCopies);
     void vDecidedDelete(void);
     i8   iDecile(void);

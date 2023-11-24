@@ -270,8 +270,14 @@ void Constants::vAddConstantsCpp(void)
   /*  4 */ vAddConstant("AT_RANGE"_Stz,    AT_RANGE);
   /*  5 */ vAddConstant("AT_SCAN"_Stz,     AT_SCAN);
   /*  6 */ vAddConstant("AT_ENUMS"_Stz,    AT_ENUMS);
-  
-  // CN_ : class number
+
+	// BT_ : buffer types
+	/*  0 */ vAddConstant("BT_NONE"_Stz,     BT_NONE);
+	/*  1 */ vAddConstant("BT_DATA"_Stz,     BT_DATA);
+	/*  2 */ vAddConstant("BT_EXPLAIN"_Stz,  BT_EXPLAIN);
+	/*  3 */ vAddConstant("BT_ENUMS"_Stz,    BT_ENUMS);
+
+	// CN_ : class number
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_REJECTJOB"_Stz,    CN_REJECTJOB);

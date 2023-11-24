@@ -9,20 +9,20 @@
 /*----------------------------------------------------------------------------*/
 : compiler_LeaveMarker \handler
 
-  // save the pipein in streamSet[]
-  StreamSet[].isNull not assert
-  StreamSet[].pipeout
+  // emit the RowBuffer[]
+  RowBuffer[].isNull not assert
+  RowBuffer[].pipeout
 
   EV_M_LEAVE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_STREAMSET ...                                             */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
-: compiler_StreamSet \handler
+: compiler_RowBuffer \handler
 
-  // save the pipein in streamSet[]
-  Pipein[]\clear to StreamSet[]
+  // save the pipein in RowBuffer[]
+  Pipein[]\clear to RowBuffer[]
 
   true
 ;
@@ -37,8 +37,8 @@
   PlanOperand[].isNull if
 
     // We got an error, but were we going to do an explain?
-    StreamSet[].isNull not if
-      StreamSet[].delete
+    RowBuffer[].isNull not if
+      RowBuffer[].delete
     then
 
     op__compileErrOut
@@ -57,7 +57,7 @@
     PlanOperand[] sOperatorName sqlCompiler::doExplain
 
     // pipeout explain
-    StreamSet[].pipeout
+    RowBuffer[].pipeout
 
     LogicUnit[].compilerToExit if
       PlanOperand[].delete

@@ -45,8 +45,9 @@
     // create a new streamDef
     streamSetTable[] StreamDefLft[].new
 
-    // create an StreamSet operand
-    streamSetTable[] StreamSet[].new
+    // create a rowBuffer operand for explain
+    streamSetTable[] RowBuffer[].new
+    BT_EXPLAIN RowBuffer[].setBufferType
 
     // execute explain for this operator
     PlanOperand[] "parser" sqlCompiler::doExplain
@@ -55,7 +56,7 @@
     StreamDefLft[].pipeout
 
     // pipeout explain
-    StreamSet[].pipeout
+    RowBuffer[].pipeout
 
     LogicUnit[].compilerToExit if
       PlanOperand[].delete

@@ -44,7 +44,8 @@ RowBuffer::RowBuffer(void)
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
-  m_bDeletable = false;
+	m_eBufferType = BT_DATA;
+  m_bDeletable  = false;
   
   m_oDecider.vSetRemaining(1);
   
@@ -65,6 +66,7 @@ RowBuffer::RowBuffer(StreamDef* pStreamDef)
 	if (pLogicUnit)
 		pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
+	m_eBufferType = BT_DATA;
 	m_bDeletable = true;
 
 	m_oDecider.vSetRemaining(1);
@@ -86,6 +88,7 @@ RowBuffer::RowBuffer(eCN eClassNo)
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
+	m_eBufferType = BT_DATA;
   m_bDeletable = true;
   
   if (CN_CRWBUFFER == eClassNo)
@@ -108,6 +111,7 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
+	m_eBufferType = BT_DATA;
   m_bDeletable = true;
   
   if (CN_ROWBUFFER == eClassNo)
@@ -427,6 +431,26 @@ Row* RowBuffer::pAllotRow(Row* pRow)
   }
 
   return pNewRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the buffer type                                                        */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vBufferType(eBT eBufferType)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+	m_eBufferType = eBufferType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the buffer type                                                        */
+/*----------------------------------------------------------------------------*/
+eBT RowBuffer::eBufferType(void)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+	return m_eBufferType;
 }
 
 /*----------------------------------------------------------------------------*/

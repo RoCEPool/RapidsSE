@@ -21,6 +21,7 @@
 #include "TablePtn.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"
+#include "eBT.h"
 
 extern SizeHeap  gxaSizeHeap[];
 
@@ -61,6 +62,7 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].decile"_Stz,         &Step::vRowBufferDecile);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
   vAddStep("RowBuffer[].get"_Stz,            &Step::vRowBufferGet);
+	vAddStep("RowBuffer[].getBufferType"_Stz,  &Step::vRowBufferGetBufferType);
   vAddStep("RowBuffer[].insdelIntoTable"_Stz,&Step::vRowBufferInsdelIntoTable);
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
@@ -70,6 +72,7 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].ptnId"_Stz,          &Step::vRowBufferPtnId);
   vAddStep("RowBuffer[].rows"_Stz,           &Step::vRowBufferRows);
   vAddStep("RowBuffer[].set"_Stz,            &Step::vRowBufferSet);
+	vAddStep("RowBuffer[].setBufferType"_Stz,  &Step::vRowBufferSetBufferType);
   vAddStep("RowBuffer[].setDeciderCopies"_Stz, &Step::vRowBufferSetDeciderCopies);
   vAddStep("RowBuffer[].setLglPtn"_Stz,      &Step::vRowBufferSetLglPtn);
   vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
@@ -1102,6 +1105,18 @@ void Step::vRowBufferGetBufferIdAsAddr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBuffer[].getBufferType -- get the rowBuffer bufferType                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferGetBufferType(void)
+{
+	ENTRY();
+
+	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBuffer->eBufferType());
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBuffer[].insdelIntoTable -- insert-delete rowBuffer into the table      */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferInsdelIntoTable(void)
@@ -1234,6 +1249,20 @@ void Step::vRowBufferSet(void)
   m_pLogicUnit->m_xpRowBuffer = _pRowBuffer(pOperand);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].setBufferType -- set buffer type                               */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferSetBufferType(void)
+{
+	ENTRY();
+
+	eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
+
+	m_pLogicUnit->m_xpRowBuffer->vBufferType(eBufferType);
+
+	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

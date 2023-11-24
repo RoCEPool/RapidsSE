@@ -46,7 +46,7 @@
     Table[].isUserCreated if
 
       sTableNm streamSetTable[] RowBuffer[].addListContents  not if
-        StreamSet[].pipeOut
+        RowBuffer[].pipeOut
         streamSetTable[] RowBuffer[].new
         sTableNm streamSetTable[] RowBuffer[].addListContents assert
       then

@@ -31,7 +31,7 @@
     iCursor Table[].listPartition to iCursor
     
     iCursor while
-      StreamSet[].pipeOut
+      RowBuffer[].pipeOut
   repeat
 
   // pipeout the rowBuffer

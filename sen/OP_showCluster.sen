@@ -31,7 +31,7 @@
     node_I[].node to pNode
 
     pNode node.id streamSetTable[] RowBuffer[].addShowCluster  not if
-      StreamSet[].pipeOut
+      RowBuffer[].pipeOut
       streamSetTable[] RowBuffer[].new
       pNode node.id streamSetTable[] RowBuffer[].addShowCluster assert
     then

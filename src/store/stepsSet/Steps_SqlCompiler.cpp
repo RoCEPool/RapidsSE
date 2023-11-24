@@ -280,8 +280,8 @@ void Step::vSqlCompilerDoExplain(void) {
   UNUSED(pRootNode);
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
-  // get the streamSet for explain
-  InfoSet *pInfoSet = _pInfoSet(*(m_pLogicUnit)->m_xpStreamSet);
+  // get the rowBuffer for explain
+	RowBuffer *pRowBuffer = _pInfoSet(*(m_pLogicUnit)->m_xpRowBuffer);
 
   // Find the explainOp. First get the /__root__/plan node
   QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
@@ -333,7 +333,7 @@ void Step::vSqlCompilerDoExplain(void) {
     }
 
 
-    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+    Row *pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
                                     iStageNum,
                                     sCompilerStage.szStz(),
                                     sExplainBuf.szStz(),
