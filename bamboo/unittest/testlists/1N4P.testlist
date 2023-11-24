@@ -31,7 +31,7 @@
 ../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
 
 ../../../seth/tests/tests1N4P/Create/testList
-////////////../../../seth/tests/tests1N4P/Compiler/testList
+../../../seth/tests/tests1N4P/Compiler/testList
 ../../../seth/tests/tests1N4P/Datums/testList
 ../../../seth/tests/tests1N4P/Ddl/testList
 //../../../seth/tests/tests1N4P/Examples/testList
