@@ -37,7 +37,6 @@ assert::stack_0
 
 "c" .verbose
 
-  "OP_callProc.sen"             include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
   "OP_checkTable.sen"           include

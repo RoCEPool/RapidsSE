@@ -186,7 +186,6 @@ namespace STORE
     static void vAddSteps_StreamDefOut(void);
     static void vAddSteps_StreamDefRht(void);
     static void vAddSteps_StreamOfOp(void);
-    static void vAddSteps_StreamSet(void);
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_StringA(void);
     static void vAddSteps_SubCall(void);

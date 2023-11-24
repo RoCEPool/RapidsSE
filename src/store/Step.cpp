@@ -204,7 +204,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamDefOut();
   Step::vAddSteps_StreamDefRht();
   Step::vAddSteps_StreamOfOp();
-  Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_SubCall();
   Step::vAddSteps_SubReturn();
