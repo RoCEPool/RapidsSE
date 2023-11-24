@@ -456,7 +456,7 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
   Stz* szErrorCode = aEC2[eErrorCode];
   Stz* szErrorText = pInfoRow->szColVal_ofs(2);
 
-  vTrace("AdaptorWL: Error infoset received: %s\n"_Stz, aErrorMsg[eErrorCode]);
+  vTraceComponent(TC_WLP, "AdaptorWL: Error infoset received: %s\n"_Stz, aErrorMsg[eErrorCode]);
 
   if (eErrorCode == EC_WL_SOCKET_CLOSED) {
     // Disconnect immediately
@@ -825,11 +825,11 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
       }
 
       dScalingFactor *= C_ROWDATARESP_SCALE_DOWN;
-      vTrace("RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
+      vTraceComponent(TC_WLP, "RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
       continue;
     }
 
-    vTrace("RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
+    vTraceComponent(TC_WLP, "RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
     iStartingRow += iRowsToSend;
 
     if (iRowsToSend > iMaxRowsThatFit) {
@@ -930,11 +930,11 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
       }
 
       dScalingFactor *= C_ROWDATARESP_SCALE_DOWN;
-      vTrace("RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
+      vTraceComponent(TC_WLP, "RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
       continue;
     }
 
-    vTrace("RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
+    vTraceComponent(TC_WLP, "RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
     iStartingRow += iRowsToSend;
 
     if (iRowsToSend > iMaxRowsThatFit) {
@@ -1119,7 +1119,7 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
     vDisconnectClient(EC_WL_PROTOCOL_ERROR);
   }
 
-  vTrace("Decoded a wireline message of type: %s\n"_Stz, to_string(eMsgType).c_str());
+  vTraceComponent(TC_WLP, "Decoded a wireline message of type: %s\n"_Stz, to_string(eMsgType).c_str());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1351,7 +1351,7 @@ void AdaptorWL::vNextState(eState eNextState)
   }
 
   // Do the transition
-  vTrace("Wireline client transitioning from state %s to state %s\n"_Stz,
+  vTraceComponent(TC_WLP, "Wireline client transitioning from state %s to state %s\n"_Stz,
          aState[m_eProtocolState],
          aState[eNextState]);
 
@@ -1672,7 +1672,7 @@ void AdaptorWL::vProcessQueryExecuteRequest()
     return;
   }
 
-  vTrace("QueryExecuteRequest contains query string: %s\n"_Stz, pMsg->query.c_str());
+  vTraceComponent(TC_WLP, "QueryExecuteRequest contains query string: %s\n"_Stz, pMsg->query.c_str());
 
   vNextState(QUERY_BEGUN);
 

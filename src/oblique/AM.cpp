@@ -2979,7 +2979,8 @@ void AM::SYSARGS::vVerbose(bool bVerbose)
 {
   _static_
 
-  gpAttachMap->m_xSysArgs.m_bVerbose = bVerbose;
+  gpAttachMap->m_bTraceableComponents[TC_VERBOSE] = bVerbose;
+//  gpAttachMap->m_xSysArgs.m_bVerbose = bVerbose;  // Changed to the above now
 }
 
 
@@ -3414,12 +3415,12 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   
   TagSet* pTags;
   
-  if (! gpAttachMap || gxCmdLineArgs.m_xSysArgs.m_bVerbose != gpAttachMap->m_xSysArgs.m_bVerbose) {
+  if (! gpAttachMap || gxCmdLineArgs.m_xSysArgs.m_bVerbose != gpAttachMap->m_bTraceableComponents[TC_VERBOSE]) {
 
     if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
       return true;
 
-    if (gpAttachMap && gpAttachMap->m_xSysArgs.m_bVerbose)
+    if (gpAttachMap && gpAttachMap->m_bTraceableComponents[TC_VERBOSE])
       return true;
 
     pTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTags;
@@ -3433,7 +3434,7 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (gpAttachMap->m_xSysArgs.m_bVerbose)
+  if (gpAttachMap->m_bTraceableComponents[TC_VERBOSE])
     return true;
   
   //if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
@@ -3481,6 +3482,32 @@ bool AM::TRACE::bVerbose(Stz* szVBtag1, Stz* szVBtag2)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verbose trace given tags?                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::TRACE::vTraceComponent(eTC eComponent, bool bTraceIt)
+{
+  _static_
+
+  ASSERT(eComponent > TC_NONE);
+  ASSERT(eComponent < TC_ENUMS);
+
+  gpAttachMap->m_bTraceableComponents[eComponent] = bTraceIt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verbose trace given tags?                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::TRACE::bTraceComponent(eTC eComponent)
+{
+  _static_
+
+  ASSERT(eComponent > TC_NONE);
+  ASSERT(eComponent < TC_ENUMS);
+
+  return (gpAttachMap && gpAttachMap->m_bTraceableComponents[eComponent]);
 }
 
 

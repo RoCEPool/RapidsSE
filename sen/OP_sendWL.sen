@@ -36,10 +36,10 @@
 
     pPayloadObj payloadObj::size@
     pPayloadObj payloadObj::msgType@
-    "SendWL: Sending payload: %v : %v bytes" .printf
+    "SendWL: Sending payload: %v : %v bytes" str.format .traceWlp
 
     pPayloadObj Socket[].sendWLMsg not if
-      Socket[].clientAddr@  "Error sending wireline message to client at %v" .printf
+      Socket[].clientAddr@  "Error sending wireline message to client at %v" str.format .traceWlp
       Socket[].close
       ErrorMarker[].newErrorMarker
       ErrorMarker[].pipeOut
@@ -66,7 +66,7 @@
   // before propagating the error.
   Socket[].isNotNull if
     Socket[].close
-    Socket[].clientAddr@ "Connection closed to client at address %v" .printf
+    Socket[].clientAddr@ "Connection closed to client at address %v" str.format .traceWlp
     Socket[].delete
   then
 

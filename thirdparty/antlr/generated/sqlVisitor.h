@@ -162,6 +162,8 @@ public:
 
     virtual antlrcpp::Any visitPipelineTypeNames(sqlParser::PipelineTypeNamesContext *context) = 0;
 
+    virtual antlrcpp::Any visitSetTraceCmd(sqlParser::SetTraceCmdContext *context) = 0;
+
     virtual antlrcpp::Any visitSleepCmd(sqlParser::SleepCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitSleepUnits(sqlParser::SleepUnitsContext *context) = 0;
@@ -175,6 +177,8 @@ public:
     virtual antlrcpp::Any visitSztblCmd(sqlParser::SztblCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitTableSizesCmd(sqlParser::TableSizesCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitTraceOption(sqlParser::TraceOptionContext *context) = 0;
 
     virtual antlrcpp::Any visitTruncateCmd(sqlParser::TruncateCmdContext *context) = 0;
 

@@ -20,7 +20,7 @@
 
       pPayloadObj payloadObj::size@
       pPayloadObj payloadObj::msgType@
-      "AdaptorWL: Piping out payload: %v : %v bytes" .printf
+      "AdaptorWL: Piping out payload: %v : %v bytes" str.format .traceWlp
 
       pPayloadObj [op].pipeOut
     repeat
@@ -29,7 +29,7 @@
 
   // Check if the protocol is unviable (e.g. received invalid msg or in wrong sequence).
   AdaptorWL[].protocolErrorTest if
-    "AdaptorWL: Piping out error marker" .printf
+    "AdaptorWL: Piping out error marker" .traceWlp
     AdaptorWL[].protocolError@ op__execErr
     false
     exit
@@ -140,7 +140,7 @@
 
   pPayloadObj payloadObj::size@
   pPayloadObj payloadObj::msgType@
-  "AdaptorWL: Received payload: %v : %v bytes" .printf
+  "AdaptorWL: Received payload: %v : %v bytes" str.format .traceWlp
 
   // Decode the payload to a message. This might generate payloads to be sent.
   pPayloadObj AdaptorWL[].decodePayload
@@ -225,7 +225,7 @@
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
-  "AdaptorWL: Processing error infoset" .
+  "AdaptorWL: Processing error infoset" .traceWlp
 
   adaptorWL[].executionError
 
@@ -393,7 +393,7 @@
   // then an ErrorMarker[] will be set. We couldn't pipe this out until the
   // child job has exited, so now is the time.
   ErrorMarker[].isNotNull if
-    "adaptorWL: Piping out previously received error marker" .
+    "adaptorWL: Piping out previously received error marker" .traceWlp
     ErrorMarker[].pipeOut
     true
     exit
@@ -432,7 +432,7 @@
   // only re-emit it after the child job has exited.
 
   AdaptorWL[].isChildJobActive if
-    "AdaptorWL: Saving error marker until child query has completed" .
+    "AdaptorWL: Saving error marker until child query has completed" .traceWlp
 
     ErrorMarker[].isNull assert
     Pipein[]\clear ErrorMarker[].set

@@ -224,6 +224,7 @@ assert::stack_0
   "OP_sendSE.sen"               include
   "OP_sendWL.sen"               include
   "OP_setOpValidate.sen"        include
+  "OP_setTrace.sen"             include
   "OP_showCluster.sen"          include
   "OP_sigfpe.sen"               include
   "OP_sigill.sen"               include

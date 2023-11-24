@@ -35,6 +35,7 @@ statementChoice   :
                     | lstblCmd
                     | pipelineCmd
                     | queryCmd    // (select)
+                    | setTraceCmd
                     | sleepCmd
                     | spaceCmd
                     | statusCmd
@@ -272,6 +273,7 @@ pipelineTypeNames   :   BOOLEAN
 // Q
 // R
 // S
+setTraceCmd       : SET TRACE traceOption;
 sleepCmd          : SLEEP integerLiteral sleepUnits?;
 sleepUnits        : seconds=( S_ONLY | SEC | SECOND | SECONDS) |
                     millis=(MS | MILLIS | MILLISECOND | MILLISECONDS);
@@ -282,6 +284,7 @@ sztblCmd          : SZTBL tableName ;
 
 // T
 tableSizesCmd     : TABLESIZES ;
+traceOption       : key=identifier '='? booleanLiteral ;
 truncateCmd       : TRUNCATE (TABLE)? name = tableName /*tableReference*/ ;
 trackmemoryCmd    : TRACKMEMORY FORCE? ;
 
@@ -610,7 +613,7 @@ dayTimeInterval   :
 nonReservedWord   :
                     ANALYSE | ANALYZE | ANIDX | ANTBL | ASC
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYE | BYTE | BYTES
-                  | CATALOG | CHARS | COMPACT | COMPACTIDX | CONCAT
+                  | CATALOG | CHARS | COMPACT | COMPACTIDX | CONCAT | CONFIG
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD | DOCOL
                   | ECHO | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING |ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
@@ -627,7 +630,7 @@ nonReservedWord   :
                   | RECORD_ENDS | RECORD_TERMINATOR | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
-                  | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
+                  | TABLESIZE | TEXT | TOP | TRACE | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
                   | UNLOAD
                   | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
@@ -673,6 +676,7 @@ COLLATE               : C O L L A T E;
 COMPACTIDX            : C O M P A C T I D X;
 COMPACT               : C O M P A C T;
 CONCAT                : C O N C A T;
+CONFIG                : C O N F I G;
 CORRESPONDING         : C O R R E S P O N D I N G;
 COUNT                 : C O U N T;
 CREATE                : C R E A T E;
@@ -835,6 +839,7 @@ TIME                  : T I M E;
 TIMESTAMP             : T I M E S T A M P;
 TO                    : T O;
 TOP                   : T O P;
+TRACE                 : T R A C E;
 TRACKMEMORY           : T R A C K M E M O R Y;
 TREE                  : T R E E;
 TRIM                  : T R I M;

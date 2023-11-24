@@ -18,8 +18,8 @@ seShellCommands ::=   sqlCommand
                     | exitCommand
 
 repeatCommand         ::= unsigned_integer sqlCommand ';'
-runCommand            ::= ('RUN' | 'SOURCE') fileName ';'
-setPageCommand        ::= 'SET' 'PAGE' integer ';'
-setSeparatorCommand   ::= 'SET' 'SEPARATOR' ('TAB' | 'PIPE' | 'COMMA') ';'
-setPrecisionCommand   ::= 'SET' 'PRECISION' unsigned_integer ';'
+runCommand            ::= 'SHELL' ('RUN' | 'SOURCE') fileName ';'
+setPageCommand        ::= 'SHELL' 'SET' 'PAGE' integer ';'
+setSeparatorCommand   ::= 'SHELL' 'SET' 'SEPARATOR' ('TAB' | 'PIPE' | 'COMMA') ';'
+setPrecisionCommand   ::= 'SHELL' 'SET' 'PRECISION' unsigned_integer ';'
 exitCommand           ::= ('EXIT' | 'QUIT' | 'BYE') ';'
