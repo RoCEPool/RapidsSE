@@ -39,7 +39,6 @@
 #include "Index.hpp"
 #include "CrwBuffer.hpp"
 #include "StreamDefRht.hpp"
-#include "StreamSet.hpp"
 #include "Marker.hpp"
 
 #include "eBO.h"
@@ -1264,7 +1263,6 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_ROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)RowBuffer::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
   gxaSizeHeap[CN_STREAMDEFRHT].m_fpPostRecvFn = (fpPOSTFN*)StreamDefRht::vPostRecv;
-  gxaSizeHeap[CN_STREAMSET].m_fpPostRecvFn = (fpPOSTFN*)StreamSet::vPostRecv;
   gxaSizeHeap[CN_TABLE].m_fpPostRecvFn     = (fpPOSTFN*)Table::vPostRecv;
 }
 

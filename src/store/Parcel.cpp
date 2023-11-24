@@ -387,7 +387,6 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
     case CN_PROFILE:      m_eSendCast = XK_ROBINDIST; break;
     case CN_STREAMDEF:    m_eSendCast = XK_BROADCAST; break;
     case CN_STREAMDEFRHT: m_eSendCast = XK_BROADCAST; break;
-    case CN_STREAMSET:    m_eSendCast = XK_BROADCAST; break;
       
     default:
       RASSERT(pOperand->bIsBuffer());
@@ -405,7 +404,6 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
       case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
       case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;
       case CN_STREAMDEFRHT: m_eSendCast = XK_FANCAST;    break;
-      case CN_STREAMSET:    m_eSendCast = XK_FANCAST;    break;
         
       default:
         RASSERT(pOperand->bIsBuffer());

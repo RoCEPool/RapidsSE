@@ -45,7 +45,6 @@
 
 #include "Pot.hpp"
 #include "InfoSet.hpp"
-#include "StreamSet.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -3901,12 +3900,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       delete pStreamDefRht;
       break;
     }
-      
-    case CN_STREAMSET: {
-      StreamSet* pStreamSet = _pStreamSet(pOperand);
-      delete pStreamSet;
-      break;
-    }
 
     case CN_METAGET: {
       MetaGet* pMetaGet = _pMetaGet(pOperand);
@@ -4568,7 +4561,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     //case CN_SRTBUFFER:    eOperand = EV_D_SRTBUFFER;      break;
     case CN_STREAMDEF:    eOperand = EV_D_STREAMDEF;      break;
     case CN_STREAMDEFRHT: eOperand = EV_D_STREAMDEFRHT;   break;
-    case CN_STREAMSET:    eOperand = EV_D_STREAMSET;      break;
     case CN_METAGET:      eOperand = EV_D_METAGET;        break;
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
     case CN_TABLE:        eOperand = EV_D_TABLE;          break;

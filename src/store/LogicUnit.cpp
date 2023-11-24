@@ -17,7 +17,6 @@
 #include "Crw.hpp"
 
 #include "IndexDef.hpp"
-#include "StreamSet.hpp"
 #include "RowInflator.hpp"
 
 #include "EnumGroups.h"

@@ -5,7 +5,6 @@
 #include "BASE.h"
 
 #include "TagConstants.h"
-#include "StreamSet.hpp"
 #include "InfoSet.hpp"
 
 extern SizeHeap     gxaSizeHeap[];

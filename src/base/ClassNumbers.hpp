@@ -378,7 +378,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMDEFRHT,
   /* */ CN_STREAMMETRICS,
-  /* */ CN_STREAMSET,
   /* */ CN_STRING_D,
   /* */ CN_STRING_T,
   /* */ CN_STRLIB,

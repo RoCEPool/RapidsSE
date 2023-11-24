@@ -10,8 +10,6 @@
 
 #include "InfoSet.hpp"
 
-#include "StreamSet.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "Crw.hpp"
@@ -551,17 +549,6 @@ bool Output::bProcessOperand(Operand* pOperand)
           vTrace("\n%s\n"_Stz, sMetadata.szStz());
         }
       }
-      break;
-    }
-
-    // -- -- -- -- -- --
-    case CN_STREAMSET: {
-      StreamSet* pStreamSet = _pStreamSet(pOperand);
-      ASSERT( ! pStreamSet->szBufferNm()->bSame(C_NO_NAME) );
-      m_ixRowsProcessed += pStreamSet->nRows();
-      vTrace("\n"_Stz);
-      pStreamSet->vPrintRows(m_pStreamDef_result);
-      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       

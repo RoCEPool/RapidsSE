@@ -9,9 +9,6 @@
 #include "Steps.hpp"
 
 #include "RowBuffer.hpp"
-
-#include "StreamSet.hpp"
-
 #include "LglPtnMap.hpp"
 
 #include "SkipRoots.hpp"

@@ -56,7 +56,6 @@
 
 #include "InfoSet.hpp"
 #include "NamedBuffer.hpp"
-#include "StreamSet.hpp"
 #include "RowCoder.hpp"
 
 #include "HeadLine.hpp"
@@ -735,7 +734,6 @@ SizeHeap gxaSizeHeap[]
   { CN_STREAMDEF,                sizeof(StreamDef),          HT_T_LARGE   ,FILL },
   { CN_STREAMDEFRHT,             sizeof(StreamDefRht),       HT_T_LARGE   ,FILL },
   { CN_STREAMMETRICS,            sizeof(StreamMetrics),      HT_T_TINY    ,FILL },
-  { CN_STREAMSET,                sizeof(StreamSet),          HT_T_LARGE   ,FILL },
   { CN_STRING_D,                 sizeof(String_d),           HT_INVALID   ,FILL },
   { CN_STRING_T,                 sizeof(s32),                HT_INVALID   ,FILL },
   { CN_STRLIB,                   0,/*yes*/                   HT_INVALID   ,FILL },

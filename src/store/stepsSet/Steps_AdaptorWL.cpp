@@ -9,7 +9,6 @@
 #include "Steps.hpp"
 
 #include "LogicUnit.hpp"
-#include "StreamSet.hpp"
 #include "Socket.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -44,7 +43,6 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].stmtParsingErr"_Stz,      &Step::vAdaptorWLStatementParsingError);
   vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);
   vAddStep("AdaptorWL[].stmtSubmittedErr"_Stz,    &Step::vAdaptorWLStatementSubmittedError);
-  vAddStep("AdaptorWL[].streamSet"_Stz,           &Step::vAdaptorWLStreamSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -457,23 +455,6 @@ void Step::vAdaptorWLStatementSubmitted(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
   pAdaptorWL->vStatementSubmitted();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* adaptorWL[].streamSet -- Received a streamset from the execution engine    */
-/*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLStreamSet(void)
-{
-  ENTRY();
-
-  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  StreamSet* pStreamSet = _pStreamSet(m_pDataStack->pPopPtr(__func__));
-  ASSERT(pStreamSet);
-  ASSERT(pStreamSet->eGetClassNo() == CN_STREAMSET);
-
-  pAdaptorWL->vRowData(pStreamSet);
 
   EXIT();
 }

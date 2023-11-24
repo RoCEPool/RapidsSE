@@ -330,28 +330,6 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_STREAMSET                                                 */
-/* Called when a StreamSet is received.                                       */
-/*----------------------------------------------------------------------------*/
-: adaptorWL_StreamSet \handler
-
-  "adaptorWL_StreamSet - EV_D_STREAMSET" .verbose
-
-  PipeIn[] AdaptorWL[].streamSet
-  Pipein[].delete
-
-  // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
-
-  true
-
-;
-
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_I_AFFECTEDROWS                                              */
 /* Called when an affectedRows infoset is received.                           */
 /*----------------------------------------------------------------------------*/
@@ -473,7 +451,6 @@
   find: adaptorWL_Warning       EV_I_WARNINGS       [op].handler!
   find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
   find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
-  find: adaptorWL_StreamSet     EV_D_STREAMSET      [op].handler!
   find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!
   find: adaptorWL_AffectedRows  EV_I_AFFECTEDROWS   [op].handler!
   find: adaptorWL_ChildExit     EV_X_CHILDEXIT      [op].handler!
