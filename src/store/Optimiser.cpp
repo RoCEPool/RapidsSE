@@ -406,7 +406,7 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
+bool Optimiser::bTransform(Error& rxError, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -421,17 +421,17 @@ bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bJoinOrder) {
-    RASSERT(pInfoSet);
-    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+    RASSERT(pRowBuffer);
+    Row *pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
                                     m_sJoinOrder.szStz(),
                                     C_VARGS_END);
     UNUSED(pRow);
 
   }
   else if (bJoinPermutations) {
-    RASSERT(pInfoSet);
+    RASSERT(pRowBuffer);
     for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++) {
-      Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+      Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
                                       m_sJoinPermutation[iIndex].szStz(),
                                       C_VARGS_END);
       UNUSED(pRow);
