@@ -22,8 +22,14 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "eBT.h"
+#include "MetricsHelper.hpp"
+#include "LockMetrics.hpp"
+#include "Op.hpp"
+#include "Job.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
+
+static const i8 C_CHUNK_BLOCK        = 2048;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -47,7 +53,7 @@ void Step::vAddSteps_RowBuffer(void)
 	vAddStep("RowBuffer[].addNodeStatus"_Stz,    &Step::vRowBufferAddNodeStatus);
 	vAddStep("RowBuffer[].addPingInfo"_Stz,      &Step::vRowBufferAddPingInfo);
 	vAddStep("RowBuffer[].addPwfInfo"_Stz,       &Step::vRowBufferAddPwfInfo);
-	vAddStep("RowBuffer[].addRowCount"_Stz,      &Step::vRowBufferAddRowCount);
+	vAddStep("RowBuffer[].addTotalCount"_Stz,    &Step::vRowBufferAddTotalCount);
 	vAddStep("RowBuffer[].addShowCluster"_Stz,   &Step::vRowBufferAddShowCluster);
 	vAddStep("RowBuffer[].addSizeIndex"_Stz,     &Step::vRowBufferAddSizeIndex);
 	vAddStep("RowBuffer[].addSizeTable"_Stz,     &Step::vRowBufferAddSizeTable);
@@ -76,6 +82,32 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].setDeciderCopies"_Stz, &Step::vRowBufferSetDeciderCopies);
   vAddStep("RowBuffer[].setLglPtn"_Stz,      &Step::vRowBufferSetLglPtn);
   vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
+
+	vAddStep("RowBuffer[].addCommandError"_Stz,  &Step::vRowBufferAddCommandError);
+	vAddStep("RowBuffer[].addExecError"_Stz,     &Step::vRowBufferAddExecError);
+	vAddStep("RowBuffer[].addLockStats"_Stz,     &Step::vRowBufferAddLockStats);
+	vAddStep("RowBuffer[].addNodeInfo"_Stz,      &Step::vRowBufferAddNodeInfo);
+	vAddStep("RowBuffer[].addProgressUnits"_Stz, &Step::vRowBufferAddProgressUnits);
+	vAddStep("RowBuffer[].addRowCount"_Stz,      &Step::vRowBufferAddRowCount);
+	vAddStep("RowBuffer[].addRowVargs"_Stz,      &Step::vRowBufferAddRowVargs);
+	vAddStep("RowBuffer[].addTotalUnits"_Stz,    &Step::vRowBufferAddTotalUnits);
+	vAddStep("RowBuffer[].addWarning"_Stz,       &Step::vRowBufferAddWarning);
+	vAddStep("RowBuffer[].chunkFile"_Stz,        &Step::vRowBufferChunkFile);
+	vAddStep("RowBuffer[].colVal@"_Stz,          &Step::vRowBufferColValFetch);
+	vAddStep("RowBuffer[].delete"_Stz,           &Step::vRowBufferDelete);
+	vAddStep("RowBuffer[].detectLineEnding"_Stz, &Step::vRowBufferDetectLineEnding);
+	vAddStep("RowBuffer[].firstRow"_Stz,         &Step::vRowBufferFirstRow);
+	vAddStep("RowBuffer[].get"_Stz,              &Step::vRowBufferGet);
+	vAddStep("RowBuffer[].infoRows"_Stz,         &Step::vRowBufferInfoRows);
+	vAddStep("RowBuffer[].isProgress"_Stz,       &Step::vRowBufferIsProgress);
+	vAddStep("RowBuffer[].isTotalUnits"_Stz,     &Step::vRowBufferIsTotalUnits);
+	vAddStep("RowBuffer[].isWarning"_Stz,        &Step::vRowBufferIsWarning);
+	vAddStep("RowBuffer[].name"_Stz,             &Step::vRowBufferName);
+	vAddStep("RowBuffer[].nextRow"_Stz,          &Step::vRowBufferNextRow);
+	vAddStep("RowBuffer[].opInfoset@"_Stz,       &Step::vRowBufferOpInfosetFetch);
+	vAddStep("RowBuffer[].opInfoset!"_Stz,       &Step::vRowBufferOpInfosetStore);
+	vAddStep("RowBuffer[].rdCsvChunk"_Stz,       &Step::vRowBufferRdCsvChunk);
+	vAddStep("RowBuffer[].writeCsv"_Stz,         &Step::vRowBufferWriteCsv);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,10 +222,10 @@ void Step::vRowBufferAddBpaObjects(void)
 {
 	ENTRY();
 
-	// Get the warning infoset and definition
+	// Get the warning RowBuffer and definition
 	InfoSet* pWarnInfoSet = * m_pLogicUnit->m_xpInfoSet;
 	ASSERT(pWarnInfoSet);
-	ASSERT(pWarnInfoSet->eOpInfoSet() == OI_WARNINGS);
+	ASSERT(pWarnInfoSet->eBufferType() == BT_WARNINGS);
 
 	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpInfoSetTable);
 	ASSERT(pWarnTable);
@@ -221,10 +253,10 @@ void Step::vRowBufferAddBpaRegions(void)
 {
 	ENTRY();
 
-	// Get the warning infoset and definition
+	// Get the warning RowBuffer and definition
 	InfoSet* pWarnInfoSet = * m_pLogicUnit->m_xpInfoSet;
 	ASSERT(pWarnInfoSet);
-	ASSERT(pWarnInfoSet->eOpInfoSet() == OI_WARNINGS);
+	ASSERT(pWarnInfoSet->eBufferType() == BT_WARNINGS);
 
 	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpInfoSetTable);
 	ASSERT(pWarnTable);
@@ -279,7 +311,7 @@ void Step::vRowBufferAddColumnDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addGridSanity -- add a row to the infoset with the gridSanity  */
+/* RowBuffer[].addGridSanity -- add a row to the RowBuffer with the gridSanity  */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddGridSanity(void)
 {
@@ -330,7 +362,7 @@ void Step::vRowBufferAddGridSanity(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addListContents -- add a row to infoset with the list contents */
+/* RowBuffer[].addListContents -- add a row to RowBuffer with the list contents */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddListContents(void)
 {
@@ -360,7 +392,7 @@ void Step::vRowBufferAddListContents(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addListFolder -- add a row to infoset with the list folder     */
+/* RowBuffer[].addListFolder -- add a row to RowBuffer with the list folder     */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddListFolder(void)
 {
@@ -396,7 +428,7 @@ void Step::vRowBufferAddListFolder(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addListIndex -- add a row to infoset with the list index       */
+/* RowBuffer[].addListIndex -- add a row to RowBuffer with the list index       */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddListIndex(void)
 {
@@ -428,7 +460,7 @@ void Step::vRowBufferAddListIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addListPartitions -- add a row to infoset with the partitions  */
+/* RowBuffer[].addListPartitions -- add a row to RowBuffer with the partitions  */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddListPartitions(void)
 {
@@ -649,7 +681,7 @@ void Step::vRowBufferAddNodeStatus(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addPingInfo -- add a row to infoset with the ping response     */
+/* RowBuffer[].addPingInfo -- add a row to RowBuffer with the ping response     */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddPingInfo(void)
 {
@@ -665,30 +697,6 @@ void Step::vRowBufferAddPingInfo(void)
 	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
 																		C_VARGS_BEGIN,
 																		"pong"_Stz,
-																		C_VARGS_END);
-	//ASSERT(pRow);
-	//pRow->vDump(pStreamDef);
-
-	m_pDataStack->vPushInt(pRow ? true : false);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].addProgressUnits -- add a row to rowBuffer with progressUnits  */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferAddProgressUnits(void)
-{
-	ENTRY();
-
-	i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
-
-	StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-
-	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
-																		C_VARGS_BEGIN,
-																		iProgressUnits,
 																		C_VARGS_END);
 	//ASSERT(pRow);
 	//pRow->vDump(pStreamDef);
@@ -729,9 +737,9 @@ void Step::vRowBufferAddPwfInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addShowCluster -- add a row to rowBuffer with the cluster info */
+/* RowBuffer[].addTotalCount -- add a row to rowBuffer with the totalCount    */
 /*----------------------------------------------------------------------------*/
-void Step::vRowBufferAddRowCount(void)
+void Step::vRowBufferAddTotalCount(void)
 {
 	ENTRY();
 
@@ -741,13 +749,13 @@ void Step::vRowBufferAddRowCount(void)
 	// get the streamDef from the table
 	StreamDef* pStreamDef = pTable->pStreamDef();
 
-	i8 i_Count = m_pDataStack->iPopInt(__func__);
+	i8 i_TotalCount = m_pDataStack->iPopInt(__func__);
 
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
 																		C_VARGS_BEGIN,
-																		i_Count,
+																		i_TotalCount,
 																		C_VARGS_END);
 	//ASSERT(pRow);
 	//pRow->vDump(pStreamDef);
@@ -1307,6 +1315,795 @@ void Step::vRowBufferToCsv(void)
   pRowBuffer->vToCsv(pTub);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addCommandError -- add a row to RowBuffer with the command error */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddCommandError(void)
+{
+	ENTRY();
+
+	s4K sErrorText;
+
+	// get the table
+	Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pStreamTable->pStreamDef();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pRowBuffer->vBufferType(BT_COMPILEERRORS);
+
+	// get the error information
+	eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
+	i8 iLineNo = m_pDataStack->iPopInt(__func__);
+	i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+	m_pDataStack->vPopStr(sErrorText, __func__);
+
+	Grid* pGrid = AM::pGrid();
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																	C_VARGS_BEGIN,
+																	pGrid->pThisNode()->szNodeNm(),
+																	eErrorCode,
+																	iLineNo,
+																	iColumnNo,
+																	sErrorText.azChar(),
+																	C_VARGS_END);
+
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addExecError -- add a row to RowBuffer with the exec error         */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddExecError(void)
+{
+	ENTRY();
+
+	s4K sErrorText;
+
+	// get the table
+	Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pStreamTable->pStreamDef();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pRowBuffer->vBufferType(BT_EXECERRORS);
+
+	// get the error information
+	eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
+	m_pDataStack->vPopStr(sErrorText, __func__);
+
+	Grid* pGrid = AM::pGrid();
+
+	//pStreamDef->vListContents(1);
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																	C_VARGS_BEGIN,
+																	pGrid->pThisNode()->szNodeNm(),
+																	(i8)eErrorCode,
+																	sErrorText.azChar(),
+																	C_VARGS_END);
+
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addLockStats -- add a row to RowBuffer with the lockStats      */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddLockStats(void)
+{
+	ENTRY();
+
+	// get the table
+	Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pStreamTable->pStreamDef();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pRowBuffer->vBufferType(BT_LOCKSTATS);
+
+	Row* pRow = LockMetrics::pSample(pStreamDef, pRowBuffer);
+
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addNodeInfo -- add a row to the RowBuffer with the nodeInfo        */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddNodeInfo(void)
+{
+	ENTRY();
+
+	// get the table
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pTable->pStreamDef();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pRowBuffer->vBufferType(BT_NODEINFO);
+
+	Grid* pGrid = AM::pGrid();
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																	C_VARGS_BEGIN,
+																	pGrid->pThisNode()->szNodeNm(),
+																	AM::iRegionSize(),
+																	AM::PTNMAP::nPtnsPerNode(),
+																	(i8)AM::SYSTEM::bStarted(),
+																	C_VARGS_END);
+	//ASSERT(pRow);
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addProgressUnits -- add a row to RowBuffer with the progressUnits  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddProgressUnits(void)
+{
+	ENTRY();
+
+	// get the table
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get no of progress units
+	i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
+
+	// get the streamDef
+	StreamDef* pStreamDef = pTable->pStreamDef();
+
+	// get the infoSet
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pRowBuffer->vBufferType(BT_PROGRESSUNITS);
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																	C_VARGS_BEGIN,
+																	iProgressUnits,
+																	C_VARGS_END);
+	//ASSERT(pRow);
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addRowCount -- add a row to RowBuffer with the row counts for ptn  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddRowCount(void)
+{
+	ENTRY();
+
+	// get the RowBuffer table
+	Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the table
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
+
+	LglPtn tLglPtn = m_pOp->tLglPtn();
+	i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pRowBuffer->vBufferType(BT_COUNT);
+
+	// RAY: UNCOMMENT next 2 lines to see relative sizes when running "count tableName;"
+	//i8 iRelativeSize = pTable->iRelativeSize();
+	//vTrace("Relative size of table %s is %lld\n"_Stz, pTable->szTableNm(), iRelativeSize);
+
+	i8 nBuffers = 0;
+	i8 nRows = 0;
+	i8 jSumRowBytes = 0;
+
+	pTable->vAnalyze(i_TablePtn, nBuffers, nRows, jSumRowBytes);
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																	C_VARGS_BEGIN,
+																	nRows,
+																	C_VARGS_END);
+	//ASSERT(pRow);
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addRowVargs -- add a row by variable arguments                   */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddRowVargs(void)
+{
+	ENTRY();
+
+	Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+	StreamDef* pStreamDef = pTable->pStreamDef();
+	i8 nCols = pStreamDef->nColumns();
+	i8 nArgs = m_pDataStack->iPopInt(__func__);
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+
+	Row* aRow = pRowBuffer->RowBuffer::pAllotRow();
+	Stz* szTail;
+	i8   nSize;
+
+	i8 iInt;
+	s256 sStr;
+	for (i8 i_Arg = 0; i_Arg < nArgs && i_Arg < nCols; i_Arg++) {
+
+		Column* pColumn = pStreamDef->pGetColumn(i_Arg);
+
+		eDM eDatum = pColumn->eDatum();
+
+		switch (eDatum) {
+
+			case DM_INT:
+				iInt = m_pDataStack->iPopInt(__func__);
+				aRow->vColVal_int(i_Arg,iInt);
+				break;
+
+			case DM_VCH:
+
+				// STRING_DEPOSIT
+				m_pDataStack->vPopStr(sStr,__func__);
+				nSize = sStr.nSize();
+				szTail = (Stz*)pRowBuffer->aAllotTail(nSize);
+				StrLib::vCopy(szTail->azChar(), nSize, sStr.azChar());
+				//aRow->vColVal_ofs(i_Arg,iOfs);
+				aRow->vColVal_ofs(i_Arg,szTail);
+				// END STRING_DEPOSIT
+
+				break;
+
+			default:
+				RASSERT(0);
+		}
+
+	}
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addTotalUnits -- add a row to RowBuffer with the totalUnits        */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddTotalUnits(void)
+{
+	ENTRY();
+
+	// get the table
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the total units
+	i8 iTotalUnits = m_pDataStack->iPopInt(__func__);
+
+	// get the file name
+	s256 sFileName;
+	m_pDataStack->vPopStr(sFileName, __func__);
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pTable->pStreamDef();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pRowBuffer->vBufferType(BT_TOTALUNITS);
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																	C_VARGS_BEGIN,
+																	sFileName.azChar(),
+																	iTotalUnits,
+																	C_VARGS_END);
+	//ASSERT(pRow);
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].addWarning -- add a row to RowBuffer with a warning                */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddWarning(void)
+{
+	ENTRY();
+
+	s4K sReason;
+
+	// get the table
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// Get the warning reason
+	m_pDataStack->vPopStr(sReason, __func__);
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pTable->pStreamDef();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pRowBuffer->vBufferType(BT_WARNINGS);
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																	C_VARGS_BEGIN,
+																	sReason.szStz(),
+																	nullptr,
+																	nullptr,
+																	C_VARGS_END);
+
+	m_pDataStack->vPushBol(pRow != nullptr);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].chunkFile -- RowBuffer chunk file                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferChunkFile(void)
+{
+	ENTRY();
+
+	// get the seekOffsets
+	RowBuffer* pSeekOffsets = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	pSeekOffsets->vBufferType(BT_SEEKOFFSETS);
+	i8 nRowsInSeekOffsets = 0;
+	Row* pSeekOffsetRow = nullptr;
+
+	// get the file we are chunking
+	File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
+
+	// allocate a work area for reading in last block of chunk
+	char* aLastBlock = (char*)MemLib::aMallocBlock(C_CHUNK_BLOCK);
+
+	i8 nSumBytes = 0;
+	i8 nChunkBytes = C_UNKNOWN;
+	i8 i_OfsOfLastBlockInChunk = C_UNKNOWN;
+
+	// get the file offset of the EOF
+	i8 i_EofOfs = m_pLogicUnit->m_iCounter1;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// process chunks till eof or till we get C_MAX_SEEKOFFSETS
+
+	for (;;) {
+
+		// get the file offset of next chunk
+		i8 i_ChunkOfs = m_pLogicUnit->m_iCounter0;
+
+		RASSERT (i_ChunkOfs < i_EofOfs);
+
+		// allot row for seek offset info
+		pSeekOffsetRow = pSeekOffsets->RowBuffer::pAllotRow();
+
+		// test for final chunk in file
+		if (i_ChunkOfs + C_CHUNK_SIZE >= i_EofOfs) {
+			// + final chunk in file
+
+			// compute the total chunk bytes
+			nChunkBytes = i_EofOfs - i_ChunkOfs;
+
+			// end of file
+			m_pLogicUnit->m_iCounter0 = i_EofOfs;
+		}
+		else {
+			// -not final chunk in file
+
+			// compute offset of last block in current chunk
+			i_OfsOfLastBlockInChunk = i_ChunkOfs + C_CHUNK_SIZE - C_CHUNK_BLOCK;
+
+			// read last block of current chunk
+			pFile->vSeek(i_OfsOfLastBlockInChunk);
+			i8 nBytesRead = pFile->nReadBytes(aLastBlock, C_CHUNK_BLOCK);
+
+			// compute address of last data byte of last block of current chunk
+			char *aLastDataByte = &aLastBlock[nBytesRead - 1];
+
+			// find the last end of line in last block of current chunk
+			char *aLastEol = aLastDataByte;
+			bool bFoundEol = StrLib::bBackward(&aLastEol, aLastBlock, '\n');
+			if (!bFoundEol)
+				bFoundEol = StrLib::bBackward(&aLastEol, aLastBlock, '\r');
+			RASSERT(bFoundEol);
+
+			// compute the number of bytes which belong to the last block in chunk
+			i8 nLastBlockBytes = nDifference(aLastEol, aLastBlock) + 1;
+
+			// compute the total chunk bytes
+			nChunkBytes = C_WSP_DATACHUNK - C_CHUNK_BLOCK + nLastBlockBytes;
+
+			// compute end location of chunk
+			i8 i_EndChunkLoc = i_ChunkOfs + nChunkBytes - 1;
+
+			// advance to start of next chunk
+			m_pLogicUnit->m_iCounter0 = i_EndChunkLoc + 1;
+		}
+
+		if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+			vTrace("<OP_Chunk>: i_ChunkOfs %lld nChunkBytes %lld\n"_Stz,
+						 i_ChunkOfs,nChunkBytes);
+
+		pSeekOffsetRow->vColVal_int(0,i_ChunkOfs);
+		pSeekOffsetRow->vColVal_int(1,nChunkBytes);
+
+		nSumBytes += nChunkBytes;
+
+		if (++nRowsInSeekOffsets >= C_MAX_SEEKOFFSETS)
+			break;
+		if (m_pLogicUnit->m_iCounter0 >= i_EofOfs)
+			break;
+	}
+
+
+	// free the read block
+	MemLib::vFreeBlock(aLastBlock, C_CHUNK_BLOCK);
+
+	if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+		vTrace("<OP_Chunk>: nSumBytes %lld\n"_Stz,nSumBytes);
+
+	m_pDataStack->vPushInt(nSumBytes);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].colVal@ -- column value fetch                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferColValFetch(void)
+{
+	ENTRY();
+
+	Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+	StreamDef* pStreamDef = pTable->pStreamDef();
+	i8 nCols = pStreamDef->nColumns();
+	UNUSED(nCols);
+
+	i8 i_Col = m_pDataStack->iPopInt(__func__);
+
+	Column* pColumn = pStreamDef->pGetColumn(i_Col);
+	eDM eDatum = pColumn->eDatum();
+
+	Row* aRow = *m_pLogicUnit->m_xpInfoSetRow;
+
+	i8 iInt;
+	s256 sStr;
+//  Dtm wDtm;
+
+	switch (eDatum) {
+
+		case DM_INT:
+			iInt = aRow->iColVal_int(i_Col);
+			m_pDataStack->vPushInt(iInt);
+			break;
+
+		case DM_VCH:
+//      wDtm = aRow->wColDtm(i_Col);
+			sStr = aRow->szColVal_ofs(i_Col);
+			m_pDataStack->vPushStz(sStr);
+			break;
+
+		default:
+			RASSERT(0);
+	}
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].detectLineEnding -- push line ending of the file onto data stack */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferDetectLineEnding(void)
+{
+	ENTRY();
+
+	Stz* szLineEnding = nullptr;
+
+	File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
+
+	i8 iBytesToRead = C_CHUNK_BLOCK;
+	i8 iBytesRead;
+
+	bool bGotCr = false;  // '\r'
+
+	// allocate a work area for reading in last block of chunk
+	char* aBlock = (char*)MemLib::aMallocBlock(C_CHUNK_BLOCK);
+
+	pFile->vSeek(0);
+	iBytesRead = pFile->nReadBytes(aBlock, iBytesToRead);
+	char* aEnd = &aBlock[iBytesRead];
+
+	while (iBytesRead > 0) {
+		for (char* aCrs = aBlock ; aCrs != aEnd; aCrs++) {
+
+			if (*aCrs == '\r') {
+				if (aCrs + 1 != aEnd) {
+					// There's at least one more character in the block
+					szLineEnding = (*(aCrs + 1) == '\n') ? "\r\n"_Stz : "\r"_Stz;
+					break;
+
+				} else {
+					// This is the last character in the block. We need to check the next block
+					bGotCr = true;
+				}
+
+			} else if (*aCrs == '\n') {
+				szLineEnding = bGotCr ? "\r\n"_Stz : "\n"_Stz;
+				break;
+
+			} else if (bGotCr) {
+				szLineEnding = "\r"_Stz;
+				break;
+			}
+		}
+
+		if (szLineEnding) {
+			break;
+		}
+
+		iBytesRead = pFile->nReadBytes(aBlock, iBytesToRead);
+	}
+
+	if (szLineEnding == nullptr) {
+		szLineEnding = "\n"_Stz;
+	}
+
+	// free the read block
+	MemLib::vFreeBlock(aBlock, C_CHUNK_BLOCK);
+
+	m_pDataStack->vPushStz(szLineEnding);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].firstRow -- get first row from the RowBuffer                       */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferFirstRow(void)
+{
+	ENTRY();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+
+	m_pDataStack->vPushPtr(pRowBuffer->pFirstRow());
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].infoRows -- get now of info rows in RowBuffer                   */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferInfoRows(void)
+{
+	ENTRY();
+
+	ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+
+	i8 nRows = pRowBuffer->nRows();
+	m_pDataStack->vPushInt(nRows);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].isProgress --is infor set a progress RowBuffer ?                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferIsProgress(void)
+{
+	ENTRY();
+
+	ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+
+	bool bIsProgress = pRowBuffer->eBufferType() == BT_PROGRESSUNITS ||
+										 pRowBuffer->eBufferType() == BT_TOTALUNITS;
+	m_pDataStack->vPushInt(bIsProgress);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].isTotalUnits --is infor set a totalUnits RowBuffer ?              */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferIsTotalUnits(void)
+{
+	ENTRY();
+
+	ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+
+	m_pDataStack->vPushInt(pRowBuffer->eBufferType() == BT_TOTALUNITS ? true : false);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].isWarning --is RowBuffer a warning RowBuffer ?                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferIsWarning(void)
+{
+	ENTRY();
+
+	ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+
+	m_pDataStack->vPushInt(pRowBuffer->eBufferType() == BT_WARNINGS ? true : false);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].name -- get RowBuffer name                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferName(void)
+{
+	ENTRY();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+
+	Stz* szBufferNm = pRowBuffer->szBufferNm();
+
+	m_pDataStack->vPushStz(szBufferNm);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].nextRow -- get next row from the RowBuffer                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferNextRow(void)
+{
+	ENTRY();
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	Row* pRow = _pRow(*m_pLogicUnit->m_xpInfoSetRow);
+
+	ASSERT(pRow);
+
+	m_pDataStack->vPushPtr(pRowBuffer->pNextRow(pRow));
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].opInfoset@ -- fetch m_eOpInfoset                               */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferOpInfosetFetch(void)
+{
+	ENTRY();
+
+	ASSERT(*m_pLogicUnit->m_xpInfoSet);
+
+	eBT eBufferType = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet)->eBufferType();
+
+	m_pDataStack->vPushInt(eBufferType);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].opInfoset! -- store m_eOpInfoset                               */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferOpInfosetStore(void)
+{
+	ENTRY();
+
+	ASSERT(*m_pLogicUnit->m_xpInfoSet);
+
+	eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
+
+	_pRowBuffer(*m_pLogicUnit->m_xpInfoSet)->vBufferType(eBufferType);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].rdCsvChunk -- reach a chunk from file given the infoSet          */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferRdCsvChunk(void)
+{
+	ENTRY();
+
+	ASSERT(*m_pLogicUnit->m_xpInfoSet);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// get file and info arguments
+
+	File* pCsvFile = _pFile(*m_pLogicUnit->m_xpFile0);
+	Stz* szFilePath = pCsvFile->sFilePath();
+
+	Row* pInfoRow = _pRow(m_pDataStack->pPopPtr(__func__));
+	i8 iOffset = pInfoRow->iColVal_int(0);
+	i8 nBytes = pInfoRow->iColVal_int(1);
+
+	//vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// create new csvBuffer and set csvMeta
+
+#ifdef WITH_OOM_FAULTINJECTION
+	PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)6);
+#endif
+
+	CsvBuffer* pCsvBuffer = new CsvBuffer;
+
+	CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
+
+	pCsvMeta->vOriginNm(AM::NODE::szNodeNm());
+	pCsvMeta->vFilePath(szFilePath);
+	pCsvMeta->vOffset(iOffset);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// read chunk into buffer
+
+	char* azInto = (char*)pCsvBuffer->ayDataArea();
+
+	pCsvFile->vSeek(iOffset);
+	pCsvBuffer->vTake(nBytes);
+	i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+
+//  if (nBytesRead != nBytes) {
+//    nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+//    ASSERT(nBytesRead == nBytes);
+//  }
+
+	ASSERT(nBytesRead == nBytes);
+	UNUSED(nBytesRead);
+
+	azInto[nBytes] = '\0';
+
+	//vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// return the CsvBuffer
+
+	m_pDataStack->vPushInt(nBytes);
+	m_pDataStack->vPushInt(iOffset);
+
+	m_pDataStack->vPushPtr(pCsvBuffer);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].writeCsv -- write RowBuffer to file as csv                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferWriteCsv(void)
+{
+	ENTRY();
+
+	ASSERT(*m_pLogicUnit->m_xpInfoSet);
+
+	Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+
+	StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
+
+	File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
+
+	MetricsHelper::vWriteCsv(pRowBuffer,pStreamDef,pFile);
+
+	EXIT();
 }
 
 /*============================================================================*/

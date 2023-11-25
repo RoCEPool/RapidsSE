@@ -58,7 +58,7 @@
   streamSetTable[] RowBuffer[].new
 
   // insert row count into rowBuffer
-  Counter0[] streamSetTable[] RowBuffer[].addRowCount assert
+  Counter0[] streamSetTable[] RowBuffer[].addTotalCount assert
 
   RowBuffer[].Pipeout
 
