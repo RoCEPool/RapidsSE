@@ -605,7 +605,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
   /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
-  /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
   /*  0 */ vAddConstant("OI_WARNINGS"_Stz,      OI_WARNINGS);
@@ -751,7 +750,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);
   /*  0 */ vAddConstant("EV_I_EXECERRORS"_Stz,      EV_I_EXECERRORS);
   /*  0 */ vAddConstant("EV_I_FORKCOMMAND"_Stz,     EV_I_FORKCOMMAND);
-  /*  0 */ vAddConstant("EV_I_LOADRESULT"_Stz,      EV_I_LOADRESULT);
   /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
   /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
   /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);

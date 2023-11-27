@@ -15,7 +15,6 @@ Stz* aOI[OI_ENUMS]
   /*    */ "OI_COUNT"_Stz,
   /*    */ "OI_EXECERRORS"_Stz,
   /*    */ "OI_FORKCOMMAND"_Stz,
-  /*    */ "OI_LOADRESULT"_Stz,
   /*    */ "OI_LOCKSTATS"_Stz,
   /*    */ "OI_PAGEINREQUEST"_Stz,
   /*    */ "OI_PATH"_Stz,

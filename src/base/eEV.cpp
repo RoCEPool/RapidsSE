@@ -39,7 +39,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_I_COUNT"_Stz,
   /*    */ "EV_I_EXECERRORS"_Stz,
   /*    */ "EV_I_FORKCOMMAND"_Stz,
-  /*    */ "EV_I_LOADRESULT"_Stz,
   /*    */ "EV_I_LOCKSTATS"_Stz,
   /*    */ "EV_I_PAGEINREQUEST"_Stz,
   /*    */ "EV_I_PATH"_Stz,
