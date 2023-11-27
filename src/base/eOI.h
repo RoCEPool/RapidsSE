@@ -16,11 +16,9 @@ enum eOI // operator Infoset
   /*    */ OI_FORKCOMMAND,
   /*    */ OI_LOADRESULT,
   /*    */ OI_LOCKSTATS,
-  /*    */ OI_NODEINFO,
   /*    */ OI_PAGEINREQUEST,
   /*    */ OI_PATH,
   /*    */ OI_PROMPTOUT,
-  /*    */ //OI_SEEKOFFSETS,
   /*    */ OI_WARNINGS,
 
   /*    */ OI_ENUMS,

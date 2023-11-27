@@ -758,7 +758,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetAddCommandError(void);
   void vInfoSetAddExecError(void);
   void vInfoSetAddLockStats(void);
-  void vInfoSetAddNodeInfo(void);
   void vInfoSetAddRowCount(void);
   void vInfoSetAddRowVargs(void);
   void vInfoSetAddWarning(void);

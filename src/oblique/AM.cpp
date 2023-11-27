@@ -4511,11 +4511,9 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OI_FORKCOMMAND:    eOperand = EV_I_FORKCOMMAND;    break;
         case OI_LOADRESULT:     eOperand = EV_I_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = EV_I_LOCKSTATS;      break;
-        case OI_NODEINFO:       eOperand = EV_I_NODEINFO;       break;
         case OI_PAGEINREQUEST:  eOperand = EV_I_PAGEINREQUEST;  break;
         case OI_PATH:           eOperand = EV_I_PATH;           break;
         case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;
-        //case OI_SEEKOFFSETS:    eOperand = EV_I_SEEKOFFSETS;    break;
         case OI_WARNINGS:       eOperand = EV_I_WARNINGS;       break;
         default:
           RASSERT(0);

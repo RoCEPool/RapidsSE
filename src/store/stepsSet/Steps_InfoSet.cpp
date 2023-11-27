@@ -42,7 +42,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addCommandError"_Stz,  &Step::vInfoSetAddCommandError);
   vAddStep("InfoSet[].addExecError"_Stz,     &Step::vInfoSetAddExecError);
   vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
-  vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
+  //vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   //vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
   vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
@@ -174,38 +174,6 @@ void Step::vInfoSetAddLockStats(void)
   
   m_pDataStack->vPushInt(pRow ? true : false);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addNodeInfo -- add a row to the infoset with the nodeInfo        */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddNodeInfo(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_NODEINFO);
-  
-  Grid* pGrid = AM::pGrid();
-  
-  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    AM::iRegionSize(),
-                                    AM::PTNMAP::nPtnsPerNode(),
-                                    (i8)AM::SYSTEM::bStarted(),
-                                    C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
   EXIT();
 }
 

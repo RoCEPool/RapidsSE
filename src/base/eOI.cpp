@@ -17,11 +17,9 @@ Stz* aOI[OI_ENUMS]
   /*    */ "OI_FORKCOMMAND"_Stz,
   /*    */ "OI_LOADRESULT"_Stz,
   /*    */ "OI_LOCKSTATS"_Stz,
-  /*    */ "OI_NODEINFO"_Stz,
   /*    */ "OI_PAGEINREQUEST"_Stz,
   /*    */ "OI_PATH"_Stz,
   /*    */ "OI_PROMPTOUT"_Stz,
-  /*    */ //"OI_SEEKOFFSETS"_Stz,
   /*    */ "OI_WARNINGS"_Stz,
 
 //  /*    */ "OI_ENUMS"_Stz,

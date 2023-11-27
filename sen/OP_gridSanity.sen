@@ -5,17 +5,20 @@
 " OP_sanity.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_I_NODEINFO...                                                          */
+/* on EV_D_ROWBUFFER...                                                       */
 /*----------------------------------------------------------------------------*/
-: gridSanity_NodeInfo \handler
+: gridSanity_RowBuffer \handler
 
-  //"Operand:- EV_I_NODEINFO" .verbose
+  //"Operand:- EV_D_ROWBUFFER" .verbose
 
-  PipeIn[] to InfoSet[]
+  PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
+  // RowBuffer should be a BT_NODEINFO buffer
+  RowBuffer[].getBufferType BT_NODEINFO == assert
+
   // get the first row of the infoSet (nodeInfo)
-  InfoSet[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to infoSetRow[]
 
   // create an infoSet operand
   StreamSetTable[] RowBuffer[].new
@@ -64,8 +67,8 @@
 
   op__topology
 
-  find: gridSanity_StartMarker EV_M_START [op].handler!
-  find: gridSanity_NodeInfo    EV_I_NODEINFO    [op].handler!
+  find: gridSanity_StartMarker EV_M_START        [op].handler!
+  find: gridSanity_RowBuffer   EV_D_ROWBUFFER    [op].handler!
 
   op__loop
 

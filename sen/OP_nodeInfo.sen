@@ -12,14 +12,14 @@
   // find the __ table
   <streamDef> op__tableDef_infoSet assert
 
-  // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  // create an rowBuffer operand
+  infoSetTable[] RowBuffer[].new
 
-  // add nodeInfo to the infoSet
-  infoSetTable[] InfoSet[].addnodeInfo assert
+  // add nodeInfo to the R\rowBuffer
+  infoSetTable[] RowBuffer[].addnodeInfo assert
 
-  // pipeout the infoset
-  InfoSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;

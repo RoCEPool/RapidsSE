@@ -583,7 +583,7 @@ void Step::vRowBufferAddMemoryLeaks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addNodeInfo -- add a row to the streamSet with this node info  */
+/* RowBuffer[].AddNodeHeartbeat -- add a row to the streamSet with node hb    */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddNodeHeartbeat(void)
 {
@@ -1425,7 +1425,7 @@ void Step::vRowBufferAddLockStats(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addNodeInfo -- add a row to the RowBuffer with the nodeInfo        */
+/* RowBuffer[].addNodeInfo -- add a row to the RowBuffer with the nodeInfo    */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddNodeInfo(void)
 {
@@ -1437,7 +1437,7 @@ void Step::vRowBufferAddNodeInfo(void)
 	// get the streamDef from the table
 	StreamDef* pStreamDef = pTable->pStreamDef();
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 	pRowBuffer->vBufferType(BT_NODEINFO);
 
 	Grid* pGrid = AM::pGrid();
