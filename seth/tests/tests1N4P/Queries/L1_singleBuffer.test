@@ -173,8 +173,5 @@ CLEANUP {
 
 //  indexEntries 0;
 //  mute
-
-  bye;
-  mute
 }
 

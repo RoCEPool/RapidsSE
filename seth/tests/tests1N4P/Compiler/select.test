@@ -170,8 +170,5 @@ rows:
 CLEANUP {
   drop table ${testName2}_selectsyntax1;
   mute
-
-  bye;
-  mute
 }
 

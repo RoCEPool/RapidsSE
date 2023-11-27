@@ -353,7 +353,4 @@ CLEANUP {
 
   drop table ${testName2}_lineitem;
   mute
-
-  bye;
-  mute
 }

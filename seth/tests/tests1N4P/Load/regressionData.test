@@ -435,9 +435,6 @@ CLEANUP {
 
   drop table ${testName2}_LIMITROW;
   mute
-
-  bye;
-  mute
 }
 
 

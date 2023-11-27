@@ -88,9 +88,6 @@ CLEANUP {
   // drop the table
   //drop table ${testName2}_uniVch;
   //mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

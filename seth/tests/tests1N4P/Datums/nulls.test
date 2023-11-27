@@ -32,7 +32,7 @@ success
 
 // check existence of table
 lstbl;
-rows: 0
+does not contain rows: ('${testName2}_nulTbl')
 
 // get memory leaks
 memoryLeaks;
@@ -42,9 +42,6 @@ CLEANUP {
   
   // drop the table
   drop table ${testName2}_nulTbl;
-  mute
-  
-  bye;
   mute
 }
 

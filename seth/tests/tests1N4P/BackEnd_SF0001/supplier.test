@@ -32,8 +32,5 @@ compactidx ${testName2}_supplier IxS_SUPPKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

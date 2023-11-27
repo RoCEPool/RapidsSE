@@ -169,7 +169,7 @@ success
 
 // check existence of table
 lstbl;
-rows: 0
+does not contain rows: ('${testName2}_bolTbl')
 
 // get memory leaks
 memoryLeaks;
@@ -179,9 +179,6 @@ CLEANUP {
   
   // drop the table
   drop table ${testName2}_bolTbl;
-  mute
-  
-  bye;
   mute
 }
 

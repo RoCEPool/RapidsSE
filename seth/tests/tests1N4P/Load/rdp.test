@@ -906,9 +906,6 @@ CLEANUP {
   
   drop table ${testName2}_RDP;
   mute
-
-  bye;
-  mute
 }
 
 // Seth:

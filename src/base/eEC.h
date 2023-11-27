@@ -159,6 +159,7 @@ enum eEC // error codes
   EC_INVALID_SYNTAX,
   EC_INVALID_TIME_FORMAT,           // SQL Compiler Subsystem
   EC_INVALID_TIMESTAMP_FORMAT,      // SQL Compiler Subsystem
+  EC_INVALID_TRACE_NAME,
   EC_INVALID_TOKEN,
   EC_INVALID_TYPES,
   EC_INVALID_VALUE,

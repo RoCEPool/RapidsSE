@@ -32,8 +32,5 @@ success
 
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

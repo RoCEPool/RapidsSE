@@ -150,8 +150,5 @@ CLEANUP {
   -- We can set the expected result to mute if we don't want to see any warnings.
   drop table ${testName2}_createT1;
   mute
-
-  bye;
-  mute
 }
 

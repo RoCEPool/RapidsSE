@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* pp_setCommands.sen -- define procedure for dynamically changing config values */
+/*============================================================================*/
+
+" pp_setCommands.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* setTrace related procedures                                                */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_SetTrace" .verbose
+
+: start::defProc_SetTrace
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // setTrace
+
+  STD_PATH_TAG
+  "
+  procedure setTrace
+  parameters $key $value
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on all nodes :
+      setTrace $key $value | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  procedure::add
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

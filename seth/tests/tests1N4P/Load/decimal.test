@@ -54,9 +54,6 @@ CLEANUP {
   
   drop table ${testName2}_decTest;
   mute
-
-  bye;
-  mute
 }
 
 

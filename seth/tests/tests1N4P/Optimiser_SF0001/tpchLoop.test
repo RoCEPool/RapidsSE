@@ -191,8 +191,5 @@ CLEANUP {
 
   drop table ${testName2}_nation;
   mute
-
-  bye;
-  mute
 }
 

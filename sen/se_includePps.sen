@@ -41,6 +41,7 @@ assert::stack_0
   "pp_noop.sen"             include
   "pp_sleepCmd.sen"         include
   "pp_logMsg.sen"           include
+  "pp_setCommands.sen"      include
 
   "pp_sqlCompiler.sen"      include 
  

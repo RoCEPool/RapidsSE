@@ -73,9 +73,6 @@ CLEANUP {
 
   drop table ${testName2}_Lineitem;
   mute
-
-  bye;
-  mute
 }
 
 

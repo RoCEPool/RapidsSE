@@ -42,8 +42,6 @@ order
 rows: (1996,0.00)
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

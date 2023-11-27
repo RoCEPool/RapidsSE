@@ -263,7 +263,4 @@ CLEANUP {
 
   //drop table ${testName2}_region;
   //mute
-
-  bye;
-  mute
 }

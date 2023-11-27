@@ -159,8 +159,5 @@ CLEANUP {
 
 drop table ${testName2}_jCdt;
 mute
-
-bye;
-mute
 }
 

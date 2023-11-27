@@ -7,10 +7,6 @@
 #include "eIV.h"
 
 
-// Note: This class is currently only used by the SQL compiler but it will
-//       eventually be used by the rest of the system. When that occurs this
-//       class can be moved to the most appropriate location.
-//
 // Note: This is a simple class to encapsulate an integer that is used as a
 //       key to look up a type. Encapsulating it in this way allows us to search
 //       for usage of this class and prevent expected automatic conversions from

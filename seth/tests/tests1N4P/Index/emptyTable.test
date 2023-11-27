@@ -55,8 +55,5 @@ CLEANUP {
 
   drop table ${testName2}_createT1;
   mute
-
-  bye;
-  mute
 }
 

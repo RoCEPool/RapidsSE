@@ -128,7 +128,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("[args].tracepoint"_Stz,        gxCmdLineArgs.m_xSysArgs.m_bTracepoint);
   Constants::vAddConstant("[args].tracing"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bTracing);
   Constants::vAddConstant("[args].unlink"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bUnlink);
-  Constants::vAddConstant("[args].verbose"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bVerbose);
+  Constants::vAddConstant("[args].verbose"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE]);
   Constants::vAddConstant("[args].welcome"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bWelcome);
 }
 
@@ -629,7 +629,11 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("RS_NONE"_Stz,                 RS_NONE);
   /*  0 */ vAddConstant("RS_LOCAL_RESPONSE"_Stz,       RS_LOCAL_RESPONSE);
   /*  0 */ vAddConstant("RS_DIS2PC_RESPONSE"_Stz,      RS_DIS2PC_RESPONSE);
-  
+
+  // TC_ : traceable components
+  /*  0 */ vAddConstant("TC_VERBOSE"_Stz,               TC_VERBOSE);
+  /*  0 */ vAddConstant("TC_WLP"_Stz,                   TC_WLP);
+
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
   /*  1 */ vAddConstant("TN_NULL"_Stz,      TN_NULL);

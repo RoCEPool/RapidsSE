@@ -78,9 +78,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_IntTbl;
   mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

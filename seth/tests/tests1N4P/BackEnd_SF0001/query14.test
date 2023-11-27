@@ -163,8 +163,6 @@ rows:
   (19.25)
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

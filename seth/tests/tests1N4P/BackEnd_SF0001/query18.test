@@ -418,8 +418,6 @@ begin
  rows: 761
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

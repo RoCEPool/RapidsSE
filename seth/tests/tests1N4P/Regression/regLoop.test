@@ -185,8 +185,5 @@ CLEANUP {
 
   drop table ${testName2}_RETURNITEMS;
   mute
-
-  bye;
-  mute
 }
 

@@ -257,7 +257,7 @@ public:
   void vClassPostRecvWordStore(void);
   void vClassPreSendWordStore(void);
 
-// column
+  // column
   void vColumnIsNullableFetch(void);
   void vColumnIsPartitionKeyFetch(void);
   void vColumnLengthFetch(void);
@@ -467,6 +467,8 @@ void vDdlLockAssertNone(void);
   void vDotBoot(void);
   void vDotPut(void);
   void vDotTrace(void);
+  void vDotTraceComponent(void);
+  void vDotTraceWlp(void);
   void vDotNewline(void);
   void vDotVerbose(void);
 
@@ -2474,6 +2476,8 @@ void vJobIdLastJobIdFetch(void);
   void vTraceOn(void);
   void vTracePoint(void);
   void vTraceSet(void);
+  void vTraceSetComponent(void);
+  void vTraceGetComponent(void);
 
   // tub
   void vTubAppend(void);

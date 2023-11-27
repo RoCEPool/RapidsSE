@@ -38,7 +38,5 @@ compactidx nation IxN_REGIONKEY;
 success
 
 CLEANUP {
-  bye;
-  mute
 }
 

@@ -21,7 +21,7 @@ LOOP FOR 5 SECONDS {
   success
 
   lstbl;
-  rows:
+  contains rows:
     ('${testName2}_foo')
 
   create index fooIdx on ${testName2}_foo (col0);
