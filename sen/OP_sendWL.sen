@@ -34,10 +34,9 @@
     // We expect to see a PayloadObj
     pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
 
-    pPayloadObj payloadObj::size@
-    pPayloadObj payloadObj::msgType@
-
     TC_WLP trace.getComponent if
+      pPayloadObj payloadObj::size@
+      pPayloadObj payloadObj::msgType@
       "SendWL: Sending payload: %v : %v bytes" str.format .traceWlp
     then
 

@@ -18,10 +18,9 @@
     while
       AdaptorWL[].nextPayloadToSend@ to pPayloadObj
 
-      pPayloadObj payloadObj::size@
-      pPayloadObj payloadObj::msgType@
-
       TC_WLP trace.getComponent if
+        pPayloadObj payloadObj::size@
+        pPayloadObj payloadObj::msgType@
         "AdaptorWL: Piping out payload: %v : %v bytes" str.format .traceWlp
       then
 
@@ -141,10 +140,9 @@
     exit
   then
 
-  pPayloadObj payloadObj::size@
-  pPayloadObj payloadObj::msgType@
-
   TC_WLP trace.getComponent if
+    pPayloadObj payloadObj::size@
+    pPayloadObj payloadObj::msgType@
     "AdaptorWL: Received payload: %v : %v bytes" str.format .traceWlp
   then
 
