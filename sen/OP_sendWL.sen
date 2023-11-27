@@ -36,7 +36,10 @@
 
     pPayloadObj payloadObj::size@
     pPayloadObj payloadObj::msgType@
-    "SendWL: Sending payload: %v : %v bytes" str.format .traceWlp
+
+    TC_WLP trace.getComponent if
+      "SendWL: Sending payload: %v : %v bytes" str.format .traceWlp
+    then
 
     pPayloadObj Socket[].sendWLMsg not if
       Socket[].clientAddr@  "Error sending wireline message to client at %v" str.format .traceWlp

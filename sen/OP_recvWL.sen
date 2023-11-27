@@ -30,7 +30,10 @@
   then
 
   Socket[].object.isNotNull if
-    Socket[].object@ payloadObj::size@ "RecvWL: Piping out payload received of %v bytes" str.format .traceWlp
+    TC_WLP trace.getComponent if
+      Socket[].object@ payloadObj::size@ "RecvWL: Piping out payload received of %v bytes" str.format .traceWlp
+    then
+
     Socket[].object@\clear [op].pipeout
     Socket[].success@
   else

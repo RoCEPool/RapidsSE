@@ -815,8 +815,8 @@ void Step::vSenProcText(void)
 
   pNewWord->vEncodePush(xVar);
 
-  pNewWord->vEncodeCall("dup"_Stz);
-  pNewWord->vEncodeCall("."_Stz);
+  // pNewWord->vEncodeCall("dup"_Stz);
+  // pNewWord->vEncodeCall("."_Stz);
   
   pNewWord->vEncodeCall("exit_rt"_Stz);
   

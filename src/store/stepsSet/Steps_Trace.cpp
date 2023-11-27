@@ -126,13 +126,28 @@ void Step::vTraceGetComponent(void)
 {
   ENTRY();
 
-  s256 sKey;
+  i8 iKey;
+  SenCell xSenCell;
+  eTC eComponent;
 
-  m_pDataStack->vPopStr(sKey, __func__);
-  eTC eComponent = eFromEnumTC(sKey);
+  m_pDataStack->vPopSenCell(xSenCell, __func__);
 
-  if (eComponent == TC_NONE || eComponent >= TC_ENUMS) {
-    m_pDataStack->vPushBol(false);
+  if (xSenCell.bIsIntVal()) {
+    iKey = xSenCell.iGetColVal();
+
+    if (iKey == TC_NONE || iKey >= TC_ENUMS) {
+      m_pDataStack->vPushBol(false);
+      return;
+    }
+    eComponent = (eTC) iKey;
+
+  } else {
+    eComponent = eFromEnumTC(xSenCell.szGetColVal());
+
+    if (eComponent == TC_NONE || eComponent >= TC_ENUMS) {
+      m_pDataStack->vPushBol(false);
+      return;
+    }
   }
 
   m_pDataStack->vPushBol(AM::TRACE::bTraceComponent(eComponent));
