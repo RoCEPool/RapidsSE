@@ -14,7 +14,7 @@ LOG = logging.getLogger(__name__)
 C_INSTALL_TIMEOUT_SEC = 120
 C_GENERAL_SSH_TIMEOUT_SEC = 120
 C_CLUSTER_START_CMD = "startSE.sh"
-C_CLUSTER_PROMPT_CMD = "prompt.sh"
+C_CLUSTER_SESHELL_CMD = "seShell.sh"
 C_CLUSTER_COLLECT_LOGS_CMD = "collectLogs.sh"
 C_CLUSTER_STATUS_CMD = "status.sh"
 
@@ -197,7 +197,7 @@ def start_rapidsse(host: str, cluster_cfg: ClusterConfig, ctx: str = ""):
 
 def run_dummy_statement(host: str, cluster_cfg: ClusterConfig, ctx: str = ""):
 
-    dummy_command = f"echo -e \"SELECT 1;\nbye;\" | {cluster_cfg.get_dir()}/{C_CLUSTER_PROMPT_CMD}"
+    dummy_command = f"echo -e \"status;\" | {cluster_cfg.get_dir()}/{C_CLUSTER_SESHELL_CMD}"
     command_timeout = 10  # seconds
 
     LOG.info(f"{ctx}About to run a dummy command on the RapidsSE cluster: {dummy_command}")
