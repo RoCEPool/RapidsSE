@@ -474,6 +474,4 @@ ordered rows:
   (1365.79,'Supplier#000000006','KENYA',56,'Manufacturer#1','tQxuVm7s7CnK','24-696-997-4969', *)
 
 CLEANUP {
-  bye;
-  mute
 }

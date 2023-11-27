@@ -50,8 +50,5 @@ rows: 0
 CLEANUP {
   drop table ${testName2}_boolTable;
   mute
-
-  bye;
-  mute
 }
 

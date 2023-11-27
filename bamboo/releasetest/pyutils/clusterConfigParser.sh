@@ -72,7 +72,8 @@ cat << EOF
   "threads": ${threads},
   "partitions": ${partitions},
   "dir": "${dir}",
-  "port": ${internal_port},
+  "internalPort": ${internal_port},
+  "externalPort": ${client_port},
   "params": "${params}"
 }
 EOF

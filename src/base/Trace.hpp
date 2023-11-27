@@ -7,6 +7,7 @@ namespace BASE
 {
   void  vTrace(Stz* szFormat,...);
   void  vTraceM(Stz* szFormat,...);
+  void  vTraceComponent(eTC eComponent, Stz* szFormat,...);
 }
 
 /*============================================================================*/

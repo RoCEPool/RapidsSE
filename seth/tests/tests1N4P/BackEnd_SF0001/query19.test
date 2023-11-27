@@ -309,8 +309,6 @@ end ;
    (-257.45)
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

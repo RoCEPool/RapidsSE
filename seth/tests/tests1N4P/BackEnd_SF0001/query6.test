@@ -93,11 +93,10 @@ pipeline Query6
      | first
 end ;
 
-row: (2141345.51)
+rows: (2141345.51)
 
 CLEANUP {
-  bye;
-  mute
+
 }
 
 

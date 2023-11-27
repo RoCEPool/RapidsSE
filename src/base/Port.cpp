@@ -833,7 +833,7 @@ bool Port::bBytesRecv(void* aBytes, i8 nBytes, SysCall& roSysCall)
     }
     
     if (0 == nRecvBytes) {
-      vTrace("Received 0 bytes; errno %lld\n"_Stz, errno);
+      // vTrace("Received 0 bytes; errno %lld\n"_Stz, errno);
       roSysCall.vError(errno); // don't die after this, node can come and goes
       //vTrace("ERROR2: %lld\n"_Stz, errno);
       return false;

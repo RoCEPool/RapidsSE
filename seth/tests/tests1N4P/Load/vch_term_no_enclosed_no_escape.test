@@ -112,9 +112,6 @@ CLEANUP {
   
   drop table ${testName2}_vch;
   mute
-
-  bye;
-  mute
 }
 
 

@@ -150,9 +150,6 @@ CLEANUP {
   // drop the table
   //drop table ${testName2}_lineitem_100;
   //mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1955,8 +1955,5 @@ CLEANUP {
 
   DROP TABLE ${testName2}_employees;
   mute
-
-  bye;
-  mute
 }
 

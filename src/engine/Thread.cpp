@@ -290,7 +290,7 @@ void Thread::vLoop_dedicated(void)
 
   Scheduler::vThread_EndThreadLoop(this);
 
-  vTrace("Exiting dedicated thread loop\n"_Stz);
+  // vTrace("Exiting dedicated thread loop\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

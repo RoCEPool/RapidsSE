@@ -41,8 +41,5 @@ CLEANUP {
 
   drop table ${testName2}_table9;
   mute
-
-  bye;
-  mute
 }
 

@@ -206,8 +206,6 @@ rows:
  ('5-LOW',12)
 */
 CLEANUP {
-  bye;
-  mute
 }
 
 

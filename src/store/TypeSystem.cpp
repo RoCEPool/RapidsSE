@@ -6,7 +6,7 @@
 #include "TypeSystem.hpp"
 #include "eIV.h"
 
-using namespace Parser;
+using namespace STORE;
 
 // A description of a type in the system
 typedef struct {

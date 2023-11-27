@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -301,6 +301,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitSetTraceCmd(sqlParser::SetTraceCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitSleepCmd(sqlParser::SleepCmdContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -326,6 +330,10 @@ public:
   }
 
   virtual antlrcpp::Any visitTableSizesCmd(sqlParser::TableSizesCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitTraceOption(sqlParser::TraceOptionContext *ctx) override {
     return visitChildren(ctx);
   }
 

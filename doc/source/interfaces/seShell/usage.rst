@@ -156,7 +156,9 @@ passing the command off to the server. These built-in commands typically control
 the execution of the query or how the results are displayed. The commands are
 typed like existing SQL commands and are terminated with a semicolon (``;``).
 Commands that aren't recognised are treated as SQL commands and are sent to
-the server for execution.
+the server for execution. Most SE Shell commands are prefixed with the keyword
+``SHELL`` in order to clearly disambiguate from similar commands that may exist
+in RapidsSE.
 
 These internal commands are described in the following sub-sections.
 
@@ -209,7 +211,7 @@ location where SE Shell is being executed from.
 
 .. code::
 
-  rapids > RUN sample.run;
+  rapids > SHELL RUN sample.run;
   Executing file sample.run...
   rapids > CREATE TABLE nation ( n_nationkey INTEGER NOT NULL, n_name CHAR(25) NOT NULL, n_regionkey INTEGER NOT NULL, n_comment VARCHAR(152) ) REPLICATED ;
   0 row(s) affected (0.03 sec)
@@ -256,7 +258,7 @@ and just have display the column headings once use ``-1`` for the page size.
 
   10 row(s) returned (0.49 sec)
   rapids >
-  rapids > SET PAGE 3;
+  rapids > SHELL SET PAGE 3;
   rapids >
   rapids > SELECT l_orderkey, l_linenumber, l_shipinstruct FROM lineitem LIMIT 10;
 
@@ -316,7 +318,7 @@ started in scripting mode.
   50,1,"COLLECT COD"
   67,6,"DELIVER IN PERSON"
 
-  set separator pipe;
+  SHELL SET SEPARATOR pipe;
 
   select l_orderkey, l_linenumber, l_shipinstruct from lineitem limit 10;
   l_orderkey|l_linenumber|l_shipinstruct
@@ -353,7 +355,7 @@ is ``11`` digits.
     5.3542154930e+03
 
   1 row(s) returned (0.55 sec)
-  rapids > set precision 3;
+  rapids > SHELL SET PRECISION 3;
   rapids > SELECT AVG(l_extendedprice)/7.1e0 FROM lineitem;
 
         COL1

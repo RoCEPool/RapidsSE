@@ -484,8 +484,6 @@ sleep 4;
 success
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

@@ -7,27 +7,27 @@
 #include "eCT.h"
 #include "eIV.h"
 
-
-// Note: This class is currently only used by the SQL compiler but it will
-//       eventually be used by the rest of the system. When that occurs this
-//       class can be moved to the most appropriate location.
+// Forward declarations for use in the 'friend' designation
 namespace Parser
+{
+  class TypeMap1D;
+  class TypeMap2D;
+  class ExtractMap;
+}
+
+namespace STORE
 {
   class TypeSystem
   {
-
-// CRAIG TO LOOK AT : Alka commented because TypeSystem was moved from Parser to Store namespace
-
-//    friend class TypeId;
-//    friend class TypeMap1D;
-//    friend class TypeMap2D;
-//    friend class ExtractMap;
+    friend class TypeId;
+    friend class Parser::TypeMap1D;
+    friend class Parser::TypeMap2D;
+    friend class Parser::ExtractMap;
 
     public:
     static i8 iMaxTypeId();
 
-  // CRAIG TO LOOK AT : Alka commented because TypeSystem was moved from Parser to Store namespace
-  //private:
+  private:
     TypeSystem(); // Not to be initialised. Static class only
 
     static b1 bIsValid(TypeId xTypeId);

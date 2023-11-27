@@ -21,7 +21,7 @@
 
     // receiver demon pipeline
     receiverWL_procText api::forkDemon not if
-      "Error Code %v" .printf
+      "Error Code %v" str.format .traceWlp
     else
       discard // jobId
     then
@@ -44,9 +44,7 @@
   // get the listening port of this node
   [grid].thisNodeName@ [grid].findNodeByName node.portWL to iPort
 
-  //[args].verbose if
-  //  iPort "Waiting for connections on port %v" .printf
-  //then
+  iPort "Waiting for connections on port %v" str.format .traceWlp
 
   // now create a listening socket
   iPort Port[]::newListen
@@ -63,7 +61,7 @@
     Port[].acceptConnection to pAcceptedSocket
 
     AM::SHOW::bConnection if
-      iPort "Answered connection on port %v" .printf
+      iPort "Answered connection on port %v" str.format .traceWlp
     then
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

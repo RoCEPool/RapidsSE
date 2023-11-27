@@ -15,8 +15,5 @@ UNSET OPTION decimalrounding;
 CLEANUP {
 
   INCLUDE FILE 'cleanup.test'
-
-  bye;
-  mute
 }
 

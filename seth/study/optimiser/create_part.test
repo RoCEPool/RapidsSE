@@ -35,8 +35,5 @@ compactidx part IxP_PARTKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

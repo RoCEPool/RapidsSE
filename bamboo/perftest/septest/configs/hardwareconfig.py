@@ -32,7 +32,6 @@ class HardwareConfig:
         instance_type = self.get_instance_type()
         image_id = self.get_image_id()
         num_machines = self.get_num_machines()
-        iam_role_name = self.get_iam_role_name()
         use_spot_instances = self.get_use_spot_instances()
         terminate_on_finish = self.get_terminate_on_finish()
 

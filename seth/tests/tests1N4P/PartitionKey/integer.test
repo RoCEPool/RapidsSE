@@ -41,8 +41,5 @@ CLEANUP {
 
   drop table ${testName2}_dataTable;
   mute
-
-  bye;
-  mute
 }
 

@@ -223,8 +223,6 @@ rows:
  ('31',2,18611.84)
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

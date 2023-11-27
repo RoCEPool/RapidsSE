@@ -12,6 +12,7 @@
 #include "CmdLineArgs.hpp"
 #include "MarkerMgr.hpp"
 #include "eAC.h"
+#include "eTC.h"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -87,6 +88,7 @@ namespace STORE
     b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
+    bool          m_bTraceableComponents[TC_ENUMS];
     TraceLock      m_oTraceLock;
     TraceMultiLock m_oTraceMultiLock;
     TxSet*        m_pTxSet;

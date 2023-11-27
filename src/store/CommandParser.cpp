@@ -359,29 +359,33 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->exportCmd())         { m_szProcName = "export"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->disconnectCmd())     { m_szProcName = "disconnect"_Stz;     return nullptr; }
 
-  else if (pCtx->antblCmd())          { m_szProcName = "antbl"_Stz;          return visitChildren(pCtx); }
+  // Less frequently used commands, in alphabetical order
   else if (pCtx->anidxCmd())          { m_szProcName = "anidx"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->antblCmd())          { m_szProcName = "antbl"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->bpaCmd())            { m_szProcName = "bpa"_Stz;            return visitChildren(pCtx); }
+  else if (pCtx->countCmd())          { m_szProcName = "count"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->docolCmd())          { m_szProcName = "docol"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->emptyCmd())          { m_szProcName = C_EMPTY_CMD;          return nullptr; }
+  else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
   else if (pCtx->logCmd())            { m_szProcName = "logMsg"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->lscolCmd())          { m_szProcName = "lscol"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->lsidxCmd())          { m_szProcName = "lsidx"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->lsidxcolCmd())       { m_szProcName = "lsidxcol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->lstblCmd())          { m_szProcName = "lstbl"_Stz;          return nullptr; }
   else if (pCtx->lsptncolCmd())       { m_szProcName = "lsptncol"_Stz;       return visitChildren(pCtx); }
-  else if (pCtx->countCmd())          { m_szProcName = "count"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
+  else if (pCtx->noopCmd())           { m_szProcName = "noop"_Stz;           return nullptr; }
+  else if (pCtx->setTraceCmd())       { m_szProcName = "setTrace"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->sleepCmd())          { m_szProcName = "sleepCmd"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->spaceCmd())          { m_szProcName = "space"_Stz;          return nullptr; }
   else if (pCtx->statusCmd())         { m_szProcName = "status"_Stz;         return nullptr; }
   else if (pCtx->szidxCmd())          { m_szProcName = "szidx"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->sztblCmd())          { m_szProcName = "sztbl"_Stz;          return visitChildren(pCtx); }
-  else if (pCtx->unloadCmd())         { m_szProcName = "unload"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->tableSizesCmd())     { m_szProcName = "tablesizes"_Stz;     return nullptr; }
   else if (pCtx->trackmemoryCmd())    { m_szProcName = "trackmemory"_Stz;    return visitChildren(pCtx); }
-  else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
-  else if (pCtx->docolCmd())          { m_szProcName = "docol"_Stz;          return visitChildren(pCtx); }
-  else if (pCtx->bpaCmd())            { m_szProcName = "bpa"_Stz;            return visitChildren(pCtx); }
-  else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
-  else if (pCtx->noopCmd())           { m_szProcName = "noop"_Stz;           return nullptr; }
-  else if (pCtx->emptyCmd())          { m_szProcName = C_EMPTY_CMD;          return nullptr; }
+  else if (pCtx->unloadCmd())         { m_szProcName = "unload"_Stz;         return visitChildren(pCtx); }
+
+  // Last
   else if (pCtx->children.empty())    { m_szProcName = C_EMPTY_CMD;          return nullptr; }
   else                                { NOT_IMPLEMENTED_YET }
 
@@ -1034,6 +1038,24 @@ antlrcpp::Any CommandParser::visitQueryCmd(Parser::sqlParser::QueryCmdContext* p
   m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
   return nullptr; // No need to visit any further down the tree
 }
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Extract parameters for a SET TRACE statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitSetTraceCmd(Parser::sqlParser::SetTraceCmdContext *pCtx)
+{
+  s256 sComponent;
+  bool bEnable;
+
+  vCleanString(pCtx->traceOption()->key, sComponent, EC_MAX_IDENTIFIER_NAME_LENGTH);
+  bEnable = (pCtx->traceOption()->booleanLiteral()->SQL_TRUE() != nullptr);
+
+  m_pArgValues->vAppendToken(sComponent.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(bEnable ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a SLEEP statement                               */

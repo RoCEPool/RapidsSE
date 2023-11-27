@@ -23,6 +23,7 @@
 #include "eYX.h"
 #include "eRA.h"
 #include "eTA.h"
+#include "eTC.h"
 #include "eVA.h"
 #include "eXA.h"
 
@@ -698,6 +699,8 @@ namespace OBLIQUE
       static bool bVBlong(void);
       static bool bVerbose(Stz* szVBtag);
       static bool bVerbose(Stz* szVBtag1, Stz* szVBtag2);
+      static void vTraceComponent(eTC eComponent, bool bTraceIt);
+      static bool bTraceComponent(eTC eComponent);
     };
 
     class WORD

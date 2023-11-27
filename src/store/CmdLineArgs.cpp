@@ -177,9 +177,12 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bTouch           = false;
   m_xSysArgs.m_bTracepoint      = false;
   m_xSysArgs.m_bTracing         = false;
+  for (i8 i=TC_NONE; i<TC_ENUMS; i++) {
+    m_xSysArgs.m_bTraceableComponents[i] = false;
+  }
   m_xSysArgs.m_eUtility         = UT_RAPIDSSE;
   m_xSysArgs.m_bVBlong          = false;
-  m_xSysArgs.m_bVerbose         = false;
+  m_xSysArgs.m_bTraceableComponents[TC_VERBOSE] = false;
   m_xSysArgs.m_bWelcome         = true;
 
   _checkInitialised_(CN_CMDLINEARGS);
@@ -1076,6 +1079,27 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--trace"_Stz)) {
+      i8 i_SysArg = i_Arg + 1;
+
+      if (i_SysArg >= argc) {
+        vTrace("Incorrect argument: --trace with nothing after\n"_Stz);
+        vTrace("Usage: --trace <name> \n"_Stz);
+        return false;
+      }
+
+      eTC eTraceComponent = eFromEnumTC(argv[++i_Arg].szStz());
+      if (eTraceComponent == TC_NONE) {
+        vTrace("Invalid trace argument: %s\n"_Stz, argv[i_Arg].szStz());
+        return false;
+      }
+
+      m_xSysArgs.m_bTraceableComponents[eTraceComponent] = true;
+      continue;
+    }
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--unlink"_Stz)) {
       m_xSysArgs.m_bUnlink = true;
       continue;
@@ -1089,7 +1113,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--verbose"_Stz)) {
-      m_xSysArgs.m_bVerbose = true;
+      m_xSysArgs.m_bTraceableComponents[TC_VERBOSE] = true;
       continue;
     }
 
@@ -1507,7 +1531,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   //  return;
   
   
-  if (gxCmdLineArgs.m_xSysArgs.m_bVerbose) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE]) {
     vTrace("\n"_Stz,CN_ENUMS);
     vTrace("  No of Classes %lld\n"_Stz,CN_ENUMS);
 #ifdef WITH_MUNGED_SEN
@@ -1531,7 +1555,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
     if (m_xSysArgs.m_bStart)       vTrace("  --start\n"_Stz);
     if (m_xSysArgs.m_bStatus)      vTrace("  --status\n"_Stz);
     if (m_xSysArgs.m_bStop)        vTrace("  --stop\n"_Stz);
-    if (m_xSysArgs.m_bVerbose)     vTrace("  --verbose\n"_Stz);
+    if (m_xSysArgs.m_bTraceableComponents[TC_VERBOSE]) vTrace("  --verbose\n"_Stz);
 #endif
 
     vTrace("  --name %s\n"_Stz, m_xSysArgs.m_sNodeName.azChar());
@@ -1584,6 +1608,12 @@ void CmdLineArgs::vPrintStartupInfo(void)
     if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
 
     if (m_xSysArgs.m_bInitial) vTrace("  --initial %s\n"_Stz,m_xSysArgs.m_sInitial.szStz());
+
+    for (i8 i=TC_NONE; i<TC_ENUMS; i++) {
+      if (m_xSysArgs.m_bTraceableComponents[i]) {
+        vTrace("  --trace %s\n"_Stz, aTCDesc[i]);
+      }
+    }
 
     BASE::vTraceWith();
   }

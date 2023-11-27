@@ -3009,8 +3009,5 @@ CLEANUP {
 
   DROP TABLE ${testName2}_region;
   mute
-
-  bye;
-  mute
 }
 

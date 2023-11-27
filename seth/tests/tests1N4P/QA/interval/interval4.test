@@ -329,7 +329,4 @@ CLEANUP {
 
   drop table ${testName2}_interval1;
   mute
-
-  bye;
-  mute
 }

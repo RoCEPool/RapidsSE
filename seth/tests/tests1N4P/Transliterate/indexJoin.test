@@ -73,7 +73,4 @@ CLEANUP {
 
   drop table region;
   mute
-
-  bye;
-  mute
 }

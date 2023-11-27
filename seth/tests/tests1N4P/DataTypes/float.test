@@ -564,9 +564,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_floatVch;
   mute
-
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

@@ -46,9 +46,6 @@ CLEANUP {
 
   drop table revenue;
   mute
-
-  bye;
-  mute
 }
 
 

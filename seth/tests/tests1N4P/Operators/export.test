@@ -77,9 +77,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_OpTable2;
   mute
-
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

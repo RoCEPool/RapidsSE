@@ -39,9 +39,6 @@ CLEANUP {
   // drop the table)
   drop table ${testName2}_uniBol;
   mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

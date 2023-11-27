@@ -392,9 +392,6 @@ CLEANUP {
   
   drop table ${testName2}_returnitems;
   mute
-
-  bye;
-  mute
 }
 
 

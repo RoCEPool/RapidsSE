@@ -530,9 +530,6 @@ CLEANUP {
 
   drop table ${testName2}_datums;
   mute
-
-  bye;
-  mute
 }
 
 

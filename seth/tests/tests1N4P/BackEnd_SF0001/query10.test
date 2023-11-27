@@ -683,8 +683,6 @@ rows:
  (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

@@ -35,9 +35,6 @@ CLEANUP {
   // drop the table
   drop table ${testName2}_uniChunkInt;
   mute
-  
-  bye;
-  mute
 }
 
 /*----------------------------------------------------------------------------*/

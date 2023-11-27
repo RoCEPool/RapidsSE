@@ -527,8 +527,6 @@ ordered rows:
  (85,3338711.39)
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

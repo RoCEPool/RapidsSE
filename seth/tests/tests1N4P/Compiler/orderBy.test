@@ -510,8 +510,5 @@ rows: 0
 CLEANUP {
   DROP TABLE ${testName2}_nation;
   mute
-
-  bye;
-  mute
 }
 

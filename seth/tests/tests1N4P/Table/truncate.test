@@ -86,8 +86,5 @@ CLEANUP {
 
   indexExtries 0;
   mute
-
-  bye;
-  mute
 }
 

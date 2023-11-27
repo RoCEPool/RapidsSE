@@ -187,6 +187,8 @@ CLEANUP {
   DROP TABLE ${testName2}_nation;
   mute
 
-  bye;
+  // If this release test finishes too quickly then the calling script thinks that
+  // Seth had a problem and the test is marked as a failure in Bamboo.
+  SLEEP 5 SECONDS;
   mute
 }

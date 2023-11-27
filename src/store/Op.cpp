@@ -507,6 +507,7 @@ Word* Op::pEntryWord(void)
   Word* pEntryWord = pDicRoot->pFindWord(sEntryWord);
   
   if (! pEntryWord) {
+    vTrace("ERROR: Could not find entry word: %s\n"_Stz, sEntryWord.szStz());
     RASSERT(pEntryWord);
   }
   
