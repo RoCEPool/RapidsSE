@@ -181,6 +181,33 @@ bool Operand::bIsProfile(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this operand a row buffer ?                                             */
+/*----------------------------------------------------------------------------*/
+bool Operand::bIsRowBuffer(void)
+{
+	_precondition_(_ADDRESS_,_MAGIC_);
+
+	eCN eClass = this->eGetClassNo();
+
+	switch(eClass) {
+
+		case CN_INDEXDEF:
+			//case CN_INFOSET:
+		case CN_MARKER:
+		case CN_PROFILE:
+		case CN_STREAMDEF:
+		case CN_STREAMDEFRHT:
+			return false;
+
+		default:
+			if (CN_ROWBUFFER == eClass)
+				return true;
+			else
+				return false;
+	}
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this operand a streamDef ?                                              */
 /*----------------------------------------------------------------------------*/
 bool Operand::bIsStreamDef(void)

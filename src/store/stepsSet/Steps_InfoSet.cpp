@@ -43,10 +43,10 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addExecError"_Stz,     &Step::vInfoSetAddExecError);
   vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
   vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
-  vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
+  //vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
   vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
-  vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
+  //vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   vAddStep("InfoSet[].addWarning"_Stz,       &Step::vInfoSetAddWarning);
   vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
   vAddStep("InfoSet[].colVal@"_Stz,          &Step::vInfoSetColValFetch);
@@ -57,8 +57,8 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].infoRows"_Stz,         &Step::vInfoSetInfoRows);
   vAddStep("InfoSet[].isNotNull"_Stz,        &Step::vInfoSetIsNotNull);
   vAddStep("InfoSet[].isNull"_Stz,           &Step::vInfoSetIsNull);
-  vAddStep("InfoSet[].isProgress"_Stz,       &Step::vInfoSetIsProgress);
-  vAddStep("InfoSet[].isTotalUnits"_Stz,     &Step::vInfoSetIsTotalUnits);
+  //vAddStep("InfoSet[].isProgress"_Stz,       &Step::vInfoSetIsProgress);
+  //vAddStep("InfoSet[].isTotalUnits"_Stz,     &Step::vInfoSetIsTotalUnits);
   vAddStep("InfoSet[].isWarning"_Stz,        &Step::vInfoSetIsWarning);
   vAddStep("InfoSet[].name"_Stz,             &Step::vInfoSetName);
   vAddStep("InfoSet[].new"_Stz,              &Step::vInfoSetNew);
@@ -210,38 +210,6 @@ void Step::vInfoSetAddNodeInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSet[].addProgressUnits -- add a row to infoset with the progressUnits  */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddProgressUnits(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get no of progress units
-  i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
-  
-  // get the streamDef
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  // get the infoSet
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_PROGRESSUNITS);
-  
-  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  iProgressUnits,
-                                  C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* InfoSet[].addRowCount -- add a row to infoset with the row counts for ptn  */
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetAddRowCount(void)
@@ -336,42 +304,6 @@ void Step::vInfoSetAddRowVargs(void)
     }
     
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addTotalUnits -- add a row to infoset with the totalUnits        */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddTotalUnits(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the total units
-  i8 iTotalUnits = m_pDataStack->iPopInt(__func__);
-  
-  // get the file name
-  s256 sFileName;
-  m_pDataStack->vPopStr(sFileName, __func__);
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_TOTALUNITS);
-  
-  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  sFileName.azChar(),
-                                  iTotalUnits,
-                                  C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -705,40 +637,6 @@ void Step::vInfoSetIsNull(void)
 
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpInfoSet.bIsNull() ? 1 : 0);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].isProgress --is infor set a progress info set ?                  */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetIsProgress(void)
-{
-  ENTRY();
-  
-  ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  
-  bool bIsProgress = pInfoSet->eOpInfoSet() == OI_PROGRESSUNITS ||
-                     pInfoSet->eOpInfoSet() == OI_TOTALUNITS;
-  m_pDataStack->vPushInt(bIsProgress);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].isTotalUnits --is infor set a totalUnits info set ?              */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetIsTotalUnits(void)
-{
-  ENTRY();
-  
-  ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  
-  m_pDataStack->vPushInt(pInfoSet->eOpInfoSet() == OI_TOTALUNITS ? true : false);
-  
   EXIT();
 }
 

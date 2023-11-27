@@ -230,6 +230,7 @@ namespace STORE
     eEC    m_eErrorCode_reg;      // error code
     
     eEV m_ePipeInOperand;
+		eBT m_ePipeInBufferType;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop

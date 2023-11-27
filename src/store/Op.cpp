@@ -622,7 +622,7 @@ bool Op::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* is operand received valid?                                                 */
 /*----------------------------------------------------------------------------*/
-bool Op::bIsEventValid(i8 i_OperandKind)
+bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -678,8 +678,8 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case EV_D_CRWBUFFER:
     case EV_D_ENTBUFFER:
-    case EV_D_ROWBUFFER:
     case EV_D_SRTBUFFER:
+			RASSERT(i_BufferType == BT_NONE);
       // These don't apply to adaptorWL
       if (szOpNm()->bSame("adaptorWL"_Stz)) {
         break;
@@ -692,7 +692,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
 
-      // should have received a EV_D_STREAMDEF
+      // should have received a EV_D_STREAMDEF if BufferType is BT_DATA
       // scanOP does not receive a STREAMDEF and can reeive a CRWBUFFER piped back to itself
       if (!szOpNm()->bSame("scan"_Stz)) {
         if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
@@ -710,6 +710,39 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       
       break;
+
+		case EV_D_ROWBUFFER:
+			RASSERT(i_BufferType != BT_NONE);
+
+			// These don't apply to adaptorWL
+			if (szOpNm()->bSame("adaptorWL"_Stz)) {
+				break;
+			}
+
+			// should have received a EV_M_DATAPULSE
+			if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
+				vTrace("%s: %s arrived without a prior EV_M_DATAPULSE\n"_Stz,
+							 szOpNm(), aEV[i_OperandKind]);
+				return false;
+			}
+
+			// should have received a EV_D_STREAMDEF if BufferType is BT_DATA
+			if (i_BufferType == BT_DATA) {
+				if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
+					vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
+								 szOpNm(), aEV[i_OperandKind]);
+					return false;
+				}
+			}
+
+			// should not have received EV_M_EOS's > EV_M_DATAPULSE's
+			if ( m_pEvMgr->m_naEventCount[EV_M_EOS] > m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
+				vTrace("%s: %s arrived after EV_M_EOS and no new EV_M_DATAPULSE\n"_Stz,
+							 szOpNm(), aEV[i_OperandKind]);
+				return false;
+			}
+
+			break;
 
     case EV_M_DATAPULSE:
       // should have received a EV_M_START

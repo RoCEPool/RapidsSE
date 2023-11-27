@@ -242,6 +242,7 @@ LogicUnit::LogicUnit(void)
   m_pEntBufferOuter = nullptr;
 
   m_ePipeInOperand = EV_NONE;
+	m_ePipeInBufferType = BT_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -777,9 +778,14 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   if (pOperand) {
     eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
     m_ePipeInOperand = eOperand;
+		if (eOperand == EV_D_ROWBUFFER) {
+			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
+			m_ePipeInBufferType = pRowBuffer->eBufferType();
+		}
   }
   else {
     m_ePipeInOperand = EV_NONE;
+		m_ePipeInBufferType    = BT_NONE;
   }
 }
 

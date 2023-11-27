@@ -39,6 +39,14 @@
   then
  */
   PipeIn[]\clear to RowBuffer[]
+
+  // pipeout non BT_DATA buffers
+  RowBuffer[].getBufferType BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   Table[] RowBuffer[] toLglPtnRow[].convert
   RowBuffer[].delete
 

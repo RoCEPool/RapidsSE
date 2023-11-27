@@ -387,7 +387,13 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
     case CN_PROFILE:      m_eSendCast = XK_ROBINDIST; break;
     case CN_STREAMDEF:    m_eSendCast = XK_BROADCAST; break;
     case CN_STREAMDEFRHT: m_eSendCast = XK_BROADCAST; break;
-      
+		case CN_ROWBUFFER: {
+			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
+			if (pRowBuffer->eBufferType() != BT_DATA)
+				m_eSendCast = XK_ROBINDIST;
+			break;
+			break;
+		}
     default:
       RASSERT(pOperand->bIsBuffer());
   }

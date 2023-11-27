@@ -20,10 +20,8 @@ Stz* aOI[OI_ENUMS]
   /*    */ "OI_NODEINFO"_Stz,
   /*    */ "OI_PAGEINREQUEST"_Stz,
   /*    */ "OI_PATH"_Stz,
-  /*    */ "OI_PROGRESSUNITS"_Stz,
   /*    */ "OI_PROMPTOUT"_Stz,
   /*    */ "OI_SEEKOFFSETS"_Stz,
-  /*    */ "OI_TOTALUNITS"_Stz,
   /*    */ "OI_WARNINGS"_Stz,
 
 //  /*    */ "OI_ENUMS"_Stz,

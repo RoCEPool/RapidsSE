@@ -30,6 +30,15 @@
 
   0 locals| rowsInserted |
 
+  // Non-data rowbuffers need to be just piped out
+  PipeIn[].isRowBuffer if
+    PipeIn[].bufferType BT_DATA == not if
+      PipeIn[].pipeout
+      true
+      exit
+    then
+  then
+
   // insert the buffer into the table ptn
   TablePtn[].grabWrite_msecLoop
   PipeIn[] TablePtn[].appendBuffer to rowsInserted
@@ -48,13 +57,13 @@
   Counter0[] 100 % 0 == if
 
     // create an infoSet operand
-    infoSetTable[] InfoSet[].new
+    infoSetTable[] RowBuffer[].new
 
     // insert progressUnits to the infoset
-    Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
+    Counter0[] infoSetTable[] RowBuffer[].addProgressUnits assert
 
     // pipeout the infoset
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -72,6 +81,15 @@
   "insert_Replicated" .
 
   0 locals| rowsInserted |
+
+  // Non-data rowbuffers need to be just piped out
+  PipeIn[].isRowBuffer if
+    PipeIn[].bufferType BT_DATA == not if
+      PipeIn[].pipeout
+      true
+      exit
+    then
+  then
 
   // insert the buffer into the table ptn
   //TablePtn[].grabWrite_msecLoop
@@ -93,13 +111,13 @@
   Counter0[] 10 % 0 == if
 
     // create an infoSet operand
-    infoSetTable[] InfoSet[].new
+    infoSetTable[] RowBuffer[].new
 
     // insert progressUnits to the infoset
-    Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
+    Counter0[] infoSetTable[] RowBuffer[].addProgressUnits assert
 
     // pipeout the infoset
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -119,13 +137,13 @@
   // send out final progress units
 
   // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  infoSetTable[] RowBuffer[].new
 
   // insert progressUnits to the infoset
-  Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
+  Counter0[] infoSetTable[] RowBuffer[].addProgressUnits assert
 
   // pipeout the infoset
-  InfoSet[].pipeOut
+  RowBuffer[].pipeOut
 
 
   // send out an AFFECTEDROWS infoset with the number of rows actually inserted

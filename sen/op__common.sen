@@ -569,7 +569,7 @@
 
       // debug::flag@ if "(Revised) Calling handler for OoO operand" . then
 
-      PipeIn[].kind [op].isEventValid not if
+      PipeIn[].bufferType PipeIn[].kind [op].isEventValid not if
         find: INVALID_OPERAND_handler op__callHandler to iContinue
         continue_if
       then
@@ -624,7 +624,7 @@
 
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
-    PipeIn[].kind [op].isEventValid not if
+    PipeIn[].bufferType PipeIn[].kind [op].isEventValid not if
       find: INVALID_OPERAND_handler op__callHandler to iContinue
       continue_if
     then

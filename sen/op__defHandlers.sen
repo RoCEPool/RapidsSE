@@ -81,10 +81,10 @@
 : EV_I_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
 : EV_I_PAGEINREQUEST_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_PATH_handler             \handler STANDARD_PIPEOUT ;
-: EV_I_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
+//: EV_I_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_PROMPTOUT_handler        \handler STANDARD_PIPEOUT ;
 : EV_I_SEEKOFFSETS_handler      \handler STANDARD_PIPEOUT ;
-: EV_I_TOTALUNITS_handler       \handler STANDARD_PIPEOUT ;
+//: EV_I_TOTALUNITS_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_WARNINGS_handler         \handler STANDARD_PIPEOUT ;
 
 : EV_M_CANCEL_handler           \handler STANDARD_PIPEOUT ;
@@ -481,10 +481,10 @@
   abnormalHandler EV_I_NODEINFO         [op].handler!
   abnormalHandler EV_I_PAGEINREQUEST    [op].handler!
   abnormalHandler EV_I_PATH             [op].handler!
-  abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
+  //abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
   abnormalHandler EV_I_PROMPTOUT        [op].handler!
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
-  abnormalHandler EV_I_TOTALUNITS       [op].handler!
+  //abnormalHandler EV_I_TOTALUNITS       [op].handler!
 
   //[op].opName@ "DONE SETTING default_internalErrorHandlers for OP %v" str.format .
 ;
@@ -508,10 +508,10 @@
   abnormalHandler EV_I_NODEINFO         [op].handler!
   abnormalHandler EV_I_PAGEINREQUEST    [op].handler!
   abnormalHandler EV_I_PATH             [op].handler!
-  abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
+  //abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
   abnormalHandler EV_I_PROMPTOUT        [op].handler!
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
-  abnormalHandler EV_I_TOTALUNITS       [op].handler!
+  //abnormalHandler EV_I_TOTALUNITS       [op].handler!
   abnormalHandler EV_I_WARNINGS         [op].handler!
 
   [op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .

@@ -4488,10 +4488,8 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OI_NODEINFO:       eOperand = EV_I_NODEINFO;       break;
         case OI_PAGEINREQUEST:  eOperand = EV_I_PAGEINREQUEST;  break;
         case OI_PATH:           eOperand = EV_I_PATH;           break;
-        case OI_PROGRESSUNITS:  eOperand = EV_I_PROGRESSUNITS;  break;
         case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;
         case OI_SEEKOFFSETS:    eOperand = EV_I_SEEKOFFSETS;    break;
-        case OI_TOTALUNITS:     eOperand = EV_I_TOTALUNITS;     break;
         case OI_WARNINGS:       eOperand = EV_I_WARNINGS;       break;
         default:
           RASSERT(0);

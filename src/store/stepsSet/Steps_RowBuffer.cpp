@@ -652,7 +652,7 @@ void Step::vRowBufferAddNodeStatus(void)
 												C_VARGS_END);
 	//ASSERT(pRow);
 	//pRow->vDump(pStreamDef);
-	
+
 	m_pDataStack->vPushInt(pRow ? true : false);
 	*/
 	Row *pRow = nullptr;
@@ -1309,9 +1309,9 @@ void Step::vRowBufferToCsv(void)
   ENTRY();
 
   RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-  
+
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
-  
+
   pRowBuffer->vToCsv(pTub);
 
   EXIT();
@@ -1473,7 +1473,7 @@ void Step::vRowBufferAddProgressUnits(void)
 	StreamDef* pStreamDef = pTable->pStreamDef();
 
 	// get the infoSet
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 	pRowBuffer->vBufferType(BT_PROGRESSUNITS);
 
 	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
@@ -1607,7 +1607,7 @@ void Step::vRowBufferAddTotalUnits(void)
 	// get the streamDef from the table
 	StreamDef* pStreamDef = pTable->pStreamDef();
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 	pRowBuffer->vBufferType(BT_TOTALUNITS);
 
 	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
@@ -1624,7 +1624,7 @@ void Step::vRowBufferAddTotalUnits(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addWarning -- add a row to RowBuffer with a warning                */
+/* RowBuffer[].addWarning -- add a row to RowBuffer with a warning            */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddWarning(void)
 {
@@ -1641,7 +1641,7 @@ void Step::vRowBufferAddWarning(void)
 	// get the streamDef from the table
 	StreamDef* pStreamDef = pTable->pStreamDef();
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 	pRowBuffer->vBufferType(BT_WARNINGS);
 
 	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
@@ -1881,7 +1881,7 @@ void Step::vRowBufferFirstRow(void)
 {
 	ENTRY();
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	m_pDataStack->vPushPtr(pRowBuffer->pFirstRow());
 }
@@ -1893,9 +1893,9 @@ void Step::vRowBufferInfoRows(void)
 {
 	ENTRY();
 
-	ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+	ASSERT ( ! m_pLogicUnit->m_xpRowBuffer.bIsNull() );
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	i8 nRows = pRowBuffer->nRows();
 	m_pDataStack->vPushInt(nRows);
@@ -1904,15 +1904,15 @@ void Step::vRowBufferInfoRows(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].isProgress --is infor set a progress RowBuffer ?                  */
+/* RowBuffer[].isProgress --is rowBffer a progress RowBuffer ?                */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferIsProgress(void)
 {
 	ENTRY();
 
-	ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+	ASSERT ( ! m_pLogicUnit->m_xpRowBuffer.bIsNull() );
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	bool bIsProgress = pRowBuffer->eBufferType() == BT_PROGRESSUNITS ||
 										 pRowBuffer->eBufferType() == BT_TOTALUNITS;
@@ -1928,9 +1928,9 @@ void Step::vRowBufferIsTotalUnits(void)
 {
 	ENTRY();
 
-	ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+	ASSERT ( ! m_pLogicUnit->m_xpRowBuffer.bIsNull() );
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	m_pDataStack->vPushInt(pRowBuffer->eBufferType() == BT_TOTALUNITS ? true : false);
 
@@ -1944,9 +1944,9 @@ void Step::vRowBufferIsWarning(void)
 {
 	ENTRY();
 
-	ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+	ASSERT ( ! m_pLogicUnit->m_xpRowBuffer.bIsNull() );
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	m_pDataStack->vPushInt(pRowBuffer->eBufferType() == BT_WARNINGS ? true : false);
 
@@ -1960,7 +1960,7 @@ void Step::vRowBufferName(void)
 {
 	ENTRY();
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	Stz* szBufferNm = pRowBuffer->szBufferNm();
 
@@ -1976,7 +1976,7 @@ void Step::vRowBufferNextRow(void)
 {
 	ENTRY();
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 	Row* pRow = _pRow(*m_pLogicUnit->m_xpInfoSetRow);
 
 	ASSERT(pRow);
@@ -1991,9 +1991,9 @@ void Step::vRowBufferOpInfosetFetch(void)
 {
 	ENTRY();
 
-	ASSERT(*m_pLogicUnit->m_xpInfoSet);
+	ASSERT(*m_pLogicUnit->m_xpRowBuffer);
 
-	eBT eBufferType = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet)->eBufferType();
+	eBT eBufferType = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer)->eBufferType();
 
 	m_pDataStack->vPushInt(eBufferType);
 
@@ -2007,6 +2007,7 @@ void Step::vRowBufferOpInfosetStore(void)
 {
 	ENTRY();
 
+	RASSERT(0);
 	ASSERT(*m_pLogicUnit->m_xpInfoSet);
 
 	eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);

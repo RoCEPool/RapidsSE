@@ -102,7 +102,7 @@ namespace STORE
   
     void vIncWorkDone(void);
     bool bIsLocked(void);
-    bool bIsEventValid(i8 i_OperandKind);
+    bool bIsEventValid(i8 i_OperandKind, i8 i_BufferType);
   
     i8   iLocalRobinNext(void);
   

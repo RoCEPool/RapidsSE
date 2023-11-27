@@ -5,7 +5,7 @@
 " OP_progress.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_EOS...                                                         */
+/* on EV_M_EOS...                                                             */
 /*----------------------------------------------------------------------------*/
 : progress_EosMarker \handler
 
@@ -18,20 +18,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_I_PROGRESSUNITS...                                                     */
+/* ProgressUnits                                                              */
 /*----------------------------------------------------------------------------*/
-: progress_ProgressUnits \handler
+: progress_ProgressUnits
 
   0 0 0 locals| nodeName partitionNo iPercent |
 
-  //"Operand:- EV_I_PROGRESSUNITS" .verbose
-
-  // get operand into InfoSet[]
-  PipeIn[] to InfoSet[]
-  nullptr to PipeIn[]
-
-  // get first row of InfoSet[]
-  InfoSet[].firstRow to infoSetRow[]
+  // get first row of RowBuffer[]
+  RowBuffer[].firstRow to infoSetRow[]
 
   // get 0th Column (ProgressUnits) add to Counter
   0 infoSetRow[].getIntColumn Counter1[] + to Counter1[]
@@ -53,28 +47,17 @@
   then
 
   iPercent to Counter2[]
-
-  // now delete the InfoSet[]
-  InfoSet[].delete
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_I_TOTALUNITS...                                                        */
+/* TotalUnits                                                                 */
 /*----------------------------------------------------------------------------*/
-: progress_TotalUnits \handler
+: progress_TotalUnits
 
   0 locals| iPercent |
 
-  //"Operand:- EV_I_TOTALUNITS" .verbose
-
-  // get operand into InfoSet[]
-  PipeIn[] to InfoSet[]
-  nullptr to PipeIn[]
-
   // get first row of InfoSet[]
-  InfoSet[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to infoSetRow[]
 
   // get 0th Column (fileName)
   0 infoSetRow[].getVchColumn to StringA[]
@@ -82,10 +65,36 @@
   // get 1st column (totalUnits)
   1 infoSetRow[].getIntColumn to Counter0[]
 
-  // now delete the InfoSet[]
-  InfoSet[].delete
-  
   //Counter0[] "Total Units: %v" .printf
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_ROWBUFFER...                                                       */
+/*----------------------------------------------------------------------------*/
+: progress_RowBuffer \handler
+
+  0 0 locals| iPercent eBufferType |
+
+  //"Operand:- EV_D_ROWBUFFER" .verbose
+
+  // get operand into RowBuffer[]
+  PipeIn[] to RowBuffer[]
+  nullptr to PipeIn[]
+
+  // get the buffer type
+  RowBuffer[].getBufferType to eBufferType
+
+  // check the rowBuffer type
+  eBufferType BT_PROGRESSUNITS == if
+    progress_ProgressUnits
+  else
+  eBufferType .
+    eBufferType BT_TOTALUNITS == assert
+    progress_TotalUnits
+  then
+
+  // now delete the RowBuffer[]
+  RowBuffer[].delete
 
   true
 ;
@@ -100,8 +109,7 @@
   op__topology
 
   find: Progress_EosMarker     EV_M_EOS           [op].handler!
-  find: Progress_ProgressUnits EV_I_PROGRESSUNITS [op].handler!
-  find: Progress_TotalUnits    EV_I_TOTALUNITS    [op].handler!
+  find: Progress_RowBuffer     EV_D_ROWBUFFER     [op].handler!
 
   op__loop
 
