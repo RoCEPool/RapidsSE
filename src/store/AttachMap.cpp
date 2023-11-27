@@ -408,7 +408,9 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bSysMetrics      = pCmdLineArgs->m_xSysArgs.m_bSysMetrics;
   m_xSysArgs.m_nThreads         = pCmdLineArgs->m_xSysArgs.m_nThreads;
   m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
-  m_bTraceableComponents[TC_VERBOSE] = pCmdLineArgs->m_xSysArgs.m_bVerbose;
+  for (i8 i=TC_NONE; i<TC_ENUMS; i++) {
+    m_bTraceableComponents[i] = pCmdLineArgs->m_xSysArgs.m_bTraceableComponents[i];
+  }
 
   m_xSysArgs.m_oArgTags.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
   

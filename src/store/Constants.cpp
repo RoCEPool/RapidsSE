@@ -128,7 +128,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("[args].tracepoint"_Stz,        gxCmdLineArgs.m_xSysArgs.m_bTracepoint);
   Constants::vAddConstant("[args].tracing"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bTracing);
   Constants::vAddConstant("[args].unlink"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bUnlink);
-  Constants::vAddConstant("[args].verbose"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bVerbose);
+  Constants::vAddConstant("[args].verbose"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE]);
   Constants::vAddConstant("[args].welcome"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bWelcome);
 }
 

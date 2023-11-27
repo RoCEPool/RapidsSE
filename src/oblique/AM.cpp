@@ -2980,7 +2980,6 @@ void AM::SYSARGS::vVerbose(bool bVerbose)
   _static_
 
   gpAttachMap->m_bTraceableComponents[TC_VERBOSE] = bVerbose;
-//  gpAttachMap->m_xSysArgs.m_bVerbose = bVerbose;  // Changed to the above now
 }
 
 
@@ -3415,9 +3414,9 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   
   TagSet* pTags;
   
-  if (! gpAttachMap || gxCmdLineArgs.m_xSysArgs.m_bVerbose != gpAttachMap->m_bTraceableComponents[TC_VERBOSE]) {
+  if (! gpAttachMap || gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE] != gpAttachMap->m_bTraceableComponents[TC_VERBOSE]) {
 
-    if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
+    if (gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE])
       return true;
 
     if (gpAttachMap && gpAttachMap->m_bTraceableComponents[TC_VERBOSE])

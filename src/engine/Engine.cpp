@@ -1108,7 +1108,7 @@ void Engine::vOpenPool(void)
       vTrace("\n*\n* %lld) Create Shared Memory Region\n*\n"_Stz,giProgressPoint++);
     
     Region::vCreate(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
-                    gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                    gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
                     gxCmdLineArgs.m_xSysArgs.m_aRegionAddr,
                     gxCmdLineArgs.m_xSysArgs.m_iRegionSize,
                     gxCmdLineArgs.m_xSysArgs.m_bTouch,
@@ -1148,7 +1148,7 @@ void Engine::vOpenPool(void)
     if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
       vTrace("\n*\n* Attach Region\n*\n"_Stz);
     bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
-                              gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                              gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
                               gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
     ASSERT(bResult);
     vAttachRegion();
@@ -1164,7 +1164,7 @@ void Engine::vOpenPool(void)
     if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
       vTrace("\n*\n* Attach Region\n*\n"_Stz);
     bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
-                              gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                              gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
                               gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
     if ( ! bResult ) {
       vTrace("Error: Unable to attach to instance %s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
@@ -1179,7 +1179,7 @@ void Engine::vOpenPool(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("\n*\n* Attach Region\n*\n"_Stz);
   bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
-                            gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                            gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
                             gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
   ASSERT(bResult);
   vAttachRegion();
@@ -1191,7 +1191,7 @@ void Engine::vOpenPool(void)
 bool Engine::bOpenPool(s32& sPoolName)
 {
   bool bResult = Region::bAttach(sPoolName,
-                                 gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                                 gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
                                  gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
   if (!bResult)
     return bResult;
@@ -1401,7 +1401,7 @@ void Engine::vPrintStatus(void)
     
     // attach to the region
     bool bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
-                                   gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                                   gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
                                    gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
     ASSERT(bResult);
     UNUSED(bResult);
