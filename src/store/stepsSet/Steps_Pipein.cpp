@@ -338,10 +338,11 @@ void Step::vPipeinSet(void)
 
   
   m_pLogicUnit->m_xpPipein = _pOperand(pOperand);
-  
+
+	m_pLogicUnit->m_ePipeInBufferType = BT_NONE;
+
   if (m_pLogicUnit->m_xpPipein.bIsNull()) {
     m_pLogicUnit->m_ePipeInOperand = EV_NONE;
-		m_pLogicUnit->m_ePipeInBufferType = BT_NONE;
   }
   else {
     eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
