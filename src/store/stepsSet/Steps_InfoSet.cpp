@@ -48,7 +48,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
   //vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   vAddStep("InfoSet[].addWarning"_Stz,       &Step::vInfoSetAddWarning);
-  vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
+  //vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
   vAddStep("InfoSet[].colVal@"_Stz,          &Step::vInfoSetColValFetch);
   vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
   vAddStep("InfoSet[].detectLineEnding"_Stz, &Step::vInfoSetDetectLineEnding);
@@ -337,115 +337,6 @@ void Step::vInfoSetAddWarning(void)
                                   C_VARGS_END);
 
   m_pDataStack->vPushBol(pRow != nullptr);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].chunkFile -- info set chunk file                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetChunkFile(void)
-{
-  ENTRY();
-
-  // get the seekOffsets
-  InfoSet* pSeekOffsets = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pSeekOffsets->vOpInfoSet(OI_SEEKOFFSETS);
-  i8 nRowsInSeekOffsets = 0;
-  Row* pSeekOffsetRow = nullptr;
-
-  // get the file we are chunking
-  File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
-
-  // allocate a work area for reading in last block of chunk
-  char* aLastBlock = (char*)MemLib::aMallocBlock(C_CHUNK_BLOCK);
-
-  i8 nSumBytes = 0;
-  i8 nChunkBytes = C_UNKNOWN;
-  i8 i_OfsOfLastBlockInChunk = C_UNKNOWN;
-
-  // get the file offset of the EOF
-  i8 i_EofOfs = m_pLogicUnit->m_iCounter1;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process chunks till eof or till we get C_MAX_SEEKOFFSETS
-
-  for (;;) {
-
-    // get the file offset of next chunk
-    i8 i_ChunkOfs = m_pLogicUnit->m_iCounter0;
-
-    RASSERT (i_ChunkOfs < i_EofOfs);
-
-    // allot row for seek offset info
-    pSeekOffsetRow = pSeekOffsets->RowBuffer::pAllotRow();
-
-    // test for final chunk in file
-    if (i_ChunkOfs + C_CHUNK_SIZE >= i_EofOfs) {
-      // + final chunk in file
-
-      // compute the total chunk bytes
-      nChunkBytes = i_EofOfs - i_ChunkOfs;
-
-      // end of file
-      m_pLogicUnit->m_iCounter0 = i_EofOfs;
-    }
-    else {
-      // -not final chunk in file
-
-      // compute offset of last block in current chunk
-      i_OfsOfLastBlockInChunk = i_ChunkOfs + C_CHUNK_SIZE - C_CHUNK_BLOCK;
-
-      // read last block of current chunk
-      pFile->vSeek(i_OfsOfLastBlockInChunk);
-      i8 nBytesRead = pFile->nReadBytes(aLastBlock, C_CHUNK_BLOCK);
-
-      // compute address of last data byte of last block of current chunk
-      char *aLastDataByte = &aLastBlock[nBytesRead - 1];
-
-      // find the last end of line in last block of current chunk
-      char *aLastEol = aLastDataByte;
-      bool bFoundEol = StrLib::bBackward(&aLastEol, aLastBlock, '\n');
-      if (!bFoundEol)
-        bFoundEol = StrLib::bBackward(&aLastEol, aLastBlock, '\r');
-      RASSERT(bFoundEol);
-
-      // compute the number of bytes which belong to the last block in chunk
-      i8 nLastBlockBytes = nDifference(aLastEol, aLastBlock) + 1;
-
-      // compute the total chunk bytes
-      nChunkBytes = C_WSP_DATACHUNK - C_CHUNK_BLOCK + nLastBlockBytes;
-
-      // compute end location of chunk
-      i8 i_EndChunkLoc = i_ChunkOfs + nChunkBytes - 1;
-
-      // advance to start of next chunk
-      m_pLogicUnit->m_iCounter0 = i_EndChunkLoc + 1;
-    }
-
-    if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
-      vTrace("<OP_Chunk>: i_ChunkOfs %lld nChunkBytes %lld\n"_Stz,
-             i_ChunkOfs,nChunkBytes);
-
-    pSeekOffsetRow->vColVal_int(0,i_ChunkOfs);
-    pSeekOffsetRow->vColVal_int(1,nChunkBytes);
-
-    nSumBytes += nChunkBytes;
-
-    if (++nRowsInSeekOffsets >= C_MAX_SEEKOFFSETS)
-      break;
-    if (m_pLogicUnit->m_iCounter0 >= i_EofOfs)
-      break;
-  }
-
-
-  // free the read block
-  MemLib::vFreeBlock(aLastBlock, C_CHUNK_BLOCK);
-
-  if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
-    vTrace("<OP_Chunk>: nSumBytes %lld\n"_Stz,nSumBytes);
-
-  m_pDataStack->vPushInt(nSumBytes);
 
   EXIT();
 }

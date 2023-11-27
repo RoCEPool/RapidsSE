@@ -609,7 +609,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
   /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
-  /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
+  /*  0 */ //vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
   /*  0 */ vAddConstant("OI_WARNINGS"_Stz,      OI_WARNINGS);
 
   // PD_ : pipe direction
@@ -759,7 +759,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
   /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
   /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);
-  /*  0 */ vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
+  /*  0 */ //vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
   /*  0 */ vAddConstant("EV_I_WARNINGS"_Stz,        EV_I_WARNINGS);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);

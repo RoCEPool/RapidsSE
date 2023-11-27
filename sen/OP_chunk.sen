@@ -97,11 +97,11 @@
   while
     //counter1[] "counter1 %v" .printf
 
-    // create an infoSet operand
-    infoSetTable[] InfoSet[].new
-    InfoSet[].chunkFile counter2[] + to counter2[]
+    // create an rowBuffer operand
+    infoSetTable[] RowBuffer[].new
+    RowBuffer[].chunkFile counter2[] + to counter2[]
 
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
   repeat
 
   "<OP_chunk>" [job].tagSet@ tagSet.hasName if

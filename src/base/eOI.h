@@ -20,7 +20,7 @@ enum eOI // operator Infoset
   /*    */ OI_PAGEINREQUEST,
   /*    */ OI_PATH,
   /*    */ OI_PROMPTOUT,
-  /*    */ OI_SEEKOFFSETS,
+  /*    */ //OI_SEEKOFFSETS,
   /*    */ OI_WARNINGS,
 
   /*    */ OI_ENUMS,

@@ -762,7 +762,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetAddRowCount(void);
   void vInfoSetAddRowVargs(void);
   void vInfoSetAddWarning(void);
-  void vInfoSetChunkFile(void);
   void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
   void vInfoSetDetectLineEnding(void);

@@ -1664,7 +1664,7 @@ void Step::vRowBufferChunkFile(void)
 	ENTRY();
 
 	// get the seekOffsets
-	RowBuffer* pSeekOffsets = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pSeekOffsets = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 	pSeekOffsets->vBufferType(BT_SEEKOFFSETS);
 	i8 nRowsInSeekOffsets = 0;
 	Row* pSeekOffsetRow = nullptr;
@@ -1744,7 +1744,7 @@ void Step::vRowBufferChunkFile(void)
 
 		pSeekOffsetRow->vColVal_int(0,i_ChunkOfs);
 		pSeekOffsetRow->vColVal_int(1,nChunkBytes);
-
+		
 		nSumBytes += nChunkBytes;
 
 		if (++nRowsInSeekOffsets >= C_MAX_SEEKOFFSETS)
@@ -2018,13 +2018,13 @@ void Step::vRowBufferOpInfosetStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].rdCsvChunk -- reach a chunk from file given the infoSet          */
+/* RowBuffer[].rdCsvChunk -- reach a chunk from file given the RowBuffer      */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferRdCsvChunk(void)
 {
 	ENTRY();
 
-	ASSERT(*m_pLogicUnit->m_xpInfoSet);
+	ASSERT(*m_pLogicUnit->m_xpRowBuffer);
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// get file and info arguments
