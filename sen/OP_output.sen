@@ -109,17 +109,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_PROMPTOUT ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_promptOut \handler
-
-  //"Operand:- EV_I_PROMPTOUT" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_RowBuffer \handler
@@ -184,7 +173,6 @@
   find: output_CompileErrors EV_I_COMPILEERRORS [op].handler!
   find: output_ExecErrors    EV_I_EXECERRORS    [op].handler!
   find: output_Warnings      EV_I_WARNINGS      [op].handler!
-  find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!
 
   find: output_InternalError EV_M_INTERNALERROR [op].handler!
   find: output_LowMemory     EV_M_LOWMEMORY     [op].handler!

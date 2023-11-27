@@ -42,7 +42,6 @@ enum eEV // events
   /*    */ EV_I_LOCKSTATS,
   /*    */ EV_I_PAGEINREQUEST,
   /*    */ EV_I_PATH,
-  /*    */ EV_I_PROMPTOUT,
   /*    */ EV_I_WARNINGS,
 
   /*    */ EV_M_CANCEL,

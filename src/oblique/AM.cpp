@@ -2336,7 +2336,7 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
 /*----------------------------------------------------------------------------*/
 /* pipe string out to prompt                                                  */
 /*----------------------------------------------------------------------------*/
-InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
+RowBuffer* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
 
@@ -2344,14 +2344,14 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
   if (! pStreamDef)
     return nullptr;
 
-  InfoSet* pInfoSet = new InfoSet(pStreamDef);
-  pInfoSet->vOpInfoSet(OI_PROMPTOUT);
+  RowBuffer* pRowBuffer = new RowBuffer(pStreamDef);
+	pRowBuffer->vBufferType(BT_PROMPTOUT);
 
-  Row* pRow = pInfoSet->pAllotRow();
+  Row* pRow = pRowBuffer->pAllotRow();
 
-  pInfoSet->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
+	pRowBuffer->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
 
-  return pInfoSet;
+  return pRowBuffer;
 }
 
 
@@ -4512,7 +4512,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OI_LOCKSTATS:      eOperand = EV_I_LOCKSTATS;      break;
         case OI_PAGEINREQUEST:  eOperand = EV_I_PAGEINREQUEST;  break;
         case OI_PATH:           eOperand = EV_I_PATH;           break;
-        case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;
         case OI_WARNINGS:       eOperand = EV_I_WARNINGS;       break;
         default:
           RASSERT(0);

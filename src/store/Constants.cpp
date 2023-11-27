@@ -753,8 +753,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
   /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
   /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
-  /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);
-  /*  0 */ //vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
   /*  0 */ vAddConstant("EV_I_WARNINGS"_Stz,        EV_I_WARNINGS);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);

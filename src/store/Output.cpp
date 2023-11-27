@@ -525,12 +525,22 @@ bool Output::bProcessOperand(Operand* pOperand)
 //                 spDataBuffer.sz(pRowBuffer),
 //                 pRowBuffer->nRows());
       if ( ! m_bHasError ) {
-        m_ixRowsProcessed += pRowBuffer->nRows();
-        vTrace("\n"_Stz);
+
+				if (pRowBuffer->eBufferType() == BT_PROMPTOUT) {
+					Row *pInfoRow = pRowBuffer->pFirstRow();
+					Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
+
+					vTrace("%s\n"_Stz, szPromptLine);
+				}
+				else {
+					m_ixRowsProcessed += pRowBuffer->nRows();
+					vTrace("\n"_Stz);
 //        PdsRowHelper* pPdsOfRows = new PdsRowHelper;
 //        pPdsOfRows->vCopyRows(pRowBuffer);
 //        pPdsOfRows->vPrintRows(nullptr, nullptr);
-        pRowBuffer->vPrintRows(m_pFileOut, nullptr);
+					pRowBuffer->vPrintRows(m_pFileOut, nullptr);
+
+				}
       }
       AM::vDeleteOperand(pOperand, nullptr);
       break;

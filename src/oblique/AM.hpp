@@ -552,7 +552,7 @@ namespace OBLIQUE
     public:
       static bool bToPipelineStmt(String* pAsPipelineStmt,
                                   TokenVec* pFromTokenVec);
-      static InfoSet* pToPromptOut(Stz* szStz);
+      static RowBuffer* pToPromptOut(Stz* szStz);
     };
 
 
