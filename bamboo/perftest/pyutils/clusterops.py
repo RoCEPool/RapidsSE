@@ -14,7 +14,7 @@ LOG = logging.getLogger(__name__)
 C_INSTALL_TIMEOUT_SEC = 120
 C_GENERAL_SSH_TIMEOUT_SEC = 120
 C_CLUSTER_START_CMD = "startSE.sh"
-C_CLUSTER_SESHELL_CMD = "seShell.sh"
+C_CLUSTER_SESHELL_CMD = "seshell.sh"
 C_CLUSTER_COLLECT_LOGS_CMD = "collectLogs.sh"
 C_CLUSTER_STATUS_CMD = "status.sh"
 
