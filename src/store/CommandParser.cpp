@@ -354,7 +354,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->loadCmd())           { m_szProcName = "load"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->loadReplicatedCmd()) { m_szProcName = "loadReplicated"_Stz; return visitChildren(pCtx); }
   else if (pCtx->dloadCmd())          { m_szProcName = "dload"_Stz;          return visitChildren(pCtx); }
-  else if (pCtx->compactIdxCmd())     { m_szProcName = "compactidx"_Stz;     return visitChildren(pCtx); }
+  else if (pCtx->compactIdxCmd())     { m_szProcName = "compact__index"_Stz; return visitChildren(pCtx); }
   else if (pCtx->truncateCmd())       { m_szProcName = "truncate"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->exportCmd())         { m_szProcName = "export"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->disconnectCmd())     { m_szProcName = "disconnect"_Stz;     return nullptr; }
