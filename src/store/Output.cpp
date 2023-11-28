@@ -416,34 +416,34 @@ bool Output::bProcessOperand(Operand* pOperand)
         }
         AM::vDeleteOperand(pOperand,nullptr);
       }
-      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS)) {
+//      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS)) {
+//
+//        m_bLoadResult = true;
+//        Row* pInfoRow = pInfoSet->pFirstRow();
+//
+//        i8 iRowsProcessed = pInfoRow->iColVal_int(0);
+//        i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
+//        i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
+//
+//        m_ixRowsProcessed += iRowsProcessed;
+//        m_ixRowsInvalid   += iRowsInvalid;
+//        m_ixRowsSkipped   += iRowsSkipped;
+//
+//        //vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,
+//        //       iRowsProcessed,iRowsInvalid,iRowsSkipped);
+//
+//        AM::vDeleteOperand(pOperand,nullptr);
+//      }
 
-        m_bLoadResult = true;
-        Row* pInfoRow = pInfoSet->pFirstRow();
-
-        i8 iRowsProcessed = pInfoRow->iColVal_int(0);
-        i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
-        i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
-
-        m_ixRowsProcessed += iRowsProcessed;
-        m_ixRowsInvalid   += iRowsInvalid;
-        m_ixRowsSkipped   += iRowsSkipped;
-
-        //vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,
-        //       iRowsProcessed,iRowsInvalid,iRowsSkipped);
-
-        AM::vDeleteOperand(pOperand,nullptr);
-      }
-
-      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_PROMPTOUT)) {
-
-        Row* pInfoRow = pInfoSet->pFirstRow();
-        Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
-
-        vTrace("%s\n"_Stz,szPromptLine);
-
-        AM::vDeleteOperand(pOperand,nullptr);
-      }
+//      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_PROMPTOUT)) {
+//
+//        Row* pInfoRow = pInfoSet->pFirstRow();
+//        Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
+//
+//        vTrace("%s\n"_Stz,szPromptLine);
+//
+//        AM::vDeleteOperand(pOperand,nullptr);
+//      }
       
       else {
         m_ixRowsProcessed += pInfoSet->nRows();
@@ -531,6 +531,18 @@ bool Output::bProcessOperand(Operand* pOperand)
 					Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
 
 					vTrace("%s\n"_Stz, szPromptLine);
+				}
+				else if (pRowBuffer->eBufferType() == BT_AFFECTEDROWS) {
+					m_bLoadResult = true;
+					Row* pInfoRow = pRowBuffer->pFirstRow();
+
+					i8 iRowsProcessed = pInfoRow->iColVal_int(0);
+					i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
+					i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
+
+					m_ixRowsProcessed += iRowsProcessed;
+					m_ixRowsInvalid   += iRowsInvalid;
+					m_ixRowsSkipped   += iRowsSkipped;
 				}
 				else {
 					m_ixRowsProcessed += pRowBuffer->nRows();

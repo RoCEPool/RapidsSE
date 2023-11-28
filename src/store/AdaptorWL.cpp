@@ -533,7 +533,7 @@ void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 /* Accumulate any affected row counts for the current statement               */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vAffectedRowCount(InfoSet* pInfoSet)
+void AdaptorWL::vAffectedRowCount(RowBuffer* pRowBuffer)
 {
   if (!bCheckState( {API_STATEMENT_SUBMITTED, API_STATEMENT_COMPLETED} )) {
     return;
@@ -547,11 +547,11 @@ void AdaptorWL::vAffectedRowCount(InfoSet* pInfoSet)
   }
 
   ASSERT(m_pStmtCtx);
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS));
-  ASSERT(pInfoSet->nRows() == 1);
+  ASSERT(pRowBuffer->eBufferType() == BT_AFFECTEDROWS);
+  ASSERT(pRowBuffer->nRows() == 1);
 
-  Row *pInfoRow = pInfoSet->pFirstRow();
-  ASSERT(pInfoRow);
+  Row *pInfoRow = pRowBuffer->pFirstRow();
+  ASSERT(pRowBuffer);
 
   i8 iRowsProcessed = pInfoRow->iColVal_int(0);
   i8 iRowsInvalid   = pInfoRow->iColVal_int(1);

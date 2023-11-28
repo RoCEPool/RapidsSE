@@ -774,7 +774,8 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   m_xpPipein = pOperand;
-  
+	m_ePipeInBufferType    = BT_NONE;
+
   if (pOperand) {
     eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
     m_ePipeInOperand = eOperand;
@@ -785,7 +786,6 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   }
   else {
     m_ePipeInOperand = EV_NONE;
-		m_ePipeInBufferType    = BT_NONE;
   }
 }
 

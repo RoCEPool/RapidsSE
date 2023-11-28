@@ -7,8 +7,7 @@
 Stz* aOI[OI_ENUMS]
 {
   /*  0 */ "OI_NONE"_Stz,
-  
-  /*    */ "OI_AFFECTEDROWS"_Stz,
+
   /*    */ "OI_CALLPIPELINE"_Stz,
   /*    */ "OI_COMMAND"_Stz,
   /*    */ "OI_COMPILEERRORS"_Stz,

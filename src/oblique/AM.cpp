@@ -4502,7 +4502,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
-        case OI_AFFECTEDROWS:   eOperand = EV_I_AFFECTEDROWS;   break;
         case OI_CALLPIPELINE:   eOperand = EV_I_CALLPIPELINE;   break;
         case OI_COMMAND:        eOperand = EV_I_COMMAND;        break;
         case OI_COMPILEERRORS:  eOperand = EV_I_COMPILEERRORS;  break;

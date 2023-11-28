@@ -185,11 +185,11 @@ void Step::vAdaptorWLAffectedRowCount(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  InfoSet* pInfoSet = * m_pLogicUnit->m_xpInfoSet;
-  ASSERT(pInfoSet);
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS));
+  RowBuffer* pRowBuffer = * m_pLogicUnit->m_xpRowBuffer;
+  ASSERT(pRowBuffer);
+  ASSERT(pRowBuffer->eBufferType() == BT_AFFECTEDROWS);
 
-  pAdaptorWL->vAffectedRowCount(pInfoSet);
+  pAdaptorWL->vAffectedRowCount(pRowBuffer);
 
   EXIT();
 }

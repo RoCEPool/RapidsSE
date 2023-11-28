@@ -69,7 +69,7 @@
 : EV_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
 
 
-: EV_I_AFFECTEDROWS_handler     \handler STANDARD_PIPEOUT ;
+//: EV_I_AFFECTEDROWS_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_COMMAND_handler          \handler STANDARD_PIPEOUT ;
 : EV_I_COMPILEERRORS_handler    \handler STANDARD_PIPEOUT ;
@@ -470,7 +470,7 @@
   [op].opName@ "SETTING default_internalErrorHandlers for OP %v" str.format .
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
-  abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
+  //abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
   abnormalHandler EV_I_COMMAND          [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
@@ -497,7 +497,7 @@
   //[op].opName@ "SETTING default_lowMemHandlers for OP %v" str.format .
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
-  abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
+  //abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
   abnormalHandler EV_I_COMMAND          [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!

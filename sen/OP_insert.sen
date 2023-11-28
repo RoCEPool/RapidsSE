@@ -156,15 +156,15 @@
 
       C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
 
-      // create an infoSet operand
-      infoSetTable[] InfoSet[].new
-      OI_AFFECTEDROWS InfoSet[].opInfoset!
+      // create an rowBuffer operand
+      infoSetTable[] RowBuffer[].new
+      BT_AFFECTEDROWS RowBuffer[].setBufferType
 
-      // insert row counts to the infoset
-      rowCounts[].getCounters@@ rowCounts[].numCounters InfoSet[].addRowVargs
+      // insert row counts to the rowBuffer
+      rowCounts[].getCounters@@ rowCounts[].numCounters RowBuffer[].addRowVargs
 
-      // pipeout the infoset
-      InfoSet[].pipeOut
+      // pipeout the rowBuffer
+      RowBuffer[].pipeOut
 
     then
   then

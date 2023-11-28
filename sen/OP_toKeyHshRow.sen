@@ -86,12 +86,12 @@
   // pipeout load results
   
   ToKeyHshRow[].countersAreZero not if
-    infoSetTable[] InfoSet[].new
-    OI_AFFECTEDROWS InfoSet[].opInfoset!
+    infoSetTable[] RowBuffer[].new
+    BT_AFFECTEDROWS RowBuffer[].setBufferType
 
-    0 0 0 ToKeyHshRow[].counters@@ 6 InfoSet[].addRowVargs
+    0 0 0 ToKeyHshRow[].counters@@ 6 RowBuffer[].addRowVargs
 
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
   then
 
 

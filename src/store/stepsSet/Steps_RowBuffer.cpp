@@ -1548,7 +1548,7 @@ void Step::vRowBufferAddRowCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addRowVargs -- add a row by variable arguments                   */
+/* RowBuffer[].addRowVargs -- add a row by variable arguments                 */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddRowVargs(void)
 {
@@ -1559,7 +1559,7 @@ void Step::vRowBufferAddRowVargs(void)
 	i8 nCols = pStreamDef->nColumns();
 	i8 nArgs = m_pDataStack->iPopInt(__func__);
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	Row* aRow = pRowBuffer->RowBuffer::pAllotRow();
 	Stz* szTail;

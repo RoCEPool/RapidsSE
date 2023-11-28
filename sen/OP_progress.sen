@@ -87,14 +87,20 @@
   // check the rowBuffer type
   eBufferType BT_PROGRESSUNITS == if
     progress_ProgressUnits
-  else
-  eBufferType .
-    eBufferType BT_TOTALUNITS == assert
-    progress_TotalUnits
+    RowBuffer[].delete
+    true
+    exit
   then
 
-  // now delete the RowBuffer[]
-  RowBuffer[].delete
+  eBufferType BT_TOTALUNITS == if
+    progress_TotalUnits
+    RowBuffer[].delete
+    true
+    exit
+  then
+
+  // pipeout all other rowBuffer types
+  RowBuffer[].pipeout
 
   true
 ;

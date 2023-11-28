@@ -41,6 +41,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handle BT_AFFECTEDROWS                                                     */
+/* Called when an affectedRows rowBuffer is received.                         */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_AffectedRows
+
+  "adaptorWL_AffectedRows - BT_AFFECTEDROWS" .verbose
+
+  PipeIn[] to RowBuffer[]
+  nullptr  to PipeIn[]
+
+  adaptorWL[].affectedRowCount
+
+  // now delete the RowBuffer[]
+  RowBuffer[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* Parse a query into one or more tasks                                       */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_parseQuery params| sSmt |
@@ -320,34 +343,15 @@
 
   "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .verbose
 
-  PipeIn[] AdaptorWL[].rowBuffer
-  Pipein[].delete
-
-  // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
+  // handle AFFECTEDROWS
+  PipeIn[].bufferType BT_AFFECTEDROWS == if
+    adaptorWL_affectedRows
     true
     exit
   then
 
-  true
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_I_AFFECTEDROWS                                              */
-/* Called when an affectedRows infoset is received.                           */
-/*----------------------------------------------------------------------------*/
-: adaptorWL_AffectedRows \handler
-
-  "adaptorWL_AffectedRows - EV_I_AFFECTEDROWS" .verbose
-
-  PipeIn[] to InfoSet[]
-  nullptr  to PipeIn[]
-
-  adaptorWL[].affectedRowCount
-
-  // now delete the InfoSet[]
-  InfoSet[].delete
+  PipeIn[] AdaptorWL[].rowBuffer
+  Pipein[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
   adaptorWL_sendAnyWLResponses not if
@@ -456,7 +460,6 @@
   find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
   find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
   find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!
-  find: adaptorWL_AffectedRows  EV_I_AFFECTEDROWS   [op].handler!
   find: adaptorWL_ChildExit     EV_X_CHILDEXIT      [op].handler!
   find: adaptorWL_Error         EV_M_ERROR          [op].handler!
   find: adaptorWL_Cleaning      EV_M_CLEANING       [op].handler!

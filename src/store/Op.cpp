@@ -680,6 +680,9 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
     case EV_D_CRWBUFFER:
     case EV_D_ENTBUFFER:
     case EV_D_SRTBUFFER:
+			if (i_BufferType != BT_NONE) {
+				vTrace("%s %s %lld\n"_Stz, aEV[i_OperandKind], aBT[i_BufferType], i_BufferType);
+			}
 			RASSERT(i_BufferType == BT_NONE);
       // These don't apply to adaptorWL
       if (szOpNm()->bSame("adaptorWL"_Stz)) {
