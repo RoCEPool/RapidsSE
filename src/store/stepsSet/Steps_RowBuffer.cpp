@@ -68,6 +68,7 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].decile"_Stz,         &Step::vRowBufferDecile);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
   vAddStep("RowBuffer[].get"_Stz,            &Step::vRowBufferGet);
+	vAddStep("RowBuffer[].getBufferName"_Stz,  &Step::vRowBufferGetBufferName);
 	vAddStep("RowBuffer[].getBufferType"_Stz,  &Step::vRowBufferGetBufferType);
   vAddStep("RowBuffer[].insdelIntoTable"_Stz,&Step::vRowBufferInsdelIntoTable);
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
@@ -1113,6 +1114,20 @@ void Step::vRowBufferGetBufferIdAsAddr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBuffer[].getBufferName -- get the rowBuffer buffer name                 */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferGetBufferName(void)
+{
+	ENTRY();
+
+	s256 sBufferName = aBT[m_pLogicUnit->m_xpRowBuffer->eBufferType()];
+
+	m_pDataStack->vPushStr(sBufferName);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBuffer[].getBufferType -- get the rowBuffer bufferType                  */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferGetBufferType(void)
@@ -1412,7 +1427,7 @@ void Step::vRowBufferAddLockStats(void)
 	// get the streamDef from the table
 	StreamDef* pStreamDef = pStreamTable->pStreamDef();
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 	pRowBuffer->vBufferType(BT_LOCKSTATS);
 
 	Row* pRow = LockMetrics::pSample(pStreamDef, pRowBuffer);

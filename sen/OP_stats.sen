@@ -36,14 +36,14 @@
   // find the __lockStats table
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert
 
-  // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  // create an rowBuffer operand
+  infoSetTable[] RowBuffer[].new
 
   // add lock  to the infoSet
-  infoSetTable[] InfoSet[].addLockStats assert
+  infoSetTable[] RowBuffer[].addLockStats assert
 
-  // pipeout the infoset
-  InfoSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;
@@ -57,13 +57,13 @@
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert
 
   // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  infoSetTable[] RowBuffer[].new
 
-  // add lock to the infoSet
-  infoSetTable[] InfoSet[].addLockStats assert
+  // add lock to the rowBuffer
+  infoSetTable[] RowBuffer[].addLockStats assert
 
-  // pipeout the infoset
-  InfoSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   EV_M_EXITING_handler // calling op_loop exits
 ;

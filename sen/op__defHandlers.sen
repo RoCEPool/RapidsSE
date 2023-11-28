@@ -77,7 +77,7 @@
 : EV_I_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_FORKCOMMAND_handler      \handler STANDARD_PIPEOUT ;
 //: EV_I_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
-: EV_I_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
+//: EV_I_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
 //: EV_I_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
 : EV_I_PAGEINREQUEST_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_PATH_handler             \handler STANDARD_PIPEOUT ;
@@ -477,7 +477,7 @@
   abnormalHandler EV_I_EXECERRORS       [op].handler!
   abnormalHandler EV_I_FORKCOMMAND      [op].handler!
   //abnormalHandler EV_I_LOADRESULT       [op].handler!
-  abnormalHandler EV_I_LOCKSTATS        [op].handler!
+  //abnormalHandler EV_I_LOCKSTATS        [op].handler!
   //abnormalHandler EV_I_NODEINFO         [op].handler!
   abnormalHandler EV_I_PAGEINREQUEST    [op].handler!
   abnormalHandler EV_I_PATH             [op].handler!
@@ -504,7 +504,7 @@
   abnormalHandler EV_I_EXECERRORS       [op].handler!
   abnormalHandler EV_I_FORKCOMMAND      [op].handler!
   //abnormalHandler EV_I_LOADRESULT       [op].handler!
-  abnormalHandler EV_I_LOCKSTATS        [op].handler!
+  //abnormalHandler EV_I_LOCKSTATS        [op].handler!
   //abnormalHandler EV_I_NODEINFO         [op].handler!
   abnormalHandler EV_I_PAGEINREQUEST    [op].handler!
   abnormalHandler EV_I_PATH             [op].handler!

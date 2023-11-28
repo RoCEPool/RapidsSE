@@ -41,7 +41,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[]"_Stz,                  &Step::vInfoSetGet);
   vAddStep("InfoSet[].addCommandError"_Stz,  &Step::vInfoSetAddCommandError);
   vAddStep("InfoSet[].addExecError"_Stz,     &Step::vInfoSetAddExecError);
-  vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
+  //vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
   //vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   //vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
@@ -65,7 +65,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].nextRow"_Stz,          &Step::vInfoSetNextRow);
   vAddStep("InfoSet[].opInfoset@"_Stz,       &Step::vInfoSetOpInfosetFetch);
   vAddStep("InfoSet[].opInfoset!"_Stz,       &Step::vInfoSetOpInfosetStore);
-  vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
+  //vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,         &Step::vInfoSetWriteCsv);
 }
@@ -149,31 +149,6 @@ void Step::vInfoSetAddExecError(void)
 
   m_pDataStack->vPushInt(pRow ? true : false);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addLockStats -- add a row to infoset with the lockStats          */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddLockStats(void)
-{
-  ENTRY();
-  
-  // get the table
-  Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pStreamTable->pStreamDef();
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_LOCKSTATS);
-  
-  Row* pRow = LockMetrics::pSample(pStreamDef, pInfoSet);
-  
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
   EXIT();
 }
 
@@ -593,74 +568,6 @@ void Step::vInfoSetOpInfosetStore(void)
   
   _pInfoSet(*m_pLogicUnit->m_xpInfoSet)->vOpInfoSet(eOpInfoSet);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].rdCsvChunk -- reach a chunk from file given the infoSet          */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetRdCsvChunk(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pLogicUnit->m_xpInfoSet);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get file and info arguments
-  
-  File* pCsvFile = _pFile(*m_pLogicUnit->m_xpFile0);
-  Stz* szFilePath = pCsvFile->sFilePath();
-  
-  Row* pInfoRow = _pRow(m_pDataStack->pPopPtr(__func__));
-  i8 iOffset = pInfoRow->iColVal_int(0);
-  i8 nBytes = pInfoRow->iColVal_int(1);
-  
-  //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create new csvBuffer and set csvMeta
-
-#ifdef WITH_OOM_FAULTINJECTION
-  PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)6);
-#endif
-
-  CsvBuffer* pCsvBuffer = new CsvBuffer;
-  
-  CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
-  
-  pCsvMeta->vOriginNm(AM::NODE::szNodeNm());
-  pCsvMeta->vFilePath(szFilePath);
-  pCsvMeta->vOffset(iOffset);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // read chunk into buffer
-  
-  char* azInto = (char*)pCsvBuffer->ayDataArea();
-
-  pCsvFile->vSeek(iOffset);
-  pCsvBuffer->vTake(nBytes);
-  i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
-
-//  if (nBytesRead != nBytes) {
-//    nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
-//    ASSERT(nBytesRead == nBytes);
-//  }
-
-  ASSERT(nBytesRead == nBytes);
-  UNUSED(nBytesRead);
-  
-  azInto[nBytes] = '\0';
-  
-  //vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // return the CsvBuffer
-
-  m_pDataStack->vPushInt(nBytes);
-  m_pDataStack->vPushInt(iOffset);
-
-  m_pDataStack->vPushPtr(pCsvBuffer);
- 
   EXIT();
 }
 
