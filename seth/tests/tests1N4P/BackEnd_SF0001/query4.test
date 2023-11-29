@@ -4,12 +4,12 @@
 /*  (original Query)
 
   select o_orderpriority, count(*) as order_count
-     from orders
+     from ${testName2}_orders
      where o_orderdate >= '1993-07-01'
       and o_orderdate < '1993-10-01'
       and exists (
       select *
-      from lineitem
+      from ${testName2}_lineitem
       where l_orderkey = o_orderkey
       and l_commitdate < l_receiptdate )
       group by o_orderpriority
@@ -22,12 +22,12 @@
 /*
 explain stage transliterate
   select o_orderpriority, count(*) as order_count
-     from orders
+     from ${testName2}_orders
      where o_orderdate >= DATE '1993-07-01'
       and o_orderdate < DATE '1993-10-01'
       and exists (
       select *
-      from lineitem
+      from ${testName2}_lineitem
       where l_orderkey = o_orderkey
       and l_commitdate < l_receiptdate )
       group by o_orderpriority
@@ -43,7 +43,7 @@ begin
       | pulse once
       | stageMarker0967
     stage stageMarker0967 on all partitions :
-      scan rapidsse public LineItem
+      scan rapidsse public ${testName2}_LineItem
       | filter " type BOOLEAN  $1 ==  $12 $13 <  and  "
       | project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
       | combined 0
@@ -62,7 +62,7 @@ begin
     | pulse once
     | stageMarker0973
   stage stageMarker0973 on all partitions :
-    scan rapidsse public orders
+    scan rapidsse public ${testName2}_orders
     | filter " type BOOLEAN  $5 DATE ''1993-07-01''  >=  $5 DATE ''1993-10-01''  <  and  $1 __subquery0003  exists  and  "
     | gbyAgg " groupBy  type VARCHAR as o_orderpriority $6 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
     | combined 0
@@ -93,7 +93,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
                             O_ORDERDATE DATE '1993-10-01' < and "
     | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -103,7 +103,7 @@ begin
     | next hashcast
 
   stage S02 on all partitions :
-    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+    keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
               aggregates
@@ -154,7 +154,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
                             O_ORDERDATE DATE '1993-10-01' < and "
     | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -163,7 +163,7 @@ begin
     | next
 
   stage S02 on all partitions :
-    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+    keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
@@ -206,8 +206,6 @@ rows:
  ('5-LOW',12)
 */
 CLEANUP {
-  bye;
-  mute
 }
 
 

@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- tpch query16 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 //NOTE:  count distinct -> count
@@ -14,8 +14,8 @@ select
   p_size,
   count(*) as supplier_cnt
 from
-  partsupp,
-  part
+  ${testName2}_partsupp,
+  ${testName2}_part
 where p_partkey = ps_partkey
    and p_brand <> 'Brand#45'
    and p_type not like 'MEDIUM POLISHED%'
@@ -25,7 +25,7 @@ where p_partkey = ps_partkey
     select
       s_suppkey
     from
-      supplier
+      ${testName2}_supplier
     where
       s_comment like '%Customer%Complaints%'
   )
@@ -117,8 +117,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

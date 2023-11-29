@@ -5,6 +5,8 @@
 #include "BASE.h"
 
 #include "TagConstants.h"
+#include "StreamSet.hpp"
+#include "InfoSet.hpp"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
@@ -610,6 +612,497 @@ void PoolHelper::vObjectSummary(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* summary report on objects in the pool and heaps                            */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
+                                InfoSet* pWarnInfoSet, StreamDef* pWarnDef)
+{
+  _static_
+
+  s32 sFlag;
+  s32 sMagObj;
+  s32 sMagHeap;
+  s32 sMagBlocks;
+  i8  nObjInHeap;
+
+  i8 iCountObjects[CN_ENUMS];
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nBlockSize =0;
+
+  nBlockSize = C_SIZE_TINY_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pTiny->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "persistent"_Stz,
+                                      "tiny"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      false,    // tiny heap is always the smallest
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In persistent tiny heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_SMALL_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pSmall->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "persistent"_Stz,
+                                      "small"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In persistent small heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_MEDIUM_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pMedium->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "persistent"_Stz,
+                                      "medium"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In persistent medium heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_LARGE_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pLarge->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "persistent"_Stz,
+                                      "large"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In persistent large heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_TINY_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pTiny->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "transient"_Stz,
+                                      "tiny"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      false,      // tiny heap is the smallest
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pTiny->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In transient tiny heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Transient.m_pTiny->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_SMALL_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pSmall->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "transient"_Stz,
+                                      "small"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pSmall->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In transient small heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Transient.m_pSmall->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_MEDIUM_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pMedium->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "transient"_Stz,
+                                      "medium"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pMedium->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In transient medium heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Transient.m_pMedium->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_LARGE_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pLarge->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "transient"_Stz,
+                                      "large"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pLarge->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In transient large heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // BufferPool Object Summary
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
+    iCountObjects[i_Index] = 0;
+
+
+  for (i8 i_PoolBuffer = gpBufferPool->iBufferFirst();
+       i_PoolBuffer <= gpBufferPool->iBufferLast();
+       i_PoolBuffer++) {
+
+    PoolBuffer* pBuffer = FileMap::pToPoolBuffer(i_PoolBuffer);
+    iCountObjects[pBuffer->eGetClassNo()]++;
+  }
+
+  nBlockSize = C_SIZE_POOL_BUFFER;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    if (iCountObjects[eClass] == 0)
+      continue;
+
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = iCountObjects[eClass] * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "bufferpool"_Stz,
+                                      0,
+                                      aCN[eClass],
+                                      iCountObjects[eClass],
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      false,
+                                      C_VARGS_END);
+    ASSERT(pRow);
+    UNUSED(pRow);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool                                      */
 /*----------------------------------------------------------------------------*/
 HACK(PoolHelper,"vObjectSnapshot() is ignoring tiny heap : Ray 28-Dec-2020)");
@@ -919,6 +1412,201 @@ void PoolHelper::vRegionSummary()
          AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
          AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
+}
+
+/*----------------------------------------------------------------------------*/
+/* report on shm region                                                       */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
+                                InfoSet* pWarnInfoSet, StreamDef* pWarnDef)
+{
+  _static_
+  UNUSED(pWarnInfoSet);
+  UNUSED(pWarnDef);
+
+  Heap* pHeap;
+  i8 iChunkSize;
+  i8 iSumBufsUsed;
+  i8 iSumChunksUsed;
+  i8 iWastageKb;
+  i8 iWastagePct;
+
+  pHeap = AM::pHeaps()->Transient.m_pTiny;
+  iChunkSize = C_SIZE_TINY_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+  // Wastage is the size of the extra buffers that were needed when the chunks could have been packed
+  // into a smaller number of buffers.
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "transient"_Stz,
+                        "tiny"_Stz,
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
+                        C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Transient.m_pSmall;
+  iChunkSize = C_SIZE_SMALL_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "transient"_Stz,
+                        "small"_Stz,
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
+                        C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Transient.m_pMedium;
+  iChunkSize = C_SIZE_MEDIUM_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "transient"_Stz,
+                        "medium"_Stz,
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
+                        C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Transient.m_pLarge;
+  iChunkSize = C_SIZE_LARGE_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "transient"_Stz,
+                        "large"_Stz,
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
+                        C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Persistent.m_pTiny;
+  iChunkSize = C_SIZE_TINY_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "persistent"_Stz,
+                        "tiny"_Stz,
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
+                        C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Persistent.m_pSmall;
+  iChunkSize = C_SIZE_SMALL_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "persistent"_Stz,
+                        "small"_Stz,
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
+                        C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Persistent.m_pMedium;
+  iChunkSize = C_SIZE_MEDIUM_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "persistent"_Stz,
+                        "medium"_Stz,
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
+                        C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Persistent.m_pLarge;
+  iChunkSize = C_SIZE_LARGE_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "persistent"_Stz,
+                        "large"_Stz,
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
+                        C_VARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/

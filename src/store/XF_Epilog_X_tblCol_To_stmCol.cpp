@@ -45,7 +45,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvert(CardIter* pCI)
 
   XF_Epilog_X_tblCol_To_stmCol* pXF_tblCol_To_stmCol = new XF_Epilog_X_tblCol_To_stmCol(pCI);
 
-  pXF_tblCol_To_stmCol->vX_tblCol_To_stmCol();
+  pXF_tblCol_To_stmCol->vX_tblCol_To_expCol();
 
   delete pXF_tblCol_To_stmCol;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvert(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* transform table-columns to stream-columns                                  */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_stmCol(void)
+void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 
@@ -112,42 +112,42 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->X.m_pExprList_i = m_pCI->G.p_OP->pSub_injected();
+  m_pCI->X.m_pExprList_i = m_pCI->G.p_OP->pSub_injectable();
   m_pCI->X.m_pExprList_k = m_pCI->G.p_OP->pSub_key();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
-    m_pCI->G.p_indexList->vX_tblCol_To_stmCol(m_pCI);
+    m_pCI->G.p_indexList->vX_tblCol_To_expCol(m_pCI);
   }
 
   if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
     if (m_pCI->Flux.m_pArriving)
-      m_pCI->G.p_key->vX_tblCol_To_stmCol(m_pCI);
+      m_pCI->G.p_key->vX_tblCol_To_expCol(m_pCI);
   }
 
   if (CK_FILTER == m_pCI->G.p_OP->eCard()) {
-    m_pCI->G.p_filter->vX_tblCol_To_stmCol(m_pCI);
+    m_pCI->G.p_filter->vX_tblCol_To_expCol(m_pCI);
   }
   else
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
-    m_pCI->G.p_filter->vX_tblCol_To_stmCol(m_pCI);
+    m_pCI->G.p_filter->vX_tblCol_To_expCol(m_pCI);
   }
 
   if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
-    m_pCI->G.p_emit->vX_tblCol_To_stmCol(m_pCI);
+    m_pCI->G.p_emit->vX_tblCol_To_expCol(m_pCI);
   }
 
   if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
     if (m_pCI->Flux.m_pArriving)
-      m_pCI->G.p_hshColList->vX_tblCol_To_stmCol(m_pCI);
+      m_pCI->G.p_hshColList->vX_tblCol_To_expCol(m_pCI);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     if (m_pCI->Flux.m_pArriving)
-      m_pCI->G.p_constraint->vX_tblCol_To_stmCol(m_pCI);
+      m_pCI->G.p_constraint->vX_tblCol_To_expCol(m_pCI);
   }
 
   m_pCI->vSnapFluxArriving();
@@ -158,11 +158,11 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     if (m_pCI->Flux.m_pArriving)
-      m_pCI->G.p_constraint->vX_tblCol_To_stmCol(m_pCI);
+      m_pCI->G.p_constraint->vX_tblCol_To_expCol(m_pCI);
   }
 
   if ((m_pCI->G.p_streamKey = m_pCI->G.p_MainCard->pSub_streamKey())) {
-    m_pCI->G.p_streamKey->vX_tblCol_To_stmCol(m_pCI);
+    m_pCI->G.p_streamKey->vX_tblCol_To_expCol(m_pCI);
   }
 }
 

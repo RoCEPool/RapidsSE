@@ -22,6 +22,7 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_PAGINGMETRICS"_Stz,
   /*    */ "EV_D_PARCEL"_Stz,
   /*    */ "EV_D_PDSROWBUFFER"_Stz,
+  /*    */ "EV_D_PAYLOAD"_Stz,
   /*    */ "EV_D_PLANOPERAND"_Stz,
   /*    */ "EV_D_PROFILE"_Stz,
   /*    */ "EV_D_ROWBUFFER"_Stz,
@@ -32,6 +33,7 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_TABLE"_Stz,
   /*    */ "EV_D_TABLEPTN"_Stz,
 
+  /*    */ "EV_I_AFFECTEDROWS"_Stz,
   /*    */ "EV_I_CALLPIPELINE"_Stz,
   /*    */ "EV_I_COMMAND"_Stz,
   /*    */ "EV_I_COMPILEERRORS"_Stz,
@@ -45,9 +47,9 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_I_PATH"_Stz,
   /*    */ "EV_I_PROGRESSUNITS"_Stz,
   /*    */ "EV_I_PROMPTOUT"_Stz,
-  /*    */ "EV_I_RETURNPIPELINE"_Stz,
   /*    */ "EV_I_SEEKOFFSETS"_Stz,
   /*    */ "EV_I_TOTALUNITS"_Stz,
+  /*    */ "EV_I_WARNINGS"_Stz,
 
   /*    */ "EV_M_CANCEL"_Stz,
   /*    */ "EV_M_CANCELLING"_Stz,

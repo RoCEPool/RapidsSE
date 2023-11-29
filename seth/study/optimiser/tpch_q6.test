@@ -4,7 +4,7 @@
 
 LOG 'TPC-H Q6...';
 
-trackMemory;
+trackMemory force;
 success
 /*
 select
@@ -36,8 +36,6 @@ MemoryLeaks;
  rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

@@ -26,7 +26,7 @@ namespace STORE
     i8 m_nFacets;
     Facet xaFacet[C_FACETS];
 
-    eCT m_eColType;
+		TypeId m_xTypeId;
 
     TagSet* m_pProperties;
 
@@ -64,6 +64,7 @@ namespace STORE
     static bool bIs_Direction(Stz* szChrSeq);       // asc, desc
     static bool bIs_Else(Stz* szChrSeq);            // ELSE
     static bool bIs_EndIf(Stz* szChrSeq);           // ENDIF
+    static bool bIs_Exp_Col(Stz* szArg);            // $n
     static bool bIs_Fld_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Flt_Lit(Stz* szChrSeq);         // StrLib::bIsFloat()
     static bool bIs_GroupBy(Stz* szChrSeq);         // GROUPBY
@@ -92,7 +93,6 @@ namespace STORE
     static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
     static bool bIs_Stg_Cast(Stz* szChrSeq);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szArg);             // Sn
-    static bool bIs_Stm_Col(Stz* szArg);            // $n
     static bool bIs_Str_Fn(Stz* szChrSeq);          // SUBSTRING2 ... SUBSTRING3
     static bool bIs_String(Stz* szChrSeq);          // 'abc'
     static bool bIs_Tbl_Col(Stz* szArg);            // $c.n
@@ -104,23 +104,23 @@ namespace STORE
     static bool bIs_When(Stz* szChrSeq);            // WHEN
     static bool bIs_Xk_Cast(Stz* szChrSeq);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
-    static bool bIsItemised(Stz* szArg);
-    static void vItemStrip(String* psArg);
-
     static bool bPossibleNm(Stz* szChrSeq);
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
 
-    static eCT  eTo_eCT_str(Stz* szType);
-    static eCT  eTo_eCT_char(Stz* szType);
+    static TypeId  xTo_TypeId_str(Stz* szType);
 
     // - - - - - -
 
+    void vAppendFacet(Facet* aFacet_arg);
     void vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vAppendFacets(Symbol* pSymbol_arg);
 
-    eCT  eColType(void);
-    void vColType(eCT eColType);
+    //eCT  eColType(void);
+    //void vColType(eCT eColType);
+
+		TypeId  xTypeId(void);
+		void vTypeId(TypeId xColTypeId);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
@@ -141,15 +141,13 @@ namespace STORE
     void vFacet(eSF eFacet, i8 iInt);
     void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
-    void vFacet_X(eSF eFacet, i8 iInt);
-    void vFacet_X(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     void vFacets(Symbol* pSymbol_arg);
     void vFacetsPpy(Symbol* pSymbol_arg);
 
     void vFacets_To_String(String* pString);
 
-    bool bFormIs(eSF eSymbol);
+    bool bFacetIs(eSF eFacet_arg);
 
     bool bHasFacet(eSF eFacet);
     bool bHasFacet(Stz* szChrSeq);
@@ -179,6 +177,7 @@ namespace STORE
     bool bIs_Direction(void);       // asc, desc
     bool bIs_Else(void);            // ELSE
     bool bIs_EndIf(void);           // ENDIF
+    bool bIs_Exp_Col(void);         // $n
     bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Flt_Lit(void);         // StrLib::bIsFloat()
     bool bIs_GroupBy(void);         // GROUPBY
@@ -207,7 +206,6 @@ namespace STORE
     bool bIs_Sqy_Rsl(void);         // __n
     bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
     bool bIs_Stg_Nm(void);          // Sn
-    bool bIs_Stm_Col(void);         // $n
     bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
     bool bIs_String(void);          // 'abc''
     bool bIs_Tbl_Col(void);         // $t.c
@@ -219,17 +217,16 @@ namespace STORE
     bool bIs_When(void);            // WHEN
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
-    void vItemStrip(void);
-
     bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
     bool bMatches(Symbol* pSymbol_arg, eSF* aeFacet=nullptr);
     bool bMatches(Symbol* pSymbol_arg, eSF eFacet);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
+    void vPushFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
+
     bool bSame(char cArg);
     bool bSame(Stz* szChrSeq);
-    bool bSame(Symbol* pArg);
 
     char cSF_char(void);
     Stz* szSF_chrSeq(eSF eSymbol_xchk);
@@ -284,6 +281,7 @@ namespace STORE
     void vFacet_Direction(Stz* szDirection);
     void vFacet_Else(Stz* szElse);
     void vFacet_EndIf(Stz* szEndIf);
+    void vFacet_Exp_Col(Stz* szExpCol);
     void vFacet_Fld_Nm(Stz* szFldNm);
     void vFacet_Flt_Lit(Stz* szFltLit);
     void vFacet_GroupBy(Stz* szGroupBy);
@@ -321,7 +319,6 @@ namespace STORE
     void vFacet_Sqy_Rsl(Stz* szSqyRsl);
     void vFacet_Stg_Cast(Stz* szStgCast);
     void vFacet_Stg_Nm(i8 iStgNo);
-    void vFacet_Stm_Col(Stz* szStmCol);
     void vFacet_Stm_Col(i8 iStmCol);
     void vFacet_Str_Fn(Stz* szStrFn);
     void vFacet_String(Stz* szString);
@@ -341,6 +338,7 @@ namespace STORE
     void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);
     void vFacetPush(eSF eFacet);
+    void vFacetPush(eSF eFacet, Stz* szFacet);
     void vFacetReset(void);
     void vFacetRotate(eSF eFacet);
     void vFacetRotateSet(eSF eFacet, Stz* szFacet);

@@ -213,7 +213,7 @@ void TablePtn::vAddIndex(IndexTree *pIndexTree)
 /*----------------------------------------------------------------------------*/
 /* append a buffer into the TablePtn                                          */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
+void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer, i8& nRowsInserted)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
@@ -228,6 +228,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
         return;
       }
       m_pCrwTablePtn->vAppendBuffer(pCrwBuffer);
+      nRowsInserted = pCrwBuffer->nRows();
       // TODO: Arjun - Update below for paging and bufferids
       vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
       break;

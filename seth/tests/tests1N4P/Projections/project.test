@@ -2,16 +2,16 @@
 -- projection tests
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 //------------------------------------------------------------------------------
-select L_DISCOUNT from lineitem;
+select L_DISCOUNT from ${testName2}_lineitem;
 failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table LineItem
+create table ${testName2}_lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -33,15 +33,15 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-select L_DISCOUNT from lineitem;
+select L_DISCOUNT from ${testName2}_lineitem;
 rows: 0
 
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-select L_PARTKEY from lineitem;
+select L_PARTKEY from ${testName2}_lineitem;
 rows:
   (1551894)
   (673091)
@@ -55,7 +55,7 @@ rows:
   (1284483)
 
 //------------------------------------------------------------------------------
-select L_DISCOUNT from lineitem;
+select L_DISCOUNT from ${testName2}_lineitem;
 rows:
   (0.04)
   (0.09)
@@ -69,7 +69,7 @@ rows:
   (0.06)
 
 //------------------------------------------------------------------------------
-select L_RETURNFLAG from lineitem;
+select L_RETURNFLAG from ${testName2}_lineitem;
 rows:
   ('N')
   ('N')
@@ -83,7 +83,7 @@ rows:
   ('A')
 
 //------------------------------------------------------------------------------
-select L_SHIPDATE from lineitem;
+select L_SHIPDATE from ${testName2}_lineitem;
 rows:
  (DATE '1993-11-09')
  (DATE '1994-02-02')
@@ -97,7 +97,7 @@ rows:
  (DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-select L_COMMENT from lineitem;
+select L_COMMENT from ${testName2}_lineitem;
 rows:
   ('egular courts above the')
   ('ly final dependencies: slyly bold ')
@@ -111,7 +111,7 @@ rows:
   ('nal foxes wake. ')
 
 //------------------------------------------------------------------------------
-select 2 as a , L_SHIPDATE as b from lineitem;
+select 2 as a , L_SHIPDATE as b from ${testName2}_lineitem;
 rows:
   (2, DATE '1993-11-09')
   (2, DATE '1994-02-02')
@@ -125,7 +125,7 @@ rows:
   (2, DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-select L_SHIPDATE , L_EXTENDEDPRICE * 2.0, L_EXTENDEDPRICE from lineitem;
+select L_SHIPDATE , L_EXTENDEDPRICE * 2.0, L_EXTENDEDPRICE from ${testName2}_lineitem;
 rows:
  (DATE '1993-11-09',141644.30,70822.15)
  (DATE '1994-02-02',172167.30,86083.65)
@@ -139,7 +139,7 @@ rows:
  (DATE '1997-01-28',126132.64,63066.32)
 
 //------------------------------------------------------------------------------
-select L_EXTENDEDPRICE, L_DISCOUNT, L_EXTENDEDPRICE * L_DISCOUNT from lineitem;
+select L_EXTENDEDPRICE, L_DISCOUNT, L_EXTENDEDPRICE * L_DISCOUNT from ${testName2}_lineitem;
 rows:
  (33078.94,0.04,1323.16)
  (38306.16,0.09,3447.55)
@@ -153,7 +153,7 @@ rows:
  (39620.34,0.06,2377.22)
 
 //------------------------------------------------------------------------------
- select 1, 2, null from lineitem;
+ select 1, 2, null from ${testName2}_lineitem;
  rows:
   (1,2,null)
   (1,2,null)
@@ -168,7 +168,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success;
 
 MemoryLeaks;
@@ -176,9 +176,6 @@ rows: 0
 
 CLEANUP {
   
-  drop table lineitem;
-  mute
-  
-  bye;
+  drop table ${testName2}_lineitem;
   mute
 }

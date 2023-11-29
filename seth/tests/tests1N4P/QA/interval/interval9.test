@@ -1,415 +1,412 @@
 
-create table interval1(a timestamp);
+create table ${testName2}_interval1(a timestamp);
 success
-load interval1 "../DATA/QA/interval/interval1.csv";
+load ${testName2}_interval1 "../DATA/QA/interval/interval1.csv";
 success
 
-select date '2023-02-13' + interval -'1' year from interval1;
+select date '2023-02-13' + interval -'1' year from ${testName2}_interval1;
 rows:
 (date '2022-02-13')
-select date '2023-02-13' + interval -'1-2' year to month from interval1;
+select date '2023-02-13' + interval -'1-2' year to month from ${testName2}_interval1;
 rows:
 (date '2021-12-13')
-select date '2023-02-13' + interval '-1' year from interval1;
+select date '2023-02-13' + interval '-1' year from ${testName2}_interval1;
 rows:
 (date '2022-02-13')
-select date '2023-02-13' + interval '-1-2' year to month from interval1;
+select date '2023-02-13' + interval '-1-2' year to month from ${testName2}_interval1;
 rows:
 (date '2021-12-13')
 
-SELECT date '2000-03-22' - date '2000-02-12' from interval1;
+SELECT date '2000-03-22' - date '2000-02-12' from ${testName2}_interval1;
 rows:
 (INTERVAL '39' DAY)
 
-SELECT date '2023-03-22' - date '2023-02-12' from interval1;
+SELECT date '2023-03-22' - date '2023-02-12' from ${testName2}_interval1;
 rows:
 (INTERVAL '38' DAY)
 
-SELECT date '2023-01-22' - date '2022-01-22' from interval1;
+SELECT date '2023-01-22' - date '2022-01-22' from ${testName2}_interval1;
 rows:
 (INTERVAL '365' DAY)
 
-SELECT date '2021-01-22' - date '2020-01-22' from interval1;
+SELECT date '2021-01-22' - date '2020-01-22' from ${testName2}_interval1;
 rows:
 (INTERVAL '366' DAY)
 
-SELECT date '2021-01-22' - date '2021-01-22' from interval1;
+SELECT date '2021-01-22' - date '2021-01-22' from ${testName2}_interval1;
 rows:
 (INTERVAL '0' DAY)
 
-select time '11:27:53.123456'-time '11:27:53.123156'  from interval1;
+select time '11:27:53.123456'-time '11:27:53.123156'  from ${testName2}_interval1;
 rows:
 (INTERVAL '0:0:0.000300' HOUR TO SECOND)
 
-select time '11:27:53'-time '11:27:53'  from interval1;
+select time '11:27:53'-time '11:27:53'  from ${testName2}_interval1;
 rows:
 (INTERVAL '0:0:0' HOUR TO SECOND)
 
-select time '11:27:53'-time '02:07:51'  from interval1;
+select time '11:27:53'-time '02:07:51'  from ${testName2}_interval1;
 rows:
 (INTERVAL '9:20:2' HOUR TO SECOND)
 
-select time '23:27:53'-time '02:07:51'  from interval1;
+select time '23:27:53'-time '02:07:51'  from ${testName2}_interval1;
 rows:
 (INTERVAL '21:20:2' HOUR TO SECOND)
 
-SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-01-19 23:58:19.123' FROM interval1;
+SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-01-19 23:58:19.123' FROM ${testName2}_interval1;
 rows:
 (INTERVAL '67 11:40:0.877' DAY TO SECOND)
 
-SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-04-19 23:58:19.123' FROM interval1;
+SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-04-19 23:58:19.123' FROM ${testName2}_interval1;
 rows:
 (INTERVAL -'22 12:19:59.123' DAY TO SECOND)
 
-SELECT timestamp '2023-03-28 11:38:20'- timestamp '2023-03-28 11:38:20' FROM interval1;
+SELECT timestamp '2023-03-28 11:38:20'- timestamp '2023-03-28 11:38:20' FROM ${testName2}_interval1;
 rows:
 (INTERVAL '0 0:0:0' DAY TO SECOND)
 
-SELECT timestamp '2023-03-28 11:38:20'- timestamp '2023-03-28 11:37:20' FROM interval1;
+SELECT timestamp '2023-03-28 11:38:20'- timestamp '2023-03-28 11:37:20' FROM ${testName2}_interval1;
 rows:
 (INTERVAL '0 0:1:0' DAY TO SECOND)
 
-SELECT timestamp '2023-03-28 11:38:20.123651'- timestamp '2023-03-29 00:00:00' FROM interval1;
+SELECT timestamp '2023-03-28 11:38:20.123651'- timestamp '2023-03-29 00:00:00' FROM ${testName2}_interval1;
 rows:
 (INTERVAL -'0 12:21:39.876349' DAY TO SECOND)
 
-select date '2023-03-29'-time '14:29:21' from interval1;
+select date '2023-03-29'-time '14:29:21' from ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
-select date '2023-03-29'-timestamp '2022-11-12 14:29:21' from interval1;
+select date '2023-03-29'-timestamp '2022-11-12 14:29:21' from ${testName2}_interval1;
 rows:
 (INTERVAL '136 9:30:39' DAY TO SECOND)
 
-select time '14:28:01'-timestamp '2022-11-12 14:29:21' from interval1;
+select time '14:28:01'-timestamp '2022-11-12 14:29:21' from ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 
 
 // TODO: (CHINA) Changed expected result from date to timestamp
-select date '2023-03-31' -interval '277' month-interval '2' day  from interval1;
+select date '2023-03-31' -interval '277' month-interval '2' day  from ${testName2}_interval1;
 rows:
 //(date '2000-02-27')
 (timestamp '2000-02-27 00:00:00')
 
 // TODO: (CHINA) Changed expected result from date to timestamp
-select date '2023-03-31' -interval '23-1' year to month -interval '2' day  from interval1;
+select date '2023-03-31' -interval '23-1' year to month -interval '2' day  from ${testName2}_interval1;
 rows:
 //(date '2000-02-27')
 (timestamp '2000-02-27 00:00:00')
 
 // TODO: (CHINA) Changed expected result from date to timestamp
-select date '2023-03-28' + interval +'4' day from interval1;
+select date '2023-03-28' + interval +'4' day from ${testName2}_interval1;
 rows:
 //(date '2023-04-01')
 (timestamp '2023-04-01 00:00:00')
 
-select date '2023-03-01' + interval +'10' month from interval1;
+select date '2023-03-01' + interval +'10' month from ${testName2}_interval1;
 rows:
 (date '2024-01-01')
 
-select date '2023-01-01' + interval +'11-5' year to month from interval1;
+select date '2023-01-01' + interval +'11-5' year to month from ${testName2}_interval1;
 rows:
 (date '2034-06-01')
 
-select timestamp '2023-01-01 00:00:00' + interval +'60 14:17:20' day to second from interval1;
+select timestamp '2023-01-01 00:00:00' + interval +'60 14:17:20' day to second from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-02 14:17:20')
 
-select INTERVAL '1' YEAR + INTERVAL '2' MONTH + INTERVAL '1-2' YEAR TO MONTH + INTERVAL -'1-2' YEAR TO MONTH from  interval1;
+select INTERVAL '1' YEAR + INTERVAL '2' MONTH + INTERVAL '1-2' YEAR TO MONTH + INTERVAL -'1-2' YEAR TO MONTH from  ${testName2}_interval1;
 rows:
 (INTERVAL '1-2' YEAR TO MONTH)
 
 
-select INTERVAL '3' DAY+INTERVAL '4' HOUR+INTERVAL '5' MINUTE+INTERVAL '6' second from interval1;
+select INTERVAL '3' DAY+INTERVAL '4' HOUR+INTERVAL '5' MINUTE+INTERVAL '6' second from ${testName2}_interval1;
 rows:
 (INTERVAL '3 4:5:6' DAY TO SECOND)
 
-select INTERVAL '6.789012' SECOND+INTERVAL '3 4' DAY TO HOUR+INTERVAL '3 4:5' DAY TO MINUTE+INTERVAL '3 4:5:6' DAY TO SECOND+INTERVAL '3 4:5:6.789012' DAY TO SECOND+INTERVAL '4:5' HOUR TO MINUTE+INTERVAL '4:5:6.789012' HOUR TO SECOND+INTERVAL '5:6.789012' MINUTE TO second from interval1;
+select INTERVAL '6.789012' SECOND+INTERVAL '3 4' DAY TO HOUR+INTERVAL '3 4:5' DAY TO MINUTE+INTERVAL '3 4:5:6' DAY TO SECOND+INTERVAL '3 4:5:6.789012' DAY TO SECOND+INTERVAL '4:5' HOUR TO MINUTE+INTERVAL '4:5:6.789012' HOUR TO SECOND+INTERVAL '5:6.789012' MINUTE TO second from ${testName2}_interval1;
 rows:
 (INTERVAL '13 0:30:33.156048' DAY TO SECOND)
 
-select INTERVAL '1' YEAR - INTERVAL '2' MONTH - INTERVAL '1-2' YEAR TO month from interval1;
+select INTERVAL '1' YEAR - INTERVAL '2' MONTH - INTERVAL '1-2' YEAR TO month from ${testName2}_interval1;
 rows:
 (INTERVAL -'0-4' YEAR TO MONTH)
 
-select INTERVAL '3' DAY-INTERVAL '4' HOUR-INTERVAL '5' MINUTE-INTERVAL '6' second from interval1;
+select INTERVAL '3' DAY-INTERVAL '4' HOUR-INTERVAL '5' MINUTE-INTERVAL '6' second from ${testName2}_interval1;
 rows:
 (INTERVAL '2 19:54:54' DAY TO SECOND)
 
-select INTERVAL '6.789012' SECOND-INTERVAL '3 4' DAY TO HOUR-INTERVAL '3 4:5' DAY TO MINUTE-INTERVAL '3 4:5:6' DAY TO SECOND-INTERVAL '3 4:5:6.789012' DAY TO SECOND-INTERVAL '4:5' HOUR TO MINUTE-INTERVAL '4:5:6.789012' HOUR TO SECOND-INTERVAL '5:6.789012' MINUTE TO second from interval1;
+select INTERVAL '6.789012' SECOND-INTERVAL '3 4' DAY TO HOUR-INTERVAL '3 4:5' DAY TO MINUTE-INTERVAL '3 4:5:6' DAY TO SECOND-INTERVAL '3 4:5:6.789012' DAY TO SECOND-INTERVAL '4:5' HOUR TO MINUTE-INTERVAL '4:5:6.789012' HOUR TO SECOND-INTERVAL '5:6.789012' MINUTE TO second from ${testName2}_interval1;
 rows:
 (INTERVAL -'13 0:30:19.578024' DAY TO SECOND)
 
 //TODO: (CHINA) modified result
-select timestamp '2023-03-29 15:42:26'+INTERVAL '1' year+INTERVAL '2' month-INTERVAL '1-2' YEAR TO month+INTERVAL '3' day+INTERVAL '4' hour+INTERVAL '5' minute -INTERVAL '6' second+INTERVAL '6.789032' second-INTERVAL '3 4' DAY TO hour+INTERVAL '3 4:5' DAY TO MINUTE-INTERVAL '3 4:5:6' DAY TO second-INTERVAL '3 4:5:6.709012' DAY TO second+INTERVAL '4:5' HOUR TO minute-INTERVAL '4:5:6.788012' HOUR TO second+INTERVAL '5:6.789001' MINUTE TO second from interval1;
+select timestamp '2023-03-29 15:42:26'+INTERVAL '1' year+INTERVAL '2' month-INTERVAL '1-2' YEAR TO month+INTERVAL '3' day+INTERVAL '4' hour+INTERVAL '5' minute -INTERVAL '6' second+INTERVAL '6.789032' second-INTERVAL '3 4' DAY TO hour+INTERVAL '3 4:5' DAY TO MINUTE-INTERVAL '3 4:5:6' DAY TO second-INTERVAL '3 4:5:6.709012' DAY TO second+INTERVAL '4:5' HOUR TO minute-INTERVAL '4:5:6.788012' HOUR TO second+INTERVAL '5:6.789001' MINUTE TO second from ${testName2}_interval1;
 rows:
 //(timestamp '2023-03-26 11:47:14.081')
 (timestamp '2023-03-26 11:47:14.081009')
 
-select interval '1' year * interval '12' month from interval1;
+select interval '1' year * interval '12' month from ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 
-select interval '1' year / interval '12' month from interval1;
+select interval '1' year / interval '12' month from ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 
-select interval '1' year / interval '12 14:43:23.123' day to second from interval1;
+select interval '1' year / interval '12 14:43:23.123' day to second from ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 
-select * from interval1 where interval '1' year=interval '12' month;
+select * from ${testName2}_interval1 where interval '1' year=interval '12' month;
 rows:
 (timestamp '2000-02-28 22:58:59')
 
-select * from interval1 where interval '1' year+interval '12' month=interval '2' year;
+select * from ${testName2}_interval1 where interval '1' year+interval '12' month=interval '2' year;
 rows:
 (timestamp '2000-02-28 22:58:59')
 
-SELECT INTERVAL '1' YEAR*3 FROM interval1;
+SELECT INTERVAL '1' YEAR*3 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '3' YEAR)
 
 
-SELECT 5*INTERVAL '2' MONTH FROM interval1;
+SELECT 5*INTERVAL '2' MONTH FROM ${testName2}_interval1;
 rows:
 (INTERVAL '10' MONTH)
 
-SELECT 7*INTERVAL '1-2' YEAR TO MONTH FROM interval1;
+SELECT 7*INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_interval1;
 rows:
 (INTERVAL '8-2' YEAR TO MONTH)
 
-SELECT INTERVAL -'1-2' YEAR TO MONTH*7 FROM interval1;
+SELECT INTERVAL -'1-2' YEAR TO MONTH*7 FROM ${testName2}_interval1;
 rows:
 (INTERVAL -'8-2' YEAR TO MONTH)
 
-SELECT INTERVAL '3' DAY*12 FROM interval1;
+SELECT INTERVAL '3' DAY*12 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '36' DAY)
 
-SELECT INTERVAL '4' HOUR*7 FROM interval1;
+SELECT INTERVAL '4' HOUR*7 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '28' HOUR)
 
-SELECT INTERVAL '5' MINUTE *130 FROM interval1;
+SELECT INTERVAL '5' MINUTE *130 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '650' MINUTE)
 
-SELECT INTERVAL '3 4' DAY TO HOUR*7 FROM interval1;
+SELECT INTERVAL '3 4' DAY TO HOUR*7 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '22 4' DAY TO HOUR)
 
-SELECT 7*INTERVAL '3 4:5:6' DAY TO SECOND FROM interval1;
+SELECT 7*INTERVAL '3 4:5:6' DAY TO SECOND FROM ${testName2}_interval1;
 rows:
 (INTERVAL '22 4:35:42' DAY TO SECOND)
 
-SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND*14 FROM interval1;
+SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND*14 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '44 9:11:35.046168' DAY TO SECOND)
 
-SELECT INTERVAL '4:5' HOUR TO MINUTE*13 FROM interval1;
+SELECT INTERVAL '4:5' HOUR TO MINUTE*13 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '53:5' HOUR TO MINUTE)
 
-SELECT INTERVAL '4:5:6.789012' HOUR TO SECOND*12 FROM interval1;
+SELECT INTERVAL '4:5:6.789012' HOUR TO SECOND*12 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '49:1:21.468144' HOUR TO SECOND)
 
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*10 FROM interval1;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*10 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '51:7.890120' MINUTE TO SECOND)
 
-SELECT INTERVAL -'5:6.789012' MINUTE TO SECOND*1 FROM interval1;
+SELECT INTERVAL -'5:6.789012' MINUTE TO SECOND*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL -'5:6.789012' MINUTE TO SECOND)
 
-SELECT INTERVAL '-5:6.789012' MINUTE TO SECOND*1 FROM interval1;
+SELECT INTERVAL '-5:6.789012' MINUTE TO SECOND*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL -'5:6.789012' MINUTE TO SECOND)
 
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*0 FROM interval1;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*0 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '0:0' MINUTE TO SECOND)
 
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*2.0 FROM interval1;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*2.0 FROM ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*2.06 FROM interval1;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*2.06 FROM ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3 FROM interval1;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3 FROM ${testName2}_interval1;
 rows:
 (INTERVAL -'15:20.367036' MINUTE TO SECOND)
 
-SELECT INTERVAL '6' year*1 FROM interval1;
+SELECT INTERVAL '6' year*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '6' YEAR)
 
-SELECT INTERVAL '6' month*1 FROM interval1;
+SELECT INTERVAL '6' month*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '6' MONTH)
 
-SELECT INTERVAL '6' day*1 FROM interval1;
+SELECT INTERVAL '6' day*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '6' DAY)
 
-SELECT INTERVAL '6' minute*1 FROM interval1;
+SELECT INTERVAL '6' minute*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '6' MINUTE)
 
-SELECT INTERVAL '6' hour*1 FROM interval1;
+SELECT INTERVAL '6' hour*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '6' HOUR)
 
 // TODO: (CHINA) Changed expected result from YEAR TO MONTH to YEAR
-SELECT INTERVAL '1' YEAR/2 FROM interval1;
+SELECT INTERVAL '1' YEAR/2 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0-6' YEAR TO MONTH)
 (INTERVAL '0' YEAR)
 
 // TODO: (CHINA) Changed expected result from YEAR TO MONTH to MONTH
-SELECT INTERVAL '9' MONTH/4 FROM interval1;
+SELECT INTERVAL '9' MONTH/4 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0-2' YEAR TO MONTH)
 (INTERVAL '2' MONTH)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH/7 FROM interval1;
+SELECT INTERVAL '1-2' YEAR TO MONTH/7 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '0-2' YEAR TO MONTH)
 
-SELECT INTERVAL '1-2' YEAR TO MONTH/5 FROM interval1;
+SELECT INTERVAL '1-2' YEAR TO MONTH/5 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '0-2' YEAR TO MONTH)
 
 // TODO: (CHINA) Changed expected result from DAY TO SECOND to DAY
-SELECT INTERVAL '3' DAY/9 FROM interval1;
+SELECT INTERVAL '3' DAY/9 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 8:0:0' DAY TO SECOND)
 (INTERVAL '0' DAY)
 
-SELECT INTERVAL '4' HOUR/101 FROM interval1;
+SELECT INTERVAL '4' HOUR/101 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 0:2:22.574257' DAY TO SECOND)
 (INTERVAL '0' HOUR)
 
-SELECT INTERVAL '5' MINUTE /50 FROM interval1;
+SELECT INTERVAL '5' MINUTE /50 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 0:0:6' DAY TO SECOND)
 (INTERVAL '0' MINUTE)
 
-SELECT INTERVAL '3 4' DAY TO HOUR/4 FROM interval1;
+SELECT INTERVAL '3 4' DAY TO HOUR/4 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 19:0:0' DAY TO SECOND)
 (INTERVAL '0 19' DAY TO HOUR)
 
-SELECT INTERVAL '3 4:5:6' DAY TO SECOND/203 FROM interval1;
+SELECT INTERVAL '3 4:5:6' DAY TO SECOND/203 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '0 0:22:29.290640' DAY TO SECOND)
 
-SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/7 FROM interval1;
+SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/7 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '0 10:52:9.541287' DAY TO SECOND)
 
-SELECT INTERVAL '4:5' HOUR TO MINUTE /1010 FROM interval1;
+SELECT INTERVAL '4:5' HOUR TO MINUTE /1010 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 0:0:14.554455' DAY TO SECOND)
 (INTERVAL '0:0' HOUR TO MINUTE)
 
-SELECT INTERVAL '4:5:6.789012' HOUR TO SECOND/4 FROM interval1;
+SELECT INTERVAL '4:5:6.789012' HOUR TO SECOND/4 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 1:1:16.697253' DAY TO SECOND)
 (INTERVAL '1:1:16.697253' HOUR TO SECOND)
 
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND/10 FROM interval1;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND/10 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 0:0:30.678901'  DAY TO SECOND)
 (INTERVAL '0:30.678901'  MINUTE TO SECOND)
 
-SELECT INTERVAL '5:6.789012' MINUTE TO SECOND/-2 FROM interval1;
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND/-2 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL -'0 0:2:33.394506' DAY TO SECOND)
 (INTERVAL -'2:33.394506' MINUTE TO SECOND)
 
 
-SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/3.75 FROM interval1;
+SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/3.75 FROM ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 
 
-SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/3.75e+3 FROM interval1;
+SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/3.75e+3 FROM ${testName2}_interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
-SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/t FROM interval1;
+SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/t FROM ${testName2}_interval1;
 failure contains:"No such column: t"
 
 
-select interval '3659' day+1 from interval1;
+select interval '3659' day+1 from ${testName2}_interval1;
 failure contains: "Expression type combination is invalid or unsupported for the expression operator"
-select interval '1' year+1 from interval1;
+select interval '1' year+1 from ${testName2}_interval1;
 failure contains: "Expression type combination is invalid or unsupported for the expression operator"
-select interval '1' year+intervali from interval1;
+select interval '1' year+intervali from ${testName2}_interval1;
 failure contains: "No such column: intervali"
 
-select interval '3659 21' day to hour-1 from interval1;
+select interval '3659 21' day to hour-1 from ${testName2}_interval1;
 failure contains: "Expression type combination is invalid or unsupported for the expression operator"
-select interval '1' hour-1 from interval1;
+select interval '1' hour-1 from ${testName2}_interval1;
 failure contains: "Expression type combination is invalid or unsupported for the expression operator"
-select interval '1:2' hour to minute-intervali from interval1;
+select interval '1:2' hour to minute-intervali from ${testName2}_interval1;
 failure contains: "No such column: intervali"
-select interval '1' second-a from interval1;
+select interval '1' second-a from ${testName2}_interval1;
 failure contains: "Expression type combination is invalid or unsupported for the expression operator"
 
 // TODO: (CHINA) Changed expected result
-SELECT INTERVAL '6.789012' SECOND/37 FROM interval1;
+SELECT INTERVAL '6.789012' SECOND/37 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 0:0:0.183487' DAY TO SECOND)
 (INTERVAL '0.183487' SECOND)
 
-SELECT INTERVAL '6' SECOND/20 FROM interval1;
+SELECT INTERVAL '6' SECOND/20 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 0:0:0.3' DAY TO SECOND)
 (INTERVAL '0.3' SECOND)
 
-SELECT INTERVAL '1.1' second*1 FROM interval1;
+SELECT INTERVAL '1.1' second*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '1.100000' SECOND)
 
 
-SELECT INTERVAL '6' SECOND*110 FROM interval1;
+SELECT INTERVAL '6' SECOND*110 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '660' SECOND)
 
-SELECT INTERVAL '1' second*1 FROM interval1;
+SELECT INTERVAL '1' second*1 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '1' SECOND)
 
 
-SELECT 100*INTERVAL '3 4:5' DAY TO MINUTE FROM interval1;
+SELECT 100*INTERVAL '3 4:5' DAY TO MINUTE FROM ${testName2}_interval1;
 rows:
 (INTERVAL '317 0:20' DAY TO MINUTE)
 
-SELECT INTERVAL '3 4:5' DAY TO MINUTE/100 FROM interval1;
+SELECT INTERVAL '3 4:5' DAY TO MINUTE/100 FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '0 0:45:39' DAY TO SECOND)
 (INTERVAL '0 0:45' DAY TO MINUTE)
 
 
-SELECT 5*INTERVAL '17' MONTH FROM interval1;
+SELECT 5*INTERVAL '17' MONTH FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '7-1' YEAR TO MONTH)
 (INTERVAL '85' MONTH)
 
-SELECT INTERVAL '17' month FROM interval1;
+SELECT INTERVAL '17' month FROM ${testName2}_interval1;
 rows:
 //(INTERVAL '1-5' YEAR TO MONTH)
 (INTERVAL '17' MONTH)
 
-SELECT INTERVAL '6.789012' SECOND*1000 FROM interval1;
+SELECT INTERVAL '6.789012' SECOND*1000 FROM ${testName2}_interval1;
 rows:
 (INTERVAL '6789.012000' SECOND)
-//SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/0 FROM interval1;
+//SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/0 FROM ${testName2}_interval1;
 
 
-drop table interval1;
+drop table ${testName2}_interval1;
 success
 
 CLEANUP {
 
-  drop table interval1;
-  mute
-
-  bye;
+  drop table ${testName2}_interval1;
   mute
 }

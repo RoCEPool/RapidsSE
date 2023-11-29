@@ -22,6 +22,7 @@ enum eEV // events
   /*    */ EV_D_PAGINGMETRICS,
   /*    */ EV_D_PARCEL,
   /*    */ EV_D_PDSROWBUFFER,
+  /*    */ EV_D_PAYLOAD,
   /*    */ EV_D_PLANOPERAND,
   /*    */ EV_D_PROFILE,
   /*    */ EV_D_ROWBUFFER,
@@ -32,6 +33,7 @@ enum eEV // events
   /*    */ EV_D_TABLE,
   /*    */ EV_D_TABLEPTN,
 
+  /*    */ EV_I_AFFECTEDROWS,
   /*    */ EV_I_CALLPIPELINE,
   /*    */ EV_I_COMMAND,
   /*    */ EV_I_COMPILEERRORS,
@@ -45,9 +47,9 @@ enum eEV // events
   /*    */ EV_I_PATH,
   /*    */ EV_I_PROGRESSUNITS,
   /*    */ EV_I_PROMPTOUT,
-  /*    */ EV_I_RETURNPIPELINE,
   /*    */ EV_I_SEEKOFFSETS,
   /*    */ EV_I_TOTALUNITS,
+  /*    */ EV_I_WARNINGS,
 
   /*    */ EV_M_CANCEL,
   /*    */ EV_M_CANCELLING,

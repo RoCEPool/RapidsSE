@@ -15,7 +15,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -23,7 +23,7 @@ create table nation (
 );
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -34,21 +34,21 @@ success
 -- being projected by the SetOp.
 -- This shouldn't work because n_regionkey is not being projected by the UnionOp
 EXPLAIN
-SELECT n_nationkey as nkey, n_name FROM nation
+SELECT n_nationkey as nkey, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_regionkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_regionkey'
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.${testName2}_nation.n_regionkey'
 
 
 -- Order expr is a superset of projected expression but contains
 -- a columnRef that is not being projected.
 EXPLAIN
-SELECT n_nationkey, n_name FROM nation
+SELECT n_nationkey, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_nationkey + n_regionkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_regionkey'
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.${testName2}_nation.n_regionkey'
 
 
 
@@ -65,6 +65,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  drop table nation ;
+  drop table ${testName2}_nation ;
   mute
 }

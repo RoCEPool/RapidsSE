@@ -1,10 +1,10 @@
 
-trackMemory;
+trackmemory force;
 success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -24,11 +24,11 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/time.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/time.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 > TIME '08:00:00';
+select tme_col10 from ${testName2}_datums where tme_col10 > TIME '08:00:00';
 rows:
 (TIME '10:23:31')
 (TIME '08:10:00')
@@ -39,18 +39,18 @@ rows:
 (TIME '11:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 > TIME '11:23:31';
+select tme_col10 from ${testName2}_datums where tme_col10 > TIME '11:23:31';
 rows:
 (TIME '11:25:31')
 (TIME '12:30:30')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 > TIME '11:23:31' AND tme_col11 > TIME '09:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 > TIME '11:23:31' AND tme_col11 > TIME '09:22:35';
 rows:
 (TIME '11:25:31',TIME '11:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 > TIME '04:23:31' AND tme_col11 > TIME '04:23:31';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 > TIME '04:23:31' AND tme_col11 > TIME '04:23:31';
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -62,21 +62,13 @@ rows:
 (TIME '06:50:00',TIME '11:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 > TIME '11:23:31' OR tme_col11 > TIME '11:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 > TIME '11:23:31' OR tme_col11 > TIME '11:22:35';
 rows:
 (TIME '11:25:31',TIME '11:22:35')
 (TIME '12:30:30',TIME '09:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 > TIME '10:23:31' OR tme_col10 > TIME '12:30:30';
-rows:
-(TIME '11:25:31',TIME '11:22:35')
-(TIME '12:30:30',TIME '09:22:35')
-(TIME '11:23:31',TIME '09:22:38')
-(TIME '11:23:31',TIME '07:10:35')
-
-//------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 > TIME '12:30:29' OR tme_col10 > TIME '11:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 > TIME '10:23:31' OR tme_col10 > TIME '12:30:30';
 rows:
 (TIME '11:25:31',TIME '11:22:35')
 (TIME '12:30:30',TIME '09:22:35')
@@ -84,20 +76,28 @@ rows:
 (TIME '11:23:31',TIME '07:10:35')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 >= TIME '11:25:31';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 > TIME '12:30:29' OR tme_col10 > TIME '11:22:35';
+rows:
+(TIME '11:25:31',TIME '11:22:35')
+(TIME '12:30:30',TIME '09:22:35')
+(TIME '11:23:31',TIME '09:22:38')
+(TIME '11:23:31',TIME '07:10:35')
+
+//------------------------------------------------------------------------------
+select tme_col10 from ${testName2}_datums where tme_col10 >= TIME '11:25:31';
 rows:
 (TIME '11:25:31')
 (TIME '12:30:30')
 
 //------------------------------------------------------------------------------
-select tme_col11 from datums where tme_col11 >= TIME '11:22:35';
+select tme_col11 from ${testName2}_datums where tme_col11 >= TIME '11:22:35';
 rows:
 (TIME '11:22:35')
 (TIME '11:22:35')
 (TIME '11:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 >= TIME '08:10:00' AND tme_col10 >= TIME '07:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 >= TIME '08:10:00' AND tme_col10 >= TIME '07:22:35';
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -108,13 +108,13 @@ rows:
 (TIME '11:23:31',TIME '07:10:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 >= TIME '11:23:32' AND tme_col10 >= TIME '11:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 >= TIME '11:23:32' AND tme_col10 >= TIME '11:22:35';
 rows:
 (TIME '11:25:31',TIME '11:22:35')
 (TIME '12:30:30',TIME '09:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 > TIME '10:23:31' AND tme_col10 > TIME '06:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 > TIME '10:23:31' AND tme_col10 > TIME '06:22:35';
 rows:
 (TIME '11:25:31',TIME '11:22:35')
 (TIME '12:30:30',TIME '09:22:35')
@@ -122,7 +122,7 @@ rows:
 (TIME '11:23:31',TIME '07:10:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 > TIME '06:50:00' AND tme_col10 > TIME '07:10:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 > TIME '06:50:00' AND tme_col10 > TIME '07:10:35';
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -133,7 +133,7 @@ rows:
 (TIME '11:23:31',TIME '07:10:35')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 <= TIME '08:10:00';
+select tme_col10 from ${testName2}_datums where tme_col10 <= TIME '08:10:00';
 rows:
 (TIME '08:10:00')
 (TIME '06:50:00')
@@ -141,13 +141,13 @@ rows:
 (TIME '04:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 <= TIME '10:23:31' AND tme_col10 <= TIME '06:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 <= TIME '10:23:31' AND tme_col10 <= TIME '06:22:35';
 rows:
 (TIME '03:23:31',TIME '06:22:35')
 (TIME '04:23:31',TIME '09:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 <= TIME '12:23:31' AND tme_col10 <= TIME '12:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 <= TIME '12:23:31' AND tme_col10 <= TIME '12:22:35';
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -160,12 +160,12 @@ rows:
 (TIME '04:23:31',TIME '09:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 <= TIME '01:23:31' AND tme_col10 <= TIME '01:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 <= TIME '01:23:31' AND tme_col10 <= TIME '01:22:35';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 != TIME '11:23:31';
+select tme_col10 from ${testName2}_datums where tme_col10 != TIME '11:23:31';
 rows:
 (TIME '10:23:31')
 (TIME '08:10:00')
@@ -177,7 +177,7 @@ rows:
 (TIME '04:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col11 != TIME '09:22:35';
+select tme_col10 from ${testName2}_datums where tme_col11 != TIME '09:22:35';
 rows:
 (TIME '10:23:31')
 (TIME '11:25:31')
@@ -189,7 +189,7 @@ rows:
 (TIME '03:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 != TIME '11:23:31' AND tme_col11 != TIME '09:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 != TIME '11:23:31' AND tme_col11 != TIME '09:22:35';
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '11:25:31',TIME '11:22:35')
@@ -198,32 +198,32 @@ rows:
 (TIME '03:23:31',TIME '06:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 = TIME '08:10:00';
+select tme_col10 from ${testName2}_datums where tme_col10 = TIME '08:10:00';
 rows:
 (TIME '08:10:00')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 = TIME '11:23:31' AND tme_col11 = TIME '09:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 = TIME '11:23:31' AND tme_col11 = TIME '09:22:35';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 = TIME '10:23:31' AND tme_col11 = TIME '10:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 = TIME '10:23:31' AND tme_col11 = TIME '10:22:35';
 rows:
 (TIME '10:23:31',TIME '10:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 = NULL OR tme_col11 = TIME '10:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 = NULL OR tme_col11 = TIME '10:22:35';
 rows:
 (TIME '10:23:31',TIME '10:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 = tme_col11;
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 = tme_col11;
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 > tme_col11;
+select tme_col10 from ${testName2}_datums where tme_col10 > tme_col11;
 rows:
 (TIME '11:25:31')
 (TIME '12:30:30')
@@ -232,7 +232,7 @@ rows:
 (TIME '11:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col11 > tme_col10;
+select tme_col10 from ${testName2}_datums where tme_col11 > tme_col10;
 rows:
 (TIME '10:23:31')
 (TIME '08:10:00')
@@ -241,7 +241,7 @@ rows:
 (TIME '04:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col11 >= tme_col10;
+select tme_col10 from ${testName2}_datums where tme_col11 >= tme_col10;
 rows:
 (TIME '10:23:31')
 (TIME '08:10:00')
@@ -250,7 +250,7 @@ rows:
 (TIME '04:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col11 <= tme_col10;
+select tme_col10 from ${testName2}_datums where tme_col11 <= tme_col10;
 rows:
 (TIME '11:25:31')
 (TIME '12:30:30')
@@ -259,7 +259,7 @@ rows:
 (TIME '11:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 != tme_col11;
+select tme_col10 from ${testName2}_datums where tme_col10 != tme_col11;
 rows:
 (TIME '10:23:31')
 (TIME '08:10:00')
@@ -273,17 +273,17 @@ rows:
 (TIME '04:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 > tme_col11 AND tme_col11 > tme_col10;
+select tme_col10 from ${testName2}_datums where tme_col10 > tme_col11 AND tme_col11 > tme_col10;
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 = tme_col11 AND tme_col11 >= tme_col10;
+select tme_col10 from ${testName2}_datums where tme_col10 = tme_col11 AND tme_col11 >= tme_col10;
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 != tme_col11 AND tme_col11 >= tme_col10;
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 != tme_col11 AND tme_col11 >= tme_col10;
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -292,7 +292,7 @@ rows:
 (TIME '04:23:31',TIME '09:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 != tme_col11 OR tme_col11 > tme_col10;
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 != tme_col11 OR tme_col11 > tme_col10;
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -308,27 +308,27 @@ rows:
 /*
 
 //------------------------------------------------------------------------------
-select min(tme_col10) from datums;
+select min(tme_col10) from ${testName2}_datums;
 rows:
 (TIME '03:23:31')
 
 //------------------------------------------------------------------------------
-select max(tme_col10) from datums;
+select max(tme_col10) from ${testName2}_datums;
 rows:
 (TIME '12:30:30')
 
 //------------------------------------------------------------------------------
-select min(tme_col11) from datums;
+select min(tme_col11) from ${testName2}_datums;
 rows:
 (TIME '06:22:35')
 
 //------------------------------------------------------------------------------
-select count(tme_col10) from datums;
+select count(tme_col10) from ${testName2}_datums;
 rows:
 (10)
 
 //------------------------------------------------------------------------------
-select vch_col15 , min(tme_col10) from datums group by vch_col15;
+select vch_col15 , min(tme_col10) from ${testName2}_datums group by vch_col15;
 rows:
 (null,TIME '10:23:31')
 (yellow,TIME '03:23:31')
@@ -338,7 +338,7 @@ rows:
 (orange,TIME '04:23:31')
 
 //------------------------------------------------------------------------------
-select vch_col15 , max(tme_col10) from datums group by vch_col15;
+select vch_col15 , max(tme_col10) from ${testName2}_datums group by vch_col15;
 rows:
 (,TIME '10:23:31')
 (yellow,TIME '03:23:31')
@@ -348,7 +348,7 @@ rows:
 (orange,TIME '06:50:00')
 
 //------------------------------------------------------------------------------
-select vch_col15 , count(tme_col10) from datums group by vch_col15;
+select vch_col15 , count(tme_col10) from ${testName2}_datums group by vch_col15;
 rows:
 (null,1)
 (yellow,1)
@@ -361,24 +361,24 @@ rows:
 ////////////////////----------Less than < Tests ---------------------///////////////////////////////////////////
 /*
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 <  TIME '08:10:00';
+select tme_col10 from ${testName2}_datums where tme_col10 <  TIME '08:10:00';
 rows:
 (TIME '06:50:00')
 (TIME '03:23:31')
 (TIME '04:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 < TIME '11:23:31' AND tme_col11 < TIME '09:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 < TIME '11:23:31' AND tme_col11 < TIME '09:22:35';
 rows:
 (TIME '03:23:31',TIME '06:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 < TIME '04:23:31' AND tme_col11 < TIME '04:23:31';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 < TIME '04:23:31' AND tme_col11 < TIME '04:23:31';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 < TIME '11:23:31' OR tme_col11 < TIME '11:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 < TIME '11:23:31' OR tme_col11 < TIME '11:22:35';
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -392,7 +392,7 @@ rows:
 (TIME '04:23:31',TIME '09:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 < TIME '10:23:31' OR tme_col10 < TIME '12:30:30';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 < TIME '10:23:31' OR tme_col10 < TIME '12:30:30';
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -405,7 +405,7 @@ rows:
 (TIME '04:23:31',TIME '09:22:35')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 < TIME '06:30:29' OR tme_col11 < TIME '11:22:35';
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 < TIME '06:30:29' OR tme_col11 < TIME '11:22:35';
 rows:
 (TIME '08:10:00',TIME '09:22:35')
 (TIME '12:30:30',TIME '09:22:35')
@@ -418,7 +418,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums where tme_col10 < tme_col11;
+select tme_col10 from ${testName2}_datums where tme_col10 < tme_col11;
 rows:
 (TIME '10:23:31')
 (TIME '08:10:00')
@@ -427,7 +427,7 @@ rows:
 (TIME '04:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col10,tme_col11 from datums where tme_col10 != tme_col11 AND tme_col10 <= tme_col11;
+select tme_col10,tme_col11 from ${testName2}_datums where tme_col10 != tme_col11 AND tme_col10 <= tme_col11;
 rows:
 (TIME '10:23:31',TIME '11:22:35')
 (TIME '08:10:00',TIME '09:22:35')
@@ -439,7 +439,7 @@ rows:
 //------------------------------------------------------------------------------
 // TO BE RUN UNDER 1 NODE - 1 PARTITION
 //------------------------------------------------------------------------------
-select tme_col10 , min(tme_col11) from datums group by tme_col10;
+select tme_col10 , min(tme_col11) from ${testName2}_datums group by tme_col10;
 rows:
 (null,TIME '10:33:35')
 (TIME '04:23:31',TIME '09:22:35')
@@ -452,7 +452,7 @@ rows:
 (TIME '11:23:31',TIME '07:10:35')
  
 //------------------------------------------------------------------------------
-select tme_col11 , max(tme_col10) from datums group by tme_col11;
+select tme_col11 , max(tme_col10) from ${testName2}_datums group by tme_col11;
 rows:
 (TIME '06:22:35',TIME '03:23:31')
 (TIME '11:22:35',TIME '11:25:31')
@@ -463,7 +463,7 @@ rows:
 (TIME '10:22:35',TIME '10:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col11 , count(tme_col10) from datums group by tme_col11;
+select tme_col11 , count(tme_col10) from ${testName2}_datums group by tme_col11;
 rows:
 (TIME '06:22:35',1)
 (TIME '11:22:35',3)
@@ -474,7 +474,7 @@ rows:
 (TIME '10:22:35',1)
 
 //------------------------------------------------------------------------------
-select tme_col10 ,  min(tme_col11) from datums group by tme_col10;
+select tme_col10 ,  min(tme_col11) from ${testName2}_datums group by tme_col10;
 rows:
 (null,TIME '10:33:35')
 (TIME '04:23:31',TIME '09:22:35')
@@ -488,7 +488,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select tme_col10 ,  max(tme_col11) from datums group by tme_col10;
+select tme_col10 ,  max(tme_col11) from ${testName2}_datums group by tme_col10;
 rows:
 (null,TIME '10:33:35')
 (TIME '04:23:31',TIME '09:22:35')
@@ -501,7 +501,7 @@ rows:
 (TIME '11:23:31',TIME '09:22:38')
 
 //------------------------------------------------------------------------------
-select tme_col10 , count(tme_col11) from datums group by tme_col10;
+select tme_col10 , count(tme_col11) from ${testName2}_datums group by tme_col10;
 rows:
 (null,1)
 (TIME '04:23:31',1)
@@ -514,13 +514,13 @@ rows:
 (TIME '11:23:31',2)
 
 //------------------------------------------------------------------------------
-select count (tme_col10) from datums;
+select count (tme_col10) from ${testName2}_datums;
 rows:
 (10)
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 memoryleaks;
@@ -528,10 +528,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
-  mute
-
-  bye;
+  drop table ${testName2}_datums;
   mute
 }
 

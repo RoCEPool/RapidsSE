@@ -2,16 +2,16 @@
 -- limit tests
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 //------------------------------------------------------------------------------
-select * from lineitem limit 4;
+select * from ${testName2}_lineitem limit 4;
 failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table LineItem
+create table ${testName2}_lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -33,24 +33,24 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-select * from lineitem limit 4;
+select * from ${testName2}_lineitem limit 4;
 rows: 0
 
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-select * from lineitem limit 4;
+select * from ${testName2}_lineitem limit 4;
 rows: 4
 
 //------------------------------------------------------------------------------
-select * from lineitem limit 7;
+select * from ${testName2}_lineitem limit 7;
 rows: 7
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success;
 
 MemoryLeaks;
@@ -58,9 +58,6 @@ rows: 0
 
 CLEANUP {
   
-  drop table lineitem;
-  mute
-  
-  bye;
+  drop table ${testName2}_lineitem;
   mute
 }

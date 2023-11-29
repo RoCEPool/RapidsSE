@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* pp_logMsg.sen -- define log related procedures                             */
+/*============================================================================*/
+
+" pp_logMsg.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* log related procedures                                                     */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_LogMsg" .verbose
+
+: start::defProc_LogMsg
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sleep
+
+  STD_PATH_TAG
+  "
+  procedure logMsg
+    parameters $msg $asResultSet
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on origin :
+      log $msg $asResultSet | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  procedure::add
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

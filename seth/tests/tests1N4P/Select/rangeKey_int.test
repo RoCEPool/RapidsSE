@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create table jCdt
-create table jCdt (
+create table ${testName2}_jCdt (
   jA  INTEGER,
   jB  INTEGER,
   jC  INTEGER,
@@ -12,59 +12,56 @@ create table jCdt (
 );
 success
 
-create index jCdt_idx1 on jCdt (jA);
+create index jCdt_idx1 on ${testName2}_jCdt (jA);
 success
 
-load jCdt "../DATA/Select/range2.csv";
+load ${testName2}_jCdt "../DATA/Select/range2.csv";
 success
 
 //------------------------------------------------------------------------------
 // SCAN
-select * from jCdt;
+select * from ${testName2}_jCdt;
 rows: 26
 
 //------------------------------------------------------------------------------
 // EXACT KEYS for index on jA
 
-select * from jCdt where jA > 19 and jA = 22;
+select * from ${testName2}_jCdt where jA > 19 and jA = 22;
 rows: 1
 
-select * from jCdt where jA >= 19 and jA = 22;
+select * from ${testName2}_jCdt where jA >= 19 and jA = 22;
 rows: 1
 
-select * from jCdt where jA > 10 and jA < 19;
+select * from ${testName2}_jCdt where jA > 10 and jA < 19;
 rows: 8
 
-select * from jCdt where jA > 10 and jA <= 19;
+select * from ${testName2}_jCdt where jA > 10 and jA <= 19;
 rows: 9
 
-select * from jCdt where jA >= 10 and jA < 19;
+select * from ${testName2}_jCdt where jA >= 10 and jA < 19;
 rows: 9
 
-select * from jCdt where jA >= 10 and jA <= 19;
+select * from ${testName2}_jCdt where jA >= 10 and jA <= 19;
 rows: 10
 
-select * from jCdt where jA > 1 and jA <= 10;
+select * from ${testName2}_jCdt where jA > 1 and jA <= 10;
 rows: 9
 
-select * from jCdt where jA >= 1 and jA <= 10;
+select * from ${testName2}_jCdt where jA >= 1 and jA <= 10;
 rows: 10
 
-select * from jCdt where jA > -9223372036854775806 and jA < 0;
+select * from ${testName2}_jCdt where jA > -9223372036854775806 and jA < 0;
 rows: 0
 
-select * from jCdt where jA > -9223372036854775806 and jA <= 1;
+select * from ${testName2}_jCdt where jA > -9223372036854775806 and jA <= 1;
 rows: 1
 
-drop table jCdt;
+drop table ${testName2}_jCdt;
 success
 
 CLEANUP {
 
-  drop table jCdt;
-  mute
-
-  bye;
+  drop table ${testName2}_jCdt;
   mute
 }
 

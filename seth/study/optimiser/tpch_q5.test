@@ -4,9 +4,12 @@
 
 LOG 'TPC-H Q5...';
 
-trackMemory;
+trackMemory force;
 success
 
+/weaved
+/optimiser_trace
+/pipeline_def
 /pipelineName = "OptQ5"
 select
   n_name,
@@ -41,8 +44,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

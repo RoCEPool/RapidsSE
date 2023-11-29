@@ -1,9 +1,9 @@
-trackMemory;
+trackmemory force;
 success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER,
   int_col1  INTEGER,
   bol_col2   BOOLEAN,
@@ -23,12 +23,12 @@ create table datums (
 );
 success
 
-load datums "../DATA/Transliterate/groupBy.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/groupBy.csv" ;
 success
 
 
 //-------------------------------------MAX TESTS------------------------------------------
-select int_col1, MAX(int_col0) from datums GROUP BY int_col1;
+select int_col1, MAX(int_col0) from ${testName2}_datums GROUP BY int_col1;
 rows:
   (null,3)
   (4000,4)
@@ -39,7 +39,7 @@ rows:
   (5000,6)
 
 //---------------------------------------------------------------------------------------
-select int_col0, MAX(int_col0) from datums GROUP BY int_col0;
+select int_col0, MAX(int_col0) from ${testName2}_datums GROUP BY int_col0;
 rows:
   (11,11)
   (9,9)
@@ -54,17 +54,17 @@ rows:
   (8,8)
 
 //---------------------------------------------------------------------------------------
-select bol_col3, MAX(int_col0) from datums GROUP BY bol_col3;
+select bol_col3, MAX(int_col0) from ${testName2}_datums GROUP BY bol_col3;
 rows:
   (false,11)
 
 //---------------------------------------------------------------------------------------
-select bol_col3, MAX(int_col0) + 6 from datums GROUP BY bol_col3;
+select bol_col3, MAX(int_col0) + 6 from ${testName2}_datums GROUP BY bol_col3;
 rows:
   (false,17)
 
 //---------------------------------------------------------------------------------------
-select dec_col6, MAX(int_col0 - 3)  from datums GROUP BY dec_col6;
+select dec_col6, MAX(int_col0 - 3)  from ${testName2}_datums GROUP BY dec_col6;
 rows:
   (null,3)
   (477.04,8)
@@ -74,7 +74,7 @@ rows:
   (4001.04,6)
 
 //---------------------------------------------------------------------------------------
-select vch_col15, MAX(tsp_col12) from datums GROUP BY vch_col15;
+select vch_col15, MAX(tsp_col12) from ${testName2}_datums GROUP BY vch_col15;
 rows:
   (null,null)
   ('yellow',TIMESTAMP '1941-01-01 00:00:00')
@@ -85,7 +85,7 @@ rows:
 
 
 //---------------------------------------------------------------------------------------
-select tme_col10, MAX(tme_col11) from datums GROUP BY tme_col10;
+select tme_col10, MAX(tme_col11) from ${testName2}_datums GROUP BY tme_col10;
 rows:
   (null,TIME '11:22:35')
   (TIME '12:23:31',TIME '09:22:38')
@@ -93,7 +93,7 @@ rows:
   (TIME '11:23:31',TIME '09:22:35')
 
 //---------------------------------------------------------------------------------------
-select tme_col10, dec_col6, MAX(tme_col11) from datums GROUP BY tme_col10, dec_col6;
+select tme_col10, dec_col6, MAX(tme_col11) from ${testName2}_datums GROUP BY tme_col10, dec_col6;
 rows:
   (TIME '10:23:31',41.04,TIME '11:22:35')
   (TIME '12:23:31',null,TIME '09:22:38')
@@ -104,7 +104,7 @@ rows:
   (TIME '11:23:31',477.04,TIME '09:22:35')
 
 //---------------------------------------------------------------------------------------
-select int_col1, dec_col6, MAX(vch_col14) from datums GROUP BY int_col1, dec_col6;
+select int_col1, dec_col6, MAX(vch_col14) from ${testName2}_datums GROUP BY int_col1, dec_col6;
 rows:
   (7000,41.04,'red')
   (8000,4001.04,null)
@@ -117,7 +117,7 @@ rows:
   (0,477.04,'x')
 
 //-------------------------------------MIN TESTS------------------------------------------
-select int_col1, MIN(int_col0) from datums GROUP BY int_col1;
+select int_col1, MIN(int_col0) from ${testName2}_datums GROUP BY int_col1;
 rows:
   (null,3)
   (4000,4)
@@ -128,7 +128,7 @@ rows:
   (5000,1)
 
 //---------------------------------------------------------------------------------------
-select int_col0, MIN(int_col0) from datums GROUP BY int_col0;
+select int_col0, MIN(int_col0) from ${testName2}_datums GROUP BY int_col0;
 rows:
   (11,11)
   (9,9)
@@ -143,17 +143,17 @@ rows:
   (8,8)
 
 //---------------------------------------------------------------------------------------
-select bol_col3, MIN(int_col0) from datums GROUP BY bol_col3;
+select bol_col3, MIN(int_col0) from ${testName2}_datums GROUP BY bol_col3;
 rows:
   (false,1)
 
 //---------------------------------------------------------------------------------------
-select bol_col3, MIN(int_col0) + 6 from datums GROUP BY bol_col3;
+select bol_col3, MIN(int_col0) + 6 from ${testName2}_datums GROUP BY bol_col3;
 rows:
   (false,7)
 
 //---------------------------------------------------------------------------------------
-select dec_col6, MIN(int_col0 - 3)  from datums GROUP BY dec_col6;
+select dec_col6, MIN(int_col0 - 3)  from ${testName2}_datums GROUP BY dec_col6;
 rows:
   (null,1)
   (477.04,7)
@@ -163,7 +163,7 @@ rows:
   (4001.04,6)
 
 //---------------------------------------------------------------------------------------
-select vch_col15, MIN(tsp_col12) from datums GROUP BY vch_col15;
+select vch_col15, MIN(tsp_col12) from ${testName2}_datums GROUP BY vch_col15;
 rows:
   (null, null)
   ('yellow', TIMESTAMP '1941-01-01 00:00:00')
@@ -173,7 +173,7 @@ rows:
   ('orange', TIMESTAMP '1943-01-01 00:00:10')
 
 //---------------------------------------------------------------------------------------
-select tme_col10, MIN(tme_col11) from datums GROUP BY tme_col10;
+select tme_col10, MIN(tme_col11) from ${testName2}_datums GROUP BY tme_col10;
 rows:
   (null, TIME '11:22:35')
   (TIME '12:23:31'  , TIME '09:22:35')
@@ -181,7 +181,7 @@ rows:
   (TIME '11:23:31'  , TIME '09:10:35')
 
 //---------------------------------------------------------------------------------------
-select tme_col10, dec_col6, MIN(tme_col11) from datums GROUP BY tme_col10, dec_col6;
+select tme_col10, dec_col6, MIN(tme_col11) from ${testName2}_datums GROUP BY tme_col10, dec_col6;
 rows:
   (TIME '10:23:31',41.04,TIME '10:22:35')
   (TIME '12:23:31',null,TIME '09:22:35')
@@ -192,7 +192,7 @@ rows:
   (TIME '11:23:31',477.04,TIME '09:22:35')
 
 //---------------------------------------------------------------------------------------
-select int_col1, dec_col6, MIN(vch_col14) from datums GROUP BY int_col1, dec_col6;
+select int_col1, dec_col6, MIN(vch_col14) from ${testName2}_datums GROUP BY int_col1, dec_col6;
 rows:
   (7000,41.04,'red')
   (8000,4001.04,null)
@@ -206,7 +206,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 memoryleaks;
@@ -214,9 +214,6 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
-  mute
-
-  bye;
+  drop table ${testName2}_datums;
   mute
 }

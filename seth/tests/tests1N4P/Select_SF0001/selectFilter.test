@@ -1,15 +1,15 @@
 --------------------------------------------------------------------------------
 -- selectScan (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 // scan
-/weaved select * from nation;
+/weaved select * from ${testName2}_nation;
 rows: 25
 
 // scan + filter + project
-/weaved select p_partkey, p_size from part where p_mfgr = 'Manufacturer#1' and p_brand = 'Brand#13' and p_size < 25;
+/weaved select p_partkey, p_size from ${testName2}_part where p_mfgr = 'Manufacturer#1' and p_brand = 'Brand#13' and p_size < 25;
 rows:
   (34,8)
   (2,1)
@@ -19,7 +19,7 @@ rows:
   (178,10)
 
 // scan + filter + project
-/weaved select p_size, p_partkey from part where p_brand = 'Brand#13' and p_mfgr = 'Manufacturer#1' and p_size < 25;
+/weaved select p_size, p_partkey from ${testName2}_part where p_brand = 'Brand#13' and p_mfgr = 'Manufacturer#1' and p_size < 25;
 rows:
   (7,1)
   (19,133)
@@ -29,7 +29,7 @@ rows:
   (8,34)
 
 // scan + filter + project + sort
-/weaved select p_size, p_partkey from part where p_brand = 'Brand#13' and p_mfgr = 'Manufacturer#1' and p_size < 25 order by p_size;
+/weaved select p_size, p_partkey from ${testName2}_part where p_brand = 'Brand#13' and p_mfgr = 'Manufacturer#1' and p_size < 25 order by p_size;
 ordered rows:
  (1,2)
  (7,1)
@@ -39,13 +39,13 @@ ordered rows:
  (20,168)
 
 // indexscan + filter + project
-/weaved select p_partkey, p_mfgr, p_size from part where p_partkey < 20 and p_brand = 'Brand#11' and p_size > 20;
+/weaved select p_partkey, p_mfgr, p_size from ${testName2}_part where p_partkey < 20 and p_brand = 'Brand#11' and p_size > 20;
 rows:
   (7,'Manufacturer#1',45)
   (18,'Manufacturer#1',42)
 
 // indexscan + filter + project
-/weaved select p_mfgr, p_partkey, p_size from part where p_partkey < 20 and p_brand = 'Brand#11' and p_size > 20;
+/weaved select p_mfgr, p_partkey, p_size from ${testName2}_part where p_partkey < 20 and p_brand = 'Brand#11' and p_size > 20;
 rows:
   ('Manufacturer#1',7,45)
   ('Manufacturer#1',18,42)
@@ -54,8 +54,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

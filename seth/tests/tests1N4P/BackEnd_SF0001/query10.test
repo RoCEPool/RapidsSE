@@ -5,7 +5,7 @@
 
 select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
      c_acctbal, n_name, c_address, c_phone, c_comment
-     from customer, orders, lineitem, nation
+     from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem, ${testName2}_nation
      where c_custkey = o_custkey
      and l_orderkey = o_orderkey
      and o_orderdate >= '1993-10-01'
@@ -25,7 +25,7 @@ select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
 EXPLAIN STAGE TRANSLITERATE
 select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
      c_acctbal, n_name, c_address, c_phone, c_comment
-     from customer, orders, lineitem, nation
+     from ${testName2}_customer, ${testName2}_orders, ${testName2}_lineitem, ${testName2}_nation
      where c_custkey = o_custkey
      and l_orderkey = o_orderkey
      and o_orderdate >= '1993-10-01'
@@ -43,18 +43,18 @@ begin
     | pulse once
     | stageMarker27159
   stage stageMarker27159 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName2}_customer
     | stageMarker27162 broadcast
   stage stageMarker27162 on all partitions :
-    scan rapidsse public orders
+    scan rapidsse public ${testName2}_orders
     | abstractJoin " 1  "
     | stageMarker27165 broadcast
   stage stageMarker27165 on all partitions :
-    scan rapidsse public lineitem
+    scan rapidsse public ${testName2}_lineitem
     | abstractJoin " 1  "
     | stageMarker27168 broadcast
   stage stageMarker27168 on all partitions :
-    scan rapidsse public nation
+    scan rapidsse public ${testName2}_nation
     | abstractJoin " 1  "
     | stageMarker27171
   stage stageMarker27171 on all partitions :
@@ -100,29 +100,29 @@ begin
     | pulse once
     | next
   stage stageMarker27159 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName2}_customer
     | next
 
   stage stageMarker27162 on all partitions :
-    //scan rapidsse public orders
+    //scan rapidsse public ${testName2}_orders
     //| abstractJoin " 1  "
-    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="  // J1 - Orders
+    indexjoin ${testName2}_Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="  // J1 - Orders
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker27165 on all partitions :
-    //scan rapidsse public lineitem
+    //scan rapidsse public ${testName2}_lineitem
     //| abstractJoin " 1  "
-    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY ==" // J2 - Lineitem
+    indexjoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY ==" // J2 - Lineitem
     | hash "type INTEGER C_NATIONKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker27168 on all partitions :
-    //scan rapidsse public nation
+    //scan rapidsse public ${testName2}_nation
     //| abstractJoin " 1  "
-    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY ==" // J3 - Nation
+    indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY ==" // J3 - Nation
     | combined 0
     | next
 
@@ -236,7 +236,7 @@ pipeline unnamed
       | next
 
     stage Gs_ORDERS on all partitions :
-      indexScan Orders IxO_ORDERDATE
+      indexScan ${testName2}_Orders IxO_ORDERDATE
           "lbound date '1993-10-01' >=  ubound date '1994-01-01' < "
       | project
           "type INTEGER as _custkey  O_CUSTKEY , type INTEGER as _orderkey O_ORDERKEY"
@@ -244,7 +244,7 @@ pipeline unnamed
       | next
 
     stage Gj_CUSTOMER on all partitions :
-      indexJoin Customer IxC_CUSTKEY expr bound $I1 _custkey ==  //J1
+      indexJoin ${testName2}_Customer IxC_CUSTKEY expr bound $I1 _custkey ==  //J1
       | project expr  type INTEGER as _custkey _custkey ,
                       type INTEGER as _orderkey _orderkey ,
                       type VARCHAR as c_name c_name ,
@@ -257,7 +257,7 @@ pipeline unnamed
       | next
 
  stage Gj_NATION on all partitions :
-    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY ==" // J2 - Nation
+    indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY ==" // J2 - Nation
     | project expr type INTEGER as _custkey _custkey ,
                    type INTEGER as _orderkey _orderkey ,
                    type VARCHAR as c_name c_name ,
@@ -274,7 +274,7 @@ pipeline unnamed
 
     // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _orderkey
     stage Gj_LINEITEM on all partitions :
-      indexJoin Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==  //J2
+      indexJoin ${testName2}_Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==  //J2
       | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
       | gbyAgg expr groupby type INTEGER _custkey
                      aggregates
@@ -366,13 +366,13 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
+    indexScan ${testName2}_Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
     | project "type INTEGER as O_CUSTKEY  O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type INTEGER as O_ORDERKEY O_ORDERKEY ,
                type VARCHAR as C_NAME C_NAME ,
@@ -385,7 +385,7 @@ begin
     | next
 
   stage S03 on all partitions :
-    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type INTEGER as O_ORDERKEY O_ORDERKEY ,
                type VARCHAR as C_NAME C_NAME ,
@@ -399,7 +399,7 @@ begin
     | next hashcast
 
   stage S03 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
     | gbyAgg  "groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
@@ -487,20 +487,20 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
+    indexScan ${testName2}_Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
     | project "type INTEGER as O_CUSTKEY  O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
     | hash expr type INTEGER O_ORDERKEY
     | combined 0
     | next hashcast
 
   stage S03 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
     | combined 0
     | next
@@ -532,13 +532,13 @@ begin
     | next hashcast
 
   stage S07 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on all partitions :
-    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
@@ -587,7 +587,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
+    indexScan ${testName2}_Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
     | project "type INTEGER as O_CUSTKEY  O_CUSTKEY ,
                type INTEGER as O_ORDERKEY O_ORDERKEY"
     | hash expr type INTEGER O_ORDERKEY
@@ -595,7 +595,7 @@ begin
     | next hashcast
 
   stage S02 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
     | gbyAgg  "groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
@@ -624,7 +624,7 @@ begin
     | next hashcast
 
   stage S06 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type INTEGER as C_NATIONKEY C_NATIONKEY ,
                type VARCHAR as C_NAME C_NAME ,
@@ -637,7 +637,7 @@ begin
     | next
 
   stage S07 on all partitions :
-    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type VARCHAR as C_NAME C_NAME ,
                type DECIMAL as REVENUE ) REVENUE ,
@@ -686,8 +686,6 @@ rows:
  (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

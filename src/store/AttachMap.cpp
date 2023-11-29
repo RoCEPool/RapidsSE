@@ -90,9 +90,15 @@ AttachMap::AttachMap(bool bNoFree)
   m_pMarkerMgr      = new MarkerMgr;
   m_pNumbering      = new Numbering;
   m_pLglPtnMap      = nullptr;
+  m_pSnapshotAtTrackingMemory = nullptr;
+  m_pSnapshotAtMemoryLeaks = nullptr;
   m_pStarter        = new Starter;
   m_pTxSet          = new TxSet;
-  
+
+  for (i8 i=TC_NONE; i<TC_ENUMS; i++) {
+    m_bTraceableComponents[i] = false;
+  }
+
   Step::vAddStep("\\word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("\\word"_Stz));
   AM::pWordRoot()->vCategoryEnum(WC_WORD);
@@ -296,24 +302,24 @@ void AttachMap::vPrintAttachMap(void)
 
   vTrace("\n"_Stz);
   vTrace("Enclosed_by_leading  : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cEnclosedBy_Leading ? gpAttachMap->m_oFormat.m_cEnclosedBy_Leading : '0');
+        gpAttachMap->m_oFormat.cEnclosedBy_Leading() ? gpAttachMap->m_oFormat.cEnclosedBy_Leading() : '0');
   vTrace("Enclosed_by_trailing : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cEnclosedBy_Trailing ? gpAttachMap->m_oFormat.m_cEnclosedBy_Trailing : '0');
+        gpAttachMap->m_oFormat.cEnclosedBy_Trailing() ? gpAttachMap->m_oFormat.cEnclosedBy_Trailing() : '0');
   
   vTrace("Escape_char          : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cEscapeChar ? gpAttachMap->m_oFormat.m_cEscapeChar : '0');
+        gpAttachMap->m_oFormat.cEscapeChar() ? gpAttachMap->m_oFormat.cEscapeChar() : '0');
   vTrace("Delimiter            : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cFieldDelimiter ? gpAttachMap->m_oFormat.m_cFieldDelimiter : '0');
+        gpAttachMap->m_oFormat.cFieldDelimiter() ? gpAttachMap->m_oFormat.cFieldDelimiter() : '0');
   vTrace("Record_terminator    : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cRecordTerminator ? gpAttachMap->m_oFormat.m_cRecordTerminator : '0');
-  vTrace("Record_end           : %s\n"_Stz, aLE[gpAttachMap->m_oFormat.m_eLineEnd]);
+        gpAttachMap->m_oFormat.cRecordTerminator() ? gpAttachMap->m_oFormat.cRecordTerminator() : '0');
+  vTrace("Record_end           : %s\n"_Stz, aLE[gpAttachMap->m_oFormat.eLineEnd()]);
   
-  vTrace("Date_component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[0]]);
-  vTrace("Date_component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[1]]);
-  vTrace("Date_component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[2]]);
+  vTrace("Date_component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.eDateComponent(0)]);
+  vTrace("Date_component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.eDateComponent(1)]);
+  vTrace("Date_component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.eDateComponent(2)]);
   
   vTrace("Date_separator       : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cDateSeparator ? gpAttachMap->m_oFormat.m_cDateSeparator : '0');
+        gpAttachMap->m_oFormat.cDateSeparator() ? gpAttachMap->m_oFormat.cDateSeparator() : '0');
   
   vTrace("\n"_Stz);
   gpAttachMap->m_xSysArgs.m_oArgTags.vDumpSet();
@@ -402,7 +408,9 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bSysMetrics      = pCmdLineArgs->m_xSysArgs.m_bSysMetrics;
   m_xSysArgs.m_nThreads         = pCmdLineArgs->m_xSysArgs.m_nThreads;
   m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
-  m_xSysArgs.m_bVerbose         = pCmdLineArgs->m_xSysArgs.m_bVerbose;
+  for (i8 i=TC_NONE; i<TC_ENUMS; i++) {
+    m_bTraceableComponents[i] = pCmdLineArgs->m_xSysArgs.m_bTraceableComponents[i];
+  }
 
   m_xSysArgs.m_oArgTags.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
   
@@ -420,7 +428,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   
   m_iEpoch      = 0;
   
-  m_oFormat.m_nMaxErrors = m_xSysArgs.m_nMaxLoadErrors;
+  m_oFormat.vMaxErrors(m_xSysArgs.m_nMaxLoadErrors);
   
   ASSERT(m_xHeaps.Transient.m_pTiny);
   ASSERT(m_xHeaps.Transient.m_pSmall);

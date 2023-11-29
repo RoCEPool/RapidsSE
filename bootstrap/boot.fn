@@ -314,7 +314,8 @@ function startCurrentNode() {
 
   # Get all of the settings for the current node
   local host
-  local port
+  local internalPort
+  local clientPort
   local heartbeat
   local dir
   local partitions
@@ -327,7 +328,7 @@ function startCurrentNode() {
 
 
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
-  internal_port="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+  internalPort="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
   clientPort="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_CLIENT_PORT_KEY}")"
   heartbeatPort="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
   heartbeatAddress="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}")"
@@ -359,7 +360,8 @@ function startCurrentNode() {
   startCmd+=("--node")
   startCmd+=("${CURRENT_NODE_NAME}")
   startCmd+=("${host}")
-  startCmd+=("${internal_port}")
+  startCmd+=("${internalPort}")
+  startCmd+=("${clientPort}")
   startCmd+=("--name")
   startCmd+=("${CURRENT_NODE_NAME}")
   startCmd+=("--start")
@@ -521,14 +523,16 @@ function buildNodeArguments() {
 
   declare -a nodeArgs=()
   local host
-  local port
+  local internalPort
+  local clientPort
 
   for row in "${NODE_LIST[@]}"
   do
     host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
-    internal_port="$(nodeCfgGetValue "${row}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    internalPort="$(nodeCfgGetValue "${row}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    clientPort="$(nodeCfgGetValue "${row}" "${NODE_CFG_CLIENT_PORT_KEY}")"
 
-    nodeArgs+=("--node" "${row}" "${host}" "${internal_port}")
+    nodeArgs+=("--node" "${row}" "${host}" "${internalPort}" "${clientPort}")
   done
  
   echo "${nodeArgs[@]}"

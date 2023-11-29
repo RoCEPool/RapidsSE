@@ -156,11 +156,11 @@ SubQuery* Bench::pGetSubQuery(Stz* szSubQueryNm)
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bIsSubQueryNm(Stz* szSubQueryNm)
+bool Bench::bIsSqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pGetBoard(szSubQueryNm)) {
+  if (Board* pBoard = pGetBoard(szSqyNm)) {
     UNUSED(pBoard);
     return true;
   }
@@ -383,8 +383,8 @@ void Bench::vValidate(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    return;
+//  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+//    return;
 
   pCI->vSave();
 
@@ -398,7 +398,10 @@ void Bench::vValidate(CardIter* pCI)
 
     RASSERT(pBoard->i_Board() == i_Board);
 
-    vTrace("Validate board [%lld] : %p\n"_Stz,i_Board,pBoard);
+    //vTrace("Validate board [%lld] : %p\n"_Stz,i_Board,pBoard);
+
+    if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+      pBoard->vClearCardMarks();
 
     pBoard->vValidate(pCI);
 

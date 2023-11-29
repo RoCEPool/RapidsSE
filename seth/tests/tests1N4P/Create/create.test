@@ -3,169 +3,249 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create table test starting character
-create table _test (
+create table _test_${testName2} (
   jA  INTEGER
 );
 success
 
-create table 1test (
+drop table _test_${testName2};
+success
+
+create table 1test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table ~test (
+create table ~test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table &test (
+create table &test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table %test (
+create table %test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table ^test (
+create table ^test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table !test (
+create table !test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table *test (
+create table *test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table :test (
+create table :test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table ?test (
+create table ?test_${testName2} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
 // (2) create table test special characters within the name
 
-create table t1est (
+create table t1est_${testName2} (
   jA  INTEGER
 );
 success
 
-create table t~est (
-  jA  INTEGER
-);
-failure contains: 'EC_INVALID_COMMAND'
+drop table t1est_${testName2};
+success
 
-create table t&est (
+create table t~est_${testName2} (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
-create table t%est (
+create table t&est_${testName2} (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
-create table t^est (
+create table t%est_${testName2} (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
-create table t!est (
+create table t^est_${testName2} (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
-create table t*est (
+create table t!est_${testName2} (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
-create table t:est (
+create table t*est_${testName2} (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
-create table t?est (
+create table t:est_${testName2} (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
-create table t est (
+create table t?est_${testName2} (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table t est_${testName2} (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
 
 // (3) create table test 31 characters and more as table name
 
-// 31 character table name (maximum length allowed)
+// 31 character table name (length allowed)
 create table abcabcabcabcabcabcabcabcabcabca (
   jA  INTEGER
 );
+success
+
+drop table abcabcabcabcabcabcabcabcabcabca;
 success
 
 // 32 character table name
 create table abcabcabcabcabcabcabcabcabcabcab (
   jA  INTEGER
 );
+success
+
+drop table abcabcabcabcabcabcabcabcabcabcab;
+success
+
+// (4) create table test 255 characters and more as table name
+
+// 255 character table name
+create table a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345 (
+  jA  INTEGER
+);
+success
+
+lstbl;
+contains rows:
+  ('a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345')
+
+drop table a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345;
+success
+
+// 256 character table name
+create table a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345z (
+  jA  INTEGER
+);
 failure contains: 'EC_MAX_TABLE_NAME_LENGTH'
 
+// 255 character column name
+create table T1_${testName2} (
+  a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345 INTEGER
+);
+success
+
+lscol T1_${testName2};
+rows: ('a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345','INTEGER',19,0,true,true)
+
+drop table T1_${testName2};
+success
+
+// 256 character column name
+create table T1_${testName2} (
+  a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345z INTEGER
+);
+failure contains: 'EC_MAX_COLUMN_NAME_LENGTH'
+
 // 0 length for varchar
-create table t (
+create table t_${testName2} (
   c VARCHAR(0)) (
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 // 0 length for char
-create table t (
+create table t_${testName2} (
   c CHAR(0)) (
 );
-failure contains: 'EC_INVALID_COMMAND'
-
+failure contains: 'EC_SYNTAX_ERROR'
 
 // Table name cannot be a reserved word
 create table create (col1 INTEGER);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table on (col1 INTEGER);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table JOIN (col1 INTEGER);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 // case insensitive
 create table join (col1 INTEGER);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
+create table _test_${testName2} (
+  jA  INTEGER
+);
+success
 
 // index names are also checked against the reserved word list
-create index left on _test (jA);
-failure contains: 'EC_RESERVED_WORD'
+create index left on _test_${testName2} (jA);
+failure contains: 'EC_SYNTAX_ERROR'
 
-create index JOIN on _test (jA);
-failure contains: 'EC_RESERVED_WORD'
+create index JOIN on _test_${testName2} (jA);
+failure contains: 'EC_SYNTAX_ERROR'
 
-create index join on _test (jA);
-failure contains: 'EC_RESERVED_WORD'
+create index join on _test_${testName2} (jA);
+failure contains: 'EC_SYNTAX_ERROR'
 
+// (5) create index test 255 characters and more as index name
+
+// 256 character index name
+create index a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345z
+  on _test_${testName2} (jA);
+failure contains: 'EC_MAX_INDEX_NAME_LENGTH'
+
+// 255 character index name
+create index a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345
+  on _test_${testName2} (jA);
+success
+
+lsidx _test_${testName2};
+rows:
+  ('a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345',false,false)
+
+drop index _test_${testName2} a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345;
+success
+
+drop table _test_${testName2};
+success
 
 CLEANUP {
 
-  drop table _test;
-  drop table t1est;
+  drop table T1_${testName2};
+  mute
+  drop table _test_${testName2};
+  mute
+  drop table t1est_${testName2};
+  mute
   drop table abcabcabcabcabcabcabcabcabcabca;
   mute
-
-  bye;
+  drop table abcabcabcabcabcabcabcabcabcabcab;
+  mute
+  drop table a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e123456789a123456789b123456789c123456789d123456789e12345678912345;
   mute
 }
 

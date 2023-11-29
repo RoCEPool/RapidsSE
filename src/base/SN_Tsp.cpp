@@ -47,8 +47,8 @@ i8 SN_Tsp::i(char** aacCrs, Format* pFmt)
   if ( ! StrLib::bExtractTimestamp2(aacCrs,
                                     iYear, iMonth, iDay,
                                     iHour, iMinute, iSecond, iMicro,
-                                    pFmt->m_eDateComponent,
-                                    pFmt->m_cDateSeparator) )
+                                    pFmt->pDateComponents(),
+                                    pFmt->cDateSeparator()) )
     THROW_USER("StrLib::bExtractTimestamp2"_Stz);
 
   m_wDtm.m_wTsp.T.m_uYearDelta = iYear - C_YEAR_BASE;

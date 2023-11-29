@@ -45,12 +45,12 @@ Stz* SN_Vch::sz(char** aacCrs, i8 iLength, Format* pFmt,
                                  sizeof(m_caVch),
                                  iLength,
                                  bSawLeadingEnclosed,
-                                 pFmt->m_cEnclosedBy_Leading,
-                                 pFmt->m_cEnclosedBy_Trailing,
-                                 pFmt->m_cEscapeChar,
-                                 pFmt->m_cFieldDelimiter,
-                                 pFmt->m_cRecordTerminator,
-                                 pFmt->m_bAllowNonPrintable,
+                                 pFmt->cEnclosedBy_Leading(),
+                                 pFmt->cEnclosedBy_Trailing(),
+                                 pFmt->cEscapeChar(),
+                                 pFmt->cFieldDelimiter(),
+                                 pFmt->cRecordTerminator(),
+                                 pFmt->bAllowNonPrintable(),
                                  nChars_) )
     THROW_USER("StrLib::bExtractVarchar"_Stz);
 

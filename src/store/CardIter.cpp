@@ -207,7 +207,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
 
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pChild->pSymbol(true)->vFacets(&xSymbol);
+  pChild->pSymbol()->vFacets(&xSymbol);
 
   pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
@@ -283,6 +283,19 @@ bool CardIter::bAncestorIncludes(eCK eCard)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ancestor parent                                                        */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pAncestorParent(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  if (! m_nAncestors)
+    return nullptr;
+
+  return m_apAncestry[m_nAncestors-1];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1242,12 +1255,9 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
         Card *pChild_prj = p_emit->pGetChild(i_Child);
         if (pChild_prj->bIsCard(CK_EXPR)) {
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-          if (Card_As* p_as = p_expr_prj->pSub_as()) {
-            //p_as->vDump();
-            if (p_as->pSymbol_AS()->bSame(p_term->szFacet(SF_NONE))) {
-              p_expr_col = p_expr_prj;
-              break;
-            }
+          if (p_expr_prj->pSymbol()->bMatches(p_term->pSymbol())) {
+            p_expr_col = p_expr_prj;
+            break;
           }
         }
       }
@@ -1322,7 +1332,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_ADDRESS:          return G.p_address;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_ANDCONJ:          return G.p_andConj;
-    case CK_AS:               return G.p_as;
 
     case CK_BOOLPRED:         return G.p_boolPred;
     case CK_BOUND:            return G.p_bound;
@@ -1543,8 +1552,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AGGREG:           G.p_aggreg           = _pCard_Aggreg(pCard);
                               G.p_OP               = (Card_OP*)pCard; break;
     case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);
-                              G.p_CONJ             = (Card_CONJUNCTION*)pCard; break;
-    case CK_AS:               G.p_as               = _pCard_As(pCard); break;
+                              G.p_CONJ             = (Card_CONJ*)pCard; break;
 
     case CK_BOOLPRED: G.p_boolPred         = _pCard_BoolPred(pCard); break;
     case CK_BOUND:            G.p_bound            = _pCard_Bound(pCard); break;
@@ -1636,11 +1644,11 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NEEDED:           G.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
     case CK_NOTCONJ:          G.p_notConj           = _pCard_NotConj(pCard);
-                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
+                              G.p_CONJ              = (Card_CONJ*)pCard; break;
 
     case CK_ON:               G.p_on                = _pCard_On(pCard); break;
     case CK_ORCONJ:           G.p_orConj            = _pCard_OrConj(pCard);
-                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
+                              G.p_CONJ              = (Card_CONJ*)pCard; break;
     case CK_ORDAGG:           G.p_ordAgg            = _pCard_OrdAgg(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
@@ -1654,7 +1662,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_RELNOP:           G.p_relnOp            = _pCard_RelnOp(pCard); break;
     case CK_REQUIRED:         G.p_required          = _pCard_Required(pCard); break;
     case CK_RLNCONJ:          G.p_rlnConj           = _pCard_RlnConj(pCard);
-                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
+                              G.p_CONJ              = (Card_CONJ*)pCard; break;
     case CK_ROWCOUNT:         G.p_rowCount          = _pCard_RowCount(pCard); break;
     case CK_ROWSIZE:          G.p_rowSize           = _pCard_RowSize(pCard); break;
     case CK_RPNCALC:          G.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
@@ -1799,7 +1807,6 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_address          = nullptr;
   G.p_aggreg           = nullptr;
   G.p_andConj          = nullptr;
-  G.p_as               = nullptr;
 
   G.p_boolPred         = nullptr;
   G.p_bound            = nullptr;
@@ -2340,13 +2347,13 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Emit* p_emitted_prior = pResolvePrior_projection();
-  if (! p_emitted_prior)
+  Card_Emit* p_arriving = pResolvePrior_projection();
+  if (! p_arriving)
     return nullptr;
 
-  //RASSERT(p_emitted_prior == this->Flux.m_pArriving);
+  //RASSERT(p_arriving == this->Flux.m_pArriving);
 
-  Card_Expr* p_expr_resolved = p_emitted_prior->pResolve_expr(p_term);
+  Card_Expr* p_expr_resolved = p_arriving->pResolve_expr(p_term);
   return p_expr_resolved;
 }
 
@@ -2371,9 +2378,9 @@ Card_Emit* CardIter::pResolvePrior_projection(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Emit* p_emitted_prior = Card_Emit::pResolvePriorProjection(this);
+  Card_Emit* p_arriving = Card_Emit::pResolvePriorProjection(this);
 
-  return p_emitted_prior;
+  return p_arriving;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2581,7 +2588,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_ADDRESS:      G.p_address->vValidate(this, iDepth, pCard);  break;
       case CK_AGGREG:       G.p_aggreg->vValidate(this, iDepth, pCard);  break;
       case CK_ANDCONJ:      G.p_andConj->vValidate(this, iDepth, pCard);  break;
-      case CK_AS:           G.p_as->vValidate(this, iDepth, pCard);  break;
 
       case CK_BOOLPRED:     G.p_boolPred->vValidate(this, iDepth, pCard);  break;
       case CK_BOUND:        G.p_bound->vValidate(this, iDepth, pCard);  break;

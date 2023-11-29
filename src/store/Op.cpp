@@ -510,6 +510,7 @@ Word* Op::pEntryWord(void)
   Word* pEntryWord = pDicRoot->pFindWord(sEntryWord);
   
   if (! pEntryWord) {
+    vTrace("ERROR: Could not find entry word: %s\n"_Stz, sEntryWord.szStz());
     RASSERT(pEntryWord);
   }
   
@@ -683,6 +684,11 @@ bool Op::bIsEventValid(i8 i_OperandKind)
     case EV_D_ENTBUFFER:
     case EV_D_ROWBUFFER:
     case EV_D_SRTBUFFER:
+      // These don't apply to adaptorWL
+      if (szOpNm()->bSame("adaptorWL"_Stz)) {
+        break;
+      }
+
       // should have received a EV_M_DATAPULSE
       if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior EV_M_DATAPULSE\n"_Stz,

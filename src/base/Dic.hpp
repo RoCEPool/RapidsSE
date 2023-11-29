@@ -13,7 +13,7 @@ namespace BASE
   private:
     Lock      m_okLock;
   
-    s32       m_sDicNm;    // name of this dictionary
+    s256      m_sDicNm;    // name of this dictionary
     eDK       m_eDicKind;  // kind of dictionary
   
     SkipListNL* m_pWordSkipList; // skip list of words (ordered by wordNm)

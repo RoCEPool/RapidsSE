@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -26,40 +26,37 @@ success
 //------------------------------------------------------------------------------
 // create the indexes
 
-create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_ORDERKEY  ON ${testName2}_lineitem (L_ORDERKEY)  ;
 affected: 0
 
-create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
+create index IxL_PARTKEY   ON ${testName2}_lineitem (L_PARTKEY)   ;
 affected: 0
 
-create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
+create index IxL_SHIPDATE  ON ${testName2}_lineitem (L_SHIPDATE)  ;
 affected: 0
 
-create index IxL_SUPPKEY  ON Lineitem (L_SUPPKEY)  ;
+create index IxL_SUPPKEY  ON ${testName2}_lineitem (L_SUPPKEY)  ;
 affected: 0
 
-create index IxL_RECEIPTDATE  ON Lineitem (L_RECEIPTDATE)  ;
+create index IxL_RECEIPTDATE  ON ${testName2}_lineitem (L_RECEIPTDATE)  ;
 affected: 0
 
 // load the table
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-select count(*) from lineitem;
+select count(*) from ${testName2}_lineitem;
 rows: (6000)
 
-compactidx lineitem IxL_ORDERKEY;
+compactidx ${testName2}_lineitem IxL_ORDERKEY;
 success
 
-compactidx lineitem IxL_PARTKEY;
+compactidx ${testName2}_lineitem IxL_PARTKEY;
 success
 
-compactidx lineitem IxL_SHIPDATE;
+compactidx ${testName2}_lineitem IxL_SHIPDATE;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

@@ -29,13 +29,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToKeyHshRow(void)
 {
-  vAddStep("ToKeyHshRow[]"_Stz,               &Step::vToKeyHshRowFetch);
-  vAddStep("ToKeyHshRow[].completed"_Stz,     &Step::vToKeyHshRowCompleted);
-  vAddStep("ToKeyHshRow[].counters@@"_Stz,    &Step::vToKeyHshRowCountersFetch);
-  vAddStep("ToKeyHshRow[].csvToRow"_Stz,      &Step::vToKeyHshRowCsvToRow);
-  vAddStep("ToKeyHshRow[].dangling"_Stz,      &Step::vToKeyHshRowDangling);
-  vAddStep("ToKeyHshRow[].delete"_Stz,        &Step::vToKeyHshRowDelete);
-  vAddStep("ToKeyHshRow[].new"_Stz,           &Step::vToKeyHshRowNew);
+  vAddStep("ToKeyHshRow[]"_Stz,                 &Step::vToKeyHshRowFetch);
+  vAddStep("ToKeyHshRow[].completed"_Stz,       &Step::vToKeyHshRowCompleted);
+  vAddStep("ToKeyHshRow[].counters@@"_Stz,      &Step::vToKeyHshRowCountersFetch);
+  vAddStep("ToKeyHshRow[].countersAreZero"_Stz, &Step::vToKeyHshRowCountersZero);
+  vAddStep("ToKeyHshRow[].csvToRow"_Stz,        &Step::vToKeyHshRowCsvToRow);
+  vAddStep("ToKeyHshRow[].dangling"_Stz,        &Step::vToKeyHshRowDangling);
+  vAddStep("ToKeyHshRow[].delete"_Stz,          &Step::vToKeyHshRowDelete);
+  vAddStep("ToKeyHshRow[].new"_Stz,             &Step::vToKeyHshRowNew);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,6 +67,24 @@ void Step::vToKeyHshRowCountersFetch(void)
   m_pDataStack->vPushInt(pToKeyHshRow->iRowsSkipped());
   m_pDataStack->vPushInt(pToKeyHshRow->iRowsInvalid());
   m_pDataStack->vPushInt(pToKeyHshRow->iRowsProcessed());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ToKeyHshRow[].countersAreZero -- push true if all counter values are zero  */
+/*----------------------------------------------------------------------------*/
+void Step::vToKeyHshRowCountersZero(void)
+{
+  ENTRY();
+
+  ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
+
+  i8 iCounter = pToKeyHshRow->iRowsSkipped() +
+                pToKeyHshRow->iRowsInvalid() +
+                pToKeyHshRow->iRowsProcessed();
+
+  m_pDataStack->vPushBol(iCounter == 0);
 
   EXIT();
 }
@@ -137,7 +156,7 @@ void Step::vToKeyHshRowFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[].new -- new ToKeyHshRow                                       */
+/* ToKeyHshRow[].new -- new ToKeyHshRow, pushes an error code (EC_NONE=success)*/
 /*----------------------------------------------------------------------------*/
 void Step::vToKeyHshRowNew(void)
 {
@@ -150,17 +169,19 @@ void Step::vToKeyHshRowNew(void)
   //pJobTags->vContentDump();
 
   Format* pFmt = new Format;
-  pFmt->vSet(pFmt);
-  
-  bool b = AM::bFormatSetFromTagSet(pFmt,pJobTags);
-  UNUSED(b);
 
-  StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
+  eEC eErrCode = AM::bFormatSetFromTagSet(pFmt,pJobTags);
 
-  ToKeyHshRow* pToKeyHshRow = new ToKeyHshRow(pStreamDef,pFmt);
-      
-  m_pLogicUnit->m_xpToKeyHshRow = pToKeyHshRow;
-  
+  if (eErrCode == EC_NONE) {
+    StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
+    ToKeyHshRow* pToKeyHshRow = new ToKeyHshRow(pStreamDef,pFmt);
+    m_pLogicUnit->m_xpToKeyHshRow = pToKeyHshRow;
+    m_pDataStack->vPushInt(EC_NONE);
+
+  } else {
+    m_pDataStack->vPushInt(eErrCode);
+  }
+
   delete pFmt;
   
   EXIT();

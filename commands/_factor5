@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* _factor5 - factor boolPred test                                            */
+/*============================================================================*/
+
+create table Factor5 (
+  a INTEGER NOT NULL,
+  b INTEGER NOT NULL,
+  c INTEGER NOT NULL,
+  d INTEGER NOT NULL,
+  e INTEGER NOT NULL
+)
+;
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
+/pipelineName = "_factor5_a"
+select *
+  from Factor5
+ where (a = 1 and b = 2 and e = 1)
+;
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
+/pipelineName = "_factor5_a"
+select *
+  from Factor5
+ where (a = 1 and b = 2 and e = 1)
+    or (a = 1 and c = 3 and e = 2)
+    or (a = 1 and d = 4 and e = 3)
+;
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
+/pipelineName = "_factor5_b"
+select *
+  from Factor5
+ where (a = 1 and b = 2 and e = 1)
+    or (c = 3 and a = 1 and e = 2)
+    or (a = 1 and d = 4 and e = 3)
+;
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
+/pipelineName = "_factor5_c"
+select *
+  from Factor5
+ where (a = 1 and b = 2 and e = 1)
+    or (c = 3 and a = 1 and e = 2)
+    or (d = 4 and e = 3 and a = 1)
+;
+
+drop table Factor5;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

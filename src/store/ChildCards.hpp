@@ -28,12 +28,9 @@ namespace STORE
     i8   nChildCards(eCK eChild);
 
     void vDeleteAllChildren(void);
-    bool bDeleteChild(Card* pChild);
     void vDeleteChild(Card* pChild);
     void vDeleteSub(Card* pSub);
 
-//    void vEnsureAfter(eCK eChild, eCK eChild_after);
-//    void vEnsureBefore(eCK eChild, eCK eChild_before);
     void vEnsureFirst(eCK eChild);
     void vEnsureLast(eCK eChild);
 
@@ -41,39 +38,37 @@ namespace STORE
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
     Card* pFindChild(eCK eCard, Stz* szFacet, i8& i_Child);
-    Card* pFindChildWithSub(eCK eChild, eCK eSub, Stz* szValue, i8& i_Child);
-    Card* pFindSubCard(eCK eCard);
-    Card_Table* pFindTableCard(char cTableSyn, Card*& rpMainCard);
+    Card* pFindChildWithSub(eCK eChild, eCK eSub, Stz* szFacet, i8& i_Child);
+    Card* pFindSubCard(eCK eSub);
+    Card_Table* pFind_table(char cTableSyn, Card*& rpMainCard);
 
+    eCK   eGetChild(i8 i_Child, Card*& rpChild);
     Card* pGetChild(i8 i_Child);
-    Card* pGetChild(i8 i_Child, eCK& reCard);
-    Card* pGetChild_bySym(Symbol* pSymbol);
+    Card* pGetChild(i8 i_Child, eCK& reChild);
 
     void  vInsertChildAfter(Card* pChild, Card* pAfter);
     void  vInsertChildBefore(Card* pChild, Card* pBefore);
 
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
 
-    void vOntoStzList(StzList* pStzList);
-
-    Card* pPeekChild(void);
-    Card* pPeekChild_last(void);
+    eCK   ePeekChild(i8 i_Child=0);
+    Card* pPeekChild(i8 i_Child=0);
+    Card* pPeekChild_tail(void);
     Card* pPopChild(void);
     Card* pPopChild_tail(void);
-    Card* pPopChildIf(Symbol xSymbol);
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
     void  vPushChild(Card* pChild);
 
     bool bRemoveChild(Card* pChild);
     void vRemoveChild(Card* pChild);
-    void vRemoveSub(Card* pSubCard);
+    void vRemoveSub(Card* pSub);
     void vReplaceChildWithItsSubs(Card* pChild);
     void vReplaceChild(Card* pChild, Card* pWith);
     void vRotateFirst(Card* pChild);
     void vRotateLast(Card* pChild);
 
     void vTransferChildren(Card* pFrom);
-    void vTransferChildren(Card* pFrom, eSF eSymbol_limit);
+    void vTransferChildren(Card* pFrom, eSF eFacet_stopAfter);
   };
 }
 

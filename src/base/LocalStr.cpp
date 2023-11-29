@@ -104,6 +104,17 @@ void LocalStr::vText(Stz* szText)
   m_pText->vSet(szText);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Revert the buffer back to a tiny one (for memory leak tracking consistency)*/
+/*----------------------------------------------------------------------------*/
+void LocalStr::vRevertBuf()
+{
+  // If a local string requires a larger buffer to be allocated then this can
+  // appear as a memory leak (e.g. in the job parsing a wireline client's command).
+  // So ensure the Text buffer is set back to a tiny buffer.
+  m_pText->vRevertToTiny();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

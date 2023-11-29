@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 
 namespace STORE
 {
-  class Card_NotConj : public Card_CONJUNCTION
+  class Card_NotConj : public Card_CONJ
   {  
   public:
     void* operator new(size_t);
@@ -16,7 +16,7 @@ namespace STORE
     Card_NotConj(void);
    ~Card_NotConj(void) noexcept(false);
 
-    void vEnsureTypesFor_stmCol(CardIter* pCI);
+    void vEnsureTypeId_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

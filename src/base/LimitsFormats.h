@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+static const i8 C_MAX_COLUMN_NAME_LENGTH = 256; // max column name length including null terminator
 static const i8 C_MAX_COLUMNS       = 64;     // max columns per table
 static const i8 C_MAX_CONN_RETRIES  = 5;      // max connection retries on node failure
 static const i8 C_MAX_DECKS         = 256;
@@ -32,11 +33,12 @@ static const i8 C_MAX_REGS          = 128;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 64;    // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 1024;
+static const i8 C_MAX_SQL_NAME_LENGTH = 256; // max sql name length including null terminator
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STREAMS       = 256;
 static const i8 C_MAX_STREAM_ORDER  = 8;
-static const i8 C_MAX_TABLE_NAME_LENGTH  = 32; // max table name length including null terminator
-static const i8 C_MAX_INDEX_NAME_LENGTH  = 32; // max index name length including null terminator
+static const i8 C_MAX_TABLE_NAME_LENGTH  = 256; // max table name length including null terminator
+static const i8 C_MAX_INDEX_NAME_LENGTH  = 256; // max index name length including null terminator
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 static const i8 C_MAX_VERTEXES      = 256;
@@ -102,8 +104,11 @@ static Stz* C_SE_PATH_ROOT = "/"_Stz;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+static Stz* C_TDEF_AFFECTEDROWS     = "__affectedRows"_Stz;
 static Stz* C_TDEF_ANALYZEINDEX     = "__analyzeIndex"_Stz;
 static Stz* C_TDEF_ANALYZETABLE     = "__analyzeTable"_Stz;
+static Stz* C_TDEF_BPAOBJECTS       = "__bpaObjects"_Stz;
+static Stz* C_TDEF_BPAREGIONS       = "__bpaRegions"_Stz;
 static Stz* C_TDEF_CALLPIPELINE     = "__callPipeline"_Stz;
 static Stz* C_TDEF_COLUMNDEFS       = "__columnDefs"_Stz;
 static Stz* C_TDEF_COMMAND          = "__command"_Stz;
@@ -127,12 +132,13 @@ static Stz* C_TDEF_LISTFOLDER       = "__listFolder"_Stz;
 static Stz* C_TDEF_LISTINDEX        = "__listIndex"_Stz;
 static Stz* C_TDEF_LISTNODES        = "__listNodes"_Stz;
 static Stz* C_TDEF_LISTPARTITIONS   = "__listPartitions"_Stz;
-static Stz* C_TDEF_LOADRESULT       = "__loadResult"_Stz;
 static Stz* C_TDEF_LOCKSTATS        = "__lockStats"_Stz;
+static Stz* C_TDEF_LOGMSG           = "__logMsg"_Stz;
 static Stz* C_TDEF_LOOKUPCATALOG    = "__lookupCatalog"_Stz;
 static Stz* C_TDEF_LOOKUPINDEX      = "__lookupIndex"_Stz;
 static Stz* C_TDEF_LOOKUPSCHEMA     = "__lookupSchema"_Stz;
 static Stz* C_TDEF_LOOKUPTABLE      = "__lookupTable"_Stz;
+static Stz* C_TDEF_MEMORYLEAKS      = "__memoryLeaks"_Stz;
 static Stz* C_TDEF_MEMORYLOG        = "SE__memoryLog"_Stz;
 static Stz* C_TDEF_NODEINFO         = "__nodeInfo"_Stz;
 static Stz* C_TDEF_OPERANDLOG       = "SE__operandLog"_Stz;
@@ -157,6 +163,7 @@ static Stz* C_TDEF_TABLESIZES       = "__tableSizes"_Stz;
 static Stz* C_TDEF_TOTALUNITS       = "__totalUnits"_Stz;
 static Stz* C_TDEF_VERIFYINDEX      = "__verifyIndex"_Stz;
 static Stz* C_TDEF_VERIFYTABLE      = "__verifyTable"_Stz;
+static Stz* C_TDEF_WARNINGS         = "__warnings"_Stz;
 
 static Stz* C_EVENT_DEMON           = "__eventDemon"_Stz;
 

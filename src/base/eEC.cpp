@@ -105,6 +105,8 @@ Stz* aEC[EC_ENUMS] =
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",       // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_IS_EMPTY                 */ (Stz*)"EC_FILE_IS_EMPTY",
+  /* EC_FILE_TOO_LARGE                */ (Stz*)"EC_FILE_TOO_LARGE",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"folder in use",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"folder not empty",
 
@@ -141,6 +143,9 @@ Stz* aEC[EC_ENUMS] =
   /* EC_INVALID_FLOAT_FORMAT          */ (Stz*)"EC_INVALID_FLOAT_FORMAT",       // SQL Compiler Subsystem
   /* EC_INVALID_INTEGER_FORMAT        */ (Stz*)"EC_INVALID_INTEGER_FORMAT",     // SQL Compiler Subsystem
   /* EC_INVALID_INTERFACE             */ (Stz*)"invalid interface",
+  /* EC_INVALID_LOAD_OPT_DATE_FORMAT  */ (Stz*)"EC_INVALID_LOAD_OPT_DATE_FORMAT",
+  /* EC_INVALID_LOAD_OPT_ENCL_TRAILING*/ (Stz*)"EC_INVALID_LOAD_OPT_ENCL_TRAILING",
+  /* EC_INVALID_LOAD_OPT_RECORD_ENDS  */ (Stz*)"EC_INVALID_LOAD_OPT_RECORD_ENDS",
   /* EC_INVALID_LIMIT_VALUE           */ (Stz*)"EC_INVALID_LIMIT_VALUE",        // SQL Compiler Subsystem
   /* EC_INVALID_OFFSET_VALUE          */ (Stz*)"EC_INVALID_OFFSET_VALUE",       // SQL Compiler Subsystem
   /* EC_INVALID_PARAMETER             */ (Stz*)"invalid parameter",
@@ -155,9 +160,11 @@ Stz* aEC[EC_ENUMS] =
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",        // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",   // SQL Compiler Subsystem
+  /* EC_INVALID_TRACE_NAME            */ (Stz*)"EC_INVALID_TRACE_NAME",
   /* EC_INVALID_TOKEN                 */ (Stz*)"EC_INVALID_TOKEN",
   /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
+  /* EC_IO_ERROR                      */ (Stz*)"EC_IO_ERROR",
 
   /* _J_ */
 
@@ -168,11 +175,15 @@ Stz* aEC[EC_ENUMS] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
-  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 31 bytes",
+  /* EC_MAX_IDENTIFIER_NAME_LENGTH    */ (Stz*)"max identifier name length allowed is 255 bytes",
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 255 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
+  /* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"max column name length allowed is 255 bytes",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
-  /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
+  /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 255 bytes",
+  /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"EC_MEMORY_ALREADY_TRACKED",
+  /* EC_MEMORY_NOT_BEING_TRACKED      */ (Stz*)"EC_MEMORY_NOT_BEING_TRACKED",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
   /* EC_MISSING_OP                    */ (Stz*)"missing operator",
   /* EC_MISSING_SCAN_OP               */ (Stz*)"missing scan operator",
@@ -267,6 +278,16 @@ Stz* aEC[EC_ENUMS] =
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */
+  /* EC_WL_DISCONNECT_REQ             */ (Stz*)"Wireline protocol client disconnect request",
+  /* EC_WL_FEATURE_NOT_SUPPORTED      */ (Stz*)"Wireline protocol feature not yet supported",
+  /* EC_WL_INTERNAL_ERROR             */ (Stz*)"Internal wireline protocol error",
+  /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"Wireline protocol message not supported yet",
+  /* EC_WL_MSG_TOO_BIG                */ (Stz*)"Wireline protocol message is too big for buffer",
+  /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"Wireline protocol error",
+  /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"Wireline protocol version not supported",
+  /* EC_WL_RESULTSET_RETURNED         */ (Stz*)"Client request was not expecting a resultset, but query generated one",
+  /* EC_WL_ROW_TOO_BIG                */ (Stz*)"Serialised row too big for buffer",
+  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"Client socket has closed",
 
   /* _X_ */
 
@@ -382,6 +403,8 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",         // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_IS_EMPTY                 */ (Stz*)"EC_FILE_IS_EMPTY",
+  /* EC_FILE_TOO_LARGE                */ (Stz*)"EC_FILE_TOO_LARGE",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"EC_FOLDER_IN_USE",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"EC_FOLDER_NOT_EMPTY",
 
@@ -418,6 +441,9 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_INVALID_FLOAT_FORMAT          */ (Stz*)"EC_INVALID_FLOAT_FORMAT",           // SQL Compiler Subsystem
   /* EC_INVALID_INTEGER_FORMAT        */ (Stz*)"EC_INVALID_INTEGER_FORMAT",         // SQL Compiler Subsystem
   /* EC_INVALID_INTERFACE             */ (Stz*)"EC_INVALID_INTERFACE",
+  /* EC_INVALID_LOAD_OPT_DATE_FORMAT  */ (Stz*)"EC_INVALID_LOAD_OPT_DATE_FORMAT",
+  /* EC_INVALID_LOAD_OPT_ENCL_TRAILING*/ (Stz*)"EC_INVALID_LOAD_OPT_ENCL_TRAILING",
+  /* EC_INVALID_LOAD_OPT_RECORD_ENDS  */ (Stz*)"EC_INVALID_LOAD_OPT_RECORD_ENDS",
   /* EC_INVALID_LIMIT_VALUE           */ (Stz*)"EC_INVALID_LIMIT_VALUE",            // SQL Compiler Subsystem
   /* EC_INVALID_OFFSET_VALUE          */ (Stz*)"EC_INVALID_OFFSET_VALUE",           // SQL Compiler Subsystem
   /* EC_INVALID_PARAMETER             */ (Stz*)"EC_INVALID_PARAMETER",
@@ -432,9 +458,11 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_INVALID_SYNTAX                */ (Stz*)"EC_INVALID_SYNTAX",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",            // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",       // SQL Compiler Subsystem
+  /* EC_INVALID_TRACE_NAME            */ (Stz*)"EC_INVALID_TRACE_NAME",
   /* EC_INVALID_TOKEN                 */ (Stz*)"EC_INVALID_TOKEN",
   /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"EC_INVALID_VALUE",
+  /* EC_IO_ERROR                      */ (Stz*)"I/O error",
 
   /* _J_ */
 
@@ -445,11 +473,15 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_LOW_MEMORY                    */ (Stz*)"EC_LOW_MEMORY",
 
   /* _M_ */
+  /* EC_MAX_IDENTIFIER_NAME_LENGTH    */ (Stz*)"EC_MAX_IDENTIFIER_NAME_LENGTH",
   /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"EC_MAX_INDEX_NAME_LENGTH",
   /* EC_MAX_INDEXES                   */ (Stz*)"EC_MAX_INDEXES",
+  /* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"EC_MAX_COLUMN_NAME_LENGTH",
   /* EC_MAX_COLUMNS                   */ (Stz*)"EC_MAX_COLUMNS",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"EC_MAX_TABLE_NAME_LENGTH",
+  /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"EC_MEMORY_ALREADY_TRACKED",
+  /* EC_MEMORY_NOT_BEING_TRACKED      */ (Stz*)"EC_MEMORY_NOT_BEING_TRACKED",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"EC_MISSING_JOIN_INDEX",
   /* EC_MISSING_OP                    */ (Stz*)"EC_MISSING_OP",
   /* EC_MISSING_SCAN_OP               */ (Stz*)"EC_MISSING_SCAN_OP",
@@ -544,6 +576,16 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_VERSION_MISMATCH              */ (Stz*)"EC_VERSION_MISMATCH",
 
   /* _W_ */
+  /* EC_WL_DISCONNECT_REQ             */ (Stz*)"EC_WL_DISCONNECT_REQ",
+  /* EC_WL_FEATURE_NOT_SUPPORTED      */ (Stz*)"EC_WL_FEATURE_NOT_SUPPORTED",
+  /* EC_WL_INTERNAL_ERROR             */ (Stz*)"EC_WL_INTERNAL_ERROR",
+  /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"EC_WL_MSG_NOT_SUPPORTED",
+  /* EC_WL_MSG_TOO_BIG                */ (Stz*)"EC_WL_MSG_TOO_BIG",
+  /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"EC_WL_PROTOCOL_ERROR",
+  /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"EC_WL_PROTOCOL_VER_NOT_SUPPORTED",
+  /* EC_WL_RESULTSET_RETURNED         */ (Stz*)"EC_WL_RESULTSET_RETURNED",
+  /* EC_WL_ROW_TOO_BIG                */ (Stz*)"EC_WL_ROW_TOO_BIG",
+  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"EC_WL_SOCKET_CLOSED",
 
   /* _X_ */
 
@@ -667,6 +709,8 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"Incompatible expression types",                            // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_IS_EMPTY                 */ (Stz*)"file is empty",
+  /* EC_FILE_TOO_LARGE                */ (Stz*)"file size is too large",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"folder in use",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"folder not empty",
 
@@ -703,6 +747,9 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_INVALID_FLOAT_FORMAT          */ (Stz*)"Invalid format of floating point literal",    // SQL Compiler Subsystem
   /* EC_INVALID_INTEGER_FORMAT        */ (Stz*)"Invalid format of integer literal",           // SQL Compiler Subsystem
   /* EC_INVALID_INTERFACE             */ (Stz*)"invalid interface",
+  /* EC_INVALID_LOAD_OPT_DATE_FORMAT  */ (Stz*)"Invalid load option DATE_FORMAT",
+  /* EC_INVALID_LOAD_OPT_ENCL_TRAILING*/ (Stz*)"Invalid load option ENCLOSED_BY_TRAILING",
+  /* EC_INVALID_LOAD_OPT_RECORD_ENDS  */ (Stz*)"Invalid load option RECORD_ENDS",
   /* EC_INVALID_LIMIT_VALUE           */ (Stz*)"LIMIT value must be >= 0",                    // SQL Compiler Subsystem
   /* EC_INVALID_OFFSET_VALUE          */ (Stz*)"OFFSET value must be >= 0",                   // SQL Compiler Subsystem
   /* EC_INVALID_PARAMETER             */ (Stz*)"invalid parameter",
@@ -717,9 +764,11 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"Invalid time string format. Must be of the form: 'hh:mm:ss[.ffffff]'",    // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"Invalid timestamp string format. Must be of the form: 'YYYY-MM-DD hh:mm:ss[.ffffff]'",    // SQL Compiler Subsystem
+  /* EC_INVALID_TRACE_NAME            */ (Stz*)"Invalid trace name",
   /* EC_INVALID_TOKEN                 */ (Stz*)"Invalid token",
   /* EC_INVALID_TYPES                 */ (Stz*)"Invalid types in arithmetic/logical/relational operation",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
+  /* EC_IO_ERROR                      */ (Stz*)"EC_IO_ERROR",
 
   /* _J_ */
 
@@ -730,11 +779,15 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
-  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 31 bytes",
+  /* EC_MAX_IDENTIFIER_NAME_LENGTH    */ (Stz*)"max identifier name length allowed is 255 bytes",
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 255 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
+  /* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"max column name length allowed is 255 bytes",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
-  /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
+  /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 255 bytes",
+  /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"memory is already being tracked",
+  /* EC_MEMORY_NOT_BEING_TRACKED      */ (Stz*)"memory is not being tracked; Run trackMemory;",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
   /* EC_MISSING_OP                    */ (Stz*)"missing operator",
   /* EC_MISSING_SCAN_OP               */ (Stz*)"missing scan operator",
@@ -828,6 +881,16 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */
+  /* EC_WL_DISCONNECT_REQ             */ (Stz*)"Wireline protocol client disconnect request",
+  /* EC_WL_FEATURE_NOT_SUPPORTED      */ (Stz*)"Wireline protocol feature not yet supported",
+  /* EC_WL_INTERNAL_ERROR             */ (Stz*)"Internal wireline protocol error",
+  /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"Wireline protocol message not supported yet",
+  /* EC_WL_MSG_TOO_BIG                */ (Stz*)"Wireline protocol message is too big for buffer",
+  /* EC_WL_PROTOCOL_ERROR             */ (Stz*)"Wireline protocol error",
+  /* EC_WL_PROTOCOL_VER_NOT_SUPPORTED */ (Stz*)"Wireline protocol version not supported",
+  /* EC_WL_RESULTSET_RETURNED         */ (Stz*)"Client request was not expecting a resultset, but query generated one",
+  /* EC_WL_ROW_TOO_BIG                */ (Stz*)"Serialised row too big for buffer",
+  /* EC_WL_SOCKET_CLOSED              */ (Stz*)"Client socket has closed",
 
   /* _X_ */
 

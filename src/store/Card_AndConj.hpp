@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 
 namespace STORE
 {
-  class Card_AndConj : public Card_CONJUNCTION
+  class Card_AndConj : public Card_CONJ
   {  
   public:
     void* operator new(size_t);
@@ -16,9 +16,7 @@ namespace STORE
     Card_AndConj(void);
    ~Card_AndConj(void) noexcept(false);
 
-    Card_RlnConj* pAndConjFindBound(Index* pIndex, ePB eBound);
-    bool bAndPredHasBounds(Index* pIndex);
-    void vEnsureTypesFor_stmCol(CardIter* pCI);
+    void vEnsureTypeId_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

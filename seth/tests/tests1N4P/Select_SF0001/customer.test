@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table customer (
+create table ${testName2}_customer (
 C_CUSTKEY       INTEGER NOT NULL,
 C_NAME          VARCHAR(25) NOT NULL,
 C_ADDRESS       VARCHAR(40) NOT NULL,
@@ -17,27 +17,24 @@ success
 
 //------------------------------------------------------------------------------
 // create an index on custkey
-create index IxC_CUSTKEY ON CUSTOMER (C_CUSTKEY)  ;
+create index IxC_CUSTKEY ON ${testName2}_customer (C_CUSTKEY)  ;
 affected: 0
 
 //------------------------------------------------------------------------------
 // create an index on nationkey
-create index IxC_NATIONKEY ON CUSTOMER (C_NATIONKEY)  ;
+create index IxC_NATIONKEY ON ${testName2}_customer (C_NATIONKEY)  ;
 affected: 0
 
 // load the table
-load customer "../TPCH/SF_0001/customer.csv";
+load ${testName2}_customer "../TPCH/SF_0001/customer.csv";
 success
 
-select count(*) from customer;
+select count(*) from ${testName2}_customer;
 rows: (150)
 
-compactidx customer IxC_CUSTKEY;
+compactidx ${testName2}_customer IxC_CUSTKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

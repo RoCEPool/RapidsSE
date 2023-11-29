@@ -1,0 +1,165 @@
+/*============================================================================*/
+/* _ray170                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+// Query5
+
+// NOTE: This is query 5 and is not completing in the timeframe given by the tests
+// One optimisation I am noticing in the pipeline is as follows:
+//  Stage S02 and S03 can be combined and project can be fused
+//  Stage S04 and S05 can be combined and project can be fused
+//  Stage S06 and S07 can be combined and project can be fused
+//  Stage S08 and S09 can be combined and project can be fused
+//  Stage S10 and S11 can be combined and project can be fused
+
+/pipelineName = "_ray170"
+select
+  n_name,
+  sum(l_extendedprice * (1 - l_discount)) as revenue
+from
+  customer,
+  orders,
+  lineitem,
+  supplier,
+  nation,
+  region
+where
+  c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and l_suppkey = s_suppkey
+  and c_nationkey = s_nationkey
+  and s_nationkey = n_nationkey
+  and n_regionkey = r_regionkey
+  and r_name = 'AMERICA'
+  and o_orderdate >= DATE '1994-01-01'
+  and o_orderdate < DATE '1995-01-01'
+group by
+  n_name
+order by
+  revenue desc;
+
+/*
+pipeline Q5
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Supplier
+  //| inflate   Supplier // fused project
+  //| project   "   type INTEGER as C0_S_SUPPKEY $1
+  //              , type INTEGER as C1_S_NATIONKEY $4 "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+  //  indexJoin nation IxN_NATIONKEY " BOUND $I1 $2 == "
+      dynamic
+    | next
+
+  stage S03 on all partitions :
+  //  project   "   type VARCHAR as C0_n_name $4
+  //              , type INTEGER as C1_S_SUPPKEY $1
+  //              , type INTEGER as C2_S_NATIONKEY $2
+  //              , type INTEGER as C3_N_REGIONKEY $5 "
+      dynamic
+    | next
+
+  stage S04 on all partitions :
+  //  indexJoin region IxR_REGIONKEY " BOUND $I1 $4 == "
+  //| filter    " type BOOLEAN $6 'AMERICA' == "
+      dynamic
+    | next
+
+  stage S05 on all partitions :
+  //  project   "   type VARCHAR as C0_n_name $1
+  //              , type INTEGER as C1_S_SUPPKEY $2
+  //              , type INTEGER as C2_S_NATIONKEY $3 "
+      dynamic
+    | next      broadcast
+
+  stage S06 on all partitions :
+  //  indexJoin Customer IxC_NATIONKEY " BOUND $I1 $3 == "
+      dynamic
+    | next
+
+  stage S07 on all partitions :
+  //  project   "   type VARCHAR as C0_n_name $1
+  //              , type INTEGER as C1_C_CUSTKEY $4
+  //              , type INTEGER as C2_S_SUPPKEY $2 "
+      dynamic
+    | next      broadcast
+
+  stage S08 on all partitions :
+  //  indexJoin Lineitem IxL_SUPPKEY " BOUND $I1 $3 == "
+      dynamic
+    | next
+
+  stage S09 on all partitions :
+  //  project   "   type VARCHAR as C0_n_name $1
+  //              , type DECIMAL as C1_L_EXTENDEDPRICE $9
+  //              , type DECIMAL as C2_L_DISCOUNT $10
+  //              , type INTEGER as C3_C_CUSTKEY $2
+  //              , type INTEGER as C4_L_ORDERKEY $4 "
+  //| hash      "type VARCHAR $1"
+      dynamic
+    | next      hashcast
+
+  stage S10 on all partitions :
+  //  indexJoin Orders IxO_CUSTKEY " BOUND $I1 $4 == "
+  //| filter    " type BOOLEAN $10 DATE '1994-01-01' >= $10 DATE '1995-01-01' < and $5 $6 == and "
+      dynamic
+    | next
+
+  stage S11 on all partitions :
+  //  project   "   type VARCHAR as C0_n_name $1
+  //              , type DECIMAL as C1_L_EXTENDEDPRICE $2
+  //              , type DECIMAL as C2_L_DISCOUNT $3 "
+      dynamic
+    | next
+
+  stage S12 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_n_name $1
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 1.00 $3 - * sum "
+      dynamic
+    | next
+
+  stage S13 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_n_name $1
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S14 on origin :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_n_name $1
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type DECIMAL as C1_revenue ) $2 sum "
+      dynamic
+    | next
+
+  stage S15 on origin :
+  //  sort      " type DECIMAL as C0_COL1 $2 DESC "
+      dynamic
+    | next
+
+  stage S16 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+_tpchDrop;

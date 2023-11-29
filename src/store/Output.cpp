@@ -418,7 +418,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         }
         AM::vDeleteOperand(pOperand,nullptr);
       }
-      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT)) {
+      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS)) {
 
         m_bLoadResult = true;
         Row* pInfoRow = pInfoSet->pFirstRow();
@@ -427,7 +427,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
         i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
 
-        m_ixRowsProcessed    += iRowsProcessed;
+        m_ixRowsProcessed += iRowsProcessed;
         m_ixRowsInvalid   += iRowsInvalid;
         m_ixRowsSkipped   += iRowsSkipped;
 

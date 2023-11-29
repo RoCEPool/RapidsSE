@@ -56,7 +56,7 @@ void Card_Level::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
           AL_NONE      == eLevel);
 
   Card::vValidate(pCI,iDepth,pParent);
-  pCI->vValidateChildren(this,iDepth+1);
+  vValidate_noChildren();
   vValidationPassed();
 }
 

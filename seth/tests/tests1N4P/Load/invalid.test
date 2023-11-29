@@ -3,26 +3,26 @@
 /*----------------------------------------------------------------------------*/
 
 // track memory
-//trackMemory;
+//trackmemory force;
 //success
 
 // incomplete load command
 load;
-failure contains: 'invalid command'
+failure contains: "mismatched input ';'"
 
 // incomplete load command
-load T1;
-failure contains: 'invalid command'
+load ${testName2}_t1;
+failure contains: 'EC_SYNTAX_ERROR'
 
 // incomplete load command
 load "../DATA/Load/null.csv";
-failure contains: 'invalid command'
+failure contains: 'EC_SYNTAX_ERROR'
 
 // load non-existent table T1
-load T1 "../DATA/Load/null.csv" ;
+load ${testName2}_t1 "../DATA/Load/null.csv" ;
 failure contains: 'Table does not exist'
 
-create table T1 (
+create table ${testName2}_t1 (
   col_id       INTEGER,
   col_vch      VARCHAR(25),
   col_int      INTEGER
@@ -30,15 +30,15 @@ create table T1 (
 success
 
 // create an index
-create index idx on T1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with invalid file
-load T1 "no-such-file" ;
+load ${testName2}_t1 "no-such-file" ;
 failure contains: 'File does not exist'
 
 // drop the table
-drop table T1;
+drop table ${testName2}_t1;
 success
 
 //MemoryLeaks;
@@ -46,10 +46,7 @@ success
 
 CLEANUP {
   
-  drop table T1;
-  mute
-
-  bye;
+  drop table ${testName2}_t1;
   mute
 }
 

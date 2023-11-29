@@ -17,18 +17,18 @@ namespace STORE
 
     static bool bIsOp(Card* pCard);
 
-    void vAdd_Conj_Under_filter(Card_CONJUNCTION *p_CONJ);
     void vAnalyse_injected(CardIter* pCI);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
-    void vCorrectStmCol(Card_Emit* p_emitted_prior);
+    void vCorrect_expCol(Card_Emit* p_arriving);
 
-    void vDeleteFilterIfEmpty(Card_Filter* p_filter);
+    void vCullIfEmpty_filter(Card_Filter* p_filter);
 
     void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);
 
+    Card_Filter* pEnsure_filter(void);
     void vEnsure_stream(CardIter* pCI);
 
     bool bIsEarlyLeaf(CardIter* pCI);
@@ -69,9 +69,6 @@ namespace STORE
     void vRpn_top         (String* psRpnExpr, Card_Top*       p_top);
     void vRpn_where       (String* psRpnExpr, Card_Where*     p_where);
 
-    void vRpn_as          (String* psRpnExpr, Card_As*        p_as);
-    void vRpn_boolPred    (String* psRpnExpr, Card_BoolPred*  p_boolPred);
-    void vRpn_boolPart    (String* psRpnExpr, Card*           p_part);
     void vRpn_expr        (String* psRpnExpr, Card_Expr*      p_expr);
     void vRpn_rpnCalc     (String* psRpnExpr, Card_RpnCalc*   p_rpnCalc);
     void vRpn_term        (String* psRpnExpr, Card_Term*      p_term);

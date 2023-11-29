@@ -43,7 +43,7 @@ Card_Injectable::~Card_Injectable(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* new Card_Injectable based on streamDef of table                              */
+/* new Card_Injectable based on streamDef of table                            */
 /*----------------------------------------------------------------------------*/
 Card_Injectable* Card_Injectable::pNew_injected(CardIter* pCI)
 {
@@ -61,26 +61,25 @@ Card_Injectable* Card_Injectable::pNew_injected(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr = new Card_Expr;
-    Symbol xSymbol(SF_STM_COL, i_Col + 1);
+    Symbol xSymbol(SF_EXP_COL, i_Col + 1);
     p_expr->pSymbol()->vFacets(&xSymbol);
     p_injected->vAppendChild(p_expr);
 
-    eCT eColumnType = pColumn->eColumnType();
+    TypeId xColumnTypeId = pColumn->xColumnTypeId();
 
-    Card_As *p_as = (new Card_As) ->SYM(SF_NMD_COL,pColumn->szColNm());
-    p_expr->vAppendChild(p_as);
+    p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,pColumn->szColNm());
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppendChild(p_rpnCalc);
-    p_rpnCalc->pSymbol()->vColType(eColumnType);
-    p_expr->pSymbol()->vColType(eColumnType);
+    p_rpnCalc->pSymbol()->vTypeId(xColumnTypeId);
+    p_expr->pSymbol()->vTypeId(xColumnTypeId);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, i_Col + 1);
     p_rpnCalc->vAppendChild(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->vColType(eColumnType);
+    p_term->pSymbol()->vTypeId(xColumnTypeId);
   }
 
   return p_injected;

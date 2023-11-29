@@ -196,6 +196,31 @@ void Text::vSet(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Revert a larger buffer back to the smallest one                            */
+/*----------------------------------------------------------------------------*/
+void Text::vRevertToTiny(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
+
+  if (!m_pTextBuffer) {
+    return;
+  }
+
+  eCN eClass = m_pTextBuffer->eGetClassNo();
+  switch (eClass) {
+    case CN_TEXTTINY  :  return;
+    case CN_TEXTSMALL :  break;
+    case CN_TEXTMEDIUM:  break;
+    case CN_TEXTLARGE :  break;
+    default:
+      NEVER_REACH;
+  }
+
+  vDeleteBuffer();
+  vNewBuffer(0);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -88,6 +88,7 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Table.hpp"
+#include "RowCounts.hpp"
 
 #include "Node.hpp"
 #include "Node_I.hpp"
@@ -106,6 +107,7 @@
 
 #include "Exemplar.hpp"
 
+#include "CommandParser.hpp"
 #include "InternalTables.hpp"
 
 #include "Job.hpp"
@@ -293,6 +295,7 @@
 #include "XF_Optimise_Early_projection.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
+#include "XF_Optimise_Factor_boolPred.hpp"
 #include "XF_Optimise_Static_calc.hpp"
 #include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_from_To_OP.hpp"
@@ -355,6 +358,10 @@
 
 using namespace Parser;
 
+#include "PayloadObj.hpp"
+#include "QueryContext.hpp"
+#include "StatementContext.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */
 /*----------------------------------------------------------------------------*/
@@ -367,7 +374,7 @@ SizeHeap gxaSizeHeap[]
   {CN__A__,                     'A' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_ACCESSPATH,               sizeof(AccessPath),             HT_T_MEDIUM  , FILL },
   {CN_ACTION,                   sizeof(Action),                 HT_T_TINY    , FILL },
-  {CN_ADAPTORWL,                sizeof(AdaptorWL),              HT_T_TINY    , FILL },
+  {CN_ADAPTORWL,                sizeof(AdaptorWL),              HT_T_MEDIUM ,  FILL },
   {CN_AGGTIMER,                 sizeof(AggTimer),               HT_T_TINY    , FILL },
   {CN_AM,                       0,                              HT_INVALID   , FILL },
   {CN_ANSWERWL,                 sizeof(AnswerWL),               HT_T_TINY    , FILL },
@@ -412,6 +419,7 @@ SizeHeap gxaSizeHeap[]
   {CN_COLPPG,                   sizeof(ColPpg),                   HT_T_MEDIUM  , FILL },
   {CN_COLUMN,                   sizeof(Column),                   HT_T_TINY    , FILL },
   {CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
+  {CN_COMMANDPARSER,            sizeof(CommandParser),            HT_V_LARGE   , FILL },
   {CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,     FILL },
   {CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
   {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
@@ -481,7 +489,7 @@ SizeHeap gxaSizeHeap[]
 
   { CN__I__,                     'I' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_INDEX,                    sizeof(Index),              HT_T_TINY    ,FILL },
-  { CN_INDEXDEF,                 sizeof(IndexDef),           HT_T_SMALL   ,FILL },
+  { CN_INDEXDEF,                 sizeof(IndexDef),           HT_T_MEDIUM  ,FILL },
   { CN_INDEXSTREAM,              sizeof(IndexStream),        HT_T_TINY    ,FILL },
   { CN_INDEXTREE,                sizeof(IndexTree),          HT_T_TINY    ,FILL },
   { CN_INDEXTREEVEC,             sizeof(IndexTreeVec),       HT_T_TINY    ,FILL },
@@ -584,6 +592,8 @@ SizeHeap gxaSizeHeap[]
   {CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    , FILL },
   {CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  , FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
+  { CN_PAYLOADLIST,              sizeof(PayloadList),        HT_T_TINY    ,FILL },
+  { CN_PAYLOADOBJ,               sizeof(WLP::PayloadObj),    HT_T_LARGE   ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
   { CN_PDS,                      sizeof(Pds),                HT_T_LARGE   , FILL },
@@ -614,11 +624,12 @@ SizeHeap gxaSizeHeap[]
   {CN_PROCEDURE,            sizeof(Procedure),              HT_T_MEDIUM  , FILL },
   {CN_PROFILE,              sizeof(Profile),                HT_T_MEDIUM  , FILL },
   {CN_PSXTHD,               sizeof(PsxThd),                 HT_T_TINY    , FILL },
-  {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_MEDIUM  , FILL },
+  {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_LARGE   , FILL },
   {CN_PTNID,                sizeof(LglPtn),                 HT_T_TINY    , FILL },
   {CN_PTRVAL,               sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
 
   { CN__Q__,                     'Q' - ('A' - 1),                HT_INVALID   , FILL },
+  { CN_QUERYCONTEXT,             sizeof(WLP::QueryContext),      HT_V_TINY    , FILL },
   { CN_QUERYNODE,                sizeof(QueryNode),              HT_V_TINY    , FILL },
   { CN_QUERYNODELIST,            sizeof(QueryNodeList),          HT_T_TINY    , FILL },
   { CN_QUERYNODESTACK,           sizeof(QueryNodeStack),         HT_T_MEDIUM  , FILL },
@@ -643,6 +654,7 @@ SizeHeap gxaSizeHeap[]
   { CN_ROWBOX,                   0,                          HT_INVALID   ,FILL },
   { CN_ROWBUFFER,                sizeof(RowBuffer),          HT_T_LARGE   ,FILL },
   { CN_ROWCOMPACTOR,             sizeof(RowCompactor),       HT_T_SMALL   ,FILL },
+  { CN_ROWCOUNTS,                sizeof(RowCounts),          HT_T_TINY   ,FILL },
   { CN_ROWONCE,                  sizeof(RowOnce),            HT_T_TINY    ,FILL },
   { CN_ROWPIX,                   sizeof(RowPix),             HT_T_MEDIUM  ,FILL },
   { CN_ROWSINGLE,                sizeof(RowSingle),          HT_T_MEDIUM  ,FILL },
@@ -710,6 +722,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STAGESPEC,                sizeof(StageSpec),          HT_T_TINY    ,FILL },
   { CN_STARTER,                  sizeof(Starter),            HT_T_TINY    ,FILL },
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
+  { CN_STATEMENTCONTEXT,         sizeof(WLP::StatementContext),HT_T_MEDIUM  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
   { CN_STENCIL,                  sizeof(Stencil),            HT_T_LARGE   ,FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,FILL },
@@ -841,6 +854,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_OPTIMISE_DUPLICATE_FILTER,      sizeof(XF_Optimise_Duplicate_filter),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_FILTER,          sizeof(XF_Optimise_Early_filter),          HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_PROJECTION,      sizeof(XF_Optimise_Early_projection),      HT_T_TINY    , FILL },
+  {CN_XF_OPTIMISE_FACTOR_BOOLPRED,       sizeof(XF_Optimise_Factor_boolPred),       HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_FROM_TO_OP,            sizeof(XF_Optimise_from_To_OP),            HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG,      sizeof(XF_Optimise_gbyAgg_To_ordAgg),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_LATE_PROJECTION,       sizeof(XF_Optimise_Late_projection),       HT_T_TINY    , FILL },
@@ -852,10 +866,10 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_OPTIMISE_STATIC_CALC,           sizeof(XF_Optimise_Static_calc),           HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_EMITTED,         sizeof(XF_Prolog_Analyse_emitted),         HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_INDEX,           sizeof(XF_Prolog_Analyse_index),           HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_INJECTED,      sizeof(XF_Prolog_Analyse_injected),      HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_SUBQUERY,      sizeof(XF_Prolog_Analyse_subQuery),      HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_TABLE,         sizeof(XF_Prolog_Analyse_table),         HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ENSURE_COLTYPE,        sizeof(XF_Prolog_Ensure_colType),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_INJECTED,        sizeof(XF_Prolog_Analyse_injected),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_SUBQUERY,        sizeof(XF_Prolog_Analyse_subQuery),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_TABLE,           sizeof(XF_Prolog_Analyse_table),           HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ENSURE_COLTYPE,          sizeof(XF_Prolog_Ensure_colType),          HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ENSURE_LEVEL,          sizeof(XF_Prolog_Ensure_level),          HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction),    HT_T_TINY    , FILL },
   {CN_XF_PROLOG_MOVE_ON,               sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },

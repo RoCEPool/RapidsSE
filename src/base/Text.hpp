@@ -34,6 +34,8 @@ namespace BASE
     void vSet(Stz* szArg);
     void vSizeText(void);
 
+    void vRevertToTiny(void);
+
   private:
     void vDeleteBuffer(void);
     void vNewBuffer(i8 nStringSize);

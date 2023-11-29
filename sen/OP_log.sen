@@ -1,0 +1,80 @@
+/*============================================================================*/
+/* OP_log.sen -- log a message to the trace file (& optionally as a resultset)*/
+/*============================================================================*/
+
+" OP_log.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on EV_M_DATAPULSE ...                                                      */
+/*----------------------------------------------------------------------------*/
+: log_log \handler
+
+  PipeIn[].pipeOut
+
+  time.currentTsp locals| iTsp |
+
+  <pMsg> iTsp time.tspToStr "[%v] %v" str.format .trace
+
+  <bToResultSet> >bol if
+    // find the C_TDEF_LOGMSG
+    <streamDef> op__tableDef_infoSet assert
+
+    // create a new streamDef
+    infoSetTable[] StreamDefLft[].new
+
+    // pipeout the streamDef
+    StreamDefLft[].pipeOut
+
+    // create a streamSet operand
+    infoSetTable[] streamSet[].new
+
+    <pMsg> iTsp infoSetTable[] StreamSet[].addLogMsg if
+      StreamSet[].pipeOut
+    else
+      StreamSet[].delete
+    then
+  then
+
+  Marker[].newEosMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* log request                                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: log_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: log_log  EV_M_DATAPULSE  [op].handler!
+
+  op__loop
+
+  // "*** log_req EXITS" .
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: log :: log <pMsg> <bToResultSet> ;
+
+: log_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "log_op"
+    <streamDef> = __logMsg
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

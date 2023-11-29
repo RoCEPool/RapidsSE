@@ -1,13 +1,13 @@
 --------------------------------------------------------------------------------
 -- tpch query15 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
-create table revenue (supplier_no, total_revenue) as
+create table ${testName2}_revenue (supplier_no, total_revenue) as
   select l_suppkey,
          sum(l_extendedprice * (1 - l_discount))
-    from lineitem
+    from ${testName2}_lineitem
     where l_shipdate >= date '1996-01-01'
       and l_shipdate <  date '1996-04-01'
     group by l_suppkey;
@@ -21,12 +21,12 @@ select
 	s_phone,
 	rv_revenue
 from
-	Supplier,
-	RevenueV
+	${testName2}_Supplier,
+	${testName2}_RevenueV
 where
 	S_SUPPKEY = RV_SUPPKEY
 	and rv_revenue = (select max(rv_revenue)
-                        from RevenueV)
+                        from ${testName2}_RevenueV)
 order by
 	s_suppkey;
 
@@ -42,9 +42,6 @@ rows: 0
 CLEANUP {
 
   drop table revenue;
-  mute
-
-  bye;
   mute
 }
 

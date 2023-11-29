@@ -5,7 +5,7 @@
 " OP_totalCount.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_STREAMSET...                                                         */
+/* on EV_M_DATAPULSE...                                                       */
 /*----------------------------------------------------------------------------*/
 : totalCount_DataMarker \handler
 
@@ -15,17 +15,13 @@
   // find the C_TABLEDEF_COUNT
   C_TDEF_COUNT op__tableDef_streamSet assert
 
-  // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
-
-  // pipeout the streamDef
-  StreamDefLft[].pipeOut
+  // don't create or pipeout a streamDef, we'll do that when we send the result
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_INFOSET...                                                           */
+/* on EV_I_COUNT...                                                           */
 /*----------------------------------------------------------------------------*/
 : totalCount_CountInfo \handler
 

@@ -3,139 +3,139 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 -- create a table
-create table createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 success
 
 -- check columns of partition key
-lsPtncol createT1;
+lsPtncol ${testName2}_createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
 
 -- drop the table
-drop table createT1;
+drop table ${testName2}_createT1;
 success
 
 -- check existence of partition key
-lsPtncol createT1;
+lsPtncol ${testName2}_createT1;
 failure contains: 'Table does not exist'
 
-create table createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition ;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 12; mismatched input ';' expecting BY"
 
 -- check existence of partition key
-lsPtncol createT1;
+lsPtncol ${testName2}_createT1;
 failure contains: 'Table does not exist'
 
-create table createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 14; mismatched input ';' expecting '('"
 
 -- check existence of partition key
-lsPtncol createT1;
+lsPtncol ${testName2}_createT1;
 failure contains: 'Table does not exist'
 
-create table createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by (;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 16; mismatched input ';'"
 
-create table createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by ();
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 16; mismatched input ')'"
 
-create table createT1 (
+create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by );
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 15; mismatched input ')' expecting '('"
 
-create table createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by key;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 15; missing '(' at 'key'"
 
-create table createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (xyz);
 failure contains: 'invalid partition key'
 
-create table createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (key);
 success
 
 -- check existence of partition key
-lsPtncol createT1;
+lsPtncol ${testName2}_createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
 
 -- drop the table
-drop table createT1;
+drop table ${testName2}_createT1;
 success
 
-create table createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (name);
 success
 
 -- check existence of partition key
-lsPtncol createT1;
+lsPtncol ${testName2}_createT1;
 rows:
   ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
-drop table createT1;
+drop table ${testName2}_createT1;
 success
 
-create table createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (key, name);
 success
 
 -- check existence of partition key
-lsPtncol createT1;
+lsPtncol ${testName2}_createT1;
 rows:
  ('key','INTEGER',19,0,false,true)
  ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
-drop table createT1;
+drop table ${testName2}_createT1;
 success
 
-create table createT1 (
+create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (name, key);
 success
 
 -- check existence of partition key
-lsPtncol createT1;
+lsPtncol ${testName2}_createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
   ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
-drop table createT1;
+drop table ${testName2}_createT1;
 success
 
 // get memory leaks
@@ -148,10 +148,7 @@ CLEANUP {
 
   -- Ensure that table  ('keyIdx') is dropped.
   -- We can set the expected result to mute if we don't want to see any warnings.
-  drop table createT1;
-  mute
-
-  bye;
+  drop table ${testName2}_createT1;
   mute
 }
 

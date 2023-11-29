@@ -3,11 +3,11 @@
 --------------------------------------------------------------------------------
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // create a table
-create table dataTable (
+create table ${testName2}_dataTable (
   key     INTEGER NOT NULL,
   name    VARCHAR(32) NOT NULL,
   value1  INTEGER,
@@ -16,21 +16,21 @@ create table dataTable (
 success
 
 // check columns of partition key
-lsPtncol dataTable;
+lsPtncol ${testName2}_dataTable;
 rows:
   ('key','INTEGER',19,0,false,true)
 
 // load data into the table
-load dataTable "../DATA/PartitionKey/data.csv";
+load ${testName2}_dataTable "../DATA/PartitionKey/data.csv";
 success
 
 // select rows from the table
-select * from dataTable;
+select * from ${testName2}_dataTable;
 rows:
 1000
 
 // drop the table
-drop table dataTable;
+drop table ${testName2}_dataTable;
 success
 
 // get memory leaks
@@ -39,10 +39,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table dataTable;
-  mute
-
-  bye;
+  drop table ${testName2}_dataTable;
   mute
 }
 

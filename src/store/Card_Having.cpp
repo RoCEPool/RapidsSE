@@ -105,8 +105,8 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   auto bLambdaFn_cmp = [](Card_Term *p_term)
   {
 
-    if (p_term->bIsStmCol())
-      p_term->vBump_stmCol();
+    if (p_term->bIs_expCol())
+      p_term->vBump_expCol();
 
     return true;
   };
@@ -125,15 +125,15 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     Card_Term* p_term_1 = _pCard_Term(pCard->pGet(1));
     pCard->vRemoveChild(p_term_1);
-    Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
-    pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
+    Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
+    pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    RASSERT(CT_NONE != p_expr_found->eColType());
+    RASSERT(CT_NONE != p_expr_found->xTypeId().eCTVal());
 
-    pCI->G.p_term->pSymbol()->vColType(p_expr_found->eColType());
+    pCI->G.p_term->pSymbol()->vTypeId(p_expr_found->xTypeId());
 
     DELETE_CARD(p_term_1);
 

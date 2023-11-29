@@ -39,6 +39,15 @@ Format::Format(void)
   m_cFieldDelimiter      = D_FIELD_DELIMITER;      //  ',';
   m_eLineEnd             = LE_NL;
   m_cRecordTerminator    = D_RECORD_TERMINATOR;    //  '\0';
+
+  m_bIsSetDateComponent       = false;
+  m_bIsSetDateSeparator       = false;
+  m_bIsSetEnclosedBy_Leading  = false;
+  m_bIsSetEnclosedBy_Trailing = false;
+  m_bIsSetEscapeChar          = false;
+  m_bIsSetFieldDelimiter      = false;
+  m_bIsSetLineEnd             = false;
+  m_bIsSetRecordTerminator    = false;
   
   m_nMaxErrors           = 0;
   
@@ -114,6 +123,15 @@ void Format::vReset(void)
   m_cRecordTerminator    = AM::pFmt()->m_cRecordTerminator;
   m_eLineEnd             = AM::pFmt()->m_eLineEnd;
   m_nMaxErrors           = AM::pFmt()->m_nMaxErrors;
+
+  m_bIsSetDateComponent       = false;
+  m_bIsSetDateSeparator       = false;
+  m_bIsSetEnclosedBy_Leading  = false;
+  m_bIsSetEnclosedBy_Trailing = false;
+  m_bIsSetEscapeChar          = false;
+  m_bIsSetFieldDelimiter      = false;
+  m_bIsSetLineEnd             = false;
+  m_bIsSetRecordTerminator    = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +153,15 @@ void Format::vSet(Format* pFmt)
   m_cRecordTerminator    = pFmt->m_cRecordTerminator;
   m_eLineEnd             = pFmt->m_eLineEnd;
   m_nMaxErrors           = pFmt->m_nMaxErrors;
+
+  m_bIsSetDateComponent       = true;
+  m_bIsSetDateSeparator       = true;
+  m_bIsSetEnclosedBy_Leading  = true;
+  m_bIsSetEnclosedBy_Trailing = true;
+  m_bIsSetEscapeChar          = true;
+  m_bIsSetFieldDelimiter      = true;
+  m_bIsSetLineEnd             = true;
+  m_bIsSetRecordTerminator    = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +211,7 @@ void Format::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* extract the date separator                                                 */
 /*----------------------------------------------------------------------------*/
-bool Format::bExtractDateFormat(Stz* dateFormat)
+bool Format::bExtractDateFormat(Stz* dateFormat, String* psErrMsg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
@@ -197,8 +224,10 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
          (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
          (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-         (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+         (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+      psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
       return false;
+    }
     
     // extract format separator
     Stz* pSeparator= dateFormat + i_Offset++;
@@ -210,17 +239,23 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       // FORMAT should be YYYY-MM-DD
       // expect another M
       if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'M'))
+           (*(dateFormat + i_Offset++)->azChar() != 'M')) {
+        psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       // expect DD
       if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'D') )
+           (*(dateFormat + i_Offset++)->azChar() != 'D') ) {
+        psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_YYYY;
       m_eDateComponent[1] = DC_MM;
@@ -232,17 +267,23 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       // FORMAT should be YYYY-DD-MM
       // expect DD
       if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'D'))
+           (*(dateFormat + i_Offset++)->azChar() != 'D')) {
+        psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       // expect MM
       if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'M') )
+           (*(dateFormat + i_Offset++)->azChar() != 'M') ) {
+        psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_YYYY;
       m_eDateComponent[1] = DC_DD;
@@ -255,8 +296,10 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     
     // expect MM
     if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-        (*(dateFormat + i_Offset++)->azChar() != 'M') )
+        (*(dateFormat + i_Offset++)->azChar() != 'M') ) {
+      psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
       return false;
+    }
     
     // extract format separator
     Stz* pSeparator= dateFormat + i_Offset++;
@@ -270,17 +313,23 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-          (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+        psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       // expect DD
       if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-          (*(dateFormat + i_Offset++)->azChar() != 'D') )
+          (*(dateFormat + i_Offset++)->azChar() != 'D') ) {
+        psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_MM;
       m_eDateComponent[1] = DC_YYYY;
@@ -290,19 +339,25 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       // FORMAT should be MM-DD-YYYY
       // expect DD
       if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-          (*(dateFormat + i_Offset++)->azChar() != 'D'))
+          (*(dateFormat + i_Offset++)->azChar() != 'D')) {
+        psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       // expect YYYY
       if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-          (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+        psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_MM;
       m_eDateComponent[1] = DC_DD;
@@ -315,8 +370,10 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     
     // expect DD
     if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
-         (*(dateFormat + i_Offset++)->azChar() != 'D') )
+         (*(dateFormat + i_Offset++)->azChar() != 'D') ) {
+      psErrMsg->vCopy("Expected day format to be \"DD\""_Stz);
       return false;
+    }
     
     // extract format separator
     Stz* pSeparator= dateFormat + i_Offset++;
@@ -328,19 +385,25 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       // FORMAT should be DD-MM-YYYY
       // expect another M
       if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'M') )
+           (*(dateFormat + i_Offset++)->azChar() != 'M') ) {
+        psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
-      
+      }
+
       // expect YYYY
       if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
            (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
            (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+        psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_DD;
       m_eDateComponent[1] = DC_MM;
@@ -353,16 +416,22 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
            (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
            (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'Y') )
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') ) {
+        psErrMsg->vCopy("Expected year format to be \"YYYY\""_Stz);
         return false;
+      }
       
       // expect format separator
-      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) ) {
+        psErrMsg->vSprint("Expected date separator to be consistent and use \"%c\""_Stz, m_cDateSeparator);
         return false;
+      }
       
       if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
-           (*(dateFormat + i_Offset++)->azChar() != 'M'))
+           (*(dateFormat + i_Offset++)->azChar() != 'M')) {
+        psErrMsg->vCopy("Expected month format to be \"MM\""_Stz);
         return false;
+      }
       
       m_eDateComponent[0] = DC_DD;
       m_eDateComponent[1] = DC_YYYY;
@@ -370,11 +439,233 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
       
     }
   }
-  else
+  else {
+    psErrMsg->vCopy("Unrecognised or unsupported date format"_Stz);
     return false;
-  
+  }
+
+  m_bIsSetDateComponent = true;
+  m_bIsSetDateSeparator = true;
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Set the enclosedby leading character                                       */
+/*----------------------------------------------------------------------------*/
+void Format::vEnclosedBy_Leading(char c)
+{
+  m_cEnclosedBy_Leading = c;
+  m_bIsSetEnclosedBy_Leading = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the enclosedby trailing character                                      */
+/*----------------------------------------------------------------------------*/
+void Format::vEnclosedBy_Trailing(char c)
+{
+  m_cEnclosedBy_Trailing = c;
+  m_bIsSetEnclosedBy_Trailing = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the escape character                                                   */
+/*----------------------------------------------------------------------------*/
+void Format::vEscapeChar(char c)
+{
+  m_cEscapeChar = c;
+  m_bIsSetEscapeChar = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the field delimiter character                                          */
+/*----------------------------------------------------------------------------*/
+void Format::vFieldDelimiter(char c)
+{
+  m_cFieldDelimiter = c;
+  m_bIsSetFieldDelimiter = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the line ending character                                              */
+/*----------------------------------------------------------------------------*/
+void Format::vLineEnd(eLE eEnding)
+{
+  m_eLineEnd = eEnding;
+  m_bIsSetLineEnd = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the record terminator character                                        */
+/*----------------------------------------------------------------------------*/
+void Format::vRecordTerminator(char c)
+{
+  m_cRecordTerminator = c;
+  m_bIsSetRecordTerminator = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set whether non printable characters are allowed                           */
+/*----------------------------------------------------------------------------*/
+void Format::vAllowNonPrintable(bool bAllow)
+{
+  m_bAllowNonPrintable = bAllow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the max allowed errors                                                 */
+/*----------------------------------------------------------------------------*/
+void Format::vMaxErrors(i8 iVal)
+{
+  m_nMaxErrors = iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get a pointer to the array of date components                              */
+/*----------------------------------------------------------------------------*/
+eDC* Format::pDateComponents()
+{
+  return m_eDateComponent;
+}
+/*----------------------------------------------------------------------------*/
+/* Get the date component                                                     */
+/*----------------------------------------------------------------------------*/
+eDC Format::eDateComponent(BASE::i8 iIdx)
+{
+  ASSERT(iIdx >= 0);
+  ASSERT(iIdx < 3);
+  return m_eDateComponent[iIdx];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the date separator character                                           */
+/*----------------------------------------------------------------------------*/
+char Format::cDateSeparator()
+{
+  return m_cDateSeparator;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the enclosedby leading character                                       */
+/*----------------------------------------------------------------------------*/
+char Format::cEnclosedBy_Leading()
+{
+  return m_cEnclosedBy_Leading;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the enclosedby trailing character                                      */
+/*----------------------------------------------------------------------------*/
+char Format::cEnclosedBy_Trailing()
+{
+  return m_cEnclosedBy_Trailing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the escape character                                                   */
+/*----------------------------------------------------------------------------*/
+char Format::cEscapeChar()
+{
+  return m_cEscapeChar;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the field delimiter character                                          */
+/*----------------------------------------------------------------------------*/
+char Format::cFieldDelimiter()
+{
+  return m_cFieldDelimiter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the line ending character                                              */
+/*----------------------------------------------------------------------------*/
+eLE  Format::eLineEnd()
+{
+  return m_eLineEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the record terminator character                                        */
+/*----------------------------------------------------------------------------*/
+char Format::cRecordTerminator()
+{
+  return m_cRecordTerminator;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get whether non printable characters are allowed                            */
+/*----------------------------------------------------------------------------*/
+bool Format::bAllowNonPrintable()
+{
+  return m_bAllowNonPrintable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the max allowed errors                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Format::nMaxErrors()
+{
+  return m_nMaxErrors;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Has the date separator character been set?                                 */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetDateSeparator()
+{
+  return m_bIsSetDateSeparator;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the enclosedby leading character been set?                             */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetEnclosedBy_Leading()
+{
+  return m_bIsSetEnclosedBy_Leading;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the enclosedby trailing character been set?                            */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetEnclosedBy_Trailing()
+{
+  return m_bIsSetEnclosedBy_Trailing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the escape character been set?                                         */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetEscapeChar()
+{
+  return m_bIsSetEscapeChar;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the field delimiter character been set?                                */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetFieldDelimiter()
+{
+  return m_bIsSetFieldDelimiter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the line ending character been set?                                    */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetLineEnd()
+{
+  return m_bIsSetLineEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the record terminator character been set?                              */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetRecordTerminator()
+{
+  return m_bIsSetRecordTerminator;
+}
+
+
         
 /*============================================================================*/
 /* end                                                                        */

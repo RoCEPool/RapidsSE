@@ -8,6 +8,7 @@ Stz* aOI[OI_ENUMS]
 {
   /*  0 */ "OI_NONE"_Stz,
   
+  /*    */ "OI_AFFECTEDROWS"_Stz,
   /*    */ "OI_CALLPIPELINE"_Stz,
   /*    */ "OI_COMMAND"_Stz,
   /*    */ "OI_COMPILEERRORS"_Stz,
@@ -21,9 +22,9 @@ Stz* aOI[OI_ENUMS]
   /*    */ "OI_PATH"_Stz,
   /*    */ "OI_PROGRESSUNITS"_Stz,
   /*    */ "OI_PROMPTOUT"_Stz,
-  /*    */ "OI_RETURNPIPELINE"_Stz,
   /*    */ "OI_SEEKOFFSETS"_Stz,
   /*    */ "OI_TOTALUNITS"_Stz,
+  /*    */ "OI_WARNINGS"_Stz,
 
 //  /*    */ "OI_ENUMS"_Stz,
 };

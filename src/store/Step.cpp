@@ -151,6 +151,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PageOut();
   Step::vAddSteps_Parcel();
   Step::vAddSteps_Pds();
+  Step::vAddSteps_PayloadObj();
   Step::vAddSteps_PdsCursor();
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
@@ -167,6 +168,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Profile();
   Step::vAddSteps_PtnDef();
   Step::vAddSteps_PtnMap();
+  Step::vAddSteps_Ptr();
   Step::vAddSteps_Push();
 
   Step::vAddSteps_RecvdObject();
@@ -178,6 +180,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegPath();
   Step::vAddSteps_RegSends();
   Step::vAddSteps_ResponseOp();
+  Step::vAddSteps_RowCounts();
   Step::vAddSteps_RowOnce();
   Step::vAddSteps_RowBuffer();
   Step::vAddSteps_Rstack();
@@ -218,6 +221,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Tag();
   Step::vAddSteps_TagSet();
   Step::vAddSteps_Task();
+  Step::vAddSteps_TaskList();
   Step::vAddSteps_Tenants();
   Step::vAddSteps_Test();
   Step::vAddSteps_Text();

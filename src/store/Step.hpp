@@ -134,6 +134,7 @@ namespace STORE
     static void vAddSteps_PageOut(void);
     static void vAddSteps_Parcel(void);
     static void vAddSteps_Pds(void);
+    static void vAddSteps_PayloadObj(void);
     static void vAddSteps_PdsCursor(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
@@ -149,6 +150,7 @@ namespace STORE
     static void vAddSteps_Profile(void);
     static void vAddSteps_PtnDef(void);
     static void vAddSteps_PtnMap(void);
+    static void vAddSteps_Ptr(void);
     static void vAddSteps_Push(void);
   
     static void vAddSteps_RecvdObject(void);
@@ -161,6 +163,7 @@ namespace STORE
     static void vAddSteps_Pipein(void);
     static void vAddSteps_RegSends(void);
     static void vAddSteps_ResponseOp(void);
+    static void vAddSteps_RowCounts(void);
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);
     static void vAddSteps_Rstack(void);
@@ -200,6 +203,7 @@ namespace STORE
     static void vAddSteps_Tag(void);
     static void vAddSteps_TagSet(void);
     static void vAddSteps_Task(void);
+    static void vAddSteps_TaskList(void);
     static void vAddSteps_Tenants(void);
     static void vAddSteps_Test(void);
     static void vAddSteps_Text(void);

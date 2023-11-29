@@ -71,22 +71,26 @@ Stz* SP_Flt::sz(d8 dFlt)
     // Using %e will round the value at the last decimal place.
     // This becomes a problem when the value is very close to the largest/smallest
     // floating point value that we support. The rounding can push it out of bounds.
-    // The fix here is to print the value with 10 decimal places to a temporary string
+    // The fix here is to print the value with 40 decimal places to a temporary string
     // and then copy the first 9 of them to the output. That way we know that it has
     // been rounded down.
     // See SE-265.
 
     s256 sTmpStr;
-    sTmpStr.vSprint("%.10e"_Stz, dFlt);
+    sTmpStr.vSprint("%.40e"_Stz, dFlt);
 
     // Find the position of the 'e' in the printed string
-    i8 iIdx = StrLib::iFind(sTmpStr.azChar(), 'e');
+    i8 iEIdx = StrLib::iFind(sTmpStr.azChar(), 'e');
+    i8 iDotIdx = StrLib::iFind(sTmpStr.azChar(), '.');
+    i8 iDotPlus10 = iDotIdx + 10;
+
+    i8 iIdx = (iDotPlus10 >= iEIdx) ? iEIdx - 1 : iDotPlus10;
 
     // Don't copy the last digit before the 'e'
     StrLib::vCopyLen(m_caResult, sizeof(m_caResult), sTmpStr.azChar(), iIdx - 1);
 
     // Now copy the 'e' and everything after it
-    StrLib::vConcat(m_caResult, sizeof(m_caResult), sTmpStr.azChar() + iIdx);
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), sTmpStr.azChar() + iEIdx);
 
   }
   else {

@@ -1,119 +1,116 @@
 
-create table interval1(a timestamp);
+create table ${testName2}_interval1(a timestamp);
 success
-load interval1 "../DATA/QA/interval/interval1.csv";
+load ${testName2}_interval1 "../DATA/QA/interval/interval1.csv";
 success
 
-select timestamp '2023-02-13 13:53:27.123' + interval '1:2' hour to minute + interval '3' second from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '1:2' hour to minute + interval '3' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-13 14:55:30.123')
-select timestamp '2023-02-13 13:53:27.123' + interval '1' hour + interval '2:3' minute to second from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '1' hour + interval '2:3' minute to second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-13 14:55:30.123')
-select timestamp '2023-02-13 13:53:27.123' + interval '1' hour + interval '2' minute + interval '3' second from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '1' hour + interval '2' minute + interval '3' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-13 14:55:30.123')
-select timestamp '2023-02-13 13:53:27.123' + interval '1:2:3' hour to second from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '1:2:3' hour to second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-13 14:55:30.123')
 
-select timestamp '2023-02-13 13:53:27.123' + interval '1' year + interval '2' month from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '1' year + interval '2' month from ${testName2}_interval1;
 rows:
 (timestamp '2024-04-13 13:53:27.123')
-select timestamp '2023-02-13 13:53:27.123' + interval '1-2' year to month from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '1-2' year to month from ${testName2}_interval1;
 rows:
 (timestamp '2024-04-13 13:53:27.123')
 
-select timestamp '2023-02-13 13:53:27.123' + interval '3-6' year to month + interval '5 2:3:4' day to second from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '3-6' year to month + interval '5 2:3:4' day to second from ${testName2}_interval1;
 rows:
 (timestamp '2026-08-18 15:56:31.123')
-select timestamp '2023-02-13 13:53:27.123' + interval '3-6' year to month + interval '10 23:55:58' day to second from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '3-6' year to month + interval '10 23:55:58' day to second from ${testName2}_interval1;
 rows:
 (timestamp '2026-08-24 13:49:25.123')
 
-select time '14:57:23'+ interval '9:3' hour to minute from interval1;
+select time '14:57:23'+ interval '9:3' hour to minute from ${testName2}_interval1;
 rows:
 (time '00:00:23')
-select time '14:57:23'+ interval '10:3:50' hour to second from interval1;
+select time '14:57:23'+ interval '10:3:50' hour to second from ${testName2}_interval1;
 rows:
 (time '01:01:13')
-select time '14:57:23'+ interval '4' minute from interval1;
+select time '14:57:23'+ interval '4' minute from ${testName2}_interval1;
 rows:
 (time '15:01:23')
-select time '14:57:23'+ interval '40' second from interval1;
+select time '14:57:23'+ interval '40' second from ${testName2}_interval1;
 rows:
 (time '14:58:03')
-select time '14:57:23'+ interval '12' hour from interval1;
+select time '14:57:23'+ interval '12' hour from ${testName2}_interval1;
 rows:
 (time '02:57:23')
-select time '14:57:23'+ interval '1:2:3' hour to second from interval1;
+select time '14:57:23'+ interval '1:2:3' hour to second from ${testName2}_interval1;
 rows:
 (time '15:59:26')
-select time '14:57:23'+ interval '1 2:3:9' day to second from interval1;
+select time '14:57:23'+ interval '1 2:3:9' day to second from ${testName2}_interval1;
 rows:
 (time '17:00:32')
-select time '14:57:23'+ interval '1 2:3' day to minute from interval1;
+select time '14:57:23'+ interval '1 2:3' day to minute from ${testName2}_interval1;
 rows:
 (time '17:00:23')
-select time '14:57:23'+ interval '1 2' day to hour from interval1;
+select time '14:57:23'+ interval '1 2' day to hour from ${testName2}_interval1;
 rows:
 (time '16:57:23')
-select time '14:57:23'+ interval '1-2' year to month from interval1;
+select time '14:57:23'+ interval '1-2' year to month from ${testName2}_interval1;
 failure contains: "Expression type combination is invalid or unsupported for the expression operator"
 
-select date '2023-02-16'+ interval '1-2' year to month from interval1;
+select date '2023-02-16'+ interval '1-2' year to month from ${testName2}_interval1;
 rows:
 (date '2024-04-16')
-select date '2023-03-31'+ interval '1' year from interval1;
+select date '2023-03-31'+ interval '1' year from ${testName2}_interval1;
 rows:
 (date '2024-03-31')
-select date '2023-02-16'+ interval '13' month from interval1;
+select date '2023-02-16'+ interval '13' month from ${testName2}_interval1;
 rows:
 (date '2024-03-16')
 
-select date '2023-02-16'+ interval '30' day from interval1;
+select date '2023-02-16'+ interval '30' day from ${testName2}_interval1;
 rows:
 (date '2023-03-18')
-select date '2023-02-16'+ interval '30' day + interval '10-11' year to month from interval1;
+select date '2023-02-16'+ interval '30' day + interval '10-11' year to month from ${testName2}_interval1;
 rows:
 (date '2034-02-18')
 
-select date '2023-02-16'+ interval '30 23' day to hour from interval1;
+select date '2023-02-16'+ interval '30 23' day to hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-18 23:00:00.000')
-select date '2023-02-16'+ interval '30 23:1' day to minute from interval1;
+select date '2023-02-16'+ interval '30 23:1' day to minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-18 23:01:00.000')
-select date '2023-02-16'+ interval '30 23:1:59' day to second from interval1;
+select date '2023-02-16'+ interval '30 23:1:59' day to second from ${testName2}_interval1;
 rows:
 (timestamp '2023-03-18 23:01:59.000')
-select date '2023-02-16'+ interval '23' hour from interval1;
+select date '2023-02-16'+ interval '23' hour from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-16 23:00:00.000')
-select date '2023-02-16'+ interval '23' minute from interval1;
+select date '2023-02-16'+ interval '23' minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-16 00:23:00.000')
-select date '2023-02-16'+ interval '23' second from interval1;
+select date '2023-02-16'+ interval '23' second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-16 00:00:23.000')
-select date '2023-02-16'+ interval '23:58' hour to minute from interval1;
+select date '2023-02-16'+ interval '23:58' hour to minute from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-16 23:58:00.000')
-select date '2023-02-16'+ interval '23:58:1' hour to second from interval1;
+select date '2023-02-16'+ interval '23:58:1' hour to second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-16 23:58:01.000')
-select date '2023-02-16'+ interval '23:58' minute to second from interval1;
+select date '2023-02-16'+ interval '23:58' minute to second from ${testName2}_interval1;
 rows:
 (timestamp '2023-02-16 00:23:58.000')
 
-drop table interval1;
+drop table ${testName2}_interval1;
 success
 
 CLEANUP {
 
-  drop table interval1;
-  mute
-
-  bye;
+  drop table ${testName2}_interval1;
   mute
 }

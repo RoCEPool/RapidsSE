@@ -6,7 +6,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-CREATE TABLE nation (
+CREATE TABLE ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE nation (
 );
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -22,152 +22,152 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- one order expression
-EXPLAIN SELECT * FROM nation ORDER BY n_name;
+EXPLAIN SELECT * FROM ${testName2}_nation ORDER BY n_name;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT * FROM nation ORDER BY n_name"
+   » queryText: "SELECT * FROM ${testName2}_nation ORDER BY n_name"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_name) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_name) ASC)
       » ordinal order expr: (($2) ASC)
 
 -> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- two order expressions
-EXPLAIN SELECT * FROM nation ORDER BY n_name, n_nationkey;
+EXPLAIN SELECT * FROM ${testName2}_nation ORDER BY n_name, n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT * FROM nation ORDER BY n_name, n_nationkey"
+   » queryText: "SELECT * FROM ${testName2}_nation ORDER BY n_name, n_nationkey"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_name) ASC, (rapidsse.public.nation.n_nationkey) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_name) ASC, (rapidsse.public.${testName2}_nation.n_nationkey) ASC)
       » ordinal order expr: (($2) ASC, ($1) ASC)
 
 -> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- different ordering directions for different ordering expressions
-EXPLAIN SELECT * FROM nation ORDER BY n_name asc, n_nationkey desc;
+EXPLAIN SELECT * FROM ${testName2}_nation ORDER BY n_name asc, n_nationkey desc;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT * FROM nation ORDER BY n_name asc, n_nationkey desc"
+   » queryText: "SELECT * FROM ${testName2}_nation ORDER BY n_name asc, n_nationkey desc"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_name) ASC, (rapidsse.public.nation.n_nationkey) DESC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_name) ASC, (rapidsse.public.${testName2}_nation.n_nationkey) DESC)
       » ordinal order expr: (($2) ASC, ($1) DESC)
 
 -> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- The default ordering direction is ascending unless otherwise stated
-EXPLAIN SELECT * FROM nation ORDER BY n_name desc, n_nationkey;
+EXPLAIN SELECT * FROM ${testName2}_nation ORDER BY n_name desc, n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT * FROM nation ORDER BY n_name desc, n_nationkey"
+   » queryText: "SELECT * FROM ${testName2}_nation ORDER BY n_name desc, n_nationkey"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_name) DESC, (rapidsse.public.nation.n_nationkey) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_name) DESC, (rapidsse.public.${testName2}_nation.n_nationkey) ASC)
       » ordinal order expr: (($2) DESC, ($1) ASC)
 
 -> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- Ordering expressions are not just column references but arbitrary expressions
-EXPLAIN SELECT * FROM nation ORDER BY n_nationkey + 1 desc;
+EXPLAIN SELECT * FROM ${testName2}_nation ORDER BY n_nationkey + 1 desc;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT * FROM nation ORDER BY n_nationkey + 1 desc"
+   » queryText: "SELECT * FROM ${testName2}_nation ORDER BY n_nationkey + 1 desc"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_nationkey + 1) DESC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_nationkey + 1) DESC)
       » ordinal order expr: (($1 + 1) DESC)
 
 -> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- Ordering expressions are not just column references but arbitrary expressions (multiple)
-EXPLAIN SELECT * FROM nation ORDER BY n_name desc, n_nationkey + n_regionkey;
+EXPLAIN SELECT * FROM ${testName2}_nation ORDER BY n_name desc, n_nationkey + n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT * FROM nation ORDER BY n_name desc, n_nationkey + n_regionkey"
+   » queryText: "SELECT * FROM ${testName2}_nation ORDER BY n_name desc, n_nationkey + n_regionkey"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_name) DESC, (rapidsse.public.nation.n_nationkey + rapidsse.public.nation.n_regionkey) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_name) DESC, (rapidsse.public.${testName2}_nation.n_nationkey + rapidsse.public.${testName2}_nation.n_regionkey) ASC)
       » ordinal order expr: (($2) DESC, ($1 + $3) ASC)
 
 -> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- ORDER BY must appear after HAVING and before LIMIT
 EXPLAIN SELECT n_name, sum(n_nationkey) as s
-FROM nation
+FROM ${testName2}_nation
 GROUP BY n_name
 HAVING n_name = 'KENYA'
 ORDER BY n_name desc, sum(n_nationkey);
@@ -177,27 +177,27 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, sum(n_nationkey) as s FROM nation GROUP BY n_name HAVING n_name = ''KENYA'' ORDER BY n_name desc, sum(n_nationkey)"
+   » queryText: "SELECT n_name, sum(n_nationkey) as s FROM ${testName2}_nation GROUP BY n_name HAVING n_name = ''KENYA'' ORDER BY n_name desc, sum(n_nationkey)"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_name) DESC, (SUM(rapidsse.public.nation.n_nationkey)) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_name) DESC, (SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ASC)
       » ordinal order expr: (($1) DESC, ($2) ASC)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_name = ''KENYA'')
+         » expr: (rapidsse.public.${testName2}_nation.n_name = ''KENYA'')
          » ordinal expr: ($1 = ''KENYA'')
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Alias = s ; Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+            » group by: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName2}_nation)'
 )
 
 EXPLAIN SELECT n_name, sum(n_nationkey) as s
-FROM nation
+FROM ${testName2}_nation
 GROUP BY n_name
 HAVING n_name = 'KENYA'
 ORDER BY n_name desc, sum(n_nationkey)
@@ -208,26 +208,26 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, sum(n_nationkey) as s FROM nation GROUP BY n_name HAVING n_name = ''KENYA'' ORDER BY n_name desc, sum(n_nationkey) LIMIT 10"
+   » queryText: "SELECT n_name, sum(n_nationkey) as s FROM ${testName2}_nation GROUP BY n_name HAVING n_name = ''KENYA'' ORDER BY n_name desc, sum(n_nationkey) LIMIT 10"
 
 -> -> limitOp
       » limit: (10)
 
 -> -> -> orderOp
-         » order expr: ((rapidsse.public.nation.n_name) DESC, (SUM(rapidsse.public.nation.n_nationkey)) ASC)
+         » order expr: ((rapidsse.public.${testName2}_nation.n_name) DESC, (SUM(rapidsse.public.${testName2}_nation.n_nationkey)) ASC)
          » ordinal order expr: (($1) DESC, ($2) ASC)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.nation.n_name = ''KENYA'')
+            » expr: (rapidsse.public.${testName2}_nation.n_name = ''KENYA'')
             » ordinal expr: ($1 = ''KENYA'')
 
 -> -> -> -> -> aggregateOp
-               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-               » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-               » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+               » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+               » column: (Alias = s ; Expr = SUM(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+               » group by: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.nation)'
+                  » table: (rapidsse.public.${testName2}_nation)'
 )
 
 
@@ -247,9 +247,9 @@ rows: (*,'explainPlan','
 -- or supersets of the projected expressions.
 -- Alternatively, we only allow ordering by aliases.
 EXPLAIN
-SELECT n_nationkey, n_name FROM nation
+SELECT n_nationkey, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
@@ -257,50 +257,50 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey"
+   » queryText: "SELECT n_nationkey, n_name FROM ${testName2}_nation UNION ALL SELECT n_regionkey, n_name FROM ${testName2}_nation ORDER BY n_nationkey"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_nationkey) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_nationkey) ASC)
       » ordinal order expr: (($1) ASC)
 
 -> -> -> statementMarker: select
-         » queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+         » queryText: "SELECT n_nationkey, n_name FROM ${testName2}_nation UNION ALL SELECT n_regionkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> unionOp
             » isDistinct: (false)
 
 -> -> -> -> -> statementMarker: select
-               » queryText: "SELECT n_nationkey, n_name FROM nation"
+               » queryText: "SELECT n_nationkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.nation)
+                     » table: (rapidsse.public.${testName2}_nation)
 
 -> -> -> -> -> statementMarker: select
-               » queryText: "SELECT n_regionkey, n_name FROM nation"
+               » queryText: "SELECT n_regionkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.nation)'
+                     » table: (rapidsse.public.${testName2}_nation)'
 )
 
 EXPLAIN
-SELECT n_nationkey + 1, n_name FROM nation
+SELECT n_nationkey + 1, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_nationkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_nationkey'
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.${testName2}_nation.n_nationkey'
 
 EXPLAIN
-SELECT n_nationkey + 1, n_name FROM nation
+SELECT n_nationkey + 1, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_nationkey + 1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
@@ -308,44 +308,44 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_nationkey + 1, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey + 1"
+   » queryText: "SELECT n_nationkey + 1, n_name FROM ${testName2}_nation UNION ALL SELECT n_regionkey, n_name FROM ${testName2}_nation ORDER BY n_nationkey + 1"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_nationkey + 1) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_nationkey + 1) ASC)
       » ordinal order expr: (($1) ASC)
 
 -> -> -> statementMarker: select
-         » queryText: "SELECT n_nationkey + 1, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+         » queryText: "SELECT n_nationkey + 1, n_name FROM ${testName2}_nation UNION ALL SELECT n_regionkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> unionOp
             » isDistinct: (false)
 
 -> -> -> -> -> statementMarker: select
-               » queryText: "SELECT n_nationkey + 1, n_name FROM nation"
+               » queryText: "SELECT n_nationkey + 1, n_name FROM ${testName2}_nation"
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.nation)
+                     » table: (rapidsse.public.${testName2}_nation)
 
 -> -> -> -> -> statementMarker: select
-               » queryText: "SELECT n_regionkey, n_name FROM nation"
+               » queryText: "SELECT n_regionkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.nation)'
+                     » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- -- Ordering expression can be a superset of the unionOps first child
 EXPLAIN
-SELECT n_nationkey, n_name FROM nation
+SELECT n_nationkey, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_nationkey * 2;
 rows: (*,'explainPlan','
 ∆ mainSubquery
@@ -353,107 +353,107 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey * 2"
+   » queryText: "SELECT n_nationkey, n_name FROM ${testName2}_nation UNION ALL SELECT n_regionkey, n_name FROM ${testName2}_nation ORDER BY n_nationkey * 2"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_nationkey * 2) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_nationkey * 2) ASC)
       » ordinal order expr: (($1 * 2) ASC)
 
 -> -> -> statementMarker: select
-         » queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+         » queryText: "SELECT n_nationkey, n_name FROM ${testName2}_nation UNION ALL SELECT n_regionkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> unionOp
             » isDistinct: (false)
 
 -> -> -> -> -> statementMarker: select
-               » queryText: "SELECT n_nationkey, n_name FROM nation"
+               » queryText: "SELECT n_nationkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.nation)
+                     » table: (rapidsse.public.${testName2}_nation)
 
 -> -> -> -> -> statementMarker: select
-               » queryText: "SELECT n_regionkey, n_name FROM nation"
+               » queryText: "SELECT n_regionkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.nation)'
+                     » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- ORDER BY above a SetOp cannot resolve columnRefs unless they are aliases
 -- being projected by the SetOp.
 -- This shouldn't work because n_regionkey is not being projected by the UnionOp
 EXPLAIN
-SELECT n_nationkey as nkey, n_name FROM nation
+SELECT n_nationkey as nkey, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_regionkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_regionkey'
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.${testName2}_nation.n_regionkey'
 
 
 -- Order expr is a superset of projected expression but contains
 -- a columnRef that is not being projected.
 EXPLAIN
-SELECT n_nationkey, n_name FROM nation
+SELECT n_nationkey, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_nationkey + n_regionkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_regionkey'
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.${testName2}_nation.n_regionkey'
 
 
 -- ORDER BY expressions can use aliases
-EXPLAIN SELECT n_name as name FROM nation ORDER BY name;
+EXPLAIN SELECT n_name as name FROM ${testName2}_nation ORDER BY name;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name as name FROM nation ORDER BY name"
+   » queryText: "SELECT n_name as name FROM ${testName2}_nation ORDER BY name"
 
 -> -> orderOp
       » order expr: ((name) ASC)
       » ordinal order expr: (($1) ASC)
 
 -> -> -> projectOp
-         » column: (Alias = name ; Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+         » column: (Alias = name ; Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- ORDER BY expressions doesn't have to always refer to the alias
-EXPLAIN SELECT n_nationkey + 1 as nkey FROM nation ORDER BY n_nationkey + 1;
+EXPLAIN SELECT n_nationkey + 1 as nkey FROM ${testName2}_nation ORDER BY n_nationkey + 1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_nationkey + 1 as nkey FROM nation ORDER BY n_nationkey + 1"
+   » queryText: "SELECT n_nationkey + 1 as nkey FROM ${testName2}_nation ORDER BY n_nationkey + 1"
 
 -> -> orderOp
-      » order expr: ((rapidsse.public.nation.n_nationkey + 1) ASC)
+      » order expr: ((rapidsse.public.${testName2}_nation.n_nationkey + 1) ASC)
       » ordinal order expr: (($1) ASC)
 
 -> -> -> projectOp
-         » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
+         » column: (Alias = nkey ; Expr = rapidsse.public.${testName2}_nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName2}_nation)'
 )
 
 -- ORDER BY expressions can use aliases (reaching through a SetOp to the first branch)
 EXPLAIN
-SELECT n_nationkey as nkey, n_name FROM nation
+SELECT n_nationkey as nkey, n_name FROM ${testName2}_nation
 UNION ALL
-SELECT n_regionkey, n_name FROM nation
+SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY nkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
@@ -461,37 +461,37 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_nationkey as nkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY nkey"
+   » queryText: "SELECT n_nationkey as nkey, n_name FROM ${testName2}_nation UNION ALL SELECT n_regionkey, n_name FROM ${testName2}_nation ORDER BY nkey"
 
 -> -> orderOp
       » order expr: ((nkey) ASC)
       » ordinal order expr: (($1) ASC)
 
 -> -> -> statementMarker: select
-         » queryText: "SELECT n_nationkey as nkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+         » queryText: "SELECT n_nationkey as nkey, n_name FROM ${testName2}_nation UNION ALL SELECT n_regionkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> unionOp
             » isDistinct: (false)
 
 -> -> -> -> -> statementMarker: select
-               » queryText: "SELECT n_nationkey as nkey, n_name FROM nation"
+               » queryText: "SELECT n_nationkey as nkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> -> -> projectOp
-                  » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+                  » column: (Alias = nkey ; Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.nation)
+                     » table: (rapidsse.public.${testName2}_nation)
 
 -> -> -> -> -> statementMarker: select
-               » queryText: "SELECT n_regionkey, n_name FROM nation"
+               » queryText: "SELECT n_regionkey, n_name FROM ${testName2}_nation"
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-                  » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+                  » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.nation)'
+                     » table: (rapidsse.public.${testName2}_nation)'
 )
 
 
@@ -508,10 +508,7 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE nation;
-  mute
-
-  bye;
+  DROP TABLE ${testName2}_nation;
   mute
 }
 

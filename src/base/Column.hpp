@@ -5,6 +5,7 @@
 
 #include "eCT.h"
 #include "eDM.h"
+#include "TypeId.hpp"
 
 namespace STORE { class InfoSet; }
 
@@ -14,8 +15,8 @@ namespace BASE
   {
     private:
     i8    m_iColumnNo;      // this columns subscript
-    s32   m_sColumnNm;      // name of the column
-    eCT   m_eColumnType;    // column type (CT_INTEGER etc)
+    s256  m_sColumnNm;      // name of the column
+		TypeId m_xColumnTypeId; // column type id
 
     bool  m_bIsUnique;      // is column unique?
     bool  m_bIsLastColumn;  // is last column
@@ -64,7 +65,9 @@ namespace BASE
     i8   iColNmBufSize(void);
   
     eCT  eColumnType(void);
-    void vColumnType(eCT eColumnType);
+
+		TypeId xColumnTypeId(void);
+		void vColumnTypeId(TypeId xTypeId);
 
     void vCopy(Column* pCol);
     void vCopy(Column* pCol, Stz* sColPrefix);
@@ -74,7 +77,7 @@ namespace BASE
     bool bIsLastColumn(void);
     void vIsLastColumn(bool bIsLastColumn);
     
-    bool bIsName(s32& sName);
+    bool bIsName(s256& sName);
   
     bool bIsUnique(void);
     void vIsUnique(bool bIsUnique);
@@ -87,10 +90,8 @@ namespace BASE
   
     void vListContents(i8 i_Depth);
   
-    void vSet(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
+    void vSet(Stz* sColumnNm, TypeId xTypeId, i8 iColumnLength, i8 iColumnScale);
     void vShow(void);
-  
-    char cTypeShort(void);
     
     Footer* aFooter(void);
   

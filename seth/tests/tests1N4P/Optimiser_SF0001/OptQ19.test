@@ -1,15 +1,15 @@
 --------------------------------------------------------------------------------
 -- tpch query19 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 /pipelineName = "OptQ19"
 select
   sum(l_extendedprice * (1 - l_discount) ) as revenue
 from
-  lineitem,
-  part
+  ${testName2}_lineitem,
+  ${testName2}_part
 where p_partkey = l_partkey
   and
   (
@@ -49,8 +49,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

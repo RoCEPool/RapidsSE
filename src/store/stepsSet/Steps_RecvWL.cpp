@@ -21,6 +21,7 @@ void Step::vAddSteps_RecvWL(void)
   vAddStep("recvWL[].isNotNull"_Stz,&Step::vRecvWLIsNotNull);
   vAddStep("recvWL[].isNull"_Stz,   &Step::vRecvWLIsNull);
   vAddStep("recvWL[].set"_Stz,      &Step::vRecvWLSet);
+  vAddStep("recvWL[].delete"_Stz,   &Step::vRecvWLDelete);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,6 +66,18 @@ void Step::vRecvWLSet(void)
   ENTRY();
 
   m_pLogicUnit->m_xpRecvWL = (RecvWL*)m_pDataStack->pPopPtr(__func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* recvWL[].delete -- delete the received object and clear                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRecvWLDelete(void)
+{
+  ENTRY();
+
+  RecvWL* pRecvWL = * m_pLogicUnit->m_xpRecvWL;
+  delete pRecvWL;
+  m_pLogicUnit->m_xpRecvWL = nullptr;
 }
 
 /*============================================================================*/

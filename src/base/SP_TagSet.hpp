@@ -17,6 +17,7 @@ namespace BASE
    ~SP_TagSet(void) noexcept(false);
   
     Stz* sz(TagSet* pTagSet);
+    Stz* szSenStr(TagSet* pTagSet);
 
   private:
     Footer* aFooter(void);

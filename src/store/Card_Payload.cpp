@@ -35,19 +35,6 @@ Card_Payload::Card_Payload(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Payload::Card_Payload(eCK eCard, i8 iMaxDepth)
-    : Card_EXPRLIST(eCard, iMaxDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Payload::~Card_Payload(void) noexcept(false)
@@ -58,42 +45,6 @@ Card_Payload::~Card_Payload(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add a key expr to this key based on given projection expr                  */
-/*----------------------------------------------------------------------------*/
-void Card_Payload::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 i_Key = nChildCards() + 1;
-
-  Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumberForm_KeyCol(i_Key);
-
-  if (Card_As* p_as = p_expr->pSub_as())
-    p_expr_new->vAppendChild(p_as->pDupCardRecursive());
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  if (p_expr->pSub_rpnCalc())
-    p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
-  p_expr_new->vAppendChild(p_rpnCalc);
-
-  p_rpnCalc->pSymbol()->vColType(p_expr->eColType());
-  p_expr_new->pSymbol()->vColType(p_expr->eColType());
-
-  if (p_expr->pSub_direction()) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_NONE));
-    p_expr_new->vAppendChild(p_direction);
-  }
-  else
-  if (bAsc) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
-    p_expr_new->vAppendChild(p_direction);
-  }
-
-  vAppendChild(p_expr_new);
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -153,59 +104,6 @@ bool Card_Payload::bIsEqual(Card_Payload* p_key_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Payload::vTypes_For_stmCol(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypes_For_stmCol(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Payload::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(! pCI->G.p_subSet);
-
-  Card_SubSet* p_subSet = new Card_SubSet;
-
-  // key is a set of expr
-  for (Kid x_expr(this); x_expr.bEach(CK_EXPR); /**/) {
-
-    x_expr.p_expr()->vFactorAll_ColSym_IntoDistinct_expr(pCI);
-    p_subSet->vTransferChildren(pCI->G.p_subSet);
-
-    DELETE_CARD(pCI->G.p_subSet);
-  }
-
-  pCI->G.p_subSet = p_subSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* map the columns of this key                                                */
-/*----------------------------------------------------------------------------*/
-void Card_Payload::vMapColumns(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 i_Cell = 0;
-
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    Card_Expr *p_expr_key = xKey.p_expr();
-
-    i_Cell++;
-    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
-    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 eCT Card_Payload::eColType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -213,7 +111,7 @@ eCT Card_Payload::eColType(void)
   eCT eColType = CT_NONE;
 
   if (Card_Expr* p_expr = pSub_expr())
-    eColType = p_expr->eColType();
+    eColType = p_expr->xTypeId().eCTVal();
 
   return eColType;
 }
@@ -253,9 +151,9 @@ IndexDef* Card_Payload::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    eCT  eColType = p_term->pSymbol()->eColType();
+    TypeId xTypeId = p_term->pSymbol()->xTypeId();
 
-    if (! szColNm || CT_NONE == eColType)
+    if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;
 
     bool bAscending = true;
@@ -263,7 +161,7 @@ IndexDef* Card_Payload::pToIndexDef(void)
       bAscending = false;
       bHasDescending = true;
     }
-    pIndexDef->vAddColumn(szColNm,eColType,bAscending);
+    pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
   }
 
   if (bHasDescending)

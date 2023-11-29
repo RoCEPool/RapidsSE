@@ -5,7 +5,7 @@
 
 select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_discount) else 0
      end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
-     from lineitem, part
+     from ${testName2}_lineitem, ${testName2}_part
      where l_partkey = p_partkey
      and l_shipdate >= '1995-09-01'
      and l_shipdate < '1995-10-01';
@@ -20,7 +20,7 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
 EXPLAIN STAGE TRANSLITERATE
 select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_discount) else 0
      end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
-     from lineitem, part
+     from ${testName2}_lineitem, ${testName2}_part
      where l_partkey = p_partkey
      and l_shipdate >= '1995-09-01'
      and l_shipdate < '1995-10-01';
@@ -32,10 +32,10 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
      | pulse once
      | stageMarker3014
    stage stageMarker3014 on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${testName2}_LineItem
      | stageMarker3017 broadcast
    stage stageMarker3017 on all partitions :
-     scan rapidsse public part
+     scan rapidsse public ${testName2}_part
      | abstractJoin "CROSS true  "
      | stageMarker3020
    stage stageMarker3020 on all partitions :
@@ -72,13 +72,13 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public lineitem
+    scan rapidsse public ${testName2}_lineitem
     | hash "type INTEGER L_PARTKEY"
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
-    indexJoin part IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    indexJoin ${testName2}_part IxP_PARTKEY "bound $I1 L_PARTKEY =="
     | filter " type BOOLEAN $2 $17 == "
     | filter " type BOOLEAN $11 DATE '1995-09-01' >= "
     | filter " type BOOLEAN $11 DATE '1995-10-01'  < "
@@ -122,7 +122,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan lineitem IxL_SHIPDATE "LBOUND DATE '1995-09-01' >= UBOUND DATE '1995-10-01' <"
+    indexscan ${testName2}_lineitem IxL_SHIPDATE "LBOUND DATE '1995-09-01' >= UBOUND DATE '1995-10-01' <"
     | project "type INTEGER as L_PARTKEY L_PARTKEY ,
                type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT"
@@ -131,7 +131,7 @@ begin
     | next hashcast
 
   stage S02 on all partitions :
-    indexJoin part IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    indexJoin ${testName2}_part IxP_PARTKEY "bound $I1 L_PARTKEY =="
     | aggreg " type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
                 type DECIMAL )  }  }  P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
@@ -163,8 +163,6 @@ rows:
   (19.25)
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

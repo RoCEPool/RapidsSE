@@ -540,11 +540,11 @@ Card_Bound* Kid::p_bound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION* Kid::p_CONJUNCTION(void)
+Card_CONJ* Kid::p_CONJUNCTION(void)
 {
   _nonProper_
 
-  return (Card_CONJUNCTION*)pChild();
+  return (Card_CONJ*)pChild();
 }
 
 /*----------------------------------------------------------------------------*/

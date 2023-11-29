@@ -237,6 +237,24 @@ JobId AM::DEMON::tAnswerDemonJobId(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set jobId of the answer wireline demon in AM                               */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vAnswerWLDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tAnswerWLDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the answer wireline demon in AM                               */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tAnswerWLDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tAnswerWLDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set jobId of the collect demon in AM                                       */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vCollectDemonJobId(JobId tJobId) {
@@ -604,9 +622,8 @@ i8 AM::GRID::nKnownNodes(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm,
-                       Stz* szIPAddr, i8 iPortNo,
-                       Stz* szRegionNm)
+void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
+                             i8 iPortNo, i8 iPortNoWL, Stz* szRegionNm)
 {
   _static_
   
@@ -617,7 +634,7 @@ void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm,
     if (! pDetectedNode) {
       AM::pGrid()->vAddDetectedNode(iNodeId, szNodeNm,
                                     szIPAddr, iPortNo,
-                                    szRegionNm);
+                                    iPortNoWL, szRegionNm);
     }
   }
 }
@@ -1637,6 +1654,50 @@ bool AM::MEMORY::bIsRunningLowDist(void)
   }
 
   return bIsLow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* AM::MEMORY::pSnapshotAtTrackingMemory(void)
+{
+  _static_
+
+  return gpAttachMap->m_pSnapshotAtTrackingMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+void AM::MEMORY::vSnapshotAtTrackingMemory(ObjectSnapshot* pSnapshot)
+{
+  _static_
+
+  ASSERT(!pSnapshot || !gpAttachMap->m_pSnapshotAtTrackingMemory);
+
+  gpAttachMap->m_pSnapshotAtTrackingMemory = pSnapshot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* AM::MEMORY::pSnapshotAtMemoryLeaks(void)
+{
+  _static_
+
+  return gpAttachMap->m_pSnapshotAtMemoryLeaks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+void AM::MEMORY::vSnapshotAtMemoryLeaks(ObjectSnapshot* pSnapshot)
+{
+  _static_
+
+  ASSERT(!pSnapshot || !gpAttachMap->m_pSnapshotAtMemoryLeaks);
+
+  gpAttachMap->m_pSnapshotAtMemoryLeaks = pSnapshot;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -2918,7 +2979,7 @@ void AM::SYSARGS::vVerbose(bool bVerbose)
 {
   _static_
 
-  gpAttachMap->m_xSysArgs.m_bVerbose = bVerbose;
+  gpAttachMap->m_bTraceableComponents[TC_VERBOSE] = bVerbose;
 }
 
 
@@ -3353,12 +3414,12 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   
   TagSet* pTags;
   
-  if (! gpAttachMap || gxCmdLineArgs.m_xSysArgs.m_bVerbose != gpAttachMap->m_xSysArgs.m_bVerbose) {
+  if (! gpAttachMap || gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE] != gpAttachMap->m_bTraceableComponents[TC_VERBOSE]) {
 
-    if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
+    if (gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE])
       return true;
 
-    if (gpAttachMap && gpAttachMap->m_xSysArgs.m_bVerbose)
+    if (gpAttachMap && gpAttachMap->m_bTraceableComponents[TC_VERBOSE])
       return true;
 
     pTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTags;
@@ -3372,7 +3433,7 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (gpAttachMap->m_xSysArgs.m_bVerbose)
+  if (gpAttachMap->m_bTraceableComponents[TC_VERBOSE])
     return true;
   
   //if (! gpAttachMap->m_xSysArgs.m_bDeveloper)
@@ -3420,6 +3481,32 @@ bool AM::TRACE::bVerbose(Stz* szVBtag1, Stz* szVBtag2)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verbose trace given tags?                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::TRACE::vTraceComponent(eTC eComponent, bool bTraceIt)
+{
+  _static_
+
+  ASSERT(eComponent > TC_NONE);
+  ASSERT(eComponent < TC_ENUMS);
+
+  gpAttachMap->m_bTraceableComponents[eComponent] = bTraceIt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verbose trace given tags?                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::TRACE::bTraceComponent(eTC eComponent)
+{
+  _static_
+
+  ASSERT(eComponent > TC_NONE);
+  ASSERT(eComponent < TC_ENUMS);
+
+  return (gpAttachMap && gpAttachMap->m_bTraceableComponents[eComponent]);
 }
 
 
@@ -3788,28 +3875,34 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
     }
 
     case CN_PDS: {
-			Pds* pPdsRowBuffer = _pPds(pOperand);
-			// permanent row buffers not to be deleted
-			if (pPdsRowBuffer->bIsPermanent()) {
-				// ensure the output queue flag is set to false
+      Pds *pPdsRowBuffer = _pPds(pOperand);
+      // permanent row buffers not to be deleted
+      if (pPdsRowBuffer->bIsPermanent()) {
+        // ensure the output queue flag is set to false
 
-				// if the output queue flag is false, then this rowbuffer
-				// is not part of m_pOutputQueue in Output.cpp
-				// someone is trying to delete it, but since it is permanent
-				// we only need to drop the hashmapentry lock
-				if(! pPdsRowBuffer->bOutputQueued())
-					AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+        // if the output queue flag is false, then this rowbuffer
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if (!pPdsRowBuffer->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
 
-				// if the output queue flag is true, then this rowbuffer
-				// should not have any locks on it
+        // if the output queue flag is true, then this rowbuffer
+        // should not have any locks on it
 
-				pPdsRowBuffer->vOutputQueued(false);
-				RASSERT( ! AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
-				break;
-			}
+        pPdsRowBuffer->vOutputQueued(false);
+        RASSERT(!AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
+        break;
+      }
 
-			pPdsRowBuffer->vDecidedDelete();
-			break;
+      pPdsRowBuffer->vDecidedDelete();
+      break;
+    }
+
+    case CN_PAYLOADOBJ: {
+      WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(pOperand);
+      delete pPayloadObj;
+      break;
     }
 
     case CN_PLANOPERAND: {
@@ -4441,6 +4534,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
+        case OI_AFFECTEDROWS:   eOperand = EV_I_AFFECTEDROWS;   break;
         case OI_CALLPIPELINE:   eOperand = EV_I_CALLPIPELINE;   break;
         case OI_COMMAND:        eOperand = EV_I_COMMAND;        break;
         case OI_COMPILEERRORS:  eOperand = EV_I_COMPILEERRORS;  break;
@@ -4454,9 +4548,9 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OI_PATH:           eOperand = EV_I_PATH;           break;
         case OI_PROGRESSUNITS:  eOperand = EV_I_PROGRESSUNITS;  break;
         case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;
-        case OI_RETURNPIPELINE: eOperand = EV_I_RETURNPIPELINE; break;
         case OI_SEEKOFFSETS:    eOperand = EV_I_SEEKOFFSETS;    break;
         case OI_TOTALUNITS:     eOperand = EV_I_TOTALUNITS;     break;
+        case OI_WARNINGS:       eOperand = EV_I_WARNINGS;       break;
         default:
           RASSERT(0);
       }
@@ -4519,6 +4613,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_OTHEROPERAND: eOperand = EV_D_OTHEROPERAND;   break;
     case CN_PAGINGMETRICS:eOperand = EV_D_PAGINGMETRICS;  break;
     case CN_PDS:          eOperand = EV_D_PDSROWBUFFER;   break;
+    case CN_PAYLOADOBJ:   eOperand = EV_D_PAYLOAD;        break;
     case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = EV_D_PROFILE;        break;
     case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;
@@ -5235,20 +5330,21 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 /*----------------------------------------------------------------------------*/
 /* set format from given tag set                                              */
 /*----------------------------------------------------------------------------*/
-bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
+eEC AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 {
   s32 sTagValue;
   i8 iTagValue;
   i8 i_Tag;
+  s2K sErrMsg;
 
   // - - - - - - - - - - - - - - - - - - - - -
   // C_RECORD_TERMINATOR
   i_Tag = pTagSet->i_Find(C_TAG_LD_RECORD_TERMINATOR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cRecordTerminator = *sTagValue.azChar();
-    if (pFormat->m_cRecordTerminator == '0')
-      pFormat->m_cRecordTerminator = '\0';
+    pFormat->vRecordTerminator(*sTagValue.azChar());
+    if (pFormat->cRecordTerminator() == '0')
+      pFormat->vRecordTerminator('\0');
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5262,33 +5358,47 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     if (sTagValue.nLength() == 1) {
       if (cRecordEnds == '0') {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
       else if (cRecordEnds == '\n') {
-        pFormat->m_eLineEnd = LE_NL;
+        pFormat->vLineEnd(LE_NL);
       }
       else if (cRecordEnds == '\r') {
-        pFormat->m_eLineEnd = LE_CR;
+        pFormat->vLineEnd(LE_CR);
       }
       else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
     }
     // record_ends is 2 characters
     else if (sTagValue.nLength() == 2) {
       
-      if (sTagValue.bSame("\r\n"_Stz)) {
-        pFormat->m_eLineEnd = LE_CRNL;
+      if (sTagValue.bSame("\\r"_Stz)) {
+        pFormat->vLineEnd(LE_CR);
+      }
+      else if (sTagValue.bSame("\\n"_Stz)) {
+        pFormat->vLineEnd(LE_NL);
+      }
+      else if (sTagValue.bSame("\r\n"_Stz)) {
+        pFormat->vLineEnd(LE_CRNL);
       }
       else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-        return false;
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
+      }
+    }
+    else if (sTagValue.nLength() == 4) {
+      if (sTagValue.bSame("\\r\\n"_Stz)) {
+        pFormat->vLineEnd(LE_CRNL);
+      } else {
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return EC_INVALID_LOAD_OPT_RECORD_ENDS;
       }
     }
     else {
       vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
-      return false;
+      return EC_INVALID_LOAD_OPT_RECORD_ENDS;
     }
   }
   
@@ -5298,11 +5408,11 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     if (sTagValue.bSame("\\t"_Stz))
-      pFormat->m_cFieldDelimiter = '\t';
+      pFormat->vFieldDelimiter('\t');
     else
-      pFormat->m_cFieldDelimiter = *sTagValue.azChar();
-    if (pFormat->m_cFieldDelimiter == '0')
-      pFormat->m_cFieldDelimiter = '\0';
+      pFormat->vFieldDelimiter(*sTagValue.azChar());
+    if (pFormat->cFieldDelimiter() == '0')
+      pFormat->vFieldDelimiter('\0');
   }
 
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5310,13 +5420,12 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   i_Tag = pTagSet->i_Find(C_TAG_LD_ENCLOSED_BY_LEADING);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cEnclosedBy_Leading = *sTagValue.azChar();
-    if (pFormat->m_cEnclosedBy_Leading == '0')
-      pFormat->m_cEnclosedBy_Leading = '\0';
+    pFormat->vEnclosedBy_Leading(*sTagValue.azChar());
+    if (pFormat->cEnclosedBy_Leading() == '0')
+      pFormat->vEnclosedBy_Leading('\0');
         
     // default set trailing same as leading
-    pFormat->m_cEnclosedBy_Trailing =
-    pFormat->m_cEnclosedBy_Leading;
+    pFormat->vEnclosedBy_Trailing(pFormat->cEnclosedBy_Leading());
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5325,14 +5434,14 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     // if trailing is specified, leading should also have been specified
-    if (pFormat->m_cEnclosedBy_Trailing == '\0') {
+    if (!pFormat->bIsSetEnclosedBy_Leading()) {
       if (! AM::bMetadata())
         vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
-      return false;
+      return EC_INVALID_LOAD_OPT_ENCL_TRAILING;
     }
-    pFormat->m_cEnclosedBy_Trailing = *sTagValue.azChar();
-    if (pFormat->m_cEnclosedBy_Trailing == '0')
-      pFormat->m_cEnclosedBy_Trailing = '\0';
+    pFormat->vEnclosedBy_Trailing(*sTagValue.azChar());
+    if (pFormat->cEnclosedBy_Trailing() == '0')
+      pFormat->vEnclosedBy_Trailing('\0');
   }
   //
   //    DATE_FORMAT='YYYY.MM.DD’
@@ -5344,10 +5453,10 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     // extract date format
-    if ( ! pFormat->bExtractDateFormat(sTagValue.szStz()) ) {
+    if ( ! pFormat->bExtractDateFormat(sTagValue.szStz(), sErrMsg) ) {
       if ( ! AM::bMetadata())
-        vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
-      return false;
+        vTrace("Invalid load : %s\n"_Stz, sErrMsg.szStz());
+      return EC_INVALID_LOAD_OPT_DATE_FORMAT;
     }
   }
   
@@ -5356,9 +5465,13 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   i_Tag = pTagSet->i_Find(C_TAG_LD_ESCAPE_CHAR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cEscapeChar = *sTagValue.azChar();
-    if (pFormat->m_cEscapeChar == '0')
-      pFormat->m_cEscapeChar = '\0';
+    if (sTagValue.bSame("\\0"_Stz)) {
+      pFormat->vEscapeChar('\0');
+    } else {
+      pFormat->vEscapeChar(*sTagValue.azChar());
+      if (pFormat->cEscapeChar() == '0')
+        pFormat->vEscapeChar('\0');
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5367,10 +5480,10 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     iTagValue = pTagSet->iValue(i_Tag);
     
-    pFormat->m_nMaxErrors = iTagValue;
+    pFormat->vMaxErrors(iTagValue);
   }
         
-  return true;
+  return EC_NONE;
 }
 
 

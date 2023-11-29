@@ -58,6 +58,7 @@
 : EV_D_PAGINGMETRICS_handler    \handler STANDARD_PIPEOUT ;
 : EV_D_PARCEL_handler           \handler STANDARD_PIPEOUT ;
 : EV_D_PDSROWBUFFER_handler     \handler STANDARD_PIPEOUT ;
+: EV_D_PAYLOAD_handler          \handler STANDARD_PIPEOUT ;
 : EV_D_PLANOPERAND_handler      \handler STANDARD_PIPEOUT ;
 : EV_D_PROFILE_handler          \handler STANDARD_PIPEOUT ;
 : EV_D_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
@@ -69,6 +70,7 @@
 : EV_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
 
 
+: EV_I_AFFECTEDROWS_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_COMMAND_handler          \handler STANDARD_PIPEOUT ;
 : EV_I_COMPILEERRORS_handler    \handler STANDARD_PIPEOUT ;
@@ -82,9 +84,9 @@
 : EV_I_PATH_handler             \handler STANDARD_PIPEOUT ;
 : EV_I_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_PROMPTOUT_handler        \handler STANDARD_PIPEOUT ;
-: EV_I_RETURNPIPELINE_handler   \handler STANDARD_PIPEOUT ;
 : EV_I_SEEKOFFSETS_handler      \handler STANDARD_PIPEOUT ;
 : EV_I_TOTALUNITS_handler       \handler STANDARD_PIPEOUT ;
+: EV_I_WARNINGS_handler         \handler STANDARD_PIPEOUT ;
 
 : EV_M_CANCEL_handler           \handler STANDARD_PIPEOUT ;
 : EV_M_CANCELLING_handler       \handler STANDARD_PIPEOUT ;
@@ -414,6 +416,7 @@
   abnormalHandler EV_D_OTHEROPERAND     [op].handler!
   abnormalHandler EV_D_PARCEL           [op].handler!
   abnormalHandler EV_D_PDSROWBUFFER     [op].handler!
+  abnormalHandler EV_D_PAYLOAD          [op].handler!
   abnormalHandler EV_D_PLANOPERAND      [op].handler!
   abnormalHandler EV_D_PROFILE          [op].handler!
   abnormalHandler EV_D_ROWBUFFER        [op].handler!
@@ -469,8 +472,8 @@
   [op].opName@ "SETTING default_internalErrorHandlers for OP %v" str.format .
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
+  abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
   abnormalHandler EV_I_COMMAND          [op].handler!
-  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
@@ -482,7 +485,6 @@
   abnormalHandler EV_I_PATH             [op].handler!
   abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
   abnormalHandler EV_I_PROMPTOUT        [op].handler!
-  abnormalHandler EV_I_RETURNPIPELINE   [op].handler!
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
 
@@ -497,8 +499,8 @@
   //[op].opName@ "SETTING default_lowMemHandlers for OP %v" str.format .
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
+  abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
   abnormalHandler EV_I_COMMAND          [op].handler!
-  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
@@ -510,9 +512,9 @@
   abnormalHandler EV_I_PATH             [op].handler!
   abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
   abnormalHandler EV_I_PROMPTOUT        [op].handler!
-  abnormalHandler EV_I_RETURNPIPELINE   [op].handler!
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
+  abnormalHandler EV_I_WARNINGS         [op].handler!
 
   [op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .
 ;

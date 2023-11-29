@@ -52,7 +52,7 @@ Stz* SP_ColPix::sz(ColPix* pColPix)
     ,(i8)pColPix->m_uNumber
     ,szColNm
     ,aCX[pColPix->m_uKind]
-    ,aCT[pColPix->m_uType]
+    ,aCT[pColPix->m_uTypeId]
     ,aDM[pColPix->m_uDatum]
     ,(i8)pColPix->m_uLength
     ,(i8)pColPix->m_uScale

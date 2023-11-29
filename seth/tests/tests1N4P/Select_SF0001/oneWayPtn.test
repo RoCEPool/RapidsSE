@@ -2,14 +2,14 @@
 /* oneWayJoins -- partitioning test                                           */
 /*============================================================================*/
 
-trackMemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNICAST
 select count(*)
-  from Customer,
-       Orders
+  from ${testName2}_customer,
+       ${testName2}_orders
  where C_CUSTKEY  = O_CUSTKEY;
 rows:
   (1500)
@@ -17,8 +17,8 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // HASHCAST
 select count(*)
-  from Lineitem,
-       Orders
+  from ${testName2}_lineitem,
+       ${testName2}_orders
  where L_ORDERKEY  = O_ORDERKEY;
 rows:
   (5996)
@@ -26,8 +26,8 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST
 select count(*)
-  from Lineitem,
-       PartSupp
+  from ${testName2}_lineitem,
+       ${testName2}_partSupp
  where L_SUPPKEY  = PS_SUPPKEY;
 rows:
  (576000)

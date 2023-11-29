@@ -1,10 +1,10 @@
 
-trackMemory;
+trackmemory force;
 success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
 int_col0   INTEGER,
 int_col1   INTEGER,
 bol_col2   BOOLEAN,
@@ -24,12 +24,12 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/groupBy.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/groupBy.csv" ;
 success
 
 
 //------------------------------------------------------------------------------------
-select COUNT(int_col1) from datums GROUP BY int_col1;
+select COUNT(int_col1) from ${testName2}_datums GROUP BY int_col1;
 rows:
 (0)
 (1)
@@ -40,7 +40,7 @@ rows:
 (3)
 
 //------------------------------------------------------------------------------------
-select int_col0, COUNT(int_col1) from datums GROUP BY int_col0;
+select int_col0, COUNT(int_col1) from ${testName2}_datums GROUP BY int_col0;
 rows:
 (11,1)
 (9,1)
@@ -55,7 +55,7 @@ rows:
 (8,1)
 
 //------------------------------------------------------------------------------------
-select COUNT(int_col1), int_col0 from datums GROUP BY int_col0;
+select COUNT(int_col1), int_col0 from ${testName2}_datums GROUP BY int_col0;
 rows:
 (1,11)
 (1,9)
@@ -70,7 +70,7 @@ rows:
 (1,8)
 
 //------------------------------------------------------------------------------------
-select COUNT(int_col1) + 3, int_col0 from datums GROUP BY int_col0;
+select COUNT(int_col1) + 3, int_col0 from ${testName2}_datums GROUP BY int_col0;
 rows:
 (4,11)
 (4,9)
@@ -85,7 +85,7 @@ rows:
 (4,8)
 
 //------------------------------------------------------------------------------------
-select COUNT(int_col1 + 3), int_col0 from datums GROUP BY int_col0;
+select COUNT(int_col1 + 3), int_col0 from ${testName2}_datums GROUP BY int_col0;
 rows:
 (1,11)
 (1,9)
@@ -100,7 +100,7 @@ rows:
 (1,8)
 
 //------------------------------------------------------------------------------------
-select int_col0, COUNT(int_col1) + 5 / 60 from datums GROUP BY int_col0;
+select int_col0, COUNT(int_col1) + 5 / 60 from ${testName2}_datums GROUP BY int_col0;
 rows:
 (11,1)
 (9,1)
@@ -115,7 +115,7 @@ rows:
 (8,1)
 
 //------------------------------------------------------------------------------------
-select COUNT(int_col1), dte_col4 from datums GROUP BY dte_col4;
+select COUNT(int_col1), dte_col4 from ${testName2}_datums GROUP BY dte_col4;
 rows:
 (0,null)
 (1,DATE'1941-01-10')
@@ -126,7 +126,7 @@ rows:
 (1,DATE'1998-11-02')
 
 //------------------------------------------------------------------------------------
-select flt_col8 , COUNT(int_col1) from datums GROUP BY flt_col8;
+select flt_col8 , COUNT(int_col1) from ${testName2}_datums GROUP BY flt_col8;
 rows:
 (null,1)
 (10.22,3)
@@ -135,7 +135,7 @@ rows:
 (0.22,4)
 
 //------------------------------------------------------------------------------------
-select vch_col15 , COUNT(int_col1) from datums GROUP BY vch_col15;
+select vch_col15 , COUNT(int_col1) from ${testName2}_datums GROUP BY vch_col15;
 rows:
 (null,1)
 ('yellow',1)
@@ -145,7 +145,7 @@ rows:
 ('orange',3)
 
 //------------------------------------------------------------------------------------
-select dte_col4 , COUNT(dec_col7) from datums GROUP BY dte_col4;
+select dte_col4 , COUNT(dec_col7) from ${testName2}_datums GROUP BY dte_col4;
 rows:
 (null,1)
 (DATE '1941-01-10',1)
@@ -157,7 +157,7 @@ rows:
 
 
 //------------------------------------------------------------------------------------
-select dte_col4 , COUNT(dec_col7) + 3 from datums GROUP BY dte_col4;
+select dte_col4 , COUNT(dec_col7) + 3 from ${testName2}_datums GROUP BY dte_col4;
 rows:
 (null,4)
 (DATE'1941-01-10',4)
@@ -168,7 +168,7 @@ rows:
 (DATE'1998-11-02',4)
 
 //------------------------------------------------------------------------------------
-select  COUNT(bol_col2) + 3 , dte_col4 from datums GROUP BY dte_col4;
+select  COUNT(bol_col2) + 3 , dte_col4 from ${testName2}_datums GROUP BY dte_col4;
 rows:
 (4,null)
 (4,DATE'1941-01-10')
@@ -179,7 +179,7 @@ rows:
 (4,DATE'1998-11-02')
 
 //------------------------------------------------------------------------------------
-select tme_col10 , COUNT(tme_col11) from datums GROUP BY tme_col10;
+select tme_col10 , COUNT(tme_col11) from ${testName2}_datums GROUP BY tme_col10;
 rows:
 (null,1)
 (TIME'12:23:31',2)
@@ -187,7 +187,7 @@ rows:
 (TIME'11:23:31',4)
 
 //------------------------------------------------------------------------------------
-select tme_col10 , COUNT(tme_col11) / 2 from datums GROUP BY tme_col10;
+select tme_col10 , COUNT(tme_col11) / 2 from ${testName2}_datums GROUP BY tme_col10;
 rows:
 (null,0)
 (TIME'12:23:31',1)
@@ -195,7 +195,7 @@ rows:
 (TIME'11:23:31',2)
 
 //------------------------------------------------------------------------------------
-select dec_col6 , COUNT(tsp_col13) from datums GROUP BY dec_col6;
+select dec_col6 , COUNT(tsp_col13) from ${testName2}_datums GROUP BY dec_col6;
 rows:
 (null,2)
 (477.04,2)
@@ -205,7 +205,7 @@ rows:
 (4001.04,1)
 
 //------------------------------------------------------------------------------------
-select vch_col14 , COUNT(vch_col15) from datums GROUP BY vch_col14;
+select vch_col14 , COUNT(vch_col15) from ${testName2}_datums GROUP BY vch_col14;
 rows:
 (null,1)
 ('124',0)
@@ -216,7 +216,7 @@ rows:
 ('x',2)
 
 //------------------------------------------------------------------------------------
-select vch_col14 , COUNT(vch_col15) + 66 from datums GROUP BY vch_col14;
+select vch_col14 , COUNT(vch_col15) + 66 from ${testName2}_datums GROUP BY vch_col14;
 rows:
 (null,67)
 ('124',66)
@@ -228,17 +228,17 @@ rows:
 
 
 //------------------------------------------------------------------------------------
-select bol_col3 , COUNT(int_col1) from datums GROUP BY bol_col3;
+select bol_col3 , COUNT(int_col1) from ${testName2}_datums GROUP BY bol_col3;
 rows:
 (false,10)
 
 //------------------------------------------------------------------------------------
-select bol_col3 , (COUNT(int_col1) + 33) /4 from datums GROUP BY bol_col3;
+select bol_col3 , (COUNT(int_col1) + 33) /4 from ${testName2}_datums GROUP BY bol_col3;
 rows:
 (false,10)
 
 //------------------------------------------------------------------------------------
-select tsp_col12 , COUNT(tsp_col13) from datums GROUP BY tsp_col12;
+select tsp_col12 , COUNT(tsp_col13) from ${testName2}_datums GROUP BY tsp_col12;
 rows:
 (null,1)
 (TIMESTAMP '1943-01-01 00:00:10',1)
@@ -249,7 +249,7 @@ rows:
 (TIMESTAMP '1972-01-01 12:00:01',1)
 
 //------------------------------------------------------------------------------------
-select dec_col6 , COUNT(flt_col9) from datums GROUP BY dec_col6;
+select dec_col6 , COUNT(flt_col9) from ${testName2}_datums GROUP BY dec_col6;
 rows:
 (null,2)
 (477.04,2)
@@ -259,7 +259,7 @@ rows:
 (4001.04,1)
 
 //------------------------------------------------------------------------------------
-select dec_col6 , bol_col2,  COUNT(flt_col9) from datums GROUP BY dec_col6, bol_col2;
+select dec_col6 , bol_col2,  COUNT(flt_col9) from ${testName2}_datums GROUP BY dec_col6, bol_col2;
 rows:
 (4001.04,false,1)
 (47.04,NULL,1)
@@ -270,7 +270,7 @@ rows:
 (23.04,false,1)
 
 //------------------------------------------------------------------------------------
-select tme_col10 , int_col1,  COUNT(tsp_col12) from datums GROUP BY tme_col10, int_col1;
+select tme_col10 , int_col1,  COUNT(tsp_col12) from ${testName2}_datums GROUP BY tme_col10, int_col1;
 rows:
 (TIME '10:23:31',NULL,1)
 (NULL,7000,1)
@@ -283,7 +283,7 @@ rows:
 (TIME '12:23:31',5000,1)
 
 //------------------------------------------------------------------------------------
-select dte_col4 , vch_col14,  COUNT(flt_col8) -1 from datums GROUP BY dte_col4, vch_col14;
+select dte_col4 , vch_col14,  COUNT(flt_col8) -1 from ${testName2}_datums GROUP BY dte_col4, vch_col14;
 rows:
 (DATE '1942-11-01','hello',0)
 (DATE '1941-01-01','hello',0)
@@ -299,7 +299,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 memoryleaks;
@@ -307,10 +307,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
-  mute
-
-  bye;
+  drop table ${testName2}_datums;
   mute
 }
 

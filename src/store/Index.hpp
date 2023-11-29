@@ -17,7 +17,7 @@ namespace STORE
     Location   m_oLocation;   // logical location of index
 
     i8         m_iIndexNo;   //
-    s32        m_sIndexNm;   //
+    s256       m_sIndexNm;   //
   
     Table*     m_pTable;     //
   

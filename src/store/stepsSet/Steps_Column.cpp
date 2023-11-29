@@ -19,7 +19,7 @@ void Step::vAddSteps_Column(void)
   vAddStep("column.length@"_Stz,         &Step::vColumnLengthFetch);
   vAddStep("column.name@"_Stz,           &Step::vColumnNameFetch);
   vAddStep("column.scale@"_Stz,          &Step::vColumnScaleFetch);
-  vAddStep("column.type@"_Stz,           &Step::vColumnTypeFetch);
+  vAddStep("column.typeId@"_Stz,         &Step::vColumnTypeIdFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@ void Step::vColumnNameFetch(void)
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
-  s32 sColNm(pColumn->szColNm());
+  s256 sColNm(pColumn->szColNm());
   
   m_pDataStack->vPushStr(sColNm);
   
@@ -106,16 +106,16 @@ void Step::vColumnScaleFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* column.type@ -- fetch column type                                          */
+/* column.typeId@ -- fetch column typeId                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vColumnTypeFetch(void)
+void Step::vColumnTypeIdFetch(void)
 {
   ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
-  m_pDataStack->vPushInt(pColumn->eColumnType());
+  m_pDataStack->vPushInt(pColumn->xColumnTypeId().iIdVal());
   
   EXIT();
 }

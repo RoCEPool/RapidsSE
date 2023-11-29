@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // missing pipeline name
@@ -15,14 +15,14 @@ begin
   start | pulse once | stageB
 
   stage stageB on all partitions:
-  scan OpTable | stageC
+  scan ${testName2}_OpTable | stageC
 
   stage stageC on origin :
   output | sink | stageA
 
 end
 ;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 3; Column: 0; extraneous input 'begin'"
 
 // missing begin
 /optimise_passthru
@@ -32,14 +32,14 @@ pipeline testPipeline
   start | pulse once | stageB
 
   stage stageB on all partitions:
-  scan OpTable | stageC
+  scan ${testName2}_OpTable | stageC
 
   stage stageC on origin :
   output | sink | stageA
 
   end
 ;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 2; missing BEGIN"
 
 // missing stage
 /optimise_passthru
@@ -49,14 +49,14 @@ begin
   start | pulse once | stageB
 
   stage stageB on all partitions:
-  scan OpTable | stageC
+  scan ${testName2}_OpTable | stageC
 
   stage stageC on origin :
   output | sink | stageA
 
 end
 ;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 2; mismatched input 'stageA' expecting STAGE"
 
 // missing on
 /optimise_passthru
@@ -66,14 +66,14 @@ begin
   start | pulse once | stageB
 
   stage stageB on all partitions:
-  scan OpTable | stageC
+  scan ${testName2}_OpTable | stageC
 
   stage stageC on origin :
   output | sink | stageA
 
 end
 ;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 15; missing ON at 'origin'"
 
 // missing origin/all partitions
 /optimise_passthru
@@ -83,14 +83,14 @@ begin
   start | pulse once | stageB
 
   stage stageB on all partitions:
-  scan OpTable | stageC
+  scan ${testName2}_OpTable | stageC
 
   stage stageC on origin :
   output | sink | stageA
 
 end
 ;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 17; mismatched input ':'"
 
 // get memory leaks
 memoryLeaks;
@@ -99,14 +99,11 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table OpTable1;
+  drop table ${testName2}_OpTable1;
   mute
 
   // drop the table
-  drop table OpTable2;
-  mute
-
-  bye;
+  drop table ${testName2}_OpTable2;
   mute
 }
 

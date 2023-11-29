@@ -3,12 +3,12 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackMemory force;
 
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -28,11 +28,11 @@ create table datums (
 );
 
 
-load datums "../DATA/Transliterate/groupBy.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/groupBy.csv" ;
 
 
 //------------------------------------------------------------------------------
-select int_col1, sum(int_col0) from datums group by int_col1;
+select int_col1, sum(int_col0) from ${testName2}_datums group by int_col1;
 rows:
  (null,3)
  (0,21)
@@ -43,7 +43,7 @@ rows:
  (8000,17)
 
 //------------------------------------------------------------------------------
-select sum(int_col0), int_col1 from datums group by int_col1;
+select sum(int_col0), int_col1 from ${testName2}_datums group by int_col1;
 rows:
  (3,null)
  (21,0)
@@ -54,7 +54,7 @@ rows:
  (17,8000)
 
 //------------------------------------------------------------------------------
-create table part (
+create table ${testName2}_part (
   P_PARTKEY           INTEGER NOT NULL,
   P_NAME              VARCHAR(55) NOT NULL,
   P_MFGR              CHAR(25) NOT NULL,
@@ -68,11 +68,11 @@ create table part (
 
 
 //------------------------------------------------------------------------------
-load part "../TPCH/SF_0001/part.csv";
+load ${testName2}_part "../TPCH/SF_0001/part.csv";
 
 
 // create a table
-create table partsupp (
+create table ${testName2}_partsupp (
 PS_PARTKEY      INTEGER NOT NULL,
 PS_SUPPKEY      INTEGER NOT NULL,
 PS_AVAILQTY     INTEGER NOT NULL,
@@ -82,10 +82,10 @@ PS_COMMENT      VARCHAR(199) NOT NULL
 
 
 //------------------------------------------------------------------------------
-load partsupp "../TPCH/SF_0001/partsupp.csv";
+load ${testName2}_partsupp "../TPCH/SF_0001/partsupp.csv";
 
 
-select p_mfgr, p_brand,  count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
+select p_mfgr, p_brand,  count(*) from ${testName2}_part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
 rows:
  ('Manufacturer#1','Brand#13',1)
  ('Manufacturer#1','Brand#11',1)
@@ -102,7 +102,7 @@ rows:
  ('Manufacturer#5','Brand#53',2)
  ('Manufacturer#5','Brand#52',2)
 
-select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand;
+select p_brand, p_mfgr, count(*) from ${testName2}_part where p_size < 5 group by p_mfgr, p_brand;
 rows:
  ('Brand#11','Manufacturer#1',1)
  ('Brand#13','Manufacturer#1',1)
@@ -121,7 +121,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table LineItem
+create table ${testName2}_LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -143,25 +143,25 @@ create table LineItem
 
 
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_lineitem "../DATA/TPCH/lineitem10.csv";
 
 
 //------------------------------------------------------------------------------
-select L_ORDERKEY, sum(L_LINENUMBER) from lineitem group by L_ORDERKEY;
+select L_ORDERKEY, sum(L_LINENUMBER) from ${testName2}_lineitem group by L_ORDERKEY;
 rows:
  (1,21)
  (2,1)
  (3,6)
 
 //------------------------------------------------------------------------------
-select sum(L_LINENUMBER), L_ORDERKEY from lineitem group by L_ORDERKEY;
+select sum(L_LINENUMBER), L_ORDERKEY from ${testName2}_lineitem group by L_ORDERKEY;
 rows:
  (21,1)
  (1,2)
  (6,3)
 
 //------------------------------------------------------------------------------
-select L_ORDERKEY, sum(L_DISCOUNT) from lineitem group by L_ORDERKEY;
+select L_ORDERKEY, sum(L_DISCOUNT) from ${testName2}_lineitem group by L_ORDERKEY;
 rows:
   (1,0.49)
   (2,0.00)
@@ -169,7 +169,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select L_LINENUMBER, sum(L_DISCOUNT) , sum(L_LINENUMBER) from lineitem group by L_LINENUMBER;
+select L_LINENUMBER, sum(L_DISCOUNT) , sum(L_LINENUMBER) from ${testName2}_lineitem group by L_LINENUMBER;
 rows:
  (1,0.10,3)
  (2,0.19,4)
@@ -179,7 +179,7 @@ rows:
  (6,0.07,6)
 
 //------------------------------------------------------------------------------
-create table Nation (
+create table ${testName2}_Nation (
 	 N_NATIONKEY       INTEGER      NOT NULL,
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
@@ -188,12 +188,12 @@ create table Nation (
 
 
 //------------------------------------------------------------------------------
-load nation "../DATA/TPCH/nation.tbl";
+load ${testName2}_nation "../DATA/TPCH/nation.tbl";
 
 
 //------------------------------------------------------------------------------
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-                                             FROM nation
+                                             FROM ${testName2}_nation
                                              GROUP BY region
                                              HAVING region > 1;
 rows:
@@ -203,23 +203,23 @@ rows:
 
 
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 
 
 // drop the table
-drop table lineitem;
+drop table ${testName2}_lineitem;
 
 
 // drop the table
-drop table part;
+drop table ${testName2}_part;
 
 
 // drop the table
-drop table partsupp;
+drop table ${testName2}_partsupp;
 
 
 // drop the table
-drop table nation;
+drop table ${testName2}_nation;
 
 
 // get memory leaks
@@ -229,26 +229,23 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table datums;
+  drop table ${testName2}_datums;
   mute
 
   // drop the table
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
   // drop the table
-  drop table part;
+  drop table ${testName2}_part;
   mute
 
   // drop the table
-  drop table partsupp;
+  drop table ${testName2}_partsupp;
   mute
 
   // drop the table
-  drop table nation;
-  mute
-  
-  bye;
+  drop table ${testName2}_nation;
   mute
 }
 

@@ -23,7 +23,8 @@ class ClusterConfig:
     C_THREADS         = "threads"
     C_PARTITIONS      = "partitions"
     C_DIR             = "dir"
-    C_PORT            = "port"
+    C_INTERNAL_PORT   = "internalPort"
+    C_EXTERNAL_PORT   = "externalPort"
     C_PARAMS          = "params"
 
     def __init__(self, path: str):
@@ -34,7 +35,8 @@ class ClusterConfig:
         self.threads = -1
         self.partitions = -1
         self.dir = ""
-        self.port = -1
+        self.internal_port = -1
+        self.external_port = -1
         self.params = ""
 
         # Make the clusterConfigParser.sh file executable
@@ -70,19 +72,21 @@ class ClusterConfig:
         self.threads         = output[self.C_THREADS]
         self.partitions      = output[self.C_PARTITIONS]
         self.dir             = output[self.C_DIR]
-        self.port            = output[self.C_PORT]
+        self.internal_port   = output[self.C_INTERNAL_PORT]
+        self.external_port   = output[self.C_EXTERNAL_PORT]
         self.params          = output[self.C_PARAMS]
 
     def __str__(self):
         s = f"<ClusterConfig>\n" \
-            f"  num nodes  = {self.get_num_nodes()}\n" \
-            f"  first node = {self.get_first_node_name()}\n" \
-            f"  shared mem = {self.get_shared_mem()}\n" \
-            f"  threads    = {self.get_threads()}\n" \
-            f"  partitions = {self.get_partitions()}\n" \
-            f"  dir        = {self.get_dir()}\n" \
-            f"  port       = {self.get_port()}\n" \
-            f"  params     = \"{self.get_params()}\""
+            f"  num nodes     = {self.get_num_nodes()}\n" \
+            f"  first node    = {self.get_first_node_name()}\n" \
+            f"  shared mem    = {self.get_shared_mem()}\n" \
+            f"  threads       = {self.get_threads()}\n" \
+            f"  partitions    = {self.get_partitions()}\n" \
+            f"  dir           = {self.get_dir()}\n" \
+            f"  internal port = {self.get_internal_port()}\n" \
+            f"  external port = {self.get_external_port()}\n" \
+            f"  params        = \"{self.get_params()}\""
         return s
 
     def get_cluster_name(self) -> str:
@@ -107,8 +111,11 @@ class ClusterConfig:
     def get_dir(self) -> str:
         return self.dir
 
-    def get_port(self) -> int:
-        return self.port
+    def get_internal_port(self) -> int:
+        return self.internal_port
+
+    def get_external_port(self) -> int:
+        return self.external_port
 
     def get_params(self) -> str:
         return self.params

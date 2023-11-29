@@ -13,10 +13,10 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-trackmemory;
+trackmemory force;
 success
 
-create table nation (
+create table ${testName2}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -24,43 +24,43 @@ create table nation (
 );
 success
 
-SELECT count(n_regionkey) FROM nation;
+SELECT count(n_regionkey) FROM ${testName2}_nation;
 rows:
   (0)
 
-SELECT SUM(n_regionkey) FROM nation;
+SELECT SUM(n_regionkey) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MIN(n_regionkey) FROM nation;
+SELECT MIN(n_regionkey) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MAX(n_regionkey) FROM nation;
+SELECT MAX(n_regionkey) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT AVG(n_regionkey) FROM nation;
+SELECT AVG(n_regionkey) FROM ${testName2}_nation;
 rows:
  (null)
 
-SELECT count(n_regionkey) FROM nation;
+SELECT count(n_regionkey) FROM ${testName2}_nation;
 rows:
   (0)
 
-SELECT SUM(n_regionkey) FROM nation group by n_nationkey;
+SELECT SUM(n_regionkey) FROM ${testName2}_nation group by n_nationkey;
 rows: 0
 
-SELECT MIN(n_regionkey) FROM nation group by n_nationkey;
+SELECT MIN(n_regionkey) FROM ${testName2}_nation group by n_nationkey;
 rows: 0
 
-SELECT MAX(n_regionkey) FROM nation group by n_nationkey;
+SELECT MAX(n_regionkey) FROM ${testName2}_nation group by n_nationkey;
 rows: 0
 
-SELECT AVG(n_regionkey) FROM nation group by n_nationkey;
+SELECT AVG(n_regionkey) FROM ${testName2}_nation group by n_nationkey;
 rows: 0
 
-load nation "../DATA/Transliterate/nationAgg.tbl";
+load ${testName2}_nation "../DATA/Transliterate/nationAgg.tbl";
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,7 +68,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- basic select of columnRef 
-SELECT n_name FROM nation;
+SELECT n_name FROM ${testName2}_nation;
 rows: 
   ('BRAZIL')
   ('INDIA')
@@ -102,111 +102,111 @@ rows:
   ('GERMANY')
 
 -- basic select of aggregation with having
-SELECT SUM(n_regionkey) FROM nation having SUM(n_regionkey) > 50;
+SELECT SUM(n_regionkey) FROM ${testName2}_nation having SUM(n_regionkey) > 50;
 rows: 
   (53)
 
-SELECT count(n_regionkey) + null FROM nation;
+SELECT count(n_regionkey) + null FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT SUM(n_regionkey)/2 FROM nation having SUM(n_regionkey)/2 > 25;
+SELECT SUM(n_regionkey)/2 FROM ${testName2}_nation having SUM(n_regionkey)/2 > 25;
 rows:
   (26)
 
-SELECT SUM(n_regionkey) + null FROM nation;
+SELECT SUM(n_regionkey) + null FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT null - SUM(n_regionkey) FROM nation;
+SELECT null - SUM(n_regionkey) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT count(n_regionkey) FROM nation having count(n_regionkey) * 2 = 54;
+SELECT count(n_regionkey) FROM ${testName2}_nation having count(n_regionkey) * 2 = 54;
 rows:
   (27)
 
-SELECT null - count(n_regionkey) FROM nation;
+SELECT null - count(n_regionkey) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MIN(n_regionkey) FROM nation having MIN(n_regionkey) != 0;
+SELECT MIN(n_regionkey) FROM ${testName2}_nation having MIN(n_regionkey) != 0;
 rows: 0
 
-SELECT MIN(n_regionkey) + null FROM nation;
+SELECT MIN(n_regionkey) + null FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MIN(n_regionkey) / null FROM nation;
+SELECT MIN(n_regionkey) / null FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MAX(n_regionkey) FROM nation having MAX(n_regionkey)*2 > 7;
+SELECT MAX(n_regionkey) FROM ${testName2}_nation having MAX(n_regionkey)*2 > 7;
 rows:
   (4)
 
-SELECT MAX(n_regionkey) + null FROM nation;
+SELECT MAX(n_regionkey) + null FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MAX(n_regionkey) * null FROM nation;
+SELECT MAX(n_regionkey) * null FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT AVG(n_regionkey) FROM nation having AVG(n_regionkey) = 1.96;
+SELECT AVG(n_regionkey) FROM ${testName2}_nation having AVG(n_regionkey) = 1.96;
 rows:
  (1.96)
 
-SELECT AVG(n_regionkey) + null FROM nation;
+SELECT AVG(n_regionkey) + null FROM ${testName2}_nation;
 rows:
   (null)
 
 -- basic select of aggregation
-SELECT SUM(n_regionkey) FROM nation;
+SELECT SUM(n_regionkey) FROM ${testName2}_nation;
 rows:
   (53)
 
-SELECT count(n_regionkey) FROM nation;
+SELECT count(n_regionkey) FROM ${testName2}_nation;
 rows:
   (27)
 
-SELECT count(n_regionkey+null) FROM nation;
+SELECT count(n_regionkey+null) FROM ${testName2}_nation;
 rows:
   (0)
 
-SELECT count(null+n_regionkey) FROM nation;
+SELECT count(null+n_regionkey) FROM ${testName2}_nation;
 rows:
   (0)
 
-SELECT SUM(n_regionkey+null) FROM nation;
+SELECT SUM(n_regionkey+null) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT SUM(null+n_regionkey) FROM nation;
+SELECT SUM(null+n_regionkey) FROM ${testName2}_nation;
 rows:
   (null)
 /*
-SELECT MIN(n_regionkey+null) FROM nation;
+SELECT MIN(n_regionkey+null) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MIN(null+n_regionkey) FROM nation;
+SELECT MIN(null+n_regionkey) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MAX(n_regionkey+null) FROM nation;
+SELECT MAX(n_regionkey+null) FROM ${testName2}_nation;
 rows:
   (null)
 
-SELECT MAX(null+n_regionkey) FROM nation;
+SELECT MAX(null+n_regionkey) FROM ${testName2}_nation;
 rows:
   (null)
 */
-SELECT AVG(n_regionkey+null) FROM nation;
+SELECT AVG(n_regionkey+null) FROM ${testName2}_nation;
 rows:
  (null)
 
-SELECT AVG(null+n_regionkey) FROM nation;
+SELECT AVG(null+n_regionkey) FROM ${testName2}_nation;
 rows:
  (null)
 
@@ -215,7 +215,7 @@ rows:
 -- and we don't have a super aggregation in place
 -- and we see CANADA once as the 2 rows with CANADA have the same nationKey
 -- and are on the same partition.
-SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
+SELECT n_name, SUM(n_regionkey) FROM ${testName2}_nation GROUP BY n_name;
 rows:
   ('KENYA',0)
   ('MOROCCO',0)
@@ -247,7 +247,7 @@ rows:
   ('SAUDI ARABIA',4)
 
 -- basic select of two columnRefs with both in GROUP BY. No aggregation
-SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
+SELECT n_name, n_nationkey FROM ${testName2}_nation GROUP BY n_name, n_nationkey;
 rows:
  ('MOZAMBIQUE',16)
  ('INDONESIA',9)
@@ -281,7 +281,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- projected ColumnRef is superset of GROUP BY expr
-SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM ${testName2}_nation GROUP BY n_nationkey;
 rows:
   (46,3)
   (24,4)
@@ -312,7 +312,7 @@ rows:
 
 
 -- projected ColumnRef is equal to GROUP BY expr
-SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
+SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM ${testName2}_nation GROUP BY 2*(n_nationkey + 1);
 rows:
  (22,4)
  (44,2)
@@ -342,7 +342,7 @@ rows:
  (8,2)
 
 -- select expr is a superset of group by expr
-SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
+SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM ${testName2}_nation GROUP BY n_nationkey + n_regionkey;
 rows:
   (23,3)
   (12,2)
@@ -371,7 +371,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -- Basic HAVING clause
 
-SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+SELECT n_name, SUM(n_nationkey) FROM ${testName2}_nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
 rows:
   ('VIETNAM',21)
   ('PERU',17)
@@ -400,7 +400,7 @@ rows:
 
 
 -- HAVING clause with aggregate not in select list
-SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
+SELECT n_name FROM ${testName2}_nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
 rows:
   ('VIETNAM')
   ('PERU')
@@ -431,15 +431,15 @@ rows:
 //  Literals in the select list
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
+SELECT 1 FROM ${testName2}_nation HAVING SUM(n_nationkey) > 0;
 rows:
  (1)
 
-SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
+SELECT SUM(n_nationkey) from ${testName2}_nation HAVING SUM(n_nationkey) > 0;
 rows:
  (329)
 
-select N_REGIONKEY,max(N_NAME) from nation group by N_REGIONKEY;
+select N_REGIONKEY,max(N_NAME) from ${testName2}_nation group by N_REGIONKEY;
 rows:
  (0,'MOZAMBIQUE')
  (1,'UNITED STATES')
@@ -447,7 +447,7 @@ rows:
  (3,'UNITED KINGDOM')
  (4,'SAUDI ARABIA')
 
-DROP TABLE nation;
+DROP TABLE ${testName2}_nation;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -462,6 +462,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE nation;
+  DROP TABLE ${testName2}_nation;
   mute
 }

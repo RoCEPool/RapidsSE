@@ -1,0 +1,22 @@
+/*
+    This is the grammar file used for producing railroad (rr) diagrams for the
+    JDBC Connection URL
+
+    NOTE:
+      This file is processed to produce a series of *.png files, one for each rule.
+      If you change the name of a rule then the output filename will also change,
+      and this needs to be updated in the documentation section where it
+      references this static image filename.
+*/
+
+connectionURL ::= 'jdbc:se:'
+                  (
+                    hostAndPort
+//                    defaultLocation?
+                    properties?
+                  )?
+
+hostAndPort   ::= '//' host (':' port)? ( ',' host (':' port)? )*
+host          ::= hostName | hostIPv4Address | '[' hostIPv6Address ']'
+//defaultLocation ::= '/' catalogName ( '/' schemaName )?
+properties    ::= '?' key '=' value ('&' key '=' value)*

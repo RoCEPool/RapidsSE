@@ -3,11 +3,11 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // (1) create a table
-create table nulTbl (
+create table ${testName2}_nulTbl (
   bol_col1   BOOLEAN,
   vch_col2   VARCHAR(32),
   int_col3   INTEGER,
@@ -19,20 +19,20 @@ create table nulTbl (
 );
 success
 
-Load nulTbl "../DATA/Datums/nulls.csv" ;
+Load ${testName2}_nulTbl "../DATA/Datums/nulls.csv" ;
 success
 
 // check no of rows
-select * from nulTbl;
+select * from ${testName2}_nulTbl;
 rows: 50
 
 // drop the table
-drop table nulTbl;
+drop table ${testName2}_nulTbl;
 success
 
 // check existence of table
 lstbl;
-rows: 0
+does not contain rows: ('${testName2}_nulTbl')
 
 // get memory leaks
 memoryLeaks;
@@ -41,10 +41,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table nulTbl;
-  mute
-  
-  bye;
+  drop table ${testName2}_nulTbl;
   mute
 }
 

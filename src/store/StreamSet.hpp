@@ -20,6 +20,7 @@ namespace STORE
     void operator delete(void*);
   
     static void vPostRecv(void* aStreamSet);
+    static void vRepair(Object* pObject);
 
     StreamSet(void);
     StreamSet(StreamDef* pStreamDef);

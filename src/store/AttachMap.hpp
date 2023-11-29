@@ -12,6 +12,7 @@
 #include "CmdLineArgs.hpp"
 #include "MarkerMgr.hpp"
 #include "eAC.h"
+#include "eTC.h"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -67,6 +68,8 @@ namespace STORE
     Locks         m_oLocks;
     MarkerMgr*    m_pMarkerMgr;
     Numbering*    m_pNumbering;
+    ObjectSnapshot* m_pSnapshotAtTrackingMemory;  // object delta reporting
+    ObjectSnapshot* m_pSnapshotAtMemoryLeaks;     // object delta reporting
     Atomic        m_nxOperands;
     Atomic        m_ixQueryNo;
     i8            m_iQuit;
@@ -85,12 +88,14 @@ namespace STORE
     b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
+    bool          m_bTraceableComponents[TC_ENUMS];
     TraceLock      m_oTraceLock;
     TraceMultiLock m_oTraceMultiLock;
     TxSet*        m_pTxSet;
     Word*         m_pWordRoot;
 
     JobId         m_tAnswerDemonJobId;
+    JobId         m_tAnswerWLDemonJobId;
     JobId         m_tCollectDemonJobId;
     JobId         m_tConnectorDemonJobId;
     JobId         m_tEventDemonJobId;

@@ -4,7 +4,7 @@
 /*  (Query : modified l_discount range for SF0001)
 
 select sum(l_extendedprice*l_discount) as revenue
-    from lineitem
+    from ${testName2}_lineitem
     where l_shipdate >= '1994-01-01'
     and l_shipdate < '1995-01-01'
     and l_discount between 1.05 - 0.01 and 1.05 + 0.01
@@ -20,7 +20,7 @@ select sum(l_extendedprice*l_discount) as revenue
 //--------------------------------------------------------------------------------
 EXPLAIN STAGE TRANSLITERATE
 select sum(l_extendedprice*l_discount) as revenue
-    from lineitem
+    from ${testName2}_lineitem
     where l_shipdate >= '1994-01-01'
     and l_shipdate < '1995-01-01'
     and l_discount between 0.06 - 0.01 and 0.06 + 0.01
@@ -33,7 +33,7 @@ begin
     | pulse once
     | stageMarker4240
   stage stageMarker4240 on all partitions :
-    scan rapidsse public lineitem
+    scan rapidsse public ${testName2}_lineitem
     | filter " type BOOLEAN  $11 TIMESTAMP ''1994-01-01 00:00:00''  >=  $11 TIMESTAMP ''1995-01-01 00:00:00''  <  and  }  0.06  0.01  -  0.06  0.01  +  $7 between  and  $5 24.  <  and  "
     | aggreg " type DECIMAL )  $6 $7 *  sum  "
     | combined 0
@@ -71,7 +71,7 @@ pipeline Query6
      | next
 
    stage S01 on all partitions :
-     indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
+     indexscan ${testName2}_lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
      | filter " type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. < and"
      | aggreg " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
@@ -93,11 +93,10 @@ pipeline Query6
      | first
 end ;
 
-row: (2141345.51)
+rows: (2141345.51)
 
 CLEANUP {
-  bye;
-  mute
+
 }
 
 

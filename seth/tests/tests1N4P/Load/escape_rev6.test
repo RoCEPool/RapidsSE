@@ -2,25 +2,25 @@
 /* escape -- escape tests                                                     */
 /*----------------------------------------------------------------------------*/
 
-create table T1 (
+create table ${testName2}_t1 (
   col_id      INTEGER,
   col_vch     VARCHAR(25)
 );
 success
 
 // create an ndex
-create index idx on T1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with deafult escape
-Load T1 "../DATA/Load/escape_defaults.csv";
+Load ${testName2}_t1 "../DATA/Load/escape_defaults.csv";
 success
 
 // predicateFetch rows
-select * from T1;
+select * from ${testName2}_t1;
 rows: 9
 
-select * from T1 ;
+select * from ${testName2}_t1 ;
 rows:
   (1, null)
   (2, 'N')
@@ -34,29 +34,29 @@ Addr 2')
   (9, 'Dave''s house')
 
 // drop the table
-drop table T1;
+drop table ${testName2}_t1;
 success
 
-create table T1 (
+create table ${testName2}_t1 (
   col_id      INTEGER,
   col_vch     VARCHAR(25)
 );
 success
 
 // create an ndex
-create index idx on T1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with deafult escape
-Load T1 "../DATA/Load/escape_enclosed.csv"
+Load ${testName2}_t1 "../DATA/Load/escape_enclosed.csv"
   <enclosed_by_leading> =  "'";
 success
 
 // predicateFetch rows
-select * from T1;
+select * from ${testName2}_t1;
 rows: 9
 
-select * from T1 ;
+select * from ${testName2}_t1 ;
 rows:
   (1, null)
   (2, 'N')
@@ -70,30 +70,30 @@ Addr 2')
   (9, 'Dave''s house')
 
 // drop the table
-drop table T1;
+drop table ${testName2}_t1;
 success
 
-create table T1 (
+create table ${testName2}_t1 (
   col_id      INTEGER,
   col_vch     VARCHAR(25)
 );
 success
 
 // create an ndex
-create index idx on T1 (col_id);
+create index idx on ${testName2}_t1 (col_id);
 success
 
 // load T1 with deafult escape
-Load T1 "../DATA/Load/escape_enclosedByCurly.csv"
+Load ${testName2}_t1 "../DATA/Load/escape_enclosedByCurly.csv"
   <enclosed_by_leading> =  "{"
   <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows
-select * from T1;
+select * from ${testName2}_t1;
 rows: 10
 
-select * from T1 ;
+select * from ${testName2}_t1 ;
 rows:
   (1, null)
   (2, 'N')
@@ -108,16 +108,13 @@ Addr 2')
   (10, '{My home}')
 
 // drop the table
-drop table T1;
+drop table ${testName2}_t1;
 success
 
 
 CLEANUP {
   
-  drop table T1;
-  mute
-
-  bye;
+  drop table ${testName2}_t1;
   mute
 }
 

@@ -1,14 +1,14 @@
 --------------------------------------------------------------------------------
 -- tpch query4 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 /pipelineName = "OptQ4"
 select o_orderpriority,
   count(*) as order_count
 from
-  orders
+  ${testName2}_orders
 where o_orderdate >= DATE '1993-07-01'
   and o_orderdate < DATE '1993-10-01'
   and
@@ -16,7 +16,7 @@ exists (
   select
     *
   from
-    lineitem
+    ${testName2}_lineitem
   where
     l_orderkey = o_orderkey
     and l_commitdate < l_receiptdate
@@ -37,8 +37,6 @@ MemoryLeaks;
  rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

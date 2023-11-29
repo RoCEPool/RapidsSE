@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- tpch query5 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 /pipelineName = "OptQ5"
@@ -9,12 +9,12 @@ select
   n_name,
   sum(l_extendedprice * (1 - l_discount)) as revenue
 from
-  customer,
-  orders,
-  lineitem,
-  supplier,
-  nation,
-  region
+  ${testName2}_customer,
+  ${testName2}_orders,
+  ${testName2}_lineitem,
+  ${testName2}_supplier,
+  ${testName2}_nation,
+  ${testName2}_region
 where
   c_custkey = o_custkey
   and l_orderkey = o_orderkey
@@ -38,8 +38,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

@@ -21,6 +21,7 @@ void Step::vAddSteps_TagSet(void)
   vAddStep("tagSet.appendInt"_Stz,  &Step::vTagSetAppendInt);
   vAddStep("tagSet.appendStr"_Stz,  &Step::vTagSetAppendStr);
   vAddStep("tagSet.asStr"_Stz,      &Step::vTagSetAsStr);
+  vAddStep("tagSet.asSenStr"_Stz,   &Step::vTagSetAsSenStr);
   vAddStep("tagSet.copy"_Stz,       &Step::vTagSetCopy);
   vAddStep("tagSet.dump"_Stz,       &Step::vTagSetDump);
   vAddStep("tagSet.getInt"_Stz,     &Step::vTagSetGetInt);
@@ -96,6 +97,7 @@ void Step::vTagSetAppendStr(void)
   
   EXIT();
 }
+
 /*----------------------------------------------------------------------------*/
 /* TagSet.asStr -- get ename-set as a single string                           */
 /*----------------------------------------------------------------------------*/
@@ -111,6 +113,24 @@ void Step::vTagSetAsStr(void)
   
   m_pDataStack->vPushStr(sStr);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TagSet.asSenStr -- get tag set printed as a sen string                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTagSetAsSenStr(void)
+{
+  ENTRY();
+
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
+
+  sSTMT sStr;
+  SP_TagSet spTagSet;
+  sStr = spTagSet.szSenStr(pTagSet);
+
+  m_pDataStack->vPushStr(sStr);
+
   EXIT();
 }
 

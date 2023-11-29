@@ -3,11 +3,11 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // (1) create a table
-create table decTbl (
+create table ${testName2}_decTbl (
   dec_col1  DECIMAL(10,2) NOT NULL,
   vch_col2  VARCHAR(32) NOT NULL,
   int_col3  INTEGER     NOT NULL,
@@ -20,50 +20,50 @@ create table decTbl (
 success
 
 // create indexes
-create index dec_idx1 on decTbl (dec_col1);
+create index dec_idx1 on ${testName2}_decTbl (dec_col1);
 success
 
-create index dec_idx2 on decTbl (dec_col6);
+create index dec_idx2 on ${testName2}_decTbl (dec_col6);
 success
 
 // check existence of index
-lsidx decTbl;
+lsidx ${testName2}_decTbl;
 rows:
 ('dec_idx1', false, false)
 ('dec_idx2', false, false)
 
 // check columns of index
-lsidxcol decTbl dec_idx1;
+lsidxcol ${testName2}_decTbl dec_idx1;
 rows:
 ('dec_col1', 'DECIMAL', 10, 2, false, true)
 
 // check columns of index
-lsidxcol decTbl dec_idx2;
+lsidxcol ${testName2}_decTbl dec_idx2;
 rows:
 ('dec_col6', 'DECIMAL',19, 2, true, false)
 
-Load decTbl "../DATA/Datums/decimal.csv" ;
-failure contains: '15 invalid'
+Load ${testName2}_decTbl "../DATA/Datums/decimal.csv" ;
+warning contains: '15 rows were invalid'
 
 // check no of rows
-select * from decTbl;
+select * from ${testName2}_decTbl;
 rows: 101
 
 // dump dec_idx1
-dumpidx decTbl dec_idx1;
-success
+// dumpidx ${testName2}_decTbl dec_idx1;
+// success
 
 // dump dec_idx2
-dumpidx decTbl dec_idx2;
-success
+// dumpidx ${testName2}_decTbl dec_idx2;
+// success
 
 // drop the table
-drop table decTbl;
+drop table ${testName2}_decTbl;
 success
 
 // check existence of table
 lstbl;
-rows: 0
+does not contain rows: ('${testName2}_decTbl')
 
 // get memory leaks
 memoryLeaks;
@@ -72,10 +72,7 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table decTbl;
-  mute
-
-  bye;
+  drop table ${testName2}_decTbl;
   mute
 }
 

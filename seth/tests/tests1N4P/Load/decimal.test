@@ -2,30 +2,30 @@
 /* decimal tests -- tests to check decimal load                               */
 /*----------------------------------------------------------------------------*/
 
-create table decTest (
+create table ${testName2}_decTest (
   dec1   DECIMAL(2,2),
   dec2  DECIMAL(19,2)
 );
 success
 
-load decTest "../DATA/Load/decTest.csv" ;
-failure contains: '9 invalid'
+load ${testName2}_decTest "../DATA/Load/decTest.csv" ;
+warning contains: '9 rows were invalid'
 
-select -360287970189639.68 from decTest where dec1 = 0.1;
+select -360287970189639.68 from ${testName2}_decTest where dec1 = 0.1;
 failure contains: 'EC_SYNTAX_ERROR'
 
-select -360287970189639.67 from decTest where dec1 = 0.1;
+select -360287970189639.67 from ${testName2}_decTest where dec1 = 0.1;
 rows:
   (-360287970189639.67)
 
-select 360287970189639.67 from decTest where dec1 = 0.1;
+select 360287970189639.67 from ${testName2}_decTest where dec1 = 0.1;
 rows:
   (360287970189639.67)
 
-select 360287970189639.68 from decTest where dec1 = 0.1;
+select 360287970189639.68 from ${testName2}_decTest where dec1 = 0.1;
 failure contains: 'EC_SYNTAX_ERROR'
 
-select dec1 from decTest;
+select dec1 from ${testName2}_decTest;
 rows:
  (-0.67)
  (0.00)
@@ -36,7 +36,7 @@ rows:
  (0.22)
  (0.64)
 
-select dec2 from decTest;
+select dec2 from ${testName2}_decTest;
 rows:
  (4.05)
  (-360287970189639.67)
@@ -47,15 +47,12 @@ rows:
  (4.05)
  (4.05)
 
-drop table decTest;
+drop table ${testName2}_decTest;
 success
 
 CLEANUP {
   
-  drop table decTest;
-  mute
-
-  bye;
+  drop table ${testName2}_decTest;
   mute
 }
 

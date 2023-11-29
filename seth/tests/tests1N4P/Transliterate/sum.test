@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER,
   int_col1  INTEGER,
   bol_col2   BOOLEAN,
@@ -24,39 +24,36 @@ create table datums (
 );
 success
 
-load datums "../DATA/Datums/datums.csv" ;
+load ${testName2}_datums "../DATA/Datums/datums.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select sum(int_col0) from datums;
+select sum(int_col0) from ${testName2}_datums;
 rows:
  (55)
 
 //------------------------------------------------------------------------------
-select sum(int_col1) from datums;
+select sum(int_col1) from ${testName2}_datums;
 rows:
  (52000)
 
 //------------------------------------------------------------------------------
-select sum(flt_col8) from datums;
+select sum(flt_col8) from ${testName2}_datums;
 rows:
- (41.98)
+ (41.98e0)
 
 //------------------------------------------------------------------------------
-select sum(dec_col6) from datums;
+select sum(dec_col6) from ${testName2}_datums;
 rows:
  (4712.32)
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 CLEANUP {
   
-  drop table datums;
-  mute
-  
-  bye;
+  drop table ${testName2}_datums;
   mute
 }

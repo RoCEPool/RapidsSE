@@ -525,24 +525,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* return pipleine                                                            */
-/*----------------------------------------------------------------------------*/
-: op__returnPipeline
-
-
-  // find the __returnPipeline table def
-  C_TDEF_RETURNPIPELINE op__tableDef_infoSet assert
-
-  infoSetTable[] InfoSet[].new
-    OI_RETURNPIPELINE InfoSet[].opInfoset!
-
-  0 <reqOf> <reqNo> 3 InfoSet[].addRowVargs
-
-  InfoSet[]
-  nullptr to InfoSet[]
-;
-
-/*----------------------------------------------------------------------------*/
 /* call event handler                                                         */
 /*----------------------------------------------------------------------------*/
 : op__callHandler

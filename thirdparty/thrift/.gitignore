@@ -1,0 +1,5 @@
+include/
+lib/
+bin/
+configure.log
+boost_1_80_0/

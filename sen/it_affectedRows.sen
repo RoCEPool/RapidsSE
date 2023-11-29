@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* it_affectedRows.sen -- Define __affectedRows table                         */
+/*============================================================================*/
+
+" it_affectedRows.sen" .verbose
+
+: start::it_affectedRows
+
+  // C_TDEF_AFFECTEDROWS
+  
+  STD_BOOTFORK_TAG
+  "
+  define table __affectedRows (
+    iRowsProcessed INTEGER NOT NULL ,
+    iRowsInvalid   INTEGER NOT NULL ,
+    iRowsSkipped   INTEGER NOT NULL ,
+    iRowsInserted  INTEGER NOT NULL ,
+    iRowsUpdated   INTEGER NOT NULL ,
+    iRowsDeleted   INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

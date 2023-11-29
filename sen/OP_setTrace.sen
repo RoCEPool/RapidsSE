@@ -1,0 +1,73 @@
+/*============================================================================*/
+/* OP_setTrace.sen -- Set Config operator                                    */
+/*============================================================================*/
+
+" OP_setTrace.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: setTrace_DataMarker \handler
+
+  // 2 trace!
+
+  //"Operand:- EV_M_DATAPULSE" .verbose
+  PipeIn[].pipeOut
+
+  ""      locals| sErrMsg |
+  EC_NONE locals| eErrorCode |
+
+  // Set the config. It will push an error code (EC_NONE if all is ok).
+  // If an error occurred then it will also have pushed an error string too.
+  <cfgValue> <cfgKey> trace.setComponent to eErrorCode
+
+  eErrorCode EC_NONE == if
+    Marker[].newEosMarker
+    Marker[].pipeOut
+    true
+    exit
+  then
+
+  // An error was also returned on the stack.
+  to sErrMsg
+
+  sErrMsg eErrorCode op__execErrMsg
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for setTrace req                          (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : setTrace_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: setTrace_DataMarker EV_M_DATAPULSE [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: setTrace :: setTrace <cfgKey> <cfgValue> ;
+
+: setTrace_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "set configuration dynamically"
+    <opEntry> = "setTrace_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

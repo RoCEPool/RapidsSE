@@ -54,7 +54,7 @@ Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_StreamPer* p_streamPer)
 {
   _static_
 
-  s32 sTableSyn;
+  //s32 sTableSyn;
 
   Card_StreamPer* p_joinPermSeq_dup =
       _pCard_StreamPer(p_streamPer->pDupCardRecursive());

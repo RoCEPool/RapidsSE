@@ -3,12 +3,12 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -28,11 +28,11 @@ create table datums (
 );
 success
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
+load ${testName2}_datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 from datums;
+select bol_col2 from ${testName2}_datums;
 rows:
   (false)
   (true)
@@ -50,11 +50,11 @@ rows:
   (false)
   (true)
 
-select -bol_col2 from datums;
+select -bol_col2 from ${testName2}_datums;
 failure contains: 'EC_SEMANTIC_ERROR'
 
 //------------------------------------------------------------------------------
-select bol_col3 from datums;
+select bol_col3 from ${testName2}_datums;
 rows:
   (false)
   (false)
@@ -73,30 +73,30 @@ rows:
   (false)
 
 //------------------------------------------------------------------------------
-select bol_col3 + 2 from datums;
+select bol_col3 + 2 from ${testName2}_datums;
 failure contains: 'EC_SEMANTIC_ERROR'
 
 //------------------------------------------------------------------------------
-select bol_col2 from datums where bol_col2 != null;
+select bol_col2 from ${testName2}_datums where bol_col2 != null;
 rows: 0
 
-select bol_col2 from datums where bol_col2 = null;
+select bol_col2 from ${testName2}_datums where bol_col2 = null;
 rows: 0
 
-select bol_col2 from datums where bol_col2 > null;
+select bol_col2 from ${testName2}_datums where bol_col2 > null;
 rows: 0
 
-select bol_col2 from datums where bol_col2 >= null;
+select bol_col2 from ${testName2}_datums where bol_col2 >= null;
 rows: 0
 
-select bol_col2 from datums where bol_col2 < null;
+select bol_col2 from ${testName2}_datums where bol_col2 < null;
 rows: 0
 
-select bol_col2 from datums where bol_col2 <= null;
+select bol_col2 from ${testName2}_datums where bol_col2 <= null;
 rows: 0
 
 //------------------------------------------------------------------------------
-select cast (bol_col2 as varchar)  , cast (bol_col3 as varchar) from datums;
+select cast (bol_col2 as varchar)  , cast (bol_col3 as varchar) from ${testName2}_datums;
 rows:
  ('true','false')
  ('false','false')
@@ -115,20 +115,20 @@ rows:
  ('true','false')
 
 // aggregates : sum
-select sum(bol_col2) from datums;
+select sum(bol_col2) from ${testName2}_datums;
 failure contains: 'EC_SEMANTIC_ERROR'
 
 // aggregates : min
 
-select min(bol_col2) from datums;
+select min(bol_col2) from ${testName2}_datums;
 failure contains: 'EC_SEMANTIC_ERROR'
 
 // aggregates : max
 
-select max(bol_col2) from datums;
+select max(bol_col2) from ${testName2}_datums;
 failure contains: 'EC_SEMANTIC_ERROR'
 
-select bol_col2 = bol_col3 from datums;
+select bol_col2 = bol_col3 from ${testName2}_datums;
 rows:
  (true)
  (null)
@@ -144,7 +144,7 @@ rows:
  (false)
  (false)
 
-select bol_col2 != bol_col3 from datums;
+select bol_col2 != bol_col3 from ${testName2}_datums;
 rows:
  (false)
  (null)
@@ -160,7 +160,7 @@ rows:
  (true)
  (true)
 
-select bol_col2 > bol_col3 from datums;
+select bol_col2 > bol_col3 from ${testName2}_datums;
 rows:
   (false)
   (null)
@@ -176,7 +176,7 @@ rows:
   (true)
   (true)
 
-select true = bol_col2 from datums;
+select true = bol_col2 from ${testName2}_datums;
 rows:
  (false)
  (null)
@@ -193,7 +193,7 @@ rows:
  (true)
 
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success
 
 // get memory leaks
@@ -203,10 +203,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table datums;
-  mute
-  
-  bye;
+  drop table ${testName2}_datums;
   mute
 }
 

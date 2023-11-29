@@ -21,18 +21,50 @@
 #include "JobList.hpp"
 
 #include "TagConstants.h"
+#include "AttachMap.hpp"
+#include "Jobs.hpp"
+
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Jobs(void)
 {
+  vAddStep("jobs::anyExitedJobs"_Stz,  &Step::vJobsAnyExited);
+  vAddStep("jobs::numActive"_Stz,      &Step::vJobsNumActive);
   vAddStep("jobs::seeDlist"_Stz,       &Step::vJobsSeeDlist);
   vAddStep("jobs::seeLlist"_Stz,       &Step::vJobsSeeLlist);
   vAddStep("jobs::seeOlist"_Stz,       &Step::vJobsSeeOlist);
   vAddStep("jobs::seePlist"_Stz,       &Step::vJobsSeePlist);
   vAddStep("jobs::seeRlist"_Stz,       &Step::vJobsSeeRlist);
   vAddStep("jobs::seeSqueue"_Stz,      &Step::vJobsSeeSqueue);
+  vAddStep("jobs::numThreshold"_Stz,   &Step::vJobsNumThreshold);
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobs::numActive -- get the count of current active jobs                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobsAnyExited(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(gpAttachMap->pJobs()->bAnyExitedJobs());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobs::numActive -- get the count of current active jobs                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobsNumActive(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(AM::JOBS::nJobsActive());
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +73,7 @@ void Step::vAddSteps_Jobs(void)
 void Step::vJobsSeeDlist(void)
 {
   ENTRY();
-  
+
   AM::pDemonJobs()->vListJobs();
 
   EXIT();
@@ -111,6 +143,18 @@ void Step::vJobsSeeSqueue(void)
   AM::pSchedule()->vDumpWaitingSet();
 
   AM::pSchedule()->vThreadsReport();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobs::numThreshold -- get the job threshold value                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobsNumThreshold(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(AM::JOBS::nJobsThreshold());
 
   EXIT();
 }

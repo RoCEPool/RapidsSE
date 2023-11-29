@@ -143,8 +143,11 @@ void Step::vTableAppendBuffer(void)
   ASSERT(! pDataBuffer->pNextItem());
   ASSERT(! pDataBuffer->pPrevItem());
 
-  pTable->vAppendBuffer_replicated(pDataBuffer);
-  
+  i8 nRowsInserted = 0;
+  pTable->vAppendBuffer_replicated(pDataBuffer, nRowsInserted);
+
+  m_pDataStack->vPushInt(nRowsInserted);
+
   EXIT();
 }
 
@@ -450,7 +453,7 @@ void Step::vTableFindColumn(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
-  s32 sColumnName;
+  s256 sColumnName;
   m_pDataStack->vPopStr(sColumnName,__func__);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
@@ -483,8 +486,8 @@ void Step::vTableIsColumn(void)
   ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  s32 sColumnName;
+
+	s256 sColumnName;
   m_pDataStack->vPopStr(sColumnName,__func__);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
@@ -644,7 +647,7 @@ extern SizeHeap  gxaSizeHeap[];
 void Step::vTableNew(void) {
   ENTRY();
 
-  s32 sTableNm;
+	s256 sTableNm;
   m_pDataStack->vPopStr(sTableNm, __func__);
 
   Job *pJob = MY::pJob();
@@ -669,7 +672,7 @@ void Step::vTableNew(void) {
   if (sTableNm.bSame("bolTbl"_Stz)) {
     pTable->iPrepareParcel();
 
-    s32 sTableName;
+    s256 sTableName;
 
     Table *pTbl = nullptr;
     Table *pNewTable = nullptr;
@@ -705,7 +708,7 @@ void Step::vTableNew(void) {
 void Step::vTableUniqueName(void) {
   ENTRY();
 
-  s32 sTableNm;
+	s256 sTableNm;
   sTableNm.vCatSprint("__Grid%s_%lld"_Stz, AM::pGrid()->szGridNm(), TickingDevice::iGetTick());
 
   m_pDataStack->vPushStr(sTableNm);

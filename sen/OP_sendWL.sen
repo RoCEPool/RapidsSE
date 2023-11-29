@@ -5,72 +5,84 @@
 " OP_sendWL.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* send the operand in the PipeIn[] register                                  */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: PipeIn[].sendTo \handler
+: sendWL_StartMarker \handler
 
-  0 locals| pParcel |
+  "sendWL_StartMarker - EV_M_START" .verbose
 
-  PipeIn[]\clear locals| pOperand |
+  "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
-  // we do not expect to see a job
-  pOperand object.class@ CN_JOB != ASSERT
+  // Make a copy of the socket where we retain the same file descriptor.
+  <ansSocket> >int >ptr to Socket[]
 
-  //pOperand object.preSendWord@ if
-  //  pOperand object.preSendWord@ execute
-  //then
-
-  pOperand object.class@ CN_PARCEL == if
-    pOperand to pParcel
-    pParcel parcel.label
-  else
-    pOperand operand.toParcel to pParcel
-  then
-
-  pParcel parcel.sendOut
-
-  pParcel parcel::delete
-
-  // calling op_loop continues
+  PipeIn[]\clear [op].pipeout
 
   true
-  //stk
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_PAYLOAD operand                                           */
+/*----------------------------------------------------------------------------*/
+: sendWL_Payload \handler
+
+  "sendWL_Payload - EV_D_PAYLOAD" .verbose
+
+  PipeIn[]\clear locals| pPayloadObj |
+
+  Socket[].isNotNull if
+    // We expect to see a PayloadObj
+    pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
+
+    TC_WLP trace.getComponent if
+      pPayloadObj payloadObj::size@
+      pPayloadObj payloadObj::msgType@
+      "SendWL: Sending payload: %v : %v bytes" str.format .traceWlp
+    then
+
+    pPayloadObj Socket[].sendWLMsg not if
+      Socket[].clientAddr@  "Error sending wireline message to client at %v" str.format .traceWlp
+      Socket[].close
+      ErrorMarker[].newErrorMarker
+      ErrorMarker[].pipeOut
+    then
+  then
+
+  pPayloadObj payloadObj::delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_CANCELLING operand                                        */
+/* handler for EV_M_ERROR operand                                             */
 /*----------------------------------------------------------------------------*/
-: sendWL_CANCELLING \handler
+: sendWL_Error \handler
 
-  PipeIn[].sendTo discard
+  "sendWL_Error - EV_M_ERROR" .verbose
 
-  PipeIn[].drain
+  // An up-stream operator has sent an error (usually the Adaptor).
+  // This SendWL operator will intercept this and close the socket
+  // before propagating the error.
+  Socket[].isNotNull if
+    Socket[].close
+    Socket[].clientAddr@ "Connection closed to client at address %v" str.format .traceWlp
+    Socket[].delete
+  then
 
-  true
+  EV_M_ERROR_handler
 ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_CLEANING operand                                          */
 /*----------------------------------------------------------------------------*/
-: sendWL_CLEANING \handler
+: sendWL_Cleaning \handler
 
-  LogicUnit[].cleanup
-  PipeIn[].sendTo
-;
+  "sendWL_Cleaning - EV_M_CLEANING" .verbose
 
-/*----------------------------------------------------------------------------*/
-/* handler for EV_M_EXITING operand                                           */
-/*----------------------------------------------------------------------------*/
-: sendWL_EXITING \handler
-
-  PipeIn[].sendTo discard
-
-  [op].ackJobTask
-
-  false // calling op_loop exits
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,15 +92,18 @@
 
   _lu_initialise_
 
+  // This line ensures that if there are lots of events to be processed then
+  // the operator does not yield until the input queue is empty or it has
+  // processed a lot of events. i.e. try to process all events on the input
+  // queue if possible.
   999999999999 [task].operandYield!
 
   op__topology
 
-  find: PipeIn[].sendTo [op].handlerAll!
-
-  find: sendWL_CANCELLING  EV_M_CANCELLING  [op].handler!
-  find: sendWL_CLEANING    EV_M_CLEANING    [op].handler!
-  find: sendWL_EXITING     EV_M_EXITING     [op].handler!
+  find: sendWL_StartMarker EV_M_START       [op].handler!
+  find: sendWL_Payload     EV_D_PAYLOAD     [op].handler!
+  find: sendWL_Cleaning    EV_M_CLEANING    [op].handler!
+  find: sendWL_Error       EV_M_ERROR       [op].handler!
 
   op__loop
 
@@ -102,7 +117,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: sendWL :: sendWL <sendCast> ;
+cmdSyntax: sendWL :: sendWL ;
 
 : sendWL_cmdTags _cmdTags tagCopy: op_tags
   tags{

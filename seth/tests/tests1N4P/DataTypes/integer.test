@@ -3,12 +3,12 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -28,52 +28,52 @@ create table datums (
 );
 success
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
+load ${testName2}_datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select int_col0 + null from datums where int_col0 = 1;
+select int_col0 + null from ${testName2}_datums where int_col0 = 1;
 rows:
   (null)
 
 //------------------------------------------------------------------------------
-select null + int_col0 from datums where int_col0 = 1;
+select null + int_col0 from ${testName2}_datums where int_col0 = 1;
 rows:
  (null)
 
 //------------------------------------------------------------------------------
-select int_col0 - null from datums where int_col0 = 1;
+select int_col0 - null from ${testName2}_datums where int_col0 = 1;
 rows:
   (null)
 
 //------------------------------------------------------------------------------
-select null - int_col0 from datums where int_col0 = 1;
+select null - int_col0 from ${testName2}_datums where int_col0 = 1;
 rows:
  (null)
 
 //------------------------------------------------------------------------------
-select int_col0 * null from datums where int_col0 = 1;
+select int_col0 * null from ${testName2}_datums where int_col0 = 1;
 rows:
 (null)
 
 //------------------------------------------------------------------------------
-select null * int_col0 from datums where int_col0 = 1;
+select null * int_col0 from ${testName2}_datums where int_col0 = 1;
 rows:
 (null)
 
 //------------------------------------------------------------------------------
-select int_col0 / null from datums where int_col0 = 1;
+select int_col0 / null from ${testName2}_datums where int_col0 = 1;
 rows:
   (null)
 
 //------------------------------------------------------------------------------
-select null / int_col0 from datums where int_col0 = 1;
+select null / int_col0 from ${testName2}_datums where int_col0 = 1;
 rows:
   (null)
 
 
 //------------------------------------------------------------------------------
-select int_col0 from datums;
+select int_col0 from ${testName2}_datums;
 rows:
   (1)
   (2)
@@ -89,7 +89,7 @@ rows:
   (12)
   (13)
 
-select -int_col0 from datums;
+select -int_col0 from ${testName2}_datums;
 rows:
   (-1)
   (-2)
@@ -106,7 +106,7 @@ rows:
   (-13)
 
 //------------------------------------------------------------------------------
-select int_col1 from datums;
+select int_col1 from ${testName2}_datums;
 rows:
   (null)
   (0)
@@ -123,7 +123,7 @@ rows:
   (922)
 
 //------------------------------------------------------------------------------
-select -int_col1 from datums;
+select -int_col1 from ${testName2}_datums;
 rows:
   (null)
   (0)
@@ -140,7 +140,7 @@ rows:
   (-922)
 
 //------------------------------------------------------------------------------
-select int_col1 + 2 from datums;
+select int_col1 + 2 from ${testName2}_datums;
 rows:
   (null)
   (2)
@@ -157,26 +157,26 @@ rows:
   (924)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where int_col0 != null;
+select int_col0 from ${testName2}_datums where int_col0 != null;
 rows: 0
 
-select int_col0 from datums where int_col0 = null;
+select int_col0 from ${testName2}_datums where int_col0 = null;
 rows: 0
 
-select int_col0 from datums where int_col0 > null;
+select int_col0 from ${testName2}_datums where int_col0 > null;
 rows: 0
 
-select int_col0 from datums where int_col0 >= null;
+select int_col0 from ${testName2}_datums where int_col0 >= null;
 rows: 0
 
-select int_col0 from datums where int_col0 < null;
+select int_col0 from ${testName2}_datums where int_col0 < null;
 rows: 0
 
-select int_col0 from datums where int_col0 <= null;
+select int_col0 from ${testName2}_datums where int_col0 <= null;
 rows: 0
 
 //------------------------------------------------------------------------------
-select cast (int_col0 as varchar)  , cast (int_col1 as varchar) from datums;
+select cast (int_col0 as varchar)  , cast (int_col1 as varchar) from ${testName2}_datums;
 rows:
  ('1','1000')
  ('2','2000')
@@ -193,159 +193,159 @@ rows:
  ('13','0')
 
 // aggregates : sum
-select sum(int_col0) from datums;
+select sum(int_col0) from ${testName2}_datums;
 rows: (91)
 
-select 10 + sum(int_col0) from datums;
+select 10 + sum(int_col0) from ${testName2}_datums;
 rows: (101)
 
-select sum(int_col0) + 10 from datums;
+select sum(int_col0) + 10 from ${testName2}_datums;
 rows: (101)
 
-select sum(10 + int_col0) from datums;
+select sum(10 + int_col0) from ${testName2}_datums;
 rows: (221)
 
-select sum(int_col0 + 10) from datums;
+select sum(int_col0 + 10) from ${testName2}_datums;
 rows: (221)
 
-select sum(int_col0 + int_col0) from datums;
+select sum(int_col0 + int_col0) from ${testName2}_datums;
 rows: (182)
 
-select sum(int_col0) + sum(int_col0) from datums;
+select sum(int_col0) + sum(int_col0) from ${testName2}_datums;
 rows: (182)
 
-select sum(int_col0) + null from datums;
+select sum(int_col0) + null from ${testName2}_datums;
 rows: (null)
 
-select null + sum(int_col0)  from datums;
+select null + sum(int_col0)  from ${testName2}_datums;
 rows: (null)
 
 // aggregates : sum (with nulls)
 
-select sum(int_col1) from datums;
+select sum(int_col1) from ${testName2}_datums;
 rows: (52000)
 
-select 10 + sum(int_col1) from datums;
+select 10 + sum(int_col1) from ${testName2}_datums;
 rows: (52010)
 
-select sum(int_col1) + 10 from datums;
+select sum(int_col1) + 10 from ${testName2}_datums;
 rows: (52010)
 
-select sum(10 + int_col1) from datums;
+select sum(10 + int_col1) from ${testName2}_datums;
 rows: (52120)
 
-select sum(int_col1 + 10) from datums;
+select sum(int_col1 + 10) from ${testName2}_datums;
 rows: (52120)
 
-select sum(int_col1 + int_col1) from datums;
+select sum(int_col1 + int_col1) from ${testName2}_datums;
 rows: (104000)
 
-select sum(int_col1) + sum(int_col1) from datums;
+select sum(int_col1) + sum(int_col1) from ${testName2}_datums;
 rows: (104000)
 
 // aggregates : min
 
-select min(int_col0) from datums;
+select min(int_col0) from ${testName2}_datums;
 rows: (1)
 
-select 10 + min(int_col0) from datums;
+select 10 + min(int_col0) from ${testName2}_datums;
 rows: (11)
 
-select min(int_col0) + 10 from datums;
+select min(int_col0) + 10 from ${testName2}_datums;
 rows: (11)
 
-select min(10 + int_col0) from datums;
+select min(10 + int_col0) from ${testName2}_datums;
 rows: (11)
 
-select min(int_col0 + 10) from datums;
+select min(int_col0 + 10) from ${testName2}_datums;
 rows: (11)
 
-select min(int_col0 + int_col0) from datums;
+select min(int_col0 + int_col0) from ${testName2}_datums;
 rows: (2)
 
-select min(int_col0) + min(int_col0) from datums;
+select min(int_col0) + min(int_col0) from ${testName2}_datums;
 rows: (2)
 
 // aggregates : min (with nulls and min/max ints)
 /*
-select min(int_col1) from datums;
+select min(int_col1) from ${testName2}_datums;
 rows: (-9223372036854775806)
 
-select 10 + min(int_col1) from datums;
+select 10 + min(int_col1) from ${testName2}_datums;
 rows: (-9223372036854775796)
 
-select min(int_col1) + 10 from datums;
+select min(int_col1) + 10 from ${testName2}_datums;
 rows: (-9223372036854775796)
 
-select min(10 + int_col1) from datums;
+select min(10 + int_col1) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 
-select min(int_col1 + 10) from datums;
+select min(int_col1 + 10) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 
-select min(int_col1 + int_col1) from datums;
+select min(int_col1 + int_col1) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 
-select min(int_col1) + min(int_col1) from datums;
+select min(int_col1) + min(int_col1) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 */
 // aggregates : max
 
-select max(int_col0) from datums;
+select max(int_col0) from ${testName2}_datums;
 rows: (13)
 
-select 10 + max(int_col0) from datums;
+select 10 + max(int_col0) from ${testName2}_datums;
 rows: (23)
 
-select max(int_col0) + 10 from datums;
+select max(int_col0) + 10 from ${testName2}_datums;
 rows: (23)
 
-select max(10 + int_col0) from datums;
+select max(10 + int_col0) from ${testName2}_datums;
 rows: (23)
 
-select max(int_col0 + 10) from datums;
+select max(int_col0 + 10) from ${testName2}_datums;
 rows: (23)
 
-select max(int_col0 + int_col0) from datums;
+select max(int_col0 + int_col0) from ${testName2}_datums;
 rows: (26)
 
-select max(int_col0) + max(int_col0) from datums;
+select max(int_col0) + max(int_col0) from ${testName2}_datums;
 rows: (26)
 
 // aggregates : max (with nulls and min/max ints)
 /*
-select max(int_col1) from datums;
+select max(int_col1) from ${testName2}_datums;
 rows: (9223372036854775806)
 
-select 10 + max(int_col1) from datums;
+select 10 + max(int_col1) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 
-select max(int_col1) + 10 from datums;
+select max(int_col1) + 10 from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 
-select max(10 + int_col1) from datums;
+select max(10 + int_col1) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 
-select max(int_col1 + 10) from datums;
+select max(int_col1 + 10) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 
-select max(int_col1 + int_col1) from datums;
+select max(int_col1 + int_col1) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 
-select max(int_col1) + max(int_col1) from datums;
+select max(int_col1) + max(int_col1) from ${testName2}_datums;
 failure contains: 'Arithmetic overflow'
 */
 
 
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success
 
 /*
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -365,11 +365,11 @@ create table datums (
 );
 success
 
-load datums "../DATA/DataTypes/dataTypesOver.csv" ;
+load ${testName2}_datums "../DATA/DataTypes/dataTypesOver.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select int_col0 from datums;
+select int_col0 from ${testName2}_datums;
 rows:
   (1)
   (2)
@@ -386,7 +386,7 @@ rows:
   (13)
 
 //------------------------------------------------------------------------------
-select int_col1 from datums;
+select int_col1 from ${testName2}_datums;
 rows:
   (null)
   (0)
@@ -403,17 +403,17 @@ rows:
   (9223372036854775806)
 
 //------------------------------------------------------------------------------
-select int_col1 + 2 from datums;
+select int_col1 + 2 from ${testName2}_datums;
 failure contains: "OVERFLOW"
 
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success
 */
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -433,11 +433,11 @@ create table datums (
 );
 success
 
-load datums "../DATA/Transliterate/groupBy.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/groupBy.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select int_col1, sum(int_col0) from datums group by int_col1;
+select int_col1, sum(int_col0) from ${testName2}_datums group by int_col1;
 rows:
  (null,3)
  (0,21)
@@ -448,7 +448,7 @@ rows:
  (8000,17)
 
 //------------------------------------------------------------------------------
-select sum(int_col0), int_col1 from datums group by int_col1;
+select sum(int_col0), int_col1 from ${testName2}_datums group by int_col1;
 rows:
  (3,null)
  (21,0)
@@ -461,7 +461,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  between
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-select int_col0 from datums where int_col0 between 3 and 10;
+select int_col0 from ${testName2}_datums where int_col0 between 3 and 10;
 rows:
  (3)
  (4)
@@ -472,7 +472,7 @@ rows:
  (9)
  (10)
 
-select int_col0 , int_col0 between 3 and 10 from datums;
+select int_col0 , int_col0 between 3 and 10 from ${testName2}_datums;
 rows:
  (1,false)
  (2,false)
@@ -489,14 +489,14 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  in expr
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-select int_col0 from datums where int_col0 in (3,4,5,6);
+select int_col0 from ${testName2}_datums where int_col0 in (3,4,5,6);
 rows:
  (3)
  (4)
  (5)
  (6)
 
-select int_col0 , int_col0 in (3,4,5,6) from datums;
+select int_col0 , int_col0 in (3,4,5,6) from ${testName2}_datums;
 rows:
  (1,false)
  (2,false)
@@ -513,7 +513,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  extract YEAR
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-select tsp_col12, EXTRACT (YEAR FROM tsp_col12) from datums;
+select tsp_col12, EXTRACT (YEAR FROM tsp_col12) from ${testName2}_datums;
 rows:
   (1941-01-01 00:00:00,1941)
   (null,null)
@@ -527,13 +527,13 @@ rows:
   (1972-01-01 10:30:10,1972)
   (1941-01-01 00:00:00,1941)
 
-select tsp_col12 from datums where EXTRACT (YEAR FROM tsp_col12) = 1941;
+select tsp_col12 from ${testName2}_datums where EXTRACT (YEAR FROM tsp_col12) = 1941;
 rows:
   (1941-01-01 00:00:00)
   (1941-01-01 00:00:00)
   (1941-01-01 00:00:00)
 
-select dte_col4, EXTRACT (YEAR FROM dte_col4) from datums;
+select dte_col4, EXTRACT (YEAR FROM dte_col4) from ${testName2}_datums;
 rows:
   (DATE '1941-01-01',1941)
   (DATE '1942-01-01',1942)
@@ -548,7 +548,7 @@ rows:
   (null,null)
 
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success
 
 // get memory leaks
@@ -558,10 +558,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table datums;
-  mute
-  
-  bye;
+  drop table ${testName2}_datums;
   mute
 }
 

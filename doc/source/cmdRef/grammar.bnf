@@ -46,11 +46,11 @@ statementChoice   ::= (
                       | dropTableStmt
                       | explainStmt
                       | loadStmt
+                      | logStmt
                       | lsColStmt
                       | lsIdxStmt
                       | lsIdxColStmt
                       | lsTblStmt
-                      | printStmt
                       | selectQuery
                       | sleepStmt
                       | spaceStmt
@@ -263,6 +263,8 @@ loadStmt          ::= 'LOAD' tableName '"' filePath '"'
 loadOption        ::= plainIdentifier
 loadValue         ::= plainIdentifier
 
+logStmt           ::= 'LOG' (singleQuotedString | doubleQuotedString)
+
 lsColStmt         ::= 'LSCOL' tableName
 
 lsIdxStmt         ::= 'LSIDX' tableName
@@ -270,8 +272,6 @@ lsIdxStmt         ::= 'LSIDX' tableName
 lsIdxColStmt      ::= 'LSIDXCOL' tableName indexName
 
 lsTblStmt         ::= 'LSTBL'
-
-printStmt         ::= 'PRINT' '"' dblQuotedStrContents '"'
 
 sleepStmt         ::= 'SLEEP' integerLiteral
 

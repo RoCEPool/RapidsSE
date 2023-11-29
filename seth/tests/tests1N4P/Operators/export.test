@@ -3,11 +3,11 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 // (1) create a table
-create table OpTable1 (
+create table ${testName2}_OpTable1 (
   jidx_key   INTEGER     NOT NULL,
   jidx_name  VARCHAR(32) NOT NULL,
   jidx_100   INTEGER     NOT NULL,
@@ -20,43 +20,43 @@ create table OpTable1 (
 success
 
 // create indexes
-create index OpTable1_idx on OpTable1 (jidx_key);
+create index OpTable1_idx on ${testName2}_OpTable1 (jidx_key);
 success
 
-load OpTable1 "../DATA/Operators/operators1_1.csv" ;
+load ${testName2}_OpTable1 "../DATA/Operators/operators1_1.csv" ;
 success
 
 // check no of rows
-select * from OpTable1;
+select * from ${testName2}_OpTable1;
 rows: 26
 
 // export to non-existent dir
-export OpTable1 "/noDir/opTable1.csv";
+export ${testName2}_OpTable1 "/noDir/${testName2}_OpTable1.csv";
 failure contains: 'File does not exist'
 
 // export a non-existent table
-export OpTable2 "/tmp/opTable1.csv";
+export ${testName2}_OpTable2 "/tmp/${testName2}_OpTable1.csv";
 failure contains: 'Table does not exist'
 
 // export a non-existent table to a non-existent dir
-export OpTable2 "/noDir/opTable1.csv";
+export ${testName2}_OpTable2 "/noDir/${testName2}_opTable1.csv";
 failure contains: 'does not exist'
 
-export OpTable1 "/tmp/opTable1.csv";
+export ${testName2}_OpTable1 "/tmp/${testName2}_OpTable1.csv";
 success
 
-truncate OpTable1;
+truncate ${testName2}_OpTable1;
 success
 
-load OpTable1 "/tmp/opTable1.csv" ;
+load ${testName2}_OpTable1 "/tmp/${testName2}_OpTable1.csv" ;
 success
 
 // check no of rows
-select * from OpTable1;
+select * from ${testName2}_OpTable1;
 rows: 26
 
 // drop the table
-drop table OpTable1;
+drop table ${testName2}_OpTable1;
 success
 
 
@@ -71,14 +71,11 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table OpTable1;
+  drop table ${testName2}_OpTable1;
   mute
 
   // drop the table
-  drop table OpTable2;
-  mute
-
-  bye;
+  drop table ${testName2}_OpTable2;
   mute
 }
 

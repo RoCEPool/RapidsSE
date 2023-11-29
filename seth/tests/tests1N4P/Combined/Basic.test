@@ -1,10 +1,10 @@
 /*----------------------------------------------------------------------------*/
 /* Basic CombinedOP tests                                                     */
 /*----------------------------------------------------------------------------*/
-//trackmemory;
+//trackmemory force;
 //success
 
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -24,19 +24,19 @@ create table lineitem (
 );
 success
 
-create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_ORDERKEY  ON ${testName2}_Lineitem (L_ORDERKEY)  ;
 success
 
-create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
+create index IxL_SHIPDATE  ON ${testName2}_Lineitem (l_SHIPDATE)  ;
 success
 
-create index IxL_ORDER_PART ON lineitem(L_ORDERKEY, L_PARTKEY);
+create index IxL_ORDER_PART ON ${testName2}_lineitem(L_ORDERKEY, L_PARTKEY);
 success
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-create table orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -49,10 +49,10 @@ create table orders (
 );
 success
 
-create index IxO_ORDERKEY  ON Orders (O_ORDERKEY)  ;
+create index IxO_ORDERKEY  ON ${testName2}_Orders (O_ORDERKEY)  ;
 success
 
-load Orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_Orders "../TPCH/SF_0001/orders.csv";
 success
 
 
@@ -73,12 +73,12 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-    | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+    | keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                          "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
@@ -153,7 +153,7 @@ pipeline Q
     | next
 
   stage Gs_LINEITEM on all partitions :
-    indexScan lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+    indexScan ${testName2}_lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
                                        UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
     //| project "type TIMESTAMP L_SHIPDATE"
 
@@ -179,8 +179,8 @@ begin
     | next
 
   stage stageM on all partitions :
-    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+    indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin ${testName2}_orders IxO_ORDERKEY "bound $I1 $1 =="
     | combined 0
     | stageLast
 
@@ -203,7 +203,7 @@ begin
     | pulse once
     | stageMarker0143
   stage stageMarker0143 on all partitions :
-    scan rapidsse public lineitem
+    scan rapidsse public ${testName2}_lineitem
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | sort "type INTEGER $2 ASC  "
     | combined 0
@@ -227,7 +227,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_SHIPDATE "lbound $I1 TIMESTAMP '1900-01-01 00:00:00' >= "
+    indexScan ${testName2}_lineitem IxL_SHIPDATE "lbound $I1 TIMESTAMP '1900-01-01 00:00:00' >= "
     | project "type INTEGER $1 , type TIMESTAMP L_SHIPDATE"
     | top "type TIMESTAMP $2" 2
     | combined 0
@@ -263,7 +263,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter " type BOOLEAN  $2 50.0  >  "
@@ -285,7 +285,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter " type BOOLEAN  $2 100.0  >  "
@@ -330,7 +330,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter " type BOOLEAN  $2 90.0  >  "
@@ -359,7 +359,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg " ORDGROUPBY type integer $1 aggregates type integer $K1 , type decimal as total )  $5 sum  "
     //| top "type DECIMAL total" 8
     | combined 0
@@ -399,11 +399,11 @@ begin
     | next
 
   stage Gj_ORDERS on all partitions :
-    scan Orders
+    scan ${testName2}_Orders
     | next
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
@@ -430,11 +430,11 @@ begin
     | next
 
   stage Gj_ORDERS on all partitions :
-    scan Orders
+    scan ${testName2}_Orders
     | next
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
@@ -467,11 +467,11 @@ begin
     | next
 
   stage Gj_ORDERS on all partitions :
-    scan Orders
+    scan ${testName2}_Orders
     | next
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
+    indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
@@ -516,7 +516,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_ORDER_PART "lbound $I1 0 >="
+    indexScan ${testName2}_lineitem IxL_ORDER_PART "lbound $I1 0 >="
     | ordAgg " ORDGROUPBY type integer $1 , type integer $2
                  aggregates type integer $K1 , type integer $K2 , type decimal as total )  $5 sum  "
     | combined 0
@@ -537,7 +537,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_ORDER_PART "lbound $I1 0 >="
+    indexScan ${testName2}_lineitem IxL_ORDER_PART "lbound $I1 0 >="
     | ordAgg " ORDGROUPBY type integer $1 , type integer $2
                  aggregates type integer $K1 , type integer $K2 , type decimal as total )  $5 sum  "
     | combined 0
@@ -561,10 +561,10 @@ contains rows:
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-DROP TABLE lineitem;
+DROP TABLE ${testName2}_lineitem;
 success
 
-DROP TABLE orders;
+DROP TABLE ${testName2}_orders;
 success
 
 //memoryleaks;
@@ -575,9 +575,9 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE lineitem;
+  DROP TABLE ${testName2}_lineitem;
   mute
 
-  DROP TABLE orders;
+  DROP TABLE ${testName2}_orders;
   mute
 }

@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table part (
+create table ${testName2}_part (
 P_PARTKEY           INTEGER NOT NULL,
 P_NAME              VARCHAR(55) NOT NULL,
 P_MFGR              CHAR(25) NOT NULL,
@@ -19,22 +19,19 @@ success
 
 //------------------------------------------------------------------------------
 // create the indexes
-CREATE INDEX IxP_PARTKEY ON part(p_partkey);
+CREATE INDEX IxP_PARTKEY ON ${testName2}_part(p_partkey);
 affected: 0
 
 // load the table
-load part "../TPCH/SF_0001/part.csv";
+load ${testName2}_part "../TPCH/SF_0001/part.csv";
 success
 
-//select count(*) from part;
+//select count(*) from ${testName2}_part;
 //rows: (200)
 
-compactidx part IxP_PARTKEY;
+compactidx ${testName2}_part IxP_PARTKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

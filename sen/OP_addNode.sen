@@ -11,7 +11,7 @@
  
   "addNode_DataPulse" .
 
-  <portNo> >int <ipAddr> <nodeNm> node::new locals| pNewNode |
+  <portNoWL> >int <portNo> >int <ipAddr> <nodeNm> node::new locals| pNewNode |
    
   EV_M_DATAPULSE_handler
 ;
@@ -26,6 +26,7 @@
   <nodeNm> .
   <ipAddr> .
   <portNo> .
+  <portNoWL> .
 
   op__topology
 
@@ -43,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: addNode :: addNode <nodeNm> <ipAddr> <portNo> ;
+cmdSyntax: addNode :: addNode <nodeNm> <ipAddr> <portNo> <portNoWL> ;
 
 : addNode_cmdTags _cmdTags tagCopy: op_tags
   tags{

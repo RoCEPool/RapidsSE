@@ -7,7 +7,6 @@ import argparse
 import subprocess
 
 import pyutils.errors as errors
-import septest.runners.jobrunner
 from septest.runners.jobrunner import JobRunner
 from septest.runners.jobrunner import terminate_instances_from_file
 

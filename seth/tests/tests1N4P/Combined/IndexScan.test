@@ -2,28 +2,28 @@
 -- IndexScan- --- Combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 // no such table
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | project " type INTEGER x "
     | combined 0
     | stageC
   stage stageC on origin :
     output | sink | stageA
 end ;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE; Table does not exist'
 
 // create a table
-create table lineitem (
+create table ${testName2}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -45,13 +45,13 @@ success
 
 // no such table
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | project " type INTEGER l_orderkey "
     | combined 0
     | stageC
@@ -62,34 +62,34 @@ failure contains: 'no such index'
 
 //------------------------------------------------------------------------------
 // create an index on shipdate(DATE)
-CREATE INDEX lineitem_ship ON lineitem(L_SHIPDATE);
+CREATE INDEX lineitem_ship ON ${testName2}_lineitem(L_SHIPDATE);
 affected: 0
 
 //------------------------------------------------------------------------------
 // create an index on orderkey(INTEGER)
-CREATE INDEX lineitem_ord ON lineitem(L_ORDERKEY);
+CREATE INDEX lineitem_ord ON ${testName2}_lineitem(L_ORDERKEY);
 affected: 0
 
 //------------------------------------------------------------------------------
 // create an index on discount(DECIMAL)
-CREATE INDEX lineitem_dis ON lineitem(L_DISCOUNT);
+CREATE INDEX lineitem_dis ON ${testName2}_lineitem(L_DISCOUNT);
 affected: 0
 
 //------------------------------------------------------------------------------
 // create an index on shipmode(VARCHAR)
-CREATE INDEX lineitem_mode ON lineitem(L_SHIPMODE);
+CREATE INDEX lineitem_mode ON ${testName2}_lineitem(L_SHIPMODE);
 affected: 0
 
 //------------------------------------------------------------------------------
 // indexscan on integer key
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | project " type INTEGER $1 "
     | combined 0
     | stageC
@@ -101,19 +101,19 @@ end ;
 rows: 0
 
 // load the table
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 //------------------------------------------------------------------------------
 // indexscan on integer key
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -125,13 +125,13 @@ rows: 100
 //------------------------------------------------------------------------------
 // indexscan on integer key
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | project " type INTEGER $1 "
     | combined 0
     | stageC
@@ -145,13 +145,13 @@ rows: 100
 //------------------------------------------------------------------------------
 // indexscan on date key
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ship " LBOUND $I1 DATE '1970-01-01' >= UBOUND $I1 DATE '1994-01-01' <= "
+    indexScan ${testName2}_lineitem lineitem_ship " LBOUND $I1 DATE '1970-01-01' >= UBOUND $I1 DATE '1994-01-01' <= "
     | project "type INTEGER $1 "
     | combined 0
     | stageC
@@ -166,13 +166,13 @@ rows: 1664
 //------------------------------------------------------------------------------
 // indexscan with aggregates
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | aggreg " type INTEGER as SUM_KEY ) L_ORDERKEY sum ,
                  type INTEGER as CNT_KEY ) L_ORDERKEY count "
     | combined 0
@@ -197,12 +197,12 @@ rows: (1400,100)
 //------------------------------------------------------------------------------
 // indexscan with aggregates and group by
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | gbyAgg " groupby type INTEGER L_PARTKEY
                 aggregates type INTEGER as PKEY $K1 ,
                 type INTEGER as SUM_KEY ) L_ORDERKEY sum ,
@@ -232,12 +232,12 @@ rows: 50
 //------------------------------------------------------------------------------
 // indexscan with filter
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | filter " type BOOLEAN L_PARTKEY 20 <= "
     | combined 0
     | next
@@ -257,8 +257,8 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 0 >= "
-    | indexJoin orders orders_ord " BOUND $I1 L_ORDERKEY == "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 0 >= "
+    | indexJoin ${testName2}_orders orders_ord " BOUND $I1 L_ORDERKEY == "
     | combined 0
     | next
   stage stageLast on origin :
@@ -267,9 +267,9 @@ begin
     | stageStart
 end ;
 
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE; Table does not exist'
 
-create table orders (
+create table ${testName2}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -282,10 +282,10 @@ create table orders (
 );
 success
 
-create index orders_ord on orders (O_ORDERKEY);
+create index orders_ord on ${testName2}_orders (O_ORDERKEY);
 success
 
-load orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
 success
 
 //------------------------------------------------------------------------------
@@ -298,8 +298,8 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 0 >= "
-    | indexJoin orders orders_ord " BOUND $I1 L_ORDERKEY == "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 0 >= "
+    | indexJoin ${testName2}_orders orders_ord " BOUND $I1 L_ORDERKEY == "
     | combined 0
     | next
   stage stageLast on origin :
@@ -317,8 +317,8 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem lineitem_ord " LBOUND $I1 0 >= "
-    | indexJoin orders orders_ord " BOUND $I1 L_ORDERKEY == "
+    indexScan ${testName2}_lineitem lineitem_ord " LBOUND $I1 0 >= "
+    | indexJoin ${testName2}_orders orders_ord " BOUND $I1 L_ORDERKEY == "
     | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
@@ -334,10 +334,10 @@ rows: 1160
 //------------------------------------------------------------------------------
 // drop the tables
 
-drop table lineitem;
+drop table ${testName2}_lineitem;
 success
 
-drop table orders;
+drop table ${testName2}_orders;
 success
 
 MemoryLeaks;
@@ -345,12 +345,9 @@ rows: 0
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName2}_lineitem;
   mute
 
-  drop table orders;
-  mute
-
-  bye;
+  drop table ${testName2}_orders;
   mute
 }

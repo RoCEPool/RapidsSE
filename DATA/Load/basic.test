@@ -117,9 +117,6 @@ CLEANUP {
   
   drop table table1;
   mute
-
-  bye;
-  mute
 }
 
 

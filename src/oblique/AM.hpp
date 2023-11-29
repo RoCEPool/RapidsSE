@@ -23,6 +23,7 @@
 #include "eYX.h"
 #include "eRA.h"
 #include "eTA.h"
+#include "eTC.h"
 #include "eVA.h"
 #include "eXA.h"
 
@@ -268,6 +269,9 @@ namespace OBLIQUE
       static void  vAnswerDemonJobId(JobId tJobId);
       static JobId tAnswerDemonJobId(void);
 
+      static void  vAnswerWLDemonJobId(JobId tJobId);
+      static JobId tAnswerWLDemonJobId(void);
+
       static void  vCollectDemonJobId(JobId tJobId);
       static JobId tCollectDemonJobId(void);
 
@@ -332,9 +336,8 @@ namespace OBLIQUE
       static Node* pGetThisNode(void);
       static i8   iGetNthNodeId(i8 i_Node);
       static i8   nKnownNodes(void);
-      static void vNodeDetected(i8 iNodeId, Stz* szNodeNm,
-                                Stz* szIPAddr, i8 iPortNo,
-                                Stz* pszRegionNm);
+      static void vNodeDetected(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
+                                i8 iPortNo, i8 iPortNoWL, Stz* pszRegionNm);
       static i8   iThisNodeId(void);
     };
   
@@ -446,6 +449,10 @@ namespace OBLIQUE
       static void vAssertAllocate(void);
       static bool bIsRunningLow(void);
       static bool bIsRunningLowDist(void);
+      static ObjectSnapshot* pSnapshotAtTrackingMemory(void);
+      static void vSnapshotAtTrackingMemory(ObjectSnapshot* pSnapshot);
+      static ObjectSnapshot* pSnapshotAtMemoryLeaks(void);
+      static void vSnapshotAtMemoryLeaks(ObjectSnapshot* pSnapshot);
     };
   
     class METRICS
@@ -692,6 +699,8 @@ namespace OBLIQUE
       static bool bVBlong(void);
       static bool bVerbose(Stz* szVBtag);
       static bool bVerbose(Stz* szVBtag1, Stz* szVBtag2);
+      static void vTraceComponent(eTC eComponent, bool bTraceIt);
+      static bool bTraceComponent(eTC eComponent);
     };
 
     class WORD
@@ -933,7 +942,7 @@ namespace OBLIQUE
     static Stz* szEnumText(i8 i_EnumGroup, i8 i_Enum);
   
   
-    static bool bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet);
+    static eEC bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet);
   
   
   

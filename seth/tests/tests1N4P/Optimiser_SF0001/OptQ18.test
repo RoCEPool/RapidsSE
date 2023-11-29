@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- tpch query18 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 /pipelineName = "OptQ18"
@@ -13,16 +13,16 @@ select
   o_totalprice,
   sum(l_quantity)
 from
-  orders,
-  customer,
-  lineitem
+  ${testName2}_orders,
+  ${testName2}_customer,
+  ${testName2}_lineitem
 where
   o_orderkey in
     (
     select
       l_orderkey
     from
-      lineitem
+      ${testName2}_lineitem
     group by
       l_orderkey
     having
@@ -126,8 +126,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

@@ -33,8 +33,13 @@ extern s256 gi_szaArgv[];
 
 extern i8   giProgressPoint;
 
-//#include <readline/readline.h>
-
+//#include "wlp/thrift/generated/ErrorResponse_types.h"
+//#include "wlp/thrift/generated/MessageTypes_types.h"
+//#include "thrift/protocol/TCompactProtocol.h"
+//#include "thrift/transport/TBufferTransports.h"
+//#include "BufferTransport.hpp"
+//#include "WlpHeader.hpp"
+//using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 
 #include "StreamDef.hpp"
 #include "IndexDef.hpp"
@@ -187,9 +192,8 @@ int main(int argc, char* argv[])
   // properly initialised
   EnumValidator::vValidateEnumStzArrays();
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   try {
     
     // force bamboo build
@@ -201,17 +205,6 @@ int main(int argc, char* argv[])
       Process::vExitStartup();
     
     // potentially run utilities
-//    if (gxCmdLineArgs.m_xSysArgs.m_bUtility) {
-//      Engine::vRunUtility(argc,(Stz**)argv);
-//      Process::vExitSuccess();
-//    }
-    
-    // temp for debugging hang in bamboo
-//    gxCmdLineArgs.m_xSysArgs.m_bDeveloper = true;
-//    gxCmdLineArgs.m_xSysArgs.m_oArgTags.vInsert(C_VB_API);
-//    gxCmdLineArgs.m_xSysArgs.m_oArgTags.vInsert(C_VB_OP);
-    // end temp
-    
     switch (gxCmdLineArgs.m_xSysArgs.m_eUtility) {
         
       case UT_APIDEMO:

@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
   int_col0   INTEGER,
   int_col1  INTEGER,
   bol_col2   BOOLEAN,
@@ -24,11 +24,11 @@ create table datums (
 );
 success
 
-load datums "../DATA/Datums/datums.csv" ;
+load ${testName2}_datums "../DATA/Datums/datums.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select int_col0 from datums;
+select int_col0 from ${testName2}_datums;
 rows:
  (1)
  (2)
@@ -42,7 +42,7 @@ rows:
  (10)
 
 //------------------------------------------------------------------------------
-select bol_col2 from datums;
+select bol_col2 from ${testName2}_datums;
 rows:
   (false)
   (null)
@@ -56,7 +56,7 @@ rows:
   (true)
 
 //------------------------------------------------------------------------------
-select bol_col3 from datums;
+select bol_col3 from ${testName2}_datums;
 rows:
   (false)
   (false)
@@ -70,7 +70,7 @@ rows:
   (false)
 
 //------------------------------------------------------------------------------
-select dte_col4 from datums;
+select dte_col4 from ${testName2}_datums;
 rows:
  (DATE '1941-01-01')
  (DATE '1942-01-01')
@@ -85,7 +85,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select dte_col5 from datums;
+select dte_col5 from ${testName2}_datums;
 rows:
  (DATE '1941-01-01')
  (DATE '1941-11-01')
@@ -99,7 +99,7 @@ rows:
  (DATE '2010-11-01')
 
 //------------------------------------------------------------------------------
-select dec_col6 from datums;
+select dec_col6 from ${testName2}_datums;
 rows:
  (41.04)
  (47.04)
@@ -113,7 +113,7 @@ rows:
  (477.04)
 
 //------------------------------------------------------------------------------
-select dec_col7 from datums;
+select dec_col7 from ${testName2}_datums;
 rows:
   (1041.04)
   (10.04)
@@ -127,7 +127,7 @@ rows:
   (10.04)
 
 //------------------------------------------------------------------------------
-select flt_col8 from datums;
+select flt_col8 from ${testName2}_datums;
 rows:
  (10.22)
  (0.22)
@@ -141,7 +141,7 @@ rows:
  (0.22)
 
 //------------------------------------------------------------------------------
-select flt_col9 from datums;
+select flt_col9 from ${testName2}_datums;
 rows:
  (31.456)
  (108.456)
@@ -155,7 +155,7 @@ rows:
  (108.456)
 
 //------------------------------------------------------------------------------
-select tme_col10 from datums;
+select tme_col10 from ${testName2}_datums;
 rows:
  (TIME '10:23:31')
  (TIME '11:23:31')
@@ -169,7 +169,7 @@ rows:
  (TIME '11:23:31')
 
 //------------------------------------------------------------------------------
-select tme_col11 from datums;
+select tme_col11 from ${testName2}_datums;
 rows:
  (TIME '11:22:35')
  (TIME '09:22:35')
@@ -183,7 +183,7 @@ rows:
  (TIME '09:22:35')
 
 //------------------------------------------------------------------------------
-select tsp_col12 from datums;
+select tsp_col12 from ${testName2}_datums;
 rows:
  (TIMESTAMP '1941-01-01 00:00:00')
  (TIMESTAMP '1972-01-01 12:00:00')
@@ -197,7 +197,7 @@ rows:
  (TIMESTAMP '1944-01-01 12:00:00')
 
 //------------------------------------------------------------------------------
-select tsp_col13 from datums;
+select tsp_col13 from ${testName2}_datums;
 rows:
  (TIMESTAMP '1972-01-01 10:30:22')
  (TIMESTAMP '1978-01-01 10:45:22')
@@ -212,14 +212,11 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 CLEANUP {
   
-  drop table datums;
-  mute
-  
-  bye;
+  drop table ${testName2}_datums;
   mute
 }

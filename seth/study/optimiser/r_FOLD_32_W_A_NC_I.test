@@ -4,7 +4,7 @@
 
 LOG 'r_FOLD_32_W_A_NC_I...';
 
-trackMemory;
+trackMemory force;
 success
 
 
@@ -26,8 +26,6 @@ MemoryLeaks;
  rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 /*============================================================================*/

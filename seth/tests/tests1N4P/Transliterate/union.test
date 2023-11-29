@@ -4,12 +4,12 @@
 
 //------------------------------------------------------------------------------
 // neither table exists
-SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+SELECT l_orderkey FROM ${testName2}_Lineitem UNION ALL SELECT o_orderkey FROM ${testName2}_Orders;
 failure contains: "No such table"
 
 //------------------------------------------------------------------------------
-// create table lineitem
-create table LineItem
+// create table ${testName2}_Lineitem
+create table ${testName2}_Lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -32,11 +32,11 @@ success
 
 //------------------------------------------------------------------------------
 // one table does not exist
-SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+SELECT l_orderkey FROM ${testName2}_Lineitem UNION ALL SELECT o_orderkey FROM ${testName2}_Orders;
 failure contains: "No such table"
 
 //------------------------------------------------------------------------------
-create table orders (
+create table ${testName2}_Orders (
    O_ORDERKEY        INTEGER       NOT NULL,  // 0)
    O_CUSTKEY         INTEGER       NOT NULL,  // 1)
    O_ORDERSTATUS     CHAR(1)       NOT NULL,  // 2)
@@ -51,17 +51,17 @@ success
 
 //------------------------------------------------------------------------------
 // no data in either table
-SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+SELECT l_orderkey FROM ${testName2}_Lineitem UNION ALL SELECT o_orderkey FROM ${testName2}_Orders;
 rows: 0
 
 //------------------------------------------------------------------------------
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_Lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
 // data in one table
-SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+SELECT l_orderkey FROM ${testName2}_Lineitem UNION ALL SELECT o_orderkey FROM ${testName2}_Orders;
 rows:
   (1)
   (1)
@@ -76,18 +76,18 @@ rows:
 
 //------------------------------------------------------------------------------
 // data in first table
-// truncate the lineitem table
-truncate lineitem;
+// truncate the ${testName2}_Lineitem table
+truncate ${testName2}_Lineitem;
 success;
 
 //------------------------------------------------------------------------------
-// load the orders table
-load Orders "../DATA/TPCH/orders10.csv";
+// load the ${testName2}_Orders table
+load ${testName2}_Orders "../DATA/TPCH/orders10.csv";
 success
 
 //------------------------------------------------------------------------------
 // data in second table
-SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+SELECT l_orderkey FROM ${testName2}_Lineitem UNION ALL SELECT o_orderkey FROM ${testName2}_Orders;
 rows:
   (1)
   (2)
@@ -102,12 +102,12 @@ rows:
 
 //------------------------------------------------------------------------------
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName2}_Lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
 // data in both tables
-SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+SELECT l_orderkey FROM ${testName2}_Lineitem UNION ALL SELECT o_orderkey FROM ${testName2}_Orders;
 rows:
   (1)
   (1)
@@ -131,7 +131,7 @@ rows:
   (34)
 
 //------------------------------------------------------------------------------
-SELECT L_PARTKEY, L_ORDERKEY from lineitem union all select O_ORDERKEY, O_CUSTKEY FROM orders;
+SELECT L_PARTKEY, L_ORDERKEY from ${testName2}_Lineitem union all select O_ORDERKEY, O_CUSTKEY FROM ${testName2}_Orders;
 success
 
 /*
@@ -171,10 +171,10 @@ rows:
 */
 
 
-drop table lineitem;
+drop table ${testName2}_Lineitem;
 success
 
-drop table orders;
+drop table ${testName2}_Orders;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -182,9 +182,9 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE lineitem;
+  DROP TABLE ${testName2}_Lineitem;
   mute
 
-  DROP TABLE orders;
+  DROP TABLE ${testName2}_Orders;
   mute
 }

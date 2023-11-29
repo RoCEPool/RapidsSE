@@ -15,8 +15,8 @@ namespace STORE
   friend class Index;
   
   private:
-    s32    m_sIndexNm;       // name of index
-    s32    m_sTableNm;       // name of table
+    s256   m_sIndexNm;       // name of index
+    s256   m_sTableNm;       // name of table
     eIT    m_eIndexType;     // index type
     eKE    m_eKeyKind;       // key entry kind
   
@@ -46,7 +46,7 @@ namespace STORE
     static eEC eParseTableName(Stz* szCmd, String* psTableNm);
     static void vPostRecv(void* aIndexDef);
 
-    void    vAddColumn(Stz* szColumnNm, eCT eColumnType, bool bAscending=true);
+    void    vAddColumn(Stz* szColumnNm, TypeId xTypeId, bool bAscending=true);
 
     i8      nColumns(void);
     i8*     aiaColSet(void);

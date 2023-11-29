@@ -1,9 +1,9 @@
-trackmemory;
+trackmemory force;
 success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName2}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -23,11 +23,11 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/decimal.csv" ;
+load ${testName2}_datums "../DATA/Transliterate/decimal.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select dec_col6 from datums;
+select dec_col6 from ${testName2}_datums;
 rows:
 (41.04)
 (47.04)
@@ -42,7 +42,7 @@ rows:
 (477.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 + null from datums;
+select dec_col6 + null from ${testName2}_datums;
 rows:
  (null)
  (null)
@@ -57,7 +57,7 @@ rows:
  (null)
 
 //------------------------------------------------------------------------------
-select null + dec_col6 from datums;
+select null + dec_col6 from ${testName2}_datums;
 rows:
  (null)
  (null)
@@ -72,7 +72,7 @@ rows:
  (null)
 
 //------------------------------------------------------------------------------
-select dec_col6 + dec_col7 from datums;
+select dec_col6 + dec_col7 from ${testName2}_datums;
 rows:
 (1082.08)
 (57.08)
@@ -87,7 +87,7 @@ rows:
 (487.08)
 
 //------------------------------------------------------------------------------
-select -dec_col6 from datums;
+select -dec_col6 from ${testName2}_datums;
 rows:
 (-41.04)
 (-47.04)
@@ -105,7 +105,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName2}_datums;
 success;
 
 MemoryLeaks;
@@ -113,10 +113,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
-  mute
-
-  bye;
+  drop table ${testName2}_datums;
   mute
 }
 

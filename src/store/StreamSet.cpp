@@ -91,6 +91,18 @@ void StreamSet::vPostRecv(void* aStreamSet)
   UNUSED(pStreamSet);
 }
 
+/*----------------------------------------------------------------------------*/
+/* repair the streamSet                                                       */
+/*----------------------------------------------------------------------------*/
+void StreamSet::vRepair(Object* pObject)
+{
+  _static_
+
+  StreamSet* pStreamSet = _pStreamSet(pObject);
+
+  // delete the streamSet
+  delete pStreamSet;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

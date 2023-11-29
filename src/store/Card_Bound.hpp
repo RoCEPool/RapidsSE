@@ -16,15 +16,15 @@ namespace STORE
     Card_Bound(void);
    ~Card_Bound(void) noexcept(false);
 
-    static Card_Bound*    pCreateFrom_CONJ(Card_CONJUNCTION* p_CONJ,
-                                           char cTblSyn_boundedTo);
+    static Card_Bound*    pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
+                                              char cTblSyn_boundedTo);
     static Card_Bound*    pBound_New(Stz* szRelnOp);
 
     static bool bValidBoundForRelnOp(Symbol* pBound, Symbol* pRelnOp);
 
-    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_tblCol_To_expCol(CardIter* pCI);
 
-    void vEnsureTypes_For_stmCol(CardIter *pCI);
+    void vEnsureTypeId_expCol(CardIter *pCI);
     bool bEquivalent(Card_RlnConj* p_rlnConj);
 
     Card_Term* pGetTerm(i8 i_Term);

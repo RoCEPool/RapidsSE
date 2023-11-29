@@ -10,11 +10,11 @@
 #include "AM.hpp"
 #include "ExtendedText.hpp"
 
-//#include <pcap/pcap.h>
 #include <arpa/inet.h>
-//#include <netinet/in.h>
 #include "Job.hpp"
 #include "CmdLineArgs.hpp"
+#include "WlpHeader.hpp"
+#include "PayloadObj.hpp"
 
 extern Stz* C_LOOPBACK_IP;
 
@@ -35,6 +35,34 @@ __aFooterFunction(Socket)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Socket::Socket(Object* pIsFor, int iSocketId, Port* pFromPort, bool bNoClose)
+    : Port(pIsFor,iSocketId, pFromPort)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+
+  m_pReceivedObject = nullptr;
+
+  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_SOCKET);
+  m_aHeader = (Header*) & m_caObjectHeader[0];
+  m_pObject = reinterpret_cast<Object*>(m_aHeader);
+  m_pWlpHeader = (WLP::WlpHeader*) & m_caObjectHeader[0];
+
+  m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+  m_pRejectJob = new RejectJob;
+
+  m_bNoClose = bNoClose;
+
+  _checkInitialised_(CN_SOCKET);
+
+  ++ gixSocket;
+
+
+  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Socket::Socket(Object* pIsFor, int iSocketId)
 : Port(pIsFor,iSocketId)
 {
@@ -45,9 +73,12 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_SOCKET);
   m_aHeader = (Header*) & m_caObjectHeader[0];
   m_pObject = reinterpret_cast<Object*>(m_aHeader);
+  m_pWlpHeader = (WLP::WlpHeader*) & m_caObjectHeader[0];
 
   m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   m_pRejectJob = new RejectJob;
+
+  m_bNoClose = false;
 
   _checkInitialised_(CN_SOCKET);
   
@@ -63,12 +94,19 @@ Socket::Socket(Object* pIsFor, int iSocketId)
 Socket::~Socket(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
+
   delete m_pRejectJob;
   m_pRejectJob = nullptr;
   
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
   m_aLowBuff = nullptr;
+
+  delete m_pReceivedObject;
+  m_pReceivedObject = nullptr;
+
+  if (m_bNoClose) {
+    m_iSocketFd = C_UNKNOWN;
+  }
   
   -- gixSocket;
   
@@ -78,6 +116,24 @@ Socket::~Socket(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* repair the socket                                                          */
+/*----------------------------------------------------------------------------*/
+void Socket::vRepair(Object* pObject)
+{
+  _static_
+
+  SysCall oSysCall;
+
+  Socket* pSocket = _pSocket(pObject);
+
+  if (pSocket->bIsOpen() && !pSocket->m_bNoClose) {
+    pSocket->bClose(oSysCall);
+  }
+
+  delete pSocket;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -239,6 +295,64 @@ Object* Socket::pRecvObject(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* recv next wireline message from this socket                                */
+/*----------------------------------------------------------------------------*/
+Object* Socket::pRecvWLMsg(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+
+  RASSERT(! pReceivedObject());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive the header of the next wireline message
+
+  if (! bWLHeaderRecv()) {
+    return nullptr;
+  }
+
+  i8 iMsgSize = m_pWlpHeader->iMsgSize();
+
+  if (iMsgSize > WLP::PayloadObj::C_MAX_PAYLOAD_BYTES) {
+    // TODO: Handle the case where the size of the message is larger than can be accepted.
+    //       Ideally we want to read the remaining bytes and return a wireline error
+    //       message to the user.
+    vTrace("Invalid message received from client on %s:%lld. Message too big (size = %lld).\n"_Stz,
+           inet_ntoa(this->m_xClientAddr.sin_addr),
+           ntohs(this->m_xClientAddr.sin_port),
+           iMsgSize);
+    return nullptr;
+  }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive object body
+
+  try {
+    Object* pReceivedObject = pWLMsgRecv();
+    if ( !pReceivedObject ) {
+      return nullptr;
+    }
+
+    vSuccess(true);
+    return pReceivedObject;
+  }
+  catch (LowMemory xLowMemory) {
+    // fall thru
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive and discard the body of the object (low memory condition)
+  // TODO: This should result in a wireline error message being sent back
+  //       to the user. We shouldn't just ignore their message.
+  Object* pReceivedObject = pWLMsgRecv_lowmem();
+  RASSERT(! pReceivedObject);
+
+  vSuccess(true);
+
+  return pReceivedObject;
+}
+
+/*----------------------------------------------------------------------------*/
 /* send an object                                                             */
 /*----------------------------------------------------------------------------*/
 bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
@@ -326,6 +440,38 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send an object                                                             */
+/*----------------------------------------------------------------------------*/
+bool Socket::bSendWLMsg(WLP::PayloadObj* pPayloadObj, SysCall& roSysCall, eSY eSendWhy)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  ASSERT(pPayloadObj->eGetClassNo() == CN_PAYLOADOBJ);
+
+  roSysCall.vClear();
+
+  i8 nBytes = pPayloadObj->iPayloadSize();
+
+  bool bResult = bBytesSend(pPayloadObj->pcBuf(), nBytes,roSysCall);
+
+  if (bResult) {
+    m_pTotup->vAdd(CN_PAYLOADOBJ,nBytes);
+    m_pWhyTot->vAdd(eSendWhy,nBytes);
+  }
+
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Writes the address and port of the connecting client to the buffer         */
+/*----------------------------------------------------------------------------*/
+void Socket::vClientAddr(s256& sBuf)
+{
+  sBuf.vSprint("%s:%d"_Stz,
+               inet_ntoa(this->m_xClientAddr.sin_addr),
+               ntohs(this->m_xClientAddr.sin_port));
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -341,6 +487,36 @@ bool Socket::bHeaderRecv(void)
   bool bResult = bBytesRecv(m_aHeader,sizeof(Object),oSysCall);
   if (! bResult) {
     vTrace("Socket::pRecvObject (header) : bRecvBytes returned false\n"_Stz);
+    vSuccess(false);
+    return false;
+  }
+
+  // Check that the magic is valid. This can happen if a wireline client
+  // connects to the internal cluster port rather than the wireline port.
+  if (!m_aHeader->bIsMagicValid()) {
+    vTrace("Socket::pRecvObject (header) : Header magic bytes are invalid. "
+           "Is this a wireline client connecting to the wrong port?\n"_Stz);
+    vSuccess(false);
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* recv next wireline header from this socket                                 */
+/*----------------------------------------------------------------------------*/
+bool Socket::bWLHeaderRecv(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+
+  SysCall oSysCall;
+
+  bool bResult = bBytesRecv(m_pWlpHeader,WLP::C_WLPHEADER_SIZE,oSysCall);
+  if (! bResult) {
+    vTrace("Client %s:%lld has disconnected\n"_Stz,
+           inet_ntoa(this->m_xClientAddr.sin_addr),
+           ntohs(this->m_xClientAddr.sin_port));
     vSuccess(false);
     return false;
   }
@@ -570,6 +746,64 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
     return nullptr;
 
   }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* complete the recv of next wireline message from this socket                */
+/*----------------------------------------------------------------------------*/
+Object* Socket::pWLMsgRecv()
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+
+  const eCN eClass = CN_PAYLOADOBJ;
+  WLP::PayloadObj *pPayloadObj = new WLP::PayloadObj();
+  SysCall oSysCall;
+
+  // Copy the wireline header into the payload object.
+  // It will be needed downstream.
+  memcpy(pPayloadObj->pcBuf(), m_pWlpHeader, WLP::C_WLPHEADER_SIZE);
+
+  ASSERT(m_pWlpHeader->iMsgSize() < WLP::PayloadObj::C_MAX_PAYLOAD_BYTES);
+  i8 nRemainingBytes = m_pWlpHeader->iMsgSize() - WLP::C_WLPHEADER_SIZE;
+  ASSERT(nRemainingBytes > 0);
+
+  char* pBody = pPayloadObj->pcBuf() + WLP::C_WLPHEADER_SIZE;
+
+  bool bResult = bBytesRecv(pBody, nRemainingBytes, oSysCall);
+  if (!bResult) {
+    vTrace("Socket::pWLMsgRecv (body) : bRecvBytes returned false\n"_Stz);
+    vSuccess(false);
+    return nullptr;
+  }
+
+  // Set the size of the payload object
+  pPayloadObj->vSetPayloadSize(m_pWlpHeader->iMsgSize());
+
+  m_pTotup->vAdd(eClass, m_pWlpHeader->iMsgSize());
+
+  return pPayloadObj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* complete the recv of next wireline message from this socket                */
+/*----------------------------------------------------------------------------*/
+Object* Socket::pWLMsgRecv_lowmem()
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+
+  SysCall oSysCall;
+
+  if (AM::SHOW::bLowMem_Recv())
+    vTrace("Socket::pWLMsgRecv_lowmem : LOW MEMORY\n"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive and discard the body of the object (low memory condition)
+  i8 nRemainingBytes = m_pWlpHeader->iMsgSize() - WLP::C_WLPHEADER_SIZE;
+
+  bool bResult = bBytesRecv(m_aLowBuff,nRemainingBytes,oSysCall);
+  UNUSED(bResult);
 
   return nullptr;
 }

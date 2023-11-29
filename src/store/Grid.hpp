@@ -39,8 +39,8 @@ namespace STORE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vRepair(Object* pObject);
 
-    void vAddDetectedNode(i8 iNodeId, Stz* szNodeNm,
-                          Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
+    void vAddDetectedNode(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
+                          i8 iPortNo, i8 iPortNoWL, Stz* szRegionNm);
     void vAddNode(Node* pNode);
     void vAdjustPtnMap(void);
     void vDropRead(void);

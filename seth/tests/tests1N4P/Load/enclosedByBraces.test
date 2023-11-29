@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // create the table
-create table T1 (
+create table ${testName2}_t1 (
     col0  INTEGER        NOT NULL,
     col1  INTEGER        NOT NULL,
     col2  INTEGER        NOT NULL,
@@ -19,13 +19,13 @@ create table T1 (
 success
 
 // load data into the table with enclosed_by as 3 characters
-load T1 "../DATA/Load/enclosedByBraces.csv"
+load ${testName2}_t1 "../DATA/Load/enclosedByBraces.csv"
   <enclosed_by_leading> = "{"
   <enclosed_by_trailing> = "}"
 ;
 success
 
-select * from T1;
+select * from ${testName2}_t1;
 rows:
   (0,217,260,'grey',TIMESTAMP '2015-10-31 00:00:00.0',73.44,5.34,8,-152,81,'lll')
   (1,278,45,'PINK',TIMESTAMP '2015-01-16 00:00:00.0',97.85,74.59,4,39,895,'qqq')
@@ -34,19 +34,19 @@ rows:
   (4,234,124,'black',TIMESTAMP '2015-01-07 00:00:00.0',213.04,96.49,3,-167,144,'mmm')
   (5,164,438,'PINK',TIMESTAMP '2015-01-30 00:00:00.0',222.66,117.29,12,-46,449,'uuu')
 
-export T1 "/tmp/T1.csv";
+export ${testName2}_t1 "/tmp/T1.csv";
 success
 
-truncate T1;
+truncate ${testName2}_t1;
 success
 
-select * from T1;
+select * from ${testName2}_t1;
 rows: 0
 /*
-load T1 "/tmp/T1.csv" <<enclosed_by_leading> "'" <enclosed_by_trailing> = "'" ;
+load ${testName2}_t1 "/tmp/T1.csv" <<enclosed_by_leading> "'" <enclosed_by_trailing> = "'" ;
 success
 
-select * from T1;
+select * from ${testName2}_t1;
 rows:
   (0,217,260,'grey',TIMESTAMP '2015-10-31 00:00:00.0',73.44,5.34,8,-152,81,'lll')
   (1,278,45,'PINK',TIMESTAMP '2015-01-16 00:00:00.0',97.85,74.59,4,39,895,'qqq')
@@ -56,15 +56,12 @@ rows:
   (5,164,438,'PINK',TIMESTAMP '2015-01-30 00:00:00.0',222.66,117.29,12,-46,449,'uuu')
 */
 
-drop table T1;
+drop table ${testName2}_t1;
 success
 
 CLEANUP {
   
-  drop table T1;
-  mute
-
-  bye;
+  drop table ${testName2}_t1;
   mute
 }
 

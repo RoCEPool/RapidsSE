@@ -93,6 +93,7 @@ void LocalStrs::vRevert(LocalStr* axLocalStr)
 
   RASSERT(C_UNKNOWN == axLocalStr->i_NextFree());
 
+  axLocalStr->vRevertBuf();
   axLocalStr->v_NextFree(m_i_FirstFree);
   m_i_FirstFree = axLocalStr->i_LocalStr();
 }

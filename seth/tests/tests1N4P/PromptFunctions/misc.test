@@ -25,7 +25,5 @@ olist;
 mute;
 
 CLEANUP {
-  bye;
-  mute
 }
 

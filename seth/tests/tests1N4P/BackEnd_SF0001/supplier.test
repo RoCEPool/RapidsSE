@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table supplier (
+create table ${testName2}_supplier (
 S_SUPPKEY       INTEGER NOT NULL,
 S_NAME          VARCHAR(25) NOT NULL,
 S_ADDRESS       VARCHAR(40) NOT NULL,
@@ -17,23 +17,20 @@ success
 
 //------------------------------------------------------------------------------
 // create the indexes
-create index IxS_SUPPKEY on supplier (S_SUPPKEY);
+create index IxS_SUPPKEY on ${testName2}_supplier (S_SUPPKEY);
 affected: 0
 
 -----------------------------------------------------------------------
 // load the table
-load supplier "../TPCH/SF_0001/supplier.csv";
+load ${testName2}_supplier "../TPCH/SF_0001/supplier.csv";
 success
 
-select count(*) from supplier;
+select count(*) from ${testName2}_supplier;
 rows: (10)
 
-compactidx supplier IxS_SUPPKEY;
+compactidx ${testName2}_supplier IxS_SUPPKEY;
 success
 
 CLEANUP {
-
-  bye;
-  mute
 }
 

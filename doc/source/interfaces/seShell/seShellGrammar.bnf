@@ -1,0 +1,25 @@
+/*
+    This is the grammar file used for producing railroad (rr) diagrams for
+    internal commands in the SE Shell
+
+    NOTE:
+      This file is processed to produce a series of *.png files, one for each rule.
+      If you change the name of a rule then the output filename will also change,
+      and this needs to be updated in the documentation section where it
+      references this static image filename.
+*/
+
+seShellCommands ::=   sqlCommand
+                    | repeatCommand
+                    | runCommand
+                    | setPageCommand
+                    | setSeparatorCommand
+                    | setPrecisionCommand
+                    | exitCommand
+
+repeatCommand         ::= unsigned_integer sqlCommand ';'
+runCommand            ::= 'SHELL' ('RUN' | 'SOURCE') fileName ';'
+setPageCommand        ::= 'SHELL' 'SET' 'PAGE' integer ';'
+setSeparatorCommand   ::= 'SHELL' 'SET' 'SEPARATOR' ('TAB' | 'PIPE' | 'COMMA') ';'
+setPrecisionCommand   ::= 'SHELL' 'SET' 'PRECISION' unsigned_integer ';'
+exitCommand           ::= ('EXIT' | 'QUIT' | 'BYE') ';'

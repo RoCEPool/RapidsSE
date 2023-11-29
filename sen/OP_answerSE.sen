@@ -38,6 +38,14 @@
 
   // receive the node info set
   Socket[].recvObject
+
+  Socket[].object.isNull if
+    Socket[].close
+
+    // return null
+    nullptr
+    exit
+  then
   
   Socket[].object@\clear to InfoSet[]
 
@@ -139,6 +147,10 @@
     // receive node info
 
     pAcceptedSocket recvNodeInfo to pAnsweredNode
+
+    pAnsweredNode ptr.isNull if
+      continue_if
+    then
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // spawn receiver task for the socket

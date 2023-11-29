@@ -35,6 +35,22 @@ void BASE::vTraceM(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* report a trace message for a component if that component's tracing is enabled*/
+/*----------------------------------------------------------------------------*/
+void BASE::vTraceComponent(eTC eComponent, Stz* aFormat, ...)
+{
+  if (!AM::TRACE::bTraceComponent(eComponent)) {
+    return;
+  }
+
+  va_list xVarArgs;
+
+  va_start(xVarArgs,aFormat);
+  AM::vWriteTrace_vargs(aFormat,xVarArgs);
+  va_end(xVarArgs);
+}
+
+/*----------------------------------------------------------------------------*/
 /* report a trace message from a shared object calling back into SE.          */
 /*----------------------------------------------------------------------------*/
 extern "C" void vTraceExternal(char* psFormat, ...)

@@ -4,7 +4,7 @@
 
 LOG 'TPC-H Q11...';
 
-trackMemory;
+trackMemory force;
 success
 
 /pipelineName = "OptQ11"
@@ -63,8 +63,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-  bye;
-  mute
 }
 
 

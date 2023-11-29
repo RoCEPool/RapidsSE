@@ -1,335 +1,332 @@
 
-create table interval1(a timestamp);
+create table ${testName2}_interval1(a timestamp);
 success
-load interval1 "../DATA/QA/interval/interval1.csv";
+load ${testName2}_interval1 "../DATA/QA/interval/interval1.csv";
 affected: 1
 
-select date '2023-02-13' + interval '1-0' year to month from interval1;
+select date '2023-02-13' + interval '1-0' year to month from ${testName2}_interval1;
 unordered rows: 
   ( DATE '2024-02-13' )
-select date '2023-02-13' + interval '1-11' year to month from interval1;
+select date '2023-02-13' + interval '1-11' year to month from ${testName2}_interval1;
 unordered rows: 
   ( DATE '2025-01-13' )
-select date '2023-02-13' + interval '1-12' year to month from interval1;
+select date '2023-02-13' + interval '1-12' year to month from ${testName2}_interval1;
 unordered rows: 
   ( DATE '2025-02-13' )
-select date '2023-02-13' + interval '1-13' year to month from interval1;
+select date '2023-02-13' + interval '1-13' year to month from ${testName2}_interval1;
 unordered rows: 
   ( DATE '2025-03-13' )
-select date '2023-02-13' + interval '0-5' year to month from interval1;
+select date '2023-02-13' + interval '0-5' year to month from ${testName2}_interval1;
 unordered rows: 
   ( DATE '2023-07-13' )
 
 //TODO: (CHINA) DATE OUT OF RANGE
-select date '2023-02-13' + interval '134-5' year to month from interval1;
+select date '2023-02-13' + interval '134-5' year to month from ${testName2}_interval1;
 //unordered rows:
   //( DATE '2157-07-13' )
 failure contains: 'EC_DATE_OUT_OF_RANGE'
 
-select date '2023-02-13' + interval '1.5-5' year to month from interval1;
+select date '2023-02-13' + interval '1.5-5' year to month from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select date '2023-02-13' + interval '1-5.5' year to month from interval1;
+select date '2023-02-13' + interval '1-5.5' year to month from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select date '2023-02-13' + interval '1-t' year to month from interval1;
+select date '2023-02-13' + interval '1-t' year to month from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select date '2023-02-13' + interval '1-测试' year to month from interval1;
+select date '2023-02-13' + interval '1-测试' year to month from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select date '2023-02-13' + interval '1-9@yy.com' year to month from interval1;
+select date '2023-02-13' + interval '1-9@yy.com' year to month from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
 
-select date '2023-02-13' + interval '-1-2' year to month from interval1;
+select date '2023-02-13' + interval '-1-2' year to month from ${testName2}_interval1;
 unordered rows: 
   ( DATE '2021-12-13' )
-select date '2023-02-13' + interval '-1--2' year to month from interval1;
+select date '2023-02-13' + interval '-1--2' year to month from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
-select timestamp '2023-02-13 11:48:52.123123' + interval '4.567' second  from interval1;
+select timestamp '2023-02-13 11:48:52.123123' + interval '4.567' second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 11:48:56.690123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '34 0' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 0' day to hour  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-19 13:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 1' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 1' day to hour  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-19 14:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 23' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 23' day to hour  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-20 12:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 24' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 24' day to hour  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-20 13:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25' day to hour  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-20 14:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 240' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 240' day to hour  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-29 13:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '-34 240' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '-34 240' day to hour  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2022-12-31 13:53:27.123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '-34 -240' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '-34 -240' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '-34.1 240' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '-34.1 240' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 240.6' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 240.6' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 6@8888' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 6@8888' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 t' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 t' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 d' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 d' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval 'd 34' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval 'd 34' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval 't 34' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval 't 34' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 测试' day to hour  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 测试' day to hour  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
 //TODO: (CHINA) incorrect expected result
-select timestamp '2023-02-13 13:53:27.123' + interval '34 0:0' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 0:0' day to minute  from ${testName2}_interval1;
 unordered rows: 
 //  ( TIMESTAMP '2023-03-19 13:53:27.0' )
 ( TIMESTAMP '2023-03-19 13:53:27.123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:60' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:60' day to minute  from ${testName2}_interval1;
 unordered rows: 
 //  ( TIMESTAMP '2023-03-20 15:53:27.0' )
   ( TIMESTAMP '2023-03-20 15:53:27.123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:61' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:61' day to minute  from ${testName2}_interval1;
 unordered rows: 
 //  ( TIMESTAMP '2023-03-20 15:54:27.0' )
   ( TIMESTAMP '2023-03-20 15:54:27.123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:59' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:59' day to minute  from ${testName2}_interval1;
 unordered rows: 
 //  ( TIMESTAMP '2023-03-20 15:52:27.0' )
 ( TIMESTAMP '2023-03-20 15:52:27.123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '34 3.4:59' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 3.4:59' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 d:59' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 d:59' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 t:59' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 t:59' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 测试:59' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 测试:59' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 -8:59' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 -8:59' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 _@8:59' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 _@8:59' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:1.2' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:1.2' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:d' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:d' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:t' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:t' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:-7' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:-7' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:测试' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:测试' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 25:7@9' day to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 25:7@9' day to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
-select timestamp '2023-02-13 13:53:27.123' + interval '34 0:0:0' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 0:0:0' day to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-19 13:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:60:0' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:60:0' day to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-20 16:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '-34 26:59:1' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '-34 26:59:1' day to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-01-09 10:54:26.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:4:60' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:4:60' day to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-20 15:58:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:4:61' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:4:61' day to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-20 15:58:28.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26.5:59:1' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26.5:59:1' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59.8:1' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59.8:1' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:5.5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:5.5' day to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-03-20 16:52:32.623' )
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:-59:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:-59:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:-5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:-5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 -26:59:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 -26:59:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 d:59:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 d:59:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:d:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:d:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:d' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:d' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 t:59:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 t:59:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:t:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:t:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:t' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:t' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 测试:59:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 测试:59:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:测试t:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:测试t:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:测试t' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:测试t' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 8@1:59:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 8@1:59:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:8@1:5' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:8@1:5' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:8@1' day to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '34 26:59:8@1' day to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
 
-select timestamp '2023-02-13 13:53:27.123' + interval '0:0:0' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '0:0:0' hour to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 13:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '26:45:0' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '26:45:0' hour to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-14 16:38:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '24:60:1' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '24:60:1' hour to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-14 14:53:28.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '24:4:60' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '24:4:60' hour to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-14 13:58:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '24:4:61' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '24:4:61' hour to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-14 13:58:28.123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '23.5:59:1' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23.5:59:1' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:59.8:1' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:59.8:1' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:59:5.5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:59:5.5' hour to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-14 13:52:32.623' )
-select timestamp '2023-02-13 13:53:27.123' + interval '23:-59:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:-59:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:59:-5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:59:-5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '-23:59:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '-23:59:5' hour to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-12 13:54:22.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval 'd:59:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval 'd:59:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '22:d:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '22:d:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:59:d' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:59:d' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval 't:59:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval 't:59:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:t:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:t:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:59:t' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:59:t' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '测试:59:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '测试:59:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:测试t:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:测试t:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:59:测试t' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:59:测试t' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '8@1:59:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '8@1:59:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:8@1:5' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:8@1:5' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:59:8@1' hour to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:59:8@1' hour to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
-select timestamp '2023-02-13 13:53:27.123' + interval '0:0' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '0:0' minute to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 13:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '60:0' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '60:0' minute to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 14:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '0:60' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '0:60' minute to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 13:54:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '0:61' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '0:61' minute to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 13:54:28.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '-59:6' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '-59:6' minute to second  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 12:54:21.123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '59:-6' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '59:-6' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval 'd:6' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval 'd:6' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '6:d' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '6:d' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval 't:6' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval 't:6' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '6:t' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '6:t' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '测试:6' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '测试:6' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '6:测试' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '6:测试' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '8%@4:6' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '8%@4:6' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '6:8%@4' minute to second  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '6:8%@4' minute to second  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
 
-select timestamp '2023-02-13 13:53:27.123' + interval '0:0' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '0:0' hour to minute  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 13:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '24:0' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '24:0' hour to minute  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-14 13:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '50:0' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '50:0' hour to minute  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-15 15:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '0:60' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '0:60' hour to minute  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 14:53:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '0:59' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '0:59' hour to minute  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-13 14:52:27.123' )
-select timestamp '2023-02-13 13:53:27.123' + interval '-23:6' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '-23:6' hour to minute  from ${testName2}_interval1;
 unordered rows: 
   ( TIMESTAMP '2023-02-12 14:47:27.123' )
 
-select timestamp '2023-02-13 13:53:27.123' + interval '23:-6' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:-6' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23.5:6' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23.5:6' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '23:6.5' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '23:6.5' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval 'd:6' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval 'd:6' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '6:d' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '6:d' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval 't:6' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval 't:6' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '6:t' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '6:t' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '测试:6' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '测试:6' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '6:测试' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '6:测试' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '8%@4:6' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '8%@4:6' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
-select timestamp '2023-02-13 13:53:27.123' + interval '6:8%@4' hour to minute  from interval1;
+select timestamp '2023-02-13 13:53:27.123' + interval '6:8%@4' hour to minute  from ${testName2}_interval1;
 failure contains: "NODE1; EC_SYNTAX_ERROR;"
 
-drop table interval1;
+drop table ${testName2}_interval1;
 success
 
 CLEANUP {
 
-  drop table interval1;
-  mute
-
-  bye;
+  drop table ${testName2}_interval1;
   mute
 }

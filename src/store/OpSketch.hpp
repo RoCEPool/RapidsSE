@@ -154,16 +154,16 @@ namespace STORE
     void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
     void vPushAggCol(TypedStack *pExprStack, ePE ePreExp, eDM eExprType,
-                     i8 i_Col, i8 iColPL, i8& i_DupCtr);
-    void vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr, bool bConstraint = false);
+                     i8 i_Col, i8 iColPL);
+    void vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, bool bConstraint = false);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType);
-    void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
+    void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn, bool bConstaint);
     void vPushCount(TypedStack *pExprStack, IntStack *pExprType, Token *pTkn);
     void vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp);
     void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, ePE ePreExp, eDM eLiteral);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, Token *pTkn);
+    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, Token *pTkn, bool bConstaint);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
     TypedStack* pWorkingStack(ePE ePreExp, bool bConstraint);
