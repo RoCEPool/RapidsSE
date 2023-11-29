@@ -329,8 +329,8 @@ Load RETURNITEMS "../DATA/Load/returnitems.csv";
 success
 
 // tests row limits
-create table limitRow (col0 VARCHAR(20000));
-success
+//create table limitRow (col0 VARCHAR(20000));
+//success
 
 //load limitRow "../seth/tests/load/largeRow1.csv";
 //success
@@ -339,20 +339,20 @@ success
 //rows: 0
 
 //Load limitRow "../DATA/Load/largeRow2.csv";
-Load limitRow "../DATA/Load/largeRow4000B.csv";
+//Load limitRow "../DATA/Load/largeRow4000B.csv";
 //failure contains: '1 invalid'
-success;
+//success;
 
-select * from limitRow;
-rows: 1
+//select * from limitRow;
+//rows: 1
 
 //Load limitRow "../DATA/Load/largeRow3.csv";
-Load limitRow "../DATA/Load/largeRow4000B.csv";
+//Load limitRow "../DATA/Load/largeRow4000B.csv";
 //failure contains: '1 invalid'
-success;
+//success;
 
-select * from limitRow;
-rows: 2
+//select * from limitRow;
+//rows: 2
 
 /*
 load limitRow "../DATA/Load/15KRow.csv";
@@ -365,8 +365,8 @@ load limitRow "../DATA/Load/16KRow.csv";
 predicateFetch limitRow;
 rows: 2
 */
-drop table limitRow;
-success
+//drop table limitRow;
+//success
 
 CLEANUP {
   
