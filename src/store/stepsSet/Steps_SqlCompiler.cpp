@@ -281,7 +281,7 @@ void Step::vSqlCompilerDoExplain(void) {
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // get the rowBuffer for explain
-	RowBuffer *pRowBuffer = _pInfoSet(*(m_pLogicUnit)->m_xpRowBuffer);
+	RowBuffer *pRowBuffer = _pRowBuffer(*(m_pLogicUnit)->m_xpRowBuffer);
 
   // Find the explainOp. First get the /__root__/plan node
   QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);

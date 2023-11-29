@@ -9,8 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : compiler_LeaveMarker \handler
 
-  // emit the RowBuffer[]
+  // should have a rowBuffer
   RowBuffer[].isNull not assert
+
+  // RowBuffer should be of type BT_EXPLAIN
+  RowBuffer[].getBufferType BT_EXPLAIN == assert
+
+  // emit the RowBuffer[]
   RowBuffer[].pipeout
 
   EV_M_LEAVE_handler
@@ -21,8 +26,12 @@
 /*----------------------------------------------------------------------------*/
 : compiler_RowBuffer \handler
 
-  // save the pipein in RowBuffer[]
-  Pipein[]\clear to RowBuffer[]
+  // save the pipein in RowBuffer[] if buffer has explain data
+  PipeIn[].bufferType BT_EXPLAIN == if
+    Pipein[]\clear to RowBuffer[]
+  else
+    PipeIn[].pipeout
+  then
 
   true
 ;
