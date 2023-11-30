@@ -164,7 +164,6 @@ void AdaptorWL::vRepair(Object* pObject)
   _static_
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(pObject);
-
   delete pAdaptorWL;
 }
 
