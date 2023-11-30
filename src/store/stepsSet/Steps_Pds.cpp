@@ -16,7 +16,9 @@ void Step::vAddSteps_Pds(void)
 {
   vAddStep("Pds[]"_Stz,                     &Step::vPdsGet);
 
+  vAddStep("Pds[].bufferId"_Stz  ,          &Step::vPdsGetBufferIdAsAddr);
   vAddStep("Pds[].delete"_Stz  ,            &Step::vPdsDelete);
+  vAddStep("Pds[].isNull"_Stz  ,            &Step::vPdsIsNull);
   vAddStep("Pds[].set"_Stz  ,               &Step::vPdsSet);
 }
 
@@ -33,6 +35,20 @@ void Step::vPdsGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Pds[].bufferId -- fetch buffer id as address                               */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsGetBufferIdAsAddr(void)
+{
+  ENTRY();
+
+  Pds* pPds = *m_pLogicUnit->m_xpPds;
+
+  m_pDataStack->vPushPtr((Object*)pPds->oGetBufferId().m_pvAsAddress);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Pds[].delete -- operand delete                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsDelete(void)
@@ -42,6 +58,18 @@ void Step::vPdsDelete(void)
   AM::vDeleteOperand(*m_pLogicUnit->m_xpPds,nullptr);
 
   m_pLogicUnit->m_xpPds = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].isNull --                                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPds.bIsNull() ? 1 : 0);
 
   EXIT();
 }

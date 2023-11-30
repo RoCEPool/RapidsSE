@@ -20,7 +20,6 @@ namespace BASE
     i8 m_nPaddingPerBlk; // Size of padding for each Skip List Block
     u2 m_uFreeListRootOffset;
     i8 m_iFreeListEntries; // Number of free entries available (Does not include dummy root node)
-//    Decider m_oDecider;
 
     CompareFunc m_fpCompare;  // compare function
 
@@ -50,6 +49,7 @@ namespace BASE
     void  operator delete(void*);
 
     Pds(RowPix* pRowPix);
+    Pds(StreamDef* pStreamDef, bool bAddKeyHash);
     Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix = nullptr);
     ~Pds(void) noexcept(false);
 
@@ -73,12 +73,14 @@ namespace BASE
     SkipListBlock*  pFirstBlock(void);
     i8              nFreeBytes(void);
     void            vInitPix(RowPix* pRowPix);
+    void            vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);
     i8              nItems(void);
     void*           aLastUsableByteAddr(void);
     i8              iLastUsableOffset(void);
     i8              iNumEntries(i8 iLevel);
     void            vPrintRows(File* pFilePtr, Stz* szLabel);
     void            vReset(void);
+    RowPix*         pRowPix(void);
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);
     void            vValidate(void);
@@ -103,7 +105,9 @@ namespace BASE
     void      vDepositColVal(i8 i_Col, i8 iColVal);
     void      vDepositColVal(Stz* szColVal, i8 iMaxStzLen);
     String_d* azDepositString_begin(i8 nSize);
+    void      vDepositString_update(i8 nTotalSize);
     void      vDepositString_end(i8 nSize);
+    void      vDiscardInvalidRow(void);
 
   public:
     Footer* aFooter(void);

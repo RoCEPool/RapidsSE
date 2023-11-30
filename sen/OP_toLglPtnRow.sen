@@ -60,6 +60,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on EV_D_PDSROWBUFFER ...                                              EACH */
+/*----------------------------------------------------------------------------*/
+: toLglPtnRow_PdsRowBuffer \handler
+
+  // check for low memory
+  /*
+  attachMap::isLowMemory if
+    EC_LOW_MEMORY op__execErr
+    PipeIn[].delete
+    true
+    exit
+  then
+ */
+  PipeIn[]\clear to Pds[]
+  Table[] Pds[] toLglPtnRow[].convert
+  Pds[].delete
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I toLglPtnRow[].completed to RowBuffer[]
+
+    begin
+      RowBuffer[].isNull not
+    while
+      RowBuffer[].pipeOut
+      I toLglPtnRow[].completed to RowBuffer[]
+    repeat
+
+  loop
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_M_EOS ...                                                       END */
 /*----------------------------------------------------------------------------*/
 : toLglPtnRow_EosMarker \handler
@@ -100,6 +135,7 @@
   find: toLglPtnRow_EosMarker   EV_M_EOS         [op].handler!
   find: toLglPtnRow_DataMarker  EV_M_DATAPULSE   [op].handler!
   find: toLglPtnRow_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: toLglPtnRow_PdsRowBuffer EV_D_PDSROWBUFFER   [op].handler!
   find: toLglPtnRow_StartMarker EV_M_START       [op].handler!
 
   op__loop

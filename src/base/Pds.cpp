@@ -7,6 +7,8 @@
 
 #include "Pds.hpp"
 #include "MiniHeap_t.hpp"
+#include "eCX.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -114,6 +116,72 @@ Pds::Pds(RowPix* pRowPix)
 
   // Init RowPix object -------------------------------
   vInitPix(pRowPix);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash)
+    : DataBuffer(CN_PDS, false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(CacheLine::bOnCacheLineBoundary(this));
+
+  i8 iRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
+
+  // Calculate block size and padding ------------------
+  m_nBlockSize = sizeof(SkipListNode) + iRowSizeProper + sizeof(m_iSynthRowKey);
+  m_nPaddingPerBlk = 0;
+
+  // Ensure block size is a multiple of 16 bytes
+  i8 iMod = m_nBlockSize % 16;
+  if(iMod != 0) {
+    m_nPaddingPerBlk = 16 - iMod;
+    m_nBlockSize += m_nPaddingPerBlk;
+  }
+
+  m_iSynthRowKey  = 0;
+
+  // Init temp variables -------------------------------
+  m_aRowCur  = nullptr;
+  m_i_RowCrs = C_UNKNOWN;
+  m_i_ColCrs = C_UNKNOWN;
+  m_aStzSet  = nullptr;
+  m_iCurStzSetSpace = 0;
+
+  // Set compare function ------------------------------
+  m_fpCompare = iIntCompare;
+
+  // Initialise the workspace --------------------------
+  m_iFreeListEntries = 0;
+  m_xWsp.vInit(m_nBlockSize, 0);
+
+  // Add dummy root nodes to the Free and In Use skip lists
+  // Note: Dummy root blocks are zeroed since we don't know what the key type is
+
+  SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
+  MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
+  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
+  // Assert the offset isn't some large garbage value
+  RASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
+
+  SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
+  MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
+  m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
+  RASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
+
+
+  // Reset the number of entries to zero since we don't count the dummy blocks
+  m_iFreeListEntries = 0;
+  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
+    m_iNumEntries[i_Level] = 0;
+  }
+
+  // Init RowPix object -------------------------------
+  vInitPix(pStreamDef, bAddKeyHash);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -262,6 +330,7 @@ Row* Pds::pAllotRow(void)
   new(aRowCur) Row();
 
   m_aRowCur = aRowCur;
+  m_i_ColCrs = 0;
 
   // If this Row contains strings,
   // allot a String Set from the tail of the Pds
@@ -302,6 +371,7 @@ Row* Pds::pAllotRowFull(char** aaStzSet)
   new(aRowCur) Row();
 
   m_aRowCur = aRowCur;
+  m_i_ColCrs = 0;
 
   // If this Row contains strings,
   // allot a String Set from the tail of the Pds
@@ -350,7 +420,6 @@ Row* Pds::pCopyRow(Row* pRow)
 
   i8 nCols = m_oRowPix.m_nColumns;
   i8 i_Col;
-  m_i_ColCrs = 0;
   for (i_Col = 0; i_Col < nCols; i_Col++) {
 
     eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
@@ -400,7 +469,6 @@ Row* Pds::pCopyRowArray(i8* pRowArray)
 
 	i8 nCols = m_oRowPix.m_nColumns;
 	i8 i_Col;
-	m_i_ColCrs = 0;
 	for (i_Col = 0; i_Col < nCols; i_Col++) {
 
 		eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
@@ -859,6 +927,7 @@ SkipListBlock* Pds::pFirstBlock(void)
 i8 Pds::nFreeBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  // Note, does not include free list entries
   return m_xWsp.nFreeBytes();
 }
 
@@ -895,6 +964,132 @@ void Pds::vInitPix(RowPix* pRowPix)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* Init the RowPix structure from a streamdef                                 */
+/*----------------------------------------------------------------------------*/
+void Pds::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
+{
+
+  i8 nColumns = pStreamDef->nColumns();
+  m_oRowPix.m_sPixNm   = pStreamDef->szStreamDefNm();
+  m_oRowPix.m_nColumns = nColumns;
+
+  ColPix* axaColPixDst = m_oRowPix.m_xaColPix;
+
+  i8 nNameSize;
+  i8 nStzOfs;
+
+
+  m_oRowPix.m_nNameOffset = sizeof(ColPix)
+                              * ( nColumns + (bAddKeyHash ? 1 : 0) );
+  m_oRowPix.m_nTotalChars = 0;
+
+  i8 iBufSpaceRemaining = (i8) (sizeof(m_oRowPix.m_xaColPix) +
+                                sizeof(m_oRowPix.m_baPixArea) -
+                                m_oRowPix.m_nNameOffset);
+
+  char* azNames = aAdd<char*>(axaColPixDst,m_oRowPix.m_nNameOffset);
+  char* azColNmDst = azNames;
+
+  i8 i_Col;
+
+  for (i_Col = 0; i_Col < nColumns; i_Col++) {
+
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
+
+    axColPixDst->m_uNumber   = (u8)i_Col;
+    // name
+    axColPixDst->m_uKind     = (u8)CX_USERCOL;
+    axColPixDst->m_uTypeId   = (u8)pColumn->xColumnTypeId().iIdVal();
+    axColPixDst->m_uDatum    = (u8)pColumn->eDatum();
+    axColPixDst->m_uLength   = (u8)pColumn->iColumnLength();
+    axColPixDst->m_uScale    = (u8)pColumn->iColumnScale();
+    axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
+    axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
+    axColPixDst->m_uSpare    = (u8)0;
+
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, pColumn->szColNm()->azChar());
+    nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
+
+    nStzOfs = nDifference(axColPixDst,azColNmDst);
+    axColPixDst->m_uName = nStzOfs;
+
+    azColNmDst += nNameSize;
+    m_oRowPix.m_nTotalChars += nNameSize;
+
+//    if (DM_VCH == axColPixDst->m_uDatum) {
+//      axColPixDst->m_uLength = 200;
+//    }
+  }
+
+  // i_Col falls thru
+
+  if (bAddKeyHash) {
+
+    //m_oRowPix.vPrint();
+    ASSERT(! m_oRowPix.m_nExtraCols);
+
+    m_oRowPix.m_nColumns++;
+    m_oRowPix.m_nExtraCols = 1;
+    m_oRowPix.m_bPtnHash = true;
+
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
+
+    axColPixDst->m_uNumber   = (u8)i_Col;
+    // name
+    axColPixDst->m_uKind     = (u8)CX_PTNHASH;
+    axColPixDst->m_uTypeId   = (u8)(TypeId::xIdOf(CT_INTEGER).iIdVal());
+    axColPixDst->m_uDatum    = (u8)DM_INT;
+    axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
+    axColPixDst->m_uScale    = (u8)0;
+    axColPixDst->m_bNullable = (u8)false;
+    axColPixDst->m_bPtnKey   = (u8)false;
+    axColPixDst->m_uSpare    = (u8)0;
+
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
+    nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
+
+    nStzOfs = nDifference(axColPixDst,azColNmDst);
+    axColPixDst->m_uName = nStzOfs;
+
+    azColNmDst += nNameSize;
+    m_oRowPix.m_nTotalChars += nNameSize;
+
+    //m_oRowPix.vPrint();
+  }
+
+  m_oRowPix.m_nTotalChars++;
+  * azColNmDst = '\0';
+
+  m_oRowPix.m_bInitialised = true;
+
+  i8 nCols = m_oRowPix.m_nColumns;
+  i8 iTotalStzArea = 0;
+
+  // Calculate total size of string area needed per row
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+    if (DM_VCH == eDatum) {
+      i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
+
+      if (nBytes) {
+        iTotalStzArea += String_d::iBytesToAlloc(nBytes);
+      }
+    }
+  }
+  // Set size of StzSet area
+  vStzSetSize(iTotalStzArea);
+
+  i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
+
+  // Assert the space we are allocating for the row + key is less than or equal to the block size
+  RASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
+
+}
 /*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
 /*----------------------------------------------------------------------------*/
@@ -978,6 +1173,15 @@ void Pds::vReset(void)
   m_i_ColCrs = C_UNKNOWN;
   m_aStzSet  = nullptr;
   m_iCurStzSetSpace = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return address of RowPix                                                   */
+/*----------------------------------------------------------------------------*/
+RowPix* Pds::pRowPix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  return &m_oRowPix;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1317,9 +1521,8 @@ void Pds::vDepositColVal(Stz* szColVal, i8 iMaxStzLen)
 
   azStringDyn->vCopy(szColVal);
   i8 iTotalSize = azStringDyn->iTotalSize();
-  RASSERT((m_iCurStzSetSpace - iTotalSize) >= 0);
 
-  m_iCurStzSetSpace -= iTotalSize;
+  vDepositString_update(iTotalSize);
 
   // TODO: Arjun - Check with Ray: nLen or iMaxStzLen?
   vDepositString_end(iTotalSize);
@@ -1348,6 +1551,18 @@ String_d* Pds::azDepositString_begin(i8 nSize)
 }
 
 /*--------------------------------------------------------------------------*/
+/* update the remaining StzSetSpace                                         */
+/*--------------------------------------------------------------------------*/
+void Pds::vDepositString_update(i8 nTotalSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT((m_iCurStzSetSpace - nTotalSize) >= 0);
+
+  m_iCurStzSetSpace -= nTotalSize;
+}
+
+/*--------------------------------------------------------------------------*/
 /* take bytes for deposited string                                          */
 /*--------------------------------------------------------------------------*/
 void Pds::vDepositString_end(i8 nSize)
@@ -1355,6 +1570,32 @@ void Pds::vDepositString_end(i8 nSize)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
   m_aStzSet = aAdd<void*>(m_aStzSet, nSize);
+}
+
+/*--------------------------------------------------------------------------*/
+/* discard current invalid/incomplete row                                   */
+/*--------------------------------------------------------------------------*/
+void Pds::vDiscardInvalidRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  bool bResult = bDelete(&m_iSynthRowKey);
+
+  if (! bResult) {
+    vTrace("Pds failed to discard invalid row with key: %lld"_Stz, m_iSynthRowKey);
+    return;
+  }
+
+  m_iSynthRowKey--;
+
+  m_aRowCur = nullptr;
+  m_i_ColCrs = 0;
+
+  m_iCurStzSetSpace = 0;
+  m_aStzSet = nullptr;
+
+  m_xWsp.vGiveTail(iStzSetSize());
+
 }
 
 /*----------------------------------------------------------------------------*/

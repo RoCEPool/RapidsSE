@@ -12,8 +12,6 @@ namespace STORE
   private:
   
     LglBufSet  m_oLglBufSet;
-  
-    RowBuffer* m_pFromRowBuffer; // the
 
     RowBuffer* m_pIntoRowBuffer;
   
@@ -30,13 +28,14 @@ namespace STORE
     static void vRepairHashSet(Object* pObject);
 
     void vConvert(Table* pTable, RowBuffer* pRowBuffer);
+    void vConvertViaPdsRowBuffer(Table* pTable, Pds* pPdsRowBuffer);
   
     RowBuffer* pCompleted(LglPtn tLglPtn);
     RowBuffer* pDangling(LglPtn tLglPtn);
   
   private:
-    void vCopyRow(LglPtn tLglPtn, Row* aRowSrc);
-    void vNewDstRow(LglPtn tLglPtn);
+    void vCopyRow(LglPtn tLglPtn, Row* aRowSrc, RowPix* pRowPix);
+    void vNewDstRow(LglPtn tLglPtn, RowPix* pFromRowPix);
 
     Footer* aFooter(void);
   };

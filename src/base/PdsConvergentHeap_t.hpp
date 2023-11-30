@@ -176,9 +176,14 @@ void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vGiveTail(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
 
-  ASSERT(m_nUsedHead  + m_nUsedTail <= AREA);
+  RASSERT(m_nUsedHead  + m_nUsedTail <= AREA);
 
+  RASSERT(m_nUsedTail >= nBytes);
   m_nUsedTail -= nBytes;
+
+  m_nTailItems--;
+
+  RASSERT(m_nTailSize >= 0);
 
   // !! !! !! !! !! !! !! !! !!
   // used bytes were changed

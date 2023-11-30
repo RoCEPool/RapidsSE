@@ -1681,7 +1681,9 @@ void vJobIdLastJobIdFetch(void);
 
   // pds
   void vPdsGet(void);
+  void vPdsGetBufferIdAsAddr(void);
   void vPdsDelete(void);
+  void vPdsIsNull(void);
   void vPdsSet(void);
 
   // PayloadObj

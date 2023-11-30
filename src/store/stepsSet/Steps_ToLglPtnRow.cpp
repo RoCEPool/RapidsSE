@@ -52,21 +52,30 @@ void Step::vToLglPtnRowCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toLglPtnRow[].convert -- convert row buffer                                */
+/* toLglPtnRow[].convert -- convert pds row buffer                            */
 /*----------------------------------------------------------------------------*/
 void Step::vToLglPtnRowConvert(void)
 {
   ENTRY();
 
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
-    
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
+  Object* pObject = (m_pDataStack->pPopPtr(__func__));
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  if (pObject->eGetClassNo() == BASE::CN_PDS) {
+    Pds* pPdsRowBuffer = _pPds(pObject);
+    pToLglPtnRow->vConvertViaPdsRowBuffer(pTable, pPdsRowBuffer);
+  } else {
+    RowBuffer* pRowBuffer = _pRowBuffer(pObject);
+    pToLglPtnRow->vConvert(pTable, pRowBuffer);
+  }
+
+
 
   //vTrace("Hey, I got table:%s\n"_Stz, pTable->szTableNm()->azChar());
 
-  pToLglPtnRow->vConvert(pTable, pRowBuffer);
+
   
   //delete pRowBuffer;
   
