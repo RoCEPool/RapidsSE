@@ -6,21 +6,6 @@
 #include "sqlBaseVisitor.h"
 #include "SqlException.hpp"
 
-
-//#define __NOT_IMPL(FEATURE) \
-//  SyntaxException::vThrowNotImplemented(m_szCurrentFile, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
-//  return nullptr; \
-//EndDefine
-//
-//#define __NOT_IMPL2(FEATURE) \
-//  SyntaxException::vThrowNotImplemented(m_szCurrentFile, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE ); \
-//  return nullptr; \
-//EndDefine
-//
-//#define __NOT_IMPL3(FEATURE) \
-//SyntaxException::vThrowNotImplemented(m_szCurrentFile, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
-//EndDefine
-
 namespace STORE
 {
 class CommandParser : public Object, public Parser::sqlBaseVisitor
