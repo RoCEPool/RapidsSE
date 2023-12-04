@@ -11,17 +11,17 @@
 #include "TypeId.hpp"
 
 #define __NOT_IMPL(FEATURE) \
-  SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
+  SyntaxException::vThrowNotImplemented(nullptr, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
   return nullptr; \
 EndDefine
 
 #define __NOT_IMPL2(FEATURE) \
-  SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE ); \
+  SyntaxException::vThrowNotImplemented(nullptr, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE ); \
   return nullptr; \
 EndDefine
 
 #define __NOT_IMPL3(FEATURE) \
-SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
+SyntaxException::vThrowNotImplemented(nullptr, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
 EndDefine
 
 namespace Parser

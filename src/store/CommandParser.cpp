@@ -59,6 +59,8 @@ CommandParser::CommandParser(TagSet* pCommonTagSet, Task* pParentTask)
   m_pArgValues  = nullptr;
   m_pChildTasks = nullptr;
 
+  m_szCurrentFile = nullptr; // The file being parsed, if any
+
   _checkInitialised_(CN_COMMANDPARSER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPARSER,_FOOTER_);
@@ -81,6 +83,8 @@ CommandParser::~CommandParser(void) noexcept
 
   delete m_pArgValues;
   delete m_pChildTasks;
+
+  m_szCurrentFile = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,8 +94,10 @@ CommandParser::~CommandParser(void) noexcept
 /*----------------------------------------------------------------------------*/
 /* Parse any SE system command                                                */
 /*----------------------------------------------------------------------------*/
-TaskList* CommandParser::pParseCommand(Stz* szCommand)
+TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
 {
+  m_szCurrentFile = szFilePath;
+
   // The thing that gets told of parsing errors.
   Parser::ErrorListener errorListener;
 
@@ -110,7 +116,7 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand)
   // Check for any syntax errors
   if (errorListener.bGotError()) {
     //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
-    Parser::SyntaxException::vThrowAntlr(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
+    Parser::SyntaxException::vThrowAntlr(szFilePath, errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
   }
 
   // Create a parser from the stream of tokens.
@@ -126,7 +132,7 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand)
   // Check for any syntax errors
   if (errorListener.bGotError()) {
     //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
-    Parser::SyntaxException::vThrowAntlr(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
+    Parser::SyntaxException::vThrowAntlr(szFilePath, errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
   }
 
   // Visit the parse tree that resulted from the above parsing.
@@ -290,7 +296,7 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
     if (!pTask) {
       i8 iLine = pCtx->start->getLine();
       i8 iColumn = pCtx->start->getCharPositionInLine();
-      Parser::SyntaxException::vThrow(iLine, iColumn, EC_INVALID_COMMAND);
+      Parser::SyntaxException::vThrow(m_szCurrentFile, iLine, iColumn, EC_INVALID_COMMAND);
     }
 
     m_pTaskList->vGrabLock();
@@ -860,7 +866,7 @@ antlrcpp::Any CommandParser::visitFileCmd(Parser::sqlParser::FileCmdContext *pCt
   CommandParser* nestedParser = new CommandParser(m_pCurStmtTagSet, m_pParentTask);
 
   try {
-    m_pChildTasks = nestedParser->pParseCommand(sFileContents.szStz());
+    m_pChildTasks = nestedParser->pParseCommand(sFileContents.szStz(), sFilePath.szStz());
 
   } catch (Parser::SyntaxException& e) {
     delete nestedParser;

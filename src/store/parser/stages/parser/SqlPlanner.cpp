@@ -257,7 +257,7 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   // Check for any syntax errors
   if (errorListener.bGotError()) {
     //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
-    SyntaxException::vThrowAntlr(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
+    SyntaxException::vThrowAntlr(nullptr, errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
   }
   
   // Visit the parse tree that resulted from the above parsing.
@@ -1689,7 +1689,8 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     if (pHavingFilterOp)  delete pHavingFilterOp;
     if (pWhereFilterOp)   delete pWhereFilterOp;
 
-    SyntaxException::vThrowNotImplemented(pCtx->start->getLine(),
+    SyntaxException::vThrowNotImplemented(nullptr,
+                                          pCtx->start->getLine(),
                                           pCtx->start->getCharPositionInLine(),
                                           "No table source specified"_Stz);
   }
@@ -2411,7 +2412,7 @@ antlrcpp::Any SqlPlanner::visitInOp(sqlParser::InOpContext *pCtx)
 
   if (m_pExprStack->nItems() < 2) {
     vRestoreMemberContext(&xContext);
-    SyntaxException::vThrow(-1, -1, EC_INSUFFICIENT_EXPRS, ": %s"_Stz, "IN clause");
+    SyntaxException::vThrow(nullptr, -1, -1, EC_INSUFFICIENT_EXPRS, ": %s"_Stz, "IN clause");
   }
 
   ASSERT(m_pExprStack->nItems() >= 2);
@@ -3322,21 +3323,21 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
   bool bResult = StrLib::bExtractDecimal(&pcCrs, iMantissa, iPrecision + iScale, iScale);
 
   if (!bResult) {
-    SyntaxException::vThrow(iLine, iColumn,
+    SyntaxException::vThrow(nullptr, iLine, iColumn,
                             EC_INVALID_VALUE,
                             ": Unable to parse decimal literal '%s'"_Stz, szStr);
   }
 
   // Check for overflows. This is dependent on the size of components of the Bcd_T structure
   if (iScale > 127 || iScale < -128) {
-    SyntaxException::vThrow(iLine, iColumn,
+    SyntaxException::vThrow(nullptr, iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
                             ": Max/min decimal scale supported is [-128, 127] : %s"_Stz, szStr);
   }
 
   if (iMantissa > 36028797018963967 || iMantissa < -36028797018963967) {
     // iDecimal > (2^55 - 1) || iDecimal < (-2^55 - 1)
-    SyntaxException::vThrow(iLine, iColumn,
+    SyntaxException::vThrow(nullptr, iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
                             ": Max/min decimal precision supported is [-360,287,970,189,639.67, 360,287,970,189,639.67] : %s"_Stz, szStr);
   }
@@ -3368,7 +3369,8 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_DATE_FORMAT,
                             ": date string is too large"_Stz);
@@ -3379,7 +3381,8 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
   vCleanString(pCtx, sBuf);
 
   if (sBuf.nLength() != 10) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_DATE_FORMAT);
   }
@@ -3388,7 +3391,8 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
 
   // Validate the format
   if (pcBuf[4] != '-' || pcBuf[7] != '-') {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_DATE_FORMAT);
   }
@@ -3401,7 +3405,8 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[6]) ||
       !StrLib::bIsDigit(pcBuf[8]) ||
       !StrLib::bIsDigit(pcBuf[9]) ) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_DATE_FORMAT);
   }
@@ -3444,7 +3449,8 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIME_FORMAT,
                             ": time string is too large"_Stz);
@@ -3459,7 +3465,8 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
   //012345678901234
 
   if (nLen < 8 || nLen > 15) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIME_FORMAT);
   }
@@ -3468,7 +3475,8 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
 
   // Validate the format
   if (pcBuf[2] != ':' || pcBuf[5] != ':') {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIME_FORMAT);
   }
@@ -3479,7 +3487,8 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[4]) ||
       !StrLib::bIsDigit(pcBuf[6]) ||
       !StrLib::bIsDigit(pcBuf[7]) ) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIME_FORMAT);
   }
@@ -3536,7 +3545,8 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIMESTAMP_FORMAT,
                             ": timestamp string is too large"_Stz);
@@ -3548,7 +3558,8 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   i8 iLen = sBuf.nLength();
   if (iLen < 19) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIMESTAMP_FORMAT);
   }
@@ -3557,7 +3568,8 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   // Validate the format
   if (pcBuf[4] != '-' || pcBuf[7] != '-' || pcBuf[10] != ' ' || pcBuf[13] != ':' || pcBuf[16] != ':') {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIMESTAMP_FORMAT);
   }
@@ -3576,7 +3588,8 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[15]) ||
       !StrLib::bIsDigit(pcBuf[17]) ||
       !StrLib::bIsDigit(pcBuf[18]) ) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_TIMESTAMP_FORMAT);
   }
@@ -3586,7 +3599,8 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   if (iLen > 19) {
     if (pcBuf[19] != '.') {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_TIMESTAMP_FORMAT);
     }
@@ -3594,13 +3608,15 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
     for (i8 iIdx = 20; iIdx < iLen; iIdx++) {
       if (iIdx > 25) {
         // can only have 6 digits of microseconds
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_TIMESTAMP_FORMAT);
       }
 
       if (!StrLib::bIsDigit(pcBuf[iIdx])) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_TIMESTAMP_FORMAT);
       }
@@ -3670,7 +3686,8 @@ Ivl SqlPlanner::xCleanInterval(sqlParser::StringLiteralContext *pCtx, eIV eIvlTy
   s256 sBuf;
 
   if ((i8) sStr.length() > sBuf.nSpace()) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is too large"_Stz);
@@ -3679,7 +3696,8 @@ Ivl SqlPlanner::xCleanInterval(sqlParser::StringLiteralContext *pCtx, eIV eIvlTy
   vCleanString(sStr, sBuf);
 
   if (sBuf.nLength() == 0) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is empty"_Stz);
@@ -3759,7 +3777,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -3776,7 +3795,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -3784,7 +3804,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
 
   // Must have at least one digit
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -3796,7 +3817,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a single field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -3805,7 +3827,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
     // Got a character we didn't expect after the digits
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -3817,7 +3840,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -3832,7 +3856,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
   switch(eIvlType) {
     case IV_YEAR:
       if (uVal > C_IVL_YEAR_MAX) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval year value exceeds maximum of %lld"_Stz,
@@ -3843,7 +3868,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
 
     case IV_MONTH:
       if (uVal > C_IVL_MONTH_MAX) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval month value exceeds maximum of %lld"_Stz,
@@ -3854,7 +3880,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
 
     case IV_DAY:
       if (uVal > C_IVL_DAY_MAX) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval day value exceeds maximum of %lld"_Stz,
@@ -3865,7 +3892,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
 
     case IV_HOUR:
       if (uVal > C_IVL_HOUR_MAX) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval hour value exceeds maximum of %lld"_Stz,
@@ -3876,7 +3904,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
 
     case IV_MINUTE:
       if (uVal > C_IVL_MINUTE_MAX) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval minute value exceeds maximum of %lld"_Stz,
@@ -3911,7 +3940,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -3928,7 +3958,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -3940,7 +3971,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
     if (!bResult) {
       // Out of range of C_MAX_INT and definitely out of range of whole seconds.
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": absolute interval seconds value exceeds maximum of %lld"_Stz,
@@ -3949,7 +3981,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
     if (*psChar != '.' && !StrLib::bIsWhite(*psChar) && psChar != psEnd) {
       // Got a character we didn't expect
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": non-digit value '%c' encountered"_Stz,
@@ -3968,7 +4001,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
       if (!bResult) {
         // Out of range of C_MAX_INT and definitely out of range of microseconds.
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -3982,7 +4016,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
       // Were there additional numbers specified in excess of microseconds?
       if (psChar != psEnd && StrLib::bIsDigit(*psChar)) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -3991,7 +4026,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
       if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
         // Got a character we didn't expect
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": unexpected character '%c' encountered"_Stz,
@@ -4001,7 +4037,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
   } else if (!bGotSecVal) {
     // No whole seconds or fractional seconds were provided
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": no whole or fractional seconds specified"_Stz);
@@ -4012,7 +4049,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4021,7 +4059,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
   // Check bounds
   if (uSecVal > C_IVL_SEC_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval seconds value exceeds maximum of %lld"_Stz,
@@ -4029,7 +4068,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
   }
 
   if (uFracVal > C_IVL_USEC_MAX_IN_1_SEC) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -4038,7 +4078,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 
   u8 uCombinedMicros = (uSecVal * C_1M) + uFracVal;
   if (uCombinedMicros > C_IVL_USEC_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval seconds value exceeds maximum of %lld.%06lld"_Stz,
@@ -4073,7 +4114,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4090,7 +4132,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4098,7 +4141,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the year value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4110,7 +4154,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a year field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4120,13 +4165,15 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
   // We should have a dash next
   if (*psChar != '-') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected '-' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected '-' separator, got '%c' instead"_Stz,
@@ -4136,7 +4183,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
   ++psChar; // Skip over the dash
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4144,7 +4192,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the month value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4156,7 +4205,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a year field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4166,7 +4216,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
     // Got a character we didn't expect after the digits
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4178,7 +4229,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4192,7 +4244,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
       uMonthVal > C_IVL_MONTH_MAX ||
       uCombinedMonths > C_IVL_MONTH_MAX) {
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds maximum of %lld years, %lld months"_Stz,
@@ -4227,7 +4280,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4244,7 +4298,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4252,7 +4307,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
 
   // Must have at least one digit for the day value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4264,7 +4320,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a day field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4274,13 +4331,15 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
   // We should have a space next
   if (*psChar != ' ') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ' ' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
@@ -4291,7 +4350,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4299,7 +4359,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
 
   // Must have at least one digit for the hour value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4311,7 +4372,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of an hour field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4321,7 +4383,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
     // Got a character we didn't expect after the digits
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4333,7 +4396,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4346,7 +4410,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
       uHourVal > C_IVL_HOUR_MAX ||
       uCombinedSec > C_IVL_SEC_MAX) {
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds maximum of %lld days, %lld hours"_Stz,
@@ -4382,7 +4447,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4399,7 +4465,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4407,7 +4474,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the day value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4419,7 +4487,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a day field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4429,13 +4498,15 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
   // We should have a space next
   if (*psChar != ' ') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ' ' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
@@ -4446,7 +4517,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4454,7 +4526,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the hour value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4466,7 +4539,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of an hour field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4476,13 +4550,15 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
   // We should have a colon next
   if (*psChar != ':') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ':' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
@@ -4491,7 +4567,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
   ++psChar;
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4499,7 +4576,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the minute value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4511,7 +4589,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a minute field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4520,7 +4599,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
     // Got a character we didn't expect after the digits
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4532,7 +4612,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4549,7 +4630,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
       uMinVal  > C_IVL_MINUTE_MAX ||
       uCombinedSec > C_IVL_SEC_MAX) {
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds maximum of %lld days, %lld hours, %lld minutes"_Stz,
@@ -4588,7 +4670,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4605,7 +4688,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4613,7 +4697,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the day value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4625,7 +4710,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a day field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4635,13 +4721,15 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   // We should have a space next
   if (*psChar != ' ') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ' ' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
@@ -4652,7 +4740,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4660,7 +4749,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the hour value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4672,7 +4762,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of an hour field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4682,13 +4773,15 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   // We should have a colon next
   if (*psChar != ':') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ':' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
@@ -4697,7 +4790,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   ++psChar;
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4705,7 +4799,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the minute value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4717,7 +4812,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a minute field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4727,13 +4823,15 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   // We should have a colon next
   if (*psChar != ':') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ':' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
@@ -4742,7 +4840,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   ++psChar;
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4750,7 +4849,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Must have at least one digit for the second value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4762,7 +4862,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a minute field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4779,7 +4880,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
       if (!bResult) {
         // Out of range of C_MAX_INT and definitely out of range of microseconds.
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -4793,7 +4895,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
       // Were there additional numbers specified in excess of microseconds?
       if (psChar != psEnd && StrLib::bIsDigit(*psChar)) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -4805,7 +4908,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
     // Got a character we didn't expect after the digits
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4817,7 +4921,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4831,7 +4936,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
                     uSecVal;
 
   if (uFracVal > C_IVL_USEC_MAX_IN_1_SEC) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -4845,7 +4951,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
       uCombinedSec > C_IVL_SEC_MAX ||
       (uCombinedSec * C_1M + uFracVal) > C_IVL_USEC_MAX) {
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds maximum of %lld days, %lld hours, %lld minutes, %lld.%06lld seconds"_Stz,
@@ -4883,7 +4990,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4900,7 +5008,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4908,7 +5017,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // Must have at least one digit for the hour value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4920,7 +5030,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of an hour field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4930,13 +5041,15 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
   // We should have a colon next
   if (*psChar != ':') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ':' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
@@ -4945,7 +5058,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
   ++psChar;
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -4953,7 +5067,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // Must have at least one digit for the minute value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -4965,7 +5080,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a minute field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -4974,7 +5090,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
     // Got a character we didn't expect after the digits
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -4986,7 +5103,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -5002,7 +5120,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
       uMinVal  > C_IVL_MINUTE_MAX  ||
       uCombinedSec > C_IVL_SEC_MAX) {
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds maximum of %lld hours, %lld minutes"_Stz,
@@ -5039,7 +5158,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -5056,7 +5176,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -5064,7 +5185,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // Must have at least one digit for the hour value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -5076,7 +5198,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of an hour field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -5086,13 +5209,15 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
   // We should have a colon next
   if (*psChar != ':') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ':' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
@@ -5101,7 +5226,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
   ++psChar;
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -5109,7 +5235,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // Must have at least one digit for the minute value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -5121,7 +5248,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a minute field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -5131,13 +5259,15 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
   // We should have a colon next
   if (*psChar != ':') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ':' separator, got end of string instead"_Stz);
     }
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
@@ -5146,7 +5276,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
   ++psChar;
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -5154,7 +5285,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // Must have at least one digit for the second value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -5166,7 +5298,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a minute field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -5183,7 +5316,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
       if (!bResult) {
         // Out of range of C_MAX_INT and definitely out of range of microseconds.
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -5197,7 +5331,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
       // Were there additional numbers specified in excess of microseconds?
       if (psChar != psEnd && StrLib::bIsDigit(*psChar)) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -5209,7 +5344,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
     // Got a character we didn't expect after the digits
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -5221,7 +5357,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -5234,7 +5371,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
                     uSecVal;
 
   if (uFracVal > C_IVL_USEC_MAX_IN_1_SEC) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -5247,7 +5385,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
       uCombinedSec > C_IVL_SEC_MAX  ||
       (uCombinedSec * C_1M + uFracVal) > C_IVL_USEC_MAX) {
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds maximum of %lld hours, %lld minutes, %lld.%06lld seconds"_Stz,
@@ -5285,7 +5424,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
   while (*psChar == ' ') { ++psChar; }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -5302,7 +5442,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
   }
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -5310,7 +5451,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
   // Must have at least one digit for the hour value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -5319,7 +5461,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
   // Must have at least one digit for the minute value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -5331,7 +5474,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a minute field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -5341,13 +5485,15 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
   // We should have a colon next
   if (*psChar != ':') {
     if (*psChar == 0) {
-      SyntaxException::vThrow(pCtx->start->getLine(),
+      SyntaxException::vThrow(nullptr,
+                              pCtx->start->getLine(),
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": expected ':' separator, got end of string instead"_Stz);
     }
     
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
@@ -5356,7 +5502,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
   ++psChar;
 
   if (psChar == psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": interval string is incomplete or invalid"_Stz);
@@ -5364,7 +5511,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
   // Must have at least one digit for the second value
   if (!StrLib::bIsDigit(*psChar)) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": non-digit value '%c' encountered"_Stz,
@@ -5376,7 +5524,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
   if (!bResult) {
     // Out of range of C_MAX_INT and definitely out of range of a minute field value.
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds integer maximum"_Stz,
@@ -5393,7 +5542,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
       if (!bResult) {
         // Out of range of C_MAX_INT and definitely out of range of microseconds.
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -5407,7 +5557,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
       // Were there additional numbers specified in excess of microseconds?
       if (psChar != psEnd && StrLib::bIsDigit(*psChar)) {
-        SyntaxException::vThrow(pCtx->start->getLine(),
+        SyntaxException::vThrow(nullptr,
+                                pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -5419,7 +5570,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
     // Got a character we didn't expect after the digits
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -5431,7 +5583,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
   // If we are not at the end then we have encountered a character we don't expect
   if (psChar != psEnd) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": unexpected character '%c' encountered"_Stz,
@@ -5443,7 +5596,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
                     uSecVal;
 
   if (uFracVal > C_IVL_USEC_MAX_IN_1_SEC) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
@@ -5455,7 +5609,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
       uCombinedSec > C_IVL_SEC_MAX  ||
       (uCombinedSec * C_1M + uFracVal) > C_IVL_USEC_MAX) {
 
-    SyntaxException::vThrow(pCtx->start->getLine(),
+    SyntaxException::vThrow(nullptr,
+                            pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval %s value exceeds maximum of %lld minutes, %lld.%06lld seconds"_Stz,

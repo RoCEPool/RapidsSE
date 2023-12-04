@@ -5,22 +5,21 @@
 
 #include "sqlBaseVisitor.h"
 #include "SqlException.hpp"
-//#include "eJT.h"
-//#include "TypeId.hpp"
 
-#define __NOT_IMPL(FEATURE) \
-  SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
-  return nullptr; \
-EndDefine
 
-#define __NOT_IMPL2(FEATURE) \
-  SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE ); \
-  return nullptr; \
-EndDefine
-
-#define __NOT_IMPL3(FEATURE) \
-SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
-EndDefine
+//#define __NOT_IMPL(FEATURE) \
+//  SyntaxException::vThrowNotImplemented(m_szCurrentFile, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
+//  return nullptr; \
+//EndDefine
+//
+//#define __NOT_IMPL2(FEATURE) \
+//  SyntaxException::vThrowNotImplemented(m_szCurrentFile, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE ); \
+//  return nullptr; \
+//EndDefine
+//
+//#define __NOT_IMPL3(FEATURE) \
+//SyntaxException::vThrowNotImplemented(m_szCurrentFile, pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
+//EndDefine
 
 namespace STORE
 {
@@ -40,6 +39,8 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     TokenVec* m_pArgValues;
     TaskList* m_pChildTasks;  // e.g. a "run" command is represented by a series of child tasks
 
+    Stz*      m_szCurrentFile;
+
     Footer m_xFooter;
 
    public:
@@ -50,7 +51,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     CommandParser(TagSet* pCommonTagSet, Task* pParentTask);
     ~CommandParser(void) noexcept;
 
-    TaskList* pParseCommand(Stz* szCommand);
+    TaskList* pParseCommand(Stz* szCommand, Stz* szFilePath = nullptr);
 
 
     Footer* aFooter(void);
