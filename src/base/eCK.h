@@ -7,16 +7,19 @@ enum eCK : i8 // card kind
 {
   /* */ CK_NONE=0,
 
-  /* */ CK_m_ABSJOIN,
+  /* */ CK_c_ABSJOIN,
+  /* */ CK_c_COMBINED,
+  /* */ CK_c_FLAT,
+  /* */ CK_c_FOLD,
+  /* */ CK_c_SEND,
+  /* */ CK_c_STAGE,
+
   /* */ CK_m_AGGREG,
   /* */ CK_m_CALL,
   /* */ CK_m_CAST,
-  /* */ CK_m_COMBINED,
   /* */ CK_m_CORRELATION,
   /* */ CK_m_CROSSJOIN,
   /* */ CK_m_FILTER,
-  /* */ CK_m_FLAT,
-  /* */ CK_m_FOLD,
   /* */ CK_m_FROM,
   /* */ CK_m_GBYAGG,
   /* */ CK_m_HASH,
@@ -30,9 +33,7 @@ enum eCK : i8 // card kind
   /* */ CK_m_ORDAGG,
   /* */ CK_m_PROJECT,
   /* */ CK_m_SCAN,
-  /* */ CK_m_SEND,
   /* */ CK_m_SORT,
-  /* */ CK_m_STAGE,
   /* */ CK_m_TOP,
   /* */ CK_m_WHERE,
 

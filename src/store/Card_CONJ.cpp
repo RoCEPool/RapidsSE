@@ -437,7 +437,7 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
   for (i8 i_Test = 0 ; i_Test < pCI->G.pDeck->nChildCards() ; i_Test++) {
     Card *pTestCard = pCI->G.pDeck->pGetChild(i_Test);
 
-    if (pTestCard->bIsCard(CK_m_FOLD))
+    if (pTestCard->bIsCard(CK_c_FOLD))
       i_Fold = i_Test;
   }
 

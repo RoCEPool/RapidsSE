@@ -66,7 +66,7 @@ void ShortForm::vAdd(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SHORTFORM, _FOOTER_);
 
-  if (pCI->G.p_MainCard->bIsCard(CK_m_STAGE)) {
+  if (pCI->G.p_MainCard->bIsCard(CK_c_STAGE)) {
     m_i_Stage_curr++;
     m_sStage_curr = pCI->G.p_MainCard->szFacet(SF_NONE);
   }

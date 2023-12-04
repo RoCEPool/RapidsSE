@@ -99,7 +99,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 
   // todo: discuss with Alka
   m_pCI->vClearRestart();
-  if (m_pCI->G_bEachMain(CK_m_FOLD)) {
+  if (m_pCI->G_bEachMain(CK_c_FOLD)) {
     if (m_pCI->G_bEachMain(CK_m_WHERE)) {
       Card_Level* p_level_where = m_pCI->G.p_where->pSub_level();
       if (m_pCI->G_bEachMainWithSub(CK_m_PROJECT, CK_s_LEVEL)) {

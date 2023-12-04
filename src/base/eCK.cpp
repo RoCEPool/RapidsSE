@@ -10,16 +10,19 @@ Stz* aCK[CK_ENUMS]
 {
   /* */ "NONE"_Stz,
 
-  /* */ "CK_m_ABSJOIN"_Stz,      // CK_m_ABSJOIN
+  /* */ "CK_c_ABSJOIN"_Stz,      // CK_c_ABSJOIN
+  /* */ "CK_c_COMBINED"_Stz,     // CK_c_COMBINED
+  /* */ "CK_c_FLAT"_Stz,         // CK_c_FLAT
+  /* */ "CK_c_FOLD"_Stz,         // CK_c_FOLD
+  /* */ "CK_c_SEND"_Stz,         // CK_c_SEND
+  /* */ "CK_c_STAGE"_Stz,        // CK_c_STAGE
+
   /* */ "CK_m_AGGREG"_Stz,       // CK_m_AGGREG
   /* */ "CK_m_CALL"_Stz,         // CK_m_CALL
   /* */ "CK_m_CAST"_Stz,         // CK_m_CAST
-  /* */ "CK_m_COMBINED"_Stz,     // CK_m_COMBINED
   /* */ "CK_m_CORRELATION"_Stz,  // CK_m_CORRELATION
   /* */ "CK_m_CROSSJOIN"_Stz,    // CK_m_CROSSJOIN
   /* */ "CK_m_FILTER"_Stz,       // CK_m_FILTER
-  /* */ "CK_m_FLAT"_Stz,         // CK_m_FLAT
-  /* */ "CK_m_FOLD"_Stz,         // CK_m_FOLD
   /* */ "CK_m_FROM"_Stz,         // CK_m_FROM
   /* */ "CK_m_GBYAGG"_Stz,       // CK_m_GBYAGG
   /* */ "CK_m_HASH"_Stz,         // CK_m_HASH
@@ -33,9 +36,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_m_ORDAGG"_Stz,       // CK_m_ORDAGG
   /* */ "CK_m_PROJECT"_Stz,      // CK_m_PROJECT
   /* */ "CK_m_SCAN"_Stz,         // CK_m_SCAN
-  /* */ "CK_m_SEND"_Stz,         // CK_m_SEND
   /* */ "CK_m_SORT"_Stz,         // CK_m_SORT
-  /* */ "CK_m_STAGE"_Stz,        // CK_m_STAGE
   /* */ "CK_m_TOP"_Stz,          // CK_m_TOP
   /* */ "CK_m_WHERE"_Stz,        // CK_m_WHERE
 
@@ -155,16 +156,19 @@ Stz* aCK_short[CK_ENUMS]
 {
   /* */ "NONE"_Stz,
 
-  /* */ "absJoin"_Stz,         // CK_m_ABSJOIN
+  /* */ "absJoin"_Stz,         // CK_c_ABSJOIN
+  /* */ "combined"_Stz,        // CK_c_COMBINED
+  /* */ "flat"_Stz,            // CK_c_FLAT
+  /* */ "fold"_Stz,            // CK_c_FOLD
+  /* */ "sendSE"_Stz,          // CK_c_SEND
+  /* */ "stage"_Stz,           // CK_c_STAGE
+
   /* */ "aggreg"_Stz,          // CK_m_AGGREG
   /* */ "call"_Stz,            // CK_m_CALL
   /* */ "cast"_Stz,            // CK_m_CAST
-  /* */ "combined"_Stz,        // CK_m_COMBINED
   /* */ "correlation"_Stz,     // CK_m_CORRELATION
   /* */ "crossJoin"_Stz,       // CK_m_CROSSJOIN
   /* */ "filter"_Stz,          // CK_m_FILTER
-  /* */ "flat"_Stz,            // CK_m_FLAT
-  /* */ "fold"_Stz,            // CK_m_FOLD
   /* */ "from"_Stz,            // CK_m_FROM
   /* */ "gbyAgg"_Stz,          // CK_m_GBYAGG
   /* */ "hash"_Stz,            // CK_m_HASH
@@ -178,9 +182,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "ordAgg"_Stz,          // CK_m_ORDAGG
   /* */ "project"_Stz,         // CK_m_PROJECT
   /* */ "scan"_Stz,            // CK_m_SCAN
-  /* */ "sendSE"_Stz,          // CK_m_SEND
   /* */ "sort"_Stz,            // CK_m_SORT
-  /* */ "stage"_Stz,           // CK_m_STAGE
   /* */ "top"_Stz,             // CK_m_TOP
   /* */ "where"_Stz,           // CK_m_WHERE
 

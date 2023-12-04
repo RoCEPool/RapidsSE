@@ -151,7 +151,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
-    if (m_pCI->G.p_OP->bIsCard(CK_m_STAGE))
+    if (m_pCI->G.p_OP->bIsCard(CK_c_STAGE))
       vCraftStageDef();
     else {
       vCraftOpDef();
@@ -193,7 +193,7 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
   if (m_pCI->G.p_OP->bIsCard(CK_m_ORDAGG))
     vDebugPoint();
 
-  if (m_pCI->G.p_OP->bIsOne(CK_m_CAST, CK_m_COMBINED, CK_m_SEND, CK_NONE))
+  if (m_pCI->G.p_OP->bIsOne(CK_m_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
     return;
 
   if (m_pCI->G.p_OP->bIsCard(CK_m_SCAN)) {
@@ -253,8 +253,8 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_m_WHERE:        p_OP->vRpn_where(sExpr, _pCard_Where(p_OP)); break;
 
     case CK_m_CAST:
-    case CK_m_COMBINED:
-    case CK_m_SEND:
+    case CK_c_COMBINED:
+    case CK_c_SEND:
       break;
 
     default:
@@ -356,7 +356,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       break;
 
-    case CK_m_SEND:
+    case CK_c_SEND:
       break;
 
     case CK_m_SORT:

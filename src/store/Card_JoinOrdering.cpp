@@ -189,7 +189,7 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
 
   {
     Kid xCI_deck(pDeck);
-    if (xCI_deck.bEach(CK_m_FOLD))
+    if (xCI_deck.bEach(CK_c_FOLD))
       pAfter = xCI_deck.p_fold();
 
     if (! pAfter) {

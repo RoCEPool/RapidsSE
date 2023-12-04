@@ -204,7 +204,7 @@ void Weaver::vCard(Card* pCard)
 
   eCK eCard = pCard->eCard();
   
-  if (CK_m_STAGE == eCard)
+  if (CK_c_STAGE == eCard)
     vStageNext(_pCard_Stage(pCard));
   else
     vOp(pCard);
@@ -307,16 +307,16 @@ void Weaver::vOp(Card* pCard, bool bCommented)
 
   eCK eCard = pCard->eCard();
 
-  if (CK_m_COMBINED == eCard)
+  if (CK_c_COMBINED == eCard)
     return;
 
-  if (CK_m_SEND == eCard)
+  if (CK_c_SEND == eCard)
     if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU))
       return;
 
   switch (eCard) {
 
-    case CK_m_ABSJOIN:      vArg_absJoin      (sOpArgs, _pCard_AbsJoin(pCard));      break;
+    case CK_c_ABSJOIN:      vArg_absJoin      (sOpArgs, _pCard_AbsJoin(pCard));      break;
     case CK_m_AGGREG:       vArg_aggreg       (sOpArgs, _pCard_Aggreg(pCard));       break;
     case CK_m_CAST:         vArg_cast         (sOpArgs, _pCard_Cast(pCard));         break;
     case CK_m_CROSSJOIN:    vArg_crossJoin    (sOpArgs, _pCard_CrossJoin(pCard));    break;
@@ -333,7 +333,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_m_ORDAGG:       vArg_ordAgg       (sOpArgs, _pCard_OrdAgg(pCard));       break;
     case CK_m_PROJECT:      vArg_project      (sOpArgs, _pCard_Project(pCard));      break;
     case CK_m_SCAN:         vArg_scan         (sOpArgs, _pCard_Scan(pCard));         break;
-    case CK_m_SEND:         vArg_send         (sOpArgs, _pCard_Send(pCard));         break;
+    case CK_c_SEND:         vArg_send         (sOpArgs, _pCard_Send(pCard));         break;
     case CK_m_SORT:         vArg_sort         (sOpArgs, _pCard_Sort(pCard));         break;
     case CK_s_TABLE:        vArg_table        (sOpArgs, _pCard_Table(pCard));        break;
     case CK_m_TOP:          vArg_top          (sOpArgs, _pCard_Top(pCard));          break;
@@ -349,7 +349,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
        if (CK_m_CAST == eCard) sOpNm = "next"_Stz;
   else if (CK_m_CROSSJOIN == eCard) sOpNm = "indexJoin"_Stz;
   else if (CK_m_HAVING == eCard) sOpNm = "filter"_Stz;
-  else if (CK_m_SEND == eCard) sOpNm = "next"_Stz;
+  else if (CK_c_SEND == eCard) sOpNm = "next"_Stz;
   else if (CK_s_TABLE == eCard) sOpNm = "scan"_Stz;
   else if (CK_m_WHERE == eCard) sOpNm = "filter"_Stz;
   else                             sOpNm = aCK_short[eCard];
@@ -960,11 +960,11 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
     xKid.vReposition(p_stage);
     while (xKid.bEach()) {
 
-      if (CK_m_STAGE == xKid.eChild())
+      if (CK_c_STAGE == xKid.eChild())
         break;
       if (CK_m_CAST == xKid.eChild())
         break;
-      if (CK_m_SEND == xKid.eChild())
+      if (CK_c_SEND == xKid.eChild())
         break;
 
       bool bCommented = true;
@@ -979,7 +979,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
     if (CK_m_CAST == xKid.eChild())
       vOp(xKid.pChild());
     else
-    if (CK_m_SEND == xKid.eChild())
+    if (CK_c_SEND == xKid.eChild())
       vOp(xKid.pChild());
 
   }

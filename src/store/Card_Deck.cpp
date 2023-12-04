@@ -97,7 +97,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
       p_combined_prior = nullptr;
       p_cast_prior     = nullptr;
     }
-    else if (CK_m_COMBINED == pCI->G.e_MainCard) {
+    else if (CK_c_COMBINED == pCI->G.e_MainCard) {
       p_combined_prior = pCI->G.p_combined;
       p_cast_prior     = nullptr;
     }
@@ -230,7 +230,7 @@ i8 Card_Deck::i_Fold(void)
   i8 nChildren = nChildCards();
   for (i8 i_Main = nChildren - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pGetChild(i_Main);
-    if (pMain->bIsCard(CK_m_FOLD))
+    if (pMain->bIsCard(CK_c_FOLD))
       return i_Main;
   }
 
@@ -247,7 +247,7 @@ Card_Fold* Card_Deck::p_fold(void)
   i8 nChildren = nChildCards();
   for (i8 i_Main = nChildren - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pGetChild(i_Main);
-    if (pMain->bIsCard(CK_m_FOLD))
+    if (pMain->bIsCard(CK_c_FOLD))
       return _pCard_Fold(pMain);
   }
 
@@ -524,7 +524,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 
   while (pCI->G_bEachMain_NONE()) {
 
-    if (CK_m_FOLD == pCI->G.e_MainCard)
+    if (CK_c_FOLD == pCI->G.e_MainCard)
       continue;
 
     switch (pCI->G.e_MainCard) {
@@ -600,7 +600,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
     switch (eChild) {
 
-      case CK_m_ABSJOIN:      pCI->G.p_absJoin->vValidate(pCI, 1, this); break;
+      case CK_c_ABSJOIN:      pCI->G.p_absJoin->vValidate(pCI, 1, this); break;
       case CK_m_AGGREG:       pCI->G.p_aggreg->vValidate(pCI, 1, this); break;
       case CK_ANDCONJ:      pCI->G.p_andConj->vValidate(pCI, 1, this); break;
 
@@ -611,7 +611,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_m_CALL:         pCI->G.p_call->vValidate(pCI, 1, this); break;
       case CK_m_CAST:         pCI->G.p_cast->vValidate(pCI, 1, this); break;
 
-      case CK_m_COMBINED:     pCI->G.p_combined->vValidate(pCI, 1, this); break;
+      case CK_c_COMBINED:     pCI->G.p_combined->vValidate(pCI, 1, this); break;
       case CK_s_CONSTRAINT:   pCI->G.p_constraint->vValidate(pCI, 1, this); break;
       case CK_CORRCOLS:     pCI->G.p_corrCols->vValidate(pCI, 1, this); break;
       case CK_m_CORRELATION:  pCI->G.p_correlation->vValidate(pCI, 1, this); break;
@@ -630,8 +630,8 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_m_FILTER:       pCI->G.p_filter->vValidate(pCI, 1, this); break;
       case CK_FILTPRED:     pCI->G.p_filtPred->vValidate(pCI, 1, this); break;
       case CK_FILTPREDLIST: pCI->G.p_filtPredList->vValidate(pCI, 1, this); break;
-      case CK_m_FLAT:         pCI->G.p_flat->vValidate(pCI, 1, this); break;
-      case CK_m_FOLD:         pCI->G.p_fold->vValidate(pCI, 1, this); break;
+      case CK_c_FLAT:         pCI->G.p_flat->vValidate(pCI, 1, this); break;
+      case CK_c_FOLD:         pCI->G.p_fold->vValidate(pCI, 1, this); break;
       case CK_m_FROM:         pCI->G.p_from->vValidate(pCI, 1, this); break;
 
       case CK_m_GBYAGG:       pCI->G.p_gbyAgg->vValidate(pCI, 1, this); break;
@@ -687,9 +687,9 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_m_SCAN:         pCI->G.p_scan->vValidate(pCI, 1, this); break;
       case CK_SECTION:      pCI->G.p_section->vValidate(pCI, 1, this); break;
-      case CK_m_SEND:         pCI->G.p_send->vValidate(pCI, 1, this); break;
+      case CK_c_SEND:         pCI->G.p_send->vValidate(pCI, 1, this); break;
       case CK_m_SORT:         pCI->G.p_sort->vValidate(pCI, 1, this); break;
-      case CK_m_STAGE:        pCI->G.p_stage->vValidate(pCI, 1, this); break;
+      case CK_c_STAGE:        pCI->G.p_stage->vValidate(pCI, 1, this); break;
       case CK_STREAMHEAD:   pCI->G.p_streamHead->vValidate(pCI, 1, this); break;
       case CK_STREAMJOIN:   pCI->G.p_streamJoin->vValidate(pCI, 1, this); break;
       case CK_STREAMKEY:    pCI->G.p_streamKey->vValidate(pCI, 1, this); break;

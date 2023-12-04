@@ -118,7 +118,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
   pCI->vBeginEachReverse();
-  RASSERT(pCI->G_bEachMain_reverse_b(CK_m_FOLD));
+  RASSERT(pCI->G_bEachMain_reverse_b(CK_c_FOLD));
 
   // Now processing OQ (outer-query)
 
@@ -166,7 +166,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  RASSERT(pCI->G_bEachMain(CK_m_FOLD));
+  RASSERT(pCI->G_bEachMain(CK_c_FOLD));
 
   pCI->vForwards(false);
   while (!pCI->G.p_MainCard->pSub_emit())
@@ -174,7 +174,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   pCI->vForwards(true);
 
   pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
-  RASSERT(pCI->G_bEachMain(CK_m_FOLD));
+  RASSERT(pCI->G_bEachMain(CK_c_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_m_WHERE, CK_BOOLPRED));
   pCI->G.p_boolPred->vBump_expCol(2);
@@ -211,7 +211,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
   //             b <-  cp          //             %1
 
-  RASSERT(pCI->G_bEachMain(CK_m_FOLD));
+  RASSERT(pCI->G_bEachMain(CK_c_FOLD));
   RASSERT(pCI->G_bEachMainWithSub(CK_m_WHERE, CK_BOOLPRED));
   //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolPred);
   vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolPred);
@@ -219,7 +219,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 //  pCI->vClearRestart();
-//  if (pCI->G_bEachMain(CK_m_FOLD)) {
+//  if (pCI->G_bEachMain(CK_c_FOLD)) {
 //    if (pCI->G_bEachMain(CK_m_WHERE)) {
 //      // TODO:
 //      // R_vUTE_Unproject_foldExpr_After_where();

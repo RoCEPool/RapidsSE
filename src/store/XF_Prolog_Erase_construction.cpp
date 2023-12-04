@@ -43,11 +43,11 @@ void XF_Prolog_Erase_construction::vErase(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_Erase_construction* pXF_Delete_Unneeded = new XF_Prolog_Erase_construction(pCI);
+  XF_Prolog_Erase_construction* pXF_Erase_construction = new XF_Prolog_Erase_construction(pCI);
 
-  pXF_Delete_Unneeded->vProlog();
+  pXF_Erase_construction->vProlog();
 
-  delete pXF_Delete_Unneeded;
+  delete pXF_Erase_construction;
 }
 
 
@@ -67,29 +67,29 @@ void XF_Prolog_Erase_construction::vProlog(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All AbsJoin
   m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain(CK_m_ABSJOIN)) {
-    m_pCI->G_vRemoveDeleteMain(CK_m_ABSJOIN);
+  while (m_pCI->G_bEachMain(CK_c_ABSJOIN)) {
+    m_pCI->G_vRemoveDeleteMain(CK_c_ABSJOIN);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Combined
   m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain(CK_m_COMBINED)) {
-    m_pCI->G_vRemoveDeleteMain(CK_m_COMBINED);
+  while (m_pCI->G_bEachMain(CK_c_COMBINED)) {
+    m_pCI->G_vRemoveDeleteMain(CK_c_COMBINED);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Send
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_m_SEND)) {
-    m_pCI->G_vRemoveDeleteMain(CK_m_SEND);
+  while (m_pCI->G_bEachMain(CK_c_SEND)) {
+    m_pCI->G_vRemoveDeleteMain(CK_c_SEND);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Stage
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_m_STAGE)) {
-    m_pCI->G_vRemoveDeleteMain(CK_m_STAGE);
+  while (m_pCI->G_bEachMain(CK_c_STAGE)) {
+    m_pCI->G_vRemoveDeleteMain(CK_c_STAGE);
   }
 
   m_pCI->vEndTransform(__LINE__);

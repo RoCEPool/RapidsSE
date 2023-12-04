@@ -299,16 +299,16 @@ bool Card::bIsMain(eCK eCard)
 
   switch (eCard) {
 
-    case CK_m_ABSJOIN:
+    case CK_c_ABSJOIN:
     case CK_m_AGGREG:
     case CK_m_CALL:
     case CK_m_CAST:
-    case CK_m_COMBINED:
+    case CK_c_COMBINED:
     case CK_m_CORRELATION:
     case CK_m_CROSSJOIN:
     case CK_m_FILTER:
-    case CK_m_FLAT:
-    case CK_m_FOLD:
+    case CK_c_FLAT:
+    case CK_c_FOLD:
     case CK_m_FROM:
     case CK_m_GBYAGG:
     case CK_m_HASH:
@@ -321,10 +321,10 @@ bool Card::bIsMain(eCK eCard)
     case CK_m_LIMIT:
     case CK_m_ORDAGG:
     case CK_m_PROJECT:
-    case CK_m_SEND:
+    case CK_c_SEND:
     case CK_m_SCAN:
     case CK_m_SORT:
-    case CK_m_STAGE:
+    case CK_c_STAGE:
     case CK_m_TOP:
     case CK_m_WHERE:
       return true;
@@ -2747,7 +2747,7 @@ Card_Flat* Card::pSub_flat(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Flat* p_flat =
-      _pCard_Flat(pFindSubCard(CK_m_FOLD));
+      _pCard_Flat(pFindSubCard(CK_c_FOLD));
   return p_flat;
 }
 
@@ -2760,7 +2760,7 @@ Card_Fold* Card::pSub_fold(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Fold* p_fold =
-      _pCard_Fold(pFindSubCard(CK_m_FOLD));
+      _pCard_Fold(pFindSubCard(CK_c_FOLD));
   return p_fold;
 }
 

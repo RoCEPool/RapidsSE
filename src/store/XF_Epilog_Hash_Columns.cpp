@@ -68,7 +68,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
   while (m_pCI->G_bEachMain_NONE()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_m_STAGE == m_pCI->G.e_MainCard) {
+    if (CK_c_STAGE == m_pCI->G.e_MainCard) {
       m_pCI->vNullMembers();
       continue;
     }
@@ -154,7 +154,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //  while (m_pCI->G_bEachMain_NONE()) {
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_m_STAGE == m_pCI->G.e_MainCard) {
+//    if (CK_c_STAGE == m_pCI->G.e_MainCard) {
 //      m_pCI->vNullMembers();
 //      continue;
 //    }

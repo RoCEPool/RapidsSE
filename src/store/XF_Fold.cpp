@@ -187,7 +187,7 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 
   while (pCI->G_bEachMain_NONE()) {
 
-    if (CK_m_FOLD == pCI->G.e_MainCard)
+    if (CK_c_FOLD == pCI->G.e_MainCard)
       break;
 
     if (Card_Emit* p_emit = pCI->G.p_MainCard->pSub_emit()) {
@@ -196,7 +196,7 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
     }
   }
 
-  RASSERT(CK_m_FOLD == pCI->G.e_MainCard);
+  RASSERT(CK_c_FOLD == pCI->G.e_MainCard);
 
   pCI->G.p_stream = new Card_Stream;
   pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
@@ -253,7 +253,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   pCI->G_vPopIter();
 
   // 5) add <fold> (before MQ)
-  pCI->G_vNewMember(CK_m_FOLD, Symbol(SF_FLD_NM, szFold));
+  pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppendChild(pCI->G.p_level);
@@ -276,7 +276,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
       pCI->Flux.m_pArriving =
           pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
-    if (pCI->G_bIsNextMain(CK_m_FOLD))
+    if (pCI->G_bIsNextMain(CK_c_FOLD))
       break;
   }
 
@@ -285,7 +285,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   // 7) derive the fold (SQ result) expr
   pCI->Sqy.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
-  if (pCI->G_bEachMain(CK_m_FOLD)) {
+  if (pCI->G_bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldExpr_H_A_NC_ro(pCI);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
@@ -314,7 +314,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
   //vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
  // pCI->vPrintBoard(__LINE__);
 
-  pCI->G_vNewMember(CK_m_FOLD, Symbol(SF_FLD_NM, szFold));
+  pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppendChild(pCI->G.p_level);
@@ -346,7 +346,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
 
   // 7) derive the fold (SQ result) expr
   pCI->vClearRestart();
-  if (pCI->G_bEachMain(CK_m_FOLD)) {
+  if (pCI->G_bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldProjection_F(pCI);
   }
@@ -395,7 +395,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   pCI->G_vPopIter();
 
   // 5) add <fold> (before MQ)
-  pCI->G_vNewMember(CK_m_FOLD, Symbol(SF_FLD_NM, szFold));
+  pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppendChild(pCI->G.p_level);
@@ -419,7 +419,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
       pCI->Flux.m_pArriving =
           pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
-    if (pCI->G_bIsNextMain(CK_m_FOLD))
+    if (pCI->G_bIsNextMain(CK_c_FOLD))
       break;
   }
 
@@ -428,7 +428,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   // 7) derive the fold (SQ result) expr
   pCI->Sqy.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
-  if (pCI->G_bEachMain(CK_m_FOLD)) {
+  if (pCI->G_bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldExpr_H_A_NC_ro(pCI);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;

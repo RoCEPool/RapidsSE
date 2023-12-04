@@ -741,7 +741,7 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 
   while (G.xKid.bEach()) {
 
-    if (G.xKid.pChild()->bIsCard(CK_m_FOLD))
+    if (G.xKid.pChild()->bIsCard(CK_c_FOLD))
       return false;
 
     if (G.xKid.pChild()->eCard() != eOfMainKind)
@@ -939,7 +939,7 @@ bool CardIter::G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
 
   while (G.xKid.bEach_reverse()) {
 
-    if (G.xKid.pChild()->bIsCard(CK_m_FOLD))
+    if (G.xKid.pChild()->bIsCard(CK_c_FOLD))
       return false;
 
     if (G.xKid.pChild()->eCard() != eOfMainKind)
@@ -1328,7 +1328,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
   switch (eMember) {
 
-    case CK_m_ABSJOIN:          return G.p_absJoin;
+    case CK_c_ABSJOIN:          return G.p_absJoin;
     case CK_ADDRESS:          return G.p_address;
     case CK_m_AGGREG:           return G.p_aggreg;
     case CK_ANDCONJ:          return G.p_andConj;
@@ -1342,7 +1342,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_CALLOP:           return G.p_callOp;
     case CK_m_CAST:             return G.p_cast;
     case CK_CLAUSE:           return G.p_clause;
-    case CK_m_COMBINED:         return G.p_combined;
+    case CK_c_COMBINED:         return G.p_combined;
     case CK_s_CONSTRAINT:       return G.p_constraint;
     case CK_CORRCOLS:         return G.p_corrCols;
     case CK_m_CORRELATION:      return G.p_correlation;
@@ -1363,8 +1363,8 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_m_FILTER:           return G.p_filter;
     case CK_FILTPRED:         return G.p_filtPred;
     case CK_FILTPREDLIST:     return G.p_filtPredList;
-    case CK_m_FLAT:             return G.p_flat;
-    case CK_m_FOLD:             return G.p_fold;
+    case CK_c_FLAT:             return G.p_flat;
+    case CK_c_FOLD:             return G.p_fold;
     case CK_m_FROM:             return G.p_from;
 
     case CK_m_GBYAGG:           return G.p_gbyAgg;
@@ -1425,13 +1425,13 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
     case CK_m_SCAN:             return G.p_scan;
     case CK_SECTION:          return G.p_section;
-    case CK_m_SEND:             return G.p_send;
+    case CK_c_SEND:             return G.p_send;
     case CK_SPARE:            return G.p_spare;
     case CK_m_SORT:             return G.p_sort;
     case CK_SQYCALLS:         return G.p_sqyCalls;
     case CK_SQYINFO:          return G.p_sqyInfo;
     case CK_SQYNO:            return G.p_sqyNo;
-    case CK_m_STAGE:            return G.p_stage;
+    case CK_c_STAGE:            return G.p_stage;
     case CK_s_STREAM:           return G.p_stream;
     case CK_STREAMHEAD:       return G.p_streamHead;
     case CK_STREAMJOIN:       return G.p_streamJoin;
@@ -1547,7 +1547,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_NONE: break;
 
-    case CK_m_ABSJOIN: G.p_absJoin          = _pCard_AbsJoin(pCard); break;
+    case CK_c_ABSJOIN: G.p_absJoin          = _pCard_AbsJoin(pCard); break;
     case CK_ADDRESS:          G.p_address          = _pCard_Address(pCard); break;
     case CK_m_AGGREG: G.p_aggreg           = _pCard_Aggreg(pCard);
                               G.p_OP               = (Card_OP*)pCard; break;
@@ -1566,7 +1566,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_CLAUSE:           G.p_clause            = _pCard_Clause(pCard); break;
 
-    case CK_m_COMBINED: G.p_combined          = _pCard_Combined(pCard);
+    case CK_c_COMBINED: G.p_combined          = _pCard_Combined(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_s_CONSTRAINT: G.p_constraint        = _pCard_Constraint(pCard); break;
     case CK_CORRCOLS:         G.p_corrCols          = _pCard_CorrCols(pCard); break;
@@ -1592,8 +1592,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_FILTPRED:         G.p_filtPred          = _pCard_FiltPred(pCard); break;
     case CK_FILTPREDLIST:     G.p_filtPredList      = _pCard_FiltPredList(pCard); break;
-    case CK_m_FLAT: G.p_flat              = _pCard_Flat(pCard); break;
-    case CK_m_FOLD: G.p_fold              = _pCard_Fold(pCard); break;
+    case CK_c_FLAT: G.p_flat              = _pCard_Flat(pCard); break;
+    case CK_c_FOLD: G.p_fold              = _pCard_Fold(pCard); break;
     case CK_m_FROM: G.p_from              = _pCard_From(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
 
@@ -1670,7 +1670,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_m_SCAN: G.p_scan              = _pCard_Scan(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_SECTION:          G.p_section           = _pCard_Section(pCard); break;
-    case CK_m_SEND: G.p_send              = _pCard_Send(pCard);
+    case CK_c_SEND: G.p_send              = _pCard_Send(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_m_SORT: G.p_sort              = _pCard_Sort(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1679,7 +1679,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SQYCALLS:         G.p_sqyCalls          = _pCard_SqyCalls(pCard); break;
     case CK_SQYINFO:          G.p_sqyInfo           = _pCard_SqyInfo(pCard); break;
     case CK_SQYNO:            G.p_sqyNo             = _pCard_SqyNo(pCard); break;
-    case CK_m_STAGE: G.p_stage             = _pCard_Stage(pCard);
+    case CK_c_STAGE: G.p_stage             = _pCard_Stage(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_s_STREAM: G.p_stream            = _pCard_Stream(pCard); break;
     case CK_STREAMHEAD:       G.p_streamHead        = _pCard_StreamHead(pCard); break;
@@ -2584,7 +2584,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
 
     switch (eChild) {
 
-      case CK_m_ABSJOIN:      G.p_absJoin->vValidate(this, iDepth, pCard);  break;
+      case CK_c_ABSJOIN:      G.p_absJoin->vValidate(this, iDepth, pCard);  break;
       case CK_ADDRESS:      G.p_address->vValidate(this, iDepth, pCard);  break;
       case CK_m_AGGREG:       G.p_aggreg->vValidate(this, iDepth, pCard);  break;
       case CK_ANDCONJ:      G.p_andConj->vValidate(this, iDepth, pCard);  break;
@@ -2598,7 +2598,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_CALLOP:       G.p_callOp->vValidate(this, iDepth, pCard);  break;
       case CK_m_CAST:         G.p_cast->vValidate(this, iDepth, pCard);  break;
       case CK_CLAUSE:       G.p_clause->vValidate(this, iDepth, pCard);  break;
-      case CK_m_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
+      case CK_c_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
       case CK_s_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
       case CK_CORRCOLS:     G.p_corrCols->vValidate(this, iDepth, pCard);  break;
       case CK_m_CORRELATION:  G.p_correlation->vValidate(this, iDepth, pCard);  break;
@@ -2619,8 +2619,8 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_m_FILTER:       G.p_filter->vValidate(this, iDepth, pCard);  break;
       case CK_FILTPRED:     G.p_filtPred->vValidate(this, iDepth, pCard);  break;
       case CK_FILTPREDLIST: G.p_filtPredList->vValidate(this, iDepth, pCard);  break;
-      case CK_m_FLAT:         G.p_flat->vValidate(this, iDepth, pCard);  break;
-      case CK_m_FOLD:         G.p_fold->vValidate(this, iDepth, pCard);  break;
+      case CK_c_FLAT:         G.p_flat->vValidate(this, iDepth, pCard);  break;
+      case CK_c_FOLD:         G.p_fold->vValidate(this, iDepth, pCard);  break;
       case CK_m_FROM:         G.p_from->vValidate(this, iDepth, pCard);  break;
 
       case CK_m_GBYAGG:       G.p_gbyAgg->vValidate(this, iDepth, pCard);  break;
@@ -2681,13 +2681,13 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
 
       case CK_m_SCAN:       G.p_scan->vValidate(this, iDepth, pCard);  break;
       case CK_SECTION:    G.p_section->vValidate(this, iDepth, pCard);  break;
-      case CK_m_SEND:       G.p_send->vValidate(this, iDepth, pCard);  break;
+      case CK_c_SEND:       G.p_send->vValidate(this, iDepth, pCard);  break;
       case CK_SPARE:      G.p_spare->vValidate(this, iDepth, pCard);  break;
       case CK_m_SORT:       G.p_sort->vValidate(this, iDepth, pCard);  break;
       case CK_SQYCALLS:   G.p_sqyCalls->vValidate(this, iDepth, pCard);  break;
       case CK_SQYINFO:    G.p_sqyInfo->vValidate(this, iDepth, pCard);  break;
       case CK_SQYNO:      G.p_sqyNo->vValidate(this, iDepth, pCard);  break;
-      case CK_m_STAGE:      G.p_stage->vValidate(this, iDepth, pCard);  break;
+      case CK_c_STAGE:      G.p_stage->vValidate(this, iDepth, pCard);  break;
       case CK_s_STREAM:     G.p_stream->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMHEAD: G.p_streamHead->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMJOIN: G.p_streamJoin->vValidate(this, iDepth, pCard);  break;
