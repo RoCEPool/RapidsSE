@@ -247,7 +247,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                        CK_NONE);
 
   if (CK_DECK == pParent->eCard()) {
-    vValidate_mustHave(CK_LEVEL, CK_STREAM, CK_NONE);
+    vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
   }
 
   UNUSED(pParent);

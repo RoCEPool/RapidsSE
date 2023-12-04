@@ -280,7 +280,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMainWithSub(CK_m_FROM, CK_TABLE))
+  while (pCI->G_bEachMainWithSub(CK_m_FROM, CK_s_TABLE))
     if ((pCI->G.p_emit = pCI->G.p_table->pSub_emit()))
       pCI->G.p_table->vDeleteChild(pCI->G.p_emit);
 
@@ -409,7 +409,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete all <>/
   pCI->vBeginEach();
-  while (pCI->G_bEachSubOfMain(CK_TABLE))
+  while (pCI->G_bEachSubOfMain(CK_s_TABLE))
     if ((pCI->G.p_emit = pCI->G.p_table->pSub_emit()))
       pCI->G.p_table->vDeleteChild(pCI->G.p_emit);
 
@@ -515,7 +515,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMainWith2Sub(CK_m_FROM, CK_STREAM, CK_EMIT))
+  while (pCI->G_bEachMainWith2Sub(CK_m_FROM, CK_s_STREAM, CK_EMIT))
     pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
 
 
@@ -612,7 +612,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_m_CAST:         pCI->G.p_cast->vValidate(pCI, 1, this); break;
 
       case CK_m_COMBINED:     pCI->G.p_combined->vValidate(pCI, 1, this); break;
-      case CK_CONSTRAINT:   pCI->G.p_constraint->vValidate(pCI, 1, this); break;
+      case CK_s_CONSTRAINT:   pCI->G.p_constraint->vValidate(pCI, 1, this); break;
       case CK_CORRCOLS:     pCI->G.p_corrCols->vValidate(pCI, 1, this); break;
       case CK_m_CORRELATION:  pCI->G.p_correlation->vValidate(pCI, 1, this); break;
       case CK_COSTJOINING:  pCI->G.p_costJoining->vValidate(pCI, 1, this); break;
@@ -648,7 +648,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_INDEXNM:      pCI->G.p_indexNm->vValidate(pCI, 1, this); break;
       case CK_m_INDEXSCAN:    pCI->G.p_indexScan->vValidate(pCI, 1, this); break;
       case CK_m_INFLATE:      pCI->G.p_inflate->vValidate(pCI, 1, this); break;
-      case CK_INJECTABLE:     pCI->G.p_injectable->vValidate(pCI, 1, this); break;
+      case CK_s_INJECTABLE:     pCI->G.p_injectable->vValidate(pCI, 1, this); break;
 
       case CK_JOINCAST:     pCI->G.p_joinCast->vValidate(pCI, 1, this); break;
       case CK_JOINESTIMATE: pCI->G.p_joinEstimate->vValidate(pCI, 1, this); break;
@@ -656,18 +656,18 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_JOINORDERING: pCI->G.p_joinOrdering->vValidate(pCI, 1, this); break;
       case CK_JOINPREDLIST: pCI->G.p_joinPredList->vValidate(pCI, 1, this); break;
 
-      case CK_KEY:          pCI->G.p_key->vValidate(pCI, 1, this); break;
+      case CK_s_KEY:          pCI->G.p_key->vValidate(pCI, 1, this); break;
       case CK_KEYCELLS:     pCI->G.p_keyCells->vValidate(pCI, 1, this); break;
       case CK_m_KEYEXISTS:    pCI->G.p_keyExists->vValidate(pCI, 1, this); break;
       case CK_m_KEYNOTEXISTS: pCI->G.p_keyNotExists->vValidate(pCI, 1, this); break;
 
-      case CK_LEVEL:        pCI->G.p_level->vValidate(pCI, 1, this); break;
+      case CK_s_LEVEL:        pCI->G.p_level->vValidate(pCI, 1, this); break;
       case CK_m_LIMIT:        pCI->G.p_limit->vValidate(pCI, 1, this); break;
 
       case CK_MAP:          pCI->G.p_map->vValidate(pCI, 1, this); break;
-      case CK_MAPPING:      pCI->G.p_mapping->vValidate(pCI, 1, this); break;
+      case CK_s_MAPPING:      pCI->G.p_mapping->vValidate(pCI, 1, this); break;
 
-      case CK_NEEDED:       pCI->G.p_needed->vValidate(pCI, 1, this); break;
+      case CK_s_NEEDED:       pCI->G.p_needed->vValidate(pCI, 1, this); break;
       case CK_NOTE:         pCI->G.p_note->vValidate(pCI, 1, this); break;
       case CK_NOTCONJ:      pCI->G.p_notConj->vValidate(pCI, 1, this); break;
 
@@ -699,7 +699,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_SUBQUERY:     pCI->G.p_subQuery->vValidate(pCI, 1, this); break;
       case CK_SUBSET:       pCI->G.p_subSet->vValidate(pCI, 1, this); break;
 
-      case CK_TABLE:        pCI->G.p_table->vValidate(pCI, 1, this); break;
+      case CK_s_TABLE:        pCI->G.p_table->vValidate(pCI, 1, this); break;
       case CK_TABLELIST:    pCI->G.p_tableList->vValidate(pCI, 1, this); break;
       case CK_TABLENM:      pCI->G.p_tableNm->vValidate(pCI, 1, this); break;
       case CK_TABLEPTN:     pCI->G.p_tablePtn->vValidate(pCI, 1, this); break;

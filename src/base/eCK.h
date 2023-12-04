@@ -47,7 +47,7 @@ enum eCK : i8 // card kind
   /* */ CK_CALLER,
   /* */ CK_CALLOP,
   /* */ CK_CLAUSE,
-  /* */ CK_CONSTRAINT,
+  /* */ CK_s_CONSTRAINT,
   /* */ CK_CORRCOLS,
   /* */ CK_COSTJOINING,
   /* */ CK_COSTNETWORK,
@@ -67,16 +67,16 @@ enum eCK : i8 // card kind
   /* */ CK_FILTPRED,
   /* */ CK_FILTPREDLIST,
 
-  /* */ CK_HASHING,
+  /* */ CK_s_HASHING,
   /* */ CK_HSHCOL,
-  /* */ CK_HSHCOLLIST,
+  /* */ CK_s_HSHCOLLIST,
 
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEX,
   /* */ CK_INDEXLIST,
   /* */ CK_INDEXNM,
-  /* */ CK_INJECTABLE,
+  /* */ CK_s_INJECTABLE,
 
   /* */ CK_JOINCAST,
   /* */ CK_JOINESTIMATE,
@@ -84,15 +84,15 @@ enum eCK : i8 // card kind
   /* */ CK_JOINORDERING,
   /* */ CK_JOINPREDLIST,
 
-  /* */ CK_KEY,
+  /* */ CK_s_KEY,
   /* */ CK_KEYCELLS,
 
-  /* */ CK_LEVEL,
+  /* */ CK_s_LEVEL,
 
   /* */ CK_MAP,
-  /* */ CK_MAPPING,
+  /* */ CK_s_MAPPING,
 
-  /* */ CK_NEEDED,
+  /* */ CK_s_NEEDED,
   /* */ CK_NOTE,
   /* */ CK_NOTCONJ,
 
@@ -101,7 +101,7 @@ enum eCK : i8 // card kind
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,
 
-  /* */ CK_PAYLOAD,
+  /* */ CK_s_PAYLOAD,
   /* */ CK_PAYLOADCELLS,
 
   /* */ CK_RELNOP,
@@ -118,7 +118,7 @@ enum eCK : i8 // card kind
   /* */ CK_SQYCALLS,
   /* */ CK_SQYINFO,
   /* */ CK_SQYNO,
-  /* */ CK_STREAM,
+  /* */ CK_s_STREAM,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
   /* */ CK_STREAMKEY,
@@ -129,7 +129,7 @@ enum eCK : i8 // card kind
   /* */ CK_SUBSET,
   /* */ CK_SYNTHESIS,
 
-  /* */ CK_TABLE,
+  /* */ CK_s_TABLE,
   /* */ CK_TABLEINFO,
   /* */ CK_TABLELIST,
   /* */ CK_TABLENM,

@@ -253,7 +253,7 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bIsKeyExpr = bIsCard(CK_KEY);
+  bool bIsKeyExpr = bIsCard(CK_s_KEY);
 
   i8 i_Expr = 1;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {

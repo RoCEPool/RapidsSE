@@ -476,10 +476,10 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(CK_STREAM == pParent->eCard());
+  RASSERT(CK_s_STREAM == pParent->eCard());
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
-  vValidate_notHave(CK_KEY,CK_NONE);
+  vValidate_notHave(CK_s_KEY, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

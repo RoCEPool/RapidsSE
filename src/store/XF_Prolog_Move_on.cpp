@@ -111,7 +111,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     if (p_rpnCalc_on->nChildCards()) {
       delete p_rpnCalc_on->pPopChild_tail();
-      m_pCI->G_vAppendNewChild(p_scan_over,CK_CONSTRAINT);
+      m_pCI->G_vAppendNewChild(p_scan_over, CK_s_CONSTRAINT);
       m_pCI->G_vAppendNewChild(m_pCI->G.p_constraint,CK_RPNCALC);
       m_pCI->G.p_rpnCalc->vTransferChildren(p_rpnCalc_on);
     }

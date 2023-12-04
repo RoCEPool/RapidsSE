@@ -19,7 +19,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Constraint,CK_CONSTRAINT)
+__pCastFunction_Card(STORE, Card_Constraint, CK_s_CONSTRAINT)
 __aNewFunction(Card_Constraint,CN_CARD)
 __vDeleteFunction(Card_Constraint,CN_CARD)
 
@@ -28,7 +28,7 @@ __vDeleteFunction(Card_Constraint,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Constraint::Card_Constraint(void)
-: Card_CONDITION(CK_CONSTRAINT, 2)
+: Card_CONDITION(CK_s_CONSTRAINT, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -81,7 +81,7 @@ void XF_Prolog_Review_as::vReview_as(void)
       case CK_m_INDEXSCAN:  break;
       case CK_m_PROJECT:    break;
       case CK_m_SORT:       break;
-      case CK_TABLE:      break;
+      case CK_s_TABLE:      break;
 
       default:
         break;

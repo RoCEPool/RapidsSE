@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Stream,CK_STREAM)
+__pCastFunction_Card(STORE, Card_Stream, CK_s_STREAM)
 __aNewFunction(Card_Stream,CN_CARD)
 __vDeleteFunction(Card_Stream,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Stream,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stream::Card_Stream(void)
-: Card_symbol(CK_STREAM, 2)
+: Card_symbol(CK_s_STREAM, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

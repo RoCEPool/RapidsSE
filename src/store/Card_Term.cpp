@@ -57,7 +57,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
     if (pCI->pAncestorFind(CK_m_KEYEXISTS) || pCI->pAncestorFind(CK_m_KEYNOTEXISTS))
       return C_CONTINUE_RECURSION;
-//    if (pCI->pAncestorFind(CK_CONSTRAINT))ø
+//    if (pCI->pAncestorFind(CK_s_CONSTRAINT))ø
 //      return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(pCard);
@@ -69,7 +69,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     if ((pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_m_INDEXJOIN))) &&
-        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
+        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT))) ) {
       //pCI->G.p_indexJoin->vDump(__func__);
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
@@ -602,17 +602,17 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 //          pParent->eCard() == CK_BOUND || // todo: is a bound a boolPred?
 //          pParent->eCard() == CK_BOOLPRED ||
 //          pParent->eCard() == CK_RLNCONJ ||
-//          pParent->eCard() == CK_HASHING ||
+//          pParent->eCard() == CK_s_HASHING ||
 //          pParent->eCard() == CK_NOTCONJ ||
 //          pParent->eCard() == CK_ORCONJ ||
 //          pParent->eCard() == CK_RPNCALC);
 
-  (void)Card::eValidate_parentEither(pCI,CK_HSHCOL,// todo: NO!?
+  (void)Card::eValidate_parentEither(pCI, CK_HSHCOL,// todo: NO!?
                                      CK_ANDCONJ,
                                      CK_BOUND,
                                      CK_BOOLPRED,
                                      CK_RLNCONJ,
-                                     CK_HASHING,
+                                     CK_s_HASHING,
                                      CK_NOTCONJ,
                                      CK_ORCONJ,
                                      CK_RPNCALC,
@@ -642,7 +642,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 
 //  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
-//    if (m_xSymbol.bIs_Tbl_Col() && ! pCI->pAncestorFind(CK_INJECTABLE)) {
+//    if (m_xSymbol.bIs_Tbl_Col() && ! pCI->pAncestorFind(CK_s_INJECTABLE)) {
 //      vDump(__func__);
 //      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
 //    }

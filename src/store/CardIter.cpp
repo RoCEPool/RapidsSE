@@ -1174,9 +1174,9 @@ void CardIter::vEndTransform(i8 iLineNo)
       G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
     for (Kid xDeck(G.pDeck); xDeck.bEach(); /**/) {
-      xDeck.pChild()->vEnsureFirst(CK_LEVEL);
-      xDeck.pChild()->vEnsureLast(CK_CONSTRAINT);
-      xDeck.pChild()->vEnsureLast(CK_NEEDED);
+      xDeck.pChild()->vEnsureFirst(CK_s_LEVEL);
+      xDeck.pChild()->vEnsureLast(CK_s_CONSTRAINT);
+      xDeck.pChild()->vEnsureLast(CK_s_NEEDED);
     }
 
     vPrintBoard(iLineNo);
@@ -1343,7 +1343,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_m_CAST:             return G.p_cast;
     case CK_CLAUSE:           return G.p_clause;
     case CK_m_COMBINED:         return G.p_combined;
-    case CK_CONSTRAINT:       return G.p_constraint;
+    case CK_s_CONSTRAINT:       return G.p_constraint;
     case CK_CORRCOLS:         return G.p_corrCols;
     case CK_m_CORRELATION:      return G.p_correlation;
     case CK_COSTJOINING:      return G.p_costJoining;
@@ -1370,10 +1370,10 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_m_GBYAGG:           return G.p_gbyAgg;
 
     case CK_m_HASH:             return G.p_hash;
-    case CK_HASHING:          return G.p_hashing;
+    case CK_s_HASHING:          return G.p_hashing;
     case CK_m_HAVING:           return G.p_having;
     case CK_HSHCOL:           return G.p_hshCol;
-    case CK_HSHCOLLIST:       return G.p_hshColList;
+    case CK_s_HSHCOLLIST:       return G.p_hshColList;
 
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
@@ -1383,7 +1383,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_m_INDEXSCAN:        return G.p_indexScan;
     case CK_m_INFLATE:          return G.p_inflate;
-    case CK_INJECTABLE:         return G.p_injectable;
+    case CK_s_INJECTABLE:         return G.p_injectable;
 
     case CK_JOINCAST:         return G.p_joinCast;
     case CK_JOINESTIMATE:     return G.p_joinEstimate;
@@ -1391,18 +1391,18 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_JOINORDERING:     return G.p_joinOrdering;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
 
-    case CK_KEY:              return G.p_key;
+    case CK_s_KEY:              return G.p_key;
     case CK_KEYCELLS:         return G.p_keyCells;
     case CK_m_KEYEXISTS:        return G.p_keyExists;
     case CK_m_KEYNOTEXISTS:     return G.p_keyNotExists;
 
-    case CK_LEVEL:            return G.p_level;
+    case CK_s_LEVEL:            return G.p_level;
     case CK_m_LIMIT:            return G.p_limit;
 
     case CK_MAP:              return G.p_map;
-    case CK_MAPPING:          return G.p_mapping;
+    case CK_s_MAPPING:          return G.p_mapping;
 
-    case CK_NEEDED:           return G.p_needed;
+    case CK_s_NEEDED:           return G.p_needed;
     case CK_NOTE:             return G.p_note;
     case CK_NOTCONJ:          return G.p_notConj;
 
@@ -1412,7 +1412,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
 
-    case CK_PAYLOAD:          return G.p_payload;
+    case CK_s_PAYLOAD:          return G.p_payload;
     case CK_PAYLOADCELLS:     return G.p_payloadCells;
     case CK_m_PROJECT:          return G.p_project;
 
@@ -1432,7 +1432,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SQYINFO:          return G.p_sqyInfo;
     case CK_SQYNO:            return G.p_sqyNo;
     case CK_m_STAGE:            return G.p_stage;
-    case CK_STREAM:           return G.p_stream;
+    case CK_s_STREAM:           return G.p_stream;
     case CK_STREAMHEAD:       return G.p_streamHead;
     case CK_STREAMJOIN:       return G.p_streamJoin;
     case CK_STREAMKEY:        return G.p_streamKey;
@@ -1443,7 +1443,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SUBSET:           return G.p_subSet;
     case CK_SYNTHESIS:        return G.p_synthesis;
 
-    case CK_TABLE:            return G.p_table;
+    case CK_s_TABLE:            return G.p_table;
     case CK_TABLEINFO:        return G.p_tableInfo;
     case CK_TABLELIST:        return G.p_tableList;
     case CK_TABLENM:          return G.p_tableNm;
@@ -1568,7 +1568,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_m_COMBINED: G.p_combined          = _pCard_Combined(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_CONSTRAINT:       G.p_constraint        = _pCard_Constraint(pCard); break;
+    case CK_s_CONSTRAINT: G.p_constraint        = _pCard_Constraint(pCard); break;
     case CK_CORRCOLS:         G.p_corrCols          = _pCard_CorrCols(pCard); break;
     case CK_m_CORRELATION: G.p_correlation       = _pCard_Correlation(pCard); ;
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1602,11 +1602,11 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_m_HASH: G.p_hash              = _pCard_Hash(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_HASHING:          G.p_hashing           = _pCard_Hashing(pCard); break;
+    case CK_s_HASHING: G.p_hashing           = _pCard_Hashing(pCard); break;
     case CK_m_HAVING: G.p_having            = _pCard_Having(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_HSHCOL:           G.p_hshCol            = _pCard_HshCol(pCard); break;
-    case CK_HSHCOLLIST:       G.p_hshColList        = _pCard_HshColList(pCard); break;
+    case CK_s_HSHCOLLIST: G.p_hshColList        = _pCard_HshColList(pCard); break;
 
     case CK_IDXCOL:           G.p_idxCol            = _pCard_IdxCol(pCard); break;
     case CK_IDXCOLLIST:       G.p_idxColList        = _pCard_IdxColList(pCard); break;
@@ -1617,7 +1617,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXNM:          G.p_indexNm           = _pCard_IndexNm(pCard); break;
     case CK_m_INDEXSCAN: G.p_indexScan         = _pCard_IndexScan(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_INJECTABLE:       G.p_injectable          = _pCard_Injectable(pCard); break;
+    case CK_s_INJECTABLE: G.p_injectable          = _pCard_Injectable(pCard); break;
     case CK_m_INFLATE: G.p_inflate           = _pCard_Inflate(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
 
@@ -1627,21 +1627,21 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_JOINORDERING:     G.p_joinOrdering      = _pCard_JoinOrdering(pCard); break;
     case CK_JOINPREDLIST:     G.p_joinPredList      = _pCard_JoinPredList(pCard); break;
 
-    case CK_KEY:              G.p_key               = _pCard_Key(pCard); break;
+    case CK_s_KEY: G.p_key               = _pCard_Key(pCard); break;
     case CK_KEYCELLS:         G.p_keyCells          = _pCard_KeyCells(pCard); break;
     case CK_m_KEYEXISTS: G.p_keyExists         = _pCard_KeyExists(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_m_KEYNOTEXISTS: G.p_keyNotExists      = _pCard_KeyNotExists(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
 
-    case CK_LEVEL:            G.p_level             = _pCard_Level(pCard); break;
+    case CK_s_LEVEL: G.p_level             = _pCard_Level(pCard); break;
     case CK_m_LIMIT: G.p_limit             = _pCard_Limit(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
 
     case CK_MAP:              G.p_map               = _pCard_Map(pCard); break;
-    case CK_MAPPING:          G.p_mapping           = _pCard_Mapping(pCard); break;
+    case CK_s_MAPPING: G.p_mapping           = _pCard_Mapping(pCard); break;
 
-    case CK_NEEDED:           G.p_needed            = _pCard_Needed(pCard); break;
+    case CK_s_NEEDED: G.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
     case CK_NOTCONJ:          G.p_notConj           = _pCard_NotConj(pCard);
                               G.p_CONJ              = (Card_CONJ*)pCard; break;
@@ -1654,7 +1654,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
     case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
-    case CK_PAYLOAD:          G.p_payload           = _pCard_Payload(pCard); break;
+    case CK_s_PAYLOAD: G.p_payload           = _pCard_Payload(pCard); break;
     case CK_PAYLOADCELLS:     G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
     case CK_m_PROJECT: G.p_project           = _pCard_Project(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1681,7 +1681,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SQYNO:            G.p_sqyNo             = _pCard_SqyNo(pCard); break;
     case CK_m_STAGE: G.p_stage             = _pCard_Stage(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_STREAM:           G.p_stream            = _pCard_Stream(pCard); break;
+    case CK_s_STREAM: G.p_stream            = _pCard_Stream(pCard); break;
     case CK_STREAMHEAD:       G.p_streamHead        = _pCard_StreamHead(pCard); break;
     case CK_STREAMJOIN:       G.p_streamJoin        = _pCard_StreamJoin(pCard); break;
     case CK_STREAMKEY:        G.p_streamKey         = _pCard_StreamKey(pCard); break;
@@ -1692,7 +1692,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SUBSET:           G.p_subSet            = _pCard_SubSet(pCard); break;
     case CK_SYNTHESIS:        G.p_synthesis         = _pCard_Synthesis(pCard); break;
 
-    case CK_TABLE:            G.p_table             = _pCard_Table(pCard);
+    case CK_s_TABLE: G.p_table             = _pCard_Table(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_TABLEINFO:        G.p_tableInfo         = _pCard_TableInfo(pCard); break;
     case CK_TABLELIST:        G.p_tableList         = _pCard_TableList(pCard); break;
@@ -2599,7 +2599,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_m_CAST:         G.p_cast->vValidate(this, iDepth, pCard);  break;
       case CK_CLAUSE:       G.p_clause->vValidate(this, iDepth, pCard);  break;
       case CK_m_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
-      case CK_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
+      case CK_s_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
       case CK_CORRCOLS:     G.p_corrCols->vValidate(this, iDepth, pCard);  break;
       case CK_m_CORRELATION:  G.p_correlation->vValidate(this, iDepth, pCard);  break;
       case CK_COSTJOINING:  G.p_costJoining->vValidate(this, iDepth, pCard);  break;
@@ -2626,10 +2626,10 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_m_GBYAGG:       G.p_gbyAgg->vValidate(this, iDepth, pCard);  break;
 
       case CK_m_HASH:         G.p_hash->vValidate(this, iDepth, pCard);  break;
-      case CK_HASHING:      G.p_hashing->vValidate(this, iDepth, pCard);  break;
+      case CK_s_HASHING:      G.p_hashing->vValidate(this, iDepth, pCard);  break;
       case CK_m_HAVING:       G.p_having->vValidate(this, iDepth, pCard);  break;
       case CK_HSHCOL:       G.p_hshCol->vValidate(this, iDepth, pCard);  break;
-      case CK_HSHCOLLIST:   G.p_hshColList->vValidate(this, iDepth, pCard);  break;
+      case CK_s_HSHCOLLIST:   G.p_hshColList->vValidate(this, iDepth, pCard);  break;
 
       case CK_IDXCOL:       G.p_idxCol->vValidate(this, iDepth, pCard);  break;
       case CK_IDXCOLLIST:   G.p_idxColList->vValidate(this, iDepth, pCard);  break;
@@ -2639,7 +2639,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_INDEXNM:      G.p_indexNm->vValidate(this, iDepth, pCard);  break;
       case CK_m_INDEXSCAN:    G.p_indexScan->vValidate(this, iDepth, pCard);  break;
       case CK_m_INFLATE:      G.p_inflate->vValidate(this, iDepth, pCard);  break;
-      case CK_INJECTABLE:     G.p_injectable->vValidate(this, iDepth, pCard);  break;
+      case CK_s_INJECTABLE:     G.p_injectable->vValidate(this, iDepth, pCard);  break;
 
       case CK_JOINCAST:     G.p_joinCast->vValidate(this, iDepth, pCard);  break;
       case CK_JOINESTIMATE: G.p_joinEstimate->vValidate(this, iDepth, pCard);  break;
@@ -2647,18 +2647,18 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_JOINORDERING: G.p_joinOrdering->vValidate(this, iDepth, pCard);  break;
       case CK_JOINPREDLIST: G.p_joinPredList->vValidate(this, iDepth, pCard);  break;
 
-      case CK_KEY:          G.p_key->vValidate(this, iDepth, pCard);  break;
+      case CK_s_KEY:          G.p_key->vValidate(this, iDepth, pCard);  break;
       case CK_KEYCELLS:     G.p_keyCells->vValidate(this, iDepth, pCard);  break;
       case CK_m_KEYEXISTS:    G.p_keyExists->vValidate(this, iDepth, pCard);  break;
       case CK_m_KEYNOTEXISTS: G.p_keyNotExists->vValidate(this, iDepth, pCard);  break;
 
-      case CK_LEVEL:        G.p_level->vValidate(this, iDepth, pCard);  break;
+      case CK_s_LEVEL:        G.p_level->vValidate(this, iDepth, pCard);  break;
       case CK_m_LIMIT:        G.p_limit->vValidate(this, iDepth, pCard);  break;
 
       case CK_MAP:          G.p_map->vValidate(this, iDepth, pCard);  break;
-      case CK_MAPPING:      G.p_mapping->vValidate(this, iDepth, pCard);  break;
+      case CK_s_MAPPING:      G.p_mapping->vValidate(this, iDepth, pCard);  break;
 
-      case CK_NEEDED:       G.p_needed->vValidate(this, iDepth, pCard);  break;
+      case CK_s_NEEDED:       G.p_needed->vValidate(this, iDepth, pCard);  break;
       case CK_NOTE:         G.p_note->vValidate(this, iDepth, pCard);  break;
       case CK_NOTCONJ:      G.p_notConj->vValidate(this, iDepth, pCard);  break;
 
@@ -2668,7 +2668,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_OUTERCOLNM:   G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
       case CK_OUTERJOIN:    G.p_outerJoin->vValidate(this, iDepth, pCard);  break;
 
-      case CK_PAYLOAD:      G.p_payload->vValidate(this, iDepth, pCard);  break;
+      case CK_s_PAYLOAD:      G.p_payload->vValidate(this, iDepth, pCard);  break;
       case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
       case CK_m_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
 
@@ -2688,7 +2688,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_SQYINFO:    G.p_sqyInfo->vValidate(this, iDepth, pCard);  break;
       case CK_SQYNO:      G.p_sqyNo->vValidate(this, iDepth, pCard);  break;
       case CK_m_STAGE:      G.p_stage->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAM:     G.p_stream->vValidate(this, iDepth, pCard);  break;
+      case CK_s_STREAM:     G.p_stream->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMHEAD: G.p_streamHead->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMJOIN: G.p_streamJoin->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMKEY:  G.p_streamKey->vValidate(this, iDepth, pCard);  break;
@@ -2699,7 +2699,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_SUBSET:     G.p_subSet->vValidate(this, iDepth, pCard);  break;
       case CK_SYNTHESIS:  G.p_synthesis->vValidate(this, iDepth, pCard);  break;
 
-      case CK_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;
+      case CK_s_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;
       case CK_TABLEINFO: G.p_tableInfo->vValidate(this, iDepth, pCard);  break;
       case CK_TABLELIST: G.p_tableList->vValidate(this, iDepth, pCard);  break;
       case CK_TABLENM:   G.p_tableNm->vValidate(this, iDepth, pCard);  break;

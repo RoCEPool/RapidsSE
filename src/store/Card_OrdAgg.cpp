@@ -138,7 +138,7 @@ void Card_OrdAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

@@ -2148,7 +2148,7 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_EMIT:    _pCard_Emit(this)->vPrint(pRibbon, iDepth);    break;
     case CK_EXPR:    _pCard_Expr(this)->vPrint(pRibbon, iDepth);    break;
     case CK_RPNCALC: _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth); break;
-    case CK_TABLE:   _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
+    case CK_s_TABLE:   _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
     case CK_TERM:    _pCard_Term(this)->vPrint(pRibbon, iDepth);    break;
 
     case CK_ANDCONJ:
@@ -2539,7 +2539,7 @@ Card_Constraint* Card::pSub_constraint(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Constraint* p_constraint =
-      _pCard_Constraint(pFindSubCard(CK_CONSTRAINT));
+      _pCard_Constraint(pFindSubCard(CK_s_CONSTRAINT));
   return p_constraint;
 }
 
@@ -2799,7 +2799,7 @@ Card_Hashing* Card::pSub_hashing(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Hashing* p_hashing =
-      _pCard_Hashing(pFindSubCard(CK_HASHING));
+      _pCard_Hashing(pFindSubCard(CK_s_HASHING));
   return p_hashing;
 }
 
@@ -2825,7 +2825,7 @@ Card_HshColList* Card::pSub_hshColList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_HshColList* p_hshColList =
-      _pCard_HshColList(pFindSubCard(CK_HSHCOLLIST));
+      _pCard_HshColList(pFindSubCard(CK_s_HSHCOLLIST));
   return p_hshColList;
 }
 
@@ -2903,7 +2903,7 @@ Card_Injectable* Card::pSub_injectable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Injectable* p_injected =
-      _pCard_Injectable(pFindSubCard(CK_INJECTABLE));
+      _pCard_Injectable(pFindSubCard(CK_s_INJECTABLE));
   return p_injected;
 }
 
@@ -2942,7 +2942,7 @@ Card_Key* Card::pSub_key(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Key* p_key =
-      _pCard_Key(pFindSubCard(CK_KEY));
+      _pCard_Key(pFindSubCard(CK_s_KEY));
   return p_key;
 }
 
@@ -3007,7 +3007,7 @@ Card_Level* Card::pSub_level(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Level* p_level =
-      _pCard_Level(pFindSubCard(CK_LEVEL));
+      _pCard_Level(pFindSubCard(CK_s_LEVEL));
   return p_level;
 }
 
@@ -3033,7 +3033,7 @@ Card_Mapping* Card::pSub_mapping(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Mapping* p_mapping =
-      _pCard_Mapping(pFindSubCard(CK_MAPPING));
+      _pCard_Mapping(pFindSubCard(CK_s_MAPPING));
   return p_mapping;
 }
 
@@ -3046,7 +3046,7 @@ Card_Needed* Card::pSub_needed(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Needed* p_needed =
-      _pCard_Needed(pFindSubCard(CK_NEEDED));
+      _pCard_Needed(pFindSubCard(CK_s_NEEDED));
   return p_needed;
 }
 
@@ -3124,7 +3124,7 @@ Card_Payload* Card::pSub_payload(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Payload* p_payload =
-      _pCard_Payload(pFindSubCard(CK_PAYLOAD));
+      _pCard_Payload(pFindSubCard(CK_s_PAYLOAD));
   return p_payload;
 }
 
@@ -3280,7 +3280,7 @@ Card_Stream* Card::pSub_stream(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Stream* p_stream =
-      _pCard_Stream(pFindSubCard(CK_STREAM));
+      _pCard_Stream(pFindSubCard(CK_s_STREAM));
   return p_stream;
 }
 
@@ -3345,7 +3345,7 @@ Card_Table* Card::pSub_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Table* p_table =
-      _pCard_Table(pFindSubCard(CK_TABLE));
+      _pCard_Table(pFindSubCard(CK_s_TABLE));
   return p_table;
 }
 

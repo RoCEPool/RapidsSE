@@ -306,7 +306,7 @@ void Card_OP::vEnsure_stream(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (! (pCI->G.p_stream = pSub_stream()) ) {
-    pCI->G_vAppendNewChild(this,CK_STREAM);
+    pCI->G_vAppendNewChild(this, CK_s_STREAM);
   }
 
   RASSERT(pCI->G.p_stream);
@@ -428,7 +428,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
   pCI->G.p_key = pSub_key();
   pCI->G.p_emit = pSub_emit();
 
-  pCI->G_vAppendNewChild(CK_SYNTHESIS, CK_MAPPING);
+  pCI->G_vAppendNewChild(CK_SYNTHESIS, CK_s_MAPPING);
   pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
   pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
 
@@ -600,7 +600,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
 
   // todo: [ray A 145]
-  char cTblSyn = bIsCard(CK_TABLE) ? pSymbol()->cSF_char() : pSub_table()->pSymbol()->cSF_char();
+  char cTblSyn = bIsCard(CK_s_TABLE) ? pSymbol()->cSF_char() : pSub_table()->pSymbol()->cSF_char();
 
   i8 iExpCol = p_emit->nExpr() + 1;
 
@@ -727,7 +727,7 @@ void Card_OP::vRpn_gbyAgg(String* psRpnExpr, Card_GbyAgg* p_gbyAgg)
   i8 nSubCards;
 
   Card_Key* pCard_Key =
-      _pCard_Key(p_gbyAgg->pFindSubCard(CK_KEY));
+      _pCard_Key(p_gbyAgg->pFindSubCard(CK_s_KEY));
 
   if (! pCard_Key)
     return;
@@ -1192,7 +1192,7 @@ void Card_OP::vRpn_ordAgg(String* psRpnExpr, Card_OrdAgg* p_ordAgg)
   i8 nSubCards;
 
   Card_Key* pCard_Key =
-      _pCard_Key(p_ordAgg->pFindSubCard(CK_KEY));
+      _pCard_Key(p_ordAgg->pFindSubCard(CK_s_KEY));
 
   if (! pCard_Key)
     return;
@@ -1303,7 +1303,7 @@ void Card_OP::vRpn_sort(String* psRpnExpr, Card_Sort* p_sort)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Key* pCard_Key =
-      _pCard_Key(p_sort->pFindSubCard(CK_KEY));
+      _pCard_Key(p_sort->pFindSubCard(CK_s_KEY));
 
   i8 nSubCards = pCard_Key->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1569,7 +1569,7 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     return;
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
-    vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
+    vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
 }
 
 /*============================================================================*/

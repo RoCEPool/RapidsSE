@@ -68,7 +68,7 @@ bool CardUsage::bAddCombined(Card_OP* p_OP)
     case CK_m_WHERE:
     case CK_m_SCAN:
     case CK_m_SORT:
-    case CK_TABLE:
+    case CK_s_TABLE:
     case CK_m_TOP:
       break;
 
@@ -105,7 +105,7 @@ bool CardUsage::bAddNext(Card_OP* p_OP)
     case CK_m_WHERE:
     case CK_m_SCAN:
     case CK_m_SORT:
-    case CK_TABLE:
+    case CK_s_TABLE:
     case CK_m_TOP:
       break;
 
@@ -142,7 +142,7 @@ bool CardUsage::bAddStage(Card_OP* p_OP)
     case CK_m_WHERE:
     case CK_m_SCAN:
     case CK_m_SORT:
-    case CK_TABLE:
+    case CK_s_TABLE:
     case CK_m_TOP:
       break;
 
