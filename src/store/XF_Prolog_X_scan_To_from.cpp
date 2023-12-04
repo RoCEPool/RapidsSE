@@ -70,8 +70,8 @@ void XF_Prolog_X_scan_To_from::vX_scan_To_from(void)
   m_pCI->vTransform(__func__, XF_PROLOG_X_SCAN_TO_FROM, "scan to table"_Stz);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_m_SCAN))
-    m_pCI->G.p_scan->vCard(CK_m_FROM);
+  while (m_pCI->G_bEachMain(CK_o_SCAN))
+    m_pCI->G.p_scan->vCard(CK_o_FROM);
 
   m_pCI->vEndTransform(__LINE__);
 

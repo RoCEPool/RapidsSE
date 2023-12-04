@@ -43,7 +43,7 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_OP->bIsOne(CK_m_SCAN, CK_m_INDEXSCAN, CK_m_INDEXJOIN, CK_m_CROSSJOIN, CK_NONE));
+  RASSERT(pCI->G.p_OP->bIsOne(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE));
   pCI->Next.m_pEmitted = pCI->Next.m_pProject->pSub_emit();
 
   if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit()))
@@ -54,7 +54,7 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
 
   // <scan> or <indexScan>
 
-  if (pCI->G.p_OP->bIsOne(CK_m_SCAN, CK_m_INDEXSCAN, CK_NONE)) {
+  if (pCI->G.p_OP->bIsOne(CK_o_SCAN, CK_o_INDEXSCAN, CK_NONE)) {
      pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
     return;
   }
@@ -81,7 +81,7 @@ void Card_Stream::vFuse_project_NoViable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_OP->bIsOne(CK_m_CROSSJOIN, CK_m_INDEXJOIN, CK_m_INDEXSCAN, CK_m_SCAN, CK_NONE));
+  RASSERT(pCI->G.p_OP->bIsOne(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_SCAN, CK_NONE));
   //RASSERT(! pCI->G.p_emit);
 
 }

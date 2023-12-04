@@ -447,14 +447,14 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
   for (/* none */ ; /* none */ ; i_Main++) {
     Card *pMainCard = pCI->G.pDeck->pGetChild(i_Main);
 
-    if (CK_m_WHERE == pMainCard->eCard()) {
+    if (CK_o_WHERE == pMainCard->eCard()) {
       delete pScope;
       return nullptr;
     }
 
     eCK eMainCard = pMainCard->eCard();
 
-    if (CK_m_FROM == eMainCard) {
+    if (CK_o_FROM == eMainCard) {
       Card_Table* p_table = pMainCard->pSub_table();
       Symbol* pSymbol_table = p_table->pSymbol();
       pScope->vInScope(pSymbol_table,true);

@@ -68,11 +68,11 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
     if (! m_pCI->Flux.m_pArriving)
       continue;
 
-    if (m_pCI->G.p_OP->bIsCard(CK_m_GBYAGG) &&
+    if (m_pCI->G.p_OP->bIsCard(CK_o_GBYAGG) &&
         m_pCI->G.p_OP->pSub_level()->pSymbol()->Y_iGet(P_Level) != AL_PARTITION)
       continue;
 
-    if (m_pCI->G.p_OP->bIsCard(CK_m_KEYEXISTS))
+    if (m_pCI->G.p_OP->bIsCard(CK_o_KEYEXISTS))
       vDebugPoint();
     //m_pCI->Flux.m_pArriving->vDump(__func__);
     vX_colNm_To_stmCol();

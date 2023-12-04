@@ -68,10 +68,10 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
   while (m_pCI->G_bEachMain_NONE()) {
 
     // test for injecting op
-    if (! m_pCI->G.p_MainCard->bIsOne(CK_m_SCAN, CK_m_INDEXSCAN, CK_m_INDEXJOIN, CK_m_CROSSJOIN, CK_NONE))
+    if (! m_pCI->G.p_MainCard->bIsOne(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE))
       goto L_UPDATE_PRIOR_EMITTED;
 
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_m_PROJECT));
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
 
     m_pCI->G.p_stream = m_pCI->G.p_MainCard->pSub_stream();
 
@@ -103,8 +103,8 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
   m_pCI->vTransform(__func__, XF_EPILOG_FUSE_PROJECT, "fuse project"_Stz);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_m_SCAN)) {
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_m_PROJECT));
+  while (m_pCI->G_bEachMain(CK_o_SCAN)) {
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
@@ -120,8 +120,8 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_m_INDEXSCAN)) {
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_m_PROJECT));
+  while (m_pCI->G_bEachMain(CK_o_INDEXSCAN)) {
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
@@ -139,13 +139,13 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
 
-    if (CK_m_INDEXJOIN != m_pCI->G.e_MainCard) {
+    if (CK_o_INDEXJOIN != m_pCI->G.e_MainCard) {
       if (m_pCI->G.p_MainCard->pSub_emit())
         m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emit();
       continue;
     }
 
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_m_PROJECT));
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
@@ -166,13 +166,13 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
 
-    if (CK_m_CROSSJOIN != m_pCI->G.e_MainCard) {
+    if (CK_o_CROSSJOIN != m_pCI->G.e_MainCard) {
       if (m_pCI->G.p_MainCard->pSub_emit())
         m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emit();
       continue;
     }
 
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_m_PROJECT));
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {

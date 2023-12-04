@@ -183,7 +183,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) get factored columns of key as start of needed projection
 
-  if (pCI->G.p_OP->bIsCard(CK_m_GBYAGG) || pCI->G.p_OP->bIsCard(CK_m_ORDAGG)) {
+  if (pCI->G.p_OP->bIsCard(CK_o_GBYAGG) || pCI->G.p_OP->bIsCard(CK_o_ORDAGG)) {
     if ((pCI->G.p_key = pSub_key())) {
       // + projection of gbyAgg/ordAgg has a key
 

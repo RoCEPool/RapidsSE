@@ -17,28 +17,28 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_c_SEND"_Stz,         // CK_c_SEND
   /* */ "CK_c_STAGE"_Stz,        // CK_c_STAGE
 
-  /* */ "CK_m_AGGREG"_Stz,       // CK_m_AGGREG
-  /* */ "CK_m_CALL"_Stz,         // CK_m_CALL
-  /* */ "CK_m_CAST"_Stz,         // CK_m_CAST
-  /* */ "CK_m_CORRELATION"_Stz,  // CK_m_CORRELATION
-  /* */ "CK_m_CROSSJOIN"_Stz,    // CK_m_CROSSJOIN
-  /* */ "CK_m_FILTER"_Stz,       // CK_m_FILTER
-  /* */ "CK_m_FROM"_Stz,         // CK_m_FROM
-  /* */ "CK_m_GBYAGG"_Stz,       // CK_m_GBYAGG
-  /* */ "CK_m_HASH"_Stz,         // CK_m_HASH
-  /* */ "CK_m_HAVING"_Stz,       // CK_m_HAVING
-  /* */ "CK_m_INDEXJOIN"_Stz,    // CK_m_INDEXJOIN
-  /* */ "CK_m_INDEXSCAN"_Stz,    // CK_m_INDEXSCAN
-  /* */ "CK_m_INFLATE"_Stz,      // CK_m_INFLATE
-  /* */ "CK_m_KEYEXISTS"_Stz,    // CK_m_KEYEXISTS
-  /* */ "CK_m_KEYNOTEXISTS"_Stz, // CK_m_KEYNOTEXISTS
-  /* */ "CK_m_LIMIT"_Stz,        // CK_m_LIMIT
-  /* */ "CK_m_ORDAGG"_Stz,       // CK_m_ORDAGG
-  /* */ "CK_m_PROJECT"_Stz,      // CK_m_PROJECT
-  /* */ "CK_m_SCAN"_Stz,         // CK_m_SCAN
-  /* */ "CK_m_SORT"_Stz,         // CK_m_SORT
-  /* */ "CK_m_TOP"_Stz,          // CK_m_TOP
-  /* */ "CK_m_WHERE"_Stz,        // CK_m_WHERE
+  /* */ "CK_o_AGGREG"_Stz,       // CK_o_AGGREG
+  /* */ "CK_o_CALL"_Stz,         // CK_o_CALL
+  /* */ "CK_o_CAST"_Stz,         // CK_o_CAST
+  /* */ "CK_o_CORRELATION"_Stz,  // CK_o_CORRELATION
+  /* */ "CK_o_CROSSJOIN"_Stz,    // CK_o_CROSSJOIN
+  /* */ "CK_o_FILTER"_Stz,       // CK_o_FILTER
+  /* */ "CK_o_FROM"_Stz,         // CK_o_FROM
+  /* */ "CK_o_GBYAGG"_Stz,       // CK_o_GBYAGG
+  /* */ "CK_o_HASH"_Stz,         // CK_o_HASH
+  /* */ "CK_o_HAVING"_Stz,       // CK_o_HAVING
+  /* */ "CK_o_INDEXJOIN"_Stz,    // CK_o_INDEXJOIN
+  /* */ "CK_o_INDEXSCAN"_Stz,    // CK_o_INDEXSCAN
+  /* */ "CK_o_INFLATE"_Stz,      // CK_o_INFLATE
+  /* */ "CK_o_KEYEXISTS"_Stz,    // CK_o_KEYEXISTS
+  /* */ "CK_o_KEYNOTEXISTS"_Stz, // CK_o_KEYNOTEXISTS
+  /* */ "CK_o_LIMIT"_Stz,        // CK_o_LIMIT
+  /* */ "CK_o_ORDAGG"_Stz,       // CK_o_ORDAGG
+  /* */ "CK_o_PROJECT"_Stz,      // CK_o_PROJECT
+  /* */ "CK_o_SCAN"_Stz,         // CK_o_SCAN
+  /* */ "CK_o_SORT"_Stz,         // CK_o_SORT
+  /* */ "CK_o_TOP"_Stz,          // CK_o_TOP
+  /* */ "CK_o_WHERE"_Stz,        // CK_o_WHERE
 
   /* */ "CK_s_CONSTRAINT"_Stz,   // CK_s_CONSTRAINT
   /* */ "CK_s_HASHING"_Stz,      // CK_s_HASHING
@@ -163,28 +163,28 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "sendSE"_Stz,          // CK_c_SEND
   /* */ "stage"_Stz,           // CK_c_STAGE
 
-  /* */ "aggreg"_Stz,          // CK_m_AGGREG
-  /* */ "call"_Stz,            // CK_m_CALL
-  /* */ "cast"_Stz,            // CK_m_CAST
-  /* */ "correlation"_Stz,     // CK_m_CORRELATION
-  /* */ "crossJoin"_Stz,       // CK_m_CROSSJOIN
-  /* */ "filter"_Stz,          // CK_m_FILTER
-  /* */ "from"_Stz,            // CK_m_FROM
-  /* */ "gbyAgg"_Stz,          // CK_m_GBYAGG
-  /* */ "hash"_Stz,            // CK_m_HASH
-  /* */ "having"_Stz,          // CK_m_HAVING
-  /* */ "indexJoin"_Stz,       // CK_m_INDEXJOIN
-  /* */ "indexScan"_Stz,       // CK_m_INDEXSCAN
-  /* */ "inflate"_Stz,         // CK_m_INFLATE
-  /* */ "keyExists"_Stz,       // CK_m_KEYEXISTS
-  /* */ "keyNotExists"_Stz,    // CK_m_KEYNOTEXISTS
-  /* */ "limit"_Stz,           // CK_m_LIMIT
-  /* */ "ordAgg"_Stz,          // CK_m_ORDAGG
-  /* */ "project"_Stz,         // CK_m_PROJECT
-  /* */ "scan"_Stz,            // CK_m_SCAN
-  /* */ "sort"_Stz,            // CK_m_SORT
-  /* */ "top"_Stz,             // CK_m_TOP
-  /* */ "where"_Stz,           // CK_m_WHERE
+  /* */ "aggreg"_Stz,          // CK_o_AGGREG
+  /* */ "call"_Stz,            // CK_o_CALL
+  /* */ "cast"_Stz,            // CK_o_CAST
+  /* */ "correlation"_Stz,     // CK_o_CORRELATION
+  /* */ "crossJoin"_Stz,       // CK_o_CROSSJOIN
+  /* */ "filter"_Stz,          // CK_o_FILTER
+  /* */ "from"_Stz,            // CK_o_FROM
+  /* */ "gbyAgg"_Stz,          // CK_o_GBYAGG
+  /* */ "hash"_Stz,            // CK_o_HASH
+  /* */ "having"_Stz,          // CK_o_HAVING
+  /* */ "indexJoin"_Stz,       // CK_o_INDEXJOIN
+  /* */ "indexScan"_Stz,       // CK_o_INDEXSCAN
+  /* */ "inflate"_Stz,         // CK_o_INFLATE
+  /* */ "keyExists"_Stz,       // CK_o_KEYEXISTS
+  /* */ "keyNotExists"_Stz,    // CK_o_KEYNOTEXISTS
+  /* */ "limit"_Stz,           // CK_o_LIMIT
+  /* */ "ordAgg"_Stz,          // CK_o_ORDAGG
+  /* */ "project"_Stz,         // CK_o_PROJECT
+  /* */ "scan"_Stz,            // CK_o_SCAN
+  /* */ "sort"_Stz,            // CK_o_SORT
+  /* */ "top"_Stz,             // CK_o_TOP
+  /* */ "where"_Stz,           // CK_o_WHERE
 
   /* */ "constraint"_Stz,      // CK_s_CONSTRAINT
   /* */ "hashing"_Stz,         // CK_s_HASHING

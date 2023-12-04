@@ -74,8 +74,8 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   while (m_pCI->G_bEachMain_NONE()) {
 
-    if (!(m_pCI->G.p_MainCard->bIsCard(CK_m_INDEXJOIN) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_m_INDEXSCAN)))
+    if (!(m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXJOIN) ||
+          m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXSCAN)))
       continue;
     if (!(m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
       continue;
@@ -108,10 +108,10 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
 
-    if (! (m_pCI->G.p_MainCard->bIsCard(CK_m_INDEXJOIN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_m_INDEXSCAN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_m_KEYEXISTS) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_m_KEYNOTEXISTS)
+    if (! (m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXJOIN) ||
+           m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXSCAN) ||
+           m_pCI->G.p_MainCard->bIsCard(CK_o_KEYEXISTS) ||
+           m_pCI->G.p_MainCard->bIsCard(CK_o_KEYNOTEXISTS)
     ))
       continue;
     if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))

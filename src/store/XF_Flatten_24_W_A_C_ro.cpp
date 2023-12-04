@@ -84,7 +84,7 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
   m_pCI->vTransform(__func__, XF_FLATTEN_24_W_A_C_RO, "((vFlatten_24_W_A_C_ro))"_Stz);
 
   XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
-  pFold->vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_m_WHERE);
+  pFold->vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
 
   CorrelatedJoin* pCorrelatedJoin = new CorrelatedJoin;
   pCorrelatedJoin->vVia_gbyAgg_Promotion(m_pCI);

@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Limit, CK_m_LIMIT)
+__pCastFunction_Card(STORE, Card_Limit, CK_o_LIMIT)
 __aNewFunction(Card_Limit,CN_CARD)
 __vDeleteFunction(Card_Limit,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Limit,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Limit::Card_Limit(void)
-: Card_OP(CK_m_LIMIT, 1)
+: Card_OP(CK_o_LIMIT, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Having, CK_m_HAVING)
+__pCastFunction_Card(STORE, Card_Having, CK_o_HAVING)
 __aNewFunction(Card_Having,CN_CARD)
 __vDeleteFunction(Card_Having,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Having,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Having::Card_Having(void)
-: Card_CONDITION(CK_m_HAVING, 1)
+: Card_CONDITION(CK_o_HAVING, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

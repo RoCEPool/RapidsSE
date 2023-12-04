@@ -68,7 +68,7 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
   Card_FiltPredList* p_filtPredList = new Card_FiltPredList;
 
   Kid xKid(p_deck);
-  while (xKid.bEach(CK_s_TABLE, CK_m_FILTER)) {
+  while (xKid.bEach(CK_s_TABLE, CK_o_FILTER)) {
 
     Card_Filter* p_filter = _pCard_Filter(xKid.pSub1());
 

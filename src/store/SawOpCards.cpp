@@ -80,16 +80,16 @@ void SawOpCards::vSaw(Card_OP* p_card_OP)
   eCK e_card_OP = p_card_OP->eCard();
 
   switch (e_card_OP) {
-    case CK_m_AGGREG: m_p_aggreg    = _pCard_Aggreg(p_card_OP);     break;
-    case CK_m_FILTER: m_p_filter    = _pCard_Filter(p_card_OP);     break;
-    case CK_m_GBYAGG: m_p_gbyAgg    = _pCard_GbyAgg(p_card_OP);     break;
-    case CK_m_HAVING: m_p_having    = _pCard_Having(p_card_OP);     break;
-    case CK_m_INDEXJOIN: m_p_indexJoin = _pCard_IndexJoin(p_card_OP);  break;
-    case CK_m_INDEXSCAN: m_p_indexScan = _pCard_IndexScan(p_card_OP);  break;
-    case CK_m_PROJECT: m_p_project   = _pCard_Project(p_card_OP);    break;
-    case CK_m_SCAN: m_p_scan      = _pCard_Scan(p_card_OP);       break;
-    case CK_m_SORT: m_p_sort      = _pCard_Sort(p_card_OP);       break;
-    case CK_m_WHERE: m_p_where     = _pCard_Where(p_card_OP);      break;
+    case CK_o_AGGREG: m_p_aggreg    = _pCard_Aggreg(p_card_OP);     break;
+    case CK_o_FILTER: m_p_filter    = _pCard_Filter(p_card_OP);     break;
+    case CK_o_GBYAGG: m_p_gbyAgg    = _pCard_GbyAgg(p_card_OP);     break;
+    case CK_o_HAVING: m_p_having    = _pCard_Having(p_card_OP);     break;
+    case CK_o_INDEXJOIN: m_p_indexJoin = _pCard_IndexJoin(p_card_OP);  break;
+    case CK_o_INDEXSCAN: m_p_indexScan = _pCard_IndexScan(p_card_OP);  break;
+    case CK_o_PROJECT: m_p_project   = _pCard_Project(p_card_OP);    break;
+    case CK_o_SCAN: m_p_scan      = _pCard_Scan(p_card_OP);       break;
+    case CK_o_SORT: m_p_sort      = _pCard_Sort(p_card_OP);       break;
+    case CK_o_WHERE: m_p_where     = _pCard_Where(p_card_OP);      break;
     default:
       NEVER_REACH
   }

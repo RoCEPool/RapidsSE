@@ -97,7 +97,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
     // change of level
     if (e_level_main != e_level_running) {
-      if (CK_m_SCAN != e_prev)// && CK_m_PROJECT != e_prev)
+      if (CK_o_SCAN != e_prev)// && CK_o_PROJECT != e_prev)
         vAddCombined(pCI, p_main, i_Main);
       if (e_level_running == AL_ORIGIN &&
           e_level_main == AL_PARTITION)
@@ -108,21 +108,21 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
       bSawFilterOp = false;
       bSawScanOp = false;
-      if (CK_m_GBYAGG == e_main || CK_m_AGGREG == e_main || CK_m_ORDAGG == e_main)
+      if (CK_o_GBYAGG == e_main || CK_o_AGGREG == e_main || CK_o_ORDAGG == e_main)
         bSawAggOp = true;
       else
         bSawAggOp = false;
-      if (CK_m_PROJECT == e_main)
+      if (CK_o_PROJECT == e_main)
         bSawProjectOp = true;
       else
         bSawProjectOp = false;
       continue;
     }
 
-    if (CK_m_CROSSJOIN == e_main || CK_m_INDEXJOIN == e_main
-        || CK_m_KEYEXISTS == e_main
-        || CK_m_KEYNOTEXISTS == e_main) {
-      if (CK_m_SCAN != e_prev)// && ((CK_m_PROJECT == e_prev && bSawFilterOp) || CK_m_PROJECT != e_prev))
+    if (CK_o_CROSSJOIN == e_main || CK_o_INDEXJOIN == e_main
+        || CK_o_KEYEXISTS == e_main
+        || CK_o_KEYNOTEXISTS == e_main) {
+      if (CK_o_SCAN != e_prev)// && ((CK_o_PROJECT == e_prev && bSawFilterOp) || CK_o_PROJECT != e_prev))
         vAddCombined(pCI, p_main, i_Main);
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
@@ -135,15 +135,15 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       continue;
     }
 
-//    if ((CK_m_PROJECT == e_main) &&
+//    if ((CK_o_PROJECT == e_main) &&
 //        ! ((bSawAggOp || bSawIndexJoinOp || bSawProjectOp || bSawScanOp || bSawSortOp))) {
 //      vAddCombined(pCI, p_main, i_Main);
 //    }
 
 
-    if ((CK_m_AGGREG == e_main)
+    if ((CK_o_AGGREG == e_main)
         && (bSawAggOp || bSawFilterOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) ) {
-      if (CK_m_SCAN != e_prev)// && CK_m_PROJECT != e_prev)
+      if (CK_o_SCAN != e_prev)// && CK_o_PROJECT != e_prev)
         vAddCombined(pCI, p_main, i_Main);
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
@@ -156,9 +156,9 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       continue;
     }
 
-    if ((CK_m_PROJECT == e_main)
+    if ((CK_o_PROJECT == e_main)
         && (bSawAggOp || bSawFilterOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) ) {
-      //if (CK_m_SCAN != e_prev && CK_m_PROJECT != e_prev)
+      //if (CK_o_SCAN != e_prev && CK_o_PROJECT != e_prev)
         vAddCombined(pCI, p_main, i_Main);
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
@@ -172,9 +172,9 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
     }
 
 
-    if ((CK_m_GBYAGG == e_main || CK_m_ORDAGG == e_main) &&
+    if ((CK_o_GBYAGG == e_main || CK_o_ORDAGG == e_main) &&
         (bSawAggOp || bSawIndexJoinOp || bSawProjectOp)) {
-      if (CK_m_SCAN != e_prev)
+      if (CK_o_SCAN != e_prev)
         vAddCombined(pCI, p_main, i_Main);
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
@@ -187,7 +187,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       continue;
     }
 
-    if (CK_m_SORT == e_main) {
+    if (CK_o_SORT == e_main) {
       if (bSawAggOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) {
         vAddCombined(pCI, p_main, i_Main);
       }
@@ -203,16 +203,16 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       continue;
     }
 
-    if (CK_m_SCAN == e_main) {
+    if (CK_o_SCAN == e_main) {
       bSawScanOp = true;
     }
 
 
     // if filter then continue?
-    if (CK_m_FILTER == e_main || CK_m_HAVING == e_main) {
+    if (CK_o_FILTER == e_main || CK_o_HAVING == e_main) {
 
       bSawFilterOp = true;
-      if (CK_m_FILTER == e_main && ! bSawAggOp)
+      if (CK_o_FILTER == e_main && ! bSawAggOp)
        continue;
 
       vAddNext(pCI, p_main, i_Main,""_Stz);
@@ -240,16 +240,16 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       continue;
     }
 
-    if (CK_m_GBYAGG == e_main || CK_m_ORDAGG == e_main)
+    if (CK_o_GBYAGG == e_main || CK_o_ORDAGG == e_main)
       bSawAggOp = true;
-    if (CK_m_PROJECT == e_main || CK_m_AGGREG == e_main)
+    if (CK_o_PROJECT == e_main || CK_o_AGGREG == e_main)
       bSawProjectOp = true;
   }
 
   e_prev = e_main;
 
   i8 i_End = C_UNKNOWN;
-  if (CK_m_SCAN != e_prev && CK_m_PROJECT != e_prev)
+  if (CK_o_SCAN != e_prev && CK_o_PROJECT != e_prev)
     vAddCombined(pCI, p_main, i_End);
   else
   if (bSawScanOp && bSawProjectOp)

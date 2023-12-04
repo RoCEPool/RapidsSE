@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Where, CK_m_WHERE)
+__pCastFunction_Card(STORE, Card_Where, CK_o_WHERE)
 __aNewFunction(Card_Where,CN_CARD)
 __vDeleteFunction(Card_Where,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Where,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Where::Card_Where(void)
-: Card_CONDITION(CK_m_WHERE, 1)
+: Card_CONDITION(CK_o_WHERE, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -50,7 +50,7 @@ void Card_Where::vCullMarked_rlnConj(CardIter* pCI) {
 
   pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_m_WHERE, CK_BOOLPRED)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED)) {
     (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 }
@@ -64,9 +64,9 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_m_WHERE, CK_BOOLPRED)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED)) {
     if (0 == pCI->G.p_boolPred->nChildCards()) {
-      pCI->G_vRemoveDeleteMain(CK_m_WHERE);
+      pCI->G_vRemoveDeleteMain(CK_o_WHERE);
     }
   }
 }
@@ -80,7 +80,7 @@ void Card_Where::vMarkWhereConjWrtTable(CardIter* pCI) {
 
   pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_m_WHERE, CK_BOOLPRED)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED)) {
     pCI->G.p_boolPred->vMark_rlnConj_Wrt_table(pCI, MARK_AT);
   }
 }
@@ -94,7 +94,7 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 
   pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_m_WHERE, CK_BOOLPRED)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED)) {
     pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(pCI, szWithMark);
   }
 }

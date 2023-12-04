@@ -486,7 +486,7 @@ Card* Dissector::pOp_filter(void)
 //  else {
 //    delete p_rpnExpr;
 //
-//    p_filter->vCard(CK_m_WHERE);
+//    p_filter->vCard(CK_o_WHERE);
 //    Card_Where* p_where = _pCard_Where(p_filter);
 //
 //    eAL eAggLevel = m_pStageSpec->eAggegLevel();
@@ -528,7 +528,7 @@ Card* Dissector::pOp_gbyAgg(void)
   if (p_rpnExpr->nItems()) {
     Card_Key* p_key = pPop_key(p_rpnExpr, true);
     p_aggreg->vAppendChild(p_key);
-    p_aggreg->vCard(CK_m_GBYAGG);
+    p_aggreg->vCard(CK_o_GBYAGG);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -939,7 +939,7 @@ Card* Dissector::pOp_ordAgg(void)
   if (p_rpnExpr->nItems()) {
     Card_Key* p_key = pPop_key(p_rpnExpr, true);
     p_ordAgg->vAppendChild(p_key);
-    //p_ordAgg->vCard(CK_m_GBYAGG);
+    //p_ordAgg->vCard(CK_o_GBYAGG);
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
@@ -996,7 +996,7 @@ Card* Dissector::pOp_project(void)
   m_bSawProjectOp = true;
   Card_RpnExpr* p_rpnExpr = pArg_rpnExpr(0);
 
-  Card_Project* p_project = new Card_Project(CK_m_PROJECT);
+  Card_Project* p_project = new Card_Project(CK_o_PROJECT);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

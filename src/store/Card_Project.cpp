@@ -16,7 +16,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Project, CK_m_PROJECT)
+__pCastFunction_Card(STORE, Card_Project, CK_o_PROJECT)
 __aNewFunction(Card_Project,CN_CARD)
 __vDeleteFunction(Card_Project,CN_CARD)
 
@@ -58,7 +58,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
   RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
 
-  Card_Project* p_project_unproject = new Card_Project(CK_m_PROJECT);
+  Card_Project* p_project_unproject = new Card_Project(CK_o_PROJECT);
   pCI->G.pDeck->vAppendChild(p_project_unproject);
   p_project_unproject->pSymbol()->Y_vSet(P_Unproject);
 

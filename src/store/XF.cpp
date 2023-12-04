@@ -301,14 +301,14 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMainWith2Sub(CK_m_SORT, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->G_bEachMainWith2Sub(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_TOP, "adjust top"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMainWith2Sub(CK_m_TOP, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->G_bEachMainWith2Sub(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
@@ -317,28 +317,28 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_INDEXJOIN, "tweak index join"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_m_INDEXJOIN)) {
+    while (m_pCI->G_bEachMain(CK_o_INDEXJOIN)) {
       m_pCI->G.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexJoin->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_INDEXSCAN, "tweak index scan"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_m_INDEXSCAN)) {
+    while (m_pCI->G_bEachMain(CK_o_INDEXSCAN)) {
       m_pCI->G.p_indexScan->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_KEYEXISTS, "tweak key exists"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_m_KEYEXISTS)) {
+    while (m_pCI->G_bEachMain(CK_o_KEYEXISTS)) {
       m_pCI->G.p_keyExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_KEYNOTEXISTS, "tweak key not exists"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_m_KEYNOTEXISTS)) {
+    while (m_pCI->G_bEachMain(CK_o_KEYNOTEXISTS)) {
       m_pCI->G.p_keyNotExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyNotExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
@@ -629,9 +629,9 @@ bool MakeOptimal::bOptimise_RplScanByIndexScan(void) {
   //    We won't see it till the Filters are moved close to the scans.
 
 //  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMainWithSub(CK_m_SCAN,CK_BOUNDS)) {
+//  if (m_pCI->G_bEachMainWithSub(CK_o_SCAN,CK_BOUNDS)) {
 //    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
-//      m_pCI->G.p_scan->vCard(CK_m_INDEXSCAN);
+//      m_pCI->G.p_scan->vCard(CK_o_INDEXSCAN);
 //
 //
 //      vDerive_Projection_Keys();

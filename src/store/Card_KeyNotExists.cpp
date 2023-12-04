@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_KeyNotExists, CK_m_KEYNOTEXISTS)
+__pCastFunction_Card(STORE, Card_KeyNotExists, CK_o_KEYNOTEXISTS)
 __aNewFunction(Card_KeyNotExists,CN_CARD)
 __vDeleteFunction(Card_KeyNotExists,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_KeyNotExists,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_KeyNotExists::Card_KeyNotExists(void)
-: Card_CONDITION(CK_m_KEYNOTEXISTS, C_UNKNOWN)
+: Card_CONDITION(CK_o_KEYNOTEXISTS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -50,7 +50,7 @@ void Card_KeyNotExists::vMorph_table_To_keyNotExists(STORE::CardIter *pCI)
   if ((pCI->G.p_keyNotExists = pCI->G.p_table->pSub_keyNotExists()))
     pCI->G.p_from->vDeleteChild(pCI->G.p_keyNotExists);
 
-  pCI->G.p_keyNotExists = _pCard_KeyNotExists(pCI->G.p_from->pCard(CK_m_KEYNOTEXISTS));
+  pCI->G.p_keyNotExists = _pCard_KeyNotExists(pCI->G.p_from->pCard(CK_o_KEYNOTEXISTS));
 
   // todo: this should be in index list
   pCI->G.p_index = pCI->G.p_keyNotExists->pSub_index();
@@ -82,7 +82,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pPrevChild()->bIsCard(CK_m_PROJECT)) {
+  if (pCI->pPrevChild()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();

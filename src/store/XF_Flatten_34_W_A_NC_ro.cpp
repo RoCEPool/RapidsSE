@@ -83,7 +83,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz,
-                               CK_m_WHERE, QO_RELN_OP, SM_NONE);
+                               CK_o_WHERE, QO_RELN_OP, SM_NONE);
 
  // m_pCI->vPrintBoard(__LINE__);
 
@@ -93,7 +93,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   // XF_Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
 
   m_pCI->vBeginEach();
-  //RASSERT(m_pCI->G_bEachMainWithSub(CK_m_PROJECT,CK_t_EMIT));
+  //RASSERT(m_pCI->G_bEachMainWithSub(CK_o_PROJECT,CK_t_EMIT));
   RASSERT(m_pCI->G_bEachMain(CK_c_FOLD));
 
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;

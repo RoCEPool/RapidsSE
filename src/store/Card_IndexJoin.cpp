@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_IndexJoin, CK_m_INDEXJOIN)
+__pCastFunction_Card(STORE, Card_IndexJoin, CK_o_INDEXJOIN)
 __aNewFunction(Card_IndexJoin,CN_CARD)
 __vDeleteFunction(Card_IndexJoin,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_IndexJoin,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexJoin::Card_IndexJoin(void)
-: Card_OP(CK_m_INDEXJOIN, C_UNKNOWN)
+: Card_OP(CK_o_INDEXJOIN, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -81,8 +81,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pPrevChild()->bIsCard(CK_m_GBYAGG) ||
-      pCI->pPrevChild()->bIsCard(CK_m_PROJECT)) {
+  if (pCI->pPrevChild()->bIsCard(CK_o_GBYAGG) ||
+      pCI->pPrevChild()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
@@ -221,7 +221,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(! pCI->Early.m_pNeeded_later);
 
-  if (pCI->pPrevChild()->bIsCard(CK_m_PROJECT))
+  if (pCI->pPrevChild()->bIsCard(CK_o_PROJECT))
     return;
 
   pCI->G.p_key = pSub_key();
@@ -285,9 +285,9 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
     throw xError;
   }
 
-//  pCI->G_vNewMember(CK_m_INDEXJOIN);
+//  pCI->G_vNewMember(CK_o_INDEXJOIN);
 //  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_indexJoin);
-  pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->G.p_from->pCard(CK_m_INDEXJOIN));
+  pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->G.p_from->pCard(CK_o_INDEXJOIN));
 
   pCI->G.p_indexList->vChoose_index_For_indexJoin();
 }

@@ -238,7 +238,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   i8 i_dup_from = 0;
   pCI->vBeginEach();
-  if (pCI->G_bEachMain(CK_m_CORRELATION)) {
+  if (pCI->G_bEachMain(CK_o_CORRELATION)) {
     pCI->Sqy.m_pCorrelation = pCI->G.pDeck->pSub_correlation();
     i_dup_from = 1;
   }
@@ -310,7 +310,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
 
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolPred>
 
-  RASSERT(pCI->G_bEachMain(CK_m_CALL));
+  RASSERT(pCI->G_bEachMain(CK_o_CALL));
   //vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
  // pCI->vPrintBoard(__LINE__);
 
@@ -440,7 +440,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   pCarryForward->vSetSeen(pCI);
 
-  if (CK_m_HAVING == eCardWithSQ) {
+  if (CK_o_HAVING == eCardWithSQ) {
     pCarryForward->Table.m_bReproject = true;
      pCarryForward->GbyAgg.m_bInject_foldExpr = true;
     pCarryForward->Having.m_bCorrect_After_Inject = true;

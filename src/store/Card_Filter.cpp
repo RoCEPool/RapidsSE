@@ -18,7 +18,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Filter, CK_m_FILTER)
+__pCastFunction_Card(STORE, Card_Filter, CK_o_FILTER)
 __aNewFunction(Card_Filter,CN_CARD)
 __vDeleteFunction(Card_Filter,CN_CARD)
 
@@ -27,7 +27,7 @@ __vDeleteFunction(Card_Filter,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Filter::Card_Filter(void)
-: Card_CONDITION(CK_m_FILTER, C_UNKNOWN)
+: Card_CONDITION(CK_o_FILTER, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -242,8 +242,8 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
   if (iDepth > 1)
-    (void)Card::eValidate_parentEither(pCI, CK_m_CROSSJOIN, CK_m_FROM, CK_m_HAVING,
-                                       CK_m_INDEXJOIN, CK_m_INDEXSCAN, CK_m_SCAN, CK_m_WHERE,
+    (void)Card::eValidate_parentEither(pCI, CK_o_CROSSJOIN, CK_o_FROM, CK_o_HAVING,
+                                       CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_SCAN, CK_o_WHERE,
                                        CK_NONE);
 
   if (CK_DECK == pParent->eCard()) {

@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Scan, CK_m_SCAN)
+__pCastFunction_Card(STORE, Card_Scan, CK_o_SCAN)
 __aNewFunction(Card_Scan,CN_CARD)
 __vDeleteFunction(Card_Scan,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Scan,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Scan::Card_Scan(void)
-: Card_OP(CK_m_SCAN, 1)
+: Card_OP(CK_o_SCAN, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -47,7 +47,7 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 {
   _static_
 
-    pCI->G.p_from->vCard(CK_m_SCAN);
+    pCI->G.p_from->vCard(CK_o_SCAN);
 }
 
 

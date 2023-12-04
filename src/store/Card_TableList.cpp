@@ -69,7 +69,7 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
     xKid.vBegin();
   }
 
-  while (xKid.bEach(CK_m_FROM, CK_s_TABLE)) {
+  while (xKid.bEach(CK_o_FROM, CK_s_TABLE)) {
 
     Card_Table* p_table = _pCard_Table(xKid.pSub1());
 

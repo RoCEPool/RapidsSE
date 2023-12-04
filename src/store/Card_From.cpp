@@ -13,7 +13,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_From, CK_m_FROM)
+__pCastFunction_Card(STORE, Card_From, CK_o_FROM)
 __aNewFunction(Card_From,CN_CARD)
 __vDeleteFunction(Card_From,CN_CARD)
 
@@ -22,7 +22,7 @@ __vDeleteFunction(Card_From,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_From::Card_From(void)
-: Card_OP(CK_m_FROM, 1)
+: Card_OP(CK_o_FROM, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
