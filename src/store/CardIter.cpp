@@ -1357,7 +1357,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_DIRECTION:        return G.p_direction;
     case CK_DISPOSITION:      return G.p_disposition;
 
-    case CK_EMIT:          return G.p_emit;
+    case CK_t_EMIT:          return G.p_emit;
     case CK_EXPR:             return G.p_expr;
 
     case CK_m_FILTER:           return G.p_filter;
@@ -1372,14 +1372,14 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_m_HASH:             return G.p_hash;
     case CK_s_HASHING:          return G.p_hashing;
     case CK_m_HAVING:           return G.p_having;
-    case CK_HSHCOL:           return G.p_hshCol;
+    case CK_t_HSHCOL:           return G.p_hshCol;
     case CK_s_HSHCOLLIST:       return G.p_hshColList;
 
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
     case CK_INDEX:            return G.p_index;
     case CK_m_INDEXJOIN:        return G.p_indexJoin;
-    case CK_INDEXLIST:        return G.p_indexList;
+    case CK_t_INDEXLIST:        return G.p_indexList;
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_m_INDEXSCAN:        return G.p_indexScan;
     case CK_m_INFLATE:          return G.p_inflate;
@@ -1444,9 +1444,9 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SYNTHESIS:        return G.p_synthesis;
 
     case CK_s_TABLE:            return G.p_table;
-    case CK_TABLEINFO:        return G.p_tableInfo;
+    case CK_t_TABLEINFO:        return G.p_tableInfo;
     case CK_TABLELIST:        return G.p_tableList;
-    case CK_TABLENM:          return G.p_tableNm;
+    case CK_t_TABLENM:          return G.p_tableNm;
     case CK_TABLEPTN:         return G.p_tablePtn;
     case CK_TABLESIZE:        return G.p_tableSize;
     case CK_TERM:             return G.p_term;
@@ -1585,7 +1585,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_DIRECTION:        G.p_direction         = _pCard_Direction(pCard); break;
     case CK_DISPOSITION:      G.p_disposition       = _pCard_Disposition(pCard); break;
 
-    case CK_EMIT:             G.p_emit              = _pCard_Emit(pCard); break;
+    case CK_t_EMIT: G.p_emit              = _pCard_Emit(pCard); break;
     case CK_EXPR:             G.p_expr              = _pCard_Expr(pCard); break;
 
     case CK_m_FILTER: G.p_filter            = _pCard_Filter(pCard);
@@ -1605,7 +1605,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_s_HASHING: G.p_hashing           = _pCard_Hashing(pCard); break;
     case CK_m_HAVING: G.p_having            = _pCard_Having(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_HSHCOL:           G.p_hshCol            = _pCard_HshCol(pCard); break;
+    case CK_t_HSHCOL: G.p_hshCol            = _pCard_HshCol(pCard); break;
     case CK_s_HSHCOLLIST: G.p_hshColList        = _pCard_HshColList(pCard); break;
 
     case CK_IDXCOL:           G.p_idxCol            = _pCard_IdxCol(pCard); break;
@@ -1613,7 +1613,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEX:            G.p_index             = _pCard_Index(pCard); break;
     case CK_m_INDEXJOIN: G.p_indexJoin         = _pCard_IndexJoin(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_INDEXLIST:        G.p_indexList         = _pCard_IndexList(pCard); break;
+    case CK_t_INDEXLIST: G.p_indexList         = _pCard_IndexList(pCard); break;
     case CK_INDEXNM:          G.p_indexNm           = _pCard_IndexNm(pCard); break;
     case CK_m_INDEXSCAN: G.p_indexScan         = _pCard_IndexScan(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1694,9 +1694,9 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_s_TABLE: G.p_table             = _pCard_Table(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_TABLEINFO:        G.p_tableInfo         = _pCard_TableInfo(pCard); break;
+    case CK_t_TABLEINFO: G.p_tableInfo         = _pCard_TableInfo(pCard); break;
     case CK_TABLELIST:        G.p_tableList         = _pCard_TableList(pCard); break;
-    case CK_TABLENM:          G.p_tableNm           = _pCard_TableNm(pCard); break;
+    case CK_t_TABLENM: G.p_tableNm           = _pCard_TableNm(pCard); break;
     case CK_TABLEPTN:         G.p_tablePtn          = _pCard_TablePtn(pCard); break;
     case CK_TABLESIZE:        G.p_tableSize         = _pCard_TableSize(pCard); break;
     case CK_TERM:             G.p_term              = _pCard_Term(pCard); break;
@@ -2613,7 +2613,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_DIRECTION:    G.p_direction->vValidate(this, iDepth, pCard);  break;
       case CK_DISPOSITION:  G.p_disposition->vValidate(this, iDepth, pCard);  break;
 
-      case CK_EMIT:      G.p_emit->vValidate(this, iDepth, pCard);  break;
+      case CK_t_EMIT:      G.p_emit->vValidate(this, iDepth, pCard);  break;
       case CK_EXPR:         G.p_expr->vValidate(this, iDepth, pCard);  break;
 
       case CK_m_FILTER:       G.p_filter->vValidate(this, iDepth, pCard);  break;
@@ -2628,14 +2628,14 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_m_HASH:         G.p_hash->vValidate(this, iDepth, pCard);  break;
       case CK_s_HASHING:      G.p_hashing->vValidate(this, iDepth, pCard);  break;
       case CK_m_HAVING:       G.p_having->vValidate(this, iDepth, pCard);  break;
-      case CK_HSHCOL:       G.p_hshCol->vValidate(this, iDepth, pCard);  break;
+      case CK_t_HSHCOL:       G.p_hshCol->vValidate(this, iDepth, pCard);  break;
       case CK_s_HSHCOLLIST:   G.p_hshColList->vValidate(this, iDepth, pCard);  break;
 
       case CK_IDXCOL:       G.p_idxCol->vValidate(this, iDepth, pCard);  break;
       case CK_IDXCOLLIST:   G.p_idxColList->vValidate(this, iDepth, pCard);  break;
       case CK_INDEX:        G.p_index->vValidate(this, iDepth, pCard);  break;
       case CK_m_INDEXJOIN:    G.p_indexJoin->vValidate(this, iDepth, pCard);  break;
-      case CK_INDEXLIST:    G.p_indexList->vValidate(this, iDepth, pCard);  break;
+      case CK_t_INDEXLIST:    G.p_indexList->vValidate(this, iDepth, pCard);  break;
       case CK_INDEXNM:      G.p_indexNm->vValidate(this, iDepth, pCard);  break;
       case CK_m_INDEXSCAN:    G.p_indexScan->vValidate(this, iDepth, pCard);  break;
       case CK_m_INFLATE:      G.p_inflate->vValidate(this, iDepth, pCard);  break;
@@ -2700,9 +2700,9 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_SYNTHESIS:  G.p_synthesis->vValidate(this, iDepth, pCard);  break;
 
       case CK_s_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;
-      case CK_TABLEINFO: G.p_tableInfo->vValidate(this, iDepth, pCard);  break;
+      case CK_t_TABLEINFO: G.p_tableInfo->vValidate(this, iDepth, pCard);  break;
       case CK_TABLELIST: G.p_tableList->vValidate(this, iDepth, pCard);  break;
-      case CK_TABLENM:   G.p_tableNm->vValidate(this, iDepth, pCard);  break;
+      case CK_t_TABLENM:   G.p_tableNm->vValidate(this, iDepth, pCard);  break;
       case CK_TABLEPTN:  G.p_tablePtn->vValidate(this, iDepth, pCard);  break;
       case CK_TABLESIZE: G.p_tableSize->vValidate(this, iDepth, pCard);  break;
       case CK_TERM:      G.p_term->vValidate(this, iDepth, pCard);  break;

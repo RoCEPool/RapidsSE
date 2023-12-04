@@ -51,7 +51,7 @@ void Card_HshColList::vX_tblCol_To_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
-  while (xKid.bEach(CK_HSHCOL)) {
+  while (xKid.bEach(CK_t_HSHCOL)) {
     xKid.p_hshCol()->vX_tblCol_To_expCol(pCI);
   }
 }

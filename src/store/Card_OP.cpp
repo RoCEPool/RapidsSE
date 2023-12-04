@@ -634,7 +634,7 @@ void Card_OP::vRpn_aggreg(String* psRpnExpr, Card_Aggreg* p_aggreg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_aggreg->pFindSubCard(CK_EMIT));
+      _pCard_Emit(p_aggreg->pFindSubCard(CK_t_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -757,7 +757,7 @@ void Card_OP::vRpn_gbyAgg(String* psRpnExpr, Card_GbyAgg* p_gbyAgg)
 
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_gbyAgg->pFindSubCard(CK_EMIT));
+      _pCard_Emit(p_gbyAgg->pFindSubCard(CK_t_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -1222,7 +1222,7 @@ void Card_OP::vRpn_ordAgg(String* psRpnExpr, Card_OrdAgg* p_ordAgg)
 
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_ordAgg->pFindSubCard(CK_EMIT));
+      _pCard_Emit(p_ordAgg->pFindSubCard(CK_t_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -1258,7 +1258,7 @@ void Card_OP::vRpn_project(String* psRpnExpr, Card_Project* p_project)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Emit* pCard_Emit =
-      _pCard_Emit(p_project->pFindSubCard(CK_EMIT));
+      _pCard_Emit(p_project->pFindSubCard(CK_t_EMIT));
 
   i8 nSubCards = pCard_Emit->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {

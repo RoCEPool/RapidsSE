@@ -2145,7 +2145,7 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
   switch (m_eCard) {
 
-    case CK_EMIT:    _pCard_Emit(this)->vPrint(pRibbon, iDepth);    break;
+    case CK_t_EMIT:    _pCard_Emit(this)->vPrint(pRibbon, iDepth);    break;
     case CK_EXPR:    _pCard_Expr(this)->vPrint(pRibbon, iDepth);    break;
     case CK_RPNCALC: _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth); break;
     case CK_s_TABLE:   _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
@@ -2682,7 +2682,7 @@ Card_Emit* Card::pSub_emit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Emit* p_emit =
-      _pCard_Emit(pFindSubCard(CK_EMIT));
+      _pCard_Emit(pFindSubCard(CK_t_EMIT));
   return p_emit;
 }
 
@@ -2812,7 +2812,7 @@ Card_HshCol* Card::pSub_hshCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_HshCol* p_hshCol =
-      _pCard_HshCol(pFindSubCard(CK_HSHCOL));
+      _pCard_HshCol(pFindSubCard(CK_t_HSHCOL));
   return p_hshCol;
 }
 
@@ -2877,7 +2877,7 @@ Card_IndexList* Card::pSub_indexList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_IndexList* p_indexList =
-      _pCard_IndexList(pFindSubCard(CK_INDEXLIST));
+      _pCard_IndexList(pFindSubCard(CK_t_INDEXLIST));
   return p_indexList;
 }
 
@@ -3358,7 +3358,7 @@ Card_TableInfo* Card::pSub_tableInfo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TableInfo* p_tableInfo =
-      _pCard_TableInfo(pFindSubCard(CK_TABLEINFO));
+      _pCard_TableInfo(pFindSubCard(CK_t_TABLEINFO));
   return p_tableInfo;
 }
 
@@ -3371,7 +3371,7 @@ Card_TableNm* Card::pSub_tableNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TableNm* p_tableNm =
-      _pCard_TableNm(pFindSubCard(CK_TABLENM));
+      _pCard_TableNm(pFindSubCard(CK_t_TABLENM));
   return p_tableNm;
 }
 

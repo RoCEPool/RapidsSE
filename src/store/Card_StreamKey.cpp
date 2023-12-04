@@ -146,7 +146,7 @@ void Card_StreamKey::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pParent->bIsCard(CK_EMIT));
+  RASSERT(pParent->bIsCard(CK_t_EMIT));
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
 

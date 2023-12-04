@@ -72,18 +72,18 @@ enum eCK : i8 // card kind
   /* */ CK_DIRECTION,
   /* */ CK_DISPOSITION,
 
-  /* */ CK_EMIT,
+  /* */ CK_t_EMIT,
   /* */ CK_EXPR,
 
   /* */ CK_FILTPRED,
   /* */ CK_FILTPREDLIST,
 
-  /* */ CK_HSHCOL,
+  /* */ CK_t_HSHCOL,
 
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEX,
-  /* */ CK_INDEXLIST,
+  /* */ CK_t_INDEXLIST,
   /* */ CK_INDEXNM,
 
   /* */ CK_JOINCAST,
@@ -130,9 +130,9 @@ enum eCK : i8 // card kind
   /* */ CK_SUBSET,
   /* */ CK_SYNTHESIS,
 
-  /* */ CK_TABLEINFO,
+  /* */ CK_t_TABLEINFO,
   /* */ CK_TABLELIST,
-  /* */ CK_TABLENM,
+  /* */ CK_t_TABLENM,
   /* */ CK_TABLEPTN,
   /* */ CK_TABLESIZE,
   /* */ CK_TBLSYN,

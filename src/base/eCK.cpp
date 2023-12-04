@@ -75,18 +75,18 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
   /* */ "CK_DISPOSITION"_Stz,  // CK_DISPOSITION
 
-  /* */ "CK_EMIT"_Stz,         // CK_EMIT
+  /* */ "CK_t_EMIT"_Stz,         // CK_t_EMIT
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
 
   /* */ "CK_FILTPRED"_Stz,     // CK_FILTPRED
   /* */ "CK_FILTPREDLIST"_Stz, // CK_FILTPREDLIST
 
-  /* */ "CK_HSHCOL"_Stz,       // CK_HSHCOL
+  /* */ "CK_t_HSHCOL"_Stz,       // CK_t_HSHCOL
 
   /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
   /* */ "CK_INDEX"_Stz,        // CK_INDEX
-  /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
+  /* */ "CK_t_INDEXLIST"_Stz,    // CK_t_INDEXLIST
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
 
   /* */ "CK_JOINCAST"_Stz,     // CK_JOINCAST
@@ -133,9 +133,9 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
   /* */ "CK_SYNTHESIS"_Stz,   // CK_SYNTHESIS
 
-  /* */ "CK_TABLEINFO"_Stz,    // CK_TABLEINFO
+  /* */ "CK_t_TABLEINFO"_Stz,    // CK_t_TABLEINFO
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
-  /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
+  /* */ "CK_t_TABLENM"_Stz,      // CK_t_TABLENM
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
   /* */ "CK_TABLESIZE"_Stz,    // CK_TABLESIZE
   /* */ "CK_TBLSYN"_Stz,       // CK_TBLSYN
@@ -220,18 +220,18 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "direction"_Stz,       // CK_DIRECTION
   /* */ "disp"_Stz,            // CK_DISPOSITION
 
-  /* */ "emit"_Stz,            // CK_EMIT
+  /* */ "emit"_Stz,            // CK_t_EMIT
   /* */ "expr"_Stz,            // CK_EXPR
 
   /* */ "filtPred"_Stz,        // CK_FILTPRED
   /* */ "filtPredList"_Stz,    // CK_FILTPREDLIST
 
-  /* */ "hshCol"_Stz,          // CK_HSHCOL
+  /* */ "hshCol"_Stz,          // CK_t_HSHCOL
 
   /* */ "idxCol"_Stz,          // CK_IDXCOL
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
   /* */ "index"_Stz,           // CK_INDEX
-  /* */ "indexList"_Stz,       // CK_INDEXLIST
+  /* */ "indexList"_Stz,       // CK_t_INDEXLIST
   /* */ "indexNm"_Stz,         // CK_INDEXNM
 
   /* */ "joinCast"_Stz,        // CK_JOINCAST
@@ -279,9 +279,9 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "subSet"_Stz,          // CK_SUBSET
   /* */ "synthesise"_Stz,      // CK_SYNTHESIS
 
-  /* */ "tableInfo"_Stz,       // CK_TABLEINFO
+  /* */ "tableInfo"_Stz,       // CK_t_TABLEINFO
   /* */ "tableList"_Stz,       // CK_TABLELIST
-  /* */ "tableNm"_Stz,         // CK_TABLENM
+  /* */ "tableNm"_Stz,         // CK_t_TABLENM
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
   /* */ "tableSize"_Stz,       // CK_TABLESIZE
   /* */ "tblSyn"_Stz,          // CK_TBLSYN

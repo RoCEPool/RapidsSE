@@ -596,7 +596,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   Card::vValidate_noChildren();
 
 //  RASSERT(
-//          pParent->eCard() == CK_HSHCOL || // todo: NO!
+//          pParent->eCard() == CK_t_HSHCOL || // todo: NO!
 //
 //          pParent->eCard() == CK_ANDCONJ ||
 //          pParent->eCard() == CK_BOUND || // todo: is a bound a boolPred?
@@ -607,7 +607,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 //          pParent->eCard() == CK_ORCONJ ||
 //          pParent->eCard() == CK_RPNCALC);
 
-  (void)Card::eValidate_parentEither(pCI, CK_HSHCOL,// todo: NO!?
+  (void)Card::eValidate_parentEither(pCI, CK_t_HSHCOL,// todo: NO!?
                                      CK_ANDCONJ,
                                      CK_BOUND,
                                      CK_BOOLPRED,

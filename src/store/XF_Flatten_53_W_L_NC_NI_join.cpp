@@ -104,7 +104,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   // smoothing
 
   m_pCI->vClearRestart();
-  //RASSERT(m_pCI->G_bEachMainWithSub(CK_m_PROJECT,CK_EMIT));
+  //RASSERT(m_pCI->G_bEachMainWithSub(CK_m_PROJECT,CK_t_EMIT));
   RASSERT(m_pCI->G_bEachMain(CK_m_FOLD));
 
   CarryForward* pCarryForward = new CarryForward;
