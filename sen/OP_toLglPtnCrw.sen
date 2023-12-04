@@ -65,6 +65,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on EV_D_PDSROWBUFFER ...                                              EACH */
+/*----------------------------------------------------------------------------*/
+: toLglPtnCrw_PdsRowBuffer \handler
+
+  PipeIn[]\clear to Pds[]
+  Pds[] ToLglPtnCrw[].convert
+  Pds[].delete
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I ToLglPtnCrw[].completed to CrwBuffer[]
+
+    begin
+      CrwBuffer[].isNull not
+    while
+      CrwBuffer[].appendClose
+      CrwBuffer[].pipeOut
+      I ToLglPtnCrw[].completed to CrwBuffer[]
+    repeat
+
+  loop
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : toLglPtnCrw_EosMarker \handler
@@ -108,6 +135,7 @@
   find: toLglPtnCrw_EosMarker   EV_M_EOS         [op].handler!
   find: toLglPtnCrw_DataMarker  EV_M_DATAPULSE   [op].handler!
   find: toLglPtnCrw_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: toLglPtnCrw_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
   find: toLglPtnCrw_StartMarker EV_M_START       [op].handler!
   find: toLglPtnCrw_StreamDef   EV_D_STREAMDEF   [op].handler!
 

@@ -404,14 +404,14 @@ Row* Pds::pAllotRowFull(char** aaStzSet)
 /*----------------------------------------------------------------------------*/
 /* Allot a row and copy given row into it                                     */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pCopyRow(Row* pRow)
+Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   RASSERT(m_oRowPix.m_bInitialised);
 
   Row* pNewRow = pAllotRow();
   if (! pNewRow) {
-    vTrace("%s: Unable to copy row as the Pds is full\n"_Stz, __func__ );
+//    vTrace("%s: Unable to copy row as the Pds is full\n"_Stz, __func__ );
     return nullptr;
   }
 
@@ -443,6 +443,11 @@ Row* Pds::pCopyRow(Row* pRow)
       iVal = pRow->iColVal_int(i_Col);
       vDepositColVal(iVal);
     }
+  }
+
+  if (bSrcHasPtnHash && bCopyPtnHash) {
+    iVal = pRow->iColVal_int(i_Col);
+    vDepositColVal(iVal);
   }
 
   vReset();
@@ -1019,10 +1024,6 @@ void Pds::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
 
     azColNmDst += nNameSize;
     m_oRowPix.m_nTotalChars += nNameSize;
-
-//    if (DM_VCH == axColPixDst->m_uDatum) {
-//      axColPixDst->m_uLength = 200;
-//    }
   }
 
   // i_Col falls thru

@@ -31,14 +31,14 @@ namespace STORE
 
     static void vRepairHashSet(Object* pObject);
 
-    void vConvert(RowBuffer* pRowBuffer);
+    void vConvert(Pds* pPdsRowBuffer);
   
     CrwBuffer* pCompleted(LglPtn tLglPtn);
     CrwBuffer* pDangling(LglPtn tLglPtn);
   
   private:
     void vAddNst(RowBuffer* pRowBuffer);
-    void vAddRowsToBuffer(LglPtn tLglPtn, RowBuffer* pRowBuffer);
+    void vAddRowsToBuffer(LglPtn tLglPtn, Pds* pPdsRowBuffer);
     CrwBuffer* pNewCrwBuffer(LglPtn tLglPtn);
 
     Footer* aFooter(void);

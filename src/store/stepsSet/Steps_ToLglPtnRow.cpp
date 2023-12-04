@@ -43,10 +43,10 @@ void Step::vToLglPtnRowCompleted(void)
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
-  
-  RowBuffer* pRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
 
-  m_pDataStack->vPushPtr(pRowBuffer);
+  Pds* pPdsRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
+
+  m_pDataStack->vPushPtr(pPdsRowBuffer);
 
   EXIT();
 }
@@ -60,25 +60,11 @@ void Step::vToLglPtnRowConvert(void)
 
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
 
-  Object* pObject = (m_pDataStack->pPopPtr(__func__));
+  Pds* pPdsRowBuffer = _pPds(m_pDataStack->pPopPtr(__func__));
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  if (pObject->eGetClassNo() == BASE::CN_PDS) {
-    Pds* pPdsRowBuffer = _pPds(pObject);
-    pToLglPtnRow->vConvertViaPdsRowBuffer(pTable, pPdsRowBuffer);
-  } else {
-    RowBuffer* pRowBuffer = _pRowBuffer(pObject);
-    pToLglPtnRow->vConvert(pTable, pRowBuffer);
-  }
+  pToLglPtnRow->vConvert(pTable, pPdsRowBuffer);
 
-
-
-  //vTrace("Hey, I got table:%s\n"_Stz, pTable->szTableNm()->azChar());
-
-
-  
-  //delete pRowBuffer;
-  
   EXIT();
 }
 
@@ -106,10 +92,10 @@ void Step::vToLglPtnRowDangling(void)
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+
+  Pds* pPdsRowBuffer = pToLglPtnRow->pDangling(i_Ptn);
   
-  RowBuffer* pRowBuffer = pToLglPtnRow->pDangling(i_Ptn);
-  
-  m_pDataStack->vPushPtr(pRowBuffer);
+  m_pDataStack->vPushPtr(pPdsRowBuffer);
 
   EXIT();
 }

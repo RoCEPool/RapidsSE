@@ -1419,6 +1419,11 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
       vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
              pRowBuffer->nRows(), this->pStage()->szStageNm(), this->szOpNm()
       );
+    } else if (CN_PDS == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+      Pds *pPdsRowBuffer = _pPds(pOperand);
+      vTrace("[%6s %10s]-Pipeout : Pds (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             pPdsRowBuffer->nItems(), this->pStage()->szStageNm(), this->szOpNm()
+      );
     }
   }
 
@@ -1617,6 +1622,15 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
           ,szOpNm()
           ,pRowBuffer->nRows()
           );
+  }
+  else
+  if (CN_PDS == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+    Pds *pPdsRowBuffer = _pPds(pOperand);
+    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
+        ,pStage()->szStageNm()
+        ,szOpNm()
+        ,pPdsRowBuffer->nItems()
+    );
   }
   return pOperand;
 

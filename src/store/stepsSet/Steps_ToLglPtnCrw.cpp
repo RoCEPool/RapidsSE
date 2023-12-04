@@ -8,8 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "EntWrk.hpp"
 
 #include "RowCoder.hpp"
@@ -60,9 +58,9 @@ void Step::vToLglPtnCrwConvert(void)
 
   ToLglPtnCrw* pToLglPtnCrw = *m_pLogicUnit->m_xpToLglPtnCrw;
     
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+  Pds* pPdsRowBuffer = _pPds(m_pDataStack->pPopPtr(__func__));
 
-  pToLglPtnCrw->vConvert(pRowBuffer);
+  pToLglPtnCrw->vConvert(pPdsRowBuffer);
   
   EXIT();
 }

@@ -59,7 +59,7 @@ namespace BASE
     // public:
     Row*            pAllotRow(void);
     Row*            pAllotRowFull(char** aaStzSet);
-    Row*            pCopyRow(Row* pRow);
+    Row*            pCopyRow(Row* pRow, bool bSrcHasPtnHash = false, bool bCopyPtnHash = false);
 		Row*            pCopyRowArray(i8* pRowArray);
     void*           aAllotStzSet(void);
     void            vDecidedDelete(void);
