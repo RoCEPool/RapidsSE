@@ -392,6 +392,16 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+	else if (szTerm->bSame("RowBufferErr[]"_Stz)) {
+		pCurrentWord->vEncodeCall("RowBufferErr[].set"_Stz);
+		EXIT();
+		return;
+	}
+	else if (szTerm->bSame("RowBufferWarn[]"_Stz)) {
+		pCurrentWord->vEncodeCall("RowBufferWarn[].set"_Stz);
+		EXIT();
+		return;
+	}
   else if (szTerm->bSame("SendNode[]"_Stz)) {
     pCurrentWord->vEncodeCall("SendNode[].set"_Stz);
     EXIT();

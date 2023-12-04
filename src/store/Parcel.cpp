@@ -392,7 +392,6 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
 			if (pRowBuffer->eBufferType() != BT_DATA)
 				m_eSendCast = XK_ROBINDIST;
 			break;
-			break;
 		}
     default:
       RASSERT(pOperand->bIsBuffer());
@@ -410,7 +409,7 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
       case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
       case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;
       case CN_STREAMDEFRHT: m_eSendCast = XK_FANCAST;    break;
-        
+
       default:
         RASSERT(pOperand->bIsBuffer());
         m_eSendCast = XK_ROBINLOCAL;
@@ -447,7 +446,16 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
         case XK_BROADCAST  : vPTN_broadcast(pSendOp);   break;
         case XK_FANCAST    : vPTN_fancast(pSendOp);     break;
-        case XK_HASHCAST   : vPTN_hashcast(pSendOp);    break;
+        case XK_HASHCAST   : {
+					Operand *pOperand = pGetOperand();
+					if (pOperand->bIsRowBuffer()) {
+						RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
+						RASSERT(pRowBuffer->eBufferType() == BT_DATA);
+						vPTN_hashcast(pSendOp);
+					} else
+						vPTN_hashcast(pSendOp);
+					break;
+				}
         case XK_ROBINDIST  : vPTN_robinDist(pSendOp);   break;
         case XK_ROBINLOCAL : vPTN_robinLocal(pSendOp);  break;
         case XK_UNICAST    : vPTN_unicast(pSendOp);     break;
@@ -686,6 +694,11 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   Operand *pOperand = pGetOperand();
+
+	if (pOperand->eGetClassNo() == CN_ROWBUFFER) {
+		RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+		RASSERT(pRowBuffer->eBufferType() == BT_DATA);
+	}
   m_eSendWhy = SY_HASHCAST;
   m_eRecvInstructions = RV_ONE_PTN;
 

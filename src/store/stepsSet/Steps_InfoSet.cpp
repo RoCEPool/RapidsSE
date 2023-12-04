@@ -39,15 +39,15 @@ static const i8 C_CHUNK_BLOCK        = 2048;
 void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                  &Step::vInfoSetGet);
-  vAddStep("InfoSet[].addCommandError"_Stz,  &Step::vInfoSetAddCommandError);
-  vAddStep("InfoSet[].addExecError"_Stz,     &Step::vInfoSetAddExecError);
+  //vAddStep("InfoSet[].addCommandError"_Stz,  &Step::vInfoSetAddCommandError);
+  //vAddStep("InfoSet[].addExecError"_Stz,     &Step::vInfoSetAddExecError);
   //vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
   //vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   //vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
   vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
   //vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
-  vAddStep("InfoSet[].addWarning"_Stz,       &Step::vInfoSetAddWarning);
+  //vAddStep("InfoSet[].addWarning"_Stz,       &Step::vInfoSetAddWarning);
   //vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
   vAddStep("InfoSet[].colVal@"_Stz,          &Step::vInfoSetColValFetch);
   vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
@@ -59,7 +59,6 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].isNull"_Stz,           &Step::vInfoSetIsNull);
   //vAddStep("InfoSet[].isProgress"_Stz,       &Step::vInfoSetIsProgress);
   //vAddStep("InfoSet[].isTotalUnits"_Stz,     &Step::vInfoSetIsTotalUnits);
-  vAddStep("InfoSet[].isWarning"_Stz,        &Step::vInfoSetIsWarning);
   vAddStep("InfoSet[].name"_Stz,             &Step::vInfoSetName);
   vAddStep("InfoSet[].new"_Stz,              &Step::vInfoSetNew);
   vAddStep("InfoSet[].nextRow"_Stz,          &Step::vInfoSetNextRow);
@@ -68,88 +67,6 @@ void Step::vAddSteps_InfoSet(void)
   //vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,         &Step::vInfoSetWriteCsv);
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addCommandError -- add a row to infoset with the command error   */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddCommandError(void)
-{
-  ENTRY();
-
-  s4K sErrorText;
-
-  // get the table
-  Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pStreamTable->pStreamDef();
-
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_COMPILEERRORS);
-
-  // get the error information
-  eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-  i8 iLineNo = m_pDataStack->iPopInt(__func__);
-  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
-  m_pDataStack->vPopStr(sErrorText, __func__);
-
-  Grid* pGrid = AM::pGrid();
-
-  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pGrid->pThisNode()->szNodeNm(),
-                                  eErrorCode,
-                                  iLineNo,
-                                  iColumnNo,
-                                  sErrorText.azChar(),
-                                  C_VARGS_END);
-
-  //pRow->vDump(pStreamDef);
-
-  m_pDataStack->vPushInt(pRow ? true : false);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addExecError -- add a row to infoset with the exec error         */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddExecError(void)
-{
-  ENTRY();
-
-  s4K sErrorText;
-
-  // get the table
-  Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pStreamTable->pStreamDef();
-
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_EXECERRORS);
-
-  // get the error information
-  eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-  m_pDataStack->vPopStr(sErrorText, __func__);
-
-  Grid* pGrid = AM::pGrid();
-
-  //pStreamDef->vListContents(1);
-  
-  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pGrid->pThisNode()->szNodeNm(),
-                                  (i8)eErrorCode,
-                                  sErrorText.azChar(),
-                                  C_VARGS_END);
-
-  //pRow->vDump(pStreamDef);
-
-  m_pDataStack->vPushInt(pRow ? true : false);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,39 +165,6 @@ void Step::vInfoSetAddRowVargs(void)
     
   }
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addWarning -- add a row to infoset with a warning                */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddWarning(void)
-{
-  ENTRY();
-
-  s4K sReason;
-
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  // Get the warning reason
-  m_pDataStack->vPopStr(sReason, __func__);
-
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_WARNINGS);
-
-  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  sReason.szStz(),
-                                  nullptr,
-                                  nullptr,
-                                  C_VARGS_END);
-
-  m_pDataStack->vPushBol(pRow != nullptr);
-
   EXIT();
 }
 
@@ -470,22 +354,6 @@ void Step::vInfoSetIsNull(void)
   ENTRY();
 
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpInfoSet.bIsNull() ? 1 : 0);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].isWarning --is infoset a warning info set ?                      */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetIsWarning(void)
-{
-  ENTRY();
-
-  ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
-
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-
-  m_pDataStack->vPushInt(pInfoSet->eOpInfoSet() == OI_WARNINGS ? true : false);
 
   EXIT();
 }

@@ -148,7 +148,9 @@ LogicUnit::LogicUnit(void)
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                    LR_RECVDOBJECT)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
-,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_ROWBUFFER)
+,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,      LR_ROWBUFFER)
+,      m_xpRowBufferWarn (this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_ROWBUFFER)
+,      m_xpRowBufferErr(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_ROWBUFFER)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
 ,      m_xpRowCounts(this,RF_REPAIR_DELETE,     RowCounts::vRepair,      LR_ROWCOUNTS)
 
@@ -343,6 +345,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpRecvdObject.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
   RASSERT(m_xpRowBuffer.bIsNull());
+	RASSERT(m_xpRowBufferWarn.bIsNull());
+	RASSERT(m_xpRowBufferErr.bIsNull());
 
   RASSERT(m_xpSendNode.bIsNull());
   RASSERT(m_xpSends.bIsNull());

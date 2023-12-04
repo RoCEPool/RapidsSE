@@ -149,6 +149,8 @@ namespace STORE
     REG<Object,         CN_NONE          > m_xpRecvdObject;
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
+		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferWarn;
+		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferErr;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
     REG<RowCounts,      CN_ROWCOUNTS     > m_xpRowCounts;
 

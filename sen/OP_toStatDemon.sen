@@ -20,7 +20,7 @@
 
   //InfoSet[].delete
 
-  InfoSet[]
+  RowBuffer[]
     "__statDemon" find dup if
       word.object@
       jobId::pipeToOp0 assert

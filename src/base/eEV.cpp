@@ -34,13 +34,10 @@ Stz* aEV[EV_ENUMS]
 
   /*    */ "EV_I_CALLPIPELINE"_Stz,
   /*    */ "EV_I_COMMAND"_Stz,
-  /*    */ "EV_I_COMPILEERRORS"_Stz,
   /*    */ "EV_I_COUNT"_Stz,
-  /*    */ "EV_I_EXECERRORS"_Stz,
   /*    */ "EV_I_FORKCOMMAND"_Stz,
   /*    */ "EV_I_PAGEINREQUEST"_Stz,
   /*    */ "EV_I_PATH"_Stz,
-  /*    */ "EV_I_WARNINGS"_Stz,
 
   /*    */ "EV_M_CANCEL"_Stz,
   /*    */ "EV_M_CANCELLING"_Stz,

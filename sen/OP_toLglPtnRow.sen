@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : toLglPtnRow_StartMarker \handler
 
+  EV_M_START_handler
+
   <tableNm> op__table discard
 
   toLglPtnRow[].create
-
-  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/

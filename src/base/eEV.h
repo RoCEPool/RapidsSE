@@ -34,13 +34,10 @@ enum eEV // events
 
   /*    */ EV_I_CALLPIPELINE,
   /*    */ EV_I_COMMAND,
-  /*    */ EV_I_COMPILEERRORS,
   /*    */ EV_I_COUNT,
-  /*    */ EV_I_EXECERRORS,
   /*    */ EV_I_FORKCOMMAND,
   /*    */ EV_I_PAGEINREQUEST,
   /*    */ EV_I_PATH,
-  /*    */ EV_I_WARNINGS,
 
   /*    */ EV_M_CANCEL,
   /*    */ EV_M_CANCELLING,

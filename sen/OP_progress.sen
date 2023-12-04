@@ -114,8 +114,8 @@
 
   op__topology
 
-  find: Progress_EosMarker     EV_M_EOS           [op].handler!
-  find: Progress_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: progress_EosMarker     EV_M_EOS           [op].handler!
+  find: progress_RowBuffer     EV_D_ROWBUFFER     [op].handler!
 
   op__loop
 

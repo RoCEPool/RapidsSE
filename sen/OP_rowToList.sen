@@ -64,6 +64,12 @@
 
   Pipein[]\clear to RowBuffer[]
 
+  RowBuffer[].getBufferType BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   RowBuffer[] List[].addRowBuffer
 
   RowBuffer[].pipeOut

@@ -755,11 +755,8 @@ void vDdlLockAssertNone(void);
   void vIndexTreeSet(void);
 
   // infoSet
-  void vInfoSetAddCommandError(void);
-  void vInfoSetAddExecError(void);
   void vInfoSetAddRowCount(void);
   void vInfoSetAddRowVargs(void);
-  void vInfoSetAddWarning(void);
   void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
   void vInfoSetDetectLineEnding(void);
@@ -768,7 +765,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetInfoRows(void);
   void vInfoSetIsNotNull(void);
   void vInfoSetIsNull(void);
-  void vInfoSetIsWarning(void);
   void vInfoSetName(void);
   void vInfoSetNew(void);
   void vInfoSetNextRow(void);
@@ -1763,8 +1759,26 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferAddTotalCount(void);
   void vRowBufferOperandDump(void);
 
-	void vRowBufferAddCommandError(void);
-	void vRowBufferAddExecError(void);
+  void vRowBufferErrAddCommandError(void);
+  void vRowBufferErrAddExecError(void);
+  void vRowBufferErrDelete(void);
+	void vRowBufferErrGet(void);
+	void vRowBufferErrGetAndClear(void);
+  void vRowBufferErrGetBufferIdAsAddr(void);
+  void vRowBufferErrGetBufferType(void);
+  void vRowBufferErrIsNull(void);
+  void vRowBufferErrIsNotNull(void);
+	void vRowBufferErrNew(void);
+	void vRowBufferErrSet(void);
+
+  void vRowBufferWarnDelete(void);
+  void vRowBufferWarnGet(void);
+  void vRowBufferWarnGetAndClear(void);
+  void vRowBufferWarnGetBufferIdAsAddr(void);
+  void vRowBufferWarnIsNull(void);
+  void vRowBufferWarnNew(void);
+  void vRowBufferWarnSet(void);
+
 	void vRowBufferAddLockStats(void);
 	void vRowBufferAddNodeInfo(void);
 	void vRowBufferAddProgressUnits(void);

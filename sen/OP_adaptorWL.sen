@@ -64,6 +64,80 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handle for EV_I_EXECERRORS                                                 */
+/* Called when there is an error from a sub command but also when the         */
+/* client disconnects.                                                        */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_ExecErrors
+
+  "adaptorWL_ExecErrors - EV_I_EXECERRORS" .verbose
+
+  PipeIn[] to RowBufferErr[]
+  nullptr to PipeIn[]
+
+  "AdaptorWL: Processing error infoset" .traceWlp
+
+  adaptorWL[].executionError
+
+  // now delete the RowBufferErr[]
+  RowBufferErr[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* handle BT_COMPILEERRORS                                                    */
+/* Called when there is an error from the SQL compiler.                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_CompileErrors
+
+  "adaptorWL_CompileErrors - EV_I_COMPILEERRORS" .verbose
+
+  PipeIn[] to RowBufferErr[]
+  nullptr to PipeIn[]
+
+  AdaptorWL[].compilerError
+
+  // now delete the RowBufferErr[]
+  RowBufferErr[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* handle BT_WARNINGS                                                         */
+/* Called when there is a warning from a sub command.                         */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_Warning
+
+  "adaptorWL_Warning - EV_I_WARNINGS" .verbose
+
+  PipeIn[] to RowBufferWarn[]
+  nullptr  to PipeIn[]
+
+  adaptorWL[].executionWarning
+
+  // now delete the RowBufferWarn[]
+  RowBufferWarn[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* Parse a query into one or more tasks                                       */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_parseQuery params| sSmt |
@@ -216,84 +290,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_COMPILEERRORS                                             */
-/* Called when there is an error from the SQL compiler.                       */
-/*----------------------------------------------------------------------------*/
-: adaptorWL_CompileErrors \handler
-
-  "adaptorWL_CompileErrors - EV_I_COMPILEERRORS" .verbose
-
-  PipeIn[] to InfoSet[]
-  nullptr to PipeIn[]
-
-  AdaptorWL[].compilerError
-
-  // now delete the InfoSet[]
-  InfoSet[].delete
-
-  // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_I_EXECERRORS                                                */
-/* Called when there is an error from a sub command but also when the         */
-/* client disconnects.                                                        */
-/*----------------------------------------------------------------------------*/
-: adaptorWL_ExecErrors \handler
-
-  "adaptorWL_ExecErrors - EV_I_EXECERRORS" .verbose
-
-  PipeIn[] to InfoSet[]
-  nullptr to PipeIn[]
-
-  "AdaptorWL: Processing error infoset" .traceWlp
-
-  adaptorWL[].executionError
-
-  // now delete the InfoSet[]
-  InfoSet[].delete
-
-  // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_I_WARNINGS                                                   */
-/* Called when there is a warning from a sub command.                         */
-/*----------------------------------------------------------------------------*/
-: adaptorWL_Warning \handler
-
-  "adaptorWL_Warning - EV_I_WARNINGS" .verbose
-
-  PipeIn[] to InfoSet[]
-  nullptr  to PipeIn[]
-
-  adaptorWL[].executionWarning
-
-  // now delete the InfoSet[]
-  InfoSet[].delete
-
-  // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_STREAMDEF                                                 */
 /* Called to indicate the definition of a resultset from a query.             */
 /*----------------------------------------------------------------------------*/
@@ -346,6 +342,27 @@
   // handle AFFECTEDROWS
   PipeIn[].bufferType BT_AFFECTEDROWS == if
     adaptorWL_affectedRows
+    true
+    exit
+  then
+
+  // handle EXECERRORS
+  PipeIn[].bufferType BT_EXECERRORS == if
+    adaptorWL_ExecErrors
+    true
+    exit
+  then
+
+  // handle BT_COMPILEERRORS
+  PipeIn[].bufferType BT_COMPILEERRORS == if
+    adaptorWL_CompileErrors
+    true
+    exit
+  then
+
+  // handle BT_WARNINGS
+  PipeIn[].bufferType BT_WARNINGS == if
+    adaptorWL_Warning
     true
     exit
   then
@@ -454,9 +471,6 @@
 
   find: adaptorWL_StartMarker   EV_M_START          [op].handler!
   find: adaptorWL_Payload       EV_D_PAYLOAD        [op].handler!
-  find: adaptorWL_CompileErrors EV_I_COMPILEERRORS  [op].handler!
-  find: adaptorWL_ExecErrors    EV_I_EXECERRORS     [op].handler!
-  find: adaptorWL_Warning       EV_I_WARNINGS       [op].handler!
   find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
   find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
   find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!

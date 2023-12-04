@@ -102,9 +102,9 @@ namespace STORE
     void vStatementSubmitted();
     void vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg);
     void vStatementSubmissionFailed(eEC eErrCode);
-    void vCompilerError(InfoSet* pInfoSet);
-    void vExecutionError(InfoSet* pInfoSet);
-    void vExecutionWarning(InfoSet* pInfoSet);
+    void vCompilerError(RowBuffer* pRowBuffer);
+    void vExecutionError(RowBuffer* pRowBuffer);
+    void vExecutionWarning(RowBuffer* pRowBuffer);
     void vAffectedRowCount(RowBuffer* pRowBuffer);
     void vChildJobExited();
     bool bIsChildJobActive();

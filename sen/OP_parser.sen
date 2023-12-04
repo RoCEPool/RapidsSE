@@ -30,8 +30,8 @@
     exit
   then
 
-  // no error, delete the infoset
-  InfoSet[].delete
+  // no error, delete the rowBufferErr
+  RowBufferErr[].delete
 
   // does the sql have an explain ?
   PlanOperand[] "parser" sqlCompiler::hasExplain if

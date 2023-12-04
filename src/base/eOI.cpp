@@ -10,13 +10,10 @@ Stz* aOI[OI_ENUMS]
 
   /*    */ "OI_CALLPIPELINE"_Stz,
   /*    */ "OI_COMMAND"_Stz,
-  /*    */ "OI_COMPILEERRORS"_Stz,
   /*    */ "OI_COUNT"_Stz,
-  /*    */ "OI_EXECERRORS"_Stz,
   /*    */ "OI_FORKCOMMAND"_Stz,
   /*    */ "OI_PAGEINREQUEST"_Stz,
   /*    */ "OI_PATH"_Stz,
-  /*    */ "OI_WARNINGS"_Stz,
 
 //  /*    */ "OI_ENUMS"_Stz,
 };

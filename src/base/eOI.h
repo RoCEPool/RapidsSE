@@ -9,13 +9,10 @@ enum eOI // operator Infoset
 
   /*    */ OI_CALLPIPELINE,
   /*    */ OI_COMMAND,
-  /*    */ OI_COMPILEERRORS,
   /*    */ OI_COUNT,
-  /*    */ OI_EXECERRORS,
   /*    */ OI_FORKCOMMAND,
   /*    */ OI_PAGEINREQUEST,
   /*    */ OI_PATH,
-  /*    */ OI_WARNINGS,
 
   /*    */ OI_ENUMS,
 };

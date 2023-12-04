@@ -14,8 +14,11 @@
   PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  // RowBuffer should be a BT_NODEINFO buffer
-  RowBuffer[].getBufferType BT_NODEINFO == assert
+  RowBuffer[].getBufferType BT_NODEINFO != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
 
   // get the first row of the infoSet (nodeInfo)
   RowBuffer[].firstRow to infoSetRow[]
@@ -26,11 +29,11 @@
   // add nodeInfo to the infoSet
   infoSetRow[].get StreamSetTable[] RowBuffer[].addgridSanity assert
 
-  // pipeout the infoset
+  // pipeout the rowBuffer
   RowBuffer[].pipeOut
 
-  // delete the infoset
-  InfoSet[].delete
+  // delete the rowBuffer
+  RowBuffer[].delete
 
   true
 ;

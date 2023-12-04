@@ -600,12 +600,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
   /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMAND);
-  /*  0 */ vAddConstant("OI_COMPILEERRORS"_Stz, OI_COMPILEERRORS);
   /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
-  /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
   /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
   /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
-  /*  0 */ vAddConstant("OI_WARNINGS"_Stz,      OI_WARNINGS);
 
   // PD_ : pipe direction
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
@@ -743,13 +740,10 @@ void Constants::vAddConstantsCpp(void)
 
   /*  0 */ vAddConstant("EV_I_CALLPIPELINE"_Stz,    EV_I_CALLPIPELINE);
   /*  0 */ vAddConstant("EV_I_COMMAND"_Stz,         EV_I_COMMAND);
-  /*  0 */ vAddConstant("EV_I_COMPILEERRORS"_Stz,   EV_I_COMPILEERRORS);
   /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);
-  /*  0 */ vAddConstant("EV_I_EXECERRORS"_Stz,      EV_I_EXECERRORS);
   /*  0 */ vAddConstant("EV_I_FORKCOMMAND"_Stz,     EV_I_FORKCOMMAND);
   /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
   /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
-  /*  0 */ vAddConstant("EV_I_WARNINGS"_Stz,        EV_I_WARNINGS);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);
   /*  0 */ vAddConstant("EV_M_CANCELLING"_Stz,      EV_M_CANCELLING);

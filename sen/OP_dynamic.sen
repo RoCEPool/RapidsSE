@@ -207,6 +207,13 @@
   //"OP_dynamic got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
+
+  RowBuffer[].getBufferType BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   RowBuffer[] Fun1[] 0 dynamic[].execute not if
     to errorCode
 

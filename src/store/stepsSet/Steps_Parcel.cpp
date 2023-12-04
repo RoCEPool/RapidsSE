@@ -463,6 +463,9 @@ void Step::vParcelAddOperand(void)
 
   pParcel->vAddItem(pOperand);
 
+//	if (pOperand->bIsRowBuffer()) {
+//		vTrace("OP: %s ROWBUFFER: %s\n"_Stz, pOpSpec->szOpNm(), aYF[pOpSpec->eParcelForward()]);
+//	}
   pParcel->vLabel(pOp->pOuterJobOfOp()->tDistId().iAsI8(),
                   pOpSpec->eParcelForward());
 

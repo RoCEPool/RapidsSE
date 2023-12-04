@@ -404,7 +404,7 @@ void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 /*----------------------------------------------------------------------------*/
 /* Update the state after an error is received from the SQL compiler          */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
+void AdaptorWL::vCompilerError(RowBuffer* pRowBuffer)
 {
   ASSERT(m_pStmtCtx);
 
@@ -416,9 +416,9 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
     return;
   }
 
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS));
+  ASSERT(pRowBuffer->eBufferType() == BT_COMPILEERRORS);
 
-  Row *pInfoRow = pInfoSet->pFirstRow();
+  Row *pInfoRow = pRowBuffer->pFirstRow();
 
   Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
@@ -445,11 +445,11 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 /* Update the state after an error is received from the execution engine      */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
+void AdaptorWL::vExecutionError(RowBuffer* pRowBuffer)
 {
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS));
+  ASSERT(pRowBuffer->eBufferType() == BT_EXECERRORS);
 
-  Row *pInfoRow = pInfoSet->pFirstRow();
+  Row *pInfoRow = pRowBuffer->pFirstRow();
 
   Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
@@ -506,7 +506,7 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 /* Handle a warning received from the execution engine                        */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
+void AdaptorWL::vExecutionWarning(RowBuffer* pRowBuffer)
 {
   ASSERT(m_pStmtCtx);
 
@@ -514,9 +514,9 @@ void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
     return;
   }
 
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_WARNINGS));
+  ASSERT(pRowBuffer->eBufferType() == BT_WARNINGS);
 
-  Row *pInfoRow = pInfoSet->pFirstRow();
+  Row *pInfoRow = pRowBuffer->pFirstRow();
 
   ASSERT(!pInfoRow->bIsColNull(0));
 

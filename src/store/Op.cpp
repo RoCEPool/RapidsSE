@@ -354,6 +354,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 
   AM::vOperandsInc();
 
+	if (pOperand->bIsMarker())
   RASSERT(pOperand->bIsMarker());
   Marker* pMarker = _pMarker(pOperand);
 
@@ -725,9 +726,13 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 
 			// should have received a EV_M_DATAPULSE
 			if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
-				vTrace("%s: %s arrived without a prior EV_M_DATAPULSE\n"_Stz,
-							 szOpNm(), aEV[i_OperandKind]);
-				return false;
+
+				// EXECERRORS can come berore the DATAPULSE
+				if (i_BufferType != BT_EXECERRORS) {
+					vTrace("%s: %s (BufferType: %s) arrived without a prior EV_M_DATAPULSE\n"_Stz,
+								 szOpNm(), aEV[i_OperandKind], aBT[i_BufferType]);
+					return false;
+				}
 			}
 
 			// should have received a EV_D_STREAMDEF if BufferType is BT_DATA
@@ -1449,8 +1454,8 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
       );
     } else if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
       RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-      vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
-             pRowBuffer->nRows(), this->pStage()->szStageNm(), this->szOpNm()
+      vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows (%s)) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             pRowBuffer->nRows(), aBT[pRowBuffer->eBufferType()], pStage()->szStageNm(), this->szOpNm()
       );
     }
   }
@@ -1645,10 +1650,11 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
   if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
     UNUSED(pRowBuffer);
-    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
+    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows(%s))\n"_Stz
           ,pStage()->szStageNm()
           ,szOpNm()
           ,pRowBuffer->nRows()
+		      ,aBT[pRowBuffer->eBufferType()]
           );
   }
   return pOperand;

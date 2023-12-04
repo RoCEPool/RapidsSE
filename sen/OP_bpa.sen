@@ -16,34 +16,33 @@
 
 
   <bpaType> "regions" str.same if
-    // Create a warnings infoset. We may not need it.
+    // Create a warnings rowBuffer. We may not need it.
     C_TDEF_WARNINGS op__tableDef_infoSet assert
-    InfoSetTable[] InfoSet[].new
-    OI_WARNINGS InfoSet[].opInfoset!
+    BT_WARNINGS InfoSetTable[] RowBufferWarn[].new
 
     // find the C_TDEF_BPAREGIONS table definition, create a streamDef and pipe it out
     C_TDEF_BPAREGIONS op__tableDef_streamSet assert
     StreamSetTable[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
-    // create streamset
+    // create rowBuffer
     StreamSetTable[] RowBuffer[].new
 
     // populate rowBuffer
     StreamSetTable[] RowBuffer[].addBpaRegions
     RowBuffer[].pipeOut
 
-    InfoSet[].infoRows 0 > if
-      InfoSet[].pipeOut
+    RowBufferWarn[]\clear to RowBuffer[]
+    RowBuffer[].infoRows 0 > if
+      RowBuffer[].pipeOut
     else
-      InfoSet[].delete
+      RowBuffer[].delete
     then
 
   else <bpaType> "objects" str.same if
-    // Create a warnings infoset. We may not need it.
+    // Create a warnings rowBuffer. We may not need it.
     C_TDEF_WARNINGS op__tableDef_infoSet assert
-    InfoSetTable[] InfoSet[].new
-    OI_WARNINGS InfoSet[].opInfoset!
+    BT_WARNINGS InfoSetTable[] RowBufferWarn[].new
 
     // find the C_TDEF_BPAOBJECTS table definition, create a streamDef and pipe it out
     C_TDEF_BPAOBJECTS op__tableDef_streamSet assert
@@ -57,10 +56,11 @@
     StreamSetTable[] RowBuffer[].addBpaObjects
     RowBuffer[].pipeOut
 
-    InfoSet[].infoRows 0 > if
-      InfoSet[].pipeOut
+    RowBufferWarn[]\clear to RowBuffer[]
+    RowBuffer[].infoRows 0 > if
+      RowBuffer[].pipeOut
     else
-      InfoSet[].delete
+      RowBuffer[].delete
     then
 
   else

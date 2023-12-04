@@ -47,8 +47,10 @@
 
     // We got an error, but were we going to do an explain?
     RowBuffer[].isNull not if
-      RowBuffer[].delete
-    then
+      RowBuffer[].getBufferType BT_EXPLAIN == if
+        RowBuffer[].delete
+      then
+   then
 
     op__compileErrOut
 
@@ -56,8 +58,18 @@
     exit
   then
 
-  // no error, delete the infoset
-  InfoSet[].delete
+  // no error, delete the RowBufferErr
+  RowBufferErr[].isNull not if
+
+    RowBufferErr[].getBufferType BT_EXECERRORS == if
+      RowBufferErr[].delete
+    then
+
+    RowBufferErr[].getBufferType BT_COMPILEERRORS == if
+      RowBufferErr[].delete
+    then
+
+  then
 
   // does the sql have an explain ?
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if
