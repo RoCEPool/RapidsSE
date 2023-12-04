@@ -28,10 +28,10 @@ OpDef::OpDef(i8 i_Op, Card* pCard)
 
   //vOpNm(szOpNm);
 
-       if (pCard->bIsCard(CK_HAVING)) vOpNm("filter"_Stz);
-  else if (pCard->bIsCard(CK_HASH))   vOpNm("hash"_Stz);
-  else if (pCard->bIsCard(CK_FROM))   vOpNm("scan"_Stz);
-  else if (pCard->bIsCard(CK_WHERE))  vOpNm("filter"_Stz);
+       if (pCard->bIsCard(CK_m_HAVING)) vOpNm("filter"_Stz);
+  else if (pCard->bIsCard(CK_m_HASH))   vOpNm("hash"_Stz);
+  else if (pCard->bIsCard(CK_m_FROM))   vOpNm("scan"_Stz);
+  else if (pCard->bIsCard(CK_m_WHERE))  vOpNm("filter"_Stz);
   else
     vOpNm(pCard->szCardNm());
 

@@ -65,7 +65,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   m_pCI->vTransform(__func__, XF_PROLOG_MOVE_ON, "move <on> in <absJoin>'s to <where>"_Stz);
 
   m_pCI->vBeginEach();
-  if (m_pCI->G_bEachMain(CK_WHERE))
+  if (m_pCI->G_bEachMain(CK_m_WHERE))
     m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,7 +75,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   Card_Scan* p_scan_over = nullptr;
 
   m_pCI->vBeginEachReverse();
-  while (m_pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
+  while (m_pCI->G_bEachMainWithSub_reverse(CK_m_ABSJOIN, CK_ON)) {
 
     // ignore
     Card_RpnCalc *p_rpnCalc_on = m_pCI->G.p_on->pSub_rpnCalc();
@@ -86,7 +86,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     if (p_rpnCalc_on->bPopDeleteChildIf(CK_TERM,
                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
       m_pCI->G_vPushIter();
-      if (m_pCI->G_bEachMain_reverse_b(CK_SCAN)) {
+      if (m_pCI->G_bEachMain_reverse_b(CK_m_SCAN)) {
         p_scan_over = m_pCI->G.p_scan;
         m_pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
         m_pCI->G.p_scan->vAppendChild(m_pCI->G.p_outerJoin);

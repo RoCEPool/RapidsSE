@@ -68,25 +68,25 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
   while (m_pCI->G_bEachMain_NONE()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_STAGE == m_pCI->G.e_MainCard) {
+    if (CK_m_STAGE == m_pCI->G.e_MainCard) {
       m_pCI->vNullMembers();
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_PROJECT == m_pCI->G.e_MainCard) {
+    if (CK_m_PROJECT == m_pCI->G.e_MainCard) {
       m_pCI->G.p_top = nullptr;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_TOP == m_pCI->G.e_MainCard) {
+    if (CK_m_TOP == m_pCI->G.e_MainCard) {
       m_pCI->G.p_project = nullptr;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_HASH == m_pCI->G.e_MainCard) {
+    if (CK_m_HASH == m_pCI->G.e_MainCard) {
       m_pCI->G_vAppendNewChild(m_pCI->G.p_hash,CK_HASHING);
 
       Kid xHshColList(m_pCI->G.p_hash->pSub_hshColList());
@@ -154,25 +154,25 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //  while (m_pCI->G_bEachMain_NONE()) {
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_STAGE == m_pCI->G.e_MainCard) {
+//    if (CK_m_STAGE == m_pCI->G.e_MainCard) {
 //      m_pCI->vNullMembers();
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_PROJECT == m_pCI->G.e_MainCard) {
+//    if (CK_m_PROJECT == m_pCI->G.e_MainCard) {
 //      m_pCI->G.p_top = nullptr;
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_TOP == m_pCI->G.e_MainCard) {
+//    if (CK_m_TOP == m_pCI->G.e_MainCard) {
 //      m_pCI->G.p_project = nullptr;
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_HASH == m_pCI->G.e_MainCard) {
+//    if (CK_m_HASH == m_pCI->G.e_MainCard) {
 //      m_pCI->G_vAppendNewChild(m_pCI->G.p_hash,CK_HASHING);
 //
 //      if (m_pCI->G.p_project) {

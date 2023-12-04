@@ -76,8 +76,8 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
 
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain_NONE()) {
-      if (m_pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
+      if (m_pCI->G.p_MainCard->bIsCard(CK_m_AGGREG) ||
+          m_pCI->G.p_MainCard->bIsCard(CK_m_GBYAGG)) {
         pOuterQuery->vDisposition(QD_AGGREGATION);
         break;
       }
@@ -87,7 +87,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
     // search for from calls to sub-queries
 
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_CALL)) {
+    while (m_pCI->G_bEachMain(CK_m_CALL)) {
 
       vAnalysis_Of_from_call(m_pCI);
       pOuterQuery->vSubQueries(pOuterQuery->nSubQueries() + 1);
@@ -97,7 +97,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
     // search for where calls to sub-queries
 
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED)) {
+    while (m_pCI->G_bEachMainWithSub(CK_m_WHERE, CK_BOOLPRED)) {
       vAnalysis_Of_where_boolPred(m_pCI);
     }
 
@@ -105,7 +105,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
     // search for having calls to sub-queries
 
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLPRED)) {
+    while (m_pCI->G_bEachMainWithSub(CK_m_HAVING, CK_BOOLPRED)) {
       vAnalysis_Of_having_boolPred(m_pCI);
     }
 
@@ -114,7 +114,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
 
     m_pCI->vClearRestart();
     i8 nParams = 0;
-    while (m_pCI->G_bEachMain(CK_CORRELATION))
+    while (m_pCI->G_bEachMain(CK_m_CORRELATION))
       nParams++;
     pOuterQuery->vCorrCols(nParams);
 

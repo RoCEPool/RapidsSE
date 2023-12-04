@@ -893,7 +893,7 @@ void Card_BoolPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     Card::eValidate_mustSome(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,
                                CK_TERM,CK_NONE);
 
-  (void)Card::eValidate_parentEither(pCI,CK_CONSTRAINT,CK_FILTER,CK_NONE);
+  (void)Card::eValidate_parentEither(pCI, CK_CONSTRAINT, CK_m_FILTER, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

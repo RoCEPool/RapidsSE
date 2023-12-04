@@ -67,7 +67,7 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE()) {
 
-    if (CK_SCAN == m_pCI->G.e_MainCard) {
+    if (CK_m_SCAN == m_pCI->G.e_MainCard) {
       m_pCI->G.p_inflate = new Card_Inflate;
       m_pCI->G_vInsertAfter(m_pCI->G.p_inflate,m_pCI->G.p_scan);
 

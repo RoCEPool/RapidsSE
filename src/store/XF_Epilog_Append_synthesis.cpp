@@ -66,7 +66,7 @@ void XF_Epilog_Append_synthesis::vAppend_synthesis(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
-    if (m_pCI->G.p_MainCard->bIsOne(CK_STAGE,CK_NONE))
+    if (m_pCI->G.p_MainCard->bIsOne(CK_m_STAGE, CK_NONE))
       continue;
 
     m_pCI->G_vAppendNewChild(m_pCI->G.p_MainCard, CK_SYNTHESIS);

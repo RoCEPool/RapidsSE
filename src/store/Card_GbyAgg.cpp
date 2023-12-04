@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_GbyAgg, CK_GBYAGG)
+__pCastFunction_Card(STORE, Card_GbyAgg, CK_m_GBYAGG)
 __aNewFunction(Card_GbyAgg, CN_CARD)
 __vDeleteFunction(Card_GbyAgg, CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_GbyAgg, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_GbyAgg::Card_GbyAgg(void)
-: Card_AGGREGATE(CK_GBYAGG, 1)
+: Card_AGGREGATE(CK_m_GBYAGG, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -90,7 +90,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   // if the immediate previous card is a project then rely on that project
   //   to have determined what projections are needed
 
-  if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
+  if (pCI->pPrevChild()->bIsCard(CK_m_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
@@ -182,7 +182,7 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
   if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pStreamKey))
     return false;
 
-  vCard(CK_ORDAGG);
+  vCard(CK_m_ORDAGG);
 
   vDebugPoint();
 

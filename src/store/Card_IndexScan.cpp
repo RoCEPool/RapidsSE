@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_IndexScan,CK_INDEXSCAN)
+__pCastFunction_Card(STORE, Card_IndexScan, CK_m_INDEXSCAN)
 __aNewFunction(Card_IndexScan,CN_CARD)
 __vDeleteFunction(Card_IndexScan,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_IndexScan,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::Card_IndexScan(void)
-: Card_OP(CK_INDEXSCAN,1)
+: Card_OP(CK_m_INDEXSCAN, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

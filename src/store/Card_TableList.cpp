@@ -61,7 +61,7 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
   xKid.vEnded();
   xKid.vBegin_reverse();
 
-  if (xKid.bEach_reverse(CK_FOLD)) {
+  if (xKid.bEach_reverse(CK_m_FOLD)) {
     xKid.vForwards(true);
   }
   else {
@@ -69,7 +69,7 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
     xKid.vBegin();
   }
 
-  while (xKid.bEach(CK_FROM,CK_TABLE)) {
+  while (xKid.bEach(CK_m_FROM, CK_TABLE)) {
 
     Card_Table* p_table = _pCard_Table(xKid.pSub1());
 

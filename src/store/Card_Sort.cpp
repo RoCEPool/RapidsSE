@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Sort,CK_SORT)
+__pCastFunction_Card(STORE, Card_Sort, CK_m_SORT)
 __aNewFunction(Card_Sort,CN_CARD)
 __vDeleteFunction(Card_Sort,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Sort,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Sort::Card_Sort(void)
-: Card_OP(CK_SORT,1)
+: Card_OP(CK_m_SORT, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

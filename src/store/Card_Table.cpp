@@ -90,7 +90,7 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   _static_
 
-  while (pCI->G_bEachMainWith3Sub(CK_FROM, CK_TABLE, CK_EMIT, CK_INDEXLIST)) {
+  while (pCI->G_bEachMainWith3Sub(CK_m_FROM, CK_TABLE, CK_EMIT, CK_INDEXLIST)) {
 
     Kid xKid(pCI->G.p_indexList);
     while (xKid.bEach(CK_INDEX)) {
@@ -122,7 +122,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMainWithSub(CK_FROM, CK_TABLE)) {
+  while (pCI->G_bEachMainWithSub(CK_m_FROM, CK_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
 
@@ -140,11 +140,11 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_TABLE, CK_INDEXLIST))
+  while (pCI->G_bEachMainWith2Sub(CK_m_FROM, CK_TABLE, CK_INDEXLIST))
     pCI->G.p_indexList->vDeleteAll_bounds();
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMainWith3Sub(CK_FROM, CK_TABLE, CK_FILTER, CK_INDEXLIST))
+  while (pCI->G_bEachMainWith3Sub(CK_m_FROM, CK_TABLE, CK_m_FILTER, CK_INDEXLIST))
     pCI->G.p_table->vDerive_bounds_From_filter(pCI);
 }
 
@@ -160,7 +160,7 @@ Card_OP* Card_Table::pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before)
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card_OP *p_OP = (Card_OP*)pCI->G.pDeck->pGetChild(i_Main);
-    if (p_OP->bIsCard(CK_FROM)) {
+    if (p_OP->bIsCard(CK_m_FROM)) {
       Card_Table* p_table_test = p_OP->pSub_table();
       if (cTblSyn == p_table_test->pSymbol()->cSF_char()) {
         return p_OP;
@@ -178,7 +178,7 @@ void Card_Table::vFixTablePos(CardIter* pCI)
 {
   _static_
 
-  for (Kid xKid(pCI->G.pDeck); xKid.bEach(CK_FROM); /**/) {
+  for (Kid xKid(pCI->G.pDeck); xKid.bEach(CK_m_FROM); /**/) {
     Card_Table* p_table = xKid.pChild()->pSub_table();
     if (p_table->bUsesSqyRsl()) {
       p_table->pSymbol()->Y_vSet(P_FixedPos,(i8)0);
@@ -197,7 +197,7 @@ i8 Card_Table::nTables(CardIter* pCI)
   i8 nTables = 0;
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMainWithSub(CK_FROM,CK_TABLE))
+  while (pCI->G_bEachMainWithSub(CK_m_FROM, CK_TABLE))
     nTables++;
 
   return nTables;
@@ -213,7 +213,7 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
   i8 nTables = 0;
 
   pCI->vBeginEachReverse();
-  while (pCI->G_bEachMain_reverse_foldBreak_b(CK_FROM))
+  while (pCI->G_bEachMain_reverse_foldBreak_b(CK_m_FROM))
     nTables++;
 
   return nTables;

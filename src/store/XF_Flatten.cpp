@@ -119,7 +119,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   for (;;) {
 
     m_pCI->vBeginEach();
-    if (! m_pCI->G_bEachMain(CK_CALL))
+    if (! m_pCI->G_bEachMain(CK_m_CALL))
       break;
 
     s256 sSubQueryNm = m_pCI->G.p_call->szFacet(SF_NONE);
@@ -149,7 +149,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED))
+    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_m_WHERE, CK_BOOLPRED))
       break;
 
     CardIter* pCI = m_pCI;
@@ -196,7 +196,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_HAVING, CK_BOOLPRED))
+    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_m_HAVING, CK_BOOLPRED))
       break;
 
     CardIter* pCI = m_pCI;

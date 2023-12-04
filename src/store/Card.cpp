@@ -109,7 +109,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (CK_CROSSJOIN == eCard)
+  if (CK_m_CROSSJOIN == eCard)
     vDebugPoint();
 
   if (CK_BOUNDS == eCard)
@@ -299,34 +299,34 @@ bool Card::bIsMain(eCK eCard)
 
   switch (eCard) {
 
-    case CK_ABSJOIN:
-    case CK_AGGREG:
-    case CK_CALL:
-    case CK_CAST:
-    case CK_COMBINED:
-    case CK_CORRELATION:
-    case CK_CROSSJOIN:
-    case CK_FILTER:
-    case CK_FLAT:
-    case CK_FOLD:
-    case CK_FROM:
-    case CK_GBYAGG:
-    case CK_HASH:
-    case CK_HAVING:
-    case CK_INDEXSCAN:
-    case CK_INDEXJOIN:
-    case CK_INFLATE:
-    case CK_KEYEXISTS:
-    case CK_KEYNOTEXISTS:
-    case CK_LIMIT:
-    case CK_ORDAGG:
-    case CK_PROJECT:
-    case CK_SEND:
-    case CK_SCAN:
-    case CK_SORT:
-    case CK_STAGE:
-    case CK_TOP:
-    case CK_WHERE:
+    case CK_m_ABSJOIN:
+    case CK_m_AGGREG:
+    case CK_m_CALL:
+    case CK_m_CAST:
+    case CK_m_COMBINED:
+    case CK_m_CORRELATION:
+    case CK_m_CROSSJOIN:
+    case CK_m_FILTER:
+    case CK_m_FLAT:
+    case CK_m_FOLD:
+    case CK_m_FROM:
+    case CK_m_GBYAGG:
+    case CK_m_HASH:
+    case CK_m_HAVING:
+    case CK_m_INDEXSCAN:
+    case CK_m_INDEXJOIN:
+    case CK_m_INFLATE:
+    case CK_m_KEYEXISTS:
+    case CK_m_KEYNOTEXISTS:
+    case CK_m_LIMIT:
+    case CK_m_ORDAGG:
+    case CK_m_PROJECT:
+    case CK_m_SEND:
+    case CK_m_SCAN:
+    case CK_m_SORT:
+    case CK_m_STAGE:
+    case CK_m_TOP:
+    case CK_m_WHERE:
       return true;
 
     default:
@@ -1454,8 +1454,8 @@ void Card::vPrintCardRecursive(CardIter* pCI,
   m_iLastPrint = pCI->m_pBench->iPrint();
 
   if (0 == iDepth) {
-    if (   bIsCard(CK_AGGREG)
-        || bIsCard(CK_PROJECT)) {
+    if (   bIsCard(CK_m_AGGREG)
+        || bIsCard(CK_m_PROJECT)) {
       vDebugPoint();
     }
 
@@ -2422,7 +2422,7 @@ Card_Aggreg* Card::pSub_aggreg(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Aggreg* p_aggreg =
-      _pCard_Aggreg(pFindSubCard(CK_AGGREG));
+      _pCard_Aggreg(pFindSubCard(CK_m_AGGREG));
   return p_aggreg;
 }
 
@@ -2500,7 +2500,7 @@ Card_Cast* Card::pSub_cast(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Cast* p_next =
-      _pCard_Cast(pFindSubCard(CK_CAST));
+      _pCard_Cast(pFindSubCard(CK_m_CAST));
   return p_next;
 }
 
@@ -2552,7 +2552,7 @@ Card_Correlation* Card::pSub_correlation(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Correlation* p_paramList =
-      _pCard_Correlation(pFindSubCard(CK_CORRELATION));
+      _pCard_Correlation(pFindSubCard(CK_m_CORRELATION));
   return p_paramList;
 }
 
@@ -2643,7 +2643,7 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_CrossJoin* p_crossJoin =
-      _pCard_CrossJoin(pFindSubCard(CK_CROSSJOIN));
+      _pCard_CrossJoin(pFindSubCard(CK_m_CROSSJOIN));
   return p_crossJoin;
 }
 
@@ -2708,7 +2708,7 @@ Card_Filter* Card::pSub_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Filter* p_filter =
-      _pCard_Filter(pFindSubCard(CK_FILTER));
+      _pCard_Filter(pFindSubCard(CK_m_FILTER));
   return p_filter;
 }
 
@@ -2747,7 +2747,7 @@ Card_Flat* Card::pSub_flat(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Flat* p_flat =
-      _pCard_Flat(pFindSubCard(CK_FOLD));
+      _pCard_Flat(pFindSubCard(CK_m_FOLD));
   return p_flat;
 }
 
@@ -2760,7 +2760,7 @@ Card_Fold* Card::pSub_fold(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Fold* p_fold =
-      _pCard_Fold(pFindSubCard(CK_FOLD));
+      _pCard_Fold(pFindSubCard(CK_m_FOLD));
   return p_fold;
 }
 
@@ -2773,7 +2773,7 @@ Card_From* Card::pSub_from(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_From* p_from =
-      _pCard_From(pFindSubCard(CK_FROM));
+      _pCard_From(pFindSubCard(CK_m_FROM));
   return p_from;
 }
 
@@ -2786,7 +2786,7 @@ Card_GbyAgg* Card::pSub_gbyAgg(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_GbyAgg* p_gbyAgg =
-      _pCard_GbyAgg(pFindSubCard(CK_GBYAGG));
+      _pCard_GbyAgg(pFindSubCard(CK_m_GBYAGG));
   return p_gbyAgg;
 }
 
@@ -2864,7 +2864,7 @@ Card_IndexJoin* Card::pSub_indexJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_IndexJoin* p_indexJoin =
-      _pCard_IndexJoin(pFindSubCard(CK_INDEXJOIN));
+      _pCard_IndexJoin(pFindSubCard(CK_m_INDEXJOIN));
   return p_indexJoin;
 }
 
@@ -2916,7 +2916,7 @@ Card_Inflate* Card::pSub_inflate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Inflate* p_inflate =
-      _pCard_Inflate(pFindSubCard(CK_INFLATE));
+      _pCard_Inflate(pFindSubCard(CK_m_INFLATE));
   return p_inflate;
 }
 
@@ -2955,7 +2955,7 @@ Card_KeyExists* Card::pSub_keyExists(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_KeyExists* p_keyExists =
-      _pCard_KeyExists(pFindSubCard(CK_KEYEXISTS));
+      _pCard_KeyExists(pFindSubCard(CK_m_KEYEXISTS));
   return p_keyExists;
 }
 
@@ -2968,7 +2968,7 @@ Card_KeyNotExists* Card::pSub_keyNotExists(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_KeyNotExists* p_keyNotExists =
-      _pCard_KeyNotExists(pFindSubCard(CK_KEYNOTEXISTS));
+      _pCard_KeyNotExists(pFindSubCard(CK_m_KEYNOTEXISTS));
   return p_keyNotExists;
 }
 
@@ -3202,7 +3202,7 @@ Card_Scan* Card::pSub_scan(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Scan* p_scan =
-      _pCard_Scan(pFindSubCard(CK_SCAN));
+      _pCard_Scan(pFindSubCard(CK_m_SCAN));
   return p_scan;
 }
 
@@ -3436,7 +3436,7 @@ Card_Top* Card::pSub_top(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Top* p_top =
-      _pCard_Top(pFindSubCard(CK_TOP));
+      _pCard_Top(pFindSubCard(CK_m_TOP));
   return p_top;
 }
 
@@ -3475,7 +3475,7 @@ Card_Where* Card::pSub_where(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Where* p_where =
-      _pCard_Where(pFindSubCard(CK_WHERE));
+      _pCard_Where(pFindSubCard(CK_m_WHERE));
   return p_where;
 }
 

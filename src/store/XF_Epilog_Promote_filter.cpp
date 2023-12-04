@@ -69,22 +69,22 @@ void XF_Epilog_Promote_filter::vPromote_filter(void)
   m_pCI->vTransform(__func__, XF_EPILOG_PROMOTE_FILTER, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+  while (m_pCI->G_bEachMainWithSub(CK_m_SCAN, CK_m_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
+  while (m_pCI->G_bEachMainWithSub(CK_m_INDEXSCAN, CK_m_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
+  while (m_pCI->G_bEachMainWithSub(CK_m_INDEXJOIN, CK_m_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
+  while (m_pCI->G_bEachMainWithSub(CK_m_CROSSJOIN, CK_m_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 

@@ -72,7 +72,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
   while (m_pCI->G_bEachMain_NONE()) {
     switch (m_pCI->G.e_MainCard) {
 
-      case CK_CROSSJOIN:
+      case CK_m_CROSSJOIN:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -80,12 +80,12 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_FILTER:
+      case CK_m_FILTER:
         if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
           vFactor_boolPred(m_pCI->G.p_boolPred);
         break;
 
-      case CK_FROM:
+      case CK_m_FROM:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
@@ -96,7 +96,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_HAVING:
+      case CK_m_HAVING:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -104,7 +104,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_INDEXJOIN:
+      case CK_m_INDEXJOIN:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
@@ -115,7 +115,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_INDEXSCAN:
+      case CK_m_INDEXSCAN:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -123,7 +123,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_KEYEXISTS:
+      case CK_m_KEYEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
@@ -131,7 +131,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
 
-      case CK_KEYNOTEXISTS:
+      case CK_m_KEYNOTEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
@@ -139,7 +139,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
 
-      case CK_SCAN:
+      case CK_m_SCAN:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -147,7 +147,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_WHERE:
+      case CK_m_WHERE:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))

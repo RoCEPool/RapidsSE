@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_OrdAgg,CK_ORDAGG)
+__pCastFunction_Card(STORE, Card_OrdAgg, CK_m_ORDAGG)
 __aNewFunction(Card_OrdAgg,CN_CARD)
 __vDeleteFunction(Card_OrdAgg,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_OrdAgg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg::Card_OrdAgg(void)
-: Card_AGGREGATE(CK_ORDAGG, 1)
+: Card_AGGREGATE(CK_m_ORDAGG, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -64,7 +64,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(! pCI->Early.m_pNeeded_later);
 
-  if (pCI->pPrevChild()->bIsCard(CK_PROJECT))
+  if (pCI->pPrevChild()->bIsCard(CK_m_PROJECT))
     return;
 
   pCI->G.p_key = pSub_key();

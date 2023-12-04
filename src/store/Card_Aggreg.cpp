@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Aggreg,CK_AGGREG)
+__pCastFunction_Card(STORE, Card_Aggreg, CK_m_AGGREG)
 __aNewFunction(Card_Aggreg,CN_CARD)
 __vDeleteFunction(Card_Aggreg,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Aggreg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::Card_Aggreg(void)
-: Card_AGGREGATE(CK_AGGREG, 1)
+: Card_AGGREGATE(CK_m_AGGREG, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

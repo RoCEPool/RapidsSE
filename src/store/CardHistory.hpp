@@ -44,7 +44,7 @@ namespace STORE
     CardImage* pImage(i8 i_Image);
     i8 nImages(void);
 
-    void vPrintImages(eCK eCard=CK_GBYAGG, eAL eLevel=AL_NONE);
+    void vPrintImages(eCK eCard=CK_m_GBYAGG, eAL eLevel=AL_NONE);
 
   protected:
     Footer* aFooter(void);

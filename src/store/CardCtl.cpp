@@ -598,7 +598,7 @@ void CardCtl::vReset(void)
 
   vHeatNext(CK_SECTION, true);
 
-  vHeatNext(CK_STAGE, true);
+  vHeatNext(CK_m_STAGE, true);
 
   vPrintByKind(CK_EMIT, true);
   vPrintByKind(CK_EXPR,true);

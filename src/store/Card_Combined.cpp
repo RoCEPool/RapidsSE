@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Combined, CK_COMBINED)
+__pCastFunction_Card(STORE, Card_Combined, CK_m_COMBINED)
 __aNewFunction(Card_Combined, CN_CARD)
 __vDeleteFunction(Card_Combined, CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Combined, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Combined::Card_Combined(void)
-: Card_CONSTRUCTION(CK_COMBINED,1)
+: Card_CONSTRUCTION(CK_m_COMBINED, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

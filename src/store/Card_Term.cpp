@@ -55,7 +55,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (! pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    if (pCI->pAncestorFind(CK_KEYEXISTS) || pCI->pAncestorFind(CK_KEYNOTEXISTS))
+    if (pCI->pAncestorFind(CK_m_KEYEXISTS) || pCI->pAncestorFind(CK_m_KEYNOTEXISTS))
       return C_CONTINUE_RECURSION;
 //    if (pCI->pAncestorFind(CK_CONSTRAINT))ø
 //      return C_CONTINUE_RECURSION;
@@ -68,8 +68,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (! pCard->pSymbol()->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
-    if ( (pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_INDEXJOIN))) &&
-         (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
+    if ((pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_m_INDEXJOIN))) &&
+        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
       //pCI->G.p_indexJoin->vDump(__func__);
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();

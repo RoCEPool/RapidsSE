@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Inflate,CK_INFLATE)
+__pCastFunction_Card(STORE, Card_Inflate, CK_m_INFLATE)
 __aNewFunction(Card_Inflate,CN_CARD)
 __vDeleteFunction(Card_Inflate,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Inflate,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Inflate::Card_Inflate(void)
-: Card_OP(CK_INFLATE,1)
+: Card_OP(CK_m_INFLATE, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
