@@ -11,7 +11,13 @@
 
   "OP_toStatD_LockStats +++ +++ +++" .
 
-  PipeIn[].bufferType BT_LOCKSTATS == assert
+  PipeIn[].bufferType "OP_toStatD %v" str.format .
+
+  PipeIn[].bufferType BT_LOCKSTATS != if
+    PipeIn[].pipeout
+    true
+    exit
+  then
 
   PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
