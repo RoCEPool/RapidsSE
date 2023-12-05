@@ -21,13 +21,19 @@
 /*----------------------------------------------------------------------------*/
 : ABNORMAL_ROWBUFFER_DATA
 
+  0 locals| eBufferType |
+
   //PipeIn[].name PipeIn[].bufferType [op].ptnId@ "ABNORMAL_ROWBUFFER_DATA P%v %v %v" str.format .
 
-  PipeIn[].bufferType BT_DATA == PipeIn[].bufferType BT_TOTALUNITS == or if
-    PipeIn[].delete
+  PipeIn[].bufferType to eBufferType
+
+  eBufferType BT_EXECERRORS ==
+    eBufferType BT_COMPILEERRORS ==
+    eBufferType BT_WARNINGS == or or if
+    PipeIn[].pipeout
   else
     //PipeIn[].bufferType "PIPING OUT %v" str.format .
-    PipeIn[].pipeout
+    PipeIn[].delete
   then
 
   // calling op_loop continues

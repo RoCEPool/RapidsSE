@@ -42,8 +42,21 @@
 /*----------------------------------------------------------------------------*/
 : output_RowBuffer \handler
 
+  0 locals| eBufferType |
+
   //"Operand:- EV_D_ROWBUFFER" .verbose
-  PipeIn[].pipeToOutput
+
+  PipeIn[].bufferType to eBufferType
+
+  eBufferType BT_EXECERRORS ==
+      eBufferType BT_COMPILEERRORS ==
+      eBufferType BT_WARNINGS == or or if
+      PipeIn[].pipeToOutput
+    else
+      PipeIn[].delete
+    then
+
+  //PipeIn[].pipeToOutput
 
   true
 ;
@@ -58,7 +71,7 @@
   "default_abnormalHandlers" FIND execute
   find: output_RowBuffer EV_D_ROWBUFFER  [op].handler!
 
-  PipeIn[].pipeOut
+  PipeIn[].pipeToOutput
 
   true
 ;
