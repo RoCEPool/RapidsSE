@@ -290,11 +290,20 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
   while (pCI->G_bEachMain_NONE()) {
 
     switch (pCI->G.e_MainCard) {
+
+      case CK_o_CALL:
+      case CK_o_CORRELATION:
+        RASSERT(!pCI->G.p_MainCard->pSub_emit());
+        continue;
+
+
       case CK_o_FROM:
         pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
         pCI->G.p_from->vUpdate_emitted(pCI);
 
-        if (pCI->G.p_MainCard->pSub_emit())
+        RASSERT(pCI->G.p_MainCard->pSub_emit())
+
+          if (pCI->G.p_MainCard->pSub_emit())
           pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
 
         if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
@@ -302,32 +311,28 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
             pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
           }
         }
-
         continue;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
       case CK_o_WHERE:
       case CK_o_HAVING:
-        {
         if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
           pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
         pCI->G.p_OP->vEnsure_stream(pCI);
-        Card_Emit *p_emit = pCI->Flux.m_pArriving->pPropagate();
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         //p_emit->vDump(__func__ );
-        pCI->G.p_stream->vAppendChild(p_emit);
-        }
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
         break;
 
       case CK_o_SORT:
-        {
-          pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_OP->vEnsure_stream(pCI);
 
-          Card_Emit* p_emitted_propagated =
-              pCI->Flux.m_pArriving->pPropagate();
-          p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+        pCI->G.p_emit->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
-          pCI->G.p_stream->vAppendChild(p_emitted_propagated);
-        }
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
         break;
 
       case CK_o_HASH:
@@ -348,37 +353,46 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
         pCI->G.p_key->vEnsureTypeId_expCol(pCI);
         pCI->G.p_key->vRenumberAll_expr();
-
         break;
 
+      case CK_o_AGGREG:
+      case CK_o_GBYAGG:
+      case CK_o_PROJECT:
+        RASSERT(pCI->G.p_MainCard->pSub_emit());
+        break;
+
+      case CK_o_CAST:
+      case CK_o_CROSSJOIN:
+      case CK_o_FILTER:
+      case CK_o_INDEXJOIN:
+      case CK_o_INDEXSCAN:
+      case CK_o_INFLATE:
       default:
+        pCI->G.p_OP->vDump(__func__);
+        NEVER_REACH
         break;
     }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-//    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-//      if (pCI->Flux.m_pArriving) {
-//        pCI->G.p_key->vEnsureTypeId_expCol(pCI);
-//        pCI->G.p_key->vRenumberAll_expr();
-//      }
-//    }
+    RASSERT(pCI->G.p_MainCard->pSub_emit());
 
+    if (! pCI->Flux.m_pArriving)
+      continue;
 
-    if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
+    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
-      if (pCI->Flux.m_pArriving) {
-        pCI->G.p_key = pCI->G.p_MainCard->pSub_key();
-        //pCI->G.p_emit->vDump(__func__);
-        pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
-        //pCI->G.p_emit->vDump(__func__);
-        pCI->G.p_emit->vRenumberAll_expr();
-        //pCI->G.p_emit->vDump(__func__);
-        vDebugPoint();
-      }
+      pCI->G.p_key = pCI->G.p_MainCard->pSub_key();
+      //pCI->G.p_emit->vDump(__func__);
+      pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
+      //pCI->G.p_emit->vDump(__func__);
+      pCI->G.p_emit->vRenumberAll_expr();
+      //pCI->G.p_emit->vDump(__func__);
+      vDebugPoint();
 
-      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
-    }
+    pCI->Flux.m_pArriving = pCI->G.p_emit;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
     if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
       if (pCI->Flux.m_pArriving) {
