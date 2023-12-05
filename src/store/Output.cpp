@@ -459,18 +459,7 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_MARKER: {
 
       Marker *pMarker = _pMarker(pOperand);
-			if (pMarker->eOpMarker() == OM_ERRORMARKER) {
-				if (!m_bHasError) {
-					vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
-					vTrace("\nerror: error\n"_Stz);
-					m_bHasError = true;
-
-					m_ixRowsProcessed = 0;
-					m_ixRowsInvalid   = 0;
-					m_ixRowsSkipped   = 0;
-				}
-			}
-			else if (pMarker->eOpMarker() == OM_LOWMEMORY) {
+			if (pMarker->eOpMarker() == OM_LOWMEMORY) {
         if (!m_bHasError) {
           vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
           vTrace("\nerror: low memory\n"_Stz);
