@@ -331,15 +331,20 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         break;
 
       case CK_o_HASH:
+        RASSERT(!pCI->G.p_MainCard->pSub_key());
+        pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+        break;
+
       case CK_o_KEYEXISTS:
       case CK_o_KEYNOTEXISTS:
       case CK_o_LIMIT:
       case CK_o_TOP:
-        {
-          pCI->G.p_OP->vEnsure_stream(pCI);
-          pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-          pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-        }
+        RASSERT(pCI->G.p_MainCard->pSub_key());
+        pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
         break;
 
       default:
