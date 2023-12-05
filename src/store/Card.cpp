@@ -291,15 +291,51 @@ eAL Card::e_stageTopo_To_aggLevel(eYG eStageTopo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if eCard is a main                                                    */
+/* test if eCard is a construction                                            */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsMain(eCK eCard)
+bool Card::bIsConstruction(eCK eCard)
 {
   _static_
 
   switch (eCard) {
 
     case CK_c_ABSJOIN:
+    case CK_c_FLAT:
+    case CK_c_FOLD:
+    case CK_c_SEND:
+    case CK_c_STAGE:
+      return true;
+
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if eCard is a main                                                    */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsMain(eCK eCard)
+{
+  _static_
+
+  if (bIsOp(eCard))
+    return true;
+
+  if (bIsConstruction(eCard))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if eCard is a op                                                      */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOp(eCK eCard)
+{
+  _static_
+
+  switch (eCard) {
+
     case CK_o_AGGREG:
     case CK_o_CALL:
     case CK_o_CAST:
@@ -307,8 +343,6 @@ bool Card::bIsMain(eCK eCard)
     case CK_o_CORRELATION:
     case CK_o_CROSSJOIN:
     case CK_o_FILTER:
-    case CK_c_FLAT:
-    case CK_c_FOLD:
     case CK_o_FROM:
     case CK_o_GBYAGG:
     case CK_o_HASH:
@@ -321,10 +355,8 @@ bool Card::bIsMain(eCK eCard)
     case CK_o_LIMIT:
     case CK_o_ORDAGG:
     case CK_o_PROJECT:
-    case CK_c_SEND:
     case CK_o_SCAN:
     case CK_o_SORT:
-    case CK_c_STAGE:
     case CK_o_TOP:
     case CK_o_WHERE:
       return true;
@@ -1001,6 +1033,19 @@ bool Card::bIsConj(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card a construction card                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsConstruction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsConstruction(eCard()))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this card a main card                                                   */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsMain(void)
@@ -1013,6 +1058,18 @@ bool Card::bIsMain(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is this card a op card                                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsOp(eCard()))
+    return true;
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */

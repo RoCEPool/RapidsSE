@@ -331,6 +331,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         break;
 
       case CK_o_HASH:
+      case CK_o_LIMIT:
         RASSERT(!pCI->G.p_MainCard->pSub_key());
         pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
@@ -339,12 +340,15 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
       case CK_o_KEYEXISTS:
       case CK_o_KEYNOTEXISTS:
-      case CK_o_LIMIT:
       case CK_o_TOP:
         RASSERT(pCI->G.p_MainCard->pSub_key());
         pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+
+        pCI->G.p_key->vEnsureTypeId_expCol(pCI);
+        pCI->G.p_key->vRenumberAll_expr();
+
         break;
 
       default:
@@ -353,16 +357,18 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-      if (pCI->Flux.m_pArriving) {
-        pCI->G.p_key->vEnsureTypeId_expCol(pCI);
-        pCI->G.p_key->vRenumberAll_expr();
-      }
-    }
+//    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
+//      if (pCI->Flux.m_pArriving) {
+//        pCI->G.p_key->vEnsureTypeId_expCol(pCI);
+//        pCI->G.p_key->vRenumberAll_expr();
+//      }
+//    }
+
 
     if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
 
       if (pCI->Flux.m_pArriving) {
+        pCI->G.p_key = pCI->G.p_MainCard->pSub_key();
         //pCI->G.p_emit->vDump(__func__);
         pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
         //pCI->G.p_emit->vDump(__func__);
