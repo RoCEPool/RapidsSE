@@ -26,13 +26,6 @@ __aFooterFunction(Pot)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_PotAllotRow(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
-  return Pot::aAllotRow((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a new row                                                            */
-/*----------------------------------------------------------------------------*/
 extern "C" void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
   return Pot::aAllotRowPds((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
 }
@@ -49,13 +42,6 @@ extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
 /*----------------------------------------------------------------------------*/
 extern "C" void vExtern_PotRowPix(void* pPot, void* pRowPix) {
   Pot::vSetRowPix((Pot*)pPot, (RowPix*)pRowPix);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a new row                                                            */
-/*----------------------------------------------------------------------------*/
-void* aPot_AllotRow(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
-  return Pot::aAllotRow((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,53 +83,6 @@ Pot::~Pot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* create new destination row (possible new row slab)                         */
-/*----------------------------------------------------------------------------*/
-void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
-{
-  _static_
-
-  try {
-    Row* aDstRow;
-
-    LglPtnMap* pPtnMap = AM::pLglPtnMap();
-    //i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHash);
-
-    // get row buffer for given partition (new a first buffer if ncessary)
-    RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
-    if (! pDstRowBuffer) {
-
-      pDstRowBuffer = new RowBuffer;
-      pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-      pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
-    }
-
-    // new a row in row buffer (new another row buffer if necessary)
-    aDstRow = pDstRowBuffer->pAllotRow();
-    if (! aDstRow) {
-      pDstRowBuffer = new RowBuffer;
-      pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-      pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
-      //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-      aDstRow = pDstRowBuffer->pAllotRow();
-      ASSERT(aDstRow);
-    }
-
-    pDstRowBuffer->vLglPtn(tLglPtn);
-
-    *aazStrArea = pDstRowBuffer->azDepositString_begin();
-
-    return aDstRow->aCellArray();;
-
-  }
-  catch (LowMemory xLowMemory) {
-    *piErrorCode = EC_LOW_MEMORY;
-    return nullptr;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
