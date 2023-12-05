@@ -34,7 +34,6 @@ enum eEV // events
 
   /*    */ EV_I_CALLPIPELINE,
   /*    */ EV_I_COMMAND,
-  /*    */ EV_I_COUNT,
   /*    */ EV_I_FORKCOMMAND,
   /*    */ EV_I_PAGEINREQUEST,
   /*    */ EV_I_PATH,

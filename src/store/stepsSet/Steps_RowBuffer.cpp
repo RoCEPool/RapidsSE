@@ -1459,7 +1459,7 @@ void Step::vRowBufferAddRowCount(void)
 	LglPtn tLglPtn = m_pOp->tLglPtn();
 	i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 	pRowBuffer->vBufferType(BT_COUNT);
 
 	// RAY: UNCOMMENT next 2 lines to see relative sizes when running "count tableName;"

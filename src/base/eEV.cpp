@@ -34,7 +34,6 @@ Stz* aEV[EV_ENUMS]
 
   /*    */ "EV_I_CALLPIPELINE"_Stz,
   /*    */ "EV_I_COMMAND"_Stz,
-  /*    */ "EV_I_COUNT"_Stz,
   /*    */ "EV_I_FORKCOMMAND"_Stz,
   /*    */ "EV_I_PAGEINREQUEST"_Stz,
   /*    */ "EV_I_PATH"_Stz,

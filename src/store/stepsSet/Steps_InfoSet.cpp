@@ -44,7 +44,7 @@ void Step::vAddSteps_InfoSet(void)
   //vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
   //vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   //vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
-  vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
+  //vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
   vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
   //vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   //vAddStep("InfoSet[].addWarning"_Stz,       &Step::vInfoSetAddWarning);
@@ -67,50 +67,6 @@ void Step::vAddSteps_InfoSet(void)
   //vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,         &Step::vInfoSetWriteCsv);
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addRowCount -- add a row to infoset with the row counts for ptn  */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddRowCount(void)
-{
-  ENTRY();
-  
-  // get the infoset table
-  Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
-  
-  LglPtn tLglPtn = m_pOp->tLglPtn();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
-
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_COUNT);
-
-  // RAY: UNCOMMENT next 2 lines to see relative sizes when running "count tableName;"
-  //i8 iRelativeSize = pTable->iRelativeSize();
-  //vTrace("Relative size of table %s is %lld\n"_Stz, pTable->szTableNm(), iRelativeSize);
-
-  i8 nBuffers = 0;
-  i8 nRows = 0;
-  i8 jSumRowBytes = 0;
-
-  pTable->vAnalyze(i_TablePtn, nBuffers, nRows, jSumRowBytes);
-  
-  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  nRows,
-                                  C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushInt(pRow ? true : false);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

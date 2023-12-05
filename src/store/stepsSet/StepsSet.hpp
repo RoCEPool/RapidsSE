@@ -755,7 +755,6 @@ void vDdlLockAssertNone(void);
   void vIndexTreeSet(void);
 
   // infoSet
-  void vInfoSetAddRowCount(void);
   void vInfoSetAddRowVargs(void);
   void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
