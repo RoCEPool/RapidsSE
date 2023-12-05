@@ -289,85 +289,64 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
   while (pCI->G_bEachMain_NONE()) {
 
-//    if (pCI->Flux.m_pArriving)
-//      pCI->Flux.m_pArriving->vDump(__func__);
+    switch (pCI->G.e_MainCard) {
+      case CK_o_FROM:
+        pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+        pCI->G.p_from->vUpdate_emitted(pCI);
 
-    if (CK_o_PROJECT == pCI->G.e_MainCard)
-      vDebugPoint();
+        if (pCI->G.p_MainCard->pSub_emit())
+          pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
 
-//    if (pCI->Flux.m_pArriving) {
-//      pCI->Flux.m_pArriving->vDump(__func__);
-//      vDebugPoint();
-//    }
-
-    if (pCI->G.p_MainCard->bIsCard(CK_o_TOP))
-      vDebugPoint();
-
-    // todo [Ray A 146]
-
-    if (CK_o_FROM == pCI->G.e_MainCard) {
-      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_from->vUpdate_emitted(pCI);
-
-      if (pCI->G.p_MainCard->pSub_emit())
-        pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
-
-        // todo: fix...
-//      pCI->G.p_emit = pCI->G.p_table->pSub_emit();
-//      pCI->G.p_table->vRemoveChild(pCI->G.p_emit);
-//      pCI->G.p_from->vAppendChild(pCI->G.p_emit);
-
-     // pCI->vPrintBoard();
-
-      if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
-        if (pCI->Flux.m_pArriving) {
-          pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
+        if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
+          if (pCI->Flux.m_pArriving) {
+            pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
+          }
         }
-      }
 
-      continue;
+        continue;
+
+      case CK_o_WHERE:
+      case CK_o_HAVING:
+        {
+        if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
+          pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
+
+        pCI->G.p_OP->vEnsure_stream(pCI);
+        Card_Emit *p_emit = pCI->Flux.m_pArriving->pPropagate();
+        //p_emit->vDump(__func__ );
+        pCI->G.p_stream->vAppendChild(p_emit);
+        }
+        break;
+
+      case CK_o_SORT:
+        {
+          pCI->G.p_OP->vEnsure_stream(pCI);
+
+          Card_Emit* p_emitted_propagated =
+              pCI->Flux.m_pArriving->pPropagate();
+          p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
+
+          pCI->G.p_stream->vAppendChild(p_emitted_propagated);
+        }
+        break;
+
+      case CK_o_HASH:
+      case CK_o_KEYEXISTS:
+      case CK_o_KEYNOTEXISTS:
+      case CK_o_LIMIT:
+      case CK_o_TOP:
+        {
+          pCI->G.p_OP->vEnsure_stream(pCI);
+          pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+          pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+        }
+        break;
+
+      default:
+        break;
     }
 
-    if (CK_o_WHERE == pCI->G.e_MainCard || CK_o_HAVING == pCI->G.e_MainCard) {
-      if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
-        pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
-
-      pCI->G.p_OP->vEnsure_stream(pCI);
-      Card_Emit* p_emit = pCI->Flux.m_pArriving->pPropagate();
-      //p_emit->vDump(__func__ );
-      pCI->G.p_stream->vAppendChild(p_emit);
-
-      //continue;
-    }
-
-//    if (CK_o_LIMIT == pCI->G.e_MainCard || CK_o_SORT == pCI->G.e_MainCard) {
-//      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
-//    }
-//    if (CK_o_SORT == pCI->G.e_MainCard) {
-//      Card_Emit* p_emitted_propagated =
-//          pCI->Flux.m_pArriving->pPropagate();
-//      p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
-//
-//      pCI->G.p_MainCard->vAppendChild(p_emitted_propagated);
-//    }
-
-    if (pCI->G.p_MainCard->bIsOne(CK_o_HASH, CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_o_LIMIT, CK_o_TOP, CK_NONE)) {
-      pCI->G.p_OP->vEnsure_stream(pCI);
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-    }
-    else
-    if (CK_o_SORT == pCI->G.e_MainCard) {
-
-      pCI->G.p_OP->vEnsure_stream(pCI);
-
-      Card_Emit* p_emitted_propagated =
-          pCI->Flux.m_pArriving->pPropagate();
-      p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
-
-      pCI->G.p_stream->vAppendChild(p_emitted_propagated);
-    }
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Flux.m_pArriving) {

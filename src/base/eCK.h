@@ -7,6 +7,8 @@ enum eCK : i8 // card kind
 {
   /* */ CK_NONE=0,
 
+  // main cards
+  //  construction cards
   /* */ CK_c_ABSJOIN,
   /* */ CK_c_COMBINED,
   /* */ CK_c_FLAT,
@@ -14,6 +16,7 @@ enum eCK : i8 // card kind
   /* */ CK_c_SEND,
   /* */ CK_c_STAGE,
 
+  //  operator cards
   /* */ CK_o_AGGREG,
   /* */ CK_o_CALL,
   /* */ CK_o_CAST,
@@ -37,6 +40,7 @@ enum eCK : i8 // card kind
   /* */ CK_o_TOP,
   /* */ CK_o_WHERE,
 
+  // secondary cards
   /* */ CK_s_CONSTRAINT,
   /* */ CK_s_HASHING,
   /* */ CK_s_HSHCOLLIST,
@@ -49,6 +53,7 @@ enum eCK : i8 // card kind
   /* */ CK_s_STREAM,
   /* */ CK_s_TABLE,
 
+  // tertiary cards
   /* */ CK_t_EMIT,
   /* */ CK_t_HSHCOL,
   /* */ CK_t_INDEXLIST,

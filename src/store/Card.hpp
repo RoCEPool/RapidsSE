@@ -351,8 +351,10 @@ namespace STORE
 
     bool bIsCard(eCK eCard);
     bool bIsConj(void);
+    bool bIsConstruction(void);
     bool bIsMain(void);
     bool bIsOne(i8 /*eCK*/ iCard, ...);
+    bool bIsOp(void);
     bool bIsPeek(eCK eCard);
     bool bIsPeek(eCK eCard_1,eCK eCard_2);
     bool bIsPeek(i8 i_Child, eCK eCard_1);
