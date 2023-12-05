@@ -25,11 +25,18 @@
 /*----------------------------------------------------------------------------*/
 : totalCount_RowBuffer \handler
 
+  0 locals| eBufferType |
+
+  PipeIn[].bufferType to eBufferType
+
+  eBufferType BT_COUNT != if
+    PipeIn[].pipeout
+    true
+    exit
+  then
+
   PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
-
-  // RowBuffer[] should be a BT_COUNT type
-  RowBuffer[].getBufferType BT_COUNT == assert
 
   // get first row of RowBuffer[]
   RowBuffer[].firstRow to infoSetRow[]
