@@ -9,7 +9,6 @@ enum eOI // operator Infoset
 
   /*    */ OI_CALLPIPELINE,
   /*    */ OI_COMMAND,
-  /*    */ OI_FORKCOMMAND,
   /*    */ OI_PAGEINREQUEST,
   /*    */ OI_PATH,
 

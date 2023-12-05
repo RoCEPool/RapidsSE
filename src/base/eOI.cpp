@@ -10,7 +10,6 @@ Stz* aOI[OI_ENUMS]
 
   /*    */ "OI_CALLPIPELINE"_Stz,
   /*    */ "OI_COMMAND"_Stz,
-  /*    */ "OI_FORKCOMMAND"_Stz,
   /*    */ "OI_PAGEINREQUEST"_Stz,
   /*    */ "OI_PATH"_Stz,
 

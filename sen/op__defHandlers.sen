@@ -502,7 +502,7 @@
   //abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   //abnormalHandler EV_I_COUNT            [op].handler!
   //abnormalHandler EV_I_EXECERRORS       [op].handler!
-  abnormalHandler EV_I_FORKCOMMAND      [op].handler!
+  //abnormalHandler EV_I_FORKCOMMAND      [op].handler!
   //abnormalHandler EV_I_LOADRESULT       [op].handler!
   //abnormalHandler EV_I_LOCKSTATS        [op].handler!
   //abnormalHandler EV_I_NODEINFO         [op].handler!
@@ -529,7 +529,7 @@
   //abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   //abnormalHandler EV_I_COUNT            [op].handler!
   //abnormalHandler EV_I_EXECERRORS       [op].handler!
-  abnormalHandler EV_I_FORKCOMMAND      [op].handler!
+  //abnormalHandler EV_I_FORKCOMMAND      [op].handler!
   //abnormalHandler EV_I_LOADRESULT       [op].handler!
   //abnormalHandler EV_I_LOCKSTATS        [op].handler!
   //abnormalHandler EV_I_NODEINFO         [op].handler!
