@@ -293,7 +293,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
       case CK_o_CALL:
       case CK_o_CORRELATION:
-        RASSERT(!pCI->G.p_MainCard->pSub_emit());
+        RASSERT(! pCI->G.p_MainCard->pSub_emit());
         continue;
 
       case CK_o_FROM:
@@ -302,20 +302,30 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
         RASSERT(pCI->G.p_MainCard->pSub_emit())
 
-          if (pCI->G.p_MainCard->pSub_emit())
-          pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
+        //if (pCI->G.p_MainCard->pSub_emit())
+        pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
 
         if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
-          if (pCI->Flux.m_pArriving) {
+          //if (pCI->Flux.m_pArriving) {
             pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
-          }
+          //}
         }
         continue;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+      case CK_o_AGGREG:
+      case CK_o_GBYAGG:
+      case CK_o_PROJECT:
+        RASSERT(pCI->G.p_MainCard->pSub_emit());
+
+        pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+        break;
+
       case CK_o_WHERE:
       case CK_o_HAVING:
+        RASSERT(pCI->Flux.m_pArriving);
+
         if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
           pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
@@ -323,12 +333,12 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         //p_emit->vDump(__func__ );
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-
-        RASSERT(pCI->G.p_MainCard->pSub_emit());
-
         break;
 
       case CK_o_SORT:
+        RASSERT(pCI->Flux.m_pArriving);
+        RASSERT(pCI->G.p_OP->pSub_key());
+
         pCI->G.p_OP->vEnsure_stream(pCI);
 
         if (! pCI->Flux.m_pArriving) {
@@ -339,43 +349,31 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         pCI->G.p_emit->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-
-        RASSERT(pCI->G.p_MainCard->pSub_emit());
-
         break;
 
       case CK_o_HASH:
       case CK_o_LIMIT:
-        RASSERT(!pCI->G.p_MainCard->pSub_key());
+        RASSERT(pCI->Flux.m_pArriving);
+        RASSERT(! pCI->G.p_MainCard->pSub_key());
+
         pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-
-        RASSERT(pCI->G.p_MainCard->pSub_emit());
-
         break;
 
       case CK_o_KEYEXISTS:
       case CK_o_KEYNOTEXISTS:
       case CK_o_TOP:
+        RASSERT(pCI->Flux.m_pArriving);
         RASSERT(pCI->G.p_MainCard->pSub_key());
+
         pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
 
+        pCI->G.p_key = pCI->G.p_MainCard->pSub_key();
         pCI->G.p_key->vEnsureTypeId_expCol(pCI);
         pCI->G.p_key->vRenumberAll_expr();
-
-        RASSERT(pCI->G.p_MainCard->pSub_emit());
-
-        break;
-
-      case CK_o_AGGREG:
-      case CK_o_GBYAGG:
-      case CK_o_PROJECT:
-
-        RASSERT(pCI->G.p_MainCard->pSub_emit());
-        pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
         break;
 
       case CK_o_CAST:
@@ -397,18 +395,13 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
     RASSERT(pCI->G.p_MainCard->pSub_emit() == pCI->G.p_emit);
 
     if (! pCI->Flux.m_pArriving) {
-      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
+      pCI->Flux.m_pArriving = pCI->G.p_emit;
       continue;
     }
 
-    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
-
     pCI->G.p_key = pCI->G.p_MainCard->pSub_key();
-    //pCI->G.p_emit->vDump(__func__);
     pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
-    //pCI->G.p_emit->vDump(__func__);
     pCI->G.p_emit->vRenumberAll_expr();
-    //pCI->G.p_emit->vDump(__func__);
 
     pCI->Flux.m_pArriving = pCI->G.p_emit;
 
