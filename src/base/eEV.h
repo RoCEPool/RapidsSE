@@ -32,7 +32,6 @@ enum eEV // events
   /*    */ EV_D_TABLE,
   /*    */ EV_D_TABLEPTN,
 
-  /*    */ EV_I_CALLPIPELINE,
   /*    */ EV_I_COMMAND,
   /*    */ EV_I_PAGEINREQUEST,
   /*    */ EV_I_PATH,
