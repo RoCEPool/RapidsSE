@@ -32,7 +32,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_TABLE"_Stz,
   /*    */ "EV_D_TABLEPTN"_Stz,
 
-  /*    */ "EV_I_COMMAND"_Stz,
   /*    */ "EV_I_PAGEINREQUEST"_Stz,
   /*    */ "EV_I_PATH"_Stz,
 

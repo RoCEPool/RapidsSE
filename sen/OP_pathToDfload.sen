@@ -74,7 +74,15 @@
   pCmdTagSet tagSet.asSenStr to sTags
 
   C_TDEF_COMMAND InfoSet:discover
-  sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
+
+  //sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
+
+  InfoSetTable[] RowBuffer[].new
+  BT_COMMAND RowBuffer[].setBufferType
+
+  sTags sCmd  2 RowBuffer[].addRowVargs
+
+  RowBuffer[].pipeOut
 
   true
 ;
