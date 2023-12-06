@@ -952,6 +952,126 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Send row data to the client                                                */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vPdsRowData(Pds* pPdsRowBuffer)
+{
+  ASSERT(m_pStmtCtx);
+  ASSERT(m_pStmtCtx->pStreamDef());
+
+  if (!bCheckState({API_METADATA_RECEIVED, API_DATA_RECEIVED})) {
+    return;
+  }
+
+  vNextState(API_DATA_RECEIVED);
+
+  if (m_pStmtCtx->bGotError()) {
+    return;
+  }
+
+  StreamDef* pDef = m_pStmtCtx->pStreamDef();
+  RowPix* pRowPix = pDef->pRowPix();
+
+  // Work out how many rows from this RowBuffer to serialise
+  i8 iStartingRow = 0;
+  d8 dScalingFactor = 1.0;  // if the serialised form doesn't fit in a single payload buffer
+  i8 iRowsInBuf = pPdsRowBuffer->nItems();
+  i8 iMaxRowsThatFit = 0; // how many did we sucessfully fit in a RowDataResponse?
+
+  // We might need to send multiple RowDataResponses for this RowBuffer.
+  // This can be due to a limit of rows per response
+  while(iStartingRow < iRowsInBuf) {
+    std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row> xRowList;
+
+    i8 iRowsToSend = nRowsToSend(iRowsInBuf - iStartingRow);
+    if (iRowsToSend <= 0) {
+      break;
+    }
+
+    // If we are sending a smaller number of rows then don't scale the quantity.
+    // We don't want the last partial filled RowDataResponse to be split into
+    // many more smaller ones.
+    if (iMaxRowsThatFit == 0 || iRowsToSend > iMaxRowsThatFit) {
+      iRowsToSend = (i8) (iRowsToSend * dScalingFactor + 0.5);
+      if (iRowsToSend == 0) {
+        iRowsToSend = 1;
+      }
+
+    } else {
+      // We're sending less rows than we have previously fit. If these don't
+      // fit then we ought to restart the scaling once again.
+      dScalingFactor = 1.0;
+      iMaxRowsThatFit = 0;
+    }
+
+
+    i8 iKey = iStartingRow + 1; // Pds entries start from index 1 (instead of 0)
+    // Find the SkipListBlock entry containing the row
+    SkipListBlock* pSkipListBlock = pPdsRowBuffer->pFind(&iKey);
+    RASSERT(pSkipListBlock);
+
+    // Init a PdsCursor, and start iterating at this entry
+    PdsCursor* pPdsCursor = new PdsCursor(pPdsRowBuffer, pSkipListBlock);
+
+
+    for (i8 i_Row = iStartingRow; i_Row < iStartingRow + iRowsToSend; i_Row++) {
+      RASSERT(pSkipListBlock);
+      Row* pRow = pSkipListBlock->aRow();
+      vCreateAndAddRow(&xRowList, pRow, pRowPix);
+      pPdsCursor->vNext();
+      pSkipListBlock = pPdsCursor->m_pCurrentBlock;
+    }
+
+    pPdsCursor->m_pPds = nullptr;
+    delete pPdsCursor;
+
+    ASSERT( (i8) xRowList.size() == iRowsToSend);
+
+    RowDataResponse xRowDataResponse;
+    xRowDataResponse.__set_rows(xRowList);
+
+    // Serialise and send. Ensure that the message is < 1MB.
+    try {
+      vSerialiseAndSendMsg(&xRowDataResponse, MessageTypes::type::RowDataResponse, false);
+
+    } catch (WLP::BufferFullException& e) {
+
+      // Special case where we cannot serialise a single row.
+      if (dScalingFactor < 1.0 && iRowsToSend == 1) {
+        m_pStmtCtx->vGotError(true);
+        eEC eErrCode = EC_WL_ROW_TOO_BIG;
+        Stz* szErrMsg = "Error: %s; %s; %ldd bytes"_Stz;
+        vSerialiseErrorResponse(eErrCode,
+                                szErrMsg,
+                                aEC2[eErrCode],
+                                aErrorMsg[eErrCode],
+                                WLP::PayloadObj::C_MAX_PAYLOAD_BYTES);
+        return;
+      }
+
+      dScalingFactor *= C_ROWDATARESP_SCALE_DOWN;
+      vTraceComponent(TC_WLP, "RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
+      continue;
+    }
+
+    vTraceComponent(TC_WLP, "RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
+    iStartingRow += iRowsToSend;
+
+    if (iRowsToSend > iMaxRowsThatFit) {
+      iMaxRowsThatFit = iRowsToSend;
+    }
+
+    // Slowly increase the scaling factor
+    dScalingFactor += C_ROWDATARESP_SCALE_UP;
+    if (dScalingFactor > 1.0) {
+      dScalingFactor = 1.0;
+    }
+
+    m_pStmtCtx->vAddRowsSelected(iRowsToSend);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Send a QueryExecuteResponse, update the state & clean up the current query */
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vQueryComplete()

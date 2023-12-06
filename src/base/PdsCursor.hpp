@@ -26,11 +26,13 @@ namespace BASE
     void  operator delete(void*);
 
     PdsCursor(Pds* pPds);
+    PdsCursor(Pds* pPds, SkipListBlock* pCurr);
     ~PdsCursor(void) noexcept(false);
 
     static void vRepair(Object *pObject);
 
     bool bIsCurrNull(void);
+    void vCurr(SkipListBlock* pCurr);
     void vNext(void);
     void vReset(void);
 

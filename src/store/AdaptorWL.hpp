@@ -111,6 +111,7 @@ namespace STORE
     void vResultMetadata(StreamDef* pStreamDef);
     void vRowData(CrwBuffer* pCrwBuffer);
     void vRowData(RowBuffer* pRowBuffer);
+    void vPdsRowData(Pds* pPdsRowBuffer);
     void vQueryComplete();
     void vQueryReceipt(TaskList* pTaskList);
 

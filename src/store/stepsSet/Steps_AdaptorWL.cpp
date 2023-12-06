@@ -32,6 +32,7 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].isAbortEarly"_Stz,        &Step::vAdaptorWLIsAbortEarly);
   vAddStep("AdaptorWL[].isChildJobActive"_Stz,    &Step::vAdaptorWLIsChildJobActive);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz,  &Step::vAdaptorWLNextPayloadToSendFetch);
+  vAddStep("AdaptorWL[].pds"_Stz,                 &Step::vAdaptorWLPdsRowBuffer);
   vAddStep("AdaptorWL[].processWLMsg"_Stz,        &Step::vAdaptorWLProcessWLMsg);
   vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
   vAddStep("AdaptorWL[].protocolErrorTest"_Stz,   &Step::vAdaptorWLProtocolErrorTest);
@@ -388,6 +389,23 @@ void Step::vAdaptorWLRowBuffer(void)
   ASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
 
   pAdaptorWL->vRowData(pRowBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].pds -- Received a pds row buffer from the execution engine     */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLPdsRowBuffer(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  Pds* pPdsRowBuffer = _pPds(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pPdsRowBuffer);
+  ASSERT(pPdsRowBuffer->eGetClassNo() == CN_PDS);
+
+  pAdaptorWL->vPdsRowData(pPdsRowBuffer);
 
   EXIT();
 }
