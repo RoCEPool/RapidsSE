@@ -1,51 +1,51 @@
 /*============================================================================*/
-/* XF_Prolog_Analyse_emitted_Analysis.cpp -- Analyse Emitted                  */
+/* XF_Prolog_Analyse_emit.cpp -- Analyse Emit                                 */
 /*============================================================================*/
 
-#include "XF_Prolog_Analyse_emitted.hpp"
+#include "XF_Prolog_Analyse_emit.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Analyse_emitted, CN_XF_PROLOG_ANALYSE_EMITTED)
-__aNewFunction(XF_Prolog_Analyse_emitted, CN_XF_PROLOG_ANALYSE_EMITTED)
-__vDeleteFunction(XF_Prolog_Analyse_emitted, CN_XF_PROLOG_ANALYSE_EMITTED)
-__aFooterFunction(XF_Prolog_Analyse_emitted)
+__pCastFunction(STORE, XF_Prolog_Analyse_emit, CN_XF_PROLOG_ANALYSE_EMIT)
+__aNewFunction(XF_Prolog_Analyse_emit, CN_XF_PROLOG_ANALYSE_EMIT)
+__vDeleteFunction(XF_Prolog_Analyse_emit, CN_XF_PROLOG_ANALYSE_EMIT)
+__aFooterFunction(XF_Prolog_Analyse_emit)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Analyse_emitted::XF_Prolog_Analyse_emitted(CardIter* pCI)
-: XF_PROLOG(CN_XF_PROLOG_ANALYSE_EMITTED, pCI)
+XF_Prolog_Analyse_emit::XF_Prolog_Analyse_emit(CardIter* pCI)
+: XF_PROLOG(CN_XF_PROLOG_ANALYSE_EMIT, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMITTED, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMIT, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PROLOG_ANALYSE_EMITTED);
+  _checkInitialised_(CN_XF_PROLOG_ANALYSE_EMIT);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMITTED, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMIT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Analyse_emitted::~XF_Prolog_Analyse_emitted(void) noexcept(false)
+XF_Prolog_Analyse_emit::~XF_Prolog_Analyse_emit(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMITTED, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMIT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_emitted::vAnalyse(CardIter* pCI)
+void XF_Prolog_Analyse_emit::vAnalyse(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_Analyse_emitted* pXF_Analyse_emitted = new XF_Prolog_Analyse_emitted(pCI);
+  XF_Prolog_Analyse_emit* pXF_Analyse_emitted = new XF_Prolog_Analyse_emit(pCI);
 
-  pXF_Analyse_emitted->vXF_Analyse_emitted();
+  pXF_Analyse_emitted->vXF_Analyse();
 
   delete pXF_Analyse_emitted;
 }
@@ -58,9 +58,9 @@ void XF_Prolog_Analyse_emitted::vAnalyse(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* projection analysis                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_emitted::vXF_Analyse_emitted(void)
+void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMITTED, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMIT, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_EMITTED, "emitted analysis"_Stz);
 

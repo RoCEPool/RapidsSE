@@ -43,7 +43,7 @@
 #include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
 #include "XF_Prolog_Analyse_injected.hpp"
-#include "XF_Prolog_Analyse_emitted.hpp"
+#include "XF_Prolog_Analyse_emit.hpp"
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Prolog_Ensure_level.hpp"
@@ -169,7 +169,7 @@ void XF::vTransform(void)
     // meta analysis                               //
     XF_Prolog_Analyse_table::vAnalyse(m_pCI);      //
     XF_Prolog_Analyse_injected::vAnalyse(m_pCI);   //
-    XF_Prolog_Analyse_emitted::vAnalyse(m_pCI);    //
+    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);    //
     XF_Prolog_Analyse_index::vAnalyse(m_pCI);      //
     XF_Prolog_Ensure_colType::vEnsure(m_pCI);      //
                                                    //
@@ -291,7 +291,7 @@ void XF::vTransform_passThru(void)
 
     XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(m_pCI);
     XF_Prolog_Analyse_injected::vAnalyse_injected_passThru(m_pCI);   //
-    XF_Prolog_Analyse_emitted::vAnalyse(m_pCI);
+    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 
     XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
 
