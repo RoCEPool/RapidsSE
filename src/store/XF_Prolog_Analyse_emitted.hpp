@@ -21,10 +21,8 @@ namespace STORE
    ~XF_Prolog_Analyse_emitted(void) noexcept(false);
 
     static void vAnalyse(CardIter* pCI);
-    static void vXF_Analyse_emitted_passThru(CardIter* pCI);
 
     void vXF_Analyse_emitted(void);
-    void vXF_projection_Analysis_passThru(void);
 
   private:
     Footer* aFooter(void);

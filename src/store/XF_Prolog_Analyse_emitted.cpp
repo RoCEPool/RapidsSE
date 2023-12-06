@@ -50,20 +50,6 @@ void XF_Prolog_Analyse_emitted::vAnalyse(CardIter* pCI)
   delete pXF_Analyse_emitted;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_emitted::vXF_Analyse_emitted_passThru(CardIter* pCI)
-{
-  _static_
-
-  XF_Prolog_Analyse_emitted* pXF_projection_Analysis = new XF_Prolog_Analyse_emitted(pCI);
-
-  pXF_projection_Analysis->vXF_projection_Analysis_passThru();
-
-  delete pXF_projection_Analysis;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
@@ -79,20 +65,6 @@ void XF_Prolog_Analyse_emitted::vXF_Analyse_emitted(void)
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_EMITTED, "emitted analysis"_Stz);
 
   m_pCI->G.pDeck->vAnalyse_emitted(m_pCI);
-
-  m_pCI->vEndTransform(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* projection analysis                                                        */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_emitted::vXF_projection_Analysis_passThru(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMITTED, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_EMITTED, "vAnalyse_emitted_passThru"_Stz);
-
-  m_pCI->G.pDeck->vAnalyse_emitted_passThru(m_pCI);
 
   m_pCI->vEndTransform(__LINE__);
 }

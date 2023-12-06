@@ -291,7 +291,7 @@ void XF::vTransform_passThru(void)
 
     XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(m_pCI);
     XF_Prolog_Analyse_injected::vAnalyse_injected_passThru(m_pCI);   //
-    XF_Prolog_Analyse_emitted::vXF_Analyse_emitted_passThru(m_pCI);
+    XF_Prolog_Analyse_emitted::vAnalyse(m_pCI);
 
     XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
 
