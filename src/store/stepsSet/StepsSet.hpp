@@ -590,6 +590,7 @@ void vDdlLockAssertNone(void);
   void vFactSubOf(void);
  
   // file
+	void vFile0DetectLineEnding(void);
   void vFile0Get(void);
   void vFile0GetEofLocation(void);
   void vFile0IsNull(void);
@@ -1773,7 +1774,6 @@ void vJobIdLastJobIdFetch(void);
 	void vRowBufferAddWarning(void);
 	void vRowBufferChunkFile(void);
 	void vRowBufferColValFetch(void);
-	void vRowBufferDetectLineEnding(void);
 	void vRowBufferFirstRow(void);
 	void vRowBufferInfoRows(void);
 	void vRowBufferIsProgress(void);

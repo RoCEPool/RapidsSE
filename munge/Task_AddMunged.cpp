@@ -4904,7 +4904,7 @@ void Task::vAddMunged(Task* )
     "    // before ToKeyHshRow[].new is executed.\n"
     "\n"
     "    \"<record_ends>\" [job].tagSet@ tagSet.hasName not if\n"
-    "      \"<record_ends>\" RowBuffer[].detectLineEnding [job].tagSet@ tagSet.insertStr\n"
+    "      \"<record_ends>\" File0[].detectLineEnding [job].tagSet@ tagSet.insertStr\n"
     "    then\n"
     "\n"
     "    // get size of file\n"

@@ -23,7 +23,7 @@
     // before ToKeyHshRow[].new is executed.
 
     "<record_ends>" [job].tagSet@ tagSet.hasName not if
-      "<record_ends>" RowBuffer[].detectLineEnding [job].tagSet@ tagSet.insertStr
+      "<record_ends>" File0[].detectLineEnding [job].tagSet@ tagSet.insertStr
     then
 
     // get size of file

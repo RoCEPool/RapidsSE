@@ -29,8 +29,6 @@
 
 extern SizeHeap  gxaSizeHeap[];
 
-static const i8 C_CHUNK_BLOCK        = 2048;
-
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -95,7 +93,6 @@ void Step::vAddSteps_RowBuffer(void)
 	vAddStep("RowBuffer[].chunkFile"_Stz,        &Step::vRowBufferChunkFile);
 	vAddStep("RowBuffer[].colVal@"_Stz,          &Step::vRowBufferColValFetch);
 	vAddStep("RowBuffer[].delete"_Stz,           &Step::vRowBufferDelete);
-	vAddStep("RowBuffer[].detectLineEnding"_Stz, &Step::vRowBufferDetectLineEnding);
 	vAddStep("RowBuffer[].firstRow"_Stz,         &Step::vRowBufferFirstRow);
 	vAddStep("RowBuffer[].get"_Stz,              &Step::vRowBufferGet);
 	vAddStep("RowBuffer[].infoRows"_Stz,         &Step::vRowBufferInfoRows);
@@ -1609,7 +1606,7 @@ void Step::vRowBufferAddWarning(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].chunkFile -- RowBuffer chunk file                                 */
+/* RowBuffer[].chunkFile -- RowBuffer chunk file                              */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferChunkFile(void)
 {
@@ -1756,72 +1753,6 @@ void Step::vRowBufferColValFetch(void)
 		default:
 			RASSERT(0);
 	}
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].detectLineEnding -- push line ending of the file onto data stack */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferDetectLineEnding(void)
-{
-	ENTRY();
-
-	Stz* szLineEnding = nullptr;
-
-	File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
-
-	i8 iBytesToRead = C_CHUNK_BLOCK;
-	i8 iBytesRead;
-
-	bool bGotCr = false;  // '\r'
-
-	// allocate a work area for reading in last block of chunk
-	char* aBlock = (char*)MemLib::aMallocBlock(C_CHUNK_BLOCK);
-
-	pFile->vSeek(0);
-	iBytesRead = pFile->nReadBytes(aBlock, iBytesToRead);
-	char* aEnd = &aBlock[iBytesRead];
-
-	while (iBytesRead > 0) {
-		for (char* aCrs = aBlock ; aCrs != aEnd; aCrs++) {
-
-			if (*aCrs == '\r') {
-				if (aCrs + 1 != aEnd) {
-					// There's at least one more character in the block
-					szLineEnding = (*(aCrs + 1) == '\n') ? "\r\n"_Stz : "\r"_Stz;
-					break;
-
-				} else {
-					// This is the last character in the block. We need to check the next block
-					bGotCr = true;
-				}
-
-			} else if (*aCrs == '\n') {
-				szLineEnding = bGotCr ? "\r\n"_Stz : "\n"_Stz;
-				break;
-
-			} else if (bGotCr) {
-				szLineEnding = "\r"_Stz;
-				break;
-			}
-		}
-
-		if (szLineEnding) {
-			break;
-		}
-
-		iBytesRead = pFile->nReadBytes(aBlock, iBytesToRead);
-	}
-
-	if (szLineEnding == nullptr) {
-		szLineEnding = "\n"_Stz;
-	}
-
-	// free the read block
-	MemLib::vFreeBlock(aBlock, C_CHUNK_BLOCK);
-
-	m_pDataStack->vPushStz(szLineEnding);
 
 	EXIT();
 }
