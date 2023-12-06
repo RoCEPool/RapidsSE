@@ -119,6 +119,7 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     vCopyRow(tLglPtn, aRowSrc);
 
   }
+  m_pFromRowBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

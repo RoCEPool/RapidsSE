@@ -10,8 +10,8 @@ from datetime import date
 project = 'RapidsSE'
 copyright = '2023, Boray Data Technology Limited'
 author = 'Boray Data Technology Limited'
-version = '1.1'
-release = '1.1.0-dev0'
+version = '1.2'
+release = '1.2.0-dev1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
