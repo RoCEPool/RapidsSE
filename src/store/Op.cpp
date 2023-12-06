@@ -1587,10 +1587,10 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
           // Operand is not in memory.
           // Queue a request to the PageIn Demon and return (Will perform pagein bide)
           // Queue request -> PageIn Demon(BufferId + m_pTask)
-          InfoSet* pInfoSet = AM::PAGING::pToPageIn(m_pTask, oBufferId);
+					RowBuffer* pRowBuffer = AM::PAGING::pToPageIn(m_pTask, oBufferId);
           vTrace("Queuing request with TaskPtr %p and BufferId %p\n"_Stz, m_pTask, oBufferId.m_pvAsAddress);
 
-          Operand* pRequestOperand = _pOperand(pInfoSet);
+          Operand* pRequestOperand = _pOperand(pRowBuffer);
           eEC eError = AM::JLIST::ePipeToOp0(AM::DEMON::tPageInDemonJobId(), pRequestOperand, m_pTask);
           //Handle error case
           RASSERT(eError == EC_NONE);

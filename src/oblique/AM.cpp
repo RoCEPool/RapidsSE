@@ -1959,6 +1959,8 @@ i8 AM::OPTIMISER::iNextBenchNo(void)
 /*----------------------------------------------------------------------------*/
 /* pipe page in request to page in demon                                      */
 /*----------------------------------------------------------------------------*/
+
+/*
 InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
 {
   _static_
@@ -1971,6 +1973,36 @@ InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
     return nullptr;
   InfoSet* pInfoSet = new InfoSet(pStreamDef);
   pInfoSet->vOpInfoSet(OI_PAGEINREQUEST);
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN
+      ,pTask
+      ,oBufferId.m_iAsI8
+      ,C_VARGS_END);
+
+  return pInfoSet;
+#else
+  NEVER_REACH;
+  return nullptr;
+#endif
+}
+*/
+
+
+// NOTE for ARJUN:
+// PageIn request is now a RowBuffer
+// I guess we will need to ensure that the PAGEINREQUEST rowBuffers are never paged out !!!
+
+RowBuffer* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
+{
+  _static_
+  UNUSED(pTask);
+  UNUSED(oBufferId);
+
+#ifdef WITH_PAGING
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
+  if (! pStreamDef)
+    return nullptr;
+  RowBuffer* pRowBuffer = new RowBuffer(pStreamDef);
+  pRowBuffer->vBufferType(BT_PAGEINREQUEST);
   Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN
       ,pTask
       ,oBufferId.m_iAsI8
@@ -4495,19 +4527,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
     case CN_INDEX:       eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
-      
-    case CN_INFOSET:
-    {
-      InfoSet* pInfoSet = _pInfoSet(pOperand);
-      
-      eOI eInfoSet = pInfoSet->eOpInfoSet();
-      switch(eInfoSet) {
-        case OI_PAGEINREQUEST:  eOperand = EV_I_PAGEINREQUEST;  break;
-        default:
-          RASSERT(0);
-      }
-      break;
-    }
 
     case CN_JOB:                eOperand = EV_D_JOB;            break;
     case CN_JOBMETRICS:         eOperand = EV_D_JOBMETRICS;     break;

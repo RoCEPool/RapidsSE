@@ -511,7 +511,7 @@ namespace OBLIQUE
     class PAGING
     {
     public:
-      static InfoSet* pToPageIn(Task* pTask, BufferId oBufferId);
+      static RowBuffer* pToPageIn(Task* pTask, BufferId oBufferId);
     };
     class PARCEL
     {
