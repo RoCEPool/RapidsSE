@@ -21,15 +21,15 @@
     BT_WARNINGS InfoSetTable[] RowBufferWarn[].new
 
     // find the C_TDEF_BPAREGIONS table definition, create a streamDef and pipe it out
-    C_TDEF_BPAREGIONS op__tableDef_streamSet assert
-    StreamSetTable[] StreamDefLft[].new
+    C_TDEF_BPAREGIONS op__tableDef assert
+    TableDef[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
     // create rowBuffer
-    StreamSetTable[] RowBuffer[].new
+    TableDef[] RowBuffer[].new
 
     // populate rowBuffer
-    StreamSetTable[] RowBuffer[].addBpaRegions
+    TableDef[] RowBuffer[].addBpaRegions
     RowBuffer[].pipeOut
 
     RowBufferWarn[]\clear to RowBuffer[]
@@ -45,15 +45,15 @@
     BT_WARNINGS InfoSetTable[] RowBufferWarn[].new
 
     // find the C_TDEF_BPAOBJECTS table definition, create a streamDef and pipe it out
-    C_TDEF_BPAOBJECTS op__tableDef_streamSet assert
-    StreamSetTable[] StreamDefLft[].new
+    C_TDEF_BPAOBJECTS op__tableDef assert
+    TableDef[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
     // create streamset
-    StreamSetTable[] RowBuffer[].new
+    TableDef[] RowBuffer[].new
 
     // populate streamset
-    StreamSetTable[] RowBuffer[].addBpaObjects
+    TableDef[] RowBuffer[].addBpaObjects
     RowBuffer[].pipeOut
 
     RowBufferWarn[]\clear to RowBuffer[]

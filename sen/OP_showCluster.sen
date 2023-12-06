@@ -10,10 +10,10 @@
 : showCluster_action
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeout the streamDef
@@ -21,7 +21,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an rowBuffer operand
-  streamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   0 locals| pNode |
 
@@ -30,10 +30,10 @@
   begin
     node_I[].node to pNode
 
-    pNode node.id streamSetTable[] RowBuffer[].addShowCluster  not if
+    pNode node.id TableDef[] RowBuffer[].addShowCluster  not if
       RowBuffer[].pipeOut
-      streamSetTable[] RowBuffer[].new
-      pNode node.id streamSetTable[] RowBuffer[].addShowCluster assert
+      TableDef[] RowBuffer[].new
+      pNode node.id TableDef[] RowBuffer[].addShowCluster assert
     then
 
     node_I[].next

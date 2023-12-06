@@ -2115,11 +2115,11 @@ void vJobIdLastJobIdFetch(void);
   void vStreamSetReadChunk(void);
   void vStreamSetSet(void);
 
-  // reg infoSet table
-  void vStreamSetTableColumnFetch(void);
-  void vStreamSetTableDump(void);
-  void vStreamSetTableGet(void);
-  void vStreamSetTableSet(void);
+  // reg TableDef table
+  void vTableDefColumnFetch(void);
+  void vTableDefDump(void);
+  void vTableDefGet(void);
+  void vTableDefSet(void);
 
   // sub call
   void vSubCallGet(void);

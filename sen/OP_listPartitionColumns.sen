@@ -18,16 +18,16 @@
   then
 
   // find the table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  StreamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  StreamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // get the ptn stream def from the table
   Table[].ptnDef@ to PtnDef[]
@@ -36,11 +36,11 @@
   // insert a row in the infoset for each column
   nPtnCols 0 do
     I PtnDef[].column@
-    StreamSetTable[] RowBuffer[].addColumnDef  not if
+    TableDef[] RowBuffer[].addColumnDef  not if
       RowBuffer[].pipeOut
-      StreamSetTable[] RowBuffer[].new
+      TableDef[] RowBuffer[].new
       I PtnDef[].column@
-      StreamSetTable[] RowBuffer[].addColumnDef assert
+      TableDef[] RowBuffer[].addColumnDef assert
     then
   loop
   

@@ -10,22 +10,22 @@
 : space_action
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   //[op].disableAllocate
   //[job].disableAllocate
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  streamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // add spaceInfo to the infoSet
-  streamSetTable[] RowBuffer[].addSpaceInfo assert
+  TableDef[] RowBuffer[].addSpaceInfo assert
 
   // pipeout the infoset
   RowBuffer[].pipeOut

@@ -154,7 +154,7 @@ void Step::vRowBufferAddAnalyzeIndex(void)
 	ENTRY();
 
 	// get the streamSet table
-	Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+	Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
 	// get the index to be analyzed
 	Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
@@ -163,7 +163,7 @@ void Step::vRowBufferAddAnalyzeIndex(void)
 	i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
 
 	// get the streamDef from the table
-	StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+	StreamDef* pStreamDef = pTableDef->pStreamDef();
 
 	// get the stream set
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
@@ -176,7 +176,7 @@ void Step::vRowBufferAddAnalyzeIndex(void)
 	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
 																		C_VARGS_BEGIN,
 																		AM::pGrid()->pThisNode()->szNodeNm(),
-																		pStreamSetTable->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
+																		pTableDef->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
 																		nBuffers,
 																		nEntries,
 																		C_VARGS_END);
@@ -197,7 +197,7 @@ void Step::vRowBufferAddAnalyzeTable(void)
 	ENTRY();
 
 	// get the streamSet table
-	Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+	Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
 	// get the table to be analyzed
 	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -206,7 +206,7 @@ void Step::vRowBufferAddAnalyzeTable(void)
 	i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
 
 	// get the streamDef from the table
-	StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+	StreamDef* pStreamDef = pTableDef->pStreamDef();
 
 	// get the stream set
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
@@ -977,8 +977,8 @@ void Step::vRowBufferAddVerifyIndex(void)
 	ENTRY();
 
 	// get the table
-	Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-	StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+	Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+	StreamDef* pStreamDef = pTableDef->pStreamDef();
 
 	// get the index
 	Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
@@ -1013,8 +1013,8 @@ void Step::vRowBufferAddVerifyTable(void)
 	ENTRY();
 
 	// get the table
-	Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-	StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+	Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+	StreamDef* pStreamDef = pTableDef->pStreamDef();
 
 	// get the table
 	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));

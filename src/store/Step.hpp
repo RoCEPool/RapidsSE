@@ -185,7 +185,6 @@ namespace STORE
     static void vAddSteps_StreamDefOut(void);
     static void vAddSteps_StreamDefRht(void);
     static void vAddSteps_StreamOfOp(void);
-    static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_StringA(void);
     static void vAddSteps_SubCall(void);
     static void vAddSteps_SubReturn(void);
@@ -196,6 +195,7 @@ namespace STORE
     static void vAddSteps_System(void);
 
     static void vAddSteps_Table(void);
+		static void vAddSteps_TableDef(void);
     static void vAddSteps_TablePtn(void);
     static void vAddSteps_Tag(void);
     static void vAddSteps_TagSet(void);

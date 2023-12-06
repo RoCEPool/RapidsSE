@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_StreamSetTable.cpp - StreamSet table step group                      */
+/* Steps_TableDef.cpp - TableDef table step group                             */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -21,22 +21,22 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_StreamSetTable(void)
+void Step::vAddSteps_TableDef(void)
 {
-  vAddStep("StreamSetTable[]"_Stz,         &Step::vStreamSetTableGet);
-  vAddStep("StreamSetTable[].column@"_Stz, &Step::vStreamSetTableColumnFetch);
-  vAddStep("StreamSetTable[].dump"_Stz,    &Step::vStreamSetTableDump);
-  vAddStep("StreamSetTable[].set"_Stz,     &Step::vStreamSetTableSet);
+  vAddStep("TableDef[]"_Stz,         &Step::vTableDefGet);
+  vAddStep("TableDef[].column@"_Stz, &Step::vTableDefColumnFetch);
+  vAddStep("TableDef[].dump"_Stz,    &Step::vTableDefDump);
+  vAddStep("TableDef[].set"_Stz,     &Step::vTableDefSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSetTable[].column -- fetch the column from the StreamSet table       */
+/* TableDef[].column -- fetch the column from the StreamSet table             */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetTableColumnFetch(void)
+void Step::vTableDefColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDefTable);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -48,15 +48,15 @@ void Step::vStreamSetTableColumnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSetTable[].dump                                                      */
+/* TableDef[].dump                                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetTableDump(void)
+void Step::vTableDefDump(void)
 {
   ENTRY();
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDefTable);
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -68,25 +68,25 @@ void Step::vStreamSetTableDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSetTable[] -- get table                                              */
+/* TableDef[] -- get table                                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetTableGet(void)
+void Step::vTableDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpStreamSetTable);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTableDefTable);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSetTable[].set -- set table                                          */
+/* TableDef[].set -- set table                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetTableSet(void)
+void Step::vTableDefSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTableDefTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

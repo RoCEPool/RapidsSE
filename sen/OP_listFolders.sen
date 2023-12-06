@@ -10,16 +10,16 @@
 : lf_action
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  StreamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create a rowBuffer operand
-  StreamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the infoSet for each word
@@ -40,11 +40,11 @@
     then
 
     object@ word.name@
-    StreamSetTable[] RowBuffer[].addListFolder not if
+    TableDef[] RowBuffer[].addListFolder not if
       RowBuffer[].pipeOut
-      StreamSetTable[] RowBuffer[].new
+      TableDef[] RowBuffer[].new
       object@ word.name@
-      StreamSetTable[] RowBuffer[].addListFolder assert
+      TableDef[] RowBuffer[].addListFolder assert
     then
 
     object@ word.prev object!      // step backwards thru words

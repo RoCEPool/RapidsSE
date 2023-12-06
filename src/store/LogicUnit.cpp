@@ -164,7 +164,7 @@ LogicUnit::LogicUnit(void)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFLFT)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFOUT)
 ,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,  StreamDefRht::vRepair,   LR_STREAMDEFRHT)
-, m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
+, m_xpTableDefTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
 ,        m_xpSubCall(this,RF_REPAIR_DELETE,       SubCall::vRepair,        LR_SUBCALL)
 ,        m_xpSubPipe(this,RF_NONE,         nullptr,                        LR_SUBPIPE)
 ,      m_xpSubReturn(this,RF_REPAIR_DELETE,     SubReturn::vRepair,      LR_SUBRETURN)
@@ -356,7 +356,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpStreamDefLft.bIsNull());
   RASSERT(m_xpStreamDefRht.bIsNull());
   RASSERT(m_xpStreamDefOut.bIsNull());
-  RASSERT(m_xpStreamSetTable.bIsNull());
+  RASSERT(m_xpTableDefTable.bIsNull());
   RASSERT(m_xpSubset.bIsNull());
 
   RASSERT(m_xpTable.bIsNull());

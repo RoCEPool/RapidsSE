@@ -17,18 +17,18 @@
 
   <bToResultSet> >bol if
     // find the C_TDEF_LOGMSG
-    <streamDef> op__tableDef_streamSet assert
+    <streamDef> op__tableDef assert
 
     // create a new streamDef
-    StreamSetTable[] StreamDefLft[].new
+    TableDef[] StreamDefLft[].new
 
     // pipeout the streamDef
     StreamDefLft[].pipeOut
 
     // create a streamSet operand
-    StreamSetTable[] RowBuffer[].new
+    TableDef[] RowBuffer[].new
 
-    <pMsg> iTsp StreamSetTable[] RowBuffer[].addLogMsg if
+    <pMsg> iTsp TableDef[] RowBuffer[].addLogMsg if
       RowBuffer[].pipeOut
     else
       RowBuffer[].delete

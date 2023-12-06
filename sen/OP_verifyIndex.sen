@@ -15,22 +15,22 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  streamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // verify the index
   Index[].verify
 
   // insert index verify
-  Index[] streamSetTable[] RowBuffer[].addVerifyIndex assert
+  Index[] TableDef[] RowBuffer[].addVerifyIndex assert
 
   // pipeout the rowBuffer
   RowBuffer[].pipeOut

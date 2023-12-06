@@ -30,10 +30,10 @@
     // skip definition only tables
     Table[].isUserCreated if
 
-      sTableNm streamSetTable[] RowBuffer[].addListContents  not if
+      sTableNm TableDef[] RowBuffer[].addListContents  not if
         RowBuffer[].pipeOut
-        streamSetTable[] RowBuffer[].new
-        sTableNm streamSetTable[] RowBuffer[].addListContents assert
+        TableDef[] RowBuffer[].new
+        sTableNm TableDef[] RowBuffer[].addListContents assert
       then
 
     then
@@ -61,16 +61,16 @@
   str.toStrVec Path[].set
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an StreamSet operand
-  streamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   true
 ;

@@ -126,7 +126,7 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
-: op__tableDef_streamSet ( tableNm -- )
+: op__tableDef ( tableNm -- )
 
   params| sTableNm |
 
@@ -142,10 +142,10 @@
 
   // move to table folder and find the table
   sTableNm Path[].pushNamedTableFolder
-  sTableNm find execute to streamSetTable[]
+  sTableNm find execute to TableDef[]
 
   // cross-check
-  streamSetTable[] assert
+  TableDef[] assert
 
   Path[].popNamedTableFolder
 

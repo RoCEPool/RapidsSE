@@ -15,16 +15,16 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  streamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   0 locals| iIndexSize |
   Index[].size to iIndexSize
@@ -32,7 +32,7 @@
   0 iIndexSize number.magnitude >str iIndexSize
 
   // insert index size
-  streamSetTable[] RowBuffer[].addSizeIndex assert
+  TableDef[] RowBuffer[].addSizeIndex assert
 
   // pipeout the rowBuffer
   RowBuffer[].pipeOut

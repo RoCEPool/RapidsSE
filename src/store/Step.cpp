@@ -203,7 +203,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamDefOut();
   Step::vAddSteps_StreamDefRht();
   Step::vAddSteps_StreamOfOp();
-  Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_SubCall();
   Step::vAddSteps_SubReturn();
   Step::vAddSteps_Subset();
@@ -214,6 +213,7 @@ void Step::vAddSteps(void)
   
 
   Step::vAddSteps_Table();
+	Step::vAddSteps_TableDef();
   Step::vAddSteps_TablePtn();
   Step::vAddSteps_Tag();
   Step::vAddSteps_TagSet();

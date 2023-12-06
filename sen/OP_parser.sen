@@ -40,13 +40,13 @@
     PlanOperand[] sqlCompiler::explainFormat to stringA[]
 
     // find the explain tabledef
-    stringA[] op__tableDef_streamSet assert
+    stringA[] op__tableDef assert
 
     // create a new streamDef
-    streamSetTable[] StreamDefLft[].new
+    TableDef[] StreamDefLft[].new
 
     // create a rowBuffer operand for explain
-    streamSetTable[] RowBuffer[].new
+    TableDef[] RowBuffer[].new
     BT_EXPLAIN RowBuffer[].setBufferType
 
     // execute explain for this operator

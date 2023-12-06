@@ -13,7 +13,7 @@
   PipeIn[].pipeOut
 
   // find the C_TABLEDEF_COUNT
-  C_TDEF_COUNT op__tableDef_streamSet assert
+  C_TDEF_COUNT op__tableDef assert
 
   // don't create or pipeout a streamDef, we'll do that when we send the result
 
@@ -59,16 +59,16 @@
   PipeIn[].pipeOut
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  streamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // insert row count into rowBuffer
-  Counter0[] streamSetTable[] RowBuffer[].addTotalCount assert
+  Counter0[] TableDef[] RowBuffer[].addTotalCount assert
 
   RowBuffer[].Pipeout
 
