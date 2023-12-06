@@ -4503,7 +4503,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
         case OI_PAGEINREQUEST:  eOperand = EV_I_PAGEINREQUEST;  break;
-        case OI_PATH:           eOperand = EV_I_PATH;           break;
         default:
           RASSERT(0);
       }

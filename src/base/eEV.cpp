@@ -33,7 +33,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_TABLEPTN"_Stz,
 
   /*    */ "EV_I_PAGEINREQUEST"_Stz,
-  /*    */ "EV_I_PATH"_Stz,
 
   /*    */ "EV_M_CANCEL"_Stz,
   /*    */ "EV_M_CANCELLING"_Stz,

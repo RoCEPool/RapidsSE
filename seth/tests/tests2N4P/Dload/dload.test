@@ -23,14 +23,14 @@ create table ${testName2}_lineitem (
 success
 
 dload ${testName2}_lineitem
-  paths "../TPCH/SF0/lineitem_10k_chunk1.csv"
-        "../TPCH/SF0/lineitem_10k_chunk2.csv"
+  paths "../DATA/TPCH/lineitem10k.csv"
+        "../DATA/TPCH/lineitem_100k.csv"
 ;
 success
 
 select count(*) from ${testName2}_lineitem;
 rows:
- (40000)
+ (220000)
 
 drop table ${testName2}_lineitem;
 success

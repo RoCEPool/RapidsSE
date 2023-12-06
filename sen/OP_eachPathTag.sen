@@ -48,7 +48,14 @@
        
     // iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
     
-    iPathOf iPathNo sPath 3 OI_PATH InfoSet:pipeoutRow
+    //iPathOf iPathNo sPath 3 OI_PATH InfoSet:pipeoutRow
+
+      InfoSetTable[] RowBuffer[].new
+      BT_PATH RowBuffer[].setBufferType
+
+      iPathOf iPathNo sPath 3 RowBuffer[].addRowVargs
+
+      RowBuffer[].pipeOut
   loop
 ;
 

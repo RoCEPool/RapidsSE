@@ -26,19 +26,32 @@
 /*----------------------------------------------------------------------------*/
 : unload_Path \handler
 
-  PipeIn[]\clear to InfoSet[]
+  Pipein[].bufferType BT_PATH != if
+    PipeIn[].pipeout
+    true
+    exit
+  then
 
-  C_TDEF_PATH infoSetRow:getFirstRow
+  PipeIn[]\clear to RowBuffer[]
+
+  //C_TDEF_PATH infoSetRow:getFirstRow
+
+  C_TDEF_PATH op__tableDef_infoSet assert
+  RowBuffer[].firstRow to InfoSetRow[]
 
   // extract the values
-  0 InfoSet[].colVal@ locals| sPath   |
-  1 InfoSet[].colVal@ locals| iPathNo |
-  2 InfoSet[].colVal@ locals| iPathOf |
+  //0 InfoSet[].colVal@ locals| sPath   |
+  //1 InfoSet[].colVal@ locals| iPathNo |
+  //2 InfoSet[].colVal@ locals| iPathOf |
+
+  0 InfoSetRow[].getVchColumn locals| sPath   |
+  1 InfoSetRow[].getVchColumn locals| iPathNo |
+  2 InfoSetRow[].getIntColumn locals| iPathOf |
 
   // unload to disk
   iPathOf iPathNo sPath unload.toDisk
 
-  InfoSet[].delete
+  RowBuffer[].delete
   nullptr to InfoSetRow[]
 
   true

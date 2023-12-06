@@ -598,7 +598,6 @@ void Constants::vAddConstantsCpp(void)
 
   // OI_ : operator infoset
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
-  /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
 
   // PD_ : pipe direction
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
@@ -735,7 +734,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_PAGINGMETRICS"_Stz,   EV_D_PAGINGMETRICS);
 
   /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
-  /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);
   /*  0 */ vAddConstant("EV_M_CANCELLING"_Stz,      EV_M_CANCELLING);

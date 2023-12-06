@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : OP_toStatDemon_RowBuffer \handler
 
-  "OP_toStatD_LockStats +++ +++ +++" .
+  //"OP_toStatD_LockStats +++ +++ +++" .
 
   PipeIn[].bufferType "OP_toStatD %v" str.format .
 

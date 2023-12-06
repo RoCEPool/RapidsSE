@@ -9,7 +9,6 @@ Stz* aOI[OI_ENUMS]
   /*  0 */ "OI_NONE"_Stz,
 
   /*    */ "OI_PAGEINREQUEST"_Stz,
-  /*    */ "OI_PATH"_Stz,
 
 //  /*    */ "OI_ENUMS"_Stz,
 };

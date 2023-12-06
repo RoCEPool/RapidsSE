@@ -33,7 +33,6 @@ enum eEV // events
   /*    */ EV_D_TABLEPTN,
 
   /*    */ EV_I_PAGEINREQUEST,
-  /*    */ EV_I_PATH,
 
   /*    */ EV_M_CANCEL,
   /*    */ EV_M_CANCELLING,

@@ -8,7 +8,6 @@ enum eOI // operator Infoset
   /*  0 */ OI_NONE=0,
 
   /*    */ OI_PAGEINREQUEST,
-  /*    */ OI_PATH,
 
   /*    */ OI_ENUMS,
 };
