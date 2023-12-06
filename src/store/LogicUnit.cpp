@@ -164,13 +164,15 @@ LogicUnit::LogicUnit(void)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFLFT)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFOUT)
 ,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,  StreamDefRht::vRepair,   LR_STREAMDEFRHT)
-, m_xpTableDefTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
 ,        m_xpSubCall(this,RF_REPAIR_DELETE,       SubCall::vRepair,        LR_SUBCALL)
 ,        m_xpSubPipe(this,RF_NONE,         nullptr,                        LR_SUBPIPE)
 ,      m_xpSubReturn(this,RF_REPAIR_DELETE,     SubReturn::vRepair,      LR_SUBRETURN)
 ,         m_xpSubset(this,RF_REPAIR_DELETE,       Operand::vRepairList,     LR_SUBSET)
 
-,          m_xpTable(this,RF_SET_NULL,     nullptr,                          LR_TABLE)
+,          m_xpTable       (this,RF_SET_NULL,   nullptr,                     LR_TABLE)
+,          m_xpTableDef    (this,RF_SET_NULL,   nullptr,                     LR_TABLE)
+,          m_xpTableDefErr (this,RF_SET_NULL,   nullptr,                     LR_TABLE)
+,          m_xpTableDefWarn(this,RF_SET_NULL,   nullptr,                     LR_TABLE)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                       LR_TABLEPTN)
 ,         m_xpTagSet(this,RF_REPAIR_DELETE,        TagSet::vRepair,         LR_TAGSET)
 ,       m_xpTaskList(this,RF_REPAIR_DELETE,      TaskList::vRepairList,   LR_TASKLIST)
@@ -356,10 +358,12 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpStreamDefLft.bIsNull());
   RASSERT(m_xpStreamDefRht.bIsNull());
   RASSERT(m_xpStreamDefOut.bIsNull());
-  RASSERT(m_xpTableDefTable.bIsNull());
   RASSERT(m_xpSubset.bIsNull());
 
   RASSERT(m_xpTable.bIsNull());
+	RASSERT(m_xpTableDef.bIsNull());
+	RASSERT(m_xpTableDefErr.bIsNull());
+	RASSERT(m_xpTableDefWarn.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
   RASSERT(m_xpText.bIsNull());
   RASSERT(m_xpTimer.bIsNull());

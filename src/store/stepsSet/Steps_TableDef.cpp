@@ -36,7 +36,7 @@ void Step::vTableDefColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDefTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -56,7 +56,7 @@ void Step::vTableDefDump(void)
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDefTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -74,7 +74,7 @@ void Step::vTableDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTableDefTable);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTableDef);
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vTableDefSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpTableDefTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

@@ -565,7 +565,7 @@ void Step::vTableListPartition(void)
   
   s256 sOutput;
   
-  Table* pTableDef = _pTable(*m_pLogicUnit->m_xpTableDefTable);
+  Table* pTableDef = _pTable(*m_pLogicUnit->m_xpTableDef);
 
   StreamDef* pStreamDef = pTableDef->pStreamDef();
 

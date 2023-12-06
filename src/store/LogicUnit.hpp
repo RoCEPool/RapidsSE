@@ -164,13 +164,15 @@ namespace STORE
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;
     REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;
-    REG<Table,          CN_TABLE         > m_xpTableDefTable;
     REG<SubCall,        CN_NONE          > m_xpSubCall;
     REG<Pipeline,       CN_PIPELINE      > m_xpSubPipe;
     REG<SubReturn,      CN_NONE          > m_xpSubReturn;
     REG<Operand,        CN_NONE          > m_xpSubset;
 
     REG<Table,          CN_TABLE         > m_xpTable;
+		REG<Table,          CN_TABLE         > m_xpTableDef;
+		REG<Table,          CN_TABLE         > m_xpTableDefErr;
+		REG<Table,          CN_TABLE         > m_xpTableDefWarn;
     REG<TablePtn,       CN_TABLEPTN      > m_xpTablePtn;
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<TaskList,       CN_TASKLIST      > m_xpTaskList;

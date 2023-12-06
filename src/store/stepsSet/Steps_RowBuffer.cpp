@@ -244,7 +244,7 @@ void Step::vRowBufferAddBpaObjects(void)
 	ASSERT(pRowBufferWarn);
 	ASSERT(pRowBufferWarn->eBufferType() == BT_WARNINGS);
 
-	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpInfoSetTable);
+	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
 	ASSERT(pWarnTable);
 	StreamDef* pWarnDef = pWarnTable->pStreamDef();
 	ASSERT(pWarnDef);
@@ -275,7 +275,7 @@ void Step::vRowBufferAddBpaRegions(void)
 	ASSERT(pRowBufferWarn);
 	ASSERT(pRowBufferWarn->eBufferType() == BT_WARNINGS);
 
-	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpInfoSetTable);
+	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
 	ASSERT(pWarnTable);
 	StreamDef* pWarnDef = pWarnTable->pStreamDef();
 	ASSERT(pWarnDef);

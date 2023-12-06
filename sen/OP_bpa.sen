@@ -17,8 +17,8 @@
 
   <bpaType> "regions" str.same if
     // Create a warnings rowBuffer. We may not need it.
-    C_TDEF_WARNINGS op__tableDef_infoSet assert
-    BT_WARNINGS InfoSetTable[] RowBufferWarn[].new
+    C_TDEF_WARNINGS op__tableDef_warn assert
+    BT_WARNINGS TableDefWarn[] RowBufferWarn[].new
 
     // find the C_TDEF_BPAREGIONS table definition, create a streamDef and pipe it out
     C_TDEF_BPAREGIONS op__tableDef assert
@@ -41,8 +41,8 @@
 
   else <bpaType> "objects" str.same if
     // Create a warnings rowBuffer. We may not need it.
-    C_TDEF_WARNINGS op__tableDef_infoSet assert
-    BT_WARNINGS InfoSetTable[] RowBufferWarn[].new
+    C_TDEF_WARNINGS op__tableDef_warn assert
+    BT_WARNINGS TableDefWarn[] RowBufferWarn[].new
 
     // find the C_TDEF_BPAOBJECTS table definition, create a streamDef and pipe it out
     C_TDEF_BPAOBJECTS op__tableDef assert

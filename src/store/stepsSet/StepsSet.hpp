@@ -2121,6 +2121,12 @@ void vJobIdLastJobIdFetch(void);
   void vTableDefGet(void);
   void vTableDefSet(void);
 
+	// reg TableDefWarn table
+	void vTableDefWarnColumnFetch(void);
+	void vTableDefWarnDump(void);
+	void vTableDefWarnGet(void);
+	void vTableDefWarnSet(void);
+
   // sub call
   void vSubCallGet(void);
   void vSubCallSet(void);

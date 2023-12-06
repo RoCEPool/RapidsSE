@@ -452,11 +452,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("TableDef[]"_Stz)) {
-    pCurrentWord->vEncodeCall("TableDef[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("StringA[]"_Stz)) {
     pCurrentWord->vEncodeCall("StringA[].set"_Stz);
     EXIT();
@@ -477,6 +472,21 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+	else if (szTerm->bSame("TableDef[]"_Stz)) {
+		pCurrentWord->vEncodeCall("TableDef[].set"_Stz);
+		EXIT();
+		return;
+	}
+	else if (szTerm->bSame("TableDefWarn[]"_Stz)) {
+		pCurrentWord->vEncodeCall("TableDefWarn[].set"_Stz);
+		EXIT();
+		return;
+	}
+	else if (szTerm->bSame("TableDefErr[]"_Stz)) {
+		pCurrentWord->vEncodeCall("TableDefErr[].set"_Stz);
+		EXIT();
+		return;
+	}
   else if (szTerm->bSame("TablePtn[]"_Stz)) {
     pCurrentWord->vEncodeCall("TablePtn[].set"_Stz);
     EXIT();
