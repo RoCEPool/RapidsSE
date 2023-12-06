@@ -629,7 +629,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     }
   }
   else
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMITTED]) ) {
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMIT]) ) {
     if (m_xSymbol.bIs_Tbl_Col()) {
       if (! m_xSymbol.bHasType()) {
         if (! pCI->G.p_call) {
