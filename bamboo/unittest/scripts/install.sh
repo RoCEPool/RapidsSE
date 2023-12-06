@@ -120,8 +120,8 @@ function createDataSymlink() {
       errorExit "Couldn't get the installation directory for node ${node}"
     fi
 
-    readonly DATA_SYMLINK_SRC="${INSTALL_DIR}/DATA"
-    readonly DATA_SYMLINK_DEST="$(realpath "${PROJ_ROOT}/DATA")"
+    DATA_SYMLINK_SRC="${INSTALL_DIR}/DATA"
+    DATA_SYMLINK_DEST="$(realpath "${PROJ_ROOT}/DATA")"
 
     # Check if the symbolic link already exists
 
@@ -164,7 +164,7 @@ function createTpchSymlink() {
       errorExit "Couldn't get the installation directory for node ${node}"
     fi
 
-    readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
+    TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
 
     # If the link exists then lets delete and recreate it.
     if [ -e "${TPCH_SYMLINK_SRC}" ]; then
