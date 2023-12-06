@@ -291,18 +291,30 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     switch (pCI->G.e_MainCard) {
 
+      case CK_c_COMBINED:
+      case CK_c_SEND:
+      case CK_c_STAGE:
       case CK_o_CALL:
       case CK_o_CORRELATION:
         RASSERT(! pCI->G.p_OP->pSub_emit());
         continue;
 
       case CK_o_FROM:
+      case CK_o_INDEXJOIN:
+      case CK_o_INDEXSCAN:
+      case CK_o_SCAN:
         pCI->G.p_table = pCI->G.p_OP->pSub_table();
-        pCI->G.p_from->vUpdate_emitted(pCI);
+        pCI->G.p_OP->vUpdate_emitted(pCI);
 
         RASSERT(pCI->G.p_OP->pSub_emit())
 
         pCI->Flux.m_pArriving = pCI->G.p_OP->pSub_emit();
+
+        if ((pCI->G.p_indexList = pCI->G.p_OP->pSub_indexList())) {
+          if (pCI->Flux.m_pArriving) {
+            pCI->G.p_indexList->vTypes_For_expCol(pCI);
+          }
+        }
 
         if ((pCI->G.p_constraint = pCI->G.p_OP->pSub_constraint()))
           pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
@@ -345,6 +357,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
       case CK_o_GBYAGG:
+      case CK_o_ORDAGG:
         RASSERT(pCI->G.p_OP->pSub_emit());
         RASSERT(pCI->G.p_OP->pSub_key());
         pCI->G.p_emit = pCI->G.p_OP->pSub_emit();
@@ -354,8 +367,23 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
       case CK_o_KEYEXISTS:
       case CK_o_KEYNOTEXISTS:
+        RASSERT(pCI->Flux.m_pArriving);
+        RASSERT(! pCI->G.p_OP->pSub_key());
+
+        pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+
+        if ((pCI->G.p_indexList = pCI->G.p_OP->pSub_indexList()))
+           pCI->G.p_indexList->vTypes_For_expCol(pCI);
+        break;
+
       case CK_o_TOP:
         RASSERT(pCI->Flux.m_pArriving);
+
+        if (! pCI->G.p_OP->pSub_key())
+          pCI->G.p_OP->vDump(__func__);
+
         RASSERT(pCI->G.p_OP->pSub_key());
 
         pCI->G.p_OP->vEnsure_stream(pCI);
@@ -386,8 +414,6 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
       case CK_o_CAST:
       case CK_o_CROSSJOIN:
       case CK_o_FILTER:
-      case CK_o_INDEXJOIN:
-      case CK_o_INDEXSCAN:
       case CK_o_INFLATE:
       default:
         pCI->G.p_OP->vDump(__func__);
@@ -423,6 +449,9 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vAnalyse_emitted(pCI);
+  return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete all <>/
