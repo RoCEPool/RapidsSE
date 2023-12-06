@@ -755,20 +755,6 @@ void vDdlLockAssertNone(void);
   void vIndexTreeSet(void);
 
   // infoSet
-  void vInfoSetAddRowVargs(void);
-  void vInfoSetColValFetch(void);
-  void vInfoSetDelete(void);
-  void vInfoSetDetectLineEnding(void);
-  void vInfoSetFirstRow(void);
-  void vInfoSetGet(void);
-  void vInfoSetInfoRows(void);
-  void vInfoSetIsNotNull(void);
-  void vInfoSetIsNull(void);
-  void vInfoSetName(void);
-  void vInfoSetNew(void);
-  void vInfoSetNextRow(void);
-  void vInfoSetOpInfosetFetch(void);
-  void vInfoSetOpInfosetStore(void);
   void vInfoSetRowGet(void);
   void vInfoSetRowGetIntColumn(void);
   void vInfoSetRowGetVchColumn(void);

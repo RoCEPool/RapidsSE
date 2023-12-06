@@ -55,7 +55,7 @@ InfoSet::InfoSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
   
-  m_eOpInfoSet = OI_NONE;
+  //m_eOpInfoSet = OI_NONE;
   _checkInitialised_(CN_INFOSET);
 }
 
@@ -67,7 +67,7 @@ InfoSet::InfoSet(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
   
-  m_eOpInfoSet = OI_NONE;
+  //m_eOpInfoSet = OI_NONE;
   
   _checkInitialised_(CN_INFOSET);
 }
@@ -117,22 +117,22 @@ void InfoSet::vPostRecv(void* aInfoSet)
 /*----------------------------------------------------------------------------*/
 /* set operator infoset                                                       */
 /*----------------------------------------------------------------------------*/
-void InfoSet::vOpInfoSet(eOI eOpInfoSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
-  
-  m_eOpInfoSet = eOpInfoSet;
-}
+//void InfoSet::vOpInfoSet(eOI eOpInfoSet)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
+//
+//  m_eOpInfoSet = eOpInfoSet;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get operator infoset                                                       */
 /*----------------------------------------------------------------------------*/
-eOI InfoSet::eOpInfoSet(void) {
-  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
-  
-  return m_eOpInfoSet;
-}
+//eOI InfoSet::eOpInfoSet(void) {
+//
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
+//
+//  return m_eOpInfoSet;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

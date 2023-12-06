@@ -596,9 +596,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
   /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
-  // OI_ : operator infoset
-  /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
-
   // PD_ : pipe direction
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
   /*  0 */ vAddConstant("PD_PIPE_IN"_Stz,   PD_PIPE_IN);

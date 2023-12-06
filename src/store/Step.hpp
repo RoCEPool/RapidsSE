@@ -82,7 +82,6 @@ namespace STORE
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
     static void vAddSteps_IndexStream(void);
-    static void vAddSteps_InfoSet(void);
     static void vAddSteps_InfoSetRow(void);
     static void vAddSteps_InfoSetTable(void);
     static void vAddSteps_Inject(void);

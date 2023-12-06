@@ -7,6 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* get first row of named infoset                                             */
 /*----------------------------------------------------------------------------*/
+/*
 : infoSetRow:getFirstRow params| sInfoSetNm |
 
   InfoSet[].isNotNull assert
@@ -18,6 +19,7 @@
   // get the first (one and only) row from this infoset
   InfoSet[].firstRow to InfoSetRow[]
 ;
+*/
 
 /*============================================================================*/
 /* end                                                                        */

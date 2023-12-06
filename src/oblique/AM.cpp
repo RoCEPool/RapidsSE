@@ -24,7 +24,6 @@
 #include "eOK.h"
 
 #include "eOT.h"
-#include "eOI.h"
 #include "eOR.h"
 #include "ePF.h"
 #include "eYG.h"
@@ -1910,24 +1909,6 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 
     if (pMarker->eOpMarker() == OM_NODELOSSABORT)
       return true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is it a infoset ?
-
-  if (CN_INFOSET == pOperand->eGetClassNo()) {
-    InfoSet* pInfoSet = _pInfoSet(pOperand);
-
-    eOI eOpInfoSet = pInfoSet->eOpInfoSet();
-    UNUSED(eOpInfoSet);
-
-//    if (OI_PROGRESSUNITS == eOpInfoSet)
-//      return true;
-//    if (OI_SEEKOFFSETS   == eOpInfoSet)
-//      return true;
-//    if (OI_TOTALUNITS    == eOpInfoSet)
-//      return true;
-
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4462,9 +4443,6 @@ Stz* AM::pOperandName(Operand* pOperand)
 {
   if (pOperand->bIsMarker())
     return aOM[(_pMarker(pOperand))->eOpMarker()];
-  
-  if (pOperand->bIsInfoSet())
-    return aOI[(_pInfoSet(pOperand))->eOpInfoSet()];
   else
     return aCN[pOperand->eGetClassNo()];
 }
@@ -5244,7 +5222,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_NS: return aNS[i_Enum];
       
     case EG_OA: return aOA[i_Enum];
-    case EG_OI: return aOI[i_Enum];
     case EG_OK: return aOK[i_Enum];
     case EG_OM: return aOM[i_Enum];
     case EG_OR: return aOR[i_Enum];
