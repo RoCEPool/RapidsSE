@@ -94,6 +94,8 @@ void ToLglPtnRow::vConvert(Table* pTable, Pds* pPdsRowBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   UNUSED(pTable);
 
+//  vTrace("ToLglPtnRow\n"_Stz);
+//  pPdsRowBuffer->vPrintRows(nullptr, nullptr);
   RowPix* pRowPix = pPdsRowBuffer->pRowPix();
   i8 i_KeyHshCol = pRowPix->i_KeyHsh();
 
@@ -110,7 +112,7 @@ void ToLglPtnRow::vConvert(Table* pTable, Pds* pPdsRowBuffer)
     // determine which lglPtn the KeyHsh is currently mapped to
     LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(tKeyHsh);
 
-    //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tLglPtn.iAsI8());
+//    vTrace("ToBktRow::vConvert2 KeyHsh: %lld Ptn:%lld\n"_Stz, tKeyHsh.iAsI8(), tLglPtn.iAsI8());
     vCopyRow(tLglPtn, aRowSrc, pRowPix);
 
     pCursor->vNext();
@@ -161,24 +163,26 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, RowPix* pFromRowPix)
 
   // get pds row buffer for given partition (new a first buffer if ncessary)
 
-  if (! m_pIntoPdsRowBuffer) {
-    m_pIntoPdsRowBuffer = new Pds(pFromRowPix);
-    m_pIntoPdsRowBuffer->vLglPtn(tLglPtn);
+  Pds* pIntoPdsRowBuffer = _pPds(m_oLglBufSet.pBuffer(tLglPtn));
 
-    m_pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
-    m_oLglBufSet.vAddBuffer(tLglPtn,m_pIntoPdsRowBuffer);
+  if (! pIntoPdsRowBuffer) {
+    pIntoPdsRowBuffer = new Pds(pFromRowPix);
+    pIntoPdsRowBuffer->vLglPtn(tLglPtn);
+
+    pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
+    m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);
   }
 
   // new a row in pds row buffer (new another pds row buffer if necessary)
-  Row* aNewRow = m_pIntoPdsRowBuffer->pCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
+  Row* aNewRow = pIntoPdsRowBuffer->pCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
   if (! aNewRow) {
-    m_pIntoPdsRowBuffer = new Pds(pFromRowPix);
-    m_pIntoPdsRowBuffer->vLglPtn(tLglPtn);
+    pIntoPdsRowBuffer = new Pds(pFromRowPix);
+    pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
-    m_pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
-    m_oLglBufSet.vAddBuffer(tLglPtn,m_pIntoPdsRowBuffer);
+    pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
+    m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);
 
-    aNewRow = m_pIntoPdsRowBuffer->pCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
+    aNewRow = pIntoPdsRowBuffer->pCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
     RASSERT(aNewRow);
   }
 }

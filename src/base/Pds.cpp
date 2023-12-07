@@ -130,7 +130,7 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash)
 
   RASSERT(CacheLine::bOnCacheLineBoundary(this));
 
-  i8 iRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
+  i8 iRowSizeProper = Row::nRowProper(pStreamDef->nColumns() + (bAddKeyHash ? 1 : 0));
 
   // Calculate block size and padding ------------------
   m_nBlockSize = sizeof(SkipListNode) + iRowSizeProper + sizeof(m_iSynthRowKey);
@@ -975,98 +975,7 @@ void Pds::vInitPix(RowPix* pRowPix)
 void Pds::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
 {
 
-  i8 nColumns = pStreamDef->nColumns();
-  m_oRowPix.m_sPixNm   = pStreamDef->szStreamDefNm();
-  m_oRowPix.m_nColumns = nColumns;
-
-  ColPix* axaColPixDst = m_oRowPix.m_xaColPix;
-
-  i8 nNameSize;
-  i8 nStzOfs;
-
-
-  m_oRowPix.m_nNameOffset = sizeof(ColPix)
-                              * ( nColumns + (bAddKeyHash ? 1 : 0) );
-  m_oRowPix.m_nTotalChars = 0;
-
-  i8 iBufSpaceRemaining = (i8) (sizeof(m_oRowPix.m_xaColPix) +
-                                sizeof(m_oRowPix.m_baPixArea) -
-                                m_oRowPix.m_nNameOffset);
-
-  char* azNames = aAdd<char*>(axaColPixDst,m_oRowPix.m_nNameOffset);
-  char* azColNmDst = azNames;
-
-  i8 i_Col;
-
-  for (i_Col = 0; i_Col < nColumns; i_Col++) {
-
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-
-    ColPix* axColPixDst = &axaColPixDst[i_Col];
-
-    axColPixDst->m_uNumber   = (u8)i_Col;
-    // name
-    axColPixDst->m_uKind     = (u8)CX_USERCOL;
-    axColPixDst->m_uTypeId   = (u8)pColumn->xColumnTypeId().iIdVal();
-    axColPixDst->m_uDatum    = (u8)pColumn->eDatum();
-    axColPixDst->m_uLength   = (u8)pColumn->iColumnLength();
-    axColPixDst->m_uScale    = (u8)pColumn->iColumnScale();
-    axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
-    axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
-    axColPixDst->m_uSpare    = (u8)0;
-
-    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, pColumn->szColNm()->azChar());
-    nNameSize = StrLib::nSize(azColNmDst);
-    iBufSpaceRemaining -= nNameSize;
-
-    nStzOfs = nDifference(axColPixDst,azColNmDst);
-    axColPixDst->m_uName = nStzOfs;
-
-    azColNmDst += nNameSize;
-    m_oRowPix.m_nTotalChars += nNameSize;
-  }
-
-  // i_Col falls thru
-
-  if (bAddKeyHash) {
-
-    //m_oRowPix.vPrint();
-    ASSERT(! m_oRowPix.m_nExtraCols);
-
-    m_oRowPix.m_nColumns++;
-    m_oRowPix.m_nExtraCols = 1;
-    m_oRowPix.m_bPtnHash = true;
-
-    ColPix* axColPixDst = &axaColPixDst[i_Col];
-
-    axColPixDst->m_uNumber   = (u8)i_Col;
-    // name
-    axColPixDst->m_uKind     = (u8)CX_PTNHASH;
-    axColPixDst->m_uTypeId   = (u8)(TypeId::xIdOf(CT_INTEGER).iIdVal());
-    axColPixDst->m_uDatum    = (u8)DM_INT;
-    axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
-    axColPixDst->m_uScale    = (u8)0;
-    axColPixDst->m_bNullable = (u8)false;
-    axColPixDst->m_bPtnKey   = (u8)false;
-    axColPixDst->m_uSpare    = (u8)0;
-
-    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
-    nNameSize = StrLib::nSize(azColNmDst);
-    iBufSpaceRemaining -= nNameSize;
-
-    nStzOfs = nDifference(axColPixDst,azColNmDst);
-    axColPixDst->m_uName = nStzOfs;
-
-    azColNmDst += nNameSize;
-    m_oRowPix.m_nTotalChars += nNameSize;
-
-    //m_oRowPix.vPrint();
-  }
-
-  m_oRowPix.m_nTotalChars++;
-  * azColNmDst = '\0';
-
-  m_oRowPix.m_bInitialised = true;
+  pStreamDef->vToRowPix(&m_oRowPix, bAddKeyHash);
 
   i8 nCols = m_oRowPix.m_nColumns;
   i8 iTotalStzArea = 0;
