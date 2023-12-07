@@ -147,7 +147,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   vMark1(MARK_BLANK);
   vMark2(MARK_BLANK);
 
-  s32 sCoord;
+  s256 sCoord;
   sCoord.vSprint("((%s new %04lld))"_Stz, aCK[m_eCard], md__SeqNo);
   StrLib::vCopy(md_Coord, sizeof(md_Coord), sCoord.azChar());
 //  if (11 == md__SeqNo) {
