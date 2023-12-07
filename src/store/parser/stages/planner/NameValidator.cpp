@@ -826,24 +826,24 @@ b1 NameValidator::bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchema
   ASSERT(pSeApi);
 
   // Look up table in SE API
-  STORE::RowBuffer* pRowBuffer = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
-  ASSERT(pRowBuffer);
+  STORE::RowBuffer* pTableInfoBuffer = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
+  ASSERT(pTableInfoBuffer);
 
-  if (pRowBuffer->nRows() == 0) {
+  if (pTableInfoBuffer->nRows() == 0) {
     // We couldn't resolve the table in the SE metadata
-    delete pRowBuffer;
+    delete pTableInfoBuffer;
     return false;
   }
 
-  if (pRowBuffer->nRows() > 1) {
+  if (pTableInfoBuffer->nRows() > 1) {
     // We've resolved more than one table in the metadata. The table name is ambiguous.
-    delete pRowBuffer;
-    NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pRowBuffer);
+    delete pTableInfoBuffer;
+    NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pTableInfoBuffer);
   }
 
-  ASSERT(pRowBuffer->nRows() == 1);
+  ASSERT(pTableInfoBuffer->nRows() == 1);
 
-  Row* pTblRow = pRowBuffer->pFirstRow();
+  Row* pTblRow = pTableInfoBuffer->pFirstRow();
   TableMetadata* pTableMeta = static_cast<TableMetadata*>(pTblRow);
 
   // Get the full name from the metadata as we may not have had all of the details before
@@ -855,7 +855,7 @@ b1 NameValidator::bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchema
   QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
   if (pTableDef) {
     TableRef::vQualify(pTableRef, szCatalogName, szSchemaName, szTableName);
-    delete pRowBuffer;
+    delete pTableInfoBuffer;
     return true;
   }
 
@@ -865,7 +865,7 @@ b1 NameValidator::bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchema
   // Qualify the TableRef
   TableRef::vQualify(pTableRef, szCatalogName, szSchemaName, szTableName);
 
-  delete pRowBuffer;
+  delete pTableInfoBuffer;
 
   return true;
 }
@@ -921,11 +921,11 @@ QueryNode* NameValidator::pCreateBaseTableColumnDefs(Stz* szCatalogName, Stz* sz
 
   // Retrieve the column definitions and make a node out of these
   QueryNode* pColumnDefs = ColumnDefs::pCreate();
-	RowBuffer* pRowBuffer = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
+	RowBuffer* pColumnInfoBuffer = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
 
-  for (Row* pColRow = pRowBuffer->pFirstRow();
+  for (Row* pColRow = pColumnInfoBuffer->pFirstRow();
        pColRow;
-       pColRow = pRowBuffer->pNextRow(pColRow)) {
+       pColRow = pColumnInfoBuffer->pNextRow(pColRow)) {
 
     ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pColRow);
 
@@ -947,7 +947,7 @@ QueryNode* NameValidator::pCreateBaseTableColumnDefs(Stz* szCatalogName, Stz* sz
     ColumnDefs::vAddColumnDef(pColumnDefs, pColumnDef);
   }
 
-  delete pRowBuffer;
+  delete pColumnInfoBuffer;
 
   return pColumnDefs;
 }
@@ -964,12 +964,12 @@ QueryNode* NameValidator::pCreateBaseTableIndexDefs(Stz* szCatalogName, Stz* szS
   ASSERT(pSeApi);
 
   QueryNode* pIndexDefs = IndexDefs::pCreate();
-	RowBuffer* pRowBuffer = pSeApi->pSearchIndexes(szCatalogName, szSchemaName, szTableName, nullptr);
-  ASSERT(pRowBuffer);
+	RowBuffer* pIndexInfoBuffer = pSeApi->pSearchIndexes(szCatalogName, szSchemaName, szTableName, nullptr);
+  ASSERT(pIndexInfoBuffer);
 
-  for (Row* pIndexRow = pRowBuffer->pFirstRow();
+  for (Row* pIndexRow = pIndexInfoBuffer->pFirstRow();
        pIndexRow;
-       pIndexRow = pRowBuffer->pNextRow(pIndexRow)) {
+       pIndexRow = pIndexInfoBuffer->pNextRow(pIndexRow)) {
 
     IndexMetadata* pIndexMeta = static_cast<IndexMetadata*>(pIndexRow);
 
@@ -983,7 +983,7 @@ QueryNode* NameValidator::pCreateBaseTableIndexDefs(Stz* szCatalogName, Stz* szS
     IndexDefs::vAddIndexDef(pIndexDefs, pIndexDef);
   }
 
-  delete pRowBuffer;
+  delete pIndexInfoBuffer;
 
   return pIndexDefs;
 }
