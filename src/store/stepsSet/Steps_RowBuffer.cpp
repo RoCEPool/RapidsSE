@@ -1445,13 +1445,13 @@ void Step::vRowBufferAddRowCount(void)
 	ENTRY();
 
 	// get the RowBuffer table
-	Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+	Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
 	// get the table
 	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
 	// get the streamDef from the table
-	StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
+	StreamDef* pStreamDef = pTableDef->pStreamDef();
 
 	LglPtn tLglPtn = m_pOp->tLglPtn();
 	i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
@@ -1977,11 +1977,11 @@ void Step::vRowBufferWriteCsv(void)
 
 	ASSERT(*m_pLogicUnit->m_xpInfoSet);
 
-	Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+	Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
 
-	StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
+	StreamDef* pStreamDef = pTableDef->pStreamDef();
 
 	File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
 

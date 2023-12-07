@@ -764,10 +764,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetRowSet(void);
   void vInfoSetSet(void);
   void vInfoSetWriteCsv(void);
-  void vInfoSetTableColumnFetch(void);
-  void vInfoSetTableDump(void);
-  void vInfoSetTableGet(void);
-  void vInfoSetTableSet(void);
 
   // inject
   void vInjectSigsegv(void);

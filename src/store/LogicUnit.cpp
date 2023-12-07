@@ -114,7 +114,6 @@ LogicUnit::LogicUnit(void)
 ,    m_xpIndexStream(this,RF_REPAIR_DELETE,   IndexStream::vRepair,    LR_INDEXSTREAM)
 ,        m_xpInfoSet(this,RF_REPAIR_DELETE,       InfoSet::vRepair,        LR_INFOSET)
 ,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                     LR_INFOSETROW)
-,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                   LR_INFOSETTABLE)
 ,       m_xpIntStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,       LR_INTSTACK)
 
 ,     m_xpJobMetrics(this,RF_REPAIR_DELETE,    JobMetrics::vRepair,     LR_JOBMETRICS)
@@ -320,7 +319,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpIndexStream.bIsNull());
   RASSERT(m_xpInfoSet.bIsNull());
   RASSERT(m_xpInfoSetRow.bIsNull());
-  RASSERT(m_xpInfoSetTable.bIsNull());
 
   RASSERT(m_xpList.bIsNull());
 

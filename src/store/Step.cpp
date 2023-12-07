@@ -101,7 +101,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_IndexDef();
   Step::vAddSteps_IndexStream();
   Step::vAddSteps_InfoSetRow();
-  Step::vAddSteps_InfoSetTable();
   Step::vAddSteps_Inject();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
