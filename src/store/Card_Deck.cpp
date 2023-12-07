@@ -214,7 +214,7 @@ Card_Expr* Card_Deck::p_expr_fold(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card_Emit* p_emitted_fold = this-> p_emitted_fold())
+  if (Card_Emit* p_emitted_fold = this->p_emit_fold())
     return p_emitted_fold->pSub_expr();
 
   return nullptr;
@@ -255,9 +255,9 @@ Card_Fold* Card_Deck::p_fold(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find project before fold (reverse)                                         */
+/* find emit prior to fold (reverse)                                          */
 /*----------------------------------------------------------------------------*/
-Card_Emit* Card_Deck::p_emitted_fold(void)
+Card_Emit* Card_Deck::p_emit_fold(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -271,209 +271,6 @@ Card_Emit* Card_Deck::p_emitted_fold(void)
   return nullptr;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* initial emitted analysis                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Deck::vAnalyse_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->vBeginEach();
-  while (pCI->G_bEachMainWithSub(CK_o_FROM, CK_s_TABLE))
-    if ((pCI->G.p_emit = pCI->G.p_table->pSub_emit()))
-      pCI->G.p_table->vDeleteChild(pCI->G.p_emit);
-
-  pCI->vBeginEach();
-  pCI->Flux.m_pArriving = pCI->G.p_emit = nullptr;
-
-  while (pCI->G_bEachMain_NONE()) {
-
-    switch (pCI->G.e_MainCard) {
-
-      case CK_c_COMBINED:
-      case CK_c_SEND:
-      case CK_c_STAGE:
-      case CK_o_CALL:
-      case CK_o_CORRELATION:
-        RASSERT(! pCI->G.p_OP->pSub_emit());
-        continue;
-
-      case CK_o_FROM:
-        pCI->G.p_table = pCI->G.p_OP->pSub_table();
-        RASSERT(! pCI->G.p_OP->pSub_emit())
-        pCI->G.p_OP->vCreate_emit(pCI);
-        //pCI->G.p_OP->vUpdate_emit_OP(pCI);
-
-        RASSERT(pCI->G.p_OP->pSub_emit())
-
-        pCI->Flux.m_pArriving = pCI->G.p_OP->pSub_emit();
-
-        if ((pCI->G.p_indexList = pCI->G.p_OP->pSub_indexList())) {
-          if (pCI->Flux.m_pArriving) {
-            pCI->G.p_indexList->vTypes_For_expCol(pCI);
-          }
-        }
-
-        if ((pCI->G.p_constraint = pCI->G.p_OP->pSub_constraint()))
-          pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
-        continue;
-
-      case CK_o_INDEXJOIN:
-      case CK_o_INDEXSCAN:
-      case CK_o_SCAN:
-
-        pCI->G.p_table = pCI->G.p_OP->pSub_table();
-        RASSERT(! pCI->G.p_OP->pSub_emit())
-        pCI->G.p_OP->vCreate_emit(pCI);
-        pCI->G.p_OP->vUpdate_emit_OP(pCI);
-
-        RASSERT(pCI->G.p_OP->pSub_emit())
-
-        pCI->Flux.m_pArriving = pCI->G.p_OP->pSub_emit();
-
-        if ((pCI->G.p_indexList = pCI->G.p_OP->pSub_indexList())) {
-          if (pCI->Flux.m_pArriving) {
-            pCI->G.p_indexList->vTypes_For_expCol(pCI);
-          }
-        }
-
-        if ((pCI->G.p_constraint = pCI->G.p_OP->pSub_constraint()))
-          pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
-        continue;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_AGGREG:
-      case CK_o_PROJECT:
-        RASSERT(pCI->G.p_OP->pSub_emit());
-        RASSERT(! pCI->G.p_OP->pSub_key());
-        pCI->G.p_emit = pCI->G.p_OP->pSub_emit();
-        break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_WHERE:
-      case CK_o_HAVING:
-        RASSERT(pCI->Flux.m_pArriving);
-        RASSERT(! pCI->G.p_OP->pSub_key());
-
-        if ((pCI->G.p_rpnCalc = pCI->G.p_OP->pSub_rpnCalc()))
-          pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
-
-        pCI->G.p_OP->vEnsure_stream(pCI);
-        pCI->G.p_OP->vCreate_emit(pCI);
-
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-        break;
-
-      case CK_o_HASH:
-      case CK_o_LIMIT:
-        RASSERT(pCI->Flux.m_pArriving);
-        RASSERT(! pCI->G.p_OP->pSub_key());
-
-        pCI->G.p_OP->vEnsure_stream(pCI);
-        pCI->G.p_OP->vCreate_emit(pCI);
-
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-        break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_GBYAGG:
-      case CK_o_ORDAGG:
-        RASSERT(pCI->G.p_OP->pSub_emit());
-        RASSERT(pCI->G.p_OP->pSub_key());
-        pCI->G.p_emit = pCI->G.p_OP->pSub_emit();
-        break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_KEYEXISTS:
-      case CK_o_KEYNOTEXISTS:
-        RASSERT(pCI->Flux.m_pArriving);
-        RASSERT(! pCI->G.p_OP->pSub_key());
-
-        pCI->G.p_OP->vEnsure_stream(pCI);
-        pCI->G.p_OP->vCreate_emit(pCI);
-
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-
-        if ((pCI->G.p_indexList = pCI->G.p_OP->pSub_indexList()))
-           pCI->G.p_indexList->vTypes_For_expCol(pCI);
-        break;
-
-      case CK_o_TOP:
-        RASSERT(pCI->Flux.m_pArriving);
-
-        if (! pCI->G.p_OP->pSub_key())
-          pCI->G.p_OP->vDump(__func__);
-
-        RASSERT(pCI->G.p_OP->pSub_key());
-
-        pCI->G.p_OP->vEnsure_stream(pCI);
-        pCI->G.p_OP->vCreate_emit(pCI);
-
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-
-        pCI->G.p_key = pCI->G.p_OP->pSub_key();
-        pCI->G.p_key->vEnsureTypeId_expCol(pCI);
-        pCI->G.p_key->vRenumberAll_expr();
-        break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_SORT:
-        RASSERT(pCI->Flux.m_pArriving);
-        RASSERT(pCI->G.p_OP->pSub_key());
-
-        pCI->G.p_key = pCI->G.p_OP->pSub_key();
-
-        pCI->G.p_OP->vEnsure_stream(pCI);
-        pCI->G.p_OP->vCreate_emit(pCI);
-
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-        pCI->G.p_emit->vAdjust_Wrt_key(pCI->G.p_key);
-        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-        break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_CAST:
-      case CK_o_CROSSJOIN:
-      case CK_o_FILTER:
-      case CK_o_INFLATE:
-      default:
-        pCI->G.p_OP->vDump(__func__);
-        NEVER_REACH
-        break;
-
-    } // switch(pCI->G.e_MainCard)
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-    if (! pCI->Flux.m_pArriving) {
-      pCI->Flux.m_pArriving = pCI->G.p_emit;
-      continue;
-    }
-
-    pCI->G.p_key = pCI->G.p_OP->pSub_key();
-    pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
-    pCI->G.p_emit->vRenumberAll_expr();
-
-    pCI->Flux.m_pArriving = pCI->G.p_emit;
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-    if ((pCI->G.p_constraint = pCI->G.p_OP->pSub_constraint()))
-      pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
-
-  } // while (pCI->G_bEachMain_NONE())
-}
 
 /*----------------------------------------------------------------------------*/
 /* update projections after some change                                       */

@@ -18,8 +18,8 @@ __aFooterFunction(XF_Prolog_Analyse_emit)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Analyse_emit::XF_Prolog_Analyse_emit(CardIter* pCI)
-: XF_PROLOG(CN_XF_PROLOG_ANALYSE_EMIT, pCI)
+XF_Prolog_Analyse_emit::XF_Prolog_Analyse_emit(CardIter* m_pCI)
+: XF_PROLOG(CN_XF_PROLOG_ANALYSE_EMIT, m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMIT, _FOOTER_);
 
@@ -39,11 +39,11 @@ XF_Prolog_Analyse_emit::~XF_Prolog_Analyse_emit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_emit::vAnalyse(CardIter* pCI)
+void XF_Prolog_Analyse_emit::vAnalyse(CardIter* m_pCI)
 {
   _static_
 
-  XF_Prolog_Analyse_emit* pXF_Analyse_emitted = new XF_Prolog_Analyse_emit(pCI);
+  XF_Prolog_Analyse_emit* pXF_Analyse_emitted = new XF_Prolog_Analyse_emit(m_pCI);
 
   pXF_Analyse_emitted->vXF_Analyse();
 
@@ -63,8 +63,201 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMIT, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_EMIT, "emit analysis"_Stz);
+  m_pCI->vBeginEach();
+  while (m_pCI->G_bEachMainWithSub(CK_o_FROM, CK_s_TABLE))
+    if ((m_pCI->G.p_emit = m_pCI->G.p_table->pSub_emit()))
+      m_pCI->G.p_table->vDeleteChild(m_pCI->G.p_emit);
 
-  m_pCI->G.pDeck->vAnalyse_emit(m_pCI);
+  m_pCI->vBeginEach();
+  m_pCI->Flux.m_pArriving = m_pCI->G.p_emit = nullptr;
+
+  while (m_pCI->G_bEachMain_NONE()) {
+
+    switch (m_pCI->G.e_MainCard) {
+
+      case CK_c_COMBINED:
+      case CK_c_SEND:
+      case CK_c_STAGE:
+      case CK_o_CALL:
+      case CK_o_CORRELATION:
+        RASSERT(! m_pCI->G.p_OP->pSub_emit());
+        continue;
+
+      case CK_o_FROM:
+        m_pCI->G.p_table = m_pCI->G.p_OP->pSub_table();
+        RASSERT(! m_pCI->G.p_OP->pSub_emit())
+        m_pCI->G.p_OP->vCreate_emit(m_pCI);
+        //m_pCI->G.p_OP->vUpdate_emit_OP(m_pCI);
+
+        RASSERT(m_pCI->G.p_OP->pSub_emit())
+
+        m_pCI->Flux.m_pArriving = m_pCI->G.p_OP->pSub_emit();
+
+        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+          if (m_pCI->Flux.m_pArriving) {
+            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+          }
+        }
+
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+        continue;
+
+      case CK_o_INDEXJOIN:
+      case CK_o_INDEXSCAN:
+      case CK_o_SCAN:
+
+        m_pCI->G.p_table = m_pCI->G.p_OP->pSub_table();
+        RASSERT(! m_pCI->G.p_OP->pSub_emit())
+        m_pCI->G.p_OP->vCreate_emit(m_pCI);
+        m_pCI->G.p_OP->vUpdate_emit_OP(m_pCI);
+
+        RASSERT(m_pCI->G.p_OP->pSub_emit())
+
+        m_pCI->Flux.m_pArriving = m_pCI->G.p_OP->pSub_emit();
+
+        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+          if (m_pCI->Flux.m_pArriving) {
+            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+          }
+        }
+
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+        continue;
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case CK_o_AGGREG:
+      case CK_o_PROJECT:
+        RASSERT(m_pCI->G.p_OP->pSub_emit());
+        RASSERT(! m_pCI->G.p_OP->pSub_key());
+        m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
+        break;
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case CK_o_WHERE:
+      case CK_o_HAVING:
+        RASSERT(m_pCI->Flux.m_pArriving);
+        RASSERT(! m_pCI->G.p_OP->pSub_key());
+
+        if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
+          m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
+
+        m_pCI->G.p_OP->vEnsure_stream(m_pCI);
+        m_pCI->G.p_OP->vCreate_emit(m_pCI);
+
+        m_pCI->G.p_emit = m_pCI->Flux.m_pArriving->pPropagate();
+        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
+        break;
+
+      case CK_o_HASH:
+      case CK_o_LIMIT:
+        RASSERT(m_pCI->Flux.m_pArriving);
+        RASSERT(! m_pCI->G.p_OP->pSub_key());
+
+        m_pCI->G.p_OP->vEnsure_stream(m_pCI);
+        m_pCI->G.p_OP->vCreate_emit(m_pCI);
+
+        m_pCI->G.p_emit = m_pCI->Flux.m_pArriving->pPropagate();
+        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
+        break;
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case CK_o_GBYAGG:
+      case CK_o_ORDAGG:
+        RASSERT(m_pCI->G.p_OP->pSub_emit());
+        RASSERT(m_pCI->G.p_OP->pSub_key());
+        m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
+        break;
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case CK_o_KEYEXISTS:
+      case CK_o_KEYNOTEXISTS:
+        RASSERT(m_pCI->Flux.m_pArriving);
+        RASSERT(! m_pCI->G.p_OP->pSub_key());
+
+        m_pCI->G.p_OP->vEnsure_stream(m_pCI);
+        m_pCI->G.p_OP->vCreate_emit(m_pCI);
+
+        m_pCI->G.p_emit = m_pCI->Flux.m_pArriving->pPropagate();
+        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
+
+        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
+          m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+        break;
+
+      case CK_o_TOP:
+        RASSERT(m_pCI->Flux.m_pArriving);
+
+        if (! m_pCI->G.p_OP->pSub_key())
+          m_pCI->G.p_OP->vDump(__func__);
+
+        RASSERT(m_pCI->G.p_OP->pSub_key());
+
+        m_pCI->G.p_OP->vEnsure_stream(m_pCI);
+        m_pCI->G.p_OP->vCreate_emit(m_pCI);
+
+        m_pCI->G.p_emit = m_pCI->Flux.m_pArriving->pPropagate();
+        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
+
+        m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
+        m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
+        m_pCI->G.p_key->vRenumberAll_expr();
+        break;
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case CK_o_SORT:
+        RASSERT(m_pCI->Flux.m_pArriving);
+        RASSERT(m_pCI->G.p_OP->pSub_key());
+
+        m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
+
+        m_pCI->G.p_OP->vEnsure_stream(m_pCI);
+        m_pCI->G.p_OP->vCreate_emit(m_pCI);
+
+        m_pCI->G.p_emit = m_pCI->Flux.m_pArriving->pPropagate();
+        m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
+        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
+        break;
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case CK_o_CAST:
+      case CK_o_CROSSJOIN:
+      case CK_o_FILTER:
+      case CK_o_INFLATE:
+      default:
+        m_pCI->G.p_OP->vDump(__func__);
+        NEVER_REACH
+        break;
+
+    } // switch(m_pCI->G.e_MainCard)
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    if (! m_pCI->Flux.m_pArriving) {
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+      continue;
+    }
+
+    m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
+    m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
+    m_pCI->G.p_emit->vRenumberAll_expr();
+
+    m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+      m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+
+  } // while (m_pCI->G_bEachMain_NONE())
+
 
   m_pCI->vEndTransform(__LINE__);
 }
