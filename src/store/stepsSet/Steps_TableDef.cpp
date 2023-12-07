@@ -30,7 +30,7 @@ void Step::vAddSteps_TableDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* TableDef[].column -- fetch the column from the StreamSet table             */
+/* TableDef[].column -- fetch the column from the TableDef table              */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDefColumnFetch(void)
 {

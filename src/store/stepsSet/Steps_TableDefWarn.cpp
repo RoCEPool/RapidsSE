@@ -30,7 +30,7 @@ void Step::vAddSteps_TableDefWarn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* TableDefWarn[].column -- fetch the column from the StreamSet table          */
+/* TableDefWarn[].column -- fetch the column from the TableDef table          */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDefWarnColumnFetch(void)
 {

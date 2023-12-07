@@ -28,7 +28,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_SRTBUFFER"_Stz,
   /*    */ "EV_D_STREAMDEF"_Stz,
   /*    */ "EV_D_STREAMDEFRHT"_Stz,
-  /*    */ "EV_D_STREAMSET"_Stz,
   /*    */ "EV_D_TABLE"_Stz,
   /*    */ "EV_D_TABLEPTN"_Stz,
 

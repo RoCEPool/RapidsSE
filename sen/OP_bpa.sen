@@ -49,10 +49,10 @@
     TableDef[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
-    // create streamset
+    // create rowBuffer
     TableDef[] RowBuffer[].new
 
-    // populate streamset
+    // populate rowBuffer
     TableDef[] RowBuffer[].addBpaObjects
     RowBuffer[].pipeOut
 

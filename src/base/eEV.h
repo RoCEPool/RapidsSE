@@ -28,7 +28,6 @@ enum eEV // events
   /*    */ EV_D_SRTBUFFER,
   /*    */ EV_D_STREAMDEF,
   /*    */ EV_D_STREAMDEFRHT,
-  /*    */ EV_D_STREAMSET,
   /*    */ EV_D_TABLE,
   /*    */ EV_D_TABLEPTN,
 

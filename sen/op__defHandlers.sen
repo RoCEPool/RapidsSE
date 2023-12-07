@@ -88,7 +88,7 @@
 : EV_D_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
 : EV_M_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
-: EV_D_STREAMSET_handler        \handler STANDARD_PIPEOUT ;
+//: EV_D_STREAMSET_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
 
@@ -449,7 +449,7 @@
   abnormalHandler EV_D_STREAMDEF        [op].handler!
   abnormalHandler EV_D_STREAMDEFRHT     [op].handler!
   abnormalHandler EV_M_STREAMDEFRHT     [op].handler!
-  abnormalHandler EV_D_STREAMSET        [op].handler!
+  //abnormalHandler EV_D_STREAMSET        [op].handler!
   abnormalHandler EV_D_TABLE            [op].handler!
 
   //abnormalHandler  EV_X_CHILDEXIT        [op].handler!

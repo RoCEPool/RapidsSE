@@ -18,7 +18,7 @@
   PipeIn[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in the streamSet for each word
+  // insert a row in the rowBuffer for each word
 
   Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
@@ -69,7 +69,7 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an StreamSet operand
+  // create an rowBuffer operand
   TableDef[] RowBuffer[].new
 
   true

@@ -2,6 +2,41 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-_lineitem
-/time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
-select * from lineitem;
+_nation
+create index IxN_NATIONKEY on nation (n_nationkey);
+load nation "../DATA/TPCH/nation.tbl";
+
+_region;
+create index IxR_REGIONKEY on Region (R_REGIONKEY);
+create index IxR_NAME on Region (R_NAME);
+load Region "../DATA/TPCH/region.tbl";
+
+/keepCodeFile
+/pipelineName = "ALKA"
+/optimise_passthru
+pipeline unnamed
+begin
+
+  stage S00 on origin :
+     start
+   | pulse     once
+   | next
+
+  stage S01 on all partitions :
+     scan      Nation
+   | project "type INTEGER N_NATIONKEY , type VARCHAR N_NAME , type INTEGER N_REGIONKEY"
+   | hash "type INTEGER $3"
+   | combined 0
+   | next hashcast
+
+  stage S02 on all partitions :
+     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+   | combined 0
+   | next
+
+  stage S04 on origin :
+     output
+   | sink
+   | first
+
+end ;

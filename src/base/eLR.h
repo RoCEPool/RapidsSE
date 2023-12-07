@@ -93,8 +93,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_STREAMDEFLFT,
   /*  */ LR_STREAMDEFOUT,
   /*  */ LR_STREAMDEFRHT,
-  /*  */ LR_STREAMSET,
-  /*  */ LR_STREAMSETTABLE,
   /*  */ LR_SUBCALL,
   /*  */ LR_SUBPIPE,
   /*  */ LR_SUBRETURN,

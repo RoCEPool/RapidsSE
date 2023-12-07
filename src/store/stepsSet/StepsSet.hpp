@@ -2102,19 +2102,6 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefRhtPrint(void);
   void vStreamDefRhtSet(void);
 
-  // reg stream set
-  void vStreamSetAddProgressUnits(void);
-  void vStreamSetDelete(void);
-  void vStreamSetFirstRow(void);
-  void vStreamSetGet(void);
-  void vStreamSetInfoRows(void);
-  void vStreamSetIsNull(void);
-  void vStreamSetName(void);
-  void vStreamSetNew(void);
-  void vStreamSetNextRow(void);
-  void vStreamSetReadChunk(void);
-  void vStreamSetSet(void);
-
   // reg TableDef table
   void vTableDefColumnFetch(void);
   void vTableDefDump(void);

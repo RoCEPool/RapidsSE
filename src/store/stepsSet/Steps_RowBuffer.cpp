@@ -147,7 +147,7 @@ void Step::vRowBufferOperandDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rowBuffer[].addAnalyzeIndex -- add a row to the streamSet index analysis   */
+/* rowBuffer[].addAnalyzeIndex -- add a row to the rowBuffer index analysis   */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddAnalyzeIndex(void)
 {
@@ -190,13 +190,13 @@ void Step::vRowBufferAddAnalyzeIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addAnalyzeTable -- add a row to the streamSet table analysis   */
+/* RowBuffer[].addAnalyzeTable -- add a row to the rowBuffer table analysis   */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddAnalyzeTable(void)
 {
 	ENTRY();
 
-	// get the streamSet table
+	// get the tableDef table
 	Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
 	// get the table to be analyzed
@@ -250,7 +250,7 @@ void Step::vRowBufferAddBpaObjects(void)
 	ASSERT(pWarnDef);
 
 
-	// get the streamset table
+	// get the table
 	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
 	// get the streamDef from the table
@@ -295,7 +295,7 @@ void Step::vRowBufferAddBpaRegions(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addColumnDef -- add a row to the streamSet with the column def */
+/* RowBuffer[].addColumnDef -- add a row to the rowBuffer with the column def */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddColumnDef(void)
 {
@@ -515,7 +515,7 @@ void Step::vRowBufferAddListPartitions(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addLogMsg -- add rows to streamSet with log message info       */
+/* RowBuffer[].addLogMsg -- add rows to rowBuffer with log message info       */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddLogMsg(void)
 {
@@ -550,7 +550,7 @@ void Step::vRowBufferAddLogMsg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].addMemoryLeaks -- add rows to streamSet with memory leak info  */
+/* RowBuffer[].addMemoryLeaks -- add rows to rowBuffer with memory leak info  */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddMemoryLeaks(void)
 {
@@ -600,7 +600,7 @@ void Step::vRowBufferAddMemoryLeaks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].AddNodeHeartbeat -- add a row to the streamSet with node hb    */
+/* RowBuffer[].AddNodeHeartbeat -- add a row to the rowBuffer with node hb    */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferAddNodeHeartbeat(void)
 {
