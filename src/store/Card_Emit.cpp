@@ -9,6 +9,8 @@
 #include "CardIter.hpp"
 #include "Card_GbyAgg.hpp"
 
+#include "Table.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -94,6 +96,33 @@ void Card_Emit::vAdjust_Wrt_key(Card_Key* p_key)
       continue;
 
     pSymbol_expr_sole->vCastFacets(p_expr_sole_key->pSymbol());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append streamDef of table to this emit                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Emit::vAppend_streamDef_table(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm(C_NOT_NULL);
+
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
+
+  i8 iExpCol = pCI->G.p_emit->nExpr() + 1;
+
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Card_Expr* p_expr_Column =
+        Card_Expr::pCast_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
+
+    pCI->G.p_emit->vAppendChild(p_expr_Column);
   }
 }
 

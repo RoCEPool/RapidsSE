@@ -128,65 +128,32 @@ void Card_OP::vCreate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pCI);
-
   RASSERT(! pSub_emit());
-  vEnsure_stream(pCI);
 
   eCK eCard = this->eCard();
   switch (eCard) {
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case CK_o_FROM:
-    {
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-      pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
-
-      if (! pCI->G.p_tableNm) {
-        vDump(__func__);
-        vDebugPoint();
-      }
-
-      Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
-      StreamDef* pStreamDef = pTable->pStreamDef();
-
-      if (pCI->Flux.m_pArriving) {
+    case CK_o_SCAN:
+      pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
+      vEnsure_stream(pCI);
+      if (pCI->Flux.m_pArriving)
         pCI->G.p_emit = pCI->Flux.m_pArriving->pReducedCopy();
-      }
-      else {
+      else
         pCI->G.p_emit = new Card_Emit;
-      }
 
-      //  --  --  --  --  --  --  --  --  --  --  --  --  --
-
-      // todo: [ray A 145]
-      char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
-
-      i8 iExpCol = pCI->G.p_emit->nExpr() + 1;
-
-      i8 nCols = pStreamDef->nColumns();
-      for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-        Column *pColumn = pStreamDef->pGetColumn(i_Col);
-
-        Card_Expr* p_expr_Column =
-            Card_Expr::pCast_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
-
-        pCI->G.p_emit->vAppendChild(p_expr_Column);
-      }
-
+      pCI->G.p_emit->vAppend_streamDef_table(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-
-      pCI->Flux.m_pArriving = pCI->G.p_emit;
-
-    }
+      RASSERT(pCI->G.p_OP->pSub_emit())
       break;
 
     default:
       break;
   }
 
-}
 
+}
 
 /*----------------------------------------------------------------------------*/
 /* remove and delete filter if it's empty                                     */

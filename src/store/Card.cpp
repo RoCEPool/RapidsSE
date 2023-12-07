@@ -2474,12 +2474,17 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Aggreg.hpp"
-Card_Aggreg* Card::pSub_aggreg(void)
+Card_Aggreg* Card::pSub_aggreg(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Aggreg* p_aggreg =
       _pCard_Aggreg(pFindSubCard(CK_o_AGGREG));
+
+  if (bNotNull && !p_aggreg) {
+    NEVER_REACH
+  }
+
   return p_aggreg;
 }
 
@@ -2487,12 +2492,17 @@ Card_Aggreg* Card::pSub_aggreg(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_BoolPred.hpp"
-Card_BoolPred* Card::pSub_boolPred(void)
+Card_BoolPred* Card::pSub_boolPred(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolPred* p_boolPred =
       _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
+
+  if (bNotNull && !p_boolPred) {
+    NEVER_REACH
+  }
+
   return p_boolPred;
 }
 
@@ -2500,12 +2510,17 @@ Card_BoolPred* Card::pSub_boolPred(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Bound.hpp"
-Card_Bound* Card::pSub_bound(void)
+Card_Bound* Card::pSub_bound(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Bound* p_bound =
       _pCard_Bound(pFindSubCard(CK_BOUND));
+
+  if (bNotNull && !p_bound) {
+    NEVER_REACH
+  }
+
   return p_bound;
 }
 
@@ -2513,12 +2528,17 @@ Card_Bound* Card::pSub_bound(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Bounds.hpp"
-Card_Bounds* Card::pSub_bounds(void)
+Card_Bounds* Card::pSub_bounds(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Bounds* p_bounds =
       _pCard_Bounds(pFindSubCard(CK_BOUNDS));
+
+  if (bNotNull && !p_bounds) {
+    NEVER_REACH
+  }
+
   return p_bounds;
 }
 
@@ -2526,12 +2546,17 @@ Card_Bounds* Card::pSub_bounds(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Caller.hpp"
-Card_Caller* Card::pSub_caller(void)
+Card_Caller* Card::pSub_caller(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Caller* p_caller =
       _pCard_Caller(pFindSubCard(CK_CALLER));
+
+  if (bNotNull && !p_caller) {
+    NEVER_REACH
+  }
+
   return p_caller;
 }
 
@@ -2539,12 +2564,17 @@ Card_Caller* Card::pSub_caller(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CallOp.hpp"
-Card_CallOp* Card::pSub_callOp(void)
+Card_CallOp* Card::pSub_callOp(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_CallOp* p_callOp =
       _pCard_CallOp(pFindSubCard(CK_CALLOP));
+
+  if (bNotNull && !p_callOp) {
+    NEVER_REACH
+  }
+
   return p_callOp;
 }
 
@@ -2552,25 +2582,35 @@ Card_CallOp* Card::pSub_callOp(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Cast.hpp"
-Card_Cast* Card::pSub_cast(void)
+Card_Cast* Card::pSub_cast(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Cast* p_next =
+  Card_Cast* p_cast =
       _pCard_Cast(pFindSubCard(CK_o_CAST));
-  return p_next;
+
+  if (bNotNull && !p_cast) {
+    NEVER_REACH
+  }
+
+  return p_cast;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Clause.hpp"
-Card_Clause* Card::pSub_clause(void)
+Card_Clause* Card::pSub_clause(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Clause* p_clause =
       _pCard_Clause(pFindSubCard(CK_CLAUSE));
+
+  if (bNotNull && !p_clause) {
+    NEVER_REACH
+  }
+
   return p_clause;
 }
 
@@ -2578,25 +2618,35 @@ Card_Clause* Card::pSub_clause(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_RlnConj.hpp"
-Card_RlnConj* Card::pSub_cmpConj(void)
+Card_RlnConj* Card::pSub_rlnConj(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_RlnConj* p_conjCmp =
+  Card_RlnConj* p_rlnConj =
       _pCard_RlnConj(pFindSubCard(CK_RLNCONJ));
-  return p_conjCmp;
+
+  if (bNotNull && !p_rlnConj) {
+    NEVER_REACH
+  }
+
+  return p_rlnConj;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Constraint.hpp"
-Card_Constraint* Card::pSub_constraint(void)
+Card_Constraint* Card::pSub_constraint(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Constraint* p_constraint =
       _pCard_Constraint(pFindSubCard(CK_s_CONSTRAINT));
+
+  if (bNotNull && !p_constraint) {
+    NEVER_REACH
+  }
+
   return p_constraint;
 }
 
@@ -2604,25 +2654,35 @@ Card_Constraint* Card::pSub_constraint(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Correlation.hpp"
-Card_Correlation* Card::pSub_correlation(void)
+Card_Correlation* Card::pSub_correlation(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Correlation* p_paramList =
+  Card_Correlation* p_correlation =
       _pCard_Correlation(pFindSubCard(CK_o_CORRELATION));
-  return p_paramList;
+
+  if (bNotNull && !p_correlation) {
+    NEVER_REACH
+  }
+
+  return p_correlation;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CostNetwork.hpp"
-Card_CostNetwork* Card::pSub_costNetwork(void)
+Card_CostNetwork* Card::pSub_costNetwork(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_CostNetwork* p_costNetwork =
       _pCard_CostNetwork(pFindSubCard(CK_COSTNETWORK));
+
+  if (bNotNull && !p_costNetwork) {
+    NEVER_REACH
+  }
+
   return p_costNetwork;
 }
 
@@ -2630,12 +2690,17 @@ Card_CostNetwork* Card::pSub_costNetwork(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CostJoining.hpp"
-Card_CostJoining* Card::pSub_costJoining(void)
+Card_CostJoining* Card::pSub_costJoining(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_CostJoining* p_costJoining =
       _pCard_CostJoining(pFindSubCard(CK_COSTJOINING));
+
+  if (bNotNull && !p_costJoining) {
+    NEVER_REACH
+  }
+
   return p_costJoining;
 }
 
@@ -2643,12 +2708,17 @@ Card_CostJoining* Card::pSub_costJoining(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CostStream.hpp"
-Card_CostStream* Card::pSub_costQuery(void)
+Card_CostStream* Card::pSub_costQuery(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_CostStream* p_costQuery =
       _pCard_CostStream(pFindSubCard(CK_COSTSTREAM));
+
+  if (bNotNull && !p_costQuery) {
+    NEVER_REACH
+  }
+
   return p_costQuery;
 }
 
@@ -2656,25 +2726,35 @@ Card_CostStream* Card::pSub_costQuery(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CostUnicast.hpp"
-Card_CostUnicast* Card::pSub_costUnicast(void)
+Card_CostUnicast* Card::pSub_costUnicast(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CostUnicast* p_loadUnicast =
+  Card_CostUnicast* p_costUnicast =
       _pCard_CostUnicast(pFindSubCard(CK_COSTUNICAST));
-  return p_loadUnicast;
+
+  if (bNotNull && !p_costUnicast) {
+    NEVER_REACH
+  }
+
+  return p_costUnicast;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Count.hpp"
-Card_Count* Card::pSub_count(void)
+Card_Count* Card::pSub_count(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Count* p_count =
       _pCard_Count(pFindSubCard(CK_COUNT));
+
+  if (bNotNull && !p_count) {
+    NEVER_REACH
+  }
+
   return p_count;
 }
 
@@ -2682,12 +2762,17 @@ Card_Count* Card::pSub_count(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CorrCols.hpp"
-Card_CorrCols* Card::pSub_corrCols(void)
+Card_CorrCols* Card::pSub_corrCols(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_CorrCols* p_corrCols =
       _pCard_CorrCols(pFindSubCard(CK_CORRCOLS));
+
+  if (bNotNull && !p_corrCols) {
+    NEVER_REACH
+  }
+
   return p_corrCols;
 }
 
@@ -2695,12 +2780,17 @@ Card_CorrCols* Card::pSub_corrCols(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CrossJoin.hpp"
-Card_CrossJoin* Card::pSub_crossJoin(void)
+Card_CrossJoin* Card::pSub_crossJoin(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_CrossJoin* p_crossJoin =
       _pCard_CrossJoin(pFindSubCard(CK_o_CROSSJOIN));
+
+  if (bNotNull && !p_crossJoin) {
+    NEVER_REACH
+  }
+
   return p_crossJoin;
 }
 
@@ -2708,12 +2798,17 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Decision.hpp"
-Card_Decision* Card::pSub_decision(void)
+Card_Decision* Card::pSub_decision(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Decision* p_decision =
       _pCard_Decision(pFindSubCard(CK_DECISION));
+
+  if (bNotNull && !p_decision) {
+    NEVER_REACH
+  }
+
   return p_decision;
 }
 
@@ -2721,12 +2816,17 @@ Card_Decision* Card::pSub_decision(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Direction.hpp"
-Card_Direction* Card::pSub_direction(void)
+Card_Direction* Card::pSub_direction(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Direction* p_direction =
       _pCard_Direction(pFindSubCard(CK_DIRECTION));
+
+  if (bNotNull && !p_direction) {
+    NEVER_REACH
+  }
+
   return p_direction;
 }
 
@@ -2734,12 +2834,17 @@ Card_Direction* Card::pSub_direction(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Emit.hpp"
-Card_Emit* Card::pSub_emit(void)
+Card_Emit* Card::pSub_emit(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Emit* p_emit =
       _pCard_Emit(pFindSubCard(CK_t_EMIT));
+
+  if (bNotNull && !p_emit) {
+    NEVER_REACH
+  }
+
   return p_emit;
 }
 
@@ -2747,12 +2852,17 @@ Card_Emit* Card::pSub_emit(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Expr.hpp"
-Card_Expr* Card::pSub_expr(void)
+Card_Expr* Card::pSub_expr(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Expr* p_expr =
       _pCard_Expr(pFindSubCard(CK_EXPR));
+
+  if (bNotNull && !p_expr) {
+    NEVER_REACH
+  }
+
   return p_expr;
 }
 
@@ -2760,12 +2870,17 @@ Card_Expr* Card::pSub_expr(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Filter.hpp"
-Card_Filter* Card::pSub_filter(void)
+Card_Filter* Card::pSub_filter(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Filter* p_filter =
       _pCard_Filter(pFindSubCard(CK_o_FILTER));
+
+  if (bNotNull && !p_filter) {
+    NEVER_REACH
+  }
+
   return p_filter;
 }
 
@@ -2773,12 +2888,17 @@ Card_Filter* Card::pSub_filter(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_FiltPred.hpp"
-Card_FiltPred* Card::pSub_filtPred(void)
+Card_FiltPred* Card::pSub_filtPred(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_FiltPred* p_filtPred =
       _pCard_FiltPred(pFindSubCard(CK_FILTPRED));
+
+  if (bNotNull && !p_filtPred) {
+    NEVER_REACH
+  }
+
   return p_filtPred;
 }
 
@@ -2786,12 +2906,17 @@ Card_FiltPred* Card::pSub_filtPred(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_FiltPredList.hpp"
-Card_FiltPredList* Card::pSub_filtPredList(void)
+Card_FiltPredList* Card::pSub_filtPredList(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_FiltPredList* p_filtPredList =
       _pCard_FiltPredList(pFindSubCard(CK_FILTPREDLIST));
+
+  if (bNotNull && !p_filtPredList) {
+    NEVER_REACH
+  }
+
   return p_filtPredList;
 }
 
@@ -2799,12 +2924,17 @@ Card_FiltPredList* Card::pSub_filtPredList(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Flat.hpp"
-Card_Flat* Card::pSub_flat(void)
+Card_Flat* Card::pSub_flat(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Flat* p_flat =
       _pCard_Flat(pFindSubCard(CK_c_FOLD));
+
+  if (bNotNull && !p_flat) {
+    NEVER_REACH
+  }
+
   return p_flat;
 }
 
@@ -2812,12 +2942,17 @@ Card_Flat* Card::pSub_flat(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Fold.hpp"
-Card_Fold* Card::pSub_fold(void)
+Card_Fold* Card::pSub_fold(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Fold* p_fold =
       _pCard_Fold(pFindSubCard(CK_c_FOLD));
+
+  if (bNotNull && !p_fold) {
+    NEVER_REACH
+  }
+
   return p_fold;
 }
 
@@ -2825,12 +2960,17 @@ Card_Fold* Card::pSub_fold(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_From.hpp"
-Card_From* Card::pSub_from(void)
+Card_From* Card::pSub_from(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_From* p_from =
       _pCard_From(pFindSubCard(CK_o_FROM));
+
+  if (bNotNull && !p_from) {
+    NEVER_REACH
+  }
+
   return p_from;
 }
 
@@ -2838,12 +2978,17 @@ Card_From* Card::pSub_from(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_GbyAgg.hpp"
-Card_GbyAgg* Card::pSub_gbyAgg(void)
+Card_GbyAgg* Card::pSub_gbyAgg(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_GbyAgg* p_gbyAgg =
       _pCard_GbyAgg(pFindSubCard(CK_o_GBYAGG));
+
+  if (bNotNull && !p_gbyAgg) {
+    NEVER_REACH
+  }
+
   return p_gbyAgg;
 }
 
@@ -2851,12 +2996,17 @@ Card_GbyAgg* Card::pSub_gbyAgg(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Hashing.hpp"
-Card_Hashing* Card::pSub_hashing(void)
+Card_Hashing* Card::pSub_hashing(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Hashing* p_hashing =
       _pCard_Hashing(pFindSubCard(CK_s_HASHING));
+
+  if (bNotNull && !p_hashing) {
+    NEVER_REACH
+  }
+
   return p_hashing;
 }
 
@@ -2864,12 +3014,17 @@ Card_Hashing* Card::pSub_hashing(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_HshCol.hpp"
-Card_HshCol* Card::pSub_hshCol(void)
+Card_HshCol* Card::pSub_hshCol(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_HshCol* p_hshCol =
       _pCard_HshCol(pFindSubCard(CK_t_HSHCOL));
+
+  if (bNotNull && !p_hshCol) {
+    NEVER_REACH
+  }
+
   return p_hshCol;
 }
 
@@ -2877,12 +3032,17 @@ Card_HshCol* Card::pSub_hshCol(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_HshColList.hpp"
-Card_HshColList* Card::pSub_hshColList(void)
+Card_HshColList* Card::pSub_hshColList(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_HshColList* p_hshColList =
       _pCard_HshColList(pFindSubCard(CK_s_HSHCOLLIST));
+
+  if (bNotNull && !p_hshColList) {
+    NEVER_REACH
+  }
+
   return p_hshColList;
 }
 
@@ -2890,12 +3050,17 @@ Card_HshColList* Card::pSub_hshColList(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_IdxColList.hpp"
-Card_IdxColList* Card::pSub_idxColList(void)
+Card_IdxColList* Card::pSub_idxColList(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_IdxColList* p_idxColList =
       _pCard_IdxColList(pFindSubCard(CK_IDXCOLLIST));
+
+  if (bNotNull && !p_idxColList) {
+    NEVER_REACH
+  }
+
   return p_idxColList;
 }
 
@@ -2903,12 +3068,17 @@ Card_IdxColList* Card::pSub_idxColList(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Index.hpp"
-Card_Index* Card::pSub_index(void)
+Card_Index* Card::pSub_index(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Index* p_index =
       _pCard_Index(pFindSubCard(CK_INDEX));
+
+  if (bNotNull && !p_index) {
+    NEVER_REACH
+  }
+
   return p_index;
 }
 
@@ -2916,12 +3086,17 @@ Card_Index* Card::pSub_index(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_IndexJoin.hpp"
-Card_IndexJoin* Card::pSub_indexJoin(void)
+Card_IndexJoin* Card::pSub_indexJoin(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_IndexJoin* p_indexJoin =
       _pCard_IndexJoin(pFindSubCard(CK_o_INDEXJOIN));
+
+  if (bNotNull && !p_indexJoin) {
+    NEVER_REACH
+  }
+
   return p_indexJoin;
 }
 
@@ -2929,12 +3104,17 @@ Card_IndexJoin* Card::pSub_indexJoin(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_IndexList.hpp"
-Card_IndexList* Card::pSub_indexList(void)
+Card_IndexList* Card::pSub_indexList(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_IndexList* p_indexList =
       _pCard_IndexList(pFindSubCard(CK_t_INDEXLIST));
+
+  if (bNotNull && !p_indexList) {
+    NEVER_REACH
+  }
+
   return p_indexList;
 }
 
@@ -2942,12 +3122,17 @@ Card_IndexList* Card::pSub_indexList(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_IndexNm.hpp"
-Card_IndexNm* Card::pSub_indexNm(void)
+Card_IndexNm* Card::pSub_indexNm(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_IndexNm* p_indexNm =
       _pCard_IndexNm(pFindSubCard(CK_INDEXNM));
+
+  if (bNotNull && !p_indexNm) {
+    NEVER_REACH
+  }
+
   return p_indexNm;
 }
 
@@ -2955,12 +3140,17 @@ Card_IndexNm* Card::pSub_indexNm(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Injectable.hpp"
-Card_Injectable* Card::pSub_injectable(void)
+Card_Injectable* Card::pSub_injectable(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Injectable* p_injected =
       _pCard_Injectable(pFindSubCard(CK_s_INJECTABLE));
+
+  if (bNotNull && !p_injected) {
+    NEVER_REACH
+  }
+
   return p_injected;
 }
 
@@ -2968,12 +3158,17 @@ Card_Injectable* Card::pSub_injectable(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Inflate.hpp"
-Card_Inflate* Card::pSub_inflate(void)
+Card_Inflate* Card::pSub_inflate(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Inflate* p_inflate =
       _pCard_Inflate(pFindSubCard(CK_o_INFLATE));
+
+  if (bNotNull && !p_inflate) {
+    NEVER_REACH
+  }
+
   return p_inflate;
 }
 
@@ -2981,12 +3176,17 @@ Card_Inflate* Card::pSub_inflate(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_JoinCast.hpp"
-Card_JoinCast* Card::pSub_joinCast(void)
+Card_JoinCast* Card::pSub_joinCast(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_JoinCast* p_castNext =
       _pCard_JoinCast(pFindSubCard(CK_JOINCAST));
+
+  if (bNotNull && !p_castNext) {
+    NEVER_REACH
+  }
+
   return p_castNext;
 }
 
@@ -2994,12 +3194,17 @@ Card_JoinCast* Card::pSub_joinCast(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Key.hpp"
-Card_Key* Card::pSub_key(void)
+Card_Key* Card::pSub_key(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Key* p_key =
       _pCard_Key(pFindSubCard(CK_s_KEY));
+
+  if (bNotNull && !p_key) {
+    NEVER_REACH
+  }
+
   return p_key;
 }
 
@@ -3007,12 +3212,17 @@ Card_Key* Card::pSub_key(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_KeyExists.hpp"
-Card_KeyExists* Card::pSub_keyExists(void)
+Card_KeyExists* Card::pSub_keyExists(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_KeyExists* p_keyExists =
       _pCard_KeyExists(pFindSubCard(CK_o_KEYEXISTS));
+
+  if (bNotNull && !p_keyExists) {
+    NEVER_REACH
+  }
+
   return p_keyExists;
 }
 
@@ -3020,12 +3230,17 @@ Card_KeyExists* Card::pSub_keyExists(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_KeyNotExists.hpp"
-Card_KeyNotExists* Card::pSub_keyNotExists(void)
+Card_KeyNotExists* Card::pSub_keyNotExists(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_KeyNotExists* p_keyNotExists =
       _pCard_KeyNotExists(pFindSubCard(CK_o_KEYNOTEXISTS));
+
+  if (bNotNull && !p_keyNotExists) {
+    NEVER_REACH
+  }
+
   return p_keyNotExists;
 }
 
@@ -3033,12 +3248,17 @@ Card_KeyNotExists* Card::pSub_keyNotExists(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_JoinEstimate.hpp"
-Card_JoinEstimate* Card::pSub_joinEstimate(void)
+Card_JoinEstimate* Card::pSub_joinEstimate(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_JoinEstimate* p_joinCost =
       _pCard_JoinEstimate(pFindSubCard(CK_JOINESTIMATE));
+
+  if (bNotNull && !p_joinCost) {
+    NEVER_REACH
+  }
+
   return p_joinCost;
 }
 
@@ -3046,12 +3266,17 @@ Card_JoinEstimate* Card::pSub_joinEstimate(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_KeyCells.hpp"
-Card_KeyCells* Card::pSub_keyCells(void)
+Card_KeyCells* Card::pSub_keyCells(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_KeyCells* p_keyCells =
       _pCard_KeyCells(pFindSubCard(CK_KEYCELLS));
+
+  if (bNotNull && !p_keyCells) {
+    NEVER_REACH
+  }
+
   return p_keyCells;
 }
 
@@ -3059,12 +3284,17 @@ Card_KeyCells* Card::pSub_keyCells(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Level.hpp"
-Card_Level* Card::pSub_level(void)
+Card_Level* Card::pSub_level(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Level* p_level =
       _pCard_Level(pFindSubCard(CK_s_LEVEL));
+
+  if (bNotNull && !p_level) {
+    NEVER_REACH
+  }
+
   return p_level;
 }
 
@@ -3072,12 +3302,17 @@ Card_Level* Card::pSub_level(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Map.hpp"
-Card_Map* Card::pSub_map(void)
+Card_Map* Card::pSub_map(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Map* p_map =
       _pCard_Map(pFindSubCard(CK_MAP));
+
+  if (bNotNull && !p_map) {
+    NEVER_REACH
+  }
+
   return p_map;
 }
 
@@ -3085,12 +3320,17 @@ Card_Map* Card::pSub_map(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Mapping.hpp"
-Card_Mapping* Card::pSub_mapping(void)
+Card_Mapping* Card::pSub_mapping(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Mapping* p_mapping =
       _pCard_Mapping(pFindSubCard(CK_s_MAPPING));
+
+  if (bNotNull && !p_mapping) {
+    NEVER_REACH
+  }
+
   return p_mapping;
 }
 
@@ -3098,12 +3338,17 @@ Card_Mapping* Card::pSub_mapping(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Needed.hpp"
-Card_Needed* Card::pSub_needed(void)
+Card_Needed* Card::pSub_needed(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Needed* p_needed =
       _pCard_Needed(pFindSubCard(CK_s_NEEDED));
+
+  if (bNotNull && !p_needed) {
+    NEVER_REACH
+  }
+
   return p_needed;
 }
 
@@ -3111,12 +3356,17 @@ Card_Needed* Card::pSub_needed(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Note.hpp"
-Card_Note* Card::pSub_note(void)
+Card_Note* Card::pSub_note(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Note* p_note =
       _pCard_Note(pFindSubCard(CK_NOTE));
+
+  if (bNotNull && !p_note) {
+    NEVER_REACH
+  }
+
   return p_note;
 }
 
@@ -3124,12 +3374,17 @@ Card_Note* Card::pSub_note(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_NotConj.hpp"
-Card_NotConj* Card::pSub_notConj(void)
+Card_NotConj* Card::pSub_notConj(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_NotConj* p_notPred =
       _pCard_NotConj(pFindSubCard(CK_NOTCONJ));
+
+  if (bNotNull && !p_notPred) {
+    NEVER_REACH
+  }
+
   return p_notPred;
 }
 
@@ -3137,25 +3392,35 @@ Card_NotConj* Card::pSub_notConj(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_On.hpp"
-Card_On* Card::pSub_on(void)
+Card_On* Card::pSub_on(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_On* p_On =
+  Card_On* p_on =
       _pCard_On(pFindSubCard(CK_ON));
-  return p_On;
+
+  if (bNotNull && !p_on) {
+    NEVER_REACH
+  }
+
+  return p_on;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_OuterColNm.hpp"
-Card_OuterColNm* Card::pSub_outerColNm(void)
+Card_OuterColNm* Card::pSub_outerColNm(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_OuterColNm* p_outerColNm =
       _pCard_OuterColNm(pFindSubCard(CK_OUTERCOLNM));
+
+  if (bNotNull && !p_outerColNm) {
+    NEVER_REACH
+  }
+
   return p_outerColNm;
 }
 
@@ -3163,12 +3428,17 @@ Card_OuterColNm* Card::pSub_outerColNm(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_OuterJoin.hpp"
-Card_OuterJoin* Card::pSub_outerJoin(void)
+Card_OuterJoin* Card::pSub_outerJoin(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_OuterJoin* p_outerJoin =
       _pCard_OuterJoin(pFindSubCard(CK_OUTERJOIN));
+
+  if (bNotNull && !p_outerJoin) {
+    NEVER_REACH
+  }
+
   return p_outerJoin;
 }
 
@@ -3176,12 +3446,17 @@ Card_OuterJoin* Card::pSub_outerJoin(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Payload.hpp"
-Card_Payload* Card::pSub_payload(void)
+Card_Payload* Card::pSub_payload(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Payload* p_payload =
       _pCard_Payload(pFindSubCard(CK_s_PAYLOAD));
+
+  if (bNotNull && !p_payload) {
+    NEVER_REACH
+  }
+
   return p_payload;
 }
 
@@ -3189,12 +3464,17 @@ Card_Payload* Card::pSub_payload(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_PayloadCells.hpp"
-Card_PayloadCells* Card::pSub_payloadCells(void)
+Card_PayloadCells* Card::pSub_payloadCells(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PayloadCells* p_payloadCells =
       _pCard_PayloadCells(pFindSubCard(CK_PAYLOADCELLS));
+
+  if (bNotNull && !p_payloadCells) {
+    NEVER_REACH
+  }
+
   return p_payloadCells;
 }
 
@@ -3202,12 +3482,17 @@ Card_PayloadCells* Card::pSub_payloadCells(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Required.hpp"
-Card_Required* Card::pSub_required(void)
+Card_Required* Card::pSub_required(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Required* p_required =
       _pCard_Required(pFindSubCard(CK_REQUIRED));
+
+  if (bNotNull && !p_required) {
+    NEVER_REACH
+  }
+
   return p_required;
 }
 
@@ -3215,12 +3500,17 @@ Card_Required* Card::pSub_required(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_RowCount.hpp"
-Card_RowCount* Card::pSub_rowCount(void)
+Card_RowCount* Card::pSub_rowCount(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_RowCount* p_rowCount =
       _pCard_RowCount(pFindSubCard(CK_ROWCOUNT));
+
+  if (bNotNull && !p_rowCount) {
+    NEVER_REACH
+  }
+
   return p_rowCount;
 }
 
@@ -3228,12 +3518,17 @@ Card_RowCount* Card::pSub_rowCount(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_RowSize.hpp"
-Card_RowSize* Card::pSub_rowSize(void)
+Card_RowSize* Card::pSub_rowSize(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_RowSize* p_rowSize =
       _pCard_RowSize(pFindSubCard(CK_ROWSIZE));
+
+  if (bNotNull && !p_rowSize) {
+    NEVER_REACH
+  }
+
   return p_rowSize;
 }
 
@@ -3241,25 +3536,35 @@ Card_RowSize* Card::pSub_rowSize(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_RpnCalc.hpp"
-Card_RpnCalc* Card::pSub_rpnCalc(void)
+Card_RpnCalc* Card::pSub_rpnCalc(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_RpnCalc* p_calc =
+  Card_RpnCalc* p_rpnCalc =
       _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
-  return p_calc;
+
+  if (bNotNull && !p_rpnCalc) {
+    NEVER_REACH
+  }
+
+  return p_rpnCalc;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Scan.hpp"
-Card_Scan* Card::pSub_scan(void)
+Card_Scan* Card::pSub_scan(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Scan* p_scan =
       _pCard_Scan(pFindSubCard(CK_o_SCAN));
+
+  if (bNotNull && !p_scan) {
+    NEVER_REACH
+  }
+
   return p_scan;
 }
 
@@ -3267,12 +3572,17 @@ Card_Scan* Card::pSub_scan(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Section.hpp"
-Card_Section* Card::pSub_section(void)
+Card_Section* Card::pSub_section(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Section* p_section =
       _pCard_Section(pFindSubCard(CK_SECTION));
+
+  if (bNotNull && !p_section) {
+    NEVER_REACH
+  }
+
   return p_section;
 }
 
@@ -3280,12 +3590,17 @@ Card_Section* Card::pSub_section(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Spare.hpp"
-Card_Spare* Card::pSub_spare(void)
+Card_Spare* Card::pSub_spare(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Spare* p_spare =
       _pCard_Spare(pFindSubCard(CK_SPARE));
+
+  if (bNotNull && !p_spare) {
+    NEVER_REACH
+  }
+
   return p_spare;
 }
 
@@ -3293,12 +3608,17 @@ Card_Spare* Card::pSub_spare(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_SqyCalls.hpp"
-Card_SqyCalls* Card::pSub_sqyCalls(void)
+Card_SqyCalls* Card::pSub_sqyCalls(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_SqyCalls* p_sqyCalls =
       _pCard_SqyCalls(pFindSubCard(CK_SQYCALLS));
+
+  if (bNotNull && !p_sqyCalls) {
+    NEVER_REACH
+  }
+
   return p_sqyCalls;
 }
 
@@ -3306,12 +3626,17 @@ Card_SqyCalls* Card::pSub_sqyCalls(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_SqyInfo.hpp"
-Card_SqyInfo* Card::pSub_sqyInfo(void)
+Card_SqyInfo* Card::pSub_sqyInfo(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_SqyInfo* p_sqyInfo =
       _pCard_SqyInfo(pFindSubCard(CK_SQYINFO));
+
+  if (bNotNull && !p_sqyInfo) {
+    NEVER_REACH
+  }
+
   return p_sqyInfo;
 }
 
@@ -3319,12 +3644,17 @@ Card_SqyInfo* Card::pSub_sqyInfo(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_SqyNo.hpp"
-Card_SqyNo* Card::pSub_sqyNo(void)
+Card_SqyNo* Card::pSub_sqyNo(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_SqyNo* p_sqyNo =
       _pCard_SqyNo(pFindSubCard(CK_SQYNO));
+
+  if (bNotNull && !p_sqyNo) {
+    NEVER_REACH
+  }
+
   return p_sqyNo;
 }
 
@@ -3332,12 +3662,17 @@ Card_SqyNo* Card::pSub_sqyNo(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Stream.hpp"
-Card_Stream* Card::pSub_stream(void)
+Card_Stream* Card::pSub_stream(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Stream* p_stream =
       _pCard_Stream(pFindSubCard(CK_s_STREAM));
+
+  if (bNotNull && !p_stream) {
+    NEVER_REACH
+  }
+
   return p_stream;
 }
 
@@ -3345,12 +3680,17 @@ Card_Stream* Card::pSub_stream(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_StreamKey.hpp"
-Card_StreamKey* Card::pSub_streamKey(void)
+Card_StreamKey* Card::pSub_streamKey(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_StreamKey* p_streamKey =
       _pCard_StreamKey(pFindSubCard(CK_STREAMKEY));
+
+  if (bNotNull && !p_streamKey) {
+    NEVER_REACH
+  }
+
   return p_streamKey;
 }
 
@@ -3358,12 +3698,17 @@ Card_StreamKey* Card::pSub_streamKey(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_StreamPtn.hpp"
-Card_StreamPtn* Card::pSub_streamPtn(void)
+Card_StreamPtn* Card::pSub_streamPtn(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_StreamPtn* p_streamPtn =
       _pCard_StreamPtn(pFindSubCard(CK_STREAMPTN));
+
+  if (bNotNull && !p_streamPtn) {
+    NEVER_REACH
+  }
+
   return p_streamPtn;
 }
 
@@ -3371,12 +3716,17 @@ Card_StreamPtn* Card::pSub_streamPtn(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_SubQuery.hpp"
-Card_SubQuery* Card::pSub_subQuery(void)
+Card_SubQuery* Card::pSub_subQuery(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_SubQuery* p_subQuery =
       _pCard_SubQuery(pFindSubCard(CK_SUBQUERY));
+
+  if (bNotNull && !p_subQuery) {
+    NEVER_REACH
+  }
+
   return p_subQuery;
 }
 
@@ -3384,12 +3734,17 @@ Card_SubQuery* Card::pSub_subQuery(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Synthesis.hpp"
-Card_Synthesis* Card::pSub_synthesis(void)
+Card_Synthesis* Card::pSub_synthesis(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Synthesis* pSub_synthesis =
       _pCard_Synthesis(pFindSubCard(CK_SYNTHESIS));
+
+  if (bNotNull && !pSub_synthesis) {
+    NEVER_REACH
+  }
+
   return pSub_synthesis;
 }
 
@@ -3397,12 +3752,17 @@ Card_Synthesis* Card::pSub_synthesis(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Table.hpp"
-Card_Table* Card::pSub_table(void)
+Card_Table* Card::pSub_table(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Table* p_table =
       _pCard_Table(pFindSubCard(CK_s_TABLE));
+
+  if (bNotNull && !p_table) {
+    NEVER_REACH
+  }
+
   return p_table;
 }
 
@@ -3410,12 +3770,17 @@ Card_Table* Card::pSub_table(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_TableInfo.hpp"
-Card_TableInfo* Card::pSub_tableInfo(void)
+Card_TableInfo* Card::pSub_tableInfo(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TableInfo* p_tableInfo =
       _pCard_TableInfo(pFindSubCard(CK_t_TABLEINFO));
+
+  if (bNotNull && !p_tableInfo) {
+    NEVER_REACH
+  }
+
   return p_tableInfo;
 }
 
@@ -3423,12 +3788,17 @@ Card_TableInfo* Card::pSub_tableInfo(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_TableNm.hpp"
-Card_TableNm* Card::pSub_tableNm(void)
+Card_TableNm* Card::pSub_tableNm(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TableNm* p_tableNm =
       _pCard_TableNm(pFindSubCard(CK_t_TABLENM));
+
+  if (bNotNull && !p_tableNm) {
+    NEVER_REACH
+  }
+
   return p_tableNm;
 }
 
@@ -3436,12 +3806,17 @@ Card_TableNm* Card::pSub_tableNm(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_TablePtn.hpp"
-Card_TablePtn* Card::pSub_tablePtn(void)
+Card_TablePtn* Card::pSub_tablePtn(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TablePtn* p_tablePtn =
       _pCard_TablePtn(pFindSubCard(CK_TABLEPTN));
+
+  if (bNotNull && !p_tablePtn) {
+    NEVER_REACH
+  }
+
   return p_tablePtn;
 }
 
@@ -3449,25 +3824,35 @@ Card_TablePtn* Card::pSub_tablePtn(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_TableSize.hpp"
-Card_TableSize* Card::pSub_tableSize(void)
+Card_TableSize* Card::pSub_tableSize(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_TableSize* p_size =
+  Card_TableSize* p_tableSize =
       _pCard_TableSize(pFindSubCard(CK_TABLESIZE));
-  return p_size;
+
+  if (bNotNull && !p_tableSize) {
+    NEVER_REACH
+  }
+
+  return p_tableSize;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_TblSyn.hpp"
-Card_TblSyn* Card::pSub_tblSyn(void)
+Card_TblSyn* Card::pSub_tblSyn(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TblSyn* p_tblSyn =
       _pCard_TblSyn(pFindSubCard(CK_TBLSYN));
+
+  if (bNotNull && !p_tblSyn) {
+    NEVER_REACH
+  }
+
   return p_tblSyn;
 }
 
@@ -3475,12 +3860,17 @@ Card_TblSyn* Card::pSub_tblSyn(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Term.hpp"
-Card_Term* Card::pSub_term(void)
+Card_Term* Card::pSub_term(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term =
       _pCard_Term(pFindSubCard(CK_TERM));
+
+  if (bNotNull && !p_term) {
+    NEVER_REACH
+  }
+
   return p_term;
 }
 
@@ -3488,12 +3878,17 @@ Card_Term* Card::pSub_term(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Top.hpp"
-Card_Top* Card::pSub_top(void)
+Card_Top* Card::pSub_top(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Top* p_top =
       _pCard_Top(pFindSubCard(CK_o_TOP));
+
+  if (bNotNull && !p_top) {
+    NEVER_REACH
+  }
+
   return p_top;
 }
 
@@ -3501,25 +3896,35 @@ Card_Top* Card::pSub_top(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Topology.hpp"
-Card_Topology* Card::pSub_topology(void)
+Card_Topology* Card::pSub_topology(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Topology* p_stageTopo =
+  Card_Topology* p_topology =
       _pCard_Topology(pFindSubCard(CK_TOPOLOGY));
-  return p_stageTopo;
+
+  if (bNotNull && !p_topology) {
+    NEVER_REACH
+  }
+
+  return p_topology;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Unique.hpp"
-Card_Unique* Card::pSub_unique(void)
+Card_Unique* Card::pSub_unique(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Unique* p_unique =
       _pCard_Unique(pFindSubCard(CK_UNIQUE));
+
+  if (bNotNull && !p_unique) {
+    NEVER_REACH
+  }
+
   return p_unique;
 }
 
@@ -3527,12 +3932,17 @@ Card_Unique* Card::pSub_unique(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Where.hpp"
-Card_Where* Card::pSub_where(void)
+Card_Where* Card::pSub_where(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Where* p_where =
       _pCard_Where(pFindSubCard(CK_o_WHERE));
+
+  if (bNotNull && !p_where) {
+    NEVER_REACH
+  }
+
   return p_where;
 }
 
@@ -3540,12 +3950,17 @@ Card_Where* Card::pSub_where(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_XCard.hpp"
-Card_XCard* Card::pSub_xcard(void)
+Card_XCard* Card::pSub_xcard(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_XCard* p_xcard =
       _pCard_XCard(pFindSubCard(CK_XCARD));
+
+  if (bNotNull && !p_xcard) {
+    NEVER_REACH
+  }
+
   return p_xcard;
 }
 

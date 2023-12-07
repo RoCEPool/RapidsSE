@@ -84,28 +84,25 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
         continue;
 
       case CK_o_FROM:
-        m_pCI->G.p_table = m_pCI->G.p_OP->pSub_table();
-        RASSERT(! m_pCI->G.p_OP->pSub_emit())
+      case CK_o_SCAN:
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
-        //m_pCI->G.p_OP->vUpdate_emit_OP(m_pCI);
-
-        RASSERT(m_pCI->G.p_OP->pSub_emit())
-
-        m_pCI->Flux.m_pArriving = m_pCI->G.p_OP->pSub_emit();
+        m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
 
         if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+          NEVER_REACH
           if (m_pCI->Flux.m_pArriving) {
             m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
           }
         }
 
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint())) {
+          NEVER_REACH
           m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+        }
         continue;
 
       case CK_o_INDEXJOIN:
       case CK_o_INDEXSCAN:
-      case CK_o_SCAN:
 
         m_pCI->G.p_table = m_pCI->G.p_OP->pSub_table();
         RASSERT(! m_pCI->G.p_OP->pSub_emit())
