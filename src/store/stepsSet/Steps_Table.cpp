@@ -12,7 +12,6 @@
 
 #include "RowBuffer.hpp"
 
-#include "StreamSet.hpp"
 #include "LglPtnMap.hpp"
 
 #include "SkipRoots.hpp"
@@ -566,9 +565,9 @@ void Step::vTableListPartition(void)
   
   s256 sOutput;
   
-  Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+  Table* pTableDef = _pTable(*m_pLogicUnit->m_xpTableDef);
 
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+  StreamDef* pStreamDef = pTableDef->pStreamDef();
 
   RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 

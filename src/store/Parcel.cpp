@@ -382,13 +382,17 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
   switch (eClass) {
     
     case CN_INDEXDEF:     m_eSendCast = XK_BROADCAST; break;
-    case CN_INFOSET:      m_eSendCast = XK_ROBINDIST; break;
+    //case CN_INFOSET:      m_eSendCast = XK_ROBINDIST; break;
     case CN_MARKER:       m_eSendCast = XK_BROADCAST; break;
     case CN_PROFILE:      m_eSendCast = XK_ROBINDIST; break;
     case CN_STREAMDEF:    m_eSendCast = XK_BROADCAST; break;
     case CN_STREAMDEFRHT: m_eSendCast = XK_BROADCAST; break;
-    case CN_STREAMSET:    m_eSendCast = XK_BROADCAST; break;
-      
+		case CN_ROWBUFFER: {
+			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
+			if (pRowBuffer->eBufferType() != BT_DATA)
+				m_eSendCast = XK_ROBINDIST;
+			break;
+		}
     default:
       RASSERT(pOperand->bIsBuffer());
   }
@@ -400,13 +404,12 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
     switch (eClass) {
       
       case CN_INDEXDEF:     m_eSendCast = XK_FANCAST;    break;
-      case CN_INFOSET:      m_eSendCast = XK_ROBINLOCAL; break;
+      //case CN_INFOSET:      m_eSendCast = XK_ROBINLOCAL; break;
       case CN_MARKER:       m_eSendCast = XK_FANCAST;    break;
       case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
       case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;
       case CN_STREAMDEFRHT: m_eSendCast = XK_FANCAST;    break;
-      case CN_STREAMSET:    m_eSendCast = XK_FANCAST;    break;
-        
+
       default:
         RASSERT(pOperand->bIsBuffer());
         m_eSendCast = XK_ROBINLOCAL;
@@ -443,7 +446,16 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
         case XK_BROADCAST  : vPTN_broadcast(pSendOp);   break;
         case XK_FANCAST    : vPTN_fancast(pSendOp);     break;
-        case XK_HASHCAST   : vPTN_hashcast(pSendOp);    break;
+        case XK_HASHCAST   : {
+					Operand *pOperand = pGetOperand();
+					if (pOperand->bIsRowBuffer()) {
+						RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
+						RASSERT(pRowBuffer->eBufferType() == BT_DATA);
+						vPTN_hashcast(pSendOp);
+					} else
+						vPTN_hashcast(pSendOp);
+					break;
+				}
         case XK_ROBINDIST  : vPTN_robinDist(pSendOp);   break;
         case XK_ROBINLOCAL : vPTN_robinLocal(pSendOp);  break;
         case XK_UNICAST    : vPTN_unicast(pSendOp);     break;
@@ -682,6 +694,11 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   Operand *pOperand = pGetOperand();
+
+	if (pOperand->eGetClassNo() == CN_ROWBUFFER) {
+		RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+		RASSERT(pRowBuffer->eBufferType() == BT_DATA);
+	}
   m_eSendWhy = SY_HASHCAST;
   m_eRecvInstructions = RV_ONE_PTN;
 
@@ -691,6 +708,12 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
   DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
 
   LglPtn tDstLglPtn = pDataBuffer->tLglPtn();
+//	if (pDataBuffer->eGetClassNo() == CN_ROWBUFFER) {
+//		RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
+//		vTrace("DATA LGL %x: %lld\n"_Stz, pRowBuffer, tDstLglPtn.iAsI8());
+//		pRowBuffer->vDumpAllRows();
+//	}
+
   i8 iDstNodeId = AM::pLglPtnMap()->iNodeId(tDstLglPtn);
 
   vDispatchParcel(pSendOp,__LINE__,iDstNodeId,pDstStage,tDstLglPtn);

@@ -10,8 +10,6 @@
 
 #include "RowBuffer.hpp"
 
-#include "InfoSet.hpp"
-
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -26,16 +24,16 @@ void Step::vAddSteps_SeekOffsets(void)
 void Step::vSeekOffsetsOperandDump(void)
 {
   ENTRY();
-  
-  InfoSet* pInfoSet = _pInfoSet(m_pDataStack->pPopPtr(__func__));
+
+	RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
   i8 iDetail = m_pDataStack->iPopInt(__func__);
   
   if (iDetail) {
     i8 i_Ofs = 0;
-    for (Row* pRow = pInfoSet->pFirstRow();
+    for (Row* pRow = pRowBuffer->pFirstRow();
          pRow;
-         pRow = pInfoSet->pNextRow(pRow)) {
+         pRow = pRowBuffer->pNextRow(pRow)) {
       
       i8 iOffset = pRow->iColVal_int(0);
       i8 nBytes  = pRow->iColVal_int(1);
@@ -46,8 +44,8 @@ void Step::vSeekOffsetsOperandDump(void)
   }
   
   vTrace("%s : %lld rows"_Stz,
-         pInfoSet->szBufferNm(),
-         pInfoSet->nRows());
+				 pRowBuffer->szBufferNm(),
+				 pRowBuffer->nRows());
   
   EXIT();
 }

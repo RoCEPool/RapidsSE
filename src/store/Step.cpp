@@ -100,9 +100,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Index();
   Step::vAddSteps_IndexDef();
   Step::vAddSteps_IndexStream();
-  Step::vAddSteps_InfoSet();
   Step::vAddSteps_InfoSetRow();
-  Step::vAddSteps_InfoSetTable();
   Step::vAddSteps_Inject();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
@@ -204,7 +202,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamDefOut();
   Step::vAddSteps_StreamDefRht();
   Step::vAddSteps_StreamOfOp();
-  Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_SubCall();
   Step::vAddSteps_SubReturn();
   Step::vAddSteps_Subset();
@@ -215,6 +212,9 @@ void Step::vAddSteps(void)
   
 
   Step::vAddSteps_Table();
+	Step::vAddSteps_TableDef();
+	Step::vAddSteps_TableDefErr();
+	Step::vAddSteps_TableDefWarn();
   Step::vAddSteps_TablePtn();
   Step::vAddSteps_Tag();
   Step::vAddSteps_TagSet();

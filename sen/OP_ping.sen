@@ -18,21 +18,21 @@
   "ping wakes" .
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  streamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
-  // add pingInfo to the infoSet
-  streamSetTable[] RowBuffer[].addPingInfo assert
+  // add pingInfo to the rowBuffer
+  TableDef[] RowBuffer[].addPingInfo assert
 
-  // pipeout the infoset
+  // pipeout the rowBuffer
   RowBuffer[].pipeOut
 
   true

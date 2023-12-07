@@ -5,23 +5,36 @@
 " OP_pathToDfload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_PATH ... an infoset with __path rows                      */
+/* handler for EV_D_ROWBUFFER ... a rowBuffer with __path rows                */
 /*----------------------------------------------------------------------------*/
 : pathToDfload_Path \handler
 
-  PipeIn[]\clear to InfoSet[]
+  Pipein[].bufferType BT_PATH != if
+    PipeIn[].pipeout
+    true
+    exit
+  then
 
-  C_TDEF_PATH infoSetRow:getFirstRow
+  PipeIn[]\clear to RowBuffer[]
+
+  //C_TDEF_PATH infoSetRow:getFirstRow
+
+  C_TDEF_PATH op__tableDef assert
+  RowBuffer[].firstRow to InfoSetRow[]
 
   // extract the values
-  0 InfoSet[].colVal@ locals| sPath   |
-  1 InfoSet[].colVal@ locals| iPathNo |
-  2 InfoSet[].colVal@ locals| iPathOf | 
-  
+  //0 InfoSet[].colVal@ locals| sPath   |
+  //1 InfoSet[].colVal@ locals| iPathNo |
+  //2 InfoSet[].colVal@ locals| iPathOf |
+
+  0 InfoSetRow[].getVchColumn locals| sPath   |
+  1 InfoSetRow[].getVchColumn locals| iPathNo |
+  2 InfoSetRow[].getIntColumn locals| iPathOf |
+
   // print the __path data
   //iPathOf iPathNo sPath "pathToDfload: %v %v %v" .printf
 
-  InfoSet[].delete
+  RowBuffer[].delete
   nullptr to InfoSetRow[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,8 +86,16 @@
   // Convert this tag set to a sen parsable string
   pCmdTagSet tagSet.asSenStr to sTags
 
-  C_TDEF_COMMAND InfoSet:discover
-  sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
+  C_TDEF_COMMAND TableDef:discover
+
+  //sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
+
+  TableDef[] RowBuffer[].new
+  BT_COMMAND RowBuffer[].setBufferType
+
+  sTags sCmd  2 RowBuffer[].addRowVargs
+
+  RowBuffer[].pipeOut
 
   true
 ;
@@ -88,7 +109,7 @@
 
   op__topology
 
-  find: pathToDfload_Path  EV_I_PATH  [op].handler!
+  find: pathToDfload_Path  EV_D_ROWBUFFER  [op].handler!
 
   op__loop
 

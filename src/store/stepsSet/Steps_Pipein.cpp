@@ -25,10 +25,12 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[]\\clear"_Stz,         &Step::vPipeinGetAndClear);
   vAddStep("PipeIn[].bide"_Stz,           &Step::vPipeinBide);
   vAddStep("PipeIn[].bideNext"_Stz,       &Step::vPipeinBideNext);
+	vAddStep("PipeIn[].bufferType"_Stz,     &Step::vPipeinBufferType);
   vAddStep("PipeIn[].delete"_Stz,         &Step::vPipeinDelete);
   vAddStep("PipeIn[].isBuffer"_Stz,       &Step::vPipeinIsBuffer);
   vAddStep("PipeIn[].isMarker"_Stz,       &Step::vPipeinIsMarker);
   vAddStep("PipeIn[].isNull"_Stz,         &Step::vPipeinIsNull);
+	vAddStep("PipeIn[].isRowBuffer"_Stz,    &Step::vPipeinIsRowBuffer);
   vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
   vAddStep("PipeIn[].name"_Stz,           &Step::vPipeinName);
   vAddStep("PipeIn[].next"_Stz,           &Step::vPipeinNext);
@@ -159,6 +161,19 @@ void Step::vPipeinGetAndClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* PipeIn[].bufferType -- decode operand into its buffer type                 */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeinBufferType(void)
+{
+	ENTRY();
+
+	eBT ePipeInBufferType = m_pLogicUnit->m_ePipeInBufferType;
+	m_pDataStack->vPushInt(ePipeInBufferType);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* PipeIn[].isBuffer -- is operand buffer ?                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vPipeinIsBuffer(void)
@@ -196,6 +211,20 @@ void Step::vPipeinIsNull(void)
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpPipein.bIsNull() ? 1 : 0);
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeIn[].isRowBuffer -- is operand a row buffer ?                          */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeinIsRowBuffer(void)
+{
+	ENTRY();
+
+	Operand* pOperand = _pOperand(*m_pLogicUnit->m_xpPipein);;
+
+	m_pDataStack->vPushInt(pOperand->bIsRowBuffer() ? 1 : 0);
+
+	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,13 +338,19 @@ void Step::vPipeinSet(void)
 
   
   m_pLogicUnit->m_xpPipein = _pOperand(pOperand);
-  
+
+	m_pLogicUnit->m_ePipeInBufferType = BT_NONE;
+
   if (m_pLogicUnit->m_xpPipein.bIsNull()) {
     m_pLogicUnit->m_ePipeInOperand = EV_NONE;
   }
   else {
     eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
     m_pLogicUnit->m_ePipeInOperand = eOperand;
+		if (eOperand == EV_D_ROWBUFFER) {
+			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
+			m_pLogicUnit->m_ePipeInBufferType = pRowBuffer->eBufferType();
+		}
   }
   
   EXIT();

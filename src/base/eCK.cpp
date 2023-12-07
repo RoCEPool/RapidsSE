@@ -277,7 +277,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "streamKey"_Stz,       // CK_STREAMKEY
   /* */ "streamPer"_Stz,       // CK_STREAMPER
   /* */ "streamPtn"_Stz,       // CK_STREAMPTN
-  /* */ "streamPrmAll"_Stz,    // CK_STREAMSET
+  /* */ "streamPrmAll"_Stz,    // CK_STREAMPRMALL
   /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET
   /* */ "synthesise"_Stz,      // CK_SYNTHESIS

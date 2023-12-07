@@ -80,7 +80,7 @@
 
     //File0[].get file.delete assert::stack_0 nullptr File0[].set
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     sFileNm EC_INVALID_FILE attachmap::errorText@ str.format
     EC_INVALID_FILE
     op__execErrMsg
@@ -92,12 +92,10 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
-: op__tableDef_infoSet ( tableNm -- )
+: op__tableDef ( tableNm -- )
 
   params| sTableNm |
 
-  //sTableNm .
-  
   // save current path
   Path[].save
 
@@ -110,10 +108,43 @@
 
   // move to table folder and find the table
   sTableNm Path[].pushNamedTableFolder
-  sTableNm find execute to infoSetTable[]
+  sTableNm find execute to TableDef[]
 
   // cross-check
-  infoSetTable[] assert
+  TableDef[] assert
+
+  Path[].popNamedTableFolder
+
+  // restore path
+  Path[].restore
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* verify and set folder to <tableNm> of tabledef  (TableDefWarn[])           */
+/*----------------------------------------------------------------------------*/
+: op__tableDef_warn ( tableNm -- )
+
+  params| sTableNm |
+
+  //sTableNm .
+
+  // save current path
+  Path[].save
+
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec Path[].set
+
+  // table
+  sTableNm check::validTableAssembly assert
+
+  // move to table folder and find the table
+  sTableNm Path[].pushNamedTableFolder
+  sTableNm find execute to TableDefWarn[]
+
+  // cross-check
+  TableDefWarn[] assert
 
   Path[].popNamedTableFolder
 
@@ -124,11 +155,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* verify and set folder to <tableNm> of tabledef                             */
+/* verify and set folder to <tableNm> of tabledef  (TableDefErr[])            */
 /*----------------------------------------------------------------------------*/
-: op__tableDef_streamSet ( tableNm -- )
+: op__tableDef_err ( tableNm -- )
 
   params| sTableNm |
+
+  //sTableNm .
 
   // save current path
   Path[].save
@@ -142,15 +175,16 @@
 
   // move to table folder and find the table
   sTableNm Path[].pushNamedTableFolder
-  sTableNm find execute to streamSetTable[]
+  sTableNm find execute to TableDefErr[]
 
   // cross-check
-  streamSetTable[] assert
+  TableDefErr[] assert
 
   Path[].popNamedTableFolder
 
   // restore path
   Path[].restore
+
   true
 ;
 
@@ -164,7 +198,7 @@
   sTableNm str.length C_MAX_TABLE_NAME_LENGTH 1 - > if
     EC_NO_SUCH_TABLE to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -175,7 +209,7 @@
   check::folderIsTables not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -186,7 +220,7 @@
   sTableNm check::validTableAssembly not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     sTableNm errorCode attachmap::errorText@ str.format
     errorCode
     op__execErrMsg
@@ -216,7 +250,7 @@
   sIndexNm str.length C_MAX_INDEX_NAME_LENGTH 1 - > if
     EC_NO_SUCH_INDEX to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -227,7 +261,7 @@
   check::folderIsTables not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -245,7 +279,7 @@
   sIndexNm check::nameIsaIndex not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     Path[].popNamedTableFolder
@@ -277,7 +311,7 @@
   sTableNm str.length C_MAX_TABLE_NAME_LENGTH 1 - > if
     EC_NO_SUCH_TABLE to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -287,7 +321,7 @@
   sIndexNm str.length C_MAX_INDEX_NAME_LENGTH 1 - > if
     EC_NO_SUCH_INDEX to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -299,7 +333,7 @@
   check::folderIsTables not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -310,7 +344,7 @@
   sTableNm check::validTableAssembly not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     sTableNm errorCode attachmap::errorText@ str.format
     errorCode
     op__execErrMsg
@@ -334,7 +368,7 @@
   sIndexNm check::nameIsaIndex not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     Path[].popNamedTableFolder
@@ -569,7 +603,7 @@
 
       // debug::flag@ if "(Revised) Calling handler for OoO operand" . then
 
-      PipeIn[].kind [op].isEventValid not if
+      PipeIn[].bufferType PipeIn[].kind [op].isEventValid not if
         find: INVALID_OPERAND_handler op__callHandler to iContinue
         continue_if
       then
@@ -624,7 +658,7 @@
 
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
-    PipeIn[].kind [op].isEventValid not if
+    PipeIn[].bufferType PipeIn[].kind [op].isEventValid not if
       find: INVALID_OPERAND_handler op__callHandler to iContinue
       continue_if
     then

@@ -94,8 +94,6 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_STREAMDEFLFT"_Stz,
   /*  */ "LR_STREAMDEFOUT"_Stz,
   /*  */ "LR_STREAMDEFRHT"_Stz,
-  /*  */ "LR_STREAMSET"_Stz,
-  /*  */ "LR_STREAMSETTABLE"_Stz,
   /*  */ "LR_SUBCALL"_Stz,
   /*  */ "LR_SUBPIPE"_Stz,
   /*  */ "LR_SUBRETURN"_Stz,

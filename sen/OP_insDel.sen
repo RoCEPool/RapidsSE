@@ -27,6 +27,12 @@
 
   PipeIn[]\clear to RowBuffer[]
 
+  RowBuffer[].getBufferType BT_NODEINFO != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   "insDel_RowBuffer" .
 
   TablePtn[].grabWrite_yieldLoop

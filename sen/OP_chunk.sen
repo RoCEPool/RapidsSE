@@ -5,6 +5,50 @@
 " OP_chunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* send_totalUnits ...                                                        */
+/*----------------------------------------------------------------------------*/
+: send_totalUnits
+
+  0 locals| iFileSizeMb |
+
+  <fileNm> locals| sFileNm_raw |
+
+  [job].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
+
+  // open the file for reading
+  sFileNm OPEN_READ op__file if
+
+    // Determine the line ending if it hasn't been explicitly set.
+    // We must do this before PipeIn[].pipeOut so that it is known
+    // before ToKeyHshRow[].new is executed.
+
+    "<record_ends>" [job].tagSet@ tagSet.hasName not if
+      "<record_ends>" File0[].detectLineEnding [job].tagSet@ tagSet.insertStr
+    then
+
+    // get size of file
+    File0[].size C_1Mb / to iFileSizeMb
+
+    // create a streamDef for C_TDEF_TOTALUNITS
+    C_TDEF_TOTALUNITS op__tableDef assert
+
+    "<OP_chunk>" [job].tagSet@ tagSet.hasName if
+      iFileSizeMb sFileNm "OP_chunk: %v : %vMB\n" .putf
+    then
+
+    // create an rowBuffer operand for C_TDEF_TOTALUNITS
+    TableDef[] RowBuffer[].new
+    BT_TOTALUNITS RowBuffer[].setBufferType
+
+    // add fileSize to the rowBuffer
+    sFileNm iFileSizeMb TableDef[] RowBuffer[].addTotalUnits assert
+
+    // pipeout the rowBuffer
+    RowBuffer[].pipeOut
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_M_CLEANING ...                                                       */
 /*----------------------------------------------------------------------------*/
 : chunk_Cleaning \handler
@@ -31,7 +75,7 @@
 
   PipeIn[].pipeOut
 
-  7 thread.faultCurrent!
+  send_totalUnits
 
   File0[].isOpen? not if
     true
@@ -40,7 +84,7 @@
   
 
   // find the __seekOffsets table
-  C_TDEF_SEEKOFFSETS op__tableDef_infoSet assert
+  C_TDEF_SEEKOFFSETS op__tableDef assert
 
   // set eof location in counter0
   File0[].getEofLocation to counter1[]
@@ -53,11 +97,11 @@
   while
     //counter1[] "counter1 %v" .printf
 
-    // create an infoSet operand
-    infoSetTable[] InfoSet[].new
-    InfoSet[].chunkFile counter2[] + to counter2[]
+    // create an rowBuffer operand
+    TableDef[] RowBuffer[].new
+    RowBuffer[].chunkFile counter2[] + to counter2[]
 
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
   repeat
 
   "<OP_chunk>" [job].tagSet@ tagSet.hasName if
@@ -79,48 +123,7 @@
 
   //"Operand:- EV_M_START" .verbose
 
-  0 locals| iFileSizeMb |
-
-  <fileNm> locals| sFileNm_raw |
-  
-  [job].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
-
-  // open the file for reading
-  sFileNm OPEN_READ op__file if
-
-    // Determine the line ending if it hasn't been explicitly set.
-    // We must do this before PipeIn[].pipeOut so that it is known
-    // before ToKeyHshRow[].new is executed.
-
-    "<record_ends>" [job].tagSet@ tagSet.hasName not if
-      "<record_ends>" InfoSet[].detectLineEnding [job].tagSet@ tagSet.insertStr
-    then
-
-    PipeIn[].pipeOut
-
-    // get size of file
-    File0[].size C_1Mb / to iFileSizeMb
-
-    // create a streamDef for C_TDEF_TOTALUNITS
-    C_TDEF_TOTALUNITS op__tableDef_infoSet assert
-
-    "<OP_chunk>" [job].tagSet@ tagSet.hasName if
-      iFileSizeMb sFileNm "OP_chunk: %v : %vMB\n" .putf
-    then
-
-    // create an infoSet operand for C_TDEF_TOTALUNITS
-    infoSetTable[] InfoSet[].new
-
-    // add fileSize to the infoset
-    sFileNm iFileSizeMb infoSetTable[] InfoSet[].addTotalUnits assert
-
-    // pipeout the infoset
-    InfoSet[].pipeOut
-
-  else
-    PipeIn[].pipeOut
-
-  then
+  Pipein[].pipeout
 
   true
 ;

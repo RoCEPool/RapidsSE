@@ -5,11 +5,11 @@
 " OP_statWrite.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_LOCKSTATS ...                                               */
+/* handler for EV_D_ROWBUFFER...                                              */
 /*----------------------------------------------------------------------------*/
-: OP_statWrite_LockStats \handler
+: OP_statWrite_RowBuffer \handler
 
-  //"statWrite_InfoSet --- --- ---" .
+  //"statWrite_RowBuffer --- --- ---" .
 
 //! ALKA TO CHECK WITH RAY
 //  File0[].isNull not if
@@ -20,14 +20,16 @@
   // open the file for writing
   "/tmp/SE_Stats.csv" OPEN_APPEND op__file if
 
-    PipeIn[] to InfoSet[]
+    PipeIn[].bufferType BT_LOCKSTATS == assert
+
+    PipeIn[] to RowBuffer[]
     nullptr to PipeIn[]
 
-    C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+    C_TDEF_LOCKSTATS op__tableDef assert
 
-    infoSetTable[] InfoSet[].writeCsv
+    TableDef[] RowBuffer[].writeCsv
 
-    InfoSet[].delete
+    RowBuffer[].delete
 
     //File0[].get file.close
     //File0[].get file.delete
@@ -70,7 +72,7 @@
 
   op__topology
 
-  find: OP_statWrite_LockStats EV_I_LOCKSTATS [op].handler!
+  find: OP_statWrite_RowBuffer EV_D_ROWBUFFER [op].handler!
   find: OP_statWrite_Profile   EV_D_PROFILE   [op].handler!
 
   op__loop

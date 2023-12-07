@@ -20,7 +20,7 @@
   Pipein[].pipeout
 
   // create the command error info set
-  op__createCompileErrInfoSet
+  op__createCompileErrRowBuffer
 
   <sqlStatement> sqlCompiler::parser to PlanOperand[]
 
@@ -30,8 +30,8 @@
     exit
   then
 
-  // no error, delete the infoset
-  InfoSet[].delete
+  // no error, delete the rowBufferErr
+  RowBufferErr[].delete
 
   // does the sql have an explain ?
   PlanOperand[] "parser" sqlCompiler::hasExplain if
@@ -40,13 +40,13 @@
     PlanOperand[] sqlCompiler::explainFormat to stringA[]
 
     // find the explain tabledef
-    stringA[] op__tableDef_streamSet assert
+    stringA[] op__tableDef assert
 
     // create a new streamDef
-    streamSetTable[] StreamDefLft[].new
+    TableDef[] StreamDefLft[].new
 
     // create a rowBuffer operand for explain
-    streamSetTable[] RowBuffer[].new
+    TableDef[] RowBuffer[].new
     BT_EXPLAIN RowBuffer[].setBufferType
 
     // execute explain for this operator

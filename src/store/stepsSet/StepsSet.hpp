@@ -52,7 +52,6 @@ public:
   void vAdaptorWLStatementParsingError(void);
   void vAdaptorWLStatementSubmitted(void);
   void vAdaptorWLStatementSubmittedError(void);
-  void vAdaptorWLStreamSet(void);
 
   // AnswerWL
   void vAnswerProcessEventA(void);
@@ -591,6 +590,7 @@ void vDdlLockAssertNone(void);
   void vFactSubOf(void);
  
   // file
+	void vFile0DetectLineEnding(void);
   void vFile0Get(void);
   void vFile0GetEofLocation(void);
   void vFile0IsNull(void);
@@ -756,33 +756,6 @@ void vDdlLockAssertNone(void);
   void vIndexTreeSet(void);
 
   // infoSet
-  void vInfoSetAddCommandError(void);
-  void vInfoSetAddExecError(void);
-  void vInfoSetAddLockStats(void);
-  void vInfoSetAddNodeInfo(void);
-  void vInfoSetAddProgressUnits(void);
-  void vInfoSetAddRowCount(void);
-  void vInfoSetAddRowVargs(void);
-  void vInfoSetAddTotalUnits(void);
-  void vInfoSetAddWarning(void);
-  void vInfoSetChunkFile(void);
-  void vInfoSetColValFetch(void);
-  void vInfoSetDelete(void);
-  void vInfoSetDetectLineEnding(void);
-  void vInfoSetFirstRow(void);
-  void vInfoSetGet(void);
-  void vInfoSetInfoRows(void);
-  void vInfoSetIsNotNull(void);
-  void vInfoSetIsNull(void);
-  void vInfoSetIsProgress(void);
-  void vInfoSetIsTotalUnits(void);
-  void vInfoSetIsWarning(void);
-  void vInfoSetName(void);
-  void vInfoSetNew(void);
-  void vInfoSetNextRow(void);
-  void vInfoSetOpInfosetFetch(void);
-  void vInfoSetOpInfosetStore(void);
-  void vInfoSetRdCsvChunk(void);
   void vInfoSetRowGet(void);
   void vInfoSetRowGetIntColumn(void);
   void vInfoSetRowGetVchColumn(void);
@@ -791,10 +764,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetRowSet(void);
   void vInfoSetSet(void);
   void vInfoSetWriteCsv(void);
-  void vInfoSetTableColumnFetch(void);
-  void vInfoSetTableDump(void);
-  void vInfoSetTableGet(void);
-  void vInfoSetTableSet(void);
 
   // inject
   void vInjectSigsegv(void);
@@ -1692,9 +1661,11 @@ void vJobIdLastJobIdFetch(void);
   void vPipeinDelete(void);
   void vPipeinGet(void);
   void vPipeinGetAndClear(void);
+	void vPipeinBufferType(void);
   void vPipeinIsBuffer(void);
   void vPipeinIsMarker(void);
   void vPipeinIsNull(void);
+  void vPipeinIsRowBuffer(void);
   void vPipeinKind(void);
   void vPipeinName(void);
   void vPipeinNext(void);
@@ -1738,9 +1709,7 @@ void vJobIdLastJobIdFetch(void);
 	void vRowBufferAddNodeHeartbeat(void);
 	void vRowBufferAddNodeStatus(void);
 	void vRowBufferAddPingInfo(void);
-	void vRowBufferAddProgressUnits(void);
 	void vRowBufferAddPwfInfo(void);
-	void vRowBufferAddRowCount(void);
 	void vRowBufferAddShowCluster(void);
 	void vRowBufferAddSizeIndex(void);
 	void vRowBufferAddSizeTable(void);
@@ -1754,6 +1723,7 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferGet(void);
   void vRowBufferGetBufferIdAsAddr(void);
   void vRowBufferGetAndClear(void);
+	void vRowBufferGetBufferName(void);
   void vRowBufferGetBufferType(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
@@ -1768,7 +1738,57 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferSetDeciderCopies(void);
   void vRowBufferSetLglPtn(void);
   void vRowBufferToCsv(void);
+  void vRowBufferAddTotalCount(void);
   void vRowBufferOperandDump(void);
+
+  void vRowBufferErrAddCommandError(void);
+  void vRowBufferErrAddExecError(void);
+  void vRowBufferErrDelete(void);
+	void vRowBufferErrGet(void);
+	void vRowBufferErrGetAndClear(void);
+  void vRowBufferErrGetBufferIdAsAddr(void);
+  void vRowBufferErrGetBufferType(void);
+  void vRowBufferErrIsNull(void);
+  void vRowBufferErrIsNotNull(void);
+	void vRowBufferErrNew(void);
+	void vRowBufferErrSet(void);
+
+  void vRowBufferWarnDelete(void);
+  void vRowBufferWarnGet(void);
+  void vRowBufferWarnGetAndClear(void);
+  void vRowBufferWarnGetBufferIdAsAddr(void);
+  void vRowBufferWarnIsNull(void);
+  void vRowBufferWarnNew(void);
+  void vRowBufferWarnSet(void);
+
+	void vRowBufferAddLockStats(void);
+	void vRowBufferAddNodeInfo(void);
+	void vRowBufferAddProgressUnits(void);
+	void vRowBufferAddRowCount(void);
+	void vRowBufferAddRowVargs(void);
+	void vRowBufferAddTotalUnits(void);
+	void vRowBufferAddWarning(void);
+	void vRowBufferChunkFile(void);
+	void vRowBufferColValFetch(void);
+	void vRowBufferFirstRow(void);
+	void vRowBufferInfoRows(void);
+	void vRowBufferIsProgress(void);
+	void vRowBufferIsTotalUnits(void);
+	void vRowBufferIsWarning(void);
+	void vRowBufferName(void);
+	void vRowBufferNextRow(void);
+	void vRowBufferRdCsvChunk(void);
+	void vRowBufferRowGet(void);
+	void vRowBufferRowGetIntColumn(void);
+	void vRowBufferRowGetVchColumn(void);
+	void vRowBufferRowIntColumnFetch(void);
+	void vRowBufferRowIsNull(void);
+	void vRowBufferRowSet(void);
+	void vRowBufferWriteCsv(void);
+	void vRowBufferTableColumnFetch(void);
+	void vRowBufferTableDump(void);
+	void vRowBufferTableGet(void);
+	void vRowBufferTableSet(void);
 
   // rowCounts
   void vRowCountsDelete(void);
@@ -2076,24 +2096,23 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefRhtPrint(void);
   void vStreamDefRhtSet(void);
 
-  // reg stream set
-  void vStreamSetAddProgressUnits(void);
-  void vStreamSetDelete(void);
-  void vStreamSetFirstRow(void);
-  void vStreamSetGet(void);
-  void vStreamSetInfoRows(void);
-  void vStreamSetIsNull(void);
-  void vStreamSetName(void);
-  void vStreamSetNew(void);
-  void vStreamSetNextRow(void);
-  void vStreamSetReadChunk(void);
-  void vStreamSetSet(void);
+  // reg TableDef table
+  void vTableDefColumnFetch(void);
+  void vTableDefDump(void);
+  void vTableDefGet(void);
+  void vTableDefSet(void);
 
-  // reg infoSet table
-  void vStreamSetTableColumnFetch(void);
-  void vStreamSetTableDump(void);
-  void vStreamSetTableGet(void);
-  void vStreamSetTableSet(void);
+	// reg TableDefErr table
+	void vTableDefErrColumnFetch(void);
+	void vTableDefErrDump(void);
+	void vTableDefErrGet(void);
+	void vTableDefErrSet(void);
+
+	// reg TableDefWarn table
+	void vTableDefWarnColumnFetch(void);
+	void vTableDefWarnDump(void);
+	void vTableDefWarnGet(void);
+	void vTableDefWarnSet(void);
 
   // sub call
   void vSubCallGet(void);

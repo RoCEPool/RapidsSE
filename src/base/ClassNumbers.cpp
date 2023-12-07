@@ -158,7 +158,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "INDEXTREE"_Stz,            // CN_INDEXTREE
     /* */ "INDEXTREEVEC"_Stz,         // CN_INDEXTREEVEC
     /* */ "IDXVEC"_Stz,               // CN_IDXVEC
-    /* */ "INFOSET"_Stz,              // CN_INFOSET
     /* */ "INGESTCHUNK"_Stz,          // CN_INGESTCHUNK
     /* */ "INPUT"_Stz,                // CN_INPUT
     /* */ "INTERNALTABLES"_Stz,       // CN_INTERNALTABLES
@@ -398,7 +397,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
     /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
     /* */ "STREAMMETRICS"_Stz,        // CN_STREAMMETRICS
-    /* */ "STREAMSET"_Stz,            // CN_STREAMSET
     /* */ "STRING_D"_Stz,             // CN_STRING_D
     /* */ "STRING_T"_Stz,             // CN_STRING_T
     /* */ "STRLIB"_Stz,               // CN_STRLIB

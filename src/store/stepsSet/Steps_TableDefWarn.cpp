@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_StreamSetTable.cpp - StreamSet table step group                      */
+/* Steps_TableDefWarnWarn.cpp - TableDefWarnWarn table step group                     */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -21,22 +21,22 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_StreamSetTable(void)
+void Step::vAddSteps_TableDefWarn(void)
 {
-  vAddStep("StreamSetTable[]"_Stz,         &Step::vStreamSetTableGet);
-  vAddStep("StreamSetTable[].column@"_Stz, &Step::vStreamSetTableColumnFetch);
-  vAddStep("StreamSetTable[].dump"_Stz,    &Step::vStreamSetTableDump);
-  vAddStep("StreamSetTable[].set"_Stz,     &Step::vStreamSetTableSet);
+  vAddStep("TableDefWarn[]"_Stz,         &Step::vTableDefWarnGet);
+  vAddStep("TableDefWarn[].column@"_Stz, &Step::vTableDefWarnColumnFetch);
+  vAddStep("TableDefWarn[].dump"_Stz,    &Step::vTableDefWarnDump);
+  vAddStep("TableDefWarn[].set"_Stz,     &Step::vTableDefWarnSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSetTable[].column -- fetch the column from the StreamSet table       */
+/* TableDefWarn[].column -- fetch the column from the TableDef table          */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetTableColumnFetch(void)
+void Step::vTableDefWarnColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDefWarn);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -48,15 +48,15 @@ void Step::vStreamSetTableColumnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSetTable[].dump                                                      */
+/* TableDefWarn[].dump                                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetTableDump(void)
+void Step::vTableDefWarnDump(void)
 {
   ENTRY();
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDefWarn);
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -68,25 +68,25 @@ void Step::vStreamSetTableDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSetTable[] -- get table                                              */
+/* TableDefWarn[] -- get table                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetTableGet(void)
+void Step::vTableDefWarnGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpStreamSetTable);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTableDefWarn);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSetTable[].set -- set table                                          */
+/* TableDefWarn[].set -- set table                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetTableSet(void)
+void Step::vTableDefWarnSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTableDefWarn = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

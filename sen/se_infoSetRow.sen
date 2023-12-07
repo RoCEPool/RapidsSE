@@ -5,19 +5,21 @@
 " se_infoSetRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* get first row of named infoset                                             */
+/* get first row of named rowBuffer                                           */
 /*----------------------------------------------------------------------------*/
-: infoSetRow:getFirstRow params| sInfoSetNm |
+/*
+: RowBufferRow:getFirstRow params| sTableNm |
 
-  InfoSet[].isNotNull assert
+  RowBuffer[].isNotNull assert
   InfoSetRow[].isNull assert
 
-  // find the sInfoSetNm table def ; set infoSetTable[]
-  sInfoSetNm op__tableDef_infoSet assert
+  // find the sTableNm table def ; set TableDef[]
+  sTableNm op__tableDef assert
 
   // get the first (one and only) row from this infoset
-  InfoSet[].firstRow to InfoSetRow[]
+  RowBuffer[].firstRow to InfoSetRow[]
 ;
+*/
 
 /*============================================================================*/
 /* end                                                                        */

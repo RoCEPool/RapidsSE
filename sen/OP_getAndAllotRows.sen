@@ -22,6 +22,13 @@
   //"Operand:- EV_D_ROWBUFFER" .verbose
 
   Pipein[]\clear to rowBuffer[]
+
+  RowBuffer[].getBufferType BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   rowBuffer[].getAndAllotRows  to DataBuffer[]
 
   rowBuffer[].delete

@@ -5,8 +5,6 @@
 #include "BASE.h"
 
 #include "TagConstants.h"
-#include "StreamSet.hpp"
-#include "InfoSet.hpp"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
@@ -615,7 +613,7 @@ void PoolHelper::vObjectSummary(void)
 /* summary report on objects in the pool and heaps                            */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
-                                InfoSet* pWarnInfoSet, StreamDef* pWarnDef)
+																RowBuffer* pRowBufferWarn, StreamDef* pWarnDef)
 {
   _static_
 
@@ -673,7 +671,7 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated());
 
-    pWarnInfoSet->pAllotRow(pWarnDef,
+		pRowBufferWarn->pAllotRow(pWarnDef,
                             C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
@@ -726,7 +724,7 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated());
 
-    pWarnInfoSet->pAllotRow(pWarnDef,
+		pRowBufferWarn->pAllotRow(pWarnDef,
                             C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
@@ -780,7 +778,7 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated());
 
-    pWarnInfoSet->pAllotRow(pWarnDef,
+		pRowBufferWarn->pAllotRow(pWarnDef,
                             C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
@@ -834,7 +832,7 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated());
 
-    pWarnInfoSet->pAllotRow(pWarnDef,
+		pRowBufferWarn->pAllotRow(pWarnDef,
                             C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
@@ -886,7 +884,7 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pTiny->nCurrAllocated());
 
-    pWarnInfoSet->pAllotRow(pWarnDef,
+		pRowBufferWarn->pAllotRow(pWarnDef,
                             C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
@@ -940,7 +938,7 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pSmall->nCurrAllocated());
 
-    pWarnInfoSet->pAllotRow(pWarnDef,
+		pRowBufferWarn->pAllotRow(pWarnDef,
                             C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
@@ -994,7 +992,7 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pMedium->nCurrAllocated());
 
-    pWarnInfoSet->pAllotRow(pWarnDef,
+		pRowBufferWarn->pAllotRow(pWarnDef,
                             C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
@@ -1048,7 +1046,7 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
 
-    pWarnInfoSet->pAllotRow(pWarnDef,
+		pRowBufferWarn->pAllotRow(pWarnDef,
                             C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
@@ -1418,10 +1416,10 @@ void PoolHelper::vRegionSummary()
 /* report on shm region                                                       */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vRegionSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
-                                InfoSet* pWarnInfoSet, StreamDef* pWarnDef)
+																RowBuffer* pRowBufferWarn, StreamDef* pWarnDef)
 {
   _static_
-  UNUSED(pWarnInfoSet);
+  UNUSED(pRowBufferWarn);
   UNUSED(pWarnDef);
 
   Heap* pHeap;

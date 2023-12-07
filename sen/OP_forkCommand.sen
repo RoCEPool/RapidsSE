@@ -5,18 +5,30 @@
 " OP_forkCommand.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_COMMAND ...                                               */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
-: forkCommand_Command \handler
+: forkCommand_RowBuffer \handler
   
   0 0 locals| eError tForkedJobId |
-  
-  PipeIn[]\clear to InfoSet[]
+
+  // pipeout the rowBuffer if not a BT_COMMAND
+  Pipein[].bufferType BT_COMMAND != if
+    Pipein[].pipeout
+    true
+    exit
+  then
+
+  PipeIn[]\clear to RowBuffer[]
 
   // get the command to be forked and any tags to be used
-  0 C_TDEF_COMMAND InfoSet:getCol locals| sForkCmd |
-  1 C_TDEF_COMMAND InfoSet:getCol locals| sTags |
-  InfoSet[].delete
+  //0 C_TDEF_COMMAND InfoSet:getCol locals| sForkCmd |
+  //1 C_TDEF_COMMAND InfoSet:getCol locals| sTags |
+
+  RowBuffer[].firstRow to infoSetRow[]
+  0 infoSetRow[].getVchColumn locals| sForkCmd |
+  1 infoSetRow[].getVchColumn locals| sTags |
+
+  RowBuffer[].delete
 
   //sForkCmd "  forkCmd=%v" .printf
 
@@ -54,7 +66,7 @@
 
   op__topology
 
-  find: forkCommand_Command  EV_I_COMMAND   [op].handler!
+  find: forkCommand_rowbuffer  EV_D_RowBuffer   [op].handler!
 
   op__loop
 

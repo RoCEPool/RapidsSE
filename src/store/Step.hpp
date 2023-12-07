@@ -82,9 +82,7 @@ namespace STORE
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
     static void vAddSteps_IndexStream(void);
-    static void vAddSteps_InfoSet(void);
     static void vAddSteps_InfoSetRow(void);
-    static void vAddSteps_InfoSetTable(void);
     static void vAddSteps_Inject(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
@@ -186,7 +184,6 @@ namespace STORE
     static void vAddSteps_StreamDefOut(void);
     static void vAddSteps_StreamDefRht(void);
     static void vAddSteps_StreamOfOp(void);
-    static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_StringA(void);
     static void vAddSteps_SubCall(void);
     static void vAddSteps_SubReturn(void);
@@ -197,6 +194,9 @@ namespace STORE
     static void vAddSteps_System(void);
 
     static void vAddSteps_Table(void);
+		static void vAddSteps_TableDef(void);
+		static void vAddSteps_TableDefErr(void);
+		static void vAddSteps_TableDefWarn(void);
     static void vAddSteps_TablePtn(void);
     static void vAddSteps_Tag(void);
     static void vAddSteps_TagSet(void);

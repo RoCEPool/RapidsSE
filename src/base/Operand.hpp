@@ -26,9 +26,9 @@ namespace BASE
 
     Operand* pDuplicateOperand(void);
     bool bIsBuffer(void);
-    bool bIsInfoSet(void);
     bool bIsMarker(void);
     bool bIsProfile(void);
+		bool bIsRowBuffer(void);
     bool bIsStreamDef(void);
     ePT  eTailProcessing(void);
     void vTailProcessing(ePT eTailProcessing);

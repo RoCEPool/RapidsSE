@@ -9,7 +9,6 @@
 #include "RowSingle.hpp"
 #include "RowBuffer.hpp"
 
-#include "InfoSet.hpp"
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
@@ -272,10 +271,28 @@ void Constants::vAddConstantsCpp(void)
   /*  6 */ vAddConstant("AT_ENUMS"_Stz,    AT_ENUMS);
 
 	// BT_ : buffer types
-	/*  0 */ vAddConstant("BT_NONE"_Stz,     BT_NONE);
-	/*  1 */ vAddConstant("BT_DATA"_Stz,     BT_DATA);
-	/*  2 */ vAddConstant("BT_EXPLAIN"_Stz,  BT_EXPLAIN);
-	/*  3 */ vAddConstant("BT_ENUMS"_Stz,    BT_ENUMS);
+	/*  0 */ vAddConstant("BT_NONE"_Stz,          BT_NONE);
+	/*  1 */ vAddConstant("BT_AFFECTEDROWS"_Stz,  BT_AFFECTEDROWS);
+	/*  2 */ vAddConstant("BT_CALLPIPELINE"_Stz,  BT_CALLPIPELINE);
+	/*  3 */ vAddConstant("BT_COMMAND"_Stz,       BT_COMMAND);
+	/*  4 */ vAddConstant("BT_COMPILEERRORS"_Stz, BT_COMPILEERRORS);
+	/*  5 */ vAddConstant("BT_COUNT"_Stz,         BT_COUNT);
+	/*  6 */ vAddConstant("BT_DATA"_Stz,          BT_DATA);
+	/*  7 */ vAddConstant("BT_EXECERRORS"_Stz,    BT_EXECERRORS);
+	/*  8 */ vAddConstant("BT_EXPLAIN"_Stz,       BT_EXPLAIN);
+	/*  9 */ vAddConstant("BT_FORKCOMMAND"_Stz,   BT_FORKCOMMAND);
+	/* 10 */ vAddConstant("BT_LOADRESULT"_Stz,    BT_LOADRESULT);
+	/* 11 */ vAddConstant("BT_LOCKSTATS"_Stz,     BT_LOCKSTATS);
+	/* 12 */ vAddConstant("BT_NODEINFO"_Stz,      BT_NODEINFO);
+	/* 13 */ vAddConstant("BT_PAGEINREQUEST"_Stz, BT_PAGEINREQUEST);
+	/* 14 */ vAddConstant("BT_PATH"_Stz,          BT_PATH);
+	/* 15 */ vAddConstant("BT_PROGRESSUNITS"_Stz, BT_PROGRESSUNITS);
+	/* 16 */ vAddConstant("BT_PROMPTOUT"_Stz,     BT_PROMPTOUT);
+	/* 17 */ vAddConstant("BT_SEEKOFFSETS"_Stz,   BT_SEEKOFFSETS);
+	/* 18 */ vAddConstant("BT_TOTALUNITS"_Stz,    BT_TOTALUNITS);
+	/* 19 */ vAddConstant("BT_WARNINGS"_Stz,      BT_WARNINGS);
+
+	/* 20 */ vAddConstant("BT_ENUMS"_Stz,         BT_ENUMS);
 
 	// CN_ : class number
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
@@ -578,24 +595,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
   /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
-  // OI_ : operator infoset
-  /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
-  /*  0 */ vAddConstant("OI_AFFECTEDROWS"_Stz,  OI_AFFECTEDROWS);
-  /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
-  /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMAND);
-  /*  0 */ vAddConstant("OI_COMPILEERRORS"_Stz, OI_COMPILEERRORS);
-  /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
-  /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
-  /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
-  /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
-  /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
-  /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
-  /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
-  /*  0 */ vAddConstant("OI_PROGRESSUNITS"_Stz, OI_PROGRESSUNITS);
-  /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
-  /*  0 */ vAddConstant("OI_TOTALUNITS"_Stz,    OI_TOTALUNITS);
-  /*  0 */ vAddConstant("OI_WARNINGS"_Stz,      OI_WARNINGS);
-
   // PD_ : pipe direction
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
   /*  0 */ vAddConstant("PD_PIPE_IN"_Stz,   PD_PIPE_IN);
@@ -724,29 +723,10 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_SRTBUFFER"_Stz,       EV_D_SRTBUFFER);
   /*  0 */ vAddConstant("EV_D_STREAMDEF"_Stz,       EV_D_STREAMDEF);
   /*  0 */ vAddConstant("EV_D_STREAMDEFRHT"_Stz,    EV_D_STREAMDEFRHT);
-  /*  0 */ vAddConstant("EV_D_STREAMSET"_Stz,       EV_D_STREAMSET);
   /*  0 */ vAddConstant("EV_D_TABLE"_Stz,           EV_D_TABLE);
   /*  0 */ vAddConstant("EV_D_TABLEPTN"_Stz,        EV_D_TABLEPTN);
   /*  0 */ vAddConstant("EV_D_JOBMETRICS"_Stz,      EV_D_JOBMETRICS);
   /*  0 */ vAddConstant("EV_D_PAGINGMETRICS"_Stz,   EV_D_PAGINGMETRICS);
-
-  /*  0 */ vAddConstant("EV_I_AFFECTEDROWS"_Stz,    EV_I_AFFECTEDROWS);
-  /*  0 */ vAddConstant("EV_I_CALLPIPELINE"_Stz,    EV_I_CALLPIPELINE);
-  /*  0 */ vAddConstant("EV_I_COMMAND"_Stz,         EV_I_COMMAND);
-  /*  0 */ vAddConstant("EV_I_COMPILEERRORS"_Stz,   EV_I_COMPILEERRORS);
-  /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);
-  /*  0 */ vAddConstant("EV_I_EXECERRORS"_Stz,      EV_I_EXECERRORS);
-  /*  0 */ vAddConstant("EV_I_FORKCOMMAND"_Stz,     EV_I_FORKCOMMAND);
-  /*  0 */ vAddConstant("EV_I_LOADRESULT"_Stz,      EV_I_LOADRESULT);
-  /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
-  /*  0 */ vAddConstant("EV_I_NODEINFO"_Stz,        EV_I_NODEINFO);
-  /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
-  /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
-  /*  0 */ vAddConstant("EV_I_PROGRESSUNITS"_Stz,   EV_I_PROGRESSUNITS);
-  /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);
-  /*  0 */ vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
-  /*  0 */ vAddConstant("EV_I_TOTALUNITS"_Stz,      EV_I_TOTALUNITS);
-  /*  0 */ vAddConstant("EV_I_WARNINGS"_Stz,        EV_I_WARNINGS);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);
   /*  0 */ vAddConstant("EV_M_CANCELLING"_Stz,      EV_M_CANCELLING);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_InfoSetTable.cpp - infoSet table step group                          */
+/* Steps_TableDef.cpp - TableDef table step group                             */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -21,22 +21,22 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_InfoSetTable(void)
+void Step::vAddSteps_TableDef(void)
 {
-  vAddStep("infoSetTable[]"_Stz,         &Step::vInfoSetTableGet);
-  vAddStep("infoSetTable[].column@"_Stz, &Step::vInfoSetTableColumnFetch);
-  vAddStep("infoSetTable[].dump"_Stz,    &Step::vInfoSetTableDump);
-  vAddStep("infoSetTable[].set"_Stz,     &Step::vInfoSetTableSet);
+  vAddStep("TableDef[]"_Stz,         &Step::vTableDefGet);
+  vAddStep("TableDef[].column@"_Stz, &Step::vTableDefColumnFetch);
+  vAddStep("TableDef[].dump"_Stz,    &Step::vTableDefDump);
+  vAddStep("TableDef[].set"_Stz,     &Step::vTableDefSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* infoSetTable[].column -- fetch the column from the infoSet table           */
+/* TableDef[].column -- fetch the column from the TableDef table              */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetTableColumnFetch(void)
+void Step::vTableDefColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -48,15 +48,15 @@ void Step::vInfoSetTableColumnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* infoSetTable[].dump                                                        */
+/* TableDef[].dump                                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetTableDump(void)
+void Step::vTableDefDump(void)
 {
   ENTRY();
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -68,27 +68,25 @@ void Step::vInfoSetTableDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* infoSetTable[] -- get table                                                */
+/* TableDef[] -- get table                                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetTableGet(void)
+void Step::vTableDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpInfoSetTable);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTableDef);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* infoSetTable[].set -- set table                                            */
+/* TableDef[].set -- set table                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetTableSet(void)
+void Step::vTableDefSet(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  m_pLogicUnit->m_xpInfoSetTable = pTable;
+  m_pLogicUnit->m_xpTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

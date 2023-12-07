@@ -23,16 +23,16 @@
   0 locals| sTableNm |
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] rowBuffer[].new
+  // create an rowBuffer operand
+  TableDef[] rowBuffer[].new
 
   Folder[] dic.lastWord dup
   iterate
@@ -51,10 +51,10 @@
       0 Table[].size number.magnitude >str
 
       // insert table size
-      sTableNm streamSetTable[] rowBuffer[].addTableSizes  not if
+      sTableNm TableDef[] rowBuffer[].addTableSizes  not if
         rowBuffer[].pipeOut
-        streamSetTable[] RowBuffer[].new
-        sTableNm streamSetTable[] rowBuffer[].addTableSizes assert
+        TableDef[] RowBuffer[].new
+        sTableNm TableDef[] rowBuffer[].addTableSizes assert
       then
 
     then
@@ -66,7 +66,7 @@
 
   next
 
-  // pipeout the infoset
+  // pipeout the rowBuffer
   rowBuffer[].pipeOut
 
   true

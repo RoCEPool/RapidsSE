@@ -161,6 +161,8 @@ void* RowBuffer::aGetCellArray(RowBuffer* pRowBuffer, i8 iRow)
 {
   _static_
 
+	RASSERT(pRowBuffer->eBufferType() == BT_DATA);
+
   Row* pRow = pRowBuffer->pRowAddress(iRow);
   m8* aArray = (m8*) & pRow->m_wxaColumnCell[0];
 

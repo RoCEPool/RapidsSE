@@ -531,7 +531,7 @@ void vTest6(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  InfoSet* pInfoSet;
+	RowBuffer* pRowBuffer;
 
   SeApi* pSeApi = new SeApi;
 
@@ -542,158 +542,158 @@ void vTest6(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pColumnDefs("rapidsse"_Stz,
+	pRowBuffer = pSeApi->pColumnDefs("rapidsse"_Stz,
                                  "public"_Stz,
                                  "lineitem"_Stz,
                                  nullptr);
-  for (Row* pRow = pInfoSet->pFirstRow();
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
     
     SP_ColumnMetadata spColMeta;
     vTrace("COLUMNMETA %s\n"_Stz,spColMeta.sz(pColMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pIndexColumnDefs("rapidsse"_Stz,
+	pRowBuffer = pSeApi->pIndexColumnDefs("rapidsse"_Stz,
                                  "public"_Stz,
                                  "lineitem"_Stz,
                                  "IxL_ORDERKEY"_Stz,
                                  nullptr);
-  for (Row* pRow = pInfoSet->pFirstRow();
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     IndexColumnMetadata* pColMeta = static_cast<IndexColumnMetadata*>(pRow);
 
     SP_IndexColumnMetadata spColMeta;
     vTrace("INDEX COLUMNMETA %s\n"_Stz,spColMeta.sz(pColMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pPartitionKey("rapidsse"_Stz,
+	pRowBuffer = pSeApi->pPartitionKey("rapidsse"_Stz,
                                    "public"_Stz,
                                    "lineitem"_Stz);
-  for (Row* pRow = pInfoSet->pFirstRow();
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     PartitionKeyMetadata* pPtnKeyMeta = static_cast<PartitionKeyMetadata*>(pRow);
     
     SP_PartitionKeyMetadata spPtnKeyMeta;
     vTrace("PARTITIONKEY %s\n"_Stz,spPtnKeyMeta.sz(pPtnKeyMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search catalogs
   
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pSearchCatalogs(nullptr);
-  for (Row* pRow = pInfoSet->pFirstRow();
+	pRowBuffer = pSeApi->pSearchCatalogs(nullptr);
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     CatalogMetadata* pCatalogMeta = static_cast<CatalogMetadata*>(pRow);
 
     SP_CatalogMetadata spCatalogMeta;
     vTrace("SEARCHCATALOG %s\n"_Stz,spCatalogMeta.sz(pCatalogMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search schemas
   
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pSearchSchemas(nullptr,nullptr);
-  for (Row* pRow = pInfoSet->pFirstRow();
+	pRowBuffer = pSeApi->pSearchSchemas(nullptr,nullptr);
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     SchemaMetadata* pSchemaMeta = static_cast<SchemaMetadata*>(pRow);
 
     SP_SchemaMetadata spSchemaMeta;
     vTrace("SEARCHSCHEMA %s\n"_Stz,spSchemaMeta.sz(pSchemaMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search tables
   
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pSearchTables(nullptr,nullptr,nullptr);
-  for (Row* pRow = pInfoSet->pFirstRow();
+	pRowBuffer = pSeApi->pSearchTables(nullptr,nullptr,nullptr);
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     TableMetadata* pTableMeta = static_cast<TableMetadata*>(pRow);
 
     SP_TableMetadata spTableMeta;
     vTrace("SEARCHTABLE %s\n"_Stz,spTableMeta.sz(pTableMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search columns
   
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pSearchColumns(nullptr,nullptr,nullptr,nullptr);
-  for (Row* pRow = pInfoSet->pFirstRow();
+	pRowBuffer = pSeApi->pSearchColumns(nullptr,nullptr,nullptr,nullptr);
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     ColumnMetadata* pColumnMeta = static_cast<ColumnMetadata*>(pRow);
 
     SP_ColumnMetadata spColumnMeta;
     vTrace("SEARCHCOLUMN %s\n"_Stz,spColumnMeta.sz(pColumnMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search for nodeName columns
   
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pSearchColumns(nullptr,nullptr,nullptr,"nodeName"_Stz);
-  for (Row* pRow = pInfoSet->pFirstRow();
+	pRowBuffer = pSeApi->pSearchColumns(nullptr,nullptr,nullptr,"nodeName"_Stz);
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     ColumnMetadata* pColumnMeta = static_cast<ColumnMetadata*>(pRow);
 
     SP_ColumnMetadata spColumnMeta;
     vTrace("SEARCHCOLUMN %s\n"_Stz,spColumnMeta.sz(pColumnMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search indexes
 
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pSearchIndexes(nullptr,nullptr,nullptr,nullptr);
-  for (Row* pRow = pInfoSet->pFirstRow();
+	pRowBuffer = pSeApi->pSearchIndexes(nullptr,nullptr,nullptr,nullptr);
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     IndexMetadata* pIndexMeta = static_cast<IndexMetadata*>(pRow);
 
     SP_IndexMetadata spIndexMeta;
     vTrace("SEARCHINDEXES %s\n"_Stz,spIndexMeta.sz(pIndexMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search index columns
 
   vTrace("\n\n"_Stz);
-  pInfoSet = pSeApi->pSearchIndexColumns(nullptr,nullptr,nullptr,nullptr,nullptr);
-  for (Row* pRow = pInfoSet->pFirstRow();
+	pRowBuffer = pSeApi->pSearchIndexColumns(nullptr,nullptr,nullptr,nullptr,nullptr);
+  for (Row* pRow = pRowBuffer->pFirstRow();
        pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
+       pRow = pRowBuffer->pNextRow(pRow)) {
     IndexColumnMetadata* pIndexColumnMeta = static_cast<IndexColumnMetadata*>(pRow);
 
     SP_IndexColumnMetadata spIndexColumnMeta;
     vTrace("SEARCHCOLUMN %s\n"_Stz,spIndexColumnMeta.sz(pIndexColumnMeta));
   }
-  delete pInfoSet;
+  delete pRowBuffer;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   delete pSeApi;

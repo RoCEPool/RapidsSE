@@ -13,7 +13,7 @@
   PipeIn[].pipeOut
 
   // find the C_TABLEDEF_COUNT
-  C_TDEF_COUNT op__tableDef_streamSet assert
+  C_TDEF_COUNT op__tableDef assert
 
   // don't create or pipeout a streamDef, we'll do that when we send the result
 
@@ -21,21 +21,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_I_COUNT...                                                           */
+/* on EV_D_ROWBUFFER...                                                       */
 /*----------------------------------------------------------------------------*/
-: totalCount_CountInfo \handler
+: totalCount_RowBuffer \handler
 
-  PipeIn[] to InfoSet[]
+  0 locals| eBufferType |
+
+  PipeIn[].bufferType to eBufferType
+
+  eBufferType BT_COUNT != if
+    PipeIn[].pipeout
+    true
+    exit
+  then
+
+  PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  // get first row of InfoSet[]
-  InfoSet[].firstRow to infoSetRow[]
+  // get first row of RowBuffer[]
+  RowBuffer[].firstRow to infoSetRow[]
 
   // get 0th Column (rowCount) add to Counter
   0 infoSetRow[].getIntColumn Counter0[] + to Counter0[]
 
-  // now delete the InfoSet[]
-  InfoSet[].delete
+  // now delete the rowBuffer
+  RowBuffer[].delete
 
   true
 ;
@@ -49,16 +59,16 @@
   PipeIn[].pipeOut
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  streamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // insert row count into rowBuffer
-  Counter0[] streamSetTable[] RowBuffer[].addRowCount assert
+  Counter0[] TableDef[] RowBuffer[].addTotalCount assert
 
   RowBuffer[].Pipeout
 
@@ -78,7 +88,7 @@
 
   find: totalCount_EosMarker   EV_M_EOS        [op].handler!
   find: totalCount_DataMarker  EV_M_DATAPULSE  [op].handler!
-  find: totalCount_countInfo   EV_I_COUNT      [op].handler!
+  find: totalCount_RowBuffer   EV_D_ROWBUFFER  [op].handler!
 
   op__loop
 

@@ -38,6 +38,7 @@
 ../../../seth/tests/tests1N4P/Insert/testList
 //../../../seth/tests/tests1N4P/JoinOrder/testList
 ../../../seth/tests/tests1N4P/Load/testList
+../../../seth/tests/tests1N4P/Dload/testList
 ../../../seth/tests/tests1N4P/LocalFunctions/testList
 ../../../seth/tests/tests1N4P/Operators/testList
 

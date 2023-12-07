@@ -28,7 +28,6 @@
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 
-#include "InfoSet.hpp"
 #include "VertexSpec.hpp"
 #include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
@@ -112,9 +111,7 @@ namespace STORE
     REG<Index,          CN_INDEX         > m_xpIndex;
     REG<IndexDef,       CN_INDEXDEF      > m_xpIndexDef;
     REG<IndexStream,    CN_INDEXSTREAM   > m_xpIndexStream;
-    REG<InfoSet,        CN_INFOSET       > m_xpInfoSet;
     REG<Row,            CN_ROW           > m_xpInfoSetRow;
-    REG<Table,          CN_TABLE         > m_xpInfoSetTable;
     REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
@@ -149,6 +146,8 @@ namespace STORE
     REG<Object,         CN_NONE          > m_xpRecvdObject;
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
+		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferWarn;
+		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferErr;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
     REG<RowCounts,      CN_ROWCOUNTS     > m_xpRowCounts;
 
@@ -162,13 +161,15 @@ namespace STORE
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;
     REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;
-    REG<Table,          CN_TABLE         > m_xpStreamSetTable;
     REG<SubCall,        CN_NONE          > m_xpSubCall;
     REG<Pipeline,       CN_PIPELINE      > m_xpSubPipe;
     REG<SubReturn,      CN_NONE          > m_xpSubReturn;
     REG<Operand,        CN_NONE          > m_xpSubset;
 
     REG<Table,          CN_TABLE         > m_xpTable;
+		REG<Table,          CN_TABLE         > m_xpTableDef;
+		REG<Table,          CN_TABLE         > m_xpTableDefErr;
+		REG<Table,          CN_TABLE         > m_xpTableDefWarn;
     REG<TablePtn,       CN_TABLEPTN      > m_xpTablePtn;
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<TaskList,       CN_TASKLIST      > m_xpTaskList;
@@ -230,6 +231,7 @@ namespace STORE
     eEC    m_eErrorCode_reg;      // error code
     
     eEV m_ePipeInOperand;
+		eBT m_ePipeInBufferType;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop

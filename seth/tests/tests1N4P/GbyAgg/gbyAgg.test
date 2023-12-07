@@ -29,7 +29,7 @@ create table ${testName2}_datums (
 
 
 load ${testName2}_datums "../DATA/Transliterate/groupBy.csv" ;
-
+success
 
 //------------------------------------------------------------------------------
 select int_col1, sum(int_col0) from ${testName2}_datums group by int_col1;

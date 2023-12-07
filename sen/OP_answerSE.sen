@@ -47,10 +47,10 @@
     exit
   then
   
-  Socket[].object@\clear to InfoSet[]
+  Socket[].object@\clear to RowBuffer[]
 
-  // get the first row from the infoset
-  InfoSet[].firstRow to infoSetRow[]
+  // get the first row from the rowBuffer
+  RowBuffer[].firstRow to infoSetRow[]
 
   // get the 0th column from the row
   0 infoSetRow[].getVchColumn to sNodeName
@@ -93,8 +93,8 @@
   //  true [system].started!
   //then
 
-  // delete the infoset
-  InfoSet[].delete
+  // delete the rowBuffer
+  RowBuffer[].delete
 
   // return the answered node
   pAnsweredNode

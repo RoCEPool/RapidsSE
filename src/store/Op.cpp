@@ -354,6 +354,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 
   AM::vOperandsInc();
 
+	if (pOperand->bIsMarker())
   RASSERT(pOperand->bIsMarker());
   Marker* pMarker = _pMarker(pOperand);
 
@@ -623,7 +624,7 @@ bool Op::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* is operand received valid?                                                 */
 /*----------------------------------------------------------------------------*/
-bool Op::bIsEventValid(i8 i_OperandKind)
+bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -679,8 +680,11 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case EV_D_CRWBUFFER:
     case EV_D_ENTBUFFER:
-    case EV_D_ROWBUFFER:
     case EV_D_SRTBUFFER:
+			if (i_BufferType != BT_NONE) {
+				vTrace("%s %s %lld\n"_Stz, aEV[i_OperandKind], aBT[i_BufferType], i_BufferType);
+			}
+			RASSERT(i_BufferType == BT_NONE);
       // These don't apply to adaptorWL
       if (szOpNm()->bSame("adaptorWL"_Stz)) {
         break;
@@ -693,7 +697,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
 
-      // should have received a EV_D_STREAMDEF
+      // should have received a EV_D_STREAMDEF if BufferType is BT_DATA
       // scanOP does not receive a STREAMDEF and can reeive a CRWBUFFER piped back to itself
       if (!szOpNm()->bSame("scan"_Stz)) {
         if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
@@ -711,6 +715,43 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       
       break;
+
+		case EV_D_ROWBUFFER:
+			RASSERT(i_BufferType != BT_NONE);
+
+			// These don't apply to adaptorWL
+			if (szOpNm()->bSame("adaptorWL"_Stz)) {
+				break;
+			}
+
+			// should have received a EV_M_DATAPULSE
+			if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
+
+				// EXECERRORS can come berore the DATAPULSE
+				if (i_BufferType != BT_EXECERRORS) {
+					vTrace("%s: %s (BufferType: %s) arrived without a prior EV_M_DATAPULSE\n"_Stz,
+								 szOpNm(), aEV[i_OperandKind], aBT[i_BufferType]);
+					return false;
+				}
+			}
+
+			// should have received a EV_D_STREAMDEF if BufferType is BT_DATA
+			if (i_BufferType == BT_DATA) {
+				if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
+					vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
+								 szOpNm(), aEV[i_OperandKind]);
+					return false;
+				}
+			}
+
+			// should not have received EV_M_EOS's > EV_M_DATAPULSE's
+			if ( m_pEvMgr->m_naEventCount[EV_M_EOS] > m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
+				vTrace("%s: %s arrived after EV_M_EOS and no new EV_M_DATAPULSE\n"_Stz,
+							 szOpNm(), aEV[i_OperandKind]);
+				return false;
+			}
+
+			break;
 
     case EV_M_DATAPULSE:
       // should have received a EV_M_START
@@ -1413,8 +1454,8 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
       );
     } else if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
       RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-      vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
-             pRowBuffer->nRows(), this->pStage()->szStageNm(), this->szOpNm()
+      vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows (%s)) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             pRowBuffer->nRows(), aBT[pRowBuffer->eBufferType()], pStage()->szStageNm(), this->szOpNm()
       );
     }
   }
@@ -1546,10 +1587,10 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
           // Operand is not in memory.
           // Queue a request to the PageIn Demon and return (Will perform pagein bide)
           // Queue request -> PageIn Demon(BufferId + m_pTask)
-          InfoSet* pInfoSet = AM::PAGING::pToPageIn(m_pTask, oBufferId);
+					RowBuffer* pRowBuffer = AM::PAGING::pToPageIn(m_pTask, oBufferId);
           vTrace("Queuing request with TaskPtr %p and BufferId %p\n"_Stz, m_pTask, oBufferId.m_pvAsAddress);
 
-          Operand* pRequestOperand = _pOperand(pInfoSet);
+          Operand* pRequestOperand = _pOperand(pRowBuffer);
           eEC eError = AM::JLIST::ePipeToOp0(AM::DEMON::tPageInDemonJobId(), pRequestOperand, m_pTask);
           //Handle error case
           RASSERT(eError == EC_NONE);
@@ -1609,10 +1650,11 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
   if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
     UNUSED(pRowBuffer);
-    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
+    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows(%s))\n"_Stz
           ,pStage()->szStageNm()
           ,szOpNm()
           ,pRowBuffer->nRows()
+		      ,aBT[pRowBuffer->eBufferType()]
           );
   }
   return pOperand;

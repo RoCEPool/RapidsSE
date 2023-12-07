@@ -5,29 +5,35 @@
 " OP_sanity.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_I_NODEINFO...                                                          */
+/* on EV_D_ROWBUFFER...                                                       */
 /*----------------------------------------------------------------------------*/
-: gridSanity_NodeInfo \handler
+: gridSanity_RowBuffer \handler
 
-  //"Operand:- EV_I_NODEINFO" .verbose
+  //"Operand:- EV_D_ROWBUFFER" .verbose
 
-  PipeIn[] to InfoSet[]
+  PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
+  RowBuffer[].getBufferType BT_NODEINFO != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   // get the first row of the infoSet (nodeInfo)
-  InfoSet[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to infoSetRow[]
 
   // create an infoSet operand
-  StreamSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // add nodeInfo to the infoSet
-  infoSetRow[].get StreamSetTable[] RowBuffer[].addgridSanity assert
+  infoSetRow[].get TableDef[] RowBuffer[].addgridSanity assert
 
-  // pipeout the infoset
+  // pipeout the rowBuffer
   RowBuffer[].pipeOut
 
-  // delete the infoset
-  InfoSet[].delete
+  // delete the rowBuffer
+  RowBuffer[].delete
 
   true
 ;
@@ -43,10 +49,10 @@
   PipeIn[].pipeOut
 
   // find the __gridSanity table
-  C_TDEF_gridSanity op__tableDef_streamSet assert
+  C_TDEF_gridSanity op__tableDef assert
 
   // create a new stream defnition as per the nodeinfo being sent
-  StreamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
@@ -64,8 +70,8 @@
 
   op__topology
 
-  find: gridSanity_StartMarker EV_M_START [op].handler!
-  find: gridSanity_NodeInfo    EV_I_NODEINFO    [op].handler!
+  find: gridSanity_StartMarker EV_M_START        [op].handler!
+  find: gridSanity_RowBuffer   EV_D_ROWBUFFER    [op].handler!
 
   op__loop
 
