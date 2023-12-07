@@ -107,7 +107,13 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
     delete pCommonTagSet;
     delete pCommandParser;
     eErrCode = e.eErrorCode();
-    sErrStr.vSprint("Line: %lld; Column: %lld; "_Stz, e.iLine(), e.iColumn());
+
+    if (e.szFile() && !e.szFile()->bIsEmpty()) {
+      sErrStr.vSprint("File: %s; Line: %lld; Column: %lld; "_Stz, e.szFile(), e.iLine(), e.iColumn());
+    } else {
+      sErrStr.vSprint("Line: %lld; Column: %lld; "_Stz, e.iLine(), e.iColumn());
+    }
+
     sErrStr.vConcat(e.szError());
     return nullptr;
 

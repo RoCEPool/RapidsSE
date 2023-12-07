@@ -12,7 +12,7 @@ RapidsSE has several system limitations. These are documented below:
 #. **Data type value ranges**
 
    Each data type can have specific limitations with their range of values.
-   Refer to the section Data Types for more details.
+   Refer to the section :ref:`dataTypes` for more details.
 
 #. **CHAR and VARCHAR length**
 

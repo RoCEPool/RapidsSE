@@ -22,9 +22,10 @@ namespace Parser
   class SqlException : public std::runtime_error
   {
   protected:
-    eEC m_eErrorCode;
-    i8  m_iLine;
-    i8  m_iColumn;
+    eEC  m_eErrorCode;
+    char m_acFile[256]; // Can't use a s256 because it allows exceptions in its destructor
+    i8   m_iLine;       // and this conflicts with the destructor of std::runtime_error.
+    i8   m_iColumn;
 
     // Constructor
     SqlException(eEC eErrorCode, const Stz* szErrorMsg)
@@ -32,19 +33,30 @@ namespace Parser
         m_eErrorCode(eErrorCode),
         m_iLine(0),
         m_iColumn(0)
-    { /* noop */ }
+    {
+      /* noop */
+      m_acFile[0] = 0;
+    }
 
     // Constructor, with line and column information
-    SqlException(eEC eErrorCode, const Stz* szErrorMsg, i8 iLine, i8 iColumn)
+    SqlException(eEC eErrorCode, const Stz* szErrorMsg, Stz* szFile, i8 iLine, i8 iColumn)
         : std::runtime_error(const_cast<Stz*>(szErrorMsg)->azChar()),
           m_eErrorCode(eErrorCode),
           m_iLine(iLine),
           m_iColumn(iColumn)
-    { /* noop */ }
+    {
+      /* noop */
+      if (szFile) {
+        StrLib::vCopy(m_acFile, sizeof(m_acFile), szFile->azChar());
+      } else {
+        m_acFile[0] = 0;
+      }
+    }
 
   public:
     Stz* szError()    { return (Stz*) this->what(); }
     eEC  eErrorCode() { return m_eErrorCode;        }
+    Stz* szFile()     { return (Stz*) m_acFile;     }
     i8   iLine()      { return m_iLine;             }
     i8   iColumn()    { return m_iColumn;           }
   };
@@ -54,13 +66,13 @@ namespace Parser
   {
   protected:
     // Constructor. Can only be created by calling vThrow() methods
-    SyntaxException(eEC eErrorCode, const Stz* szErrorMsg, i8 iLine, i8 iColumn)
-      : SqlException(eErrorCode, szErrorMsg, iLine, iColumn)
+    SyntaxException(eEC eErrorCode, const Stz* szErrorMsg, Stz* szFile, i8 iLine, i8 iColumn)
+      : SqlException(eErrorCode, szErrorMsg, szFile, iLine, iColumn)
       { /* noop */ }
 
   public:
     // Creates and throws a SyntaxException. The error message should come from ANTLR.
-    static void vThrowAntlr(i8 iLine, i8 iColumn, Stz* szFormat, ...)
+    static void vThrowAntlr(Stz* szFile, i8 iLine, i8 iColumn, Stz* szFormat, ...)
     {
       s2K sErrMsg;
       va_list vaArgs;
@@ -69,25 +81,25 @@ namespace Parser
       sErrMsg.vSprintVA(szFormat,vaArgs);
       va_end(vaArgs);
 
-      throw SyntaxException(EC_SYNTAX_ERROR, sErrMsg.szStz(), iLine, iColumn);
+      throw SyntaxException(EC_SYNTAX_ERROR, sErrMsg.szStz(), szFile, iLine, iColumn);
     }
 
     // An error that indicates that the given syntax feature is not yet implemented
-    static void vThrowNotImplemented(i8 iLine, i8 iColumn, Stz* szFeatureName)
+    static void vThrowNotImplemented(Stz* szFile, i8 iLine, i8 iColumn, Stz* szFeatureName)
     {
       s2K sErrMsg(aErrorMsg[EC_NOT_IMPLEMENTED]);
       sErrMsg.vCatSprint(": %s"_Stz, szFeatureName);
 
-      throw SyntaxException(EC_NOT_IMPLEMENTED, sErrMsg.szStz(), iLine, iColumn);
+      throw SyntaxException(EC_NOT_IMPLEMENTED, sErrMsg.szStz(), szFile, iLine, iColumn);
     }
 
-    static void vThrow(i8 iLine, i8 iColumn, eEC eErrorCode)
+    static void vThrow(Stz* szFile, i8 iLine, i8 iColumn, eEC eErrorCode)
     {
       s2K sErrMsg(aErrorMsg[eErrorCode]);
-      throw SyntaxException(eErrorCode, sErrMsg.szStz(), iLine, iColumn);
+      throw SyntaxException(eErrorCode, sErrMsg.szStz(), szFile, iLine, iColumn);
     }
 
-    static void vThrow(i8 iLine, i8 iColumn, eEC eErrorCode, Stz* szParamFormat, ...)
+    static void vThrow(Stz* szFile, i8 iLine, i8 iColumn, eEC eErrorCode, Stz* szParamFormat, ...)
     {
       // Get the default error message for this error code
       s2K sErrMsg(aErrorMsg[eErrorCode]);
@@ -103,7 +115,7 @@ namespace Parser
       // Combine the ParamFormat string with the default error message
       sErrMsg.vConcat(sParamStr);
 
-      throw SyntaxException(eErrorCode, sErrMsg.szStz(), iLine, iColumn);
+      throw SyntaxException(eErrorCode, sErrMsg.szStz(), szFile, iLine, iColumn);
     }
   };
 

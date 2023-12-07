@@ -93,7 +93,7 @@ void JoinOptimisation::vApplyJoinHint(PlanNode* pRootNode)
     if (pJoinAlgoHint->nChildren() != 1 ||
         Hint::pFirstValue(pJoinAlgoHint)->eValueType() != Value::VT_STRING) {
 
-      SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s"_Stz, C_HINT_KEY_JOIN_ALGO);
+      SyntaxException::vThrow(nullptr,-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s"_Stz, C_HINT_KEY_JOIN_ALGO);
     }
 
     Stz* szAlgoType = Hint::pFirstValue(pJoinAlgoHint)->szValue();
@@ -117,7 +117,7 @@ void JoinOptimisation::vApplyJoinHint(PlanNode* pRootNode)
       SortMergeJoinOp::vConvertJoinAlgorithm(pJoinOp, pRootNode);
 
     } else {
-      SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s = %s"_Stz, C_HINT_KEY_JOIN_ALGO, szAlgoType);
+      SyntaxException::vThrow(nullptr,-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s = %s"_Stz, C_HINT_KEY_JOIN_ALGO, szAlgoType);
     }
 
     return GraphNav::WALK_CONTINUE;
@@ -147,7 +147,7 @@ void JoinOptimisation::vConvertJoinToIndexJoin(QueryNode* pJoinOp, PlanNode* pRo
   if (pJoinIndexHint->nChildren() != 1 ||
       Hint::pFirstValue(pJoinIndexHint)->eValueType() != Value::VT_STRING ||
       Hint::pFirstValue(pJoinIndexHint)->szValue()->bIsEmpty()) {
-    SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s"_Stz, C_HINT_KEY_JOIN_INDEX);
+    SyntaxException::vThrow(nullptr,-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s"_Stz, C_HINT_KEY_JOIN_INDEX);
   }
 
   Stz* szIndexName = pJoinIndexHint->pFirstChild()->szValue();
