@@ -25,9 +25,9 @@
     PipeIn[] to RowBuffer[]
     nullptr to PipeIn[]
 
-    C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+    C_TDEF_LOCKSTATS op__tableDef assert
 
-    infoSetTable[] RowBuffer[].writeCsv
+    TableDef[] RowBuffer[].writeCsv
 
     RowBuffer[].delete
 

@@ -16,11 +16,11 @@
     RowBufferErr[].delete
   then
 
-  // create the infoSetTable for C_TDEF_COMPILEERRORS
-  C_TDEF_COMPILEERRORS "op__tableDef_infoSet" find execute assert
+  // create the tableDef for C_TDEF_COMPILEERRORS
+  C_TDEF_COMPILEERRORS "op__tableDef_err" find execute assert
 
   // create an rowBuffer operand for compileErrors
-  BT_COMPILEERRORS infoSetTable[] RowBufferErr[].new
+  BT_COMPILEERRORS TableDefErr[] RowBufferErr[].new
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,13 +51,13 @@
     RowBufferErr[].delete
   then
 
-  // create the infoSetTable for C_TDEF_COMPILEERRORS
-  C_TDEF_COMPILEERRORS "op__tableDef_infoSet" find execute assert
+  // create the tableDef for C_TDEF_COMPILEERRORS
+  C_TDEF_COMPILEERRORS "op__tableDef_err" find execute assert
 
   // create an rowBuffer operand for commandErrors
-  BT_COMPILEERRORS infoSetTable[] RowBufferErr[].new
+  BT_COMPILEERRORS TableDefErr[] RowBufferErr[].new
 
-  errorMsg errorCode infoSetTable[] RowBufferErr[].addCommandError assert
+  errorMsg errorCode TableDefErr[] RowBufferErr[].addCommandError assert
 
   // pipeout the CMDERROR rowBuffer
   RowBufferErr[].pipeOut
@@ -81,14 +81,14 @@
     RowBufferErr[].delete
   then
 
-  // create the infoSetTable for C_TDEF_EXECERRORS
-  C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
+  // create the tableDef for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
 
   // create an infoSet operand for commandErrors
-  BT_EXECERRORS infoSetTable[] RowBufferErr[].new
+  BT_EXECERRORS TableDefErr[] RowBufferErr[].new
 
   errorCode attachmap::errorText@
-    errorCode infoSetTable[] RowBufferErr[].addExecError assert
+    errorCode TableDefErr[] RowBufferErr[].addExecError assert
 
   // pipeout the EXECERROR infoset
   RowBufferErr[].pipeOut
@@ -112,13 +112,13 @@
     RowBufferErr[].delete
   then
 
-  // create the infoSetTable for C_TDEF_EXECERRORS
-  C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
+  // create the tableDef for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
 
   // create an rowBuffer operand for commandErrors
-  BT_EXECERRORS infoSetTable[] RowBufferErr[].new
+  BT_EXECERRORS TableDefErr[] RowBufferErr[].new
 
-  errorMsg errorCode infoSetTable[] RowBufferErr[].addExecError assert
+  errorMsg errorCode TableDefErr[] RowBufferErr[].addExecError assert
 
   // pipeout the EXECERROR rowBuffer
   RowBufferErr[].pipeOut

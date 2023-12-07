@@ -19,7 +19,7 @@
 
   //C_TDEF_PATH infoSetRow:getFirstRow
 
-  C_TDEF_PATH op__tableDef_infoSet assert
+  C_TDEF_PATH op__tableDef assert
   RowBuffer[].firstRow to InfoSetRow[]
 
   // extract the values
@@ -86,11 +86,11 @@
   // Convert this tag set to a sen parsable string
   pCmdTagSet tagSet.asSenStr to sTags
 
-  C_TDEF_COMMAND InfoSet:discover
+  C_TDEF_COMMAND TableDef:discover
 
   //sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
 
-  InfoSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
   BT_COMMAND RowBuffer[].setBufferType
 
   sTags sCmd  2 RowBuffer[].addRowVargs

@@ -36,7 +36,7 @@
 
   //C_TDEF_PATH infoSetRow:getFirstRow
 
-  C_TDEF_PATH op__tableDef_infoSet assert
+  C_TDEF_PATH op__tableDef assert
   RowBuffer[].firstRow to InfoSetRow[]
 
   // extract the values

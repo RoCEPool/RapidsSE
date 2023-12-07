@@ -23,10 +23,10 @@
 //  then
 /*
   // find the __lockStats table
-  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+  C_TDEF_LOCKSTATS op__tableDef assert
 
   // create a new streamDef
-  infoSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   //StreamDefLft[].asStr .
   Expressions::lockSample to operandC[]
@@ -34,13 +34,13 @@
 */
 
   // find the __lockStats table
-  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+  C_TDEF_LOCKSTATS op__tableDef assert
 
   // create an rowBuffer operand
-  infoSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // add lock  to the infoSet
-  infoSetTable[] RowBuffer[].addLockStats assert
+  TableDef[] RowBuffer[].addLockStats assert
 
   // pipeout the rowBuffer
   RowBuffer[].pipeOut
@@ -54,13 +54,13 @@
 : stats_Exiting \handler
 
   // find the __lockStats table
-  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+  C_TDEF_LOCKSTATS op__tableDef assert
 
   // create an infoSet operand
-  infoSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // add lock to the rowBuffer
-  infoSetTable[] RowBuffer[].addLockStats assert
+  TableDef[] RowBuffer[].addLockStats assert
 
   // pipeout the rowBuffer
   RowBuffer[].pipeOut

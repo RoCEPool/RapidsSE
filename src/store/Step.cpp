@@ -214,6 +214,7 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_Table();
 	Step::vAddSteps_TableDef();
+	Step::vAddSteps_TableDefErr();
 	Step::vAddSteps_TableDefWarn();
   Step::vAddSteps_TablePtn();
   Step::vAddSteps_Tag();

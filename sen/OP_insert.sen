@@ -56,11 +56,11 @@
   // send out an infoSet of ProgressUnits every 100 buffers
   Counter0[] 100 % 0 == if
 
-    // create an infoSet operand
-    infoSetTable[] RowBuffer[].new
+    // create a RowBuffer operand
+    TableDef[] RowBuffer[].new
 
     // insert progressUnits to the infoset
-    Counter0[] infoSetTable[] RowBuffer[].addProgressUnits assert
+    Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
 
     // pipeout the infoset
     RowBuffer[].pipeOut
@@ -111,10 +111,10 @@
   Counter0[] 10 % 0 == if
 
     // create an infoSet operand
-    infoSetTable[] RowBuffer[].new
+    TableDef[] RowBuffer[].new
 
     // insert progressUnits to the infoset
-    Counter0[] infoSetTable[] RowBuffer[].addProgressUnits assert
+    Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
 
     // pipeout the infoset
     RowBuffer[].pipeOut
@@ -136,11 +136,11 @@
 
   // send out final progress units
 
-  // create an infoSet operand
-  infoSetTable[] RowBuffer[].new
+  // create a rowBuffer operand
+  TableDef[] RowBuffer[].new
 
   // insert progressUnits to the infoset
-  Counter0[] infoSetTable[] RowBuffer[].addProgressUnits assert
+  Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
 
   // pipeout the infoset
   RowBuffer[].pipeOut
@@ -154,10 +154,10 @@
     // Don't emit an infoset if the values are all zeros
     rowCounts[].areAllZeros not if
 
-      C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
+      C_TDEF_AFFECTEDROWS op__tableDef assert
 
       // create an rowBuffer operand
-      infoSetTable[] RowBuffer[].new
+      TableDef[] RowBuffer[].new
       BT_AFFECTEDROWS RowBuffer[].setBufferType
 
       // insert row counts to the rowBuffer
@@ -183,8 +183,8 @@
   //"Operand Insert:- EV_M_START" .
   PipeIn[].pipeOut
 
-  // create the infoSetTable for C_TDEF_PROGRESSUNITS
-  C_TDEF_PROGRESSUNITS op__tableDef_infoSet assert
+  // create the TableDef for C_TDEF_PROGRESSUNITS
+  C_TDEF_PROGRESSUNITS op__tableDef assert
 
   // get Table[] to be inserted into
   <tableNm> op__table if

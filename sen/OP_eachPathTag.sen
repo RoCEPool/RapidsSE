@@ -20,11 +20,11 @@
   
   //nPaths "eachPathTag: nPaths %v" .printf
 
-  C_TDEF_COUNT InfoSet:discover
+  C_TDEF_COUNT TableDef:discover
   
   //nPaths 1 OI_COUNT InfoSet:pipeoutRow
 
-  InfoSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
     BT_COUNT RowBuffer[].setBufferType
 
   nPaths 1 RowBuffer[].addRowVargs
@@ -35,7 +35,7 @@
 
   0 0 0 locals| sPath iPathNo iPathOf |
 
-  C_TDEF_PATH InfoSet:discover
+  C_TDEF_PATH TableDef:discover
 
   nPaths 0
   do
@@ -50,7 +50,7 @@
     
     //iPathOf iPathNo sPath 3 OI_PATH InfoSet:pipeoutRow
 
-      InfoSetTable[] RowBuffer[].new
+      TableDef[] RowBuffer[].new
       BT_PATH RowBuffer[].setBufferType
 
       iPathOf iPathNo sPath 3 RowBuffer[].addRowVargs

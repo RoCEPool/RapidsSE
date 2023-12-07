@@ -1488,7 +1488,7 @@ void Step::vRowBufferAddRowVargs(void)
 {
 	ENTRY();
 
-	Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+	Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
 	StreamDef* pStreamDef = pTable->pStreamDef();
 	i8 nCols = pStreamDef->nColumns();
 	i8 nArgs = m_pDataStack->iPopInt(__func__);
@@ -1721,7 +1721,7 @@ void Step::vRowBufferColValFetch(void)
 {
 	ENTRY();
 
-	Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+	Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
 	StreamDef* pStreamDef = pTable->pStreamDef();
 	i8 nCols = pStreamDef->nColumns();
 	UNUSED(nCols);

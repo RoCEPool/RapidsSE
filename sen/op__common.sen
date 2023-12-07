@@ -92,40 +92,6 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
-: op__tableDef_infoSet ( tableNm -- )
-
-  params| sTableNm |
-
-  //sTableNm .
-  
-  // save current path
-  Path[].save
-
-  // move to default tables folder
-  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
-  str.toStrVec Path[].set
-
-  // table
-  sTableNm check::validTableAssembly assert
-
-  // move to table folder and find the table
-  sTableNm Path[].pushNamedTableFolder
-  sTableNm find execute to infoSetTable[]
-
-  // cross-check
-  infoSetTable[] assert
-
-  Path[].popNamedTableFolder
-
-  // restore path
-  Path[].restore
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* verify and set folder to <tableNm> of tabledef                             */
-/*----------------------------------------------------------------------------*/
 : op__tableDef ( tableNm -- )
 
   params| sTableNm |
@@ -179,6 +145,40 @@
 
   // cross-check
   TableDefWarn[] assert
+
+  Path[].popNamedTableFolder
+
+  // restore path
+  Path[].restore
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* verify and set folder to <tableNm> of tabledef  (TableDefErr[])            */
+/*----------------------------------------------------------------------------*/
+: op__tableDef_err ( tableNm -- )
+
+  params| sTableNm |
+
+  //sTableNm .
+
+  // save current path
+  Path[].save
+
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec Path[].set
+
+  // table
+  sTableNm check::validTableAssembly assert
+
+  // move to table folder and find the table
+  sTableNm Path[].pushNamedTableFolder
+  sTableNm find execute to TableDefErr[]
+
+  // cross-check
+  TableDefErr[] assert
 
   Path[].popNamedTableFolder
 

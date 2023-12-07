@@ -5,26 +5,26 @@
 " se_infoSet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* discover infoset by name                                                   */
+/* discover tableDef by name                                                  */
 /*----------------------------------------------------------------------------*/
-: InfoSet:discover params| sInfoSetNm |
+: TableDef:discover params| sTableDefNm |
 
   //InfoSet[].isNull assert
   
-  sInfoSetNm op__tableDef_infoSet assert
+  sTableDefNm op__tableDef assert
 ;
 
 /*----------------------------------------------------------------------------*/
 /* discover infoset by name                                                   */
 /*----------------------------------------------------------------------------*/
 /*
-: InfoSet:getCol params| sInfoSetNm i_Col |
+: RowBuffer:getCol params| sTableDefNm i_Col |
 
-  sInfoSetNm InfoSet:discover
+  sTableDefNm TableDef:discover
   
-  InfoSet[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to infoSetRow[]
 
-  i_Col InfoSet[].colVal@
+  i_Col RowBuffer[].colVal@
 ;
 */
 
@@ -32,19 +32,19 @@
 /* add single varg row to infoet ; pipeout infoset                            */
 /*----------------------------------------------------------------------------*/
 /*
-: InfoSet:pipeoutRow params| eInfoSet nArgs |
+: InfoSet:pipeoutRow params| eBufferType nArgs |
   
-  InfoSetTable[] assert
-  InfoSet[].isNull assert
+  TableDef[] assert
+  TableDef[].isNull assert
   
-  InfoSetTable[] InfoSet[].new
-    eInfoSet InfoSet[].opInfoset!
+  TableDef[] RowBuffer[].new
+    eBufferType RowBuffer[].setBufferType
     
-  nArgs InfoSet[].addRowVargs
+  nArgs RowBuffer[].addRowVargs
  
-  InfoSet[].pipeOut
+  RowBuffer[].pipeOut
 
-  InfoSet[].isNull assert
+  RowBuffer[].isNull assert
 ;
 */
 

@@ -13,13 +13,13 @@
   PipeIn[].pipeOut
 
   // find the __count table
-  C_TDEF_COUNT op__tableDef_infoSet assert
+  C_TDEF_COUNT op__tableDef assert
 
   // create a new streamDef
-  infoSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // create an rowBuffer operand
-  Table[] infoSetTable[] RowBuffer[].addRowCount assert
+  Table[] TableDef[] RowBuffer[].addRowCount assert
 
   // pipeout the rowBuffer
   RowBuffer[].pipeOut

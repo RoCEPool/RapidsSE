@@ -30,18 +30,18 @@
     File0[].size C_1Mb / to iFileSizeMb
 
     // create a streamDef for C_TDEF_TOTALUNITS
-    C_TDEF_TOTALUNITS op__tableDef_infoSet assert
+    C_TDEF_TOTALUNITS op__tableDef assert
 
     "<OP_chunk>" [job].tagSet@ tagSet.hasName if
       iFileSizeMb sFileNm "OP_chunk: %v : %vMB\n" .putf
     then
 
     // create an rowBuffer operand for C_TDEF_TOTALUNITS
-    infoSetTable[] RowBuffer[].new
+    TableDef[] RowBuffer[].new
     BT_TOTALUNITS RowBuffer[].setBufferType
 
     // add fileSize to the infoset
-    sFileNm iFileSizeMb infoSetTable[] RowBuffer[].addTotalUnits assert
+    sFileNm iFileSizeMb TableDef[] RowBuffer[].addTotalUnits assert
 
     // pipeout the rowBuffer
     RowBuffer[].pipeOut
@@ -84,7 +84,7 @@
   
 
   // find the __seekOffsets table
-  C_TDEF_SEEKOFFSETS op__tableDef_infoSet assert
+  C_TDEF_SEEKOFFSETS op__tableDef assert
 
   // set eof location in counter0
   File0[].getEofLocation to counter1[]
@@ -98,7 +98,7 @@
     //counter1[] "counter1 %v" .printf
 
     // create an rowBuffer operand
-    infoSetTable[] RowBuffer[].new
+    TableDef[] RowBuffer[].new
     RowBuffer[].chunkFile counter2[] + to counter2[]
 
     RowBuffer[].pipeOut

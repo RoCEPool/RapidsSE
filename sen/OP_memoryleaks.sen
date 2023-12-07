@@ -105,7 +105,7 @@
 
   // Time to report the memory leaks
 
-  // Create and send the stream definition. This will populate infoSetTable[].
+  // Create and send the stream definition. This will populate TableDef[].
   memoryleaks_sendStreamDef
 
   // create a rowBuffer operand

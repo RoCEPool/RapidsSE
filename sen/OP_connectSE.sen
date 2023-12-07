@@ -10,13 +10,13 @@
 : connectSE_sendNodeInfo ( -- )
 
   // find the __nodeinfo table
-  C_TDEF_NODEINFO op__tableDef_infoSet assert
+  C_TDEF_NODEINFO op__tableDef assert
 
   // create an rowBuffer operand
-  infoSetTable[] RowBuffer[].new
+  TableDef[] RowBuffer[].new
 
   // add nodeInfo to the rowBuffer
-  infoSetTable[] RowBuffer[].addnodeInfo assert
+  TableDef[] RowBuffer[].addnodeInfo assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node

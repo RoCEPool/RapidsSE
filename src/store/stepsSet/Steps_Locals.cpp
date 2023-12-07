@@ -477,6 +477,11 @@ void Step::vLocalsTo(void)
 		EXIT();
 		return;
 	}
+	else if (szTerm->bSame("TableDefErr[]"_Stz)) {
+		pCurrentWord->vEncodeCall("TableDefErr[].set"_Stz);
+		EXIT();
+		return;
+	}
 	else if (szTerm->bSame("TableDefWarn[]"_Stz)) {
 		pCurrentWord->vEncodeCall("TableDefWarn[].set"_Stz);
 		EXIT();
