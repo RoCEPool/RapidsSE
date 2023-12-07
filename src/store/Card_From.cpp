@@ -74,7 +74,7 @@ void Card_From::vSmooth(CardIter* pCI)
 
   pCI->G.p_table = pSub_table();
 
-  vUpdate_emitted(pCI);
+  vUpdate_emit_OP(pCI);
  // pCI->vRenumberCards();
 }
 
@@ -90,7 +90,7 @@ void Card_From::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.p_table = pSub_table();
 
   RASSERT(pCarryForward->Table.m_bReproject);
-  vUpdate_emitted(pCI);
+  vUpdate_emit_OP(pCI);
  // pCI->vRenumberCards();
 }
 

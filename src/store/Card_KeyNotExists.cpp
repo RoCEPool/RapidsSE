@@ -114,7 +114,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_emitted(pCI);
+  vUpdate_emit(pCI);
 
   vCorrect_expCol(pCI->Flux.m_pArriving);
 
@@ -179,7 +179,7 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_KeyNotExists::vUpdate_emitted(CardIter* pCI)
+void Card_KeyNotExists::vUpdate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

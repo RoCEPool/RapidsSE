@@ -275,7 +275,7 @@ Card_Emit* Card_Deck::p_emitted_fold(void)
 /*----------------------------------------------------------------------------*/
 /* initial emitted analysis                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Deck::vAnalyse_emitted(CardIter* pCI)
+void Card_Deck::vAnalyse_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -303,8 +303,11 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
       case CK_o_INDEXJOIN:
       case CK_o_INDEXSCAN:
       case CK_o_SCAN:
+        pCI->G.p_OP->vCreate_emit(pCI);
+
         pCI->G.p_table = pCI->G.p_OP->pSub_table();
-        pCI->G.p_OP->vUpdate_emitted(pCI);
+        RASSERT(! pCI->G.p_OP->pSub_emit())
+        pCI->G.p_OP->vUpdate_emit_OP(pCI);
 
         RASSERT(pCI->G.p_OP->pSub_emit())
 
@@ -340,6 +343,8 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
           pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
         pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_OP->vCreate_emit(pCI);
+
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
         break;
@@ -350,6 +355,8 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         RASSERT(! pCI->G.p_OP->pSub_key());
 
         pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_OP->vCreate_emit(pCI);
+
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
         break;
@@ -371,6 +378,8 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         RASSERT(! pCI->G.p_OP->pSub_key());
 
         pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_OP->vCreate_emit(pCI);
+
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
 
@@ -387,6 +396,8 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         RASSERT(pCI->G.p_OP->pSub_key());
 
         pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_OP->vCreate_emit(pCI);
+
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
 
@@ -404,6 +415,8 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         pCI->G.p_key = pCI->G.p_OP->pSub_key();
 
         pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_OP->vCreate_emit(pCI);
+
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_emit->vAdjust_Wrt_key(pCI->G.p_key);
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
@@ -468,17 +481,17 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       case CK_o_LIMIT:   break;
       case CK_o_SORT:    break;
 
-      case CK_o_AGGREG:  pCI->G.p_aggreg->Card_Aggreg::vUpdate_emitted(pCI); break;
-      case CK_o_GBYAGG:  pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_emitted(pCI); break;
-      case CK_o_HAVING:  pCI->G.p_having->Card_Having::vUpdate_emitted(pCI); break;
-      case CK_o_ORDAGG:  pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_emitted(pCI); break;
-      case CK_o_PROJECT: pCI->G.p_project->Card_Project::vUpdate_emitted(pCI); break;
-      case CK_o_WHERE:   pCI->G.p_where->Card_Where::vUpdate_emitted(pCI); break;
+      case CK_o_AGGREG:  pCI->G.p_aggreg->Card_Aggreg::vUpdate_emit(pCI); break;
+      case CK_o_GBYAGG:  pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_emit(pCI); break;
+      case CK_o_HAVING:  pCI->G.p_having->Card_Having::vUpdate_emit(pCI); break;
+      case CK_o_ORDAGG:  pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_emit(pCI); break;
+      case CK_o_PROJECT: pCI->G.p_project->Card_Project::vUpdate_emit_OP(pCI); break;
+      case CK_o_WHERE:   pCI->G.p_where->Card_Where::vUpdate_emit(pCI); break;
 
       case CK_o_FROM:
         pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
         //pCI->vPrintBoard(__LINE__);
-        pCI->G.p_from->vUpdate_emitted(pCI);
+        pCI->G.p_from->vUpdate_emit_OP(pCI);
 
         if ((pCI->G.p_filter = pCI->G.p_from->pSub_filter())) {
           if ((pCI->G.p_stream = pCI->G.p_filter->pSub_stream())) {
@@ -499,7 +512,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
     }
 
 //    if (pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()) {
-//      pCI->G.p_filter->Card_Filter::vUpdate_emitted(pCI);
+//      pCI->G.p_filter->Card_Filter::vUpdate_emit(pCI);
 //    }
 
     if (pCI->G.p_MainCard->pSub_emit()) {

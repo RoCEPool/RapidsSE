@@ -104,7 +104,7 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index_passThru(void)
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_INDEX, "index analysis"_Stz);
 
   while (m_pCI->G_bEachMain(CK_o_INDEXSCAN)) {
-    m_pCI->G.p_indexScan->vUpdate_emitted(m_pCI);
+    m_pCI->G.p_indexScan->vUpdate_emit_OP(m_pCI);
 
     m_pCI->G.p_index = m_pCI->G.p_indexScan->pSub_index();
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
@@ -112,7 +112,7 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index_passThru(void)
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain(CK_o_INDEXJOIN)) {
-    m_pCI->G.p_indexJoin->vUpdate_emitted(m_pCI);
+    m_pCI->G.p_indexJoin->vUpdate_emit_OP(m_pCI);
 
     m_pCI->G.p_index = m_pCI->G.p_indexJoin->pSub_index();
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
@@ -123,7 +123,7 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index_passThru(void)
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain(CK_o_KEYEXISTS)) {
-    m_pCI->G.p_keyExists->vUpdate_emitted(m_pCI);
+    m_pCI->G.p_keyExists->vUpdate_emit(m_pCI);
 
     m_pCI->G.p_index = m_pCI->G.p_keyExists->pSub_index();
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
@@ -131,7 +131,7 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index_passThru(void)
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain(CK_o_KEYNOTEXISTS)) {
-    m_pCI->G.p_keyNotExists->vUpdate_emitted(m_pCI);
+    m_pCI->G.p_keyNotExists->vUpdate_emit(m_pCI);
 
     m_pCI->G.p_index = m_pCI->G.p_keyNotExists->pSub_index();
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);

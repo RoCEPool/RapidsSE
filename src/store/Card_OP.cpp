@@ -122,6 +122,27 @@ void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create emit                                                                */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vCreate_emit(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pCI);
+
+  RASSERT(! pSub_emit());
+
+  eCK eCard = this->eCard();
+  switch (eCard) {
+
+    default:
+      break;
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* remove and delete filter if it's empty                                     */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vCullIfEmpty_filter(Card_Filter* p_filter)
@@ -539,9 +560,32 @@ void Card_OP::vUpdate_constraint(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* update emit                                                                */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vUpdate_emit(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(pCI->Flux.m_pArriving);
+  RASSERT(pSub_emit());
+
+  pCI->G.p_stream = pSub_stream();
+  pCI->G.p_emit   = pCI->G.p_stream->pSub_emit();
+
+  //pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+
+  eCK eCard = this->eCard();
+  switch (eCard) {
+
+    default:
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* update projection                                                          */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vUpdate_emitted(CardIter* pCI)
+void Card_OP::vUpdate_emit_OP(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -56,7 +56,7 @@ void XF_Prolog_Analyse_emit::vAnalyse(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* projection analysis                                                        */
+/* first analysis of emit                                                     */
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 {
@@ -64,7 +64,7 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_EMIT, "emit analysis"_Stz);
 
-  m_pCI->G.pDeck->vAnalyse_emitted(m_pCI);
+  m_pCI->G.pDeck->vAnalyse_emit(m_pCI);
 
   m_pCI->vEndTransform(__LINE__);
 }

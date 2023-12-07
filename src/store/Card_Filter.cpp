@@ -171,7 +171,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_emitted(pCI);
+  vUpdate_emit(pCI);
 
  // pCI->vPrintBoard();
 
@@ -215,7 +215,7 @@ bool Card_Filter::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vUpdate_emitted(CardIter* pCI)
+void Card_Filter::vUpdate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
