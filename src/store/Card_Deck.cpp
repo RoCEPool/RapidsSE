@@ -300,13 +300,32 @@ void Card_Deck::vAnalyse_emit(CardIter* pCI)
         continue;
 
       case CK_o_FROM:
+        pCI->G.p_table = pCI->G.p_OP->pSub_table();
+        RASSERT(! pCI->G.p_OP->pSub_emit())
+        pCI->G.p_OP->vCreate_emit(pCI);
+        //pCI->G.p_OP->vUpdate_emit_OP(pCI);
+
+        RASSERT(pCI->G.p_OP->pSub_emit())
+
+        pCI->Flux.m_pArriving = pCI->G.p_OP->pSub_emit();
+
+        if ((pCI->G.p_indexList = pCI->G.p_OP->pSub_indexList())) {
+          if (pCI->Flux.m_pArriving) {
+            pCI->G.p_indexList->vTypes_For_expCol(pCI);
+          }
+        }
+
+        if ((pCI->G.p_constraint = pCI->G.p_OP->pSub_constraint()))
+          pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
+        continue;
+
       case CK_o_INDEXJOIN:
       case CK_o_INDEXSCAN:
       case CK_o_SCAN:
-        pCI->G.p_OP->vCreate_emit(pCI);
 
         pCI->G.p_table = pCI->G.p_OP->pSub_table();
         RASSERT(! pCI->G.p_OP->pSub_emit())
+        pCI->G.p_OP->vCreate_emit(pCI);
         pCI->G.p_OP->vUpdate_emit_OP(pCI);
 
         RASSERT(pCI->G.p_OP->pSub_emit())
