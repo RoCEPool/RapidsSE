@@ -708,12 +708,11 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
   DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
 
   LglPtn tDstLglPtn = pDataBuffer->tLglPtn();
-	if (pDataBuffer->eGetClassNo() == CN_ROWBUFFER) {
-		RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
-		vTrace("DATA LGL %x: %lld\n"_Stz, pRowBuffer, tDstLglPtn.iAsI8());
-		pRowBuffer->vDumpAllRows();
-	}
-
+//	if (pDataBuffer->eGetClassNo() == CN_ROWBUFFER) {
+//		RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
+//		vTrace("DATA LGL %x: %lld\n"_Stz, pRowBuffer, tDstLglPtn.iAsI8());
+//		pRowBuffer->vDumpAllRows();
+//	}
 
   i8 iDstNodeId = AM::pLglPtnMap()->iNodeId(tDstLglPtn);
 
