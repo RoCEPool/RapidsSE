@@ -7,9 +7,60 @@ enum eCK : i8 // card kind
 {
   /* */ CK_NONE=0,
 
-  /* */ CK_ABSJOIN,
+  // main cards
+  //  construction cards
+  /* */ CK_c_ABSJOIN,
+  /* */ CK_c_COMBINED,
+  /* */ CK_c_FLAT,
+  /* */ CK_c_FOLD,
+  /* */ CK_c_SEND,
+  /* */ CK_c_STAGE,
+
+  //  operator cards
+  /* */ CK_o_AGGREG,
+  /* */ CK_o_CALL,
+  /* */ CK_o_CAST,
+  /* */ CK_o_CORRELATION,
+  /* */ CK_o_CROSSJOIN,
+  /* */ CK_o_FILTER,
+  /* */ CK_o_FROM,
+  /* */ CK_o_GBYAGG,
+  /* */ CK_o_HASH,
+  /* */ CK_o_HAVING,
+  /* */ CK_o_INDEXJOIN,
+  /* */ CK_o_INDEXSCAN,
+  /* */ CK_o_INFLATE,
+  /* */ CK_o_KEYEXISTS,
+  /* */ CK_o_KEYNOTEXISTS,
+  /* */ CK_o_LIMIT,
+  /* */ CK_o_ORDAGG,
+  /* */ CK_o_PROJECT,
+  /* */ CK_o_SCAN,
+  /* */ CK_o_SORT,
+  /* */ CK_o_TOP,
+  /* */ CK_o_WHERE,
+
+  // secondary cards
+  /* */ CK_s_CONSTRAINT,
+  /* */ CK_s_HASHING,
+  /* */ CK_s_HSHCOLLIST,
+  /* */ CK_s_INJECTABLE,
+  /* */ CK_s_KEY,
+  /* */ CK_s_LEVEL,
+  /* */ CK_s_MAPPING,
+  /* */ CK_s_NEEDED,
+  /* */ CK_s_PAYLOAD,
+  /* */ CK_s_STREAM,
+  /* */ CK_s_TABLE,
+
+  // tertiary cards
+  /* */ CK_t_EMIT,
+  /* */ CK_t_HSHCOL,
+  /* */ CK_t_INDEXLIST,
+  /* */ CK_t_TABLEINFO,
+  /* */ CK_t_TABLENM,
+
   /* */ CK_ADDRESS,
-  /* */ CK_AGGREG,
   /* */ CK_ANDCONJ,
   /* */ CK_AS,
 
@@ -17,21 +68,15 @@ enum eCK : i8 // card kind
   /* */ CK_BOUND,
   /* */ CK_BOUNDS,
 
-  /* */ CK_CALL,
   /* */ CK_CALLER,
   /* */ CK_CALLOP,
-  /* */ CK_CAST,
   /* */ CK_CLAUSE,
-  /* */ CK_COMBINED,
-  /* */ CK_CONSTRAINT,
   /* */ CK_CORRCOLS,
-  /* */ CK_CORRELATION,
   /* */ CK_COSTJOINING,
   /* */ CK_COSTNETWORK,
   /* */ CK_COSTSTREAM,
   /* */ CK_COSTUNICAST,
   /* */ CK_COUNT,
-  /* */ CK_CROSSJOIN,
 
   /* */ CK_DEBUG,
   /* */ CK_DECISION,
@@ -39,33 +84,15 @@ enum eCK : i8 // card kind
   /* */ CK_DIRECTION,
   /* */ CK_DISPOSITION,
 
-  /* */ CK_EMIT,
   /* */ CK_EXPR,
 
-  /* */ CK_FILTER,
   /* */ CK_FILTPRED,
   /* */ CK_FILTPREDLIST,
-  /* */ CK_FLAT,
-  /* */ CK_FOLD,
-  /* */ CK_FROM,
-
-  /* */ CK_GBYAGG,
-
-  /* */ CK_HASH,
-  /* */ CK_HASHING,
-  /* */ CK_HAVING,
-  /* */ CK_HSHCOL,
-  /* */ CK_HSHCOLLIST,
 
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEX,
-  /* */ CK_INDEXJOIN,
-  /* */ CK_INDEXLIST,
   /* */ CK_INDEXNM,
-  /* */ CK_INDEXSCAN,
-  /* */ CK_INFLATE,
-  /* */ CK_INJECTABLE,
 
   /* */ CK_JOINCAST,
   /* */ CK_JOINESTIMATE,
@@ -73,30 +100,19 @@ enum eCK : i8 // card kind
   /* */ CK_JOINORDERING,
   /* */ CK_JOINPREDLIST,
 
-  /* */ CK_KEY,
   /* */ CK_KEYCELLS,
-  /* */ CK_KEYEXISTS,
-  /* */ CK_KEYNOTEXISTS,
-
-  /* */ CK_LEVEL,
-  /* */ CK_LIMIT,
 
   /* */ CK_MAP,
-  /* */ CK_MAPPING,
 
-  /* */ CK_NEEDED,
   /* */ CK_NOTE,
   /* */ CK_NOTCONJ,
 
   /* */ CK_ON,
-  /* */ CK_ORDAGG,
   /* */ CK_ORCONJ,
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,
 
-  /* */ CK_PAYLOAD,
   /* */ CK_PAYLOADCELLS,
-  /* */ CK_PROJECT,
 
   /* */ CK_RELNOP,
   /* */ CK_REQUIRED,
@@ -106,17 +122,12 @@ enum eCK : i8 // card kind
   /* */ CK_RPNCALC,
   /* */ CK_RPNEXPR,
 
-  /* */ CK_SCAN,
   /* */ CK_SECTION,
-  /* */ CK_SEND,
   /* */ CK_SENDKIND,
-  /* */ CK_SORT,
   /* */ CK_SPARE,
   /* */ CK_SQYCALLS,
   /* */ CK_SQYINFO,
   /* */ CK_SQYNO,
-  /* */ CK_STAGE,
-  /* */ CK_STREAM,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
   /* */ CK_STREAMKEY,
@@ -127,20 +138,14 @@ enum eCK : i8 // card kind
   /* */ CK_SUBSET,
   /* */ CK_SYNTHESIS,
 
-  /* */ CK_TABLE,
-  /* */ CK_TABLEINFO,
   /* */ CK_TABLELIST,
-  /* */ CK_TABLENM,
   /* */ CK_TABLEPTN,
   /* */ CK_TABLESIZE,
   /* */ CK_TBLSYN,
   /* */ CK_TERM,
-  /* */ CK_TOP,
   /* */ CK_TOPOLOGY,
 
   /* */ CK_UNIQUE,
-
-  /* */ CK_WHERE,
 
   /* */ CK_XCARD,
 

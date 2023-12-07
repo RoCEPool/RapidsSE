@@ -58,11 +58,11 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 
   pCI->vClearRestart();
-  RASSERT(pCI->G_bEachMain_foldBreak(CK_FROM));
+  RASSERT(pCI->G_bEachMain_foldBreak(CK_o_FROM));
 
 
-  //RASSERT(pCI->G_bEachMain(CK_WHERE));
-  RASSERT(pCI->G_bEachMain_foldBreak(CK_PROJECT));
+  //RASSERT(pCI->G_bEachMain(CK_o_WHERE));
+  RASSERT(pCI->G_bEachMain_foldBreak(CK_o_PROJECT));
 
 //  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
 //  pCI->G.p_where->vRemoveSub(pCI->G.p_constraint);
@@ -87,13 +87,13 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vBeginEachReverse();
-  RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));
+  RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_o_WHERE));
 
-  RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_FROM));
+  RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_o_FROM));
   Card_Emit* p_emitted_table = pCI->G.p_from->pSub_emit();
 
   pCI->vBeginEachReverse();
-  RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));
+  RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_o_WHERE));
 
 
   pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);
@@ -154,14 +154,14 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
  // pCI->vPrintBoard();
 
   pCI->vClearRestart();
-  if (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED)) {
+  if (pCI->G_bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED)) {
     (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
  // pCI->vPrintBoard();
 
   pCI->vClearRestart();
-  pCI->G_vDeleteWhenEmptySub(CK_WHERE, CK_BOOLPRED);
+  pCI->G_vDeleteWhenEmptySub(CK_o_WHERE, CK_BOOLPRED);
 
  // pCI->vRenumberCards();
  // pCI->vPrintBoard(__LINE__);

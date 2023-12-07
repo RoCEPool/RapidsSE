@@ -77,7 +77,7 @@ Optimiser::~Optimiser(void) noexcept(false)
   //RASSERT(0 == m_pCI->nItems());
 
   if (m_pCardCtl->pCardHistory())
-    m_pCardCtl->pCardHistory()->vPrintImages(CK_GBYAGG,AL_PARTITION);
+    m_pCardCtl->pCardHistory()->vPrintImages(CK_o_GBYAGG, AL_PARTITION);
 
   delete m_pCardCtl;
   

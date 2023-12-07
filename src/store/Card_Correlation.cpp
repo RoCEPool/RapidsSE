@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Correlation, CK_CORRELATION)
+__pCastFunction_Card(STORE, Card_Correlation, CK_o_CORRELATION)
 __aNewFunction(Card_Correlation, CN_CARD)
 __vDeleteFunction(Card_Correlation, CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Correlation, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Correlation::Card_Correlation(void)
-: Card_symbol(CK_CORRELATION, C_UNKNOWN)
+: Card_symbol(CK_o_CORRELATION, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

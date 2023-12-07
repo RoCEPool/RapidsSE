@@ -18,7 +18,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Filter,CK_FILTER)
+__pCastFunction_Card(STORE, Card_Filter, CK_o_FILTER)
 __aNewFunction(Card_Filter,CN_CARD)
 __vDeleteFunction(Card_Filter,CN_CARD)
 
@@ -27,7 +27,7 @@ __vDeleteFunction(Card_Filter,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Filter::Card_Filter(void)
-: Card_CONDITION(CK_FILTER, C_UNKNOWN)
+: Card_CONDITION(CK_o_FILTER, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -171,7 +171,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_emitted(pCI);
+  vUpdate_emit(pCI);
 
  // pCI->vPrintBoard();
 
@@ -215,7 +215,7 @@ bool Card_Filter::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vUpdate_emitted(CardIter* pCI)
+void Card_Filter::vUpdate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -242,12 +242,12 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
   if (iDepth > 1)
-    (void)Card::eValidate_parentEither(pCI,CK_CROSSJOIN,CK_FROM,CK_HAVING,
-                                           CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_WHERE,
+    (void)Card::eValidate_parentEither(pCI, CK_o_CROSSJOIN, CK_o_FROM, CK_o_HAVING,
+                                       CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_SCAN, CK_o_WHERE,
                                        CK_NONE);
 
   if (CK_DECK == pParent->eCard()) {
-    vValidate_mustHave(CK_LEVEL, CK_STREAM, CK_NONE);
+    vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
   }
 
   UNUSED(pParent);

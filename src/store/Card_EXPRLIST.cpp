@@ -253,7 +253,7 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bIsKeyExpr = bIsCard(CK_KEY);
+  bool bIsKeyExpr = bIsCard(CK_s_KEY);
 
   i8 i_Expr = 1;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
@@ -332,7 +332,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (CK_GBYAGG == p_OP->eCard()) {
+  if (CK_o_GBYAGG == p_OP->eCard()) {
 
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xExprList.p_expr();
@@ -353,7 +353,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (CK_SORT == p_OP->eCard()) {
+  if (CK_o_SORT == p_OP->eCard()) {
 
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xExprList.p_expr();
@@ -373,7 +373,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (CK_TOP == p_OP->eCard()) {
+  if (CK_o_TOP == p_OP->eCard()) {
 
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xExprList.p_expr();
@@ -395,7 +395,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   i8 i_EmittedCol = 1;
   UNUSED(i_EmittedCol);
-  if (CK_PROJECT == p_OP->eCard()) {
+  if (CK_o_PROJECT == p_OP->eCard()) {
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xExprList.p_expr();
 
@@ -416,7 +416,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
 
   i_EmittedCol = 1;
-  if (CK_SCAN == p_OP->eCard()) {
+  if (CK_o_SCAN == p_OP->eCard()) {
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xExprList.p_expr();
 
@@ -435,18 +435,18 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(CK_GBYAGG != p_OP->eCard());
+  RASSERT(CK_o_GBYAGG != p_OP->eCard());
   i_EmittedCol = 1;
 
   for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
     Card_Expr *p_expr = xExprList.p_expr();
 
-    if (CK_PROJECT == p_OP->eCard()) {
+    if (CK_o_PROJECT == p_OP->eCard()) {
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
     }
     else
-    if (CK_SORT == p_OP->eCard()) {
+    if (CK_o_SORT == p_OP->eCard()) {
       sColNm = p_expr->szFacet(SF_ITM_COL);
     }
     else {

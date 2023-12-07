@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Fold,CK_FOLD)
+__pCastFunction_Card(STORE, Card_Fold, CK_c_FOLD)
 __aNewFunction(Card_Fold,CN_CARD)
 __vDeleteFunction(Card_Fold,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Fold,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Fold::Card_Fold(void)
-: Card_CONSTRUCTION(CK_FOLD,1)
+: Card_CONSTRUCTION(CK_c_FOLD, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -47,8 +47,8 @@ void Card_Fold::vMorph_to_flat(CardIter* pCI)
   _static_
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain(CK_FOLD))
-    pCI->G.p_fold->vCard(CK_FLAT);
+  while (pCI->G_bEachMain(CK_c_FOLD))
+    pCI->G.p_fold->vCard(CK_c_FLAT);
 }
 
 /*----------------------------------------------------------------------------*/

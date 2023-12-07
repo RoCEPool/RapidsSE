@@ -88,7 +88,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
 
   XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
 
-  pFold->vFold_basic(m_pCI,"W_L_NC_NI_join"_Stz,CK_WHERE);
+  pFold->vFold_basic(m_pCI, "W_L_NC_NI_join"_Stz, CK_o_WHERE);
 
  // m_pCI->vPrintBoard(__LINE__);
 
@@ -104,8 +104,8 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   // smoothing
 
   m_pCI->vClearRestart();
-  //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_EMIT));
-  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+  //RASSERT(m_pCI->G_bEachMainWithSub(CK_o_PROJECT,CK_t_EMIT));
+  RASSERT(m_pCI->G_bEachMain(CK_c_FOLD));
 
   CarryForward* pCarryForward = new CarryForward;
   pCarryForward->Table.m_bReproject = true;

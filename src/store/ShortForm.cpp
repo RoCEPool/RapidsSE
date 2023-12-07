@@ -66,7 +66,7 @@ void ShortForm::vAdd(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SHORTFORM, _FOOTER_);
 
-  if (pCI->G.p_MainCard->bIsCard(CK_STAGE)) {
+  if (pCI->G.p_MainCard->bIsCard(CK_c_STAGE)) {
     m_i_Stage_curr++;
     m_sStage_curr = pCI->G.p_MainCard->szFacet(SF_NONE);
   }
@@ -77,7 +77,7 @@ void ShortForm::vAdd(CardIter* pCI)
   m_axOp[m_nOps].m_i_Op    = pCI->G.i_MainCard;
   m_axOp[m_nOps].m_sStage  = m_sStage_curr;
 
-  if (pCI->G.p_MainCard->bIsCard(CK_PROJECT) &&
+  if (pCI->G.p_MainCard->bIsCard(CK_o_PROJECT) &&
       pCI->G.p_MainCard->pSymbol()->Y_bHas(P_Early))
     m_axOp[m_nOps].m_sOp     = "early"_Stz;
   else
@@ -93,7 +93,7 @@ void ShortForm::vAdd(CardIter* pCI)
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key()))
     pCI->G.p_key->vShortForm(m_axOp[m_nOps].m_sKey);
 
-  if (pCI->G.p_MainCard->bIsCard(CK_FILTER))
+  if (pCI->G.p_MainCard->bIsCard(CK_o_FILTER))
     pCI->G.p_filter->vShortForm(m_axOp[m_nOps].m_sFilter);
   else
   if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))

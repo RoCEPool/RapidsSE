@@ -55,9 +55,9 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (! pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    if (pCI->pAncestorFind(CK_KEYEXISTS) || pCI->pAncestorFind(CK_KEYNOTEXISTS))
+    if (pCI->pAncestorFind(CK_o_KEYEXISTS) || pCI->pAncestorFind(CK_o_KEYNOTEXISTS))
       return C_CONTINUE_RECURSION;
-//    if (pCI->pAncestorFind(CK_CONSTRAINT))ø
+//    if (pCI->pAncestorFind(CK_s_CONSTRAINT))ø
 //      return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(pCard);
@@ -68,8 +68,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (! pCard->pSymbol()->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
-    if ( (pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_INDEXJOIN))) &&
-         (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
+    if ((pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_o_INDEXJOIN))) &&
+        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT))) ) {
       //pCI->G.p_indexJoin->vDump(__func__);
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
@@ -596,23 +596,23 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   Card::vValidate_noChildren();
 
 //  RASSERT(
-//          pParent->eCard() == CK_HSHCOL || // todo: NO!
+//          pParent->eCard() == CK_t_HSHCOL || // todo: NO!
 //
 //          pParent->eCard() == CK_ANDCONJ ||
 //          pParent->eCard() == CK_BOUND || // todo: is a bound a boolPred?
 //          pParent->eCard() == CK_BOOLPRED ||
 //          pParent->eCard() == CK_RLNCONJ ||
-//          pParent->eCard() == CK_HASHING ||
+//          pParent->eCard() == CK_s_HASHING ||
 //          pParent->eCard() == CK_NOTCONJ ||
 //          pParent->eCard() == CK_ORCONJ ||
 //          pParent->eCard() == CK_RPNCALC);
 
-  (void)Card::eValidate_parentEither(pCI,CK_HSHCOL,// todo: NO!?
+  (void)Card::eValidate_parentEither(pCI, CK_t_HSHCOL,// todo: NO!?
                                      CK_ANDCONJ,
                                      CK_BOUND,
                                      CK_BOOLPRED,
                                      CK_RLNCONJ,
-                                     CK_HASHING,
+                                     CK_s_HASHING,
                                      CK_NOTCONJ,
                                      CK_ORCONJ,
                                      CK_RPNCALC,
@@ -629,7 +629,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     }
   }
   else
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMITTED]) ) {
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMIT]) ) {
     if (m_xSymbol.bIs_Tbl_Col()) {
       if (! m_xSymbol.bHasType()) {
         if (! pCI->G.p_call) {
@@ -642,7 +642,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 
 //  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
-//    if (m_xSymbol.bIs_Tbl_Col() && ! pCI->pAncestorFind(CK_INJECTABLE)) {
+//    if (m_xSymbol.bIs_Tbl_Col() && ! pCI->pAncestorFind(CK_s_INJECTABLE)) {
 //      vDump(__func__);
 //      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
 //    }

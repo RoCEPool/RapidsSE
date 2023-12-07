@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_Analyse_emitted.hpp -- Analyse Emitted                           */
+/* XF_Prolog_Analyse_emit.hpp -- Analyse Emit                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_Analyse_emitted : public XF_PROLOG
+  class XF_Prolog_Analyse_emit : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,20 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_Analyse_emitted(CardIter* pCI);
-   ~XF_Prolog_Analyse_emitted(void) noexcept(false);
+    XF_Prolog_Analyse_emit(CardIter* pCI);
+   ~XF_Prolog_Analyse_emit(void) noexcept(false);
 
     static void vAnalyse(CardIter* pCI);
-    static void vXF_Analyse_emitted_passThru(CardIter* pCI);
 
-    void vXF_Analyse_emitted(void);
-    void vXF_projection_Analysis_passThru(void);
+    void vXF_Analyse(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Prolog_Analyse_emitted* _pXF_Prolog_Analyse_emitted(void* aAddr);
+  XF_Prolog_Analyse_emit* _pXF_Prolog_Analyse_emit(void* aAddr);
 }
 
 /*============================================================================*/

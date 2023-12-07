@@ -43,7 +43,7 @@
 #include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
 #include "XF_Prolog_Analyse_injected.hpp"
-#include "XF_Prolog_Analyse_emitted.hpp"
+#include "XF_Prolog_Analyse_emit.hpp"
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Prolog_Ensure_level.hpp"
@@ -169,7 +169,7 @@ void XF::vTransform(void)
     // meta analysis                               //
     XF_Prolog_Analyse_table::vAnalyse(m_pCI);      //
     XF_Prolog_Analyse_injected::vAnalyse(m_pCI);   //
-    XF_Prolog_Analyse_emitted::vAnalyse(m_pCI);    //
+    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);    //
     XF_Prolog_Analyse_index::vAnalyse(m_pCI);      //
     XF_Prolog_Ensure_colType::vEnsure(m_pCI);      //
                                                    //
@@ -291,7 +291,7 @@ void XF::vTransform_passThru(void)
 
     XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(m_pCI);
     XF_Prolog_Analyse_injected::vAnalyse_injected_passThru(m_pCI);   //
-    XF_Prolog_Analyse_emitted::vXF_Analyse_emitted_passThru(m_pCI);
+    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 
     XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
 
@@ -301,14 +301,14 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMainWith2Sub(CK_SORT, CK_KEY, CK_EMIT)) {
+    while (m_pCI->G_bEachMainWith2Sub(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_TOP, "adjust top"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMainWith2Sub(CK_TOP, CK_KEY, CK_EMIT)) {
+    while (m_pCI->G_bEachMainWith2Sub(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
@@ -317,28 +317,28 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_INDEXJOIN, "tweak index join"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
+    while (m_pCI->G_bEachMain(CK_o_INDEXJOIN)) {
       m_pCI->G.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexJoin->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_INDEXSCAN, "tweak index scan"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
+    while (m_pCI->G_bEachMain(CK_o_INDEXSCAN)) {
       m_pCI->G.p_indexScan->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_KEYEXISTS, "tweak key exists"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_KEYEXISTS)) {
+    while (m_pCI->G_bEachMain(CK_o_KEYEXISTS)) {
       m_pCI->G.p_keyExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_KEYNOTEXISTS, "tweak key not exists"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_KEYNOTEXISTS)) {
+    while (m_pCI->G_bEachMain(CK_o_KEYNOTEXISTS)) {
       m_pCI->G.p_keyNotExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyNotExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
@@ -629,9 +629,9 @@ bool MakeOptimal::bOptimise_RplScanByIndexScan(void) {
   //    We won't see it till the Filters are moved close to the scans.
 
 //  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
+//  if (m_pCI->G_bEachMainWithSub(CK_o_SCAN,CK_BOUNDS)) {
 //    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
-//      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
+//      m_pCI->G.p_scan->vCard(CK_o_INDEXSCAN);
 //
 //
 //      vDerive_Projection_Keys();

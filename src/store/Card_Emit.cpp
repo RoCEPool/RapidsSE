@@ -13,7 +13,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Emit, CK_EMIT)
+__pCastFunction_Card(STORE, Card_Emit, CK_t_EMIT)
 __aNewFunction(Card_Emit, CN_CARD)
 __vDeleteFunction(Card_Emit, CN_CARD)
 
@@ -23,7 +23,7 @@ __vDeleteFunction(Card_Emit, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Emit::Card_Emit(void)
-: Card_EXPRLIST(CK_EMIT, 3)
+: Card_EXPRLIST(CK_t_EMIT, 3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -183,7 +183,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) get factored columns of key as start of needed projection
 
-  if (pCI->G.p_OP->bIsCard(CK_GBYAGG) || pCI->G.p_OP->bIsCard(CK_ORDAGG)) {
+  if (pCI->G.p_OP->bIsCard(CK_o_GBYAGG) || pCI->G.p_OP->bIsCard(CK_o_ORDAGG)) {
     if ((pCI->G.p_key = pSub_key())) {
       // + projection of gbyAgg/ordAgg has a key
 
@@ -476,10 +476,10 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(CK_STREAM == pParent->eCard());
+  RASSERT(CK_s_STREAM == pParent->eCard());
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
-  vValidate_notHave(CK_KEY,CK_NONE);
+  vValidate_notHave(CK_s_KEY, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

@@ -13,7 +13,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_From,CK_FROM)
+__pCastFunction_Card(STORE, Card_From, CK_o_FROM)
 __aNewFunction(Card_From,CN_CARD)
 __vDeleteFunction(Card_From,CN_CARD)
 
@@ -22,7 +22,7 @@ __vDeleteFunction(Card_From,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_From::Card_From(void)
-: Card_OP(CK_FROM,1)
+: Card_OP(CK_o_FROM, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -74,7 +74,7 @@ void Card_From::vSmooth(CardIter* pCI)
 
   pCI->G.p_table = pSub_table();
 
-  vUpdate_emitted(pCI);
+  vUpdate_emit_OP(pCI);
  // pCI->vRenumberCards();
 }
 
@@ -90,7 +90,7 @@ void Card_From::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.p_table = pSub_table();
 
   RASSERT(pCarryForward->Table.m_bReproject);
-  vUpdate_emitted(pCI);
+  vUpdate_emit_OP(pCI);
  // pCI->vRenumberCards();
 }
 

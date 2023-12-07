@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Having,CK_HAVING)
+__pCastFunction_Card(STORE, Card_Having, CK_o_HAVING)
 __aNewFunction(Card_Having,CN_CARD)
 __vDeleteFunction(Card_Having,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Having,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Having::Card_Having(void)
-: Card_CONDITION(CK_HAVING, 1)
+: Card_CONDITION(CK_o_HAVING, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -82,7 +82,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->G.p_having->vUpdate_emitted(pCI);
+  pCI->G.p_having->vUpdate_emit(pCI);
 
   pCI->Flux.m_pArriving = pSub_emit();
 
@@ -148,7 +148,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Having::vUpdate_emitted(CardIter* pCI)
+void Card_Having::vUpdate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -171,7 +171,7 @@ void Card_Having::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_NONE);
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

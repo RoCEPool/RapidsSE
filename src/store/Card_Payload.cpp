@@ -16,7 +16,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Payload,CK_PAYLOAD)
+__pCastFunction_Card(STORE, Card_Payload, CK_s_PAYLOAD)
 __aNewFunction(Card_Payload,CN_CARD)
 __vDeleteFunction(Card_Payload,CN_CARD)
 
@@ -25,7 +25,7 @@ __vDeleteFunction(Card_Payload,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Payload::Card_Payload(void)
-: Card_EXPRLIST(CK_PAYLOAD, 2)
+: Card_EXPRLIST(CK_s_PAYLOAD, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

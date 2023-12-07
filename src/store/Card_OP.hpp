@@ -22,6 +22,7 @@ namespace STORE
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
     void vCorrect_expCol(Card_Emit* p_arriving);
+    void vCreate_emit(CardIter* pCI);
 
     void vCullIfEmpty_filter(Card_Filter* p_filter);
 
@@ -45,7 +46,8 @@ namespace STORE
     bool bPeg_Projection(CardIter* pCI);
 
     void vUpdate_constraint(CardIter* pCI);
-    void vUpdate_emitted(CardIter* pCI);
+    void vUpdate_emit(CardIter* pCI);
+    void vUpdate_emit_OP(CardIter* pCI);
 
     void vRpn_aggreg      (String* psRpnExpr, Card_Aggreg*    p_aggreg);
     void vRpn_crossJoin   (String* psRpnExpr, Card_CrossJoin* p_crossJoin);

@@ -151,7 +151,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
-    if (m_pCI->G.p_OP->bIsCard(CK_STAGE))
+    if (m_pCI->G.p_OP->bIsCard(CK_c_STAGE))
       vCraftStageDef();
     else {
       vCraftOpDef();
@@ -190,13 +190,13 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   RASSERT(m_pStageDef);
 
-  if (m_pCI->G.p_OP->bIsCard(CK_ORDAGG))
+  if (m_pCI->G.p_OP->bIsCard(CK_o_ORDAGG))
     vDebugPoint();
 
-  if (m_pCI->G.p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
+  if (m_pCI->G.p_OP->bIsOne(CK_o_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
     return;
 
-  if (m_pCI->G.p_OP->bIsCard(CK_SCAN)) {
+  if (m_pCI->G.p_OP->bIsCard(CK_o_SCAN)) {
     return;
   }
 
@@ -233,28 +233,28 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
   switch (eCard) {
 
-    case CK_AGGREG:       p_OP->vRpn_aggreg     (sExpr, _pCard_Aggreg(p_OP));       break;
-    case CK_CROSSJOIN:    p_OP->vRpn_crossJoin  (sExpr, _pCard_CrossJoin(p_OP)); break;
-    case CK_FILTER:       p_OP->vRpn_filter(sExpr, _pCard_Filter(p_OP)); break;
-    case CK_GBYAGG:       p_OP->vRpn_gbyAgg(sExpr, _pCard_GbyAgg(p_OP)); break;
-    case CK_HASH:         p_OP->vRpn_hash(sExpr, _pCard_Hash(p_OP)); break;
-    case CK_HAVING:       p_OP->vRpn_having(sExpr, _pCard_Having(p_OP)); break;
-    case CK_INDEXJOIN:    p_OP->vRpn_indexJoin(sExpr, _pCard_IndexJoin(p_OP)); break;
-    case CK_INDEXSCAN:    p_OP->vRpn_indexScan(sExpr, _pCard_IndexScan(p_OP)); break;
-    case CK_INFLATE:      p_OP->vRpn_inflate(sExpr, _pCard_Inflate(p_OP)); break;
-    case CK_KEYEXISTS:    p_OP->vRpn_keyExists(sExpr, _pCard_KeyExists(p_OP)); break;
-    case CK_KEYNOTEXISTS: p_OP->vRpn_keyNotExists(sExpr, _pCard_KeyNotExists(p_OP)); break;
-    case CK_LIMIT:        p_OP->vRpn_limit(sExpr, _pCard_Limit(p_OP)); break;
-    case CK_ORDAGG:       p_OP->vRpn_ordAgg(sExpr, _pCard_OrdAgg(p_OP)); break;
-    case CK_PROJECT:      p_OP->vRpn_project(sExpr, _pCard_Project(p_OP)); break;
-    case CK_SCAN:         p_OP->vRpn_scan(sExpr, _pCard_Scan(p_OP)); break;
-    case CK_SORT:         p_OP->vRpn_sort(sExpr, _pCard_Sort(p_OP)); break;
-    case CK_TOP:          p_OP->vRpn_top(sExpr, _pCard_Top(p_OP)); break;
-    case CK_WHERE:        p_OP->vRpn_where(sExpr, _pCard_Where(p_OP)); break;
+    case CK_o_AGGREG:       p_OP->vRpn_aggreg     (sExpr, _pCard_Aggreg(p_OP));       break;
+    case CK_o_CROSSJOIN:    p_OP->vRpn_crossJoin  (sExpr, _pCard_CrossJoin(p_OP)); break;
+    case CK_o_FILTER:       p_OP->vRpn_filter(sExpr, _pCard_Filter(p_OP)); break;
+    case CK_o_GBYAGG:       p_OP->vRpn_gbyAgg(sExpr, _pCard_GbyAgg(p_OP)); break;
+    case CK_o_HASH:         p_OP->vRpn_hash(sExpr, _pCard_Hash(p_OP)); break;
+    case CK_o_HAVING:       p_OP->vRpn_having(sExpr, _pCard_Having(p_OP)); break;
+    case CK_o_INDEXJOIN:    p_OP->vRpn_indexJoin(sExpr, _pCard_IndexJoin(p_OP)); break;
+    case CK_o_INDEXSCAN:    p_OP->vRpn_indexScan(sExpr, _pCard_IndexScan(p_OP)); break;
+    case CK_o_INFLATE:      p_OP->vRpn_inflate(sExpr, _pCard_Inflate(p_OP)); break;
+    case CK_o_KEYEXISTS:    p_OP->vRpn_keyExists(sExpr, _pCard_KeyExists(p_OP)); break;
+    case CK_o_KEYNOTEXISTS: p_OP->vRpn_keyNotExists(sExpr, _pCard_KeyNotExists(p_OP)); break;
+    case CK_o_LIMIT:        p_OP->vRpn_limit(sExpr, _pCard_Limit(p_OP)); break;
+    case CK_o_ORDAGG:       p_OP->vRpn_ordAgg(sExpr, _pCard_OrdAgg(p_OP)); break;
+    case CK_o_PROJECT:      p_OP->vRpn_project(sExpr, _pCard_Project(p_OP)); break;
+    case CK_o_SCAN:         p_OP->vRpn_scan(sExpr, _pCard_Scan(p_OP)); break;
+    case CK_o_SORT:         p_OP->vRpn_sort(sExpr, _pCard_Sort(p_OP)); break;
+    case CK_o_TOP:          p_OP->vRpn_top(sExpr, _pCard_Top(p_OP)); break;
+    case CK_o_WHERE:        p_OP->vRpn_where(sExpr, _pCard_Where(p_OP)); break;
 
-    case CK_CAST:
-    case CK_COMBINED:
-    case CK_SEND:
+    case CK_o_CAST:
+    case CK_c_COMBINED:
+    case CK_c_SEND:
       break;
 
     default:
@@ -267,29 +267,29 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
   switch (eCard) {
 
-    case CK_AGGREG:
+    case CK_o_AGGREG:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_CAST:
+    case CK_o_CAST:
       m_pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szFacet(SF_NONE)));
       break;
 
-    case CK_CROSSJOIN:
+    case CK_o_CROSSJOIN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
-    case CK_FILTER:
+    case CK_o_FILTER:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_GBYAGG:
+    case CK_o_GBYAGG:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_HASH:
+    case CK_o_HASH:
       if (m_pStageDef->i_Stage() == 5 && m_pOpDef->i_Op() == 1)
         vDebugPoint();
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
@@ -297,11 +297,11 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->m_pColHsh->vUpdate(_pCard_Hash(p_OP)->pSub_hashing());
       break;
 
-    case CK_HAVING:
+    case CK_o_HAVING:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_INDEXJOIN:
+    case CK_o_INDEXJOIN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
@@ -312,17 +312,17 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       }
       break;
 
-    case CK_INDEXSCAN:
+    case CK_o_INDEXSCAN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
-    case CK_INFLATE:
+    case CK_o_INFLATE:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       break;
 
-    case CK_KEYEXISTS:
+    case CK_o_KEYEXISTS:
       p_OP->vRpn_keyExists_constraint(sConstraint, _pCard_KeyExists(p_OP));
 
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
@@ -331,7 +331,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
       break;
 
-    case CK_KEYNOTEXISTS:
+    case CK_o_KEYNOTEXISTS:
       p_OP->vRpn_keyNotExists_constraint(sConstraint, _pCard_KeyNotExists(p_OP));
 
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
@@ -340,35 +340,35 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
       break;
 
-    case CK_LIMIT:
+    case CK_o_LIMIT:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_ORDAGG:
+    case CK_o_ORDAGG:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_PROJECT:
+    case CK_o_PROJECT:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_SCAN:
+    case CK_o_SCAN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       break;
 
-    case CK_SEND:
+    case CK_c_SEND:
       break;
 
-    case CK_SORT:
+    case CK_o_SORT:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_TOP:
+    case CK_o_TOP:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       m_pOpDef->vAppend(new ArgDef(0, "count"_Stz, _pCard_Top(p_OP)->pSub_count()->szFacet(SF_NONE)));
       break;
 
-    case CK_WHERE:
+    case CK_o_WHERE:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
@@ -393,19 +393,19 @@ void XF_Synthesise_pipelineDef::vCraftIndexes(void)
 
   eCK eCard = p_OP->eCard();
 
-  if (CK_CROSSJOIN == eCard)
+  if (CK_o_CROSSJOIN == eCard)
     m_pOpDef->m_pIndex_indexJoin   = p_OP->pGetIndex_chosenIndex();
   else
-  if (CK_INDEXJOIN == eCard)
+  if (CK_o_INDEXJOIN == eCard)
     m_pOpDef->m_pIndex_indexJoin   = p_OP->pGetIndex_chosenIndex();
   else
-  if (CK_INDEXSCAN == eCard)
+  if (CK_o_INDEXSCAN == eCard)
     m_pOpDef->m_pIndex_indexScan   = p_OP->pGetIndex_chosenIndex();
   else
-  if (CK_KEYEXISTS == eCard)
+  if (CK_o_KEYEXISTS == eCard)
     m_pOpDef->m_pIndex_indexSemi   = p_OP->pGetIndex_chosenIndex();
   else
-  if (CK_KEYNOTEXISTS == eCard)
+  if (CK_o_KEYNOTEXISTS == eCard)
     m_pOpDef->m_pIndex_indexSemi   = p_OP->pGetIndex_chosenIndex();
 }
 
@@ -420,13 +420,13 @@ void XF_Synthesise_pipelineDef::vCraftIndexDefs(void)
 
   eCK eCard = p_OP->eCard();
 
-  if (CK_GBYAGG == eCard)
+  if (CK_o_GBYAGG == eCard)
     m_pOpDef->m_pIndexDef_gbyAgg = p_OP->pCraftIndexDef_key();
   else
-  if (CK_SORT == eCard)
+  if (CK_o_SORT == eCard)
     m_pOpDef->m_pIndexDef_sort = p_OP->pCraftIndexDef_key();
   else
-  if (CK_TOP == eCard)
+  if (CK_o_TOP == eCard)
     m_pOpDef->m_pIndexDef_top = p_OP->pCraftIndexDef_key();
 }
 
@@ -448,7 +448,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // arriving
 
-  if (p_OP->bIsCard(CK_INDEXJOIN)) {
+  if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
         m_pCI->Flux.m_pArriving->pToStreamDef(nullptr, nullptr, p_OP);
   }
@@ -458,33 +458,33 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
 
   else
-  if (p_OP->bIsCard(CK_INDEXJOIN)) {
+  if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
         m_pCI->Flux.m_pArriving->pToStreamDef(nullptr, nullptr, p_OP);
   }
   else
-  if (p_OP->bIsCard(CK_INFLATE)) {
+  if (p_OP->bIsCard(CK_o_INFLATE)) {
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // emitted
 
-  if (p_OP->bIsCard(CK_INDEXJOIN))
+  if (p_OP->bIsCard(CK_o_INDEXJOIN))
     vDebugPoint();
 
   ColMap** ppColMap = nullptr;
-  if (p_OP->bIsCard(CK_GBYAGG))
+  if (p_OP->bIsCard(CK_o_GBYAGG))
     ppColMap = &m_pOpDef->m_pColMap_gbyAgg;
   else
-  if (p_OP->bIsCard(CK_SORT))
+  if (p_OP->bIsCard(CK_o_SORT))
     ppColMap = &m_pOpDef->m_pColMap_sort;
   else
-  if (p_OP->bIsCard(CK_TOP))
+  if (p_OP->bIsCard(CK_o_TOP))
     ppColMap = &m_pOpDef->m_pColMap_top;
 
   m_pOpDef->m_pStreamDef_emitted = p_OP->pCraftStreamDef_emitted(ppColMap);
 
-  if (! m_pOpDef->m_pStreamDef_emitted && p_OP->bIsCard(CK_HASH))
+  if (! m_pOpDef->m_pStreamDef_emitted && p_OP->bIsCard(CK_o_HASH))
     m_pOpDef->m_pStreamDef_emitted = m_pOpDef->m_pStreamDef_arriving->pDup();
 
   if (m_pOpDef->m_pStreamDef_emitted)
@@ -507,8 +507,8 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 
   Card* p_OP_curr = m_pCI->G.p_OP;
 
-  if (! p_OP_curr->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_INDEXSCAN, CK_INFLATE,
-                          CK_KEYEXISTS, CK_KEYNOTEXISTS, CK_SCAN, CK_NONE))
+  if (! p_OP_curr->bIsOne(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_INFLATE,
+                          CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_o_SCAN, CK_NONE))
     return;
 
   eCK eCard_OP = p_OP_curr->eCard();
@@ -525,11 +525,11 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (CK_SCAN      == eCard_OP ||
-      CK_INFLATE   == eCard_OP ||
-      CK_INDEXJOIN == eCard_OP ||
-      CK_CROSSJOIN == eCard_OP ||
-      CK_INDEXSCAN == eCard_OP) {
+  if (CK_o_SCAN == eCard_OP ||
+      CK_o_INFLATE == eCard_OP ||
+      CK_o_INDEXJOIN == eCard_OP ||
+      CK_o_CROSSJOIN == eCard_OP ||
+      CK_o_INDEXSCAN == eCard_OP) {
     vCraftColInj(pColInj, p_OP_curr);
   }
 
@@ -621,7 +621,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
       vDebugPoint();
   }
 
-  if (! m_pCI->G.p_OP->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_NONE))
+  if (! m_pCI->G.p_OP->bIsOne(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
     return;
 
   if (! m_pCI->Flux.m_pArriving)
@@ -769,7 +769,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (! m_pCI->G.p_OP->bIsOne(CK_ORDAGG, CK_NONE))
+  if (! m_pCI->G.p_OP->bIsOne(CK_o_ORDAGG, CK_NONE))
     return;
 
   m_pOpDef->m_pKeyMap = new KeyMap;

@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_GbyAgg, CK_GBYAGG)
+__pCastFunction_Card(STORE, Card_GbyAgg, CK_o_GBYAGG)
 __aNewFunction(Card_GbyAgg, CN_CARD)
 __vDeleteFunction(Card_GbyAgg, CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_GbyAgg, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_GbyAgg::Card_GbyAgg(void)
-: Card_AGGREGATE(CK_GBYAGG, 1)
+: Card_AGGREGATE(CK_o_GBYAGG, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -90,7 +90,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   // if the immediate previous card is a project then rely on that project
   //   to have determined what projections are needed
 
-  if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
+  if (pCI->pPrevChild()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
@@ -182,7 +182,7 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
   if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pStreamKey))
     return false;
 
-  vCard(CK_ORDAGG);
+  vCard(CK_o_ORDAGG);
 
   vDebugPoint();
 
@@ -214,7 +214,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vUpdate_emitted(CardIter* pCI)
+void Card_GbyAgg::vUpdate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -242,7 +242,7 @@ void Card_GbyAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_LEVEL,CK_KEY,CK_STREAM,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_s_STREAM, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Sort,CK_SORT)
+__pCastFunction_Card(STORE, Card_Sort, CK_o_SORT)
 __aNewFunction(Card_Sort,CN_CARD)
 __vDeleteFunction(Card_Sort,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Sort,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Sort::Card_Sort(void)
-: Card_OP(CK_SORT,1)
+: Card_OP(CK_o_SORT, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -102,7 +102,7 @@ void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_KEY,CK_STREAM,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_s_STREAM, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);
