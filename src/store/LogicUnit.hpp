@@ -112,7 +112,6 @@ namespace STORE
     REG<Index,          CN_INDEX         > m_xpIndex;
     REG<IndexDef,       CN_INDEXDEF      > m_xpIndexDef;
     REG<IndexStream,    CN_INDEXSTREAM   > m_xpIndexStream;
-    REG<InfoSet,        CN_INFOSET       > m_xpInfoSet;
     REG<Row,            CN_ROW           > m_xpInfoSetRow;
     REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 

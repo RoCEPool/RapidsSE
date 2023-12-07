@@ -1777,8 +1777,6 @@ void vJobIdLastJobIdFetch(void);
 	void vRowBufferIsWarning(void);
 	void vRowBufferName(void);
 	void vRowBufferNextRow(void);
-	void vRowBufferOpInfosetFetch(void);
-	void vRowBufferOpInfosetStore(void);
 	void vRowBufferRdCsvChunk(void);
 	void vRowBufferRowGet(void);
 	void vRowBufferRowGetIntColumn(void);

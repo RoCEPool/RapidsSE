@@ -101,8 +101,6 @@ void Step::vAddSteps_RowBuffer(void)
 	vAddStep("RowBuffer[].isWarning"_Stz,        &Step::vRowBufferIsWarning);
 	vAddStep("RowBuffer[].name"_Stz,             &Step::vRowBufferName);
 	vAddStep("RowBuffer[].nextRow"_Stz,          &Step::vRowBufferNextRow);
-	vAddStep("RowBuffer[].opInfoset@"_Stz,       &Step::vRowBufferOpInfosetFetch);
-	vAddStep("RowBuffer[].opInfoset!"_Stz,       &Step::vRowBufferOpInfosetStore);
 	vAddStep("RowBuffer[].rdCsvChunk"_Stz,       &Step::vRowBufferRdCsvChunk);
 	vAddStep("RowBuffer[].writeCsv"_Stz,         &Step::vRowBufferWriteCsv);
 
@@ -1868,39 +1866,6 @@ void Step::vRowBufferNextRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].opInfoset@ -- fetch m_eOpInfoset                               */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferOpInfosetFetch(void)
-{
-	ENTRY();
-
-	ASSERT(*m_pLogicUnit->m_xpRowBuffer);
-
-	eBT eBufferType = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer)->eBufferType();
-
-	m_pDataStack->vPushInt(eBufferType);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].opInfoset! -- store m_eOpInfoset                               */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferOpInfosetStore(void)
-{
-	ENTRY();
-
-	RASSERT(0);
-	ASSERT(*m_pLogicUnit->m_xpInfoSet);
-
-	eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
-
-	_pRowBuffer(*m_pLogicUnit->m_xpInfoSet)->vBufferType(eBufferType);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* RowBuffer[].rdCsvChunk -- reach a chunk from file given the RowBuffer      */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferRdCsvChunk(void)
@@ -1975,11 +1940,11 @@ void Step::vRowBufferWriteCsv(void)
 {
 	ENTRY();
 
-	ASSERT(*m_pLogicUnit->m_xpInfoSet);
+	ASSERT(*m_pLogicUnit->m_xpRowBuffer);
 
 	Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpInfoSet);
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	StreamDef* pStreamDef = pTableDef->pStreamDef();
 
