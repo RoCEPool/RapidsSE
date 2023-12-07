@@ -91,7 +91,7 @@
 
     0 0 0 toKeyHshRow[].counters@@ 6 RowBuffer[].addRowVargs
 
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
   then
 */
 

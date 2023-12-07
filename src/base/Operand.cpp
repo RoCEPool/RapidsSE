@@ -30,7 +30,6 @@ bool BASE::_bIsValidOperand(eCN eClass)
     case CN_CRWBUFFER:
     case CN_CSVBUFFER:
     case CN_INDEXDEF:
-    case CN_INFOSET:
     case CN_MARKER:
     case CN_PROFILE:
     case CN_ROWBUFFER:
@@ -148,16 +147,6 @@ bool Operand::bIsBuffer(void)
     default:
       return true;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this operand an InfoSet ?                                               */
-/*----------------------------------------------------------------------------*/
-bool Operand::bIsInfoSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return eGetClassNo() == CN_INFOSET ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

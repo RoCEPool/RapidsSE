@@ -14,8 +14,6 @@
 
 #include "RowBuffer.hpp"
 
-#include "InfoSet.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "Crw.hpp"

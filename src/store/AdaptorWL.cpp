@@ -11,7 +11,6 @@
 #include "BufferTransport.hpp"
 #include "WlpHeader.hpp"
 #include "Version.h"
-#include "InfoSet.hpp"
 #include "StatementContext.hpp"
 #include "IndexDef.hpp"
 #include "TailLine.hpp"

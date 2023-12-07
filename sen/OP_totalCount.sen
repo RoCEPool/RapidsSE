@@ -44,7 +44,7 @@
   // get 0th Column (rowCount) add to Counter
   0 infoSetRow[].getIntColumn Counter0[] + to Counter0[]
 
-  // now delete the InfoSet[]
+  // now delete the rowBuffer
   RowBuffer[].delete
 
   true

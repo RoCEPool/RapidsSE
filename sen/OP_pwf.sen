@@ -37,7 +37,7 @@
   // create an rowBuffer operand
   TableDef[] RowBuffer[].new
 
-  // add pwfInfo to the infoSet
+  // add pwfInfo to the rowBuffer
   folder TableDef[]  RowBuffer[].addPwfInfo assert
 
   // pipeout the rowBuffer

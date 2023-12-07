@@ -5,7 +5,6 @@
 
 #include <exception>
 #include "BASE.h"
-#include "InfoSet.hpp"
 #include "TableMetadata.hpp"
 #include "ColumnMetadata.hpp"
 #include "TableDef.hpp"
@@ -177,7 +176,7 @@ namespace Parser
       throw NameValidationException(EC_NO_SUCH_TABLE2, sErrMsg.szStz());
     }
 
-    static void vThrowAmbiguousTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, STORE::InfoSet* pInfoSet)
+    static void vThrowAmbiguousTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, STORE::RowBuffer* pRowBuffer)
     {
       s2K sErrMsg(aErrorMsg[EC_AMBIGUOUS_TABLE]);
 
@@ -191,9 +190,9 @@ namespace Parser
 
       sErrMsg.vConcat(". Could be one of:"_Stz);
 
-      for (Row* pRow = pInfoSet->pFirstRow();
+      for (Row* pRow = pRowBuffer->pFirstRow();
            pRow;
-           pRow = pInfoSet->pNextRow(pRow)) {
+           pRow = pRowBuffer->pNextRow(pRow)) {
 
         TableMetadata* pTableMeta = static_cast<TableMetadata*>(pRow);
         sErrMsg.vCatSprint("\n  %s.%s.%s"_Stz,
@@ -202,7 +201,7 @@ namespace Parser
                            pTableMeta->szTableName());
       }
 
-      delete pInfoSet;
+      delete pRowBuffer;
       throw NameValidationException(EC_AMBIGUOUS_TABLE, sErrMsg.szStz());
     }
 

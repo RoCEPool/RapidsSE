@@ -39,7 +39,7 @@
   // create an rowBuffer operand
   TableDef[] RowBuffer[].new
 
-  // add lock  to the infoSet
+  // add lock  to the rowBuffer
   TableDef[] RowBuffer[].addLockStats assert
 
   // pipeout the rowBuffer
@@ -56,7 +56,7 @@
   // find the __lockStats table
   C_TDEF_LOCKSTATS op__tableDef assert
 
-  // create an infoSet operand
+  // create an rowBuffer operand
   TableDef[] RowBuffer[].new
 
   // add lock to the rowBuffer

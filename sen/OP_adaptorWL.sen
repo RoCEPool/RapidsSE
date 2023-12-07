@@ -75,7 +75,7 @@
   PipeIn[] to RowBufferErr[]
   nullptr to PipeIn[]
 
-  "AdaptorWL: Processing error infoset" .traceWlp
+  "AdaptorWL: Processing error rowBuffer" .traceWlp
 
   adaptorWL[].executionError
 

@@ -10,8 +10,6 @@
 #include "Grid.hpp"
 #include "Node.hpp"
 
-#include "InfoSet.hpp"
-
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
@@ -379,7 +377,7 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // get the rowBuffer for explain
-  RowBuffer *pRowBuffer = _pInfoSet(*(m_pLogicUnit)->m_xpRowBuffer);
+  RowBuffer *pRowBuffer = _pRowBuffer(*(m_pLogicUnit)->m_xpRowBuffer);
 
   // Find the explainOp
   QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);

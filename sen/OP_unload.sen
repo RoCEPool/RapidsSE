@@ -22,7 +22,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_PATH ... an infoset with __path rows                      */
+/* handler for EV_D_ROWBUFFER ... a RowBuffer with __path rows                */
 /*----------------------------------------------------------------------------*/
 : unload_Path \handler
 

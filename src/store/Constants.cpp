@@ -9,7 +9,6 @@
 #include "RowSingle.hpp"
 #include "RowBuffer.hpp"
 
-#include "InfoSet.hpp"
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 

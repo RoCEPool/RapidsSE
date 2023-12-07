@@ -5,7 +5,6 @@
 #include "BASE.h"
 
 #include "TagConstants.h"
-#include "InfoSet.hpp"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;

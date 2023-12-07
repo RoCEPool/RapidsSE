@@ -158,7 +158,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "INDEXTREE"_Stz,            // CN_INDEXTREE
     /* */ "INDEXTREEVEC"_Stz,         // CN_INDEXTREEVEC
     /* */ "IDXVEC"_Stz,               // CN_IDXVEC
-    /* */ "INFOSET"_Stz,              // CN_INFOSET
     /* */ "INGESTCHUNK"_Stz,          // CN_INGESTCHUNK
     /* */ "INPUT"_Stz,                // CN_INPUT
     /* */ "INTERNALTABLES"_Stz,       // CN_INTERNALTABLES

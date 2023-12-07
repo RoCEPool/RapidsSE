@@ -54,7 +54,6 @@
 #include "LglBufSet.hpp"
 #include "Pot.hpp"
 
-#include "InfoSet.hpp"
 #include "NamedBuffer.hpp"
 #include "RowCoder.hpp"
 
@@ -494,7 +493,6 @@ SizeHeap gxaSizeHeap[]
   { CN_INDEXTREE,                sizeof(IndexTree),          HT_T_TINY    ,FILL },
   { CN_INDEXTREEVEC,             sizeof(IndexTreeVec),       HT_T_TINY    ,FILL },
   { CN_IDXVEC,                   sizeof(IdxVec),             HT_T_TINY    ,FILL },
-  { CN_INFOSET,                  sizeof(InfoSet),            HT_T_LARGE   ,FILL },
   { CN_INGESTCHUNK,              sizeof(IngestChunk),        HT_T_LARGE   ,FILL },
   { CN_INPUT,                    sizeof(Input),              HT_T_TINY    ,FILL },
   { CN_INTERNALTABLES,           sizeof(InternalTables),     HT_T_TINY    ,FILL },

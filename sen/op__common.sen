@@ -80,7 +80,7 @@
 
     //File0[].get file.delete assert::stack_0 nullptr File0[].set
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     sFileNm EC_INVALID_FILE attachmap::errorText@ str.format
     EC_INVALID_FILE
     op__execErrMsg
@@ -198,7 +198,7 @@
   sTableNm str.length C_MAX_TABLE_NAME_LENGTH 1 - > if
     EC_NO_SUCH_TABLE to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -209,7 +209,7 @@
   check::folderIsTables not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -220,7 +220,7 @@
   sTableNm check::validTableAssembly not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     sTableNm errorCode attachmap::errorText@ str.format
     errorCode
     op__execErrMsg
@@ -250,7 +250,7 @@
   sIndexNm str.length C_MAX_INDEX_NAME_LENGTH 1 - > if
     EC_NO_SUCH_INDEX to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -261,7 +261,7 @@
   check::folderIsTables not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -279,7 +279,7 @@
   sIndexNm check::nameIsaIndex not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     Path[].popNamedTableFolder
@@ -311,7 +311,7 @@
   sTableNm str.length C_MAX_TABLE_NAME_LENGTH 1 - > if
     EC_NO_SUCH_TABLE to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -321,7 +321,7 @@
   sIndexNm str.length C_MAX_INDEX_NAME_LENGTH 1 - > if
     EC_NO_SUCH_INDEX to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -333,7 +333,7 @@
   check::folderIsTables not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     false
@@ -344,7 +344,7 @@
   sTableNm check::validTableAssembly not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     sTableNm errorCode attachmap::errorText@ str.format
     errorCode
     op__execErrMsg
@@ -368,7 +368,7 @@
   sIndexNm check::nameIsaIndex not if
     to errorCode
 
-    // create an exec error infoset
+    // create an exec error rowBuffer
     errorCode op__execErr
 
     Path[].popNamedTableFolder

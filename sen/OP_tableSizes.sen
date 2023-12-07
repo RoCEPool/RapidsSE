@@ -31,7 +31,7 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
+  // create an rowBuffer operand
   TableDef[] rowBuffer[].new
 
   Folder[] dic.lastWord dup
@@ -66,7 +66,7 @@
 
   next
 
-  // pipeout the infoset
+  // pipeout the rowBuffer
   rowBuffer[].pipeOut
 
   true

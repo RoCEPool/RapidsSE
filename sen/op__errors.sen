@@ -5,9 +5,9 @@
 " op__errors.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create the compile error info set                                          */
+/* create the compile error rowBuffer                                         */
 /*----------------------------------------------------------------------------*/
-: op__createCompileErrInfoSet
+: op__createCompileErrRowBuffer
 
   [ddlLock].testDrop
 
@@ -84,13 +84,13 @@
   // create the tableDef for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
 
-  // create an infoSet operand for commandErrors
+  // create an rowBufferErr operand for commandErrors
   BT_EXECERRORS TableDefErr[] RowBufferErr[].new
 
   errorCode attachmap::errorText@
     errorCode TableDefErr[] RowBufferErr[].addExecError assert
 
-  // pipeout the EXECERROR infoset
+  // pipeout the EXECERROR rowBufferErr
   RowBufferErr[].pipeOut
 
   ErrorMarker[].newErrorMarker

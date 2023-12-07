@@ -111,7 +111,7 @@
   // get 0th Column (rowCount) add to Counter
   0 infoSetRow[].getIntColumn to Counter0[]
 
-  // now delete the InfoSet[]
+  // now delete the rowBuffer
   RowBuffer[].delete
 
   //Counter0[] "  expecting %v commands" .printf

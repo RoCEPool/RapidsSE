@@ -138,7 +138,6 @@ enum eCN : u2 // Class Number
   /* */ CN_INDEXTREE,
   /* */ CN_INDEXTREEVEC,
   /* */ CN_IDXVEC,
-  /* */ CN_INFOSET,
   /* */ CN_INGESTCHUNK,
   /* */ CN_INPUT,
   /* */ CN_INTERNALTABLES,

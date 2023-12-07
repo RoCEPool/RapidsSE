@@ -28,7 +28,6 @@
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 
-#include "InfoSet.hpp"
 #include "VertexSpec.hpp"
 #include "NamedBuffer.hpp"
 #include "Optimiser.hpp"

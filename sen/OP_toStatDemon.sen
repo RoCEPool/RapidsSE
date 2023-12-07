@@ -22,9 +22,7 @@
   PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  RowBuffer[].getBufferName .
-
-  //InfoSet[].delete
+  //RowBuffer[].getBufferName .
 
   RowBuffer[]
     "__statDemon" find dup if

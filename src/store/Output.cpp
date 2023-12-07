@@ -8,8 +8,6 @@
 
 #include "RowBuffer.hpp"
 
-#include "InfoSet.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "Crw.hpp"
@@ -369,92 +367,6 @@ bool Output::bProcessOperand(Operand* pOperand)
     }
       
     // -- -- -- -- -- --
-      
-    case CN_INFOSET: {
-      InfoSet* pInfoSet = _pInfoSet(pOperand);
-      ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
-//      if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS)) {
-//
-//        if ( ! m_bHasError) {
-//          Row *pInfoRow = pInfoSet->pFirstRow();
-//
-//          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
-//          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
-//          i8 iLineNo = pInfoRow->iColVal_int(2);
-//          i8 iColumnNo = pInfoRow->iColVal_int(3);
-//          Stz *szErrorText = pInfoRow->szColVal_ofs(4);
-//
-//          vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
-//                 sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
-//          m_bHasError = true;
-//        }
-//        else {
-//          // LOG error
-//        }
-//        AM::vDeleteOperand(pOperand,nullptr);
-//      }
-//      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
-//
-//        if ( ! m_bHasError) {
-//          Row *pInfoRow = pInfoSet->pFirstRow();
-//
-//          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
-//          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
-//          Stz *szErrorText = pInfoRow->szColVal_ofs(2);
-//
-//          vTrace("\nerror: %s; %s; %s; \n"_Stz,
-//                 sNodeName, aEC2[eErrorCode], szErrorText);
-//
-//          m_ixRowsProcessed = 0;
-//          m_ixRowsInvalid   = 0;
-//          m_ixRowsSkipped   = 0;
-//
-//          m_bHasError = true;
-//        }
-//        else {
-//          // LOG error
-//        }
-//        AM::vDeleteOperand(pOperand,nullptr);
-//      }
-//      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS)) {
-//
-//        m_bLoadResult = true;
-//        Row* pInfoRow = pInfoSet->pFirstRow();
-//
-//        i8 iRowsProcessed = pInfoRow->iColVal_int(0);
-//        i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
-//        i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
-//
-//        m_ixRowsProcessed += iRowsProcessed;
-//        m_ixRowsInvalid   += iRowsInvalid;
-//        m_ixRowsSkipped   += iRowsSkipped;
-//
-//        //vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,
-//        //       iRowsProcessed,iRowsInvalid,iRowsSkipped);
-//
-//        AM::vDeleteOperand(pOperand,nullptr);
-//      }
-
-//      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_PROMPTOUT)) {
-//
-//        Row* pInfoRow = pInfoSet->pFirstRow();
-//        Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
-//
-//        vTrace("%s\n"_Stz,szPromptLine);
-//
-//        AM::vDeleteOperand(pOperand,nullptr);
-//      }
-      
-      //else {
-        m_ixRowsProcessed += pInfoSet->nRows();
-        vTrace("\n"_Stz);
-        pInfoSet->vPrintRows(m_pStreamDef_result);
-        AM::vDeleteOperand(pOperand,nullptr);
-      //}
-      break;
-    }
-
-      // -- -- -- -- -- --
 
     case CN_MARKER: {
 

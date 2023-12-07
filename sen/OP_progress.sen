@@ -56,7 +56,7 @@
 
   0 locals| iPercent |
 
-  // get first row of InfoSet[]
+  // get first row of RowBuffer[]
   RowBuffer[].firstRow to infoSetRow[]
 
   // get 0th Column (fileName)

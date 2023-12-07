@@ -40,7 +40,7 @@
     TableDef[] RowBuffer[].new
     BT_TOTALUNITS RowBuffer[].setBufferType
 
-    // add fileSize to the infoset
+    // add fileSize to the rowBuffer
     sFileNm iFileSizeMb TableDef[] RowBuffer[].addTotalUnits assert
 
     // pipeout the rowBuffer

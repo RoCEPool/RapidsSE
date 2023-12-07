@@ -24,10 +24,10 @@
   // create an rowBuffer operand
   TableDef[] RowBuffer[].new
 
-  // add spaceInfo to the infoSet
+  // add spaceInfo to the rowBuffer
   TableDef[] RowBuffer[].addSpaceInfo assert
 
-  // pipeout the infoset
+  // pipeout the rowBuffer
   RowBuffer[].pipeOut
 
   true

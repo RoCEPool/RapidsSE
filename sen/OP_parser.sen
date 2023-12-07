@@ -20,7 +20,7 @@
   Pipein[].pipeout
 
   // create the command error info set
-  op__createCompileErrInfoSet
+  op__createCompileErrRowBuffer
 
   <sqlStatement> sqlCompiler::parser to PlanOperand[]
 

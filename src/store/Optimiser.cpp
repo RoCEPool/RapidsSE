@@ -8,7 +8,6 @@
 
 #include "SP_PipeSpec.hpp"
 #include "Job.hpp"
-#include "InfoSet.hpp"
 #include "XF_Synthesise_code.hpp"
 #include "CardIter.hpp"
 

@@ -23,7 +23,7 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
+  // create an rowBuffer operand
   TableDef[] RowBuffer[].new
 
   // add a row for each table ptn
@@ -38,7 +38,7 @@
 
   loop
 
-  // pipeout the infoset
+  // pipeout the rowBuffer
   RowBuffer[].pipeOut
 
   true

@@ -24,7 +24,7 @@
   // add nodeStatus to the rowBuffer
   TableDef[] RowBuffer[].addNodeStatus assert
 
-  // pipeout the infoset
+  // pipeout the rowBuffer
   RowBuffer[].pipeOut
 
   true
