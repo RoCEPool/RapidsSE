@@ -124,13 +124,12 @@ void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
 /*----------------------------------------------------------------------------*/
 /* create emit                                                                */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCreate_emit(CardIter* pCI)
+void Card_OP::      vEnsure_stream(pCI);
+(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(! pSub_emit());
-
-  vEnsure_stream(pCI);
 
   eCK eCard = this->eCard();
   switch (eCard) {
@@ -147,34 +146,27 @@ void Card_OP::vCreate_emit(CardIter* pCI)
         pCI->G.p_emit = new Card_Emit;
 
       pCI->G.p_emit->vAppend_streamDef_table(pCI);
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-      RASSERT(pCI->G.p_OP->pSub_emit())
       break;
 
     case CK_o_WHERE:
     case CK_o_HAVING:
-      RASSERT(pCI->Flux.m_pArriving);
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-      break;
-
     case CK_o_HASH:
     case CK_o_LIMIT:
     case CK_o_KEYEXISTS:
     case CK_o_KEYNOTEXISTS:
     case CK_o_TOP:
     case CK_o_SORT:
-      vEnsure_stream(pCI);
       RASSERT(pCI->Flux.m_pArriving);
       pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
       break;
 
     default:
       break;
   }
 
-
+  vEnsure_stream(pCI);
+  pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+  RASSERT(pCI->G.p_OP->pSub_emit())
 }
 
 /*----------------------------------------------------------------------------*/
