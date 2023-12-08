@@ -122,7 +122,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
         RASSERT(! m_pCI->G.p_OP->pSub_key());
 
        m_pCI->G.p_OP->vCreate_emit(m_pCI);
-        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
 
         if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
           m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
@@ -136,7 +135,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
 
-        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
         break;
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -157,9 +155,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
 
-        m_pCI->G.p_emit = m_pCI->Flux.m_pArriving->pPropagate();
-        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
-
         if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
           m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
         break;
@@ -173,9 +168,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
         RASSERT(m_pCI->G.p_OP->pSub_key());
 
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
-
-        m_pCI->G.p_emit = m_pCI->Flux.m_pArriving->pPropagate();
-        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
 
         m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
         m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
@@ -192,9 +184,7 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
 
-        m_pCI->G.p_emit = m_pCI->Flux.m_pArriving->pPropagate();
         m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
-        m_pCI->G.p_stream->vAppendChild(m_pCI->G.p_emit);
         break;
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

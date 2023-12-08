@@ -155,13 +155,19 @@ void Card_OP::vCreate_emit(CardIter* pCI)
     case CK_o_HAVING:
       RASSERT(pCI->Flux.m_pArriving);
       pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
       break;
 
     case CK_o_HASH:
     case CK_o_LIMIT:
+    case CK_o_KEYEXISTS:
+    case CK_o_KEYNOTEXISTS:
+    case CK_o_TOP:
+    case CK_o_SORT:
       vEnsure_stream(pCI);
       RASSERT(pCI->Flux.m_pArriving);
       pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
       break;
 
     default:
