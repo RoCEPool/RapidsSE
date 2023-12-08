@@ -721,7 +721,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_ROWBUFFER"_Stz,       EV_D_ROWBUFFER);
   /*  0 */ vAddConstant("EV_D_SRTBUFFER"_Stz,       EV_D_SRTBUFFER);
   /*  0 */ vAddConstant("EV_D_STREAMDEF"_Stz,       EV_D_STREAMDEF);
-  /*  0 */ vAddConstant("EV_D_STREAMDEFRHT"_Stz,    EV_D_STREAMDEFRHT);
   /*  0 */ vAddConstant("EV_D_TABLE"_Stz,           EV_D_TABLE);
   /*  0 */ vAddConstant("EV_D_TABLEPTN"_Stz,        EV_D_TABLEPTN);
   /*  0 */ vAddConstant("EV_D_JOBMETRICS"_Stz,      EV_D_JOBMETRICS);
@@ -754,7 +753,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_NODELOSSABORT"_Stz,   EV_M_NODELOSSABORT);
   /*  0 */ vAddConstant("EV_M_START"_Stz,           EV_M_START);
   /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);
-  /*  0 */ vAddConstant("EV_M_STREAMDEFRHT"_Stz,    EV_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("EV_M_TRIGGER"_Stz,         EV_M_TRIGGER);
   /*  0 */ vAddConstant("EV_M_TRIGGERED"_Stz,       EV_M_TRIGGERED);
 

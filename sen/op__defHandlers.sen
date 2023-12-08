@@ -87,8 +87,6 @@
 : EV_D_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
-: EV_M_STREAMDEFRHT_handler     \handler STANDARD_PIPEOUT ;
 : EV_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
 
@@ -424,8 +422,6 @@
   abnormalRowBufferHandler EV_D_ROWBUFFER  [op].handler!
   abnormalHandler EV_D_SRTBUFFER        [op].handler!
   abnormalHandler EV_D_STREAMDEF        [op].handler!
-  abnormalHandler EV_D_STREAMDEFRHT     [op].handler!
-  abnormalHandler EV_M_STREAMDEFRHT     [op].handler!
   //abnormalHandler EV_D_STREAMSET        [op].handler!
   abnormalHandler EV_D_TABLE            [op].handler!
 
@@ -442,7 +438,6 @@
   defaultHandler EV_M_INTERNALERROR     [op].handler!
   defaultHandler EV_M_LOWMEMORY         [op].handler!
   defaultHandler EV_M_START             [op].handler!
-  //defaultHandler EV_M_STREAMDEFRHT      [op].handler!
   //defaultHandler EV_M_TRIGGERED         [op].handler!
 
   //EV_M_CANCEL

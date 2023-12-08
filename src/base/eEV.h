@@ -26,7 +26,6 @@ enum eEV // events
   /*    */ EV_D_ROWBUFFER,
   /*    */ EV_D_SRTBUFFER,
   /*    */ EV_D_STREAMDEF,
-  /*    */ EV_D_STREAMDEFRHT,
   /*    */ EV_D_TABLE,
   /*    */ EV_D_TABLEPTN,
 
@@ -58,7 +57,6 @@ enum eEV // events
   /*    */ EV_M_NODELOSSABORT,
   /*    */ EV_M_STARTED,
   /*    */ EV_M_START,
-  /*    */ EV_M_STREAMDEFRHT,
   /*    */ EV_M_TRIGGER,
   /*    */ EV_M_TRIGGERED,
 

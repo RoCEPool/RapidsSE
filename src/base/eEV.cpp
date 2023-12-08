@@ -26,7 +26,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_ROWBUFFER"_Stz,
   /*    */ "EV_D_SRTBUFFER"_Stz,
   /*    */ "EV_D_STREAMDEF"_Stz,
-  /*    */ "EV_D_STREAMDEFRHT"_Stz,
   /*    */ "EV_D_TABLE"_Stz,
   /*    */ "EV_D_TABLEPTN"_Stz,
 
@@ -58,7 +57,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_M_NODELOSSABORT"_Stz,
   /*    */ "EV_M_STARTED"_Stz,
   /*    */ "EV_M_START"_Stz,
-  /*    */ "EV_M_STREAMDEFRHT"_Stz,
   /*    */ "EV_M_TRIGGER"_Stz,
   /*    */ "EV_M_TRIGGERED"_Stz,
 

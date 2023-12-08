@@ -7,16 +7,13 @@
 Stz* aOM[OM_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
-  
-  /*    */ "CALLMARKER"_Stz,
+
   /*    */ "CANCELMARKER"_Stz,
   /*    */ "CANCELLING"_Stz,
   /*    */ "CANCELLEDMARKER"_Stz,
   /*    */ "CHILDEXIT"_Stz,
   /*    */ "CLEANING"_Stz,
   /*    */ "CLEANED"_Stz,
-  /*    */ "COMMENCEMARKER"_Stz,
-  /*    */ "COMMENCEDMARKER"_Stz,
   
   /*    */ "DATAPULSE"_Stz,
   /*    */ "DESTROYMARKER"_Stz,
@@ -46,14 +43,8 @@ Stz* aOM[OM_ENUMS]
 
   /*    */ "NODELOSSABORT"_Stz,
   
-  /*    */ "PULSEDMARKER"_Stz,
-  
-  /*    */ "RETURNMARKER"_Stz,
-  /*    */ "RETURNEDMARKER"_Stz,
-  
   /*    */ "STARTEDMARKER"_Stz,
   /*    */ "STARTMARKER"_Stz,
-  /*    */ "STREAMDEFRHT"_Stz,
   
   /*    */ "TRIGGER"_Stz,
   /*    */ "TRIGGEREDMARKER"_Stz,

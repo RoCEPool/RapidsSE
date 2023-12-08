@@ -73,7 +73,6 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newLowMemory"_Stz,         &Step::vMarkerNewLowMemory);
   vAddStep("Marker[].newStartedMarker"_Stz,     &Step::vMarkerNewStartedMarker);
   vAddStep("Marker[].newStartMarker"_Stz,       &Step::vMarkerNewStartMarker);
-  vAddStep("Marker[].newStreamDefRht"_Stz,      &Step::vMarkerNewStreamDefRht);
   vAddStep("Marker[].newTrigger"_Stz,           &Step::vMarkerNewTrigger);
   vAddStep("Marker[].newTriggeredMarker"_Stz,   &Step::vMarkerNewTriggeredMarker);
   vAddStep("Marker[].pipeIn"_Stz,               &Step::vMarkerPipeIn);
@@ -534,21 +533,6 @@ void Step::vMarkerNewStartMarker(void)
     AM::MARKER::pNewMarker(OM_STARTMARKER,pOuterJobOfTask());
 
   //pOp->vOpTrace(pOperand,(Stz*)__func__,true);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Marker[].newStreamDefRht -- new a streamDefRht marker                      */
-/*----------------------------------------------------------------------------*/
-void Step::vMarkerNewStreamDefRht(void)
-{
-  ENTRY();
-
-  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
-
-  m_pLogicUnit->m_xpMarker =
-    AM::MARKER::pNewMarker(OM_STREAMDEFRHT,pOuterJobOfTask());
 
   EXIT();
 }

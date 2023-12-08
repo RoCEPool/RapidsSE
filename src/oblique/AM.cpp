@@ -4513,7 +4513,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_NODELOSSABORT:      eOperand = EV_M_NODELOSSABORT; break;
         case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
         case OM_STARTMARKER:        eOperand = EV_M_START;        break;
-        case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
         case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
 
@@ -4536,7 +4535,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;
     //case CN_SRTBUFFER:    eOperand = EV_D_SRTBUFFER;      break;
     case CN_STREAMDEF:    eOperand = EV_D_STREAMDEF;      break;
-    case CN_STREAMDEFRHT: eOperand = EV_D_STREAMDEFRHT;   break;
     case CN_METAGET:      eOperand = EV_D_METAGET;        break;
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
     case CN_TABLE:        eOperand = EV_D_TABLE;          break;

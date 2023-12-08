@@ -6,16 +6,13 @@
 enum eOM // operator markers
 {
   /*  0 */ OM_NONE=0,
-  
-  /*    */ OM_CALLMARKER,
+
   /*    */ OM_CANCELMARKER,
   /*    */ OM_CANCELLING,
   /*    */ OM_CANCELLEDMARKER,
   /*    */ OM_CHILDEXIT,
   /*    */ OM_CLEANING,
   /*    */ OM_CLEANED,
-  /*    */ OM_COMMENCEMARKER,
-  /*    */ OM_COMMENCEDMARKER,
   
   /*    */ OM_DATAPULSE,
   /*    */ OM_DESTROYMARKER,
@@ -46,14 +43,8 @@ enum eOM // operator markers
 
   /*    */ OM_NODELOSSABORT,
   
-  /*    */ OM_PULSEDMARKER,
-  
-  /*    */ OM_RETURNMARKER,
-  /*    */ OM_RETURNEDMARKER,
-  
   /*    */ OM_STARTEDMARKER,
   /*    */ OM_STARTMARKER,
-  /*    */ OM_STREAMDEFRHT,
   
   /*    */ OM_TRIGGER,
   /*    */ OM_TRIGGERED,
