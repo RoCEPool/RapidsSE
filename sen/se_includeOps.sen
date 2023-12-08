@@ -85,8 +85,6 @@ assert::stack_0
   "OP_echo.sen"                 include
   "OP_emptyLoop.sen"            include
   "OP_etcTest.sen"              include
-  "OP_execOnEnd.sen"            include
-  "OP_execOnStart.sen"          include
   "OP_exemplar.sen"             include
   "OP_explainPlan.sen"          include
   "OP_exprPushdown.sen"         include
