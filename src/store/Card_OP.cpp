@@ -130,6 +130,8 @@ void Card_OP::vCreate_emit(CardIter* pCI)
 
   RASSERT(! pSub_emit());
 
+  vEnsure_stream(pCI);
+
   eCK eCard = this->eCard();
   switch (eCard) {
 
@@ -139,8 +141,7 @@ void Card_OP::vCreate_emit(CardIter* pCI)
     case CK_o_INDEXSCAN:
     case CK_o_SCAN:
       pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
-      vEnsure_stream(pCI);
-      if (pCI->Flux.m_pArriving)
+       if (pCI->Flux.m_pArriving)
         pCI->G.p_emit = pCI->Flux.m_pArriving->pReducedCopy();
       else
         pCI->G.p_emit = new Card_Emit;
@@ -152,7 +153,6 @@ void Card_OP::vCreate_emit(CardIter* pCI)
 
     case CK_o_WHERE:
     case CK_o_HAVING:
-      vEnsure_stream(pCI);
       RASSERT(pCI->Flux.m_pArriving);
       pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
       break;
