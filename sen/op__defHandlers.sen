@@ -413,7 +413,6 @@
   abnormalHandler EV_D_GRID             [op].handler!
   abnormalHandler EV_D_INDEX            [op].handler!
   abnormalHandler EV_D_INDEXDEF         [op].handler!
-  abnormalHandler EV_D_JOB              [op].handler!
   abnormalHandler EV_D_METAGET          [op].handler!
   abnormalHandler EV_D_NAMEDBUFFER      [op].handler!
   abnormalHandler EV_D_OP               [op].handler!

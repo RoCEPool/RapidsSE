@@ -13,7 +13,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_GRID"_Stz,
   /*    */ "EV_D_INDEX"_Stz,
   /*    */ "EV_D_INDEXDEF"_Stz,
-  /*    */ "EV_D_JOB"_Stz,
   /*    */ "EV_D_JOBMETRICS"_Stz,
   /*    */ "EV_D_METAGET"_Stz,
   /*    */ "EV_D_NAMEDBUFFER"_Stz,

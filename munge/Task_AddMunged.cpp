@@ -20547,7 +20547,6 @@ void Task::vAddMunged(Task* )
     "  abnormalHandler EV_D_GRID             [op].handler!\n"
     "  abnormalHandler EV_D_INDEX            [op].handler!\n"
     "  abnormalHandler EV_D_INDEXDEF         [op].handler!\n"
-    "  abnormalHandler EV_D_JOB              [op].handler!\n"
     "  abnormalHandler EV_D_METAGET          [op].handler!\n"
     "  abnormalHandler EV_D_NAMEDBUFFER      [op].handler!\n"
     "  abnormalHandler EV_D_OP               [op].handler!\n"
