@@ -12,6 +12,7 @@ namespace WLP
 
   private:
     i8   m_nPayloadBytes;
+    u8   m_uCreationTime; // in nanos
     char m_caPayload[C_MAX_PAYLOAD_BYTES];
 
     Footer m_xFooter;
@@ -26,6 +27,7 @@ namespace WLP
   
     char* pcBuf();
     i8 iPayloadSize();
+    u8 uCreationTime();
     void vSetPayloadSize(i8 nBytes);
     void vReset();
     void vMsgType(s256& sBuf);

@@ -1678,6 +1678,7 @@ void vJobIdLastJobIdFetch(void);
   void vPayloadObjDelete(void);
   void vPayloadObjSize(void);
   void vPayloadObjMsgType(void);
+  void vPayloadObjCreationTime(void);
 
   // pds Cursor
   void vPdsCursorGet(void);

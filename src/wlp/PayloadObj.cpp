@@ -30,6 +30,7 @@ PayloadObj::PayloadObj(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAYLOADOBJ,_FOOTER_);
 
   m_nPayloadBytes = 0;
+  m_uCreationTime = Hardware::uReadClock();
   m_caPayload[0] = 0;
 
 #ifdef WITH_CHECK_INITIALISED
@@ -66,6 +67,14 @@ char* PayloadObj::pcBuf(void)
 i8 PayloadObj::iPayloadSize(void)
 {
   return m_nPayloadBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the time the buffer was created                                        */
+/*----------------------------------------------------------------------------*/
+u8 PayloadObj::uCreationTime(void)
+{
+  return m_uCreationTime;
 }
 
 /*----------------------------------------------------------------------------*/
