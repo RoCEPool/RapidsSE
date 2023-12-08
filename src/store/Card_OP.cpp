@@ -135,6 +135,8 @@ void Card_OP::vCreate_emit(CardIter* pCI)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case CK_o_FROM:
+    case CK_o_INDEXJOIN:
+    case CK_o_INDEXSCAN:
     case CK_o_SCAN:
       pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
       vEnsure_stream(pCI);
@@ -146,6 +148,20 @@ void Card_OP::vCreate_emit(CardIter* pCI)
       pCI->G.p_emit->vAppend_streamDef_table(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
       RASSERT(pCI->G.p_OP->pSub_emit())
+      break;
+
+    case CK_o_WHERE:
+    case CK_o_HAVING:
+      vEnsure_stream(pCI);
+      RASSERT(pCI->Flux.m_pArriving);
+      pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+      break;
+
+    case CK_o_HASH:
+    case CK_o_LIMIT:
+      vEnsure_stream(pCI);
+      RASSERT(pCI->Flux.m_pArriving);
+      pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
       break;
 
     default:
