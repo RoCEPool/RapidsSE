@@ -56,7 +56,6 @@ enum eEV // events
   /*    */ EV_M_LEAVING,
   /*    */ EV_M_LEFT,
   /*    */ EV_M_LOWMEMORY,
-  /*    */ EV_M_NEXTBUFFER,
   /*    */ EV_M_NODELOSSABORT,
   /*    */ EV_M_STARTED,
   /*    */ EV_M_START,

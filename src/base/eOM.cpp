@@ -43,8 +43,7 @@ Stz* aOM[OM_ENUMS]
   /*    */ "LEAVINGMARKER"_Stz,
   /*    */ "LEFTMARKER"_Stz,
   /*    */ "LOWMEMORY"_Stz,
-  
-  /*    */ "NEXTBUFFERMARKER"_Stz,
+
   /*    */ "NODELOSSABORT"_Stz,
   
   /*    */ "PULSEDMARKER"_Stz,

@@ -43,8 +43,7 @@ enum eOM // operator markers
   /*    */ OM_LEAVINGMARKER,
   /*    */ OM_LEFTMARKER,
   /*    */ OM_LOWMEMORY,
-  
-  /*    */ OM_NEXTBUFFERMARKER,
+
   /*    */ OM_NODELOSSABORT,
   
   /*    */ OM_PULSEDMARKER,

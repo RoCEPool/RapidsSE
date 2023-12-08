@@ -752,7 +752,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_LEAVING"_Stz,         EV_M_LEAVING);
   /*  0 */ vAddConstant("EV_M_LEFT"_Stz,            EV_M_LEFT);
   /*  0 */ vAddConstant("EV_M_LOWMEMORY"_Stz,       EV_M_LOWMEMORY);
-  /*  0 */ vAddConstant("EV_M_NEXTBUFFER"_Stz,      EV_M_NEXTBUFFER);
   /*  0 */ vAddConstant("EV_M_NODELOSSABORT"_Stz,   EV_M_NODELOSSABORT);
   /*  0 */ vAddConstant("EV_M_START"_Stz,           EV_M_START);
   /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);

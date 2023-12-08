@@ -1175,7 +1175,6 @@ void vJobIdLastJobIdFetch(void);
   void vMarkerNewLeavingMarker(void);
   void vMarkerNewLeftMarker(void);
   void vMarkerNewLowMemory(void);
-  void vMarkerNewNextBufferMarker(void);
   void vMarkerNewStartedMarker(void);
   void vMarkerNewStartMarker(void);
   void vMarkerNewStreamDefRht(void);

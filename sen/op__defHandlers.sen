@@ -105,7 +105,6 @@
 : EV_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVING_handler          \handler STANDARD_PIPEOUT ;
 //: EV_M_LOWMEMORY_handler        \handler STANDARD_PIPEOUT ;
-: EV_M_NEXTBUFFER_handler       \handler STANDARD_PIPEOUT ;
 : EV_M_START_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_TRIGGER_handler          \handler STANDARD_PIPEOUT ;
 
@@ -443,7 +442,6 @@
   abnormalHandlerEnd    EV_M_HARDABORT  [op].handler!
   defaultHandler EV_M_INTERNALERROR     [op].handler!
   defaultHandler EV_M_LOWMEMORY         [op].handler!
-  defaultHandler EV_M_NEXTBUFFER        [op].handler!
   defaultHandler EV_M_START             [op].handler!
   //defaultHandler EV_M_STREAMDEFRHT      [op].handler!
   //defaultHandler EV_M_TRIGGERED         [op].handler!
