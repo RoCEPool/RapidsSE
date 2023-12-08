@@ -25,7 +25,7 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[]\\clear"_Stz,         &Step::vPipeinGetAndClear);
   vAddStep("PipeIn[].bide"_Stz,           &Step::vPipeinBide);
   vAddStep("PipeIn[].bideNext"_Stz,       &Step::vPipeinBideNext);
-	vAddStep("PipeIn[].bufferType"_Stz,     &Step::vPipeinBufferType);
+	vAddStep("PipeIn[].bufferType@"_Stz,    &Step::vPipeinFetchBufferType);
   vAddStep("PipeIn[].delete"_Stz,         &Step::vPipeinDelete);
   vAddStep("PipeIn[].isBuffer"_Stz,       &Step::vPipeinIsBuffer);
   vAddStep("PipeIn[].isMarker"_Stz,       &Step::vPipeinIsMarker);
@@ -161,9 +161,9 @@ void Step::vPipeinGetAndClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipeIn[].bufferType -- decode operand into its buffer type                 */
+/* PipeIn[].bufferType@ -- fetch buffer type                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPipeinBufferType(void)
+void Step::vPipeinFetchBufferType(void)
 {
 	ENTRY();
 

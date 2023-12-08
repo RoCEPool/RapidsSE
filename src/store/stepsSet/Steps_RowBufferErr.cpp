@@ -34,11 +34,11 @@ void Step::vAddSteps_RowBufferErr(void)
 {
 	vAddStep("RowBufferErr[].addCommandError"_Stz, &Step::vRowBufferErrAddCommandError);
 	vAddStep("RowBufferErr[].addExecError"_Stz,    &Step::vRowBufferErrAddExecError);
+	vAddStep("RowBufferErr[].bufferType@"_Stz,     &Step::vRowBufferErrBufferTypeFetch);
 	vAddStep("RowBufferErr[].delete"_Stz,          &Step::vRowBufferErrDelete);
-	vAddStep("RowBufferErr[].bufferId"_Stz,        &Step::vRowBufferErrGetBufferIdAsAddr);
 	vAddStep("RowBufferErr[]"_Stz,                 &Step::vRowBufferErrGet);
 	vAddStep("RowBufferErr[]\\clear"_Stz,          &Step::vRowBufferErrGetAndClear);
-	vAddStep("RowBufferErr[].getBufferType"_Stz,   &Step::vRowBufferErrGetBufferType);
+	vAddStep("RowBufferErr[].bufferId"_Stz,        &Step::vRowBufferErrGetBufferIdAsAddr);
 	vAddStep("RowBufferErr[].isNotNull"_Stz,       &Step::vRowBufferErrIsNotNull);
 	vAddStep("RowBufferErr[].isNull"_Stz,          &Step::vRowBufferErrIsNull);
 	vAddStep("RowBufferErr[].new"_Stz,             &Step::vRowBufferErrNew);
@@ -88,7 +88,19 @@ void Step::vRowBufferErrAddCommandError(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBufferErr[].addExecError -- add a row to RowBuffer with the exec error     */
+/* RowBufferErr[].bufferType@ -- fetch the rowBuffer bufferType               */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferErrBufferTypeFetch(void)
+{
+	ENTRY();
+
+	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBufferErr->eBufferType());
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBufferErr[].addExecError -- add a row to RowBuffer with the exec error  */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferErrAddExecError(void)
 {
@@ -140,6 +152,20 @@ void Step::vRowBufferErrGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBufferErr[].getAndClear -- fetch operand and set to nullptr             */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferErrGetAndClear(void)
+{
+	ENTRY();
+
+	m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRowBufferErr);
+
+	m_pLogicUnit->m_xpRowBufferErr = nullptr;
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBufferErr[].bufferId -- fetch buffer id as address                     */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferErrGetBufferIdAsAddr(void)
@@ -163,32 +189,6 @@ void Step::vRowBufferErrDelete(void)
 	AM::vDeleteOperand(*m_pLogicUnit->m_xpRowBufferErr,nullptr);
 
 	m_pLogicUnit->m_xpRowBufferErr = nullptr;
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].getAndClear -- fetch operand and set to nullptr                */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrGetAndClear(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRowBufferErr);
-
-	m_pLogicUnit->m_xpRowBufferErr = nullptr;
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].getBufferType -- get the rowBuffer bufferType                  */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrGetBufferType(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBufferErr->eBufferType());
 
 	EXIT();
 }

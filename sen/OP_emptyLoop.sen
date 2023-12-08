@@ -23,7 +23,7 @@
 
   Pipein[]\clear to rowBuffer[]
 
-  RowBuffer[].getBufferType BT_DATA != if
+  RowBuffer[].bufferType@ BT_DATA != if
     RowBuffer[].pipeout
     true
     exit

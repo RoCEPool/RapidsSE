@@ -12,7 +12,7 @@
   0 0 locals| eError tForkedJobId |
 
   // pipeout the rowBuffer if not a BT_COMMAND
-  Pipein[].bufferType BT_COMMAND != if
+  PipeIn[].bufferType@ BT_COMMAND != if
     Pipein[].pipeout
     true
     exit

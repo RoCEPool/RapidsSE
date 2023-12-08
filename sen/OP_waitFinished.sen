@@ -91,7 +91,7 @@
 
   0 locals| eBufferType |
 
-  PipeIn[].bufferType to eBufferType
+  PipeIn[].bufferType@ to eBufferType
 
   eBufferType BT_COUNT != if
     PipeIn[].pipeout

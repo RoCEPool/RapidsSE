@@ -11,9 +11,9 @@
 
   //"OP_toStatD_LockStats +++ +++ +++" .
 
-  PipeIn[].bufferType "OP_toStatD %v" str.format .
+  PipeIn[].bufferType@ "OP_toStatD %v" str.format .
 
-  PipeIn[].bufferType BT_LOCKSTATS != if
+  PipeIn[].bufferType@ BT_LOCKSTATS != if
     PipeIn[].pipeout
     true
     exit

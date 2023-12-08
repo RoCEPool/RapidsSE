@@ -82,7 +82,7 @@
   nullptr to PipeIn[]
 
   // get the buffer type
-  RowBuffer[].getBufferType to eBufferType
+  RowBuffer[].bufferType@ to eBufferType
 
   // check the rowBuffer type
   eBufferType BT_PROGRESSUNITS == if

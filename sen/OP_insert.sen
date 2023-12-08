@@ -32,7 +32,7 @@
 
   // Non-data rowbuffers need to be just piped out
   PipeIn[].isRowBuffer if
-    PipeIn[].bufferType BT_DATA == not if
+    PipeIn[].bufferType@ BT_DATA == not if
       PipeIn[].pipeout
       true
       exit
@@ -84,7 +84,7 @@
 
   // Non-data rowbuffers need to be just piped out
   PipeIn[].isRowBuffer if
-    PipeIn[].bufferType BT_DATA == not if
+    PipeIn[].bufferType@ BT_DATA == not if
       PipeIn[].pipeout
       true
       exit

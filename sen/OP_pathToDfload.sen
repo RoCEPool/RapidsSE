@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : pathToDfload_Path \handler
 
-  Pipein[].bufferType BT_PATH != if
+  PipeIn[].bufferType@ BT_PATH != if
     PipeIn[].pipeout
     true
     exit

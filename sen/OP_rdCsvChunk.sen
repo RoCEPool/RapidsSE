@@ -43,7 +43,7 @@
   0 0 locals| iOffset nBytes |
 
   // handle only SEEKOFFSETS
-  PipeIn[].bufferType BT_SEEKOFFSETS == not if
+  PipeIn[].bufferType@ BT_SEEKOFFSETS == not if
     Pipein[].pipeout
     true
     exit

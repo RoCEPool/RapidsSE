@@ -66,9 +66,9 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].copy"_Stz,           &Step::vRowBufferCopy);
   vAddStep("RowBuffer[].decile"_Stz,         &Step::vRowBufferDecile);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
+	vAddStep("RowBuffer[].bufferName@"_Stz,    &Step::vRowBufferBufferNameFetch);
+	vAddStep("RowBuffer[].bufferType@"_Stz,    &Step::vRowBufferBufferTypeFetch);
   vAddStep("RowBuffer[].get"_Stz,            &Step::vRowBufferGet);
-	vAddStep("RowBuffer[].getBufferName"_Stz,  &Step::vRowBufferGetBufferName);
-	vAddStep("RowBuffer[].getBufferType"_Stz,  &Step::vRowBufferGetBufferType);
   vAddStep("RowBuffer[].insdelIntoTable"_Stz,&Step::vRowBufferInsdelIntoTable);
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
@@ -1016,6 +1016,32 @@ void Step::vRowBufferAddVerifyTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBuffer[].bufferName@ -- fetch the rowBuffer buffer name                 */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferBufferNameFetch(void)
+{
+	ENTRY();
+
+	s256 sBufferName = aBT[m_pLogicUnit->m_xpRowBuffer->eBufferType()];
+
+	m_pDataStack->vPushStr(sBufferName);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].bufferType@ -- fetch the rowBuffer bufferType                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferBufferTypeFetch(void)
+{
+	ENTRY();
+
+	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBuffer->eBufferType());
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBuffer[].copy-- copy the row buffer                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferCopy(void)
@@ -1105,32 +1131,6 @@ void Step::vRowBufferGetBufferIdAsAddr(void)
   m_pDataStack->vPushPtr((Object*)pRowBuffer->oGetBufferId().m_pvAsAddress);
 
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].getBufferName -- get the rowBuffer buffer name                 */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferGetBufferName(void)
-{
-	ENTRY();
-
-	s256 sBufferName = aBT[m_pLogicUnit->m_xpRowBuffer->eBufferType()];
-
-	m_pDataStack->vPushStr(sBufferName);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].getBufferType -- get the rowBuffer bufferType                  */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferGetBufferType(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBuffer->eBufferType());
-
-	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

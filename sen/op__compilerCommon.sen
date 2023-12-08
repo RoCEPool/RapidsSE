@@ -13,7 +13,7 @@
   RowBuffer[].isNull not assert
 
   // RowBuffer should be of type BT_EXPLAIN
-  RowBuffer[].getBufferType BT_EXPLAIN == assert
+  RowBuffer[].bufferType@ BT_EXPLAIN == assert
 
   // emit the RowBuffer[]
   RowBuffer[].pipeout
@@ -27,7 +27,7 @@
 : compiler_RowBuffer \handler
 
   // save the pipein in RowBuffer[] if buffer has explain data
-  PipeIn[].bufferType BT_EXPLAIN == if
+  PipeIn[].bufferType@ BT_EXPLAIN == if
     Pipein[]\clear to RowBuffer[]
   else
     PipeIn[].pipeout
@@ -47,7 +47,7 @@
 
     // We got an error, but were we going to do an explain?
     RowBuffer[].isNull not if
-      RowBuffer[].getBufferType BT_EXPLAIN == if
+      RowBuffer[].bufferType@ BT_EXPLAIN == if
         RowBuffer[].delete
       then
    then
@@ -61,11 +61,11 @@
   // no error, delete the RowBufferErr
   RowBufferErr[].isNull not if
 
-    RowBufferErr[].getBufferType BT_EXECERRORS == if
+    RowBufferErr[].bufferType@ BT_EXECERRORS == if
       RowBufferErr[].delete
     then
 
-    RowBufferErr[].getBufferType BT_COMPILEERRORS == if
+    RowBufferErr[].bufferType@ BT_COMPILEERRORS == if
       RowBufferErr[].delete
     then
 

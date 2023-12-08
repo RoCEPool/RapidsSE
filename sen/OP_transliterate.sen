@@ -223,7 +223,7 @@
   Pipein[]\clear to RowBuffer[]
 
   // pipe out normal data buffers
-  BT_EXPLAIN RowBuffer[].getBufferType != if
+  BT_EXPLAIN RowBuffer[].bufferType@ != if
     RowBuffer[].pipeout
   then
 
