@@ -25,10 +25,10 @@
   0 0 0 locals| nodeName partitionNo iPercent |
 
   // get first row of RowBuffer[]
-  RowBuffer[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
 
   // get 0th Column (ProgressUnits) add to Counter
-  0 infoSetRow[].getIntColumn Counter1[] + to Counter1[]
+  0 Row[].getIntColumn Counter1[] + to Counter1[]
 
   // calculat the Load %
   Counter1[] Counter0[] Int.percent to iPercent
@@ -57,13 +57,13 @@
   0 locals| iPercent |
 
   // get first row of RowBuffer[]
-  RowBuffer[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
 
   // get 0th Column (fileName)
-  0 infoSetRow[].getVchColumn to StringA[]
+  0 Row[].getVchColumn to StringA[]
 
   // get 1st column (totalUnits)
-  1 infoSetRow[].getIntColumn to Counter0[]
+  1 Row[].getIntColumn to Counter0[]
 
   //Counter0[] "Total Units: %v" .printf
 ;

@@ -755,15 +755,15 @@ void vDdlLockAssertNone(void);
   void vIndexTreeNew(void);
   void vIndexTreeSet(void);
 
-  // infoSet
-  void vInfoSetRowGet(void);
-  void vInfoSetRowGetIntColumn(void);
-  void vInfoSetRowGetVchColumn(void);
-  void vInfoSetRowIntColumnFetch(void);
-  void vInfoSetRowIsNull(void);
-  void vInfoSetRowSet(void);
-  void vInfoSetSet(void);
-  void vInfoSetWriteCsv(void);
+  // row
+  void vRowGet(void);
+  void vRowGetIntColumn(void);
+  void vRowGetVchColumn(void);
+  void vRowIntColumnFetch(void);
+  void vRowIsNull(void);
+  void vRowSet(void);
+  void vSet(void);
+  void vWriteCsv(void);
 
   // inject
   void vInjectSigsegv(void);

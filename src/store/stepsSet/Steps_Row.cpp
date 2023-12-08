@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_InfoSetRow.cpp -- InfoSetRow step group                              */
+/* Steps_Row.cpp -- Row step group                              */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -15,37 +15,37 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_InfoSetRow(void)
+void Step::vAddSteps_Row(void)
 {
-  vAddStep("InfoSetRow[].get"_Stz,           &Step::vInfoSetRowGet);
-  vAddStep("InfoSetRow[].getIntColumn"_Stz,  &Step::vInfoSetRowGetIntColumn);
-  vAddStep("InfoSetRow[].getVchColumn"_Stz,  &Step::vInfoSetRowGetVchColumn);
-  vAddStep("InfoSetRow[].isNull"_Stz,        &Step::vInfoSetRowIsNull);
-  vAddStep("InfoSetRow[].set"_Stz,           &Step::vInfoSetRowSet);
+  vAddStep("Row[].get"_Stz,           &Step::vRowGet);
+  vAddStep("Row[].getIntColumn"_Stz,  &Step::vRowGetIntColumn);
+  vAddStep("Row[].getVchColumn"_Stz,  &Step::vRowGetVchColumn);
+  vAddStep("Row[].isNull"_Stz,        &Step::vRowIsNull);
+  vAddStep("Row[].set"_Stz,           &Step::vRowSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSetRow[].get -- get the row                                                   */
+/* Row[].get -- get the row                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetRowGet(void)
+void Step::vRowGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpInfoSetRow);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRow);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSetRow[].getIntColumn -- get the integer column from the row                  */
+/* Row[].getIntColumn -- get the integer column from the row                  */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetRowGetIntColumn(void)
+void Step::vRowGetIntColumn(void)
 {
   ENTRY();
   
   i8 i_Col = m_pDataStack->iPopInt(__func__);
   
-  Row* pRow = *m_pLogicUnit->m_xpInfoSetRow;
+  Row* pRow = *m_pLogicUnit->m_xpRow;
   
   m_pDataStack->vPushInt(pRow->iColVal_int(i_Col));
   
@@ -53,15 +53,15 @@ void Step::vInfoSetRowGetIntColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSetRow[].getVchColumn -- get the varchar column from the row           */
+/* Row[].getVchColumn -- get the varchar column from the row           */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetRowGetVchColumn(void)
+void Step::vRowGetVchColumn(void)
 {
   ENTRY();
   
   i8 i_Col = m_pDataStack->iPopInt(__func__);
   
-  Row* pRow = *m_pLogicUnit->m_xpInfoSetRow;
+  Row* pRow = *m_pLogicUnit->m_xpRow;
   
   s256 sColumn = pRow->szColVal_ofs(i_Col);
   m_pDataStack->vPushStr(sColumn);
@@ -70,27 +70,27 @@ void Step::vInfoSetRowGetVchColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSetRow[].isNull -- is row null ?                                              */
+/* Row[].isNull -- is row null ?                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetRowIsNull(void)
+void Step::vRowIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpInfoSetRow.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRow.bIsNull() ? 1 : 0);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSetRow[].set -- set row                                                       */
+/* Row[].set -- set row                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vInfoSetRowSet(void)
+void Step::vRowSet(void)
 {
   ENTRY();
 
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
 
-  m_pLogicUnit->m_xpInfoSetRow = _pRow(pRow);
+  m_pLogicUnit->m_xpRow = _pRow(pRow);
   
   EXIT();
 }

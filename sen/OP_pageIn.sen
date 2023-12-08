@@ -35,16 +35,16 @@
 
   PipeIn[]\clear to RowBuffer[]
 
-  RowBuffer[].firstRow to InfoSetRow[]
+  RowBuffer[].firstRow to Row[]
 
-  0 InfoSetRow[].getIntColumn locals| pTaskPtr  |
-  1 InfoSetRow[].getIntColumn locals| oBufferId |
+  0 Row[].getIntColumn locals| pTaskPtr  |
+  1 Row[].getIntColumn locals| oBufferId |
 
   // unload to disk
   pTaskPtr oBufferId pageIn::popRequest
 
   RowBuffer[].delete
-  nullptr to InfoSetRow[]
+  nullptr to Row[]
   true
 ;
 

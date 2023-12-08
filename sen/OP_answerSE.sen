@@ -50,10 +50,10 @@
   Socket[].object@\clear to RowBuffer[]
 
   // get the first row from the rowBuffer
-  RowBuffer[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
 
   // get the 0th column from the row
-  0 infoSetRow[].getVchColumn to sNodeName
+  0 Row[].getVchColumn to sNodeName
 
   // find the node
   sNodeName [grid].findNodeByName to pAnsweredNode
@@ -89,7 +89,7 @@
 
   //ptnmap::adjust
 
-  //3 infoSetRow[].getIntColumn [system].started@ not and if
+  //3 Row[].getIntColumn [system].started@ not and if
   //  true [system].started!
   //then
 

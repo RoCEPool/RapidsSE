@@ -82,7 +82,6 @@ namespace STORE
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
     static void vAddSteps_IndexStream(void);
-    static void vAddSteps_InfoSetRow(void);
     static void vAddSteps_Inject(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
@@ -134,6 +133,7 @@ namespace STORE
     static void vAddSteps_PayloadObj(void);
     static void vAddSteps_PdsCursor(void);
     static void vAddSteps_Persistence(void);
+		static void vAddSteps_Pipein(void);
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_PipelineOfOp(void);
     static void vAddSteps_PipeSpec(void);
@@ -149,7 +149,7 @@ namespace STORE
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_Ptr(void);
     static void vAddSteps_Push(void);
-  
+
     static void vAddSteps_RecvdObject(void);
     static void vAddSteps_RecvWL(void);
     static void vAddSteps_RefTimer(void);
@@ -157,9 +157,9 @@ namespace STORE
     static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegPath(void);
-    static void vAddSteps_Pipein(void);
     static void vAddSteps_RegSends(void);
     static void vAddSteps_ResponseOp(void);
+		static void vAddSteps_Row(void);
     static void vAddSteps_RowCounts(void);
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);

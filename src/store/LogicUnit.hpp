@@ -111,7 +111,6 @@ namespace STORE
     REG<Index,          CN_INDEX         > m_xpIndex;
     REG<IndexDef,       CN_INDEXDEF      > m_xpIndexDef;
     REG<IndexStream,    CN_INDEXSTREAM   > m_xpIndexStream;
-    REG<Row,            CN_ROW           > m_xpInfoSetRow;
     REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
@@ -145,9 +144,10 @@ namespace STORE
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
+		REG<Row,            CN_ROW           > m_xpRow;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
-		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferWarn;
 		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferErr;
+		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferWarn;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
     REG<RowCounts,      CN_ROWCOUNTS     > m_xpRowCounts;
 

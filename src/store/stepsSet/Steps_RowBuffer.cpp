@@ -1729,7 +1729,7 @@ void Step::vRowBufferColValFetch(void)
 	Column* pColumn = pStreamDef->pGetColumn(i_Col);
 	eDM eDatum = pColumn->eDatum();
 
-	Row* aRow = *m_pLogicUnit->m_xpInfoSetRow;
+	Row* aRow = *m_pLogicUnit->m_xpRow;
 
 	i8 iInt;
 	s256 sStr;
@@ -1858,7 +1858,7 @@ void Step::vRowBufferNextRow(void)
 	ENTRY();
 
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-	Row* pRow = _pRow(*m_pLogicUnit->m_xpInfoSetRow);
+	Row* pRow = _pRow(*m_pLogicUnit->m_xpRow);
 
 	ASSERT(pRow);
 

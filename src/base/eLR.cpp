@@ -43,9 +43,6 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_INDEX"_Stz,
   /*  */ "LR_INDEXDEF"_Stz,
   /*  */ "LR_INDEXSTREAM"_Stz,
-  /*  */ "LR_INFOSET"_Stz,
-  /*  */ "LR_INFOSETROW"_Stz,
-  /*  */ "LR_INFOSETTABLE"_Stz,
   /*  */ "LR_INTSTACK"_Stz,
   
   /*  */ "LR_JOBMETRICS"_Stz,
@@ -79,8 +76,11 @@ Stz* aLR[LR_ENUMS]
   
   /*  */ "LR_RECVDOBJECT"_Stz,
   /*  */ "LR_RECVWL"_Stz,
+	/*  */ "LR_ROW"_Stz,
   /*  */ "LR_ROWBUFFER"_Stz,
-  /*  */ "LR_ROWONCE"_Stz,
+	/*  */ "LR_ROWBUFFERERR"_Stz,
+	/*  */ "LR_ROWBUFFERWARN"_Stz,
+	/*  */ "LR_ROWONCE"_Stz,
   /*  */ "LR_ROWCOUNTS"_Stz,
 
   /*  */ "LR_SENDNODE"_Stz,
@@ -100,7 +100,10 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_SUBSET"_Stz,
   
   /*  */ "LR_TABLE"_Stz,
-  /*  */ "LR_TABLEPTN"_Stz,
+	/*  */ "LR_TABLEDEF"_Stz,
+	/*  */ "LR_TABLEDEFERR"_Stz,
+	/*  */ "LR_TABLEDEFWARN"_Stz,
+	/*  */ "LR_TABLEPTN"_Stz,
   /*  */ "LR_TAGSET"_Stz,
   /*  */ "LR_TASKLIST"_Stz,
   /*  */ "LR_TEXT"_Stz,

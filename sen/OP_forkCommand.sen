@@ -24,9 +24,9 @@
   //0 C_TDEF_COMMAND InfoSet:getCol locals| sForkCmd |
   //1 C_TDEF_COMMAND InfoSet:getCol locals| sTags |
 
-  RowBuffer[].firstRow to infoSetRow[]
-  0 infoSetRow[].getVchColumn locals| sForkCmd |
-  1 infoSetRow[].getVchColumn locals| sTags |
+  RowBuffer[].firstRow to Row[]
+  0 Row[].getVchColumn locals| sForkCmd |
+  1 Row[].getVchColumn locals| sTags |
 
   RowBuffer[].delete
 

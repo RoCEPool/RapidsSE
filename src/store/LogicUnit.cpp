@@ -112,7 +112,6 @@ LogicUnit::LogicUnit(void)
 ,          m_xpIndex(this,RF_SET_NULL,     nullptr,                          LR_INDEX)
 ,       m_xpIndexDef(this,RF_SET_NULL,     nullptr,                       LR_INDEXDEF)
 ,    m_xpIndexStream(this,RF_REPAIR_DELETE,   IndexStream::vRepair,    LR_INDEXSTREAM)
-,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                     LR_INFOSETROW)
 ,       m_xpIntStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,       LR_INTSTACK)
 
 ,     m_xpJobMetrics(this,RF_REPAIR_DELETE,    JobMetrics::vRepair,     LR_JOBMETRICS)
@@ -146,9 +145,10 @@ LogicUnit::LogicUnit(void)
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                    LR_RECVDOBJECT)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
+,            m_xpRow(this,RF_SET_NULL,     nullptr,                            LR_ROW)
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,      LR_ROWBUFFER)
-,      m_xpRowBufferWarn (this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_ROWBUFFER)
-,      m_xpRowBufferErr(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_ROWBUFFER)
+,      m_xpRowBufferErr(this,RF_REPAIR_DELETE,  RowBuffer::vRepair,   LR_ROWBUFFERERR)
+,    m_xpRowBufferWarn (this,RF_REPAIR_DELETE,  RowBuffer::vRepair,  LR_ROWBUFFERWARN)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
 ,      m_xpRowCounts(this,RF_REPAIR_DELETE,     RowCounts::vRepair,      LR_ROWCOUNTS)
 
@@ -168,9 +168,9 @@ LogicUnit::LogicUnit(void)
 ,         m_xpSubset(this,RF_REPAIR_DELETE,       Operand::vRepairList,     LR_SUBSET)
 
 ,          m_xpTable       (this,RF_SET_NULL,   nullptr,                     LR_TABLE)
-,          m_xpTableDef    (this,RF_SET_NULL,   nullptr,                     LR_TABLE)
-,          m_xpTableDefErr (this,RF_SET_NULL,   nullptr,                     LR_TABLE)
-,          m_xpTableDefWarn(this,RF_SET_NULL,   nullptr,                     LR_TABLE)
+,          m_xpTableDef    (this,RF_SET_NULL,   nullptr,                  LR_TABLEDEF)
+,          m_xpTableDefErr (this,RF_SET_NULL,   nullptr,               LR_TABLEDEFERR)
+,          m_xpTableDefWarn(this,RF_SET_NULL,   nullptr,              LR_TABLEDEFWARN)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                       LR_TABLEPTN)
 ,         m_xpTagSet(this,RF_REPAIR_DELETE,        TagSet::vRepair,         LR_TAGSET)
 ,       m_xpTaskList(this,RF_REPAIR_DELETE,      TaskList::vRepairList,   LR_TASKLIST)
@@ -316,7 +316,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpIndex.bIsNull());
   RASSERT(m_xpIndexDef.bIsNull());
   RASSERT(m_xpIndexStream.bIsNull());
-  RASSERT(m_xpInfoSetRow.bIsNull());
 
   RASSERT(m_xpList.bIsNull());
 
@@ -341,6 +340,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpPot.bIsNull());
 
   RASSERT(m_xpRecvdObject.bIsNull());
+	RASSERT(m_xpRow.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
   RASSERT(m_xpRowBuffer.bIsNull());
 	RASSERT(m_xpRowBufferWarn.bIsNull());

@@ -287,8 +287,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("InfoSetRow[]"_Stz)) {
-    pCurrentWord->vEncodeCall("InfoSetRow[].set"_Stz);
+  else if (szTerm->bSame("Row[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Row[].set"_Stz);
     EXIT();
     return;
   }

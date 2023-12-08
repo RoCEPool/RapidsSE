@@ -39,10 +39,10 @@
   nullptr to PipeIn[]
 
   // get first row of RowBuffer[]
-  RowBuffer[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
 
   // get 0th Column (rowCount) add to Counter
-  0 infoSetRow[].getIntColumn Counter0[] + to Counter0[]
+  0 Row[].getIntColumn Counter0[] + to Counter0[]
 
   // now delete the rowBuffer
   RowBuffer[].delete
