@@ -27,8 +27,7 @@ enum eOM // operator markers
   /*    */ OM_EXIT,
   /*    */ OM_EXITING,
   /*    */ OM_EXITED,
-  
-  /*    */ OM_FINISHED,
+
   /*    */ OM_FLUSH,
 
   /*    */ OM_HARDABORT,

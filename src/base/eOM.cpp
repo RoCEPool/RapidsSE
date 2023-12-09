@@ -28,8 +28,7 @@ Stz* aOM[OM_ENUMS]
   /*    */ "EXIT"_Stz,
   /*    */ "EXITINGMARKER"_Stz,
   /*    */ "EXITEDMARKER"_Stz,
-  
-  /*    */ "FINISHED"_Stz,
+
   /*    */ "FLUSH"_Stz,
 
   /*    */ "HARDABORT"_Stz,

@@ -742,7 +742,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_ERRORING"_Stz,        EV_M_ERRORING);
   /*  0 */ vAddConstant("EV_M_EXITING"_Stz,         EV_M_EXITING);
   /*  0 */ vAddConstant("EV_M_EXITED"_Stz,          EV_M_EXITED);
-  /*  0 */ vAddConstant("EV_M_FINISHED"_Stz,        EV_M_FINISHED);
   /*  0 */ vAddConstant("EV_M_FLUSH"_Stz,           EV_M_FLUSH);
   /*  0 */ vAddConstant("EV_M_HARDABORT"_Stz,       EV_M_HARDABORT);
   /*  0 */ vAddConstant("EV_M_INTERNALERROR"_Stz,   EV_M_INTERNALERROR);

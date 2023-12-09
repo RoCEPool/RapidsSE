@@ -98,7 +98,6 @@
 : EV_M_ENDING_handler           \handler STANDARD_PIPEOUT ;
 : EV_M_EOS_handler              \handler STANDARD_PIPEOUT ;
 : EV_M_ERRORING_handler         \handler STANDARD_PIPEOUT ;
-: EV_M_FINISHED_handler         \handler STANDARD_PIPEOUT ;
 : EV_M_FLUSH_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVING_handler          \handler STANDARD_PIPEOUT ;
@@ -432,7 +431,6 @@
   defaultHandler EV_M_DATAPULSE         [op].handler!
   defaultHandler EV_M_DESTROY           [op].handler!
   defaultHandler EV_M_EOS               [op].handler!
-  defaultHandler EV_M_FINISHED          [op].handler!
   defaultHandler EV_M_FLUSH             [op].handler!
   abnormalHandlerEnd    EV_M_HARDABORT  [op].handler!
   defaultHandler EV_M_INTERNALERROR     [op].handler!

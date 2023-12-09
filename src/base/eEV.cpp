@@ -45,7 +45,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_M_ERRORING"_Stz,
   /*    */ "EV_M_EXITING"_Stz,
   /*    */ "EV_M_EXITED"_Stz,
-  /*    */ "EV_M_FINISHED"_Stz,
   /*    */ "EV_M_FLUSH"_Stz,
   /*    */ "EV_M_HARDABORT"_Stz,
   /*    */ "EV_M_INTERNALERROR"_Stz,

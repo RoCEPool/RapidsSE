@@ -45,7 +45,6 @@ enum eEV // events
   /*    */ EV_M_ERRORING,
   /*    */ EV_M_EXITING,
   /*    */ EV_M_EXITED,
-  /*    */ EV_M_FINISHED,
   /*    */ EV_M_FLUSH,
   /*    */ EV_M_HARDABORT,
   /*    */ EV_M_INTERNALERROR,

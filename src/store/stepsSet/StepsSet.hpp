@@ -1167,7 +1167,6 @@ void vJobIdLastJobIdFetch(void);
   void vMarkerNewExitMarker(void);
   void vMarkerNewExitingMarker(void);
   void vMarkerNewExitedMarker(void);
-  void vMarkerNewFinishedMarker(void);
   void vMarkerNewFlushMarker(void);
   void vMarkerNewInternalError(void);
   void vMarkerNewInvokeMarker(void);
