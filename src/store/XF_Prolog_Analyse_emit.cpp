@@ -84,8 +84,8 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
 
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+//        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+//          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
 
         continue;
 
@@ -193,6 +193,10 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
       case CK_o_CROSSJOIN:
       case CK_o_FILTER:
       case CK_o_INFLATE:
+        m_pCI->G.p_OP->vDump(__func__);
+        NEVER_REACH
+        break;
+
       default:
         m_pCI->G.p_OP->vDump(__func__);
         NEVER_REACH
