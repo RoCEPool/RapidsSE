@@ -124,8 +124,7 @@ void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
 /*----------------------------------------------------------------------------*/
 /* create emit                                                                */
 /*----------------------------------------------------------------------------*/
-void Card_OP::      vEnsure_stream(pCI);
-(CardIter* pCI)
+void Card_OP::vCreate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
