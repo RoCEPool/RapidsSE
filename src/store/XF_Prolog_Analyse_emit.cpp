@@ -84,9 +84,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
 
-//        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-//          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
-
         continue;
 
       case CK_o_INDEXJOIN:
@@ -95,15 +92,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
         RASSERT(! m_pCI->G.p_OP->pSub_emit())
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
         m_pCI->Flux.m_pArriving = m_pCI->G.p_OP->pSub_emit();
-
-//        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
-//          if (m_pCI->Flux.m_pArriving) {
-//            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
-//          }
-//        }
-
-//        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-//          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
         continue;
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -154,9 +142,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
         RASSERT(! m_pCI->G.p_OP->pSub_key());
 
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
-
-//        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
-//          m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
         break;
 
       case CK_o_TOP:
@@ -184,7 +169,7 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
 
-        m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
+        m_pCI->G.p_emit->vConcatFacets_From_key(m_pCI->G.p_key);
         break;
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -218,9 +203,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
     m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-//    if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-//      m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
 
   } // while (m_pCI->G_bEachMain_NONE())
 

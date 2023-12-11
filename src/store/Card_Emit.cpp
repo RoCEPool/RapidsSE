@@ -74,9 +74,9 @@ Card_Emit* Card_Emit::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* adjust this projection given key                                           */
+/* concat facets from given key                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vAdjust_Wrt_key(Card_Key* p_key)
+void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -95,7 +95,8 @@ void Card_Emit::vAdjust_Wrt_key(Card_Key* p_key)
     if (! p_expr_sole_key)
       continue;
 
-    pSymbol_expr_sole->vCastFacets(p_expr_sole_key->pSymbol());
+    //pSymbol_expr_sole->vCastFacets(p_expr_sole_key->pSymbol());
+    pSymbol_expr_sole->vConcatFacets(p_expr_sole_key->pSymbol());
   }
 }
 

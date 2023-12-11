@@ -1208,6 +1208,16 @@ void Symbol::vCastFacetsPpy(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set cast & facets from arg                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vConcatFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacetConcat(pSymbol_arg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete facet                                                               */
 /*----------------------------------------------------------------------------*/
 void Symbol::vDeleteFacet(eSF eFacet)

@@ -70,39 +70,19 @@ void XF_Epilog_Type_Cast::vCast(void)
     switch (m_pCI->G.e_MainCard) {
 
       case CK_o_FROM:
-//        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-//          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
         break;
 
       case CK_o_INDEXJOIN:
-//        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
-//          if (m_pCI->Flux.m_pArriving) {
-//            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
-//          }
-//        }
-
         break;
 
       case CK_o_INDEXSCAN:
-//        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
-//          if (m_pCI->Flux.m_pArriving) {
-//            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
-//          }
-//        }
         break;
 
       case CK_o_SCAN:
-//        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-//          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
         break;
 
       case CK_o_SORT:
-        /**
-        m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
-        m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
-        m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
-        */
-        break;
+       break;
 
       case CK_c_COMBINED:
       case CK_c_STAGE:
