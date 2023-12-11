@@ -40,6 +40,7 @@ public:
   void vAdaptorWLIsChildJobActive(void);
   void vAdaptorWLNew(void);
   void vAdaptorWLNextPayloadToSendFetch(void);
+  void vAdaptorWLPayloadCreateTime(void);
   void vAdaptorWLProcessWLMsg(void);
   void vAdaptorWLProtocolErrorFetch(void);
   void vAdaptorWLProtocolErrorTest(void);

@@ -416,6 +416,9 @@
 
   "adaptorWL_ChildExit - EV_X_CHILDEXIT" .verbose
 
+  0 locals| iCurrTime    |
+  0 locals| iElapsedTime |
+
   nullptr [job].responseOp!
   Pipein[].delete
 
@@ -449,6 +452,16 @@
   adaptorWL_sendAnyWLResponses not if
     true
     exit
+  then
+
+
+  // Print out how long it took from receiving the query to sending the last response.
+  // This does not include the actual sending of the payloads or how long it takes for
+  // the client to receive and display them.
+  TC_WLP trace.getComponent if
+    ticking::getTick to iCurrTime
+    iCurrTime adaptorWL[].payloadCreateTime@ - to iElapsedTime
+    iElapsedTime iCurrTime "AdaptorWL: Recv & execution of query finished at time %v (elapsed time: %v ns)" str.format .traceWlp
   then
 
   true

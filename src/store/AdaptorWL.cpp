@@ -181,6 +181,8 @@ void AdaptorWL::vDecodePayload(WLP::PayloadObj* pPayload)
   ASSERT(!m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == -1);
 
+  m_uPayloadCreationTime = pPayload->uCreationTime();
+
   ASSERT(pPayload->iPayloadSize() > WLP::C_WLPHEADER_SIZE);
   WLP::WlpHeader* pHeader = (WLP::WlpHeader*) pPayload->pcBuf();
 
@@ -324,6 +326,14 @@ Stz* AdaptorWL::szQuery()
 bool AdaptorWL::bAbortEarly()
 {
   return m_oQueryCtx.bAbortEarly();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the time when the last payload was created                          */
+/*----------------------------------------------------------------------------*/
+u8 AdaptorWL::uPayloadCreationTime()
+{
+  return m_uPayloadCreationTime;
 }
 
 /*----------------------------------------------------------------------------*/
