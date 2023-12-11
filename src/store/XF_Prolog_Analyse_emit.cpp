@@ -96,11 +96,11 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
         m_pCI->Flux.m_pArriving = m_pCI->G.p_OP->pSub_emit();
 
-        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
-          if (m_pCI->Flux.m_pArriving) {
-            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
-          }
-        }
+//        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+//          if (m_pCI->Flux.m_pArriving) {
+//            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+//          }
+//        }
 
 //        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
 //          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
@@ -155,8 +155,8 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
 
-        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
-          m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+//        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
+//          m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
         break;
 
       case CK_o_TOP:

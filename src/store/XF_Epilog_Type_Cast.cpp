@@ -126,8 +126,12 @@ void XF_Epilog_Type_Cast::vCast(void)
         break;
     } // switch
 
-    if (m_pCI->G.p_emit) {
+    if ((m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit())) {
       m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+      if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+          m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+
+      }
       if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
         m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
     }
