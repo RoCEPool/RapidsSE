@@ -74,26 +74,65 @@ void XF_Epilog_Type_Cast::vCast(void)
           m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
         break;
 
+      case CK_o_HAVING:
+        if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
+          m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
+        break;
+
       case CK_o_INDEXJOIN:
-//        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
-//          if (m_pCI->Flux.m_pArriving) {
-//            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
-//          }
-//        }
+        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+          if (m_pCI->Flux.m_pArriving) {
+            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+          }
+        }
+
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
 
         break;
 
       case CK_o_INDEXSCAN:
-//        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
-//          if (m_pCI->Flux.m_pArriving) {
-//            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
-//          }
-//        }
+        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+          if (m_pCI->Flux.m_pArriving) {
+            m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+          }
+        }
+
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+        break;
+
+      case CK_o_KEYEXISTS:
+        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
+          m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
+        break;
+
+      case CK_o_KEYNOTEXISTS:
+        if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
+          m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
         break;
 
       case CK_o_SCAN:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
           m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+        break;
+
+      case CK_o_WHERE:
+        if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
+          m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
+        break;
+
+      case CK_o_SORT:
+        m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
+        m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
+        m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
+        m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
+        break;
+
+      case CK_o_TOP:
+        m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
+        m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
+        m_pCI->G.p_key->vRenumberAll_expr();
         break;
 
       case CK_c_COMBINED:
@@ -108,16 +147,10 @@ void XF_Epilog_Type_Cast::vCast(void)
       case CK_o_FILTER:
       case CK_o_GBYAGG:
       case CK_o_HASH:
-      case CK_o_HAVING:
       case CK_o_INFLATE:
-      case CK_o_KEYEXISTS:
-      case CK_o_KEYNOTEXISTS:
       case CK_o_LIMIT:
       case CK_o_ORDAGG:
       case CK_o_PROJECT:
-      case CK_o_SORT:
-      case CK_o_TOP:
-      case CK_o_WHERE:
         break;
 
       default:
@@ -125,6 +158,10 @@ void XF_Epilog_Type_Cast::vCast(void)
         NEVER_REACH
         break;
     } // switch
+
+    if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit()))
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+
   } // while
 
   m_pCI->vEndTransform(__LINE__);

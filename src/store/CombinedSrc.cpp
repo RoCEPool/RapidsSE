@@ -1028,7 +1028,8 @@ void CombinedSrc::vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction
   }
 }
 
-/*----------------------------------------------------------------------------*/
+/*-----------------------------------------------------------
+ * -----------------*/
 /* append code fragment for populating payload columns                        */
 /*----------------------------------------------------------------------------*/
 void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
