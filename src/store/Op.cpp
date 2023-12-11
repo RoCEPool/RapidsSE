@@ -1942,23 +1942,23 @@ void Op::vTask(Task* pTask)
 i8 Op::nTmpIndexSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-   /*
-  if (pOpLogicUnit()->m_xpCombined.bIsNull())
+
+  if (pOpLogicUnit()->m_xpDynamic.bIsNull())
     return -8;
 
-  Combined* pCombined = * pOpLogicUnit()->m_xpCombined;
-  Combined_T* aCombinedT = pCombined->aCombinedT();
-  if (! aCombinedT)
+  Dynamic* pDynamic = * pOpLogicUnit()->m_xpDynamic;
+  Dynamic_T* aDynamicT = pDynamic->aDynamicT();
+  if (! aDynamicT)
     return -7;
 
-  IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreePL);
+  IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoT.m_aIndexTree);
   if (! pIndexTree)
     return -6;
   
   i8 nEntBuffers = pIndexTree->nEntBuffers();
   
   return nEntBuffers;
-    */
+
    RASSERT(0);
    return C_UNKNOWN;
 }
