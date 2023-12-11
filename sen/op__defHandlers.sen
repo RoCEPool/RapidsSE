@@ -77,8 +77,6 @@
 : EV_D_JOBMETRICS_handler       \handler STANDARD_PIPEOUT ;
 : EV_D_NAMEDBUFFER_handler      \handler STANDARD_PIPEOUT ;
 : EV_D_METAGET_handler          \handler STANDARD_PIPEOUT ;
-: EV_D_OP_handler               \handler STANDARD_PIPEOUT ;
-: EV_D_OTHEROPERAND_handler     \handler STANDARD_PIPEOUT ;
 : EV_D_PAGINGMETRICS_handler    \handler STANDARD_PIPEOUT ;
 : EV_D_PARCEL_handler           \handler STANDARD_PIPEOUT ;
 : EV_D_PAYLOAD_handler          \handler STANDARD_PIPEOUT ;
@@ -412,8 +410,6 @@
   abnormalHandler EV_D_INDEXDEF         [op].handler!
   abnormalHandler EV_D_METAGET          [op].handler!
   abnormalHandler EV_D_NAMEDBUFFER      [op].handler!
-  abnormalHandler EV_D_OP               [op].handler!
-  abnormalHandler EV_D_OTHEROPERAND     [op].handler!
   abnormalHandler EV_D_PARCEL           [op].handler!
   abnormalHandler EV_D_PAYLOAD          [op].handler!
   abnormalHandler EV_D_PLANOPERAND      [op].handler!

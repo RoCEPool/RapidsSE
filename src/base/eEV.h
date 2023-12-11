@@ -16,8 +16,6 @@ enum eEV // events
   /*    */ EV_D_JOBMETRICS,
   /*    */ EV_D_METAGET,
   /*    */ EV_D_NAMEDBUFFER,
-  /*    */ EV_D_OP,
-  /*    */ EV_D_OTHEROPERAND,
   /*    */ EV_D_PAGINGMETRICS,
   /*    */ EV_D_PARCEL,
   /*    */ EV_D_PAYLOAD,
