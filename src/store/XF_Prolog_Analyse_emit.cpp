@@ -102,8 +102,8 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
           }
         }
 
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+//        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+//          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
         continue;
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

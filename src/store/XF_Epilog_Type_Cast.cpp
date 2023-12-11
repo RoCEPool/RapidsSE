@@ -70,8 +70,8 @@ void XF_Epilog_Type_Cast::vCast(void)
     switch (m_pCI->G.e_MainCard) {
 
       case CK_o_FROM:
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+//        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+//          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
         break;
 
       case CK_o_INDEXJOIN:
@@ -92,8 +92,8 @@ void XF_Epilog_Type_Cast::vCast(void)
         break;
 
       case CK_o_SCAN:
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+//        if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+//          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
         break;
 
       case CK_c_COMBINED:
@@ -125,6 +125,16 @@ void XF_Epilog_Type_Cast::vCast(void)
         NEVER_REACH
         break;
     } // switch
+
+    if (m_pCI->G.p_emit) {
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+      if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
+        m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+    }
+    else {
+
+    }
+
   } // while
 
   m_pCI->vEndTransform(__LINE__);
