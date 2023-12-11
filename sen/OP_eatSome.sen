@@ -51,7 +51,6 @@
 //  pEatSomeHandler EV_M_DATAPULSE        [op].handler!
     pEatSomeHandler EV_D_ROWBUFFER        [op].handler!
 //  pEatSomeHandler EV_I_SEEKOFFSETS      [op].handler!
-//  pEatSomeHandler EV_D_SRTBUFFER        [op].handler!
 //  pEatSomeHandler EV_M_START      [op].handler!
 //  pEatSomeHandler EV_M_STARTED    [op].handler!
 //  pEatSomeHandler EV_D_STREAMDEF        [op].handler!

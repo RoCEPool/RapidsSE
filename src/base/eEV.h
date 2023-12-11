@@ -20,7 +20,6 @@ enum eEV // events
   /*    */ EV_D_PLANOPERAND,
   /*    */ EV_D_PROFILE,
   /*    */ EV_D_ROWBUFFER,
-  /*    */ EV_D_SRTBUFFER,
   /*    */ EV_D_STREAMDEF,
   /*    */ EV_D_TABLE,
   /*    */ EV_D_TABLEPTN,

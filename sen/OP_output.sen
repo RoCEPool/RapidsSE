@@ -92,17 +92,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_SRTBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_SrtBuffer \handler
-
-  //"Operand:- EV_D_SRTBUFFER" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_StreamDef \handler
@@ -126,7 +115,6 @@
   find: output_CsvBuffer     EV_D_CSVBUFFER     [op].handler!
   find: output_EntBuffer     EV_D_ENTBUFFER     [op].handler!
   find: output_RowBuffer     EV_D_ROWBUFFER     [op].handler!
-  find: output_SrtBuffer     EV_D_SRTBUFFER     [op].handler!
   find: output_StreamDef     EV_D_STREAMDEF     [op].handler!
 
   find: output_InternalError EV_M_INTERNALERROR [op].handler!
