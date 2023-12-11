@@ -147,10 +147,7 @@ assert::stack_0
 "m" .verbose
 
   "OP_memoryleaks.sen"          include
-  "OP_metaGet.sen"              include
-  "OP_metaRecv.sen"             include
   "OP_metaScan.sen"             include
-  "OP_metaSend.sen"             include
   "OP_metaTables.sen"           include
   "OP_metricsCollect.sen"       include
   "OP_metricsCtl.sen"           include

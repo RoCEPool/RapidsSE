@@ -13,7 +13,6 @@ enum eEV // events
   /*    */ EV_D_INDEX,
   /*    */ EV_D_INDEXDEF,
   /*    */ EV_D_JOBMETRICS,
-  /*    */ EV_D_METAGET,
   /*    */ EV_D_NAMEDBUFFER,
   /*    */ EV_D_PAGINGMETRICS,
   /*    */ EV_D_PARCEL,

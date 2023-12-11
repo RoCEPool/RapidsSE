@@ -168,7 +168,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
-  
+/*
   STD_PATH_TAG
   "
   procedure getMeta
@@ -188,8 +188,9 @@
   end ;
   "
   procedure::add
-
+*/
 ;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get all metadata for user tables
