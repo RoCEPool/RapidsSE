@@ -96,6 +96,14 @@ void XF_Epilog_Type_Cast::vCast(void)
 //          m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
         break;
 
+      case CK_o_SORT:
+        /**
+        m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
+        m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
+        m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
+        */
+        break;
+
       case CK_c_COMBINED:
       case CK_c_STAGE:
       case CK_c_SEND:
@@ -115,7 +123,6 @@ void XF_Epilog_Type_Cast::vCast(void)
       case CK_o_LIMIT:
       case CK_o_ORDAGG:
       case CK_o_PROJECT:
-      case CK_o_SORT:
       case CK_o_TOP:
       case CK_o_WHERE:
         break;
