@@ -246,8 +246,6 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5/5) synthesise
 
-  XF_Epilog_Type_Cast::vCast(m_pCI);                   //
-
   XF_Epilog_Fuse_project::vFuse(m_pCI);                // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
   XF_Epilog_Append_synthesis::vAppend(m_pCI);          // adds <synthesis>
   XF_Epilog_Map_Columns::vMap(m_pCI);                  // gbyAgg, sort, top
@@ -255,6 +253,7 @@ void XF::vTransform(void)
   XF_Epilog_Determine_Columns::vDetermine(m_pCI);      // nil
   XF_Epilog_Hash_Columns::vHash(m_pCI);                //
                                                        ////
+  XF_Epilog_Type_Cast::vCast(m_pCI);                   //
                                                        //
   XF_Epilog_Itemise_Columns::vItemise(m_pCI);          //
                                                        //

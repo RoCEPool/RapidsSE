@@ -19,8 +19,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-INCLUDE 'select_star.test';
-INCLUDE 'select_sort.test';
+INCLUDE 'tpch_q16.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';
@@ -79,11 +78,11 @@ LOG ' ';
 LOG 'Double Checking:';
 
 LOG 'AggregExpr.test';
-INCLUDE '../../../../tests/tests1N4P/Combined/AggregExpr.test';
+INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
 LOG 'IndexJoin.test';
-INCLUDE '../../../../tests/tests1N4P/Combined/IndexJoin.test';
+INCLUDE '../../tests/tests1N4P/Combined/IndexJoin.test';
 LOG 'operator.test';
-INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
+INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
 
 LOG 'End Double Checking';
 
