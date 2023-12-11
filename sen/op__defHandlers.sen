@@ -72,7 +72,6 @@
 : EV_D_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
-: EV_D_GRID_handler             \handler STANDARD_PIPEOUT ;
 : EV_D_JOB_handler              \handler STANDARD_PIPEOUT ;
 : EV_D_JOBMETRICS_handler       \handler STANDARD_PIPEOUT ;
 : EV_D_NAMEDBUFFER_handler      \handler STANDARD_PIPEOUT ;
@@ -405,7 +404,6 @@
   abnormalHandler EV_D_CRWBUFFER        [op].handler!
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
   abnormalHandler EV_D_ENTBUFFER        [op].handler!
-  abnormalHandler EV_D_GRID             [op].handler!
   abnormalHandler EV_D_INDEX            [op].handler!
   abnormalHandler EV_D_INDEXDEF         [op].handler!
   abnormalHandler EV_D_METAGET          [op].handler!

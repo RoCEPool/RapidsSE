@@ -10,7 +10,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_CRWBUFFER"_Stz,
   /*    */ "EV_D_CSVBUFFER"_Stz,
   /*    */ "EV_D_ENTBUFFER"_Stz,
-  /*    */ "EV_D_GRID"_Stz,
   /*    */ "EV_D_INDEX"_Stz,
   /*    */ "EV_D_INDEXDEF"_Stz,
   /*    */ "EV_D_JOBMETRICS"_Stz,

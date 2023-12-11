@@ -114,7 +114,7 @@
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // prototype assertGrid
-
+/*
   STD_PATH_TAG
   "
   procedure assertGrid
@@ -136,7 +136,7 @@
   end ;
   "
   procedure::add
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump grid info
 
