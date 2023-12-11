@@ -28,6 +28,8 @@ Stz* aBT[BT_ENUMS]
 	/*    */ "BT_PROGRESSUNITS"_Stz,
 	/*    */ "BT_PROMPTOUT"_Stz,
 	/*    */ "BT_SEEKOFFSETS"_Stz,
+  /*    */ "BT_SYSLOCKS"_Stz,
+	/*    */ "BT_SYSMETRICS"_Stz,
 	/*    */ "BT_TOTALUNITS"_Stz,
 	/*    */ "BT_WARNINGS"_Stz,
 
