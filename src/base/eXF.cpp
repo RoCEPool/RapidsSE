@@ -19,6 +19,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_MAP_COLUMNS"_Stz,
   /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,
   /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,
+  /* */ "XF_EPILOG_TYPE_CAST"_Stz,
   /* */ "XF_EPILOG_X_STMCOL_TO_COLNM"_Stz,
   /* */ "XF_EPILOG_X_TBLCOL_TO_STMCOL"_Stz,
   /* */ "XF_FLATTEN"_Stz,

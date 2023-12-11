@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_Type_Cast, CN_XF_EPILOG_HASH_COLUMNS)
-__aNewFunction(XF_Epilog_Type_Cast, CN_XF_EPILOG_HASH_COLUMNS)
-__vDeleteFunction(XF_Epilog_Type_Cast, CN_XF_EPILOG_HASH_COLUMNS)
+__pCastFunction(STORE, XF_Epilog_Type_Cast, CN_XF_EPILOG_TYPE_CAST)
+__aNewFunction(XF_Epilog_Type_Cast, CN_XF_EPILOG_TYPE_CAST)
+__vDeleteFunction(XF_Epilog_Type_Cast, CN_XF_EPILOG_TYPE_CAST)
 __aFooterFunction(XF_Epilog_Type_Cast)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Epilog_Type_Cast)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Type_Cast::XF_Epilog_Type_Cast(CardIter* pCI)
-: XF_EPILOG(CN_XF_EPILOG_HASH_COLUMNS, pCI)
+: XF_EPILOG(CN_XF_EPILOG_TYPE_CAST, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_HASH_COLUMNS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_TYPE_CAST, _FOOTER_);
 
-  _checkInitialised_(CN_XF_EPILOG_HASH_COLUMNS);
+  _checkInitialised_(CN_XF_EPILOG_TYPE_CAST);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_HASH_COLUMNS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_TYPE_CAST, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Epilog_Type_Cast::XF_Epilog_Type_Cast(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Type_Cast::~XF_Epilog_Type_Cast(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_HASH_COLUMNS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_TYPE_CAST, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,9 +60,9 @@ void XF_Epilog_Type_Cast::vCast(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_Type_Cast::vCast(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_HASH_COLUMNS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_TYPE_CAST, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_HASH_COLUMNS, "column hashing"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_TYPE_CAST, "type cast"_Stz);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE()) {
@@ -113,13 +113,36 @@ void XF_Epilog_Type_Cast::vCast(void)
         break;
     } // switch
 
-    if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-      m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
-      m_pCI->G.p_key->vRenumberAll_expr();
-    }
 
     if ((m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit())) {
-      m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+
+
+      if (CK_o_SCAN == m_pCI->G.e_MainCard ||
+          CK_o_INDEXJOIN == m_pCI->G.e_MainCard ||
+          CK_o_INDEXSCAN == m_pCI->G.e_MainCard) {
+
+        m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+
+        m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
+        m_pCI->G.p_emit->vRenumberAll_expr();
+
+      }
+      else {
+//        if (m_pCI->Flux.m_pArriving) {
+//          m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
+//          m_pCI->G.p_emit->vRenumberAll_expr();
+//        }
+        m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+      }
+      //m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
+
+      if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
+        m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
+        m_pCI->G.p_key->vRenumberAll_expr();
+      }
+      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
+        m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
+
       if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
           m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
 

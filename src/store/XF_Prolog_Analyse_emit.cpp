@@ -111,8 +111,8 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
        m_pCI->G.p_OP->vCreate_emit(m_pCI);
 
-        if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
-          m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
+//        if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
+//          m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
 
         break;
 
