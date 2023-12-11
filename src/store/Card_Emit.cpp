@@ -298,6 +298,8 @@ void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  pCI->G.p_key = pCI->G.p_OP->pSub_key();
+
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
     xKid.p_expr()->vEnsureTypeId_expCol(pCI);
 }

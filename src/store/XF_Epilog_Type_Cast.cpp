@@ -113,6 +113,11 @@ void XF_Epilog_Type_Cast::vCast(void)
         break;
     } // switch
 
+    if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
+      m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
+      m_pCI->G.p_key->vRenumberAll_expr();
+    }
+
     if ((m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit())) {
       m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
       if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
