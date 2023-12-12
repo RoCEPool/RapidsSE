@@ -129,7 +129,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Memory();
   Step::vAddSteps_Monitor();
 
-  Step::vAddSteps_NamedBuffer();
   Step::vAddSteps_Network();
   Step::vAddSteps_Node();
   Step::vAddSteps_NodeMonitor();

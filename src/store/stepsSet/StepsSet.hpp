@@ -1252,18 +1252,6 @@ void vJobIdLastJobIdFetch(void);
   // Monitor (Nodes)
   void vMonitorUpdateNodeStatus(void);
 
-  // named buffer
-  void vNamedBufferDelete(void);
-  void vNamedBufferGet(void);
-  void vNamedBufferGetAndClear(void);
-  void vNamedBufferIsNotNull(void);
-  void vNamedBufferIsNull(void);
-  void vNamedBufferMorphClass(void);
-  void vNamedBufferNameFetch(void);
-  void vNamedBufferNameStore(void);
-  void vNamedBufferPipeIn(void);
-  void vNamedBufferSet(void);
-
   // network
   void vNetworkReset(void);
   void vNetworkShow(void);
