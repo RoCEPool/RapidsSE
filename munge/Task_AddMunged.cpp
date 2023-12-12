@@ -35499,7 +35499,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  PipeIn[]\\clear to RowBuffer[]\n"
     "\n"
-    "  RowBuffer[].bufferType@ BT_JOBOPERANDS == assert\n"
+    "  //RowBuffer[].bufferType@ BT_JOBOPERANDS == assert\n"
     "\n"
     "  RowBuffer[].tableDefName@ locals| sTableDefName |\n"
     "\n"

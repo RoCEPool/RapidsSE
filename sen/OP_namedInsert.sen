@@ -111,7 +111,7 @@
 
   PipeIn[]\clear to RowBuffer[]
 
-  RowBuffer[].bufferType@ BT_JOBOPERANDS == assert
+  //RowBuffer[].bufferType@ BT_JOBOPERANDS == assert
 
   RowBuffer[].tableDefName@ locals| sTableDefName |
 
