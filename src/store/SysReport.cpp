@@ -7,7 +7,6 @@
 #include "SysReport.hpp"
 #include "SysMetrics.hpp"
 
-#include "NamedBuffer.hpp"
 #include "Node.hpp"
 
 #include "Table.hpp"

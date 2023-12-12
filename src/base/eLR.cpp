@@ -53,8 +53,7 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_MARKER"_Stz,
   /*  */ "LR_MEMORYHOG"_Stz,
   /*  */ "LR_META"_Stz,
-  
-  /*  */ "LR_NAMEDBUFFER"_Stz,
+
   /*  */ "LR_NODE"_Stz,
   /*  */ "LR_NODE_I"_Stz,
   /*  */ "LR_NOW"_Stz,

@@ -7,7 +7,6 @@
 #include "DerefMetrics.hpp"
 #include "Stream.hpp"
 #include "Table.hpp"
-#include "NamedBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

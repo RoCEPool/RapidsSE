@@ -52,8 +52,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_MARKER,
   /*  */ LR_MEMORYHOG,
   /*  */ LR_META,
-  
-  /*  */ LR_NAMEDBUFFER,
+
   /*  */ LR_NODE,
   /*  */ LR_NODE_I,
   /*  */ LR_NOW,

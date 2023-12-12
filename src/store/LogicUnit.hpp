@@ -29,7 +29,6 @@
 #include "SubReturn.hpp"
 
 #include "VertexSpec.hpp"
-#include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
 #include "AdaptorWL.hpp"
 #include "AnswerWL.hpp"

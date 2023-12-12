@@ -10,7 +10,6 @@
 
 #include "Job.hpp"
 #include "SysReport.hpp"
-#include "NamedBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

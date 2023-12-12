@@ -798,7 +798,7 @@ void Engine::vGetWelcome(s256& sWelcome)
 /*----------------------------------------------------------------------------*/
 void Engine::vIgnoreMemoryLeak(void)
 {
-  gxaSizeHeap[CN_NAMEDBUFFER].m_bIgnoreMemoryLeak = true;
+  //gxaSizeHeap[CN_NAMEDBUFFER].m_bIgnoreMemoryLeak = true;
 }
 
 /*----------------------------------------------------------------------------*/

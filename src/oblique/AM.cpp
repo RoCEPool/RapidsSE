@@ -3848,15 +3848,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
-    case CN_NAMEDBUFFER: {
-      NamedBuffer* pNamedBuffer = _pNamedBuffer(pOperand);
-      // permament row buffers not to be deleted
-      if (pNamedBuffer->bIsPermanent())
-        break;
-      delete pNamedBuffer;
-      break;
-    }
-
     case CN_PAYLOADOBJ: {
       WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(pOperand);
       delete pPayloadObj;

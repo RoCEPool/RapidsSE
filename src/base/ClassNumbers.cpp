@@ -222,7 +222,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "MUTEX"_Stz,                // CN_MUTEX
 
     /* */ "_N__"_Stz,                 // CN__N__
-    /* */ "NAMEDBUFFER"_Stz,          // CN_NAMEDBUFFER
     /* */ "NEXTGID"_Stz,              // CN_NEXTGID
     /* */ "NMLSTR"_Stz,               // CN_NMLSTR
     /* */ "NODE"_Stz,                 // CN_NODE

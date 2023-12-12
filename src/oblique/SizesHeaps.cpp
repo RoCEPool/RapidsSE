@@ -54,7 +54,6 @@
 #include "LglBufSet.hpp"
 #include "Pot.hpp"
 
-#include "NamedBuffer.hpp"
 #include "RowCoder.hpp"
 
 #include "HeadLine.hpp"
@@ -557,7 +556,6 @@ SizeHeap gxaSizeHeap[]
   {CN_MUTEX,                    sizeof(Mutex),              HT_T_TINY    , FILL },
 
   {CN__N__,                     'N' - ('A' - 1),            HT_INVALID   , FILL },
-  {CN_NAMEDBUFFER,              sizeof(NamedBuffer),        HT_T_LARGE   , FILL },
   {CN_NEXTGID,                  sizeof(NextGid),            HT_INVALID   , FILL },
   {CN_NMLSTR,                   sizeof(NmlStr),             HT_T_MEDIUM  , FILL },
   {CN_NODE,                     sizeof(Node),               HT_T_TINY    , FILL },
