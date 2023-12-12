@@ -580,7 +580,7 @@ Card_Expr* Card_Expr::pPropagate(void)
   Card_Expr* p_expr_propagation = new Card_Expr;
 
   //vDump(__func__);
-  p_expr_propagation->vCast(this);
+  //p_expr_propagation->vCast(this);
 
   if (pSymbol()->bHasFacet(SF_NMD_COL))
     p_expr_propagation->pSymbol()->vAppendFacet(SF_NMD_COL,pSymbol()->szSF_chrSeq(SF_NMD_COL));
@@ -729,7 +729,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card::vValidate_hasType();
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST]))
+    Card::vValidate_hasType();
 
   (void)Card::eValidate_parentEither(pCI, CK_t_EMIT, CK_c_FOLD, CK_s_INJECTABLE,
                                      CK_s_KEY, CK_s_NEEDED, CK_STREAMKEY, CK_NONE);

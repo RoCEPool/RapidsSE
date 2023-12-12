@@ -201,7 +201,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
           continue;
 
-        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
+        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
           p_needed->vAppendChild(p_expr_col->pClone());
       }
       else {
@@ -243,7 +243,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   p_needed->vRenumberAll_expr();
-  //p_needed->vDump();
+  p_needed->vDump(__func__);
 
   return p_needed;
 }

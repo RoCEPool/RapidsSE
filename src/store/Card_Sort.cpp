@@ -77,17 +77,32 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if ((pCI->G.p_emit = pCI->G.p_sort->pSub_emit()))
     pCI->G.p_sort->vDeleteSub(pCI->G.p_emit);
 
-  Card_Emit* p_emitted_sort =  pCI->Flux.m_pArriving->pPropagate();
-  for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
-    Card_Expr* p_expr_key = xKey_sort.p_expr();
+  Card_Emit* p_emit_sort =  pCI->Flux.m_pArriving->pPropagate();
+  p_emit_sort->vDump(__func__);
+//  for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
+//    Card_Expr* p_expr_key = xKey_sort.p_expr();
+//
+//    Symbol* pSym_expr_key = p_expr_key->pFirst_expCol();
+//    Card_Expr* p_expr_emit = p_emit_sort->pGet_expr(pSym_expr_key);
+//
+//    p_expr_emit->pGet_term(0)->pSymbol()->vConcatFacets(p_expr_key->pSymbol());
+//  }
 
-    Symbol* pSym_expr_x = p_expr_key->pFirst_expCol();
-    Card_Expr* p_expr_prj = p_emitted_sort->pGet_expr(pSym_expr_x);
+  for (Kid xEmit_sort(p_emit_sort); xEmit_sort.bEach(); /**/) {
+    Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
+    p_expr_emit_sort->vDump(__func__ );
+    Card_Expr* p_expr_key = pCI->G.p_key->pFind_expr_Via_term0(p_expr_emit_sort->pSymbol());
+    if (! p_expr_key)
+      continue;
+    p_expr_key->vDump(__func__ );
+    Symbol* pSym_expr_key = p_expr_key->pSymbol();
+    p_expr_emit_sort->pGet_term(0)->pSymbol()->vConcatFacets(pSym_expr_key);
+    p_expr_emit_sort->vDump(__func__ );
+   }
 
-    p_expr_prj->pGet_term(0)->pSymbol()->vCastFacets(p_expr_key->pSymbol());
-  }
 
-  pCI->G.p_stream->vAppendChild(p_emitted_sort);
+
+  pCI->G.p_stream->vAppendChild(p_emit_sort);
 
   pCI->Flux.m_pArriving = pSub_emit();
 

@@ -1229,6 +1229,9 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
       }
 
     }
+    if (p_expr_col)
+      break;
+
   }
 
   return p_expr_col;
