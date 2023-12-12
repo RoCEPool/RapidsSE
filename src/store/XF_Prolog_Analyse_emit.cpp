@@ -108,21 +108,14 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
       case CK_o_WHERE:
       case CK_o_HAVING:
         RASSERT(! m_pCI->G.p_OP->pSub_key());
-
-       m_pCI->G.p_OP->vCreate_emit(m_pCI);
-
-//        if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
-//          m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
-
+        m_pCI->G.p_OP->vCreate_emit(m_pCI);
         break;
 
       case CK_o_HASH:
       case CK_o_LIMIT:
         RASSERT(m_pCI->Flux.m_pArriving);
         RASSERT(! m_pCI->G.p_OP->pSub_key());
-
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
-
         break;
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -140,23 +133,15 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
       case CK_o_KEYNOTEXISTS:
         RASSERT(m_pCI->Flux.m_pArriving);
         RASSERT(! m_pCI->G.p_OP->pSub_key());
-
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
         break;
 
       case CK_o_TOP:
         RASSERT(m_pCI->Flux.m_pArriving);
-
         if (! m_pCI->G.p_OP->pSub_key())
           m_pCI->G.p_OP->vDump(__func__);
-
         RASSERT(m_pCI->G.p_OP->pSub_key());
-
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
-
-//        m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
-//        m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
-//        m_pCI->G.p_key->vRenumberAll_expr();
         break;
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -164,11 +149,8 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
       case CK_o_SORT:
         RASSERT(m_pCI->Flux.m_pArriving);
         RASSERT(m_pCI->G.p_OP->pSub_key());
-
         m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
-
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
-
         m_pCI->G.p_emit->vConcatFacets_From_key(m_pCI->G.p_key);
         break;
 
@@ -191,21 +173,9 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-    if (! m_pCI->Flux.m_pArriving) {
-      m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
-      continue;
-    }
-
-    m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key();
-    m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
-    m_pCI->G.p_emit->vRenumberAll_expr();
-
     m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
   } // while (m_pCI->G_bEachMain_NONE())
-
 
   m_pCI->vEndTransform(__LINE__);
 }
