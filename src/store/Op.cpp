@@ -627,7 +627,16 @@ bool Op::bIsLocked(void)
 bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
+	bool bDemonJob = false;
+
+	Job* pOuterJob = pOuterJobOfOp();
+		Stz* sPipeLineName = pOuterJob->pPipeline()->szPipelineNm();
+		//vTrace("PipelineName = %s\n"_Stz, sPipeLineName);
+		if (sPipeLineName->bSame("eventDemon"_Stz) ||
+				sPipeLineName->bSame("exitDemon"_Stz))
+			bDemonJob = true;
+
   switch(i_OperandKind) {
 
     case EV_M_CANCELLING:
@@ -723,11 +732,16 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 				break;
 			}
 
+			// These don't apply to startDemon
+			if (szOpNm()->bSame("startDemon"_Stz)) {
+				break;
+			}
+
 			// should have received a EV_M_DATAPULSE
 			if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
 
-				// EXECERRORS can come berore the DATAPULSE
-				if (i_BufferType != BT_EXECERRORS) {
+				// EXECERRORS can come before the DATAPULSE
+				if (i_BufferType != BT_EXECERRORS &&  ! bDemonJob ) {
 					vTrace("%s: %s (BufferType: %s) arrived without a prior EV_M_DATAPULSE\n"_Stz,
 								 szOpNm(), aEV[i_OperandKind], aBT[i_BufferType]);
 					return false;
@@ -906,7 +920,7 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 
     case EV_M_STARTED:
       // should have received a EV_M_START
-      if (szOpNm()->bSame("start"_Stz) ) {
+      if (szOpNm()->bSame("start"_Stz) || szOpNm()->bSame("startDemon"_Stz)) {
         if (! m_pEvMgr->m_naEventCount[EV_M_INVOKE]) {
           vTrace("%s: %s arrived without a prior EV_M_INVOKE\n"_Stz,
                  szOpNm(), aEV[i_OperandKind]);
@@ -928,7 +942,8 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
       }
     
       // Only StartOP/SinkOP receives an EV_M_STARTED
-      if ( ! szOpNm()->bSame("start"_Stz) ) {
+      if ( ! szOpNm()->bSame("start"_Stz) &&
+			     ! szOpNm()->bSame("startDemon"_Stz)) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;

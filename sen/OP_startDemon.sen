@@ -1,0 +1,296 @@
+/*============================================================================*/
+/* OP_startDemon.sen -- Operator startDemon                                   */
+/*============================================================================*/
+
+" OP_start.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CANCEL ...                                                */
+/*----------------------------------------------------------------------------*/
+: startDemon_CancelMarker \handler
+
+  //"Operand:- EV_M_CANCEL" .verbose
+  PipeIn[].delete
+
+  // toggle to default abnormal handlers for all data operands
+  "default_abnormalHandlers" FIND execute
+
+  // check if start has already been pulsed
+  [pipeline].pulsed@ if
+    PipeIn[].delete
+  else
+    // mark pipeline as being cancelled
+    true [pipeline].cancelled!
+
+    Marker[].newCancelling
+    Marker[].pipeOut
+
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CANCELLED ...                                             */
+/*----------------------------------------------------------------------------*/
+: startDemon_CancelledMarker \handler
+
+  //"Operand:- EV_M_CANCELLED" .verbose
+  PipeIn[].delete
+
+  // now pipeout a cleaning marker
+  Marker[].newCleaningMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CLEANED ...                                               */
+/*----------------------------------------------------------------------------*/
+: startDemon_Cleaned \handler
+
+  //"EV_M_CLEANED_handler" .verbose
+  Pipein[].delete
+
+  // now pipeout an exiting marker
+  Marker[].newExitingMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ENDED ...                                                 */
+/*----------------------------------------------------------------------------*/
+: startDemon_EndedMarker \handler
+
+  //"Operand:- EV_M_ENDED" .verbose
+  PipeIn[].delete
+
+  // now pipeout a cleanup marker
+  Marker[].newCleaningMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERRORED ...                                               */
+/*----------------------------------------------------------------------------*/
+: startDemon_ErroredMarker \handler
+
+  //"Operand:- EV_M_ERRORED" .verbose
+  PipeIn[].delete
+
+  // now pipeout a cleanup marker
+  Marker[].newCleaningMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_EXITED ...                                                */
+/*----------------------------------------------------------------------------*/
+: startDemon_ExitedMarker \handler
+
+  //"Operand:- EV_M_EXITED" .verbose
+  PipeIn[].delete
+  [op].ackJobTask
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_LEFT ...                                                  */
+/*----------------------------------------------------------------------------*/
+: startDemon_LeftMarker \handler
+
+  //"Operand:- EV_M_LEFT" .verbose
+  PipeIn[].delete
+
+  // now pipeout a cleanup marker
+  Marker[].newCleaningMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_LEAVING ...                                               */
+/*----------------------------------------------------------------------------*/
+: startDemon_LeavingMarker \handler
+
+  //"Operand:- EV_M_LEAVING" .verbose
+
+  // delete the triggered marker
+  Pipein[].delete
+
+  // pipeline should not be cancelled
+  [pipeline].cancelled@ not assert
+
+  // pipeline should not be errored
+  [pipeline].errored@ not assert
+
+  // pipeline should have exited early
+  [pipeline].earlyExit@ assert
+
+  // mark pipeline as being pulsed
+  true [pipeline].pulsed!
+
+  // now pipeout the ending marker
+  Marker[].newEndingMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_INTERNALERROR ...                                         */
+/*----------------------------------------------------------------------------*/
+: startDemon_InternalError \handler
+
+  "Operand:- startDemon_InternalError EV_M_INTERNALERROR" .verbose
+  PipeIn[].delete
+
+  // toggle to default abnormal handlers for all data operands
+  "default_abnormalHandlers" FIND execute
+
+  // mark pipeline as being cancelled
+  true [pipeline].cancelled!
+
+  Marker[].newCancelling
+  Marker[].pipeOut
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_LOWMEMORY ...                                             */
+/*----------------------------------------------------------------------------*/
+: startDemon_LowMemory \handler
+
+  //"Operand:- EV_M_LOWMEMORY" .verbose
+  PipeIn[].delete
+
+  // toggle to default abnormal handlers for all data operands
+  "default_abnormalHandlers" FIND execute
+
+  // mark pipeline as being cancelled
+  true [pipeline].cancelled!
+
+  Marker[].newCancelling
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_ROWBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: startDemon_RowBuffer \handler
+
+  //"Operand:- EV_D_ROWBUFFER" .verbose
+  PipeIn[].bufferType@ BT_DATA != assert
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_TRIGGERED ...                                             */
+/*----------------------------------------------------------------------------*/
+: startDemon_TriggeredMarker \handler
+
+  //"Operand:- EV_M_TRIGGERED" .verbose
+
+  // delete the triggered marker
+  Pipein[].delete
+
+  // pipeline should not be cancelled
+  [pipeline].cancelled@ not assert
+
+  // pipeline should not be errored
+  [pipeline].errored@ not assert
+
+  // pipeline should not have exited early
+  [pipeline].earlyExit@ not assert
+
+  // mark pipeline as being pulsed
+  true [pipeline].pulsed!
+
+  // now pipeout the ending marker
+  Marker[].newEndingMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_STARTED ...                                               */
+/*----------------------------------------------------------------------------*/
+: startDemon_StartedMarker \handler
+
+  //"Operand:- EV_M_STARTED" .verbose
+  PipeIn[].delete
+  Marker[].newTrigger
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for start request                          (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : startDemon_op \operator
+ 
+  _lu_initialise_
+
+  op__topology
+
+  find: startDemon_CancelMarker      EV_M_CANCEL      [op].handler!
+  find: startDemon_CancelledMarker   EV_M_CANCELLED   [op].handler!
+  find: startDemon_Cleaned           EV_M_CLEANED     [op].handler!
+  find: startDemon_EndedMarker       EV_M_ENDED       [op].handler!
+  find: startDemon_ErroredMarker     EV_M_ERRORED     [op].handler!
+  find: startDemon_ExitedMarker      EV_M_EXITED      [op].handler!
+  find: startDemon_InternalError     EV_M_INTERNALERROR   [op].handler!
+  find: startDemon_LeavingMarker     EV_M_LEAVING     [op].handler!
+  find: startDemon_LeftMarker        EV_M_LEFT        [op].handler!
+  find: startDemon_LowMemory         EV_M_LOWMEMORY   [op].handler!
+  find: startDemon_RowBuffer         EV_D_ROWBUFFER   [op].handler!
+  find: startDemon_StartedMarker     EV_M_STARTED     [op].handler!
+  find: startDemon_TriggeredMarker   EV_M_TRIGGERED   [op].handler!
+
+  find: INVALID_OPERAND_handler EV_D_CRWBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler EV_D_CSVBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler EV_D_ENTBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler EV_D_STREAMDEF       [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: start :: start ;
+
+: startDemon_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "startDemon_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

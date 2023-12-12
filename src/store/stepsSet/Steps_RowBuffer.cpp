@@ -81,7 +81,8 @@ void Step::vAddSteps_RowBuffer(void)
 	vAddStep("RowBuffer[].setBufferType"_Stz,  &Step::vRowBufferSetBufferType);
   vAddStep("RowBuffer[].setDeciderCopies"_Stz, &Step::vRowBufferSetDeciderCopies);
   vAddStep("RowBuffer[].setLglPtn"_Stz,      &Step::vRowBufferSetLglPtn);
-  vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
+  vAddStep("RowBuffer[].tableDefName@"_Stz,  &Step::vRowBufferTableDefNameFetch);
+	vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
 
 	vAddStep("RowBuffer[].addLockStats"_Stz,     &Step::vRowBufferAddLockStats);
 	vAddStep("RowBuffer[].addNodeInfo"_Stz,      &Step::vRowBufferAddNodeInfo);
@@ -1308,6 +1309,105 @@ void Step::vRowBufferSetLglPtn(void)
   m_pLogicUnit->m_xpRowBuffer->vLglPtn((LglPtn)iLglPtn);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].tableDefName@ -- fetch the corresoonding tableDef name         */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferTableDefNameFetch(void)
+{
+	ENTRY();
+
+	s256 sTdefNm;
+
+	eBT eBufferType = m_pLogicUnit->m_xpRowBuffer->eBufferType();
+
+	switch(eBufferType) {
+		case BT_AFFECTEDROWS:
+			sTdefNm = C_TDEF_AFFECTEDROWS;
+			break;
+		case BT_CALLPIPELINE:
+			sTdefNm = C_TDEF_CALLPIPELINE;
+			break;
+		case BT_COMMAND:
+			sTdefNm = C_TDEF_COMMAND;
+			break;
+		case BT_COMPILEERRORS:
+			sTdefNm = C_TDEF_COMPILEERRORS;
+			break;
+		case BT_COUNT:
+			sTdefNm = C_TDEF_COUNT;
+			break;
+		case BT_DEREFMETRICS:
+			sTdefNm = C_TDEF_DEREFMETRICS;
+			break;
+		case BT_EXECERRORS:
+			sTdefNm = C_TDEF_EXECERRORS;
+			break;
+		case BT_EXPLAIN:
+			sTdefNm = C_TDEF_EXPLAIN;
+			break;
+		//case BT_FORKCOMMAND:
+		//	break;
+		case BT_JOBMETRICS:
+			sTdefNm = C_TDEF_JOBMETRICS;
+			break;
+		case BT_JOBNETDISSECT:
+			sTdefNm = C_TDEF_JOBNETDISSECT;
+			break;
+		case BT_JOBNETWORK:
+			sTdefNm = C_TDEF_JOBNETWORK;
+			break;
+		case BT_JOBOPERANDS:
+			sTdefNm = C_TDEF_JOBOPERANDS;
+			break;
+		case BT_JOBOPERATORS:
+			sTdefNm = C_TDEF_JOBOPERATORS;
+			break;
+		//case BT_LOADRESULT:
+		//	sTdefNm = C_TDEF_AFFECTEDROWS;
+		//	break;
+		case BT_LOCKSTATS:
+			sTdefNm = C_TDEF_LOCKSTATS;
+			break;
+		case BT_NODEINFO:
+			sTdefNm = C_TDEF_NODEINFO;
+			break;
+		case BT_PAGEINREQUEST:
+			sTdefNm = C_TDEF_PAGEINREQUEST;
+			break;
+		case BT_PATH:
+			sTdefNm = C_TDEF_PATH;
+			break;
+		case BT_PROGRESSUNITS:
+			sTdefNm = C_TDEF_PROGRESSUNITS;
+			break;
+		case BT_PROMPTOUT:
+			sTdefNm = C_TDEF_PROMPTOUT;
+			break;
+		case BT_SEEKOFFSETS:
+			sTdefNm = C_TDEF_SEEKOFFSETS;
+			break;
+		case BT_SYSLOCKS:
+			sTdefNm = C_TDEF_SYSLOCKS;
+			break;
+		case BT_SYSMETRICS:
+			sTdefNm = C_TDEF_SYSMETRICS;
+			break;
+		case BT_TOTALUNITS:
+			sTdefNm = C_TDEF_TOTALUNITS;
+			break;
+		case BT_WARNINGS:
+			sTdefNm = C_TDEF_WARNINGS;
+			break;
+		case BT_DATA:
+		default:
+			NEVER_REACH
+	}
+
+	m_pDataStack->vPushStr(sTdefNm);
+
+	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1733,6 +1733,7 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferSetBufferType(void);
   void vRowBufferSetDeciderCopies(void);
   void vRowBufferSetLglPtn(void);
+	void vRowBufferTableDefNameFetch(void);
   void vRowBufferToCsv(void);
   void vRowBufferAddTotalCount(void);
   void vRowBufferOperandDump(void);
@@ -2097,6 +2098,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableDefDump(void);
   void vTableDefGet(void);
   void vTableDefSet(void);
+	void vTableDefTablePtnGet(void);
 
 	// reg TableDefErr table
 	void vTableDefErrColumnFetch(void);

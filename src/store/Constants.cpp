@@ -278,9 +278,18 @@ void Constants::vAddConstantsCpp(void)
 	/*  4 */ vAddConstant("BT_COMPILEERRORS"_Stz, BT_COMPILEERRORS);
 	/*  5 */ vAddConstant("BT_COUNT"_Stz,         BT_COUNT);
 	/*  6 */ vAddConstant("BT_DATA"_Stz,          BT_DATA);
+	/*  6 */ vAddConstant("BT_DEREFMETRICS"_Stz,  BT_DEREFMETRICS);
 	/*  7 */ vAddConstant("BT_EXECERRORS"_Stz,    BT_EXECERRORS);
 	/*  8 */ vAddConstant("BT_EXPLAIN"_Stz,       BT_EXPLAIN);
 	/*  9 */ vAddConstant("BT_FORKCOMMAND"_Stz,   BT_FORKCOMMAND);
+
+	/*  9 */ vAddConstant("BT_JOBOPERANDS"_Stz,   BT_JOBOPERANDS);
+	/*  9 */ vAddConstant("BT_JOBOPERATORS"_Stz,  BT_JOBOPERATORS);
+	/*  9 */ vAddConstant("BT_JOBMETRICS"_Stz,    BT_JOBMETRICS);
+	/*  9 */ vAddConstant("BT_JOBNETDISSECT"_Stz, BT_JOBNETDISSECT);
+	/*  9 */ vAddConstant("BT_JOBNETWORK"_Stz,    BT_JOBNETWORK);
+
+
 	/* 10 */ vAddConstant("BT_LOADRESULT"_Stz,    BT_LOADRESULT);
 	/* 11 */ vAddConstant("BT_LOCKSTATS"_Stz,     BT_LOCKSTATS);
 	/* 12 */ vAddConstant("BT_NODEINFO"_Stz,      BT_NODEINFO);

@@ -524,14 +524,14 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
   StreamDef* pStreamDef = pJobOperandsTable->pStreamDef();
 
   // get a working buffer from the tub
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
-  if (! pNamedBuffer) {
+  if (! pRowBuffer) {
     // new a named buffer
-    pNamedBuffer = new NamedBuffer(pStreamDef);
+		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERANDS);
 
     // add the named buffer to the tub
-    pTub->vAddBuffer(pNamedBuffer);
+    pTub->vAddBuffer(pRowBuffer);
   }
 
   Node*   pThisNode = MY::pNode();
@@ -570,7 +570,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
             continue;
           
           L_HACK:
-          Row* pRow = pNamedBuffer->pAllotRow
+          Row* pRow = pRowBuffer->pAllotRow
                       (
                         C_VARGS_BEGIN
                        
@@ -600,10 +600,10 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
                       );
           
           if (! pRow) {
-            pNamedBuffer = new NamedBuffer(pStreamDef);
+            pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERANDS);
 
             // add the named buffer to the tub
-            pTub->vAddBuffer(pNamedBuffer);
+            pTub->vAddBuffer(pRowBuffer);
             goto L_HACK;
           }
 

@@ -31,6 +31,7 @@ namespace STORE
   
     RowBuffer(void);
 		RowBuffer(StreamDef* pStreamDef);
+		RowBuffer(StreamDef* pStreamDef, eBT eBufferType);
     RowBuffer(eCN eClassNo);
     RowBuffer(eCN eClassNo, StreamDef* pStreamDef);
    ~RowBuffer(void) noexcept(false);

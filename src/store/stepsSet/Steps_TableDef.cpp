@@ -27,6 +27,7 @@ void Step::vAddSteps_TableDef(void)
   vAddStep("TableDef[].column@"_Stz, &Step::vTableDefColumnFetch);
   vAddStep("TableDef[].dump"_Stz,    &Step::vTableDefDump);
   vAddStep("TableDef[].set"_Stz,     &Step::vTableDefSet);
+	vAddStep("TableDef[].tablePtnGet"_Stz, &Step::vTableDefTablePtnGet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,6 +90,26 @@ void Step::vTableDefSet(void)
   m_pLogicUnit->m_xpTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TableDef[].tablePtnGet -- fetch given table partition[tLglPtn]             */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDefTablePtnGet(void)
+{
+	ENTRY();
+
+	Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
+
+	LglPtn tLglPtn;
+	tLglPtn = m_pDataStack->iPopInt(__func__);
+	i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
+
+	TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+	m_pDataStack->vPushPtr(pTablePtn);
+
+	EXIT();
 }
 
 /*============================================================================*/
