@@ -618,6 +618,16 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_RPNCALC,
                                      CK_NONE);
 
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
+    if (m_xSymbol.bIs_Exp_Col() ) {
+      if (! m_xSymbol.bHasType()) {
+         vDump(__func__);
+         pCI->vPrintBoard(__LINE__,true);
+         vValidationFailed("Type Missing : %p"_Stz,this);
+      }
+    }
+  }
+
 //  if (pCI->G.pBoard->pState()->bHasName(aOH[OH_OPTIMISE])) {
 //    if (m_xSymbol.bIs_Exp_Col() || m_xSymbol.bIs_Tbl_Col()) {
 //      if (! m_xSymbol.bHasType()) {

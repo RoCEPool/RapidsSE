@@ -117,7 +117,8 @@ void XF_Epilog_Type_Cast::vCast(void)
     if ((m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit())) {
 
 
-      if (CK_o_SCAN == m_pCI->G.e_MainCard ||
+      if (CK_o_FROM == m_pCI->G.e_MainCard ||
+          CK_o_SCAN == m_pCI->G.e_MainCard ||
           CK_o_INDEXJOIN == m_pCI->G.e_MainCard ||
           CK_o_INDEXSCAN == m_pCI->G.e_MainCard) {
 
@@ -140,6 +141,10 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
         m_pCI->G.p_key->vRenumberAll_expr();
       }
+
+      if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred()))
+        m_pCI->G.p_boolPred->vEnsureTypeId_expCol(m_pCI);
+
       if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
         m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
 
