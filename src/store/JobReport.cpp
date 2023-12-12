@@ -126,10 +126,10 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
   RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
   if (! pRowBuffer) {
-    // new a named buffer
+    // new a row buffer
 		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBMETRICS);
 
-    // add the named buffer to the tub
+    // add the row buffer to the tub
     pTub->vAddBuffer(pRowBuffer);
   }
   
@@ -189,7 +189,7 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
           if (! pRow) {
             pRowBuffer = new RowBuffer(pStreamDef, BT_JOBMETRICS);
 
-            // add the named buffer to the tub
+            // add the row buffer to the tub
             pTub->vAddBuffer(pRowBuffer);
             goto L_RETRY;
           }
@@ -365,7 +365,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       if (! pRow) {
 				pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETDISSECT);
 
-        // add the named buffer to the tub
+        // add the row buffer to the tub
         pTub->vAddBuffer(pRowBuffer);
         goto L_RETRY_2a;
       }
@@ -402,7 +402,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       if (! pRow) {
 				pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETDISSECT);
 
-        // add the named buffer to the tub
+        // add the row buffer to the tub
         pTub->vAddBuffer(pRowBuffer);
         goto L_RETRY_2b;
       }
@@ -490,7 +490,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
     if (! pRow) {
 			pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETWORK);
 
-      // add the named buffer to the tub
+      // add the row buffer to the tub
       pTub->vAddBuffer(pRowBuffer);
       goto L_HACK;
     }
@@ -527,10 +527,10 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
 	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
   if (! pRowBuffer) {
-    // new a named buffer
+    // new a row buffer
 		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERANDS);
 
-    // add the named buffer to the tub
+    // add the row buffer to the tub
     pTub->vAddBuffer(pRowBuffer);
   }
 
@@ -602,7 +602,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
           if (! pRow) {
             pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERANDS);
 
-            // add the named buffer to the tub
+            // add the row buffer to the tub
             pTub->vAddBuffer(pRowBuffer);
             goto L_HACK;
           }
@@ -649,7 +649,7 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
     // new a row buffer
 		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERATORS);
 
-    // add the named buffer to the tub
+    // add the row buffer to the tub
     pTub->vAddBuffer(pRowBuffer);
   }
   
@@ -716,7 +716,7 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
           pTub->vAddBuffer(pRowBuffer);
         }
 
-        // allot a row for the stats in the named buffer
+        // allot a row for the stats in the row buffer
         Row* pRow = pRowBuffer->pAllotRow
                     (
                       C_VARGS_BEGIN

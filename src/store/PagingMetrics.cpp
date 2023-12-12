@@ -87,12 +87,12 @@ void PagingMetrics::vReportDerefMetrics(Tub* pTub)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get a working buffer from the tub
+
+	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
   
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
-  
-  if (! pNamedBuffer) {
-    pNamedBuffer = new NamedBuffer(pStreamDef);
-    pTub->vAddBuffer(pNamedBuffer);
+  if (! pRowBuffer) {
+		pRowBuffer = new RowBuffer(pStreamDef, BT_DEREFMETRICS);
+    pTub->vAddBuffer(pRowBuffer);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -102,7 +102,7 @@ void PagingMetrics::vReportDerefMetrics(Tub* pTub)
   while (DerefMetrics* pDerefMetrics = pGetDerefMetrics(d_MetricsCursor)) {
     
     L_RETRY:
-    Row* pRow = pNamedBuffer->pAllotRow
+    Row* pRow = pRowBuffer->pAllotRow
                 (
                   C_VARGS_BEGIN
                  
@@ -115,8 +115,8 @@ void PagingMetrics::vReportDerefMetrics(Tub* pTub)
                 );
     
     if (! pRow) {
-      pNamedBuffer = new NamedBuffer(pStreamDef);
-      pTub->vAddBuffer(pNamedBuffer);
+			pRowBuffer = new RowBuffer(pStreamDef, BT_DEREFMETRICS);
+      pTub->vAddBuffer(pRowBuffer);
       goto L_RETRY;
     }
 
