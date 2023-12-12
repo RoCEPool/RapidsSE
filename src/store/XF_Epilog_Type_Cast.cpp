@@ -134,13 +134,17 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_emit->vRenumberAll_expr();
 
       }
-      else {
-//        if (m_pCI->Flux.m_pArriving) {
+      else if (m_pCI->Flux.m_pArriving) {
 //          m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
 //          m_pCI->G.p_emit->vRenumberAll_expr();
-//        }
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
       }
+      else {
+        m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+      }
+
+      if ((m_pCI->G.p_streamKey = m_pCI->G.p_OP->pSub_streamKey()))
+        m_pCI->G.p_streamKey->vEnsureTypeId_expCol(m_pCI);
 
       if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred()))
         m_pCI->G.p_boolPred->vEnsureTypeId_expCol(m_pCI);
