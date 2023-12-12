@@ -20,6 +20,7 @@ void Step::vAddSteps_PayloadObj(void)
   vAddStep("payloadObj::size@"_Stz,        &Step::vPayloadObjSize);
   vAddStep("payloadObj::msgType@"_Stz,     &Step::vPayloadObjMsgType);
   vAddStep("payloadObj::creationTime@"_Stz,&Step::vPayloadObjCreationTime);
+  vAddStep("payloadObj::doNotProcess@"_Stz,&Step::vPayloadObjDoNotProcess);
 
 }
 
@@ -83,6 +84,22 @@ void Step::vPayloadObjCreationTime(void)
 
   u8 uCreationTime = pPayloadObj->uCreationTime();
   m_pDataStack->vPushInt((i8) uCreationTime);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* payloadObj::doNotProcess@ : get whether the adaptor should process this msg*/
+/*----------------------------------------------------------------------------*/
+void Step::vPayloadObjDoNotProcess(void)
+{
+  ENTRY();
+
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
+
+  bool bDoNotProcess = pPayloadObj->bDoNotProcess();
+  m_pDataStack->vPushBol(bDoNotProcess);
 
   EXIT();
 }

@@ -124,6 +124,7 @@ AdaptorWL::AdaptorWL(Stz* szClientAddr)
   m_eProtocolError = EC_NONE;
   m_eProtocolState = CONNECTED;
   m_bGotGracefulDisconnect = false;
+  m_uPayloadCreationTime = 0;
 
   //m_oQueryCtx
   m_pStmtCtx = nullptr;

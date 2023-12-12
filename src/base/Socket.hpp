@@ -48,7 +48,7 @@ namespace BASE
     Object* pReceivedObject(void);
     void    vReceivedObject(Object* pReceivedObject);
     Object* pRecvObject(void);
-    Object* pRecvWLMsg(void);
+    Object* pRecvWLMsg(eEC& eErrorCode, String* psErrStr);
 
     bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
     bool bSendWLMsg(WLP::PayloadObj* pPayloadObj, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);

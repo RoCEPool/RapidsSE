@@ -139,6 +139,14 @@
   0 locals| iCurrTime |
   0 locals| iElapsedTime |
 
+  // Check if we need to process this message
+  pPayloadObj payloadObj::doNotProcess@ if
+    "AdaptorWL: ignoring payload with doNotProcess bit set" .traceWlp
+    pPayloadObj [op].pipeOut
+    true
+    exit
+  then
+
   // Check if we previously received an error
   AdaptorWL[].protocolErrorTest if
     pPayloadObj payloadObj::delete

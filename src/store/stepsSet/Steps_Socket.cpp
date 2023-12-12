@@ -385,6 +385,7 @@ void Step::vSocketRecvObject(void)
 
 /*----------------------------------------------------------------------------*/
 /* Socket[].recvWLMsg: recv wireline message from a socket                    */
+/* Sets ErrorCode[] and ErrorStr[] registers.                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketRecvWLMsg(void)
 {
@@ -394,9 +395,14 @@ void Step::vSocketRecvWLMsg(void)
 
   RASSERT(! pSocket->pReceivedObject());
 
-  Object* pReceivedObject = pSocket->pRecvWLMsg();
+  eEC eErrCode = EC_NONE;
+  s256 sErrStr;
+
+  Object* pReceivedObject = pSocket->pRecvWLMsg(eErrCode, sErrStr.pString());
 
   pSocket->vReceivedObject(pReceivedObject);
+  m_pLogicUnit->m_eErrorCode_reg = eErrCode;
+  m_pLogicUnit->m_sErrorStr_reg.vCopy(sErrStr);
 
   EXIT();
 }
