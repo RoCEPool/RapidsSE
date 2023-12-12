@@ -44,7 +44,6 @@
 //  pEatSomeHandler EV_M_EXITING    [op].handler!
 //  pEatSomeHandler EV_M_EXITED     [op].handler!
 //  pEatSomeHandler EV_I_LOCKSTATS        [op].handler!
-//  pEatSomeHandler EV_D_NAMEDBUFFER      [op].handler!
 //  pEatSomeHandler EV_I_NODEINFO         [op].handler!
 //  pEatSomeHandler EV_D_PROFILE          [op].handler!
 //  pEatSomeHandler EV_I_PROGRESSUNITS    [op].handler!

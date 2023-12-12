@@ -4524,7 +4524,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       break;
     }
 
-    case CN_NAMEDBUFFER:  eOperand = EV_D_NAMEDBUFFER;    break;
     case CN_PAGINGMETRICS:eOperand = EV_D_PAGINGMETRICS;  break;
     case CN_PAYLOADOBJ:   eOperand = EV_D_PAYLOAD;        break;
     case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
