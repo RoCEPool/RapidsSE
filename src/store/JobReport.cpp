@@ -438,14 +438,14 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
   StreamDef* pStreamDef = pJobNetworkTable->pStreamDef();
 
   // get a working buffer from the tub
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
-  if (! pNamedBuffer) {
-    // new a named buffer
-    pNamedBuffer = new NamedBuffer(pStreamDef);
+  if (! pRowBuffer) {
+    // new a row buffer
+		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETWORK);
 
-    // add the named buffer to the tub
-    pTub->vAddBuffer(pNamedBuffer);
+    // add the row buffer to the tub
+    pTub->vAddBuffer(pRowBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -462,7 +462,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
     pRcvSkt =  pNode->pRecvSocket();
 
     L_HACK:
-    Row* pRow = pNamedBuffer->pAllotRow
+    Row* pRow = pRowBuffer->pAllotRow
                 (
                   C_VARGS_BEGIN
                  
@@ -488,10 +488,10 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
                 );
     
     if (! pRow) {
-      pNamedBuffer = new NamedBuffer(pStreamDef);
+			pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETWORK);
 
       // add the named buffer to the tub
-      pTub->vAddBuffer(pNamedBuffer);
+      pTub->vAddBuffer(pRowBuffer);
       goto L_HACK;
     }
 
