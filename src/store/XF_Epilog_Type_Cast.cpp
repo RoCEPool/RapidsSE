@@ -113,6 +113,12 @@ void XF_Epilog_Type_Cast::vCast(void)
         break;
     } // switch
 
+    if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
+      m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
+      m_pCI->G.p_key->vRenumberAll_expr();
+    }
+
+
 
     if ((m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit())) {
 
@@ -134,12 +140,6 @@ void XF_Epilog_Type_Cast::vCast(void)
 //          m_pCI->G.p_emit->vRenumberAll_expr();
 //        }
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
-      }
-      //m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
-
-      if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-        m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
-        m_pCI->G.p_key->vRenumberAll_expr();
       }
 
       if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred()))
