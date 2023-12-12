@@ -525,6 +525,22 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             pSymbol->xCast().m_nTypeLength
                             );
   }
+  else if (C_UNKNOWN != (i_Facet = pSymbol->i_Facet(SF_KEY_COL))) {
+    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
+                            cMark1(),
+                            cMark2(),
+                            Stz::szDots(iDepth - 1),
+                            m_i_Child,
+                            szCardNm(),
+                            szFacet(SF_KEY_COL),
+
+                            i_Facet,
+                            sType_short.szStz(),
+                            pSymbol->xCast().m_nTypeLength
+    );
+
+  }
+
   else {
 //    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s"_Stz,
 //                            cMark1(),
@@ -543,6 +559,8 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
   for (i_Facet = 0; i_Facet < nFacets; i_Facet++) {
     Facet* aFacet = pSymbol->aFacet(i_Facet);
     if (SF_EXP_COL == aFacet->m_eFacet)
+      continue;
+    if (SF_KEY_COL == aFacet->m_eFacet)
       continue;
     pRibbon->vSprintSnippet(true, "%s~%lld"_Stz,
                             aFacet->m_sChrSeq.szStz(),
