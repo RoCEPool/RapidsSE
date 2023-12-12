@@ -77,22 +77,18 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
       case CK_o_CALL:
       case CK_o_CORRELATION:
         RASSERT(! m_pCI->G.p_OP->pSub_emit());
-        continue;
+        break;
 
       case CK_o_FROM:
       case CK_o_SCAN:
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
-        m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
-
-        continue;
+        break;
 
       case CK_o_INDEXJOIN:
       case CK_o_INDEXSCAN:
-
         RASSERT(! m_pCI->G.p_OP->pSub_emit())
         m_pCI->G.p_OP->vCreate_emit(m_pCI);
-        m_pCI->Flux.m_pArriving = m_pCI->G.p_OP->pSub_emit();
-        continue;
+        break;
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
