@@ -123,14 +123,14 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get a working buffer from the tub
   
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
-  if (! pNamedBuffer) {
+  if (! pRowBuffer) {
     // new a named buffer
-    pNamedBuffer = new NamedBuffer(pStreamDef);
+		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBMETRICS);
 
     // add the named buffer to the tub
-    pTub->vAddBuffer(pNamedBuffer);
+    pTub->vAddBuffer(pRowBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -159,7 +159,7 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
                        = pJobMetrics->pGetOpMetrics(d_MetricsCursor);
 
           L_RETRY:
-          Row* pRow = pNamedBuffer->pAllotRow
+          Row* pRow = pRowBuffer->pAllotRow
                       (
                         C_VARGS_BEGIN
                        
@@ -187,10 +187,10 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
                       );
           
           if (! pRow) {
-            pNamedBuffer = new NamedBuffer(pStreamDef);
+            pRowBuffer = new RowBuffer(pStreamDef, BT_JOBMETRICS);
 
             // add the named buffer to the tub
-            pTub->vAddBuffer(pNamedBuffer);
+            pTub->vAddBuffer(pRowBuffer);
             goto L_RETRY;
           }
 
