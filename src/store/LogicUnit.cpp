@@ -123,7 +123,6 @@ LogicUnit::LogicUnit(void)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_MEMORYHOG)
 ,        m_xpMetaGet(this,RF_REPAIR_DELETE,       MetaGet::vRepair,           LR_META)
 
-,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,   NamedBuffer::vRepairList,LR_NAMEDBUFFER)
 ,           m_xpNode(this,RF_REPAIR_NEVER, nullptr,                           LR_NODE)
 ,         m_xpNode_I(this,RF_REPAIR_NEVER, nullptr,                         LR_NODE_I)
 ,            m_xpNow(this,RF_REPAIR_DELETE,   Now::vRepair,                    LR_NOW)
@@ -323,7 +322,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpMemoryHog.bIsNull());
   RASSERT(m_xpMetaGet.bIsNull());
 
-  RASSERT(m_xpNamedBuffer.bIsNull());
   RASSERT(m_xpNode.bIsNull());
 
   if ( ! m_xpNode_I.bIsNull() )
