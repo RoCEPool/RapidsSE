@@ -20211,7 +20211,6 @@ void Task::vAddMunged(Task* )
     ": EV_D_INDEXDEF_handler         \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_JOB_handler              \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_JOBMETRICS_handler       \\handler STANDARD_PIPEOUT ;\n"
-    ": EV_D_PAGINGMETRICS_handler    \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_PARCEL_handler           \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_PAYLOAD_handler          \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_PLANOPERAND_handler      \\handler STANDARD_PIPEOUT ;\n"
