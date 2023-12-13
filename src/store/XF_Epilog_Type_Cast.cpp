@@ -143,8 +143,10 @@ void XF_Epilog_Type_Cast::vCast(void)
       if ((m_pCI->G.p_streamKey = m_pCI->G.p_OP->pSub_streamKey()))
         m_pCI->G.p_streamKey->vEnsureTypeId_expCol(m_pCI);
 
-      if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred()))
+      if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred())) {
+        m_pCI->G.p_boolPred->vDump(__func__);
         m_pCI->G.p_boolPred->vEnsureTypeId_expCol(m_pCI);
+      }
 
       if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
         m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);

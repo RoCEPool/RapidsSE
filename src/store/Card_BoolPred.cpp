@@ -417,8 +417,14 @@ void Card_BoolPred::vEnsureTypeId_expCol(CardIter* pCI)
 
   Card_CONJ* p_conj = pRoot_conj();
 
-  if (p_conj)
+  if (CK_TERM != p_conj->eCard()) {
     p_conj->vEnsureTypeId_expCol(pCI);
+    return;
+  }
+
+  for (Kid xBoolPred(this); xBoolPred.bEach(CK_TERM); /**/) {
+    xBoolPred.p_term()->vEnsureTypeId_expCol(pCI);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
