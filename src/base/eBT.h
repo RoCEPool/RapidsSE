@@ -8,7 +8,6 @@ enum eBT // buffer type
   /*  0 */ BT_NONE=0,
 
   /*    */ BT_AFFECTEDROWS,
-	/*    */ BT_CALLPIPELINE,
 	/*    */ BT_COMMAND,
 	/*    */ BT_COMPILEERRORS,
 	/*    */ BT_COUNT,

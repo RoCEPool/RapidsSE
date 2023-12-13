@@ -1326,9 +1326,6 @@ void Step::vRowBufferTableDefNameFetch(void)
 		case BT_AFFECTEDROWS:
 			sTdefNm = C_TDEF_AFFECTEDROWS;
 			break;
-		case BT_CALLPIPELINE:
-			sTdefNm = C_TDEF_CALLPIPELINE;
-			break;
 		case BT_COMMAND:
 			sTdefNm = C_TDEF_COMMAND;
 			break;

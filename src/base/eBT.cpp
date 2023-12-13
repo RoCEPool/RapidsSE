@@ -9,7 +9,6 @@ Stz* aBT[BT_ENUMS]
   /*  0 */ "NONE"_Stz,
 
   /*    */ "BT_AFFECTEDROWS"_Stz,
-	/*    */ "BT_CALLPIPELINE"_Stz,
 	/*    */ "BT_COMMAND"_Stz,
 	/*    */ "BT_COMPILEERRORS"_Stz,
 	/*    */ "BT_COUNT"_Stz,

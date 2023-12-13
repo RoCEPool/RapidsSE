@@ -49,7 +49,6 @@
   start::it_analyzeTable
   start::it_bpaObjects
   start::it_bpaRegions
-  start::it_callPipeline
   start::it_columnDefs
   start::it_command
   start::it_compileErrors

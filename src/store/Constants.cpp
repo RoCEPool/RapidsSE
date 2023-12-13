@@ -209,7 +209,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_BPAOBJECTS"_Stz,    C_TDEF_BPAOBJECTS);
   vAddConstant("C_TDEF_BPAREGIONS"_Stz,    C_TDEF_BPAREGIONS);
-  vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
   vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
   vAddConstant("C_TDEF_COMMAND"_Stz,       C_TDEF_COMMAND);
   vAddConstant("C_TDEF_COMPILEERRORS"_Stz, C_TDEF_COMPILEERRORS);
@@ -273,7 +272,6 @@ void Constants::vAddConstantsCpp(void)
 	// BT_ : buffer types
 	/*  0 */ vAddConstant("BT_NONE"_Stz,          BT_NONE);
 	/*  1 */ vAddConstant("BT_AFFECTEDROWS"_Stz,  BT_AFFECTEDROWS);
-	/*  2 */ vAddConstant("BT_CALLPIPELINE"_Stz,  BT_CALLPIPELINE);
 	/*  3 */ vAddConstant("BT_COMMAND"_Stz,       BT_COMMAND);
 	/*  4 */ vAddConstant("BT_COMPILEERRORS"_Stz, BT_COMPILEERRORS);
 	/*  5 */ vAddConstant("BT_COUNT"_Stz,         BT_COUNT);
