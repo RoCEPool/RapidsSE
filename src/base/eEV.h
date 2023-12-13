@@ -12,7 +12,6 @@ enum eEV // events
   /*    */ EV_D_ENTBUFFER,
   /*    */ EV_D_INDEX,
   /*    */ EV_D_INDEXDEF,
-  /*    */ EV_D_JOBMETRICS,
   /*    */ EV_D_PARCEL,
   /*    */ EV_D_PAYLOAD,
   /*    */ EV_D_PLANOPERAND,

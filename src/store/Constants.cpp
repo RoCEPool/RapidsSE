@@ -726,7 +726,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_STREAMDEF"_Stz,       EV_D_STREAMDEF);
   /*  0 */ vAddConstant("EV_D_TABLE"_Stz,           EV_D_TABLE);
   /*  0 */ vAddConstant("EV_D_TABLEPTN"_Stz,        EV_D_TABLEPTN);
-  /*  0 */ vAddConstant("EV_D_JOBMETRICS"_Stz,      EV_D_JOBMETRICS);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);
   /*  0 */ vAddConstant("EV_M_CANCELLING"_Stz,      EV_M_CANCELLING);

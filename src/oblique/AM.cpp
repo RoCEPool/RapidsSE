@@ -4468,8 +4468,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_INDEX:       eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
 
-    case CN_JOBMETRICS:         eOperand = EV_D_JOBMETRICS;     break;
-
     case CN_MARKER:
     {
       Marker* pMarker = _pMarker(pOperand);

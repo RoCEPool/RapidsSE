@@ -12,7 +12,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_ENTBUFFER"_Stz,
   /*    */ "EV_D_INDEX"_Stz,
   /*    */ "EV_D_INDEXDEF"_Stz,
-  /*    */ "EV_D_JOBMETRICS"_Stz,
   /*    */ "EV_D_PARCEL"_Stz,
   /*    */ "EV_D_PAYLOAD"_Stz,
   /*    */ "EV_D_PLANOPERAND"_Stz,
