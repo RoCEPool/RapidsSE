@@ -23,7 +23,6 @@ namespace STORE
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
     void vCorrect_expCol(Card_Emit* p_arriving);
-    void vCreate_emit(CardIter* pCI);
 
     void vCullIfEmpty_filter(Card_Filter* p_filter);
 

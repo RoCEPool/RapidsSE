@@ -113,7 +113,16 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_INDEXSCAN:
       case CK_o_SCAN:
         pCI->G.p_OP->vEnsure_stream(pCI);
-        pCI->G.p_OP->vCreate_emit(pCI);
+//        pCI->G.p_OP->vCreate_emit(pCI);
+        pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
+        if (pCI->Flux.m_pArriving)
+          pCI->G.p_emit = pCI->Flux.m_pArriving->pReducedCopy();
+        else
+          pCI->G.p_emit = new Card_Emit;
+
+        pCI->G.p_emit->vAppend_streamDef_table(pCI);
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -126,7 +135,10 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_TOP:
       case CK_o_WHERE:
         pCI->G.p_OP->vEnsure_stream(pCI);
-        pCI->G.p_OP->vCreate_emit(pCI);
+//        pCI->G.p_OP->vCreate_emit(pCI);
+        RASSERT(pCI->Flux.m_pArriving);
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -199,51 +211,6 @@ void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
 
   if (Card_Emit* p_emit = pSub_emit())
     p_emit->vCorrect_expCol(p_arriving);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create emit                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vCreate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  RASSERT(! pSub_emit());
-
-  eCK eCard = this->eCard();
-  switch (eCard) {
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case CK_o_FROM:
-    case CK_o_INDEXJOIN:
-    case CK_o_INDEXSCAN:
-    case CK_o_SCAN:
-      pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
-       if (pCI->Flux.m_pArriving)
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pReducedCopy();
-      else
-        pCI->G.p_emit = new Card_Emit;
-
-      pCI->G.p_emit->vAppend_streamDef_table(pCI);
-      break;
-
-    case CK_o_WHERE:
-    case CK_o_HAVING:
-    case CK_o_HASH:
-    case CK_o_LIMIT:
-    case CK_o_KEYEXISTS:
-    case CK_o_KEYNOTEXISTS:
-    case CK_o_TOP:
-    case CK_o_SORT:
-      RASSERT(pCI->Flux.m_pArriving);
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
-      break;
-
-    default:
-      break;
-  }
-
-  pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
 }
 
 /*----------------------------------------------------------------------------*/
