@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : namedInsert_RowBuffer \handler
 
-"namedInsert_RowBuffer" .
+  //"namedInsert_RowBuffer" .
 
   PipeIn[]\clear to RowBuffer[]
 
@@ -98,7 +98,7 @@
   ToLglPtnCrw[].delete
   StreamDefLft[].delete
 
-  sTableDefName "$$$ OP_namedInsert %v" .printf
+  //sTableDefName "$$$ OP_namedInsert %v" .printf
 
   true
 ;
