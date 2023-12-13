@@ -715,8 +715,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_NONE"_Stz,              EV_NONE);
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
-  /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
-  /*  0 */ vAddConstant("EV_D_INDEX"_Stz,           EV_D_INDEX);
   /*  0 */ vAddConstant("EV_D_INDEXDEF"_Stz,        EV_D_INDEXDEF);
   /*  0 */ vAddConstant("EV_D_PARCEL"_Stz,          EV_D_PARCEL);
   /*  0 */ vAddConstant("EV_D_PAYLOAD"_Stz,         EV_D_PAYLOAD);

@@ -398,8 +398,6 @@
   // ABNORMAL handlers (pipein delete) for DATA Operators
   abnormalHandler EV_D_CRWBUFFER        [op].handler!
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
-  abnormalHandler EV_D_ENTBUFFER        [op].handler!
-  abnormalHandler EV_D_INDEX            [op].handler!
   abnormalHandler EV_D_INDEXDEF         [op].handler!
   abnormalHandler EV_D_PARCEL           [op].handler!
   abnormalHandler EV_D_PAYLOAD          [op].handler!

@@ -9,8 +9,6 @@ Stz* aEV[EV_ENUMS]
   /*  0 */ "NONE"_Stz,
   /*    */ "EV_D_CRWBUFFER"_Stz,
   /*    */ "EV_D_CSVBUFFER"_Stz,
-  /*    */ "EV_D_ENTBUFFER"_Stz,
-  /*    */ "EV_D_INDEX"_Stz,
   /*    */ "EV_D_INDEXDEF"_Stz,
   /*    */ "EV_D_PARCEL"_Stz,
   /*    */ "EV_D_PAYLOAD"_Stz,

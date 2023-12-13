@@ -357,14 +357,14 @@ bool Output::bProcessOperand(Operand* pOperand)
 
     // -- -- -- -- -- --
       
-    case CN_ENTBUFFER: {
-      EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-      m_ixRowsProcessed += pEntBuffer->nItems();
-      vTrace("\n"_Stz);
-      pEntBuffer->vPrintRefdRows();
-      AM::vDeleteOperand(pOperand,nullptr);
-      break;
-    }
+//    case CN_ENTBUFFER: {
+//      EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+//      m_ixRowsProcessed += pEntBuffer->nItems();
+//      vTrace("\n"_Stz);
+//      pEntBuffer->vPrintRefdRows();
+//      AM::vDeleteOperand(pOperand,nullptr);
+//      break;
+//    }
       
     // -- -- -- -- -- --
 

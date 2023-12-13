@@ -27,17 +27,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ENTBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_EntBuffer \handler
-
-  //"Operand:- EV_D_ENTBUFFER" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_RowBuffer \handler
@@ -113,7 +102,6 @@
 
   find: output_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
   find: output_CsvBuffer     EV_D_CSVBUFFER     [op].handler!
-  find: output_EntBuffer     EV_D_ENTBUFFER     [op].handler!
   find: output_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: output_StreamDef     EV_D_STREAMDEF     [op].handler!
 

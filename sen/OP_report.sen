@@ -39,25 +39,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ENTBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: report_EntBuffer \handler
-
-  //"Operand:- EV_D_ENTBUFFER" .verbose
-  /*
-  PipeIn[] to EntBuffer[]
-  nullptr to EntBuffer[]
-
-  EntBuffer[].isReport if
-    EntBuffer[].writeToFile0
-  else
-    EntBuffer[].pipeOut
-  then
-  */
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : report_EosMarker \handler
@@ -96,7 +77,6 @@
 
   find: report_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
   find: report_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
-  find: report_EntBuffer   EV_D_ENTBUFFER   [op].handler!
   find: report_EosMarker   EV_M_EOS   [op].handler!
   find: report_StartMarker EV_M_START [op].handler!
 

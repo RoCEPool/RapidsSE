@@ -9,8 +9,6 @@ enum eEV // events
 
   /*    */ EV_D_CRWBUFFER,
   /*    */ EV_D_CSVBUFFER,
-  /*    */ EV_D_ENTBUFFER,
-  /*    */ EV_D_INDEX,
   /*    */ EV_D_INDEXDEF,
   /*    */ EV_D_PARCEL,
   /*    */ EV_D_PAYLOAD,

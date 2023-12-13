@@ -36,7 +36,6 @@
 //  pEatSomeHandler EV_M_END        [op].handler!
 //  pEatSomeHandler EV_M_ENDED      [op].handler!
 //  pEatSomeHandler EV_M_ENDING     [op].handler!
-//  pEatSomeHandler EV_D_ENTBUFFER        [op].handler!
 //  pEatSomeHandler EV_M_EOS        [op].handler!
 //  pEatSomeHandler EV_M_ERROR      [op].handler!
 //  pEatSomeHandler EV_M_ERRORED    [op].handler!
