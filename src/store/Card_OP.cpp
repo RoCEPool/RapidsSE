@@ -86,6 +86,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
   while (pCI->G_bEachMain_NONE()) {
 
+    pCI->G.p_key = pCI->G.p_OP->pSub_key();
+
     switch (pCI->G.e_MainCard) {
 
       case CK_c_COMBINED:
@@ -101,6 +103,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_PROJECT:
       case CK_o_GBYAGG:
       case CK_o_ORDAGG:
+        pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_emit = pCI->G.p_OP->pSub_emit();
         break;
 
@@ -109,6 +112,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_INDEXJOIN:
       case CK_o_INDEXSCAN:
       case CK_o_SCAN:
+        pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_OP->vCreate_emit(pCI);
         break;
 
@@ -118,16 +122,11 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_KEYEXISTS:
       case CK_o_KEYNOTEXISTS:
       case CK_o_LIMIT:
+      case CK_o_SORT:
       case CK_o_TOP:
       case CK_o_WHERE:
+        pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_OP->vCreate_emit(pCI);
-        break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case CK_o_SORT:
-        pCI->G.p_key = pCI->G.p_OP->pSub_key();
-        pCI->G.p_OP->vCreate_emit(pCI);
-        pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -145,6 +144,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
         break;
 
     } // switch(pCI->G.e_MainCard)
+
+    if (pCI->G.p_emit && pCI->G.p_key)
+      pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
     pCI->Flux.m_pArriving = pCI->G.p_emit;
 
@@ -241,9 +243,7 @@ void Card_OP::vCreate_emit(CardIter* pCI)
       break;
   }
 
-  vEnsure_stream(pCI);
   pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-  RASSERT(pCI->G.p_OP->pSub_emit())
 }
 
 /*----------------------------------------------------------------------------*/
