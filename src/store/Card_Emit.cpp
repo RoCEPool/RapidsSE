@@ -243,7 +243,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   p_needed->vRenumberAll_expr();
-  p_needed->vDump(__func__);
+  //p_needed->vDump(__func__);
 
   return p_needed;
 }
@@ -278,7 +278,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
     Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
     Card_Expr* p_expr_prjCol = pFind_expr_Via_term0(p_term_runkey->pSymbol());
 
-    if (p_expr_prjCol) {
+    if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc()->nChildCards()) {
 
       // annotation or direction in passing
       if (p_expr_runkey->pSub_direction() && ! p_expr_prjCol->pSub_direction()) {
@@ -509,6 +509,9 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(CK_s_STREAM == pParent->eCard());
+
+  if (! pSub_expr())
+    pCI->vPrintBoard(__LINE__,true);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
   vValidate_notHave(CK_s_KEY, CK_NONE);

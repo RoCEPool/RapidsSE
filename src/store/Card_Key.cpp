@@ -104,8 +104,8 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 
   RASSERT(CT_NONE != this->eCTVal());
 
-  if (xTypeId() != p_key_arg->xTypeId())
-    return false;
+//  if (xTypeId() != p_key_arg->xTypeId())
+//    return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

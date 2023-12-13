@@ -648,8 +648,8 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (xTypeId() != p_expr_arg->xTypeId())
-    return false;
+//  if (xTypeId() != p_expr_arg->xTypeId())
+//    return false;
 
   Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
   Card_RpnCalc* p_rpnCalc_arg  = p_expr_arg->pSub_rpnCalc();

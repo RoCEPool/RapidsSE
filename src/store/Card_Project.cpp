@@ -138,6 +138,7 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
+    //p_expr_needed->vDump(__func__);
     if (! pCI->Flux.m_pArriving->pContains(p_expr_needed))
       continue;
 
