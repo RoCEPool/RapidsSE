@@ -99,7 +99,6 @@ assert::stack_0
   "dp_collectDemon.sen"     include
   "dp_eventDemon.sen"       include
   "dp_jobExitDemon.sen"     include
-  "dp_metricsDemon.sen"     include
   "dp_monDemon.sen"         include
   "dp_recurDemon.sen"       include
   "dp_statDemon.sen"        include
