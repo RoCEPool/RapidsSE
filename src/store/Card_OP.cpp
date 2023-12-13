@@ -96,79 +96,41 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
         RASSERT(! pCI->G.p_OP->pSub_emit());
         break;
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case CK_o_AGGREG:
+      case CK_o_PROJECT:
+      case CK_o_GBYAGG:
+      case CK_o_ORDAGG:
+        pCI->G.p_emit = pCI->G.p_OP->pSub_emit();
+        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case CK_o_FROM:
+      case CK_o_INDEXJOIN:
+      case CK_o_INDEXSCAN:
       case CK_o_SCAN:
         pCI->G.p_OP->vCreate_emit(pCI);
         break;
 
-      case CK_o_INDEXJOIN:
-      case CK_o_INDEXSCAN:
-        RASSERT(! pCI->G.p_OP->pSub_emit())
-        pCI->G.p_OP->vCreate_emit(pCI);
-        break;
-
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_AGGREG:
-      case CK_o_PROJECT:
-        RASSERT(pCI->G.p_OP->pSub_emit());
-        RASSERT(! pCI->G.p_OP->pSub_key());
-        pCI->G.p_emit = pCI->G.p_OP->pSub_emit();
-        break;
-
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_WHERE:
-      case CK_o_HAVING:
-        RASSERT(! pCI->G.p_OP->pSub_key());
-        pCI->G.p_OP->vCreate_emit(pCI);
-        break;
-
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case CK_o_HASH:
-      case CK_o_LIMIT:
-        RASSERT(pCI->Flux.m_pArriving);
-        RASSERT(! pCI->G.p_OP->pSub_key());
-        pCI->G.p_OP->vCreate_emit(pCI);
-        break;
-
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case CK_o_GBYAGG:
-      case CK_o_ORDAGG:
-        RASSERT(pCI->G.p_OP->pSub_emit());
-        RASSERT(pCI->G.p_OP->pSub_key());
-        pCI->G.p_emit = pCI->G.p_OP->pSub_emit();
-        break;
-
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
+      case CK_o_HAVING:
       case CK_o_KEYEXISTS:
       case CK_o_KEYNOTEXISTS:
-        RASSERT(pCI->Flux.m_pArriving);
-        RASSERT(! pCI->G.p_OP->pSub_key());
-        pCI->G.p_OP->vCreate_emit(pCI);
-        break;
-
+      case CK_o_LIMIT:
       case CK_o_TOP:
-        RASSERT(pCI->Flux.m_pArriving);
-        if (! pCI->G.p_OP->pSub_key())
-          pCI->G.p_OP->vDump(__func__);
-        RASSERT(pCI->G.p_OP->pSub_key());
+      case CK_o_WHERE:
         pCI->G.p_OP->vCreate_emit(pCI);
         break;
 
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case CK_o_SORT:
-        RASSERT(pCI->Flux.m_pArriving);
-        RASSERT(pCI->G.p_OP->pSub_key());
         pCI->G.p_key = pCI->G.p_OP->pSub_key();
         pCI->G.p_OP->vCreate_emit(pCI);
         pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
         break;
 
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case CK_o_CAST:
       case CK_o_CROSSJOIN:
       case CK_o_FILTER:
@@ -183,8 +145,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
         break;
 
     } // switch(pCI->G.e_MainCard)
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
     pCI->Flux.m_pArriving = pCI->G.p_emit;
 
