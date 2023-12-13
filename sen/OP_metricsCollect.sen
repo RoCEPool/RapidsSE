@@ -54,37 +54,8 @@
 /* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : metricsCollect_DataPulse
-  
-/*
+
   begin
-
-    sysargs::jobMetrics@ if
-
-      metricsCollectJob
-
-    then
-
-    sysargs::sysMetrics@ if
-    
-      metricsCollectSys
-
-    then
-
-    
-    sysargs::jobMetrics@ sysargs::sysMetrics@ or if
-    
-      sysargs::metricsSleep@ thread::sleepMsec
-      
-    else
-    
-      1000 thread::sleepMsec
-
-    then
-    
-  again
-*/
-
-begin
 
     // collect job metrics
     metricsCollectJob

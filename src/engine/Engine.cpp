@@ -463,9 +463,8 @@ void Engine::vCallPrompt(void)
 
   //AM::vPromptCall();
 
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("  Adding Ignore memory leaks\n"_Stz);
-  vIgnoreMemoryLeak();
+  //if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+  //  vTrace("  Adding Ignore memory leaks\n"_Stz);
 
   SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
   
@@ -791,14 +790,6 @@ void Engine::vGetWelcome(s256& sWelcome)
                    Process::iGetPid(),
                    gsBuildGitHash
                   );
-}
-
-/*----------------------------------------------------------------------------*/
-/* IgnoreMemoryLeak                                                           */
-/*----------------------------------------------------------------------------*/
-void Engine::vIgnoreMemoryLeak(void)
-{
-  //gxaSizeHeap[CN_NAMEDBUFFER].m_bIgnoreMemoryLeak = true;
 }
 
 /*----------------------------------------------------------------------------*/
