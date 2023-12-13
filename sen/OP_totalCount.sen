@@ -29,6 +29,7 @@
 
   PipeIn[].bufferType@ to eBufferType
 
+  // handle BT_COUNT only
   eBufferType BT_COUNT != if
     PipeIn[].pipeout
     true

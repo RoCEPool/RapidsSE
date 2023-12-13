@@ -30,7 +30,7 @@
 
   0 locals| rowsInserted |
 
-  // Non-data rowbuffers need to be just piped out
+  // handle BT_DATA only
   PipeIn[].isRowBuffer if
     PipeIn[].bufferType@ BT_DATA == not if
       PipeIn[].pipeout
@@ -82,7 +82,7 @@
 
   0 locals| rowsInserted |
 
-  // Non-data rowbuffers need to be just piped out
+  // handle BT_DATA only
   PipeIn[].isRowBuffer if
     PipeIn[].bufferType@ BT_DATA == not if
       PipeIn[].pipeout

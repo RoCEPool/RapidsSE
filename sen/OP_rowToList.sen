@@ -64,6 +64,7 @@
 
   Pipein[]\clear to RowBuffer[]
 
+  // handle onlt BT_DATA
   RowBuffer[].bufferType@ BT_DATA != if
     RowBuffer[].pipeout
     true

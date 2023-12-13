@@ -222,8 +222,8 @@
   // get the pipein in RowBuffer[]
   Pipein[]\clear to RowBuffer[]
 
-  // pipe out normal data buffers
-  BT_EXPLAIN RowBuffer[].bufferType@ != if
+  // handle BT_EXPLAIN only
+  RowBuffer[].bufferType@ BT_EXPLAIN  != if
     RowBuffer[].pipeout
   then
 

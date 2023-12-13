@@ -48,6 +48,7 @@
 
   PipeIn[]\clear to RowBuffer[]
 
+  // handle BT_DATA only
   RowBuffer[].bufferType@ BT_DATA != if
     RowBuffer[].pipeout
     true

@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 : compiler_RowBuffer \handler
 
-  // save the pipein in RowBuffer[] if buffer has explain data
+  // handle explain data
   PipeIn[].bufferType@ BT_EXPLAIN == if
     Pipein[]\clear to RowBuffer[]
   else

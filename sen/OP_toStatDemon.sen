@@ -13,6 +13,7 @@
 
   PipeIn[].bufferType@ "OP_toStatD %v" str.format .
 
+  // handle BT_LOCKSTATS only
   PipeIn[].bufferType@ BT_LOCKSTATS != if
     PipeIn[].pipeout
     true

@@ -26,6 +26,7 @@
 /*----------------------------------------------------------------------------*/
 : unload_Path \handler
 
+  // handle BT_PATH only
   PipeIn[].bufferType@ BT_PATH != if
     PipeIn[].pipeout
     true

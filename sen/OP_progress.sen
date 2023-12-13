@@ -84,7 +84,7 @@
   // get the buffer type
   RowBuffer[].bufferType@ to eBufferType
 
-  // check the rowBuffer type
+  // handle BT_PROGRESSUNITS
   eBufferType BT_PROGRESSUNITS == if
     progress_ProgressUnits
     RowBuffer[].delete
@@ -92,6 +92,7 @@
     exit
   then
 
+  // handle BT_TOTALUNITS
   eBufferType BT_TOTALUNITS == if
     progress_TotalUnits
     RowBuffer[].delete
