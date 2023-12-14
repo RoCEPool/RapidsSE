@@ -1721,7 +1721,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferFirstRow(void);
-  void vRowBufferInfoRows(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsProgress(void);
   void vRowBufferIsTotalUnits(void);
@@ -1755,6 +1754,7 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferErrIsNull(void);
   void vRowBufferErrIsNotNull(void);
 	void vRowBufferErrNew(void);
+  void vRowBufferErrRows(void);
 	void vRowBufferErrSet(void);
 
 	// RowBufferWarn
@@ -1764,6 +1764,7 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferWarnGetBufferIdAsAddr(void);
   void vRowBufferWarnIsNull(void);
   void vRowBufferWarnNew(void);
+  void vRowBufferWarnRows(void);
   void vRowBufferWarnSet(void);
 
   // rowCounts

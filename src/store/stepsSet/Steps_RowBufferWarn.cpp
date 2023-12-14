@@ -38,6 +38,7 @@ void Step::vAddSteps_RowBufferWarn(void)
 	vAddStep("RowBufferWarn[]\\clear"_Stz,       &Step::vRowBufferWarnGetAndClear);
 	vAddStep("RowBufferWarn[].isNull"_Stz,       &Step::vRowBufferWarnIsNull);
 	vAddStep("RowBufferWarn[].new"_Stz,          &Step::vRowBufferWarnNew);
+	vAddStep("RowBufferWarn[].rows"_Stz,         &Step::vRowBufferWarnRows);
 	vAddStep("RowBufferWarn[].set"_Stz,          &Step::vRowBufferWarnSet);
 }
 
@@ -124,6 +125,18 @@ void Step::vRowBufferWarnNew(void)
 	m_pLogicUnit->m_xpRowBufferWarn = new RowBuffer(pStreamDef);
 
 	m_pLogicUnit->m_xpRowBufferWarn->vBufferType(eBufferType);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBufferWarn[].rows -- get number of rows                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferWarnRows(void)
+{
+	ENTRY();
+
+	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBufferWarn->nRows());
 
 	EXIT();
 }

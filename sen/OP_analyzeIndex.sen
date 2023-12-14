@@ -14,7 +14,7 @@
     exit
   then
 
-  // find the __ table
+  // find the <streamDef> table
   <streamDef> op__tableDef assert
 
   // create a new streamDef
@@ -29,7 +29,7 @@
   // add a row for each table ptn
   [grid].ptnsPerNode 0
   do
-    // insert index verify
+    // insert index analysis
     I Index[] TableDef[] RowBuffer[].addAnalyzeIndex  not if
     RowBuffer[].pipeOut
       TableDef[] RowBuffer[].new

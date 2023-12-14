@@ -14,7 +14,7 @@
     exit
   then
 
-  // find the __ table
+  // find the <streamDef> table
   <streamDef> op__tableDef assert
 
   // create a new streamDef
@@ -23,7 +23,7 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
+  // create an rowBuffer
   TableDef[] RowBuffer[].new
 
   // add a row for each table ptn

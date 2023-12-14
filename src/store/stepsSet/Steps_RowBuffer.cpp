@@ -83,7 +83,6 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].delete"_Stz,           &Step::vRowBufferDelete);
   vAddStep("RowBuffer[].get"_Stz,              &Step::vRowBufferGet);
 	vAddStep("RowBuffer[].firstRow"_Stz,         &Step::vRowBufferFirstRow);
-	vAddStep("RowBuffer[].infoRows"_Stz,         &Step::vRowBufferInfoRows);
 	vAddStep("RowBuffer[].insdelIntoTable"_Stz,  &Step::vRowBufferInsdelIntoTable);
 	vAddStep("RowBuffer[].isProgress"_Stz,       &Step::vRowBufferIsProgress);
 	vAddStep("RowBuffer[].isTotalUnits"_Stz,     &Step::vRowBufferIsTotalUnits);
@@ -141,10 +140,10 @@ void Step::vRowBufferAddAnalyzeIndex(void)
 	// get the tablePtn
 	i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
 
-	// get the streamDef from the table
+	// get the streamDef from the tableDef
 	StreamDef* pStreamDef = pTableDef->pStreamDef();
 
-	// get the stream set
+	// get the rowBuffer
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	i8 nBuffers = 0;
@@ -1842,23 +1841,6 @@ void Step::vRowBufferFirstRow(void)
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
 	m_pDataStack->vPushPtr(pRowBuffer->pFirstRow());
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].infoRows -- get now of info rows in RowBuffer                   */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferInfoRows(void)
-{
-	ENTRY();
-
-	ASSERT ( ! m_pLogicUnit->m_xpRowBuffer.bIsNull() );
-
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-
-	i8 nRows = pRowBuffer->nRows();
-	m_pDataStack->vPushInt(nRows);
-
-	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

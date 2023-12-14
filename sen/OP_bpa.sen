@@ -20,8 +20,10 @@
     C_TDEF_WARNINGS op__tableDef_warn assert
     BT_WARNINGS TableDefWarn[] RowBufferWarn[].new
 
-    // find the C_TDEF_BPAREGIONS table definition, create a streamDef and pipe it out
+    // find the C_TDEF_BPAREGIONS table definition
     C_TDEF_BPAREGIONS op__tableDef assert
+
+    // create a streamDef and pipe it out
     TableDef[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
@@ -32,11 +34,10 @@
     TableDef[] RowBuffer[].addBpaRegions
     RowBuffer[].pipeOut
 
-    RowBufferWarn[]\clear to RowBuffer[]
-    RowBuffer[].infoRows 0 > if
-      RowBuffer[].pipeOut
+    RowBufferWarn[].rows 0 > if
+      RowBufferWarn[].pipeOut
     else
-      RowBuffer[].delete
+      RowBufferWarn[].delete
     then
 
   else <bpaType> "objects" str.same if
@@ -44,8 +45,10 @@
     C_TDEF_WARNINGS op__tableDef_warn assert
     BT_WARNINGS TableDefWarn[] RowBufferWarn[].new
 
-    // find the C_TDEF_BPAOBJECTS table definition, create a streamDef and pipe it out
+    // find the C_TDEF_BPAOBJECTS table definition
     C_TDEF_BPAOBJECTS op__tableDef assert
+
+    // create a streamDef and pipe it out
     TableDef[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
@@ -56,11 +59,10 @@
     TableDef[] RowBuffer[].addBpaObjects
     RowBuffer[].pipeOut
 
-    RowBufferWarn[]\clear to RowBuffer[]
-    RowBuffer[].infoRows 0 > if
-      RowBuffer[].pipeOut
+    RowBufferWarn[].rows 0 > if
+      RowBufferWarn[].pipeOut
     else
-      RowBuffer[].delete
+      RowBufferWarn[].delete
     then
 
   else

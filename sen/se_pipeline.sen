@@ -206,6 +206,21 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
+: RowBufferWarn[].pipeOut
+
+  RowBufferWarn[].bufferId to BufferId[]
+
+  nullptr to RowBufferWarn[]
+
+  BufferId[].dropLock
+
+  BufferId[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
 : StreamDefLft[].pipeOut
 
   StreamDefLft[]
