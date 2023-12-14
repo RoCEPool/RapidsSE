@@ -17,7 +17,7 @@
 #include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
 #include "XF_Flatten_Update_projection.hpp"
-
+#include "XF_Prolog_Analyse_emit.hpp"
 #include "eOT.h"
 
 /*----------------------------------------------------------------------------*/
@@ -126,6 +126,11 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
 
   // reorder the tables
   vReorderTables();
+
+  //XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
+
+  XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
+
   m_pCI->vValidateBench();
 
   XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
@@ -360,7 +365,8 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
-   m_pCI->vPrintBoard(__LINE__);
+  m_pCI->vPrintBoard(__LINE__);
+
   m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);

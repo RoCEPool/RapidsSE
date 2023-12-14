@@ -133,7 +133,8 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 
   Card_Emit* p_emit_early = new Card_Emit;
 
-  //pCI->Early.m_pNeeded_later->vDump();
+  pCI->Early.m_pNeeded_later->vDump(__func__);
+  pCI->Flux.m_pArriving->vDump(__func__);
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();

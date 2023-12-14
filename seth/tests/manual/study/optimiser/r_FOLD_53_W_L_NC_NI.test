@@ -9,6 +9,10 @@ success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
 /pipelineName = "r_FOLD_53_W_L_NC_NI"
 select count(*)
   from partsupp, part
