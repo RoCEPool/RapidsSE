@@ -274,6 +274,26 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* induct this arriving rpcCalc                                               */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc* Card_RpnCalc::pInduct(Card_Expr* p_expr_arriving)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc_inducted = new Card_RpnCalc;
+
+  p_rpnCalc_inducted->vCast(this);
+
+  Card_Term* p_term_inducted =
+      (new Card_Term) ->SYM(SF_EXP_COL, p_expr_arriving->szFacet(SF_EXP_COL));
+  p_term_inducted->vCast(this);
+
+  p_rpnCalc_inducted->vAppendChild(p_term_inducted);
+
+  return p_rpnCalc_inducted;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this rpnCalc an aggregate function sequence ?                           */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsAggCalc(void)

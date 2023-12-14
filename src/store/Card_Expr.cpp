@@ -360,6 +360,35 @@ Card_Term* Card_Expr::pGet_term0(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* induct this arriving expr                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pInduct(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc_arriving = pSub_rpnCalc();
+
+  Card_Expr* p_expr_inducted = new Card_Expr;
+
+  //vDump(__func__);
+  //p_expr_inducted->vCast(this);
+
+  Symbol* pSymbol_arriving = pSymbol();
+
+  RASSERT(pSymbol_arriving->bHasFacet(SF_EXP_COL));
+
+  if (pSymbol_arriving->bHasFacet(SF_NMD_COL))
+    p_expr_inducted->pSymbol()->vAppendFacet(SF_NMD_COL,
+                                             pSymbol_arriving->szSF_chrSeq(SF_NMD_COL));
+
+  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
+
+  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
+
+  return p_expr_inducted;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsDescending(void)

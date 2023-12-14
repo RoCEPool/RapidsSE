@@ -319,6 +319,26 @@ Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* induct this arriving emit                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Emit* Card_Emit::pInduct(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Emit *p_emit_inducted = new Card_Emit;
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_arriving = xKid.p_expr();
+
+    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct();
+    p_emit_inducted->vAppendChild(p_expr_inducted);
+  }
+
+  p_emit_inducted->vRenumberAll_expr();
+
+  return p_emit_inducted;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a compound projection?                                             */
 /*----------------------------------------------------------------------------*/
 bool Card_Emit::bIsCompound(void)
