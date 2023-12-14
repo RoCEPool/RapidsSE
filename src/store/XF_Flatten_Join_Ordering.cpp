@@ -16,6 +16,7 @@
 #include "XF_Flatten_Purge_where.hpp"
 #include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
+#include "XF_Flatten_Update_projection.hpp"
 #include "XF_Prolog_Analyse_emit.hpp"
 #include "eOT.h"
 

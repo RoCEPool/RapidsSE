@@ -30,6 +30,8 @@ namespace STORE
                                   Card_Emit* p_emitted_prev,
                                   Card_OP*         p_OP_curr);
 
+    void vProjectionUpdate(CardIter* pCI);
+
     Card_Emit* p_emit_fold(void);
 
     void vValidate(CardIter* pCI);
