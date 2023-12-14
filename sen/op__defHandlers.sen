@@ -442,30 +442,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                 INTERNALERROR EVENT HANDLERS                               */
+/*                 TOGGLE ROWBUFFER HANDLER                                   */
 /*----------------------------------------------------------------------------*/
-: default_internalErrorHandlers
+: toggle_rowBufferHandler
 
-  [op].opName@ "SETTING default_internalErrorHandlers for OP %v" str.format .
-  find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
-
-  abnormalHandler EV_D_ROWBUFFER        [op].handler!
-
-  //[op].opName@ "DONE SETTING default_internalErrorHandlers for OP %v" str.format .
+  ABNORMAL_PIPEIN_DELETE EV_D_ROWBUFFER        [op].handler!
 ;
 
-/*----------------------------------------------------------------------------*/
-/*                 LOWMEMORY EVENT HANDLERS                                   */
-/*----------------------------------------------------------------------------*/
-: default_lowMemHandlers
-
-  //[op].opName@ "SETTING default_lowMemHandlers for OP %v" str.format .
-  find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
-
-  abnormalHandler EV_D_ROWBUFFER          [op].handler!
-
-  [op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .
-;
 
 /*============================================================================*/
 /* end                                                                        */
