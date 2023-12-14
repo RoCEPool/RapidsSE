@@ -5,7 +5,7 @@
 " OP_crwToRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_STREAMDEF ...                                               */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : crwToRow_StreamDef \handler
 
@@ -26,7 +26,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_CRWBUFFER ...                                                   EACH */
+/* on EV_D_CRWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : crwToRow_CrwBuffer \handler
 
@@ -51,7 +51,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_EOS ...                                                    END */
+/* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : crwToRow_EosMarker \handler
 
@@ -88,7 +88,7 @@
 
   find: crwToRow_StreamDef EV_D_STREAMDEF  [op].handler!
   find: crwToRow_CrwBuffer EV_D_CRWBUFFER  [op].handler!
-  find: crwToRow_EosMarker EV_M_EOS  [op].handler!
+  find: crwToRow_EosMarker EV_M_EOS        [op].handler!
 
   op__loop
 

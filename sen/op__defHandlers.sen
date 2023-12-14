@@ -323,7 +323,7 @@
 
   //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
   "default_abnormalHandlers" FIND execute
-  "default_lowMemHandlers" FIND execute
+  "toggle_rowBufferHandler" FIND execute
   //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
 
