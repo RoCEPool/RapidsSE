@@ -74,6 +74,111 @@ bool Card_OP::bIsOp(Card* pCard)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* create/recreate emit                                                       */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRecreate_emit(CardIter* pCI)
+{
+  _static_
+
+  pCI->vBeginEach();
+  pCI->Flux.m_pArriving = pCI->G.p_emit = nullptr;
+
+  while (pCI->G_bEachMain_NONE()) {
+
+    if (! pCI->G.p_OP)
+      continue;
+
+    pCI->G.p_key = pCI->G.p_OP->pSub_key();
+    pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
+
+    switch (pCI->G.e_MainCard) {
+
+      case CK_c_COMBINED:
+      case CK_c_SEND:
+      case CK_c_STAGE:
+      case CK_o_CALL:
+      case CK_o_CORRELATION:
+        RASSERT(! pCI->G.p_OP->pSub_emit());
+        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case CK_o_AGGREG:
+      case CK_o_GBYAGG:
+      case CK_o_ORDAGG:
+        pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
+        break;
+
+      case CK_o_PROJECT:
+        pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
+        break;
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case CK_o_FROM:
+        if (pCI->G.p_OP->pSub_keyExists() || pCI->G.p_OP->pSub_keyNotExists() )
+          goto L_o_KEYEXISTS;
+        [[clang::fallthrough]];
+      case CK_o_INDEXJOIN:
+      case CK_o_INDEXSCAN:
+      case CK_o_SCAN:
+        if ((pCI->G.p_emit = pCI->G.p_OP->pSub_emit()))
+          pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+
+        if (pCI->Flux.m_pArriving)
+          pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct();
+        else
+          pCI->G.p_emit = new Card_Emit;
+
+        pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
+        pCI->G.p_emit->vAppend_streamDef_table(pCI);
+
+        pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case CK_o_HASH:
+      case CK_o_HAVING:
+      case CK_o_KEYEXISTS:
+      case CK_o_KEYNOTEXISTS:
+      case CK_o_LIMIT:
+      case CK_o_SORT:
+      case CK_o_TOP:
+      case CK_o_WHERE:
+        L_o_KEYEXISTS:
+        if ((pCI->G.p_emit = pCI->G.p_OP->pSub_emit()))
+          pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct();
+        pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+        break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case CK_o_CAST:
+      case CK_o_CROSSJOIN:
+      case CK_o_FILTER:
+      case CK_o_INFLATE:
+        pCI->G.p_OP->vDump(__func__);
+        NEVER_REACH
+        break;
+
+      default:
+        pCI->G.p_OP->vDump(__func__);
+        NEVER_REACH
+        break;
+
+    } // switch(pCI->G.e_MainCard)
+
+    if (pCI->G.p_emit && pCI->G.p_key)
+      pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
+
+    pCI->Flux.m_pArriving = pCI->G.p_emit;
+
+  } // while (pCI->G_bEachMain_NONE())
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -520,101 +625,6 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create/recreate emit                                                       */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vRecreate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_key = pSub_key();
-  pCI->G.p_stream = pSub_stream();
-
-  eCK eCard = this->eCard();
-  switch (eCard) {
-
-    case CK_c_COMBINED:
-    case CK_c_SEND:
-    case CK_c_STAGE:
-    case CK_o_CALL:
-    case CK_o_CORRELATION:
-      RASSERT(! pSub_emit());
-      break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_o_AGGREG:
-    case CK_o_GBYAGG:
-    case CK_o_ORDAGG:
-      pCI->G.p_emit = pSub_emit(C_NOT_NULL);
-      break;
-
-    case CK_o_PROJECT:
-      pCI->G.p_emit = pSub_emit(C_NOT_NULL);
-      break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_o_FROM:
-      if (pSub_keyExists() || pSub_keyNotExists() )
-        goto L_o_KEYEXISTS;
-      [[clang::fallthrough]];
-    case CK_o_INDEXJOIN:
-    case CK_o_INDEXSCAN:
-    case CK_o_SCAN:
-      if ((pCI->G.p_emit = pSub_emit()))
-        pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
-
-      if (pCI->Flux.m_pArriving)
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct();
-      else
-        pCI->G.p_emit = new Card_Emit;
-
-      pCI->G.p_table = pSub_table(C_NOT_NULL);
-      pCI->G.p_emit->vAppend_streamDef_table(pCI);
-
-      vEnsure_stream(pCI);
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-      break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_o_HASH:
-    case CK_o_HAVING:
-    case CK_o_KEYEXISTS:
-    case CK_o_KEYNOTEXISTS:
-    case CK_o_LIMIT:
-    case CK_o_SORT:
-    case CK_o_TOP:
-    case CK_o_WHERE:
-    L_o_KEYEXISTS:
-      if ((pCI->G.p_emit = pSub_emit()))
-        pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
-
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct();
-      vEnsure_stream(pCI);
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-      break;
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_o_CAST:
-    case CK_o_CROSSJOIN:
-    case CK_o_FILTER:
-    case CK_o_INFLATE:
-      vDump(__func__);
-      NEVER_REACH
-      break;
-
-    default:
-      vDump(__func__);
-      NEVER_REACH
-      break;
-
-  } // switch(pCI->G.e_MainCard)
-
-  if (pCI->G.p_emit && pCI->G.p_key)
-    pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -16,6 +16,7 @@ namespace STORE
    ~Card_OP(void) noexcept(false);
 
     static bool bIsOp(Card* pCard);
+    static void vRecreate_emit(CardIter* pCI);
 
     void vAnalyse_injected(CardIter* pCI);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
@@ -44,7 +45,7 @@ namespace STORE
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
-    void vRecreate_emit(CardIter* pCI);
+
     void vUpdate_constraint(CardIter* pCI);
     void vUpdate_emit(CardIter* pCI);
     void vUpdate_emit_OP(CardIter* pCI);
