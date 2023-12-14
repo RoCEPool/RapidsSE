@@ -50,20 +50,6 @@ void XF_Prolog_Analyse_index::vAnalyse(CardIter* pCI)
   delete pXF_index_Analysis;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_index::vXF_index_Analysis_passThru(CardIter* pCI)
-{
-  _static_
-
-  XF_Prolog_Analyse_index* pXF_index_Analysis = new XF_Prolog_Analyse_index(pCI);
-
-  pXF_index_Analysis->vXF_Analyse_index_passThru();
-
-  delete pXF_index_Analysis;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
@@ -92,52 +78,6 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index(void)
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index analysis                                                             */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_index::vXF_Analyse_index_passThru(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_INDEX, "index analysis"_Stz);
-
-  while (m_pCI->G_bEachMain(CK_o_INDEXSCAN)) {
-    m_pCI->G.p_indexScan->vUpdate_emit_OP(m_pCI);
-
-    m_pCI->G.p_index = m_pCI->G.p_indexScan->pSub_index();
-    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
-  }
-
-  m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain(CK_o_INDEXJOIN)) {
-    m_pCI->G.p_indexJoin->vUpdate_emit_OP(m_pCI);
-
-    m_pCI->G.p_index = m_pCI->G.p_indexJoin->pSub_index();
-    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
-
-    m_pCI->G.p_bound = m_pCI->G.p_index->pSub_bound();
-    m_pCI->G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
-  }
-
-  m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain(CK_o_KEYEXISTS)) {
-    m_pCI->G.p_keyExists->vUpdate_emit(m_pCI);
-
-    m_pCI->G.p_index = m_pCI->G.p_keyExists->pSub_index();
-    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
-  }
-
-  m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain(CK_o_KEYNOTEXISTS)) {
-    m_pCI->G.p_keyNotExists->vUpdate_emit(m_pCI);
-
-    m_pCI->G.p_index = m_pCI->G.p_keyNotExists->pSub_index();
-    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
-  }
-
-  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

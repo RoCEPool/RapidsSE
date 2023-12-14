@@ -87,6 +87,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
   while (pCI->G_bEachMain_NONE()) {
 
     pCI->G.p_key = pCI->G.p_OP->pSub_key();
+    pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
 
     switch (pCI->G.e_MainCard) {
 
@@ -111,6 +112,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_INDEXJOIN:
       case CK_o_INDEXSCAN:
       case CK_o_SCAN:
+        if ((pCI->G.p_emit = pCI->G.p_OP->pSub_emit()))
+          pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+
         if (pCI->Flux.m_pArriving)
           pCI->G.p_emit = pCI->Flux.m_pArriving->pReducedCopy();
         else
@@ -132,6 +136,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_SORT:
       case CK_o_TOP:
       case CK_o_WHERE:
+        if ((pCI->G.p_emit = pCI->G.p_OP->pSub_emit()))
+          pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
         pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
