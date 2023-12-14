@@ -559,6 +559,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       if (pSub_keyExists() || pSub_keyNotExists() )
         goto L_o_KEYEXISTS;
       [[clang::fallthrough]];
+    case CK_o_CROSSJOIN:
     case CK_o_INDEXJOIN:
     case CK_o_INDEXSCAN:
     case CK_o_SCAN:
@@ -597,7 +598,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CAST:
-    case CK_o_CROSSJOIN:
     case CK_o_FILTER:
     case CK_o_INFLATE:
       vDump(__func__);
@@ -662,6 +662,9 @@ void Card_OP::vUpdate_emit(CardIter* pCI)
 void Card_OP::vUpdate_emit_OP(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+//  vRecreate_emit(pCI);
+//  return;
 
   Card_Emit* p_emit;
 
