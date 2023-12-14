@@ -281,7 +281,6 @@ void* Pds::aGetCellArray(Pds* pPdsRowBuffer, i8 iRow)
 {
   _static_
 
-  iRow += 1;
   SkipListBlock* pSkipListBlock = pPdsRowBuffer->pFind(&iRow);
   if (pSkipListBlock == nullptr) {
     return nullptr;
@@ -289,7 +288,7 @@ void* Pds::aGetCellArray(Pds* pPdsRowBuffer, i8 iRow)
 
   // Calculate the address of the Row
   // <(i8)key><Row>
-  Row* pRow = aAdd<Row*>(pSkipListBlock->aItem(), sizeof(m_iSynthRowKey));
+  Row* pRow = pSkipListBlock->aRow();
 
   return (void*)pRow->aCellArray();
 }
@@ -318,13 +317,15 @@ Row* Pds::pAllotRow(void)
 
   // Pass an integer key to Pds that we increment each time we insert
   // Essentially append
-  SkipListBlock* pSkipListBlock = pInsert((void*) &(++m_iSynthRowKey));
+  SkipListBlock* pSkipListBlock = pInsert((void*) &(m_iSynthRowKey));
   i8* pKey = (i8*)pSkipListBlock->aItem();
   *pKey = m_iSynthRowKey;
 
+  m_iSynthRowKey++;
+
   // Calculate the address of the Row
   // <(i8)key><Row>
-  Row* aRowCur = aAdd<Row*>(pSkipListBlock->aItem(), sizeof(m_iSynthRowKey));
+  Row* aRowCur = pSkipListBlock->aRow();
 
   // Initialise the row at the given addr
   new(aRowCur) Row();
@@ -338,6 +339,7 @@ Row* Pds::pAllotRow(void)
     if (aAllotStzSet() == nullptr) {
       vTrace("%s: Unable to copy rows as the Pds string area is full\n"_Stz, __func__ );
       vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
+      vDiscardInvalidRow();
       return nullptr;
     }
   }
@@ -359,13 +361,15 @@ Row* Pds::pAllotRowFull(char** aaStzSet)
 
   // Pass an integer key to Pds that we increment each time we insert
   // Essentially append
-  SkipListBlock* pSkipListBlock = pInsert((void*) &(++m_iSynthRowKey));
+  SkipListBlock* pSkipListBlock = pInsert((void*) &(m_iSynthRowKey));
   i8* pKey = (i8*)pSkipListBlock->aItem();
   *pKey = m_iSynthRowKey;
 
+  m_iSynthRowKey++;
+
   // Calculate the address of the Row
   // <(i8)key><Row>
-  Row* aRowCur = aAdd<Row*>(pSkipListBlock->aItem(), sizeof(m_iSynthRowKey));
+  Row* aRowCur = pSkipListBlock->aRow();
 
   // Initialise the row at the given addr
   new(aRowCur) Row();
@@ -379,6 +383,7 @@ Row* Pds::pAllotRowFull(char** aaStzSet)
     if (aAllotStzSet() == nullptr) {
       vTrace("%s: Unable to copy rows as the Pds string area is full\n"_Stz, __func__ );
       vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
+      vDiscardInvalidRow();
       return nullptr;
     }
     *aaStzSet = (char*)m_aStzSet;
@@ -553,22 +558,21 @@ bool Pds::bDelete(void* pKey)
 
   // -------------- Sanity check ----------------
   // Assert the key is greater than the root dummy block key of zero
-  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
-  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
-  RASSERT(iCompareRes == -1);
+//  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+//  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
+//  RASSERT(iCompareRes == -1);
   // --------------------------------------------
 
   // TODO: Add an assert to check that all the entries are deleted where
   // the entry to delete has a non-zero value in it's respective level.
   SkipListBlock* pDeleteEntry = nullptr;
+  SkipListBlock* pPrev = pHeadSL();
 
   // Iterate the Skip List from the top down
   for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
     if(m_iNumEntries[i_Level] == 0)
       continue;
 
-    // Get the dummy root at this level
-    SkipListBlock* pPrev = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
     SkipListBlock* pCurr = pNextSLBlock(pPrev, i_Level);
 
     // Iterate through all elements at this level while searching for the key
@@ -588,9 +592,10 @@ bool Pds::bDelete(void* pKey)
 
         // No need to continue iterating at this level
         break;
-      } else if(iCompareRes > 0)
+      } else if(iCompareRes > 0) {
         // We passed the key, move to a lower level
         break;
+      }
       pPrev = pCurr;
       pCurr = pNextSLBlock(pCurr, i_Level);
     }
@@ -598,8 +603,8 @@ bool Pds::bDelete(void* pKey)
 
   if(pDeleteEntry){
     // Assert we are not deleting the root block
-    u8 uOffsetToDelete = uGetOffsetFromBase(pDeleteEntry);
-    RASSERT(uOffsetToDelete != m_uInUseRootOffset);
+//    u8 uOffsetToDelete = uGetOffsetFromBase(pDeleteEntry);
+//    RASSERT(uOffsetToDelete != m_uInUseRootOffset);
 
     vMoveToFreeList(pDeleteEntry);
 //    vValidate();
@@ -619,7 +624,7 @@ void Pds::vDumpFreeList(void) {
   vTrace("Free List\n"_Stz);
   vTrace("=================================================="
          "===================================================\n"_Stz);
-  if((SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset) == nullptr) {
+  if(pHeadFreeList() == nullptr) {
     vTrace("Invalid offset given\n"_Stz);
     return;
   }
@@ -629,18 +634,18 @@ void Pds::vDumpFreeList(void) {
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
 
-  SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
+  SkipListBlock* pHead = pHeadFreeList();
+  SkipListBlock* pCursor = pNextSLBlock(pHead, 0);
 
   vTrace("| %5lld | %6lld | "_Stz, 0, m_iFreeListEntries);
+  vTrace("Rt-->"_Stz);
 
-  for(i8 iNumEntries = 0; iNumEntries < m_iFreeListEntries + 1; iNumEntries++) {
-    vTrace("%lld-->"_Stz, pCursor->iKey());
+  while(pCursor != nullptr) {
+    vTrace("(%lld)-->"_Stz, pCursor->iKey());
 
     pCursor = pNextSLBlock(pCursor, 0);
-    if(pCursor == nullptr) {
-      break;
-    }
   }
+
   vTrace("END\n"_Stz);
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -664,7 +669,7 @@ void Pds::vDumpInUseList(void) {
   vTrace("In Use List\n"_Stz);
   vTrace("=================================================="
          "===================================================\n"_Stz);
-  if((SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset) == nullptr) {
+  if(pHeadSL() == nullptr) {
     vTrace("Invalid offset given\n"_Stz);
     return;
   }
@@ -674,20 +679,19 @@ void Pds::vDumpInUseList(void) {
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+    SkipListBlock* pHead = pHeadSL();
+    SkipListBlock* pCursor = pNextSLBlock(pHead, i_Level);
 
     vTrace("| %5lld | %6lld | "_Stz, i_Level, m_iNumEntries[i_Level]);
+    vTrace("Rt-->"_Stz);
 
-    for(i8 iNumEntries = 0; iNumEntries < m_iNumEntries[i_Level] + 1; iNumEntries++) {
+    while(pCursor != nullptr) {
 //      DoubleKey oDKey;
 //      oDKey = *(DoubleKey*)(pCursor->aItemKey());
 //      vTrace("%lld(%lld)-->"_Stz, oDKey.iKey_1, oDKey.iKey_2);
-      vTrace("%lld-->"_Stz, pCursor->iKey());
+      vTrace("(%lld)-->"_Stz, pCursor->iKey());
 
       pCursor = pNextSLBlock(pCursor, i_Level);
-      if(pCursor == nullptr) {
-        break;
-      }
     }
     vTrace("END\n"_Stz);
     vTrace("--------------------------------------------------"
@@ -700,6 +704,30 @@ void Pds::vDumpInUseList(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get dummy head of in use skip list                                         */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds::pHeadSL(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(m_uInUseRootOffset != 0);
+
+  return (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get dummy head of free list                                                */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds::pHeadFreeList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(m_uFreeListRootOffset != 0);
+
+  return (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Insert Key                                                                 */
 /*----------------------------------------------------------------------------*/
 SkipListBlock* Pds::pInsert(void* pKey)
@@ -708,9 +736,9 @@ SkipListBlock* Pds::pInsert(void* pKey)
 
   // -------------- Sanity check ----------------
   // Assert the key is greater than the root dummy block key of zero
-  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
-  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
-  RASSERT(iCompareRes == -1);
+//  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+//  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
+//  RASSERT(iCompareRes == -1);
   // --------------------------------------------
 
   // try to allocate a block as mini-Heap may be full
@@ -772,31 +800,25 @@ SkipListBlock* Pds::pFind(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  u2 uOffset = m_uInUseRootOffset;
+  SkipListBlock* pPrev = pHeadSL();
   for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
     if(m_iNumEntries[i_Level] == 0)
       continue;
 
-    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
-
-    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
-    while(pNext != nullptr) {
-      i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+    SkipListBlock* pCursor = pNextSLBlock(pPrev, i_Level);
+    while(pCursor != nullptr) {
+      i8 iCompareRes = m_fpCompare(pCursor->aItem(), pKey);
 
       if(iCompareRes == 0) {
-        //Ensure that we are not returning the dummy root block
-        if(uGetOffsetFromBase(pNext) == m_uInUseRootOffset)
-          return nullptr;
-
-        return pNext;
+        return pCursor;
       } else if(iCompareRes > 0) {
-        // pNext > pKey
-        uOffset = uGetOffsetFromBase(pCursor);
+        // pCursor > pKey
+        // move down one level
         break;
       }
 
-      pCursor = pNext;
-      pNext = pNextSLBlock(pNext, i_Level);
+      pPrev = pCursor;
+      pCursor = pNextSLBlock(pCursor, i_Level);
     }
   }
 
@@ -916,7 +938,7 @@ SkipListBlock* Pds::pFirstBlock(void)
   if(m_iNumEntries[0] == 0)
     return nullptr;
 
-  SkipListBlock* pRootBlock = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  SkipListBlock* pRootBlock = pHeadSL();
 
   SkipListBlock* pFirstBlock = pNextSLBlock(pRootBlock, 0);
 
@@ -1251,7 +1273,7 @@ void Pds::vMoveToFreeList(SkipListBlock* pSLBlock)
   }
 
 
-  SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
+  SkipListBlock* pCursor = pHeadFreeList();
 
   SkipListBlock* pNext = pNextSLBlock(pCursor, 0);
 
@@ -1313,7 +1335,7 @@ bool Pds::bPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  SkipListBlock* pCurr = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  SkipListBlock* pCurr = pHeadSL();
 
   for (i8 i_Level = C_MAX_LVL_LEVELS - 1; i_Level >= 0; i_Level--) {
 
@@ -1324,13 +1346,18 @@ bool Pds::bPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
 
     SkipListBlock* pNext = pNextSLBlock(pCurr, i_Level);
 
-    i8 iCompareRes = 0;
+    // inner loop:
+    //   move right along the nodes at this level
+    //     until we find
+    //       pNext > pKey at current level
     while(pNext != nullptr) {
-      iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+      i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+
       if(iCompareRes == 0)
         return false;
       else if(iCompareRes > 0)
         break;
+
       pCurr = pNext;
       pNext = pNextSLBlock(pCurr, i_Level);
     }
@@ -1349,9 +1376,6 @@ i8 Pds::iIntCompare(void* aItem_l, void* aItem_r)
   _static_
   i8 iKey_l = *(i8*) aItem_l;
   i8 iKey_r = *(i8*) aItem_r;
-
-  // Key value of 0 is used for the dummy root blocks
-  RASSERT(iKey_r != 0);
 
   // do the node keys match?
   if (iKey_l == iKey_r)
@@ -1489,14 +1513,14 @@ void Pds::vDiscardInvalidRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
+  m_iSynthRowKey--;
+
   bool bResult = bDelete(&m_iSynthRowKey);
 
   if (! bResult) {
     vTrace("Pds failed to discard invalid row with key: %lld"_Stz, m_iSynthRowKey);
     return;
   }
-
-  m_iSynthRowKey--;
 
   m_aRowCur = nullptr;
   m_i_ColCrs = 0;

@@ -600,7 +600,6 @@ SizeHeap gxaSizeHeap[]
   { CN_PDSBUFFERIDQUEUE,         sizeof(PdsBufferIdQueue),   HT_T_TINY    , FILL },
   { CN_PDSCURSOR,                sizeof(PdsCursor),          HT_T_TINY    , FILL },
   { CN_PDSCONVERGENTHEAP_t,      0,                          HT_INVALID   , FILL },
-  { CN_PDSROWHELPER,             sizeof(PdsRowHelper),       HT_T_TINY    , FILL },
   { CN_PERMGEN,                  sizeof(PermGen),            HT_T_LARGE   ,FILL },
   { CN_PERMIT,                   sizeof(Permit),             HT_T_TINY    ,FILL },
   { CN_PERUSE,                   sizeof(Peruse),             HT_T_MEDIUM  ,FILL },

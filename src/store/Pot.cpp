@@ -181,7 +181,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   PotPdsItem oSearchKey;
-  oSearchKey.iLglPtn = i_Ptn + 1;
+  oSearchKey.iLglPtn = i_Ptn;
   oSearchKey.iSynthKey = C_INT_MAX;
 
   // Find the last block that is less than LglPtn,Max key
@@ -193,7 +193,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
 
     // If the LglPtn value matches, we found a buffer part of this LglPtn chain
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
-    if(pItem != nullptr && pItem->iLglPtn == (i_Ptn + 1)) {
+    if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
       RASSERT(BufferId::bIsBufferId(pItem->oBufferId));
       return _pDataBuffer(BufferId::aAddressFromId(pItem->oBufferId));
     }
@@ -209,12 +209,9 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
-  // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
-  i8 iLglPtnKey = i_Ptn + 1;
-
   PotPdsItem oSearchKey;
   // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
-  oSearchKey.iLglPtn = iLglPtnKey;
+  oSearchKey.iLglPtn = i_Ptn;
   oSearchKey.iSynthKey = C_INT_MIN;
 
   // Get the first block that is greater than LglPtn,Min
@@ -225,7 +222,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
     PotPdsItem* pItem = (PotPdsItem*) pHead->aItem();
 
     // If this block doesn't match our LglPtn key, return nullptr
-    if(pItem != nullptr && pItem->iLglPtn != iLglPtnKey) {
+    if(pItem != nullptr && pItem->iLglPtn != i_Ptn) {
       return nullptr;
     }
 
@@ -237,7 +234,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
       PotPdsItem* pNextItem = (PotPdsItem*) pNextBlock->aItem();
       RASSERT(pNextItem != nullptr);
 
-      if(pNextItem->iLglPtn == iLglPtnKey) {
+      if(pNextItem->iLglPtn == i_Ptn) {
         // Next block exists for this LglPtn chain
         // Which means our current buffer is a completed buffer
 
@@ -266,7 +263,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   PotPdsItem oSearchKey;
-  oSearchKey.iLglPtn = i_Ptn + 1;
+  oSearchKey.iLglPtn = i_Ptn;
   oSearchKey.iSynthKey = C_INT_MAX;
   // Find the buffer part of this LglPtn at the front of the queue.
   // There may be more than one.
@@ -283,7 +280,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     // if the LglPtn matches.
-    if(pItem != nullptr && pItem->iLglPtn == (i_Ptn + 1)) {
+    if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
       BufferId oBufferId = pItem->oBufferId;
       RASSERT(BufferId::bIsBufferId(oBufferId));
       bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
@@ -388,10 +385,10 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   // Append a buffer to this pds
   // Use a synthetic key to ensure the buffers are added in ascending order
   PotPdsItem oItem;
-  oItem.iLglPtn = i_Ptn + 1;
-  oItem.iSynthKey = ++m_iSynthKey;
+  oItem.iLglPtn = i_Ptn;
+  oItem.iSynthKey = m_iSynthKey;
   oItem.oBufferId = pAddBuffer->oGetBufferId();
-
+  m_iSynthKey++;
   RASSERT(BufferId::bIsBufferId(oItem.oBufferId));
 
   SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);

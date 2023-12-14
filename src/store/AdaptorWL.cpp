@@ -1004,10 +1004,8 @@ void AdaptorWL::vPdsRowData(Pds* pPdsRowBuffer)
       iMaxRowsThatFit = 0;
     }
 
-
-    i8 iKey = iStartingRow + 1; // Pds entries start from index 1 (instead of 0)
     // Find the SkipListBlock entry containing the row
-    SkipListBlock* pSkipListBlock = pPdsRowBuffer->pFind(&iKey);
+    SkipListBlock* pSkipListBlock = pPdsRowBuffer->pFind(&iStartingRow);
     RASSERT(pSkipListBlock);
 
     // Init a PdsCursor, and start iterating at this entry
