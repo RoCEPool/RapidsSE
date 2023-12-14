@@ -45,7 +45,6 @@ namespace STORE
     bool bPeg_Projection(CardIter* pCI);
 
     void vRecreate_emit(CardIter* pCI);
-    void vUpdate_constraint(CardIter* pCI);
     void vUpdate_emit(CardIter* pCI);
     void vUpdate_emit_OP(CardIter* pCI);
 

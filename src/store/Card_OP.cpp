@@ -618,22 +618,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* update constraint analysis                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vUpdate_constraint(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(pCI);
-
-  Card_Constraint* p_constraint;
-
-  if ((p_constraint = pSub_constraint())) {
-    vDebugPoint();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* update emit                                                                */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vUpdate_emit(CardIter* pCI)
