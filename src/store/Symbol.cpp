@@ -1358,6 +1358,22 @@ i8 Symbol::i_Facet(eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /* scan for symbol facet                                                      */
 /*----------------------------------------------------------------------------*/
+Stz* Symbol::szFacet(eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (eFacet == xaFacet[i_Facet].m_eFacet)
+      return xaFacet[i_Facet].m_sChrSeq;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* scan for symbol facet                                                      */
+/*----------------------------------------------------------------------------*/
 i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
