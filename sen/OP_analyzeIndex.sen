@@ -24,7 +24,7 @@
   StreamDefLft[].pipeOut
 
   // create a rowBuffer
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add a row for each table ptn
   [grid].ptnsPerNode 0

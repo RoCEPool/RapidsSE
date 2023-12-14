@@ -1463,7 +1463,6 @@ void Step::vRowBufferAddNodeInfo(void)
 	StreamDef* pStreamDef = pTable->pStreamDef();
 
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-	pRowBuffer->vBufferType(BT_NODEINFO);
 
 	Grid* pGrid = AM::pGrid();
 
@@ -1690,7 +1689,7 @@ void Step::vRowBufferChunkFile(void)
 
 	// get the seekOffsets
 	RowBuffer* pSeekOffsets = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-	pSeekOffsets->vBufferType(BT_SEEKOFFSETS);
+
 	i8 nRowsInSeekOffsets = 0;
 	Row* pSeekOffsetRow = nullptr;
 

@@ -97,7 +97,7 @@
     //counter1[] "counter1 %v" .printf
 
     // create an rowBuffer operand
-    BT_DATA TableDef[] RowBuffer[].new
+    BT_SEEKOFFSETS TableDef[] RowBuffer[].new
     RowBuffer[].chunkFile counter2[] + to counter2[]
 
     RowBuffer[].pipeOut
