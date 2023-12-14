@@ -35,20 +35,20 @@ extern SizeHeap  gxaSizeHeap[];
 void Step::vAddSteps_RowBuffer(void)
 {
 
-  vAddStep("rowBuffer.operandDump"_Stz,      &Step::vRowBufferOperandDump);
+  vAddStep("rowBuffer.operandDump"_Stz,        &Step::vRowBufferOperandDump);
 
-	vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
-	vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
+	vAddStep("RowBuffer[]"_Stz,                  &Step::vRowBufferGet);
+	vAddStep("RowBuffer[]\\clear"_Stz,           &Step::vRowBufferGetAndClear);
 
-	vAddStep("RowBuffer[].addAnalyzeIndex"_Stz,&Step::vRowBufferAddAnalyzeIndex);
-	vAddStep("RowBuffer[].addAnalyzeTable"_Stz,&Step::vRowBufferAddAnalyzeTable);
-	vAddStep("RowBuffer[].addBpaObjects"_Stz,  &Step::vRowBufferAddBpaObjects);
-	vAddStep("RowBuffer[].addBpaRegions"_Stz,  &Step::vRowBufferAddBpaRegions);
-	vAddStep("RowBuffer[].addColumnDef"_Stz,   &Step::vRowBufferAddColumnDef);
-	vAddStep("RowBuffer[].addGridSanity"_Stz,  &Step::vRowBufferAddGridSanity);
-	vAddStep("RowBuffer[].addListContents"_Stz,&Step::vRowBufferAddListContents);
-	vAddStep("RowBuffer[].addListFolder"_Stz,  &Step::vRowBufferAddListFolder);
-	vAddStep("RowBuffer[].addListIndex"_Stz,   &Step::vRowBufferAddListIndex);
+	vAddStep("RowBuffer[].addAnalyzeIndex"_Stz,  &Step::vRowBufferAddAnalyzeIndex);
+	vAddStep("RowBuffer[].addAnalyzeTable"_Stz,  &Step::vRowBufferAddAnalyzeTable);
+	vAddStep("RowBuffer[].addBpaObjects"_Stz,    &Step::vRowBufferAddBpaObjects);
+	vAddStep("RowBuffer[].addBpaRegions"_Stz,    &Step::vRowBufferAddBpaRegions);
+	vAddStep("RowBuffer[].addColumnDef"_Stz,     &Step::vRowBufferAddColumnDef);
+	vAddStep("RowBuffer[].addGridSanity"_Stz,    &Step::vRowBufferAddGridSanity);
+	vAddStep("RowBuffer[].addListContents"_Stz,  &Step::vRowBufferAddListContents);
+	vAddStep("RowBuffer[].addListFolder"_Stz,    &Step::vRowBufferAddListFolder);
+	vAddStep("RowBuffer[].addListIndex"_Stz,     &Step::vRowBufferAddListIndex);
 	vAddStep("RowBuffer[].addListPartitions"_Stz,&Step::vRowBufferAddListPartitions);
 	vAddStep("RowBuffer[].addLogMsg"_Stz,        &Step::vRowBufferAddLogMsg);
 	vAddStep("RowBuffer[].addLockStats"_Stz,     &Step::vRowBufferAddLockStats);

@@ -15,7 +15,7 @@
   // RowBuffer should be of type BT_EXPLAIN
   RowBuffer[].bufferType@ BT_EXPLAIN == assert
 
-  // emit the RowBuffer[]
+  // time to emit the RowBuffer[]
   RowBuffer[].pipeout
 
   EV_M_LEAVE_handler
@@ -47,9 +47,8 @@
 
     // We got an error, but were we going to do an explain?
     RowBuffer[].isNull not if
-      RowBuffer[].bufferType@ BT_EXPLAIN == if
-        RowBuffer[].delete
-      then
+      RowBuffer[].bufferType@ BT_EXPLAIN == assert
+      RowBuffer[].delete
    then
 
     op__compileErrOut
