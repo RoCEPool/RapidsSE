@@ -84,7 +84,6 @@ bool DataBuffer::bIsDataBuffer(eCN eClass)
   _static_
 
   if (   eClass == CN_ROWBUFFER
-      || eClass == CN_NAMEDBUFFER
       || eClass == CN_CSVBUFFER
       || eClass == CN_CRVBUFFER
       || eClass == CN_OBJBUFFER

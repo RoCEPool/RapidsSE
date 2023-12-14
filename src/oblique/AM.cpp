@@ -1903,9 +1903,6 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
     if (pMarker->eOpMarker() == OM_LOWMEMORY)
       return true;
 
-    if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)
-      return true;
-
     if (pMarker->eOpMarker() == OM_NODELOSSABORT)
       return true;
   }
@@ -3851,15 +3848,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
-    case CN_NAMEDBUFFER: {
-      NamedBuffer* pNamedBuffer = _pNamedBuffer(pOperand);
-      // permament row buffers not to be deleted
-      if (pNamedBuffer->bIsPermanent())
-        break;
-      delete pNamedBuffer;
-      break;
-    }
-
     case CN_PAYLOADOBJ: {
       WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(pOperand);
       delete pPayloadObj;
@@ -4476,12 +4464,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
 
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
-    case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
-    case CN_INDEX:       eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
-
-    case CN_JOB:                eOperand = EV_D_JOB;            break;
-    case CN_JOBMETRICS:         eOperand = EV_D_JOBMETRICS;     break;
 
     case CN_MARKER:
     {
@@ -4505,7 +4488,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_ERRORINGMARKER:     eOperand = EV_M_ERRORING;     break;
         case OM_EXITING:            eOperand = EV_M_EXITING;      break;
         case OM_EXITED:             eOperand = EV_M_EXITED;       break;
-        case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
         case OM_FLUSH:              eOperand = EV_M_FLUSH;        break;
         case OM_HARDABORT:          eOperand = EV_M_HARDABORT;    break;
         case OM_INTERNALERROR:      eOperand = EV_M_INTERNALERROR; break;
@@ -4514,11 +4496,9 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = EV_M_LEFT;         break;
         case OM_LOWMEMORY:          eOperand = EV_M_LOWMEMORY;    break;
-        case OM_NEXTBUFFERMARKER:   eOperand = EV_M_NEXTBUFFER;   break;
         case OM_NODELOSSABORT:      eOperand = EV_M_NODELOSSABORT; break;
         case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
         case OM_STARTMARKER:        eOperand = EV_M_START;        break;
-        case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
         case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
 
@@ -4531,21 +4511,13 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       break;
     }
 
-    case CN_NAMEDBUFFER:  eOperand = EV_D_NAMEDBUFFER;    break;
-    case CN_OP:           eOperand = EV_D_OP;             break;
-    case CN_OTHEROPERAND: eOperand = EV_D_OTHEROPERAND;   break;
-    case CN_PAGINGMETRICS:eOperand = EV_D_PAGINGMETRICS;  break;
     case CN_PAYLOADOBJ:   eOperand = EV_D_PAYLOAD;        break;
     case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = EV_D_PROFILE;        break;
     case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;
-    //case CN_SRTBUFFER:    eOperand = EV_D_SRTBUFFER;      break;
     case CN_STREAMDEF:    eOperand = EV_D_STREAMDEF;      break;
-    case CN_STREAMDEFRHT: eOperand = EV_D_STREAMDEFRHT;   break;
-    case CN_METAGET:      eOperand = EV_D_METAGET;        break;
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
     case CN_TABLE:        eOperand = EV_D_TABLE;          break;
-    case CN_GRID:         eOperand = EV_D_GRID;           break;
     case CN_TABLEPTN:     eOperand = EV_D_TABLEPTN;      break;
 
     default:

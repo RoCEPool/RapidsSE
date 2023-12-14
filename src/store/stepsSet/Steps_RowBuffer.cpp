@@ -66,9 +66,9 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].copy"_Stz,           &Step::vRowBufferCopy);
   vAddStep("RowBuffer[].decile"_Stz,         &Step::vRowBufferDecile);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
+	vAddStep("RowBuffer[].bufferName@"_Stz,    &Step::vRowBufferBufferNameFetch);
+	vAddStep("RowBuffer[].bufferType@"_Stz,    &Step::vRowBufferBufferTypeFetch);
   vAddStep("RowBuffer[].get"_Stz,            &Step::vRowBufferGet);
-	vAddStep("RowBuffer[].getBufferName"_Stz,  &Step::vRowBufferGetBufferName);
-	vAddStep("RowBuffer[].getBufferType"_Stz,  &Step::vRowBufferGetBufferType);
   vAddStep("RowBuffer[].insdelIntoTable"_Stz,&Step::vRowBufferInsdelIntoTable);
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
@@ -81,7 +81,8 @@ void Step::vAddSteps_RowBuffer(void)
 	vAddStep("RowBuffer[].setBufferType"_Stz,  &Step::vRowBufferSetBufferType);
   vAddStep("RowBuffer[].setDeciderCopies"_Stz, &Step::vRowBufferSetDeciderCopies);
   vAddStep("RowBuffer[].setLglPtn"_Stz,      &Step::vRowBufferSetLglPtn);
-  vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
+  vAddStep("RowBuffer[].tableDefName@"_Stz,  &Step::vRowBufferTableDefNameFetch);
+	vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
 
 	vAddStep("RowBuffer[].addLockStats"_Stz,     &Step::vRowBufferAddLockStats);
 	vAddStep("RowBuffer[].addNodeInfo"_Stz,      &Step::vRowBufferAddNodeInfo);
@@ -103,26 +104,6 @@ void Step::vAddSteps_RowBuffer(void)
 	vAddStep("RowBuffer[].nextRow"_Stz,          &Step::vRowBufferNextRow);
 	vAddStep("RowBuffer[].rdCsvChunk"_Stz,       &Step::vRowBufferRdCsvChunk);
 	vAddStep("RowBuffer[].writeCsv"_Stz,         &Step::vRowBufferWriteCsv);
-
-	vAddStep("RowBufferErr[].addCommandError"_Stz, &Step::vRowBufferErrAddCommandError);
-	vAddStep("RowBufferErr[].addExecError"_Stz,    &Step::vRowBufferErrAddExecError);
-	vAddStep("RowBufferErr[].delete"_Stz,          &Step::vRowBufferErrDelete);
-	vAddStep("RowBufferErr[].bufferId"_Stz,        &Step::vRowBufferErrGetBufferIdAsAddr);
-	vAddStep("RowBufferErr[]"_Stz,                 &Step::vRowBufferErrGet);
-	vAddStep("RowBufferErr[]\\clear"_Stz,          &Step::vRowBufferErrGetAndClear);
-	vAddStep("RowBufferErr[].getBufferType"_Stz,   &Step::vRowBufferErrGetBufferType);
-	vAddStep("RowBufferErr[].isNotNull"_Stz,       &Step::vRowBufferErrIsNotNull);
-	vAddStep("RowBufferErr[].isNull"_Stz,          &Step::vRowBufferErrIsNull);
-	vAddStep("RowBufferErr[].new"_Stz,             &Step::vRowBufferErrNew);
-	vAddStep("RowBufferErr[].set"_Stz,             &Step::vRowBufferErrSet);
-
-	vAddStep("RowBufferWarn[].bufferId"_Stz,     &Step::vRowBufferWarnGetBufferIdAsAddr);
-	vAddStep("RowBufferWarn[]"_Stz,              &Step::vRowBufferWarnGet);
-	vAddStep("RowBufferWarn[].delete"_Stz,       &Step::vRowBufferWarnDelete);
-	vAddStep("RowBufferWarn[]\\clear"_Stz,       &Step::vRowBufferWarnGetAndClear);
-	vAddStep("RowBufferWarn[].isNull"_Stz,       &Step::vRowBufferWarnIsNull);
-	vAddStep("RowBufferWarn[].new"_Stz,          &Step::vRowBufferWarnNew);
-	vAddStep("RowBufferWarn[].set"_Stz,          &Step::vRowBufferWarnSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1036,6 +1017,32 @@ void Step::vRowBufferAddVerifyTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBuffer[].bufferName@ -- fetch the rowBuffer buffer name                 */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferBufferNameFetch(void)
+{
+	ENTRY();
+
+	s256 sBufferName = aBT[m_pLogicUnit->m_xpRowBuffer->eBufferType()];
+
+	m_pDataStack->vPushStr(sBufferName);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].bufferType@ -- fetch the rowBuffer bufferType                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferBufferTypeFetch(void)
+{
+	ENTRY();
+
+	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBuffer->eBufferType());
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBuffer[].copy-- copy the row buffer                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferCopy(void)
@@ -1125,32 +1132,6 @@ void Step::vRowBufferGetBufferIdAsAddr(void)
   m_pDataStack->vPushPtr((Object*)pRowBuffer->oGetBufferId().m_pvAsAddress);
 
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].getBufferName -- get the rowBuffer buffer name                 */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferGetBufferName(void)
-{
-	ENTRY();
-
-	s256 sBufferName = aBT[m_pLogicUnit->m_xpRowBuffer->eBufferType()];
-
-	m_pDataStack->vPushStr(sBufferName);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].getBufferType -- get the rowBuffer bufferType                  */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferGetBufferType(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBuffer->eBufferType());
-
-	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1328,6 +1309,102 @@ void Step::vRowBufferSetLglPtn(void)
   m_pLogicUnit->m_xpRowBuffer->vLglPtn((LglPtn)iLglPtn);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].tableDefName@ -- fetch the corresoonding tableDef name         */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferTableDefNameFetch(void)
+{
+	ENTRY();
+
+	s256 sTdefNm;
+
+	eBT eBufferType = m_pLogicUnit->m_xpRowBuffer->eBufferType();
+
+	switch(eBufferType) {
+		case BT_AFFECTEDROWS:
+			sTdefNm = C_TDEF_AFFECTEDROWS;
+			break;
+		case BT_COMMAND:
+			sTdefNm = C_TDEF_COMMAND;
+			break;
+		case BT_COMPILEERRORS:
+			sTdefNm = C_TDEF_COMPILEERRORS;
+			break;
+		case BT_COUNT:
+			sTdefNm = C_TDEF_COUNT;
+			break;
+		case BT_DEREFMETRICS:
+			sTdefNm = C_TDEF_DEREFMETRICS;
+			break;
+		case BT_EXECERRORS:
+			sTdefNm = C_TDEF_EXECERRORS;
+			break;
+		case BT_EXPLAIN:
+			sTdefNm = C_TDEF_EXPLAIN;
+			break;
+		//case BT_FORKCOMMAND:
+		//	break;
+		case BT_JOBMETRICS:
+			sTdefNm = C_TDEF_JOBMETRICS;
+			break;
+		case BT_JOBNETDISSECT:
+			sTdefNm = C_TDEF_JOBNETDISSECT;
+			break;
+		case BT_JOBNETWORK:
+			sTdefNm = C_TDEF_JOBNETWORK;
+			break;
+		case BT_JOBOPERANDS:
+			sTdefNm = C_TDEF_JOBOPERANDS;
+			break;
+		case BT_JOBOPERATORS:
+			sTdefNm = C_TDEF_JOBOPERATORS;
+			break;
+		//case BT_LOADRESULT:
+		//	sTdefNm = C_TDEF_AFFECTEDROWS;
+		//	break;
+		case BT_LOCKSTATS:
+			sTdefNm = C_TDEF_LOCKSTATS;
+			break;
+		case BT_NODEINFO:
+			sTdefNm = C_TDEF_NODEINFO;
+			break;
+		case BT_PAGEINREQUEST:
+			sTdefNm = C_TDEF_PAGEINREQUEST;
+			break;
+		case BT_PATH:
+			sTdefNm = C_TDEF_PATH;
+			break;
+		case BT_PROGRESSUNITS:
+			sTdefNm = C_TDEF_PROGRESSUNITS;
+			break;
+		case BT_PROMPTOUT:
+			sTdefNm = C_TDEF_PROMPTOUT;
+			break;
+		case BT_SEEKOFFSETS:
+			sTdefNm = C_TDEF_SEEKOFFSETS;
+			break;
+		case BT_SYSLOCKS:
+			sTdefNm = C_TDEF_SYSLOCKS;
+			break;
+		case BT_SYSMETRICS:
+			sTdefNm = C_TDEF_SYSMETRICS;
+			break;
+		case BT_TOTALUNITS:
+			sTdefNm = C_TDEF_TOTALUNITS;
+			break;
+		case BT_WARNINGS:
+			sTdefNm = C_TDEF_WARNINGS;
+			break;
+		case BT_DATA:
+		default:
+			NEVER_REACH
+	}
+
+	m_pDataStack->vPushStr(sTdefNm);
+
+	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1729,7 +1806,7 @@ void Step::vRowBufferColValFetch(void)
 	Column* pColumn = pStreamDef->pGetColumn(i_Col);
 	eDM eDatum = pColumn->eDatum();
 
-	Row* aRow = *m_pLogicUnit->m_xpInfoSetRow;
+	Row* aRow = *m_pLogicUnit->m_xpRow;
 
 	i8 iInt;
 	s256 sStr;
@@ -1858,7 +1935,7 @@ void Step::vRowBufferNextRow(void)
 	ENTRY();
 
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-	Row* pRow = _pRow(*m_pLogicUnit->m_xpInfoSetRow);
+	Row* pRow = _pRow(*m_pLogicUnit->m_xpRow);
 
 	ASSERT(pRow);
 
@@ -1951,319 +2028,6 @@ void Step::vRowBufferWriteCsv(void)
 	File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
 
 	MetricsHelper::vWriteCsv(pRowBuffer,pStreamDef,pFile);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].addCommandError -- add a row to RowBuffer with the command error */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrAddCommandError(void)
-{
-	ENTRY();
-
-	s4K sErrorText;
-
-	// get the table
-	Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-	// get the streamDef from the table
-	StreamDef* pStreamDef = pStreamTable->pStreamDef();
-
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBufferErr);
-	pRowBuffer->vBufferType(BT_COMPILEERRORS);
-
-	// get the error information
-	eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-	i8 iLineNo = m_pDataStack->iPopInt(__func__);
-	i8 iColumnNo = m_pDataStack->iPopInt(__func__);
-	m_pDataStack->vPopStr(sErrorText, __func__);
-
-	Grid* pGrid = AM::pGrid();
-
-	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
-																		C_VARGS_BEGIN,
-																		pGrid->pThisNode()->szNodeNm(),
-																		eErrorCode,
-																		iLineNo,
-																		iColumnNo,
-																		sErrorText.azChar(),
-																		C_VARGS_END);
-
-	//pRow->vDump(pStreamDef);
-
-	m_pDataStack->vPushInt(pRow ? true : false);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].addExecError -- add a row to RowBuffer with the exec error     */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrAddExecError(void)
-{
-	ENTRY();
-
-	s4K sErrorText;
-
-	// get the table
-	Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-	// get the streamDef from the table
-	StreamDef* pStreamDef = pStreamTable->pStreamDef();
-
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBufferErr);
-	pRowBuffer->vBufferType(BT_EXECERRORS);
-
-	// get the error information
-	eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-	m_pDataStack->vPopStr(sErrorText, __func__);
-
-	Grid* pGrid = AM::pGrid();
-
-	//pStreamDef->vListContents(1);
-
-	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
-																		C_VARGS_BEGIN,
-																		pGrid->pThisNode()->szNodeNm(),
-																		(i8)eErrorCode,
-																		sErrorText.azChar(),
-																		C_VARGS_END);
-
-	//pRow->vDump(pStreamDef);
-
-	m_pDataStack->vPushInt(pRow ? true : false);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].get -- fetch operand                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrGet(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRowBufferErr);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].bufferId -- fetch buffer id as address                     */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrGetBufferIdAsAddr(void)
-{
-	ENTRY();
-
-	RowBuffer* pRowBuffer = *m_pLogicUnit->m_xpRowBufferErr;
-
-	m_pDataStack->vPushPtr((Object*)pRowBuffer->oGetBufferId().m_pvAsAddress);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].delete -- delete the buffer                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrDelete(void)
-{
-	ENTRY();
-
-	AM::vDeleteOperand(*m_pLogicUnit->m_xpRowBufferErr,nullptr);
-
-	m_pLogicUnit->m_xpRowBufferErr = nullptr;
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].getAndClear -- fetch operand and set to nullptr                */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrGetAndClear(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRowBufferErr);
-
-	m_pLogicUnit->m_xpRowBufferErr = nullptr;
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].getBufferType -- get the rowBuffer bufferType                  */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrGetBufferType(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBufferErr->eBufferType());
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].isNotNull -- is RowBuffer not null ?                        */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrIsNotNull(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBufferErr.bIsNull() ? 0 : 1);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].isNull -- is RowBuffer null ?                               */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrIsNull(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBufferErr.bIsNull() ? 1 : 0);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].new -- new an rowBufferWarn operand                        */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrNew(void)
-{
-	ENTRY();
-
-	ASSERT(m_pLogicUnit->m_xpRowBufferErr.bIsNull());
-
-	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
-
-	StreamDef* pStreamDef = pTable->pStreamDef();
-
-	m_pLogicUnit->m_xpRowBufferErr = new RowBuffer(pStreamDef);
-
-	m_pLogicUnit->m_xpRowBufferErr->vBufferType(eBufferType);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferErr[].set -- set operand                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferErrSet(void)
-{
-	ENTRY();
-
-	Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-	ASSERT(! pOperand || m_pLogicUnit->m_xpRowBuffer.bIsNull());
-
-	m_pLogicUnit->m_xpRowBufferErr = _pRowBuffer(pOperand);
-
-	EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferWarn[].get -- fetch operand                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferWarnGet(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRowBufferWarn);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferWarn[].delete -- delete the buffer                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferWarnDelete(void)
-{
-	ENTRY();
-
-	AM::vDeleteOperand(*m_pLogicUnit->m_xpRowBufferWarn,nullptr);
-
-	m_pLogicUnit->m_xpRowBufferWarn = nullptr;
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferWarn[].bufferId -- fetch buffer id as address                     */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferWarnGetBufferIdAsAddr(void)
-{
-	ENTRY();
-
-	RowBuffer* pRowBuffer = *m_pLogicUnit->m_xpRowBufferWarn;
-
-	m_pDataStack->vPushPtr((Object*)pRowBuffer->oGetBufferId().m_pvAsAddress);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferWarn[].getAndClear -- fetch operand and set to nullptr                */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferWarnGetAndClear(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRowBufferWarn);
-
-	m_pLogicUnit->m_xpRowBufferWarn = nullptr;
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferWarn[].isNull -- is RowBuffer null ?                              */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferWarnIsNull(void)
-{
-	ENTRY();
-
-	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBufferWarn.bIsNull() ? 1 : 0);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferWarn[].new -- new an rowBufferWarn operand                        */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferWarnNew(void)
-{
-	ENTRY();
-
-	ASSERT(m_pLogicUnit->m_xpRowBuffer.bIsNull());
-
-	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-	eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
-
-	StreamDef* pStreamDef = pTable->pStreamDef();
-
-	m_pLogicUnit->m_xpRowBufferWarn = new RowBuffer(pStreamDef);
-
-	m_pLogicUnit->m_xpRowBufferWarn->vBufferType(eBufferType);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBufferWarn[].set -- set operand                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferWarnSet(void)
-{
-	ENTRY();
-
-	Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-	ASSERT(! pOperand || m_pLogicUnit->m_xpRowBufferWarn.bIsNull());
-
-	m_pLogicUnit->m_xpRowBufferWarn = _pRowBuffer(pOperand);
 
 	EXIT();
 }

@@ -100,7 +100,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Index();
   Step::vAddSteps_IndexDef();
   Step::vAddSteps_IndexStream();
-  Step::vAddSteps_InfoSetRow();
   Step::vAddSteps_Inject();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
@@ -130,7 +129,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Memory();
   Step::vAddSteps_Monitor();
 
-  Step::vAddSteps_NamedBuffer();
   Step::vAddSteps_Network();
   Step::vAddSteps_Node();
   Step::vAddSteps_NodeMonitor();
@@ -169,6 +167,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Push();
 
   Step::vAddSteps_RecvdObject();
+	Step::vAddSteps_Row();
   Step::vAddSteps_RecvWL();
   Step::vAddSteps_RefTimer();
   Step::vAddSteps_RegCounter();
@@ -180,6 +179,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RowCounts();
   Step::vAddSteps_RowOnce();
   Step::vAddSteps_RowBuffer();
+	Step::vAddSteps_RowBufferErr();
+	Step::vAddSteps_RowBufferWarn();
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_Schedule();

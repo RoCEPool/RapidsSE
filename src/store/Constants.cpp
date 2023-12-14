@@ -209,7 +209,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_BPAOBJECTS"_Stz,    C_TDEF_BPAOBJECTS);
   vAddConstant("C_TDEF_BPAREGIONS"_Stz,    C_TDEF_BPAREGIONS);
-  vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
   vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
   vAddConstant("C_TDEF_COMMAND"_Stz,       C_TDEF_COMMAND);
   vAddConstant("C_TDEF_COMPILEERRORS"_Stz, C_TDEF_COMPILEERRORS);
@@ -273,14 +272,22 @@ void Constants::vAddConstantsCpp(void)
 	// BT_ : buffer types
 	/*  0 */ vAddConstant("BT_NONE"_Stz,          BT_NONE);
 	/*  1 */ vAddConstant("BT_AFFECTEDROWS"_Stz,  BT_AFFECTEDROWS);
-	/*  2 */ vAddConstant("BT_CALLPIPELINE"_Stz,  BT_CALLPIPELINE);
 	/*  3 */ vAddConstant("BT_COMMAND"_Stz,       BT_COMMAND);
 	/*  4 */ vAddConstant("BT_COMPILEERRORS"_Stz, BT_COMPILEERRORS);
 	/*  5 */ vAddConstant("BT_COUNT"_Stz,         BT_COUNT);
 	/*  6 */ vAddConstant("BT_DATA"_Stz,          BT_DATA);
+	/*  6 */ vAddConstant("BT_DEREFMETRICS"_Stz,  BT_DEREFMETRICS);
 	/*  7 */ vAddConstant("BT_EXECERRORS"_Stz,    BT_EXECERRORS);
 	/*  8 */ vAddConstant("BT_EXPLAIN"_Stz,       BT_EXPLAIN);
 	/*  9 */ vAddConstant("BT_FORKCOMMAND"_Stz,   BT_FORKCOMMAND);
+
+	/*  9 */ vAddConstant("BT_JOBOPERANDS"_Stz,   BT_JOBOPERANDS);
+	/*  9 */ vAddConstant("BT_JOBOPERATORS"_Stz,  BT_JOBOPERATORS);
+	/*  9 */ vAddConstant("BT_JOBMETRICS"_Stz,    BT_JOBMETRICS);
+	/*  9 */ vAddConstant("BT_JOBNETDISSECT"_Stz, BT_JOBNETDISSECT);
+	/*  9 */ vAddConstant("BT_JOBNETWORK"_Stz,    BT_JOBNETWORK);
+
+
 	/* 10 */ vAddConstant("BT_LOADRESULT"_Stz,    BT_LOADRESULT);
 	/* 11 */ vAddConstant("BT_LOCKSTATS"_Stz,     BT_LOCKSTATS);
 	/* 12 */ vAddConstant("BT_NODEINFO"_Stz,      BT_NODEINFO);
@@ -706,27 +713,15 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_NONE"_Stz,              EV_NONE);
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
-  /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
-  /*  0 */ vAddConstant("EV_D_GRID"_Stz,            EV_D_GRID);
-  /*  0 */ vAddConstant("EV_D_INDEX"_Stz,           EV_D_INDEX);
   /*  0 */ vAddConstant("EV_D_INDEXDEF"_Stz,        EV_D_INDEXDEF);
-  /*  0 */ vAddConstant("EV_D_JOB"_Stz,             EV_D_JOB);
-  /*  0 */ vAddConstant("EV_D_METAGET"_Stz,         EV_D_METAGET);
-  /*  0 */ vAddConstant("EV_D_NAMEDBUFFER"_Stz,     EV_D_NAMEDBUFFER);
-  /*  0 */ vAddConstant("EV_D_OP"_Stz,              EV_D_OP);
-  /*  0 */ vAddConstant("EV_D_OTHEROPERAND"_Stz,    EV_D_OTHEROPERAND);
   /*  0 */ vAddConstant("EV_D_PARCEL"_Stz,          EV_D_PARCEL);
   /*  0 */ vAddConstant("EV_D_PAYLOAD"_Stz,         EV_D_PAYLOAD);
   /*  0 */ vAddConstant("EV_D_PLANOPERAND"_Stz,     EV_D_PLANOPERAND);
   /*  0 */ vAddConstant("EV_D_PROFILE"_Stz,         EV_D_PROFILE);
   /*  0 */ vAddConstant("EV_D_ROWBUFFER"_Stz,       EV_D_ROWBUFFER);
-  /*  0 */ vAddConstant("EV_D_SRTBUFFER"_Stz,       EV_D_SRTBUFFER);
   /*  0 */ vAddConstant("EV_D_STREAMDEF"_Stz,       EV_D_STREAMDEF);
-  /*  0 */ vAddConstant("EV_D_STREAMDEFRHT"_Stz,    EV_D_STREAMDEFRHT);
   /*  0 */ vAddConstant("EV_D_TABLE"_Stz,           EV_D_TABLE);
   /*  0 */ vAddConstant("EV_D_TABLEPTN"_Stz,        EV_D_TABLEPTN);
-  /*  0 */ vAddConstant("EV_D_JOBMETRICS"_Stz,      EV_D_JOBMETRICS);
-  /*  0 */ vAddConstant("EV_D_PAGINGMETRICS"_Stz,   EV_D_PAGINGMETRICS);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);
   /*  0 */ vAddConstant("EV_M_CANCELLING"_Stz,      EV_M_CANCELLING);
@@ -744,7 +739,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_ERRORING"_Stz,        EV_M_ERRORING);
   /*  0 */ vAddConstant("EV_M_EXITING"_Stz,         EV_M_EXITING);
   /*  0 */ vAddConstant("EV_M_EXITED"_Stz,          EV_M_EXITED);
-  /*  0 */ vAddConstant("EV_M_FINISHED"_Stz,        EV_M_FINISHED);
   /*  0 */ vAddConstant("EV_M_FLUSH"_Stz,           EV_M_FLUSH);
   /*  0 */ vAddConstant("EV_M_HARDABORT"_Stz,       EV_M_HARDABORT);
   /*  0 */ vAddConstant("EV_M_INTERNALERROR"_Stz,   EV_M_INTERNALERROR);
@@ -752,11 +746,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_LEAVING"_Stz,         EV_M_LEAVING);
   /*  0 */ vAddConstant("EV_M_LEFT"_Stz,            EV_M_LEFT);
   /*  0 */ vAddConstant("EV_M_LOWMEMORY"_Stz,       EV_M_LOWMEMORY);
-  /*  0 */ vAddConstant("EV_M_NEXTBUFFER"_Stz,      EV_M_NEXTBUFFER);
   /*  0 */ vAddConstant("EV_M_NODELOSSABORT"_Stz,   EV_M_NODELOSSABORT);
   /*  0 */ vAddConstant("EV_M_START"_Stz,           EV_M_START);
   /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);
-  /*  0 */ vAddConstant("EV_M_STREAMDEFRHT"_Stz,    EV_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("EV_M_TRIGGER"_Stz,         EV_M_TRIGGER);
   /*  0 */ vAddConstant("EV_M_TRIGGERED"_Stz,       EV_M_TRIGGERED);
 

@@ -49,7 +49,6 @@
   start::it_analyzeTable
   start::it_bpaObjects
   start::it_bpaRegions
-  start::it_callPipeline
   start::it_columnDefs
   start::it_command
   start::it_compileErrors
@@ -111,14 +110,14 @@
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   "spawning demons" .verbose
-
+/*
   // spawn metrics update
   STD_DEMONFORK_TAG metricsDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
     AM::DEMON::tMetricsDemonJobId!
   then
-
+*/
   // spawn metrics collect
   STD_DEMONFORK_TAG collectDemonPipeline api::forkDemon not if
     "Error Code %v" .printf

@@ -627,7 +627,13 @@ bool Op::bIsLocked(void)
 bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
+	bool bDemonJob = false;
+
+	Job* pOuterJob = pOuterJobOfOp();
+	if (pOuterJob->eJobList() == JL_DEMON)
+		bDemonJob = true;
+
   switch(i_OperandKind) {
 
     case EV_M_CANCELLING:
@@ -679,8 +685,6 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
       break;
 
     case EV_D_CRWBUFFER:
-    case EV_D_ENTBUFFER:
-    case EV_D_SRTBUFFER:
 			if (i_BufferType != BT_NONE) {
 				vTrace("%s %s %lld\n"_Stz, aEV[i_OperandKind], aBT[i_BufferType], i_BufferType);
 			}
@@ -727,8 +731,9 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 			// should have received a EV_M_DATAPULSE
 			if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
 
-				// EXECERRORS can come berore the DATAPULSE
-				if (i_BufferType != BT_EXECERRORS) {
+				// EXECERRORS can come before the DATAPULSE
+				// and demon pipeline operators can receve ROWBUFFERS without a DATAPULSE
+				if (i_BufferType != BT_EXECERRORS &&  ! bDemonJob ) {
 					vTrace("%s: %s (BufferType: %s) arrived without a prior EV_M_DATAPULSE\n"_Stz,
 								 szOpNm(), aEV[i_OperandKind], aBT[i_BufferType]);
 					return false;
@@ -907,7 +912,7 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 
     case EV_M_STARTED:
       // should have received a EV_M_START
-      if (szOpNm()->bSame("start"_Stz) ) {
+      if (szOpNm()->bSame("start"_Stz)) {
         if (! m_pEvMgr->m_naEventCount[EV_M_INVOKE]) {
           vTrace("%s: %s arrived without a prior EV_M_INVOKE\n"_Stz,
                  szOpNm(), aEV[i_OperandKind]);
@@ -1943,23 +1948,23 @@ void Op::vTask(Task* pTask)
 i8 Op::nTmpIndexSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-   /*
-  if (pOpLogicUnit()->m_xpCombined.bIsNull())
+
+  if (pOpLogicUnit()->m_xpDynamic.bIsNull())
     return -8;
 
-  Combined* pCombined = * pOpLogicUnit()->m_xpCombined;
-  Combined_T* aCombinedT = pCombined->aCombinedT();
-  if (! aCombinedT)
+  Dynamic* pDynamic = * pOpLogicUnit()->m_xpDynamic;
+  Dynamic_T* aDynamicT = pDynamic->aDynamicT();
+  if (! aDynamicT)
     return -7;
 
-  IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreePL);
+  IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoT.m_aIndexTree);
   if (! pIndexTree)
     return -6;
   
   i8 nEntBuffers = pIndexTree->nEntBuffers();
   
   return nEntBuffers;
-    */
+
    RASSERT(0);
    return C_UNKNOWN;
 }

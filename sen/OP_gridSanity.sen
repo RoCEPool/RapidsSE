@@ -14,20 +14,21 @@
   PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  RowBuffer[].getBufferType BT_NODEINFO != if
+  // handle BT_NODEINFO only
+  RowBuffer[].bufferType@ BT_NODEINFO != if
     RowBuffer[].pipeout
     true
     exit
   then
 
   // get the first row of the infoSet (nodeInfo)
-  RowBuffer[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
 
   // create an infoSet operand
   TableDef[] RowBuffer[].new
 
   // add nodeInfo to the infoSet
-  infoSetRow[].get TableDef[] RowBuffer[].addgridSanity assert
+  Row[].get TableDef[] RowBuffer[].addgridSanity assert
 
   // pipeout the rowBuffer
   RowBuffer[].pipeOut

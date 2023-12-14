@@ -206,20 +206,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_STREAMDEFRHT ...                                          */
-/*----------------------------------------------------------------------------*/
-: consumeOp_StreamDefRht \handler
-
-  //"Operand:- EV_D_STREAMDEFRHT" .verbose
-  Sends[].handleStreamDefRht if
-    PipeIn[].pipeOut
-  else
-    PipeIn[].delete
-  then
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_M_TRIGGERED ...                                             */
 /*----------------------------------------------------------------------------*/
 : consumeOp_TriggeredMarker \handler
@@ -262,7 +248,6 @@
   find: consumeOp_TriggeredMarker EV_M_TRIGGERED [op].handler!
 
   find: consumeOp_StreamDef      EV_D_STREAMDEF  [op].handler!
-  find: consumeOp_StreamDefRht   EV_D_STREAMDEFRHT  [op].handler!
 
   op__loop
 

@@ -202,7 +202,6 @@ enum eCN : u2 // Class Number
   /* */ CN_MUTEX,
 
   /* */ CN__N__,
-  /* */ CN_NAMEDBUFFER,
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,

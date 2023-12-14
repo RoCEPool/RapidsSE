@@ -755,15 +755,15 @@ void vDdlLockAssertNone(void);
   void vIndexTreeNew(void);
   void vIndexTreeSet(void);
 
-  // infoSet
-  void vInfoSetRowGet(void);
-  void vInfoSetRowGetIntColumn(void);
-  void vInfoSetRowGetVchColumn(void);
-  void vInfoSetRowIntColumnFetch(void);
-  void vInfoSetRowIsNull(void);
-  void vInfoSetRowSet(void);
-  void vInfoSetSet(void);
-  void vInfoSetWriteCsv(void);
+  // row
+  void vRowGet(void);
+  void vRowGetIntColumn(void);
+  void vRowGetVchColumn(void);
+  void vRowIntColumnFetch(void);
+  void vRowIsNull(void);
+  void vRowSet(void);
+  void vSet(void);
+  void vWriteCsv(void);
 
   // inject
   void vInjectSigsegv(void);
@@ -1167,7 +1167,6 @@ void vJobIdLastJobIdFetch(void);
   void vMarkerNewExitMarker(void);
   void vMarkerNewExitingMarker(void);
   void vMarkerNewExitedMarker(void);
-  void vMarkerNewFinishedMarker(void);
   void vMarkerNewFlushMarker(void);
   void vMarkerNewInternalError(void);
   void vMarkerNewInvokeMarker(void);
@@ -1175,10 +1174,8 @@ void vJobIdLastJobIdFetch(void);
   void vMarkerNewLeavingMarker(void);
   void vMarkerNewLeftMarker(void);
   void vMarkerNewLowMemory(void);
-  void vMarkerNewNextBufferMarker(void);
   void vMarkerNewStartedMarker(void);
   void vMarkerNewStartMarker(void);
-  void vMarkerNewStreamDefRht(void);
   void vMarkerNewTrigger(void);
   void vMarkerNewTriggeredMarker(void);
   void vMarkerPipeIn(void);
@@ -1254,18 +1251,6 @@ void vJobIdLastJobIdFetch(void);
 
   // Monitor (Nodes)
   void vMonitorUpdateNodeStatus(void);
-
-  // named buffer
-  void vNamedBufferDelete(void);
-  void vNamedBufferGet(void);
-  void vNamedBufferGetAndClear(void);
-  void vNamedBufferIsNotNull(void);
-  void vNamedBufferIsNull(void);
-  void vNamedBufferMorphClass(void);
-  void vNamedBufferNameFetch(void);
-  void vNamedBufferNameStore(void);
-  void vNamedBufferPipeIn(void);
-  void vNamedBufferSet(void);
 
   // network
   void vNetworkReset(void);
@@ -1595,7 +1580,6 @@ void vJobIdLastJobIdFetch(void);
   void vRegSendsHandleLeaving(void);
   void vRegSendsHandleStart(void);
   void vRegSendsHandleStreamDef(void);
-  void vRegSendsHandleStreamDefRht(void);
   void vRegSendsHandleTriggered(void);
   void vRegSendsIsNull(void);
   void vRegSendsNew(void);
@@ -1661,7 +1645,7 @@ void vJobIdLastJobIdFetch(void);
   void vPipeinDelete(void);
   void vPipeinGet(void);
   void vPipeinGetAndClear(void);
-	void vPipeinBufferType(void);
+	void vPipeinFetchBufferType(void);
   void vPipeinIsBuffer(void);
   void vPipeinIsMarker(void);
   void vPipeinIsNull(void);
@@ -1717,14 +1701,14 @@ void vJobIdLastJobIdFetch(void);
 	void vRowBufferAddTableSizes(void);
 	void vRowBufferAddVerifyIndex(void);
 	void vRowBufferAddVerifyTable(void);
+  void vRowBufferBufferNameFetch(void);
+  void vRowBufferBufferTypeFetch(void);
   void vRowBufferCopy(void);
   void vRowBufferDecile(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetBufferIdAsAddr(void);
   void vRowBufferGetAndClear(void);
-	void vRowBufferGetBufferName(void);
-  void vRowBufferGetBufferType(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
@@ -1737,6 +1721,7 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferSetBufferType(void);
   void vRowBufferSetDeciderCopies(void);
   void vRowBufferSetLglPtn(void);
+	void vRowBufferTableDefNameFetch(void);
   void vRowBufferToCsv(void);
   void vRowBufferAddTotalCount(void);
   void vRowBufferOperandDump(void);
@@ -1744,10 +1729,10 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferErrAddCommandError(void);
   void vRowBufferErrAddExecError(void);
   void vRowBufferErrDelete(void);
+  void vRowBufferErrBufferTypeFetch(void);
 	void vRowBufferErrGet(void);
 	void vRowBufferErrGetAndClear(void);
   void vRowBufferErrGetBufferIdAsAddr(void);
-  void vRowBufferErrGetBufferType(void);
   void vRowBufferErrIsNull(void);
   void vRowBufferErrIsNotNull(void);
 	void vRowBufferErrNew(void);
@@ -2101,6 +2086,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableDefDump(void);
   void vTableDefGet(void);
   void vTableDefSet(void);
+	void vTableDefTablePtnGet(void);
 
 	// reg TableDefErr table
 	void vTableDefErrColumnFetch(void);

@@ -340,28 +340,28 @@
   "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .verbose
 
   // handle AFFECTEDROWS
-  PipeIn[].bufferType BT_AFFECTEDROWS == if
+  PipeIn[].bufferType@ BT_AFFECTEDROWS == if
     adaptorWL_affectedRows
     true
     exit
   then
 
-  // handle EXECERRORS
-  PipeIn[].bufferType BT_EXECERRORS == if
-    adaptorWL_ExecErrors
-    true
-    exit
-  then
-
   // handle BT_COMPILEERRORS
-  PipeIn[].bufferType BT_COMPILEERRORS == if
+  PipeIn[].bufferType@ BT_COMPILEERRORS == if
     adaptorWL_CompileErrors
     true
     exit
   then
 
+  // handle EXECERRORS
+  PipeIn[].bufferType@ BT_EXECERRORS == if
+    adaptorWL_ExecErrors
+    true
+    exit
+  then
+
   // handle BT_WARNINGS
-  PipeIn[].bufferType BT_WARNINGS == if
+  PipeIn[].bufferType@ BT_WARNINGS == if
     adaptorWL_Warning
     true
     exit

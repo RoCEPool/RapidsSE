@@ -20,7 +20,7 @@
   // open the file for writing
   "/tmp/SE_Stats.csv" OPEN_APPEND op__file if
 
-    PipeIn[].bufferType BT_LOCKSTATS == assert
+    PipeIn[].bufferType@ BT_LOCKSTATS == assert
 
     PipeIn[] to RowBuffer[]
     nullptr to PipeIn[]

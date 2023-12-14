@@ -22,7 +22,7 @@
 
   sTableDefNm TableDef:discover
   
-  RowBuffer[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
 
   i_Col RowBuffer[].colVal@
 ;

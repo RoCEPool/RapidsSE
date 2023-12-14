@@ -354,7 +354,8 @@ bool Stage::bEnqueueInvoke(void)
     if (!pOp->szOpNm()->bSame("eatAll"_Stz) &&
         !pOp->szOpNm()->bSame("statWrite"_Stz)) {
 
-      RASSERT(pOp->szOpNm()->bSame("start"_Stz));
+      RASSERT(pOp->szOpNm()->bSame("start"_Stz) ||
+							pOp->szOpNm()->bSame("startDemon"_Stz));
 
       return true;
     }

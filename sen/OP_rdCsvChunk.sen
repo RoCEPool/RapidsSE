@@ -42,8 +42,8 @@
 
   0 0 locals| iOffset nBytes |
 
-  // handle only SEEKOFFSETS
-  PipeIn[].bufferType BT_SEEKOFFSETS == not if
+  // handle only BT_SEEKOFFSETS
+  PipeIn[].bufferType@ BT_SEEKOFFSETS == not if
     Pipein[].pipeout
     true
     exit
@@ -52,9 +52,9 @@
   PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  RowBuffer[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
   begin
-    infoSetRow[].isNull
+    Row[].isNull
   not while
 
     discern::rdCsvChunk not if
@@ -74,7 +74,7 @@
       then
       */
 
-      infoSetRow[].get RowBuffer[].rdCsvChunk
+      Row[].get RowBuffer[].rdCsvChunk
         to CsvBuffer[]
         to iOffset
         to nBytes
@@ -86,7 +86,7 @@
       then
 
       CsvBuffer[].pipeOut
-      RowBuffer[].nextRow to infoSetRow[]
+      RowBuffer[].nextRow to Row[]
 
     then
 
@@ -107,9 +107,9 @@
   PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  RowBuffer[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
   begin
-    infoSetRow[].isNull
+    Row[].isNull
   not while
 
    [args].operands attachmap::operands@ [args].operands > and if
@@ -129,9 +129,9 @@
 
       discern::rdCsvChunk discard
       
-      infoSetRow[].get RowBuffer[].rdCsvChunk to CsvBuffer[]
+      Row[].get RowBuffer[].rdCsvChunk to CsvBuffer[]
       CsvBuffer[].pipeOut
-      RowBuffer[].nextRow to infoSetRow[]
+      RowBuffer[].nextRow to Row[]
 
     then
 

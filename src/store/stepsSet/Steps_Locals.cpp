@@ -287,8 +287,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("InfoSetRow[]"_Stz)) {
-    pCurrentWord->vEncodeCall("InfoSetRow[].set"_Stz);
+  else if (szTerm->bSame("Row[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Row[].set"_Stz);
     EXIT();
     return;
   }
@@ -314,11 +314,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("MetaGet[]"_Stz)) {
     pCurrentWord->vEncodeCall("MetaGet[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("NamedBuffer[]"_Stz)) {
-    pCurrentWord->vEncodeCall("NamedBuffer[].set"_Stz);
     EXIT();
     return;
   }

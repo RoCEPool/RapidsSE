@@ -26,7 +26,8 @@
 /*----------------------------------------------------------------------------*/
 : unload_Path \handler
 
-  Pipein[].bufferType BT_PATH != if
+  // handle BT_PATH only
+  PipeIn[].bufferType@ BT_PATH != if
     PipeIn[].pipeout
     true
     exit
@@ -37,22 +38,22 @@
   //C_TDEF_PATH infoSetRow:getFirstRow
 
   C_TDEF_PATH op__tableDef assert
-  RowBuffer[].firstRow to InfoSetRow[]
+  RowBuffer[].firstRow to Row[]
 
   // extract the values
   //0 InfoSet[].colVal@ locals| sPath   |
   //1 InfoSet[].colVal@ locals| iPathNo |
   //2 InfoSet[].colVal@ locals| iPathOf |
 
-  0 InfoSetRow[].getVchColumn locals| sPath   |
-  1 InfoSetRow[].getVchColumn locals| iPathNo |
-  2 InfoSetRow[].getIntColumn locals| iPathOf |
+  0 Row[].getVchColumn locals| sPath   |
+  1 Row[].getVchColumn locals| iPathNo |
+  2 Row[].getIntColumn locals| iPathOf |
 
   // unload to disk
   iPathOf iPathNo sPath unload.toDisk
 
   RowBuffer[].delete
-  nullptr to InfoSetRow[]
+  nullptr to Row[]
 
   true
 ;

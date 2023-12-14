@@ -27,7 +27,7 @@
 
   PipeIn[]\clear to RowBuffer[]
 
-  RowBuffer[].getBufferType BT_NODEINFO != if
+  RowBuffer[].bufferType@ BT_NODEINFO != if
     RowBuffer[].pipeout
     true
     exit
