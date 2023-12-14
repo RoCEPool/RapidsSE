@@ -6,8 +6,6 @@
 #include "CommandParser.hpp"
 
 #include "../thirdparty/antlr/generated/sqlLexer.h"
-#include "../thirdparty/antlr/generated/sqlParser.h"
-#include "../thirdparty/antlr/generated/sqlBaseVisitor.h"
 
 #include "store/sqlCompiler/common/ErrorListener.hpp"
 #include "store/sqlCompiler/common/SqlException.hpp"
@@ -169,6 +167,22 @@ antlrcpp::Any CommandParser::visitStatements(Parser::sqlParser::StatementsContex
   // Save the whole query text which may contain multiple statements.
   antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+  if (queryStlStr.length() > (u8) m_sQueryStr.nAreaBytes() - 1) {
+    eEC eErrorCode = EC_STATEMENT_TOO_LONG;
+    Stz* szFmt = "%s: Statement is %lld bytes; max length is %lld bytes: %s"_Stz;
+
+    s256 sStmtBuf;
+    sStmtBuf.vCopy((Stz*) queryStlStr.c_str(), 40);
+    sStmtBuf.vCat("..."_Stz);
+
+    Parser::SemanticException::vThrow(eErrorCode,
+                                      szFmt,
+                                      aErrorMsg[eErrorCode],
+                                      queryStlStr.length(),
+                                      m_sQueryStr.nAreaBytes() - 1,
+                                      sStmtBuf.szStz());
+  }
 
   m_sQueryStr.vCopy((Stz*) queryStlStr.c_str());
 

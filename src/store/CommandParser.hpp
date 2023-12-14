@@ -4,7 +4,7 @@
 #pragma once
 
 #include "sqlBaseVisitor.h"
-#include "SqlException.hpp"
+//#include "store/sqlCompiler/common/SqlException.hpp"
 
 namespace STORE
 {

@@ -114,14 +114,14 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
       sErrStr.vSprint("Line: %lld; Column: %lld; "_Stz, e.iLine(), e.iColumn());
     }
 
-    sErrStr.vConcat(e.szError());
+    sErrStr.vConcat(e.szError(), sErrStr.nFreeBytes() - 1);
     return nullptr;
 
   } catch (Parser::SemanticException& e) {
     delete pCommonTagSet;
     delete pCommandParser;
     eErrCode = e.eErrorCode();
-    sErrStr.vCopy(e.szError());
+    sErrStr.vCopy(e.szError(), sErrStr.nFreeBytes() - 1);
     return nullptr;
   }
 

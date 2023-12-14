@@ -48,8 +48,9 @@ void ErrorListener::syntaxError(antlr4::Recognizer *recognizer,
     m_bGotError = true;
     m_iLine = line;
     m_iColumn = charPositionInLine;
-    m_sToken.vCopy( (offendingSymbol == nullptr ? ""_Stz : (Stz*) offendingSymbol->getText().c_str()) );
-    m_sErrorMsg.vCopy((Stz*) msg.c_str());
+    m_sToken.vCopy( (offendingSymbol == nullptr ? ""_Stz : (Stz*) offendingSymbol->getText().c_str()),
+                    m_sToken.nAreaBytes() - 1 );
+    m_sErrorMsg.vCopy((Stz*) msg.c_str(), m_sErrorMsg.nAreaBytes() - 1);
   }
   
 }
