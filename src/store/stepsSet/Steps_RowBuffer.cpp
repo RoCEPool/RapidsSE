@@ -37,6 +37,9 @@ void Step::vAddSteps_RowBuffer(void)
 
   vAddStep("rowBuffer.operandDump"_Stz,      &Step::vRowBufferOperandDump);
 
+	vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
+	vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
+
 	vAddStep("RowBuffer[].addAnalyzeIndex"_Stz,&Step::vRowBufferAddAnalyzeIndex);
 	vAddStep("RowBuffer[].addAnalyzeTable"_Stz,&Step::vRowBufferAddAnalyzeTable);
 	vAddStep("RowBuffer[].addBpaObjects"_Stz,  &Step::vRowBufferAddBpaObjects);
@@ -48,12 +51,18 @@ void Step::vAddSteps_RowBuffer(void)
 	vAddStep("RowBuffer[].addListIndex"_Stz,   &Step::vRowBufferAddListIndex);
 	vAddStep("RowBuffer[].addListPartitions"_Stz,&Step::vRowBufferAddListPartitions);
 	vAddStep("RowBuffer[].addLogMsg"_Stz,        &Step::vRowBufferAddLogMsg);
+	vAddStep("RowBuffer[].addLockStats"_Stz,     &Step::vRowBufferAddLockStats);
 	vAddStep("RowBuffer[].addMemoryLeaks"_Stz,   &Step::vRowBufferAddMemoryLeaks);
 	vAddStep("RowBuffer[].addNodeHeartbeat"_Stz, &Step::vRowBufferAddNodeHeartbeat);
+	vAddStep("RowBuffer[].addNodeInfo"_Stz,      &Step::vRowBufferAddNodeInfo);
 	vAddStep("RowBuffer[].addNodeStatus"_Stz,    &Step::vRowBufferAddNodeStatus);
 	vAddStep("RowBuffer[].addPingInfo"_Stz,      &Step::vRowBufferAddPingInfo);
+	vAddStep("RowBuffer[].addProgressUnits"_Stz, &Step::vRowBufferAddProgressUnits);
 	vAddStep("RowBuffer[].addPwfInfo"_Stz,       &Step::vRowBufferAddPwfInfo);
+	vAddStep("RowBuffer[].addRowCount"_Stz,      &Step::vRowBufferAddRowCount);
+	vAddStep("RowBuffer[].addRowVargs"_Stz,      &Step::vRowBufferAddRowVargs);
 	vAddStep("RowBuffer[].addTotalCount"_Stz,    &Step::vRowBufferAddTotalCount);
+	vAddStep("RowBuffer[].addTotalUnits"_Stz,    &Step::vRowBufferAddTotalUnits);
 	vAddStep("RowBuffer[].addShowCluster"_Stz,   &Step::vRowBufferAddShowCluster);
 	vAddStep("RowBuffer[].addSizeIndex"_Stz,     &Step::vRowBufferAddSizeIndex);
 	vAddStep("RowBuffer[].addSizeTable"_Stz,     &Step::vRowBufferAddSizeTable);
@@ -61,50 +70,39 @@ void Step::vAddSteps_RowBuffer(void)
 	vAddStep("RowBuffer[].addTableSizes"_Stz,    &Step::vRowBufferAddTableSizes);
 	vAddStep("RowBuffer[].addVerifyIndex"_Stz,   &Step::vRowBufferAddVerifyIndex);
 	vAddStep("RowBuffer[].addVerifyTable"_Stz,   &Step::vRowBufferAddVerifyTable);
+	vAddStep("RowBuffer[].addWarning"_Stz,       &Step::vRowBufferAddWarning);
 
-  vAddStep("RowBuffer[]"_Stz,                  &Step::vRowBufferGet);
-  vAddStep("RowBuffer[]\\clear"_Stz,           &Step::vRowBufferGetAndClear);
-  vAddStep("RowBuffer[].bufferId"_Stz,         &Step::vRowBufferGetBufferIdAsAddr);
-  vAddStep("RowBuffer[].copy"_Stz,             &Step::vRowBufferCopy);
-  vAddStep("RowBuffer[].decile"_Stz,           &Step::vRowBufferDecile);
-  vAddStep("RowBuffer[].delete"_Stz,           &Step::vRowBufferDelete);
+  vAddStep("RowBuffer[].bufferId@"_Stz,        &Step::vRowBufferBufferIdAsAddrFetch);
 	vAddStep("RowBuffer[].bufferName@"_Stz,      &Step::vRowBufferBufferNameFetch);
 	vAddStep("RowBuffer[].bufferType@"_Stz,      &Step::vRowBufferBufferTypeFetch);
+	vAddStep("RowBuffer[].bufferType!"_Stz,      &Step::vRowBufferBufferTypeStore);
+	vAddStep("RowBuffer[].chunkFile"_Stz,        &Step::vRowBufferChunkFile);
+  vAddStep("RowBuffer[].copy"_Stz,             &Step::vRowBufferCopy);
+	vAddStep("RowBuffer[].colVal@"_Stz,          &Step::vRowBufferColValFetch);
+  vAddStep("RowBuffer[].decile"_Stz,           &Step::vRowBufferDecile);
+  vAddStep("RowBuffer[].delete"_Stz,           &Step::vRowBufferDelete);
   vAddStep("RowBuffer[].get"_Stz,              &Step::vRowBufferGet);
-  vAddStep("RowBuffer[].insdelIntoTable"_Stz,  &Step::vRowBufferInsdelIntoTable);
+	vAddStep("RowBuffer[].firstRow"_Stz,         &Step::vRowBufferFirstRow);
+	vAddStep("RowBuffer[].infoRows"_Stz,         &Step::vRowBufferInfoRows);
+	vAddStep("RowBuffer[].insdelIntoTable"_Stz,  &Step::vRowBufferInsdelIntoTable);
+	vAddStep("RowBuffer[].isProgress"_Stz,       &Step::vRowBufferIsProgress);
+	vAddStep("RowBuffer[].isTotalUnits"_Stz,     &Step::vRowBufferIsTotalUnits);
+	vAddStep("RowBuffer[].isWarning"_Stz,        &Step::vRowBufferIsWarning);
   vAddStep("RowBuffer[].isNotNull"_Stz,        &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,           &Step::vRowBufferIsNull);
   vAddStep("RowBuffer[].iterate"_Stz,          &Step::vRowBufferIterate);
+	vAddStep("RowBuffer[].name"_Stz,             &Step::vRowBufferName);
 	vAddStep("RowBuffer[].new"_Stz,              &Step::vRowBufferNew);
+	vAddStep("RowBuffer[].nextRow"_Stz,          &Step::vRowBufferNextRow);
   vAddStep("RowBuffer[].print"_Stz,            &Step::vRowBufferPrint);
   vAddStep("RowBuffer[].ptnId"_Stz,            &Step::vRowBufferPtnId);
+	vAddStep("RowBuffer[].rdCsvChunk"_Stz,       &Step::vRowBufferRdCsvChunk);
   vAddStep("RowBuffer[].rows"_Stz,             &Step::vRowBufferRows);
   vAddStep("RowBuffer[].set"_Stz,              &Step::vRowBufferSet);
-	vAddStep("RowBuffer[].setBufferType"_Stz,    &Step::vRowBufferSetBufferType);
   vAddStep("RowBuffer[].setDeciderCopies"_Stz, &Step::vRowBufferSetDeciderCopies);
   vAddStep("RowBuffer[].setLglPtn"_Stz,        &Step::vRowBufferSetLglPtn);
   vAddStep("RowBuffer[].tableDefName@"_Stz,    &Step::vRowBufferTableDefNameFetch);
 	vAddStep("RowBuffer[].toCsv"_Stz,            &Step::vRowBufferToCsv);
-
-	vAddStep("RowBuffer[].addLockStats"_Stz,     &Step::vRowBufferAddLockStats);
-	vAddStep("RowBuffer[].addNodeInfo"_Stz,      &Step::vRowBufferAddNodeInfo);
-	vAddStep("RowBuffer[].addProgressUnits"_Stz, &Step::vRowBufferAddProgressUnits);
-	vAddStep("RowBuffer[].addRowCount"_Stz,      &Step::vRowBufferAddRowCount);
-	vAddStep("RowBuffer[].addRowVargs"_Stz,      &Step::vRowBufferAddRowVargs);
-	vAddStep("RowBuffer[].addTotalUnits"_Stz,    &Step::vRowBufferAddTotalUnits);
-	vAddStep("RowBuffer[].addWarning"_Stz,       &Step::vRowBufferAddWarning);
-	vAddStep("RowBuffer[].chunkFile"_Stz,        &Step::vRowBufferChunkFile);
-	vAddStep("RowBuffer[].colVal@"_Stz,          &Step::vRowBufferColValFetch);
-	vAddStep("RowBuffer[].delete"_Stz,           &Step::vRowBufferDelete);
-	vAddStep("RowBuffer[].firstRow"_Stz,         &Step::vRowBufferFirstRow);
-	vAddStep("RowBuffer[].get"_Stz,              &Step::vRowBufferGet);
-	vAddStep("RowBuffer[].infoRows"_Stz,         &Step::vRowBufferInfoRows);
-	vAddStep("RowBuffer[].isProgress"_Stz,       &Step::vRowBufferIsProgress);
-	vAddStep("RowBuffer[].isTotalUnits"_Stz,     &Step::vRowBufferIsTotalUnits);
-	vAddStep("RowBuffer[].isWarning"_Stz,        &Step::vRowBufferIsWarning);
-	vAddStep("RowBuffer[].name"_Stz,             &Step::vRowBufferName);
-	vAddStep("RowBuffer[].nextRow"_Stz,          &Step::vRowBufferNextRow);
-	vAddStep("RowBuffer[].rdCsvChunk"_Stz,       &Step::vRowBufferRdCsvChunk);
 	vAddStep("RowBuffer[].writeCsv"_Stz,         &Step::vRowBufferWriteCsv);
 }
 
@@ -1045,6 +1043,20 @@ void Step::vRowBufferBufferTypeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBuffer[].bufferType! -- store buffer type                               */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferBufferTypeStore(void)
+{
+	ENTRY();
+
+	eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
+
+	m_pLogicUnit->m_xpRowBuffer->vBufferType(eBufferType);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBuffer[].copy-- copy the row buffer                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferCopy(void)
@@ -1123,9 +1135,9 @@ void Step::vRowBufferGetAndClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* RowBuffer[].bufferId -- fetch buffer id as address                         */
+/* RowBuffer[].bufferId@ -- fetch buffer id as address                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRowBufferGetBufferIdAsAddr(void)
+void Step::vRowBufferBufferIdAsAddrFetch(void)
 {
   ENTRY();
 
@@ -1269,20 +1281,6 @@ void Step::vRowBufferSet(void)
   m_pLogicUnit->m_xpRowBuffer = _pRowBuffer(pOperand);
 
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].setBufferType -- set buffer type                               */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferSetBufferType(void)
-{
-	ENTRY();
-
-	eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
-
-	m_pLogicUnit->m_xpRowBuffer->vBufferType(eBufferType);
-
-	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

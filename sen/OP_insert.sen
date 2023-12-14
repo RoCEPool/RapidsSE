@@ -158,7 +158,7 @@
 
       // create an rowBuffer operand
       TableDef[] RowBuffer[].new
-      BT_AFFECTEDROWS RowBuffer[].setBufferType
+      BT_AFFECTEDROWS RowBuffer[].bufferType!
 
       // insert row counts to the rowBuffer
       rowCounts[].getCounters@@ rowCounts[].numCounters RowBuffer[].addRowVargs

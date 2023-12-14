@@ -87,7 +87,7 @@
   
   ToKeyHshRow[].countersAreZero not if
     TableDef[] RowBuffer[].new
-    BT_AFFECTEDROWS RowBuffer[].setBufferType
+    BT_AFFECTEDROWS RowBuffer[].bufferType!
 
     0 0 0 ToKeyHshRow[].counters@@ 6 RowBuffer[].addRowVargs
 

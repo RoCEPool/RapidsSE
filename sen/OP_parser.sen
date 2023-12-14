@@ -47,7 +47,7 @@
 
     // create a rowBuffer operand for explain
     TableDef[] RowBuffer[].new
-    BT_EXPLAIN RowBuffer[].setBufferType
+    BT_EXPLAIN RowBuffer[].bufferType!
 
     // execute explain for this operator
     PlanOperand[] "parser" sqlCompiler::doExplain

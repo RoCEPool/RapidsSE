@@ -38,7 +38,7 @@
 
     // create an rowBuffer operand for C_TDEF_TOTALUNITS
     TableDef[] RowBuffer[].new
-    BT_TOTALUNITS RowBuffer[].setBufferType
+    BT_TOTALUNITS RowBuffer[].bufferType!
 
     // add fileSize to the rowBuffer
     sFileNm iFileSizeMb TableDef[] RowBuffer[].addTotalUnits assert

@@ -178,7 +178,7 @@
 
 : RowBuffer[].pipeOut
 
-  RowBuffer[].bufferId to BufferId[]
+  RowBuffer[].bufferId@ to BufferId[]
 
   nullptr to RowBuffer[]
 
