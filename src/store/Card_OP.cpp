@@ -103,8 +103,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_PROJECT:
       case CK_o_GBYAGG:
       case CK_o_ORDAGG:
-        pCI->G.p_OP->vEnsure_stream(pCI);
-        pCI->G.p_emit = pCI->G.p_OP->pSub_emit();
+        pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -112,17 +111,16 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_INDEXJOIN:
       case CK_o_INDEXSCAN:
       case CK_o_SCAN:
-        pCI->G.p_OP->vEnsure_stream(pCI);
-//        pCI->G.p_OP->vCreate_emit(pCI);
-        pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
         if (pCI->Flux.m_pArriving)
           pCI->G.p_emit = pCI->Flux.m_pArriving->pReducedCopy();
         else
           pCI->G.p_emit = new Card_Emit;
 
+        pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
         pCI->G.p_emit->vAppend_streamDef_table(pCI);
-        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
 
+        pCI->G.p_OP->vEnsure_stream(pCI);
+        pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
         break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -134,10 +132,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       case CK_o_SORT:
       case CK_o_TOP:
       case CK_o_WHERE:
-        pCI->G.p_OP->vEnsure_stream(pCI);
-//        pCI->G.p_OP->vCreate_emit(pCI);
-        RASSERT(pCI->Flux.m_pArriving);
         pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
+        pCI->G.p_OP->vEnsure_stream(pCI);
         pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
         break;
 
