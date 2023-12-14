@@ -27,7 +27,7 @@
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // get the ptn stream def from the table
   Table[].ptnDef@ to PtnDef[]
@@ -38,7 +38,7 @@
     I PtnDef[].column@
     TableDef[] RowBuffer[].addColumnDef  not if
       RowBuffer[].pipeOut
-      TableDef[] RowBuffer[].new
+      BT_DATA TableDef[] RowBuffer[].new
       I PtnDef[].column@
       TableDef[] RowBuffer[].addColumnDef assert
     then

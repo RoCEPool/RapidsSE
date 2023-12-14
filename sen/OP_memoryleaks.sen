@@ -109,7 +109,7 @@
   memoryleaks_sendStreamDef
 
   // create a rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // Record the memory object allocations
   TableDef[] RowBuffer[].addMemoryLeaks if

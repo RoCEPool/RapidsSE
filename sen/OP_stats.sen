@@ -37,7 +37,7 @@
   C_TDEF_LOCKSTATS op__tableDef assert
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add lock  to the rowBuffer
   TableDef[] RowBuffer[].addLockStats assert
@@ -57,7 +57,7 @@
   C_TDEF_LOCKSTATS op__tableDef assert
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add lock to the rowBuffer
   TableDef[] RowBuffer[].addLockStats assert

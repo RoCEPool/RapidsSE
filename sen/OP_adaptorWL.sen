@@ -338,7 +338,6 @@
 
   "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .verbose
 
-  PipeIn[]\clear to
   // handle AFFECTEDROWS
   PipeIn[].bufferType@ BT_AFFECTEDROWS == if
     adaptorWL_affectedRows

@@ -28,7 +28,7 @@
     StreamDefLft[].pipeOut
 
     // create rowBuffer
-    TableDef[] RowBuffer[].new
+    BT_DATA tableDef[] RowBuffer[].new
 
     // populate rowBuffer
     TableDef[] RowBuffer[].addBpaRegions
@@ -53,7 +53,7 @@
     StreamDefLft[].pipeOut
 
     // create rowBuffer
-    TableDef[] RowBuffer[].new
+    BT_DATA TableDef[] RowBuffer[].new
 
     // populate rowBuffer
     TableDef[] RowBuffer[].addBpaObjects

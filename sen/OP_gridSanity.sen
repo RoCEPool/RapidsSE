@@ -25,7 +25,7 @@
   RowBuffer[].firstRow to Row[]
 
   // create an infoSet operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add nodeInfo to the infoSet
   Row[].get TableDef[] RowBuffer[].addgridSanity assert

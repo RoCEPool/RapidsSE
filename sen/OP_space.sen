@@ -22,7 +22,7 @@
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add spaceInfo to the rowBuffer
   TableDef[] RowBuffer[].addSpaceInfo assert

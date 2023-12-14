@@ -29,16 +29,15 @@
     // get size of file
     File0[].size C_1Mb / to iFileSizeMb
 
-    // create a streamDef for C_TDEF_TOTALUNITS
+    // create a tableDef for C_TDEF_TOTALUNITS
     C_TDEF_TOTALUNITS op__tableDef assert
 
     "<OP_chunk>" [job].tagSet@ tagSet.hasName if
       iFileSizeMb sFileNm "OP_chunk: %v : %vMB\n" .putf
     then
 
-    // create an rowBuffer operand for C_TDEF_TOTALUNITS
-    TableDef[] RowBuffer[].new
-    BT_TOTALUNITS RowBuffer[].bufferType!
+    // create a rowBuffer operand for C_TDEF_TOTALUNITS
+    BT_TOTALUNITS TableDef[] RowBuffer[].new
 
     // add fileSize to the rowBuffer
     sFileNm iFileSizeMb TableDef[] RowBuffer[].addTotalUnits assert
@@ -98,7 +97,7 @@
     //counter1[] "counter1 %v" .printf
 
     // create an rowBuffer operand
-    TableDef[] RowBuffer[].new
+    BT_DATA TableDef[] RowBuffer[].new
     RowBuffer[].chunkFile counter2[] + to counter2[]
 
     RowBuffer[].pipeOut

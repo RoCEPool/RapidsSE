@@ -30,14 +30,14 @@
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // insert a row in the infoset for each column
   iColumns 0 do
     I Table[].column@
     TableDef[] RowBuffer[].addColumnDef not if
       RowBuffer[].pipeOut
-      TableDef[] RowBuffer[].new
+      BT_DATA TableDef[] RowBuffer[].new
       I Table[].column@
       TableDef[] RowBuffer[].addColumnDef assert
     then

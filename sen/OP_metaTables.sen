@@ -32,7 +32,7 @@
 
       sTableNm TableDef[] RowBuffer[].addListContents  not if
         RowBuffer[].pipeOut
-        TableDef[] RowBuffer[].new
+        BT_DATA TableDef[] RowBuffer[].new
         sTableNm TableDef[] RowBuffer[].addListContents assert
       then
 
@@ -70,7 +70,7 @@
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   true
 ;

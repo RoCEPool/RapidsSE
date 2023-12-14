@@ -1223,9 +1223,11 @@ void Step::vRowBufferNew(void)
 
 	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
+	eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
+
 	StreamDef* pStreamDef = pTable->pStreamDef();
 
-	m_pLogicUnit->m_xpRowBuffer = new RowBuffer(pStreamDef);
+	m_pLogicUnit->m_xpRowBuffer = new RowBuffer(pStreamDef, eBufferType);
 
 	EXIT();
 }

@@ -13,7 +13,7 @@
   <streamDef> op__tableDef assert
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add nodeInfo to the R\rowBuffer
   TableDef[] RowBuffer[].addnodeInfo assert

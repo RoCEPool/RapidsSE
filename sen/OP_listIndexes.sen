@@ -45,7 +45,7 @@
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the infoSet for each word
@@ -57,7 +57,7 @@
 
     pIndex TableDef[] RowBuffer[].addListIndex  not if
       RowBuffer[].pipeOut
-      TableDef[] RowBuffer[].new
+      BT_DATA TableDef[] RowBuffer[].new
       pIndex TableDef[] RowBuffer[].addListIndex assert
     then
 

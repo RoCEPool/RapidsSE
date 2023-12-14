@@ -32,7 +32,7 @@
     // insert index analysis
     I Index[] TableDef[] RowBuffer[].addAnalyzeIndex  not if
     RowBuffer[].pipeOut
-      TableDef[] RowBuffer[].new
+      BT_DATA TableDef[] RowBuffer[].new
       I Index[] TableDef[] RowBuffer[].addAnalyzeIndex assert
     then
 

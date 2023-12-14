@@ -32,7 +32,7 @@
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  TableDef[] rowBuffer[].new
+  BT_DATA TableDef[] rowBuffer[].new
 
   Folder[] dic.lastWord dup
   iterate
@@ -53,7 +53,7 @@
       // insert table size
       sTableNm TableDef[] rowBuffer[].addTableSizes  not if
         rowBuffer[].pipeOut
-        TableDef[] RowBuffer[].new
+        BT_DATA TableDef[] RowBuffer[].new
         sTableNm TableDef[] rowBuffer[].addTableSizes assert
       then
 

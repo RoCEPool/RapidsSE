@@ -90,8 +90,7 @@
 
   //sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
 
-  TableDef[] RowBuffer[].new
-  BT_COMMAND RowBuffer[].bufferType!
+  BT_COMMAND TableDef[] RowBuffer[].new
 
   sTags sCmd  2 RowBuffer[].addRowVargs
 
