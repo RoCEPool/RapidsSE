@@ -46,8 +46,7 @@
     TableDef[] StreamDefLft[].new
 
     // create a rowBuffer operand for explain
-    TableDef[] RowBuffer[].new
-    BT_EXPLAIN RowBuffer[].setBufferType
+    BT_EXPLAIN TableDef[] RowBuffer[].new
 
     // execute explain for this operator
     PlanOperand[] "parser" sqlCompiler::doExplain

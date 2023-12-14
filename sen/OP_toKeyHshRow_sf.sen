@@ -86,14 +86,13 @@
   // pipeout load results
   /*
   ToKeyHshRow[].countersAreZero not if
-    TableDef[] RowBuffer[].new
-    BT_AFFECTEDROWS RowBuffer[].setBufferType
+    BT_AFFECTEDROWS TableDef[] RowBuffer[].new
 
     0 0 0 toKeyHshRow[].counters@@ 6 RowBuffer[].addRowVargs
 
     RowBuffer[].pipeOut
   then
-*/
+  */
 
   // -- -- -- -- -- --
 

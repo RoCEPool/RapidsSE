@@ -16,7 +16,7 @@
   C_TDEF_COUNT op__tableDef assert
 
   // create a new streamDef
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // create an rowBuffer operand
   Table[] TableDef[] RowBuffer[].addRowCount assert

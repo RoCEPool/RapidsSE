@@ -37,36 +37,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the command error info set and pipe it out                          */
-/*----------------------------------------------------------------------------*/
-: op__cmdErr params| errorCode errorMsg |
-
-  [ddlLock].testDrop
-
-  // toggle to default abnormal handlers
-  "default_abnormalHandlers" FIND execute
-
-  // delete if any rowBufferErr in the register
-  RowBufferErr[].isNotNull if
-    RowBufferErr[].delete
-  then
-
-  // create the tableDef for C_TDEF_COMPILEERRORS
-  C_TDEF_COMPILEERRORS "op__tableDef_err" find execute assert
-
-  // create an rowBuffer operand for commandErrors
-  BT_COMPILEERRORS TableDefErr[] RowBufferErr[].new
-
-  errorMsg errorCode TableDefErr[] RowBufferErr[].addCommandError assert
-
-  // pipeout the CMDERROR rowBuffer
-  RowBufferErr[].pipeOut
-
-  ErrorMarker[].newErrorMarker
-  ErrorMarker[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
 /* create the exec error info set                                             */
 /*----------------------------------------------------------------------------*/
 : op__execErr params| errorCode |

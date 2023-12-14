@@ -27,7 +27,7 @@
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add pingInfo to the rowBuffer
   TableDef[] RowBuffer[].addPingInfo assert

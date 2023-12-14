@@ -11,8 +11,7 @@
 
   //"Operand:- EV_D_ROWBUFFER" .verbose
 
-  PipeIn[] to RowBuffer[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to RowBuffer[]
 
   // handle BT_NODEINFO only
   RowBuffer[].bufferType@ BT_NODEINFO != if
@@ -21,11 +20,13 @@
     exit
   then
 
-  // get the first row of the infoSet (nodeInfo)
+  // get the first row of the rowBuffer (nodeInfo)
   RowBuffer[].firstRow to Row[]
 
-  // create an infoSet operand
-  TableDef[] RowBuffer[].new
+  RowBuffer[] to DataBuffer[]
+
+  // create an rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add nodeInfo to the infoSet
   Row[].get TableDef[] RowBuffer[].addgridSanity assert
@@ -33,8 +34,8 @@
   // pipeout the rowBuffer
   RowBuffer[].pipeOut
 
-  // delete the rowBuffer
-  RowBuffer[].delete
+  // delete the dataBuffer
+  DataBuffer[].delete
 
   true
 ;
@@ -50,9 +51,9 @@
   PipeIn[].pipeOut
 
   // find the __gridSanity table
-  C_TDEF_gridSanity op__tableDef assert
+  C_TDEF_GRIDSANITY op__tableDef assert
 
-  // create a new stream defnition as per the nodeinfo being sent
+  // create a new stream definition as per the nodeinfo being sent
   TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef

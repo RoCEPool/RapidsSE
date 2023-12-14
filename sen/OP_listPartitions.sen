@@ -27,7 +27,7 @@
   StreamDefLft[].pipeOut
 
   begin
-    TableDef[] RowBuffer[].new
+    BT_DATA TableDef[] RowBuffer[].new
     iCursor Table[].listPartition to iCursor
     
     iCursor while

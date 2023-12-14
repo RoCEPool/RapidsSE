@@ -21,7 +21,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   0 locals| pNode |
 
@@ -32,7 +32,7 @@
 
     pNode node.id TableDef[] RowBuffer[].addShowCluster  not if
       RowBuffer[].pipeOut
-      TableDef[] RowBuffer[].new
+      BT_DATA TableDef[] RowBuffer[].new
       pNode node.id TableDef[] RowBuffer[].addShowCluster assert
     then
 

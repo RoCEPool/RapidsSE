@@ -24,8 +24,7 @@
   
   //nPaths 1 OI_COUNT InfoSet:pipeoutRow
 
-  TableDef[] RowBuffer[].new
-    BT_COUNT RowBuffer[].setBufferType
+  BT_COUNT TableDef[] RowBuffer[].new
 
   nPaths 1 RowBuffer[].addRowVargs
 
@@ -50,8 +49,7 @@
     
     //iPathOf iPathNo sPath 3 OI_PATH InfoSet:pipeoutRow
 
-      TableDef[] RowBuffer[].new
-      BT_PATH RowBuffer[].setBufferType
+      BT_PATH TableDef[] RowBuffer[].new
 
       iPathOf iPathNo sPath 3 RowBuffer[].addRowVargs
 

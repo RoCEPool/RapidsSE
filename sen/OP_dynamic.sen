@@ -24,7 +24,7 @@
   Marker[].pipeOut
 
   "default_abnormalHandlers" FIND execute
-  "default_lowMemHandlers" FIND execute
+  "toggle_rowBufferHandler" FIND execute
 
   true
 ;
@@ -84,7 +84,7 @@
 
       //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
       "default_abnormalHandlers" FIND execute
-      "default_lowMemHandlers" FIND execute
+      "toggle_rowBufferHandler" FIND execute
       //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
     else
       errorCode op__execErr
@@ -215,6 +215,7 @@
     exit
   then
 
+  // invoke the dunamically synthesised code
   RowBuffer[] Fun1[] 0 dynamic[].execute not if
     to errorCode
 
@@ -240,7 +241,7 @@
 
       //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
       "default_abnormalHandlers" FIND execute
-      "default_lowMemHandlers" FIND execute
+      "toggle_rowBufferHandler" FIND execute
       //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
     else
       errorCode op__execErr

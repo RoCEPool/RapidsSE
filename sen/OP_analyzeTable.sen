@@ -14,7 +14,7 @@
     exit
   then
 
-  // find the __ table
+  // find the <streamDef> table
   <streamDef> op__tableDef assert
 
   // create a new streamDef
@@ -23,8 +23,8 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  // create an rowBuffer
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add a row for each table ptn
   [grid].ptnsPerNode 0
@@ -32,7 +32,7 @@
     // analyze table
     I Table[] TableDef[] RowBuffer[].addAnalyzeTable  not if
       RowBuffer[].pipeOut
-      TableDef[] RowBuffer[].new
+      BT_DATA TableDef[] RowBuffer[].new
       I Table[] TableDef[] RowBuffer[].addAnalyzeTable assert
     then
 

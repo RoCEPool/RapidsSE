@@ -42,6 +42,7 @@ void Step::vAddSteps_RowBufferErr(void)
 	vAddStep("RowBufferErr[].isNotNull"_Stz,       &Step::vRowBufferErrIsNotNull);
 	vAddStep("RowBufferErr[].isNull"_Stz,          &Step::vRowBufferErrIsNull);
 	vAddStep("RowBufferErr[].new"_Stz,             &Step::vRowBufferErrNew);
+	vAddStep("RowBufferErr[].rows"_Stz,            &Step::vRowBufferErrRows);
 	vAddStep("RowBufferErr[].set"_Stz,             &Step::vRowBufferErrSet);
 }
 
@@ -239,6 +240,18 @@ void Step::vRowBufferErrNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBufferErr[].rows -- get number of rows                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferErrRows(void)
+{
+	ENTRY();
+
+	m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBufferErr->nRows());
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBufferErr[].set -- set operand                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferErrSet(void)
@@ -247,7 +260,7 @@ void Step::vRowBufferErrSet(void)
 
 	Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-	ASSERT(! pOperand || m_pLogicUnit->m_xpRowBuffer.bIsNull());
+	ASSERT(! pOperand || m_pLogicUnit->m_xpRowBufferErr.bIsNull());
 
 	m_pLogicUnit->m_xpRowBufferErr = _pRowBuffer(pOperand);
 

@@ -24,7 +24,7 @@
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   0 locals| iIndexSize |
   Index[].size to iIndexSize

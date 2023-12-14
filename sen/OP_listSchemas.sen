@@ -30,7 +30,7 @@
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word
@@ -40,7 +40,7 @@
     object@ word.name@
     TableDef[] RowBuffer[].addListContents  not if
       RowBuffer[].pipeOut
-      TableDef[] RowBuffer[].new
+      BT_DATA TableDef[] RowBuffer[].new
       object@ word.name@
       TableDef[] RowBuffer[].addListContents assert
     then

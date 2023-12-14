@@ -26,7 +26,7 @@
     StreamDefLft[].pipeOut
 
     // create a rowBuffer operand
-    TableDef[] RowBuffer[].new
+    BT_DATA TableDef[] RowBuffer[].new
 
     <pMsg> iTsp TableDef[] RowBuffer[].addLogMsg if
       RowBuffer[].pipeOut

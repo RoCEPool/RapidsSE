@@ -57,7 +57,7 @@
   Counter0[] 100 % 0 == if
 
     // create a RowBuffer operand
-    TableDef[] RowBuffer[].new
+    BT_DATA TableDef[] RowBuffer[].new
 
     // insert progressUnits to the infoset
     Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
@@ -111,7 +111,7 @@
   Counter0[] 10 % 0 == if
 
     // create an infoSet operand
-    TableDef[] RowBuffer[].new
+    BT_DATA TableDef[] RowBuffer[].new
 
     // insert progressUnits to the infoset
     Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
@@ -137,7 +137,7 @@
   // send out final progress units
 
   // create a rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // insert progressUnits to the infoset
   Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
@@ -157,8 +157,7 @@
       C_TDEF_AFFECTEDROWS op__tableDef assert
 
       // create an rowBuffer operand
-      TableDef[] RowBuffer[].new
-      BT_AFFECTEDROWS RowBuffer[].setBufferType
+      BT_AFFECTEDROWS TableDef[] RowBuffer[].new
 
       // insert row counts to the rowBuffer
       rowCounts[].getCounters@@ rowCounts[].numCounters RowBuffer[].addRowVargs

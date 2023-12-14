@@ -19,7 +19,7 @@
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // get a row per partition on this node
   [grid].ptnsPerNode 0 do
@@ -27,7 +27,7 @@
     I [grid].tablePtnToPtnNo
       TableDef[] RowBuffer[].addListPartitions  not if
         RowBuffer[].pipeOut
-        TableDef[] RowBuffer[].new
+        BT_DATA TableDef[] RowBuffer[].new
         I [grid].tablePtnToPtnNo
         TableDef[] RowBuffer[].addListPartitions assert
       then

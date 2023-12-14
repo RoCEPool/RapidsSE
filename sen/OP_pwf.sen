@@ -35,7 +35,7 @@
   StreamDefLft[].pipeOut
 
   // create an rowBuffer operand
-  TableDef[] RowBuffer[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // add pwfInfo to the rowBuffer
   folder TableDef[]  RowBuffer[].addPwfInfo assert

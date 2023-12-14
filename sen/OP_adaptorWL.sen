@@ -48,8 +48,8 @@
 
   "adaptorWL_AffectedRows - BT_AFFECTEDROWS" .verbose
 
-  PipeIn[] to RowBuffer[]
-  nullptr  to PipeIn[]
+  // get the rowBuffer
+  PipeIn[]\clear to RowBuffer[]
 
   adaptorWL[].affectedRowCount
 
@@ -120,8 +120,7 @@
 
   "adaptorWL_Warning - EV_I_WARNINGS" .verbose
 
-  PipeIn[] to RowBufferWarn[]
-  nullptr  to PipeIn[]
+  PipeIn[]\clear to RowBufferWarn[]
 
   adaptorWL[].executionWarning
 

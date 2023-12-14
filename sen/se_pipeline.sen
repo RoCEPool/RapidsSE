@@ -178,7 +178,7 @@
 
 : RowBuffer[].pipeOut
 
-  RowBuffer[].bufferId to BufferId[]
+  RowBuffer[].bufferId@ to BufferId[]
 
   nullptr to RowBuffer[]
 
@@ -196,6 +196,21 @@
   RowBufferErr[].bufferId to BufferId[]
 
   nullptr to RowBufferErr[]
+
+  BufferId[].dropLock
+
+  BufferId[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+: RowBufferWarn[].pipeOut
+
+  RowBufferWarn[].bufferId to BufferId[]
+
+  nullptr to RowBufferWarn[]
 
   BufferId[].dropLock
 

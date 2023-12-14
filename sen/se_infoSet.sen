@@ -38,7 +38,7 @@
   TableDef[].isNull assert
   
   TableDef[] RowBuffer[].new
-    eBufferType RowBuffer[].setBufferType
+    eBufferType RowBuffer[].bufferType!
     
   nArgs RowBuffer[].addRowVargs
  
