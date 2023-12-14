@@ -50,7 +50,7 @@
 
 #include "TagConstants.h"
 
-#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
+#include "store/sqlCompiler/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "ExplainOp.hpp"
 
 #include "GraphValidator.hpp"

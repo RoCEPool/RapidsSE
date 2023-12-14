@@ -5,12 +5,12 @@
 #include "BASE.h"
 #include "CommandParser.hpp"
 
-#include "sqlLexer.h"
-#include "sqlParser.h"
-#include "sqlBaseVisitor.h"
+#include "../thirdparty/antlr/generated/sqlLexer.h"
+#include "../thirdparty/antlr/generated/sqlParser.h"
+#include "../thirdparty/antlr/generated/sqlBaseVisitor.h"
 
-#include "parser/common/ErrorListener.hpp"
-#include "SqlException.hpp"
+#include "store/sqlCompiler/common/ErrorListener.hpp"
+#include "store/sqlCompiler/common/SqlException.hpp"
 
 #include "ExtendedText.hpp"
 #include "AttachMap.hpp"
