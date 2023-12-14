@@ -23,8 +23,7 @@
   // get the first row of the rowBuffer (nodeInfo)
   RowBuffer[].firstRow to Row[]
 
-  // delete the rowBuffer
-  RowBuffer[].delete
+  RowBuffer[] to DataBuffer[]
 
   // create an rowBuffer operand
   BT_DATA TableDef[] RowBuffer[].new
@@ -34,6 +33,9 @@
 
   // pipeout the rowBuffer
   RowBuffer[].pipeOut
+
+  // delete the dataBuffer
+  DataBuffer[].delete
 
   true
 ;
@@ -51,7 +53,7 @@
   // find the __gridSanity table
   C_TDEF_GRIDSANITY op__tableDef assert
 
-  // create a new stream defnition as per the nodeinfo being sent
+  // create a new stream definition as per the nodeinfo being sent
   TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
