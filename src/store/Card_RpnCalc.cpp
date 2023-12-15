@@ -284,19 +284,19 @@ Card_RpnCalc* Card_RpnCalc::pInduct(Card_Expr* p_expr_arriving)
 
   p_rpnCalc_inducted->vCast(this);
 
-  Card_Term* p_term_inducted;
+  Card_Term* p_term_inducted = new Card_Term;
+  p_term_inducted->vCast(this);
+  p_rpnCalc_inducted->vAppendChild(p_term_inducted);
 
   if (bIsScalarCol() && pFirstColSym()->bHasFacet(SF_TBL_COL)) {
-    p_term_inducted =
-        (new Card_Term)->SYM(SF_TBL_COL, pFirstColSym()->szFacet(SF_TBL_COL));
+    p_term_inducted ->SYM(SF_TBL_COL, pFirstColSym()->szFacet(SF_TBL_COL));
   }
-  else {
-    p_term_inducted =
-        (new Card_Term)->SYM(SF_EXP_COL, p_expr_arriving->szFacet(SF_EXP_COL));
+  if (p_expr_arriving->pSymbol()->bHasFacet(SF_EXP_COL)) {
+    p_term_inducted ->SYM(SF_EXP_COL, p_expr_arriving->szFacet(SF_EXP_COL));
   }
-  p_term_inducted->vCast(this);
+  //p_term_inducted->vCast(this);
 
-  p_rpnCalc_inducted->vAppendChild(p_term_inducted);
+  //p_rpnCalc_inducted->vAppendChild(p_term_inducted);
 
   return p_rpnCalc_inducted;
 }

@@ -47,9 +47,10 @@ create index table9_pcol9 on table9(pcol9);
 
 Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 
+/optimiser_trace
 /weaved
 /pipeline_def
-/pipeline_name = "_ray181"
+/pipelineName = "_ray181"
 select pcol1, pcol9, colb1, colb9 from table1
   join table9 on colb1 = colb9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
 

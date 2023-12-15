@@ -381,6 +381,10 @@ Card_Expr* Card_Expr::pInduct(void)
     p_expr_inducted->pSymbol()->vAppendFacet(SF_NMD_COL,
                                              pSymbol_arriving->szSF_chrSeq(SF_NMD_COL));
 
+  if (pSymbol_arriving->bHasFacet(SF_KEY_COL))
+    p_expr_inducted->pSymbol()->vAppendFacet(SF_KEY_COL,
+                                             pSymbol_arriving->szSF_chrSeq(SF_KEY_COL));
+
   Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
 
   p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
@@ -493,20 +497,6 @@ bool Card_Expr::bIsScalarKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this an expression of given symbol ?                                    */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* pSymbol_term0 = pGet_term(0)->pSymbol();
-
-  if (pSymbol_term0->bMatches(pSymbol_arg, aeFacet_arg))
-    return true;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does expression have term ?                                                */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bHasTerm(Symbol* pSymbol)
@@ -522,6 +512,35 @@ bool Card_Expr::bHasTerm(Symbol* pSymbol)
     bHas = p_rpnCalc->bHasTerm(pSymbol);
 
   return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this an expression of given symbol ?                                    */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bMatches(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol_arg = p_expr_arg->pGet_Symbol(0);
+  Symbol* pSymbol_this = this->pGet_Symbol(0);
+
+  if (pSymbol_this->bMatches(pSymbol_arg))
+    return true;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this an expression of given symbol ?                                    */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol_term0 = pGet_term(0)->pSymbol();
+
+  if (pSymbol_term0->bMatches(pSymbol_arg, aeFacet_arg))
+    return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
