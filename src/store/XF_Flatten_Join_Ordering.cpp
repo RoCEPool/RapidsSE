@@ -117,7 +117,8 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // Join Ordering Proper
 
   if (AM::JOB::bHasTag(C_JO_DISABLE)) {
-    XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
+    //XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
+    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
     return;
   }
 
