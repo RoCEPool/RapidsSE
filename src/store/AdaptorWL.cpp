@@ -430,17 +430,16 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
 
   Row *pInfoRow = pInfoSet->pFirstRow();
 
-  Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
+  //Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
   i8 iLineNo       = pInfoRow->iColVal_int(2);
   i8 iColumnNo     = pInfoRow->iColVal_int(3);
   Stz* szErrorText = pInfoRow->szColVal_ofs(4);
 
-  Stz* szMsgFmt = "Error: %s; %s; Line: %lld; Column: %lld; %s"_Stz;
+  Stz* szMsgFmt = "Error: %s; Line: %lld; Column: %lld; %s"_Stz;
   vSerialiseErrorResponse(eErrorCode,
                           szMsgFmt,
                           aEC2[eErrorCode],
-                          szNodeName,
                           iLineNo,
                           iColumnNo,
                           szErrorText);
@@ -461,7 +460,7 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 
   Row *pInfoRow = pInfoSet->pFirstRow();
 
-  Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
+  //Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
   Stz* szErrorText = pInfoRow->szColVal_ofs(2);
 
@@ -499,11 +498,10 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
     return;
   }
 
-  Stz* szMsgFmt = "Error: %s; %s; %s"_Stz;
+  Stz* szMsgFmt = "Error: %s; %s"_Stz;
   vSerialiseErrorResponse(eErrorCode,
                           szMsgFmt,
                           aEC2[eErrorCode],
-                          szNodeName,
                           szErrorText);
 
   m_pStmtCtx->vGotError(true);
