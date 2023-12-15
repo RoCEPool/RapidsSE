@@ -127,7 +127,7 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // reorder the tables
   vReorderTables();
 
-  XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
+  //XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 
   XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
 
@@ -367,7 +367,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  //m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 
