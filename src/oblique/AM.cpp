@@ -4513,7 +4513,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
 
     case CN_PAYLOADOBJ:   eOperand = EV_D_PAYLOAD;        break;
     case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
-    case CN_PROFILE:      eOperand = EV_D_PROFILE;        break;
     case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;
     case CN_STREAMDEF:    eOperand = EV_D_STREAMDEF;      break;
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;

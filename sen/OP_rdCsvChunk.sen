@@ -94,15 +94,11 @@
 
   RowBuffer[].delete
 
-  // 1 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
-
   true
 ;
 
 /*
 : rdCsvChunk_SeekOffsets \handler
-
-  // 0 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
@@ -138,8 +134,6 @@
   repeat
 
   RowBuffer[].delete
-
-  // 1 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   true
 ;
