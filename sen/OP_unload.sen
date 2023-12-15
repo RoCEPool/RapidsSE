@@ -26,25 +26,20 @@
 /*----------------------------------------------------------------------------*/
 : unload_Path \handler
 
-  // handle BT_PATH only
-  PipeIn[].bufferType@ BT_PATH != if
-    PipeIn[].pipeout
+  // get the rowBuffer
+  PipeIn[]\clear to RowBuffer[]
+
+  // pipeout buffers other than BT_PATH
+  RowBuffer[].bufferType@ BT_PATH != if
+    RowBuffer[].pipeout
     true
     exit
   then
 
-  PipeIn[]\clear to RowBuffer[]
-
-  //C_TDEF_PATH infoSetRow:getFirstRow
-
-  C_TDEF_PATH op__tableDef assert
+  // get first row of RowBuffer[]
   RowBuffer[].firstRow to Row[]
 
-  // extract the values
-  //0 InfoSet[].colVal@ locals| sPath   |
-  //1 InfoSet[].colVal@ locals| iPathNo |
-  //2 InfoSet[].colVal@ locals| iPathOf |
-
+  // get the columns from the row
   0 Row[].getVchColumn locals| sPath   |
   1 Row[].getVchColumn locals| iPathNo |
   2 Row[].getIntColumn locals| iPathOf |

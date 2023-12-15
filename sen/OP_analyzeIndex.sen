@@ -23,7 +23,7 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create a rowBuffer
+  // create a DATA rowBuffer
   BT_DATA TableDef[] RowBuffer[].new
 
   // add a row for each table ptn

@@ -15,7 +15,7 @@
   // RowBuffer should be of type BT_EXPLAIN
   RowBuffer[].bufferType@ BT_EXPLAIN == assert
 
-  // time to emit the RowBuffer[]
+  // time to emit the BT_EXPLAIN RowBuffer[]
   RowBuffer[].pipeout
 
   EV_M_LEAVE_handler
@@ -76,7 +76,7 @@
     // execute explain for this operator
     PlanOperand[] sOperatorName sqlCompiler::doExplain
 
-    // pipeout explain
+    // pipeout BT_EXPLAIN RowBuffer
     RowBuffer[].pipeout
 
     LogicUnit[].compilerToExit if

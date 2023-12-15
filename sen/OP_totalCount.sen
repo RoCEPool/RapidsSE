@@ -25,19 +25,15 @@
 /*----------------------------------------------------------------------------*/
 : totalCount_RowBuffer \handler
 
-  0 locals| eBufferType |
+  // get the rowBuffer
+  PipeIn[]\clear to RowBuffer[]
 
-  PipeIn[].bufferType@ to eBufferType
-
-  // handle BT_COUNT only
-  eBufferType BT_COUNT != if
-    PipeIn[].pipeout
+  // pipeout buffers other than BT_COUNT
+  RowBuffer[].bufferType@ BT_COUNT != if
+    RowBuffer[].pipeout
     true
     exit
   then
-
-  PipeIn[] to RowBuffer[]
-  nullptr to PipeIn[]
 
   // get first row of RowBuffer[]
   RowBuffer[].firstRow to Row[]
