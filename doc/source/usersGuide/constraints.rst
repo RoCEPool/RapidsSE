@@ -44,8 +44,7 @@ RapidsSE has several system limitations. These are documented below:
 
 #. **Statement length**
 
-   A statement issued to RapidsSE cannot have more than 2048 tokens (words)
-   or be longer than 48,000 bytes.
+   A statement issued to RapidsSE cannot be longer than 48,000 bytes.
 
 #. **Logging defaults**
 
@@ -107,3 +106,8 @@ RapidsSE has several system limitations. These are documented below:
 
    Aggregate expressions (``SUM``, ``MIN``, ``MAX``, etc) are not currently
    supported on interval expressions.
+
+#. **Wireline protocol message size**
+
+   Any individual wireline protocol message sent to RapidsSE cannot be larger
+   than 1,000,000 bytes when serialised.

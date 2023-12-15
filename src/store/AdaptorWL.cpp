@@ -259,7 +259,8 @@ void AdaptorWL::vProcessWLMsg(void)
       std::string sMsgType = to_string(eMsgType);
       eEC eErrCode = EC_WL_PROTOCOL_ERROR;
       vSerialiseErrorResponse(eErrCode,
-                              "Error: %s; Processing an unexpected wireline message type of %s."_Stz,
+                              "Error: %s; %s; Processing an unexpected wireline message type of %s."_Stz,
+                              aEC2[eErrCode],
                               aErrorMsg[eErrCode],
                               sMsgType.c_str());
 
@@ -386,9 +387,9 @@ void AdaptorWL::vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg)
     return;
   }
 
-  Stz* szErrFmt= "Error: %s"_Stz;
+  Stz* szErrFmt= "Error: %s; %s"_Stz;
 
-  vSerialiseErrorResponse(eErrCode, szErrFmt, szErrMsg);
+  vSerialiseErrorResponse(eErrCode, szErrFmt, aEC2[eErrCode], szErrMsg);
   ASSERT(!m_pStmtCtx);
 }
 
@@ -401,9 +402,9 @@ void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
     return;
   }
 
-  Stz* szErrMsg= "Error: %s"_Stz;
+  Stz* szErrMsg= "Error: %s; %s"_Stz;
 
-  vSerialiseErrorResponse(eErrCode, szErrMsg, aErrorMsg[eErrCode]);
+  vSerialiseErrorResponse(eErrCode, szErrMsg, aEC2[eErrCode], aErrorMsg[eErrCode]);
   m_pStmtCtx->vGotError(true);
 
   // The child job failed during submission.
@@ -435,9 +436,10 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
   i8 iColumnNo     = pInfoRow->iColVal_int(3);
   Stz* szErrorText = pInfoRow->szColVal_ofs(4);
 
-  Stz* szMsgFmt = "Error: %s; Line: %lld; Column: %lld; %s"_Stz;
+  Stz* szMsgFmt = "Error: %s; %s; Line: %lld; Column: %lld; %s"_Stz;
   vSerialiseErrorResponse(eErrorCode,
                           szMsgFmt,
+                          aEC2[eErrorCode],
                           szNodeName,
                           iLineNo,
                           iColumnNo,
@@ -497,9 +499,10 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
     return;
   }
 
-  Stz* szMsgFmt = "Error: %s; %s"_Stz;
+  Stz* szMsgFmt = "Error: %s; %s; %s"_Stz;
   vSerialiseErrorResponse(eErrorCode,
                           szMsgFmt,
+                          aEC2[eErrorCode],
                           szNodeName,
                           szErrorText);
 
@@ -663,9 +666,10 @@ void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
     m_pStmtCtx->vGotError(true);
 
     eEC eErrCode = EC_WL_RESULTSET_RETURNED;
-    Stz* szErrMsg = "Error: %s: %s"_Stz;
+    Stz* szErrMsg = "Error: %s; %s: %s"_Stz;
     vSerialiseErrorResponse(eErrCode,
                             szErrMsg,
+                            aEC2[eErrCode],
                             aErrorMsg[eErrCode],
                             m_pStmtCtx->szStmt());
     return;
@@ -691,16 +695,18 @@ void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
       eEC eErrCode = EC_WL_INTERNAL_ERROR;
 
       if (!xTypeId.bIsValid()) {
-        Stz* szErrMsg = "Error: %s: Could not convert internal type %d to a wireline type"_Stz;
+        Stz* szErrMsg = "Error: %s; %s: Could not convert internal type %d to a wireline type"_Stz;
         vSerialiseErrorResponse(eErrCode,
                                 szErrMsg,
+                                aEC2[eErrCode],
                                 aErrorMsg[eErrCode],
                                 xTypeId.iIdVal());
 
       } else {
-        Stz* szErrMsg = "Error: %s: Could not convert internal type %s to a wireline type"_Stz;
+        Stz* szErrMsg = "Error: %s; %s: Could not convert internal type %s to a wireline type"_Stz;
         vSerialiseErrorResponse(eErrCode,
                                 szErrMsg,
+                                aEC2[eErrCode],
                                 aErrorMsg[eErrCode],
                                 xTypeId.szTypeName());
       }
@@ -821,9 +827,10 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
       if (dScalingFactor < 1.0 && iRowsToSend == 1) {
         m_pStmtCtx->vGotError(true);
         eEC eErrCode = EC_WL_ROW_TOO_BIG;
-        Stz* szErrMsg = "Error: %s; %lld bytes"_Stz;
+        Stz* szErrMsg = "Error: %s; %s; %lld bytes"_Stz;
         vSerialiseErrorResponse(eErrCode,
                                 szErrMsg,
+                                aEC2[eErrCode],
                                 aErrorMsg[eErrCode],
                                 WLP::PayloadObj::C_MAX_PAYLOAD_BYTES);
         return;
@@ -925,9 +932,10 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
       if (dScalingFactor < 1.0 && iRowsToSend == 1) {
         m_pStmtCtx->vGotError(true);
         eEC eErrCode = EC_WL_ROW_TOO_BIG;
-        Stz* szErrMsg = "Error: %s; %lld bytes"_Stz;
+        Stz* szErrMsg = "Error: %s; %s; %lld bytes"_Stz;
         vSerialiseErrorResponse(eErrCode,
                                 szErrMsg,
+                                aEC2[eErrCode],
                                 aErrorMsg[eErrCode],
                                 WLP::PayloadObj::C_MAX_PAYLOAD_BYTES);
         return;
@@ -1098,7 +1106,8 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
       std::string sMsgType = to_string(eMsgType);
       eEC eErrCode = EC_WL_PROTOCOL_ERROR;
       vSerialiseErrorResponse(eErrCode,
-                              "Error: %s: Received an unexpected wireline message type of %s."_Stz,
+                              "Error: %s; %s: Received an unexpected wireline message type of %s."_Stz,
+                              aEC2[eErrCode],
                               aErrorMsg[eErrCode],
                               sMsgType.c_str());
 
@@ -1116,7 +1125,8 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
     std::string sMsgType = to_string(eMsgType);
     eEC eErrCode = EC_WL_PROTOCOL_ERROR;
     vSerialiseErrorResponse(eErrCode,
-                            "Error: %s: Unable to decode wireline message of type %s."_Stz,
+                            "Error: %s; %s: Unable to decode wireline message of type %s."_Stz,
+                            aEC2[eErrCode],
                             aErrorMsg[eErrCode],
                             sMsgType.c_str());
 
@@ -1654,9 +1664,10 @@ void AdaptorWL::vProcessQueryExecuteRequest()
   eEC eErrorCode = EC_NONE;
 
   // Check if the query string to too large for the sen variable stack
-  if (pMsg->query.length() >= C_MAX_QUERY_STR) {
+  // and downstream parsing, which places it into an s48K.
+  if (pMsg->query.length() + 1 > C_MAX_QUERY_STR) {
     eErrorCode = EC_STATEMENT_TOO_LONG;
-    Stz* szFmt = "Error: %s: Statement is %lld bytes; max length is %lld bytes: %s"_Stz;
+    Stz* szFmt = "Error: %s; %s: Statement is %lld bytes; max length is %lld bytes: %s"_Stz;
 
     s256 sStmtBuf;
     sStmtBuf.vCopy((Stz*) pMsg->query.c_str(), 250);
@@ -1664,8 +1675,9 @@ void AdaptorWL::vProcessQueryExecuteRequest()
 
     vSerialiseErrorResponse(eErrorCode,
                             szFmt,
+                            aEC2[eErrorCode],
                             aErrorMsg[eErrorCode],
-                            pMsg->query.length(),
+                            pMsg->query.length() + 1,
                             C_MAX_QUERY_STR,
                             sStmtBuf.szStz());
     vNextState(READY);
@@ -1675,9 +1687,10 @@ void AdaptorWL::vProcessQueryExecuteRequest()
   if (pMsg->rowsPerRowDataResponse < 0) {
     // Sending this error before the QueryReceiptResponse ends the dialog
     eErrorCode = EC_WL_PROTOCOL_ERROR;
-    Stz* szMsg = "Error: %s; Message QueryExecuteRequest field rowsPerRowDataResponse cannot be negative. Current value: %lld"_Stz;
+    Stz* szMsg = "Error: %s; %s; Message QueryExecuteRequest field rowsPerRowDataResponse cannot be negative. Current value: %lld"_Stz;
     vSerialiseErrorResponse(eErrorCode,
                             szMsg,
+                            aEC2[eErrorCode],
                             aErrorMsg[eErrorCode],
                             pMsg->rowsPerRowDataResponse);
     vDisconnectClient(eErrorCode);
@@ -1688,9 +1701,10 @@ void AdaptorWL::vProcessQueryExecuteRequest()
   if (pMsg->maxRowsToReturn < -1) {
     // Sending this error before the QueryReceiptResponse ends the dialog
     eErrorCode = EC_WL_PROTOCOL_ERROR;
-    Stz* szMsg = "Error: %s; Message QueryExecuteRequest field maxRowsToReturn cannot be less than -1. Current value: %lld"_Stz;
+    Stz* szMsg = "Error: %s; %s; Message QueryExecuteRequest field maxRowsToReturn cannot be less than -1. Current value: %lld"_Stz;
     vSerialiseErrorResponse(eErrorCode,
                             szMsg,
+                            aEC2[eErrorCode],
                             aErrorMsg[eErrorCode],
                             pMsg->rowsPerRowDataResponse);
     vDisconnectClient(eErrorCode);
@@ -1885,10 +1899,11 @@ bool AdaptorWL::bCheckState(std::initializer_list<eState> eProtocolStates)
       sBuf.vConcat(aState[eProtocolState]);
     }
 
-    Stz* szErrMsg = "Error: %s; Current protocol state is %s. Expected to be in one of the following states [%s]"_Stz;
+    Stz* szErrMsg = "Error: %s; %s; Current protocol state is %s. Expected to be in one of the following states [%s]"_Stz;
 
     vSerialiseErrorResponse(eErrType,
                             szErrMsg,
+                            aEC2[eErrType],
                             aErrorMsg[eErrType],
                             aState[m_eProtocolState],
                             sBuf.szStz());
@@ -1906,11 +1921,12 @@ bool AdaptorWL::bCheckState(std::initializer_list<eState> eProtocolStates)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
 {
-  Stz* szErrMsg = "Error: %s; Unable to cast decoded message to type %s"_Stz;
+  Stz* szErrMsg = "Error: %s; %s; Unable to cast decoded message to type %s"_Stz;
   const eEC eErrType = EC_WL_INTERNAL_ERROR;
 
   vSerialiseErrorResponse(eErrType,
                           szErrMsg,
+                          aEC2[eErrType],
                           aErrorMsg[eErrType],
                           pcTargetType);
 }
@@ -1920,11 +1936,12 @@ void AdaptorWL::vErrorDynamicCast(const char* pcTargetType)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorStateTransition(Stz* szFromState, Stz* szToState)
 {
-  Stz* szErrMsg = "Error: %s; Invalid state transition from state %s to state %s"_Stz;
+  Stz* szErrMsg = "Error: %s; %s; Invalid state transition from state %s to state %s"_Stz;
   const eEC eErrType = EC_WL_PROTOCOL_ERROR;
 
   vSerialiseErrorResponse(eErrType,
                           szErrMsg,
+                          aEC2[eErrType],
                           aErrorMsg[eErrType],
                           szFromState,
                           szToState);
@@ -1935,11 +1952,12 @@ void AdaptorWL::vErrorStateTransition(Stz* szFromState, Stz* szToState)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorMessageNotSupported()
 {
-  Stz* szErrMsg = "Error: %s; %s"_Stz;
+  Stz* szErrMsg = "Error: %s; %s; %s"_Stz;
   const eEC eErrType = EC_WL_MSG_NOT_SUPPORTED;
 
   vSerialiseErrorResponse(eErrType,
                           szErrMsg,
+                          aEC2[eErrType],
                           aErrorMsg[eErrType],
                           to_string((MessageTypes::type)m_iCurrentMsgType).c_str());
 }
@@ -1949,11 +1967,12 @@ void AdaptorWL::vErrorMessageNotSupported()
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vErrorFeatureNotSupported(Stz* szFeature)
 {
-  Stz* szErrMsg = "Error: %s; %s"_Stz;
+  Stz* szErrMsg = "Error: %s; %s; %s"_Stz;
   const eEC eErrType = EC_WL_FEATURE_NOT_SUPPORTED;
 
   vSerialiseErrorResponse(eErrType,
                           szErrMsg,
+                          aEC2[eErrType],
                           aErrorMsg[eErrType],
                           szFeature);
 }

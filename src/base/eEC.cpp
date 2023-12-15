@@ -852,7 +852,7 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"SE unknown error",
   /* EC_SEMANTIC_ERROR                */ (Stz*)"semantic error",              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ (Stz*)"send failure",
-  /* EC_STATEMENT_TOO_LONG            */ (Stz*)"statement is too long",       // SQL Compiler Subsystem
+  /* EC_STATEMENT_TOO_LONG            */ (Stz*)"Statement is too long",       // SQL Compiler Subsystem
   /* EC_SUBQUERY_SELF_REFERENCE       */ (Stz*)"Non-recursive subquery cannot refer to itself",  // SQL Compiler Subsystem
   /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ (Stz*)"Subquery cannot project more than one column",   // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ (Stz*)"syntax error",                // SQL Compiler Subsystem. Custom error string from ANTLR.
