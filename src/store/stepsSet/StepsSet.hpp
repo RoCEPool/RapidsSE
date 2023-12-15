@@ -1720,7 +1720,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferFirstRow(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
-  void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferIterate(void);

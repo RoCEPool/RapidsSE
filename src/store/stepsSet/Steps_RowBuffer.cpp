@@ -82,7 +82,6 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].delete"_Stz,           &Step::vRowBufferDelete);
   vAddStep("RowBuffer[].get"_Stz,              &Step::vRowBufferGet);
 	vAddStep("RowBuffer[].firstRow"_Stz,         &Step::vRowBufferFirstRow);
-	vAddStep("RowBuffer[].insdelIntoTable"_Stz,  &Step::vRowBufferInsdelIntoTable);
   vAddStep("RowBuffer[].isNotNull"_Stz,        &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,           &Step::vRowBufferIsNull);
   vAddStep("RowBuffer[].iterate"_Stz,          &Step::vRowBufferIterate);
@@ -1522,28 +1521,6 @@ void Step::vRowBufferGetAndClear(void)
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRowBuffer);
 
   m_pLogicUnit->m_xpRowBuffer = nullptr;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].insdelIntoTable -- insert-delete rowBuffer into the table      */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferInsdelIntoTable(void)
-{
-  ENTRY();
-
-//  ASSERT(*m_pLogicUnit->m_xpRowBuffer);
-//
-//  Op* pOp = m_pJob->m_pOp;
-//  PtnId tLglPtn = pOp->tLglPtn();
-//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tLglPtn);
-//
-
-//  // will delete this buffer
-//  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-//  pRowBuffer->vIsPermanent(false);
-//  m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRowBuffer);
 
   EXIT();
 }
