@@ -13,7 +13,6 @@ assert::stack_0
   "op__common.sen"              include
   "reg__common.sen"             include
   "OP_failed.sen"               include
-  "se_infoSet.sen"              include
   "se_row.sen"                  include
 
 "a" .verbose
@@ -111,7 +110,6 @@ assert::stack_0
   "OP_idxSort.sen"              include
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
-  "OP_insDel.sen"               include
   "OP_inflateRows.sen"          include
   "OP_insert.sen"               include
   "OP_invoke.sen"               include

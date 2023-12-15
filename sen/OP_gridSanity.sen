@@ -29,7 +29,7 @@
   BT_DATA TableDef[] RowBuffer[].new
 
   // add nodeInfo to the infoSet
-  Row[].get TableDef[] RowBuffer[].addgridSanity assert
+  Row[] TableDef[] RowBuffer[].addgridSanity assert
 
   // pipeout the rowBuffer
   RowBuffer[].pipeOut

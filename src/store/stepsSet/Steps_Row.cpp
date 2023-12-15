@@ -17,6 +17,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Row(void)
 {
+	vAddStep("Row[]"_Stz,               &Step::vRowGet);
   vAddStep("Row[].get"_Stz,           &Step::vRowGet);
   vAddStep("Row[].getIntColumn"_Stz,  &Step::vRowGetIntColumn);
   vAddStep("Row[].getVchColumn"_Stz,  &Step::vRowGetVchColumn);

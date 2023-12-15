@@ -86,9 +86,7 @@
   // Convert this tag set to a sen parsable string
   pCmdTagSet tagSet.asSenStr to sTags
 
-  C_TDEF_COMMAND TableDef:discover
-
-  //sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
+  C_TDEF_COMMAND op__tableDef assert
 
   BT_COMMAND TableDef[] RowBuffer[].new
 

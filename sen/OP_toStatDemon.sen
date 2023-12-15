@@ -39,26 +39,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_PROFILE ...                                                        */
-/*----------------------------------------------------------------------------*/
-: OP_toStatDemon_Profile \handler
-
-  //"OP_toStatD_Profile +++ +++ +++" .
-
-  PipeIn[]
-  "__statDemon" find dup if
-    word.object@
-    jobId::pipeToOp0 assert
-    nullptr to PipeIn[]
-  else
-    discard discard
-    PipeIn[].delete
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* toStatD request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : toStatDemon_op \operator
@@ -68,7 +48,6 @@
   op__topology
 
   find: OP_toStatDemon_RowBuffer EV_D_ROWBUFFER [op].handler!
-  find: OP_toStatDemon_Profile   EV_D_PROFILE   [op].handler!
 
   op__loop
 

@@ -25,7 +25,7 @@
   nullptr to InfoSetRow[]
 */
 
-  C_TDEF_PAGEINREQUEST TableDef:discover
+  C_TDEF_PAGEINREQUEST op__tableDef assert
 
   PipeIn[].bufferType@ BT_PATH != if
     PipeIn[].pipeout

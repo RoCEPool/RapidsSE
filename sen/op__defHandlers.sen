@@ -10,6 +10,7 @@
 : ABNORMAL_PIPEIN_DELETE
 
   //PipeIn[].name [op].ptnId@ "ABNORMAL_PIPEIN_DELETE P%v %v" str.format .
+
   PipeIn[].delete
 
   // calling op_loop continues
@@ -76,7 +77,6 @@
 : EV_D_PARCEL_handler           \handler STANDARD_PIPEOUT ;
 : EV_D_PAYLOAD_handler          \handler STANDARD_PIPEOUT ;
 : EV_D_PLANOPERAND_handler      \handler STANDARD_PIPEOUT ;
-: EV_D_PROFILE_handler          \handler STANDARD_PIPEOUT ;
 : EV_D_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
@@ -402,7 +402,6 @@
   abnormalHandler EV_D_PARCEL           [op].handler!
   abnormalHandler EV_D_PAYLOAD          [op].handler!
   abnormalHandler EV_D_PLANOPERAND      [op].handler!
-  abnormalHandler EV_D_PROFILE          [op].handler!
   abnormalRowBufferHandler EV_D_ROWBUFFER  [op].handler!
   abnormalHandler EV_D_STREAMDEF        [op].handler!
   abnormalHandler EV_D_TABLE            [op].handler!
@@ -446,7 +445,9 @@
 /*----------------------------------------------------------------------------*/
 : toggle_rowBufferHandler
 
-  ABNORMAL_PIPEIN_DELETE EV_D_ROWBUFFER        [op].handler!
+  find: ABNORMAL_PIPEIN_DELETE locals| abnormalHandler |
+
+  abnormalHandler EV_D_ROWBUFFER   [op].handler!
 ;
 
 
