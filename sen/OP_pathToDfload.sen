@@ -88,8 +88,6 @@
 
   C_TDEF_COMMAND op__tableDef assert
 
-  //sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
-
   BT_COMMAND TableDef[] RowBuffer[].new
 
   sTags sCmd  2 RowBuffer[].addRowVargs
