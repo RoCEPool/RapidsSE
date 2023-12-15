@@ -20,7 +20,7 @@
   
   //nPaths "eachPathTag: nPaths %v" .printf
 
-  C_TDEF_COUNT TableDef:discover
+  C_TDEF_COUNT op__tableDef assert
   
   //nPaths 1 OI_COUNT InfoSet:pipeoutRow
 
@@ -34,7 +34,7 @@
 
   0 0 0 locals| sPath iPathNo iPathOf |
 
-  C_TDEF_PATH TableDef:discover
+  C_TDEF_PATH op__tableDef assert
 
   nPaths 0
   do

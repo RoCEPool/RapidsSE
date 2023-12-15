@@ -5,30 +5,6 @@
 " se_infoSet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* discover tableDef by name                                                  */
-/*----------------------------------------------------------------------------*/
-: TableDef:discover params| sTableDefNm |
-
-  //InfoSet[].isNull assert
-  
-  sTableDefNm op__tableDef assert
-;
-
-/*----------------------------------------------------------------------------*/
-/* discover infoset by name                                                   */
-/*----------------------------------------------------------------------------*/
-/*
-: RowBuffer:getCol params| sTableDefNm i_Col |
-
-  sTableDefNm TableDef:discover
-  
-  RowBuffer[].firstRow to Row[]
-
-  i_Col RowBuffer[].colVal@
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* add single varg row to infoet ; pipeout infoset                            */
 /*----------------------------------------------------------------------------*/
 /*
