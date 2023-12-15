@@ -10,6 +10,7 @@
 : ABNORMAL_PIPEIN_DELETE
 
   //PipeIn[].name [op].ptnId@ "ABNORMAL_PIPEIN_DELETE P%v %v" str.format .
+
   PipeIn[].delete
 
   // calling op_loop continues
@@ -446,7 +447,9 @@
 /*----------------------------------------------------------------------------*/
 : toggle_rowBufferHandler
 
-  ABNORMAL_PIPEIN_DELETE EV_D_ROWBUFFER        [op].handler!
+  find: ABNORMAL_PIPEIN_DELETE locals| abnormalHandler |
+
+  abnormalHandler EV_D_ROWBUFFER   [op].handler!
 ;
 
 
