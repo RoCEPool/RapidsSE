@@ -125,7 +125,7 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 
   Kid xCI_this(this);
   while (xCI_this.bEach(CK_EXPR))
-    if (xCI_this.p_expr()->bSameAs(p_expr_arg))
+    if (xCI_this.p_expr()->bMatches(p_expr_arg))
       return xCI_this.p_expr();
 
   return nullptr;

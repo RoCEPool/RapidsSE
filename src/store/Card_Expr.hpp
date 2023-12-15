@@ -39,7 +39,6 @@ namespace STORE
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
     bool bIsDescending(void);
-    bool bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg= nullptr);
     Card_Expr* pInduct(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
@@ -47,6 +46,8 @@ namespace STORE
     bool bIsScalarKey(void);
     bool bIsExpressionOfKey(void);
     bool bHasTerm(Symbol* pSymbol);
+    bool bMatches(Card_Expr* p_expr_arg);
+    bool bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg= nullptr);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     Card_Expr* pPropagate(void);
     Card_Expr *pReducedCopy(i8 i_Expr);
