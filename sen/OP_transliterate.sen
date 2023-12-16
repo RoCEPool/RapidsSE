@@ -76,14 +76,17 @@
 
   0 0 locals| sOperatorName sPipeline |
 
+  // get the planOperand
   PipeIn[]\clear to PlanOperand[]
 
+  // set the pipeLine name
   "<pipelineName>" [job].tagSet@ tagSet.hasName if
     <pipelineName> to sPipeline
   else
     "unamed" to sPipeline
   then
 
+  // transliterate the plan
   sPipeline PlanOperand[] sqlCompiler::transliterate to Text[]
 
   // print the transliterated pipeline
@@ -92,6 +95,7 @@
      Text[] .
   then
 
+  // explain transliterate ?
   "transliterate" to sOperatorName
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if
 
@@ -122,9 +126,12 @@
     [job].tagSet@ tagSet.dump
   then
 
+  // set the responseOp as this OP
   [Op] [job].responseOp!
 
+  // Fork a child with >UseCodeFile> to execute the pipeline
   "<UseCodeFile>" [job].tagSet@ tagSet.hasName if
+
      STD_NORMALFORK_OPT_NOCODE_TAG Text[] nullptr api::forkChild not if
        //"****Error Code %v" .printf
        nullptr [job].responseOp!
@@ -140,6 +147,7 @@
 
   then
 
+  // Fork a child with >keepCodeFile> to execute the pipeline
   "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
 
      STD_NORMALFORK_OPT_KEEP_TAG Text[] nullptr api::forkChild not if
@@ -157,6 +165,7 @@
 
   then
 
+  // Fork a normal child to execute the pipeline
   STD_NORMALFORK_OPT_TAG Text[] nullptr api::forkChild not if
        //"****Error Code %v" .printf
        nullptr [job].responseOp!
@@ -183,8 +192,13 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_LeaveMarker \handler
 
-  // save the pipein in RowBuffer[]
+  // RowBuffer[] should not be null
   RowBuffer[].isNull not assert
+
+  // it should have BT_EXPLAIN
+  RowBuffer[].bufferType@ BT_EXPLAIN ==
+
+  // pipeout the rowBuffer
   RowBuffer[].pipeout
 
   EV_M_LEAVE_handler
@@ -227,6 +241,8 @@
     RowBuffer[].pipeout
   then
 
+  // keep the BT_EXPLAIN rowBuffer
+  // to be pipedout when the LEAVEMARKER comes along
   true
 ;
 
