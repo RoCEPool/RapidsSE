@@ -27,7 +27,7 @@
     TableDef[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
-    // create rowBuffer
+    // create a DATA rowBuffer
     BT_DATA tableDef[] RowBuffer[].new
 
     // populate rowBuffer

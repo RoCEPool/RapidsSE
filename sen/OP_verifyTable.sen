@@ -23,7 +23,7 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
+  // create a rowBuffer operand
   BT_DATA TableDef[] RowBuffer[].new
 
   // verify the table
