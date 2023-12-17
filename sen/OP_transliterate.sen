@@ -196,7 +196,7 @@
   RowBuffer[].isNull not assert
 
   // it should have BT_EXPLAIN
-  RowBuffer[].bufferType@ BT_EXPLAIN ==
+  RowBuffer[].bufferType@ BT_EXPLAIN == assert
 
   // pipeout the rowBuffer
   RowBuffer[].pipeout

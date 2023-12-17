@@ -28342,7 +28342,7 @@ void Task::vAddMunged(Task* )
     "  RowBuffer[].isNull not assert\n"
     "\n"
     "  // it should have BT_EXPLAIN\n"
-    "  RowBuffer[].bufferType@ BT_EXPLAIN ==\n"
+    "  RowBuffer[].bufferType@ BT_EXPLAIN == assert\n"
     "\n"
     "  // pipeout the rowBuffer\n"
     "  RowBuffer[].pipeout\n"
