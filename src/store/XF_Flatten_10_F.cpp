@@ -115,9 +115,8 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   delete pCarryForward;
   delete pFold;
 
-  XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
-  //XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
-
+  //XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
+  XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 }
 
 /*============================================================================*/

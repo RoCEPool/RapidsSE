@@ -7,6 +7,10 @@ LOG 'TPC-H Q9...';
 trackMemory force;
 success
 
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
 /pipelineName = "OptQ9"
 select
   nation,

@@ -196,6 +196,8 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
+      if (p_expr_clone->pGet_Symbol(0)->nFacets() > 1)
+        p_expr_clone->pGet_Symbol(0)->vDeleteFacet(SF_EXP_COL);
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
