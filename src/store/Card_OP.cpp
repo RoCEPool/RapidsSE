@@ -564,7 +564,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
         pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
 
       if (pCI->Flux.m_pArriving)
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct();
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
       else
         pCI->G.p_emit = new Card_Emit;
 
@@ -588,7 +588,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       if ((pCI->G.p_emit = pCI->G.p_OP->pSub_emit()))
         pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
 
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct();
+      pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
       break;
