@@ -46,8 +46,6 @@ namespace STORE
 
     void vRecreate_emit(CardIter* pCI);
 
-    void vUpdate_constraint(CardIter* pCI);
-    void vUpdate_emit(CardIter* pCI);
     void vUpdate_emit_OP(CardIter* pCI);
 
     void vRpn_aggreg      (String* psRpnExpr, Card_Aggreg*    p_aggreg);
