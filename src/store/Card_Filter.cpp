@@ -171,7 +171,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_emit(pCI);
+  pCI->G.p_OP->vRecreate_emit(pCI);
 
  // pCI->vPrintBoard();
 
@@ -210,21 +210,6 @@ bool Card_Filter::bIsEmpty(void)
     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_emit = pCI->G.p_filter->pSub_emit())) {
-
-    pCI->G.p_filter->vDeleteChild(pCI->G.p_emit);
-    pCI->G.p_filter->vAppendChild(pCI->Flux.m_pArriving->pClone());
-
-  }
 }
 
 /*----------------------------------------------------------------------------*/
