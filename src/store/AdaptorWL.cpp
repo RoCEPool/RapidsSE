@@ -2154,7 +2154,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
     switch (eDatum) {
       case DM_BCD:
         xBcd = iVal;
-        xColumnWL.__set_bigDecimalVal(spBcd.sz(xBcd.T.m_iMantissa,xBcd.T.m_iScale)->azChar()); // Fix
+        xColumnWL.__set_bigDecimalVal(spBcd.sz(xBcd.T.m_iMantissa,xBcd.T.m_uScale)->azChar()); // Fix
         break;
 
       case DM_BOL:

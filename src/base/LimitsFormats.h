@@ -52,13 +52,6 @@ static const i8 C_MIN_LVL_RATIO     = 2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-static const i8 C_MAX_BCD_PRECISION = 19;
-static const i8 C_MAX_FLT_PRECISION = 19;
-static const i8 C_MAX_INT_PRECISION = 19;
-static const i8 C_MAX_VCH_PRECISION = C_64KB; // max defined length of a vch col
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 static const Stz* F_BCD       = "%s%lld."_Stz;
 static const Stz* F_BCD_frac  = "%s%lld.%.*lld"_Stz;
 static const Stz* F_DTE       = "%04lld-%02lld-%02lld"_Stz;

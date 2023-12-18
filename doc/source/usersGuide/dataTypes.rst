@@ -37,12 +37,11 @@ below.
    ``INTEGER``    ``-9223372036854775806`` to ``9223372036854775806``
    ``FLOAT``      ``-1.797693134862315708145274237317043567981e+308`` to
                   ``1.797693134862315708145274237317043567981e+308``
-   ``DECIMAL``    RapidsSE v1.x only supports a fixed scale of 2 (2 decimal places).
-                  Specifying the precision and range in a statement is currently ignored.
+   ``DECIMAL``    RapidsSE v1.x supports decimals with a maximum precision and scale of 17 digits.
                   The range of the mantissa (the un-scaled value) is from
-                  ``-36,028,797,018,963,967`` to ``36,028,797,018,963,967``. With a scale of 2 the
-                  range of the overall value is ``-360,287,970,189,639.67`` to
-                  ``360,287,970,189,639.67``
+                  ``-99,999,999,999,999,999`` to ``99,999,999,999,999,999``. With a scale of 2 the
+                  range of the overall value is ``-999,999,999,999,999.99`` to
+                  ``999,999,999,999,999.99``
    ``BOOLEAN``    No limits
    ``DATE``       For RapidsSE v1.x the range of valid years is ``1900`` to ``2155``
    ``TIME``       No limits

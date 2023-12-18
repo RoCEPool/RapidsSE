@@ -1294,7 +1294,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       Bcd xBcd;
       SP_Bcd spBcd;
       xBcd = DecimalLiteral::xValue(pOrdinalExpr);
-      sPipeline->vCatSprint(" %s "_Stz, (char*)spBcd.sz(xBcd.T.m_iMantissa, xBcd.T.m_iScale));
+      sPipeline->vCatSprint(" %s "_Stz, (char*)spBcd.sz(xBcd.T.m_iMantissa, xBcd.T.m_uScale));
     }
 
     if (FloatLiteral::bIsOfType(pOrdinalExpr)) {

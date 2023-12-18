@@ -548,7 +548,7 @@ namespace Parser
           break;
 
         case VT_DECIMAL:
-          sBuf.vSprint("%s"_Stz, oSpBcd.sz(m_xBcd.T.m_iMantissa, m_xBcd.T.m_iScale));
+          sBuf.vSprint("%s"_Stz, oSpBcd.sz(m_xBcd.T.m_iMantissa, m_xBcd.T.m_uScale));
           break;
 
         case VT_STRING:

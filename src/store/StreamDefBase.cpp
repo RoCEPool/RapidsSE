@@ -984,7 +984,7 @@ eEC StreamDefBase::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   
   // set default precision and scale
   i8 iPrecision = C_MAX_BCD_PRECISION;
-  i8 iScale = 2;
+  i8 iScale = C_BCD_DEFAULT_SCALE;
   
   // set column type in column
   pCol->vColumnTypeId(TypeId::xIdOf(CT_DECIMAL));

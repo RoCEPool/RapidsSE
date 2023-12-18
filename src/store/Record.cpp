@@ -202,7 +202,7 @@ void Record::vAddRow(Row* aRow)
       }
 
       xBcd = aRow->iColVal_int(i_Col);
-      vAppendCsvVal(eDatum,xBcd.T.m_iScale,xBcd.T.m_iMantissa);
+      vAppendCsvVal(eDatum, xBcd.T.m_uScale, xBcd.T.m_iMantissa);
       continue;
     }
 

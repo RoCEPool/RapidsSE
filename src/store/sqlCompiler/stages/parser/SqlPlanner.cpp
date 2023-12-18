@@ -3329,33 +3329,28 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
   }
 
   // Check for overflows. This is dependent on the size of components of the Bcd_T structure
-  if (iScale > 127 || iScale < -128) {
+  if (iScale > C_BCD_SCALE_MAX || iScale < C_BCD_SCALE_MIN) {
     SyntaxException::vThrow(nullptr, iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
-                            ": Max/min decimal scale supported is [-128, 127] : %s"_Stz, szStr);
+                            ": Max/min decimal scale supported is [%lld, %lld] : %s"_Stz,
+                            C_BCD_SCALE_MIN,
+                            C_BCD_SCALE_MAX,
+                            szStr);
   }
 
-  if (iMantissa > 36028797018963967 || iMantissa < -36028797018963967) {
-    // iDecimal > (2^55 - 1) || iDecimal < (-2^55 - 1)
+  if (iMantissa > C_BCD_MAX || iMantissa < C_BCD_MIN) {
     SyntaxException::vThrow(nullptr, iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
-                            ": Max/min decimal precision supported is [-360,287,970,189,639.67, 360,287,970,189,639.67] : %s"_Stz, szStr);
+                            ": Max/min decimal precision supported is [%lld, %lld] : %s"_Stz,
+                            C_BCD_MIN,
+                            C_BCD_MAX,
+                            szStr);
   }
 
   ASSERT(sizeof(Bcd) == C_BYTES_PER_WORD);
 
   Bcd xBcd;
-
-  // REVISE: If the value is small enough then represent it with 2 decimal places
-  // so it prints nicely. It should strictly have a scale of 0.
-  if ( iScale == 0 &&
-      (iMantissa * 100) < C_BCD_MAX &&
-      (iMantissa * 100) > C_BCD_MIN ) {
-    xBcd.vSet(iMantissa * 100, 2);
-
-  } else {
-    xBcd.vSet(iMantissa, iScale);
-  }
+  xBcd.vSet(iMantissa, iScale);
 
   return xBcd;
 }

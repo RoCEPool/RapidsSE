@@ -15,10 +15,18 @@ typedef i8 tXN; // opaque type for transaction number
 static const i8 C_INT_MIN = -9223372036854775806LL;
 static const i8 C_INT_MAX =  9223372036854775806LL;
 //36028797018963967
-static const i8 C_BCD_MIN = -36028797018963967;
-static const i8 C_BCD_MAX = 36028797018963967;
-static const i8 C_BCD_SCALE_MIN = -128;
-static const i8 C_BCD_SCALE_MAX = 127;
+static const i8 C_BCD_MIN = -99999999999999999;
+static const i8 C_BCD_MAX = 99999999999999999;
+static const i8 C_MAX_BCD_PRECISION = 17;
+static const i8 C_BCD_SCALE_MIN = 0;
+static const i8 C_BCD_SCALE_MAX = C_MAX_BCD_PRECISION;
+static const i8 C_BCD_DEFAULT_SCALE = 0;
+
+
+static const i8 C_MAX_FLT_PRECISION = 19;
+static const i8 C_MAX_INT_PRECISION = 19;
+static const i8 C_MAX_VCH_PRECISION = C_64KB; // max defined length of a vch col
+
 
 // MaxFloat64
 static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;
@@ -105,14 +113,14 @@ public:
 
   void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
   void vSet(i8 iMantissa, i8 iScale)   { T.m_iMantissa = iMantissa; // set value
-                                         T.m_iScale = iScale; }
-  void vSetMax(void)                { T.m_iBcd = C_I8_MAX; }  // set max value
-  void vSetMid(void)                { T.m_iBcd = C_I8_MID; }  // set mid value
-  void vSetMin(void)                { T.m_iBcd = C_I8_MIN; }  // set min value
-  void vSetNull(void)           { T.m_iBcd = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                    { T.m_iBcd = 73; }  // set usual value
+                                         T.m_uScale = iScale; }
+  void vSetMax(void)          { T.m_iMantissa = C_BCD_MAX; }  // set max value
+  void vSetMid(void)                  { T.m_iMantissa = 0; }  // set mid value
+  void vSetMin(void)          { T.m_iMantissa = C_BCD_MIN; }  // set min value
+  void vSetNull(void)                { T.m_bIsNull = true; }  // set to be null
+  void vSetUsual(void)               { T.m_iMantissa = 73; }  // set usual value
 
-  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
+  bool bIsNull(void)               { return (T.m_bIsNull); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

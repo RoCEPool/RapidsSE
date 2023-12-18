@@ -36,8 +36,9 @@ extern eIVL eMacro_AddSubResultIVL[IVL_ENUMS][IVL_ENUMS];
 union Bcd_T
 {
   struct {
-    i8 m_iScale: 8; //
-    i8 m_iMantissa: 56; // 2's complement
+    u8 m_bIsNull:    1;
+    u8 m_uScale:     5;
+    i8 m_iMantissa: 58; // 2's complement
   };
   i8 m_iBcd;
   i8 m_iAsI8;
