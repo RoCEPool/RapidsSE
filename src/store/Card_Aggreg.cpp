@@ -138,25 +138,6 @@ void Card_Aggreg::vSmooth(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* update existing emit                                                       */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
-
-    if (pCI->Flux.m_pArriving) {
-      pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
-      pCI->G.p_emit->vRenumberAll_expr();
-    }
-
-  }
-
-  vValidationPassed();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
