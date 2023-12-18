@@ -17,6 +17,9 @@ namespace STORE
    ~Card_Needed(void) noexcept(false);
 
     Card_Needed* pClone(void);
+
+    bool bNeeded_expr(Card_Expr* p_expr_arg);
+
     Card_Project* pNew_project_early(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

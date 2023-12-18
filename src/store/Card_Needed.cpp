@@ -59,6 +59,24 @@ Card_Needed* Card_Needed::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if given expr is a needed expr                                        */
+/*----------------------------------------------------------------------------*/
+bool Card_Needed::bNeeded_expr(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid x_needed(this); x_needed.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_needed = x_needed.p_expr();
+
+    //p_expr_needed->vDump(__func__);
+    if (p_expr_needed->bMatches(p_expr_arg))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Project* Card_Needed::pNew_project_early(CardIter* pCI)
