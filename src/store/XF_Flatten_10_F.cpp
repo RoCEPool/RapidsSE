@@ -6,7 +6,6 @@
 
 #include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
-#include "XF_Flatten_Update_projection.hpp"
 #include "XF_Prolog_Analyse_emit.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -111,11 +110,11 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 
   m_pCI->vEndTransform(__LINE__);
 
+
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
 
-  //XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 }
 
