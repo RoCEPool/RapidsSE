@@ -555,63 +555,46 @@ bool Pds::bDelete(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-
-  // -------------- Sanity check ----------------
-  // Assert the key is greater than the root dummy block key of zero
-//  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
-//  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
-//  RASSERT(iCompareRes == -1);
-  // --------------------------------------------
-
   // TODO: Add an assert to check that all the entries are deleted where
-  // the entry to delete has a non-zero value in it's respective level.
+
   SkipListBlock* pDeleteEntry = nullptr;
-  SkipListBlock* pPrev = pHeadSL();
+  SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
 
-  // Iterate the Skip List from the top down
-  for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
-    if(m_iNumEntries[i_Level] == 0)
-      continue;
+  // Get the prior vector at all levels for this key, i.e
+  // the elements at each level of the skip list after which
+  // is the key we want to delete
+  vPriorVecToKey(pKey, xPriorVec);
 
-    SkipListBlock* pCurr = pNextSLBlock(pPrev, i_Level);
+  // Iterate this vector for each level
+  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
 
-    // Iterate through all elements at this level while searching for the key
-    while(pCurr != nullptr) {
-      i8 iCompareRes = m_fpCompare(pCurr->aItem(), pKey);
+    SkipListBlock* pCursor = xPriorVec[i_Level];
 
-      if(iCompareRes == 0) {
+    // Delete the next, if it matches the key
+    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
+
+    if(pNext) {
+      // Check if the next key is the same as the key we want to delete
+      i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+      if (iCompareRes == 0) {
         // Found the key, save its address and update the chain pointers/offsets
-        pDeleteEntry = pCurr;
+        pDeleteEntry = pNext;
 
-        SkipListBlock* pNextBlock = pNextSLBlock(pCurr, i_Level);
-        bool bResult = bSetNextSLBlock(pPrev, pNextBlock, i_Level);
-        RASSERT(bResult == 1);
+        SkipListBlock* pNextNext = pNextSLBlock(pNext, i_Level);
+        bool bResult = bSetNextSLBlock(pCursor, pNextNext, i_Level);
+        RASSERT(bResult);
 
         m_iNumEntries[i_Level]--;
         RASSERT(m_iNumEntries[i_Level] >= 0);
-
-        // No need to continue iterating at this level
-        break;
-      } else if(iCompareRes > 0) {
-        // We passed the key, move to a lower level
-        break;
       }
-      pPrev = pCurr;
-      pCurr = pNextSLBlock(pCurr, i_Level);
     }
   }
 
   if(pDeleteEntry){
-    // Assert we are not deleting the root block
-//    u8 uOffsetToDelete = uGetOffsetFromBase(pDeleteEntry);
-//    RASSERT(uOffsetToDelete != m_uInUseRootOffset);
-
     vMoveToFreeList(pDeleteEntry);
-//    vValidate();
     return true;
   }
 
-//  vValidate();
   return false;
 }
 
@@ -753,15 +736,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
   // Get the prior vector at all levels for this key, i.e
   // the elements at each level of the skip list after which
   // we want to insert this key.
-  bool bResult = bPriorVecToKey(pKey, xPriorVec);
-
-  if( ! bResult) {
-    // Got duplicate key, error
-    vMoveToFreeList(pNewSLBlock);
-    vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
-//    vValidate();
-    return nullptr;
-  }
+  vPriorVecToKey(pKey, xPriorVec);
 
   // Iterate this vector for each level, and we may or may not
   // insert the key
@@ -777,8 +752,17 @@ SkipListBlock* Pds::pInsert(void* pKey)
     // Insert element, update offset values
     SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
 
-    // Assert that we are not inserting a block before the dummy root block
-    RASSERT(uGetOffsetFromBase(pNext) != m_uInUseRootOffset);
+    if(pNext) {
+      // Check if the next key is the same as the key we are inserting
+      // Currently we do not allow duplicates
+      i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+      if (iCompareRes == 0) {
+        // Got duplicate key, error
+        vMoveToFreeList(pNewSLBlock);
+        vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
+        return nullptr;
+      }
+    }
 
     bool bResult = bSetNextSLBlock(pCursor, pNewSLBlock, i_Level);
     RASSERT(bResult);
@@ -1328,10 +1312,10 @@ SkipListBlock* Pds::pNextSLBlock(SkipListBlock* pSLBlock, i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute prior vector for insert key, such that next of PriorVec[0] is      */
-/* specifically the point to insert at                                        */
+/* compute prior vector for insert/delete key, such that next of PriorVec[0] is      */
+/* specifically the point to insert at or delete                              */
 /*----------------------------------------------------------------------------*/
-bool Pds::bPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
+void Pds::vPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -1349,13 +1333,11 @@ bool Pds::bPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
     // inner loop:
     //   move right along the nodes at this level
     //     until we find
-    //       pNext > pKey at current level
+    //       pNext >= pKey at current level
     while(pNext != nullptr) {
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
 
-      if(iCompareRes == 0)
-        return false;
-      else if(iCompareRes > 0)
+      if(iCompareRes >= 0)
         break;
 
       pCurr = pNext;
@@ -1364,8 +1346,6 @@ bool Pds::bPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
 
     aPriorVec[i_Level] = pCurr;
   }
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

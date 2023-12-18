@@ -94,7 +94,7 @@ namespace BASE
     u2              uGetOffsetFromBase(void* aAddress);
     void            vMoveToFreeList(SkipListBlock* pSLBlock);
     SkipListBlock*  pNextSLBlock(SkipListBlock* pSLBlock , i8 iLevel);
-    bool            bPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[]);
+    void            vPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[]);
     bool            bSetNextSLBlock(SkipListBlock* pStartBlk, SkipListBlock* pEndBlock, i8 iLevel);
     bool            bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);
 
