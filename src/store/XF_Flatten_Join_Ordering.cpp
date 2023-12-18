@@ -366,6 +366,8 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
+  //m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 
  // m_pCI->vPrintBoard(__LINE__);

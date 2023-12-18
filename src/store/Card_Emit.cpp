@@ -321,20 +321,13 @@ Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* induct this arriving emit                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pInduct(CardIter *pCI) {
+Card_Emit* Card_Emit::pInduct(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(pCI);
 
   Card_Emit *p_emit_inducted = new Card_Emit;
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_arriving = xKid.p_expr();
-
-//    if (pCI->Early.m_pNeeded_later) {
-//      if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(p_expr_arriving->pGet_Symbol(0)))
-//        continue;
-//    }
 
     Card_Expr *p_expr_inducted = p_expr_arriving->pInduct();
     p_emit_inducted->vAppendChild(p_expr_inducted);

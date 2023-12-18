@@ -110,6 +110,30 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_OrdAgg::vUpdate_emit(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
+    if (pCI->Flux.m_pArriving) {
+      pCI->G.p_key->vEnsureTypeId_expCol(pCI);
+      pCI->G.p_key->vRenumberAll_expr();
+    }
+  }
+
+  if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
+
+    if (pCI->Flux.m_pArriving) {
+      pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
+      pCI->G.p_emit->vRenumberAll_expr();
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
