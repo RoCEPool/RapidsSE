@@ -329,9 +329,10 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI, bool bExcludeNotNeeded) {
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_arriving = xKid.p_expr();
 
-    if (bExcludeNotNeeded && pCI->G.p_needed) {
-      // todo: if test continue
-    }
+    // exclude not needed expressions
+    if (bExcludeNotNeeded && pCI->G.p_needed)
+      if (! pCI->G.p_needed->bNeeded_expr(p_expr_arriving))
+        continue;
 
     Card_Expr *p_expr_inducted = p_expr_arriving->pInduct();
     p_emit_inducted->vAppendChild(p_expr_inducted);
