@@ -21,6 +21,10 @@ void Step::vAddSteps_ErrorCode(void)
   vAddStep("ErrorCode[]"_Stz,             &Step::vErrorCodeGet);
   vAddStep("ErrorCode[].get"_Stz,         &Step::vErrorCodeGet);
   vAddStep("ErrorCode[].set"_Stz,         &Step::vErrorCodeSet);
+
+  vAddStep("ErrorStr[]"_Stz,             &Step::vErrorStrGet);
+  vAddStep("ErrorStr[].get"_Stz,         &Step::vErrorStrGet);
+  vAddStep("ErrorStr[].set"_Stz,         &Step::vErrorStrSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,6 +67,35 @@ void Step::vErrorCodeSet(void)
   eEC eError = (eEC)m_pDataStack->iPopInt(__func__);
 
   m_pLogicUnit->m_eErrorCode_reg = eError;
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* ErrorStr[].get -- get supplementary error details (from logic unit)        */
+/*----------------------------------------------------------------------------*/
+void Step::vErrorStrGet(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sErrorStr_reg);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* ErrorStr[].set -- set supplementary error details in logic unit            */
+/*----------------------------------------------------------------------------*/
+void Step::vErrorStrSet(void)
+{
+  ENTRY();
+
+  s256 sErr;
+  m_pDataStack->vPopStr(sErr, __func__);
+
+  m_pLogicUnit->m_sErrorStr_reg.vCopy(sErr.szStz());
 
   EXIT();
 }

@@ -30,14 +30,24 @@
 
   PipeIn[]\clear locals| pPayloadObj |
 
+  0 locals| iCurrTime |
+  0 locals| iElapsedRecvTime |
+
   Socket[].isNotNull if
     // We expect to see a PayloadObj
     pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
 
     TC_WLP trace.getComponent if
+      // Calculate the elapsed time between receiving the payload off OP_adaptorWL
+      // to processing it here in OP_sendWL
+      ticking::getTick to iCurrTime
+      iCurrTime pPayloadObj payloadObj::creationTime@ - to iElapsedRecvTime
+
+      iElapsedRecvTime
+      iCurrTime
       pPayloadObj payloadObj::size@
       pPayloadObj payloadObj::msgType@
-      "SendWL: Sending payload: %v : %v bytes" str.format .traceWlp
+      "SendWL: Sending payload: %v : %v bytes at time %v (elapsed OP_adaptorWL to OP_sendWL time: %v ns)" str.format .traceWlp
     then
 
     pPayloadObj Socket[].sendWLMsg not if

@@ -19,19 +19,38 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_recvNext
 
+  0 locals| pPayload |
+
   Socket[].object.isNotNull not assert
 
   // The received object is saved in Socket[].object
   Socket[].recvWLMsg
 
   Socket[].success@ not if
+    EC_NONE ErrorCode[].get == not if
+
+      // We got an error message set. Let's serialise it and send it to
+      // the client before we disconnect the socket.
+      // Mark the payload as not-for-processing so the adaptorWL doesn't inspect it.
+
+      ErrorStr[].get ErrorCode[].get recvWL[].serialiseError to pPayload
+      pPayload if
+        ErrorCode[].get ErrorCode::decodeError "RecvWL: sending ErrorResponse with error message: %v" str.format .traceWlp
+        pPayload [op].pipeOut
+      then
+    then
+
+    // Stop reading on the socket.
     false
     exit
   then
 
   Socket[].object.isNotNull if
     TC_WLP trace.getComponent if
-      Socket[].object@ payloadObj::size@ "RecvWL: Piping out payload received of %v bytes" str.format .traceWlp
+      Socket[].object@ payloadObj::creationTime@
+      Socket[].object@ payloadObj::size@
+      "RecvWL: Piping out payload received of %v bytes at time %v"
+      str.format .traceWlp
     then
 
     Socket[].object@\clear [op].pipeout
@@ -80,7 +99,7 @@
   recvWL_loop
 
   // If we get here then there was a problem receiving the next message from the client.
-  "recvWL_StartMarker: piping out error marker" .traceWlp
+  "recvWL_StartMarker: piping out error marker EC_WL_SOCKET_CLOSED" .traceWlp
   EC_WL_SOCKET_CLOSED op__execErr
 
   true

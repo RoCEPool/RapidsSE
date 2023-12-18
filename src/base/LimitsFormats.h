@@ -29,6 +29,7 @@ static const i8 C_MAX_PATH          = 256;    // max length of file path
 static const i8 C_MAX_PAYLOAD       = C_1KB;  // max length of index entry payload
 static const i8 C_MAX_PREDICATEVEC  = 16;
 static const i8 C_MAX_PTNSPERNODE   = 64;    // max partitions per node
+static const i8 C_MAX_QUERY_STR     = C_48K; // max length of a string to be parsed and executed
 static const i8 C_MAX_REGS          = 128;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 64;    // max number of sessions

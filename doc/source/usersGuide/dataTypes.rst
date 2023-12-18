@@ -40,9 +40,9 @@ below.
    ``DECIMAL``    RapidsSE v1.x only supports a fixed scale of 2 (2 decimal places).
                   Specifying the precision and range in a statement is currently ignored.
                   The range of the mantissa (the un-scaled value) is from
-                  ``-140,737,488,355,327`` to ``140,737,488,355,327``. With a scale of 2 the
-                  range of the overall value is ``-1,407,374,883,553.27`` to
-                  ``1,407,374,883,553.27``
+                  ``-36,028,797,018,963,967`` to ``36,028,797,018,963,967``. With a scale of 2 the
+                  range of the overall value is ``-360,287,970,189,639.67`` to
+                  ``360,287,970,189,639.67``
    ``BOOLEAN``    No limits
    ``DATE``       For RapidsSE v1.x the range of valid years is ``1900`` to ``2155``
    ``TIME``       No limits

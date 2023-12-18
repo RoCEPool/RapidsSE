@@ -270,6 +270,7 @@ LogicUnit::LogicUnit(void)
   m_xRluCommon.m_pPot = nullptr;
 
   m_eErrorCode_reg = EC_NONE;
+  m_sErrorStr_reg.vReset();
   
   m_nPotSize = 0;
   

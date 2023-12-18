@@ -116,7 +116,7 @@ void ToLglPtnCrw::vConvert(Pds* pPdsRowBuffer)
   
   //delete pRowBuffer;
   
-  vDebugPoint();
+  //vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -32,6 +32,7 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].isAbortEarly"_Stz,        &Step::vAdaptorWLIsAbortEarly);
   vAddStep("AdaptorWL[].isChildJobActive"_Stz,    &Step::vAdaptorWLIsChildJobActive);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz,  &Step::vAdaptorWLNextPayloadToSendFetch);
+  vAddStep("AdaptorWL[].payloadCreateTime@"_Stz,  &Step::vAdaptorWLPayloadCreateTime);
   vAddStep("AdaptorWL[].pds"_Stz,                 &Step::vAdaptorWLPdsRowBuffer);
   vAddStep("AdaptorWL[].processWLMsg"_Stz,        &Step::vAdaptorWLProcessWLMsg);
   vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
@@ -207,6 +208,20 @@ void Step::vAdaptorWLProcessWLMsg(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
   pAdaptorWL->vProcessWLMsg();
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].payloadCreateTime -- Get creation time of last payload received*/
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLPayloadCreateTime(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  u8 uPayloadCreateTime = pAdaptorWL->uPayloadCreationTime();
+
+  m_pDataStack->vPushInt((i8) uPayloadCreateTime);
   EXIT();
 }
 

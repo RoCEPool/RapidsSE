@@ -98,7 +98,7 @@ cp "${ROOT_DIR}/bootstrap/collectLogs.sh"         "${LAYOUT_DIR}"
 
 # Resources
 mkdir -p "${LAYOUT_DIR}/res"
-cp "${ROOT_DIR}/src/store/parser/graph/PlannerDef.json5" "${LAYOUT_DIR}/res"
+cp "${ROOT_DIR}/src/store/sqlCompiler/graph/PlannerDef.json5" "${LAYOUT_DIR}/res"
 
 # Documentation
 if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then

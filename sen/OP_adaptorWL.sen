@@ -77,6 +77,10 @@
     exit
   then
 
+  TC_WLP trace.getComponent if
+    ticking::getTick "AdaptorWL: Scheduling task for execution at time %v" str.format .traceWlp
+  then
+
   TaskList[].pop to pNextTask
 
   pNextTask AdaptorWL[].statementToSubmit
@@ -131,6 +135,17 @@
   "adaptorWL_Payload - EV_D_PAYLOAD" .verbose
 
   PipeIn[]\clear locals| pPayloadObj |
+  0 locals| iLastTime |
+  0 locals| iCurrTime |
+  0 locals| iElapsedTime |
+
+  // Check if we need to process this message
+  pPayloadObj payloadObj::doNotProcess@ if
+    "AdaptorWL: ignoring payload with doNotProcess bit set" .traceWlp
+    pPayloadObj [op].pipeOut
+    true
+    exit
+  then
 
   // Check if we previously received an error
   AdaptorWL[].protocolErrorTest if
@@ -141,9 +156,16 @@
   then
 
   TC_WLP trace.getComponent if
+    // Calculate the elapsed time between receiving the payload off the socket
+    // to processing it in the AdaptorWL
+    ticking::getTick to iCurrTime
+    iCurrTime pPayloadObj payloadObj::creationTime@ - to iElapsedTime
+
+    iElapsedTime
+    iCurrTime
     pPayloadObj payloadObj::size@
     pPayloadObj payloadObj::msgType@
-    "AdaptorWL: Received payload: %v : %v bytes" str.format .traceWlp
+    "AdaptorWL: Received payload: %v : %v bytes at time %v (elapsed socket recv to adaptor recv time: %v ns)" str.format .traceWlp
   then
 
   // Decode the payload to a message. This might generate payloads to be sent.
@@ -170,7 +192,21 @@
 
   // Check if there are queries to be parsed and submitted through the API
   AdaptorWL[].hasQuery if
+
+    TC_WLP trace.getComponent if
+      iCurrTime to iLastTime
+      ticking::getTick to iCurrTime
+      iCurrTime "AdaptorWL: About to start parsing query at time %v" str.format .traceWlp
+    then
+
     AdaptorWL[].queryStr@ adaptorWL_parseQuery
+
+    TC_WLP trace.getComponent if
+      iCurrTime to iLastTime
+      ticking::getTick to iCurrTime
+      iCurrTime iLastTime - to iElapsedTime
+      iElapsedTime iCurrTime "AdaptorWL: Finished parsing query at time %v (elapsed time: %v ns)" str.format .traceWlp
+    then
 
     // Pipeout any payloads that were just generated so they can be sent straight away
     adaptorWL_sendAnyWLResponses not if
@@ -407,8 +443,15 @@
 
   "adaptorWL_ChildExit - EV_X_CHILDEXIT" .verbose
 
+  0 locals| iCurrTime    |
+  0 locals| iElapsedTime |
+
   nullptr [job].responseOp!
   Pipein[].delete
+
+  TC_WLP trace.getComponent if
+    ticking::getTick "AdaptorWL: Child task exited at time %v" str.format .traceWlp
+  then
 
   adaptorWL[].childJobExited
 
@@ -436,6 +479,16 @@
   adaptorWL_sendAnyWLResponses not if
     true
     exit
+  then
+
+
+  // Print out how long it took from receiving the query to sending the last response.
+  // This does not include the actual sending of the payloads or how long it takes for
+  // the client to receive and display them.
+  TC_WLP trace.getComponent if
+    ticking::getTick to iCurrTime
+    iCurrTime adaptorWL[].payloadCreateTime@ - to iElapsedTime
+    iElapsedTime iCurrTime "AdaptorWL: Recv & execution of query finished at time %v (elapsed time: %v ns)" str.format .traceWlp
   then
 
   true

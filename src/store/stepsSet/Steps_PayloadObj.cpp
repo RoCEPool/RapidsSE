@@ -16,9 +16,11 @@
 void Step::vAddSteps_PayloadObj(void)
 {
 
-  vAddStep("payloadObj::delete"_Stz,   &Step::vPayloadObjDelete);
-  vAddStep("payloadObj::size@"_Stz,    &Step::vPayloadObjSize);
-  vAddStep("payloadObj::msgType@"_Stz, &Step::vPayloadObjMsgType);
+  vAddStep("payloadObj::delete"_Stz,       &Step::vPayloadObjDelete);
+  vAddStep("payloadObj::size@"_Stz,        &Step::vPayloadObjSize);
+  vAddStep("payloadObj::msgType@"_Stz,     &Step::vPayloadObjMsgType);
+  vAddStep("payloadObj::creationTime@"_Stz,&Step::vPayloadObjCreationTime);
+  vAddStep("payloadObj::doNotProcess@"_Stz,&Step::vPayloadObjDoNotProcess);
 
 }
 
@@ -66,6 +68,38 @@ void Step::vPayloadObjMsgType(void)
   s256 sBuf;
   pPayloadObj->vMsgType(sBuf);
   m_pDataStack->vPushStr(sBuf);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* payloadObj::creationTime@ : push the buffer creation time on the stk       */
+/*----------------------------------------------------------------------------*/
+void Step::vPayloadObjCreationTime(void)
+{
+  ENTRY();
+
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
+
+  u8 uCreationTime = pPayloadObj->uCreationTime();
+  m_pDataStack->vPushInt((i8) uCreationTime);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* payloadObj::doNotProcess@ : get whether the adaptor should process this msg*/
+/*----------------------------------------------------------------------------*/
+void Step::vPayloadObjDoNotProcess(void)
+{
+  ENTRY();
+
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
+
+  bool bDoNotProcess = pPayloadObj->bDoNotProcess();
+  m_pDataStack->vPushBol(bDoNotProcess);
 
   EXIT();
 }
