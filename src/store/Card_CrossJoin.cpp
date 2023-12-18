@@ -94,7 +94,6 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  //vUpdate_emit_OP(pCI);
   pCI->G.p_OP->vRecreate_emit(pCI);
 
   vCorrect_expCol(pCI->Flux.m_pArriving);
