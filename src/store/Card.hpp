@@ -248,7 +248,8 @@ namespace STORE
   static const bool C_LEFT_ORIENTATION  = true;
   static const bool C_RIGHT_ORIENTATION = false;
 
-  static const bool C_NOT_NULL  = true;
+  static const bool C_NOT_NULL = true;
+  static const bool C_EXCLUDE_NOT_NEED = true;
 
   class Card : public Object
              , public ChildCards
