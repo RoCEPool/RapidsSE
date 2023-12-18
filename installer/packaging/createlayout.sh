@@ -92,14 +92,14 @@ cp "${ROOT_DIR}/bootstrap/startSE.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/stopSE.sh"              "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/boot.fn"                "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/status.sh"              "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/prompt.sh"              "${LAYOUT_DIR}"
+# cp "${ROOT_DIR}/bootstrap/prompt.sh"              "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/collectLogs.sh"         "${LAYOUT_DIR}"
 # cp "${ROOT_DIR}/bootstrap/addNode.sh"            "${LAYOUT_DIR}"
 # cp "${ROOT_DIR}/bootstrap/removeNode.sh"         "${LAYOUT_DIR}"
 
 # Resources
 mkdir -p "${LAYOUT_DIR}/res"
-cp "${ROOT_DIR}/src/store/parser/graph/PlannerDef.json5" "${LAYOUT_DIR}/res"
+cp "${ROOT_DIR}/src/store/sqlCompiler/graph/PlannerDef.json5" "${LAYOUT_DIR}/res"
 
 # Documentation
 if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then

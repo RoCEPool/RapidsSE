@@ -12,6 +12,8 @@ namespace WLP
 
   private:
     i8   m_nPayloadBytes;
+    u8   m_uCreationTime; // in nanos
+    bool m_bDoNotProcess; // the wireline adaptor should not process this payload
     char m_caPayload[C_MAX_PAYLOAD_BYTES];
 
     Footer m_xFooter;
@@ -21,11 +23,13 @@ namespace WLP
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PayloadObj(void);
+    PayloadObj(bool bDoNotProcess = false);
     ~PayloadObj(void) noexcept(false);
   
     char* pcBuf();
     i8 iPayloadSize();
+    u8 uCreationTime();
+    bool bDoNotProcess();
     void vSetPayloadSize(i8 nBytes);
     void vReset();
     void vMsgType(s256& sBuf);

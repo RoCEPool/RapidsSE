@@ -336,23 +336,23 @@
 #include "MatrixPrint.hpp"
 
 
-#include "graph/PlanConstants.hpp"
-#include "graph/PlanNode.hpp"
-#include "graph/PlanNodeBuilder.hpp"
-#include "graph/RootNode.hpp"
-#include "graph/DefinitionNode.hpp"
-#include "graph/PrimitiveNode.hpp"
-#include "graph/QueryNode.hpp"
-#include "graph/PlanDefinitionParser.hpp"
-#include "graph/ConditionalQueryNodeIter.hpp"
+#include "store/sqlCompiler/graph/PlanConstants.hpp"
+#include "store/sqlCompiler/graph/PlanNode.hpp"
+#include "store/sqlCompiler/graph/PlanNodeBuilder.hpp"
+#include "store/sqlCompiler/graph/RootNode.hpp"
+#include "store/sqlCompiler/graph/DefinitionNode.hpp"
+#include "store/sqlCompiler/graph/PrimitiveNode.hpp"
+#include "store/sqlCompiler/graph/QueryNode.hpp"
+#include "store/sqlCompiler/graph/PlanDefinitionParser.hpp"
+#include "store/sqlCompiler/graph/ConditionalQueryNodeIter.hpp"
 
-#include "graphTools/GraphNav.hpp"
-#include "graphTools/GraphEditor.hpp"
+#include "store/sqlCompiler/graphTools/GraphNav.hpp"
+#include "store/sqlCompiler/graphTools/GraphEditor.hpp"
 
-#include "parser/stages/parser/SqlPlanner.hpp"
-#include "parser/common/TypeMap1D.hpp"
-#include "parser/common/TypeMap2D.hpp"
-#include "parser/common/ExtractMap.hpp"
+#include "store/sqlCompiler/stages/parser/SqlPlanner.hpp"
+#include "store/sqlCompiler/common/TypeMap1D.hpp"
+#include "store/sqlCompiler/common/TypeMap2D.hpp"
+#include "store/sqlCompiler/common/ExtractMap.hpp"
 
 using namespace Parser;
 

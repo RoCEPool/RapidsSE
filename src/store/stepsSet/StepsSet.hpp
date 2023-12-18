@@ -40,6 +40,7 @@ public:
   void vAdaptorWLIsChildJobActive(void);
   void vAdaptorWLNew(void);
   void vAdaptorWLNextPayloadToSendFetch(void);
+  void vAdaptorWLPayloadCreateTime(void);
   void vAdaptorWLProcessWLMsg(void);
   void vAdaptorWLProtocolErrorFetch(void);
   void vAdaptorWLProtocolErrorTest(void);
@@ -546,10 +547,13 @@ void vDdlLockAssertNone(void);
   // env
   void vEnvGet(void);
 
-  // error code
+  // error code & error string
   void vErrorCodeDecodeError(void);
   void vErrorCodeGet(void);
   void vErrorCodeSet(void);
+  void vErrorStrGet(void);
+  void vErrorStrSet(void);
+
 
   // event manager
   void vEvMgrEventCountFetch(void);
@@ -1560,6 +1564,7 @@ void vJobIdLastJobIdFetch(void);
   void vRecvWLIsNull(void);
   void vRecvWLSet(void);
   void vRecvWLDelete(void);
+  void vRecvWLSerialiseError(void);
 
   // reference timer
   void vRefTimerReset(void);
@@ -1631,6 +1636,8 @@ void vJobIdLastJobIdFetch(void);
   void vPayloadObjDelete(void);
   void vPayloadObjSize(void);
   void vPayloadObjMsgType(void);
+  void vPayloadObjCreationTime(void);
+  void vPayloadObjDoNotProcess(void);
 
   // pds Cursor
   void vPdsCursorGet(void);

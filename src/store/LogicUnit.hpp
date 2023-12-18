@@ -227,6 +227,7 @@ namespace STORE
     EntBuffer* m_pEntBufferOuter;
 
     eEC    m_eErrorCode_reg;      // error code
+    s256   m_sErrorStr_reg;       // supplementary error details
     
     eEV m_ePipeInOperand;
 		eBT m_ePipeInBufferType;

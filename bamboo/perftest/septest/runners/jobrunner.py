@@ -342,8 +342,13 @@ class JobRunner:
                 self.current_test_runner = None
 
             #  Check if we are aborting abnormally due to a crash, timeout, etc.
-            if not self.abnormal_exit:
-                self.test_results.append(test_result)
+            #  We want the last test to be recorded as a failure, otherwise we can
+            #  end up with a situation where the last test is not recorded or not
+            #  marked as a failure despite a crash or time out.
+            if self.abnormal_exit:
+                test_result.test_passed = False
+
+            self.test_results.append(test_result)
 
             if test_result.test_passed is False:
                 LOG.debug(f"Test {test_result.test_name} failed")

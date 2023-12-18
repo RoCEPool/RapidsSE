@@ -64,6 +64,7 @@ namespace STORE
     eEC          m_eProtocolError;
     eState       m_eProtocolState;
     bool         m_bGotGracefulDisconnect;
+    u8           m_uPayloadCreationTime;  // when was the payload first received
 
 
     WLP::QueryContext m_oQueryCtx;
@@ -95,6 +96,8 @@ namespace STORE
     bool bHasQuery();
     Stz* szQuery();
     bool bAbortEarly();
+
+    u8   uPayloadCreationTime();
 
     // State-change handlers called from sen code
 

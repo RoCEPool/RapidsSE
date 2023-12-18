@@ -297,11 +297,12 @@ Object* Socket::pRecvObject(void)
 /*----------------------------------------------------------------------------*/
 /* recv next wireline message from this socket                                */
 /*----------------------------------------------------------------------------*/
-Object* Socket::pRecvWLMsg(void)
+Object* Socket::pRecvWLMsg(eEC& eErrorCode, String* psErrStr)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 
   RASSERT(! pReceivedObject());
+  ASSERT(psErrStr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the header of the next wireline message
@@ -313,13 +314,21 @@ Object* Socket::pRecvWLMsg(void)
   i8 iMsgSize = m_pWlpHeader->iMsgSize();
 
   if (iMsgSize > WLP::PayloadObj::C_MAX_PAYLOAD_BYTES) {
-    // TODO: Handle the case where the size of the message is larger than can be accepted.
-    //       Ideally we want to read the remaining bytes and return a wireline error
-    //       message to the user.
+    // Handle the case where the size of the message is larger than can be accepted.
+    // We're not going to try to clear the remaining bytes on the socket and keep it
+    // alive as the payload size in the header may be incorrect. Better to just send
+    // the client an error message and then disconnect them.
     vTrace("Invalid message received from client on %s:%lld. Message too big (size = %lld).\n"_Stz,
            inet_ntoa(this->m_xClientAddr.sin_addr),
            ntohs(this->m_xClientAddr.sin_port),
            iMsgSize);
+
+    vSuccess(false);
+    eErrorCode = EC_WL_MSG_TOO_BIG;
+    psErrStr->vSprint("Max message size of %lld bytes. Received message is %lld bytes."_Stz,
+                      WLP::PayloadObj::C_MAX_PAYLOAD_BYTES,
+                      iMsgSize);
+
     return nullptr;
   }
 

@@ -24,12 +24,14 @@ __vDeleteFunction(PayloadObj,CN_PAYLOADOBJ)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PayloadObj::PayloadObj(void)
+PayloadObj::PayloadObj(bool bDoNotProcess)
 : Object(CN_PAYLOADOBJ)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAYLOADOBJ,_FOOTER_);
 
   m_nPayloadBytes = 0;
+  m_uCreationTime = Hardware::uReadClock();
+  m_bDoNotProcess = bDoNotProcess;
   m_caPayload[0] = 0;
 
 #ifdef WITH_CHECK_INITIALISED
@@ -66,6 +68,22 @@ char* PayloadObj::pcBuf(void)
 i8 PayloadObj::iPayloadSize(void)
 {
   return m_nPayloadBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the time the buffer was created                                        */
+/*----------------------------------------------------------------------------*/
+u8 PayloadObj::uCreationTime(void)
+{
+  return m_uCreationTime;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get whether the wireline adaptor needs to process this message or not      */
+/*----------------------------------------------------------------------------*/
+bool PayloadObj::bDoNotProcess(void)
+{
+  return m_bDoNotProcess;
 }
 
 /*----------------------------------------------------------------------------*/

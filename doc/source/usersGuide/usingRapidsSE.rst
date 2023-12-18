@@ -37,7 +37,7 @@ SE Shell utilises the capabilities of the RapidsSE :ref:`JDBC Driver <jdbcDriver
 submitting commands and extracting results. SE Shell can submit commands to a
 RapidsSE node from across the network.
 
-SE Shell is started by running ``./seShell.sh`` in the root of the RapidsSE
+SE Shell is started by running ``./seshell.sh`` in the root of the RapidsSE
 installation directory. When SE Shell has started it will display the prompt
 ``rapids >``. To exit the SE Shell simply enter the command ``exit;`` or
 press ``<Control>``-``<C>``. This can be seen in the example below:
