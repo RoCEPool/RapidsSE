@@ -21,7 +21,7 @@ success
 create index IxP_PARTKEY   ON ${testName2}_Part   (P_PARTKEY);
 success
 
-load ${testName2}_part "../TPCH/SF_0001/part.csv";
+load ${testName2}_part "../TPCH/SF_0001/part.tbl";
 success
 
 create table ${testName2}_partsupp (
@@ -36,7 +36,7 @@ success
 create index IxPS_PARTKEY ON ${testName2}_partsupp(PS_PARTKEY);
 success
 
-load ${testName2}_partsupp "../TPCH/SF_0001/partsupp.csv";
+load ${testName2}_partsupp "../TPCH/SF_0001/partsupp.tbl";
 success
 
 create table ${testName2}_orders (
@@ -55,7 +55,7 @@ success
 create index IxO_ORDERKEY  ON ${testName2}_orders(O_ORDERKEY);
 success
 
-load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.tbl";
 success
 
 create table ${testName2}_lineitem (
@@ -81,7 +81,7 @@ success
 create index IxL_PARTKEY ON ${testName2}_lineitem(L_PARTKEY);
 success
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 /optimise_passthru 

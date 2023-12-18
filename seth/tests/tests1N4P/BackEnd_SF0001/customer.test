@@ -21,7 +21,7 @@ create index IxC_CUSTKEY ON ${testName2}_CUSTOMER (C_CUSTKEY)  ;
 affected: 0
 
 // load the table
-load ${testName2}_customer "../TPCH/SF_0001/customer.csv";
+load ${testName2}_customer "../TPCH/SF_0001/customer.tbl";
 success
 
 select count(*) from ${testName2}_customer;

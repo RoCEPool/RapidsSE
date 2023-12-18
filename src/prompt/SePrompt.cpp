@@ -27,7 +27,6 @@
 #include "TagConstants.h"
 #include "Op.hpp"
 
-#include "InfoSet.hpp"
 #include "Marker.hpp"
 
 

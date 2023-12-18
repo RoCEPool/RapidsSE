@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CrossJoin,CK_CROSSJOIN)
+__pCastFunction_Card(STORE, Card_CrossJoin, CK_o_CROSSJOIN)
 __aNewFunction(Card_CrossJoin,CN_CARD)
 __vDeleteFunction(Card_CrossJoin,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_CrossJoin,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CrossJoin::Card_CrossJoin(void)
-: Card_OP(CK_CROSSJOIN,1)
+: Card_OP(CK_o_CROSSJOIN, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -50,11 +50,11 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 
   pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
 
-//  pCI->G_vNewMember(CK_CROSSJOIN);
+//  pCI->G_vNewMember(CK_o_CROSSJOIN);
 //  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
 
 
-  pCI->G.p_crossJoin = _pCard_CrossJoin(pCI->G.p_from->pCard(CK_CROSSJOIN));
+  pCI->G.p_crossJoin = _pCard_CrossJoin(pCI->G.p_from->pCard(CK_o_CROSSJOIN));
   pCI->G.p_index = pCI->G.p_crossJoin->pSub_index();
 
   pCI->G_vNewMember(CK_BOUNDS,Symbol(SF_CROSS,"cross"_Stz));
@@ -94,7 +94,8 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_emitted(pCI);
+  //vUpdate_emit_OP(pCI);
+  pCI->G.p_OP->vRecreate_emit(pCI);
 
   vCorrect_expCol(pCI->Flux.m_pArriving);
 
@@ -119,7 +120,7 @@ void Card_CrossJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_TABLE, CK_NONE);
 
   RASSERT(pSub_table()->pSub_indexList());
 

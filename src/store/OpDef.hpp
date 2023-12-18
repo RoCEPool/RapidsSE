@@ -9,6 +9,7 @@
 #include "ColMap.hpp"
 #include "ColInj.hpp"
 #include "ColPpg.hpp"
+#include "KeyMap.hpp"
 #include "StreamDef.hpp"
 #include "IntStack.hpp"
 #include "ListExo2_t.hpp"
@@ -45,6 +46,7 @@ namespace STORE
     ColInj*    m_pColInj;
 
     ColHsh*    m_pColHsh;
+    KeyMap*    m_pKeyMap;
 
   protected:
     // must be last

@@ -29,6 +29,7 @@ namespace STORE
     bool bIsEq(Card_RlnConj* p_rlnConj_arg);
     bool bIsEqOp(void);
     bool bIsIndexBound(Card_Index* p_index);
+    bool bIsRlnOp(void);
     char cOtherTable(char cTblSyn);
     bool bSubsetOf_bounds(Card_Bounds* p_bounds);
     bool bUsesTable(char cTblSyn);

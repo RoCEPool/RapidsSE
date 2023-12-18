@@ -24,7 +24,6 @@
 #include "eOK.h"
 
 #include "eOT.h"
-#include "eOI.h"
 #include "eOR.h"
 #include "ePF.h"
 #include "eYG.h"
@@ -44,8 +43,6 @@
 #include "RowBuffer.hpp"
 
 #include "Pot.hpp"
-#include "InfoSet.hpp"
-#include "StreamSet.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -1906,29 +1903,8 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
     if (pMarker->eOpMarker() == OM_LOWMEMORY)
       return true;
 
-    if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)
-      return true;
-
     if (pMarker->eOpMarker() == OM_NODELOSSABORT)
       return true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is it a infoset ?
-
-  if (CN_INFOSET == pOperand->eGetClassNo()) {
-    InfoSet* pInfoSet = _pInfoSet(pOperand);
-
-    eOI eOpInfoSet = pInfoSet->eOpInfoSet();
-    UNUSED(eOpInfoSet);
-
-//    if (OI_PROGRESSUNITS == eOpInfoSet)
-//      return true;
-//    if (OI_SEEKOFFSETS   == eOpInfoSet)
-//      return true;
-//    if (OI_TOTALUNITS    == eOpInfoSet)
-//      return true;
-
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1960,6 +1936,8 @@ i8 AM::OPTIMISER::iNextBenchNo(void)
 /*----------------------------------------------------------------------------*/
 /* pipe page in request to page in demon                                      */
 /*----------------------------------------------------------------------------*/
+
+/*
 InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
 {
   _static_
@@ -1972,6 +1950,36 @@ InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
     return nullptr;
   InfoSet* pInfoSet = new InfoSet(pStreamDef);
   pInfoSet->vOpInfoSet(OI_PAGEINREQUEST);
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN
+      ,pTask
+      ,oBufferId.m_iAsI8
+      ,C_VARGS_END);
+
+  return pInfoSet;
+#else
+  NEVER_REACH;
+  return nullptr;
+#endif
+}
+*/
+
+
+// NOTE for ARJUN:
+// PageIn request is now a RowBuffer
+// I guess we will need to ensure that the PAGEINREQUEST rowBuffers are never paged out !!!
+
+RowBuffer* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
+{
+  _static_
+  UNUSED(pTask);
+  UNUSED(oBufferId);
+
+#ifdef WITH_PAGING
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
+  if (! pStreamDef)
+    return nullptr;
+  RowBuffer* pRowBuffer = new RowBuffer(pStreamDef);
+  pRowBuffer->vBufferType(BT_PAGEINREQUEST);
   Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN
       ,pTask
       ,oBufferId.m_iAsI8
@@ -2337,7 +2345,7 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
 /*----------------------------------------------------------------------------*/
 /* pipe string out to prompt                                                  */
 /*----------------------------------------------------------------------------*/
-InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
+RowBuffer* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
 
@@ -2345,14 +2353,14 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
   if (! pStreamDef)
     return nullptr;
 
-  InfoSet* pInfoSet = new InfoSet(pStreamDef);
-  pInfoSet->vOpInfoSet(OI_PROMPTOUT);
+  RowBuffer* pRowBuffer = new RowBuffer(pStreamDef);
+	pRowBuffer->vBufferType(BT_PROMPTOUT);
 
-  Row* pRow = pInfoSet->pAllotRow();
+  Row* pRow = pRowBuffer->pAllotRow();
 
-  pInfoSet->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
+	pRowBuffer->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
 
-  return pInfoSet;
+  return pRowBuffer;
 }
 
 
@@ -3827,31 +3835,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       delete pIndexDef;
       break;
     }
-      
-    case CN_INFOSET: {
-      InfoSet* pInfoSet = _pInfoSet(pOperand);
-
-      if (pInfoSet->bIsPermanent()) {
-        // ensure the output queue flag is set to false
-
-        // if the output queue flag is false, then this infoset
-        // is not part of m_pOutputQueue in Output.cpp
-        // someone is trying to delete it, but since it is permanent
-        // we only need to drop the hashmapentry lock
-        if(! pInfoSet->bOutputQueued())
-          AM::pHashMap()->vDropKeyLock(pInfoSet->oGetBufferId().m_pvAsAddress);
-
-        // if the output queue flag is true, then this infoset
-        // should not have any locks on it
-
-        pInfoSet->vOutputQueued(false);
-        RASSERT( ! AM::pHashMap()->bIsLocked(pInfoSet->oGetBufferId().m_pvAsAddress));
-        break;
-      }
-
-      delete pInfoSet;
-      break;
-    }
 
     case CN_JOBMETRICS: {
       JobMetrics* pJobMetrics = _pJobMetrics(pOperand);
@@ -3862,15 +3845,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
       AM::MARKER::vFreeMarker(pMarker,pJob);
-      break;
-    }
-
-    case CN_NAMEDBUFFER: {
-      NamedBuffer* pNamedBuffer = _pNamedBuffer(pOperand);
-      // permament row buffers not to be deleted
-      if (pNamedBuffer->bIsPermanent())
-        break;
-      delete pNamedBuffer;
       break;
     }
 
@@ -3950,12 +3924,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
     case CN_STREAMDEFRHT: {
       StreamDefRht* pStreamDefRht = _pStreamDefRht(pOperand);
       delete pStreamDefRht;
-      break;
-    }
-      
-    case CN_STREAMSET: {
-      StreamSet* pStreamSet = _pStreamSet(pOperand);
-      delete pStreamSet;
       break;
     }
 
@@ -4462,9 +4430,6 @@ Stz* AM::pOperandName(Operand* pOperand)
 {
   if (pOperand->bIsMarker())
     return aOM[(_pMarker(pOperand))->eOpMarker()];
-  
-  if (pOperand->bIsInfoSet())
-    return aOI[(_pInfoSet(pOperand))->eOpInfoSet()];
   else
     return aCN[pOperand->eGetClassNo()];
 }
@@ -4524,41 +4489,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
 
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
-    case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
-    case CN_INDEX:       eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
-      
-    case CN_INFOSET:
-    {
-      InfoSet* pInfoSet = _pInfoSet(pOperand);
-      
-      eOI eInfoSet = pInfoSet->eOpInfoSet();
-      switch(eInfoSet) {
-        case OI_AFFECTEDROWS:   eOperand = EV_I_AFFECTEDROWS;   break;
-        case OI_CALLPIPELINE:   eOperand = EV_I_CALLPIPELINE;   break;
-        case OI_COMMAND:        eOperand = EV_I_COMMAND;        break;
-        case OI_COMPILEERRORS:  eOperand = EV_I_COMPILEERRORS;  break;
-        case OI_COUNT:          eOperand = EV_I_COUNT;          break;
-        case OI_EXECERRORS:     eOperand = EV_I_EXECERRORS;     break;
-        case OI_FORKCOMMAND:    eOperand = EV_I_FORKCOMMAND;    break;
-        case OI_LOADRESULT:     eOperand = EV_I_LOADRESULT;     break;
-        case OI_LOCKSTATS:      eOperand = EV_I_LOCKSTATS;      break;
-        case OI_NODEINFO:       eOperand = EV_I_NODEINFO;       break;
-        case OI_PAGEINREQUEST:  eOperand = EV_I_PAGEINREQUEST;  break;
-        case OI_PATH:           eOperand = EV_I_PATH;           break;
-        case OI_PROGRESSUNITS:  eOperand = EV_I_PROGRESSUNITS;  break;
-        case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;
-        case OI_SEEKOFFSETS:    eOperand = EV_I_SEEKOFFSETS;    break;
-        case OI_TOTALUNITS:     eOperand = EV_I_TOTALUNITS;     break;
-        case OI_WARNINGS:       eOperand = EV_I_WARNINGS;       break;
-        default:
-          RASSERT(0);
-      }
-      break;
-    }
-
-    case CN_JOB:                eOperand = EV_D_JOB;            break;
-    case CN_JOBMETRICS:         eOperand = EV_D_JOBMETRICS;     break;
 
     case CN_MARKER:
     {
@@ -4582,7 +4513,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_ERRORINGMARKER:     eOperand = EV_M_ERRORING;     break;
         case OM_EXITING:            eOperand = EV_M_EXITING;      break;
         case OM_EXITED:             eOperand = EV_M_EXITED;       break;
-        case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
         case OM_FLUSH:              eOperand = EV_M_FLUSH;        break;
         case OM_HARDABORT:          eOperand = EV_M_HARDABORT;    break;
         case OM_INTERNALERROR:      eOperand = EV_M_INTERNALERROR; break;
@@ -4591,11 +4521,9 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = EV_M_LEFT;         break;
         case OM_LOWMEMORY:          eOperand = EV_M_LOWMEMORY;    break;
-        case OM_NEXTBUFFERMARKER:   eOperand = EV_M_NEXTBUFFER;   break;
         case OM_NODELOSSABORT:      eOperand = EV_M_NODELOSSABORT; break;
         case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
         case OM_STARTMARKER:        eOperand = EV_M_START;        break;
-        case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
         case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
 
@@ -4608,23 +4536,13 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       break;
     }
 
-    case CN_NAMEDBUFFER:  eOperand = EV_D_NAMEDBUFFER;    break;
-    case CN_OP:           eOperand = EV_D_OP;             break;
-    case CN_OTHEROPERAND: eOperand = EV_D_OTHEROPERAND;   break;
-    case CN_PAGINGMETRICS:eOperand = EV_D_PAGINGMETRICS;  break;
     case CN_PDS:          eOperand = EV_D_PDSROWBUFFER;   break;
     case CN_PAYLOADOBJ:   eOperand = EV_D_PAYLOAD;        break;
     case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
-    case CN_PROFILE:      eOperand = EV_D_PROFILE;        break;
     case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;
-    //case CN_SRTBUFFER:    eOperand = EV_D_SRTBUFFER;      break;
     case CN_STREAMDEF:    eOperand = EV_D_STREAMDEF;      break;
-    case CN_STREAMDEFRHT: eOperand = EV_D_STREAMDEFRHT;   break;
-    case CN_STREAMSET:    eOperand = EV_D_STREAMSET;      break;
-    case CN_METAGET:      eOperand = EV_D_METAGET;        break;
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
     case CN_TABLE:        eOperand = EV_D_TABLE;          break;
-    case CN_GRID:         eOperand = EV_D_GRID;           break;
     case CN_TABLEPTN:     eOperand = EV_D_TABLEPTN;      break;
 
     default:
@@ -5275,7 +5193,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_NS: return aNS[i_Enum];
       
     case EG_OA: return aOA[i_Enum];
-    case EG_OI: return aOI[i_Enum];
     case EG_OK: return aOK[i_Enum];
     case EG_OM: return aOM[i_Enum];
     case EG_OR: return aOR[i_Enum];

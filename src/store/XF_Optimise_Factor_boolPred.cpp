@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Optimise_Factor_boolPred.cpp -- Refactor boolPred                     */
+/* XF_Optimise_Factor_boolPred.cpp -- Refactor boolPred                       */
 /*============================================================================*/
 
 #include "XF_Optimise_Factor_boolPred.hpp"
@@ -72,7 +72,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
   while (m_pCI->G_bEachMain_NONE()) {
     switch (m_pCI->G.e_MainCard) {
 
-      case CK_CROSSJOIN:
+      case CK_o_CROSSJOIN:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -80,12 +80,12 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_FILTER:
+      case CK_o_FILTER:
         if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
           vFactor_boolPred(m_pCI->G.p_boolPred);
         break;
 
-      case CK_FROM:
+      case CK_o_FROM:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
@@ -96,7 +96,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_HAVING:
+      case CK_o_HAVING:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -104,7 +104,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_INDEXJOIN:
+      case CK_o_INDEXJOIN:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
@@ -115,7 +115,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_INDEXSCAN:
+      case CK_o_INDEXSCAN:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -123,7 +123,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_KEYEXISTS:
+      case CK_o_KEYEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
@@ -131,7 +131,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
 
-      case CK_KEYNOTEXISTS:
+      case CK_o_KEYNOTEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
@@ -139,7 +139,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
 
-      case CK_SCAN:
+      case CK_o_SCAN:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -147,7 +147,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         }
         break;
 
-      case CK_WHERE:
+      case CK_o_WHERE:
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
@@ -172,558 +172,116 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+
 void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  eRC eRotation;
-  do {
-    RASSERT(!m_pCI->nAncestors());
-    eRotation = eFactor_boolPred(p_boolPred);
-    RASSERT(!m_pCI->nAncestors());
+  Card_CONJ *p_conj_root = p_boolPred->pRoot_conj();
 
-    p_boolPred->vMarksClearRecursive();
-    p_boolPred->vConjFormClearRecursive();
-    p_boolPred->vConjRotClearRecursive();
-  } while (eRotation);
+  if (!p_conj_root->bIsCard(CK_ORCONJ))
+    return;
 
-  m_pCI->G.p_boolPred = nullptr;
-}
+  if (!p_conj_root->bAllChildren(CK_ANDCONJ))
+    return;
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eRC XF_Optimise_Factor_boolPred::eFactor_boolPred(Card_BoolPred* p_boolPred)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+  Kid xOrConj(p_conj_root);
+  RASSERT(xOrConj.bEach());
 
-  eRC eRotation = RC_NONE;
+  Card_AndConj *p_andConj_ref = xOrConj.p_andConj();
 
-  m_pCI->vAncestorPush(p_boolPred);
-  p_boolPred->vMark(MARK_AT, MARK_PREDICATE);
-
-  Card *pChild = p_boolPred->pPeekChild();
-  if (! pChild) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  eCK eChild = pChild->eCard();
-  switch (eChild) {
-    case CK_ANDCONJ:
-      eRotation = eFactor_andConj(_pCard_AndConj(pChild));
-      break;
-    case CK_NOTCONJ:
-      eRotation = eFactor_notConj(_pCard_NotConj(pChild));
-      break;
-    case CK_ORCONJ:
-      eRotation = eFactor_orConj(_pCard_OrConj(pChild));
-      break;
-    case CK_RLNCONJ:
-      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild));
-      break;
-
-    case CK_TERM:
-      break;
-
-    default:
-      NEVER_REACH
-  }
-
-  if (RC_NONE != eRotation) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-  // possible rotation
-
-  if (pChild->eConjForm() == FC_OR_2AND_RLN_MIX) {
-    pChild->vConjForm(FC_OR_2AND_RLN_TRIPLE);
-    pChild->vMark2(MARK_ENUM);
-    pChild->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_MIX));
-
-    pChild->vConjRot(RC_FACTOR_OR_2AND_RLN_MIX);
-  }
-
-  if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eConjRot()) {
-    if (bTest_Rotate_Or_2arm(p_boolPred)) {
-      eRotation = eRotate_Or_2arm(p_boolPred);
+  bool bFoundFactor = true;
+  for (Kid xAndConj_ref(p_andConj_ref); xAndConj_ref.bEach(); /**/) {
+    if (CK_RLNCONJ != xAndConj_ref.eChild()) {
+      xAndConj_ref.pChild()->vMark1(MARK_UNVALID);
+      continue;
     }
-  }
-
-  m_pCI->vAncestorPop();
-  return eRotation;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  eRC eRotation = RC_NONE;
-
-  p_andConj->vMark(MARK_AT, MARK_AND);
-  m_pCI->vAncestorPush(p_andConj);
-
-  Card* pChild_0 = p_andConj->pGetChild(0);
-  if (! pChild_0) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  eCK eChild_0 = pChild_0->eCard();
-  switch (eChild_0) {
-    case CK_ANDCONJ:
-      eRotation = eFactor_andConj(_pCard_AndConj(pChild_0));
-      break;
-    case CK_NOTCONJ:
-      eRotation = eFactor_notConj(_pCard_NotConj(pChild_0));
-      break;
-    case CK_ORCONJ:
-      eRotation = eFactor_orConj(_pCard_OrConj(pChild_0));
-      break;
-    case CK_RLNCONJ:
-      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_0));
-      break;
-
-    case CK_TERM:
-      break;
-
-    default:
-      NEVER_REACH
-  }
-
-  if (RC_NONE != eRotation) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card* pChild_1 = p_andConj->pGetChild(1);
-  if (! pChild_1) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  eCK eChild_1 = pChild_1->eCard();
-  switch (eChild_1) {
-    case CK_ANDCONJ:
-      eRotation = eFactor_andConj(_pCard_AndConj(pChild_1));
-      break;
-    case CK_NOTCONJ:
-      eRotation = eFactor_notConj(_pCard_NotConj(pChild_1));
-      break;
-    case CK_ORCONJ:
-      eRotation = eFactor_orConj(_pCard_OrConj(pChild_1));
-      break;
-    case CK_RLNCONJ:
-      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_1));
-      break;
-
-    case CK_TERM:
-      break;
-
-    default:
-      NEVER_REACH
-  }
-
-  if (RC_NONE != eRotation) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  // : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
-  // markup conjunction form
-
-  if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_RLNCONJ) {
-    p_andConj->vConjForm(FC_AND_RLN_DOUBLE);
-    p_andConj->vMark2(MARK_ENUM);
-    p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_DOUBLE));
-  }
-  else
-  if (pChild_0->eConjForm() == FC_AND_RLN_DOUBLE && eChild_1 == CK_RLNCONJ) {
-    p_andConj->vConjForm(FC_AND_RLN_TRIPLE);
-    p_andConj->vMark2(MARK_ENUM);
-    p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
-  }
-  else
-  if (eChild_0 == CK_RLNCONJ && pChild_1->eConjForm() == FC_AND_RLN_DOUBLE) {
-    p_andConj->vConjForm(FC_AND_RLN_TRIPLE);
-    p_andConj->vMark2(MARK_ENUM);
-    p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
-  }
-  else
-  if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_ORCONJ) {
-    p_andConj->vConjForm(FC_AND_RLN_OR);
-    p_andConj->vMark2(MARK_ENUM);
-    p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_OR));
-  }
-
-  m_pCI->vAncestorPop();
-  return eRotation;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eRC XF_Optimise_Factor_boolPred::eFactor_notConj(Card_NotConj* p_notConj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  eRC eRotation = RC_NONE;
-
-  p_notConj->vMark(MARK_AT,MARK_NOT);
-  m_pCI->vAncestorPush(p_notConj);
-
-  Card* pChild_0 = p_notConj->pGetChild(0);
-  if (! pChild_0) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  eCK eChild_0 = pChild_0->eCard();
-  switch (eChild_0) {
-    case CK_ANDCONJ:
-      eRotation = eFactor_andConj(_pCard_AndConj(pChild_0));
-      break;
-    case CK_NOTCONJ:
-      eRotation = eFactor_notConj(_pCard_NotConj(pChild_0));
-      break;
-    case CK_ORCONJ:
-      eRotation = eFactor_orConj(_pCard_OrConj(pChild_0));
-      break;
-    case CK_RLNCONJ:
-      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_0));
-      break;
-
-    case CK_TERM:
-      break;
-
-    default:
-      NEVER_REACH
-  }
-
-  m_pCI->vAncestorPop();
-  return eRotation;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  eRC eRotation = RC_NONE;
-
-  p_orConj->vMark(MARK_AT,MARK_OR);
-  m_pCI->vAncestorPush(p_orConj);
-
-  Card* pChild_0 = p_orConj->pGetChild(0);
-  if (! pChild_0) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  eCK eChild_0 = pChild_0->eCard();
-  switch (eChild_0) {
-    case CK_ANDCONJ:
-      eRotation = eFactor_andConj(_pCard_AndConj(pChild_0));
-      break;
-    case CK_NOTCONJ:
-      eRotation = eFactor_notConj(_pCard_NotConj(pChild_0));
-      break;
-    case CK_ORCONJ:
-      eRotation = eFactor_orConj(_pCard_OrConj(pChild_0));
-      break;
-    case CK_RLNCONJ:
-      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_0));
-      break;
-
-    case CK_TERM:
-      break;
-
-    default:
-      NEVER_REACH
-  }
-
-  if (RC_NONE != eRotation) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card* pChild_1 = p_orConj->pGetChild(1);
-  if (!pChild_1) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  eCK eChild_1 = pChild_1->eCard();
-  switch (eChild_1) {
-    case CK_ANDCONJ:
-      eRotation = eFactor_andConj(_pCard_AndConj(pChild_1));
-      break;
-    case CK_NOTCONJ:
-      eRotation = eFactor_notConj(_pCard_NotConj(pChild_1));
-      break;
-    case CK_ORCONJ:
-      eRotation = eFactor_orConj(_pCard_OrConj(pChild_1));
-      break;
-    case CK_RLNCONJ:
-      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_1));
-      break;
-
-    case CK_TERM:
-      break;
-
-    default:
-      NEVER_REACH
-  }
-
-  if (RC_NONE != eRotation) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  // : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
-  // markup conjunction form
-
-  if (eChild_0 == CK_ANDCONJ && eChild_1 == CK_ANDCONJ) {
-    if (pChild_0->eConjForm() == FC_AND_RLN_OR &&
-        pChild_1->eConjForm() == FC_AND_RLN_TRIPLE)
-      p_orConj->vConjForm(FC_OR_2AND_RLN_MIX);
-  }
-
-  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-  // possible rotation
-
-  if (pChild_0->eConjForm() == FC_AND_RLN_TRIPLE &&
-      pChild_1->eConjForm() == FC_AND_RLN_TRIPLE) {
-    p_orConj->vConjForm(FC_OR_2AND_RLN_TRIPLE);
-    p_orConj->vMark2(MARK_ENUM);
-    p_orConj->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_TRIPLE));
-
-    p_orConj->vConjRot(RC_FACTOR_OR_2AND_RLN_TRIPLE);
-  }
-
-  if (RC_FACTOR_OR_2AND_RLN_TRIPLE == pChild_0->eConjRot()) {
-    if (bTest_Rotate_Or_2ar3(p_orConj)) {
-      eRotation = eRotate_Or_2ar3(p_orConj);
-
-      pChild_0->vMarksClearRecursive();
-      pChild_0->vConjFormClearRecursive();
-      pChild_0->vConjRotClearRecursive();
-    }
-  }
-
-  m_pCI->vAncestorPop();
-  return eRotation;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eRC XF_Optimise_Factor_boolPred::eFactor_rlnConj(Card_RlnConj* p_rlnConj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  eRC eRotation = RC_NONE;
-
-  m_pCI->vAncestorPush(p_rlnConj);
-  p_rlnConj->vMark(MARK_AT,MARK_COMPARE);
-
-  Card* pChild_0 = p_rlnConj->pGetChild(0);
-  if (! pChild_0) {
-    m_pCI->vAncestorPop();
-    return eRotation;
-  }
-
-  eCK eChild = pChild_0->eCard();
-  switch (eChild) {
-    case CK_ANDCONJ:
-      eRotation = eFactor_andConj(_pCard_AndConj(pChild_0));
-      break;
-    case CK_NOTCONJ:
-      eRotation = eFactor_notConj(_pCard_NotConj(pChild_0));
-      break;
-    case CK_ORCONJ:
-      eRotation = eFactor_orConj(_pCard_OrConj(pChild_0));
-      break;
-    case CK_RLNCONJ:
-      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_0));
-      break;
-
-    case CK_TERM: break;
-
-    default:
-      NEVER_REACH
-  }
-
-  m_pCI->vAncestorPop();
-  return eRotation;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eRC XF_Optimise_Factor_boolPred::eRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // disassemble (pop conjunctions apart)
-
-  Card_OrConj*  p_0_orConj        = p_CONJSUBROOT->pPop_orConj();
-  Card_AndConj* p_andConj         = p_CONJSUBROOT->pPop_andConj();
-
-  Card_AndConj* p_0_0_andConj     = p_0_orConj->pPop_andConj();
-  Card_AndConj* p_0_0_0_andConj   = p_0_0_andConj->pPop_andConj();
-  Card_RlnConj* p_0_0_0_0_rlnConj = p_0_0_0_andConj->pPop_rlnConj();
-  Card_RlnConj* p_0_0_0_1_rlnConj = p_0_0_0_andConj->pPop_rlnConj();
-  Card_RlnConj* p_0_0_1_rlnConj   = p_0_0_andConj->pPop_rlnConj();
-
-  Card_AndConj* p_0_1_andConj     = p_0_orConj->pPop_andConj();
-  Card_AndConj* p_0_1_0_andConj   = p_0_1_andConj->pPop_andConj();
-  Card_RlnConj* p_0_1_0_0_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
-  Card_RlnConj* p_0_1_0_1_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
-  Card_RlnConj* p_0_1_1_rlnConj   = p_0_1_andConj->pPop_rlnConj();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reassemble (append conjunctions together)
-
-  p_CONJSUBROOT->vAppendChild(p_0_0_andConj);
-    p_0_0_andConj->vAppendChild(p_0_0_0_0_rlnConj);
-    p_0_0_andConj->vAppendChild(p_0_orConj);
-      p_0_orConj->vAppendChild(p_0_0_0_andConj);
-        p_0_0_0_andConj->vAppendChild(p_0_0_0_1_rlnConj);
-        p_0_0_0_andConj->vAppendChild(p_0_0_1_rlnConj);
-      p_0_orConj->vAppendChild(p_0_1_0_andConj);
-        p_0_1_0_andConj->vAppendChild(p_0_1_0_1_rlnConj);
-        p_0_1_0_andConj->vAppendChild(p_0_1_1_rlnConj);
-  p_CONJSUBROOT->vAppendChild(p_andConj);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete unneeded conjunctions
-
-  delete p_0_1_andConj;
-  delete p_0_1_0_0_rlnConj;
-  m_pCI->vPrintBoard(__LINE__);
-
-  return RC_FACTOR_OR_2AND_RLN_TRIPLE;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eRC XF_Optimise_Factor_boolPred::eRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // disassemble (pop conjunctions apart)
-
-  Card_OrConj* p_0_orConj = p_CONJSUBROOT->pPop_orConj();
-
-  Card_AndConj* p_0_0_andConj   = p_0_orConj->pPop_andConj();
-  Card_RlnConj* p_0_0_0_rlnConj = p_0_0_andConj->pPop_rlnConj();
-  Card_OrConj*  p_0_0_1_orConj  = p_0_0_andConj->pPop_orConj();
-
-  Card_AndConj* p_0_1_andConj     = p_0_orConj->pPop_andConj();
-  Card_AndConj* p_0_1_0_andConj   = p_0_1_andConj->pPop_andConj();
-  Card_RlnConj* p_0_1_0_0_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
-  Card_RlnConj* p_0_1_0_1_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
-  Card_RlnConj* p_0_1_1_rlnConj   = p_0_1_andConj->pPop_rlnConj();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reassemble (append conjunctions together)
-
-  p_CONJSUBROOT->vAppendChild(p_0_0_andConj);
-    p_0_0_andConj->vAppendChild(p_0_0_0_rlnConj);
-    p_0_0_andConj->vAppendChild(p_0_orConj);
-      p_0_orConj->vAppendChild(p_0_0_1_orConj);
-      p_0_orConj->vAppendChild(p_0_1_andConj);
-        p_0_1_andConj->vAppendChild(p_0_1_0_1_rlnConj);
-        p_0_1_andConj->vAppendChild(p_0_1_1_rlnConj);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete unneeded conjunctions
-
-  delete p_0_1_0_andConj;
-  delete p_0_1_0_0_rlnConj;
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  return RC_FACTOR_OR_2AND_RLN_MIX;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  Card_OrConj* p_0_orConj = p_CONJSUBROOT->pGet_orConj(0);
-
-  RASSERT(RC_FACTOR_OR_2AND_RLN_TRIPLE == p_0_orConj->eConjRot());
-
-  Card_AndConj* p_0_0_andConj = _pCard_AndConj(p_0_orConj->pGetChild(0));
-  Card_AndConj* p_0_1_andConj = _pCard_AndConj(p_0_orConj->pGetChild(1));
-
-  Card* pCard_0_0_andConj;
-  if (CK_ANDCONJ == p_0_0_andConj->eGetChild(0, pCard_0_0_andConj)) {
-    Card_AndConj *p_0_0_0_andConj = _pCard_AndConj(pCard_0_0_andConj);
-
-    Card* pCard_0_1_0_andConj;
-    if (CK_ANDCONJ == p_0_1_andConj->eGetChild(0, pCard_0_1_0_andConj)) {
-      Card_AndConj *p_0_1_0_andConj = _pCard_AndConj(pCard_0_1_0_andConj);
-
-      Card_RlnConj* p_0_0_0_0_rlnConj = p_0_0_0_andConj->pGet_rlnConj(0);
-      Card_RlnConj* p_0_1_0_0_rlnConj = p_0_1_0_andConj->pGet_rlnConj(0);
-
-      if (p_0_0_0_0_rlnConj->bIsEq(p_0_1_0_0_rlnConj)) {
-//        p_0_0_0_rlnConj->vDump(__func__ ,"p_0_0_0_rlnConj"_Stz);
-//        p_1_0_0_rlnConj->vDump(__func__ ,"p_1_0_0_rlnConj"_Stz);
-        return true;
+    Card_RlnConj *p_rlnConj_ref = xAndConj_ref.p_rlnConj();
+    p_rlnConj_ref->vMark1(MARK_AT);
+
+    while (xOrConj.bEach()) {
+
+      i8 nAltMatchesRef = 0;
+      for (Kid xAndConj_alt(xOrConj.p_andConj()); xAndConj_alt.bEach(); /**/) {
+        if (CK_RLNCONJ != xAndConj_alt.eChild()) {
+          xAndConj_ref.pChild()->vMark1(MARK_UNVALID);
+          continue;
+        }
+        Card_RlnConj *p_rlnConj_alt = xAndConj_alt.p_rlnConj();
+        p_rlnConj_alt->vMark1(MARK_VALID);
+
+        if (p_rlnConj_alt->bIsEq(p_rlnConj_ref)) {
+          p_rlnConj_alt->vMark1(MARK_AT);
+          nAltMatchesRef++;
+          break;
+        }
       }
+
+      if (!nAltMatchesRef) {
+        bFoundFactor = false;
+        break;
+      }
+
+    }
+
+    if (bFoundFactor)
+      break;
+  }
+
+  //m_pCI->vPrintBoard(__LINE__);
+
+  if (!bFoundFactor)
+    return;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // find @rln in reference andConj
+
+  Card_RlnConj* p_rlnConj_factored = nullptr;
+  for (Kid xAndConj_ref(p_andConj_ref); xAndConj_ref.bEach(); /**/) {
+    if (CK_RLNCONJ != xAndConj_ref.eChild() ||
+        ! xAndConj_ref.pChild()->bMark1(MARK_AT))
+      continue;
+
+    p_rlnConj_factored = xAndConj_ref.p_rlnConj();
+  }
+
+  RASSERT(p_rlnConj_factored);
+
+  p_andConj_ref->vRemoveChild(p_rlnConj_factored);
+
+  xOrConj.vBegin();
+  RASSERT(xOrConj.bEach());
+
+  while (xOrConj.bEach()) {
+    for (Kid xAndConj_alt(xOrConj.p_andConj()); xAndConj_alt.bEach(); /**/) {
+
+      if (CK_RLNCONJ != xAndConj_alt.eChild() ||
+          !xAndConj_alt.pChild()->bMark1(MARK_AT))
+        continue;
+
+      xOrConj.p_andConj()->vDeleteChild(xAndConj_alt.pChild());
     }
   }
 
-  return false;
+  //m_pCI->vPrintBoard(__LINE__);
+
+
+
+  Card_AndConj* p_andConj_new = new Card_AndConj;
+  p_andConj_new->vAppendChild(p_rlnConj_factored);
+
+  Card_OrConj* p_orConj_top = p_boolPred->pPop_orConj();
+  p_andConj_new->vAppendChild(p_orConj_top);
+
+  p_boolPred->vAppendChild(p_andConj_new);
+
+  //m_pCI->vPrintBoard(__LINE__);
+
+  vDebugPoint();
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  Card_OrConj* p_0_orConj = p_CONJSUBROOT->pGet_orConj(0);
-
-  Card_AndConj* p_0_0_andConj   = p_0_orConj->pGet_andConj(0);
-  Card_RlnConj* p_0_0_0_rlnConj = p_0_0_andConj->pGet_rlnConj(0);
-
-  Card_AndConj* p_0_1_andConj     = p_0_orConj->pGet_andConj(1);
-  Card_AndConj* p_0_1_0_andConj   = p_0_1_andConj->pGet_andConj(0);
-  Card_RlnConj* p_0_1_0_0_rlnConj = p_0_1_0_andConj->pGet_rlnConj(0);
-
-  if (p_0_0_0_rlnConj->bIsEq(p_0_1_0_0_rlnConj)) {
-//        p_0_0_0_rlnConj->vDump(__func__ ,"p_0_0_0_rlnConj"_Stz);
-//        p_0_1_0_0_rlnConj->vDump(__func__ ,"p_0_1_0_0_rlnConj"_Stz);
-    return true;
-  }
-
-  return false;
-}
 
 /*============================================================================*/
 /* end                                                                        */

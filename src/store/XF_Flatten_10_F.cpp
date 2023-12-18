@@ -6,7 +6,7 @@
 
 #include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
-#include "XF_Flatten_Update_projection.hpp"
+#include "XF_Prolog_Analyse_emit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -99,10 +99,10 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 
   // todo: discuss with Alka
   m_pCI->vClearRestart();
-  if (m_pCI->G_bEachMain(CK_FOLD)) {
-    if (m_pCI->G_bEachMain(CK_WHERE)) {
+  if (m_pCI->G_bEachMain(CK_c_FOLD)) {
+    if (m_pCI->G_bEachMain(CK_o_WHERE)) {
       Card_Level* p_level_where = m_pCI->G.p_where->pSub_level();
-      if (m_pCI->G_bEachMainWithSub(CK_PROJECT, CK_LEVEL)) {
+      if (m_pCI->G_bEachMainWithSub(CK_o_PROJECT, CK_s_LEVEL)) {
         p_level_where->pSymbol()->Y_vSet(P_Level, m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
       }
     }
@@ -110,11 +110,12 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 
   m_pCI->vEndTransform(__LINE__);
 
+
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
 
-  XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
+  XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 }
 
 /*============================================================================*/

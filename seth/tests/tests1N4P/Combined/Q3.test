@@ -28,7 +28,7 @@ success
 create index IxL_ORDERKEY  ON ${testName2}_Lineitem (L_ORDERKEY)  ;
 success;
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 create table ${testName2}_customer (
@@ -46,7 +46,7 @@ success
 create index IxC_CUSTKEY  ON ${testName2}_Customer (C_CUSTKEY)   ;
 success
 
-load ${testName2}_customer "../TPCH/SF_0001/customer.csv";
+load ${testName2}_customer "../TPCH/SF_0001/customer.tbl";
 success
 
 create table ${testName2}_orders (
@@ -65,11 +65,9 @@ success
 create index IxO_CUSTKEY  ON ${testName2}_orders  (O_CUSTKEY)  ;
 success
 
-load ${testName2}_Orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_Orders "../TPCH/SF_0001/orders.tbl";
 success
 
-// TODO V2 : ORDAGG
-/*
 /optimise_passthru 
 pipeline Q3
 begin
@@ -123,8 +121,17 @@ begin
 
 end ;
 
-rows: 10
-*/
+rows:
+  (64, -251.04,TIMESTAMP '1993-10-19 00:00:00',1)
+  (327,-206.60,TIMESTAMP '1994-07-05 00:00:00',1)
+  (553,-110.41,TIMESTAMP '1992-07-10 00:00:00',1)
+  (83, -50.90, TIMESTAMP '1994-03-26 00:00:00',1)
+  (884,-40.47, TIMESTAMP '1992-05-03 00:00:00',1)
+  (402, 0.00,  TIMESTAMP '1993-08-05 00:00:00',1)
+  (98,  0.00,  TIMESTAMP '1995-01-25 00:00:00',1)
+  (514, 0.00,  TIMESTAMP '1994-06-02 00:00:00',1)
+  (47,  0.00,  TIMESTAMP '1993-01-04 00:00:00',1)
+  (1386,0.00,  TIMESTAMP '1993-12-25 00:00:00',1)
 
 //------------------------------------------------------------------------------
 // drop the tables

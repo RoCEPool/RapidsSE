@@ -13,7 +13,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_HshColList,CK_HSHCOLLIST)
+__pCastFunction_Card(STORE, Card_HshColList, CK_s_HSHCOLLIST)
 __aNewFunction(Card_HshColList,CN_CARD)
 __vDeleteFunction(Card_HshColList,CN_CARD)
 
@@ -22,7 +22,7 @@ __vDeleteFunction(Card_HshColList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_HshColList::Card_HshColList(void)
-    : Card_symbol(CK_HSHCOLLIST, 2)
+    : Card_symbol(CK_s_HSHCOLLIST, 2)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -51,7 +51,7 @@ void Card_HshColList::vX_tblCol_To_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
-  while (xKid.bEach(CK_HSHCOL)) {
+  while (xKid.bEach(CK_t_HSHCOL)) {
     xKid.p_hshCol()->vX_tblCol_To_expCol(pCI);
   }
 }

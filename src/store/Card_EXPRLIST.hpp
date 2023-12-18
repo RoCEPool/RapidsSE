@@ -47,6 +47,8 @@ namespace STORE
                             Card_Key* p_key,
                             Card* p_OP);
 
+    void vUpdate_cast(Card_EXPRLIST* p_exprList_ref);
+
     void vX_tblCol_To_expCol(CardIter* pCI);
     void vX_expCol_To_tblCol(CardIter* pCI);
 

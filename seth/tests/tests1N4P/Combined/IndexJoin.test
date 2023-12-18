@@ -347,7 +347,7 @@ begin
     | stageStart
 end ;
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 // no data in orders
@@ -373,10 +373,10 @@ end ;
 
 rows: 0
 
-load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.tbl";
 success
 
-load ${testName2}_part "../TPCH/SF_0001/part.csv";
+load ${testName2}_part "../TPCH/SF_0001/part.tbl";
 success
 
 /optimise_passthru 

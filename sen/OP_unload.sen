@@ -22,24 +22,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_PATH ... an infoset with __path rows                      */
+/* handler for EV_D_ROWBUFFER ... a RowBuffer with __path rows                */
 /*----------------------------------------------------------------------------*/
 : unload_Path \handler
 
-  PipeIn[]\clear to InfoSet[]
+  // get the rowBuffer
+  PipeIn[]\clear to RowBuffer[]
 
-  C_TDEF_PATH infoSetRow:getFirstRow
+  // pipeout buffers other than BT_PATH
+  RowBuffer[].bufferType@ BT_PATH != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
 
-  // extract the values
-  0 InfoSet[].colVal@ locals| sPath   |
-  1 InfoSet[].colVal@ locals| iPathNo |
-  2 InfoSet[].colVal@ locals| iPathOf |
+  // get first row of RowBuffer[]
+  RowBuffer[].firstRow to Row[]
+
+  // get the columns from the row
+  0 Row[].getVchColumn locals| sPath   |
+  1 Row[].getVchColumn locals| iPathNo |
+  2 Row[].getIntColumn locals| iPathOf |
 
   // unload to disk
   iPathOf iPathNo sPath unload.toDisk
 
-  InfoSet[].delete
-  nullptr to InfoSetRow[]
+  RowBuffer[].delete
+  nullptr to Row[]
 
   true
 ;

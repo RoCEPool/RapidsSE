@@ -19,6 +19,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_MAP_COLUMNS"_Stz,
   /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,
   /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,
+  /* */ "XF_EPILOG_TYPE_CAST"_Stz,
   /* */ "XF_EPILOG_X_STMCOL_TO_COLNM"_Stz,
   /* */ "XF_EPILOG_X_TBLCOL_TO_STMCOL"_Stz,
   /* */ "XF_FLATTEN"_Stz,
@@ -42,7 +43,6 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,
   /* */ "XF_FLATTEN_SMOOSH"_Stz,
   /* */ "XF_FLATTEN_SMOOTH"_Stz,
-  /* */ "XF_FLATTEN_UPDATE_PROJECTION"_Stz,
   /* */ "XF_FLATTEN_X_STMCOL_TO_TBLCOL"_Stz,
   /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz,
   /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,
@@ -68,7 +68,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PASSTHRU_TWEAK_INDEXSCAN"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYEXISTS"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYNOTEXITS"_Stz,
-  /* */ "XF_PROLOG_ANALYSE_EMITTED"_Stz,
+  /* */ "XF_PROLOG_ANALYSE_EMIT"_Stz,
   /* */ "XF_PROLOG_ANALYSE_INDEX"_Stz,
   /* */ "XF_PROLOG_ANALYSE_INJECTED"_Stz,
   /* */ "XF_PROLOG_ANALYSE_SUBQUERY"_Stz,
@@ -126,7 +126,6 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_REPOSITION
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOSH
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOTH
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_UPDATE_PROJECTION
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_X_STMCOL_TO_TBLCOL
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_NONUSED_BOUND
@@ -152,7 +151,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_INDEXSCAN
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYEXISTS
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYNOTEXITS
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_EMITTED
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_EMIT
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_INDEX
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_SUBQUERY
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_TABLE

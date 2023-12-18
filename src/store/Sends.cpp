@@ -295,24 +295,6 @@ bool Sends::bStreamDefDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* streamDefRht done ?                                                        */
-/*----------------------------------------------------------------------------*/
-bool Sends::bStreamDefRhtDone(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
-
-  if (m_iStreamDefRhts > m_iSends)
-    vTrace("Warning: ConsumeOp EV_D_STREAMDEFRHT received %lld; expected %lld\n"_Stz,
-           m_iStreamDefRhts, m_iSends);
-
-  if (m_iStreamDefRhts == 0) {
-    return true;
-  }
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* triggered done ?                                                           */
 /*----------------------------------------------------------------------------*/
 bool Sends::bTriggeredDone(void)

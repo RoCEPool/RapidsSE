@@ -85,15 +85,29 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_COUNT ...                                                 */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
-: waitFinished_Count \handler
+: waitFinished_RowBuffer \handler
 
-  PipeIn[]\clear to InfoSet[]
-  
-  0 C_TDEF_COUNT InfoSet:getCol to Counter0[]
-  InfoSet[].delete
-  
+  // get the rowBuffer
+  PipeIn[]\clear to RowBuffer[]
+
+  // pipeout buffers other than BT_COUNT
+  RowBuffer[].bufferType@ BT_COUNT != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
+  // get first row of RowBuffer[]
+  RowBuffer[].firstRow to Row[]
+
+  // get 0th Column (rowCount) add to Counter
+  0 Row[].getIntColumn to Counter0[]
+
+  // now delete the rowBuffer
+  RowBuffer[].delete
+
   //Counter0[] "  expecting %v commands" .printf
 
   true
@@ -123,11 +137,11 @@
 
   op__topology
 
-  find: waitFinished_Count     EV_I_COUNT     [op].handler!
   find: waitFinished_End       EV_M_END       [op].handler!
+  find: waitFinished_RowBuffer EV_D_ROWBUFFER [op].handler!
   find: waitFinished_Start     EV_M_START     [op].handler!
 
-  find: waitFinished_ChildExit EV_X_CHILDEXIT     [op].handler!
+  find: waitFinished_ChildExit EV_X_CHILDEXIT [op].handler!
 
   op__loop
 

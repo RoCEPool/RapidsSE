@@ -26,27 +26,28 @@
   Table[] assert
 ;
 
-
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_NAMEDBUFFER ...                                           */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
-: namedInsert_NamedBuffer \handler
+: namedInsert_RowBuffer \handler
 
-  PipeIn[]\clear to NamedBuffer[]
+  //"namedInsert_RowBuffer" .
 
-  NamedBuffer[].name@ locals| sBufferNm |
+  PipeIn[]\clear to RowBuffer[]
+
+  //RowBuffer[].bufferType@ BT_JOBOPERANDS == assert
+
+  RowBuffer[].tableDefName@ locals| sTableDefName |
+
+  sTableDefName .
 
   // locate the table
-  sBufferNm locateNamedTable
+  sTableDefName op__tableDef assert
 
   // create the streamDef of this table
-  Table[] StreamDefOut[].newFromTable
+  TableDef[] StreamDefOut[].newFromTable
   StreamDefOut[] to StreamDefLft[]
   nullptr to StreamDefOut[]
-
-  // morph the nameBuffer to a rowBuffer
-  CN_ROWBUFFER NamedBuffer[].morphClass
-  NamedBuffer[]\clear to RowBuffer[]
 
   // set the lgl ptn of the rowBuffer
   0 RowBuffer[].setLglPtn
@@ -63,7 +64,7 @@
 
   // insert the crwBuffers into the table
 
-  0 Table[].tablePtnGet to TablePtn[]
+  0 TableDef[].tablePtnGet to TablePtn[]
 
   0 ToLglPtnCrw[].completed to CrwBuffer[]
 
@@ -97,8 +98,7 @@
   ToLglPtnCrw[].delete
   StreamDefLft[].delete
 
-  //sBufferNm "$$$ OP_namedInsert %v" .printf
-  Table[].name@ "$$$ OP_namedInsert %v" .printf
+  //sTableDefName "$$$ OP_namedInsert %v" .printf
 
   true
 ;
@@ -115,7 +115,7 @@
 
   op__topology
 
-  find: namedInsert_NamedBuffer EV_D_NAMEDBUFFER [op].handler!
+  find: namedInsert_RowBuffer   EV_D_ROWBUFFER   [op].handler!
 
   op__loop
 

@@ -1,0 +1,69 @@
+/*============================================================================*/
+/* _ray180                                                                   */
+/*============================================================================*/
+
+// NOTE: The expr for sort in stage S03 is incorrectly generated
+//        ArgDef: [0] expr  type VARCHAR as C0_colb9 $1 ASC
+//        ( should have been $2)
+
+
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+
+create index table9_colb9 on table9(colb9);
+create index table9_ucol on table9(ucol);
+create index table9_ucolvc on table9(ucolvc);
+create index table9_pcol9 on table9(pcol9);
+
+Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+
+
+// NOTE: The weaved
+
+/weaved
+/pipeline_def
+/pipelineName = "_ray180"
+select substring(colb9,2,2), colb9 from table9 where pcol9 >= 220 and pcol9 <= 245 order by colb9;
+
+/*
+ordered rows:
+  (NULL, NULL)
+  (NULL, NULL)
+  (NULL, NULL)
+  ('RE', 'GREEN')
+  ('RA', 'ORANGE')
+  ('IN', 'PINK')
+  ('UR', 'PURPLE')
+  ('UR', 'PURPLE')
+  ('ED', 'RED')
+  ('EL', 'YELLOW')
+  ('EL', 'YELLOW')
+  ('qu', 'aqua')
+  ('la', 'black')
+  ('lu', 'blue')
+  ('lu', 'blue')
+  ('ol', 'gold')
+  ('nd', 'indigo')
+  ('nd', 'indigo')
+  ('ar', 'maroon')
+  ('ra', 'orange')
+  ('ra', 'orange')
+  ('ra', 'orange')
+  ('an', 'tan')
+  ('an', 'tan')
+  ('io', 'violet')
+  ('el', 'yellow')
+
+*/
+
+drop table TABLE9;

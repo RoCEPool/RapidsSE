@@ -8,6 +8,9 @@
 
 typedef i8 tXN; // opaque type for transaction number
 
+// load file chunk size
+static const i8 C_CHUNK_BLOCK = 2048;
+
 // Note: For version 1.x we reserve one value from the largest possible integer
 //       and two values from the smallest possible integer to represent
 //       +/- Infinity as well as NULL values. This will be fixed in version 2.x.

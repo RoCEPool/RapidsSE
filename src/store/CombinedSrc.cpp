@@ -312,11 +312,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 				vAppendStencilTo(pOpSketch);
 				vAppendCodeFragment(pOpSketch, "iOrdAggBegin"_Stz, pOperatorFile);
-/*
-				vAppendCodeFragment(pOpSketch, "vAggregColsBegin"_Stz, pOperatorFile);
-				vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
-				vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz, pOperatorFile);
-*/
+
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 				// close the aggregate code fragments file
 				pOperatorFile->vClose();
@@ -732,6 +728,22 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         else {
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // POT/TUB in CRW/ROW/INDEX handler
+
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// does the tub have an ordAgg constraint to apply ?
+					if (pOpSketch->m_pConstraintStack->nValues()) {
+						// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+						// open the ordAgg code fragments file
+						bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/OrdAgg.cpp"_Stz);
+						RASSERT ( bOpened );
+
+						pOpSketch->m_sLabelOrdAgg = sLabel_ordAgg;
+						vAppendCodeFragment(pOpSketch, "iOrdAggConstraint"_Stz, pOperatorFile);
+
+						// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+						// close the ordAgg code fragments file
+						pOperatorFile->vClose();
+					}
 
           // generate code for the hash value
           if (pOpSketch->eSketchKind() == SK_POT)

@@ -194,45 +194,45 @@ void CarryForward::vSetSeen(CardIter* pCI)
 
   pCI->vBeginEach();
 
-  RASSERT(pCI->G_bEachMain(CK_FOLD));
-  RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));
+  RASSERT(pCI->G_bEachMain(CK_c_FOLD));
+  RASSERT(pCI->G.p_MainCard->bIsCard(CK_c_FOLD));
 
   // SubQuery
   if (pCI->G_bIsNextMain(CK_SUBQUERY))
     RASSERT(pCI->pAdvanceChild()->bIsCard(CK_SUBQUERY));
 
   // From*
-  while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
+  while (pCI->G_bIsNextMain(CK_o_FROM) && pCI->G_bEachMain(CK_o_FROM)) {
     Table.m_bSeen = true;
     Table.m_nTables++;
   }
 
   // [Where]
-  if (pCI->G_bIsNextMain(CK_WHERE) && pCI->G_bEachMain(CK_WHERE)) {
+  if (pCI->G_bIsNextMain(CK_o_WHERE) && pCI->G_bEachMain(CK_o_WHERE)) {
     Where_preAgg.m_bSeen = true;
   }
 
   // Aggreg
-  while (pCI->G_bIsNextMain(CK_AGGREG) && pCI->G_bEachMain(CK_AGGREG)) {
+  while (pCI->G_bIsNextMain(CK_o_AGGREG) && pCI->G_bEachMain(CK_o_AGGREG)) {
     GbyAgg.m_bSeen = true;
   }
   // GbyAgg
-  while (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
+  while (pCI->G_bIsNextMain(CK_o_GBYAGG) && pCI->G_bEachMain(CK_o_GBYAGG)) {
     GbyAgg.m_bSeen = true;
   }
 
   // [project]
-  if (pCI->G_bIsNextMain(CK_PROJECT) && pCI->G_bEachMain(CK_PROJECT)) {
+  if (pCI->G_bIsNextMain(CK_o_PROJECT) && pCI->G_bEachMain(CK_o_PROJECT)) {
     Project_postAgg.m_bSeen = true;
   }
 
   // Having
-  if (pCI->G_bIsNextMain(CK_HAVING) && pCI->G_bEachMain(CK_HAVING)) {
+  if (pCI->G_bIsNextMain(CK_o_HAVING) && pCI->G_bEachMain(CK_o_HAVING)) {
     Having.m_bSeen = true;
   }
 
   // Sort
-  if (pCI->G_bIsNextMain(CK_SORT) && pCI->G_bEachMain(CK_SORT)) {
+  if (pCI->G_bIsNextMain(CK_o_SORT) && pCI->G_bEachMain(CK_o_SORT)) {
     Sort.m_bSeen = true;
   }
 

@@ -45,10 +45,10 @@ create table ${testName2}_datums (
 );
 success
 
-load ${testName2}_region "../TPCH/SF_0001/region.csv";
+load ${testName2}_region "../TPCH/SF_0001/region.tbl";
 success
 
-load ${testName2}_nation "../TPCH/SF_0001/nation.csv";
+load ${testName2}_nation "../TPCH/SF_0001/nation.tbl";
 success
 
 load ${testName2}_datums "../DATA/Datums/datums.csv" ;

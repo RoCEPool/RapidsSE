@@ -14,10 +14,9 @@
 #include "XF_Flatten_Anchor_table.hpp"
 #include "XF_Flatten_Derive_bounds.hpp"
 #include "XF_Flatten_Purge_where.hpp"
-#include "XF_Flatten_Predicate_Pull_Up.hpp"
+#include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
-#include "XF_Flatten_Update_projection.hpp"
-
+#include "XF_Prolog_Analyse_emit.hpp"
 #include "eOT.h"
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +93,7 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
 
   m_pCI->vValidateBench();
 
-  XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
+  XF_Flatten_Pullup_rlnConj::vXF_Pullup_rlnConj(m_pCI);
   m_pCI->vValidateBench();
 
   // delete empty where
@@ -117,7 +116,7 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // Join Ordering Proper
 
   if (AM::JOB::bHasTag(C_JO_DISABLE)) {
-    XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
+    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
     return;
   }
 
@@ -126,12 +125,17 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
 
   // reorder the tables
   vReorderTables();
+
+  XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
+
+  XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
+
   m_pCI->vValidateBench();
 
   XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
   m_pCI->vValidateBench();
 
-  XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
+  XF_Flatten_Pullup_rlnConj::vXF_Pullup_rlnConj(m_pCI);
   m_pCI->vValidateBench();
 
   // re-derive bounds from filter after join ordering
@@ -360,8 +364,9 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
-   m_pCI->vPrintBoard(__LINE__);
-  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+  m_pCI->vPrintBoard(__LINE__);
+
+  //m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 

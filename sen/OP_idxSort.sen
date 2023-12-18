@@ -61,6 +61,14 @@
   0 EV_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   pipeIn[]\clear to RowBuffer[]
+
+  // handle BT_DATA only
+  RowBuffer[].bufferType@ BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   RowBuffer[] StreamDefLft[] IndexStream[].populate
 
   // save the rowBuffer in the tub

@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Sort,CK_SORT)
+__pCastFunction_Card(STORE, Card_Sort, CK_o_SORT)
 __aNewFunction(Card_Sort,CN_CARD)
 __vDeleteFunction(Card_Sort,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Sort,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Sort::Card_Sort(void)
-: Card_OP(CK_SORT,1)
+: Card_OP(CK_o_SORT, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -77,17 +77,32 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if ((pCI->G.p_emit = pCI->G.p_sort->pSub_emit()))
     pCI->G.p_sort->vDeleteSub(pCI->G.p_emit);
 
-  Card_Emit* p_emitted_sort =  pCI->Flux.m_pArriving->pPropagate();
-  for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
-    Card_Expr* p_expr_key = xKey_sort.p_expr();
+  Card_Emit* p_emit_sort =  pCI->Flux.m_pArriving->pPropagate();
+  p_emit_sort->vDump(__func__);
+//  for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
+//    Card_Expr* p_expr_key = xKey_sort.p_expr();
+//
+//    Symbol* pSym_expr_key = p_expr_key->pFirst_expCol();
+//    Card_Expr* p_expr_emit = p_emit_sort->pGet_expr(pSym_expr_key);
+//
+//    p_expr_emit->pGet_term(0)->pSymbol()->vConcatFacets(p_expr_key->pSymbol());
+//  }
 
-    Symbol* pSym_expr_x = p_expr_key->pFirst_expCol();
-    Card_Expr* p_expr_prj = p_emitted_sort->pGet_expr(pSym_expr_x);
+  for (Kid xEmit_sort(p_emit_sort); xEmit_sort.bEach(); /**/) {
+    Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
+    p_expr_emit_sort->vDump(__func__ );
+    Card_Expr* p_expr_key = pCI->G.p_key->pFind_expr_Via_term0(p_expr_emit_sort->pSymbol());
+    if (! p_expr_key)
+      continue;
+    p_expr_key->vDump(__func__ );
+    Symbol* pSym_expr_key = p_expr_key->pSymbol();
+    p_expr_emit_sort->pGet_term(0)->pSymbol()->vConcatFacets(pSym_expr_key);
+    p_expr_emit_sort->vDump(__func__ );
+   }
 
-    p_expr_prj->pGet_term(0)->pSymbol()->vFacets(p_expr_key->pSymbol());
-  }
 
-  pCI->G.p_stream->vAppendChild(p_emitted_sort);
+
+  pCI->G.p_stream->vAppendChild(p_emit_sort);
 
   pCI->Flux.m_pArriving = pSub_emit();
 
@@ -102,7 +117,7 @@ void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_KEY,CK_STREAM,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_s_STREAM, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

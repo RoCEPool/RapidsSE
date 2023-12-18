@@ -76,14 +76,17 @@
 
   0 0 locals| sOperatorName sPipeline |
 
+  // get the planOperand
   PipeIn[]\clear to PlanOperand[]
 
+  // set the pipeLine name
   "<pipelineName>" [job].tagSet@ tagSet.hasName if
     <pipelineName> to sPipeline
   else
     "unamed" to sPipeline
   then
 
+  // transliterate the plan
   sPipeline PlanOperand[] sqlCompiler::transliterate to Text[]
 
   // print the transliterated pipeline
@@ -92,6 +95,7 @@
      Text[] .
   then
 
+  // explain transliterate ?
   "transliterate" to sOperatorName
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if
 
@@ -99,8 +103,8 @@
     PlanOperand[] Text[] sOperatorName sqlCompiler::doExplainTliterate
 
     // pipeout explain
-    StreamSet[].isNull not assert
-    StreamSet[].pipeout
+    RowBuffer[].isNull not assert
+    RowBuffer[].pipeout
 
     // Always exit at this point
     PlanOperand[].delete
@@ -122,9 +126,12 @@
     [job].tagSet@ tagSet.dump
   then
 
+  // set the responseOp as this OP
   [Op] [job].responseOp!
 
+  // Fork a child with >UseCodeFile> to execute the pipeline
   "<UseCodeFile>" [job].tagSet@ tagSet.hasName if
+
      STD_NORMALFORK_OPT_NOCODE_TAG Text[] nullptr api::forkChild not if
        //"****Error Code %v" .printf
        nullptr [job].responseOp!
@@ -140,6 +147,7 @@
 
   then
 
+  // Fork a child with >keepCodeFile> to execute the pipeline
   "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
 
      STD_NORMALFORK_OPT_KEEP_TAG Text[] nullptr api::forkChild not if
@@ -157,6 +165,7 @@
 
   then
 
+  // Fork a normal child to execute the pipeline
   STD_NORMALFORK_OPT_TAG Text[] nullptr api::forkChild not if
        //"****Error Code %v" .printf
        nullptr [job].responseOp!
@@ -183,12 +192,18 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_LeaveMarker \handler
 
-  // save the pipein in streamSet[]
-  StreamSet[].isNull not assert
-  StreamSet[].pipeout
+  // RowBuffer[] should not be null
+  RowBuffer[].isNull not assert
+
+  // it should have BT_EXPLAIN
+  RowBuffer[].bufferType@ BT_EXPLAIN == assert
+
+  // pipeout the rowBuffer
+  RowBuffer[].pipeout
 
   EV_M_LEAVE_handler
 ;
+
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_INTERNALERROR operand                                     */
 /*----------------------------------------------------------------------------*/
@@ -214,13 +229,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_STREAMSET ...                                               */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
-: transliterate_StreamSet \handler
+: transliterate_RowBuffer \handler
 
-  // save the pipein in streamSet[]
-  Pipein[]\clear to StreamSet[]
+  // get the pipein in RowBuffer[]
+  Pipein[]\clear to RowBuffer[]
 
+  // handle BT_EXPLAIN only
+  RowBuffer[].bufferType@ BT_EXPLAIN  != if
+    RowBuffer[].pipeout
+  then
+
+  // keep the BT_EXPLAIN rowBuffer
+  // to be pipedout when the LEAVEMARKER comes along
   true
 ;
 
@@ -242,7 +264,7 @@
   find: transliterate_PlanOperand   EV_D_PLANOPERAND   [op].handler!
   find: transliterate_StartMarker   EV_M_START         [op].handler!
 
-  find: transliterate_StreamSet     EV_D_STREAMSET     [op].handler!
+  find: transliterate_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: transliterate_InternalError EV_M_INTERNALERROR [op].handler!
   find: transliterate_LeaveMarker   EV_M_LEAVE         [op].handler!
   find: transliterate_LowMemory     EV_M_LOWMEMORY     [op].handler!

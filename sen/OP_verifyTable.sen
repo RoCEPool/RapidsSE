@@ -15,24 +15,25 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create a rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
+  // verify the table
   Table[].verify
 
   // insert index verify
-  Table[] streamSetTable[] StreamSet[].addVerifyTable assert
+  Table[] TableDef[] RowBuffer[].addVerifyTable assert
 
-  // pipeout the infoset
-  StreamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;

@@ -16,10 +16,10 @@
   str.toStrVec Path[].set
 
   // find the __ table
-  "__listContents" op__tableDef_streamSet assert
+  "__listContents" op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // -- -- -- -- -- --
   
@@ -87,10 +87,10 @@
   str.toStrVec Path[].set
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   PipeIn[].pipeOut
 

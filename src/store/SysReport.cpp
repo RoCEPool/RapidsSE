@@ -7,7 +7,6 @@
 #include "SysReport.hpp"
 #include "SysMetrics.hpp"
 
-#include "NamedBuffer.hpp"
 #include "Node.hpp"
 
 #include "Table.hpp"
@@ -64,15 +63,15 @@ void SysReport::vSysLocks(Tub* pTub)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get a working buffer from the tub
-  
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
 
-  if (! pNamedBuffer) {
-    // new a named buffer
-    pNamedBuffer = new NamedBuffer(pStreamDef);
+	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+
+  if (! pRowBuffer) {
+    // new a row buffer
+		pRowBuffer = new RowBuffer(pStreamDef, BT_SYSLOCKS);
 
     // add the named buffer to the tub
-    pTub->vAddBuffer(pNamedBuffer);
+    pTub->vAddBuffer(pRowBuffer);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -97,7 +96,7 @@ void SysReport::vSysLocks(Tub* pTub)
       continue;
     
     L_RETRY:
-    Row* pRow = pNamedBuffer->pAllotRow
+    Row* pRow = pRowBuffer->pAllotRow
                 (
                   C_VARGS_BEGIN
                  
@@ -121,10 +120,10 @@ void SysReport::vSysLocks(Tub* pTub)
                 );
       
     if (! pRow) {
-      pNamedBuffer = new NamedBuffer(pStreamDef);
+      pRowBuffer = new RowBuffer(pStreamDef, BT_SYSLOCKS);
 
-      // add the named buffer to the tub
-      pTub->vAddBuffer(pNamedBuffer);
+      // add the row buffer to the tub
+      pTub->vAddBuffer(pRowBuffer);
       goto L_RETRY;
     }
   
@@ -160,15 +159,15 @@ void SysReport::vSysMetrics(Tub* pTub)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get a working buffer from the tub
-  
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
 
-  if (! pNamedBuffer) {
-    // new a named buffer
-    pNamedBuffer = new NamedBuffer(pStreamDef);
+	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
-    // add the named buffer to the tub
-    pTub->vAddBuffer(pNamedBuffer);
+  if (! pRowBuffer) {
+    // new a row buffer
+		pRowBuffer = new RowBuffer(pStreamDef, BT_SYSMETRICS);
+
+    // add the row buffer to the tub
+    pTub->vAddBuffer(pRowBuffer);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -181,7 +180,7 @@ void SysReport::vSysMetrics(Tub* pTub)
       
       
     L_RETRY:
-    Row* pRow = pNamedBuffer->pAllotRow
+    Row* pRow = pRowBuffer->pAllotRow
                 (
                   C_VARGS_BEGIN
                  
@@ -205,10 +204,10 @@ void SysReport::vSysMetrics(Tub* pTub)
                 );
       
       if (! pRow) {
-        pNamedBuffer = new NamedBuffer(pStreamDef);
+				pRowBuffer = new RowBuffer(pStreamDef, BT_SYSMETRICS);
 
-        // add the named buffer to the tub
-        pTub->vAddBuffer(pNamedBuffer);
+        // add the row buffer to the tub
+        pTub->vAddBuffer(pRowBuffer);
         goto L_RETRY;
       }
 

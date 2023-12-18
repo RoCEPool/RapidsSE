@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Injectable, CK_INJECTABLE)
+__pCastFunction_Card(STORE, Card_Injectable, CK_s_INJECTABLE)
 __aNewFunction(Card_Injectable, CN_CARD)
 __vDeleteFunction(Card_Injectable, CN_CARD)
 
@@ -21,7 +21,7 @@ __vDeleteFunction(Card_Injectable, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Injectable::Card_Injectable(void)
-: Card_EXPRLIST(CK_INJECTABLE, 2)
+: Card_EXPRLIST(CK_s_INJECTABLE, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -45,7 +45,7 @@ Card_Injectable::~Card_Injectable(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* new Card_Injectable based on streamDef of table                            */
 /*----------------------------------------------------------------------------*/
-Card_Injectable* Card_Injectable::pNew_injected(CardIter* pCI)
+Card_Injectable* Card_Injectable::pNew_injectable(CardIter* pCI)
 {
   _static_;
 
@@ -54,35 +54,19 @@ Card_Injectable* Card_Injectable::pNew_injected(CardIter* pCI)
 
   char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
 
-  Card_Injectable* p_injected = new Card_Injectable;
+  Card_Injectable* p_injectable = new Card_Injectable;
 
   i8 nCols = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
-    Card_Expr* p_expr = new Card_Expr;
-    Symbol xSymbol(SF_EXP_COL, i_Col + 1);
-    p_expr->pSymbol()->vFacets(&xSymbol);
-    p_injected->vAppendChild(p_expr);
+    Card_Expr* p_expr_Column =
+        Card_Expr::pCast_expr_Column(pColumn, i_Col + 1, cTblSyn, i_Col + 1);
 
-    TypeId xColumnTypeId = pColumn->xColumnTypeId();
-
-    p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,pColumn->szColNm());
-
-    Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
-    p_expr->vAppendChild(p_rpnCalc);
-    p_rpnCalc->pSymbol()->vTypeId(xColumnTypeId);
-    p_expr->pSymbol()->vTypeId(xColumnTypeId);
-
-    Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, i_Col + 1);
-    p_rpnCalc->vAppendChild(p_term);
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->vTypeId(xColumnTypeId);
+    p_injectable->vAppendChild(p_expr_Column);
   }
 
-  return p_injected;
+  return p_injectable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +93,7 @@ void Card_Injectable::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //RASSERT(CK_STREAM == pParent->eCard());
+  //RASSERT(CK_s_STREAM == pParent->eCard());
   
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

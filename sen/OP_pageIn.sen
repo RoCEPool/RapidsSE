@@ -5,10 +5,11 @@
 " OP_pageIn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_PAGEINREQUEST ...                                         */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : pageIn::request \handler
 
+/*
   PipeIn[]\clear to InfoSet[]
 
   C_TDEF_PAGEINREQUEST infoSetRow:getFirstRow
@@ -22,7 +23,28 @@
 
   InfoSet[].delete
   nullptr to InfoSetRow[]
+*/
 
+  C_TDEF_PAGEINREQUEST op__tableDef assert
+
+  PipeIn[].bufferType@ BT_PATH != if
+    PipeIn[].pipeout
+    true
+    exit
+  then
+
+  PipeIn[]\clear to RowBuffer[]
+
+  RowBuffer[].firstRow to Row[]
+
+  0 Row[].getIntColumn locals| pTaskPtr  |
+  1 Row[].getIntColumn locals| oBufferId |
+
+  // unload to disk
+  pTaskPtr oBufferId pageIn::popRequest
+
+  RowBuffer[].delete
+  nullptr to Row[]
   true
 ;
 
@@ -39,7 +61,7 @@
 
   op__topology
 
-  find: pageIn::request     EV_I_PAGEINREQUEST   [op].handler!
+  find: pageIn::request     EV_D_ROWBUFFER  [op].handler!
 
   op__loop
 

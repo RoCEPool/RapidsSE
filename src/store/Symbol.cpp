@@ -23,8 +23,8 @@ Symbol::Symbol(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
+  vCastReset();
 
-  //m_xTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -89,33 +89,6 @@ Symbol::~Symbol(void)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* determine the ordinal difference between seq 1 and 2                       */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::iOrdDiff(Stz* szSeq1, Stz* szSeq2)
-{
-  _static_
-
-  char* acSeq1 = szSeq1->azChar();
-  char* acSeq2 = szSeq2->azChar();
-  while (*acSeq1 && ! StrLib::bIsDigit(*acSeq1) && *acSeq1 == *acSeq2) {
-    acSeq1++;
-    acSeq2++;
-  }
-
-  if (StrLib::bIsDigit(*acSeq1) &&  StrLib::bIsDigit(*acSeq2)) {
-    i8 iSeq1 = StrLib::iGleanInt(acSeq1);
-    i8 iSeq2 = StrLib::iGleanInt(acSeq2);
-
-    if (iSeq2 >= iSeq1) {
-      i8 iDiff = iSeq2 - iSeq1;
-      return iDiff;
-    }
-  }
-
-  return C_UNKNOWN;
-}
 
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
@@ -1140,18 +1113,13 @@ bool Symbol::bSame(Facet* aFacet_a, Facet* aFacet_b)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find TypeId by name                                                        */
+/* convert type name to typeId                                                */
 /*----------------------------------------------------------------------------*/
-TypeId Symbol::xTo_TypeId_str(Stz* szType)
+TypeId Symbol::xTo_TypeId(Stz* szTypeName)
 {
   _static_
 
-//  for (i8 i_Type = 0; i_Type < Parser::TypeSystem::iMaxTypeId(); i_Type++)
-//    return TypeId::xIdOf("rapids"_Stz, szType);
-//
-//  return (TypeId)-1;
-
-	return TypeId::xIdOf("rapids"_Stz, szType);
+	return TypeId::xIdOf("rapids"_Stz, szTypeName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1198,43 +1166,55 @@ void Symbol::vAppendFacets(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column type                                                            */
+/* get cast                                                                   */
 /*----------------------------------------------------------------------------*/
-//eCT Symbol::eColType(void)
-//{
-//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-//
-//  return m_eColType;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set type                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Symbol:: vColType(eCT eColType)
-//{
-//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-//
-//  m_eColType = eColType;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get column type                                                            */
-/*----------------------------------------------------------------------------*/
-TypeId Symbol::xTypeId(void)
+Cast Symbol::xCast(void)
 {
-	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-	return m_xTypeId;
+  return m_xCast;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set type                                                                   */
+/* set cast                                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol:: vTypeId(TypeId xColTypeId)
+void Symbol::vCast(Cast xCast)
 {
-	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_xTypeId = xColTypeId;
+  m_xCast = xCast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cast & facets from arg                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCastFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_xCast = pSymbol_arg->m_xCast;
+  vFacetConcat(pSymbol_arg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cast, facets and properties from arg                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCastFacetsPpy(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vCastFacets(pSymbol_arg);
+  Y_vAll(pSymbol_arg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cast & facets from arg                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vConcatFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacetConcat(pSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1374,6 +1354,22 @@ i8 Symbol::i_Facet(eSF eFacet)
   }
   return C_UNKNOWN;
 }
+
+/*----------------------------------------------------------------------------*/
+/* scan for symbol facet                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szFacet(eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (eFacet == xaFacet[i_Facet].m_eFacet)
+      return xaFacet[i_Facet].m_sChrSeq;
+  }
+
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* scan for symbol facet                                                      */
@@ -1520,8 +1516,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_DIRECTION:   vFacet_Direction(szChrSeq);   break;
     case SF_ELSE:        vFacet_Else(szChrSeq);        break;
     case SF_ENDIF:       vFacet_EndIf(szChrSeq);       break;
-    case SF_EXP_COL:
-      vFacet_Exp_Col(szChrSeq);     break;
+    case SF_EXP_COL:     vFacet_Exp_Col(szChrSeq);     break;
     case SF_FLD_NM:      vFacet_Fld_Nm(szChrSeq);      break;
     case SF_FLT_LIT:     vFacet_Flt_Lit(szChrSeq);     break;
     case SF_GROUPBY:     vFacet_GroupBy(szChrSeq);     break;
@@ -1572,42 +1567,6 @@ i8 Symbol::nFacets(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_nFacets;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set facets from arg                                                        */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacets(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_EXP_COL == pSymbol_arg->xaFacet[0].m_eFacet) {
-    vFacet_Exp_Col(pSymbol_arg->xaFacet[0].m_sChrSeq);
-  }
-
-  vFacetConcat(pSymbol_arg);
-
-  m_xTypeId = pSymbol_arg->m_xTypeId;
-
-  if (SF_EXP_COL == xaFacet[0].m_eFacet)
-    RASSERT(Symbol::bIs_Exp_Col(xaFacet[0].m_sChrSeq));
-
-  if (SF_TBL_COL == xaFacet[0].m_eFacet)
-    RASSERT(Symbol::bIs_Tbl_Col(xaFacet[0].m_sChrSeq));
-
-  if (pSymbol_arg->bHasFacets())
-    RASSERT(bHasFacets());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set facets and properties from arg                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacetsPpy(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vFacets(pSymbol_arg);
-  Y_vAll(pSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1707,27 +1666,7 @@ bool Symbol::bHasType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return m_xTypeId.bIsValid();
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this symbol have identical facets with given arg?                     */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIdenticalFacets(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (pSymbol_arg->nFacets() != m_nFacets)
-    return false;
-
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    Facet* aFacet_this = this->aFacet(i_Facet);
-    Facet* aFacet_that = pSymbol_arg->aFacet(i_Facet);
-    if (! bSame(aFacet_this,aFacet_that))
-      return false;
-  }
-
-  return true;
+  return m_xCast.m_xTypeId.bIsValid();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2856,6 +2795,46 @@ char Symbol::cSF_tblSyn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get typeId                                                                 */
+/*----------------------------------------------------------------------------*/
+TypeId Symbol::xTypeId(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_xTypeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get typeLength                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::nTypeLength(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_nTypeLength;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get typeNullable                                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bTypeNullable(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_bTypeNullable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get typeScale                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::nTypeScale(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_nTypeScale;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate symbol                                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bValidate(void)
@@ -3087,41 +3066,6 @@ Stz* Symbol::Y_szGet(Stz* szPpyNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Ppy Symbol::Y_xGet(i8 i_Ppy)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Ppy xPpy;
-
-  if (! m_pProperties)
-    return xPpy;
-
-  xPpy = m_pProperties->szValue(i_Ppy);
-
-  return xPpy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Ppy Symbol::Y_xGet(Stz* szPpyNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Ppy xPpy;
-
-  if (! m_pProperties)
-    return xPpy;
-
-  xPpy = m_pProperties->szValue(szPpyNm);
-
-  return xPpy;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* has given property ?                                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::Y_bHas(Stz* szPpyNm)
@@ -3293,6 +3237,20 @@ void Symbol::Y_vTo_String(String* pString)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* reset cast                                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCastReset(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_xCast.m_xTypeId = TypeId();
+
+  m_xCast.m_nTypeLength   = C_UNKNOWN;
+  m_xCast.m_nTypeScale    = C_UNKNOWN;
+  m_xCast.m_bTypeNullable = true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given aggregate fn                                      */

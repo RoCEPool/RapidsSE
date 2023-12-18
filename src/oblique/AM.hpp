@@ -511,7 +511,7 @@ namespace OBLIQUE
     class PAGING
     {
     public:
-      static InfoSet* pToPageIn(Task* pTask, BufferId oBufferId);
+      static RowBuffer* pToPageIn(Task* pTask, BufferId oBufferId);
     };
     class PARCEL
     {
@@ -552,7 +552,7 @@ namespace OBLIQUE
     public:
       static bool bToPipelineStmt(String* pAsPipelineStmt,
                                   TokenVec* pFromTokenVec);
-      static InfoSet* pToPromptOut(Stz* szStz);
+      static RowBuffer* pToPromptOut(Stz* szStz);
     };
 
 

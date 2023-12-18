@@ -32,7 +32,6 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[].handleLeaving"_Stz,  &Step::vRegSendsHandleLeaving);
   vAddStep("Sends[].handleStart"_Stz,    &Step::vRegSendsHandleStart);
   vAddStep("Sends[].handleStreamDef"_Stz,&Step::vRegSendsHandleStreamDef);
-  vAddStep("Sends[].handleStreamDefRht"_Stz,&Step::vRegSendsHandleStreamDefRht);
   vAddStep("Sends[].handleTriggered"_Stz,&Step::vRegSendsHandleTriggered);
   vAddStep("Sends[].isNull"_Stz,         &Step::vRegSendsIsNull);
   vAddStep("Sends[].new"_Stz,            &Step::vRegSendsNew);
@@ -257,24 +256,6 @@ void Step::vRegSendsHandleStreamDef(void)
   
   m_pDataStack->vPushInt(bStreamDefDone);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Sends[].handleStreamDefRht -- handle consume of streamDefRht               */
-/*----------------------------------------------------------------------------*/
-void Step::vRegSendsHandleStreamDefRht(void)
-{
-  ENTRY();
-
-  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
-
-  bool bStreamDefRhtDone = pSends->bStreamDefRhtDone();
-
-  pSends->vIncStreamDefRht();
-
-  m_pDataStack->vPushInt(bStreamDefRhtDone);
-
   EXIT();
 }
 

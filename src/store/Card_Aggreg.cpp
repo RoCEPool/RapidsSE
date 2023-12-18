@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Aggreg,CK_AGGREG)
+__pCastFunction_Card(STORE, Card_Aggreg, CK_o_AGGREG)
 __aNewFunction(Card_Aggreg,CN_CARD)
 __vDeleteFunction(Card_Aggreg,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Aggreg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::Card_Aggreg(void)
-: Card_AGGREGATE(CK_AGGREG, 1)
+: Card_AGGREGATE(CK_o_AGGREG, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -138,9 +138,9 @@ void Card_Aggreg::vSmooth(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* update existing emit                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Aggreg::vUpdate_emitted(CardIter* pCI)
+void Card_Aggreg::vUpdate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -164,7 +164,7 @@ void Card_Aggreg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

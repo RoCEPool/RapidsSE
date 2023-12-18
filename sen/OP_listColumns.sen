@@ -21,30 +21,30 @@
   Table[].columnCount@ to iColumns
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // insert a row in the infoset for each column
   iColumns 0 do
     I Table[].column@
-    streamSetTable[] StreamSet[].addColumnDef not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
+    TableDef[] RowBuffer[].addColumnDef not if
+      RowBuffer[].pipeOut
+      BT_DATA TableDef[] RowBuffer[].new
       I Table[].column@
-      streamSetTable[] StreamSet[].addColumnDef assert
+      TableDef[] RowBuffer[].addColumnDef assert
     then
   loop
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

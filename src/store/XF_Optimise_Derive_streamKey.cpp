@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAM_KEY)
-__aNewFunction(XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAM_KEY)
-__vDeleteFunction(XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAM_KEY)
+__pCastFunction(STORE, XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAMKEY)
+__aNewFunction(XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAMKEY)
+__vDeleteFunction(XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAMKEY)
 __aFooterFunction(XF_Optimise_Derive_streamKey)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Optimise_Derive_streamKey)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Derive_streamKey::XF_Optimise_Derive_streamKey(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_OPTIMISE_DERIVE_STREAM_KEY, OT_DERIVE_STREAMKEY, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_DERIVE_STREAMKEY, OT_DERIVE_STREAMKEY, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_OPTIMISE_DERIVE_STREAM_KEY);
+  _checkInitialised_(CN_XF_OPTIMISE_DERIVE_STREAMKEY);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Optimise_Derive_streamKey::XF_Optimise_Derive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Derive_streamKey::~XF_Optimise_Derive_streamKey(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@ void XF_Optimise_Derive_streamKey::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Derive_streamKey::bOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 
   bool bOptRun = false;
 
@@ -92,16 +92,16 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 
   bool bFoundKeyStart = false;
 
   m_pCI->vClearRestart();
 
   for (;;) {
-    if (m_pCI->pNextChildIf(CK_INDEXSCAN) ||
-        m_pCI->pNextChildIf(CK_GBYAGG)    ||
-        m_pCI->pNextChildIf(CK_SORT) ) {
+    if (m_pCI->pNextChildIf(CK_o_INDEXSCAN) ||
+        m_pCI->pNextChildIf(CK_o_GBYAGG) ||
+        m_pCI->pNextChildIf(CK_o_SORT) ) {
       bFoundKeyStart = true;
       break;
     }
@@ -118,17 +118,17 @@ bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
 /*----------------------------------------------------------------------------*/
 void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 
   while (m_pCI->G_bEachMain_NONE()) {
 
     switch (m_pCI->G.e_MainCard) {
 
-      case CK_GBYAGG:     m_pCI->G.p_gbyAgg->vDerive_streamKey(m_pCI);     break;
-      case CK_INDEXJOIN:  m_pCI->G.p_indexJoin->vDerive_streamKey(m_pCI);  break;
-      case CK_INDEXSCAN:  m_pCI->G.p_indexScan->vDerive_streamKey(m_pCI);  break;
-      case CK_PROJECT:    m_pCI->G.p_project->vDerive_streamKey(m_pCI);    break;
-      case CK_SORT:       m_pCI->G.p_sort->vDerive_streamKey(m_pCI);       break;
+      case CK_o_GBYAGG:     m_pCI->G.p_gbyAgg->vDerive_streamKey(m_pCI);     break;
+      case CK_o_INDEXJOIN:  m_pCI->G.p_indexJoin->vDerive_streamKey(m_pCI);  break;
+      case CK_o_INDEXSCAN:  m_pCI->G.p_indexScan->vDerive_streamKey(m_pCI);  break;
+      case CK_o_PROJECT:    m_pCI->G.p_project->vDerive_streamKey(m_pCI);    break;
+      case CK_o_SORT:       m_pCI->G.p_sort->vDerive_streamKey(m_pCI);       break;
 
       default:
         break;

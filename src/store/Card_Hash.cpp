@@ -15,7 +15,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Hash,CK_HASH)
+__pCastFunction_Card(STORE, Card_Hash, CK_o_HASH)
 __aNewFunction(Card_Hash,CN_CARD)
 __vDeleteFunction(Card_Hash,CN_CARD)
 
@@ -24,7 +24,7 @@ __vDeleteFunction(Card_Hash,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Hash::Card_Hash(void)
-: Card_OP(CK_HASH,1)
+: Card_OP(CK_o_HASH, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

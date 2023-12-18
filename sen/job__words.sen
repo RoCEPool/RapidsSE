@@ -242,18 +242,7 @@
 
     [op].isSend not assert
 
-    //[op].isSend if
-    //  Parcel[].reset
-    //  true
-    //  exit
-    //then
-
     [op].isRecv not assert
-
-    //[op].isRecv if
-    //  true
-    //  exit
-    //then
 
     // not already detected internal error ?
     [pipeline].internalError@ not if
@@ -270,10 +259,13 @@
       [job] >str "%v PIPELINE ALREADY DETECTED INTERNAL ERROR!!!" str.format .
     then
 
+    //
     // toggle to default abnormal handlers
+    //
+
     //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
     "default_abnormalHandlers" FIND execute
-    "default_internalErrorHandlers" FIND execute
+    "toggle_rowBufferHandler" FIND execute
     //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
     true
@@ -314,18 +306,8 @@
 
     [op].isSend not assert
 
-    //[op].isSend if
-    //  Parcel[].reset
-    //  true
-    //  exit
-    //then
-
     [op].isRecv not assert
 
-    //[op].isRecv if
-    //  true
-    //  exit
-    //then
 
     // not already detected low memory ?
     [pipeline].lowMemory@ not if
@@ -342,10 +324,13 @@
       [job] >str "%v PIPELINE ALREADY DETECTED LOW MEMORY!!!" str.format .
     then
 
+    //
     // toggle to default abnormal handlers
+    //
+
     //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
     "default_abnormalHandlers" FIND execute
-    "default_lowMemHandlers" FIND execute
+    "toggle_rowBufferHandler" FIND execute
     //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
     true

@@ -28,9 +28,7 @@
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 
-#include "InfoSet.hpp"
 #include "VertexSpec.hpp"
-#include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
 #include "AdaptorWL.hpp"
 #include "AnswerWL.hpp"
@@ -112,9 +110,6 @@ namespace STORE
     REG<Index,          CN_INDEX         > m_xpIndex;
     REG<IndexDef,       CN_INDEXDEF      > m_xpIndexDef;
     REG<IndexStream,    CN_INDEXSTREAM   > m_xpIndexStream;
-    REG<InfoSet,        CN_INFOSET       > m_xpInfoSet;
-    REG<Row,            CN_ROW           > m_xpInfoSetRow;
-    REG<Table,          CN_TABLE         > m_xpInfoSetTable;
     REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
@@ -126,7 +121,6 @@ namespace STORE
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog;
     REG<MetaGet,        CN_METAGET       > m_xpMetaGet;
 
-    REG<NamedBuffer,    CN_NAMEDBUFFER   > m_xpNamedBuffer;
     REG<Node,           CN_NODE          > m_xpNode;
     REG<Node_I,         CN_NODE_I        > m_xpNode_I;
     REG<Now,            CN_NOW           > m_xpNow;
@@ -149,7 +143,10 @@ namespace STORE
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
+		REG<Row,            CN_ROW           > m_xpRow;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
+		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferErr;
+		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferWarn;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
     REG<RowCounts,      CN_ROWCOUNTS     > m_xpRowCounts;
 
@@ -163,14 +160,15 @@ namespace STORE
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;
     REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;
-    REG<Operand,        CN_NONE          > m_xpStreamSet;
-    REG<Table,          CN_TABLE         > m_xpStreamSetTable;
     REG<SubCall,        CN_NONE          > m_xpSubCall;
     REG<Pipeline,       CN_PIPELINE      > m_xpSubPipe;
     REG<SubReturn,      CN_NONE          > m_xpSubReturn;
     REG<Operand,        CN_NONE          > m_xpSubset;
 
     REG<Table,          CN_TABLE         > m_xpTable;
+		REG<Table,          CN_TABLE         > m_xpTableDef;
+		REG<Table,          CN_TABLE         > m_xpTableDefErr;
+		REG<Table,          CN_TABLE         > m_xpTableDefWarn;
     REG<TablePtn,       CN_TABLEPTN      > m_xpTablePtn;
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<TaskList,       CN_TASKLIST      > m_xpTaskList;
@@ -234,6 +232,7 @@ namespace STORE
     s256   m_sErrorStr_reg;       // supplementary error details
     
     eEV m_ePipeInOperand;
+		eBT m_ePipeInBufferType;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop

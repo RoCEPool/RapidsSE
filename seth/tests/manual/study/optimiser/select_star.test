@@ -1,0 +1,25 @@
+--------------------------------------------------------------------------------
+-- select_star
+--------------------------------------------------------------------------------
+
+LOG 'SELECT_STAR ..';
+
+trackMemory;
+success
+
+/pipelineName = "SELECT_STAR"
+select *
+  from Customer
+;
+
+rows: 150
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  bye;
+  mute
+}
+
+

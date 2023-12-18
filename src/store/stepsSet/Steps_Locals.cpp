@@ -292,8 +292,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("InfoSetRow[]"_Stz)) {
-    pCurrentWord->vEncodeCall("InfoSetRow[].set"_Stz);
+  else if (szTerm->bSame("Row[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Row[].set"_Stz);
     EXIT();
     return;
   }
@@ -319,11 +319,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("MetaGet[]"_Stz)) {
     pCurrentWord->vEncodeCall("MetaGet[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("NamedBuffer[]"_Stz)) {
-    pCurrentWord->vEncodeCall("NamedBuffer[].set"_Stz);
     EXIT();
     return;
   }
@@ -402,6 +397,16 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+	else if (szTerm->bSame("RowBufferErr[]"_Stz)) {
+		pCurrentWord->vEncodeCall("RowBufferErr[].set"_Stz);
+		EXIT();
+		return;
+	}
+	else if (szTerm->bSame("RowBufferWarn[]"_Stz)) {
+		pCurrentWord->vEncodeCall("RowBufferWarn[].set"_Stz);
+		EXIT();
+		return;
+	}
   else if (szTerm->bSame("SendNode[]"_Stz)) {
     pCurrentWord->vEncodeCall("SendNode[].set"_Stz);
     EXIT();
@@ -447,18 +452,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("StreamSet[]"_Stz)) {
-    pCurrentWord->vEncodeCall("StreamSet[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("StreamDefOut[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamDefOut[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("StreamSetTable[]"_Stz)) {
-    pCurrentWord->vEncodeCall("StreamSetTable[].set"_Stz);
     EXIT();
     return;
   }
@@ -482,6 +477,26 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+	else if (szTerm->bSame("TableDef[]"_Stz)) {
+		pCurrentWord->vEncodeCall("TableDef[].set"_Stz);
+		EXIT();
+		return;
+	}
+	else if (szTerm->bSame("TableDefErr[]"_Stz)) {
+		pCurrentWord->vEncodeCall("TableDefErr[].set"_Stz);
+		EXIT();
+		return;
+	}
+	else if (szTerm->bSame("TableDefWarn[]"_Stz)) {
+		pCurrentWord->vEncodeCall("TableDefWarn[].set"_Stz);
+		EXIT();
+		return;
+	}
+	else if (szTerm->bSame("TableDefErr[]"_Stz)) {
+		pCurrentWord->vEncodeCall("TableDefErr[].set"_Stz);
+		EXIT();
+		return;
+	}
   else if (szTerm->bSame("TablePtn[]"_Stz)) {
     pCurrentWord->vEncodeCall("TablePtn[].set"_Stz);
     EXIT();

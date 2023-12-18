@@ -5,7 +5,7 @@
 " OP_rowCount.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_INFOSET...                                                           */
+/* on EV_M_DATAPULSE...                                                       */
 /*----------------------------------------------------------------------------*/
 : rowCount_DataMarker \handler
 
@@ -13,16 +13,16 @@
   PipeIn[].pipeOut
 
   // find the __count table
-  C_TDEF_COUNT op__tableDef_infoSet assert
+  C_TDEF_COUNT op__tableDef assert
 
   // create a new streamDef
-  infoSetTable[] InfoSet[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
-  // create an infoSet operand
-  Table[] infoSetTable[] InfoSet[].addRowCount assert
+  // create an rowBuffer operand
+  Table[] TableDef[] RowBuffer[].addRowCount assert
 
-  // pipeout the infoset
-  InfoSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   Marker[].newEosMarker
   Marker[].pipeOut

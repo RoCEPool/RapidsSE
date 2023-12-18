@@ -36,16 +36,16 @@
   Path[].pushIndexesFolder
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create an rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the infoSet for each word
@@ -55,10 +55,10 @@
 
     object@ word.name@ Folder[].findSymbol execute to pIndex
 
-    pIndex streamSetTable[] StreamSet[].addListIndex  not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
-      pIndex streamSetTable[] StreamSet[].addListIndex assert
+    pIndex TableDef[] RowBuffer[].addListIndex  not if
+      RowBuffer[].pipeOut
+      BT_DATA TableDef[] RowBuffer[].new
+      pIndex TableDef[] RowBuffer[].addListIndex assert
     then
 
     object@ word.prev object!      // step backwards thru words
@@ -73,7 +73,7 @@
   Folder[].isTables assert
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

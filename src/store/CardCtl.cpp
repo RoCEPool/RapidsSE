@@ -584,8 +584,8 @@ void CardCtl::vReset(void)
   //vPrintProperties(CK_RLNCONJ, false);
 
 
-//  vPrintByKind(CK_KEY,true);
-//  vPrintSubCards(CK_KEY, false);
+//  vPrintByKind(CK_s_KEY,true);
+//  vPrintSubCards(CK_s_KEY, false);
 
   vPrintName(CK_NOTE,false);
   vPrintProperties(CK_NOTE,false);
@@ -593,14 +593,14 @@ void CardCtl::vReset(void)
   vPrintValue(CK_ORCONJ, false);
   vPrintProperties(CK_ORCONJ, false);
 
-//  vPrintByKind(CK_EMIT,true);
-//  vPrintSubCards(CK_EMIT, false);
+//  vPrintByKind(CK_t_EMIT,true);
+//  vPrintSubCards(CK_t_EMIT, false);
 
   vHeatNext(CK_SECTION, true);
 
-  vHeatNext(CK_STAGE, true);
+  vHeatNext(CK_c_STAGE, true);
 
-  vPrintByKind(CK_EMIT, true);
+  vPrintByKind(CK_t_EMIT, true);
   vPrintByKind(CK_EXPR,true);
   vPrintByKind(CK_ANDCONJ,true);
   vPrintByKind(CK_NOTCONJ,true);
@@ -608,9 +608,9 @@ void CardCtl::vReset(void)
   vPrintByKind(CK_RLNCONJ,true);
 
   vPrintByKind(CK_RPNCALC,true);
-  vPrintByKind(CK_TABLE,true);
-  vPrintValue(CK_TABLE, false);
-  //vPrintProperties(CK_TABLE, false);
+  vPrintByKind(CK_s_TABLE, true);
+  vPrintValue(CK_s_TABLE, false);
+  //vPrintProperties(CK_s_TABLE, false);
 
   vPrintByKind(CK_TERM,true);
   vPrintName(CK_TERM,false);

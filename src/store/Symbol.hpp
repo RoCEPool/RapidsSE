@@ -18,6 +18,13 @@ namespace STORE
     s256 m_sChrSeq;
   };
 
+  struct Cast {
+    TypeId m_xTypeId;
+    i8     m_nTypeLength;
+    i8     m_nTypeScale;
+    b8     m_bTypeNullable;
+  };
+
   class Symbol : public Object
   {
   private:
@@ -26,7 +33,7 @@ namespace STORE
     i8 m_nFacets;
     Facet xaFacet[C_FACETS];
 
-		TypeId m_xTypeId;
+    Cast m_xCast;
 
     TagSet* m_pProperties;
 
@@ -40,8 +47,6 @@ namespace STORE
     Symbol(eSF eFacet, Stz* szChrSeq);
 
     ~Symbol(void);
-
-    static i8   iOrdDiff(Stz* szSeq1, Stz* szSeq2);
 
     static eRO  eEvalRelnOp(Stz* szSymbol);
     static eQO  eEvalSubQryOp(Stz* szArg);
@@ -108,7 +113,7 @@ namespace STORE
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
 
-    static TypeId  xTo_TypeId_str(Stz* szType);
+    static TypeId xTo_TypeId(Stz* szTypeName);
 
     // - - - - - -
 
@@ -116,15 +121,14 @@ namespace STORE
     void vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vAppendFacets(Symbol* pSymbol_arg);
 
-    //eCT  eColType(void);
-    //void vColType(eCT eColType);
-
-		TypeId  xTypeId(void);
-		void vTypeId(TypeId xColTypeId);
+    Cast xCast(void);
+    void vCast(Cast xCast);
+    void vCastFacets(Symbol* pSymbol_arg);
+    void vCastFacetsPpy(Symbol* pSymbol_arg);
+    void vConcatFacets(Symbol* pSymbol_arg);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-
     void vDump(void);
 
     eRO  eEvalRlnOp(void);
@@ -135,6 +139,7 @@ namespace STORE
     eSF  eFacet(i8 i_Facet=0);
     i8   i_Facet(eSF eFacet);
     i8   i_Facet(eSF eFacet, char cTblSyn);
+    Stz* szFacet(eSF eFacet);
     void vFacet(eSF eFacet);
     void vFacet(eSF eFacet, char cChr);
     void vFacet(eSF eFacet, char cChr, i8 iInt);
@@ -142,11 +147,7 @@ namespace STORE
     void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
-    void vFacets(Symbol* pSymbol_arg);
-    void vFacetsPpy(Symbol* pSymbol_arg);
-
     void vFacets_To_String(String* pString);
-
     bool bFacetIs(eSF eFacet_arg);
 
     bool bHasFacet(eSF eFacet);
@@ -155,11 +156,8 @@ namespace STORE
     bool bHasProperties(void);
     bool bHasType(void);
 
-    bool bIdenticalFacets(Symbol* pSymbol_arg);
-
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
-
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
     bool bIs_As(void);              // AS
     bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
@@ -234,6 +232,11 @@ namespace STORE
     i8   iSF_ordinal(void);
     char cSF_tblSyn(void);
 
+    TypeId xTypeId(void);
+    i8     nTypeLength(void);
+    bool   bTypeNullable(void);
+    i8     nTypeScale(void);
+
     bool bValidate(void);
     void vValidate(void);
 
@@ -241,16 +244,12 @@ namespace STORE
 
     void Y_vAll(Symbol* pSymbol_arg);
     void Y_vCut(Stz* szPpyNm);
-//  char Y_cGet(i8 i_Ppy);
-//  char Y_cGet(Stz* szPptNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
     Object* Y_pGet(i8 i_Ppy);
     Object* Y_pGet(Stz* szPpyNm);
     Stz* Y_szGet(i8 i_Ppy);
     Stz* Y_szGet(Stz* szPpyNm);
-    Ppy  Y_xGet(i8 i_Ppy);
-    Ppy  Y_xGet(Stz* szPpyNm);
     bool Y_bHas(Stz* szPpyNm);
     i8   Y_nPpy(void);
     Stz* Y_szPpyNm(i8 i_Ppy);
@@ -264,6 +263,8 @@ namespace STORE
     void Y_vTo_String(String* pString);
 
   private:
+    void vCastReset(void);
+
     void vFacet_Agg_Fn(Stz* szAggFn);
     void vFacet_As(Stz* szAs);
     void vFacet_Bol_Fn(Stz* szBolFn);

@@ -1,0 +1,67 @@
+/*============================================================================*/
+/* _ray177                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+// NOTE: The weaved statement does not show the fused project in comments in stage S01
+
+
+/optimiser_trace
+/pipeline_def
+/weaved
+select l_orderkey, sum(l_quantity) from lineitem where l_orderkey >= 2 group by l_orderkey ;
+
+_tpchDrop;
+
+
+/*
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+  //  indexScan Lineitem IxL_ORDERKEY
+  //            " LBOUND $I1 2 >= "
+      dynamic
+    | next
+
+  stage S02 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S03 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S04 on origin :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+*/

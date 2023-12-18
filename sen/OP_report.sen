@@ -39,25 +39,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ENTBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: report_EntBuffer \handler
-
-  //"Operand:- EV_D_ENTBUFFER" .verbose
-  /*
-  PipeIn[] to EntBuffer[]
-  nullptr to EntBuffer[]
-
-  EntBuffer[].isReport if
-    EntBuffer[].writeToFile0
-  else
-    EntBuffer[].pipeOut
-  then
-  */
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : report_EosMarker \handler
@@ -67,25 +48,6 @@
   //File0[].get file.delete
   PipeIn[].pipeOut
 
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_SRTBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: report_SrtBuffer \handler
-
-/*
-  //"Operand:- EV_D_SRTBUFFER" .verbose
-  PipeIn[] to SrtBuffer[]
-  nullptr to SrtBuffer[]
-
-  SrtBuffer[].isReport if
-    SrtBuffer[].writeToFile0
-  else
-    SrtBuffer[].pipeOut
-  then
-*/
   true
 ;
 
@@ -115,9 +77,7 @@
 
   find: report_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
   find: report_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
-  find: report_EntBuffer   EV_D_ENTBUFFER   [op].handler!
   find: report_EosMarker   EV_M_EOS   [op].handler!
-  find: report_SrtBuffer   EV_D_SRTBUFFER   [op].handler!
   find: report_StartMarker EV_M_START [op].handler!
 
   op__loop

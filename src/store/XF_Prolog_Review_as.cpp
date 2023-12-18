@@ -70,18 +70,18 @@ void XF_Prolog_Review_as::vReview_as(void)
 
     switch (m_pCI->G.e_MainCard) {
 
-      case CK_GBYAGG:
+      case CK_o_GBYAGG:
         //m_pCI->G.p_gbyAgg->vAs_Review(m_pCI);
         m_pCI->G.p_key = m_pCI->G.p_gbyAgg->pSub_key();
         m_pCI->G.p_emit = m_pCI->G.p_gbyAgg->pSub_emit();
         //m_pCI->G.p_emit->vAs_Review(m_pCI);
         break;
 
-      case CK_INDEXJOIN:  break;
-      case CK_INDEXSCAN:  break;
-      case CK_PROJECT:    break;
-      case CK_SORT:       break;
-      case CK_TABLE:      break;
+      case CK_o_INDEXJOIN:  break;
+      case CK_o_INDEXSCAN:  break;
+      case CK_o_PROJECT:    break;
+      case CK_o_SORT:       break;
+      case CK_s_TABLE:      break;
 
       default:
         break;

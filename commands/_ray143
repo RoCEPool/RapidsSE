@@ -5,7 +5,8 @@
 __TPCH_SCHEMA;
 
 // NOTE: project went missing.
-//       looks like project got fused with filter
+//       looks like project got fused with indexJoin
+//       need a commented line to show that
 
 // (Combined/indexJoin.test)
 

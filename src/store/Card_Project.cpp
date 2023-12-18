@@ -16,7 +16,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Project,CK_PROJECT)
+__pCastFunction_Card(STORE, Card_Project, CK_o_PROJECT)
 __aNewFunction(Card_Project,CN_CARD)
 __vDeleteFunction(Card_Project,CN_CARD)
 
@@ -58,7 +58,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
   RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
 
-  Card_Project* p_project_unproject = new Card_Project(CK_PROJECT);
+  Card_Project* p_project_unproject = new Card_Project(CK_o_PROJECT);
   pCI->G.pDeck->vAppendChild(p_project_unproject);
   p_project_unproject->pSymbol()->Y_vSet(P_Unproject);
 
@@ -133,11 +133,13 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 
   Card_Emit* p_emit_early = new Card_Emit;
 
-  //pCI->Early.m_pNeeded_later->vDump();
+  pCI->Early.m_pNeeded_later->vDump(__func__);
+  pCI->Flux.m_pArriving->vDump(__func__);
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
+    //p_expr_needed->vDump(__func__);
     if (! pCI->Flux.m_pArriving->pContains(p_expr_needed))
       continue;
 
@@ -253,7 +255,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppendChild(pCI->G.p_rpnCalc);
-  pCI->G.p_expr->vColType(pCI->G.p_rpnCalc);
+  pCI->G.p_expr->vCast(pCI->G.p_rpnCalc);
 
   Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
   pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
@@ -387,7 +389,7 @@ void Card_Project::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   Card_OP::vValidate(pCI,iDepth,pParent);

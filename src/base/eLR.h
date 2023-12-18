@@ -42,9 +42,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_INDEX,
   /*  */ LR_INDEXDEF,
   /*  */ LR_INDEXSTREAM,
-  /*  */ LR_INFOSET,
-  /*  */ LR_INFOSETROW,
-  /*  */ LR_INFOSETTABLE,
   /*  */ LR_INTSTACK,
   
   /*  */ LR_JOBMETRICS,
@@ -55,8 +52,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_MARKER,
   /*  */ LR_MEMORYHOG,
   /*  */ LR_META,
-  
-  /*  */ LR_NAMEDBUFFER,
+
   /*  */ LR_NODE,
   /*  */ LR_NODE_I,
   /*  */ LR_NOW,
@@ -79,7 +75,10 @@ enum eLR // Logic Unit Registers
   
   /*  */ LR_RECVDOBJECT,
   /*  */ LR_RECVWL,
+  /*  */ LR_ROW,
   /*  */ LR_ROWBUFFER,
+	/*  */ LR_ROWBUFFERERR,
+	/*  */ LR_ROWBUFFERWARN,
   /*  */ LR_ROWONCE,
   /*  */ LR_ROWCOUNTS,
 
@@ -94,15 +93,16 @@ enum eLR // Logic Unit Registers
   /*  */ LR_STREAMDEFLFT,
   /*  */ LR_STREAMDEFOUT,
   /*  */ LR_STREAMDEFRHT,
-  /*  */ LR_STREAMSET,
-  /*  */ LR_STREAMSETTABLE,
   /*  */ LR_SUBCALL,
   /*  */ LR_SUBPIPE,
   /*  */ LR_SUBRETURN,
   /*  */ LR_SUBSET,
   
   /*  */ LR_TABLE,
-  /*  */ LR_TABLEPTN,
+	/*  */ LR_TABLEDEF,
+	/*  */ LR_TABLEDEFERR,
+	/*  */ LR_TABLEDEFWARN,
+	/*  */ LR_TABLEPTN,
   /*  */ LR_TAGSET,
   /*  */ LR_TASKLIST,
   /*  */ LR_TEXT,

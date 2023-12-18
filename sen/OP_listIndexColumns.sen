@@ -18,16 +18,16 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // get no of columns in the index
   Index[].columnCount@ to iColumns
@@ -36,16 +36,16 @@
   // insert a row in the infoSet for each index column
   iColumns 0 do
     I Index[].column@
-    streamSetTable[] StreamSet[].addColumnDef  not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
+    TableDef[] RowBuffer[].addColumnDef  not if
+      RowBuffer[].pipeOut
+      BT_DATA TableDef[] RowBuffer[].new
       I Index[].column@
-      streamSetTable[] StreamSet[].addColumnDef assert
+      TableDef[] RowBuffer[].addColumnDef assert
     then
   loop
 
   // pipeout the infoset
-  StreamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

@@ -22,6 +22,14 @@
   //"Operand:- EV_D_ROWBUFFER" .verbose
 
   Pipein[]\clear to rowBuffer[]
+
+  // handle DATA rowBuffers only
+  RowBuffer[].bufferType@ BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   rowBuffer[].iterate
 
   rowBuffer[].pipeOut

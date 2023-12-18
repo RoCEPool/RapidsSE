@@ -34,20 +34,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_I_SEEKOFFSETS ...                                                    */
+/* on EV_D_ROWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: rdCsvChunk_SeekOffsets \handler
+: rdCsvChunk_RowBuffer \handler
 
-  // 0 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 0 EV_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   0 0 locals| iOffset nBytes |
 
-  PipeIn[] to InfoSet[]
+  // handle only BT_SEEKOFFSETS
+  PipeIn[].bufferType@ BT_SEEKOFFSETS == not if
+    Pipein[].pipeout
+    true
+    exit
+  then
+
+  PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  InfoSet[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
   begin
-    infoSetRow[].isNull
+    Row[].isNull
   not while
 
     discern::rdCsvChunk not if
@@ -60,14 +67,14 @@
       // check for low memory
       /*
       attachMap::isLowMemory if
-        //InfoSet[].delete
+        //RowBuffer[].delete
         EC_LOW_MEMORY op__execErr
         true
         exit
       then
       */
 
-      infoSetRow[].get InfoSet[].rdCsvChunk
+      Row[].get RowBuffer[].rdCsvChunk
         to CsvBuffer[]
         to iOffset
         to nBytes
@@ -79,15 +86,13 @@
       then
 
       CsvBuffer[].pipeOut
-      InfoSet[].nextRow to infoSetRow[]
+      RowBuffer[].nextRow to Row[]
 
     then
 
   repeat
 
-  InfoSet[].delete
-
-  // 1 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  RowBuffer[].delete
 
   true
 ;
@@ -95,14 +100,12 @@
 /*
 : rdCsvChunk_SeekOffsets \handler
 
-  // 0 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
-
-  PipeIn[] to InfoSet[]
+  PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  InfoSet[].firstRow to infoSetRow[]
+  RowBuffer[].firstRow to Row[]
   begin
-    infoSetRow[].isNull
+    Row[].isNull
   not while
 
    [args].operands attachmap::operands@ [args].operands > and if
@@ -114,7 +117,7 @@
 
       // check for low memory
       attachMap::isLowMemory if
-        //InfoSet[].delete
+        //RowBuffer[].delete
         EC_LOW_MEMORY op__execErr
         true
         exit
@@ -122,24 +125,22 @@
 
       discern::rdCsvChunk discard
       
-      infoSetRow[].get InfoSet[].rdCsvChunk to CsvBuffer[]
+      Row[].get RowBuffer[].rdCsvChunk to CsvBuffer[]
       CsvBuffer[].pipeOut
-      InfoSet[].nextRow to infoSetRow[]
+      RowBuffer[].nextRow to Row[]
 
     then
 
   repeat
 
-  InfoSet[].delete
-
-  // 1 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  RowBuffer[].delete
 
   true
 ;
 */
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_START ...                                                      */
+/* on EV_M_START ...                                                          */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_StartMarker \handler
 
@@ -179,7 +180,7 @@
 
   find: rdCsvChunk_Cleaning      EV_M_CLEANING     [op].handler!
   find: rdCsvChunk_Eos           EV_M_EOS          [op].handler!
-  find: rdCsvChunk_SeekOffsets   EV_I_SEEKOFFSETS  [op].handler!
+  find: rdCsvChunk_RowBuffer     EV_D_ROWBUFFER    [op].handler!
   find: rdCsvChunk_StartMarker   EV_M_START        [op].handler!
 
   op__loop

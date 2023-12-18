@@ -10,18 +10,18 @@
 : showCluster_action
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an infoSet operand
-  streamSetTable[] streamSet[].new
+  // create an rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
   0 locals| pNode |
 
@@ -30,10 +30,10 @@
   begin
     node_I[].node to pNode
 
-    pNode node.id streamSetTable[] streamSet[].addShowCluster  not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
-      pNode node.id streamSetTable[] StreamSet[].addShowCluster assert
+    pNode node.id TableDef[] RowBuffer[].addShowCluster  not if
+      RowBuffer[].pipeOut
+      BT_DATA TableDef[] RowBuffer[].new
+      pNode node.id TableDef[] RowBuffer[].addShowCluster assert
     then
 
     node_I[].next
@@ -44,8 +44,8 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipeout the infoset
-  streamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;

@@ -9,17 +9,17 @@
 /*----------------------------------------------------------------------------*/
 : nodeInfo_action
 
-  // find the __ table
-  <streamDef> op__tableDef_infoSet assert
+  // find the <streamDef> table
+  <streamDef> op__tableDef assert
 
-  // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  // create a rowBuffer operand
+  BT_NODEINFO TableDef[] RowBuffer[].new
 
-  // add nodeInfo to the infoSet
-  infoSetTable[] InfoSet[].addnodeInfo assert
+  // add nodeInfo to the rowBuffer
+  TableDef[] RowBuffer[].addnodeInfo assert
 
-  // pipeout the infoset
-  InfoSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;

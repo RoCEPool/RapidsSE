@@ -8,7 +8,6 @@
 
 #include "SP_PipeSpec.hpp"
 #include "Job.hpp"
-#include "InfoSet.hpp"
 #include "XF_Synthesise_code.hpp"
 #include "CardIter.hpp"
 
@@ -78,7 +77,7 @@ Optimiser::~Optimiser(void) noexcept(false)
   //RASSERT(0 == m_pCI->nItems());
 
   if (m_pCardCtl->pCardHistory())
-    m_pCardCtl->pCardHistory()->vPrintImages(CK_GBYAGG,AL_PARTITION);
+    m_pCardCtl->pCardHistory()->vPrintImages(CK_o_GBYAGG, AL_PARTITION);
 
   delete m_pCardCtl;
   
@@ -406,7 +405,7 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
+bool Optimiser::bTransform(Error& rxError, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -421,17 +420,17 @@ bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bJoinOrder) {
-    RASSERT(pInfoSet);
-    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+    RASSERT(pRowBuffer);
+    Row *pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
                                     m_sJoinOrder.szStz(),
                                     C_VARGS_END);
     UNUSED(pRow);
 
   }
   else if (bJoinPermutations) {
-    RASSERT(pInfoSet);
+    RASSERT(pRowBuffer);
     for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++) {
-      Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+      Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
                                       m_sJoinPermutation[iIndex].szStz(),
                                       C_VARGS_END);
       UNUSED(pRow);

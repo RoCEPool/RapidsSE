@@ -85,10 +85,6 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr, Card_CONJSUBROOT* p_conj)
       break;
 
     case CK_RLNCONJ:
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
       while (xKid.bEach())
         vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
       psRpnExpr->vCatSprint(" %s"_Stz, p_conj->szFacet(SF_NONE));

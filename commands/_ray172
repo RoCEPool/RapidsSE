@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray172                                                                    */
+/* _ray172  - ( for alka to look at )                                         */
 /*============================================================================*/
 
 __TPCH_SCHEMA;
@@ -26,9 +26,9 @@ begin
 
   stage S02 on all partitions :
     indexJoin Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-    | filter "type BOOLEAN O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+    | filter "type BOOLEAN O_ORDERDATE DATE '1995-03-15' <"
     | project "type INTEGER as _orderkey O_ORDERKEY ,
-         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+         type DATE as O_ORDERDATE O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY"
     | hash expr type INTEGER _orderkey
     | combined 0
@@ -36,12 +36,20 @@ begin
 
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
-    | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN L_SHIPDATE DATE '1995-03-15' >"
     | ordAgg expr ordgroupby type INTEGER _orderkey
         aggregates type INTEGER as _orderkey $K1 ,
         type DECIMAL as Revenue ) L_EXTENDEDPRICE 1.0 L_DISCOUNT - * sum ,
-        type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+        type DATE as O_ORDERDATE O_ORDERDATE ,
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+    | combined 0
+    | next
+
+  stage XYZ on origin :
+    top "type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
 
   stage S04 on origin :
     output

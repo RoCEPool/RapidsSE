@@ -30,7 +30,7 @@ select l_discount from ${testName2}_Lineitem limit 3;
 rows: 0
 
 // load data
-load ${testName2}_Lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_Lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 //------------------------------------------------------------------------------

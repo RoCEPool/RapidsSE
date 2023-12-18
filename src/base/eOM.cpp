@@ -7,16 +7,13 @@
 Stz* aOM[OM_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
-  
-  /*    */ "CALLMARKER"_Stz,
+
   /*    */ "CANCELMARKER"_Stz,
   /*    */ "CANCELLING"_Stz,
   /*    */ "CANCELLEDMARKER"_Stz,
   /*    */ "CHILDEXIT"_Stz,
   /*    */ "CLEANING"_Stz,
   /*    */ "CLEANED"_Stz,
-  /*    */ "COMMENCEMARKER"_Stz,
-  /*    */ "COMMENCEDMARKER"_Stz,
   
   /*    */ "DATAPULSE"_Stz,
   /*    */ "DESTROYMARKER"_Stz,
@@ -31,8 +28,7 @@ Stz* aOM[OM_ENUMS]
   /*    */ "EXIT"_Stz,
   /*    */ "EXITINGMARKER"_Stz,
   /*    */ "EXITEDMARKER"_Stz,
-  
-  /*    */ "FINISHED"_Stz,
+
   /*    */ "FLUSH"_Stz,
 
   /*    */ "HARDABORT"_Stz,
@@ -43,18 +39,11 @@ Stz* aOM[OM_ENUMS]
   /*    */ "LEAVINGMARKER"_Stz,
   /*    */ "LEFTMARKER"_Stz,
   /*    */ "LOWMEMORY"_Stz,
-  
-  /*    */ "NEXTBUFFERMARKER"_Stz,
+
   /*    */ "NODELOSSABORT"_Stz,
-  
-  /*    */ "PULSEDMARKER"_Stz,
-  
-  /*    */ "RETURNMARKER"_Stz,
-  /*    */ "RETURNEDMARKER"_Stz,
   
   /*    */ "STARTEDMARKER"_Stz,
   /*    */ "STARTMARKER"_Stz,
-  /*    */ "STREAMDEFRHT"_Stz,
   
   /*    */ "TRIGGER"_Stz,
   /*    */ "TRIGGEREDMARKER"_Stz,

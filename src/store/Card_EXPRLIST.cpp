@@ -125,7 +125,7 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 
   Kid xCI_this(this);
   while (xCI_this.bEach(CK_EXPR))
-    if (xCI_this.p_expr()->bSameAs(p_expr_arg))
+    if (xCI_this.p_expr()->bMatches(p_expr_arg))
       return xCI_this.p_expr();
 
   return nullptr;
@@ -253,7 +253,7 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bIsKeyExpr = bIsCard(CK_KEY);
+  bool bIsKeyExpr = bIsCard(CK_s_KEY);
 
   i8 i_Expr = 1;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
@@ -320,8 +320,8 @@ void Card_EXPRLIST::vShortForm(String* pString)
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
 StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
-                                         Card_Key* p_key,
-                                         Card* p_OP)
+                                       Card_Key* p_key,
+                                       Card* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -332,16 +332,20 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (CK_GBYAGG == p_OP->eCard()) {
+  if (CK_o_GBYAGG == p_OP->eCard()) {
 
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xExprList.p_expr();
 
-      p_expr->vDump(__func__,"GBYAGG"_Stz);
+      //p_expr->vDump(__func__,"GBYAGG"_Stz);
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      TypeId xTypeId = p_expr->xColumnTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -349,15 +353,19 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (CK_SORT == p_OP->eCard()) {
+  if (CK_o_SORT == p_OP->eCard()) {
 
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      TypeId xTypeId = p_expr->xColumnTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -365,15 +373,19 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (CK_TOP == p_OP->eCard()) {
+  if (CK_o_TOP == p_OP->eCard()) {
 
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-			TypeId xTypeId = p_expr->xColumnTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -383,14 +395,18 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   i8 i_EmittedCol = 1;
   UNUSED(i_EmittedCol);
-  if (CK_PROJECT == p_OP->eCard()) {
+  if (CK_o_PROJECT == p_OP->eCard()) {
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-			TypeId xTypeId = p_expr->xColumnTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -400,14 +416,18 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
 
   i_EmittedCol = 1;
-  if (CK_SCAN == p_OP->eCard()) {
+  if (CK_o_SCAN == p_OP->eCard()) {
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-			TypeId xTypeId = p_expr->xColumnTypeId();
-      pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+      Cast xCast = p_expr->xCast();
+      pStreamDef->vAddColumn(sColNm,
+                             xCast.m_xTypeId,
+                             xCast.m_nTypeLength,
+                             xCast.m_nTypeScale,
+                             xCast.m_bTypeNullable);
     }
 
     return pStreamDef;
@@ -415,18 +435,18 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(CK_GBYAGG != p_OP->eCard());
+  RASSERT(CK_o_GBYAGG != p_OP->eCard());
   i_EmittedCol = 1;
 
   for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
     Card_Expr *p_expr = xExprList.p_expr();
 
-    if (CK_PROJECT == p_OP->eCard()) {
+    if (CK_o_PROJECT == p_OP->eCard()) {
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
     }
     else
-    if (CK_SORT == p_OP->eCard()) {
+    if (CK_o_SORT == p_OP->eCard()) {
       sColNm = p_expr->szFacet(SF_ITM_COL);
     }
     else {
@@ -437,9 +457,13 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // stream def column
 
-		TypeId xTypeId = p_expr->xColumnTypeId();
+		Cast xCast = p_expr->xCast();
 
-    pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
+    pStreamDef->vAddColumn(sColNm,
+                           xCast.m_xTypeId,
+                           xCast.m_nTypeLength,
+                           xCast.m_nTypeScale,
+                           xCast.m_bTypeNullable);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // col map (gbyagg) column
@@ -459,6 +483,33 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
   }
 
   return pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the casts of this exprList                                          */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vUpdate_cast(Card_EXPRLIST *p_exprList_ref)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vDump(__func__,"vUpdate_cast"_Stz);
+  p_exprList_ref->vDump(__func__,"p_exprList_ref"_Stz);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card_Expr* p_expr_this = xKid.p_expr();
+    if (!p_expr_this->bIsScalarCol())
+      continue;
+
+    Symbol* pSymbol = p_expr_this->pSymbol();
+
+    Card_Expr* p_expr_ref = p_exprList_ref->pFind_expr_Matches(pSymbol);
+
+    if (p_expr_ref) {
+      p_expr_this->vCast(p_expr_ref->xCast());
+      p_expr_this->pSub_rpnCalc()->vCast(p_expr_ref->xCast());
+      p_expr_this->pSub_rpnCalc()->pGetTerm(0)->vCast(p_expr_ref->xCast());
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

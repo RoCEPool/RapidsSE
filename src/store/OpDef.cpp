@@ -28,10 +28,10 @@ OpDef::OpDef(i8 i_Op, Card* pCard)
 
   //vOpNm(szOpNm);
 
-       if (pCard->bIsCard(CK_HAVING)) vOpNm("filter"_Stz);
-  else if (pCard->bIsCard(CK_HASH))   vOpNm("hash"_Stz);
-  else if (pCard->bIsCard(CK_FROM))   vOpNm("scan"_Stz);
-  else if (pCard->bIsCard(CK_WHERE))  vOpNm("filter"_Stz);
+       if (pCard->bIsCard(CK_o_HAVING)) vOpNm("filter"_Stz);
+  else if (pCard->bIsCard(CK_o_HASH))   vOpNm("hash"_Stz);
+  else if (pCard->bIsCard(CK_o_FROM))   vOpNm("scan"_Stz);
+  else if (pCard->bIsCard(CK_o_WHERE))  vOpNm("filter"_Stz);
   else
     vOpNm(pCard->szCardNm());
 
@@ -59,6 +59,7 @@ OpDef::OpDef(i8 i_Op, Card* pCard)
   m_pColInj             = nullptr;
 
   m_pColHsh             = nullptr;
+  m_pKeyMap             = nullptr;
 
   _checkInitialised_(CN_OPDEF);
 
@@ -87,6 +88,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pColPpg;
   delete m_pColInj;
   delete m_pColHsh;
+  delete m_pKeyMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,6 +326,13 @@ void OpDef::vDump(i8 i_Tab)
            Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColHsh);
     m_pColHsh->vDump(i_Tab + 1);
   }
+
+  if (m_pKeyMap) {
+    vTrace("%s%s : KeyMap %p\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColHsh);
+    m_pKeyMap->vDump(i_Tab + 1);
+  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - -
 

@@ -10,23 +10,23 @@
 : connectSE_sendNodeInfo ( -- )
 
   // find the __nodeinfo table
-  C_TDEF_NODEINFO op__tableDef_infoSet assert
+  C_TDEF_NODEINFO op__tableDef assert
 
-  // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  // create an rowBuffer operand
+  BT_NODEINFO TableDef[] RowBuffer[].new
 
-  // add nodeInfo to the infoSet
-  infoSetTable[] InfoSet[].addnodeInfo assert
+  // add nodeInfo to the rowBuffer
+  TableDef[] RowBuffer[].addnodeInfo assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
   Socket[].grabWrite
-  InfoSet[] Socket[].sendObject assert
+  RowBuffer[] Socket[].sendObject assert
   Socket[].dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete infoset
-  InfoSet[].delete
+  // delete rowBuffer
+  RowBuffer[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

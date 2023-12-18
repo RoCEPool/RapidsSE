@@ -21,7 +21,7 @@ affected: 0
 
 -----------------------------------------------------------------------
 // load the table
-loadReplicated ${testName2}_region "../TPCH/SF_0001/region.csv";
+loadReplicated ${testName2}_region "../TPCH/SF_0001/region.tbl";
 success
 
 //select count(*) from ${testName2}_region;

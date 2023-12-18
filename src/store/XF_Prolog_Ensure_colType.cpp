@@ -65,8 +65,9 @@ void XF_Prolog_Ensure_colType::vEnsure(void)
   m_pCI->vTransform(__func__, XF_PROLOG_ENSURE_COLTYPE, "validate boards"_Stz);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
-  }
+//  while (m_pCI->G_bEachMainWith2Sub(CK_o_FROM,CK_s_INJECTABLE,CK_t_EMIT)) {
+//    m_pCI->G.p_emit->vUpdate_cast(m_pCI->G.p_injectable);
+//  }
 
   m_pCI->vEndTransform(__LINE__);
 }

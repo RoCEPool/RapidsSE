@@ -16,7 +16,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Payload,CK_PAYLOAD)
+__pCastFunction_Card(STORE, Card_Payload, CK_s_PAYLOAD)
 __aNewFunction(Card_Payload,CN_CARD)
 __vDeleteFunction(Card_Payload,CN_CARD)
 
@@ -25,7 +25,7 @@ __vDeleteFunction(Card_Payload,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Payload::Card_Payload(void)
-: Card_EXPRLIST(CK_PAYLOAD, 2)
+: Card_EXPRLIST(CK_s_PAYLOAD, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -111,7 +111,7 @@ eCT Card_Payload::eColType(void)
   eCT eColType = CT_NONE;
 
   if (Card_Expr* p_expr = pSub_expr())
-    eColType = p_expr->xTypeId().eCTVal();
+    eColType = p_expr->eCTVal();
 
   return eColType;
 }
@@ -151,7 +151,7 @@ IndexDef* Card_Payload::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    TypeId xTypeId = p_term->pSymbol()->xTypeId();
+    TypeId xTypeId = p_term->xTypeId();
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;

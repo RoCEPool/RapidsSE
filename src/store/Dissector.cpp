@@ -486,7 +486,7 @@ Card* Dissector::pOp_filter(void)
 //  else {
 //    delete p_rpnExpr;
 //
-//    p_filter->vCard(CK_WHERE);
+//    p_filter->vCard(CK_o_WHERE);
 //    Card_Where* p_where = _pCard_Where(p_filter);
 //
 //    eAL eAggLevel = m_pStageSpec->eAggegLevel();
@@ -528,7 +528,7 @@ Card* Dissector::pOp_gbyAgg(void)
   if (p_rpnExpr->nItems()) {
     Card_Key* p_key = pPop_key(p_rpnExpr, true);
     p_aggreg->vAppendChild(p_key);
-    p_aggreg->vCard(CK_GBYAGG);
+    p_aggreg->vCard(CK_o_GBYAGG);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -647,7 +647,7 @@ Card* Dissector::pOp_indexJoin(void)
   Card_Term* p_term_first = p_bound->pGetTerm(0);
   if (p_term_first->pSymbol()->bSame("LEFT_OUTER"_Stz)) {
     Card_OuterJoin* p_outerJoin = new Card_OuterJoin;
-    p_outerJoin->pSymbol()->vFacets(p_term_first->pSymbol());
+    p_outerJoin->pSymbol()->vCastFacets(p_term_first->pSymbol());
     p_indexJoin->vAppendChild(p_outerJoin);
   }
   p_bound->vDeleteChild(p_term_first);
@@ -662,7 +662,7 @@ Card* Dissector::pOp_indexJoin(void)
   i8 nTerms = p_bound->nChildCards();
 
   Card_Term* p_term_last = p_bound->pGetTerm(nTerms-1);
-  p_bound->pSymbol()->vFacets(p_term_last->pSymbol());
+  p_bound->pSymbol()->vCastFacets(p_term_last->pSymbol());
   p_bound->vDeleteChild(p_term_last);
 
   p_bounds->vAppendChild(p_bound);
@@ -939,7 +939,7 @@ Card* Dissector::pOp_ordAgg(void)
   if (p_rpnExpr->nItems()) {
     Card_Key* p_key = pPop_key(p_rpnExpr, true);
     p_ordAgg->vAppendChild(p_key);
-    //p_ordAgg->vCard(CK_GBYAGG);
+    //p_ordAgg->vCard(CK_o_GBYAGG);
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
@@ -996,7 +996,7 @@ Card* Dissector::pOp_project(void)
   m_bSawProjectOp = true;
   Card_RpnExpr* p_rpnExpr = pArg_rpnExpr(0);
 
-  Card_Project* p_project = new Card_Project(CK_PROJECT);
+  Card_Project* p_project = new Card_Project(CK_o_PROJECT);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1312,7 +1312,7 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
 
   // use last term to set bound symbol
   Card_Term* p_term_last = p_bound->pGetTerm_last();
-  p_bound->pSymbol()->vFacets(p_term_last->pSymbol());
+  p_bound->pSymbol()->vCastFacets(p_term_last->pSymbol());
 
   // cross-check validity of bound symbol
   RASSERT(Card_Bound::bValidBoundForRelnOp(p_rpnItem->pSymbol(),
@@ -1334,13 +1334,14 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card_Constraint* p_constraint = new Card_Constraint;
+  Cast xCast;
+  xCast.m_xTypeId = xPopTypeId(p_rpnExpr);
 
-  TypeId xColTypeId = xPopColTypeId(p_rpnExpr);
+  Card_Constraint* p_constraint = new Card_Constraint;
 
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
 
-  p_rpnCalc->pSymbol()->vTypeId(xColTypeId);
+  p_rpnCalc->vCast(xCast);
 
   p_constraint->vAppendChild(p_rpnCalc);
 
@@ -1383,14 +1384,15 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   if (bIsKeyExpr) {
     Symbol xSymbol_expCol(SF_KEY_COL, ri_Expr);
-    p_expr->pSymbol()->vFacets(&xSymbol_expCol);
+    p_expr->pSymbol()->vCastFacets(&xSymbol_expCol);
   }
   else {
     Symbol xSymbol_expCol(SF_EXP_COL, ri_Expr);
-    p_expr->pSymbol()->vFacets(&xSymbol_expCol);
+    p_expr->pSymbol()->vCastFacets(&xSymbol_expCol);
   }
 
-	TypeId xColTypeId = this->xPopColTypeId(p_rpnExpr);
+  Cast xCast;
+	xCast.m_xTypeId = this->xPopTypeId(p_rpnExpr);
 
 
   // [ AS <as> ]
@@ -1401,7 +1403,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_as = pPop_as(p_rpnExpr);
     //p_expr->vAppendChild(p_as);
 
-    oSymbol_nmdCol.vFacets(p_as->pSymbol());
+    oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
 
 //    delete p_as;
 //    p_as = nullptr;
@@ -1412,12 +1414,12 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
   p_expr->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->vTypeId(xColTypeId);
-  p_expr->pSymbol()->vTypeId(xColTypeId);
+  p_rpnCalc->vCast(xCast);
+  p_expr->vCast(xCast);
 
   if (bIsKeyExpr && p_expr->pSub_rpnCalc()->nChildCards() == 1) {
     Card_Term* p_term_0 = p_expr->pGet_term0();
-    p_term_0->pSymbol()->vTypeId(xColTypeId);
+    p_term_0->vCast(xCast);
   }
 
   // [ AS <as> ]
@@ -1428,7 +1430,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_as = pPop_as(p_rpnExpr);
     //p_expr->vAppendChild(p_as);
 
-    oSymbol_nmdCol.vFacets(p_as->pSymbol());
+    oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
 
 //    delete p_as;
 //    p_as = nullptr;
@@ -1467,7 +1469,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     }
     //p_expr->vPushChild(p_as);
   }
-  oSymbol_nmdCol.vFacets(p_as->pSymbol());
+  oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
 
   p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
 
@@ -1500,11 +1502,12 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
   delete p_card_type;
 
   Card_Term* p_term1 = _pCard_Term(p_rpnExpr->pPopChild());
-	TypeId xColTypeId = Symbol::xTo_TypeId_str(p_term1->szFacet(SF_NONE));
+  Cast xCast;
+  xCast.m_xTypeId = Symbol::xTo_TypeId(p_term1->szFacet(SF_NONE));
   delete p_term1;
 
   Card_Term* p_term_hsh = _pCard_Term(p_rpnExpr->pPopChild());
-  p_term_hsh->pSymbol()->vTypeId(xColTypeId);
+  p_term_hsh->vCast(xCast);
   p_hshCol->vAppendChild(p_term_hsh);
 
   return p_hshCol;
@@ -1569,6 +1572,9 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
 //    }
 
     p_key->vAppendChild(p_expr);
+
+    if (1 == p_key->nChildCards())
+      p_key->vCast(p_expr->xCast());
   }
 
   return p_key;
@@ -1652,9 +1658,9 @@ Card_RpnCalc* Dissector::pPop_rpnCalc(Card_RpnExpr* p_rpnExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop type (single char form)                                                */
+/* pop typeId                                                                 */
 /*----------------------------------------------------------------------------*/
-TypeId Dissector::xPopColTypeId(Card_RpnExpr* p_rpnExpr)
+TypeId Dissector::xPopTypeId(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -1669,11 +1675,11 @@ TypeId Dissector::xPopColTypeId(Card_RpnExpr* p_rpnExpr)
   // column type (e.g. BOOLEAN)
   Card_Term* p_term_type = _pCard_Term(p_rpnExpr->pPopChild());
 
-	TypeId xColTypeId = Symbol::xTo_TypeId_str(p_term_type->szFacet(SF_NONE));
+	TypeId xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_NONE));
 
   delete p_term_type;
 
-  return xColTypeId;
+  return xTypeId;
 }
 
 

@@ -101,7 +101,7 @@ end ;
 rows: 0
 
 // load the table
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 //------------------------------------------------------------------------------
@@ -285,7 +285,7 @@ success
 create index orders_ord on ${testName2}_orders (O_ORDERKEY);
 success
 
-load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.tbl";
 success
 
 //------------------------------------------------------------------------------

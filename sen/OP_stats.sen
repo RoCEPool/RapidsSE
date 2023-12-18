@@ -23,10 +23,10 @@
 //  then
 /*
   // find the __lockStats table
-  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+  C_TDEF_LOCKSTATS op__tableDef assert
 
   // create a new streamDef
-  infoSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   //StreamDefLft[].asStr .
   Expressions::lockSample to operandC[]
@@ -34,16 +34,16 @@
 */
 
   // find the __lockStats table
-  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+  C_TDEF_LOCKSTATS op__tableDef assert
 
-  // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  // create an rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
-  // add lock  to the infoSet
-  infoSetTable[] InfoSet[].addLockStats assert
+  // add lock  to the rowBuffer
+  TableDef[] RowBuffer[].addLockStats assert
 
-  // pipeout the infoset
-  InfoSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;
@@ -54,16 +54,16 @@
 : stats_Exiting \handler
 
   // find the __lockStats table
-  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+  C_TDEF_LOCKSTATS op__tableDef assert
 
-  // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  // create an rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
-  // add lock to the infoSet
-  infoSetTable[] InfoSet[].addLockStats assert
+  // add lock to the rowBuffer
+  TableDef[] RowBuffer[].addLockStats assert
 
-  // pipeout the infoset
-  InfoSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   EV_M_EXITING_handler // calling op_loop exits
 ;

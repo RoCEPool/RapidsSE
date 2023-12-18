@@ -1,0 +1,47 @@
+--------------------------------------------------------------------------------
+-- tpch query1 (SF_0001)
+--------------------------------------------------------------------------------
+
+LOG 'TPC-H Q1...';
+
+trackMemory force;
+success
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
+/pipelineName = "OptQ1"
+ select
+   l_returnflag,
+   l_linestatus,
+   sum(l_quantity)                                     as sum_qty,
+   sum(l_extendedprice)                                as sum_base_price,
+   sum(l_extendedprice * (1-l_discount))               as sum_disc_price,
+   sum(l_extendedprice * (1-l_discount) * (1 + l_tax)) as sum_charge,
+   avg(l_quantity)                                     as avg_qty,
+   avg(l_extendedprice)                                as avg_price,
+   avg(l_discount)                                     as avg_disc,
+   count(*)                                            as count_order
+
+ from LineItem
+
+ where l_shipdate <= DATE '1998-09-01'
+
+ group by l_returnflag, l_linestatus
+
+ order by l_returnflag, l_linestatus;
+
+ordered rows:
+  ('A','F',37474.00,56250004.88,-2850613.26,-5813077.32,25.35,38058.19,1.05,1478)
+  ('N','F',1041.00,1614635.42,-64993.33,-132418.45,27.39,42490.41,1.04,38)
+  ('N','O',75062.00,112768276.42,-5569437.53,-11358753.47,25.57,38408.81,1.05,2936)
+  ('R','F',36470.00,54082045.78,-2697671.68,-5504499.33,25.05,37144.26,1.05,1456)
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+}
+
+
