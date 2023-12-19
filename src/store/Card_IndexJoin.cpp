@@ -245,7 +245,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  pCI->G.p_ordAgg->vRecreate_emit(pCI,true);
+  pCI->G.p_indexJoin->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
 
