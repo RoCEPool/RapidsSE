@@ -602,6 +602,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
   if (bRecreate &&
        (CK_o_AGGREG == eCard_OP
        || CK_o_GBYAGG == eCard_OP
+       || CK_o_INDEXJOIN == eCard_OP
        || CK_o_ORDAGG == eCard_OP))
     vCorrect_expCol(pCI->Flux.m_pArriving);
 

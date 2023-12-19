@@ -119,9 +119,6 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G.p_OP = pCI->G.p_indexJoin;
   pCI->G.p_indexJoin->vRecreate_emit(pCI);
 
-  //pCI->Flux.m_pArriving->vDump(__func__);
-  //vCorrect_expCol(pCI->Flux.m_pArriving);
-
   pCI->vPrintBoard(__LINE__,true);
 
   // restore needed
@@ -248,7 +245,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  pCI->G.p_ordAgg->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
 
