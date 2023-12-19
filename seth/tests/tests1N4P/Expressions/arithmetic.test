@@ -629,6 +629,10 @@ SELECT INTERVAL '32 9' DAY TO HOUR = INTERVAL '32 9' DAY TO HOUR FROM ${testName
 rows:
   (true)
 
+SELECT (INTERVAL '-31 0:0:0' DAY TO second > INTERVAL '1 0:0:0' DAY TO second) from ${testName2}_nation where n_nationkey = 2;
+rows:
+  (false)
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval in
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

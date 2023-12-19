@@ -702,23 +702,35 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros == ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                                             \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+      *paW++ = iIvlArg2 == iIvlArg1;                                       \
     }                                                                      \
   }
 
 #define _GE_IVDIVD(eErrorCode)                                             \
   {                                                                        \
-  ivlArg1.m_iAsI8 = *(--paW);                                            \
-  ivlArg2.m_iAsI8 = *(--paW);                                            \
-                                                                         \
-  if (eErrorCode != EC_NONE ||                                           \
-      ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-      ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else {                                                                 \
-    *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros >= ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                                             \
-  }                                                                      \
+  ivlArg1.m_iAsI8 = *(--paW);                                              \
+  ivlArg2.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+  if (eErrorCode != EC_NONE ||                                             \
+    ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                     \
+    ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                     \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }                                                                        \
+  else {                                                                   \
+    i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                     \
+    i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                     \
+    if (ivlArg1.m_xIvl.m_bIsNeg)                                           \
+      iIvlArg1 = (-1) * iIvlArg1;                                          \
+    if (ivlArg2.m_xIvl.m_bIsNeg)                                           \
+      iIvlArg2 = (-1) * iIvlArg2;                                          \
+    *paW++ = iIvlArg2 >= iIvlArg1;                                         \
+  }                                                                        \
 }
 
 #define _GT_IVDIVD(eErrorCode)                                           \
@@ -732,7 +744,13 @@
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-    *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros > ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;  \
+    i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+    i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+    if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+      iIvlArg1 = (-1) * iIvlArg1;                                        \
+    if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+      iIvlArg2 = (-1) * iIvlArg2;                                        \
+    *paW++ = iIvlArg2 > iIvlArg1;                                        \
   }                                                                      \
 }
 
@@ -751,12 +769,18 @@
       *paW++ = 0;                                                         \
     }                                                                     \
     else {                                                                \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros > ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros ? 1 : 0; \
-    }                                                                      \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                  \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                  \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                        \
+        iIvlArg1 = (-1) * iIvlArg1;                                       \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                        \
+        iIvlArg2 = (-1) * iIvlArg2;                                       \
+      *paW++ = iIvlArg2 > iIvlArg1;                                       \
+    }                                                                     \
   }
 
-#define _LE_IVDIVD(eErrorCode)                                             \
-  {                                                                        \
+#define _LE_IVDIVD(eErrorCode)                                           \
+  {                                                                      \
   ivlArg1.m_iAsI8 = *(--paW);                                            \
   ivlArg2.m_iAsI8 = *(--paW);                                            \
                                                                          \
@@ -766,9 +790,15 @@
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-    *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros <= ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;  \
+     i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                  \
+     i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                  \
+     if (ivlArg1.m_xIvl.m_bIsNeg)                                        \
+       iIvlArg1 = (-1) * iIvlArg1;                                       \
+     if (ivlArg2.m_xIvl.m_bIsNeg)                                        \
+       iIvlArg2 = (-1) * iIvlArg2;                                       \
+     *paW++ = iIvlArg2 <= iIvlArg1;                                      \
   }                                                                      \
-  }
+}
 
 #define _LT_IVDIVD(eErrorCode)                                             \
   {                                                                        \
@@ -781,7 +811,13 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros < ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;  \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+      *paW++ = iIvlArg2 < iIvlArg1;                                        \
     }                                                                      \
  }
 
@@ -800,8 +836,14 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros < ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros ? 1 : 0; \
-    }                                                                     \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+      *paW++ = iIvlArg2 < iIvlArg1;                                        \
+    }                                                                      \
   }
 
 #define _NE_IVDIVD(eErrorCode)                                             \
@@ -815,7 +857,13 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros != ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros ? 1 : 0;  \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+      *paW++ = iIvlArg2 != iIvlArg1;                                       \
     }                                                                      \
   }
 
@@ -834,7 +882,13 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths == ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                                             \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+      *paW++ = iIvlArg2 == iIvlArg1;                                       \
     }                                                                      \
   }
 
@@ -849,7 +903,13 @@
     *paW++ = C_DATUM_NULL;                                                 \
   }                                                                        \
   else {                                                                   \
-    *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths >= ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                                             \
+    i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                     \
+    i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                     \
+    if (ivlArg1.m_xIvl.m_bIsNeg)                                           \
+      iIvlArg1 = (-1) * iIvlArg1;                                          \
+    if (ivlArg2.m_xIvl.m_bIsNeg)                                           \
+      iIvlArg2 = (-1) * iIvlArg2;                                          \
+    *paW++ = iIvlArg2 >= iIvlArg1;                                         \                                                    \
   }                                                                        \
 }
 
@@ -864,7 +924,13 @@
     *paW++ = C_DATUM_NULL;                                                 \
   }                                                                        \
   else {                                                                   \
-    *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths > ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;  \
+    i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                     \
+    i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                     \
+    if (ivlArg1.m_xIvl.m_bIsNeg)                                           \
+      iIvlArg1 = (-1) * iIvlArg1;                                          \
+    if (ivlArg2.m_xIvl.m_bIsNeg)                                           \
+      iIvlArg2 = (-1) * iIvlArg2;                                          \
+    *paW++ = iIvlArg2 > iIvlArg1;                                          \
   }                                                                        \
 }
 
@@ -883,7 +949,13 @@
       *paW++ = 0;                                                         \
     }                                                                     \
     else {                                                                \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths > ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths ? 1 : 0; \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                  \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                  \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                        \
+        iIvlArg1 = (-1) * iIvlArg1;                                       \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                        \
+        iIvlArg2 = (-1) * iIvlArg2;                                       \
+      *paW++ = iIvlArg2 > iIvlArg1;                                       \
     }                                                                     \
   }
 
@@ -898,7 +970,13 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths <= ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;  \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+      *paW++ = iIvlArg2 <= iIvlArg1;                                       \
     }                                                                      \
   }
 
@@ -913,7 +991,13 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths < ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;  \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+      *paW++ = iIvlArg2 < iIvlArg1;                                        \
     }                                                                      \
  }
 
@@ -932,8 +1016,14 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths < ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths ? 1 : 0; \
-    }                                                                     \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+    *paW++ = iIvlArg2 < iIvlArg1;                                          \
+    }                                                                      \
   }
 
 #define _NE_IVYIVY(eErrorCode)                                             \
@@ -947,7 +1037,13 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths != ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths ? 1 : 0;  \
+      i8 iIvlArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      i8 iIvlArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                   \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg1 = (-1) * iIvlArg1;                                        \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+        iIvlArg2 = (-1) * iIvlArg2;                                        \
+      *paW++ = iIvlArg2 != iIvlArg1;                                       \
     }                                                                      \
   }
 
