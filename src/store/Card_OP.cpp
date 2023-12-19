@@ -573,6 +573,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
       pCI->G.p_emit->vAppend_streamDef_table(pCI);
 
+      if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
+        pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
+
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
       break;
@@ -615,90 +618,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
-}
-
-/*----------------------------------------------------------------------------*/
-/* update projection                                                          */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vUpdate_emit_OP(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Emit* p_emit;
-
-  if (CK_o_PROJECT == eCard() && pCI->Flux.m_pArriving) {
-    p_emit = pSub_emit();
-    p_emit->vEnsureTypeId_expCol(pCI);
-    return;
-  }
-
-  if (! bNeedsProjectionAnalysis())
-    return;
-
-  vEnsure_stream(pCI);
-
-
-  if ((p_emit = pSub_emit()))
-    pCI->G.p_stream->vDeleteChild(p_emit);
-
-
-  Card_Emit* p_emitted_needed;
-  if ((p_emitted_needed = pSub_emit()))
-    vRemoveChild(p_emitted_needed);
-
-  if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_emit = _pCard_Emit(pCI->Flux.m_pArriving->pDupCardRecursive());
-    pCI->G.p_stream->vAppendChild(p_emit);
-    pCI->Flux.m_pArriving = p_emit;
-    if (p_emitted_needed)
-      vAppendChild(p_emitted_needed);
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
-
-  if (! pCI->G.p_tableNm) {
-    vDump(__func__);
-    vDebugPoint();
-  }
-
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  if (pCI->Flux.m_pArriving) {
-//    p_emit = pCI->Flux.m_pArriving->pClone();
-    p_emit = pCI->Flux.m_pArriving->pReducedCopy();
-    //p_emit->vDump(__func__ );
-  }
-  else {
-    p_emit = new Card_Emit;
-  }
-
-  //  --  --  --  --  --  --  --  --  --  --  --  --  --
-
-  // todo: [ray A 145]
-  char cTblSyn = bIsCard(CK_s_TABLE) ? pSymbol()->cSF_char() : pSub_table()->pSymbol()->cSF_char();
-
-  i8 iExpCol = p_emit->nExpr() + 1;
-
-  i8 nCols = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    Column *pColumn = pStreamDef->pGetColumn(i_Col);
-
-    Card_Expr* p_expr_Column =
-        Card_Expr::pCast_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
-
-    p_emit->vAppendChild(p_expr_Column);
-  }
-
-  pCI->G.p_stream->vAppendChild(p_emit);
-
-  pCI->Flux.m_pArriving = p_emit;
-
-  if (p_emitted_needed)
-    vAppendChild(p_emitted_needed);
 }
 
 /*----------------------------------------------------------------------------*/

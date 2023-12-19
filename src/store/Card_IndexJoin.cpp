@@ -116,15 +116,13 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 //  pCI->vPrintBoard();
 
   pCI->G.p_table = pSub_table();
-  vUpdate_emit_OP(pCI);
-
-//  pCI->vRenumberCards();
-//  pCI->vPrintBoard();
+  pCI->G.p_OP = pCI->G.p_indexJoin;
+  pCI->G.p_indexJoin->vRecreate_emit(pCI);
 
   //pCI->Flux.m_pArriving->vDump(__func__);
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  //vCorrect_expCol(pCI->Flux.m_pArriving);
 
- // pCI->vPrintBoard();
+  pCI->vPrintBoard(__LINE__,true);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
