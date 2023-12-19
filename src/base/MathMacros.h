@@ -343,14 +343,14 @@
     xDateTime.tm_min  = 0;                                                 \
     xDateTime.tm_sec  = iArg2/_C_1M;                                       \
                                                                            \
-    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
+		time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
                                                                            \
     i8 iMicroSeconds = iArg2%_C_1M;                                        \
                                                                            \
-    if (iMicroSeconds && iArg2 < 0) {                                      \
+    if (iMicroSeconds < 0) {                                               \
       xDateTime.tm_sec--;                                                  \
-      iMicroSeconds = _C_1M - iMicroSeconds;                               \
-    }                                                                      \
+      iMicroSeconds = _C_1M + iMicroSeconds;                               \
+		}                                                                      \
     xTsp2.m_iAsI8 = 0;                                                     \
                                                                            \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
@@ -577,9 +577,9 @@
                                                                            \
     i8 iMicroSeconds = iArg2%_C_1M;                                        \
                                                                            \
-    if (iMicroSeconds) {                                                   \
+    if (iMicroSeconds < 0) {                                               \
       xDateTime.tm_sec--;                                                  \
-      iMicroSeconds = _C_1M - iMicroSeconds;                               \
+      iMicroSeconds = _C_1M + iMicroSeconds;                               \
     }                                                                      \
                                                                            \
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \

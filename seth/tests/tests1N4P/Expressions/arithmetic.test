@@ -413,6 +413,18 @@ select date '2023-04-13' - interval '1-4' YEAR TO MONTH from ${testName2}_nation
 rows:
   (DATE '2021-12-13')
 
+select date '2023-02-16'+ interval '-30 23:1:59.000001' day to second from ${testName2}_nation where n_nationkey = 2;
+rows:
+  (TIMESTAMP '2023-01-16 00:58:00.999999')
+
+select date '2023-02-16'+ interval -'23.901234' second from ${testName2}_nation where n_nationkey = 2;
+rows:
+(TIMESTAMP '2023-02-15 23:59:36.098766')
+
+select date '2023-02-16'+ interval '-23.901234' second from ${testName2}_nation where n_nationkey = 2;
+rows:
+(TIMESTAMP '2023-02-15 23:59:36.098766')
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Date - Interval (YEAR MONTH)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
