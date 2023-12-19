@@ -36,8 +36,8 @@ extern eIVL eMacro_AddSubResultIVL[IVL_ENUMS][IVL_ENUMS];
 union Bcd_T
 {
   struct {
-    u8 m_bIsNull:    1;
-    u8 m_uScale:     5;
+    u8 m_iSpare:     1;
+    u8 m_uScale:     5; // only need 0..17 to match precision of mantissa
     i8 m_iMantissa: 58; // 2's complement
   };
   i8 m_iBcd;

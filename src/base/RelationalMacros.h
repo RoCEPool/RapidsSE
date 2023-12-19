@@ -15,7 +15,7 @@
     else {                                                           \
       bcdRound.m_iMantissa = bcdRound.m_iMantissa / 10;              \
     }                                                                \
-    bcdRound.m_iScale--;                                             \
+    bcdRound.m_uScale--;                                             \
     *paW++ = bcdRound.m_iAsI8;                                       \
   }
 
@@ -25,14 +25,14 @@
   {                                                                   \
     bcdReScale2.m_iAsI8 = *(--paW);                                   \
     bcdReScale1.m_iAsI8 = *(--paW);                                   \
-    iScaleDiff = bcdReScale1.m_iScale - bcdReScale2.m_iScale;         \
+    iScaleDiff = (i8) bcdReScale1.m_uScale - (i8) bcdReScale2.m_uScale; \
                                                                       \
     if (iScaleDiff > 0) {                                             \
-      bcdReScale2.m_iScale = bcdReScale1.m_iScale;                    \
+      bcdReScale2.m_uScale = bcdReScale1.m_uScale;                    \
       bcdReScale2.m_iMantissa = bcdReScale2.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff]; \
     }                                                                 \
     else {                                                            \
-      bcdReScale1.m_iScale = bcdReScale2.m_iScale;                    \
+      bcdReScale1.m_uScale = bcdReScale2.m_uScale;                    \
       bcdReScale1.m_iMantissa = bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[-iScaleDiff]; \
     }                                                                   \
                                                                         \
@@ -46,8 +46,8 @@
   {                                                                        \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
-    iScaleDiff = bcdArg2.m_iScale - bcdArg1.m_iScale;                      \
-    bcdArg1.m_iScale = bcdArg2.m_iScale;                                   \
+    iScaleDiff = (i8) bcdArg2.m_uScale - (i8) bcdArg1.m_uScale;            \
+    bcdArg1.m_uScale = bcdArg2.m_uScale;                                   \
     *paW++ = bcdArg2.m_iAsI8;                                              \
     if(iScaleDiff < 0 || iScaleDiff > 14) {                                \
       eErrorCode = EC_SCALE_OUT_OF_BOUNDS;                                 \
@@ -71,13 +71,13 @@
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
-      if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
+      if(bcdArg1.m_uScale < bcdArg2.m_uScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
         bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg2.m_iAsI8 = *(--paW);                                        \
-      } else if(bcdArg2.m_iScale < bcdArg1.m_iScale) {                     \
+      } else if(bcdArg2.m_uScale < bcdArg1.m_uScale) {                     \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
@@ -101,13 +101,13 @@
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
-      if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
+      if(bcdArg1.m_uScale < bcdArg2.m_uScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
         bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg2.m_iAsI8 = *(--paW);                                        \
-      } else if(bcdArg2.m_iScale < bcdArg1.m_iScale) {                     \
+      } else if(bcdArg2.m_uScale < bcdArg1.m_uScale) {                     \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
@@ -131,13 +131,13 @@
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
-      if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
+      if(bcdArg1.m_uScale < bcdArg2.m_uScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
         bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg2.m_iAsI8 = *(--paW);                                        \
-      } else if(bcdArg2.m_iScale < bcdArg1.m_iScale) {                     \
+      } else if(bcdArg2.m_uScale < bcdArg1.m_uScale) {                     \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
@@ -166,13 +166,13 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
+      if(bcdArg1.m_uScale < bcdArg2.m_uScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
         bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg2.m_iAsI8 = *(--paW);                                        \
-      } else if(bcdArg2.m_iScale < bcdArg1.m_iScale) {                     \
+      } else if(bcdArg2.m_uScale < bcdArg1.m_uScale) {                     \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
@@ -196,13 +196,13 @@
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
-      if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
+      if(bcdArg1.m_uScale < bcdArg2.m_uScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
         bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg2.m_iAsI8 = *(--paW);                                        \
-      } else if(bcdArg2.m_iScale < bcdArg1.m_iScale) {                     \
+      } else if(bcdArg2.m_uScale < bcdArg1.m_uScale) {                     \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
@@ -226,13 +226,13 @@
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
-      if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
+      if(bcdArg1.m_uScale < bcdArg2.m_uScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
         bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg2.m_iAsI8 = *(--paW);                                        \
-      } else if(bcdArg2.m_iScale < bcdArg1.m_iScale) {                     \
+      } else if(bcdArg2.m_uScale < bcdArg1.m_uScale) {                     \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
@@ -261,13 +261,13 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
+      if(bcdArg1.m_uScale < bcdArg2.m_uScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
         bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg2.m_iAsI8 = *(--paW);                                        \
-      } else if(bcdArg2.m_iScale < bcdArg1.m_iScale) {                     \
+      } else if(bcdArg2.m_uScale < bcdArg1.m_uScale) {                     \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
@@ -291,13 +291,13 @@
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
-      if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
+      if(bcdArg1.m_uScale < bcdArg2.m_uScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \
         bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg2.m_iAsI8 = *(--paW);                                        \
-      } else if(bcdArg2.m_iScale < bcdArg1.m_iScale) {                     \
+      } else if(bcdArg2.m_uScale < bcdArg1.m_uScale) {                     \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD(eErrorCode)                                           \

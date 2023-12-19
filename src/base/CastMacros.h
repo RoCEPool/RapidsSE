@@ -43,7 +43,7 @@
         }                                                                  \
         else {                                                             \
           bcdArg1.m_iMantissa *= bcdArg2.m_iMantissa;                      \
-          bcdArg1.m_iScale = max_col_decimal;                              \
+          bcdArg1.m_uScale = max_col_decimal;                              \
           *paW++ = bcdArg1.m_iAsI8;                                        \
         }                                                                  \
       }                                                                    \
@@ -65,7 +65,7 @@
   }                                                                      \
   else {                                                                 \
     fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa);                          \
-    fltArg1.m_dFlt = fltArg1.m_dFlt / aDynamicT->m_iaPow10[bcdArg1.m_iScale]; \
+    fltArg1.m_dFlt = fltArg1.m_dFlt / aDynamicT->m_iaPow10[bcdArg1.m_uScale]; \
     *paW++ = fltArg1.m_iAsI8 ;                                           \
   }                                                                      \
 }
@@ -156,7 +156,7 @@
       }                                                                    \
                                                                            \
       bcdArg1.m_iMantissa = iMantissa;                                     \
-      bcdArg1.m_iScale = cnt;                                              \
+      bcdArg1.m_uScale = cnt;                                              \
                                                                            \
       *paW++ = bcdArg1.m_iAsI8;                                            \
     }                                                                      \
@@ -200,7 +200,7 @@
       }                                                                    \
                                                                            \
       bcdArg1.m_iMantissa = iMantissa;                                     \
-      bcdArg1.m_iScale = iScale;                                           \
+      bcdArg1.m_uScale = iScale;                                           \
                                                                            \
       *paW++ = bcdArg1.m_iAsI8;                                            \
     }                                                                      \
@@ -319,7 +319,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = bcdArg1.m_iMantissa / aDynamicT->m_iaPow10[bcdArg1.m_iScale]; \
+      *paW++ = bcdArg1.m_iMantissa / aDynamicT->m_iaPow10[bcdArg1.m_uScale]; \
     }                                                                      \
   }
 
@@ -483,17 +483,17 @@
       }                                                                    \
                                                                            \
       char *p = szDstArea, *q = szDstArea;                                 \
-      if(bcdArg1.m_iScale == 0) {                                          \
+      if(bcdArg1.m_uScale == 0) {                                          \
         while(max_col_decimal) {                                           \
           *p++ = '0';                                                      \
           max_col_decimal--;                                               \
         }                                                                  \
       }                                                                    \
       else {                                                               \
-        while (bcdArg1.m_iScale) {                                         \
+        while (bcdArg1.m_uScale) {                                         \
           *p++ = (bcdArg1.m_iMantissa % 10) + '0';                         \
           bcdArg1.m_iMantissa /= 10ll;                                     \
-          bcdArg1.m_iScale--;                                              \
+          bcdArg1.m_uScale--;                                              \
         }                                                                  \
       }                                                                    \
       *p++ = '.';                                                          \

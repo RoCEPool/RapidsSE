@@ -253,7 +253,8 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_aStreamDefOut = nullptr;
 
   m_xDynamicT.m_iaPow10[0] = 1;
-  for (i8 iIndex = 1; iIndex < 16; iIndex++) {
+  const i8 nElements = sizeof(m_xDynamicT.m_iaPow10) / sizeof(m_xDynamicT.m_iaPow10[0]);
+  for (i8 iIndex = 1; iIndex < nElements; iIndex++) {
     m_xDynamicT.m_iaPow10[iIndex] = 10*m_xDynamicT.m_iaPow10[iIndex-1];
   }
 

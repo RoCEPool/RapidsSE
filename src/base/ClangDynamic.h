@@ -111,7 +111,7 @@ struct Dynamic_T
 //  i8      m_iHasOrdAggRow;
 //  i8      m_iOrdAggDone;
 
-  i8    m_iaPow10[16];
+  i8    m_iaPow10[32];  // This needs to be at least as big as the max BCD scale being supported
 };
 
 /*============================================================================*/

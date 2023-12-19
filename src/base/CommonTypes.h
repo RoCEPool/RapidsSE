@@ -114,13 +114,16 @@ public:
   void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
   void vSet(i8 iMantissa, i8 iScale)   { T.m_iMantissa = iMantissa; // set value
                                          T.m_uScale = iScale; }
-  void vSetMax(void)          { T.m_iMantissa = C_BCD_MAX; }  // set max value
-  void vSetMid(void)                  { T.m_iMantissa = 0; }  // set mid value
-  void vSetMin(void)          { T.m_iMantissa = C_BCD_MIN; }  // set min value
-  void vSetNull(void)                { T.m_bIsNull = true; }  // set to be null
-  void vSetUsual(void)               { T.m_iMantissa = 73; }  // set usual value
+  void vSetMax(void)                   { T.m_iMantissa = C_BCD_MAX;
+                                         T.m_uScale = 0; }  // set max value
+  void vSetMid(void)                   { T.m_iMantissa = 0;
+                                         T.m_uScale = 0; }  // set mid value
+  void vSetMin(void)                   { T.m_iMantissa = C_BCD_MIN;
+                                         T.m_uScale = 0; }  // set min value
+  void vSetNull(void)                  { T.m_iBcd = C_DATUM_NULL; }  // set to be null
+  void vSetUsual(void)                 { T.m_iMantissa = 73; }  // set usual value
 
-  bool bIsNull(void)               { return (T.m_bIsNull); }  // test for null
+  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

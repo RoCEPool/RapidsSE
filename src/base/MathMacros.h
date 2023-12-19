@@ -104,7 +104,7 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
-        if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                        \
+        if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                        \
           *paW++ = bcdArg1.m_iAsI8;                                        \
           *paW++ = bcdArg2.m_iAsI8;                                        \
           _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
@@ -139,7 +139,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                          \
+      if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                          \
         *paW++ = bcdArg1.m_iAsI8;                                          \
         *paW++ = bcdArg2.m_iAsI8;                                          \
         _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                                \
@@ -157,7 +157,7 @@
         }                                                                \
         else {                                                           \
           fltArg1.m_dFlt = ((d8)bcdArg1.m_iMantissa) / ((d8)bcdArg2.m_iMantissa); \
-          *paW++ = bcdArg1.m_iScale + 1;                                 \
+          *paW++ = bcdArg1.m_uScale + 1;                                 \
           _PSH_FLT(fltArg1.m_dFlt)                                       \
           _FLT_TOBCD_TO_SCALE(eErrorCode)                                \
           _ROUND_BCD(eErrorCode)                                         \
@@ -185,18 +185,18 @@
       *paW++ = C_DATUM_NULL;                                             \
     }                                                                    \
     else {                                                               \
-      i8 iScaleNew = bcdArg1.m_iScale > bcdArg2.m_iScale ? bcdArg1.m_iScale : bcdArg2.m_iScale;  \
+      i8 iScaleNew = bcdArg1.m_uScale > bcdArg2.m_uScale ? bcdArg1.m_uScale : bcdArg2.m_uScale;  \
       i8 iResult = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;            \
-      iScale = bcdArg1.m_iScale + bcdArg2.m_iScale;                      \
+      iScale = bcdArg1.m_uScale + bcdArg2.m_uScale;                      \
       if (iScale != iScaleNew) {                                         \
         bcdArg1.m_iMantissa = iResult / aDynamicT->m_iaPow10[iScale - iScaleNew - 1]; \
-        bcdArg1.m_iScale = iScaleNew + 1;                                \
+        bcdArg1.m_uScale = iScaleNew + 1;                                \
         *paW++ = bcdArg1.m_iAsI8;                                        \
         _ROUND_BCD(eErrorCode)                                           \
       }                                                                  \
       else {                                                             \
         bcdArg1.m_iMantissa = iResult;                                   \
-        bcdArg1.m_iScale = iScaleNew;                                    \
+        bcdArg1.m_uScale = iScaleNew;                                    \
        *paW++ = bcdArg1.m_iAsI8;                                         \
        }                                                                 \
     }                                                                    \
@@ -226,7 +226,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-        if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                        \
+        if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                        \
           *paW++ = bcdArg1.m_iAsI8;                                        \
           *paW++ = bcdArg2.m_iAsI8;                                       \
           _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
@@ -264,7 +264,7 @@
       *paW++ = bcdArg1.m_iAsI8;                                            \
     }                                                                      \
     else {                                                                 \
-       if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                         \
+       if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                         \
           *paW++ = bcdArg1.m_iAsI8;                                        \
           *paW++ = bcdArg2.m_iAsI8;                                        \
           _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
