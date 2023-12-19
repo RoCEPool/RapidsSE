@@ -532,7 +532,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
   pCI->G.p_needed = pCI->G.p_OP->pSub_needed();
   pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
 
-  switch (pCI->G.e_MainCard) {
+  eCK eCard_OP = pCI->G.p_OP->eCard();
+  switch (eCard_OP) {
 
     case CK_c_COMBINED:
     case CK_c_SEND:

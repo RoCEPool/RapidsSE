@@ -154,7 +154,8 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_emit(pCI);
+  pCI->G.p_OP = pCI->G.p_where;
+  pCI->G.p_OP->vRecreate_emit(pCI);
 
  // pCI->vPrintBoard();
 
@@ -195,24 +196,10 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   }
 
-  pCI->G.p_where->vUpdate_emit(pCI);
+   RASSERT(pCI->G.p_OP == pCI->G.p_where);
+  pCI->G.p_where->vRecreate_emit(pCI);
 
  // pCI->vRenumberCards();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Where::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_stream = pCI->G.p_where->pSub_stream())) {
-    if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit())) {
-      pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
-      pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pClone());
-    }
-  }
 }
 
 /*----------------------------------------------------------------------------*/
