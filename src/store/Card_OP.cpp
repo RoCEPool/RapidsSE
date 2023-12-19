@@ -598,6 +598,10 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
+
+  if (CK_o_KEYEXISTS == eCard_OP ||
+      CK_o_KEYNOTEXISTS == eCard_OP)
+    vCorrect_expCol(pCI->Flux.m_pArriving);
 }
 
 /*----------------------------------------------------------------------------*/

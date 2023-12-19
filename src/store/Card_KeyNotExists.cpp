@@ -108,8 +108,6 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G.p_OP = pCI->G.p_keyNotExists;
   pCI->G.p_keyNotExists->vRecreate_emit(pCI);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
-
   pCI->vPrintBoard();
 
   // restore needed
