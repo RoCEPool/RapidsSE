@@ -196,7 +196,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   }
 
-   RASSERT(pCI->G.p_OP == pCI->G.p_where);
+  RASSERT(pCI->G.p_OP == pCI->G.p_where);
   pCI->G.p_where->vRecreate_emit(pCI);
 
  // pCI->vRenumberCards();
