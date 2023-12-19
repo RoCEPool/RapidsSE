@@ -20,7 +20,7 @@ namespace STORE
 
     void vEarlyProject_recurse_add(CardIter* pCI);
 
-    static void vMorph_table_To_keyNotExists(CardIter* pCI);
+    static void vMorph_from_To_keyNotExists(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

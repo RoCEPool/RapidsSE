@@ -41,9 +41,9 @@ Card_KeyNotExists::~Card_KeyNotExists(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* table morphs to keyNotExists                                               */
+/* from morphs to keyNotExists                                                */
 /*----------------------------------------------------------------------------*/
-void Card_KeyNotExists::vMorph_table_To_keyNotExists(STORE::CardIter *pCI)
+void Card_KeyNotExists::vMorph_from_To_keyNotExists(CardIter *pCI)
 {
   _static_
 
