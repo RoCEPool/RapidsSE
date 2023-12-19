@@ -9,7 +9,7 @@
 #include "CardIter.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
-#include "Expr.hpp"
+//#include "Expr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -553,8 +553,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
       pCI->G.p_emit->vAppend_streamDef_table(pCI);
 
-      if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
-        pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
 
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
@@ -596,14 +594,17 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
+    pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
+
   if (! bRecreate && pCI->G.p_emit && pCI->G.p_key)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
   if (bRecreate &&
-       (CK_o_AGGREG == eCard_OP
-       || CK_o_GBYAGG == eCard_OP
+       (  CK_o_AGGREG    == eCard_OP
+       || CK_o_GBYAGG    == eCard_OP
        || CK_o_INDEXJOIN == eCard_OP
-       || CK_o_ORDAGG == eCard_OP))
+       || CK_o_ORDAGG    == eCard_OP))
     vCorrect_expCol(pCI->Flux.m_pArriving);
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
