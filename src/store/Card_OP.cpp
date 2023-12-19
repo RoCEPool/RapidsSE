@@ -600,7 +600,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
   if (bRecreate &&
-       (CK_o_AGGREG == eCard_OP || CK_o_GBYAGG == eCard_OP))
+       (CK_o_AGGREG == eCard_OP
+       || CK_o_GBYAGG == eCard_OP
+       || CK_o_ORDAGG == eCard_OP))
     vCorrect_expCol(pCI->Flux.m_pArriving);
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
