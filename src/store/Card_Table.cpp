@@ -385,7 +385,7 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
   }
     // b) KEYEXISTS
   else if (pCI->G.p_from->pSub_keyExists()) {
-    Card_KeyExists::vMorph_table_To_keyExists(pCI);
+    Card_KeyExists::vMorph_from_To_keyExists(pCI);
   }
     // c) KEYNOTEXISTS
   else if (pCI->G.p_from->pSub_keyNotExists()) {

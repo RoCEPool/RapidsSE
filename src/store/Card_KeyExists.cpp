@@ -41,15 +41,14 @@ Card_KeyExists::~Card_KeyExists(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* table morphs to keyExists                                                  */
+/* from morphs to keyExists                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
+void Card_KeyExists::vMorph_from_To_keyExists(CardIter *pCI)
 {
   _static_
 
   pCI->G.p_keyExists = pCI->G.p_from->pSub_keyExists();
 
-  //pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_keyExists);
   pCI->G.p_from->vDeleteChild(pCI->G.p_keyExists);
 
   pCI->G.p_keyExists = _pCard_KeyExists(pCI->G.p_from->pCard(CK_o_KEYEXISTS));
