@@ -11,7 +11,6 @@
 #include "BufferTransport.hpp"
 #include "WlpHeader.hpp"
 #include "Version.h"
-#include "InfoSet.hpp"
 #include "StatementContext.hpp"
 #include "IndexDef.hpp"
 #include "TailLine.hpp"
@@ -414,7 +413,7 @@ void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 /*----------------------------------------------------------------------------*/
 /* Update the state after an error is received from the SQL compiler          */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
+void AdaptorWL::vCompilerError(RowBuffer* pRowBuffer)
 {
   ASSERT(m_pStmtCtx);
 
@@ -426,9 +425,9 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
     return;
   }
 
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS));
+  ASSERT(pRowBuffer->eBufferType() == BT_COMPILEERRORS);
 
-  Row *pInfoRow = pInfoSet->pFirstRow();
+  Row *pInfoRow = pRowBuffer->pFirstRow();
 
   //Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
@@ -454,11 +453,11 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 /* Update the state after an error is received from the execution engine      */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
+void AdaptorWL::vExecutionError(RowBuffer* pRowBuffer)
 {
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS));
+  ASSERT(pRowBuffer->eBufferType() == BT_EXECERRORS);
 
-  Row *pInfoRow = pInfoSet->pFirstRow();
+  Row *pInfoRow = pRowBuffer->pFirstRow();
 
   //Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
@@ -513,7 +512,7 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 /* Handle a warning received from the execution engine                        */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
+void AdaptorWL::vExecutionWarning(RowBuffer* pRowBuffer)
 {
   ASSERT(m_pStmtCtx);
 
@@ -521,9 +520,9 @@ void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
     return;
   }
 
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_WARNINGS));
+  ASSERT(pRowBuffer->eBufferType() == BT_WARNINGS);
 
-  Row *pInfoRow = pInfoSet->pFirstRow();
+  Row *pInfoRow = pRowBuffer->pFirstRow();
 
   ASSERT(!pInfoRow->bIsColNull(0));
 
@@ -540,7 +539,7 @@ void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 /* Accumulate any affected row counts for the current statement               */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vAffectedRowCount(InfoSet* pInfoSet)
+void AdaptorWL::vAffectedRowCount(RowBuffer* pRowBuffer)
 {
   if (!bCheckState( {API_STATEMENT_SUBMITTED, API_STATEMENT_COMPLETED} )) {
     return;
@@ -554,11 +553,11 @@ void AdaptorWL::vAffectedRowCount(InfoSet* pInfoSet)
   }
 
   ASSERT(m_pStmtCtx);
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS));
-  ASSERT(pInfoSet->nRows() == 1);
+  ASSERT(pRowBuffer->eBufferType() == BT_AFFECTEDROWS);
+  ASSERT(pRowBuffer->nRows() == 1);
 
-  Row *pInfoRow = pInfoSet->pFirstRow();
-  ASSERT(pInfoRow);
+  Row *pInfoRow = pRowBuffer->pFirstRow();
+  ASSERT(pRowBuffer);
 
   i8 iRowsProcessed = pInfoRow->iColVal_int(0);
   i8 iRowsInvalid   = pInfoRow->iColVal_int(1);

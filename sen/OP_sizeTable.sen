@@ -15,16 +15,16 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create an rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
   0 locals| iTableSize |
   Table[].size to iTableSize
@@ -32,10 +32,10 @@
   0 iTableSize number.magnitude >str iTableSize
 
   // insert index size
-  streamSetTable[] StreamSet[].addSizeTable assert
+  TableDef[] RowBuffer[].addSizeTable assert
 
-  // pipeout the infoset
-  StreamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;

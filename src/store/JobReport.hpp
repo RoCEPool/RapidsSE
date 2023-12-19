@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "NamedBuffer.hpp"
 #include "JobMetrics.hpp"
 
 namespace STORE

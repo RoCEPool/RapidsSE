@@ -54,9 +54,6 @@
 #include "LglBufSet.hpp"
 #include "Pot.hpp"
 
-#include "InfoSet.hpp"
-#include "NamedBuffer.hpp"
-#include "StreamSet.hpp"
 #include "RowCoder.hpp"
 
 #include "HeadLine.hpp"
@@ -254,6 +251,7 @@
 #include "Ppy.hpp"
 #include "Symbol.hpp"
 #include "Weaver.hpp"
+#include "KeyMap.hpp"
 
 #include "XF.hpp"
 #include "XF_Epilog_Add_hash_cast.hpp"
@@ -267,6 +265,7 @@
 #include "XF_Epilog_Map_Columns.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
+#include "XF_Epilog_Type_Cast.hpp"
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_stmCol.hpp"
 #include "XF_Flatten_10_F.hpp"
@@ -283,9 +282,8 @@
 #include "XF_Flatten_Delete_flat.hpp"
 #include "XF_Flatten_Derive_bounds.hpp"
 #include "XF_Flatten_Anchor_table.hpp"
-#include "XF_Flatten_Predicate_Pull_Up.hpp"
+#include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
-#include "XF_Flatten_Update_projection.hpp"
 #include "XF_Flatten_X_stmCol_To_tblCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
@@ -306,14 +304,14 @@
 #include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
 #include "XF_Prolog_Analyse_injected.hpp"
-#include "XF_Prolog_Analyse_emitted.hpp"
+#include "XF_Prolog_Analyse_emit.hpp"
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Prolog_Ensure_colType.hpp"
 #include "XF_Prolog_Ensure_level.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
-#include "XF_Flatten_Predicate_Pull_Up.hpp"
+#include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Review_as.hpp"
 #include "XF_Prolog_Validate_Board.hpp"
@@ -494,7 +492,6 @@ SizeHeap gxaSizeHeap[]
   { CN_INDEXTREE,                sizeof(IndexTree),          HT_T_TINY    ,FILL },
   { CN_INDEXTREEVEC,             sizeof(IndexTreeVec),       HT_T_TINY    ,FILL },
   { CN_IDXVEC,                   sizeof(IdxVec),             HT_T_TINY    ,FILL },
-  { CN_INFOSET,                  sizeof(InfoSet),            HT_T_LARGE   ,FILL },
   { CN_INGESTCHUNK,              sizeof(IngestChunk),        HT_T_LARGE   ,FILL },
   { CN_INPUT,                    sizeof(Input),              HT_T_TINY    ,FILL },
   { CN_INTERNALTABLES,           sizeof(InternalTables),     HT_T_TINY    ,FILL },
@@ -514,6 +511,7 @@ SizeHeap gxaSizeHeap[]
 
   {CN__K__,                     'K' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_KEY,                      sizeof(Key),                    HT_INVALID   , FILL },
+  {CN_KEYMAP,                   sizeof(KeyMap),                 HT_T_MEDIUM  , FILL },
   {CN_KID,                      sizeof(Kid),                    HT_T_TINY    , FILL },
 
   {CN__L__,                     'L' - ('A' - 1),                HT_INVALID   , FILL },
@@ -558,7 +556,6 @@ SizeHeap gxaSizeHeap[]
   {CN_MUTEX,                    sizeof(Mutex),              HT_T_TINY    , FILL },
 
   {CN__N__,                     'N' - ('A' - 1),            HT_INVALID   , FILL },
-  {CN_NAMEDBUFFER,              sizeof(NamedBuffer),        HT_T_LARGE   , FILL },
   {CN_NEXTGID,                  sizeof(NextGid),            HT_INVALID   , FILL },
   {CN_NMLSTR,                   sizeof(NmlStr),             HT_T_MEDIUM  , FILL },
   {CN_NODE,                     sizeof(Node),               HT_T_TINY    , FILL },
@@ -733,7 +730,6 @@ SizeHeap gxaSizeHeap[]
   { CN_STREAMDEF,                sizeof(StreamDef),          HT_T_LARGE   ,FILL },
   { CN_STREAMDEFRHT,             sizeof(StreamDefRht),       HT_T_LARGE   ,FILL },
   { CN_STREAMMETRICS,            sizeof(StreamMetrics),      HT_T_TINY    ,FILL },
-  { CN_STREAMSET,                sizeof(StreamSet),          HT_T_LARGE   ,FILL },
   { CN_STRING_D,                 sizeof(String_d),           HT_INVALID   ,FILL },
   { CN_STRING_T,                 sizeof(s32),                HT_INVALID   ,FILL },
   { CN_STRLIB,                   0,/*yes*/                   HT_INVALID   ,FILL },
@@ -821,6 +817,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_MAP_COLUMNS,             sizeof(XF_Epilog_Map_Columns),             HT_T_TINY    , FILL },
   {CN_XF_EPILOG_PROMOTE_FILTER,          sizeof(XF_Epilog_Promote_filter),          HT_T_TINY    , FILL },
   {CN_XF_EPILOG_REINSTATE_STAGE,         sizeof(XF_Epilog_Reinstate_stage),         HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_TYPE_CAST,               sizeof(XF_Epilog_Type_Cast),               HT_T_TINY    , FILL },
   {CN_XF_EPILOG_X_STMCOL_TO_COLNM,       sizeof(XF_Epilog_X_stmCol_To_colNm),       HT_T_TINY    , FILL },
   {CN_XF_EPILOG_X_TBLCOL_TO_STMCOL,      sizeof(XF_Epilog_X_tblCol_To_stmCol),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN,                        sizeof(XF_Flatten),                        HT_T_TINY    , FILL },
@@ -840,17 +837,16 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_ANCHOR_TABLE,           sizeof(XF_Flatten_Anchor_table),           HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_JOIN_ORDERING,          sizeof(XF_Flatten_Join_Ordering),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_LEFT_SUBQUERY,          sizeof(XF_Flatten_Left_subQuery),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_PREDICATE_PULLUP,       sizeof(XF_Flatten_Predicate_Pull_Up),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PREDICATE_REPOSITION,   sizeof(XF_Flatten_Predicate_Reposition),   HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_PULLUP_RLNCONJ,         sizeof(XF_Flatten_Pullup_rlnConj),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SMOOSH,                 sizeof(XF_Flatten_Smoosh),                 HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SMOOTH,                 sizeof(XF_Flatten_Smooth),                 HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_UPDATE_PROJECTION,      sizeof(XF_Flatten_Update_projection),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL,     sizeof(XF_Flatten_X_stmCol_To_tblCol),     HT_T_TINY    , FILL },
   {CN_XF_FOLD,                           sizeof(XF_Fold),                           HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, sizeof(XF_Optimise_aggreg_To_sort_ordAgg), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_CULL_BOUND,            sizeof(XF_Optimise_Cull_bound),            HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_CUT_SORT,              sizeof(XF_Optimise_Cut_sort),              HT_T_TINY    , FILL },
-  {CN_XF_OPTIMISE_DERIVE_STREAM_KEY,     sizeof(XF_Optimise_Derive_streamKey),      HT_T_TINY    , FILL },
+  {CN_XF_OPTIMISE_DERIVE_STREAMKEY,      sizeof(XF_Optimise_Derive_streamKey),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_DUPLICATE_FILTER,      sizeof(XF_Optimise_Duplicate_filter),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_FILTER,          sizeof(XF_Optimise_Early_filter),          HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_PROJECTION,      sizeof(XF_Optimise_Early_projection),      HT_T_TINY    , FILL },
@@ -864,17 +860,17 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP, sizeof(XF_Optimise_sortDesc_limit_to_top), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, sizeof(XF_Optimise_sort_limit_All_Levels), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_STATIC_CALC,           sizeof(XF_Optimise_Static_calc),           HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_EMITTED,         sizeof(XF_Prolog_Analyse_emitted),         HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_EMIT,            sizeof(XF_Prolog_Analyse_emit),            HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_INDEX,           sizeof(XF_Prolog_Analyse_index),           HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_INJECTED,        sizeof(XF_Prolog_Analyse_injected),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_SUBQUERY,        sizeof(XF_Prolog_Analyse_subQuery),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_TABLE,           sizeof(XF_Prolog_Analyse_table),           HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ENSURE_COLTYPE,          sizeof(XF_Prolog_Ensure_colType),          HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ENSURE_LEVEL,          sizeof(XF_Prolog_Ensure_level),          HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction),    HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_MOVE_ON,               sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_REDUCE_NOT,            sizeof(XF_Prolog_Reduce_not),            HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_REVIEW_AS,             sizeof(XF_Prolog_Review_as),             HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ENSURE_LEVEL,            sizeof(XF_Prolog_Ensure_level),            HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ERASE_CONSTRUCTION,      sizeof(XF_Prolog_Erase_construction),      HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_MOVE_ON,                 sizeof(XF_Prolog_Move_on),                 HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_REDUCE_NOT,              sizeof(XF_Prolog_Reduce_not),              HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_REVIEW_AS,               sizeof(XF_Prolog_Review_as),               HT_T_TINY    , FILL },
   {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_BOARD_TO_SQYNM,      sizeof(XF_Prolog_X_board_To_sqyNm),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_COLNM_BY_STMCOL,     sizeof(XF_Prolog_X_colNm_By_stmCol),     HT_T_TINY    , FILL },

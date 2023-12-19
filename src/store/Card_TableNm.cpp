@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_TableNm,CK_TABLENM)
+__pCastFunction_Card(STORE, Card_TableNm, CK_t_TABLENM)
 __aNewFunction(Card_TableNm,CN_CARD)
 __vDeleteFunction(Card_TableNm,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_TableNm,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableNm::Card_TableNm(void)
-: Card_symbol(CK_TABLENM, 3)
+: Card_symbol(CK_t_TABLENM, 3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

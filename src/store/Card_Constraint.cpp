@@ -19,7 +19,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Constraint,CK_CONSTRAINT)
+__pCastFunction_Card(STORE, Card_Constraint, CK_s_CONSTRAINT)
 __aNewFunction(Card_Constraint,CN_CARD)
 __vDeleteFunction(Card_Constraint,CN_CARD)
 
@@ -28,7 +28,7 @@ __vDeleteFunction(Card_Constraint,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Constraint::Card_Constraint(void)
-: Card_CONDITION(CK_CONSTRAINT, 2)
+: Card_CONDITION(CK_s_CONSTRAINT, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -138,8 +138,8 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     Card_Expr* p_expr_resolved;
 
     Symbol* pSymbol = p_term->pSymbol();
-    pCI->G.p_injected = pCI->G.p_MainCard->pSub_injectable();
-    p_expr_resolved = pCI->G.p_injected->pFind_expr_Via_term0(pSymbol);
+    pCI->G.p_injectable = pCI->G.p_MainCard->pSub_injectable();
+    p_expr_resolved = pCI->G.p_injectable->pFind_expr_Via_term0(pSymbol);
 
     szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
 
@@ -163,8 +163,8 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  (void)Card::eValidate_parentEither(pCI,CK_FROM,CK_INDEXJOIN,
-                                     CK_KEYEXISTS,CK_KEYNOTEXISTS,
+  (void)Card::eValidate_parentEither(pCI, CK_o_FROM, CK_o_INDEXJOIN,
+                                     CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS,
                                      CK_NONE);
 
   (void)eValidate_mustEither(CK_BOOLPRED,CK_RPNCALC,CK_NONE);

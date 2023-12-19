@@ -62,6 +62,9 @@ void Step::vToLglPtnCrwConvert(void)
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
+	//if (m_pLogicUnit->m_xpStreamDefLft.bIsNotNull())
+	//  pRowBuffer->vShow(*m_pLogicUnit->m_xpStreamDefLft);
+
   pToLglPtnCrw->vConvert(pRowBuffer);
   
   EXIT();

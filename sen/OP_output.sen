@@ -5,17 +5,6 @@
 " OP_output.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_COMPILEERRORS ...                                         */
-/*----------------------------------------------------------------------------*/
-: output_CompileErrors \handler
-
-  //"Operand:- EV_I_COMPILEERRORS" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_CrwBuffer \handler
@@ -38,45 +27,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ENTBUFFER ...                                             */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
-: output_EntBuffer \handler
+: output_RowBuffer \handler
 
-  //"Operand:- EV_D_ENTBUFFER" .verbose
+  //"Operand:- EV_D_ROWBUFFER" .verbose
+
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_EXECERRORS ...                                            */
+/* handler for EV_M_ERROR ...                                                 */
 /*----------------------------------------------------------------------------*/
-: output_ExecErrors \handler
+: output_Error \handler
 
-  //"Operand:- EV_I_EXECERRORS" .verbose
-  PipeIn[].pipeToOutput
+  "Operand:- EV_M_ERROR" .verbose
 
-  true
-;
+  "default_abnormalHandlers" FIND execute
+  find: output_RowBuffer EV_D_ROWBUFFER  [op].handler!
 
-/*----------------------------------------------------------------------------*/
-/* handler for EV_I_WARNINGS ...                                              */
-/*----------------------------------------------------------------------------*/
-: output_Warnings \handler
-
-  //"Operand:- EV_I_WARNINGS" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_I_AFFECTEDROWS ...                                          */
-/*----------------------------------------------------------------------------*/
-: output_AffectedRows \handler
-
-  //"Operand:- EV_I_AFFECTEDROWS" .verbose
-  PipeIn[].pipeToOutput
+  PipeIn[].pipeout
 
   true
 ;
@@ -109,55 +81,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_PROMPTOUT ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_promptOut \handler
-
-  //"Operand:- EV_I_PROMPTOUT" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_RowBuffer \handler
-
-  //"Operand:- EV_D_ROWBUFFER" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_SRTBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_SrtBuffer \handler
-
-  //"Operand:- EV_D_SRTBUFFER" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_StreamDef \handler
 
   //"Operand:- EV_D_STREAMDEF" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_STREAMSET ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_StreamSet \handler
-
-  //"Operand:- EV_D_STREAMSET" .verbose
   PipeIn[].pipeToOutput
 
   true
@@ -174,20 +102,12 @@
 
   find: output_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
   find: output_CsvBuffer     EV_D_CSVBUFFER     [op].handler!
-  find: output_EntBuffer     EV_D_ENTBUFFER     [op].handler!
   find: output_RowBuffer     EV_D_ROWBUFFER     [op].handler!
-  find: output_SrtBuffer     EV_D_SRTBUFFER     [op].handler!
   find: output_StreamDef     EV_D_STREAMDEF     [op].handler!
-  find: output_StreamDef     EV_D_STREAMSET     [op].handler!
-
-  find: output_AffectedRows  EV_I_AFFECTEDROWS  [op].handler!
-  find: output_CompileErrors EV_I_COMPILEERRORS [op].handler!
-  find: output_ExecErrors    EV_I_EXECERRORS    [op].handler!
-  find: output_Warnings      EV_I_WARNINGS      [op].handler!
-  find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!
 
   find: output_InternalError EV_M_INTERNALERROR [op].handler!
   find: output_LowMemory     EV_M_LOWMEMORY     [op].handler!
+  find: output_Error         EV_M_ERROR         [op].handler!
 
   op__loop
 

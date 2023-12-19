@@ -19,7 +19,8 @@ namespace STORE
 
     static Card_Emit* pResolvePriorProjection(CardIter* pCI);
 
-    void vAdjust_Wrt_key(Card_Key* p_key);
+    void vConcatFacets_From_key(Card_Key* p_key);
+    void vAppend_streamDef_table(CardIter* pCI);
 
     Card_Emit* pClone(void);
     void vCorrect_expCol(Card_Emit* p_arriving);
@@ -28,6 +29,7 @@ namespace STORE
     void vDerive_streamKey(CardIter* pCI);
     void vEnsureTypeId_expCol(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
+    Card_Emit* pInduct(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     void vMapColumns(CardIter* pCI);

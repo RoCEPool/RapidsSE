@@ -5,48 +5,35 @@
 " OP_toStatDemon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_I_LOCKSTATS ...                                                        */
+/* on EV_D_ROWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: OP_toStatDemon_LockStats \handler
+: OP_toStatDemon_RowBuffer \handler
 
-  "OP_toStatD_LockStats +++ +++ +++" .
+  //"OP_toStatD_LockStats +++ +++ +++" .
 
-  PipeIn[] to InfoSet[]
+  PipeIn[].bufferType@ "OP_toStatD %v" str.format .
+
+  // handle BT_LOCKSTATS only
+  PipeIn[].bufferType@ BT_LOCKSTATS != if
+    PipeIn[].pipeout
+    true
+    exit
+  then
+
+  PipeIn[] to RowBuffer[]
   nullptr to PipeIn[]
 
-  InfoSet[].name .
+  //RowBuffer[].getBufferName .
 
-  //InfoSet[].delete
-
-  InfoSet[]
+  RowBuffer[]
     "__statDemon" find dup if
       word.object@
       jobId::pipeToOp0 assert
-      nullptr to InfoSet[]
+      nullptr to RowBuffer[]
     else
       discard discard
-      InfoSet[].delete
+      RowBuffer[].delete
     then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on EV_D_PROFILE ...                                                        */
-/*----------------------------------------------------------------------------*/
-: OP_toStatDemon_Profile \handler
-
-  //"OP_toStatD_Profile +++ +++ +++" .
-
-  PipeIn[]
-  "__statDemon" find dup if
-    word.object@
-    jobId::pipeToOp0 assert
-    nullptr to PipeIn[]
-  else
-    discard discard
-    PipeIn[].delete
-  then
 
   true
 ;
@@ -60,8 +47,7 @@
 
   op__topology
 
-  find: OP_toStatDemon_LockStats EV_I_LOCKSTATS [op].handler!
-  find: OP_toStatDemon_Profile   EV_D_PROFILE   [op].handler!
+  find: OP_toStatDemon_RowBuffer EV_D_ROWBUFFER [op].handler!
 
   op__loop
 

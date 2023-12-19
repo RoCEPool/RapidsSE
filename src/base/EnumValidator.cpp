@@ -76,7 +76,6 @@
 #include "eNS.h"
 #include "eOA.h"
 #include "eOH.h"
-#include "eOI.h"
 #include "eOK.h"
 #include "eOM.h"
 #include "eOR.h"
@@ -173,6 +172,7 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aAT[AT_ENUMS - 1],          "aAT[]"_Stz,     "eAT"_Stz },
       {           aBK[BK_ENUMS - 1],          "aBK[]"_Stz,     "eBK"_Stz },
       {           aBO[BO_ENUMS - 1],          "aBO[]"_Stz,     "eBO"_Stz },
+			{           aBT[BO_ENUMS - 1],          "aBT[]"_Stz,     "eBT"_Stz },
       {           aCC[CC_ENUMS - 1],          "aCC[]"_Stz,     "eCC"_Stz },
       {           aCF[CF_ENUMS - 1],          "aCF[]"_Stz,     "eCF"_Stz },
       {           aCK[CK_ENUMS - 1],          "aCK[]"_Stz,     "eCK"_Stz },
@@ -249,7 +249,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aOA[OA_ENUMS - 1],          "aOA[]"_Stz,     "eOA"_Stz },
       {           aOH[OH_ENUMS - 1],          "aOH[]"_Stz,     "eOH"_Stz },
       {     aOH_short[OH_ENUMS - 1],    "aOH_short[]"_Stz,     "eOH"_Stz },
-      {           aOI[OI_ENUMS - 1],          "aOI[]"_Stz,     "eOI"_Stz },
       {           aOK[OK_ENUMS - 1],          "aOK[]"_Stz,     "eOK"_Stz },
       {           aOM[OM_ENUMS - 1],          "aOM[]"_Stz,     "eOM"_Stz },
       {           aOR[OR_ENUMS - 1],          "aOR[]"_Stz,     "eOR"_Stz },

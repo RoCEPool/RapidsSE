@@ -192,7 +192,7 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAllotTail(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
   
-  ASSERT(nBytes >= 16);
+  //ASSERT(nBytes >= 16);
 
   if (C_UNKNOWN == m_nTailSize) {
     m_nTailSize = nBytes;

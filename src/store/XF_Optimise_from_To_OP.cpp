@@ -69,7 +69,7 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
   m_pCI->vTransform(__func__, XF_OPTIMISE_FROM_TO_OP, "morph table to EE op"_Stz);
 
   m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMainWithSub(CK_FROM,CK_TABLE)) {
+  while (m_pCI->G_bEachMainWithSub(CK_o_FROM, CK_s_TABLE)) {
     m_pCI->G.p_table->vMorph_table_To_EEop(m_pCI);
   }
 

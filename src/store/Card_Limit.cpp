@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Limit,CK_LIMIT)
+__pCastFunction_Card(STORE, Card_Limit, CK_o_LIMIT)
 __aNewFunction(Card_Limit,CN_CARD)
 __vDeleteFunction(Card_Limit,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Limit,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Limit::Card_Limit(void)
-: Card_OP(CK_LIMIT,1)
+: Card_OP(CK_o_LIMIT, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -57,7 +57,7 @@ void Card_Limit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

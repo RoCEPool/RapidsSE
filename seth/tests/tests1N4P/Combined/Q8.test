@@ -111,22 +111,22 @@ success
 create index IxR_REGIONKEY ON ${testName2}_Region   (R_REGIONKEY) ;
 success
 
-load ${testName2}_Customer "../TPCH/SF_0001/customer.csv" ;
+load ${testName2}_Customer "../TPCH/SF_0001/customer.tbl" ;
 success
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
-load ${testName2}_Orders   "../TPCH/SF_0001/orders.csv";
+load ${testName2}_Orders   "../TPCH/SF_0001/orders.tbl";
 success
 
-load ${testName2}_Supplier "../TPCH/SF_0001/supplier.csv";
+load ${testName2}_Supplier "../TPCH/SF_0001/supplier.tbl";
 success
 
-load ${testName2}_Region "../TPCH/SF_0001/region.csv";
+load ${testName2}_Region "../TPCH/SF_0001/region.tbl";
 success
 
-load ${testName2}_Nation "../TPCH/SF_0001/nation.csv";
+load ${testName2}_Nation "../TPCH/SF_0001/nation.tbl";
 success
 
 /optimise_passthru 

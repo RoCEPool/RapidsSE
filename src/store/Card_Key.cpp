@@ -16,7 +16,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Key,CK_KEY)
+__pCastFunction_Card(STORE, Card_Key, CK_s_KEY)
 __aNewFunction(Card_Key,CN_CARD)
 __vDeleteFunction(Card_Key,CN_CARD)
 
@@ -25,7 +25,7 @@ __vDeleteFunction(Card_Key,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Key::Card_Key(void)
-: Card_EXPRLIST(CK_KEY, 2)
+: Card_EXPRLIST(CK_s_KEY, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -76,8 +76,8 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
   p_expr_new->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->vTypeId(p_expr->xTypeId());
-  p_expr_new->pSymbol()->vTypeId(p_expr->xTypeId());
+  p_rpnCalc->vCast(p_expr->xCast());
+  p_expr_new->vCast(p_expr->xCast());
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_NONE));
@@ -89,20 +89,23 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_expr_new->vAppendChild(p_direction);
   }
 
+  if (0 == i_Key)
+    vCast(p_expr->xCast());
+
   vAppendChild(p_expr_new);
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(CT_NONE != this->xColTypeId().eCTVal());
+  RASSERT(CT_NONE != this->eCTVal());
 
-  if (xColTypeId() != p_key_arg->xColTypeId())
-    return false;
+//  if (xTypeId() != p_key_arg->xTypeId())
+//    return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -148,7 +151,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* ensure cast info                                                           */
 /*----------------------------------------------------------------------------*/
 void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 {
@@ -156,29 +159,6 @@ void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
     xKid.p_expr()->vEnsureTypeId_expCol(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Key::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(! pCI->G.p_subSet);
-
-  Card_SubSet* p_subSet = new Card_SubSet;
-
-  // key is a set of expr
-  for (Kid x_expr(this); x_expr.bEach(CK_EXPR); /**/) {
-
-    x_expr.p_expr()->vFactorAll_ColSym_IntoDistinct_expr(pCI);
-    p_subSet->vTransferChildren(pCI->G.p_subSet);
-
-    DELETE_CARD(pCI->G.p_subSet);
-  }
-
-  pCI->G.p_subSet = p_subSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,21 +178,6 @@ void Card_Key::vMapColumns(CardIter *pCI)
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-TypeId Card_Key::xColTypeId(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-	TypeId xColTypeId;
-
-  if (Card_Expr* p_expr = pSub_expr())
-		xColTypeId = p_expr->xTypeId();
-
-  return xColTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +215,7 @@ IndexDef* Card_Key::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    TypeId xTypeId = p_term->pSymbol()->xTypeId();
+    TypeId xTypeId = p_term->xTypeId();
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;
@@ -274,7 +239,7 @@ IndexDef* Card_Key::pToIndexDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {

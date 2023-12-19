@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_KeyExists,CK_KEYEXISTS)
+__pCastFunction_Card(STORE, Card_KeyExists, CK_o_KEYEXISTS)
 __aNewFunction(Card_KeyExists,CN_CARD)
 __vDeleteFunction(Card_KeyExists,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_KeyExists,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_KeyExists::Card_KeyExists(void)
-: Card_CONDITION(CK_KEYEXISTS, C_UNKNOWN)
+: Card_CONDITION(CK_o_KEYEXISTS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -52,7 +52,7 @@ void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
   //pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_keyExists);
   pCI->G.p_from->vDeleteChild(pCI->G.p_keyExists);
 
-  pCI->G.p_keyExists = _pCard_KeyExists(pCI->G.p_from->pCard(CK_KEYEXISTS));
+  pCI->G.p_keyExists = _pCard_KeyExists(pCI->G.p_from->pCard(CK_o_KEYEXISTS));
 
   // todo: this should be in index list
   pCI->G.p_index = pCI->G.p_keyExists->pSub_index();
@@ -60,7 +60,7 @@ void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
   pCI->G.p_index->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
 
   pCI->G.p_filter = pCI->G.p_keyExists->pSub_filter();
-  pCI->G.p_filter->vCard(CK_CONSTRAINT);
+  pCI->G.p_filter->vCard(CK_s_CONSTRAINT);
 }
 
 
@@ -87,7 +87,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
+  if (pCI->pPrevChild()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
@@ -121,7 +121,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_emitted(pCI);
+  vUpdate_emit(pCI);
 
  // pCI->vPrintBoard();
 
@@ -187,7 +187,7 @@ void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_KeyExists::vUpdate_emitted(CardIter* pCI)
+void Card_KeyExists::vUpdate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -211,7 +211,7 @@ void Card_KeyExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   if (1 == iDepth) {
-    vValidate_mustHave(CK_LEVEL, CK_TABLE, CK_CONSTRAINT, CK_NONE);
+    vValidate_mustHave(CK_s_LEVEL, CK_s_TABLE, CK_s_CONSTRAINT, CK_NONE);
     RASSERT(pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
     RASSERT(pSub_bound());
   }

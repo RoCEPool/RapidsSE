@@ -81,7 +81,7 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
 
     p_card->pSymbol()->vDeleteFacet(SF_NMD_COL);
     Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);
-    p_card->pSymbol()->vFacets(&xSymbol_sqyNm);
+    p_card->pSymbol()->vCastFacets(&xSymbol_sqyNm);
 
     return C_CONTINUE_RECURSION;
   };

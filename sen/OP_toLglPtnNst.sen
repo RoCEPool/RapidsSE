@@ -28,6 +28,14 @@
 : toLglPtnNst_RowBuffer \handler
 
   PipeIn[]\clear to RowBuffer[]
+
+  // handle BT_DATA only
+  RowBuffer[].bufferType@ BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   RowBuffer[]\clear ToNstRow[].convert to RowBuffer[]
 
   RowBuffer[].pipeOut

@@ -4,12 +4,111 @@
 
 __TPCH_SCHEMA;
 
-// NOTE: Optimiser to copy all fields of the columns when generating the streamDef's
+// NOTE: S01 ORDAGG streamdef_emitted length , scale not correct
 
 /optimiser_trace
-/pipeline_def
 /weaved
-/pipelineName = "_ray171"
-select * from nation;
+/optimise_passthru
+/pipeline_Def
+/keepCodeFile
+/pipelineName = "Query18"
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+      indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+     | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
+     | combined 0
+     | next
+
+   stage S02 on all partitions :
+     filter  " type BOOLEAN  SUM_QTY 100.00  >  "
+     | combined 0
+     | next broadcast
+
+   stage S03 on all partitions :
+     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+                type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY "
+     | combined 0
+     | next
+
+   stage S04 on all partitions :
+     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
+     | project "type VARCHAR as C_NAME C_NAME ,
+                type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY "
+     | combined 0
+     | next
+
+   stage S05 on all partitions :
+     gbyAgg " groupBy type VARCHAR as C_NAME C_NAME ,
+                      type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR as C_NAME $K1 ,
+                      type INTEGER as C_CUSTKEY $K2 ,
+                      type INTEGER as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL as O_TOTALPRICE $K5 ,
+                      type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage S06 on all nodes :
+     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR as C_NAME $K1 ,
+                       type INTEGER as C_CUSTKEY $K2 ,
+                       type INTEGER as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL as O_TOTALPRICE $K5 ,
+                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR as C_NAME $K1 ,
+                       type INTEGER as C_CUSTKEY $K2 ,
+                       type INTEGER as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL as O_TOTALPRICE $K5 ,
+                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage S08 on origin :
+     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     | limit 100
+     | combined 0
+     | next
+
+   stage S09 on origin :
+     output
+     | sink
+     | first
+ end ;
 
 _tpchDrop;

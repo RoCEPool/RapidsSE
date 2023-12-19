@@ -30,6 +30,15 @@
 
   0 locals| rowsInserted |
 
+  // handle BT_DATA only
+  PipeIn[].isRowBuffer if
+    PipeIn[].bufferType@ BT_DATA == not if
+      PipeIn[].pipeout
+      true
+      exit
+    then
+  then
+
   // insert the buffer into the table ptn
   TablePtn[].grabWrite_msecLoop
   PipeIn[] TablePtn[].appendBuffer to rowsInserted
@@ -47,14 +56,14 @@
   // send out an infoSet of ProgressUnits every 100 buffers
   Counter0[] 100 % 0 == if
 
-    // create an infoSet operand
-    infoSetTable[] InfoSet[].new
+    // create a RowBuffer operand
+    BT_DATA TableDef[] RowBuffer[].new
 
     // insert progressUnits to the infoset
-    Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
+    Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
 
     // pipeout the infoset
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -72,6 +81,15 @@
   "insert_Replicated" .
 
   0 locals| rowsInserted |
+
+  // handle BT_DATA only
+  PipeIn[].isRowBuffer if
+    PipeIn[].bufferType@ BT_DATA == not if
+      PipeIn[].pipeout
+      true
+      exit
+    then
+  then
 
   // insert the buffer into the table ptn
   //TablePtn[].grabWrite_msecLoop
@@ -93,13 +111,13 @@
   Counter0[] 10 % 0 == if
 
     // create an infoSet operand
-    infoSetTable[] InfoSet[].new
+    BT_DATA TableDef[] RowBuffer[].new
 
     // insert progressUnits to the infoset
-    Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
+    Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
 
     // pipeout the infoset
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -118,14 +136,14 @@
 
   // send out final progress units
 
-  // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  // create a rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
   // insert progressUnits to the infoset
-  Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
+  Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
 
   // pipeout the infoset
-  InfoSet[].pipeOut
+  RowBuffer[].pipeOut
 
 
   // send out an AFFECTEDROWS infoset with the number of rows actually inserted
@@ -136,17 +154,16 @@
     // Don't emit an infoset if the values are all zeros
     rowCounts[].areAllZeros not if
 
-      C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
+      C_TDEF_AFFECTEDROWS op__tableDef assert
 
-      // create an infoSet operand
-      infoSetTable[] InfoSet[].new
-      OI_AFFECTEDROWS InfoSet[].opInfoset!
+      // create an rowBuffer operand
+      BT_AFFECTEDROWS TableDef[] RowBuffer[].new
 
-      // insert row counts to the infoset
-      rowCounts[].getCounters@@ rowCounts[].numCounters InfoSet[].addRowVargs
+      // insert row counts to the rowBuffer
+      rowCounts[].getCounters@@ rowCounts[].numCounters RowBuffer[].addRowVargs
 
-      // pipeout the infoset
-      InfoSet[].pipeOut
+      // pipeout the rowBuffer
+      RowBuffer[].pipeOut
 
     then
   then
@@ -165,8 +182,8 @@
   //"Operand Insert:- EV_M_START" .
   PipeIn[].pipeOut
 
-  // create the infoSetTable for C_TDEF_PROGRESSUNITS
-  C_TDEF_PROGRESSUNITS op__tableDef_infoSet assert
+  // create the TableDef for C_TDEF_PROGRESSUNITS
+  C_TDEF_PROGRESSUNITS op__tableDef assert
 
   // get Table[] to be inserted into
   <tableNm> op__table if

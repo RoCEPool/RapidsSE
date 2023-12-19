@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Where,CK_WHERE)
+__pCastFunction_Card(STORE, Card_Where, CK_o_WHERE)
 __aNewFunction(Card_Where,CN_CARD)
 __vDeleteFunction(Card_Where,CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Where,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Where::Card_Where(void)
-: Card_CONDITION(CK_WHERE, 1)
+: Card_CONDITION(CK_o_WHERE, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -50,7 +50,7 @@ void Card_Where::vCullMarked_rlnConj(CardIter* pCI) {
 
   pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED)) {
     (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 }
@@ -64,9 +64,9 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED)) {
     if (0 == pCI->G.p_boolPred->nChildCards()) {
-      pCI->G_vRemoveDeleteMain(CK_WHERE);
+      pCI->G_vRemoveDeleteMain(CK_o_WHERE);
     }
   }
 }
@@ -80,7 +80,7 @@ void Card_Where::vMarkWhereConjWrtTable(CardIter* pCI) {
 
   pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED)) {
     pCI->G.p_boolPred->vMark_rlnConj_Wrt_table(pCI, MARK_AT);
   }
 }
@@ -94,7 +94,7 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 
   pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED)) {
     pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(pCI, szWithMark);
   }
 }
@@ -154,7 +154,7 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_emitted(pCI);
+  vUpdate_emit(pCI);
 
  // pCI->vPrintBoard();
 
@@ -191,11 +191,11 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     pCI->Sqy.m_pTerm_sqyCall->SYM(SF_EXP_COL, (i8)1);
 
     Card_Expr* p_expr_0 = pCI->Flux.m_pArriving->pGet_expr((i8) 0);
-    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vTypeId(p_expr_0->xTypeId());
+    pCI->Sqy.m_pTerm_sqyCall->vCast(p_expr_0->xCast());
 
   }
 
-  pCI->G.p_where->vUpdate_emitted(pCI);
+  pCI->G.p_where->vUpdate_emit(pCI);
 
  // pCI->vRenumberCards();
 }
@@ -203,7 +203,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vUpdate_emitted(CardIter* pCI)
+void Card_Where::vUpdate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -222,7 +222,7 @@ void Card_Where::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_LEVEL,CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

@@ -32,10 +32,7 @@ namespace STORE
 
     void vProjectionUpdate(CardIter* pCI);
 
-    Card_Emit* p_emitted_fold(void);
-
-    void vAnalyse_emitted(CardIter* pCI);
-    void vAnalyse_emitted_passThru(CardIter* pCI);
+    Card_Emit* p_emit_fold(void);
 
     void vValidate(CardIter* pCI);
   };

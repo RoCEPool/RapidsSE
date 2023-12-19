@@ -48,6 +48,13 @@
 
   PipeIn[]\clear to RowBuffer[]
 
+  // pipeout buffers other than BT_DATA
+  RowBuffer[].bufferType@ BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   // write the ROWBUFFER to file
 
   true

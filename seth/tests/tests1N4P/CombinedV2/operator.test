@@ -833,10 +833,10 @@ success
 create index IxO_ORDERKEY  on ${testName2}_Orders   (O_ORDERKEY);
 success
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
-load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.tbl";
 success
 
 /optimise_passthru

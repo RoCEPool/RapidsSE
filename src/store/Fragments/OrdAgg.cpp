@@ -107,6 +107,46 @@ i8 iOrdAggBegin(Dynamic_T* aDynamicT) {
 	return 0;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- iOrdAggConstraint -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iOrdAggConstraint
+i8 iOrdAggConstraint(Dynamic_T* aDynamicT) {
+
+	i8 __CONSTRAINTSTACK__;
+
+	bool bFilterResult;
+
+	__LABEL_ORDAGG__:
+
+	// marker-start
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// ORDAGG CONSTRAINT
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	__CONSTRAINTSTACK__;
+
+	// check for error
+	if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+		return 0;
+	}
+
+	// check for constraint result
+	if ( ! bFilterResult || bFilterResult == C_DATUM_NULL) {
+		aDynamicT->m_bHasAggRow = false;
+
+		if ( aDynamicT->m_bHasRowToAgg ) {
+			goto __LABEL_ORDAGG__;
+		}
+		goto L_Return;
+	}
+
+	// marker-end
+	L_Return:
+	  return 0;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

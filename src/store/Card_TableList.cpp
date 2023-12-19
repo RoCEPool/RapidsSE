@@ -61,7 +61,7 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
   xKid.vEnded();
   xKid.vBegin_reverse();
 
-  if (xKid.bEach_reverse(CK_FOLD)) {
+  if (xKid.bEach_reverse(CK_c_FOLD)) {
     xKid.vForwards(true);
   }
   else {
@@ -69,7 +69,7 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
     xKid.vBegin();
   }
 
-  while (xKid.bEach(CK_FROM,CK_TABLE)) {
+  while (xKid.bEach(CK_o_FROM, CK_s_TABLE)) {
 
     Card_Table* p_table = _pCard_Table(xKid.pSub1());
 
@@ -126,7 +126,7 @@ Card_Table* Card_TableList::pFind(char cTblSyn)
   i8 nChildren = nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card* pChildCard = pGetChild(i_Child);
-    if (CK_TABLE != pChildCard->eCard())
+    if (CK_s_TABLE != pChildCard->eCard())
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);

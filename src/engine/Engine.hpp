@@ -36,7 +36,6 @@ namespace ENGINE
     static void vErrorHandler(Error* pError);
     static void vGetCopyright(s256& sCopyright);
     static void vGetWelcome(s256& sWelcome);
-    static void vIgnoreMemoryLeak(void);
     static void vInternalTables(void);
     static void vKillPrev(void);
     static void vLoadTables(void);

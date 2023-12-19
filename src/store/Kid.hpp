@@ -78,9 +78,9 @@ namespace STORE
 
     bool bWithinRange(void);
 
+    Card_AndConj*     p_andConj(void);
     Card_Bound*       p_bound(void);
-    Card_RlnConj*     p_rlnConj(void);
-    Card_CONJ* p_CONJUNCTION(void);
+    Card_CONJ*        p_CONJ(void);
     Card_Correlation* p_correlation(void);
     Card_Expr*        p_expr(void);
     Card_Fold*        p_fold(void);
@@ -90,6 +90,8 @@ namespace STORE
     Card_JoinOrder*   p_joinOrder(void);
     Card_Map*         p_map(void);
     Card_OP*          p_OP(void);
+    Card_OrConj*      p_orConj(void);
+    Card_RlnConj*     p_rlnConj(void);
     Card_RpnCalc*     p_rpnCalc(void);
     Card_Stage*       p_stage(void);
     Card_StreamHead*  p_streamHead(void);

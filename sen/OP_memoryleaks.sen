@@ -13,10 +13,10 @@
   "memoryleaks_sendStreamDef" .verbose
 
   // find the C_TDEF_MEMORYLEAKS
-  C_TDEF_MEMORYLEAKS op__tableDef_infoSet assert
+  C_TDEF_MEMORYLEAKS op__tableDef assert
 
   // create a new streamDef
-  infoSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
@@ -105,17 +105,17 @@
 
   // Time to report the memory leaks
 
-  // Create and send the stream definition. This will populate infoSetTable[].
+  // Create and send the stream definition. This will populate TableDef[].
   memoryleaks_sendStreamDef
 
-  // create a streamSet operand
-  infoSetTable[] streamSet[].new
+  // create a rowBuffer operand
+  BT_DATA TableDef[] RowBuffer[].new
 
   // Record the memory object allocations
-  infoSetTable[] StreamSet[].addMemoryLeaks if
-    StreamSet[].pipeOut
+  TableDef[] RowBuffer[].addMemoryLeaks if
+    RowBuffer[].pipeOut
   else
-    StreamSet[].delete
+    RowBuffer[].delete
   then
 
   // Stop tracking memory

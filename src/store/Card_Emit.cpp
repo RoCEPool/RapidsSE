@@ -9,11 +9,13 @@
 #include "CardIter.hpp"
 #include "Card_GbyAgg.hpp"
 
+#include "Table.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Emit, CK_EMIT)
+__pCastFunction_Card(STORE, Card_Emit, CK_t_EMIT)
 __aNewFunction(Card_Emit, CN_CARD)
 __vDeleteFunction(Card_Emit, CN_CARD)
 
@@ -23,7 +25,7 @@ __vDeleteFunction(Card_Emit, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Emit::Card_Emit(void)
-: Card_EXPRLIST(CK_EMIT, 3)
+: Card_EXPRLIST(CK_t_EMIT, 3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -72,9 +74,9 @@ Card_Emit* Card_Emit::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* adjust this projection given key                                           */
+/* concat facets from given key                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vAdjust_Wrt_key(Card_Key* p_key)
+void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -93,7 +95,35 @@ void Card_Emit::vAdjust_Wrt_key(Card_Key* p_key)
     if (! p_expr_sole_key)
       continue;
 
-    pSymbol_expr_sole->vFacets(p_expr_sole_key->pSymbol());
+    //pSymbol_expr_sole->vCastFacets(p_expr_sole_key->pSymbol());
+    pSymbol_expr_sole->vConcatFacets(p_expr_sole_key->pSymbol());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append streamDef of table to this emit                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Emit::vAppend_streamDef_table(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm(C_NOT_NULL);
+
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
+
+  i8 iExpCol = pCI->G.p_emit->nExpr() + 1;
+
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Card_Expr* p_expr_Column =
+        Card_Expr::pCast_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
+
+    pCI->G.p_emit->vAppendChild(p_expr_Column);
   }
 }
 
@@ -152,7 +182,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         RASSERT(pCI->G.p_streamKey);
 
         Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(xCI_rpnCalc.p_term()->pSymbol());
-        Symbol* pSymbol_tblCol = p_expr_key->pFirstTblCol();
+        Symbol* pSymbol_tblCol = p_expr_key->pFirst_tblCol();
 
         vDebugPoint();
 
@@ -171,7 +201,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
           continue;
 
-        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
+        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
           p_needed->vAppendChild(p_expr_col->pClone());
       }
       else {
@@ -183,7 +213,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) get factored columns of key as start of needed projection
 
-  if (pCI->G.p_OP->bIsCard(CK_GBYAGG) || pCI->G.p_OP->bIsCard(CK_ORDAGG)) {
+  if (pCI->G.p_OP->bIsCard(CK_o_GBYAGG) || pCI->G.p_OP->bIsCard(CK_o_ORDAGG)) {
     if ((pCI->G.p_key = pSub_key())) {
       // + projection of gbyAgg/ordAgg has a key
 
@@ -213,7 +243,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   p_needed->vRenumberAll_expr();
-  //p_needed->vDump();
+  //p_needed->vDump(__func__);
 
   return p_needed;
 }
@@ -248,7 +278,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
     Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
     Card_Expr* p_expr_prjCol = pFind_expr_Via_term0(p_term_runkey->pSymbol());
 
-    if (p_expr_prjCol) {
+    if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc()->nChildCards()) {
 
       // annotation or direction in passing
       if (p_expr_runkey->pSub_direction() && ! p_expr_prjCol->pSub_direction()) {
@@ -268,6 +298,8 @@ void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  pCI->G.p_key = pCI->G.p_OP->pSub_key();
+
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
     xKid.p_expr()->vEnsureTypeId_expCol(pCI);
 }
@@ -284,6 +316,26 @@ Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
       return xKid.p_expr();
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* induct this arriving emit                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Emit* Card_Emit::pInduct(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Emit *p_emit_inducted = new Card_Emit;
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_arriving = xKid.p_expr();
+
+    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct();
+    p_emit_inducted->vAppendChild(p_expr_inducted);
+  }
+
+  p_emit_inducted->vRenumberAll_expr();
+
+  return p_emit_inducted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,7 +392,7 @@ void Card_Emit::vMapColumns(CardIter* pCI)
 
       nExpr_key++;
 
-      Symbol *pSymbol_keyCol = p_expr_projection->pFirstKeyCol();
+      Symbol *pSymbol_keyCol = p_expr_projection->pFirst_keyCol();
       Card_Map* p_map_keyCell = pCI->G.p_keyCells->pGetMap(pSymbol_keyCol);
       p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
@@ -476,10 +528,13 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(CK_STREAM == pParent->eCard());
+  RASSERT(CK_s_STREAM == pParent->eCard());
+
+  if (! pSub_expr())
+    pCI->vPrintBoard(__LINE__,true);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
-  vValidate_notHave(CK_KEY,CK_NONE);
+  vValidate_notHave(CK_s_KEY, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

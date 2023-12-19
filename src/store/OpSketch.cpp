@@ -88,6 +88,8 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   m_pColMap       = nullptr;
 	m_pColPpg       = nullptr;
 
+	m_pKeyMap       = nullptr;
+
   // labels
   m_sLabel     = ""_Stz;
   m_sLabelLoop = ""_Stz;
@@ -156,6 +158,8 @@ OpSketch::~OpSketch(void) noexcept(false)
   delete m_pColMap;
 	delete m_pColPpg;
 
+	delete m_pKeyMap;
+
   delete m_pConstraintStack;
   delete m_pExprStack;
   delete m_pInitStack;
@@ -175,7 +179,7 @@ OpSketch::~OpSketch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy columns map (for gbyAgg, sort, top and ordAgg)                        */
+/* copy columns map (for gbyAgg, sort and top)                                */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vCopyColMap(ColMap* pColsMap)
 {
@@ -249,6 +253,22 @@ void OpSketch::vCopyColPpg(ColPpg* pColPpg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy key map (for ordAgg)                                                  */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vCopyKeyMap(KeyMap* pKeyMap)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	m_pKeyMap = new KeyMap;
+
+	m_pKeyMap->m_nCols = pKeyMap->m_nCols;
+	for (i8 i_Col = 0; i_Col < pKeyMap->m_nCols; i_Col++) {
+		m_pKeyMap->m_axCols[i_Col].m_i_EmittedCol = pKeyMap->m_axCols[i_Col].m_i_EmittedCol;
+		m_pKeyMap->m_axCols[i_Col].m_i_Cell = pKeyMap->m_axCols[i_Col].m_i_Cell;
+	}
+}
+
+/*----------------------------------------------------------------------------*/
 /* set table                                                                  */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vTable(Table* pTable)
@@ -281,6 +301,21 @@ bool OpSketch::bIsEmittedColPayload(i8 i_emittedCol)
 	}
 	RASSERT(0);
 	return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy the ConstraintStack                                                   */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vCopyConstraintStack(TypedStack* pConstraintStack)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	TypeValueArea xTypeValueArea;
+
+	for (i8 i = pConstraintStack->nValues() - 1; i >= 0; i--) {
+		pConstraintStack->vPeekTypeValueArea(i, &xTypeValueArea);
+		m_pConstraintStack->vPushStz(xTypeValueArea.szStz());
+	}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -452,6 +487,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
         if (m_eSketchKind == SK_ORDAGG && iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
+				//else
+				//  m_pOrdAggStack->vPushStz("_ASSIGN(bKeyMatch)"_Stz);
       }
       else if (ePreExp == PE_GKY) {
         vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL);
@@ -514,6 +551,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       iGbyCols++;
 
       if (m_eSketchKind == SK_ORDAGG) {
+				m_pOrdAggStack->vPushStz("_ASSIGN(bKeyMatch)"_Stz);
         if (iGbyCols == 2 || (iGbyCols > 2 && iGbyCols % 2))
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aDynamicT->m_iErrorCode)"_Stz);
       }
@@ -1183,7 +1221,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 //	// dump the m_pOrdAggStack stack
 //  vTrace("--------------------------------------\n"_Stz);
 //  vTrace("ORDAGGSTACK:\n"_Stz);
-//  nExpr = m_pGbyStack ? m_pOrdAggStack->nValues() - 1 : -1;
+//  nExpr = m_pOrdAggStack ? m_pOrdAggStack->nValues() - 1 : -1;
 //
 //  while ( nExpr >= 0) {
 //    pTypedCell = m_pOrdAggStack->aPeekItem(nExpr--);
@@ -1611,7 +1649,7 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   if ( ! pColumn ) {
     if(m_eSketchKind == SK_SEMIJOIN || m_eSketchKind == SK_ANTIJOIN )
       pColumn = m_pStreamDefRht->pFindColumn(pTkn->szChars());
-    else if (m_eSketchKind == SK_INDEXJOIN) {
+    else if (m_eSketchKind == SK_INDEXJOIN || m_eSketchKind == SK_ORDAGG) {
       pColumn = m_pStreamDefOut->pFindColumn(pTkn->szChars());
     }
   }
@@ -2006,8 +2044,19 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         break;
       }
 
+			if ( bConstraint) {
+				pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
+				break;
+			}
+
       if (ePreExp == PE_GBY) {
-        sPush.vSprint("_ASSIGN(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
+        //sPush.vSprint("_ASSIGN(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
+				i_Col = m_pKeyMap->m_axCols[i_Col].m_i_EmittedCol;
+				pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+				sColumn = pColumn->szColNm();
+				StrLib::vToUpper(sColumn.azChar(), sColumn.nAreaBytes());
+
+				sPush.vSprint("_ASSIGN(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
         pExprStack->vPushStz(sPush);
 
         sPush.vSprint("_PSH_COL(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
@@ -2016,8 +2065,8 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         sPush = aFM[eMacro_Eq[eDatum][eDatum]];
         sPush.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
         m_pOrdAggStack->vPushStz(sPush);
-				sPush.vSprint("_ASSIGN(bKeyMatch)\n"_Stz);
-				m_pOrdAggStack->vPushStz(sPush);
+				//sPush.vSprint("_ASSIGN(bKeyMatch)\n"_Stz);
+				//m_pOrdAggStack->vPushStz(sPush);
         break;
       }
 
@@ -2400,6 +2449,11 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
     case SK_AGGREG:
     case SK_GBYAGG:
 		case SK_ORDAGG:
+			if (bConstraint) {
+				RASSERT(m_eSketchKind == SK_ORDAGG);
+				return m_pConstraintStack;
+			}
+
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;
@@ -2408,12 +2462,6 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
         return m_pGbyStack;
 
       return m_pInitStack;
-
-//    case SK_ORDAGG:
-//      if (ePreExp == PE_GBY)
-//        return m_pGbyStack;
-//      else
-//        return m_pExprStack;
 
     case SK_FILTER:
     case SK_INDEXSCAN:

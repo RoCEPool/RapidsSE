@@ -107,6 +107,7 @@ void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
 
     // get row buffer for given partition (new a first buffer if ncessary)
     RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
+
     if (! pDstRowBuffer) {
 
       pDstRowBuffer = new RowBuffer;

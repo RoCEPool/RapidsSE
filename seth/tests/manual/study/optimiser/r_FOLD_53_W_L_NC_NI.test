@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* r_FOLD_53_W_L_NC_NI -- sub-query flattening test : refer Q16               */
+/*============================================================================*/
+
+LOG 'r_FOLD_53_W_L_NC_NI...';
+
+trackMemory force;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
+/pipelineName = "r_FOLD_53_W_L_NC_NI"
+select count(*)
+  from partsupp, part
+ where PS_PARTKEY = P_PARTKEY
+   and PS_SUPPKEY not in (select S_SUPPKEY
+                            from supplier
+                           where s_comment like '%Customer%Complaints%')
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+MemoryLeaks;
+ rows: 0
+
+CLEANUP {
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

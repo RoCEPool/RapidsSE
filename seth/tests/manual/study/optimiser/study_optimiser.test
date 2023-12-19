@@ -1,0 +1,124 @@
+--------------------------------------------------------------------------------
+-- optimiser study
+--------------------------------------------------------------------------------
+LOG ' ';
+LOG '** Optimiser Study **';
+
+//------------------------------------------------------------------------------
+//LOG 'operator.test';
+//INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
+
+//------------------------------------------------------------------------------
+LOG ' ';
+INCLUDE 'create_customer.test';
+INCLUDE 'create_lineitem.test';
+INCLUDE 'create_nation.test';
+INCLUDE 'create_orders.test';
+INCLUDE 'create_part.test';
+INCLUDE 'create_partsupp.test';
+INCLUDE 'create_region.test';
+INCLUDE 'create_supplier.test';
+
+INCLUDE 'tpch_q17.test';
+
+
+INCLUDE 'select_star.test';
+INCLUDE 'select_sort.test';
+
+//------------------------------------------------------------------------------
+LOG ' ';
+INCLUDE 'r_FOLD_10_F.test';
+INCLUDE 'r_FOLD_24_W_A_C_ro.test';
+INCLUDE 'r_FOLD_32_W_A_NC_I.test';
+INCLUDE 'r_FOLD_34_W_A_NC_ro.test';
+INCLUDE 'r_FOLD_40_W_L_C_E.test';
+INCLUDE 'r_FOLD_52_W_L_NC_I.test';
+INCLUDE 'r_FOLD_53_W_L_NC_NI.test';
+INCLUDE 'r_FOLD_74_H_A_NC_ro.test';
+
+//------------------------------------------------------------------------------
+LOG ' ';
+INCLUDE 'case_sort1.test';
+INCLUDE 'case_indexScan1.test';
+INCLUDE 'case_cut_sort1.test';
+
+//------------------------------------------------------------------------------
+LOG ' ';
+INCLUDE 'tpch_q1.test';
+//INCLUDE 'tpch_q2.test';
+INCLUDE 'tpch_q3.test';
+INCLUDE 'tpch_q4.test';
+INCLUDE 'tpch_q5.test';
+INCLUDE 'tpch_q6.test';
+INCLUDE 'tpch_q7.test';
+INCLUDE 'tpch_q8.test';
+INCLUDE 'tpch_q9.test';
+INCLUDE 'tpch_q10.test';
+INCLUDE 'tpch_q11.test';
+
+INCLUDE 'tpch_q12.test';
+INCLUDE 'tpch_q13.test';
+INCLUDE 'tpch_q14.test';
+//INCLUDE 'tpch_q15.test';
+INCLUDE 'tpch_q16.test';
+INCLUDE 'tpch_q17.test';
+INCLUDE 'tpch_q18.test';
+
+INCLUDE 'tpch_q19.test';
+//INCLUDE 'tpch_q20.test';
+//INCLUDE 'tpch_q21.test';
+//INCLUDE 'tpch_q22.test';
+
+//------------------------------------------------------------------------------
+LOG ' ';
+INCLUDE 'drop_tables.test';
+
+
+LOG 'End Optimiser Study';
+
+//------------------------------------------------------------------------------
+LOG ' ';
+
+LOG 'Double Checking:';
+
+LOG 'AggregExpr.test';
+INCLUDE '../../../../tests/tests1N4P/Combined/AggregExpr.test';
+LOG 'IndexJoin.test';
+INCLUDE '../../../../tests/tests1N4P/Combined/IndexJoin.test';
+LOG 'operator.test';
+INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
+
+LOG 'End Double Checking';
+
+//------------------------------------------------------------------------------
+
+CLEANUP {
+
+  drop table customer;
+  mute
+
+  drop table supplier;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table partsupp;
+  mute
+
+  drop table part;
+  mute
+
+  drop table region;
+  mute
+
+  drop table lineitem;
+  mute
+
+  drop table nation;
+  mute
+}
+
+--------------------------------------------------------------------------------
+-- end
+--------------------------------------------------------------------------------

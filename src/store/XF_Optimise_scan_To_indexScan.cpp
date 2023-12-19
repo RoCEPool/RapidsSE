@@ -71,12 +71,12 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
   m_pCI->vTransform(__func__, XF_OPTIMISE_SCAN_TO_INDEXSCAN, "morph scan to indexScan"_Stz);
 
   m_pCI->vClearRestart();
-  if (m_pCI->G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {
+  if (m_pCI->G_bEachMainWith2Sub(CK_o_SCAN, CK_t_INDEXLIST, CK_BOUNDS)) {
 
     if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
         m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {
 
-      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
+      m_pCI->G.p_scan->vCard(CK_o_INDEXSCAN);
       bOptRun = true;
 
       m_pCI->G.p_indexList->vChoose_index_For_indexScan();

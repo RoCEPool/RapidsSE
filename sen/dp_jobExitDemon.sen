@@ -16,9 +16,8 @@
     begin
 
       stage stageA on origin :
-          start
+          startDemon
         | jobExit
-        //| metricsUpdate
         | eatAll
         | stageA
 

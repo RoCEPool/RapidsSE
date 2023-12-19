@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Stream,CK_STREAM)
+__pCastFunction_Card(STORE, Card_Stream, CK_s_STREAM)
 __aNewFunction(Card_Stream,CN_CARD)
 __vDeleteFunction(Card_Stream,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Stream,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stream::Card_Stream(void)
-: Card_symbol(CK_STREAM, 2)
+: Card_symbol(CK_s_STREAM, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -43,7 +43,7 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_CROSSJOIN,CK_NONE));
+  RASSERT(pCI->G.p_OP->bIsOne(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE));
   pCI->Next.m_pEmitted = pCI->Next.m_pProject->pSub_emit();
 
   if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit()))
@@ -54,7 +54,7 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
 
   // <scan> or <indexScan>
 
-  if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
+  if (pCI->G.p_OP->bIsOne(CK_o_SCAN, CK_o_INDEXSCAN, CK_NONE)) {
      pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
     return;
   }
@@ -81,7 +81,7 @@ void Card_Stream::vFuse_project_NoViable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_OP->bIsOne(CK_CROSSJOIN,CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_NONE));
+  RASSERT(pCI->G.p_OP->bIsOne(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_SCAN, CK_NONE));
   //RASSERT(! pCI->G.p_emit);
 
 }
@@ -94,7 +94,7 @@ void Card_Stream::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
-    vValidate_mustHave(CK_EMIT, CK_NONE);
+    vValidate_mustHave(CK_t_EMIT, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

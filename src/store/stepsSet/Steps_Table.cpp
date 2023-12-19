@@ -12,7 +12,6 @@
 
 #include "RowBuffer.hpp"
 
-#include "StreamSet.hpp"
 #include "LglPtnMap.hpp"
 
 #include "SkipRoots.hpp"
@@ -566,11 +565,11 @@ void Step::vTableListPartition(void)
   
   s256 sOutput;
   
-  Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+  Table* pTableDef = _pTable(*m_pLogicUnit->m_xpTableDef);
 
-  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+  StreamDef* pStreamDef = pTableDef->pStreamDef();
 
-  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
   LglPtn tLglPtn;
   tLglPtn = m_pDataStack->iPopAsInt(__func__);
@@ -584,7 +583,7 @@ void Step::vTableListPartition(void)
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
                     tLglPtn.iAsI8(),iNodeId,i_TablePtn);
 
-    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       sOutput.azChar(),
                                       C_VARGS_END);

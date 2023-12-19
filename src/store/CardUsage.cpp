@@ -53,23 +53,23 @@ bool CardUsage::bAddCombined(Card_OP* p_OP)
 
   switch (e_OP) {
 
-    case CK_AGGREG:
-    case CK_CROSSJOIN:
-    case CK_FILTER:
-    case CK_GBYAGG:
-    case CK_HAVING:
-    case CK_INDEXJOIN:
-    case CK_INDEXSCAN:
-    case CK_KEYEXISTS:
-    case CK_KEYNOTEXISTS:
-    case CK_LIMIT:
-    case CK_ORDAGG:
-    case CK_PROJECT:
-    case CK_WHERE:
-    case CK_SCAN:
-    case CK_SORT:
-    case CK_TABLE:
-    case CK_TOP:
+    case CK_o_AGGREG:
+    case CK_o_CROSSJOIN:
+    case CK_o_FILTER:
+    case CK_o_GBYAGG:
+    case CK_o_HAVING:
+    case CK_o_INDEXJOIN:
+    case CK_o_INDEXSCAN:
+    case CK_o_KEYEXISTS:
+    case CK_o_KEYNOTEXISTS:
+    case CK_o_LIMIT:
+    case CK_o_ORDAGG:
+    case CK_o_PROJECT:
+    case CK_o_WHERE:
+    case CK_o_SCAN:
+    case CK_o_SORT:
+    case CK_s_TABLE:
+    case CK_o_TOP:
       break;
 
     default:
@@ -90,23 +90,23 @@ bool CardUsage::bAddNext(Card_OP* p_OP)
 
   switch (e_OP) {
 
-    case CK_AGGREG:
-    case CK_CROSSJOIN:
-    case CK_FILTER:
-    case CK_GBYAGG:
-    case CK_HAVING:
-    case CK_INDEXJOIN:
-    case CK_INDEXSCAN:
-    case CK_KEYEXISTS:
-    case CK_KEYNOTEXISTS:
-    case CK_LIMIT:
-    case CK_ORDAGG:
-    case CK_PROJECT:
-    case CK_WHERE:
-    case CK_SCAN:
-    case CK_SORT:
-    case CK_TABLE:
-    case CK_TOP:
+    case CK_o_AGGREG:
+    case CK_o_CROSSJOIN:
+    case CK_o_FILTER:
+    case CK_o_GBYAGG:
+    case CK_o_HAVING:
+    case CK_o_INDEXJOIN:
+    case CK_o_INDEXSCAN:
+    case CK_o_KEYEXISTS:
+    case CK_o_KEYNOTEXISTS:
+    case CK_o_LIMIT:
+    case CK_o_ORDAGG:
+    case CK_o_PROJECT:
+    case CK_o_WHERE:
+    case CK_o_SCAN:
+    case CK_o_SORT:
+    case CK_s_TABLE:
+    case CK_o_TOP:
       break;
 
     default:
@@ -127,23 +127,23 @@ bool CardUsage::bAddStage(Card_OP* p_OP)
 
   switch (e_OP) {
 
-    case CK_AGGREG:
-    case CK_CROSSJOIN:
-    case CK_FILTER:
-    case CK_GBYAGG:
-    case CK_HAVING:
-    case CK_INDEXJOIN:
-    case CK_INDEXSCAN:
-    case CK_KEYEXISTS:
-    case CK_KEYNOTEXISTS:
-    case CK_LIMIT:
-    case CK_ORDAGG:
-    case CK_PROJECT:
-    case CK_WHERE:
-    case CK_SCAN:
-    case CK_SORT:
-    case CK_TABLE:
-    case CK_TOP:
+    case CK_o_AGGREG:
+    case CK_o_CROSSJOIN:
+    case CK_o_FILTER:
+    case CK_o_GBYAGG:
+    case CK_o_HAVING:
+    case CK_o_INDEXJOIN:
+    case CK_o_INDEXSCAN:
+    case CK_o_KEYEXISTS:
+    case CK_o_KEYNOTEXISTS:
+    case CK_o_LIMIT:
+    case CK_o_ORDAGG:
+    case CK_o_PROJECT:
+    case CK_o_WHERE:
+    case CK_o_SCAN:
+    case CK_o_SORT:
+    case CK_s_TABLE:
+    case CK_o_TOP:
       break;
 
     default:

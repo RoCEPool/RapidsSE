@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : toLglPtnRow_StartMarker \handler
 
+  EV_M_START_handler
+
   <tableNm> op__table discard
 
   toLglPtnRow[].create
-
-  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -39,6 +39,14 @@
   then
  */
   PipeIn[]\clear to RowBuffer[]
+
+  // handle BT_DATA only
+  RowBuffer[].bufferType@ BT_DATA != if
+    RowBuffer[].pipeout
+    true
+    exit
+  then
+
   Table[] RowBuffer[] toLglPtnRow[].convert
   RowBuffer[].delete
 

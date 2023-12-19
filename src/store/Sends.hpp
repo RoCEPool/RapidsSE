@@ -47,7 +47,6 @@ namespace STORE
     bool bLeavingDone(void);
     bool bStartDone(void);
     bool bStreamDefDone(void);
-    bool bStreamDefRhtDone(void);
     bool bTriggeredDone(void);
     
     void vIncCancelling(void);

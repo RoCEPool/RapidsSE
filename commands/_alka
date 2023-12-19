@@ -2,98 +2,35 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-_lineitem
-_nation_replicated
-_orders_custkey
-_supplier
+create table t2 (
+v1 varchar,
+v2 varchar,
+v3 varchar,
+v4 varchar,
+v5 varchar,
+v6 varchar,
+v7 varchar,
+v8 varchar,
+v9 varchar,
+v10 varchar,
+v11 varchar,
+v12 varchar,
+v13 varchar,
+v14 varchar,
+v15 varchar,
+v16 varchar,
+v17 varchar,
+v18 varchar,
+v19 varchar,
+v20 varchar,
+v21 varchar,
+v22 varchar
+);
 
-create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
-create        index IxN_NATIONKEY   on Nation   (N_NATIONKEY);
-create        index IxO_ORDERKEY    on Orders   (O_ORDERKEY);
-create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
+load t2 "../DATA/x.csv";
 
-/time loadReplicated nation   "<tpch_dir>/nation.<suffix>"   ;
-/time load supplier           "<tpch_dir>/supplier.<suffix>" ;
-/time load orders             "<tpch_dir>/orders.<suffix>"   ;
-/time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
-
-/weaved
-/pipeline_def
-/optimise_passthru
-pipeline Query21
-begin
-  stage S00 on origin :
-    start
-    | pulse once
-    | next
-
-  stage S01 on all partitions :
-    scan rapidsse public Lineitem
-    | filter " type BOOLEAN  $13 $12 > "
-    | filter "type BOOLEAN L_SUPPKEY 5 =="
-    | project " type INTEGER as L_ORDERKEY_L1 $1 , type INTEGER as L_SUPPKEY_L1 $3 "
-    | combined 0
-    | next
-
-  stage S02 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 L_ORDERKEY_L1 =="
-        " type BOOLEAN  L_SUPPKEY_L1 L_SUPPKEY  != "
-        | project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_SUPPKEY_L1 $2 , type INTEGER L_SUPPKEY"
-    | gbyAgg " groupBy type integer L_ORDERKEY ,
-                       type integer L_SUPPKEY
-               aggregates type integer as L_ORDERKEY $K1 ,
-                          type integer as L_SUPPKEY $K2"
-    | combined 0
-    | next
-
-  stage S03 on all partitions :
-    indexJoin Orders IxO_ORDERKEY "BOUND $I1 L_ORDERKEY =="
-    | filter " type BOOLEAN  O_ORDERSTATUS 'F'  == "
-    | project " type INTEGER as L_SUPPKEY L_SUPPKEY "
-    | combined 0
-    | next
-
-  stage S04 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as S_NAME S_NAME "
-    | combined 0
-    | next
-
-  stage S05 on all partitions :
-    indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
-       " type BOOLEAN N_NAME 'SAUDI ARABIA' ==  "
-    | gbyAgg " groupBy  type VARCHAR as S_NAME $2 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
-    | combined 0
-    | next
 /*
-  stage S06 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
-    | combined 0
-    | next
-
-  stage S07 on origin :
-    gbyAgg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER as numwait )  $2 sum  "
-    | combined 0
-    | next
-
-  stage S08 on all nodes :
-    sort " type VARCHAR as s_name $1 ASC  "
-    //sort " type INTEGER $2 DESC  , type VARCHAR as s_name $1 ASC  "
-    //| limit 100
-    | combined 0
-    | next
-
-stage S09 on all nodes :
-    sort " type INTEGER s_nationkey "
-    //sort " type INTEGER $2 DESC  , type VARCHAR as s_name $1 ASC  "
-    //| limit 100
-    | combined 0
-    | next
+/pipelineName = 'alka'
+/keepCodeFile
+select v1 from t2;
 */
-  stage S10 on origin :
-    output
-    | sink
-    | first
-end ;
-
-// Supplier#000000005 | Gcdm2rJRzl5qlTVzc | Supplier#000000005

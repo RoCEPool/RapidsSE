@@ -2,30 +2,20 @@
 /* _ordAgg                                                                    */
 /*============================================================================*/
 
-_lineitem;
-create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
-load lineitem "../DATA/TPCH/lineitem10.csv";
 /*
-///useCodeFile = "_unnamed__NODE1_2"
-/optimiser_trace
-/keepCodeFile
+/hasCodeFile
+/UseCodeFile = "ORDAGG_NODE1_2"
+select l_orderkey, sum(l_quantity) from lineitem group by l_orderkey having sum(l_quantity) > 100.00;
+*/
+__TPCH_SCHEMA
+
+trackMemory;
+
 /pipeline_def
 /weaved
-select l_orderkey, sum(l_quantity) from lineitem where l_orderkey >= 2 group by l_orderkey ;
-
-
-(2,38.00)
-(3,116.00)
-/HasCodeFile
-/UseCodeFile = 'ordAggExp'
-/HasCodeFile
-/UseCodeFile = '_unnamed__NODE1_2'
-*/
-
 /optimise_passthru
-
 /keepCodeFile
-/pipeline_def
+/PipelineName = "ORDAGG"
 pipeline Q
 begin
   stage stageStart on origin :
@@ -33,21 +23,27 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexScan lineitem IxL_ORDERKEY "lbound $I1 2 >="
-    //| ordAgg " ORDGROUPBY type integer $1
-    //           aggregates type integer $K1 , type decimal as total )  $5 sum  "
-    | filter "type boolean $1 3 !="
-    | gbyAgg " groupby type integer $1
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg " ORDGROUPBY type integer $1
                aggregates type integer $K1 , type decimal as total )  $5 sum  "
-    //| aggreg "type decimal as total )  $5 sum"
     | combined 0
     | next
+/*
+
+  stage stageB on all partitions :
+    filter " type BOOLEAN  $2 180.0  >  "
+    | combined 0
+    | next
+*/
   stage stageLast on origin :
     output
     | sink
     | first
   end ;
 
+MemoryLeaks;
+
+//rows: 1448
 
 /*============================================================================*/
 /* end                                                                        */

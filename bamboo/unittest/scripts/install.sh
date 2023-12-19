@@ -104,6 +104,84 @@ function processArgs() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Create a symbolic link from <install_dir>/DATA to <repo_dir>/DATA
+## for each node in the cluster.
+## Note: Assumes all nodes are on the same machine.
+## Params: None
+
+function createDataSymlink() {
+
+  for node in "${NODE_LIST[@]}"; do
+
+    # Get the installation dir of the node
+    INSTALL_DIR="$(nodeCfgGetValue "${node}" "dir")"
+
+    if [ -z "${INSTALL_DIR:-}" ]; then
+      errorExit "Couldn't get the installation directory for node ${node}"
+    fi
+
+    DATA_SYMLINK_SRC="${INSTALL_DIR}/DATA"
+    DATA_SYMLINK_DEST="$(realpath "${PROJ_ROOT}/DATA")"
+
+    # Check if the symbolic link already exists
+
+    # If the link exists then lets delete and recreate it.
+    if [ -e "${DATA_SYMLINK_SRC}" ]; then
+      # Is it a symbolic link?
+      if [ -h "${DATA_SYMLINK_SRC}" ]; then
+        rm -f "${DATA_SYMLINK_SRC}"
+      else
+        errorExit "Expected to find a symbolic link at path: ${DATA_SYMLINK_SRC}"
+      fi
+    fi
+
+    echo "Making the symbolic link from ${DATA_SYMLINK_SRC} to ${DATA_SYMLINK_DEST}"
+    ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function createTpchSymlink() {
+
+  # Find the TPC-H data on the system
+  TPCH_SYMLINK_DEST=""
+  if ! TPCH_SYMLINK_DEST="$(getTpchDataDir)"; then
+    errorExit "Could not find the TPC-H SF1 data on the system."
+  fi
+
+  # Check if the data actually exists
+  if [ ! -d "${TPCH_SYMLINK_DEST}" ]; then
+    errorExit "TPC-H SF1 data does not exist at: ${TPCH_SYMLINK_DEST}"
+  fi
+
+
+  for node in "${NODE_LIST[@]}"; do
+    # Get the installation dir of the node
+    INSTALL_DIR="$(nodeCfgGetValue "${node}" "dir")"
+
+    if [ -z "${INSTALL_DIR:-}" ]; then
+      errorExit "Couldn't get the installation directory for node ${node}"
+    fi
+
+    TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
+
+    # If the link exists then lets delete and recreate it.
+    if [ -e "${TPCH_SYMLINK_SRC}" ]; then
+      # Is it a symbolic link?
+      if [ -h "${TPCH_SYMLINK_SRC}" ]; then
+        rm -f "${TPCH_SYMLINK_SRC}"
+      else
+        errorExit "Expected to find a symbolic link at path: ${TPCH_SYMLINK_SRC}"
+      fi
+    fi
+
+    echo "Making the symbolic link from ${TPCH_SYMLINK_SRC} to ${TPCH_SYMLINK_DEST}"
+    ln -s "${TPCH_SYMLINK_DEST}" "${TPCH_SYMLINK_SRC}"
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 ###############################################################################
@@ -161,66 +239,12 @@ INSTALLER="$(realpath "${INSTALLER}")"
 # To do this, load the config (it is just a bash script file)
 loadClusterConfig
 
-# Get the name of the first node
-FIRST_NODE="${NODE_LIST[0]}"
+createDataSymlink
 
-# Get the installation dir of the first node
-INSTALL_DIR="$(nodeCfgGetValue "${FIRST_NODE}" "dir")"
-
-if [ -z "${INSTALL_DIR:-}" ]; then
-  errorExit "Couldn't get the installation directory for node ${FIRST_NODE}"
-fi
-
-readonly DATA_SYMLINK_SRC="${INSTALL_DIR}/DATA"
-readonly DATA_SYMLINK_DEST="$(realpath "${PROJ_ROOT}/DATA")"
-
-# Check if the symbolic link already exists
-
-# If the link exists then lets delete and recreate it.
-if [ -e "${DATA_SYMLINK_SRC}" ]; then
-  # Is it a symbolic link?
-  if [ -h "${DATA_SYMLINK_SRC}" ]; then
-    rm -f "${DATA_SYMLINK_SRC}"
-  else 
-    errorExit "Expected to find a symbolic link at path: ${DATA_SYMLINK_SRC}"
-  fi
-fi
-
-echo "Making the symbolic link from ${DATA_SYMLINK_SRC} to ${DATA_SYMLINK_DEST}"
-ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
-
-#
 # Now let's do the same but for the ../TPCH symbolic link.
 # This data is much bigger (SF1) so it's not checked in.
 # Instead we must have it somewhere on the system.
-#
-
-readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
-
-TPCH_SYMLINK_DEST=""
-if ! TPCH_SYMLINK_DEST="$(getTpchDataDir)"; then
-  errorExit "Could not find the TPC-H SF1 data on the system."
-fi
-
-# Check if the data actually exists
-if [ ! -d "${TPCH_SYMLINK_DEST}" ]; then
-  errorExit "TPC-H SF1 data does not exist at: ${TPCH_SYMLINK_DEST}"
-fi
-
-# Check if the symbolic link already exists
-
-# If the link exists then lets delete and recreate it.
-if [ -e "${TPCH_SYMLINK_SRC}" ]; then
-  # Is it a symbolic link?
-  if [ -h "${TPCH_SYMLINK_SRC}" ]; then
-    rm -f "${TPCH_SYMLINK_SRC}"
-  else
-    errorExit "Expected to find a symbolic link at path: ${TPCH_SYMLINK_SRC}"
-  fi
-fi
-
-echo "Making the symbolic link from ${TPCH_SYMLINK_SRC} to ${TPCH_SYMLINK_DEST}"
-ln -s "${TPCH_SYMLINK_DEST}" "${TPCH_SYMLINK_SRC}"
+createTpchSymlink
 
 # Set this flag that the script completed successfully.
 # This will be picked up in the exit hook.

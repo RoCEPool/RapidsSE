@@ -186,8 +186,6 @@ rows:
   (10,135)
   (20,1)
 
-// TODO V2 : ORDAGG
-/*
 /optimise_passthru 
 pipeline Query13
 begin
@@ -240,6 +238,9 @@ rows:
   (10,135)
   (20,1)
 
+// TODO V2 : (_ray178)
+/*
+/pipeline_def
 /optimise_passthru 
 pipeline Query13
 begin
@@ -262,7 +263,7 @@ begin
     | next
 
   stage S03 on all partitions :
-    ordAgg " ordGroupBy  type INTEGER as C_CUSTKEY $1
+    gbyAgg " GroupBy  type INTEGER as C_CUSTKEY $1
              aggregates  type INTEGER $K1 ,
                          type INTEGER ) O_ORDERKEY count  "
     | combined 0
@@ -294,7 +295,11 @@ begin
    (9,11)
    (10,135)
    (20,1)
+*/
 
+// TODO V2 (_ray178)
+// The fused project in S02 should include the columns required by the constraint
+/*
 /optimise_passthru 
 pipeline Query13
 begin

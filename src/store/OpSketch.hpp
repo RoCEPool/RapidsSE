@@ -68,6 +68,8 @@ namespace STORE
     ColMap*    m_pColMap;
 		ColPpg*    m_pColPpg;
 
+		KeyMap*    m_pKeyMap;
+
 
     // stencils
     eSR m_eStencilFrom;
@@ -121,7 +123,9 @@ namespace STORE
 		void vCopyColInj(ColInj* pColsInj);
     void vCopyColMap(ColMap* pColMap);
 		void vCopyColPpg(ColPpg* pColPpg);
+		void vCopyKeyMap(KeyMap* pKeyMap);
 
+		void vCopyConstraintStack(TypedStack* pConstraintStack);
     void vCopyInitStack(TypedStack* pInitStack);
 
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);

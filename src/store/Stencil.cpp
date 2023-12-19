@@ -531,7 +531,6 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
-  StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
 	// get the colInj
 	ColInj* pColInj = pOpDef->m_pColInj;
@@ -555,10 +554,9 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
-  // HACK-OPTIMISER
   // set the streamDefRht
   Table* pTable = pIndex->pTable();
-  pStreamDefRht = pTable->pStreamDef();
+  StreamDef* pStreamDefRht = pTable->pStreamDef();
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
@@ -821,14 +819,9 @@ OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   // get join constraint from OP
   Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
 
-  // get the streamDefLft
+  // get the streamDefLft and streamDefOut
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
-
-  //HACK-OPTIMISER
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
-
-  //HACK-OPTIMISER
-  StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
   // get the index
   Index *pIndex = pOpDef->m_pIndex_indexSemi;
@@ -837,11 +830,10 @@ OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   // generate the code for the semi-join
   pOpSketch = new OpSketch(pStageDef, i_Op, sJoinExpr, m_eHandlerKind, SK_SEMIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
 
-  //HACK-OPTIMISER
   // set the streamDefRht
   // pOpSketch->vStreamDefRht(pStreamDefRht);
   Table* pTable = pIndex->pTable();
-  pStreamDefRht = pTable->pStreamDef();
+  StreamDef* pStreamDefRht = pTable->pStreamDef();
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
@@ -920,6 +912,9 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
   // get the ordered groupBy aggregate expr from OpDef
   Stz* sOrdAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
+	// get the key map
+	KeyMap* pKeyMap = pOpDef->m_pKeyMap;
+
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
@@ -937,11 +932,25 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 	// set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
-	// generate the expression stacks
+	// set the colMap (key information)
+
+	// set the keyMap (key information)
+	pOpSketch->vCopyKeyMap(pKeyMap);
+
+	// generate the expression stack
 	pOpSketch->vGenerateExprStacks(sOrdAggExpr);
 
-//	pOpSketch->vGenerateExprStacks("ORDGROUPBY type integer as C0_l_orderkey $1\n"
-//																 " aggregates type integer as C0_l_orderkey $K1 , type decimal as C1_COL2 )  $5 sum"_Stz);
+	// generate the having cluase constraint expression stack
+	if ( pOpDef->pArgDef_constraint() ) {
+
+		// get having constraint from OP
+		Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
+
+		pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
+	}
+
+	// for testing
+	//pOpSketch->vGenerateExprStacks(" type BOOLEAN C1_TOTAL 100.00  >  "_Stz, true /* constraint */);
 
   return pOpSketch;
 }
@@ -1008,9 +1017,6 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
 
-  //HACK-OPTIMISER
-  StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
-
   // get the index
   Index *pIndex = pOpDef->m_pIndex_indexSemi;
 
@@ -1018,11 +1024,9 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   // generate the code for the semi-join
   pOpSketch = new OpSketch(pStageDef, i_Op, sJoinExpr, m_eHandlerKind, SK_ANTIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
 
-  //HACK-OPTIMISER
   // set the streamDefRht
-  // pOpSketch->vStreamDefRht(pStreamDefRht);
   Table* pTable = pIndex->pTable();
-  pStreamDefRht = pTable->pStreamDef();
+	StreamDef* pStreamDefRht = pTable->pStreamDef();
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
@@ -1101,7 +1105,7 @@ OpSketch* Stencil::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   Stz* sGbyAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the columns required
-  ColMap* pColsMap = pOpDef->m_pColMap_gbyAgg;
+  ColMap* pColMap = pOpDef->m_pColMap_gbyAgg;
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -1127,7 +1131,7 @@ OpSketch* Stencil::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the colsMap (payload information)
-  pOpSketch->vCopyColMap(pColsMap);
+  pOpSketch->vCopyColMap(pColMap);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sGbyAggExpr);
@@ -1152,7 +1156,7 @@ OpSketch* Stencil::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   Stz* sSortExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the columns required
-  ColMap* pColsMap = pOpDef->m_pColMap_sort;
+  ColMap* pColMap = pOpDef->m_pColMap_sort;
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -1178,7 +1182,7 @@ OpSketch* Stencil::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the colsMap (payload information)
-  pOpSketch->vCopyColMap(pColsMap);
+  pOpSketch->vCopyColMap(pColMap);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sSortExpr);
@@ -1312,6 +1316,13 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pH
     // copy the colMap
     pOpSketch->vCopyColMap(pLastOp->m_pColMap);
   }
+
+	if (pLastOp->eSketchKind() == SK_ORDAGG) {
+
+		// copy the constraint expression stack
+		if (pLastOp->m_pConstraintStack->nValues())
+		pOpSketch->vCopyConstraintStack(pLastOp->m_pConstraintStack);
+	}
 
   // set the labels in the opSketch
   sLabel = "L_AddRowToTubPot"_Stz;

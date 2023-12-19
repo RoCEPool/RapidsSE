@@ -10,32 +10,32 @@
 : lsPtns_action
 
   // find the __ table
-  <streamDef> op__tableDef_streamSet assert
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
-  streamSetTable[] StreamDefLft[].new
+  TableDef[] StreamDefLft[].new
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  streamSetTable[] streamSet[].new
+  BT_DATA TableDef[] RowBuffer[].new
 
   // get a row per partition on this node
   [grid].ptnsPerNode 0 do
 
     I [grid].tablePtnToPtnNo
-      streamSetTable[] streamSet[].addListPartitions  not if
-        StreamSet[].pipeOut
-        streamSetTable[] streamSet[].new
+      TableDef[] RowBuffer[].addListPartitions  not if
+        RowBuffer[].pipeOut
+        BT_DATA TableDef[] RowBuffer[].new
         I [grid].tablePtnToPtnNo
-        streamSetTable[] StreamSet[].addListPartitions assert
+        TableDef[] RowBuffer[].addListPartitions assert
       then
 
   loop
 
   // pipeout the infoset
-  streamSet[].pipeOut
+  RowBuffer[].pipeOut
 
   true
 ;

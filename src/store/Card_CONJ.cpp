@@ -107,7 +107,7 @@ bool Card_CONJ::bConjRecursive(std::function<bool(Card_CONJ* p_conj, bool bUpwar
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJ::bContains_sqyCall(CardIter* pCI)
+bool Card_CONJ::bContains_sqyCall(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -115,8 +115,9 @@ bool Card_CONJ::bContains_sqyCall(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (pCI->m_pBench->bIsSqyNm(xKid.p_term()->szFacet(SF_NONE)))
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_SQY_NM)) {
       return true;
+    }
 
   return false;
 }
@@ -335,8 +336,8 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     Symbol x_Symbol_expCol1;
     if (p_term) {
-      x_Symbol_expCol1.vFacets(p_term->pSymbol());
-      p_term1->pSymbol()->vFacets(&x_Symbol_expCol1);
+      x_Symbol_expCol1.vCastFacets(p_term->pSymbol());
+      p_term1->pSymbol()->vCastFacets(&x_Symbol_expCol1);
     }
     else {
       //x_Symbol_expCol1.vSet_Col_No(1);
@@ -346,7 +347,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    p_term1->pSymbol()->vTypeId(p_expr_found->xTypeId());
+    p_term1->vCast(p_expr_found->xCast());
 
    // pCI->vPrintBoard(__LINE__);
     return;
@@ -365,18 +366,18 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     if (p_term) {
       Symbol x_Symbol_expCol1;
-      x_Symbol_expCol1.vFacets(p_term->pSymbol());
-      p_term_head->pSymbol()->vFacets(&x_Symbol_expCol1);
+      x_Symbol_expCol1.vCastFacets(p_term->pSymbol());
+      p_term_head->pSymbol()->vCastFacets(&x_Symbol_expCol1);
     }
     else {
       Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-      p_term_head->pSymbol()->vFacets(&x_Symbol_expCol1);
+      p_term_head->pSymbol()->vCastFacets(&x_Symbol_expCol1);
     }
 
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    p_term_head->pSymbol()->vTypeId(p_expr_found->xTypeId());
+    p_term_head->vCast(p_expr_found->xCast());
 
    // pCI->vPrintBoard(__LINE__);
 
@@ -396,8 +397,8 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
     if (p_term)
-      x_Symbol_expCol1.vFacetsPpy(p_term->pSymbol());
-    p_term_head->pSymbol()->vFacetsPpy(&x_Symbol_expCol1);
+      x_Symbol_expCol1.vCastFacetsPpy(p_term->pSymbol());
+    p_term_head->pSymbol()->vCastFacetsPpy(&x_Symbol_expCol1);
     return;
   }
 
@@ -436,7 +437,7 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
   for (i8 i_Test = 0 ; i_Test < pCI->G.pDeck->nChildCards() ; i_Test++) {
     Card *pTestCard = pCI->G.pDeck->pGetChild(i_Test);
 
-    if (pTestCard->bIsCard(CK_FOLD))
+    if (pTestCard->bIsCard(CK_c_FOLD))
       i_Fold = i_Test;
   }
 
@@ -446,14 +447,14 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
   for (/* none */ ; /* none */ ; i_Main++) {
     Card *pMainCard = pCI->G.pDeck->pGetChild(i_Main);
 
-    if (CK_WHERE == pMainCard->eCard()) {
+    if (CK_o_WHERE == pMainCard->eCard()) {
       delete pScope;
       return nullptr;
     }
 
     eCK eMainCard = pMainCard->eCard();
 
-    if (CK_FROM == eMainCard) {
+    if (CK_o_FROM == eMainCard) {
       Card_Table* p_table = pMainCard->pSub_table();
       Symbol* pSymbol_table = p_table->pSymbol();
       pScope->vInScope(pSymbol_table,true);
@@ -485,7 +486,7 @@ void Card_CONJ::vShortForm(String* pString)
       xKid.p_term()->vShortForm(pString, " "_Stz);
     }
     else {
-      xKid.p_CONJUNCTION()->vShortForm(pString);
+      xKid.p_CONJ()->vShortForm(pString);
     }
   }
 

@@ -32,7 +32,7 @@ create index IxO_ORDERDATE  ON ${testName2}_Orders  (O_ORDERDATE)  ;
 affected: 0
 
 // load the table
-load ${testName2}_orders "../TPCH/SF_0001/orders.csv";
+load ${testName2}_orders "../TPCH/SF_0001/orders.tbl";
 success
 
 select count(*) from ${testName2}_orders;

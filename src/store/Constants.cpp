@@ -9,7 +9,6 @@
 #include "RowSingle.hpp"
 #include "RowBuffer.hpp"
 
-#include "InfoSet.hpp"
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
@@ -210,7 +209,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_BPAOBJECTS"_Stz,    C_TDEF_BPAOBJECTS);
   vAddConstant("C_TDEF_BPAREGIONS"_Stz,    C_TDEF_BPAREGIONS);
-  vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
   vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
   vAddConstant("C_TDEF_COMMAND"_Stz,       C_TDEF_COMMAND);
   vAddConstant("C_TDEF_COMPILEERRORS"_Stz, C_TDEF_COMPILEERRORS);
@@ -270,8 +268,40 @@ void Constants::vAddConstantsCpp(void)
   /*  4 */ vAddConstant("AT_RANGE"_Stz,    AT_RANGE);
   /*  5 */ vAddConstant("AT_SCAN"_Stz,     AT_SCAN);
   /*  6 */ vAddConstant("AT_ENUMS"_Stz,    AT_ENUMS);
-  
-  // CN_ : class number
+
+	// BT_ : buffer types
+	/*  0 */ vAddConstant("BT_NONE"_Stz,          BT_NONE);
+	/*  1 */ vAddConstant("BT_AFFECTEDROWS"_Stz,  BT_AFFECTEDROWS);
+	/*  3 */ vAddConstant("BT_COMMAND"_Stz,       BT_COMMAND);
+	/*  4 */ vAddConstant("BT_COMPILEERRORS"_Stz, BT_COMPILEERRORS);
+	/*  5 */ vAddConstant("BT_COUNT"_Stz,         BT_COUNT);
+	/*  6 */ vAddConstant("BT_DATA"_Stz,          BT_DATA);
+	/*  6 */ vAddConstant("BT_DEREFMETRICS"_Stz,  BT_DEREFMETRICS);
+	/*  7 */ vAddConstant("BT_EXECERRORS"_Stz,    BT_EXECERRORS);
+	/*  8 */ vAddConstant("BT_EXPLAIN"_Stz,       BT_EXPLAIN);
+	/*  9 */ vAddConstant("BT_FORKCOMMAND"_Stz,   BT_FORKCOMMAND);
+
+	/*  9 */ vAddConstant("BT_JOBOPERANDS"_Stz,   BT_JOBOPERANDS);
+	/*  9 */ vAddConstant("BT_JOBOPERATORS"_Stz,  BT_JOBOPERATORS);
+	/*  9 */ vAddConstant("BT_JOBMETRICS"_Stz,    BT_JOBMETRICS);
+	/*  9 */ vAddConstant("BT_JOBNETDISSECT"_Stz, BT_JOBNETDISSECT);
+	/*  9 */ vAddConstant("BT_JOBNETWORK"_Stz,    BT_JOBNETWORK);
+
+
+	/* 10 */ vAddConstant("BT_LOADRESULT"_Stz,    BT_LOADRESULT);
+	/* 11 */ vAddConstant("BT_LOCKSTATS"_Stz,     BT_LOCKSTATS);
+	/* 12 */ vAddConstant("BT_NODEINFO"_Stz,      BT_NODEINFO);
+	/* 13 */ vAddConstant("BT_PAGEINREQUEST"_Stz, BT_PAGEINREQUEST);
+	/* 14 */ vAddConstant("BT_PATH"_Stz,          BT_PATH);
+	/* 15 */ vAddConstant("BT_PROGRESSUNITS"_Stz, BT_PROGRESSUNITS);
+	/* 16 */ vAddConstant("BT_PROMPTOUT"_Stz,     BT_PROMPTOUT);
+	/* 17 */ vAddConstant("BT_SEEKOFFSETS"_Stz,   BT_SEEKOFFSETS);
+	/* 18 */ vAddConstant("BT_TOTALUNITS"_Stz,    BT_TOTALUNITS);
+	/* 19 */ vAddConstant("BT_WARNINGS"_Stz,      BT_WARNINGS);
+
+	/* 20 */ vAddConstant("BT_ENUMS"_Stz,         BT_ENUMS);
+
+	// CN_ : class number
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_REJECTJOB"_Stz,    CN_REJECTJOB);
@@ -572,24 +602,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
   /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
-  // OI_ : operator infoset
-  /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
-  /*  0 */ vAddConstant("OI_AFFECTEDROWS"_Stz,  OI_AFFECTEDROWS);
-  /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
-  /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMAND);
-  /*  0 */ vAddConstant("OI_COMPILEERRORS"_Stz, OI_COMPILEERRORS);
-  /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
-  /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
-  /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
-  /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
-  /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
-  /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
-  /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
-  /*  0 */ vAddConstant("OI_PROGRESSUNITS"_Stz, OI_PROGRESSUNITS);
-  /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
-  /*  0 */ vAddConstant("OI_TOTALUNITS"_Stz,    OI_TOTALUNITS);
-  /*  0 */ vAddConstant("OI_WARNINGS"_Stz,      OI_WARNINGS);
-
   // PD_ : pipe direction
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
   /*  0 */ vAddConstant("PD_PIPE_IN"_Stz,   PD_PIPE_IN);
@@ -701,46 +713,14 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_NONE"_Stz,              EV_NONE);
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
-  /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
-  /*  0 */ vAddConstant("EV_D_GRID"_Stz,            EV_D_GRID);
-  /*  0 */ vAddConstant("EV_D_INDEX"_Stz,           EV_D_INDEX);
   /*  0 */ vAddConstant("EV_D_INDEXDEF"_Stz,        EV_D_INDEXDEF);
-  /*  0 */ vAddConstant("EV_D_JOB"_Stz,             EV_D_JOB);
-  /*  0 */ vAddConstant("EV_D_METAGET"_Stz,         EV_D_METAGET);
-  /*  0 */ vAddConstant("EV_D_NAMEDBUFFER"_Stz,     EV_D_NAMEDBUFFER);
-  /*  0 */ vAddConstant("EV_D_OP"_Stz,              EV_D_OP);
-  /*  0 */ vAddConstant("EV_D_OTHEROPERAND"_Stz,    EV_D_OTHEROPERAND);
   /*  0 */ vAddConstant("EV_D_PARCEL"_Stz,          EV_D_PARCEL);
   /*  0 */ vAddConstant("EV_D_PAYLOAD"_Stz,         EV_D_PAYLOAD);
   /*  0 */ vAddConstant("EV_D_PLANOPERAND"_Stz,     EV_D_PLANOPERAND);
-  /*  0 */ vAddConstant("EV_D_PROFILE"_Stz,         EV_D_PROFILE);
   /*  0 */ vAddConstant("EV_D_ROWBUFFER"_Stz,       EV_D_ROWBUFFER);
-  /*  0 */ vAddConstant("EV_D_SRTBUFFER"_Stz,       EV_D_SRTBUFFER);
   /*  0 */ vAddConstant("EV_D_STREAMDEF"_Stz,       EV_D_STREAMDEF);
-  /*  0 */ vAddConstant("EV_D_STREAMDEFRHT"_Stz,    EV_D_STREAMDEFRHT);
-  /*  0 */ vAddConstant("EV_D_STREAMSET"_Stz,       EV_D_STREAMSET);
   /*  0 */ vAddConstant("EV_D_TABLE"_Stz,           EV_D_TABLE);
   /*  0 */ vAddConstant("EV_D_TABLEPTN"_Stz,        EV_D_TABLEPTN);
-  /*  0 */ vAddConstant("EV_D_JOBMETRICS"_Stz,      EV_D_JOBMETRICS);
-  /*  0 */ vAddConstant("EV_D_PAGINGMETRICS"_Stz,   EV_D_PAGINGMETRICS);
-
-  /*  0 */ vAddConstant("EV_I_AFFECTEDROWS"_Stz,    EV_I_AFFECTEDROWS);
-  /*  0 */ vAddConstant("EV_I_CALLPIPELINE"_Stz,    EV_I_CALLPIPELINE);
-  /*  0 */ vAddConstant("EV_I_COMMAND"_Stz,         EV_I_COMMAND);
-  /*  0 */ vAddConstant("EV_I_COMPILEERRORS"_Stz,   EV_I_COMPILEERRORS);
-  /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);
-  /*  0 */ vAddConstant("EV_I_EXECERRORS"_Stz,      EV_I_EXECERRORS);
-  /*  0 */ vAddConstant("EV_I_FORKCOMMAND"_Stz,     EV_I_FORKCOMMAND);
-  /*  0 */ vAddConstant("EV_I_LOADRESULT"_Stz,      EV_I_LOADRESULT);
-  /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
-  /*  0 */ vAddConstant("EV_I_NODEINFO"_Stz,        EV_I_NODEINFO);
-  /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
-  /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
-  /*  0 */ vAddConstant("EV_I_PROGRESSUNITS"_Stz,   EV_I_PROGRESSUNITS);
-  /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);
-  /*  0 */ vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
-  /*  0 */ vAddConstant("EV_I_TOTALUNITS"_Stz,      EV_I_TOTALUNITS);
-  /*  0 */ vAddConstant("EV_I_WARNINGS"_Stz,        EV_I_WARNINGS);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);
   /*  0 */ vAddConstant("EV_M_CANCELLING"_Stz,      EV_M_CANCELLING);
@@ -758,7 +738,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_ERRORING"_Stz,        EV_M_ERRORING);
   /*  0 */ vAddConstant("EV_M_EXITING"_Stz,         EV_M_EXITING);
   /*  0 */ vAddConstant("EV_M_EXITED"_Stz,          EV_M_EXITED);
-  /*  0 */ vAddConstant("EV_M_FINISHED"_Stz,        EV_M_FINISHED);
   /*  0 */ vAddConstant("EV_M_FLUSH"_Stz,           EV_M_FLUSH);
   /*  0 */ vAddConstant("EV_M_HARDABORT"_Stz,       EV_M_HARDABORT);
   /*  0 */ vAddConstant("EV_M_INTERNALERROR"_Stz,   EV_M_INTERNALERROR);
@@ -766,11 +745,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_LEAVING"_Stz,         EV_M_LEAVING);
   /*  0 */ vAddConstant("EV_M_LEFT"_Stz,            EV_M_LEFT);
   /*  0 */ vAddConstant("EV_M_LOWMEMORY"_Stz,       EV_M_LOWMEMORY);
-  /*  0 */ vAddConstant("EV_M_NEXTBUFFER"_Stz,      EV_M_NEXTBUFFER);
   /*  0 */ vAddConstant("EV_M_NODELOSSABORT"_Stz,   EV_M_NODELOSSABORT);
   /*  0 */ vAddConstant("EV_M_START"_Stz,           EV_M_START);
   /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);
-  /*  0 */ vAddConstant("EV_M_STREAMDEFRHT"_Stz,    EV_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("EV_M_TRIGGER"_Stz,         EV_M_TRIGGER);
   /*  0 */ vAddConstant("EV_M_TRIGGERED"_Stz,       EV_M_TRIGGERED);
 

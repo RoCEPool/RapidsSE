@@ -17,7 +17,7 @@ namespace STORE
     Card_Injectable(void);
    ~Card_Injectable(void) noexcept(false);
 
-    static Card_Injectable* pNew_injected(CardIter* pCI);
+    static Card_Injectable* pNew_injectable(CardIter* pCI);
 
     void vShortForm(String* pString);
 

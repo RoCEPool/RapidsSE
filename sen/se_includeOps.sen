@@ -13,8 +13,6 @@ assert::stack_0
   "op__common.sen"              include
   "reg__common.sen"             include
   "OP_failed.sen"               include
-  "se_infoSet.sen"              include
-  "se_infoSetRow.sen"           include
 
 "a" .verbose
 
@@ -37,7 +35,6 @@ assert::stack_0
 
 "c" .verbose
 
-  "OP_callProc.sen"             include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
   "OP_checkTable.sen"           include
@@ -47,7 +44,6 @@ assert::stack_0
   "OP_compilerOpEg.sen"         include
   "OP_connectSE.sen"            include
   "OP_consume.sen"              include
-  "OP_copyRows.sen"             include
   "OP_corrBySquash.sen"         include
   "OP_createCatalog.sen"        include
   "OP_createIndex.sen"          include
@@ -85,8 +81,6 @@ assert::stack_0
   "OP_echo.sen"                 include
   "OP_emptyLoop.sen"            include
   "OP_etcTest.sen"              include
-  "OP_execOnEnd.sen"            include
-  "OP_execOnStart.sen"          include
   "OP_exemplar.sen"             include
   "OP_explainPlan.sen"          include
   "OP_exprPushdown.sen"         include
@@ -103,10 +97,7 @@ assert::stack_0
 
   "OP_gbyAgg.sen"               include
   "OP_grid.sen"                 include
-  "OP_gridGet.sen"              include
-  "OP_gridRecv.sen"             include
   "OP_gridSanity.sen"           include
-  "OP_gridSend.sen"             include
  
 "h" .verbose
 
@@ -117,7 +108,6 @@ assert::stack_0
   "OP_idxSort.sen"              include
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
-  "OP_insDel.sen"               include
   "OP_inflateRows.sen"          include
   "OP_insert.sen"               include
   "OP_invoke.sen"               include
@@ -152,15 +142,11 @@ assert::stack_0
 "m" .verbose
 
   "OP_memoryleaks.sen"          include
-  "OP_metaGet.sen"              include
-  "OP_metaRecv.sen"             include
   "OP_metaScan.sen"             include
-  "OP_metaSend.sen"             include
   "OP_metaTables.sen"           include
   "OP_metricsCollect.sen"       include
   "OP_metricsCtl.sen"           include
   "OP_metricsFlush.sen"         include
-  "OP_metricsUpdate.sen"        include
   "OP_monitor.sen"              include
         
 "n" .verbose
@@ -238,6 +224,7 @@ assert::stack_0
   "OP_sqlInit.sen"              include
   "OP_stageMarkers.sen"         include
   "OP_start.sen"                include
+  "OP_startDemon.sen"           include
   "OP_stats.sen"                include
   "OP_status.sen"               include
   "OP_statWrite.sen"            include

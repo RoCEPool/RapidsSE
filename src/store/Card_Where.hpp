@@ -30,7 +30,7 @@ namespace STORE
     void vEarlyProject_recurse_update(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
-    void vUpdate_emitted(CardIter* pCI);
+    void vUpdate_emit(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

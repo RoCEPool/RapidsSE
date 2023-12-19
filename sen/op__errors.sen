@@ -5,23 +5,22 @@
 " op__errors.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create the compile error info set                                          */
+/* create the compile error rowBuffer                                         */
 /*----------------------------------------------------------------------------*/
-: op__createCompileErrInfoSet
+: op__createCompileErrRowBuffer
 
   [ddlLock].testDrop
 
-  // delete if any infoset in the register
-  InfoSet[].isNotNull if
-    InfoSet[].delete
+  // delete if any rowBufferErr in the register
+  RowBufferErr[].isNotNull if
+    RowBufferErr[].delete
   then
 
-  // create the infoSetTable for C_TDEF_COMPILEERRORS
-  C_TDEF_COMPILEERRORS "op__tableDef_infoSet" find execute assert
+  // create the tableDef for C_TDEF_COMPILEERRORS
+  C_TDEF_COMPILEERRORS "op__tableDef_err" find execute assert
 
-  // create an infoSet operand for compileErrors
-  infoSetTable[] InfoSet[].new
-  OI_COMPILEERRORS infoSet[].opInfoset!
+  // create an rowBuffer operand for compileErrors
+  BT_COMPILEERRORS TableDefErr[] RowBufferErr[].new
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -32,38 +31,7 @@
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
 
-  InfoSet[].pipeOut
-  ErrorMarker[].newErrorMarker
-  ErrorMarker[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
-/* create the command error info set and pipe it out                          */
-/*----------------------------------------------------------------------------*/
-: op__cmdErr params| errorCode errorMsg |
-
-  [ddlLock].testDrop
-
-  // toggle to default abnormal handlers
-  "default_abnormalHandlers" FIND execute
-
-  // delete if any infoset in the register
-  InfoSet[].isNotNull if
-    InfoSet[].delete
-  then
-
-  // create the infoSetTable for C_TDEF_COMPILEERRORS
-  C_TDEF_COMPILEERRORS "op__tableDef_infoSet" find execute assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_COMPILEERRORS infoSet[].opInfoset!
-
-  errorMsg errorCode infoSetTable[] InfoSet[].addCommandError assert
-
-  // pipeout the CMDERROR infoset
-  InfoSet[].pipeOut
-
+  RowBufferErr[].pipeOut
   ErrorMarker[].newErrorMarker
   ErrorMarker[].pipeOut
 ;
@@ -78,23 +46,22 @@
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
 
-  // delete if any infoset in the register
-  InfoSet[].isNotNull if
-    InfoSet[].delete
+  // delete if any rowBufferErr in the register
+  RowBufferErr[].isNotNull if
+    RowBufferErr[].delete
   then
 
-  // create the infoSetTable for C_TDEF_EXECERRORS
-  C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
+  // create the tableDef for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
 
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_EXECERRORS infoSet[].opInfoset!
+  // create an rowBufferErr operand for commandErrors
+  BT_EXECERRORS TableDefErr[] RowBufferErr[].new
 
   errorCode attachmap::errorText@
-    errorCode infoSetTable[] InfoSet[].addExecError assert
+    errorCode TableDefErr[] RowBufferErr[].addExecError assert
 
-  // pipeout the EXECERROR infoset
-  InfoSet[].pipeOut
+  // pipeout the EXECERROR rowBufferErr
+  RowBufferErr[].pipeOut
 
   ErrorMarker[].newErrorMarker
   ErrorMarker[].pipeOut
@@ -110,22 +77,21 @@
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
 
-  // delete if any infoset in the register
-  InfoSet[].isNotNull if
-    InfoSet[].delete
+  // delete if any rowBufferErr in the register
+  RowBufferErr[].isNotNull if
+    RowBufferErr[].delete
   then
 
-  // create the infoSetTable for C_TDEF_EXECERRORS
-  C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
+  // create the tableDef for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
 
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_EXECERRORS infoSet[].opInfoset!
+  // create an rowBuffer operand for commandErrors
+  BT_EXECERRORS TableDefErr[] RowBufferErr[].new
 
-  errorMsg errorCode infoSetTable[] InfoSet[].addExecError assert
+  errorMsg errorCode TableDefErr[] RowBufferErr[].addExecError assert
 
-  // pipeout the EXECERROR infoset
-  InfoSet[].pipeOut
+  // pipeout the EXECERROR rowBuffer
+  RowBufferErr[].pipeOut
 
   ErrorMarker[].newErrorMarker
   ErrorMarker[].pipeOut
@@ -134,3 +100,4 @@
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+

@@ -1,0 +1,67 @@
+/*============================================================================*/
+/* _ray178                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+// NOTE: The fused project in S02 should include the columns required by the constraint
+
+/weaved
+/optimiser_trace
+/optimise_passthru
+/pipeline_Def
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+        "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    gbyAgg " GroupBy  type INTEGER as C_CUSTKEY $1
+             aggregates  type INTEGER $K1 ,
+                         type INTEGER ) O_ORDERKEY count  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg " groupBy    type INTEGER as c_count $2
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg " groupBy    type INTEGER as c_count $2
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    sort " type INTEGER $1 DESC ,
+           type INTEGER as c_count $2 DESC "
+    | combined 0
+    | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+ end ;
+
+ _tpchDrop

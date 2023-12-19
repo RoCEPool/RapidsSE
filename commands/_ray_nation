@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* _ray_nation                                                                */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_nation
+
+load Nation "<tpch_dir>/nation.<suffix>" ;
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_nation"
+select *
+  from nation
+;
+
+drop table nation;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

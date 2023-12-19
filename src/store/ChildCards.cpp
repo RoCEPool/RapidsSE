@@ -399,6 +399,9 @@ void ChildCards::vMorphChildrenTo(eCK eFrom, eCK eTo)
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pPeekChild(i8 i_Child)
 {
+  if (i_Child >= nChildCards())
+    return nullptr;
+
   Card* pChild = pPeek(i_Child);
 
   return pChild;

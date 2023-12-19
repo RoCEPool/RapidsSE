@@ -32,7 +32,7 @@
   then
 
   // find the __affectedRows table def
-  C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
+  //C_TDEF_AFFECTEDROWS op__tableDef_ assert
 
   true
 ;
@@ -86,14 +86,13 @@
   // pipeout load results
   /*
   ToKeyHshRow[].countersAreZero not if
-    infoSetTable[] InfoSet[].new
-    OI_AFFECTEDROWS InfoSet[].opInfoset!
+    BT_AFFECTEDROWS TableDef[] RowBuffer[].new
 
-    0 0 0 toKeyHshRow[].counters@@ 6 InfoSet[].addRowVargs
+    0 0 0 toKeyHshRow[].counters@@ 6 RowBuffer[].addRowVargs
 
-    InfoSet[].pipeOut
+    RowBuffer[].pipeOut
   then
-*/
+  */
 
   // -- -- -- -- -- --
 

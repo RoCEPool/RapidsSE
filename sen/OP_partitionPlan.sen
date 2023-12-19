@@ -20,7 +20,7 @@
   PipeIn[]\clear to PlanOperand[]
 
   // create the command error info set
-  op__createCompileErrInfoSet
+  op__createCompileErrRowBuffer
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::partitionPlan to PlanOperand[]
 
@@ -41,7 +41,7 @@
 
   // common compiler handlers
   find: compiler_LeaveMarker        EV_M_LEAVE         [op].handler!
-  find: compiler_StreamSet          EV_D_STREAMSET     [op].handler!
+  find: compiler_RowBuffer          EV_D_ROWBUFFER     [op].handler!
 
   // specific handlers
   find: partitionPlan_Cleaning      EV_M_CLEANING      [op].handler!
