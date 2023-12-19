@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* _alka                                                                      */
+/*============================================================================*/
+
+create table t2 (
+v1 varchar,
+v2 varchar,
+v3 varchar,
+v4 varchar,
+v5 varchar,
+v6 varchar,
+v7 varchar,
+v8 varchar,
+v9 varchar,
+v10 varchar,
+v11 varchar,
+v12 varchar,
+v13 varchar,
+v14 varchar,
+v15 varchar,
+v16 varchar,
+v17 varchar,
+v18 varchar,
+v19 varchar,
+v20 varchar,
+v21 varchar,
+v22 varchar
+);
+
+load t2 "../DATA/x.csv";
+
+/*
+/pipelineName = 'alka'
+/keepCodeFile
+select v1 from t2;
+*/
