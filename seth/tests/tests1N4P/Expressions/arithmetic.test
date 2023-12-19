@@ -785,6 +785,61 @@ success
 drop table ${testName2}_TABLE4;
 success
 
+create table  ${testName2}_intervalD(xh integer,a date,b date,c time,d time,e timestamp,f timestamp);
+success
+
+Load  ${testName2}_intervalD "../DATA/Expressions/intervalD.csv";
+success
+
+SELECT e-f,e,f from ${testName2}_intervald i where e-f > INTERVAL '1 0:0:0' DAY TO second;
+rows:
+  (INTERVAL '31 0:0:0' DAY TO SECOND,2022-08-08 17:22:34,2022-07-08 17:22:34)
+  (INTERVAL '365 0:0:0' DAY TO SECOND,2022-08-08 17:22:34,2021-08-08 17:22:34)
+
+SELECT (INTERVAL '-31 0:0:0' DAY TO second > INTERVAL '1 0:0:0' DAY TO second) from ${testName2}_intervald where xh=1;
+rows:
+ (false)
+
+SELECT a-b,a,b from ${testName2}_intervald i where a-b=interval '1' day;
+rows:
+    (INTERVAL '1' DAY, DATE '2022-08-08', DATE '2022-08-07')
+    (INTERVAL '1' DAY, DATE '2023-05-02', DATE '2023-05-01')
+    (INTERVAL '1' DAY, DATE '2023-05-08', DATE '2023-05-07')
+    (INTERVAL '1' DAY, DATE '2023-05-03', DATE '2023-05-02')
+    (INTERVAL '1' DAY, DATE '2023-05-04', DATE '2023-05-03')
+    (INTERVAL '1' DAY, DATE '2023-05-06', DATE '2023-05-05')
+    (INTERVAL '1' DAY, DATE '2023-05-07', DATE '2023-05-06')
+    (INTERVAL '1' DAY, DATE '2055-12-31', DATE '2055-12-30')
+    (INTERVAL '1' DAY, DATE '2023-05-09', DATE '2023-05-08')
+    (INTERVAL '1' DAY, DATE '2023-05-10', DATE '2023-05-09')
+
+select INTERVAL '3' DAY + date '2021-02-28' from ${testName2}_intervalD where xh = 1;
+rows:
+ (DATE '2021-03-03')
+
+select date '2021-02-28' + INTERVAL '3' DAY from ${testName2}_intervalD where xh = 1;
+rows:
+ (DATE '2021-03-03')
+
+select INTERVAL -'5:6.789012' MINUTE TO SECOND + date '2021-03-01' from ${testName2}_intervalD where xh = 1;
+rows:
+ (TIMESTAMP '2021-02-28 23:54:53.210988')
+
+select INTERVAL '3 4:5:6' DAY TO SECOND + date '2021-04-28' from ${testName2}_intervalD where xh = 1;
+rows:
+  (TIMESTAMP '2021-05-01 04:05:06')
+
+select date '2021-03-01' + INTERVAL -'5:6.789012' MINUTE TO SECOND from ${testName2}_intervalD where xh = 1;
+rows:
+  (TIMESTAMP '2021-02-28 23:54:53.210988')
+
+select date '2021-03-01' - INTERVAL '5:6.789012' MINUTE TO SECOND from ${testName2}_intervalD where xh = 1;
+rows:
+  (TIMESTAMP '2021-02-28 23:54:53.210988')
+
+DROP TABLE ${testName2}_intervald;
+success
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -803,4 +858,6 @@ CLEANUP {
   DROP TABLE ${testName2}_table4;
   mute
 
+  DROP TABLE ${testName2}_intervald;
+  mute
 }
