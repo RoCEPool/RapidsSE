@@ -59,7 +59,7 @@ success
 create index IxC_CUSTKEY ON ${testName2}_customer(C_CUSTKEY);
 success
 
-load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.cvs";
+load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
 load ${testName2}_orders "../TPCH/SF_0001/orders.tbl";
