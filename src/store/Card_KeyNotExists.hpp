@@ -16,8 +16,6 @@ namespace STORE
     Card_KeyNotExists(void);
    ~Card_KeyNotExists(void) noexcept(false);
 
-    void vComputeProjection(CardIter* pCI); // prototype
-
     void vEarlyProject_add_transients(CardIter* pCI);
 
     void vEarlyProject_recurse_add(CardIter* pCI);

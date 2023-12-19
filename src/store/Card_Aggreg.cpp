@@ -53,15 +53,6 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vDerive_streamKey(CardIter* pCI)

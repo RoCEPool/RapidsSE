@@ -69,16 +69,6 @@ void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_KeyExists::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)

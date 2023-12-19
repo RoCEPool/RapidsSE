@@ -114,16 +114,6 @@ void Card_Project::vBump_Rightwards(i8 nBumpBy)
     p_emit->vBump_Rightwards(nBumpBy);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-}
-
 /*----------------------------------------------------------------------------*/
 /* craft projection for early project                                         */
 /*----------------------------------------------------------------------------*/
