@@ -338,24 +338,6 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   vDebugPoint();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* smooth                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_project->pSymbol()->Y_vSet(P_Smoothed);
-
-  if (nBumpBy) {
-    pCI->G.p_project->vBump_Rightwards(nBumpBy);
-  }
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
-}
-
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/

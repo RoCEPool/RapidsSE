@@ -321,7 +321,7 @@ Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* induct this arriving emit                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pInduct(CardIter* pCI, bool bExcludeNotNeeded) {
+Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Emit *p_emit_inducted = new Card_Emit;
@@ -330,7 +330,7 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI, bool bExcludeNotNeeded) {
     Card_Expr *p_expr_arriving = xKid.p_expr();
 
     // exclude not needed expressions
-    if (bExcludeNotNeeded && pCI->G.p_needed)
+    if (pCI->G.p_needed)
       if (! pCI->G.p_needed->bNeeded_expr(p_expr_arriving))
         continue;
 

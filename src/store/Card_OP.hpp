@@ -38,7 +38,6 @@ namespace STORE
     bool bIsPartitionLevel(void);
 
     void vMapColumns(CardIter *pCI);
-    bool bNeedsProjectionAnalysis(void);
 
     bool bPeg_Chosen_index(CardIter* pCI);
     bool bPeg_Key(CardIter* pCI);

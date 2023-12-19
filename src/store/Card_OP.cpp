@@ -457,26 +457,6 @@ bool Card_OP::bIsPartitionLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does op needs projection analysis?                                         */
-/*----------------------------------------------------------------------------*/
-bool Card_OP::bNeedsProjectionAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (bIsCard(CK_o_FROM) ||
-      bIsCard(CK_o_KEYEXISTS) ||
-      bIsCard(CK_o_KEYNOTEXISTS) ||
-      bIsCard(CK_o_INDEXSCAN) ||
-      bIsCard(CK_o_INDEXJOIN) ||
-//    bIsCard(CK_o_PROJECT)      ||
-      bIsCard(CK_o_SCAN) ||
-      bIsCard(CK_o_SORT)         )
-  return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bPeg_Chosen_index(CardIter* pCI)
