@@ -162,7 +162,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_OP->vRecreate_emit(pCI);
+  pCI->G.p_OP->vRecreate_emit(pCI,true);
 
   //pCI->vPrintBoard();
 
