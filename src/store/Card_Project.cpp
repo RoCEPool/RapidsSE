@@ -211,8 +211,6 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
   RASSERT(pCI->Early.m_pOP_leaf);
   RASSERT(pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
-  //vCorrect_expCol(pCI->Flux.m_pArriving);
-
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
 
@@ -326,8 +324,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   RASSERT(pCI->Early.m_pOP_leaf);
   RASSERT(! pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
-  //vCorrect_expCol(pCI->Flux.m_pArriving);
-  pCI->G.p_OP->vRecreate_emit(pCI,true);
+   pCI->G.p_OP->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
 

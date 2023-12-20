@@ -525,6 +525,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_AGGREG:
+    case CK_o_CROSSJOIN:
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
@@ -578,7 +579,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CAST:
-    case CK_o_CROSSJOIN:
     case CK_o_FILTER:
     case CK_o_INFLATE:
       pCI->G.p_OP->vDump(__func__);
@@ -595,17 +595,19 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
-    pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
+    if (pCI->Flux.m_pArriving)
+      pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
 
   if (! bRecreate && pCI->G.p_emit && pCI->G.p_key)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
   if (bRecreate &&
-       (  CK_o_AGGREG    == eCard_OP
-       || CK_o_GBYAGG    == eCard_OP
-       || CK_o_INDEXJOIN == eCard_OP
-       || CK_o_ORDAGG    == eCard_OP
-       || CK_o_PROJECT   == eCard_OP))
+       (   CK_o_AGGREG    == eCard_OP
+        || CK_o_CROSSJOIN == eCard_OP
+        || CK_o_GBYAGG    == eCard_OP
+        || CK_o_INDEXJOIN == eCard_OP
+        || CK_o_ORDAGG    == eCard_OP
+        || CK_o_PROJECT   == eCard_OP))
     vCorrect_expCol(pCI->Flux.m_pArriving);
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
