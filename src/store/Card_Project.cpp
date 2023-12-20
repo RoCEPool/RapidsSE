@@ -327,8 +327,6 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
    pCI->G.p_OP->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

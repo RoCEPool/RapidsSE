@@ -164,15 +164,11 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
   pCI->G.p_OP->vRecreate_emit(pCI);
 
- // pCI->vPrintBoard();
+  //pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

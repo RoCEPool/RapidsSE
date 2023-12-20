@@ -104,8 +104,6 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   pCI->G.p_aggreg->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

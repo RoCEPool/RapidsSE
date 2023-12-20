@@ -118,12 +118,6 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

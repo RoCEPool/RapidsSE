@@ -84,8 +84,6 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G.p_ordAgg->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

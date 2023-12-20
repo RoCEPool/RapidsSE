@@ -162,10 +162,6 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 
@@ -196,8 +192,6 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   RASSERT(pCI->G.p_OP == pCI->G.p_where);
   pCI->G.p_where->vRecreate_emit(pCI);
-
- // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/

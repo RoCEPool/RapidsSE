@@ -99,17 +99,11 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
   pCI->G.p_OP->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
+  // pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
