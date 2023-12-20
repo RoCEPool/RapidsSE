@@ -400,16 +400,16 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      xTsp2.m_iAsI8 = 0;                                                   \
+      xTsp1.m_iAsI8 = 0;                                                   \
                                                                            \
       xTsp1.m_uDay = xDte1.m_uDay;                                         \
       xTsp1.m_uMonth = xDte1.m_uMonth;                                     \
       xTsp1.m_uYearDelta = xDte1.m_uYearDelta;                             \
-      xTsp2.m_uHour      = 0;                                              \
-      xTsp2.m_uMinute    = 0;                                              \
-      xTsp2.m_uSecond    = 0;                                              \
-      xTsp2.m_uMicro     = 0;                                              \
-      xTsp2.m_uLocal     = _C_TSP_LOCAL;                                   \
+      xTsp1.m_uHour      = 0;                                              \
+      xTsp1.m_uMinute    = 0;                                              \
+      xTsp1.m_uSecond    = 0;                                              \
+      xTsp1.m_uMicro     = 0;                                              \
+      xTsp1.m_uLocal     = _C_TSP_LOCAL;                                   \
       *paW++ = xTsp1.m_iAsI8;                                              \
     }                                                                      \
   }
