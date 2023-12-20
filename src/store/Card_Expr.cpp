@@ -617,58 +617,6 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft propagated version of this expression                                */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pPropagate(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
-
-  Card_Expr* p_expr_propagation = new Card_Expr;
-
-  //vDump(__func__);
-  //p_expr_propagation->vCast(this);
-
-  if (pSymbol()->bHasFacet(SF_NMD_COL))
-    p_expr_propagation->pSymbol()->vAppendFacet(SF_NMD_COL,pSymbol()->szSF_chrSeq(SF_NMD_COL));
-
-  Card_RpnCalc* p_rpnCalc_propagated = p_rpnCalc->pPropagate(this);
-
-  p_expr_propagation->vAppendChild(p_rpnCalc_propagated);
-
-  return p_expr_propagation;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return a reduced copy of this expr                                         */
-/*----------------------------------------------------------------------------*/
-Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol xExprNo(SF_EXP_COL, i_Expr + 1);
-
-  Card_Expr* p_expr_reduced = new Card_Expr;
-  p_expr_reduced->pSymbol()->vCastFacets(&xExprNo);
-  p_expr_reduced->vCast(this);
-  bool bIs_SQCRLKEY = pSymbol()->bHasFacet(C_SQCRLKEY);
-
-  if (pSymbol()->bHasFacet(SF_NMD_COL))
-    p_expr_reduced->pSymbol()->vAppendFacet(SF_NMD_COL,pSymbol()->szSF_chrSeq(SF_NMD_COL));
-
-  Card_RpnCalc* p_rpnCalc_reduced;
-  if (bIsScalarKey())
-    p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy_key();
-  else
-    p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy(i_Expr,bIs_SQCRLKEY);
-
-  p_expr_reduced->vAppendChild(p_rpnCalc_reduced);
-
-  return p_expr_reduced;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vRenumberForm_keyCol(i8 i_Expr)

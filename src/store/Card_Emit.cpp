@@ -456,44 +456,6 @@ void Card_Emit::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* propagate this projection                                                  */
-/*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pPropagate(void) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Emit *p_emit_propagated = new Card_Emit;
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-
-    Card_Expr *p_expr_propagated = xKid.p_expr()->pPropagate();
-    p_emit_propagated->vAppendChild(p_expr_propagated);
-  }
-
-  p_emit_propagated->vRenumberAll_expr();
-
-  return p_emit_propagated;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* return a reduced copy of this projection                                   */
-/*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pReducedCopy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Emit* p_emitted_reduced = new Card_Emit;
-
-  i8 i_Expr = 0;
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    Card_Expr* p_expr_copy = xKid.p_expr()->pReducedCopy(i_Expr++);
-    p_emitted_reduced->vAppendChild(p_expr_copy);
-  }
-
-  return p_emitted_reduced;
-}
-
-/*----------------------------------------------------------------------------*/
 /* resolve prior expr of given term (find right-to-left)                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
