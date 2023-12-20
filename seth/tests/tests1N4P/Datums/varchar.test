@@ -48,7 +48,7 @@ rows:
 // check columns of index
 lsidxcol ${testName2}_VchTbl vch_idx3;
 rows:
-  ('vch_col5', 'VARCHAR', 64000, 0, true, false)
+  ('vch_col5', 'VARCHAR', 0, 0, true, false)
 
 Load ${testName2}_VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
 warning contains: '2 rows were invalid'

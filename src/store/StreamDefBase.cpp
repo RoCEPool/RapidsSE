@@ -1165,7 +1165,7 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // set default size
-  i8 iSize = C_64K;
+  i8 iSize = 0;
   
   // set column type
   pCol->vColumnTypeId(TypeId::xIdOf(CT_VARCHAR));
