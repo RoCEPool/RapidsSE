@@ -155,7 +155,7 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
  // pCI->vPrintBoard();
 
   pCI->G.p_OP = pCI->G.p_where;
-  pCI->G.p_OP->vRecreate_emit(pCI);
+  pCI->G.p_OP->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
 
