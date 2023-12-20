@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "eBT.h"
 #include "SkipListNode.hpp"
 #include "SkipListBlock.hpp"
 
@@ -26,6 +27,8 @@ namespace BASE
     u2 m_uInUseRootOffset;
     i8 m_iNumEntries[C_MAX_LVL_LEVELS];
 
+    eBT     m_eBufferType;
+
     RowPix m_oRowPix;
 
     // ---------------------------
@@ -48,9 +51,9 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Pds(RowPix* pRowPix);
-    Pds(StreamDef* pStreamDef, bool bAddKeyHash);
-    Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix = nullptr);
+    Pds(RowPix* pRowPix, eBT eBufferType = BT_DATA);                          // When Pds is used to store rows
+    Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType = BT_DATA);  // When Pds is used to store rows
+    Pds(i8 nBytes, CompareFunc fpCompare);                                    // When Pds is used to track BufferIds
     ~Pds(void) noexcept(false);
 
     static void* aGetCellArray(Pds* pPdsRowBuffer, i8 iRow);
@@ -59,6 +62,8 @@ namespace BASE
     // public:
     Row*            pAllotRow(void);
     Row*            pAllotRowFull(char** aaStzSet);
+    eBT             eBufferType(void);
+    void            vBufferType(eBT eBufferType);
     Row*            pCopyRow(Row* pRow, bool bSrcHasPtnHash = false, bool bCopyPtnHash = false);
 		Row*            pCopyRowArray(i8* pRowArray);
     void*           aAllotStzSet(void);
@@ -73,6 +78,7 @@ namespace BASE
     SkipListBlock*  pFindLessThan(void* pKey);
     SkipListBlock*  pFindGreaterThan(void* pKey);
     SkipListBlock*  pFirstBlock(void);
+    Row*            pFirstRow(void);
     i8              nFreeBytes(void);
     void            vInitPix(RowPix* pRowPix);
     void            vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);

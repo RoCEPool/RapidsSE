@@ -430,15 +430,65 @@ bool Output::bProcessOperand(Operand* pOperand)
       // -- -- -- -- -- --
 
     case CN_PDS: {
-      Pds* pPds = _pPds(pOperand);
+      Pds* pPdsRowBuffer = _pPds(pOperand);
 
-      if ( ! m_bHasError ) {
-        m_ixRowsProcessed += pPds->nItems();
+      if (pPdsRowBuffer->eBufferType() == BT_PROMPTOUT) {
+        Row *pInfoRow = pPdsRowBuffer->pFirstRow();
+        Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
+
+        vTrace("%s\n"_Stz, szPromptLine);
+      }
+      else if (pPdsRowBuffer->eBufferType() == BT_AFFECTEDROWS) {
+        m_bLoadResult = true;
+        Row *pInfoRow = pPdsRowBuffer->pFirstRow();
+
+        i8 iRowsProcessed = pInfoRow->iColVal_int(0);
+        i8 iRowsInvalid = pInfoRow->iColVal_int(1);
+        i8 iRowsSkipped = pInfoRow->iColVal_int(2);
+
+        m_ixRowsProcessed += iRowsProcessed;
+        m_ixRowsInvalid += iRowsInvalid;
+        m_ixRowsSkipped += iRowsSkipped;
+      }
+      else if (pPdsRowBuffer->eBufferType() == BT_EXECERRORS) {
+        if ( ! m_bHasError) {
+          Row *pInfoRow = pPdsRowBuffer->pFirstRow();
+
+          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
+          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
+          Stz *szErrorText = pInfoRow->szColVal_ofs(2);
+
+          vTrace("\nerror: %s; %s; %s; \n"_Stz,
+                 sNodeName, aEC2[eErrorCode], szErrorText);
+
+          m_ixRowsProcessed = 0;
+          m_ixRowsInvalid   = 0;
+          m_ixRowsSkipped   = 0;
+
+          m_bHasError = true;
+        }
+      }
+      else if (pPdsRowBuffer->eBufferType() == BT_COMPILEERRORS) {
+        if ( ! m_bHasError) {
+          Row *pInfoRow = pPdsRowBuffer->pFirstRow();
+
+          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
+          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
+          i8 iLineNo = pInfoRow->iColVal_int(2);
+          i8 iColumnNo = pInfoRow->iColVal_int(3);
+          Stz *szErrorText = pInfoRow->szColVal_ofs(4);
+
+          vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
+                 sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
+          m_bHasError = true;
+        }
+      }
+      else {
+        m_ixRowsProcessed += pPdsRowBuffer->nItems();
         vTrace("\n"_Stz);
-        pPds->vPrintRows(nullptr, nullptr);
+        pPdsRowBuffer->vPrintRows(nullptr, nullptr);
       }
       AM::vDeleteOperand(pOperand, nullptr);
-
       break;
     }
 

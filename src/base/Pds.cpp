@@ -57,7 +57,7 @@ void Pds::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(RowPix* pRowPix)
+Pds::Pds(RowPix* pRowPix, eBT eBufferType)
     : DataBuffer(CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
@@ -78,6 +78,7 @@ Pds::Pds(RowPix* pRowPix)
   }
 
   m_iSynthRowKey  = 0;
+  m_eBufferType = eBufferType;
 
   // Init temp variables -------------------------------
   m_aRowCur  = nullptr;
@@ -123,7 +124,7 @@ Pds::Pds(RowPix* pRowPix)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash)
+Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
     : DataBuffer(CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
@@ -144,6 +145,7 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash)
   }
 
   m_iSynthRowKey  = 0;
+  m_eBufferType = eBufferType;
 
   // Init temp variables -------------------------------
   m_aRowCur  = nullptr;
@@ -189,7 +191,7 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
+Pds::Pds(i8 nBytes, CompareFunc fpCompare)
     : DataBuffer(CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
@@ -211,6 +213,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
   }
 
   m_iSynthRowKey  = 0;
+  m_eBufferType = BT_BUFFERID;
 
   // Init temp variables -------------------------------
   m_aRowCur  = nullptr;
@@ -253,11 +256,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
     m_iNumEntries[i_Level] = 0;
   }
 
-  // Init RowPix object -------------------------------
-  if (pRowPix)
-    vInitPix(pRowPix);
-  else
-    m_oRowPix.m_bInitialised = false;
+  m_oRowPix.m_bInitialised = false;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -404,6 +403,26 @@ Row* Pds::pAllotRowFull(char** aaStzSet)
   }
 
   return aRowCur;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the buffer type                                                        */
+/*----------------------------------------------------------------------------*/
+eBT Pds::eBufferType(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  return m_eBufferType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the buffer type                                                        */
+/*----------------------------------------------------------------------------*/
+void Pds::vBufferType(eBT eBufferType)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  m_eBufferType = eBufferType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -930,6 +949,26 @@ SkipListBlock* Pds::pFirstBlock(void)
   RASSERT(pFirstBlock != pRootBlock);
 
   return pFirstBlock;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the first Row after the root block                                     */
+/*----------------------------------------------------------------------------*/
+Row* Pds::pFirstRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  if(m_iNumEntries[0] == 0)
+    return nullptr;
+
+  SkipListBlock* pRootBlock = pHeadSL();
+
+  SkipListBlock* pFirstBlock = pNextSLBlock(pRootBlock, 0);
+
+  RASSERT(pFirstBlock != nullptr);
+  RASSERT(pFirstBlock != pRootBlock);
+
+  return pFirstBlock->aRow();
 }
 
 /*----------------------------------------------------------------------------*/
