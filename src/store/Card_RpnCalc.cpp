@@ -591,6 +591,13 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   (void)Card::eValidate_parentEither(pCI,CK_EXPR,CK_NONE);
 
+  if (pCI->pAncestorFind(CK_s_INJECTABLE)) {
+    if (! m_xSymbol.bHasType()) {
+      vDump(__func__);
+      vValidationFailed("Type Missing : %p"_Stz,this);
+    }
+  }
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

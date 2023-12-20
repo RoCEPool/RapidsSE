@@ -628,6 +628,14 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     }
   }
 
+  if (pCI->pAncestorFind(CK_s_INJECTABLE)) {
+    RASSERT(m_xSymbol.bIs_Tbl_Col());
+    if (! m_xSymbol.bHasType()) {
+      vDump(__func__);
+      vValidationFailed("Type Missing : %p"_Stz,this);
+    }
+  }
+
 //  if (pCI->G.pBoard->pState()->bHasName(aOH[OH_OPTIMISE])) {
 //    if (m_xSymbol.bIs_Exp_Col() || m_xSymbol.bIs_Tbl_Col()) {
 //      if (! m_xSymbol.bHasType()) {
