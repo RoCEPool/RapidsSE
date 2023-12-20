@@ -117,7 +117,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   pCI->G.p_table = pSub_table();
   pCI->G.p_OP = pCI->G.p_indexJoin;
-  pCI->G.p_indexJoin->vRecreate_emit(pCI);
+  pCI->G.p_indexJoin->vRecreate_emit(pCI,true);
 
   //pCI->vPrintBoard(__LINE__,true);
 
