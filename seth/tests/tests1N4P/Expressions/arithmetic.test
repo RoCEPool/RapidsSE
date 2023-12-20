@@ -813,29 +813,37 @@ rows:
     (INTERVAL '1' DAY, DATE '2023-05-09', DATE '2023-05-08')
     (INTERVAL '1' DAY, DATE '2023-05-10', DATE '2023-05-09')
 
-select INTERVAL '3' DAY + date '2021-02-28' from ${testName2}_intervalD where xh = 1;
+SELECT INTERVAL '3' DAY + date '2021-02-28' from ${testName2}_intervalD where xh = 1;
 rows:
  (DATE '2021-03-03')
 
-select date '2021-02-28' + INTERVAL '3' DAY from ${testName2}_intervalD where xh = 1;
+SELECT date '2021-02-28' + INTERVAL '3' DAY from ${testName2}_intervalD where xh = 1;
 rows:
  (DATE '2021-03-03')
 
-select INTERVAL -'5:6.789012' MINUTE TO SECOND + date '2021-03-01' from ${testName2}_intervalD where xh = 1;
+SELECT INTERVAL -'5:6.789012' MINUTE TO SECOND + date '2021-03-01' from ${testName2}_intervalD where xh = 1;
 rows:
  (TIMESTAMP '2021-02-28 23:54:53.210988')
 
-select INTERVAL '3 4:5:6' DAY TO SECOND + date '2021-04-28' from ${testName2}_intervalD where xh = 1;
+SELECT INTERVAL '3 4:5:6' DAY TO SECOND + date '2021-04-28' from ${testName2}_intervalD where xh = 1;
 rows:
   (TIMESTAMP '2021-05-01 04:05:06')
 
-select date '2021-03-01' + INTERVAL -'5:6.789012' MINUTE TO SECOND from ${testName2}_intervalD where xh = 1;
+SELECT date '2021-03-01' + INTERVAL -'5:6.789012' MINUTE TO SECOND from ${testName2}_intervalD where xh = 1;
 rows:
   (TIMESTAMP '2021-02-28 23:54:53.210988')
 
-select date '2021-03-01' - INTERVAL '5:6.789012' MINUTE TO SECOND from ${testName2}_intervalD where xh = 1;
+SELECT date '2021-03-01' - INTERVAL '5:6.789012' MINUTE TO SECOND from ${testName2}_intervalD where xh = 1;
 rows:
   (TIMESTAMP '2021-02-28 23:54:53.210988')
+
+SELECT xh,a,e,a-e from ${testName2}_intervalD i where xh=2;
+rows:
+  (2,DATE '2055-12-31', TIMESTAMP '2021-01-02 12:59:59',INTERVAL '12780 11:0:1' DAY TO SECOND)
+
+SELECT xh,a,e,e-a from ${testName2}_intervalD i where xh=2;
+rows:
+  (2,DATE '2055-12-31', TIMESTAMP '2021-01-02 12:59:59',INTERVAL -'12780 11:0:1' DAY TO SECOND)
 
 DROP TABLE ${testName2}_intervald;
 success

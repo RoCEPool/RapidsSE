@@ -1973,7 +1973,7 @@
     xTsp2.m_iAsI8 = *(--paW);                                              \
     xTsp1.m_iAsI8 = *(--paW);                                              \
                                                                            \
-    if (eErrorCode != EC_NONE ||                                           \
+		if (eErrorCode != EC_NONE ||                                           \
         xTsp2.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTsp1.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = C_DATUM_NULL;                                               \
@@ -2010,14 +2010,14 @@
                                                                            \
     if (iSeconds < 0) {                                                    \
       wIvlResult.m_xIvl.m_bIsNeg = 1;                                      \
-      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  (-1)*iSeconds*_C_1M +            \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  (-1)*iSeconds*_C_1M +      \
       (xTsp2.m_uMicro - xTsp1.m_uMicro);                                   \
-      }                                                                      \
+      }                                                                    \
     else {                                                                 \
-      wIvlResult.m_xIvl.m_bIsNeg = 0;                                      \
-      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M +            \
+			wIvlResult.m_xIvl.m_bIsNeg = 0;                                      \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M +           \
       (xTsp1.m_uMicro - xTsp2.m_uMicro);                                   \
-      }                                                                      \
+      }                                                                    \
     *paW++ = wIvlResult.m_iAsI8;                                           \
   }                                                                        \
 }
