@@ -529,6 +529,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
+      if (pCI->Flux.m_pArriving)
+        pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
       break;
 
     case CK_o_PROJECT:
@@ -591,6 +593,15 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       break;
 
   } // switch(pCI->G.e_MainCard)
+
+  if (   CK_o_HAVING == eCard_OP
+      || CK_o_WHERE  == eCard_OP) {
+    if ((pCI->G.p_boolPred = pCI->G.p_OP->pSub_boolPred()))
+      pCI->G.p_boolPred->vEnsureTypeId_expCol(pCI);
+    else
+    if ((pCI->G.p_rpnCalc = pCI->G.p_OP->pSub_rpnCalc()))
+      pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
