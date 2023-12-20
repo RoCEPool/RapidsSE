@@ -20,7 +20,6 @@ namespace STORE
 
     static void vUnproject_foldExpr(CardIter* pCI,
                                     CarryForward* pCarryForward);
-    //static Card_Project* pNew_project(Card_Emit* p_prjection);
 
     void vBump_Rightwards(i8 nBumpBy);
 
@@ -36,10 +35,7 @@ namespace STORE
     bool bIsCompound(void);
     bool bIsLiterals(void);
 
-    void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy);
     void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);
-
-    void vUpdate_projection_off_running(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

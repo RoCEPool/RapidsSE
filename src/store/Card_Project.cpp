@@ -209,8 +209,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
-
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  RASSERT(pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
@@ -317,43 +316,17 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   Card_OP::vEarlyProject_backstep(pCI);
 
+  pCI->G.p_MainCard = pCI->G.p_OP = this;
+  pCI->G.e_MainCard = CK_o_PROJECT;
+
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
+  RASSERT(! pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
-
- // pCI->vPrintBoard();
-
-  pCI->G.p_key = pSub_key();
+   pCI->G.p_OP->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
-
-  pCI->G.p_emit = pSub_emit();
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* smooth                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_project->pSymbol()->Y_vSet(P_Smoothed);
-
-  if (nBumpBy) {
-    pCI->G.p_project->vBump_Rightwards(nBumpBy);
-  }
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
 }
 
 /*----------------------------------------------------------------------------*/

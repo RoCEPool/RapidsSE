@@ -9,7 +9,7 @@
 #include "CardIter.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
-#include "Expr.hpp"
+//#include "Expr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -457,26 +457,6 @@ bool Card_OP::bIsPartitionLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does op needs projection analysis?                                         */
-/*----------------------------------------------------------------------------*/
-bool Card_OP::bNeedsProjectionAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (bIsCard(CK_o_FROM) ||
-      bIsCard(CK_o_KEYEXISTS) ||
-      bIsCard(CK_o_KEYNOTEXISTS) ||
-      bIsCard(CK_o_INDEXSCAN) ||
-      bIsCard(CK_o_INDEXJOIN) ||
-//    bIsCard(CK_o_PROJECT)      ||
-      bIsCard(CK_o_SCAN) ||
-      bIsCard(CK_o_SORT)         )
-  return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bPeg_Chosen_index(CardIter* pCI)
@@ -524,7 +504,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* create/recreate emit                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRecreate_emit(CardIter* pCI)
+void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -545,6 +525,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_AGGREG:
+    case CK_o_CROSSJOIN:
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
@@ -573,8 +554,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
       pCI->G.p_emit->vAppend_streamDef_table(pCI);
 
-      if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
-        pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
 
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
@@ -600,7 +579,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CAST:
-    case CK_o_CROSSJOIN:
     case CK_o_FILTER:
     case CK_o_INFLATE:
       pCI->G.p_OP->vDump(__func__);
@@ -614,10 +592,29 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
   } // switch(pCI->G.e_MainCard)
 
-  if (pCI->G.p_emit && pCI->G.p_key)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
+    if (pCI->Flux.m_pArriving)
+      pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
+
+  if (! bRecreate && pCI->G.p_emit && pCI->G.p_key)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
+  if (bRecreate &&
+       (   CK_o_AGGREG    == eCard_OP
+        || CK_o_CROSSJOIN == eCard_OP
+        || CK_o_GBYAGG    == eCard_OP
+        || CK_o_ORDAGG    == eCard_OP
+        || CK_o_PROJECT   == eCard_OP))
+    vCorrect_expCol(pCI->Flux.m_pArriving);
+
   pCI->Flux.m_pArriving = pCI->G.p_emit;
+
+  if (CK_o_KEYEXISTS    == eCard_OP ||
+      CK_o_KEYNOTEXISTS == eCard_OP ||
+      CK_o_WHERE        == eCard_OP)
+    vCorrect_expCol(pCI->Flux.m_pArriving);
 }
 
 /*----------------------------------------------------------------------------*/

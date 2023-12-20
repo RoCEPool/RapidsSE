@@ -103,24 +103,16 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  pCI->vPrintBoard();
+  //pCI->vPrintBoard();
 
   pCI->G.p_OP = pCI->G.p_keyNotExists;
-  pCI->G.p_keyNotExists->vRecreate_emit(pCI);
+  pCI->G.p_keyNotExists->vRecreate_emit(pCI,true);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
-
-  pCI->vPrintBoard();
+  //pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

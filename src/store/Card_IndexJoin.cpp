@@ -117,24 +117,13 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   pCI->G.p_table = pSub_table();
   pCI->G.p_OP = pCI->G.p_indexJoin;
-  pCI->G.p_indexJoin->vRecreate_emit(pCI);
+  pCI->G.p_indexJoin->vRecreate_emit(pCI,true);
 
-  //pCI->Flux.m_pArriving->vDump(__func__);
-  //vCorrect_expCol(pCI->Flux.m_pArriving);
-
-  pCI->vPrintBoard(__LINE__,true);
+  //pCI->vPrintBoard(__LINE__,true);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
-
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,21 +237,9 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  pCI->G.p_indexJoin->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
-
-  pCI->G.p_key = pSub_key();
-
- // pCI->vPrintBoard();
-
-  pCI->G.p_emit = pSub_emit();
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

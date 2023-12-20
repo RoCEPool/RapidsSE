@@ -111,21 +111,13 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
  // pCI->vPrintBoard();
 
   pCI->G.p_OP = pCI->G.p_keyExists;
-  pCI->G.p_keyExists->vRecreate_emit(pCI);
+  pCI->G.p_keyExists->vRecreate_emit(pCI,true);
 
  // pCI->vPrintBoard();
-
-  vCorrect_expCol(pCI->Flux.m_pArriving);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

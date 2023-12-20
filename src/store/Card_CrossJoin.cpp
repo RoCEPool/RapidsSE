@@ -89,26 +89,21 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
   Card_OP::vEarlyProject_backstep(pCI);
 
+  pCI->G.p_MainCard = pCI->G.p_OP = this;
+  pCI->G.e_MainCard = CK_o_CROSSJOIN;
+
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_OP->vRecreate_emit(pCI);
+  pCI->G.p_OP->vRecreate_emit(pCI,true);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
-
- // pCI->vPrintBoard();
+  // pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
