@@ -371,7 +371,7 @@ Card_Expr* Card_Expr::pInduct(void)
   Card_Expr* p_expr_inducted = new Card_Expr;
 
   //vDump(__func__);
-  //p_expr_inducted->vCast(this);
+  p_expr_inducted->vCast(this);
 
   Symbol* pSymbol_arriving = pSymbol();
 
@@ -787,6 +787,16 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (! m_xSymbol.bHasType()) {
       vDump(__func__);
       vValidationFailed("Type Missing : %p"_Stz,this);
+    }
+  }
+
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMIT]) ) {
+    if (pCI->pAncestorFind(CK_t_EMIT)) {
+      if (!m_xSymbol.bHasType()) {
+        pCI->vPrintBoard(__LINE__,true);
+        vDump(__func__);
+        vValidationFailed("Type Missing : %p"_Stz, this);
+      }
     }
   }
 
