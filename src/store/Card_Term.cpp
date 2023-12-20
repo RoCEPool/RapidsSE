@@ -648,7 +648,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   /*
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL]) ) {
     if (m_xSymbol.bIs_Exp_Col() && ! pCI->G.p_call) {
-      if (! m_xSymbol.bHasType()) {
+      if (! m_xSymbol.bHasType() && ! m_xSymbol.bHasFacet(SF_SQY_PRM)) {
         pCI->vPrintBoard(__LINE__,true);
         vDump(__func__);
         vValidationFailed("Type Missing : %p"_Stz,this);

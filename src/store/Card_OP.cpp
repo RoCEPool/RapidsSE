@@ -535,6 +535,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 
     case CK_o_PROJECT:
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
+      if (pCI->Flux.m_pArriving)
+        pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -559,6 +561,11 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+
+      if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()) &&
+          (pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred()))
+        pCI->G.p_boolPred->vEnsureTypeId_expCol(pCI);
+
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
