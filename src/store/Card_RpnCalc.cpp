@@ -235,38 +235,6 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
   if (! pSymbol()->xCast().m_xTypeId.bIsValid() && xCast_last.m_xTypeId.bIsValid())
     vCast(xCast_last);
 }
-/*----------------------------------------------------------------------------*/
-//void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  Card_Expr *p_expr_found;
-//
-//  // rpnCalc is a set of terms
-//  for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
-//    if (xTerm.p_term()->pSymbol()->bHasType())
-//      continue;
-//
-//    i8 iOdn = xTerm.iGetOdn();
-//
-//    if (xTerm.p_term()->bIsKeyCol())
-//      p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
-//    else
-//    if (xTerm.p_term()->bIs_expCol()) {
-//      //pCI->Flux.m_pArriving->vDump(__func__);
-//      p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
-//    }
-//    else
-//      continue;
-//
-//    Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
-//
-//    xTerm.p_term()->vCast(p_rpnCalc_found);
-//  }
-//
-//  if (bIsScalarCol())
-//    vCast(pGetTerm(0)->xCast());
-//}
 
 /*----------------------------------------------------------------------------*/
 /* return first key col in this rpn sequence                                  */

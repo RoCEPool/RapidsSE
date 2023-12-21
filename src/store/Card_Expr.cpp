@@ -268,7 +268,10 @@ void Card_Expr::vEnsureTypeId_expCol(CardIter* pCI)
 
   pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
-  vCast(pCI->G.p_rpnCalc->xCast());
+  if (! pSymbol()->xCast().m_xTypeId.bIsValid())
+    vCast(pCI->G.p_rpnCalc->xCast());
+
+  RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
 }
 
 /*----------------------------------------------------------------------------*/
