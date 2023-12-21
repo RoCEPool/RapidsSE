@@ -131,9 +131,15 @@ enum eFM : u2 // function macros
   /*  */ FM_FLT_TOVCH,          // flt to vch
 
   /*  */ FM_INT_TOBCD,          // int to bcd
+	/*  */ FM_INT_TODAY,          // int to day(ivd)
   /*  */ FM_INT_TOFLT,          // int to flt
+	/*  */ FM_INT_TOHOUR,         // int to hour(ivd)
+	/*  */ FM_INT_TOMINUTE,       // int to minutr(ivd)
+	/*  */ FM_INT_TOMONTH,        // int to month(ivl)
+	/*  */ FM_INT_TOSECOND,       // int to second(ivd)
   /*  */ FM_INT_TOUNK,          // int to unk
   /*  */ FM_INT_TOVCH,          // int to vch
+	/*  */ FM_INT_TOYEAR,         // int to year(ivl)
 
   /*  */ FM_IVD_TOUNK,          // ivd to unk
   /*  */ FM_IVD_TOVCH,          // ivd to vch

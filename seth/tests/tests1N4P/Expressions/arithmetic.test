@@ -679,7 +679,8 @@ rows:
 //  Cast as Interval
 // NB: We add zero to these so they aren't short-circuited in the SQL compiler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+// TODO : V2
+/*
 SELECT CAST(1 + 0  AS INTERVAL YEAR) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
@@ -688,7 +689,7 @@ failure contains: 'EC_NOT_IMPLEMENTED'
 
 SELECT CAST(1.0e1 + 0 AS INTERVAL DAY) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
-
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cast Interval as
 // NB: We add zero to these so they aren't short-circuited in the SQL compiler

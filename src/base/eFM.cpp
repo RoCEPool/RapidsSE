@@ -135,12 +135,19 @@ Stz* aFM[FM_ENUMS]
   /*  */ "_FLT_TOUNK"_Stz,
   /*  */ "_FLT_TOVCH"_Stz,
 
-  /*  */ "_INT_TOBCD"_Stz,
-  /*  */ "_INT_TOFLT"_Stz,
-  /*  */ "_INT_TOUNK"_Stz,
-  /*  */ "_INT_TOVCH"_Stz,
+	/*  */ "_INT_TOBCD"_Stz,
+	/*  */ "_INT_TODAY"_Stz,
+	/*  */ "_INT_TOFLT"_Stz,
+	/*  */ "_INT_TOHOUR"_Stz,
+	/*  */ "_INT_TOMINUTE"_Stz,
+	/*  */ "_INT_TOMONTH"_Stz,
+	/*  */ "_INT_TOSECOND"_Stz,
+	/*  */ "_INT_TOUNK"_Stz,
+	/*  */ "_INT_TOVCH"_Stz,
+	/*  */ "_INT_TOYEAR"_Stz,
 
-  /*  */ "_IVD_TOUNK"_Stz,
+
+	/*  */ "_IVD_TOUNK"_Stz,
   /*  */ "_IVD_TOVCH"_Stz,
 
   /*  */ "_IVY_TOUNK"_Stz,
