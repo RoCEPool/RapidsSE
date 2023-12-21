@@ -34,6 +34,12 @@ namespace Parser
     // Returns the resulting type of the expression operation
     static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns the precision of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iPrecision(QueryNode* pExprNode, PlanNode* pRootNode);
+
+    // Returns the scale of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iScale(QueryNode* pExprNode, PlanNode* pRootNode);
+
     // Parse a string into a Bcd, throwing an exception if there is a problem
     static Bcd xParseStr(Stz* szStr);
   };

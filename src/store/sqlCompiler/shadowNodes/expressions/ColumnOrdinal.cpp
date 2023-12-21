@@ -105,6 +105,43 @@ TypeId ColumnOrdinal::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ColumnOrdinal::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // This should never be called because an column ordinal knows nothing of
+  // the expression nodes it is representing. Instead, the symbolic expression
+  // should be queried for it's type, scale, precision, etc.
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ColumnOrdinal::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // This should never be called because an column ordinal knows nothing of
+  // the expression nodes it is representing. Instead, the symbolic expression
+  // should be queried for it's type, scale, precision, etc.
+  NEVER_REACH
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Returns the 1-based reference to a column                                  */
 /*----------------------------------------------------------------------------*/
 i8 ColumnOrdinal::iOrdinal(QueryNode* pNode)

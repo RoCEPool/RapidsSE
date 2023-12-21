@@ -142,6 +142,32 @@ TypeId TimeLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 TimeLiteral::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 TimeLiteral::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given string validly represents a time                 */
 /*----------------------------------------------------------------------------*/
 b1 TimeLiteral::bIsTimeStr(Stz* szStr)

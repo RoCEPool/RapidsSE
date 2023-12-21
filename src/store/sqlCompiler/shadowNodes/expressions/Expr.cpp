@@ -75,7 +75,7 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  // TODO: manual expression polymorphism here
+  // Manual expression polymorphism here
 
   if      (    LiteralExpr::bIsOfType(pNode))  {     LiteralExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (      ColumnRef::bIsOfType(pNode))  {       ColumnRef::vDescribe(pNode, sBuf, pRootNode); }
@@ -99,7 +99,7 @@ void Expr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  // TODO: manual expression polymorphism here
+  // Manual expression polymorphism here
 
   if      (    LiteralExpr::bIsOfType(pNode))  {     LiteralExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
   else if (      ColumnRef::bIsOfType(pNode))  {       ColumnRef::vDescribeAsTypes(pNode, sBuf, pRootNode); }
@@ -139,17 +139,67 @@ TypeId Expr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
 
-  // TODO: manual expression polymorphism here
+  // Manual expression polymorphism here
 
-  if      (    LiteralExpr::bIsOfType(pExprNode))  { return LiteralExpr::xTypeId(pExprNode, pRootNode); }
-  else if (      ColumnRef::bIsOfType(pExprNode))  { return ColumnRef::xTypeId(pExprNode, pRootNode); }
-  else if (       AliasRef::bIsOfType(pExprNode))  { return AliasRef::xTypeId(pExprNode, pRootNode); }
-  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return ColumnWildcard::xTypeId(pExprNode, pRootNode); }
-  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return ColumnOrdinal::xTypeId(pExprNode, pRootNode); }
+  if      (    LiteralExpr::bIsOfType(pExprNode))  { return     LiteralExpr::xTypeId(pExprNode, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pExprNode))  { return       ColumnRef::xTypeId(pExprNode, pRootNode); }
+  else if (       AliasRef::bIsOfType(pExprNode))  { return        AliasRef::xTypeId(pExprNode, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return  ColumnWildcard::xTypeId(pExprNode, pRootNode); }
+  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return   ColumnOrdinal::xTypeId(pExprNode, pRootNode); }
   else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::xTypeId(pExprNode, pRootNode); }
-  else if (   OperatorExpr::bIsOfType(pExprNode))  { return OperatorExpr::xTypeId(pExprNode, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pExprNode))  { return    OperatorExpr::xTypeId(pExprNode, pRootNode); }
   else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::xTypeId(pExprNode, pRootNode); }
-  else if (       MiscExpr::bIsOfType(pExprNode))  { return MiscExpr::xTypeId(pExprNode, pRootNode); }
+  else if (       MiscExpr::bIsOfType(pExprNode))  { return        MiscExpr::xTypeId(pExprNode, pRootNode); }
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 Expr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (    LiteralExpr::bIsOfType(pExprNode))  { return     LiteralExpr::iPrecision(pExprNode, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pExprNode))  { return       ColumnRef::iPrecision(pExprNode, pRootNode); }
+  else if (       AliasRef::bIsOfType(pExprNode))  { return        AliasRef::iPrecision(pExprNode, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return  ColumnWildcard::iPrecision(pExprNode, pRootNode); }
+  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return   ColumnOrdinal::iPrecision(pExprNode, pRootNode); }
+  else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::iPrecision(pExprNode, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pExprNode))  { return    OperatorExpr::iPrecision(pExprNode, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       MiscExpr::bIsOfType(pExprNode))  { return        MiscExpr::iPrecision(pExprNode, pRootNode); }
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 Expr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+      ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (    LiteralExpr::bIsOfType(pExprNode))  { return     LiteralExpr::iScale(pExprNode, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pExprNode))  { return       ColumnRef::iScale(pExprNode, pRootNode); }
+  else if (       AliasRef::bIsOfType(pExprNode))  { return        AliasRef::iScale(pExprNode, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return  ColumnWildcard::iScale(pExprNode, pRootNode); }
+  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return   ColumnOrdinal::iScale(pExprNode, pRootNode); }
+  else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::iScale(pExprNode, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pExprNode))  { return    OperatorExpr::iScale(pExprNode, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::iScale(pExprNode, pRootNode); }
+  else if (       MiscExpr::bIsOfType(pExprNode))  { return        MiscExpr::iScale(pExprNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

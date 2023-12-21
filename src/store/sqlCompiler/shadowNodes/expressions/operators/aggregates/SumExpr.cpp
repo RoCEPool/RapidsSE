@@ -190,6 +190,45 @@ TypeId SumExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return xResult;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SumExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // The precision of a SUM() is the precision of the child expression,
+  // except for the case of a DECIMAL, where the output precision is the
+  // maximum supported decimal precision.
+  TypeId xId = xTypeId(pExprNode, pRootNode);
+
+  if (xId.eCTVal() == CT_DECIMAL) {
+    return C_MAX_BCD_PRECISION;
+
+  } else {
+    QueryNode* pChild1 = SumExpr::pChild1(pExprNode);
+    i8 iVal = Expr::iPrecision(pChild1, pRootNode);
+    return iVal;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SumExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // Get the scale of the child expression
+  QueryNode* pChild1 = SumExpr::pChild1(pExprNode);
+  i8 iVal = Expr::iScale(pChild1, pRootNode);
+  return iVal;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

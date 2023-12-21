@@ -114,6 +114,42 @@ TypeId ColumnParameter::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ColumnParameter::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // This should never be called because an column parameter knows nothing of
+  // the expression nodes it is representing. Instead, the symbolic expression
+  // should be queried for it's type, scale, precision, etc.
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ColumnParameter::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // This should never be called because an column parameter knows nothing of
+  // the expression nodes it is representing. Instead, the symbolic expression
+  // should be queried for it's type, scale, precision, etc.
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the 1-based reference to a column                                  */
 /*----------------------------------------------------------------------------*/
 i8 ColumnParameter::iParameter(QueryNode* pNode)

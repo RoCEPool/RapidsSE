@@ -102,13 +102,49 @@ TypeId AggregateExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
 
-  // TODO: manual expression polymorphism here
+  // Manual expression polymorphism here
 
   if      (CountExpr::bIsOfType(pExprNode))  { return CountExpr::xTypeId(pExprNode, pRootNode); }
   else if (  SumExpr::bIsOfType(pExprNode))  {   return SumExpr::xTypeId(pExprNode, pRootNode); }
   else if (  MinExpr::bIsOfType(pExprNode))  {   return MinExpr::xTypeId(pExprNode, pRootNode); }
   else if (  MaxExpr::bIsOfType(pExprNode))  {   return MaxExpr::xTypeId(pExprNode, pRootNode); }
   else if (  AvgExpr::bIsOfType(pExprNode))  {   return AvgExpr::xTypeId(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 AggregateExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (CountExpr::bIsOfType(pExprNode))  { return CountExpr::iPrecision(pExprNode, pRootNode); }
+  else if (  SumExpr::bIsOfType(pExprNode))  {   return SumExpr::iPrecision(pExprNode, pRootNode); }
+  else if (  MinExpr::bIsOfType(pExprNode))  {   return MinExpr::iPrecision(pExprNode, pRootNode); }
+  else if (  MaxExpr::bIsOfType(pExprNode))  {   return MaxExpr::iPrecision(pExprNode, pRootNode); }
+  else if (  AvgExpr::bIsOfType(pExprNode))  {   return AvgExpr::iPrecision(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 AggregateExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (CountExpr::bIsOfType(pExprNode))  { return CountExpr::iScale(pExprNode, pRootNode); }
+  else if (  SumExpr::bIsOfType(pExprNode))  {   return SumExpr::iScale(pExprNode, pRootNode); }
+  else if (  MinExpr::bIsOfType(pExprNode))  {   return MinExpr::iScale(pExprNode, pRootNode); }
+  else if (  MaxExpr::bIsOfType(pExprNode))  {   return MaxExpr::iScale(pExprNode, pRootNode); }
+  else if (  AvgExpr::bIsOfType(pExprNode))  {   return AvgExpr::iScale(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 

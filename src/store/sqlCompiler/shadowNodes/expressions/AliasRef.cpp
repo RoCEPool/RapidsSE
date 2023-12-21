@@ -126,6 +126,42 @@ TypeId AliasRef::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 AliasRef::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Get the aliasExpr node
+  QueryNode* pAliasExpr = _pQueryNode(GraphNav::pFindProperty(C_ALIASEXPR_PROP, pExprNode));
+  ASSERT(pAliasExpr);
+
+  i8 iVal = Expr::iPrecision(pAliasExpr, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 AliasRef::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Get the aliasExpr node
+  QueryNode* pAliasExpr = _pQueryNode(GraphNav::pFindProperty(C_ALIASEXPR_PROP, pExprNode));
+  ASSERT(pAliasExpr);
+
+  i8 iVal = Expr::iScale(pAliasExpr, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the alias name of the AliasRef                                     */
 /*----------------------------------------------------------------------------*/
 Stz* AliasRef::szAlias(QueryNode* pNode)

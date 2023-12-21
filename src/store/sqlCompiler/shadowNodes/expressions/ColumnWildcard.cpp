@@ -135,6 +135,40 @@ TypeId ColumnWildcard::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ColumnWildcard::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // This should never be called. The ColumnWildcard should instead be replaced
+  // with specific ColumnRefs once the tables in the plan have been resolved.
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ColumnWildcard::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // This should never be called. The ColumnWildcard should instead be replaced
+  // with specific ColumnRefs once the tables in the plan have been resolved.
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the catalogName of the columnWildcard. May be null.                */
 /*----------------------------------------------------------------------------*/
 Stz* ColumnWildcard::szCatalog(QueryNode* pNode)

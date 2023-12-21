@@ -231,6 +231,113 @@ TypeId ColumnRef::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ColumnRef::iPrecision(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(bIsFullyQualified(pNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Get the metadata node
+  QueryNode* pMetadata = ShadowRoot::pMetadataNode(pRootNode);
+  ASSERT(pMetadata);
+
+  Stz* szCatalog  = ColumnRef::szCatalog(pNode);
+  Stz* szSchema   = ColumnRef::szSchema(pNode);
+  Stz* szTable    = ColumnRef::szTable(pNode);
+  Stz* szColumn   = ColumnRef::szColumn(pNode);
+  Stz* szDefnPath = ColumnRef::szDefnPath(pNode);
+
+  ASSERT(szColumn);
+
+  if (!szCatalog || !szSchema || !szTable) {
+    // This can occur when we have columnRefs for named subqueries, such as
+    // Common Table Expressions (CTEs), which have a (table) name but no
+    // catalog or schema name.
+    ASSERT(szDefnPath);
+
+    // Get the node for this path
+    QueryNode* pCteDef = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
+    ASSERT(pCteDef);
+    ASSERT(CteDef::bIsOfType(pCteDef));
+
+    QueryNode* pColumnDef = CteDef::pColumnDef(pCteDef, szColumn);
+    ASSERT(pColumnDef);
+    ASSERT(ColumnDef::bIsOfType(pColumnDef));
+
+    i8 iVal = ColumnDef::iPrecision(pColumnDef);
+    return iVal;
+  }
+
+  QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
+                                                   szCatalog,
+                                                   szSchema,
+                                                   szTable,
+                                                   szColumn);
+  ASSERT(pColumnDef);
+
+  i8 iVal = ColumnDef::iPrecision(pColumnDef);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ColumnRef::iScale(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(bIsFullyQualified(pNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Get the metadata node
+  QueryNode* pMetadata = ShadowRoot::pMetadataNode(pRootNode);
+  ASSERT(pMetadata);
+
+  Stz* szCatalog  = ColumnRef::szCatalog(pNode);
+  Stz* szSchema   = ColumnRef::szSchema(pNode);
+  Stz* szTable    = ColumnRef::szTable(pNode);
+  Stz* szColumn   = ColumnRef::szColumn(pNode);
+  Stz* szDefnPath = ColumnRef::szDefnPath(pNode);
+
+  ASSERT(szColumn);
+
+  if (!szCatalog || !szSchema || !szTable) {
+    // This can occur when we have columnRefs for named subqueries, such as
+    // Common Table Expressions (CTEs), which have a (table) name but no
+    // catalog or schema name.
+    ASSERT(szDefnPath);
+
+    // Get the node for this path
+    QueryNode* pCteDef = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
+    ASSERT(pCteDef);
+    ASSERT(CteDef::bIsOfType(pCteDef));
+
+    QueryNode* pColumnDef = CteDef::pColumnDef(pCteDef, szColumn);
+    ASSERT(pColumnDef);
+    ASSERT(ColumnDef::bIsOfType(pColumnDef));
+
+    i8 iVal = ColumnDef::iScale(pColumnDef);
+    return iVal;
+  }
+
+  QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
+                                                   szCatalog,
+                                                   szSchema,
+                                                   szTable,
+                                                   szColumn);
+  ASSERT(pColumnDef);
+
+  i8 iVal = ColumnDef::iScale(pColumnDef);
+  return iVal;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Returns the tableAliasName of the columnRef. May be null.                  */
 /*----------------------------------------------------------------------------*/
 Stz* ColumnRef::szTableAlias(QueryNode* pNode)

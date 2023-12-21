@@ -190,6 +190,36 @@ TypeId MaxExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return xResult;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 MaxExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // Get the precision of the child expression
+  QueryNode* pChild1 = MaxExpr::pChild1(pExprNode);
+  i8 iVal = Expr::iPrecision(pChild1, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 MaxExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // Get the scale of the child expression
+  QueryNode* pChild1 = MaxExpr::pChild1(pExprNode);
+  i8 iVal = Expr::iScale(pChild1, pRootNode);
+  return iVal;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

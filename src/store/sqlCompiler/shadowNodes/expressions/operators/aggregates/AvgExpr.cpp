@@ -189,6 +189,59 @@ TypeId AvgExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return xResult;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 AvgExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // The precision of a AVG() is the precision of the child expression,
+  // except for the case of a DECIMAL, where the output precision is the
+  // maximum supported decimal precision.
+  TypeId xId = xTypeId(pExprNode, pRootNode);
+
+  if (xId.eCTVal() == CT_DECIMAL) {
+    return C_MAX_BCD_PRECISION;
+
+  } else {
+    QueryNode* pChild1 = AvgExpr::pChild1(pExprNode);
+    i8 iVal = Expr::iPrecision(pChild1, pRootNode);
+    return iVal;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 AvgExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // The scale of an AVG() is the scale of the child expression,
+  // except for the case of a DECIMAL, where the output scale is
+  // defined as scale(childExpr) + 10 + 1
+
+  TypeId xId = xTypeId(pExprNode, pRootNode);
+
+  QueryNode* pChild1 = AvgExpr::pChild1(pExprNode);
+  i8 iVal = Expr::iScale(pChild1, pRootNode);
+
+  if (xId.eCTVal() == CT_DECIMAL) {
+    if (iVal < 0) {
+      iVal = 0;
+    }
+    return iVal + 11;
+
+  } else {
+    return iVal;
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

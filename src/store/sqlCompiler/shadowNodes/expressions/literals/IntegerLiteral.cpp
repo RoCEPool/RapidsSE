@@ -130,6 +130,31 @@ TypeId IntegerLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return TypeId::xIdOf(CT_INTEGER);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 IntegerLiteral::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  return C_MAX_INT_PRECISION;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 IntegerLiteral::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  return -1;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

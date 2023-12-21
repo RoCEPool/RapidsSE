@@ -133,6 +133,31 @@ TypeId FloatLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return TypeId::xIdOf(CT_FLOAT);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 FloatLiteral::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  return C_MAX_FLT_PRECISION;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 FloatLiteral::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  return -1;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

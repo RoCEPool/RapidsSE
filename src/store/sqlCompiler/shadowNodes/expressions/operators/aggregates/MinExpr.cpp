@@ -190,6 +190,36 @@ TypeId MinExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return xResult;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 MinExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // Get the precision of the child expression
+  QueryNode* pChild1 = MinExpr::pChild1(pExprNode);
+  i8 iVal = Expr::iPrecision(pChild1, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 MinExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // Get the scale of the child expression
+  QueryNode* pChild1 = MinExpr::pChild1(pExprNode);
+  i8 iVal = Expr::iScale(pChild1, pRootNode);
+  return iVal;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

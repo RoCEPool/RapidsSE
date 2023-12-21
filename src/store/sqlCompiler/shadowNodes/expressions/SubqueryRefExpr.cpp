@@ -178,6 +178,59 @@ TypeId SubqueryRefExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SubqueryRefExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  QueryNode* pCteDef = pDefnNode(pExprNode, pRootNode);
+  ASSERT(pCteDef);
+  ASSERT(CteDef::bIsOfType(pCteDef));
+
+  // In most cases an expression subquery should be projecting only 1 column.
+  // (An EXISTS clause is different). So we won't assert that here, but rather
+  // explicitly check it in ExprValidation.cpp. Instead, when asked the precision of
+  // an expression subquery we will simply return the precision of the first column.
+  QueryNode* pColumnDef = CteDef::pFirstColumnDef(pCteDef);
+  ASSERT(pColumnDef);
+  ASSERT(ColumnDef::bIsOfType(pColumnDef));
+
+  i8 iVal = ColumnDef::iPrecision(pColumnDef);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SubqueryRefExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  QueryNode* pCteDef = pDefnNode(pExprNode, pRootNode);
+  ASSERT(pCteDef);
+  ASSERT(CteDef::bIsOfType(pCteDef));
+
+  // In most cases an expression subquery should be projecting only 1 column.
+  // (An EXISTS clause is different). So we won't assert that here, but rather
+  // explicitly check it in ExprValidation.cpp. Instead, when asked the scale of
+  // an expression subquery we will simply return the scale of the first column.
+  QueryNode* pColumnDef = CteDef::pFirstColumnDef(pCteDef);
+  ASSERT(pColumnDef);
+  ASSERT(ColumnDef::bIsOfType(pColumnDef));
+
+  i8 iVal = ColumnDef::iScale(pColumnDef);
+  return iVal;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the expression does not contain any column references.     */
 /* All expressions are relative column ordinals, operators or literals only.  */
 /*----------------------------------------------------------------------------*/

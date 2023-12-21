@@ -171,6 +171,36 @@ TypeId CountExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return TypeId::xIdOf(CT_INTEGER);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 CountExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // COUNT() always returns an integer, so the precision is fixed
+  return C_MAX_INT_PRECISION;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 CountExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // COUNT() always returns an integer, so there is no scale
+  return -1;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

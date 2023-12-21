@@ -51,6 +51,12 @@ namespace Parser
     // Returns the resulting typeId of the expression operation
     static TypeId xTypeId(QueryNode* pExprNode, PlanNode* pRootNode);
 
+    // Returns the precision of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iPrecision(QueryNode* pExprNode, PlanNode* pRootNode);
+
+    // Returns the scale of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iScale(QueryNode* pExprNode, PlanNode* pRootNode);
+
     // Returns true if this expression (and therefore any subexpression elements
     // it contains) is an aggregate expression. It may also contain non-aggregated
     // terms too.

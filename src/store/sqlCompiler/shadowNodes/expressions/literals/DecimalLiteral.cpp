@@ -137,6 +137,45 @@ TypeId DecimalLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 DecimalLiteral::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  Bcd xBcd = xValue(pExprNode);
+  if (xBcd.bIsNull()) {
+    return -1;
+  }
+
+  // The precision is the number of digits in the mantissa.
+  i8 iPrecision = IntLib::iLog10(IntLib::iAbs(xBcd.T.m_iMantissa)) + 1;
+  return iPrecision;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 DecimalLiteral::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  Bcd xBcd = xValue(pExprNode);
+  if (xBcd.bIsNull()) {
+    return -1;
+  }
+
+  // This is easy, each BCD value must have a known scale.
+  return (i8) xBcd.T.m_uScale;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Parse a string into a Bcd, throwing an exception is there is a problem     */
 /*----------------------------------------------------------------------------*/
 Bcd DecimalLiteral::xParseStr(Stz* szStr)

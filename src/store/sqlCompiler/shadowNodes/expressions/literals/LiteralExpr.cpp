@@ -116,7 +116,49 @@ TypeId LiteralExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (        TimeLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_TIME);        }
   else if (   TimestampLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_TIMESTAMP);   }
   else if (    IntervalLiteral::bIsOfType(pExprNode))  { return IntervalLiteral::xTypeId(pExprNode, pRootNode); }
-  else if (      NullLiteral::bIsOfType(pExprNode))    { return TypeId::xIdOf(CT_UNKNOWN);     }
+  else if (        NullLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_UNKNOWN);     }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 LiteralExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  if      (      StringLiteral::bIsOfType(pExprNode))  { return    StringLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (     BooleanLiteral::bIsOfType(pExprNode))  { return   BooleanLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (     IntegerLiteral::bIsOfType(pExprNode))  { return   IntegerLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (       FloatLiteral::bIsOfType(pExprNode))  { return     FloatLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (     DecimalLiteral::bIsOfType(pExprNode))  { return   DecimalLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (        DateLiteral::bIsOfType(pExprNode))  { return      DateLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (        TimeLiteral::bIsOfType(pExprNode))  { return      TimeLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (   TimestampLiteral::bIsOfType(pExprNode))  { return TimestampLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (    IntervalLiteral::bIsOfType(pExprNode))  { return  IntervalLiteral::iPrecision(pExprNode,pRootNode); }
+  else if (        NullLiteral::bIsOfType(pExprNode))  { return      NullLiteral::iPrecision(pExprNode,pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 LiteralExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  if      (      StringLiteral::bIsOfType(pExprNode))  { return    StringLiteral::iScale(pExprNode,pRootNode); }
+  else if (     BooleanLiteral::bIsOfType(pExprNode))  { return   BooleanLiteral::iScale(pExprNode,pRootNode); }
+  else if (     IntegerLiteral::bIsOfType(pExprNode))  { return   IntegerLiteral::iScale(pExprNode,pRootNode); }
+  else if (       FloatLiteral::bIsOfType(pExprNode))  { return     FloatLiteral::iScale(pExprNode,pRootNode); }
+  else if (     DecimalLiteral::bIsOfType(pExprNode))  { return   DecimalLiteral::iScale(pExprNode,pRootNode); }
+  else if (        DateLiteral::bIsOfType(pExprNode))  { return      DateLiteral::iScale(pExprNode,pRootNode); }
+  else if (        TimeLiteral::bIsOfType(pExprNode))  { return      TimeLiteral::iScale(pExprNode,pRootNode); }
+  else if (   TimestampLiteral::bIsOfType(pExprNode))  { return TimestampLiteral::iScale(pExprNode,pRootNode); }
+  else if (    IntervalLiteral::bIsOfType(pExprNode))  { return  IntervalLiteral::iScale(pExprNode,pRootNode); }
+  else if (        NullLiteral::bIsOfType(pExprNode))  { return      NullLiteral::iScale(pExprNode,pRootNode); }
   else NEVER_REACH
 }
 
