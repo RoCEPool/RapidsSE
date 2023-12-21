@@ -355,6 +355,28 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO IVL
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// INT to DAY
+#define _INT_TODAY(iErrorCode) \
+{                                                                        \
+  iArg1 = *(--paW);                                                      \
+  if (iErrorCode != EC_NONE ||                                           \
+    iArg1 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    wIvlResult.m_iAsI8 = 0;                                              \
+    wIvlResult.m_xIvl.m_eType = IVL_DAY;                                 \
+                                                                         \
+    if (iArg1 < 0) {                                                     \
+      wIvlResult.m_xIvl.m_bIsNeg = 1;                                         \
+		}                                                                    \
+		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_DAY * _C_1M;         \
+																                                         \
+		*paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                      \
+}
+
 #define _VCH_TOIVL(iErrorCode) \
   iErrorCode = EC_NOT_IMPLEMENTED;
 
