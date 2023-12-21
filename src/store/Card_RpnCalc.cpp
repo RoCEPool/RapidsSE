@@ -138,6 +138,66 @@ void Card_RpnCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
+//void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  Card_Expr *p_expr_found;
+//
+//  Cast xCast_last;
+//  xCast_last.m_xTypeId = TypeId();
+//
+//  // rpnCalc is a set of terms
+//  for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
+//    if (xTerm.p_term()->pSymbol()->bHasType()) {
+//      xCast_last = xTerm.p_term()->pSymbol()->xCast();
+//      continue;
+//    }
+//
+//    i8 iOdn = xTerm.iGetOdn();
+//
+//    if (xTerm.p_term()->bIsKeyCol())
+//      p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
+//    else
+//    if (xTerm.p_term()->bIs_expCol()) {
+//      //pCI->Flux.m_pArriving->vDump(__func__);
+//      p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
+//    }
+//    else
+//    if (xTerm.p_term()->pSymbol()->bIs_Col_Type()) {
+//      Stz* szArg = xTerm.p_term()->pSymbol()->szFacet(SF_COL_TYPE);
+//
+//           if (szArg->bSame("BOOLEAN"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
+//      else if (szArg->bSame("DATE"_Stz))         xCast_last.m_xTypeId = TypeId::xIdOf(CT_DATE);
+//      else if (szArg->bSame("DECIMAL"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+//      else if (szArg->bSame("INTEGER"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+//      else if (szArg->bSame("INTERVAL_DT"_Stz))  xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_DT);
+//      else if (szArg->bSame("INTERVAL_YM"_Stz))  xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_YM);
+//      else if (szArg->bSame("FLOAT"_Stz))        xCast_last.m_xTypeId = TypeId::xIdOf(CT_FLOAT);
+//      else if (szArg->bSame("TIME"_Stz))         xCast_last.m_xTypeId = TypeId::xIdOf(CT_TIME);
+//      else if (szArg->bSame("TIMESTAMP"_Stz))    xCast_last.m_xTypeId = TypeId::xIdOf(CT_TIMESTAMP);
+//      else if (szArg->bSame("VARCHAR"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_VARCHAR);
+//      continue;
+//    }
+//    else
+//      continue;
+//
+//
+//    Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
+//
+//    xTerm.p_term()->vCast(p_rpnCalc_found);
+//
+//    if (xTerm.p_term()->pSymbol()->bHasType())
+//      xCast_last = xTerm.p_term()->pSymbol()->xCast();
+//  }
+//
+//  if (bIsScalarCol())
+//    vCast(pGetTerm(0)->xCast());
+//  else
+//  if (xCast_last.m_xTypeId.bIsValid())
+//    vCast(xCast_last);
+//}
+/*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
