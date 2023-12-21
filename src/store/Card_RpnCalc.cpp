@@ -215,15 +215,13 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
     if (xTerm.p_term()->bIsKeyCol())
       p_expr_arriving = pCI->G.p_key->pGet_expr(iOdn - 1);
     else
-    if (xTerm.p_term()->bIs_expCol()) {
-      //pCI->Flux.m_pArriving->vDump(__func__);
+    if (xTerm.p_term()->bIs_expCol())
       p_expr_arriving = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
-    }
-    else
+    else {
+      RASSERT(!xTerm.p_term()->bIsTblCol());
       continue;
+    }
 
-    //Card_RpnCalc *p_rpnCalc_found = p_expr_arriving->pSub_rpnCalc();
-    //xTerm.p_term()->vCast(p_rpnCalc_found);
     RASSERT(! xTerm.p_term()->pSymbol()->xTypeId().bIsValid() &&
           p_expr_arriving->xTypeId().bIsValid());
     xTerm.p_term()->vCast(p_expr_arriving);
