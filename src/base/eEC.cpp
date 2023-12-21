@@ -262,7 +262,6 @@ Stz* aEC[EC_ENUMS] =
   /* EC_TABLE_IN_USE                  */ (Stz*)"table in use",
   /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ (Stz*)"EC_TABLE_SUBQUERY_OUT_OF_SCOPE",  // SQL Compiler Subsystem
   /* EC_TENANT_EXISTS                 */ (Stz*)"tenant exists",
-  /* EC_TINYC_ERROR                   */ (Stz*)"tinyC compilation error",
   /* EC_TOO_MANY_NAMED_COLUMNS        */ (Stz*)"too many named columns",
   /* EC_TX_BEGIN_FAILED               */ (Stz*)"begin transaction failed",
   /* EC_TX_COMMIT_FAILED              */ (Stz*)"commit transaction failed",
@@ -561,7 +560,6 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_TABLE_IN_USE                  */ (Stz*)"EC_TABLE_IN_USE",
   /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ (Stz*)"EC_TABLE_SUBQUERY_OUT_OF_SCOPE",
   /* EC_TENANT_EXISTS                 */ (Stz*)"EC_TENANT_EXISTS",
-  /* EC_TINYC_ERROR                   */ (Stz*)"EC_TINYC_ERROR",
   /* EC_TOO_MANY_NAMED_COLUMNS        */ (Stz*)"EC_TOO_MANY_NAMED_COLUMNS",
   /* EC_TX_BEGIN_FAILED               */ (Stz*)"EC_TX_BEGIN_FAILED",
   /* EC_TX_COMMIT_FAILED              */ (Stz*)"EC_TX_COMMIT_FAILED",
@@ -867,7 +865,6 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_TABLE_IN_USE                  */ (Stz*)"table in use",
   /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ (Stz*)"Table name refers to a table subquery alias that is not in scope",    // SQL Compiler Subsystem
   /* EC_TENANT_EXISTS                 */ (Stz*)"tenant exists",
-  /* EC_TINYC_ERROR                   */ (Stz*)"tinyC compilation error",
   /* EC_TOO_MANY_NAMED_COLUMNS        */ (Stz*)"too many named columns in table subquery",
   /* EC_TX_BEGIN_FAILED               */ (Stz*)"begin transaction failed",
   /* EC_TX_COMMIT_FAILED              */ (Stz*)"commit transaction failed",
