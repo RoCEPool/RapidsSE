@@ -197,13 +197,13 @@ bool Symbol::bIs_Agg_Fn(Stz* szArg)
 {
   _static_
 
-       if (szArg->bSame("avg"_Stz))      return true;
-  else if (szArg->bSame("count"_Stz))    return true;
-  else if (szArg->bSame("countAll"_Stz)) return true;
-  else if (szArg->bSame("max"_Stz))      return true;
-  else if (szArg->bSame("min"_Stz))      return true;
-//else if (szArg->bSame("stddev"_Stz))   return true;
-  else if (szArg->bSame("sum"_Stz))      return true;
+       if (szArg->bSame("AVG"_Stz))      return true;
+  else if (szArg->bSame("COUNT"_Stz))    return true;
+  else if (szArg->bSame("COUNTALL"_Stz)) return true;
+  else if (szArg->bSame("MAX"_Stz))      return true;
+  else if (szArg->bSame("MIN"_Stz))      return true;
+//else if (szArg->bSame("STDDEV"_Stz))   return true;
+  else if (szArg->bSame("SUM"_Stz))      return true;
 
   return false;
 }
