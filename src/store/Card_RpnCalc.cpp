@@ -146,6 +146,8 @@ void Card_RpnCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 //
 //  Cast xCast_last;
 //  xCast_last.m_xTypeId = TypeId();
+//  xCast_last.m_nTypeLength = 0;
+//  xCast_last.m_nTypeScale = 0;
 //
 //  // rpnCalc is a set of terms
 //  for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
@@ -169,8 +171,17 @@ void Card_RpnCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 //
 //           if (szArg->bSame("BOOLEAN"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
 //      else if (szArg->bSame("DATE"_Stz))         xCast_last.m_xTypeId = TypeId::xIdOf(CT_DATE);
-//      else if (szArg->bSame("DECIMAL"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
-//      else if (szArg->bSame("INTEGER"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+//      else if (szArg->bSame("DECIMAL"_Stz)) {
+//             xCast_last.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+//             xCast_last.m_nTypeLength = 19;
+//             xCast_last.m_nTypeScale = 2;
+//           }
+//      else if (szArg->bSame("INTEGER"_Stz)) {
+//             xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+//             xCast_last.m_nTypeLength = 0;
+//             xCast_last.m_nTypeScale = 0;
+//
+//      }
 //      else if (szArg->bSame("INTERVAL_DT"_Stz))  xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_DT);
 //      else if (szArg->bSame("INTERVAL_YM"_Stz))  xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_YM);
 //      else if (szArg->bSame("FLOAT"_Stz))        xCast_last.m_xTypeId = TypeId::xIdOf(CT_FLOAT);
