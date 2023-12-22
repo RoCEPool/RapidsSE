@@ -422,8 +422,14 @@ void Card_BoolPred::vEnsureTypeId_expCol(CardIter* pCI)
     return;
   }
 
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(! xCast_last.m_xTypeId.bIsValid());
+
   for (Kid xBoolPred(this); xBoolPred.bEach(CK_TERM); /**/) {
-    xBoolPred.p_term()->vEnsureTypeId_expCol(pCI);
+    xBoolPred.p_term()->vEnsureTypeId_expCol(pCI,xCast_last);
   }
 }
 

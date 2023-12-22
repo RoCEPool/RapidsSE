@@ -180,35 +180,7 @@ void Card_Term::vBump_expCol(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vEnsureTypeId_expCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Expr *p_expr_found;
-
-  // rpnCalc is a set of terms
-  if (pSymbol()->bHasType())
-    return;
-
-  i8 iOdn = iGetOdn();
-
-  if (bIsKeyCol())
-    p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
-  else
-  if (bIs_expCol())
-    p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
-  else
-    return;
-
-  Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
-
-  vCast(p_rpnCalc_found);
-}
-
-/*----------------------------------------------------------------------------*/
-/* ensure all terms have a type                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vEnsureTypeId_expCol2(CardIter* pCI, Cast& rxCast_last)
+void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

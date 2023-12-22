@@ -169,7 +169,7 @@ void Card_CONJ::vEnsureTypeId_expCol(CardIter *pCI)
       _pCard_RlnConj(this)->vEnsureTypeId_expCol(pCI); break;
 
     case CK_TERM:
-      _pCard_Term(this)->vEnsureTypeId_expCol2(pCI,xCast_last);  break;
+      _pCard_Term(this)->vEnsureTypeId_expCol(pCI, xCast_last);  break;
 
     default:
       NEVER_REACH

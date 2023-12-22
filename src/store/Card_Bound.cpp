@@ -208,8 +208,14 @@ void Card_Bound::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(! xCast_last.m_xTypeId.bIsValid());
+
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vEnsureTypeId_expCol(pCI);
+    xKid.p_term()->vEnsureTypeId_expCol(pCI, xCast_last);
   }
 
 }

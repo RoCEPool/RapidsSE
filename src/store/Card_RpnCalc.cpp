@@ -150,7 +150,7 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
 
   // rpnCalc is a set of terms
   for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
-    xTerm.p_term()->vEnsureTypeId_expCol2(pCI,xCast_last);
+    xTerm.p_term()->vEnsureTypeId_expCol(pCI, xCast_last);
   }
 
   if (! pSymbol()->xCast().m_xTypeId.bIsValid() && xCast_last.m_xTypeId.bIsValid())
