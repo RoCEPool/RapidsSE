@@ -11,7 +11,7 @@ __TPCH_SCHEMA;
 /optimise_passthru
 /pipeline_Def
 /keepCodeFile
-/pipelineName = "Query18"
+/pipelineName = "_ray171"
 pipeline Query18
 begin
    stage S00 on origin :

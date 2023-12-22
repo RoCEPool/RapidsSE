@@ -217,10 +217,16 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
     else
     if (xTerm.p_term()->bIs_expCol())
       p_expr_arriving = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
+    else
+    if (xTerm.p_term()->bIsNmdCol())
+      p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(xTerm.p_term()->pSymbol());
     else {
       RASSERT(!xTerm.p_term()->bIsTblCol());
       continue;
     }
+
+    if (! p_expr_arriving)
+      continue;
 
     RASSERT(! xTerm.p_term()->pSymbol()->xTypeId().bIsValid() &&
           p_expr_arriving->xTypeId().bIsValid());
@@ -231,6 +237,12 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
   }
 
   if (! pSymbol()->xCast().m_xTypeId.bIsValid() && xCast_last.m_xTypeId.bIsValid())
+    vCast(xCast_last);
+  else
+  if (pSymbol()->xCast().m_xTypeId == xCast_last.m_xTypeId &&
+      (pSymbol()->xCast().m_nTypeLength   != xCast_last.m_nTypeLength ||
+       pSymbol()->xCast().m_nTypeScale    != xCast_last.m_nTypeScale  ||
+       pSymbol()->xCast().m_bTypeNullable != xCast_last.m_bTypeNullable))
     vCast(xCast_last);
 }
 

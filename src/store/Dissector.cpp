@@ -1393,6 +1393,9 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   Cast xCast;
 	xCast.m_xTypeId = this->xPopTypeId(p_rpnExpr);
+  xCast.m_nTypeLength = 0;
+  xCast.m_nTypeScale = 0;
+  xCast.m_bTypeNullable = 1;
 
 
   // [ AS <as> ]
