@@ -50,6 +50,12 @@ void Card_OrConj::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(! xCast_last.m_xTypeId.bIsValid());
+
   Kid xOrConj(this);
   while (xOrConj.bEach()) {
     Card* pCard = xOrConj.pChild();
@@ -66,7 +72,8 @@ void Card_OrConj::vEnsureTypeId_expCol(CardIter *pCI)
       case CK_RLNCONJ:
         _pCard_RlnConj(pCard)->vEnsureTypeId_expCol(pCI); break;
 
-      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeId_expCol(pCI);     break;
+      case CK_TERM:
+        _pCard_Term(pCard)->vEnsureTypeId_expCol2(pCI,xCast_last);  break;
 
       default:
         NEVER_REACH
