@@ -196,6 +196,8 @@ i8 ModulusExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
   ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
 
   return -1;
 }
