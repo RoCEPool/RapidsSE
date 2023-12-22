@@ -206,6 +206,91 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure all terms have a type                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vEnsureTypeId_expCol2(CardIter* pCI, Cast& rxCast_last)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr *p_expr_arriving = nullptr;
+
+  if (pSymbol()->bHasType()) {
+    RASSERT(pSymbol()->xTypeId().bIsValid());
+    rxCast_last = pSymbol()->xCast();
+    return;
+  }
+
+  if (pSymbol()->bIs_Col_Type()) {
+    Stz* szArg = pSymbol()->szFacet(SF_COL_TYPE);
+
+    if (szArg->bSame("BOOLEAN"_Stz))      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
+    else if (szArg->bSame("DATE"_Stz))         rxCast_last.m_xTypeId = TypeId::xIdOf(CT_DATE);
+    else if (szArg->bSame("DECIMAL"_Stz)) {
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+      rxCast_last.m_nTypeLength = 19;
+      rxCast_last.m_nTypeScale = 2;
+    }
+    else if (szArg->bSame("INTEGER"_Stz)) {
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+      rxCast_last.m_nTypeLength = 0;
+      rxCast_last.m_nTypeScale = 0;
+
+    }
+    else if (szArg->bSame("INTERVAL_DT"_Stz))  rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_DT);
+    else if (szArg->bSame("INTERVAL_YM"_Stz))  rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_YM);
+    else if (szArg->bSame("FLOAT"_Stz))        rxCast_last.m_xTypeId = TypeId::xIdOf(CT_FLOAT);
+    else if (szArg->bSame("TIME"_Stz))         rxCast_last.m_xTypeId = TypeId::xIdOf(CT_TIME);
+    else if (szArg->bSame("TIMESTAMP"_Stz))    rxCast_last.m_xTypeId = TypeId::xIdOf(CT_TIMESTAMP);
+    else if (szArg->bSame("VARCHAR"_Stz))      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_VARCHAR);
+
+    return;
+  }
+
+  if (pSymbol()->bIs_Agg_Fn()) {
+    Stz* szArg = pSymbol()->szFacet(SF_AGG_FN);
+
+    if (szArg->bSame("COUNT"_Stz)) {
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+      rxCast_last.m_nTypeLength = 0;
+      rxCast_last.m_nTypeScale = 0;
+    }
+    else
+    if (szArg->bSame("COUNTALL"_Stz)) {
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+      rxCast_last.m_nTypeLength = 0;
+      rxCast_last.m_nTypeScale = 0;
+    }
+
+    return;
+  }
+
+  i8 iOdn = iGetOdn();
+
+  if (bIsKeyCol())
+    p_expr_arriving = pCI->G.p_key->pGet_expr(iOdn - 1);
+  else
+  if (bIs_expCol())
+    p_expr_arriving = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
+  else
+  if (bIsNmdCol())
+    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol());
+  else {
+    RASSERT(!bIsTblCol());
+    return;
+  }
+
+  if (! p_expr_arriving)
+    return;
+
+  RASSERT(! pSymbol()->xTypeId().bIsValid() &&
+          p_expr_arriving->xTypeId().bIsValid());
+  vCast(p_expr_arriving);
+
+  if (pSymbol()->bHasType())
+    rxCast_last = pSymbol()->xCast();
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
 ePB Card_Term::eEvalBound(void)
