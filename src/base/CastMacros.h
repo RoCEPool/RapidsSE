@@ -369,9 +369,114 @@
     wIvlResult.m_xIvl.m_eType = IVL_DAY;                                 \
                                                                          \
     if (iArg1 < 0) {                                                     \
-      wIvlResult.m_xIvl.m_bIsNeg = 1;                                         \
+      wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
 		}                                                                    \
-		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_DAY * _C_1M;         \
+		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_DAY * _C_1M; \
+																                                         \
+		*paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                      \
+}
+
+// INT to HOUR
+#define _INT_TOHOUR(iErrorCode)                                          \
+{                                                                        \
+  iArg1 = *(--paW);                                                      \
+  if (iErrorCode != EC_NONE ||                                           \
+    iArg1 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    wIvlResult.m_iAsI8 = 0;                                              \
+    wIvlResult.m_xIvl.m_eType = IVL_HOUR;                                \
+                                                                         \
+    if (iArg1 < 0) {                                                     \
+      wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+		}                                                                    \
+		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_HOUR * _C_1M; \
+																                                         \
+		*paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                      \
+}
+
+// INT to MINUTE
+#define _INT_TOMINUTE(iErrorCode) \
+{                                                                        \
+  iArg1 = *(--paW);                                                      \
+  if (iErrorCode != EC_NONE ||                                           \
+    iArg1 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    wIvlResult.m_iAsI8 = 0;                                              \
+    wIvlResult.m_xIvl.m_eType = IVL_MINUTE;                              \
+                                                                         \
+    if (iArg1 < 0) {                                                     \
+      wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+		}                                                                    \
+		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_MINUTE * _C_1M; \
+																                                         \
+		*paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                      \
+}
+
+// INT to MONTH
+#define _INT_TOMONTH(iErrorCode)                                         \
+{                                                                        \
+  iArg1 = *(--paW);                                                      \
+  if (iErrorCode != EC_NONE ||                                           \
+    iArg1 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    wIvlResult.m_iAsI8 = 0;                                              \
+    wIvlResult.m_xIvl.m_eType = IVL_MONTH;                               \
+                                                                         \
+    if (iArg1 < 0) {                                                     \
+      wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+		}                                                                    \
+		wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg1;                      \
+																                                         \
+		*paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                      \
+}
+
+// INT to SECOND
+#define _INT_TOSECOND(iErrorCode) \
+{                                                                        \
+  iArg1 = *(--paW);                                                      \
+  if (iErrorCode != EC_NONE ||                                           \
+    iArg1 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    wIvlResult.m_iAsI8 = 0;                                              \
+    wIvlResult.m_xIvl.m_eType = IVL_SECOND;                              \
+                                                                         \
+    if (iArg1 < 0) {                                                     \
+      wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+		}                                                                    \
+		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_1M;              \
+																                                         \
+		*paW++ = wIvlResult.m_iAsI8;                                         \
+  }                                                                      \
+}
+
+// INT to YEAR
+#define _INT_TOYEAR(iErrorCode)                                          \
+{                                                                        \
+  iArg1 = *(--paW);                                                      \
+  if (iErrorCode != EC_NONE ||                                           \
+    iArg1 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    wIvlResult.m_iAsI8 = 0;                                              \
+    wIvlResult.m_xIvl.m_eType = IVL_DAY;                                 \
+                                                                         \
+    if (iArg1 < 0) {                                                     \
+      wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
+		}                                                                    \
+		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_MONTHS_PER_YEAR; \
 																                                         \
 		*paW++ = wIvlResult.m_iAsI8;                                         \
   }                                                                      \
