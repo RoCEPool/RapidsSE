@@ -142,14 +142,6 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  if (bIsScalarCol()) {
-//    vCast(pGetTerm(0)->xCast());
-//  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_Expr *p_expr_arriving;
-
   Cast xCast_last;
   xCast_last.m_xTypeId = TypeId();
   xCast_last.m_nTypeLength = 0;
@@ -158,82 +150,7 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
 
   // rpnCalc is a set of terms
   for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
-
-    if (xTerm.p_term()->pSymbol()->bHasType()) {
-      RASSERT(xTerm.p_term()->pSymbol()->xTypeId().bIsValid());
-      xCast_last = xTerm.p_term()->pSymbol()->xCast();
-      continue;
-    }
-
-    if (xTerm.p_term()->pSymbol()->bIs_Col_Type()) {
-      Stz* szArg = xTerm.p_term()->pSymbol()->szFacet(SF_COL_TYPE);
-
-      if (szArg->bSame("BOOLEAN"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
-      else if (szArg->bSame("DATE"_Stz))         xCast_last.m_xTypeId = TypeId::xIdOf(CT_DATE);
-      else if (szArg->bSame("DECIMAL"_Stz)) {
-        xCast_last.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
-        xCast_last.m_nTypeLength = 19;
-        xCast_last.m_nTypeScale = 2;
-      }
-      else if (szArg->bSame("INTEGER"_Stz)) {
-        xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
-        xCast_last.m_nTypeLength = 0;
-        xCast_last.m_nTypeScale = 0;
-
-      }
-      else if (szArg->bSame("INTERVAL_DT"_Stz))  xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_DT);
-      else if (szArg->bSame("INTERVAL_YM"_Stz))  xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_YM);
-      else if (szArg->bSame("FLOAT"_Stz))        xCast_last.m_xTypeId = TypeId::xIdOf(CT_FLOAT);
-      else if (szArg->bSame("TIME"_Stz))         xCast_last.m_xTypeId = TypeId::xIdOf(CT_TIME);
-      else if (szArg->bSame("TIMESTAMP"_Stz))    xCast_last.m_xTypeId = TypeId::xIdOf(CT_TIMESTAMP);
-      else if (szArg->bSame("VARCHAR"_Stz))      xCast_last.m_xTypeId = TypeId::xIdOf(CT_VARCHAR);
-
-      continue;
-    }
-
-    if (xTerm.p_term()->pSymbol()->bIs_Agg_Fn()) {
-      Stz* szArg = xTerm.p_term()->pSymbol()->szFacet(SF_AGG_FN);
-
-      if (szArg->bSame("COUNT"_Stz)) {
-        xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
-        xCast_last.m_nTypeLength = 0;
-        xCast_last.m_nTypeScale = 0;
-      }
-      else
-      if (szArg->bSame("COUNTALL"_Stz)) {
-        xCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
-        xCast_last.m_nTypeLength = 0;
-        xCast_last.m_nTypeScale = 0;
-      }
-
-      continue;
-
-    }
-
-    i8 iOdn = xTerm.iGetOdn();
-
-    if (xTerm.p_term()->bIsKeyCol())
-      p_expr_arriving = pCI->G.p_key->pGet_expr(iOdn - 1);
-    else
-    if (xTerm.p_term()->bIs_expCol())
-      p_expr_arriving = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
-    else
-    if (xTerm.p_term()->bIsNmdCol())
-      p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(xTerm.p_term()->pSymbol());
-    else {
-      RASSERT(!xTerm.p_term()->bIsTblCol());
-      continue;
-    }
-
-    if (! p_expr_arriving)
-      continue;
-
-    RASSERT(! xTerm.p_term()->pSymbol()->xTypeId().bIsValid() &&
-          p_expr_arriving->xTypeId().bIsValid());
-    xTerm.p_term()->vCast(p_expr_arriving);
-
-    if (xTerm.p_term()->pSymbol()->bHasType())
-      xCast_last = xTerm.p_term()->pSymbol()->xCast();
+    xTerm.p_term()->vEnsureTypeId_expCol2(pCI,xCast_last);
   }
 
   if (! pSymbol()->xCast().m_xTypeId.bIsValid() && xCast_last.m_xTypeId.bIsValid())
