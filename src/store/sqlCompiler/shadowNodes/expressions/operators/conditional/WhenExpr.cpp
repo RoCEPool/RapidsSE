@@ -168,6 +168,40 @@ TypeId WhenExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 WhenExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // Get the precision of the result expression
+  QueryNode* pResult = WhenExpr::pResultExpr(pExprNode);
+  i8 iVal = Expr::iPrecision(pResult, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 WhenExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // Get the scale of the result expression
+  QueryNode* pResult = WhenExpr::pResultExpr(pExprNode);
+  i8 iVal = Expr::iScale(pResult, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Modifies subexpressions by promoting/casting data types so that they       */
 /* are type compatible with this expression. Modifies the expression          */
 /* tree in place.                                                             */

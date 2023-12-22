@@ -21,8 +21,8 @@ static const i8 C_INT_MAX =  9223372036854775806LL;
 static const i8 C_BCD_MIN = -99999999999999999;
 static const i8 C_BCD_MAX = 99999999999999999;
 static const i8 C_MAX_BCD_PRECISION = 17;
-static const i8 C_BCD_SCALE_MIN = 0;
-static const i8 C_BCD_SCALE_MAX = C_MAX_BCD_PRECISION;
+static const i8 C_MIN_BCD_SCALE = 0;
+static const i8 C_MAX_BCD_SCALE = C_MAX_BCD_PRECISION;
 static const i8 C_BCD_DEFAULT_SCALE = 0;
 
 

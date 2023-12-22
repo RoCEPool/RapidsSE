@@ -290,6 +290,36 @@ TypeId InExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return xResult;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 InExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // Precision returned is always n/a
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 InExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // Scale returned is always n/a
+  return -1;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -83,7 +83,7 @@ TypeId LogicExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
 
-  // TODO: manual expression polymorphism here
+  // Manual expression polymorphism here
 
   if      (   AndExpr::bIsOfType(pExprNode))    { return    AndExpr::xTypeId(pExprNode, pRootNode);  }
   else if (    OrExpr::bIsOfType(pExprNode))    { return     OrExpr::xTypeId(pExprNode, pRootNode);  }
@@ -92,6 +92,43 @@ TypeId LogicExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (IsNullExpr::bIsOfType(pExprNode))    { return IsNullExpr::xTypeId(pExprNode, pRootNode);  }
   else NEVER_REACH
 }
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 LogicExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (   AndExpr::bIsOfType(pExprNode))    { return    AndExpr::iPrecision(pExprNode, pRootNode);  }
+  else if (    OrExpr::bIsOfType(pExprNode))    { return     OrExpr::iPrecision(pExprNode, pRootNode);  }
+  else if (   XorExpr::bIsOfType(pExprNode))    { return    XorExpr::iPrecision(pExprNode, pRootNode);  }
+  else if (   NotExpr::bIsOfType(pExprNode))    { return    NotExpr::iPrecision(pExprNode, pRootNode);  }
+  else if (IsNullExpr::bIsOfType(pExprNode))    { return IsNullExpr::iPrecision(pExprNode, pRootNode);  }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 LogicExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (   AndExpr::bIsOfType(pExprNode))    { return    AndExpr::iScale(pExprNode, pRootNode);  }
+  else if (    OrExpr::bIsOfType(pExprNode))    { return     OrExpr::iScale(pExprNode, pRootNode);  }
+  else if (   XorExpr::bIsOfType(pExprNode))    { return    XorExpr::iScale(pExprNode, pRootNode);  }
+  else if (   NotExpr::bIsOfType(pExprNode))    { return    NotExpr::iScale(pExprNode, pRootNode);  }
+  else if (IsNullExpr::bIsOfType(pExprNode))    { return IsNullExpr::iScale(pExprNode, pRootNode);  }
+  else NEVER_REACH
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

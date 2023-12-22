@@ -169,6 +169,37 @@ TypeId ModulusExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return xResult;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ModulusExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  TypeId xResultType = xTypeId(pExprNode, pRootNode);
+
+  if (xResultType == TypeId::xIdOf(CT_INTEGER)) {
+    return C_MAX_INT_PRECISION;
+  }
+
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ModulusExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  return -1;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

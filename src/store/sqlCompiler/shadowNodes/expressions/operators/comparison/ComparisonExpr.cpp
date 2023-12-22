@@ -101,7 +101,7 @@ TypeId ComparisonExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
 
-  // TODO: manual expression polymorphism here
+  // Manual expression polymorphism here
 
   if      (       EqExpr::bIsOfType(pExprNode))   { return      EqExpr::xTypeId(pExprNode, pRootNode); }
   else if (       NeExpr::bIsOfType(pExprNode))   { return      NeExpr::xTypeId(pExprNode, pRootNode); }
@@ -114,6 +114,54 @@ TypeId ComparisonExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (     LikeExpr::bIsOfType(pExprNode))   { return    LikeExpr::xTypeId(pExprNode, pRootNode); }
   else if (  BetweenExpr::bIsOfType(pExprNode))   { return BetweenExpr::xTypeId(pExprNode, pRootNode); }
 //else if (      AnyExpr::bIsOfType(pExprNode))          { return     AnyExpr::xTypeId(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ComparisonExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (       EqExpr::bIsOfType(pExprNode))   { return      EqExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       NeExpr::bIsOfType(pExprNode))   { return      NeExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       GtExpr::bIsOfType(pExprNode))   { return      GtExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       GeExpr::bIsOfType(pExprNode))   { return      GeExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       LtExpr::bIsOfType(pExprNode))   { return      LtExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       LeExpr::bIsOfType(pExprNode))   { return      LeExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       InExpr::bIsOfType(pExprNode))   { return      InExpr::iPrecision(pExprNode, pRootNode); }
+  else if (   ExistsExpr::bIsOfType(pExprNode))   { return  ExistsExpr::iPrecision(pExprNode, pRootNode); }
+  else if (     LikeExpr::bIsOfType(pExprNode))   { return    LikeExpr::iPrecision(pExprNode, pRootNode); }
+  else if (  BetweenExpr::bIsOfType(pExprNode))   { return BetweenExpr::iPrecision(pExprNode, pRootNode); }
+//else if (      AnyExpr::bIsOfType(pExprNode))          { return     AnyExpr::iPrecision(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ComparisonExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (       EqExpr::bIsOfType(pExprNode))   { return      EqExpr::iScale(pExprNode, pRootNode); }
+  else if (       NeExpr::bIsOfType(pExprNode))   { return      NeExpr::iScale(pExprNode, pRootNode); }
+  else if (       GtExpr::bIsOfType(pExprNode))   { return      GtExpr::iScale(pExprNode, pRootNode); }
+  else if (       GeExpr::bIsOfType(pExprNode))   { return      GeExpr::iScale(pExprNode, pRootNode); }
+  else if (       LtExpr::bIsOfType(pExprNode))   { return      LtExpr::iScale(pExprNode, pRootNode); }
+  else if (       LeExpr::bIsOfType(pExprNode))   { return      LeExpr::iScale(pExprNode, pRootNode); }
+  else if (       InExpr::bIsOfType(pExprNode))   { return      InExpr::iScale(pExprNode, pRootNode); }
+  else if (   ExistsExpr::bIsOfType(pExprNode))   { return  ExistsExpr::iScale(pExprNode, pRootNode); }
+  else if (     LikeExpr::bIsOfType(pExprNode))   { return    LikeExpr::iScale(pExprNode, pRootNode); }
+  else if (  BetweenExpr::bIsOfType(pExprNode))   { return BetweenExpr::iScale(pExprNode, pRootNode); }
+//else if (      AnyExpr::bIsOfType(pExprNode))          { return     AnyExpr::iScale(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 

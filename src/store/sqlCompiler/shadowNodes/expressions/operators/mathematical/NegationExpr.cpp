@@ -140,7 +140,7 @@ TypeId NegationExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
 
-  // Get the types of the two operands
+  // Get the type of the child operand
   QueryNode* pChild1 = NegationExpr::pChild1(pExprNode);
 
   TypeId xType1 = Expr::xTypeId(pChild1, pRootNode);
@@ -148,6 +148,34 @@ TypeId NegationExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   // Lookup the type of the result
   TypeId xResult = S_pTypeMap->xLookup(xType1);
   return xResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 NegationExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  QueryNode* pChild1 = NegationExpr::pChild1(pExprNode);
+  i8 iVal = Expr::iPrecision(pChild1, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 NegationExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  QueryNode* pChild1 = NegationExpr::pChild1(pExprNode);
+  i8 iVal = Expr::iScale(pChild1, pRootNode);
+  return iVal;
 }
 
 /*============================================================================*/

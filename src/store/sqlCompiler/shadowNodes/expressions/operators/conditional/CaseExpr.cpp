@@ -245,6 +245,90 @@ TypeId CaseExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 CaseExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  TypeId xResultType = xTypeId(pExprNode, pRootNode);
+
+  if (!xResultType.bIsValid()) {
+    // The type being returned is invalid, so there is no precision
+    return -1;
+  }
+
+  // The precision returned is the highest precision of the children
+  i8 iResultPrecision = -1;
+
+  PlanNodeIter* pIter = pExprNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode *pChild = _pQueryNode(pIter->pNext());
+    ASSERT(WhenExpr::bIsOfType(pChild) || ElseExpr::bIsOfType(pChild));
+
+    TypeId xChildType = Expr::xTypeId(pChild, pRootNode);
+
+    if (xResultType == xChildType) {
+      i8 iChildPrecision = Expr::iPrecision(pChild, pRootNode);
+
+      if (iChildPrecision > iResultPrecision) {
+        iResultPrecision = iChildPrecision;
+      }
+    }
+  }
+
+  delete pIter;
+
+  return iResultPrecision;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 CaseExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  TypeId xResultType = xTypeId(pExprNode, pRootNode);
+
+  if (!xResultType.bIsValid()) {
+    // The type being returned is invalid, so there is no precision
+    return -1;
+  }
+
+  // The scale returned is the highest scale of the children
+  i8 iResultScale = -1;
+
+  PlanNodeIter* pIter = pExprNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode *pChild = _pQueryNode(pIter->pNext());
+    ASSERT(WhenExpr::bIsOfType(pChild) || ElseExpr::bIsOfType(pChild));
+
+    TypeId xChildType = Expr::xTypeId(pChild, pRootNode);
+
+    if (xResultType == xChildType) {
+      i8 iChildScale = Expr::iScale(pChild, pRootNode);
+
+      if (iChildScale > iResultScale) {
+        iResultScale = iChildScale;
+      }
+    }
+  }
+
+  delete pIter;
+
+  return iResultScale;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Modifies subexpressions by promoting/casting data types so that they       */
 /* are type compatible with this expression. Modifies the expression          */
 /* tree in place.                                                             */

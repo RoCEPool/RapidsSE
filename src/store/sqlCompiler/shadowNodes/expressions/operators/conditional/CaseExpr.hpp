@@ -45,6 +45,12 @@ namespace Parser
     // A returned value of CT_NONE means that it is not supported or invalid.
     static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns the precision of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iPrecision(QueryNode* pExprNode, PlanNode* pRootNode);
+
+    // Returns the scale of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iScale(QueryNode* pExprNode, PlanNode* pRootNode);
+    
     // Modifies subexpressions by promoting/casting data types so that they
     // are type compatible with this expression. Modifies the expression
     // tree in place.

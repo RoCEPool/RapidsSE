@@ -129,6 +129,40 @@ TypeId ElseExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ElseExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // Get the precision of the result expression
+  QueryNode* pResult = ElseExpr::pElseExpr(pExprNode);
+  i8 iVal = Expr::iPrecision(pResult, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ElseExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
+
+  // Get the scale of the result expression
+  QueryNode* pResult = ElseExpr::pElseExpr(pExprNode);
+  i8 iVal = Expr::iScale(pResult, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Tries to coerce the result expr of this ELSE statement to a given type     */
 /*----------------------------------------------------------------------------*/
 void ElseExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pElseExpr, PlanNode* pRootNode)

@@ -3329,12 +3329,12 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
   }
 
   // Check for overflows. This is dependent on the size of components of the Bcd_T structure
-  if (iScale > C_BCD_SCALE_MAX || iScale < C_BCD_SCALE_MIN) {
+  if (iScale > C_MAX_BCD_SCALE || iScale < C_MIN_BCD_SCALE) {
     SyntaxException::vThrow(nullptr, iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
                             ": Max/min decimal scale supported is [%lld, %lld] : %s"_Stz,
-                            C_BCD_SCALE_MIN,
-                            C_BCD_SCALE_MAX,
+                            C_MIN_BCD_SCALE,
+                            C_MAX_BCD_SCALE,
                             szStr);
   }
 

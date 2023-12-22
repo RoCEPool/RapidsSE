@@ -227,6 +227,50 @@ TypeId ExtractExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return xResult;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ExtractExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  TypeId xResultType = xTypeId(pExprNode, pRootNode);
+  eCT    eResultType = xResultType.eCTVal();
+
+  switch (eResultType) {
+    case CT_INTEGER:
+      return C_MAX_INT_PRECISION;
+
+    case CT_DECIMAL:
+      return C_MAX_BCD_PRECISION;
+
+    default:
+      return -1;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ExtractExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  TypeId xResultType = xTypeId(pExprNode, pRootNode);
+
+  if (xResultType == TypeId::xIdOf(CT_DECIMAL)) {
+    // This is extracting a second field with microseconds component
+    // therefore the scale is 6.
+    return 6;
+  }
+
+  return -1;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

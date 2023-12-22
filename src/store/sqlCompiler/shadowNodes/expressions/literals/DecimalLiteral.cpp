@@ -238,12 +238,12 @@ Bcd DecimalLiteral::xParseStr(Stz* szStr)
   }
 
   // Check for overflows. This is dependent on the size of components of the Bcd_T structure
-  if (iScale > C_BCD_SCALE_MAX || iScale < C_BCD_SCALE_MIN) {
+  if (iScale > C_MAX_BCD_SCALE || iScale < C_MIN_BCD_SCALE) {
     SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE,
                               ": %s: Max/min decimal scale supported is %lld to %lld"_Stz,
                               szStr,
-                              C_BCD_SCALE_MIN,
-                              C_BCD_SCALE_MAX);
+                              C_MIN_BCD_SCALE,
+                              C_MAX_BCD_SCALE);
   }
 
   if (iMantissa > C_BCD_MAX || iMantissa < C_BCD_MIN) {

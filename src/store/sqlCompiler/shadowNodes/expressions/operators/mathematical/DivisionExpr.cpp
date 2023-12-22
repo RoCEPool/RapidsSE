@@ -207,6 +207,168 @@ TypeId DivisionExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   return xResult;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 DivisionExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  TypeId xResultType = xTypeId(pExprNode, pRootNode);
+  eCT eResultType = xResultType.eCTVal();
+
+  i8 iVal = -1;
+
+  switch (eResultType) {
+
+    case CT_NONE:
+    case CT_BOOLEAN:
+    case CT_CHAR:
+    case CT_DATE:
+      break;
+
+    case CT_DECIMAL:
+      iVal = iCalcDecimalPrecision(pChild1(pExprNode), pChild2(pExprNode), pRootNode);
+      break;
+
+    case CT_FLOAT:
+      iVal = C_MAX_FLT_PRECISION;
+      break;
+
+    case CT_INTEGER:
+      iVal = C_MAX_INT_PRECISION;
+      break;
+
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_VARCHAR:
+    case CT_UNKNOWN:
+      break;
+
+    case CT_ENUMS:
+      NEVER_REACH;
+  }
+
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 DivisionExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  TypeId xResultType = xTypeId(pExprNode, pRootNode);
+  eCT eResultType = xResultType.eCTVal();
+
+  i8 iVal = -1;
+
+  switch (eResultType) {
+
+    case CT_NONE:
+    case CT_BOOLEAN:
+    case CT_CHAR:
+    case CT_DATE:
+      break;
+
+    case CT_DECIMAL:
+      iVal = iCalcDecimalScale(pChild1(pExprNode), pChild2(pExprNode), pRootNode);
+      break;
+
+    case CT_FLOAT:
+    case CT_INTEGER:
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_VARCHAR:
+    case CT_UNKNOWN:
+      break;
+
+    case CT_ENUMS:
+      NEVER_REACH;
+  }
+
+  return iVal;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Calculates the resulting precision of adding two decimal operands          */
+/*----------------------------------------------------------------------------*/
+i8 DivisionExpr::iCalcDecimalPrecision(Parser::QueryNode *pChild1,
+                                       Parser::QueryNode *pChild2,
+                                       Parser::PlanNode *pRootNode)
+{
+  _static_
+  ASSERT(pChild1);
+  ASSERT(pChild2);
+  ASSERT(pRootNode);
+  ASSERT(Expr::xTypeId(pChild1,pRootNode) == TypeId::xIdOf(CT_DECIMAL));
+  ASSERT(Expr::xTypeId(pChild2,pRootNode) == TypeId::xIdOf(CT_DECIMAL));
+
+  // Precision = p1 - s1 + s2 + max(6, s1 + p2 + 1)
+
+  i8 iPrecision1 = Expr::iPrecision(pChild1, pRootNode);
+  i8 iPrecision2 = Expr::iPrecision(pChild2, pRootNode);
+  i8 iScale1     = Expr::iScale(pChild1, pRootNode);
+  i8 iScale2     = Expr::iScale(pChild2, pRootNode);
+
+  ASSERT(iPrecision1 > 0);
+  ASSERT(iPrecision2 > 0);
+  ASSERT(iScale1 >= 0);
+  ASSERT(iScale2 >= 0);
+
+  i8 iVal = iPrecision1 - iScale1 + iScale2 + MAX__(6, (iScale1 + iPrecision2 + 1));
+
+  if (iVal > C_MAX_BCD_PRECISION) {
+    iVal = C_MAX_BCD_PRECISION;
+  }
+
+  return iVal;
+}
+/*----------------------------------------------------------------------------*/
+/* Calculates the resulting scale of adding two decimal operands             */
+/*----------------------------------------------------------------------------*/
+i8 DivisionExpr::iCalcDecimalScale(Parser::QueryNode *pChild1,
+                                   Parser::QueryNode *pChild2,
+                                   Parser::PlanNode *pRootNode)
+{
+  _static_
+  ASSERT(pChild1);
+  ASSERT(pChild2);
+  ASSERT(pRootNode);
+  ASSERT(Expr::xTypeId(pChild1,pRootNode) == TypeId::xIdOf(CT_DECIMAL));
+  ASSERT(Expr::xTypeId(pChild2,pRootNode) == TypeId::xIdOf(CT_DECIMAL));
+
+  // Scale = max(6, s1 + p2 + 1)
+
+//i8 iPrecision1 = Expr::iPrecision(pChild1, pRootNode);
+  i8 iPrecision2 = Expr::iPrecision(pChild2, pRootNode);
+  i8 iScale1     = Expr::iScale(pChild1, pRootNode);
+//i8 iScale2     = Expr::iScale(pChild2, pRootNode);
+
+//ASSERT(iPrecision1 > 0);
+  ASSERT(iPrecision2 > 0);
+  ASSERT(iScale1 >= 0);
+//ASSERT(iScale2 >= 0);
+
+  i8 iVal = MAX__(6, (iScale1 + iPrecision2 + 1));
+
+  if (iVal > C_MAX_BCD_SCALE) {
+    iVal = C_MAX_BCD_SCALE;
+  }
+
+  return iVal;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -75,15 +75,48 @@ b1 ConditionalExpr::bIsExactType(PlanNode *pNode)
 TypeId ConditionalExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
-      ASSERT(bIsOfType(pExprNode));
+  ASSERT(bIsOfType(pExprNode));
 
-  // TODO: manual expression polymorphism here
+  // Manual expression polymorphism here
 
   if      (CaseExpr::bIsOfType(pExprNode))    { return CaseExpr::xTypeId(pExprNode, pRootNode);  }
   else if (WhenExpr::bIsOfType(pExprNode))    { return WhenExpr::xTypeId(pExprNode, pRootNode);  }
   else if (ElseExpr::bIsOfType(pExprNode))    { return ElseExpr::xTypeId(pExprNode, pRootNode);  }
   else NEVER_REACH
 }
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 ConditionalExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (CaseExpr::bIsOfType(pExprNode))    { return CaseExpr::iPrecision(pExprNode, pRootNode);  }
+  else if (WhenExpr::bIsOfType(pExprNode))    { return WhenExpr::iPrecision(pExprNode, pRootNode);  }
+  else if (ElseExpr::bIsOfType(pExprNode))    { return ElseExpr::iPrecision(pExprNode, pRootNode);  }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 ConditionalExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (CaseExpr::bIsOfType(pExprNode))    { return CaseExpr::iScale(pExprNode, pRootNode);  }
+  else if (WhenExpr::bIsOfType(pExprNode))    { return WhenExpr::iScale(pExprNode, pRootNode);  }
+  else if (ElseExpr::bIsOfType(pExprNode))    { return ElseExpr::iScale(pExprNode, pRootNode);  }
+  else NEVER_REACH
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

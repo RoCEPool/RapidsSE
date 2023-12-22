@@ -93,7 +93,7 @@ TypeId MathematicalExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
 
-  // TODO: manual expression polymorphism here
+  // Manual expression polymorphism here
 
   if      (      AdditionExpr::bIsOfType(pExprNode))  { return       AdditionExpr::xTypeId(pExprNode, pRootNode); }
   else if (   SubtractionExpr::bIsOfType(pExprNode))  { return    SubtractionExpr::xTypeId(pExprNode, pRootNode); }
@@ -102,8 +102,52 @@ TypeId MathematicalExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (       ModulusExpr::bIsOfType(pExprNode))  { return        ModulusExpr::xTypeId(pExprNode, pRootNode); }
   else if (      NegationExpr::bIsOfType(pExprNode))  { return       NegationExpr::xTypeId(pExprNode, pRootNode); }
   else if (       ExtractExpr::bIsOfType(pExprNode))  { return        ExtractExpr::xTypeId(pExprNode, pRootNode); }
-//else if (       PowerExpr::bIsOfType(pExprNode))           { return          PowerExpr::eType(pExprNode, pRootNode);          }
-//else if (         LogExpr::bIsOfType(pExprNode))           { return            LogExpr::eType(pExprNode, pRootNode);          }
+//else if (       PowerExpr::bIsOfType(pExprNode))           { return          PowerExpr::xTypeId(pExprNode, pRootNode);        }
+//else if (         LogExpr::bIsOfType(pExprNode))           { return            LogExpr::xTypeId(pExprNode, pRootNode);        }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 MathematicalExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (      AdditionExpr::bIsOfType(pExprNode))  { return       AdditionExpr::iPrecision(pExprNode, pRootNode); }
+  else if (   SubtractionExpr::bIsOfType(pExprNode))  { return    SubtractionExpr::iPrecision(pExprNode, pRootNode); }
+  else if (MultiplicationExpr::bIsOfType(pExprNode))  { return MultiplicationExpr::iPrecision(pExprNode, pRootNode); }
+  else if (      DivisionExpr::bIsOfType(pExprNode))  { return       DivisionExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       ModulusExpr::bIsOfType(pExprNode))  { return        ModulusExpr::iPrecision(pExprNode, pRootNode); }
+  else if (      NegationExpr::bIsOfType(pExprNode))  { return       NegationExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       ExtractExpr::bIsOfType(pExprNode))  { return        ExtractExpr::iPrecision(pExprNode, pRootNode); }
+//else if (       PowerExpr::bIsOfType(pExprNode))           { return          PowerExpr::iPrecision(pExprNode, pRootNode); }
+//else if (         LogExpr::bIsOfType(pExprNode))           { return            LogExpr::iPrecision(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 MathematicalExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Manual expression polymorphism here
+
+  if      (      AdditionExpr::bIsOfType(pExprNode))  { return       AdditionExpr::iPrecision(pExprNode, pRootNode); }
+  else if (   SubtractionExpr::bIsOfType(pExprNode))  { return    SubtractionExpr::iPrecision(pExprNode, pRootNode); }
+  else if (MultiplicationExpr::bIsOfType(pExprNode))  { return MultiplicationExpr::iPrecision(pExprNode, pRootNode); }
+  else if (      DivisionExpr::bIsOfType(pExprNode))  { return       DivisionExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       ModulusExpr::bIsOfType(pExprNode))  { return        ModulusExpr::iPrecision(pExprNode, pRootNode); }
+  else if (      NegationExpr::bIsOfType(pExprNode))  { return       NegationExpr::iPrecision(pExprNode, pRootNode); }
+  else if (       ExtractExpr::bIsOfType(pExprNode))  { return        ExtractExpr::iPrecision(pExprNode, pRootNode); }
+//else if (       PowerExpr::bIsOfType(pExprNode))           { return          PowerExpr::iPrecision(pExprNode, pRootNode); }
+//else if (         LogExpr::bIsOfType(pExprNode))           { return            LogExpr::iPrecision(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 
