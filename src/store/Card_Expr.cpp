@@ -395,6 +395,14 @@ Card_Expr* Card_Expr::pInduct(void)
     pSymbol_expr_inducted->vAppendFacet(SF_KEY_COL,
                                         pSymbol_expr_arriving->szSF_chrSeq(SF_KEY_COL));
 
+  if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
+    pSymbol_expr_inducted->vAppendFacet(SF_TBL_COL,
+                                        pGet_Symbol(0)->szSF_chrSeq(SF_TBL_COL));
+  }
+
+
+
+
   Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
 
   p_expr_inducted->vAppendChild(p_rpnCalc_inducted);

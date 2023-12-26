@@ -699,6 +699,12 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
         vDump(__func__);
         vValidationFailed("Type Missing : %p"_Stz, this);
       }
+
+//      if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL) &&
+//          m_xSymbol.nTypeLength() == 0) {
+//        vDump(__func__);
+//        vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+//      }
     }
   }
 
@@ -709,6 +715,11 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
         vDump(__func__);
         vValidationFailed("Type Missing : %p"_Stz,this);
       }
+//      if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL) &&
+//          m_xSymbol.nTypeLength() == 0) {
+//        vDump(__func__);
+//        vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+//      }
     }
   }
 
