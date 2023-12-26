@@ -646,7 +646,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
   pRowBuffer()->vDepositColVal(_colVal); \
   \
   if (xColPix.m_bPtnKey) \
-    tKeyHsh.vRunningHash(_colVal);
+    tKeyHsh.vRunningHash((byte*)&_colVal, sizeof(i8));
 
 #define vDEPOSIT_NULL(_errorCode) \
   \
@@ -656,8 +656,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
   pRowBuffer()->vDepositColVal(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
-    tKeyHsh.vRunningHash(C_DATUM_NULL);
-
+    tKeyHsh.vRunningHash((byte*)&C_DATUM_NULL,sizeof(i8));
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
@@ -2455,7 +2454,10 @@ L_Varchar_depositValue:
     goto L_FieldError;
 
   pRowBuffer()->vDepositString_end(nVchChars+1);
-  
+
+	if (xColPix.m_bPtnKey)
+    tKeyHsh.vRunningHash((byte*)azColVal_varchar, nVchChars);
+
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_Varchar_depositValue: %s\n"_Stz,azColVal_varchar);
   

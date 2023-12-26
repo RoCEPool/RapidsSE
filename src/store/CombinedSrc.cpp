@@ -1520,7 +1520,7 @@ void CombinedSrc::vAppendCodeHashCols(OpSketch* pOpSketch)
 		switch (pColumn->eColumnType()) {
 
 			case CT_VARCHAR:
-				RASSERT(0);
+				vAppendCodeFragment(pOpSketch, "vAssignVchHash"_Stz, pColumn);
 				break;
 
 			default:

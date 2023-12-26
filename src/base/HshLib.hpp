@@ -18,7 +18,7 @@ namespace BASE
     static i8 iHashRotate(byte* ayaKey, i8 nBytes, i8 nRotate);
     static i8 iHashRotateReverse(byte* ayaKey, i8 nBytes, i8 nRotate);
   
-    static void vRunningHash(i8* aiHash, i8 iMixIn);
+    static void vRunningHash(i8* aiHash, byte* aMixIn, i8 iSize);
   };
 }
 
