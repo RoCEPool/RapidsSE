@@ -378,21 +378,22 @@ Card_Expr* Card_Expr::pInduct(void)
   Card_RpnCalc* p_rpnCalc_arriving = pSub_rpnCalc();
 
   Card_Expr* p_expr_inducted = new Card_Expr;
+  Symbol* pSymbol_expr_inducted = p_expr_inducted->pSymbol();
 
   //vDump(__func__);
   p_expr_inducted->vCast(this);
 
-  Symbol* pSymbol_arriving = pSymbol();
+  Symbol* pSymbol_expr_arriving = pSymbol();
 
-  RASSERT(pSymbol_arriving->bHasFacet(SF_EXP_COL));
+  RASSERT(pSymbol_expr_arriving->bHasFacet(SF_EXP_COL));
 
-  if (pSymbol_arriving->bHasFacet(SF_NMD_COL))
-    p_expr_inducted->pSymbol()->vAppendFacet(SF_NMD_COL,
-                                             pSymbol_arriving->szSF_chrSeq(SF_NMD_COL));
+  if (pSymbol_expr_arriving->bHasFacet(SF_NMD_COL))
+    pSymbol_expr_inducted->vAppendFacet(SF_NMD_COL,
+                                         pSymbol_expr_arriving->szSF_chrSeq(SF_NMD_COL));
 
-  if (pSymbol_arriving->bHasFacet(SF_KEY_COL))
-    p_expr_inducted->pSymbol()->vAppendFacet(SF_KEY_COL,
-                                             pSymbol_arriving->szSF_chrSeq(SF_KEY_COL));
+  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
+    pSymbol_expr_inducted->vAppendFacet(SF_KEY_COL,
+                                        pSymbol_expr_arriving->szSF_chrSeq(SF_KEY_COL));
 
   Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
 

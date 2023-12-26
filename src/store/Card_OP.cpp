@@ -556,7 +556,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
         pCI->G.p_emit = new Card_Emit;
 
       pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
-      pCI->G.p_emit->vAppend_streamDef_table(pCI);
+      pCI->G.p_emit->vInject_streamDef_table(pCI);
 
 
       pCI->G.p_OP->vEnsure_stream(pCI);
