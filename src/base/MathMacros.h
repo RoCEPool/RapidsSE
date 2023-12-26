@@ -1707,6 +1707,10 @@
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
       time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
                                                                            \
+     if (xDateTime.tm_year > C_YEAR_RANGE) {                               \
+        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
+      }                                                                    \
+                                                                           \
       xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
       xTsp2.m_uYearDelta = xDateTime.tm_year;                              \
@@ -1902,6 +1906,10 @@
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
       time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
                                                                            \
+      if (xDateTime.tm_year > C_YEAR_RANGE) {                              \
+        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
+      }                                                                    \
+			                                                                     \
       xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
       xTsp2.m_uYearDelta = xDateTime.tm_year;                              \

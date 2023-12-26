@@ -41,8 +41,8 @@ KeyHsh::KeyHsh(const KeyHsh& oCopy)
 /*----------------------------------------------------------------------------*/
 /* calculate the running hash                                                 */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_RunningHash(i8* piKeyHash, i8 iMixVal) {
-	HshLib::vRunningHash(piKeyHash,iMixVal);
+extern "C" void vExtern_RunningHash(i8* piKeyHash, byte* aMixVal, i8 iSize) {
+	HshLib::vRunningHash(piKeyHash,aMixVal, iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,9 +129,9 @@ void KeyHsh::vAsI8(i8 iAsI8)
 /*----------------------------------------------------------------------------*/
 /* running hash computation                                                   */
 /*----------------------------------------------------------------------------*/
-void KeyHsh::vRunningHash(i8 iMixVal)
+void KeyHsh::vRunningHash(byte* aMixIn, i8 iSize)
 {
-  HshLib::vRunningHash(&m_iAsI8,iMixVal);
+  HshLib::vRunningHash(&m_iAsI8, aMixIn, iSize);
 }
 
 /*============================================================================*/

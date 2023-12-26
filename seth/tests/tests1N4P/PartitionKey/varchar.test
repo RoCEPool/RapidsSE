@@ -1,0 +1,92 @@
+--------------------------------------------------------------------------------
+-- create partition key tests
+--------------------------------------------------------------------------------
+
+// begin tracking memory
+trackmemory force;
+success
+
+create table ${testName2}_score(s_id varchar(6),c_id varchar(6),cj decimal(5,1));
+success
+
+load ${testName2}_score "../DATA/PartitionKey/score.csv";
+success
+
+create index score_idx1 on ${testName2}_score(s_id);
+success
+
+create index score_idx2 on ${testName2}_score(c_id);
+success
+
+create table ${testName2}_student(s_id varchar(6),s_name varchar(50),s_csrq date,s_sex varchar(10));
+success
+
+load ${testName2}_student "../DATA/PartitionKey/student.csv";
+success
+
+create index student_idx1 on ${testName2}_student(s_id);
+success
+
+create table ${testName2}_course(c_id varchar(6),c_name varchar(50),t_id varchar(6));
+success
+
+load ${testName2}_course "../DATA/PartitionKey/course.csv";
+success
+
+create index course_idx1 on ${testName2}_course(c_id);
+success
+
+create index course_idx2 on ${testName2}_course(t_id);
+success
+
+create table ${testName2}_teacher(t_id varchar(6),t_name varchar(50));
+success
+
+load ${testName2}_teacher "../DATA/PartitionKey/teacher.csv";
+success
+
+create index teacher_idx1 on ${testName2}_teacher(t_id);
+success
+
+select * from ${testName2}_score js1
+inner join ${testName2}_student js2 on js1.s_id =js2.s_id;
+rows: 7
+
+select * from ${testName2}_score js
+inner join ${testName2}_student js2 on js.s_id =js2.s_id
+inner join ${testName2}_course jc on js.c_id =jc.c_id
+inner join ${testName2}_teacher jt on jc.t_id =jt.t_id;
+rows: 5
+
+// drop the tables
+drop table ${testName2}_score;
+success
+
+drop table ${testName2}_student;
+success
+
+drop table ${testName2}_course;
+success
+
+drop table ${testName2}_teacher;
+success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table ${testName2}_score;
+  mute
+
+  drop table ${testName2}_student;
+  mute
+
+  drop table ${testName2}_course;
+  mute
+
+  drop table ${testName2}_teacher;
+  mute
+}
+
