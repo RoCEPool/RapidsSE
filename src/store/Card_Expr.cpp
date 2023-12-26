@@ -148,7 +148,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* craft a casted expr for given column                                       */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCast_expr_Column(Column *pColumn, i8 iExpCol,
+Card_Expr* Card_Expr:: pCast_expr_Column(Column *pColumn, i8 iExpCol,
                                         char cTblSyn, i8 iColOdn)
 {
   _static_
@@ -172,6 +172,8 @@ Card_Expr* Card_Expr::pCast_expr_Column(Column *pColumn, i8 iExpCol,
   Card_Term *p_term_new = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iColOdn);
   p_term_new->vCast(xCast);
   p_rpnCalc_new->vAppendChild(p_term_new);
+
+  p_expr_new->pSymbol()->vAppendFacets(p_term_new->pSymbol());
 
   return p_expr_new;
 }

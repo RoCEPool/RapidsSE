@@ -21,6 +21,8 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
+#define Z_MATCHES
+
 namespace STORE
 {
   class Card_AbsJoin;
