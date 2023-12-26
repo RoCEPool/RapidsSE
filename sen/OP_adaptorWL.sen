@@ -64,6 +64,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handle BT_AFFECTEDROWS                                                     */
+/* Called when an affectedRows pdsRowBuffer is received.                      */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_AffectedRowsPds
+
+  "adaptorWL_AffectedRowsPds - BT_AFFECTEDROWS" .verbose
+
+  // get the pdsRowBuffer
+  PipeIn[]\clear to Pds[]
+
+  adaptorWL[].affectedRowCountPds
+
+  // now delete the Pds[]
+  Pds[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* handle for BT_EXECERRORS                                                   */
 /* Called when there is an error from a sub command but also when the         */
 /* client disconnects.                                                        */
@@ -373,6 +396,34 @@
 : adaptorWL_PdsRowBuffer \handler
 
   "adaptorWL_PdsRowBuffer - EV_D_PDSROWBUFFER" .verbose
+
+  // handle AFFECTEDROWS
+  PipeIn[].bufferType@ BT_AFFECTEDROWS == if
+    adaptorWL_affectedRowsPds
+    true
+    exit
+  then
+
+  // handle BT_COMPILEERRORS
+  PipeIn[].bufferType@ BT_COMPILEERRORS == if
+    adaptorWL_CompileErrors
+    true
+    exit
+  then
+
+  // handle EXECERRORS
+  PipeIn[].bufferType@ BT_EXECERRORS == if
+    adaptorWL_ExecErrors
+    true
+    exit
+  then
+
+  // handle BT_WARNINGS
+  PipeIn[].bufferType@ BT_WARNINGS == if
+    adaptorWL_Warning
+    true
+    exit
+  then
 
   PipeIn[] AdaptorWL[].Pds
   Pipein[].delete

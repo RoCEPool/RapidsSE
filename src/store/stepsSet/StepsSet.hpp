@@ -33,6 +33,7 @@ public:
   void vAdaptorWLExecutionError(void);
   void vAdaptorWLExecutionWarning(void);
   void vAdaptorWLAffectedRowCount(void);
+  void vAdaptorWLAffectedRowCountPds(void);
   void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
   void vAdaptorWLHasQuery(void);
@@ -1639,10 +1640,15 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSet(void);
 
   // pds
+  void vPdsAddProgressUnits(void);
+  void vPdsAddRowVargs(void);
   void vPdsGet(void);
   void vPdsGetBufferIdAsAddr(void);
+  void vPdsBufferTypeFetch(void);
+  void vPdsBufferTypeStore(void);
   void vPdsDelete(void);
   void vPdsIsNull(void);
+  void vPdsNew(void);
   void vPdsSet(void);
 
   // PayloadObj
@@ -1671,6 +1677,7 @@ void vJobIdLastJobIdFetch(void);
   void vPipeinIsMarker(void);
   void vPipeinIsNull(void);
   void vPipeinIsRowBuffer(void);
+  void vPipeinIsPds(void);
   void vPipeinKind(void);
   void vPipeinName(void);
   void vPipeinNext(void);

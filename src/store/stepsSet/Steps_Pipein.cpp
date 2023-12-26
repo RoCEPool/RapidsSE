@@ -31,6 +31,7 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[].isMarker"_Stz,       &Step::vPipeinIsMarker);
   vAddStep("PipeIn[].isNull"_Stz,         &Step::vPipeinIsNull);
 	vAddStep("PipeIn[].isRowBuffer"_Stz,    &Step::vPipeinIsRowBuffer);
+  vAddStep("PipeIn[].isPds"_Stz,    &Step::vPipeinIsPds);
   vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
   vAddStep("PipeIn[].name"_Stz,           &Step::vPipeinName);
   vAddStep("PipeIn[].next"_Stz,           &Step::vPipeinNext);
@@ -228,6 +229,20 @@ void Step::vPipeinIsRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* PipeIn[].isPds -- is operand a Pds buffer ?                                */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeinIsPds(void)
+{
+  ENTRY();
+
+  Operand* pOperand = _pOperand(*m_pLogicUnit->m_xpPipein);;
+
+  m_pDataStack->vPushInt(pOperand->eGetClassNo() == CN_PDS ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* PipeIn[].kind -- decode operand into its operand kind                      */
 /*----------------------------------------------------------------------------*/
 void Step::vPipeinKind(void)
@@ -350,7 +365,10 @@ void Step::vPipeinSet(void)
 		if (eOperand == EV_D_ROWBUFFER) {
 			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
 			m_pLogicUnit->m_ePipeInBufferType = pRowBuffer->eBufferType();
-		}
+		} else if (eOperand == EV_D_PDSROWBUFFER) {
+      Pds *pPdsRowBuffer = _pPds(pOperand);
+      m_pLogicUnit->m_ePipeInBufferType = pPdsRowBuffer->eBufferType();
+    }
   }
   
   EXIT();

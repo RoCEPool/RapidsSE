@@ -575,6 +575,44 @@ void AdaptorWL::vAffectedRowCount(RowBuffer* pRowBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Accumulate any affected row counts for the current statement               */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vAffectedRowCountPds(Pds* pPdsRowBuffer)
+{
+  if (!bCheckState( {API_STATEMENT_SUBMITTED, API_STATEMENT_COMPLETED} )) {
+    return;
+  }
+
+  // We've already sent a response to the client. Ignore any further affected row counts.
+  // This could occur when affected row counts are sent after an error has
+  // already been received.
+  if (m_eProtocolState == API_STATEMENT_COMPLETED || !m_pStmtCtx) {
+    return;
+  }
+
+  ASSERT(m_pStmtCtx);
+  ASSERT(pPdsRowBuffer->eBufferType() == BT_AFFECTEDROWS);
+  ASSERT(pPdsRowBuffer->nItems() == 1);
+
+  Row *pInfoRow = pPdsRowBuffer->pFirstRow();
+  ASSERT(pPdsRowBuffer);
+
+  i8 iRowsProcessed = pInfoRow->iColVal_int(0);
+  i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
+  i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
+  i8 iRowsInserted  = pInfoRow->iColVal_int(3);
+  i8 iRowsUpdated   = pInfoRow->iColVal_int(4);
+  i8 iRowsDeleted   = pInfoRow->iColVal_int(5);
+
+  m_pStmtCtx->vAddRowsProcessed(iRowsProcessed);
+  m_pStmtCtx->vAddRowsSkipped(iRowsSkipped);
+  m_pStmtCtx->vAddRowsInvalid(iRowsInvalid);
+  m_pStmtCtx->vAddRowsInserted(iRowsInserted);
+  m_pStmtCtx->vAddRowsUpdated(iRowsUpdated);
+  m_pStmtCtx->vAddRowsDeleted(iRowsDeleted);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Update the state after the child job has exited                            */
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vChildJobExited()

@@ -117,6 +117,7 @@
 
   find: progress_EosMarker     EV_M_EOS           [op].handler!
   find: progress_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  //find: progress_PdsRowBuffer     EV_D_PDSROWBUFFER     [op].handler!
 
   op__loop
 

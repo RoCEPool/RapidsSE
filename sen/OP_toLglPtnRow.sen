@@ -82,6 +82,14 @@
   then
  */
   PipeIn[]\clear to Pds[]
+
+  // handle BT_DATA only
+  Pds[].bufferType@ BT_DATA != if
+    Pds[].pipeout
+    true
+    exit
+  then
+
   Table[] Pds[] toLglPtnRow[].convert
   Pds[].delete
 

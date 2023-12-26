@@ -393,6 +393,12 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
 				m_eSendCast = XK_ROBINDIST;
 			break;
 		}
+    case CN_PDS: {
+      Pds *pPdsRowBuffer = _pPds(pOperand);
+      if (pPdsRowBuffer->eBufferType() != BT_DATA)
+        m_eSendCast = XK_ROBINDIST;
+      break;
+    }
     default:
       RASSERT(pOperand->bIsBuffer());
   }
@@ -452,7 +458,11 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 						RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
 						RASSERT(pRowBuffer->eBufferType() == BT_DATA);
 						vPTN_hashcast(pSendOp);
-					} else
+					} else if(pOperand->eGetClassNo() == CN_PDS) {
+            Pds *pPdsRowBuffer = _pPds(pOperand);
+            RASSERT(pPdsRowBuffer->eBufferType() == BT_DATA);
+            vPTN_hashcast(pSendOp);
+          } else
 						vPTN_hashcast(pSendOp);
 					break;
 				}
@@ -698,7 +708,10 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
 	if (pOperand->eGetClassNo() == CN_ROWBUFFER) {
 		RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
 		RASSERT(pRowBuffer->eBufferType() == BT_DATA);
-	}
+	} else if(pOperand->eGetClassNo() == CN_PDS) {
+    Pds* pPdsRowBuffer = _pPds(pOperand);
+    RASSERT(pPdsRowBuffer->eBufferType() == BT_DATA);
+  }
   m_eSendWhy = SY_HASHCAST;
   m_eRecvInstructions = RV_ONE_PTN;
 
@@ -1044,6 +1057,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   
   // get preliminary information
   Node *pDstNode = AM::pGrid()->pFindNodeById(m_iDstNode);
+  ASSERT(pDstNode);
   //vTrace("vSendParcelViaSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeId(), pDstNode->iPortNo());
   Socket *pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nItems();
