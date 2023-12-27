@@ -85,6 +85,35 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_D_PDSROWBUFFER ...                                          */
+/*----------------------------------------------------------------------------*/
+: waitFinished_PdsRowBuffer \handler
+
+  // get the Pds
+  PipeIn[]\clear to Pds[]
+
+  // pipeout buffers other than BT_COUNT
+  Pds[].bufferType@ BT_COUNT != if
+    Pds[].pipeout
+    true
+    exit
+  then
+
+  // get first row of Pds[]
+  Pds[].firstRow to Row[]
+
+  // get 0th Column (rowCount) add to Counter
+  0 Row[].getIntColumn to Counter0[]
+
+  // now delete the Pds
+  Pds[].delete
+
+  //Counter0[] "  expecting %v commands" .printf
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : waitFinished_RowBuffer \handler
@@ -138,6 +167,7 @@
   op__topology
 
   find: waitFinished_End       EV_M_END       [op].handler!
+  find: waitFinished_PdsRowBuffer EV_D_PDSROWBUFFER [op].handler!
   find: waitFinished_RowBuffer EV_D_ROWBUFFER [op].handler!
   find: waitFinished_Start     EV_M_START     [op].handler!
 

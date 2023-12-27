@@ -1641,6 +1641,7 @@ void vJobIdLastJobIdFetch(void);
 
   // pds
   void vPdsAddProgressUnits(void);
+  void vPdsAddRowCount(void);
   void vPdsAddRowVargs(void);
   void vPdsGet(void);
   void vPdsGetBufferIdAsAddr(void);

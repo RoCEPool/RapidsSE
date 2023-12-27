@@ -15,14 +15,14 @@
   // find the __count table
   C_TDEF_COUNT op__tableDef assert
 
-  // create a new streamDef
-  BT_DATA TableDef[] RowBuffer[].new
-
   // create an rowBuffer operand
-  Table[] TableDef[] RowBuffer[].addRowCount assert
+  BT_COUNT TableDef[] Pds[].new
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // add row count to Pds
+  Table[] Pds[].addRowCount assert
+
+  // pipeout the Pds
+  Pds[].pipeOut
 
   Marker[].newEosMarker
   Marker[].pipeOut

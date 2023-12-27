@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 #include "LogicUnit.hpp"
 #include "Table.hpp"
+#include "Op.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -18,6 +19,7 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[]"_Stz,                     &Step::vPdsGet);
 
   vAddStep("Pds[].addProgressUnits"_Stz, &Step::vPdsAddProgressUnits);
+  vAddStep("Pds[].addRowCount"_Stz,      &Step::vPdsAddRowCount);
   vAddStep("Pds[].addRowVargs"_Stz,      &Step::vPdsAddRowVargs);
   vAddStep("Pds[].bufferId"_Stz  ,          &Step::vPdsGetBufferIdAsAddr);
   vAddStep("Pds[].bufferType@"_Stz,         &Step::vPdsBufferTypeFetch);
@@ -45,6 +47,43 @@ void Step::vPdsAddProgressUnits(void)
 
   Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
                                     iProgressUnits,
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addRowCount -- add a row to Pds with the row counts for ptn          */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddRowCount(void)
+{
+  ENTRY();
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  LglPtn tLglPtn = m_pOp->tLglPtn();
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+  pPdsRowBuffer->vBufferType(BT_COUNT);
+
+  // RAY: UNCOMMENT next 2 lines to see relative sizes when running "count tableName;"
+  //i8 iRelativeSize = pTable->iRelativeSize();
+  //vTrace("Relative size of table %s is %lld\n"_Stz, pTable->szTableNm(), iRelativeSize);
+
+  i8 nBuffers = 0;
+  i8 nRows = 0;
+  i8 jSumRowBytes = 0;
+
+  pTable->vAnalyze(i_TablePtn, nBuffers, nRows, jSumRowBytes);
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                    nRows,
                                     C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
