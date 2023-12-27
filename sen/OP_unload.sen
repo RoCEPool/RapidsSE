@@ -22,7 +22,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ... a RowBuffer with __path rows                */
+/* handler for EV_D_PDSROWBUFFER ... a Pds with __path rows                   */
 /*----------------------------------------------------------------------------*/
 : unload_Path \handler
 
@@ -30,14 +30,14 @@
   PipeIn[]\clear to RowBuffer[]
 
   // pipeout buffers other than BT_PATH
-  RowBuffer[].bufferType@ BT_PATH != if
-    RowBuffer[].pipeout
+  Pds[].bufferType@ BT_PATH != if
+    Pds[].pipeout
     true
     exit
   then
 
-  // get first row of RowBuffer[]
-  RowBuffer[].firstRow to Row[]
+  // get first row of Pds[]
+  Pds[].firstRow to Row[]
 
   // get the columns from the row
   0 Row[].getVchColumn locals| sPath   |
@@ -47,7 +47,7 @@
   // unload to disk
   iPathOf iPathNo sPath unload.toDisk
 
-  RowBuffer[].delete
+  Pds[].delete
   nullptr to Row[]
 
   true

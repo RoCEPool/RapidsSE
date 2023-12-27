@@ -33,9 +33,9 @@
     exit
   then
 
-  PipeIn[]\clear to RowBuffer[]
+  PipeIn[]\clear to Pds[]
 
-  RowBuffer[].firstRow to Row[]
+  Pds[].firstRow to Row[]
 
   0 Row[].getIntColumn locals| pTaskPtr  |
   1 Row[].getIntColumn locals| oBufferId |
@@ -43,7 +43,7 @@
   // unload to disk
   pTaskPtr oBufferId pageIn::popRequest
 
-  RowBuffer[].delete
+  Pds[].delete
   nullptr to Row[]
   true
 ;
@@ -61,7 +61,7 @@
 
   op__topology
 
-  find: pageIn::request     EV_D_ROWBUFFER  [op].handler!
+  find: pageIn::request     EV_D_PDSROWBUFFER  [op].handler!
 
   op__loop
 

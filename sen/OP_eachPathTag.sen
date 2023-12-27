@@ -24,7 +24,7 @@
 
   BT_COUNT TableDef[] Pds[].new
 
-  nPaths 1 Pds[].addRowVargs
+  nPaths 1 Pds[].addRowVargs assert
 
   Pds[].pipeOut
 
@@ -47,7 +47,7 @@
 
       BT_PATH TableDef[] Pds[].new
 
-      iPathOf iPathNo sPath 3 Pds[].addRowVargs
+      iPathOf iPathNo sPath 3 Pds[].addRowVargs assert
 
       Pds[].pipeOut
   loop

@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 : totalCount_PdsRowBuffer \handler
 
-  // get the rowBuffer
+  // get the Pds
   PipeIn[]\clear to Pds[]
 
   // pipeout buffers other than BT_COUNT
