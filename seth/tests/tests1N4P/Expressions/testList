@@ -2,3 +2,4 @@ arithmetic.test
 caseExpr.test
 likeExpr.test
 substringExpr.test
+inExpr.test
