@@ -179,8 +179,16 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->bIsColSym()) {
 
         // which we haven't already added
-        if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
+        if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol())) {
+#ifdef Z_MATCHES
+//          if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()) != p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol())) {
+//            pCI->vPrintBoard(__LINE__,true);
+//            xCI_rpnCalc.p_term()->vDump(__func__);
+//            NEVER_REACH
+//          }
+#endif
           continue;
+        }
 
         if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
           p_needed->vAppendChild(p_expr_col->pClone());
@@ -476,9 +484,15 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
   else
   if (p_term->pSymbol()->bIs_Tbl_Col()) {
     Card_Expr *p_expr_prior = this->pFind_expr_Via_term0(p_term->pSymbol());
+#ifdef Z_MATCHES
+    if (p_expr_prior != pFind_expr_Matches(p_term->pSymbol())) {
+      //pCI->vPrintBoard(__LINE__,true);
+      p_term->vDump(__func__);
+      NEVER_REACH
+    }
+#endif
     return p_expr_prior;
   }
-
   return nullptr;
 }
 
