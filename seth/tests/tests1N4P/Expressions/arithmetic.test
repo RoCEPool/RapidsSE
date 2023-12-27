@@ -846,6 +846,14 @@ SELECT xh,a,e,e-a from ${testName2}_intervalD i where xh=2;
 rows:
   (2,DATE '2055-12-31', TIMESTAMP '2021-01-02 12:59:59',INTERVAL -'12780 11:0:1' DAY TO SECOND)
 
+
+// date of of range
+select timestamp '2155-05-31 00:00:00' +interval '-833999' day from intervalD;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
+
+select timestamp '1900-01-01 00:00:00' +interval '833999' day from intervalD;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
+
 DROP TABLE ${testName2}_intervald;
 success
 
