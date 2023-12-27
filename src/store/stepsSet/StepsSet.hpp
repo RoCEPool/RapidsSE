@@ -1647,6 +1647,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsBufferTypeFetch(void);
   void vPdsBufferTypeStore(void);
   void vPdsDelete(void);
+  void vPdsFirstRow(void);
   void vPdsIsNull(void);
   void vPdsNew(void);
   void vPdsSet(void);

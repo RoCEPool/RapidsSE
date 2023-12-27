@@ -48,23 +48,14 @@
   Counter0[] 100 % 0 == if
 
     // create a Pds operand
-    //BT_PROGRESSUNITS TableDef[] Pds[].new
+    BT_PROGRESSUNITS TableDef[] Pds[].new
 
     // insert progressUnits to the Pds
     //Counter0[] Pds[].addProgressUnits assert
-    //Counter0[] 1 Pds[].addRowVargs assert
+    Counter0[] 1 Pds[].addRowVargs assert
 
     // pipeout the Pds
-    //Pds[].pipeOut
-
-    // create a RowBuffer operand
-    BT_DATA TableDef[] RowBuffer[].new
-
-    // insert progressUnits to the infoset
-    Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
-
-    // pipeout the infoset
-    RowBuffer[].pipeOut
+    Pds[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -103,23 +94,14 @@
   Counter0[] 10 % 0 == if
 
     // create a Pds operand
-    //BT_PROGRESSUNITS TableDef[] Pds[].new
+    BT_PROGRESSUNITS TableDef[] Pds[].new
 
     // insert progressUnits to the Pds
     //Counter0[] Pds[].addProgressUnits assert
-    //Counter0[] 1 Pds[].addRowVargs assert
+    Counter0[] 1 Pds[].addRowVargs assert
 
     // pipeout the Pds
-    //Pds[].pipeOut
-
-    // create a RowBuffer operand
-    BT_DATA TableDef[] RowBuffer[].new
-
-    // insert progressUnits to the infoset
-    Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
-
-    // pipeout the infoset
-    RowBuffer[].pipeOut
+    Pds[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -139,23 +121,14 @@
   // send out final progress units
 
   // create a Pds operand
-  //BT_PROGRESSUNITS TableDef[] Pds[].new
+  BT_PROGRESSUNITS TableDef[] Pds[].new
 
   // insert progressUnits to the Pds
   //Counter0[] Pds[].addProgressUnits assert
-  //Counter0[] 1 Pds[].addRowVargs assert
+  Counter0[] 1 Pds[].addRowVargs assert
 
   // pipeout the Pds
-  //Pds[].pipeOut
-
-  // create a RowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
-
-  // insert progressUnits to the infoset
-  Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
-
-  // pipeout the infoset
-  RowBuffer[].pipeOut
+  Pds[].pipeOut
 
   // send out an AFFECTEDROWS infoset with the number of rows actually inserted
   Table[].isReplicated not

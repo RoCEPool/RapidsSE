@@ -23,6 +23,7 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].bufferType@"_Stz,         &Step::vPdsBufferTypeFetch);
   vAddStep("Pds[].bufferType!"_Stz,         &Step::vPdsBufferTypeStore);
   vAddStep("Pds[].delete"_Stz  ,            &Step::vPdsDelete);
+  vAddStep("Pds[].firstRow"_Stz,            &Step::vPdsFirstRow);
   vAddStep("Pds[].isNull"_Stz  ,            &Step::vPdsIsNull);
   vAddStep("Pds[].new"_Stz,                 &Step::vPdsNew);
   vAddStep("Pds[].set"_Stz  ,               &Step::vPdsSet);
@@ -172,6 +173,18 @@ void Step::vPdsDelete(void)
   m_pLogicUnit->m_xpPds = nullptr;
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].firstRow -- get first row from the PdsRowBuffer                      */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsFirstRow(void)
+{
+  ENTRY();
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  m_pDataStack->vPushPtr(pPdsRowBuffer->pFirstRow());
 }
 
 /*----------------------------------------------------------------------------*/
