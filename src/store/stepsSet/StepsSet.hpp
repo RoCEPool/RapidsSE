@@ -1651,6 +1651,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsIsNull(void);
   void vPdsNew(void);
   void vPdsSet(void);
+  void vPdsTableDefNameFetch(void);
 
   // PayloadObj
   void vPayloadObjDelete(void);

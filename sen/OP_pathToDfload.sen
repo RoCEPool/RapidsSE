@@ -88,11 +88,11 @@
 
   C_TDEF_COMMAND op__tableDef assert
 
-  BT_COMMAND TableDef[] RowBuffer[].new
+  BT_COMMAND TableDef[] Pds[].new
 
-  sTags sCmd  2 RowBuffer[].addRowVargs
+  sTags sCmd  2 Pds[].addRowVargs
 
-  RowBuffer[].pipeOut
+  Pds[].pipeOut
 
   true
 ;
