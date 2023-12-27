@@ -159,8 +159,16 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
         vDebugPoint();
 
-        if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol))
+        if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol)) {
+#ifdef Z_MATCHES
+          if (pCI->G.p_needed->pFind_expr_Matches(pSymbol_tblCol) != pCI->G.p_needed->pFind_expr_Via_term0(pSymbol_tblCol)) {
+            pCI->vPrintBoard(__LINE__,true);
+            p_expr_key->vDump(__func__);
+            NEVER_REACH
+          }
+#endif
           continue;
+        }
 
         Card_Expr* p_expr_cloned = p_expr_key->pClone();
         p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
