@@ -848,10 +848,11 @@ rows:
 
 
 // date of of range
-select timestamp '2155-05-31 00:00:00' +interval '-833999' day from intervalD;
+select timestamp '2155-05-31 00:00:00' +interval '-833999' day from ${testName2}_intervalD;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
 failure contains: 'EC_DATE_OUT_OF_RANGE'
 
-select timestamp '1900-01-01 00:00:00' +interval '833999' day from intervalD;
+select timestamp '1900-01-01 00:00:00' +interval '833999' day from ${testName2}_intervalD;
 failure contains: 'EC_DATE_OUT_OF_RANGE'
 
 DROP TABLE ${testName2}_intervald;

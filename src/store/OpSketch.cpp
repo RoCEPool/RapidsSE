@@ -512,6 +512,16 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       continue;
     }
 
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// save the column name
+		if (pTkn->bIsString()) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// push literal
+			vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_VCH);
+			continue;
+		}
+
     if (pTkn->bSame("groupby"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1106,17 +1116,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       continue;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // save the column name
-    if (pTkn->bIsString()) {
+		vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn, bConstraint);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // push literal
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_VCH);
-    }
-    else {
-      vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn, bConstraint);
-    }
 
   }
 
