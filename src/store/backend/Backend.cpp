@@ -274,6 +274,13 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
   String* sPipeline = pBackend->m_sPipeline;
   s256 sAliasName;
 
+	// check if the ordinalExpr is an aliasRef
+	if (AliasRef::bIsOfType(pOrdinalExpr)) {
+		QueryNode* pAliasExpr = AliasRef::pAliasedExpr(pOrdinalExpr);
+		vAppendExpr(pBackend, pExprNode, pAliasExpr, nullptr);
+		return;
+	}
+
   if (szAliasName) {
     sAliasName = szAliasName;
   }
@@ -409,8 +416,13 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pGroupByExpr, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
       RASSERT(pOrdinalExpr);
 
-      //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
-      vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
+			if (AliasRef::bIsOfType(pOrdinalExpr)) {
+				QueryNode* pAliasExpr = AliasRef::pAliasedExpr(pOrdinalExpr);
+				vAppendExpr(pBackend, pGroupByExpr, pAliasExpr, nullptr);
+			}
+			else
+        vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
+
       delete pOrdinalExpr;
     }
 
