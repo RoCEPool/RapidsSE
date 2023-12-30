@@ -10,6 +10,8 @@
 #include "LogicUnit.hpp"
 #include "Table.hpp"
 #include "Op.hpp"
+#include "MetricsHelper.hpp"
+#include "LockMetrics.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -18,6 +20,7 @@ void Step::vAddSteps_Pds(void)
 {
   vAddStep("Pds[]"_Stz,                     &Step::vPdsGet);
 
+  vAddStep("Pds[].addLockStats"_Stz,      &Step::vPdsAddLockStats);
   vAddStep("Pds[].addProgressUnits"_Stz, &Step::vPdsAddProgressUnits);
   vAddStep("Pds[].addRowCount"_Stz,      &Step::vPdsAddRowCount);
   vAddStep("Pds[].addRowVargs"_Stz,      &Step::vPdsAddRowVargs);
@@ -30,6 +33,25 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].new"_Stz,                 &Step::vPdsNew);
   vAddStep("Pds[].set"_Stz  ,               &Step::vPdsSet);
   vAddStep("Pds[].tableDefName@"_Stz,    &Step::vPdsTableDefNameFetch);
+  vAddStep("Pds[].writeCsv"_Stz,    &Step::vPdsWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addLockStats -- add a row to Pds with the lockStats                  */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddLockStats(void)
+{
+  ENTRY();
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = LockMetrics::pSamplePds(pPdsRowBuffer);
+
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,3 +388,26 @@ void Step::vPdsTableDefNameFetch(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].writeCsv -- write Pds to file as csv                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsWriteCsv(void)
+{
+  ENTRY();
+
+  ASSERT(*m_pLogicUnit->m_xpPds);
+
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  StreamDef* pStreamDef = pTableDef->pStreamDef();
+
+  File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
+
+  MetricsHelper::vWriteCsvPds(pPdsRowBuffer,pStreamDef,pFile);
+
+  EXIT();
+}
+

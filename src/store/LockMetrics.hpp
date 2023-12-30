@@ -10,6 +10,7 @@ namespace STORE
   public:
     static Row* pSample(StreamDef* pStreamDef, InfoSet* pInfoSet);
 		static Row* pSample(StreamDef* pStreamDef, RowBuffer* pRowBuffer);
+    static Row* pSamplePds(Pds* pPdsRowBuffer);
   };
 
 }

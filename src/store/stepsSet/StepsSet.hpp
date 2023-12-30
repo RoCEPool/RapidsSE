@@ -1640,6 +1640,7 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSet(void);
 
   // pds
+  void vPdsAddLockStats(void);
   void vPdsAddProgressUnits(void);
   void vPdsAddRowCount(void);
   void vPdsAddRowVargs(void);
@@ -1653,6 +1654,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsNew(void);
   void vPdsSet(void);
   void vPdsTableDefNameFetch(void);
+  void vPdsWriteCsv(void);
 
   // PayloadObj
   void vPayloadObjDelete(void);

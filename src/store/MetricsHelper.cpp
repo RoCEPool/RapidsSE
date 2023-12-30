@@ -30,6 +30,30 @@ void MetricsHelper::vWriteCsv(RowBuffer* pRowBuffer, StreamDef* pStreamDef, File
 	}
 }
 
+/*----------------------------------------------------------------------------*/
+void MetricsHelper::vWriteCsvPds(Pds* pPdsRowBuffer, StreamDef* pStreamDef, File* pFile)
+{
+  _static_
+
+  HV_Record hvRecord(pStreamDef->pRowPix());
+
+  PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
+
+  while( ! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSkipListBlock = pCursor->m_pCurrentBlock;
+    Row* pInfoRow = pSkipListBlock->aRow();
+
+    vTrace("MetricsHelper: %s\n"_Stz,hvRecord->sz(pInfoRow));
+
+    pFile->vPrint("%s\n"_Stz,hvRecord->sz(pInfoRow));
+
+    pCursor->vNext();
+  }
+
+  pCursor->m_pPds = nullptr;
+  delete pCursor;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

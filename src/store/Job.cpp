@@ -1643,6 +1643,7 @@ void Job::vPipeoutResponse(Operand* pOperand)
         RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
         vTrace("RowBuffer Rows: %lld\n"_Stz, pRowBuffer->nRows());
 
+        // Convert NestedSql RowBuffer result to Pds and pipeout
         i8 nRows = pRowBuffer->nRows();
         RowPix* pRowPix = pRowBuffer->pRowPix();
 

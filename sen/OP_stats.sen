@@ -36,14 +36,14 @@
   // find the __lockStats table
   C_TDEF_LOCKSTATS op__tableDef assert
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create an Pds operand
+  BT_LOCKSTATS TableDef[] Pds[].new
 
-  // add lock  to the rowBuffer
-  TableDef[] RowBuffer[].addLockStats assert
+  // add lock  to the Pds
+  Pds[].addLockStats assert
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;
@@ -56,14 +56,14 @@
   // find the __lockStats table
   C_TDEF_LOCKSTATS op__tableDef assert
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create an Pds operand
+  BT_DATA TableDef[] Pds[].new
 
-  // add lock to the rowBuffer
-  TableDef[] RowBuffer[].addLockStats assert
+  // add lock to the Pds
+  Pds[].addLockStats assert
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   EV_M_EXITING_handler // calling op_loop exits
 ;

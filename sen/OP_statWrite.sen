@@ -5,6 +5,42 @@
 " OP_statWrite.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_D_PDSROWBUFFER...                                           */
+/*----------------------------------------------------------------------------*/
+: OP_statWrite_PdsRowBuffer \handler
+
+  //"statWrite_PdsRowBuffer --- --- ---" .
+
+//! ALKA TO CHECK WITH RAY
+//  File0[].isNull not if
+//    "File not null" .
+//    process::quit
+//  then
+
+  // open the file for writing
+  "/tmp/SE_Stats.csv" OPEN_APPEND op__file if
+
+    PipeIn[].bufferType@ BT_LOCKSTATS == assert
+
+    PipeIn[] to Pds[]
+    nullptr to PipeIn[]
+
+    C_TDEF_LOCKSTATS op__tableDef assert
+
+    TableDef[] Pds[].writeCsv
+
+    Pds[].delete
+
+    //File0[].get file.close
+    //File0[].get file.delete
+  else
+    Pipein[].delete
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_ROWBUFFER...                                              */
 /*----------------------------------------------------------------------------*/
 : OP_statWrite_RowBuffer \handler
@@ -50,6 +86,7 @@
   op__topology
 
   find: OP_statWrite_RowBuffer EV_D_ROWBUFFER [op].handler!
+  find: OP_statWrite_PdsRowBuffer EV_D_PDSROWBUFFER [op].handler!
 
   op__loop
 

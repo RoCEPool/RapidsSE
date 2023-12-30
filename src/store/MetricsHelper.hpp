@@ -9,6 +9,7 @@ namespace STORE
   {
   public:
 		static void vWriteCsv(RowBuffer* pIRowBuffer, StreamDef* pStreamDef, File* pFile);
+		static void vWriteCsvPds(Pds* pPdsRowBuffer, StreamDef* pStreamDef, File* pFile);
   };
 
 }
