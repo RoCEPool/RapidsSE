@@ -5,6 +5,42 @@
 " OP_sanity.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on EV_D_PDSROWBUFFER...                                                    */
+/*----------------------------------------------------------------------------*/
+: gridSanity_PdsRowBuffer \handler
+
+  //"Operand:- EV_D_PDSROWBUFFER" .verbose
+
+  PipeIn[]\clear to Pds[]
+
+  // handle BT_NODEINFO only
+  Pds[].bufferType@ BT_NODEINFO != if
+    Pds[].pipeout
+    true
+    exit
+  then
+
+  // get the first row of the Pds (nodeInfo)
+  Pds[].firstRow to Row[]
+
+  Pds[] to DataBuffer[]
+
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
+
+  // add nodeInfo to the Pds
+  Row[] Pds[].addgridSanity assert
+
+  // pipeout the Pds
+  Pds[].pipeOut
+
+  // delete the dataBuffer
+  DataBuffer[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_D_ROWBUFFER...                                                       */
 /*----------------------------------------------------------------------------*/
 : gridSanity_RowBuffer \handler
@@ -73,6 +109,7 @@
   op__topology
 
   find: gridSanity_StartMarker EV_M_START        [op].handler!
+  find: gridSanity_PdsRowBuffer   EV_D_PDSROWBUFFER    [op].handler!
   find: gridSanity_RowBuffer   EV_D_ROWBUFFER    [op].handler!
 
   op__loop

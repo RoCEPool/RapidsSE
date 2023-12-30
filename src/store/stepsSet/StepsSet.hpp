@@ -1640,6 +1640,8 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSet(void);
 
   // pds
+  void vPdsAddGridSanity(void);
+  void vPdsAddNodeInfo(void);
   void vPdsAddLockStats(void);
   void vPdsAddProgressUnits(void);
   void vPdsAddRowCount(void);

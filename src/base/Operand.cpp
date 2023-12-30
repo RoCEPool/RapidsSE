@@ -35,6 +35,7 @@ bool BASE::_bIsValidOperand(eCN eClass)
     case CN_ROWBUFFER:
     case CN_STREAMDEF:
     case CN_STREAMDEFRHT:
+    case CN_PDS:
       return true;
     default:
       return false;

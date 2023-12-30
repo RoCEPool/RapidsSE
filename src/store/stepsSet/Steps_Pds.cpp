@@ -12,6 +12,7 @@
 #include "Op.hpp"
 #include "MetricsHelper.hpp"
 #include "LockMetrics.hpp"
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -20,6 +21,8 @@ void Step::vAddSteps_Pds(void)
 {
   vAddStep("Pds[]"_Stz,                     &Step::vPdsGet);
 
+  vAddStep("Pds[].addGridSanity"_Stz,      &Step::vPdsAddGridSanity);
+  vAddStep("Pds[].addNodeInfo"_Stz, &Step::vPdsAddNodeInfo);
   vAddStep("Pds[].addLockStats"_Stz,      &Step::vPdsAddLockStats);
   vAddStep("Pds[].addProgressUnits"_Stz, &Step::vPdsAddProgressUnits);
   vAddStep("Pds[].addRowCount"_Stz,      &Step::vPdsAddRowCount);
@@ -34,6 +37,69 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].set"_Stz  ,               &Step::vPdsSet);
   vAddStep("Pds[].tableDefName@"_Stz,    &Step::vPdsTableDefNameFetch);
   vAddStep("Pds[].writeCsv"_Stz,    &Step::vPdsWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addGridSanity -- add a row to Pds with the gridSanity                */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddGridSanity(void)
+{
+  ENTRY();
+
+  Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  // get regionSize on this node
+  bool bRegionSize = false;
+  i8 iRegionSize = AM::iRegionSize();
+  if (pNodeInfo->iColVal_int(1) == iRegionSize)
+    bRegionSize = true;
+
+  // get partitions per table for this node
+  bool bPartitions = false;
+  i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
+  if (pNodeInfo->iColVal_int(2) == nPtnsPerNode)
+    bPartitions = true;
+
+  // check if the regionSize and partitions match
+  bool bHomogenous = false;
+  if ( bRegionSize && bPartitions )
+    bHomogenous = true;
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                    pNodeInfo->szColVal_ofs(0),
+                                    bHomogenous,
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addNodeInfo -- add a row to the Pds with the nodeInfo                */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddNodeInfo(void)
+{
+  ENTRY();
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Grid* pGrid = AM::pGrid();
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    AM::iRegionSize(),
+                                    AM::PTNMAP::nPtnsPerNode(),
+                                    (i8)AM::SYSTEM::bStarted(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
