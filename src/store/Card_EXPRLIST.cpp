@@ -531,8 +531,10 @@ void Card_EXPRLIST::vX_expCol_To_tblCol(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
-  while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vX_expCol_To_tblCol(pCI);
+  while (xKid.bEach(CK_EXPR)) {
+    pCI->G.p_expr = xKid.p_expr();
+    pCI->G.p_expr->vX_expCol_To_tblCol(pCI);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

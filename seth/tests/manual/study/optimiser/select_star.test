@@ -7,6 +7,10 @@ LOG 'SELECT_STAR ..';
 trackMemory;
 success
 
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
 /pipelineName = "SELECT_STAR"
 select *
   from Customer

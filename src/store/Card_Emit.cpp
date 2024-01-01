@@ -165,7 +165,13 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(xCI_rpnCalc.p_term()->pSymbol());
         Symbol* pSymbol_tblCol = p_expr_key->pFirst_tblCol();
 
-        vDebugPoint();
+
+        if (p_expr_key->bIsScalarCol()) {
+          p_expr_key->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
+          p_expr_key->vDump(__func__);
+          vDebugPoint();
+
+        }
 
         if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol)) {
 #ifdef Z_MATCHES
@@ -186,7 +192,13 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       else
       if (xCI_rpnCalc.p_term()->bIsColSym()) {
 
-        // which we haven't already added
+        if (xCI_projection.p_expr()->bIsScalarCol()) {
+          xCI_projection.p_expr()->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
+        }
+
+      }
+
+      // which we haven't already added
         if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol())) {
 #ifdef Z_MATCHES
 //          if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()) != p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol())) {
@@ -200,7 +212,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
         if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
           p_needed->vAppendChild(p_expr_col->pClone());
-      }
+
       else {
 
       }

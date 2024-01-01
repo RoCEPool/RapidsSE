@@ -711,11 +711,14 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vX_expCol_To_tblCol(pCI);
+  pCI->G.p_boolPred = nullptr;
+  pCI->G.p_rpnCalc  = nullptr;
+
+  if ((pCI->G.p_boolPred = pSub_boolPred()))
+    pCI->G.p_boolPred->vX_expCol_To_tblCol(pCI);
   else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vX_expCol_To_tblCol(pCI);
+  if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
+    pCI->G.p_rpnCalc->vX_expCol_To_tblCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
