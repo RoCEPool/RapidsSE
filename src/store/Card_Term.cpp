@@ -743,6 +743,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       eCK eAncestor = p_ANCESTOR->eCard();
       RASSERT(CK_t_EMIT == eAncestor ||
               CK_s_KEY == eAncestor  ||
+              CK_s_NEEDED == eAncestor  ||
               CK_STREAMKEY == eAncestor  ||
               CK_s_INJECTABLE == eAncestor);
 //      if (pCI->G.p_expr->bIsScalarCol()) {
