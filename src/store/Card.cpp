@@ -3445,24 +3445,6 @@ Card_OuterJoin* Card::pSub_outerJoin(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Payload.hpp"
-Card_Payload* Card::pSub_payload(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Payload* p_payload =
-      _pCard_Payload(pFindSubCard(CK_s_PAYLOAD));
-
-  if (bNotNull && !p_payload) {
-    NEVER_REACH
-  }
-
-  return p_payload;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_PayloadCells.hpp"
 Card_PayloadCells* Card::pSub_payloadCells(bool bNotNull)
 {

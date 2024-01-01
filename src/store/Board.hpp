@@ -106,7 +106,6 @@
 #include "Card_OuterColNm.hpp"
 #include "Card_OuterJoin.hpp"
 
-#include "Card_Payload.hpp"
 #include "Card_PayloadCells.hpp"
 #include "Card_Project.hpp"
 

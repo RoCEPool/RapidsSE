@@ -506,7 +506,6 @@ namespace STORE
     Card_On*            pSub_on(bool bNotNull=false);
     Card_OuterColNm*    pSub_outerColNm(bool bNotNull=false);
     Card_OuterJoin*     pSub_outerJoin(bool bNotNull=false);
-    Card_Payload*       pSub_payload(bool bNotNull=false);
     Card_PayloadCells*  pSub_payloadCells(bool bNotNull=false);
     Card_RelnOp*        pSub_relnOp(bool bNotNull=false);
     Card_Required*      pSub_required(bool bNotNull=false);

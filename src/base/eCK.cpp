@@ -48,7 +48,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_s_LEVEL"_Stz,        // CK_s_LEVEL
   /* */ "CK_s_MAPPING"_Stz,      // CK_s_MAPPING
   /* */ "CK_s_NEEDED"_Stz,       // CK_s_NEEDED
-  /* */ "CK_s_PAYLOAD"_Stz,      // CK_s_PAYLOAD
   /* */ "CK_s_STREAM"_Stz,       // CK_s_STREAM
   /* */ "CK_s_TABLE"_Stz,        // CK_s_TABLE
 
@@ -194,7 +193,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "level"_Stz,           // CK_s_LEVEL
   /* */ "mapping"_Stz,         // CK_s_MAPPING
   /* */ "needed"_Stz,          // CK_s_NEEDED
-  /* */ "payload"_Stz,         // CK_s_PAYLOAD
   /* */ "stream"_Stz,          // CK_s_STREAM
   /* */ "table"_Stz,           // CK_s_TABLE
 

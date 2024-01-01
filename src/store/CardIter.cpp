@@ -1421,7 +1421,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
 
-    case CK_s_PAYLOAD:          return G.p_payload;
     case CK_PAYLOADCELLS:     return G.p_payloadCells;
     case CK_o_PROJECT:          return G.p_project;
 
@@ -1663,7 +1662,6 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
     case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
-    case CK_s_PAYLOAD: G.p_payload           = _pCard_Payload(pCard); break;
     case CK_PAYLOADCELLS:     G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
     case CK_o_PROJECT: G.p_project           = _pCard_Project(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -2677,7 +2675,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_OUTERCOLNM:   G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
       case CK_OUTERJOIN:    G.p_outerJoin->vValidate(this, iDepth, pCard);  break;
 
-      case CK_s_PAYLOAD:      G.p_payload->vValidate(this, iDepth, pCard);  break;
       case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
       case CK_o_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
 
