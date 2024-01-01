@@ -92,6 +92,14 @@ void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
     Symbol* pSymbol_expr_sole = xKid.p_expr()->pGet_Symbol(0);
 
     Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term0(pSymbol_expr_sole);
+//    Card_Expr* p_expr_sole_key;
+//
+//#ifdef Z_MATCHES
+//    p_expr_sole_key = p_key->pFind_expr_Matches(xKid.p_expr()->pSymbol());
+//#else
+//    Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term0(pSymbol_expr_sole);
+//#endif
+
     if (! p_expr_sole_key)
       continue;
 

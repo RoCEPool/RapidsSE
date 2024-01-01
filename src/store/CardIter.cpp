@@ -272,6 +272,9 @@ Card* CardIter::pAncestorFind(eCK eCard, i8* ai_Ancestor)
     }
   }
 
+  if (ai_Ancestor)
+    *ai_Ancestor = C_UNKNOWN;
+
   return nullptr;
 }
 

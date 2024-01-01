@@ -48,6 +48,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 {
   _static_
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   auto bfItemise_colNm = [pCI](Card* pCard)
   {
     UNUSED(pCI);
@@ -97,6 +99,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
+
     NEVER_REACH;
   };
 
@@ -592,6 +595,16 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (pCI->X.m_pExprList_a) {
     //pCI->X.m_pExprList_a->vDump(__func__);
     if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term0(&xTblCol_sym)) {
+
+#ifdef Z_MATCHES
+//    if (pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym) != p_expr_scalar_a) {
+//      pCI->vPrintBoard(__LINE__);
+//      pCI->X.m_pExprList_a->vDump(__func__ );
+//      this->vDump(__func__ );
+//      NEVER_REACH
+//    }
+#endif
+
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
       pSymbol_this->vFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
@@ -719,6 +732,21 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 //          m_xSymbol.nTypeLength() == 0) {
 //        vDump(__func__);
 //        vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+//      }
+    }
+  }
+
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL]) ) {
+    i8 i_Ancestor;
+    if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR,&i_Ancestor)))) {
+      Card* p_ANCESTOR = pCI->pAncestor(i_Ancestor - 1);
+      eCK eAncestor = p_ANCESTOR->eCard();
+      RASSERT(CK_t_EMIT == eAncestor ||
+              CK_s_KEY == eAncestor  ||
+              CK_STREAMKEY == eAncestor  ||
+              CK_s_INJECTABLE == eAncestor);
+//      if (pCI->G.p_expr->bIsScalarCol()) {
+//        RASSERT(pCI->G.p_expr->)
 //      }
     }
   }
