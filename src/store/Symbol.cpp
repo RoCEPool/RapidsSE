@@ -1208,6 +1208,16 @@ void Symbol::vCastFacetsPpy(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vConcatFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacetRotateSet(eFacet_arg,szChrSeq_arg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set cast & facets from arg                                                 */
 /*----------------------------------------------------------------------------*/
 void Symbol::vConcatFacets(Symbol* pSymbol_arg)
