@@ -535,6 +535,8 @@ void Card_EXPRLIST::vX_expCol_To_tblCol(CardIter* pCI)
     pCI->G.p_expr = xKid.p_expr();
     pCI->G.p_expr->vX_expCol_To_tblCol(pCI);
   }
+
+  pCI->G.p_expr = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

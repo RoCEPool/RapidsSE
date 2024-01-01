@@ -489,8 +489,11 @@ void Card_RpnCalc::vX_expCol_To_tblCol(CardIter* pCI)
     if (!xKid.p_term()->pSymbol()->bIs_Exp_Col())
       continue;
 
-    xKid.p_term()->vX_expCol_To_tblCol(pCI);
+    pCI->G.p_term = xKid.p_term();
+    pCI->G.p_term->vX_expCol_To_tblCol(pCI);
   }
+
+  pCI->G.p_term = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
