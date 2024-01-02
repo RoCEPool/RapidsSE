@@ -546,6 +546,12 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
       pSymbol_this->vDeleteFacet(SF_EXP_COL);
       pSymbol_this->vCastFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
+
+      if (pCI->G.p_expr && pCI->G.p_expr->bIsScalarCol() && pCI->G.p_rpnCalc) {
+        if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_TBL_COL))
+          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
+      }
+
     }
     else {
       eSF eSymbol = pSymbol_this->eFacet();
