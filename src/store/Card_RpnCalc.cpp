@@ -505,11 +505,14 @@ void Card_RpnCalc::vX_tblCol_To_expCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
-      continue;
+//    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
+//      continue;
 
-    xKid.p_term()->vX_tblCol_To_expCol(pCI);
+    pCI->G.p_term = xKid.p_term();
+    pCI->G.p_term->vX_tblCol_To_expCol(pCI);
   }
+
+  pCI->G.p_term = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -574,8 +574,15 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pSymbol_this = this->pSymbol();
-  if (! pSymbol_this->bIs_Tbl_Col())
+  if (! pSymbol_this->bIs_Tbl_Col()) {
+
+    if (pCI->G.p_key && pCI->G.p_expr) {
+      if (pSymbol_this->bHasFacet(SF_EXP_COL) && ! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
+        pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+    }
+
     return;
+  }
 
   Symbol xTblCol_sym;
   xTblCol_sym.vFacet(SF_TBL_COL,pSymbol_this->szSF_chrSeq(SF_TBL_COL));
@@ -614,12 +621,21 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
       pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
+
+      if (pCI->G.p_key && pCI->G.p_expr) {
+        if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
+          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+      }
+
       return;
     }
     if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Via_term0(&xTblCol_sym)) {
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
       pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
+      if (pCI->G.p_key && pCI->G.p_expr) {
+        pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+      }
       return;
     }
 
@@ -631,6 +647,9 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
         pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
+        if (pCI->G.p_key && pCI->G.p_expr) {
+          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+        }
         return;
       }
     }
@@ -650,6 +669,9 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
         Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
         pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
+        if (pCI->G.p_key && pCI->G.p_expr) {
+          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+        }
       }
       return;
     }
