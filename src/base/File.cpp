@@ -907,7 +907,7 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
 
-  if (! nBytesRead) {
+  if (! nBytesRead && errno ) {
     vTrace("nReadBytes: error %lld %s\n"_Stz,errno,SysCall::azError(errno));
 
     char caTest[64000];
