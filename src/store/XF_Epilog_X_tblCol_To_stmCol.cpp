@@ -67,15 +67,15 @@ void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_expCol(void)
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
 
-    if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
-
-      if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
-        if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
-          m_pCI->vSnapFluxArriving();
-          continue;
-        }
-      }
-    }
+//    if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
+//
+//      if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
+//        if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
+//          m_pCI->vSnapFluxArriving();
+//          continue;
+//        }
+//      }
+//    }
     vTo_stmCol();
 
 //    m_pCI->vPrintBoard(__LINE__);
@@ -102,13 +102,23 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
     vDebugPoint();
   }
 
-  if (m_pCI->G.p_MainCard->bIsCard(CK_o_TOP)) {
+  if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG) && m_pCI->G.p_OP->i_Child() == 6) {
     //m_pCI->G.p_OP->vDump(__func__);
     vDebugPoint();
   }
 
-  if (m_pCI->G.p_OP->i_Child() == 40)
-    vDebugPoint();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
+
+    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
+      if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
+        m_pCI->vSnapFluxArriving();
+        return;
+      }
+    }
+  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

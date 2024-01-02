@@ -55,8 +55,12 @@ void Card_Bounds::vX_tblCol_To_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
-  while (xKid.bEach(CK_BOUND))
-    xKid.p_bound()->vX_tblCol_To_expCol(pCI);
+  while (xKid.bEach(CK_BOUND)) {
+    pCI->G.p_bound = xKid.p_bound();
+    pCI->G.p_bound->vX_tblCol_To_expCol(pCI);
+  }
+
+  pCI->G.p_bound = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

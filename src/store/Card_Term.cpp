@@ -573,16 +573,28 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  RASSERT(pCI->G.p_boolPred || pCI->G.p_bound || pCI->G.p_expr || pCI->G.p_hshCol || pCI->G.p_rpnCalc);
+
   Symbol* pSymbol_this = this->pSymbol();
-  if (! pSymbol_this->bIs_Tbl_Col()) {
 
-    if (pCI->G.p_key && pCI->G.p_expr) {
-      if (pSymbol_this->bHasFacet(SF_EXP_COL) && ! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
-        pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
-    }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ../<key>/<expr>|?|/<rpnCalc>/<term>|?|
 
-    return;
+  if (pCI->G.p_key && pCI->G.p_expr) {
+    Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
+
+    if (pSymbol_this->bHasFacet(SF_EXP_COL) && ! pSymbol_expr->bHasFacet(SF_EXP_COL))
+      pSymbol_expr->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+    if (pSymbol_this->bHasFacet(SF_KEY_COL) && ! pSymbol_expr->bHasFacet(SF_KEY_COL))
+      pSymbol_expr->vAppendFacet(SF_KEY_COL,pSymbol_this->szFacet(SF_KEY_COL));
+    if (pSymbol_this->bHasFacet(SF_TBL_COL) && ! pSymbol_expr->bHasFacet(SF_TBL_COL))
+      pSymbol_expr->vAppendFacet(SF_TBL_COL,pSymbol_this->szFacet(SF_TBL_COL));
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (! pSymbol_this->bIs_Tbl_Col())
+    return;
 
   Symbol xTblCol_sym;
   xTblCol_sym.vFacet(SF_TBL_COL,pSymbol_this->szSF_chrSeq(SF_TBL_COL));
@@ -648,7 +660,8 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
         pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
         if (pCI->G.p_key && pCI->G.p_expr) {
-          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+          if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
+            pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
         }
         return;
       }
