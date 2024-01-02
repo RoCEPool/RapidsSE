@@ -2345,7 +2345,7 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
 /*----------------------------------------------------------------------------*/
 /* pipe string out to prompt                                                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* AM::PROMPT::pToPromptOut(Stz* szStz)
+void* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
 
@@ -2353,14 +2353,11 @@ RowBuffer* AM::PROMPT::pToPromptOut(Stz* szStz)
   if (! pStreamDef)
     return nullptr;
 
-  RowBuffer* pRowBuffer = new RowBuffer(pStreamDef);
-	pRowBuffer->vBufferType(BT_PROMPTOUT);
+  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_PROMPTOUT);
 
-  Row* pRow = pRowBuffer->pAllotRow();
+  ASSERT(pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,szStz,C_VARGS_END));
 
-	pRowBuffer->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
-
-  return pRowBuffer;
+  return (void*)pPdsRowBuffer;
 }
 
 

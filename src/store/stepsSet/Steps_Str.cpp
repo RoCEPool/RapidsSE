@@ -645,7 +645,7 @@ void Step::vStrToPromptOut(void)
   
   m_pDataStack->vPopStr(sString,__func__);
 
-	RowBuffer* pPromptOut = AM::PROMPT::pToPromptOut(sString);
+	Pds* pPromptOut = _pPds(AM::PROMPT::pToPromptOut(sString));
   
   m_pDataStack->vPushPtr((Object*)pPromptOut);
 
