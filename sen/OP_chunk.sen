@@ -97,11 +97,11 @@
   while
     //counter1[] "counter1 %v" .printf
 
-    // create an rowBuffer operand
-    BT_SEEKOFFSETS TableDef[] RowBuffer[].new
-    RowBuffer[].chunkFile counter2[] + to counter2[]
+    // create a Pds operand
+    BT_SEEKOFFSETS TableDef[] Pds[].new
+    Pds[].chunkFile counter2[] + to counter2[]
 
-    RowBuffer[].pipeOut
+    Pds[].pipeOut
   repeat
 
   "<OP_chunk>" [job].tagSet@ tagSet.hasName if

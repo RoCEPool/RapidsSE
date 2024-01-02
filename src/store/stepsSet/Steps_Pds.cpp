@@ -13,6 +13,7 @@
 #include "MetricsHelper.hpp"
 #include "LockMetrics.hpp"
 #include "Grid.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -30,10 +31,12 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].bufferId"_Stz  ,          &Step::vPdsGetBufferIdAsAddr);
   vAddStep("Pds[].bufferType@"_Stz,         &Step::vPdsBufferTypeFetch);
   vAddStep("Pds[].bufferType!"_Stz,         &Step::vPdsBufferTypeStore);
+  vAddStep("Pds[].chunkFile"_Stz,         &Step::vPdsChunkFile);
   vAddStep("Pds[].delete"_Stz  ,            &Step::vPdsDelete);
   vAddStep("Pds[].firstRow"_Stz,            &Step::vPdsFirstRow);
   vAddStep("Pds[].isNull"_Stz  ,            &Step::vPdsIsNull);
   vAddStep("Pds[].new"_Stz,                 &Step::vPdsNew);
+  vAddStep("Pds[].rdCsvChunk"_Stz,                 &Step::vPdsRdCsvChunk);
   vAddStep("Pds[].set"_Stz  ,               &Step::vPdsSet);
   vAddStep("Pds[].tableDefName@"_Stz,    &Step::vPdsTableDefNameFetch);
   vAddStep("Pds[].writeCsv"_Stz,    &Step::vPdsWriteCsv);
@@ -290,6 +293,115 @@ void Step::vPdsBufferTypeStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Pds[].chunkFile -- Pds chunk file                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsChunkFile(void)
+{
+  ENTRY();
+
+  // get the seekOffsets
+  Pds* pSeekOffsets = _pPds(*m_pLogicUnit->m_xpPds);
+
+  i8 nRowsInSeekOffsets = 0;
+  Row* pSeekOffsetRow = nullptr;
+
+  // get the file we are chunking
+  File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
+
+  // allocate a work area for reading in last block of chunk
+  char* aLastBlock = (char*)MemLib::aMallocBlock(C_CHUNK_BLOCK);
+
+  i8 nSumBytes = 0;
+  i8 nChunkBytes = C_UNKNOWN;
+  i8 i_OfsOfLastBlockInChunk = C_UNKNOWN;
+
+  // get the file offset of the EOF
+  i8 i_EofOfs = m_pLogicUnit->m_iCounter1;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process chunks till eof or till we get C_MAX_SEEKOFFSETS
+
+  for (;;) {
+
+    // get the file offset of next chunk
+    i8 i_ChunkOfs = m_pLogicUnit->m_iCounter0;
+
+    RASSERT (i_ChunkOfs < i_EofOfs);
+
+    // allot row for seek offset info
+    pSeekOffsetRow = pSeekOffsets->pAllotRow();
+
+    // test for final chunk in file
+    if (i_ChunkOfs + C_CHUNK_SIZE >= i_EofOfs) {
+      // + final chunk in file
+
+      // compute the total chunk bytes
+      nChunkBytes = i_EofOfs - i_ChunkOfs;
+
+      // end of file
+      m_pLogicUnit->m_iCounter0 = i_EofOfs;
+    }
+    else {
+      // -not final chunk in file
+
+      // compute offset of last block in current chunk
+      i_OfsOfLastBlockInChunk = i_ChunkOfs + C_CHUNK_SIZE - C_CHUNK_BLOCK;
+
+      // read last block of current chunk
+      pFile->vSeek(i_OfsOfLastBlockInChunk);
+      i8 nBytesRead = pFile->nReadBytes(aLastBlock, C_CHUNK_BLOCK);
+
+      // compute address of last data byte of last block of current chunk
+      char *aLastDataByte = &aLastBlock[nBytesRead - 1];
+
+      // find the last end of line in last block of current chunk
+      char *aLastEol = aLastDataByte;
+      bool bFoundEol = StrLib::bBackward(&aLastEol, aLastBlock, '\n');
+      if (!bFoundEol)
+        bFoundEol = StrLib::bBackward(&aLastEol, aLastBlock, '\r');
+      RASSERT(bFoundEol);
+
+      // compute the number of bytes which belong to the last block in chunk
+      i8 nLastBlockBytes = nDifference(aLastEol, aLastBlock) + 1;
+
+      // compute the total chunk bytes
+      nChunkBytes = C_WSP_DATACHUNK - C_CHUNK_BLOCK + nLastBlockBytes;
+
+      // compute end location of chunk
+      i8 i_EndChunkLoc = i_ChunkOfs + nChunkBytes - 1;
+
+      // advance to start of next chunk
+      m_pLogicUnit->m_iCounter0 = i_EndChunkLoc + 1;
+    }
+
+    if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+      vTrace("<OP_Chunk>: i_ChunkOfs %lld nChunkBytes %lld\n"_Stz,
+             i_ChunkOfs,nChunkBytes);
+
+    pSeekOffsetRow->vColVal_int(0,i_ChunkOfs);
+    pSeekOffsetRow->vColVal_int(1,nChunkBytes);
+
+    nSumBytes += nChunkBytes;
+
+    if (++nRowsInSeekOffsets >= C_MAX_SEEKOFFSETS)
+      break;
+    if (m_pLogicUnit->m_iCounter0 >= i_EofOfs)
+      break;
+  }
+
+
+  // free the read block
+  MemLib::vFreeBlock(aLastBlock, C_CHUNK_BLOCK);
+
+  if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+    vTrace("<OP_Chunk>: nSumBytes %lld\n"_Stz,nSumBytes);
+
+  m_pDataStack->vPushInt(nSumBytes);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Pds[].delete -- operand delete                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsDelete(void)
@@ -343,6 +455,74 @@ void Step::vPdsNew(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   m_pLogicUnit->m_xpPds = new Pds(pStreamDef, false, eBufferType);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].rdCsvChunk -- reach a chunk from file given the Pds                  */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsRdCsvChunk(void)
+{
+  ENTRY();
+
+  ASSERT(*m_pLogicUnit->m_xpPds);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get file and info arguments
+
+  File* pCsvFile = _pFile(*m_pLogicUnit->m_xpFile0);
+  Stz* szFilePath = pCsvFile->sFilePath();
+
+  Row* pInfoRow = _pRow(m_pDataStack->pPopPtr(__func__));
+  i8 iOffset = pInfoRow->iColVal_int(0);
+  i8 nBytes = pInfoRow->iColVal_int(1);
+
+  //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create new csvBuffer and set csvMeta
+
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)6);
+#endif
+
+  CsvBuffer* pCsvBuffer = new CsvBuffer;
+
+  CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
+
+  pCsvMeta->vOriginNm(AM::NODE::szNodeNm());
+  pCsvMeta->vFilePath(szFilePath);
+  pCsvMeta->vOffset(iOffset);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read chunk into buffer
+
+  char* azInto = (char*)pCsvBuffer->ayDataArea();
+
+  pCsvFile->vSeek(iOffset);
+  pCsvBuffer->vTake(nBytes);
+  i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+
+//  if (nBytesRead != nBytes) {
+//    nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+//    ASSERT(nBytesRead == nBytes);
+//  }
+
+  ASSERT(nBytesRead == nBytes);
+  UNUSED(nBytesRead);
+
+  azInto[nBytes] = '\0';
+
+  //vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // return the CsvBuffer
+
+  m_pDataStack->vPushInt(nBytes);
+  m_pDataStack->vPushInt(iOffset);
+
+  m_pDataStack->vPushPtr(pCsvBuffer);
 
   EXIT();
 }

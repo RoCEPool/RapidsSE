@@ -34,11 +34,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                                      */
+/* on EV_D_PDSROWBUFFER ...                                                   */
 /*----------------------------------------------------------------------------*/
-: rdCsvChunk_RowBuffer \handler
+: rdCsvChunk_PdsRowBuffer \handler
 
-  // 0 EV_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+  // 0 EV_D_PDSROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   0 0 locals| iOffset nBytes |
 
@@ -49,13 +49,15 @@
     exit
   then
 
-  PipeIn[] to RowBuffer[]
+  PipeIn[] to Pds[]
   nullptr to PipeIn[]
 
-  RowBuffer[].firstRow to Row[]
+  PdsCursor[].new
+
   begin
-    Row[].isNull
-  not while
+      PdsCursor[].currIsNotNull
+  while
+    PdsCursor[].row to Row[]
 
     discern::rdCsvChunk not if
     
@@ -67,14 +69,13 @@
       // check for low memory
       /*
       attachMap::isLowMemory if
-        //RowBuffer[].delete
         EC_LOW_MEMORY op__execErr
         true
         exit
       then
       */
 
-      Row[].get RowBuffer[].rdCsvChunk
+      Row[].get Pds[].rdCsvChunk
         to CsvBuffer[]
         to iOffset
         to nBytes
@@ -86,13 +87,16 @@
       then
 
       CsvBuffer[].pipeOut
-      RowBuffer[].nextRow to Row[]
+      PdsCursor[].next
 
     then
 
   repeat
 
-  RowBuffer[].delete
+  PdsCursor[].delete
+  nullptr to PdsCursor[]
+
+  Pds[].delete
 
   true
 ;
@@ -180,7 +184,7 @@
 
   find: rdCsvChunk_Cleaning      EV_M_CLEANING     [op].handler!
   find: rdCsvChunk_Eos           EV_M_EOS          [op].handler!
-  find: rdCsvChunk_RowBuffer     EV_D_ROWBUFFER    [op].handler!
+  find: rdCsvChunk_PdsRowBuffer  EV_D_PDSROWBUFFER [op].handler!
   find: rdCsvChunk_StartMarker   EV_M_START        [op].handler!
 
   op__loop
