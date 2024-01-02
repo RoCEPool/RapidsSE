@@ -177,13 +177,13 @@ i8 Card_EXPRLIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg)
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg, eSF eFacet_ignore)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bMatches(pSymbol_arg))
+    if (xKid.p_expr()->pSymbol()->bMatches(pSymbol_arg,nullptr,eFacet_ignore))
       return xKid.p_expr();
   }
 
