@@ -79,10 +79,12 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_expCol_To_tblCol(void)
     if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
       if (m_pCI->Flux.m_pArriving)
         m_pCI->G.p_key->vX_expCol_To_tblCol(m_pCI);
+      m_pCI->G.p_key = nullptr;
     }
 
     if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
       m_pCI->G.p_filter->vX_expCol_To_tblCol(m_pCI);
+      m_pCI->G.p_filter = nullptr;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -92,6 +94,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_expCol_To_tblCol(void)
       if (m_pCI->Flux.m_pArriving)
         m_pCI->G.p_emit->vX_expCol_To_tblCol(m_pCI);
       m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+      m_pCI->G.p_emit = nullptr;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -100,6 +103,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_expCol_To_tblCol(void)
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
       if (m_pCI->Flux.m_pArriving)
         m_pCI->G.p_constraint->vX_expCol_To_tblCol(m_pCI);
+      m_pCI->G.p_constraint = nullptr;
     }
 
   }
