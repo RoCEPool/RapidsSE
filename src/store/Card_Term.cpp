@@ -787,9 +787,13 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
               CK_s_NEEDED == eAncestor  ||
               CK_STREAMKEY == eAncestor  ||
               CK_s_INJECTABLE == eAncestor);
-//      if (CK_s_KEY != eAncestor && CK_STREAMKEY != eAncestor && pCI->G.p_expr->bIsScalarCol()) {
+//      if (CK_s_KEY != eAncestor && CK_STREAMKEY != eAncestor && pCI->G.p_expr->bIsScalarCol()
+//           //&& ! pCI->bAncestorIncludes(CK_o_SORT) && ! pCI->bAncestorIncludes(CK_o_PROJECT)
+//           && (pSymbol_this->nFacets() > 1 || ! pSymbol_this->bHasFacet(SF_EXP_COL))
+//           ) {
+//        Symbol* pSymbol_this = pSymbol();
 //        Card_EXPRLIST* p_EXPRLIST = (Card_EXPRLIST*)p_ANCESTOR;
-//        if (p_EXPRLIST->pFind_expr_Matches(this->pSymbol()) != pCI->G.p_expr) {
+//        if (p_EXPRLIST->pFind_expr_Matches(this->pSymbol(),SF_EXP_COL) != pCI->G.p_expr) {
 //          pCI->vPrintBoard(__LINE__,true);
 //          p_EXPRLIST->vDump(__func__ );
 //          pCI->G.p_expr->vDump(__func__ );
