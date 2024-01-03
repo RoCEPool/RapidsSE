@@ -64,6 +64,8 @@ enum eLR // Logic Unit Registers
   /*  */ LR_PARCEL,
   /*  */ LR_PDS,
 	/*  */ LR_PDSCURSOR,
+  /*  */ LR_PDSERR,
+  /*  */ LR_PDSWARN,
   /*  */ LR_PATHIDENTIFIER,
   /*  */ LR_PIPEIN,
   /*  */ LR_PIPELINE,

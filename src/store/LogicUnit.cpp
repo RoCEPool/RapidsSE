@@ -135,6 +135,8 @@ LogicUnit::LogicUnit(void)
 ,         m_xpParcel(this,RF_REPAIR_DELETE,        Parcel::vRepair,         LR_PARCEL)
 ,            m_xpPds(this,RF_REPAIR_DELETE,        Pds::vRepair,               LR_PDS)
 ,      m_xpPdsCursor(this,RF_REPAIR_DELETE,        PdsCursor::vRepair,   LR_PDSCURSOR)
+,         m_xpPdsErr(this,RF_REPAIR_DELETE,        Pds::vRepair,               LR_PDSERR)
+,        m_xpPdsWarn(this,RF_REPAIR_DELETE,        Pds::vRepair,               LR_PDSWARN)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                         LR_PIPEIN)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                       LR_PIPELINE)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,   PlanOperand::vRepair,    LR_PLANOPERAND)
@@ -335,6 +337,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpParcel.bIsNull());
   RASSERT(m_xpPds.bIsNull());
   RASSERT(m_xpPdsCursor.bIsNull());
+  RASSERT(m_xpPdsErr.bIsNull());
+  RASSERT(m_xpPdsWarn.bIsNull());
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());

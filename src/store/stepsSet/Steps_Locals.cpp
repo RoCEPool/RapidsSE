@@ -347,6 +347,16 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("PdsErr[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PdsErr[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("PdsWarn[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PdsWarn[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("PipeIn[]"_Stz)) {
     pCurrentWord->vEncodeCall("PipeIn[].set"_Stz);
     EXIT();

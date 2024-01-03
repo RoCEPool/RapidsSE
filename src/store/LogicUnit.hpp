@@ -133,6 +133,8 @@ namespace STORE
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Pds,            CN_PDS           > m_xpPds;
     REG<PdsCursor,      CN_PDSCURSOR     > m_xpPdsCursor;
+    REG<Pds,            CN_PDS           > m_xpPdsErr;
+    REG<Pds,            CN_PDS           > m_xpPdsWarn;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;

@@ -42,34 +42,11 @@
 
 /*----------------------------------------------------------------------------*/
 /* handle BT_AFFECTEDROWS                                                     */
-/* Called when an affectedRows rowBuffer is received.                         */
+/* Called when an affectedRows pdsRowBuffer is received.                      */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_AffectedRows
 
   "adaptorWL_AffectedRows - BT_AFFECTEDROWS" .verbose
-
-  // get the rowBuffer
-  PipeIn[]\clear to RowBuffer[]
-
-  adaptorWL[].affectedRowCount
-
-  // now delete the RowBuffer[]
-  RowBuffer[].delete
-
-  // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
-;
-
-/*----------------------------------------------------------------------------*/
-/* handle BT_AFFECTEDROWS                                                     */
-/* Called when an affectedRows pdsRowBuffer is received.                      */
-/*----------------------------------------------------------------------------*/
-: adaptorWL_AffectedRowsPds
-
-  "adaptorWL_AffectedRowsPds - BT_AFFECTEDROWS" .verbose
 
   // get the pdsRowBuffer
   PipeIn[]\clear to Pds[]
@@ -95,15 +72,15 @@
 
   "adaptorWL_ExecErrors - BT_EXECERRORS" .verbose
 
-  PipeIn[] to RowBufferErr[]
+  PipeIn[] to PdsErr[]
   nullptr to PipeIn[]
 
-  "AdaptorWL: Processing error rowBuffer" .traceWlp
+  "AdaptorWL: Processing error PdsRowBuffer" .traceWlp
 
   adaptorWL[].executionError
 
-  // now delete the RowBufferErr[]
-  RowBufferErr[].delete
+  // now delete the PdsErr[]
+  PdsErr[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
   adaptorWL_sendAnyWLResponses not if
@@ -120,13 +97,13 @@
 
   "adaptorWL_CompileErrors - COMPILEERRORS" .verbose
 
-  PipeIn[] to RowBufferErr[]
+  PipeIn[] to PdsErr[]
   nullptr to PipeIn[]
 
   AdaptorWL[].compilerError
 
-  // now delete the RowBufferErr[]
-  RowBufferErr[].delete
+  // now delete the PdsErr[]
+  PdsErr[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
   adaptorWL_sendAnyWLResponses not if
@@ -399,7 +376,7 @@
 
   // handle AFFECTEDROWS
   PipeIn[].bufferType@ BT_AFFECTEDROWS == if
-    adaptorWL_affectedRowsPds
+    adaptorWL_affectedRows
     true
     exit
   then
@@ -444,27 +421,6 @@
 : adaptorWL_RowBuffer \handler
 
   "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .verbose
-
-  // handle AFFECTEDROWS
-  PipeIn[].bufferType@ BT_AFFECTEDROWS == if
-    adaptorWL_affectedRows
-    true
-    exit
-  then
-
-  // handle BT_COMPILEERRORS
-  PipeIn[].bufferType@ BT_COMPILEERRORS == if
-    adaptorWL_CompileErrors
-    true
-    exit
-  then
-
-  // handle EXECERRORS
-  PipeIn[].bufferType@ BT_EXECERRORS == if
-    adaptorWL_ExecErrors
-    true
-    exit
-  then
 
   // handle BT_WARNINGS
   PipeIn[].bufferType@ BT_WARNINGS == if

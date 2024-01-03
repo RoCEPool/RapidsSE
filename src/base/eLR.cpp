@@ -65,6 +65,8 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_PARCEL"_Stz,
   /*  */ "LR_PDS"_Stz,
 	/*  */ "LR_PDSCURSOR"_Stz,
+  /*  */ "LR_PDSERR"_Stz,
+  /*  */ "LR_PDSWARN"_Stz,
   /*  */ "LR_PATHIDENTIFIER"_Stz,
   /*  */ "LR_PIPEIN"_Stz,
   /*  */ "LR_PIPELINE"_Stz,

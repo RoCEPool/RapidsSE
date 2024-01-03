@@ -413,7 +413,7 @@ void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 /*----------------------------------------------------------------------------*/
 /* Update the state after an error is received from the SQL compiler          */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vCompilerError(RowBuffer* pRowBuffer)
+void AdaptorWL::vCompilerError(Pds* pPds)
 {
   ASSERT(m_pStmtCtx);
 
@@ -425,9 +425,9 @@ void AdaptorWL::vCompilerError(RowBuffer* pRowBuffer)
     return;
   }
 
-  ASSERT(pRowBuffer->eBufferType() == BT_COMPILEERRORS);
+  ASSERT(pPds->eBufferType() == BT_COMPILEERRORS);
 
-  Row *pInfoRow = pRowBuffer->pFirstRow();
+  Row *pInfoRow = pPds->pFirstRow();
 
   //Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
@@ -453,11 +453,11 @@ void AdaptorWL::vCompilerError(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* Update the state after an error is received from the execution engine      */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vExecutionError(RowBuffer* pRowBuffer)
+void AdaptorWL::vExecutionError(Pds* pPds)
 {
-  ASSERT(pRowBuffer->eBufferType() == BT_EXECERRORS);
+  ASSERT(pPds->eBufferType() == BT_EXECERRORS);
 
-  Row *pInfoRow = pRowBuffer->pFirstRow();
+  Row *pInfoRow = pPds->pFirstRow();
 
   //Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);

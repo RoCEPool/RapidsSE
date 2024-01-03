@@ -149,6 +149,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Pds();
   Step::vAddSteps_PayloadObj();
   Step::vAddSteps_PdsCursor();
+  Step::vAddSteps_PdsErr();
+  Step::vAddSteps_PdsWarn();
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();

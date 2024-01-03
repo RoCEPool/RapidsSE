@@ -102,11 +102,11 @@ void Step::vAdaptorWLCompilerError(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-	RowBuffer* pRowBuffer = * m_pLogicUnit->m_xpRowBufferErr;
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eBufferType() == BT_COMPILEERRORS);
+	Pds* pPds = * m_pLogicUnit->m_xpPdsErr;
+  ASSERT(pPds);
+  ASSERT(pPds->eBufferType() == BT_COMPILEERRORS);
 
-  pAdaptorWL->vCompilerError(pRowBuffer);
+  pAdaptorWL->vCompilerError(pPds);
 
   EXIT();
 }
@@ -153,11 +153,11 @@ void Step::vAdaptorWLExecutionError(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  RowBuffer* pRowBuffer = * m_pLogicUnit->m_xpRowBufferErr;
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eBufferType() == BT_EXECERRORS);
+  Pds* pPds = * m_pLogicUnit->m_xpPdsErr;
+  ASSERT(pPds);
+  ASSERT(pPds->eBufferType() == BT_EXECERRORS);
 
-  pAdaptorWL->vExecutionError(pRowBuffer);
+  pAdaptorWL->vExecutionError(pPds);
 
   EXIT();
 }

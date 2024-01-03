@@ -105,8 +105,8 @@ namespace STORE
     void vStatementSubmitted();
     void vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg);
     void vStatementSubmissionFailed(eEC eErrCode);
-    void vCompilerError(RowBuffer* pRowBuffer);
-    void vExecutionError(RowBuffer* pRowBuffer);
+    void vCompilerError(Pds* pPds);
+    void vExecutionError(Pds* pPds);
     void vExecutionWarning(RowBuffer* pRowBuffer);
     void vAffectedRowCount(RowBuffer* pRowBuffer);
     void vAffectedRowCountPds(Pds* pPdsRowBuffer);

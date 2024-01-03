@@ -1677,6 +1677,23 @@ void vJobIdLastJobIdFetch(void);
   void vPdsCursorSet(void);
   void vPdsCursorDelete(void);
 
+  // PdsErr
+  void vPdsErrAddExecError(void);
+  void vPdsErrDelete(void);
+  void vPdsErrBufferTypeFetch(void);
+	void vPdsErrGet(void);
+	void vPdsErrGetAndClear(void);
+  void vPdsErrGetBufferIdAsAddr(void);
+  void vPdsErrIsNull(void);
+  void vPdsErrIsNotNull(void);
+	void vPdsErrNew(void);
+  void vPdsErrRows(void);
+	void vPdsErrSet(void);
+
+  // PdsErr
+  void vPdsWarnDelete(void);
+  void vPdsWarnSet(void);
+
   // reg Pipein
   void vPipeinBide(void);
   void vPipeinBideNext(void);

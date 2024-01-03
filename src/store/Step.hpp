@@ -132,6 +132,8 @@ namespace STORE
     static void vAddSteps_Pds(void);
     static void vAddSteps_PayloadObj(void);
     static void vAddSteps_PdsCursor(void);
+    static void vAddSteps_PdsErr(void);
+    static void vAddSteps_PdsWarn(void);
     static void vAddSteps_Persistence(void);
 		static void vAddSteps_Pipein(void);
     static void vAddSteps_Pipeline(void);
