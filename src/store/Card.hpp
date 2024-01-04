@@ -335,6 +335,7 @@ namespace STORE
     Stz* szCoord(void);
     eCT  eCTVal(void);
 
+    void  vDeleteFacetRecursive(eSF eFacet);
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
     void  vDumpShort(const char* azFunc, Stz* szTitle);
     Card* pDupCard(void);
@@ -354,6 +355,7 @@ namespace STORE
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);
 
+    bool bHasFacetRecursive(eSF eFacet);
     bool bHasSubRecursive(Card* pSubCard);
 
     bool bIsCard(eCK eCard);

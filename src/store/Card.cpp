@@ -657,6 +657,20 @@ eCT Card::eCTVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given card a sub card of this card?                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vDeleteFacetRecursive(eSF eFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pSymbol()->vDeleteFacet(eFacet);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    xKid.pChild()->vDeleteFacetRecursive(eFacet);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
@@ -984,6 +998,24 @@ void Card::vFixedDepth(i8 iFixedDepth)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_iFixedDepth = iFixedDepth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given card a sub card of this card?                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasFacetRecursive(eSF eFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->bHasFacet(eFacet))
+    return true;
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (xKid.pChild()->bHasFacetRecursive(eFacet))
+      return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
