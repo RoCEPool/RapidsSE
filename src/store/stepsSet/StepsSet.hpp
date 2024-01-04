@@ -1657,6 +1657,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsNew(void);
   void vPdsRdCsvChunk(void);
   void vPdsSet(void);
+  void vPdsSetLglPtn(void);
   void vPdsTableDefNameFetch(void);
   void vPdsWriteCsv(void);
 

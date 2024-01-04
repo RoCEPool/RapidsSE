@@ -27,6 +27,80 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_D_PDSROWBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: namedInsert_PdsRowBuffer \handler
+
+  //"namedInsert_PdsRowBuffer" .
+
+  PipeIn[]\clear to Pds[]
+
+  //Pds[].bufferType@ BT_JOBOPERANDS == assert
+
+  Pds[].tableDefName@ locals| sTableDefName |
+
+  sTableDefName .
+
+  // locate the table
+  sTableDefName op__tableDef assert
+
+  // create the streamDef of this table
+  TableDef[] StreamDefOut[].newFromTable
+  StreamDefOut[] to StreamDefLft[]
+  nullptr to StreamDefOut[]
+
+  // set the lgl ptn of the Pds
+  0 Pds[].setLglPtn
+
+  // convert the Pds to a CrwBuffer
+  ToLglPtnCrw[].create
+  Pds[] ToLglPtnCrw[].convert
+
+  // delete the Pds
+  Pds[].delete
+
+  // insert the crwBuffers into the table
+
+  0 TableDef[].tablePtnGet to TablePtn[]
+
+  0 ToLglPtnCrw[].completed to CrwBuffer[]
+
+  begin
+    CrwBuffer[].isNull not
+  while
+    CrwBuffer[].appendClose
+    TablePtn[].grabWrite_msecLoop
+    CrwBuffer[]\clear TablePtn[].appendBuffer discard
+    TablePtn[].dropWrite
+
+    0 ToLglPtnCrw[].completed to CrwBuffer[]
+
+  repeat
+
+  0 ToLglPtnCrw[].dangling to CrwBuffer[]
+
+  begin
+    CrwBuffer[].isNull not
+  while
+    CrwBuffer[].appendClose
+    TablePtn[].grabWrite_msecLoop
+    CrwBuffer[]\clear TablePtn[].appendBuffer discard
+    TablePtn[].dropWrite
+
+    0 ToLglPtnCrw[].dangling to CrwBuffer[]
+
+  repeat
+
+  // cleanup
+  ToLglPtnCrw[].delete
+  StreamDefLft[].delete
+
+  //sTableDefName "$$$ OP_namedInsert %v" .printf
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : namedInsert_RowBuffer \handler
@@ -115,6 +189,7 @@
 
   op__topology
 
+  find: namedInsert_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
   find: namedInsert_RowBuffer   EV_D_ROWBUFFER   [op].handler!
 
   op__loop

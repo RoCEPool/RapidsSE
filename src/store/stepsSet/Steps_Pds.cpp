@@ -38,6 +38,7 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].new"_Stz,                 &Step::vPdsNew);
   vAddStep("Pds[].rdCsvChunk"_Stz,                 &Step::vPdsRdCsvChunk);
   vAddStep("Pds[].set"_Stz  ,               &Step::vPdsSet);
+  vAddStep("Pds[].setLglPtn"_Stz  ,               &Step::vPdsSetLglPtn);
   vAddStep("Pds[].tableDefName@"_Stz,    &Step::vPdsTableDefNameFetch);
   vAddStep("Pds[].writeCsv"_Stz,    &Step::vPdsWriteCsv);
 }
@@ -535,6 +536,20 @@ void Step::vPdsSet(void)
   ENTRY();
 
   m_pLogicUnit->m_xpPds = _pPds(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].setLglPtn -- set logical partition                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsSetLglPtn(void)
+{
+  ENTRY();
+
+  i8 iLglPtn = m_pDataStack->iPopInt(__func__);
+
+  m_pLogicUnit->m_xpPds->vLglPtn((LglPtn)iLglPtn);
 
   EXIT();
 }

@@ -123,14 +123,14 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get a working buffer from the tub
   
-  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+  Pds* pPds = _pPds(pTub->pWorkingBuffer());
 
-  if (! pRowBuffer) {
-    // new a row buffer
-		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBMETRICS);
+  if (! pPds) {
+    // new a Pds
+		pPds = new Pds(pStreamDef, false, BT_JOBMETRICS);
 
-    // add the row buffer to the tub
-    pTub->vAddBuffer(pRowBuffer);
+    // add the Pds to the tub
+    pTub->vAddBuffer(pPds);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -159,7 +159,7 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
                        = pJobMetrics->pGetOpMetrics(d_MetricsCursor);
 
           L_RETRY:
-          Row* pRow = pRowBuffer->pAllotRow
+          Row* pRow = pPds->pAllotRow
                       (
                         C_VARGS_BEGIN
                        
@@ -187,12 +187,14 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
                       );
           
           if (! pRow) {
-            pRowBuffer = new RowBuffer(pStreamDef, BT_JOBMETRICS);
+            pPds = new Pds(pStreamDef, false, BT_JOBMETRICS);
 
-            // add the row buffer to the tub
-            pTub->vAddBuffer(pRowBuffer);
+            // add the Pds to the tub
+            pTub->vAddBuffer(pPds);
             goto L_RETRY;
           }
+
+          RASSERT(pRow);
 
         } // while opMetrics
         
@@ -230,14 +232,14 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
   StreamDef* pStreamDef = pJobNetDissectTable->pStreamDef();
 
   // get a working buffer from the tub
-	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+	Pds* pPds = _pPds(pTub->pWorkingBuffer());
 
-  if (! pRowBuffer) {
-    // new a row buffer
-    pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETDISSECT);
+  if (! pPds) {
+    // new a Pds
+    pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
 
-    // add the row buffer to the tub
-    pTub->vAddBuffer(pRowBuffer);
+    // add the Pds to the tub
+    pTub->vAddBuffer(pPds);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -264,7 +266,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
         continue;
       
       L_RETRY_1a:
-      Row* pRow = pRowBuffer->pAllotRow
+      Row* pRow = pPds->pAllotRow
                   (
                     C_VARGS_BEGIN
                    
@@ -286,12 +288,13 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                   );
       
       if (! pRow) {
-				pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETDISSECT);
+				pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
 
-        // add the row buffer to the tub
-        pTub->vAddBuffer(pRowBuffer);
+        // add the Pds to the tub
+        pTub->vAddBuffer(pPds);
         goto L_RETRY_1a;
       }
+      RASSERT(pRow);
     }
     
     
@@ -301,7 +304,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
         continue;
       
       L_RETRY_1b:
-      Row* pRow = pRowBuffer->pAllotRow
+      Row* pRow = pPds->pAllotRow
                   (
                     C_VARGS_BEGIN
                    
@@ -323,13 +326,13 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                   );
       
       if (! pRow) {
-				pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETDISSECT);
+				pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
 
-        // add the row buffer to the tub
-        pTub->vAddBuffer(pRowBuffer);
+        // add the Pds to the tub
+        pTub->vAddBuffer(pPds);
         goto L_RETRY_1b;
       }
-
+      RASSERT(pRow);
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- --
@@ -341,7 +344,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
         continue;
       
       L_RETRY_2a:
-      Row* pRow = pRowBuffer->pAllotRow
+      Row* pRow = pPds->pAllotRow
                   (
                     C_VARGS_BEGIN
                    
@@ -363,12 +366,13 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                   );
       
       if (! pRow) {
-				pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETDISSECT);
+				pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
 
-        // add the row buffer to the tub
-        pTub->vAddBuffer(pRowBuffer);
+        // add the Pds to the tub
+        pTub->vAddBuffer(pPds);
         goto L_RETRY_2a;
       }
+      RASSERT(pRow);
     }
     
     
@@ -378,7 +382,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
         continue;
       
       L_RETRY_2b:
-      Row* pRow = pRowBuffer->pAllotRow
+      Row* pRow = pPds->pAllotRow
                   (
                     C_VARGS_BEGIN
                    
@@ -400,12 +404,13 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                   );
       
       if (! pRow) {
-				pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETDISSECT);
+				pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
 
-        // add the row buffer to the tub
-        pTub->vAddBuffer(pRowBuffer);
+        // add the Pds to the tub
+        pTub->vAddBuffer(pPds);
         goto L_RETRY_2b;
       }
+      RASSERT(pRow);
 
     }
 
@@ -438,14 +443,14 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
   StreamDef* pStreamDef = pJobNetworkTable->pStreamDef();
 
   // get a working buffer from the tub
-	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+	Pds* pPds = _pPds(pTub->pWorkingBuffer());
 
-  if (! pRowBuffer) {
-    // new a row buffer
-		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETWORK);
+  if (! pPds) {
+    // new a Pds
+		pPds = new Pds(pStreamDef, false, BT_JOBNETWORK);
 
-    // add the row buffer to the tub
-    pTub->vAddBuffer(pRowBuffer);
+    // add the Pds to the tub
+    pTub->vAddBuffer(pPds);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -462,7 +467,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
     pRcvSkt =  pNode->pRecvSocket();
 
     L_HACK:
-    Row* pRow = pRowBuffer->pAllotRow
+    Row* pRow = pPds->pAllotRow
                 (
                   C_VARGS_BEGIN
                  
@@ -488,12 +493,13 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
                 );
     
     if (! pRow) {
-			pRowBuffer = new RowBuffer(pStreamDef, BT_JOBNETWORK);
+			pPds = new Pds(pStreamDef, false, BT_JOBNETWORK);
 
-      // add the row buffer to the tub
-      pTub->vAddBuffer(pRowBuffer);
+      // add the Pds to the tub
+      pTub->vAddBuffer(pPds);
       goto L_HACK;
     }
+    RASSERT(pRow);
 
   }
   
@@ -524,14 +530,14 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
   StreamDef* pStreamDef = pJobOperandsTable->pStreamDef();
 
   // get a working buffer from the tub
-	RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+	Pds* pPds = _pPds(pTub->pWorkingBuffer());
 
-  if (! pRowBuffer) {
-    // new a row buffer
-		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERANDS);
+  if (! pPds) {
+    // new a Pds
+		pPds = new Pds(pStreamDef, false, BT_JOBOPERANDS);
 
-    // add the row buffer to the tub
-    pTub->vAddBuffer(pRowBuffer);
+    // add the Pds to the tub
+    pTub->vAddBuffer(pPds);
   }
 
   Node*   pThisNode = MY::pNode();
@@ -570,7 +576,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
             continue;
           
           L_HACK:
-          Row* pRow = pRowBuffer->pAllotRow
+          Row* pRow = pPds->pAllotRow
                       (
                         C_VARGS_BEGIN
                        
@@ -600,12 +606,13 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
                       );
           
           if (! pRow) {
-            pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERANDS);
+            pPds = new Pds(pStreamDef, false, BT_JOBOPERANDS);
 
-            // add the row buffer to the tub
-            pTub->vAddBuffer(pRowBuffer);
+            // add the Pds to the tub
+            pTub->vAddBuffer(pPds);
             goto L_HACK;
           }
+          RASSERT(pRow);
 
         } // operand
       } // op
@@ -643,14 +650,14 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
   StreamDef* pStreamDef = pJobOperatorsTable->pStreamDef();
 
   // get a working buffer from the tub
-  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+  Pds* pPds = _pPds(pTub->pWorkingBuffer());
 
-  if (! pRowBuffer) {
-    // new a row buffer
-		pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERATORS);
+  if (! pPds) {
+    // new a Pds
+		pPds = new Pds(pStreamDef, false, BT_JOBOPERATORS);
 
-    // add the row buffer to the tub
-    pTub->vAddBuffer(pRowBuffer);
+    // add the Pds to the tub
+    pTub->vAddBuffer(pPds);
   }
   
   Node*   pThisNode = MY::pNode();
@@ -706,18 +713,9 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
         s32 sBytesWrite;
         MagLib::vByteMag(pStats->m_nBytesWrite, sBytesWrite);
 
-        // is their space in the buffer ?
-        if (pRowBuffer->nFreeBytes() < pRowBuffer->nRowProperBytes() + 1) {
-
-          // new a row buffer
-					pRowBuffer = new RowBuffer(pStreamDef, BT_JOBOPERATORS);
-
-          // add the row buffer to the tub
-          pTub->vAddBuffer(pRowBuffer);
-        }
-
-        // allot a row for the stats in the row buffer
-        Row* pRow = pRowBuffer->pAllotRow
+        // allot a row for the stats in the Pds
+        L_RETRY_3a:
+        Row* pRow = pPds->pAllotRow
                     (
                       C_VARGS_BEGIN
                                             
@@ -745,20 +743,19 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
                     ,sBytesAlloc.azChar()
                     ,pStats->m_nFrees
                     ,sBytesFree.azChar()
-                   /*
-                   ,sMaxBytes.azChar()
-                   ,pStats->m_nReads
-                   ,sBytesRead.azChar()
-                   ,pStats->m_nWrites
-                   ,sBytesWrite.azChar()
-                   ,pStats->m_nParcelSends
-                   ,pStats->m_nObjectsSent
-                   ,pStats->m_nParcelRecvs
-                   ,pStats->m_nObjectsRecv
-                   */
                      ,C_VARGS_END
                     );
-        
+        // is their space in the buffer ?
+        if (! pRow) {
+
+          // new a Pds
+          pPds = new Pds(pStreamDef, false, BT_JOBOPERATORS);
+
+          // add the Pds to the tub
+          pTub->vAddBuffer(pPds);
+          goto L_RETRY_3a;
+        }
+
         RASSERT(pRow);
       }
     }

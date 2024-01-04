@@ -741,10 +741,12 @@
 /*----------------------------------------------------------------------------*/
 : Tub[].pipeOutCompleted
 
+  Tub[].completed to DataBuffer[]
   begin
-    Tub[].completed dup to DataBuffer[]
+    DataBuffer[].isNull not
   while
     DataBuffer[].pipeOut
+    Tub[].completed to DataBuffer[]
   repeat
 ;
 
@@ -753,16 +755,20 @@
 /*----------------------------------------------------------------------------*/
 : Tub[].pipeOutRemainder
 
+  Tub[].completed to DataBuffer[]
   begin
-    Tub[].completed dup to DataBuffer[]
+    DataBuffer[].isNull not
   while
     DataBuffer[].pipeOut
+    Tub[].completed to DataBuffer[]
   repeat
 
+  Tub[].dangling to DataBuffer[]
   begin
-    Tub[].dangling dup to DataBuffer[]
+    DataBuffer[].isNull not
   while
     DataBuffer[].pipeOut
+    Tub[].dangling to DataBuffer[]
   repeat
 ;
 
@@ -771,16 +777,20 @@
 /*----------------------------------------------------------------------------*/
 : Tub[].pipeToJob params| tPipelineJobId |
 
+  Tub[].completed to DataBuffer[]
   begin
-    Tub[].completed dup to DataBuffer[]
+    DataBuffer[].isNull not
   while
-    DataBuffer[] tPipelineJobId jobId::pipeToOp0 assert
+    DataBuffer[]\clear tPipelineJobId jobId::pipeToOp0 assert
+    Tub[].completed to DataBuffer[]
   repeat
 
+  Tub[].dangling to DataBuffer[]
   begin
-    Tub[].dangling dup to DataBuffer[]
+    DataBuffer[].isNull not
   while
-    DataBuffer[] tPipelineJobId jobId::pipeToOp0 assert
+    DataBuffer[]\clear tPipelineJobId jobId::pipeToOp0 assert
+    Tub[].dangling to DataBuffer[]
   repeat
 ;
 
@@ -789,16 +799,20 @@
 /*----------------------------------------------------------------------------*/
 : Tub[].deleteAllBuffers
 
+  Tub[].completed to DataBuffer[]
   begin
-    Tub[].completed dup to DataBuffer[]
+    DataBuffer[].isNull not
   while
     DataBuffer[].delete
+    Tub[].completed to DataBuffer[]
   repeat
 
+  Tub[].dangling to DataBuffer[]
   begin
-    Tub[].dangling dup to DataBuffer[]
+    DataBuffer[].isNull not
   while
     DataBuffer[].delete
+    Tub[].dangling to DataBuffer[]
   repeat
 ;
 
