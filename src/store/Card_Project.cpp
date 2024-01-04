@@ -84,13 +84,13 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     if (pCI->G.p_expr->pSymbol()->bMatches(SF_EXP_COL, "$1"_Stz))
       continue;
 
-   // pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__func__,__LINE__);
 
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
 
     p_emitted_unproject->vAppendChild(p_expr_simple);
 
-   // pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__func__,__LINE__);
 
     vDebugPoint();
   }
@@ -189,7 +189,7 @@ void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 
   pCI->Early.m_pOP_leaf = this;
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   vDebugPoint();
 }
@@ -224,7 +224,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   vDebugPoint();
 }
@@ -311,7 +311,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
  // pCI->vRenumberCards();
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -326,7 +326,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
    pCI->G.p_OP->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

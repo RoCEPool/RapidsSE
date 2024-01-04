@@ -623,7 +623,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
 #ifdef Z_MATCHES
 //    if (pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym) != p_expr_scalar_a) {
-//      pCI->vPrintBoard(__LINE__);
+//      pCI->vPrintBoard(__func__,__LINE__);
 //      pCI->X.m_pExprList_a->vDump(__func__ );
 //      this->vDump(__func__ );
 //      NEVER_REACH
@@ -731,7 +731,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 //  if (pCI->bAncestorIncludes(CK_o_PROJECT)) {
 //    if (pSymbol()->bHasFacet(SF_KEY_COL)) {
-//      pCI->vPrintBoard(__LINE__,true);
+//      pCI->vPrintBoard(__func__,__LINE__,true);
 //      this->vDump(__func__ );
 //      NEVER_REACH
 //    }
@@ -741,7 +741,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (m_xSymbol.bIs_Exp_Col() ) {
       if (! m_xSymbol.bHasType()) {
          vDump(__func__);
-         pCI->vPrintBoard(__LINE__,true);
+         pCI->vPrintBoard(__func__,__LINE__,true);
          vValidationFailed("Type Missing : %p"_Stz,this);
       }
     }
@@ -773,7 +773,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL]) ) {
     if (m_xSymbol.bIs_Exp_Col() && ! pCI->G.p_call) {
       if (! m_xSymbol.bHasType() && ! m_xSymbol.bHasFacet(SF_SQY_PRM)) {
-        pCI->vPrintBoard(__LINE__,true);
+        pCI->vPrintBoard(__func__,__LINE__,true);
         vDump(__func__);
         vValidationFailed("Type Missing : %p"_Stz,this);
       }
@@ -802,7 +802,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 //           ) {
 //        Card_EXPRLIST* p_EXPRLIST = (Card_EXPRLIST*)p_ANCESTOR;
 //        if (p_EXPRLIST->pFind_expr_Matches(this->pSymbol(),SF_EXP_COL) != pCI->G.p_expr) {
-//          pCI->vPrintBoard(__LINE__,true);
+//          pCI->vPrintBoard(__func__,__LINE__,true);
 //          p_EXPRLIST->vDump(__func__ );
 //          pCI->G.p_expr->vDump(__func__ );
 //          NEVER_REACH

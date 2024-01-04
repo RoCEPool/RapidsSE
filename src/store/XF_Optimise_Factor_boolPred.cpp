@@ -228,7 +228,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
       break;
   }
 
-  //m_pCI->vPrintBoard(__LINE__);
+  //m_pCI->vPrintBoard(__func__,__LINE__);
 
   if (!bFoundFactor)
     return;
@@ -265,7 +265,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
     }
   }
 
-  //m_pCI->vPrintBoard(__LINE__);
+  //m_pCI->vPrintBoard(__func__,__LINE__);
 
 
 
@@ -277,7 +277,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
 
   p_boolPred->vAppendChild(p_andConj_new);
 
-  //m_pCI->vPrintBoard(__LINE__);
+  //m_pCI->vPrintBoard(__func__,__LINE__);
 
   vDebugPoint();
 }

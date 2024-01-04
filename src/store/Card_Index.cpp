@@ -82,7 +82,7 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
       xCI_bounds.pChild()->vMark1(MARK_AT);
     }
 
-   // pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__func__,__LINE__);
     nCulled += p_bounds->nCullBound(MARK_AT);
 
   }

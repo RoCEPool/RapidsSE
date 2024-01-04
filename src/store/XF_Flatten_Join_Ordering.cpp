@@ -195,14 +195,14 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   m_pCI->G.p_tableList = Card_TableList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppendChild(m_pCI->G.p_tableList);
  // m_pCI->vRenumberCards();
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   // 2) Extract joinPredList from pipeline
 
   m_pCI->G.p_joinPredList = Card_JoinPredList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppendChild(m_pCI->G.p_joinPredList);
  // m_pCI->vRenumberCards();
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   if (! m_pCI->G.p_joinPredList->nChildCards()) {
     s4K sTableList;
@@ -217,7 +217,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   m_pCI->G.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppendChild(m_pCI->G.p_filtPredList);
  // m_pCI->vRenumberCards();
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4) Compute all possible join permutations
@@ -230,7 +230,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   while (xKid.bEach())
     m_pCI->G.pDeck->vAppendChild(xKid.p_streamPer()->pDupCardRecursive());
  // m_pCI->vRenumberCards();
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   // 5) Remove invalid permutations
 
@@ -242,7 +242,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   while (xKid.bEach())
     m_pCI->G.pDeck->vAppendChild(xKid.p_streamPer()->pDupCardRecursive());
  // m_pCI->vRenumberCards();
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   if (! p_streamPrmAll->nChildCards()) {
     s4K sTableList;
@@ -262,7 +262,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   while (xKid.bEach())
     m_pCI->G.pDeck->vAppendChild(xKid.p_streamPer()->pDupCardRecursive());
  // m_pCI->vRenumberCards();
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   // get the join permutations strings
 
@@ -321,7 +321,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
     m_pCI->G.pDeck->vAppendChild((new Card_Section) ->SYM(SF_NOTE,"Picked Ordering"_Stz));
   m_pCI->G.pDeck->vAppendChild(p_joinOrdering->pDupCardRecursive());
  // m_pCI->vRenumberCards();
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 7) get the final join ordering string
@@ -353,9 +353,9 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
   p_joinOrdering->vReorder(m_pCI->G.pDeck);
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
 
   DELETE_CARD(p_joinOrdering);
@@ -364,13 +364,13 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
-  m_pCI->vPrintBoard(__LINE__);
+  m_pCI->vPrintBoard(__func__,__LINE__);
 
   //m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 
- // m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   m_pCI->vEndTransform(__LINE__);
 }

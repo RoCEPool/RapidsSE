@@ -176,7 +176,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol)) {
 #ifdef Z_MATCHES
           if (pCI->G.p_needed->pFind_expr_Matches(pSymbol_tblCol) != pCI->G.p_needed->pFind_expr_Via_term0(pSymbol_tblCol)) {
-            pCI->vPrintBoard(__LINE__,true);
+            pCI->vPrintBoard(__func__,__LINE__,true);
             p_expr_key->vDump(__func__);
             NEVER_REACH
           }
@@ -202,7 +202,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol())) {
 #ifdef Z_MATCHES
 //          if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()) != p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol())) {
-//            pCI->vPrintBoard(__LINE__,true);
+//            pCI->vPrintBoard(__func__,__LINE__,true);
 //            xCI_rpnCalc.p_term()->vDump(__func__);
 //            NEVER_REACH
 //          }
@@ -506,7 +506,7 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
     Card_Expr *p_expr_prior = this->pFind_expr_Via_term0(p_term->pSymbol());
 #ifdef Z_MATCHES
     if (p_expr_prior != pFind_expr_Matches(p_term->pSymbol())) {
-      //pCI->vPrintBoard(__LINE__,true);
+      //pCI->vPrintBoard(__func__,__LINE__,true);
       p_term->vDump(__func__);
       NEVER_REACH
     }
@@ -539,7 +539,7 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(CK_s_STREAM == pParent->eCard());
 
   if (! pSub_expr())
-    pCI->vPrintBoard(__LINE__,true);
+    pCI->vPrintBoard(__func__,__LINE__,true);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
   vValidate_notHave(CK_s_KEY, CK_NONE);

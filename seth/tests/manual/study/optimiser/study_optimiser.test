@@ -19,8 +19,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-LOG 'operator.test';
-INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
+INCLUDE 'r_FOLD_74_H_A_NC_ro.test';
 
 
 INCLUDE 'select_star.test';

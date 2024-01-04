@@ -182,7 +182,7 @@ namespace STORE
     void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
-    void vPrintBoard(i8 iLineNo=C_UNKNOWN, bool bForce=false);
+    void vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
     void G_vPushBoard(Board* pBoard);
     void G_vPushBoard(Stz* szBoardNm);

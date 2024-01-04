@@ -68,7 +68,7 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 
    pCI->Flux.m_pArriving = pSub_emit();
 
-  // pCI->vPrintBoard();
+  // pCI->vPrintBoard(__func__,__LINE__);
 
    vDebugPoint();
 }

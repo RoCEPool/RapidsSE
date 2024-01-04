@@ -81,7 +81,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard();
+   // pCI->vPrintBoard(__func__,__LINE__);
     return;
 
   }
@@ -101,19 +101,19 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vMainResynch();
 
  // pCI->vRenumberCards();
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   pCI->G.p_OP = pCI->G.p_keyExists;
   pCI->G.p_keyExists->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

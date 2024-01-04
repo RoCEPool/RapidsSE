@@ -142,7 +142,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     p_expr_resolved = pCI->G.p_injectable->pFind_expr_Via_term0(pSymbol);
 #ifdef Z_MATCHES
     if (p_expr_resolved != pCI->G.p_injectable->pFind_expr_Matches(pSymbol)) {
-      pCI->vPrintBoard(__LINE__,true);
+      pCI->vPrintBoard(__func__,__LINE__,true);
       p_term->vDump(__func__);
       NEVER_REACH
     }

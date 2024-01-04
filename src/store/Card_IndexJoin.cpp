@@ -87,7 +87,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard();
+   // pCI->vPrintBoard(__func__,__LINE__);
     return;
 
 
@@ -106,20 +106,20 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vMainResynch();
 
  // pCI->vRenumberCards();
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 //  pCI->vRenumberCards();
-//  pCI->vPrintBoard();
+//  pCI->vPrintBoard(__func__,__LINE__);
 
   pCI->G.p_table = pSub_table();
   pCI->G.p_OP = pCI->G.p_indexJoin;
   pCI->G.p_indexJoin->vRecreate_emit(pCI,true);
 
-  //pCI->vPrintBoard(__LINE__,true);
+  //pCI->vPrintBoard(__func__,__LINE__,true);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
@@ -228,7 +228,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   pCI->G_vMainResynch();
 
   pCI->vRenumberCards();
-  pCI->vPrintBoard();
+  pCI->vPrintBoard(__func__,__LINE__);
 
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -239,7 +239,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_indexJoin->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

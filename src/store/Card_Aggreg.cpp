@@ -92,7 +92,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vMainResynch();
 
  // pCI->vRenumberCards();
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -103,7 +103,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_aggreg->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

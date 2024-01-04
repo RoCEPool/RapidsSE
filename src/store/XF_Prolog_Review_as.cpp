@@ -87,7 +87,7 @@ void XF_Prolog_Review_as::vReview_as(void)
         break;
     }
 
-   // m_pCI->vPrintBoard(__LINE__);
+   // m_pCI->vPrintBoard(__func__,__LINE__);
   }
 
   m_pCI->vEndTransform(__LINE__);

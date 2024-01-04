@@ -764,7 +764,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMIT]) ) {
     if (pCI->pAncestorFind(CK_t_EMIT)) {
       if (!m_xSymbol.bHasType()) {
-        pCI->vPrintBoard(__LINE__,true);
+        pCI->vPrintBoard(__func__,__LINE__,true);
         vDump(__func__);
         vValidationFailed("Type Missing : %p"_Stz, this);
       }

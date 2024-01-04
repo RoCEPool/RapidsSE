@@ -1185,7 +1185,7 @@ void CardIter::vEndTransform(i8 iLineNo)
       xDeck.pChild()->vEnsureLast(CK_s_NEEDED);
     }
 
-    vPrintBoard(iLineNo);
+    vPrintBoard(__func__,iLineNo);
 
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
       ShortForm *pShortForm = new ShortForm(this);
@@ -2017,10 +2017,9 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
+void CardIter::vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-  UNUSED(iLineNo);
 
   if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE) && ! bForce)
     return;
@@ -2050,10 +2049,7 @@ void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
 
 
   s256 sWhere;
-  if (C_UNKNOWN == iLineNo)
-    sWhere.vCatSprint("%s :: %s"_Stz, aXF[m_pBench->eXform()],szXfunc());
-  else
-    sWhere.vCatSprint("%s :: %s:%lld"_Stz, aXF[m_pBench->eXform()], szXfunc(), iLineNo);
+    sWhere.vCatSprint("%s :: %s:%lld"_Stz, aXF[m_pBench->eXform()], azFunc, iLineNo);
 
   vTrace("%s\n"_Stz, sWhere.azChar());
 }
