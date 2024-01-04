@@ -1711,7 +1711,7 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
   else
   if (CN_PDS == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
     Pds *pPdsRowBuffer = _pPds(pOperand);
-    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
+    vTrace("[%6s %10s]-Pipein  : Pds (%lld rows)\n"_Stz
         ,pStage()->szStageNm()
         ,szOpNm()
         ,pPdsRowBuffer->nItems()

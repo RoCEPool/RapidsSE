@@ -1,3 +1,4 @@
+
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
@@ -6,18 +7,28 @@ create table nation (
 );
 
 
+load nation "../DATA/TPCH/nation.tbl" ;
+
+SELECT AVG(INTERVAL '9' HOUR) FROM nation where n_nationkey = 2;
 
 
-EXPLAIN STAGE parser-nameValidate, setOpValidate-explainPlan SELECT n_nationkey FROM nation;
+//SELECT CAST(1 + 0  AS INTERVAL YEAR) FROM nation where n_nationkey = 2;
 
-EXPLAIN STAGE * SELECT n_nationkey FROM nation;
-EXPLAIN STAGE ALL SELECT n_nationkey FROM nation;
+_lineitem;
+load lineitem "<tpch_dir>/lineitem.tbl";
 
-EXPLAIN STAGE 1-2, 4-5, 6-7, 8-9, 10-11 SELECT n_nationkey FROM nation;
-
-EXPLAIN STAGE 1-1000 SELECT n_nationkey FROM nation;
-
-EXPLAIN STAGE 3-1 SELECT n_nationkey FROM nation;
+/jobMetrics select l_returnflag, l_linestatus, sum(l_extendedPrice) from lineitem group by l_returnflag, l_linestatus;
 
 
+create table tsp (
+tsp_key    INTEGER     NOT NULL,
+tsp_tsp    TIMESTAMP   NOT NULL
+);
+
+create index idx on tsp (tsp_key);
+
+
+Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT = "YYYY-DD.MM" ;
+
+Load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv";
 
