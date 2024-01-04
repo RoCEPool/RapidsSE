@@ -1025,13 +1025,11 @@ bool Card::bHasSubRecursive(Card* pSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (this == pSubCard)
+    return true;
+
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pTestCard = xKid.pChild();
-
-    if (pTestCard == pSubCard)
-      return true;
-
-    if (pTestCard->bHasSubRecursive(pSubCard))
+     if (xKid.pChild()->bHasSubRecursive(pSubCard))
       return true;
   }
 
