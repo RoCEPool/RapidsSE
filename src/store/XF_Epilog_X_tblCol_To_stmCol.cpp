@@ -109,15 +109,15 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
-
-    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
-      if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
-        m_pCI->vSnapFluxArriving();
-        return;
-      }
-    }
-  }
+//  if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
+//
+//    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
+//      if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
+//        m_pCI->vSnapFluxArriving();
+//        return;
+//      }
+//    }
+//  }
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

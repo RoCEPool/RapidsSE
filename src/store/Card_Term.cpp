@@ -729,6 +729,14 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_RPNCALC,
                                      CK_NONE);
 
+//  if (pCI->bAncestorIncludes(CK_o_PROJECT)) {
+//    if (pSymbol()->bHasFacet(SF_KEY_COL)) {
+//      pCI->vPrintBoard(__LINE__,true);
+//      this->vDump(__func__ );
+//      NEVER_REACH
+//    }
+//  }
+
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
     if (m_xSymbol.bIs_Exp_Col() ) {
       if (! m_xSymbol.bHasType()) {
@@ -787,11 +795,11 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
               CK_s_NEEDED == eAncestor  ||
               CK_STREAMKEY == eAncestor  ||
               CK_s_INJECTABLE == eAncestor);
+//      Symbol* pSymbol_this = pSymbol();
 //      if (CK_s_KEY != eAncestor && CK_STREAMKEY != eAncestor && pCI->G.p_expr->bIsScalarCol()
 //           //&& ! pCI->bAncestorIncludes(CK_o_SORT) && ! pCI->bAncestorIncludes(CK_o_PROJECT)
 //           && (pSymbol_this->nFacets() > 1 || ! pSymbol_this->bHasFacet(SF_EXP_COL))
 //           ) {
-//        Symbol* pSymbol_this = pSymbol();
 //        Card_EXPRLIST* p_EXPRLIST = (Card_EXPRLIST*)p_ANCESTOR;
 //        if (p_EXPRLIST->pFind_expr_Matches(this->pSymbol(),SF_EXP_COL) != pCI->G.p_expr) {
 //          pCI->vPrintBoard(__LINE__,true);
