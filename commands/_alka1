@@ -1,44 +1,23 @@
 /*============================================================================*/
 /* _alka1                                                                     */
 /*============================================================================*/
-
 _nation;
-load nation "../DATA/TPCH/nation.tbl";
+load nation "../TPCH/SF_0001/nation.tbl";
 
+select (0.3*3)+0.1 = 1.0e0 from nation where n_nationkey = 1;
+select (0.3*3)+0.1 >= 1.0e0 from nation where n_nationkey = 1;
+select (0.3*3)+0.1 > 1.0e0 from nation where n_nationkey = 1;
 
-/pipeline_def
-/weaved
-/transliterated
+select (0.3*3)+0.1 <= 1.0e0 from nation where n_nationkey = 1;
+select (0.3*3)+0.1 < 1.0e0 from nation where n_nationkey = 1;
+
+create table orderby3(a float);
+load orderby3 "../DATA/y.csv";
+
 /keepCodeFile
-/pipelineName="XYZ"
-SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from nation where n_nationkey = 2;
+select * from orderby3 order by a;
+//issue：The sorting result of the float column is incorrect，-3.346459668e-306 should be larger than -3.345078968e-02
 
-/*
-create table interval1(a timestamp);
-load interval1 "../DATA/QA/interval/interval1.csv";
+/useCodeFile = "_unnamed__NODE1_16" select * from orderby3;
 
-/weaved
-/transliterated
-/pipeline_def
-SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-01-19 23:58:19.123' FROM interval1;
-
-explain stage transliterate
-SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
-
-/weaved
-SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
-
-
-explain stage transliterate
-SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
-
-/weaved
-SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
-
-explain stage transliterate
-SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
-
-/weaved
-SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
-
-*/
+select -3.346459668e-306 >= -3.345078968e-02 from nation where n_nationkey = 1;
