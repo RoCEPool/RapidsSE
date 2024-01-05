@@ -94,6 +94,7 @@ namespace BASE {
   class PoolBuffer;
   class PoolHelper;
   class PsxThd;
+  class Pds;
 
   class Queue;
 

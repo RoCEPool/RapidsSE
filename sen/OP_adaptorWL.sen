@@ -120,12 +120,12 @@
 
   "adaptorWL_Warning - BT_WARNINGS" .verbose
 
-  PipeIn[]\clear to RowBufferWarn[]
+  PipeIn[]\clear to PdsWarn[]
 
   adaptorWL[].executionWarning
 
-  // now delete the RowBufferWarn[]
-  RowBufferWarn[].delete
+  // now delete the PdsWarn[]
+  PdsWarn[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
   adaptorWL_sendAnyWLResponses not if
@@ -421,13 +421,6 @@
 : adaptorWL_RowBuffer \handler
 
   "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .verbose
-
-  // handle BT_WARNINGS
-  PipeIn[].bufferType@ BT_WARNINGS == if
-    adaptorWL_Warning
-    true
-    exit
-  then
 
   PipeIn[] AdaptorWL[].rowBuffer
   Pipein[].delete

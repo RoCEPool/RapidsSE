@@ -1691,8 +1691,14 @@ void vJobIdLastJobIdFetch(void);
   void vPdsErrRows(void);
 	void vPdsErrSet(void);
 
-  // PdsErr
+  // PdsWarn
   void vPdsWarnDelete(void);
+  void vPdsWarnGet(void);
+  void vPdsWarnGetAndClear(void);
+  void vPdsWarnGetBufferIdAsAddr(void);
+  void vPdsWarnIsNull(void);
+  void vPdsWarnNew(void);
+  void vPdsWarnRows(void);
   void vPdsWarnSet(void);
 
   // reg Pipein

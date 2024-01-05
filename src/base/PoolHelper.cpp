@@ -613,7 +613,7 @@ void PoolHelper::vObjectSummary(void)
 /* summary report on objects in the pool and heaps                            */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
-																RowBuffer* pRowBufferWarn, StreamDef* pWarnDef)
+                                Pds* pPdsWarn)
 {
   _static_
 
@@ -671,12 +671,13 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated());
 
-		pRowBufferWarn->pAllotRow(pWarnDef,
-                            C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
                             C_VARGS_END);
+    ASSERT(pRowWarn);
+    UNUSED(pRowWarn);
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -724,12 +725,13 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated());
 
-		pRowBufferWarn->pAllotRow(pWarnDef,
-                            C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
                             C_VARGS_END);
+    ASSERT(pRowWarn);
+    UNUSED(pRowWarn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -778,12 +780,13 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated());
 
-		pRowBufferWarn->pAllotRow(pWarnDef,
-                            C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
                             C_VARGS_END);
+    ASSERT(pRowWarn);
+    UNUSED(pRowWarn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -832,12 +835,13 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated());
 
-		pRowBufferWarn->pAllotRow(pWarnDef,
-                            C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
                             C_VARGS_END);
+    ASSERT(pRowWarn);
+    UNUSED(pRowWarn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -884,12 +888,13 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pTiny->nCurrAllocated());
 
-		pRowBufferWarn->pAllotRow(pWarnDef,
-                            C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
                             C_VARGS_END);
+    ASSERT(pRowWarn);
+    UNUSED(pRowWarn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -938,12 +943,13 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pSmall->nCurrAllocated());
 
-		pRowBufferWarn->pAllotRow(pWarnDef,
-                            C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
                             C_VARGS_END);
+    ASSERT(pRowWarn);
+    UNUSED(pRowWarn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -992,12 +998,13 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pMedium->nCurrAllocated());
 
-		pRowBufferWarn->pAllotRow(pWarnDef,
-                            C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
                             C_VARGS_END);
+    ASSERT(pRowWarn);
+    UNUSED(pRowWarn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1046,12 +1053,13 @@ void PoolHelper::vObjectSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
 
-		pRowBufferWarn->pAllotRow(pWarnDef,
-                            C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
                             C_VARGS_END);
+    ASSERT(pRowWarn);
+    UNUSED(pRowWarn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1416,10 +1424,10 @@ void PoolHelper::vRegionSummary()
 /* report on shm region                                                       */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vRegionSummary(RowBuffer* pRowBuffer, StreamDef* pStreamDef,
-																RowBuffer* pRowBufferWarn, StreamDef* pWarnDef)
+                                Pds* pPdsWarn, StreamDef* pWarnDef)
 {
   _static_
-  UNUSED(pRowBufferWarn);
+  UNUSED(pPdsWarn);
   UNUSED(pWarnDef);
 
   Heap* pHeap;

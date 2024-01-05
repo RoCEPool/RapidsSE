@@ -170,11 +170,11 @@ void Step::vAdaptorWLExecutionWarning(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-	RowBuffer* pRowBuffer = * m_pLogicUnit->m_xpRowBufferWarn;
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eBufferType() == BT_WARNINGS);
+  Pds* pPdsRowBuffer = * m_pLogicUnit->m_xpPdsWarn;
+  ASSERT(pPdsRowBuffer);
+  ASSERT(pPdsRowBuffer->eBufferType() == BT_WARNINGS);
 
-  pAdaptorWL->vExecutionWarning(pRowBuffer);
+  pAdaptorWL->vExecutionWarning(pPdsRowBuffer);
 
   EXIT();
 }

@@ -211,16 +211,10 @@ void Step::vRowBufferAddBpaObjects(void)
 {
 	ENTRY();
 
-	// Get the warning RowBuffer and definition
-	RowBuffer* pRowBufferWarn = * m_pLogicUnit->m_xpRowBufferWarn;
-	ASSERT(pRowBufferWarn);
-	ASSERT(pRowBufferWarn->eBufferType() == BT_WARNINGS);
-
-	// get the warning table and streamDef
-	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
-	ASSERT(pWarnTable);
-	StreamDef* pWarnDef = pWarnTable->pStreamDef();
-	ASSERT(pWarnDef);
+	// Get the warning Pds and definition
+  Pds* pPdsWarn = * m_pLogicUnit->m_xpPdsWarn;
+	ASSERT(pPdsWarn);
+	ASSERT(pPdsWarn->eBufferType() == BT_WARNINGS);
 
 	// get the table
 	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -230,7 +224,7 @@ void Step::vRowBufferAddBpaObjects(void)
 
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
-	PoolHelper::vObjectSummary(pRowBuffer, pStreamDef, pRowBufferWarn, pWarnDef);
+	PoolHelper::vObjectSummary(pRowBuffer, pStreamDef, pPdsWarn);
 
 	EXIT();
 }
@@ -242,10 +236,10 @@ void Step::vRowBufferAddBpaRegions(void)
 {
 	ENTRY();
 
-	// Get the warning RowBuffer and definition
-	RowBuffer* pRowBufferWarn = * m_pLogicUnit->m_xpRowBufferWarn;
-	ASSERT(pRowBufferWarn);
-	ASSERT(pRowBufferWarn->eBufferType() == BT_WARNINGS);
+	// Get the warning Pds and definition
+  Pds* pPdsWarn = * m_pLogicUnit->m_xpPdsWarn;
+	ASSERT(pPdsWarn);
+	ASSERT(pPdsWarn->eBufferType() == BT_WARNINGS);
 
 	// Get the warning TableDef
 	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
@@ -261,7 +255,7 @@ void Step::vRowBufferAddBpaRegions(void)
 
 	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 
-	PoolHelper::vRegionSummary(pRowBuffer, pStreamDef, pRowBufferWarn, pWarnDef);
+	PoolHelper::vRegionSummary(pRowBuffer, pStreamDef, pPdsWarn, pWarnDef);
 
 	EXIT();
 }

@@ -512,7 +512,7 @@ void AdaptorWL::vExecutionError(Pds* pPds)
 /*----------------------------------------------------------------------------*/
 /* Handle a warning received from the execution engine                        */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vExecutionWarning(RowBuffer* pRowBuffer)
+void AdaptorWL::vExecutionWarning(Pds* pPdsRowBuffer)
 {
   ASSERT(m_pStmtCtx);
 
@@ -520,9 +520,9 @@ void AdaptorWL::vExecutionWarning(RowBuffer* pRowBuffer)
     return;
   }
 
-  ASSERT(pRowBuffer->eBufferType() == BT_WARNINGS);
+  ASSERT(pPdsRowBuffer->eBufferType() == BT_WARNINGS);
 
-  Row *pInfoRow = pRowBuffer->pFirstRow();
+  Row *pInfoRow = pPdsRowBuffer->pFirstRow();
 
   ASSERT(!pInfoRow->bIsColNull(0));
 
