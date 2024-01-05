@@ -132,9 +132,11 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->vCast(p_expr->xCast());
 
-  Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
-  p_term->vCast(p_expr->xCast());
+  //Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
+  //p_term->vCast(p_expr->xCast());
   //p_term->vDump();
+
+  Card_Term* p_term = (new Card_Term) -> SYM(SF_EXP_COL,i_Col);
 
   p_rpnCalc->vAppendChild(p_term);
 

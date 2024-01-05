@@ -84,13 +84,10 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     if (pCI->G.p_expr->pSymbol()->bMatches(SF_EXP_COL, "$1"_Stz))
       continue;
 
-   // pCI->vPrintBoard(__func__,__LINE__);
-
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
+    p_expr_simple->vDeleteFacetRecursive(SF_KEY_COL);
 
     p_emitted_unproject->vAppendChild(p_expr_simple);
-
-   // pCI->vPrintBoard(__func__,__LINE__);
 
     vDebugPoint();
   }
