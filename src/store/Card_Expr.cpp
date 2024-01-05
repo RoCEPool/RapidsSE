@@ -395,9 +395,9 @@ Card_Expr* Card_Expr::pInduct(void)
     pSymbol_expr_inducted->vAppendFacet(SF_NMD_COL,
                                          pSymbol_expr_arriving->szSF_chrSeq(SF_NMD_COL));
 
-  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
-    pSymbol_expr_inducted->vAppendFacet(SF_KEY_COL,
-                                        pSymbol_expr_arriving->szSF_chrSeq(SF_KEY_COL));
+//  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
+//    pSymbol_expr_inducted->vAppendFacet(SF_KEY_COL,
+//                                        pSymbol_expr_arriving->szSF_chrSeq(SF_KEY_COL));
 
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
     pSymbol_expr_inducted->vAppendFacet(SF_TBL_COL,

@@ -10,10 +10,6 @@ success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimiser_trace
-/transliterated
-/weaved
-/pipeline_Def
 /pipelineName = "r_FOLD_74_H_A_NC_ro"
 select ps_partkey,
        sum(ps_supplycost * ps_availqty) as value

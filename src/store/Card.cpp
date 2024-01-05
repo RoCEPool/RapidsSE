@@ -511,6 +511,18 @@ void Card::vCast(Cast xCast)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get cast information                                                       */
+/*----------------------------------------------------------------------------*/
+Cast Card::xCast(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Cast xCast = pSymbol()->xCast();
+
+  return xCast;
+}
+
+/*----------------------------------------------------------------------------*/
 /* visit all sub-cards and check correctness                                   */
 /*----------------------------------------------------------------------------*/
 void Card::vCheckCorrectness(void)
@@ -552,18 +564,6 @@ Stz* Card::szCardNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return aCK_short[m_eCard];
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cast information                                                       */
-/*----------------------------------------------------------------------------*/
-Cast Card::xCast(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Cast xCast = pSymbol()->xCast();
-
-  return xCast;
 }
 
 /*----------------------------------------------------------------------------*/

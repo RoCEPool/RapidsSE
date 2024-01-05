@@ -64,7 +64,6 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
   Card_Level* p_level = new Card_Level(AL_ORIGIN);
   p_project_unproject->vAppendChild(p_level);
-  //pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
 
   Card_Stream* p_stream = new Card_Stream;
   p_project_unproject->vAppendChild(p_stream);

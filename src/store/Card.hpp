@@ -320,10 +320,10 @@ namespace STORE
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
-    Cast xCast(void);
     void vCast(Card* pCard_arg);
     void vCast(Cast xCast);
     void vCheckCorrectness(void);
+    Cast xCast(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     eFC  eConjForm(void);

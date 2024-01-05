@@ -583,8 +583,8 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (pCI->G.p_key && pCI->G.p_expr) {
     Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
 
-    if (pSymbol_this->bHasFacet(SF_EXP_COL) && ! pSymbol_expr->bHasFacet(SF_EXP_COL))
-      pSymbol_expr->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+//    if (pSymbol_this->bHasFacet(SF_EXP_COL) && ! pSymbol_expr->bHasFacet(SF_EXP_COL))
+//      pSymbol_expr->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
     if (pSymbol_this->bHasFacet(SF_KEY_COL) && ! pSymbol_expr->bHasFacet(SF_KEY_COL))
       pSymbol_expr->vAppendFacet(SF_KEY_COL,pSymbol_this->szFacet(SF_KEY_COL));
     if (pSymbol_this->bHasFacet(SF_TBL_COL) && ! pSymbol_expr->bHasFacet(SF_TBL_COL))
