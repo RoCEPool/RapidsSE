@@ -28,11 +28,11 @@
     StreamDefLft[].pipeOut
 
     // create a DATA rowBuffer
-    BT_DATA tableDef[] RowBuffer[].new
+    BT_DATA tableDef[] Pds[].new
 
-    // populate rowBuffer
-    TableDef[] RowBuffer[].addBpaRegions
-    RowBuffer[].pipeOut
+    // populate Pds
+    Pds[].addBpaRegions
+    Pds[].pipeOut
 
     PdsWarn[].rows 0 > if
       PdsWarn[].pipeOut
@@ -52,12 +52,12 @@
     TableDef[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
-    // create rowBuffer
-    BT_DATA TableDef[] RowBuffer[].new
+    // create Pds
+    BT_DATA TableDef[] Pds[].new
 
-    // populate rowBuffer
-    TableDef[] RowBuffer[].addBpaObjects
-    RowBuffer[].pipeOut
+    // populate Pds
+    Pds[].addBpaObjects
+    Pds[].pipeOut
 
     PdsWarn[].rows 0 > if
       PdsWarn[].pipeOut

@@ -42,8 +42,6 @@ void Step::vAddSteps_RowBuffer(void)
 
 	vAddStep("RowBuffer[].addAnalyzeIndex"_Stz,  &Step::vRowBufferAddAnalyzeIndex);
 	vAddStep("RowBuffer[].addAnalyzeTable"_Stz,  &Step::vRowBufferAddAnalyzeTable);
-	vAddStep("RowBuffer[].addBpaObjects"_Stz,    &Step::vRowBufferAddBpaObjects);
-	vAddStep("RowBuffer[].addBpaRegions"_Stz,    &Step::vRowBufferAddBpaRegions);
 	vAddStep("RowBuffer[].addColumnDef"_Stz,     &Step::vRowBufferAddColumnDef);
 	vAddStep("RowBuffer[].addGridSanity"_Stz,    &Step::vRowBufferAddGridSanity);
 	vAddStep("RowBuffer[].addListContents"_Stz,  &Step::vRowBufferAddListContents);
@@ -201,62 +199,6 @@ void Step::vRowBufferAddAnalyzeTable(void)
 	//pRow->vDump(pStreamDef);
 
 	m_pDataStack->vPushInt(pRow ? true : false);
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].addBpaObjects -- add rows about bpa object analysis            */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferAddBpaObjects(void)
-{
-	ENTRY();
-
-	// Get the warning Pds and definition
-  Pds* pPdsWarn = * m_pLogicUnit->m_xpPdsWarn;
-	ASSERT(pPdsWarn);
-	ASSERT(pPdsWarn->eBufferType() == BT_WARNINGS);
-
-	// get the table
-	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-	// get the streamDef from the table
-	StreamDef* pStreamDef = pTable->pStreamDef();
-
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-
-	PoolHelper::vObjectSummary(pRowBuffer, pStreamDef, pPdsWarn);
-
-	EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].addBpaRegions -- add rows about bpa region analysis            */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferAddBpaRegions(void)
-{
-	ENTRY();
-
-	// Get the warning Pds and definition
-  Pds* pPdsWarn = * m_pLogicUnit->m_xpPdsWarn;
-	ASSERT(pPdsWarn);
-	ASSERT(pPdsWarn->eBufferType() == BT_WARNINGS);
-
-	// Get the warning TableDef
-	Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
-	ASSERT(pWarnTable);
-	StreamDef* pWarnDef = pWarnTable->pStreamDef();
-	ASSERT(pWarnDef);
-
-	// get the table
-	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-	// get the streamDef from the table
-	StreamDef* pStreamDef = pTable->pStreamDef();
-
-	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-
-	PoolHelper::vRegionSummary(pRowBuffer, pStreamDef, pPdsWarn, pWarnDef);
-
 	EXIT();
 }
 

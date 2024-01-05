@@ -22,6 +22,8 @@ void Step::vAddSteps_Pds(void)
 {
   vAddStep("Pds[]"_Stz,                     &Step::vPdsGet);
 
+  vAddStep("Pds[].addBpaObjects"_Stz, &Step::vPdsAddBpaObjects);
+  vAddStep("Pds[].addBpaRegions"_Stz, &Step::vPdsAddBpaRegions);
   vAddStep("Pds[].addGridSanity"_Stz,      &Step::vPdsAddGridSanity);
   vAddStep("Pds[].addNodeInfo"_Stz, &Step::vPdsAddNodeInfo);
   vAddStep("Pds[].addLockStats"_Stz,      &Step::vPdsAddLockStats);
@@ -41,6 +43,50 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].setLglPtn"_Stz  ,               &Step::vPdsSetLglPtn);
   vAddStep("Pds[].tableDefName@"_Stz,    &Step::vPdsTableDefNameFetch);
   vAddStep("Pds[].writeCsv"_Stz,    &Step::vPdsWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addBpaObjects -- add rows about bpa object analysis                  */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddBpaObjects(void)
+{
+  ENTRY();
+
+  // Get the warning Pds and definition
+  Pds* pPdsWarn = * m_pLogicUnit->m_xpPdsWarn;
+  ASSERT(pPdsWarn);
+  ASSERT(pPdsWarn->eBufferType() == BT_WARNINGS);
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  PoolHelper::vObjectSummary(pPds, pPdsWarn);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addBpaRegions -- add rows about bpa region analysis                  */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddBpaRegions(void)
+{
+  ENTRY();
+
+  // Get the warning Pds and definition
+  Pds* pPdsWarn = * m_pLogicUnit->m_xpPdsWarn;
+  ASSERT(pPdsWarn);
+  ASSERT(pPdsWarn->eBufferType() == BT_WARNINGS);
+
+  // Get the warning TableDef
+  Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
+  ASSERT(pWarnTable);
+  StreamDef* pWarnDef = pWarnTable->pStreamDef();
+  ASSERT(pWarnDef);
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  PoolHelper::vRegionSummary(pPdsRowBuffer, pPdsWarn, pWarnDef);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

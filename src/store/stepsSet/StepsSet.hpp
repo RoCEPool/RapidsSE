@@ -1640,6 +1640,8 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSet(void);
 
   // pds
+  void vPdsAddBpaObjects(void);
+  void vPdsAddBpaRegions(void);
   void vPdsAddGridSanity(void);
   void vPdsAddNodeInfo(void);
   void vPdsAddLockStats(void);
@@ -1743,8 +1745,6 @@ void vJobIdLastJobIdFetch(void);
   // row buffer
 	void vRowBufferAddAnalyzeIndex(void);
 	void vRowBufferAddAnalyzeTable(void);
-	void vRowBufferAddBpaObjects(void);
-	void vRowBufferAddBpaRegions(void);
 	void vRowBufferAddColumnDef(void);
 	void vRowBufferAddGridSanity(void);
 	void vRowBufferAddListContents(void);
