@@ -250,7 +250,7 @@ bool Card_Expr::bContains(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* append a synthetic SF_NMD_COL                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vAppend_expr_nmdCol_synthetic(BASE::i8 iExpCol)
+void Card_Expr::vAppend_nmdCol_synthetic(i8 iExpCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -388,7 +388,7 @@ Card_Term* Card_Expr::pGet_term0(void)
 /*----------------------------------------------------------------------------*/
 /* induct this arriving expr                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pInduct(void)
+Card_Expr * Card_Expr::pInduct(i8 iExp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -407,6 +407,8 @@ Card_Expr* Card_Expr::pInduct(void)
   if (pSymbol_expr_arriving->bHasFacet(SF_NMD_COL))
     pSymbol_expr_inducted->vAppendFacet(SF_NMD_COL,
                                          pSymbol_expr_arriving->szSF_chrSeq(SF_NMD_COL));
+  else
+    p_expr_inducted->vAppend_nmdCol_synthetic(iExp);
 
 //  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
 //    pSymbol_expr_inducted->vAppendFacet(SF_KEY_COL,

@@ -343,7 +343,7 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
       if (! pCI->G.p_needed->bNeeded_expr(p_expr_arriving))
         continue;
 
-    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct();
+    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct(xKid.i_Child()+1);
     p_emit_inducted->vAppendChild(p_expr_inducted);
   }
 

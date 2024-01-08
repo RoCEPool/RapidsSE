@@ -29,7 +29,7 @@ namespace STORE
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
-    void vAppend_expr_nmdCol_synthetic(i8 iExpCol);
+    void vAppend_nmdCol_synthetic(i8 iExpCol);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypeId_expCol(CardIter* pCI);
     Symbol* pFirst_expCol(void);
@@ -40,7 +40,7 @@ namespace STORE
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
     bool bIsDescending(void);
-    Card_Expr* pInduct(void);
+    Card_Expr *pInduct(i8 iExp);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
