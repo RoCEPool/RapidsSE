@@ -10,8 +10,6 @@
 
 #include "eYX.h"
 
-#include "RowBuffer.hpp"
-
 #include "LglPtnMap.hpp"
 
 #include "SkipRoots.hpp"
@@ -564,12 +562,8 @@ void Step::vTableListPartition(void)
   ENTRY();
   
   s256 sOutput;
-  
-  Table* pTableDef = _pTable(*m_pLogicUnit->m_xpTableDef);
 
-  StreamDef* pStreamDef = pTableDef->pStreamDef();
-
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
   LglPtn tLglPtn;
   tLglPtn = m_pDataStack->iPopAsInt(__func__);
@@ -583,8 +577,7 @@ void Step::vTableListPartition(void)
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
                     tLglPtn.iAsI8(),iNodeId,i_TablePtn);
 
-    Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
-                                      C_VARGS_BEGIN,
+    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                       sOutput.azChar(),
                                       C_VARGS_END);
 

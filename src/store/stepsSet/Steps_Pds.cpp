@@ -8,6 +8,8 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 #include "LogicUnit.hpp"
+
+#include "LglPtnMap.hpp"
 #include "Table.hpp"
 #include "Op.hpp"
 #include "MetricsHelper.hpp"
@@ -25,8 +27,12 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].addAnalyzeTable"_Stz, &Step::vPdsAddAnalyzeTable);
   vAddStep("Pds[].addBpaObjects"_Stz, &Step::vPdsAddBpaObjects);
   vAddStep("Pds[].addBpaRegions"_Stz, &Step::vPdsAddBpaRegions);
+  vAddStep("Pds[].addColumnDef"_Stz, &Step::vPdsAddColumnDef);
   vAddStep("Pds[].addGridSanity"_Stz,      &Step::vPdsAddGridSanity);
   vAddStep("Pds[].addNodeInfo"_Stz, &Step::vPdsAddNodeInfo);
+  vAddStep("Pds[].addListFolder"_Stz,    &Step::vPdsAddListFolder);
+  vAddStep("Pds[].addListIndex"_Stz,     &Step::vPdsAddListIndex);
+  vAddStep("Pds[].addListPartitions"_Stz,&Step::vPdsAddListPartitions);
   vAddStep("Pds[].addLockStats"_Stz,      &Step::vPdsAddLockStats);
   vAddStep("Pds[].addProgressUnits"_Stz, &Step::vPdsAddProgressUnits);
   vAddStep("Pds[].addRowCount"_Stz,      &Step::vPdsAddRowCount);
@@ -127,6 +133,32 @@ void Step::vPdsAddBpaRegions(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Pds[].addColumnDef -- add a row to the Pds with the column def             */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddColumnDef(void)
+{
+  ENTRY();
+
+  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    pColumn->szColNm(),
+                                    aCT[pColumn->eColumnType()],
+                                    pColumn->iColumnLength(),
+                                    pColumn->iColumnScale(),
+                                    (i8)pColumn->bIsNullable(),
+                                    (i8)pColumn->bIsPtnKey(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Pds[].addGridSanity -- add a row to Pds with the gridSanity                */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddGridSanity(void)
@@ -186,6 +218,91 @@ void Step::vPdsAddNodeInfo(void)
   //pRow->vDump(pStreamDef);
 
   m_pDataStack->vPushInt(pRow ? true : false);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addListFolder -- add a row to Pds with the list folder               */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddListFolder(void)
+{
+  ENTRY();
+
+  // get the name
+  s256 sName;
+  m_pDataStack->vPopStr(sName, __func__);
+
+  // get the kind
+  s256 sKind;
+  m_pDataStack->vPopStr(sKind, __func__);
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                    sName.azChar(),
+                                    sKind.azChar(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addListIndex -- add a row to Pds with the list index                 */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddListIndex(void)
+{
+  ENTRY();
+
+  // get the index
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    pIndex->szIndexNm(),
+                                    (i8)pIndex->bIsUnique(),
+                                    (i8)pIndex->bIsPrimaryKey(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addListPartitions -- add a row to Pds with the partitions*/
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddListPartitions(void)
+{
+  ENTRY();
+
+  LglPtn tLglPtn;
+  tLglPtn = m_pDataStack->iPopInt(__func__);
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Grid* pGrid = AM::pGrid();
+
+  i8 iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
+  Node* pNode = pGrid->pFindNodeById(iNodeId);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    tLglPtn.iAsI8(),
+                                    pNode->szNodeNm(),
+                                    C_VARGS_END);
+
+
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
   EXIT();
 }
 
