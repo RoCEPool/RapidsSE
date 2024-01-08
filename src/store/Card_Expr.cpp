@@ -248,6 +248,19 @@ bool Card_Expr::bContains(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append a synthetic SF_NMD_COL                                              */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vAppend_expr_nmdCol_synthetic(BASE::i8 iExpCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s256 sColNm_synthetic;
+  sColNm_synthetic.vSprint("COL%lld"_Stz,iExpCol);
+
+  pSymbol()->vAppendFacet(SF_NMD_COL,sColNm_synthetic);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)

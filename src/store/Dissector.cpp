@@ -1455,6 +1455,8 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_expr->vAppendChild(p_direction);
   }
 
+#ifndef Z_EMIT
+
   if (! p_as) {
     RASSERT(! p_as);
     RASSERT(0 == oSymbol_nmdCol.nFacets());
@@ -1472,12 +1474,16 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     }
     //p_expr->vPushChild(p_as);
   }
-  oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
+#endif
 
-  p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
+  if (p_as) {
+    oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
 
-  delete p_as;
-  p_as = nullptr;
+    p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
+
+    delete p_as;
+    p_as = nullptr;
+  }
 
   ri_Expr++;
   return p_expr;
