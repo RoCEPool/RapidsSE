@@ -136,7 +136,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iFixedDepth = iFixedDepth;
 
   m_iFirstPrint = C_UNKNOWN;
-  m_iLastPrint  = C_UNKNOWN;
+   m_nPrintCount = 0;
   m_eFirst = CK_NONE;
 
   m_bAddedCorrectly   = false;
@@ -1538,7 +1538,7 @@ void Card::vPrintCardRecursive(CardIter* pCI,
     m_iFirstPrint = pCI->m_pBench->iPrint();
     m_eFirst = m_eCard;
   }
-  m_iLastPrint = pCI->m_pBench->iPrint();
+  m_nPrintCount++;
 
   if (0 == iDepth) {
     if (   bIsCard(CK_o_AGGREG)
@@ -2326,10 +2326,11 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
                     szCustomName);
     }
     else {
-      sName.vSprint("%s%s *%lld"_Stz,
+      sName.vSprint("%s%s *%lld:%lld"_Stz,
                     szCardNm(),
                     sHiddenChildren.szStz(),
-                    nItems());
+                    m_nPrintCount,
+                    m_iFirstPrint);
       sName.vToUpper();
     }
   }
@@ -2371,16 +2372,18 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
 
   if (0 == iDepth) {
     if (m_xSymbol.bHasFacets())
-      sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
+      sNameSymbol.vSprint("%s%s %s *%lld:%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
                           szFacet(SF_NONE),
-                          nItems());
+                          m_nPrintCount,
+                          m_iFirstPrint);
     else
-      sNameSymbol.vSprint("%s%s *%lld"_Stz,
+      sNameSymbol.vSprint("%s%s *%lld:%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
-                          nItems());
+                          m_nPrintCount,
+                          m_iFirstPrint);
 
   }
   else {

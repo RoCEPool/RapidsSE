@@ -278,7 +278,7 @@ namespace STORE
     i8 md__LeakDetected;
     i8      m_iFirstPrint;
     eCK     m_eFirst;
-    i8      m_iLastPrint;
+    i8      m_nPrintCount;
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
     i8      m_iItemise;
