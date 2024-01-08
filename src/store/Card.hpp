@@ -22,7 +22,6 @@
 #include "Symbol.hpp"
 
 #define Z_MATCHES
-#define Z_RIGHT
 
 namespace STORE
 {
@@ -248,8 +247,8 @@ namespace STORE
   static const bool C_CONTINUE_RECURSION  = true;
   static const bool C_TERMINATE_RECURSION = false;
 
-  static const bool C_LEFT  = false;
-  static const bool C_RIGHT = true;
+  static const bool C_LEFT_ORIENTATION  = true;
+  static const bool C_RIGHT_ORIENTATION = false;
 
   static const bool C_NOT_NULL = true;
   static const bool C_EXCLUDE_NOT_NEED = true;
