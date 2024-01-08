@@ -272,7 +272,7 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
   _static_
 
   String* sPipeline = pBackend->m_sPipeline;
-  s256 sAliasName;
+  //s256 sAliasName;
 
 	// check if the ordinalExpr is an aliasRef
 	if (AliasRef::bIsOfType(pOrdinalExpr)) {
@@ -281,9 +281,9 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
 		return;
 	}
 
-  if (szAliasName) {
-    sAliasName = szAliasName;
-  }
+//  if (szAliasName) {
+//    sAliasName = szAliasName;
+//  }
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
@@ -304,25 +304,25 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
 			aCT[eCTType]);
 	}
 
-  if ( ! szAliasName) {
-    if (ColumnRef::bIsOfType(pExprNode)) {
-      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-      szAliasName = ColumnRef::szColumn(pColumnRef);
+//  if ( ! szAliasName) {
+//    if (ColumnRef::bIsOfType(pExprNode)) {
+//      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+//      szAliasName = ColumnRef::szColumn(pColumnRef);
+//
+//      // We cannot modify the szAliasName directly because we don't know the
+//      // size of the underlying buffer. We need to modify a copy of it instead.
+//      if (szAliasName) {
+//        sAliasName = szAliasName;
+//        StrLib::vToLower(sAliasName.azChar(), sAliasName.nAreaBytes());
+//      }
+//    }
+//  }
 
-      // We cannot modify the szAliasName directly because we don't know the
-      // size of the underlying buffer. We need to modify a copy of it instead.
-      if (szAliasName) {
-        sAliasName = szAliasName;
-        StrLib::vToLower(sAliasName.azChar(), sAliasName.nAreaBytes());
-      }
-    }
-  }
-
-  if (szAliasName) {
+  if (szAliasName && !szAliasName->bSame(""_Stz)) {
     sPipeline->vCatSprint(
         " as %s"
         ""_Stz,
-        sAliasName.azChar());
+        szAliasName->azChar());
   }
 
   // Walk the expr node plan graph
@@ -694,6 +694,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
 
   bool bFirstExpr = false;
   String* sPipeline = pBackend->m_sPipeline;
+	s256 sAliasName;
 
   // Get the list of projected expressions from ProjectOp
   ASSERT(pNode->nChildren() == 1);
@@ -763,14 +764,31 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      RASSERT(pBackend->m_pColExprList);
+			if ( ! szAliasName) {
+				if (ColumnRef::bIsOfType(pExprNode)) {
+					QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+					szAliasName = ColumnRef::szColumn(pColumnRef);
+
+					// We cannot modify the szAliasName directly because we don't know the
+					// size of the underlying buffer. We need to modify a copy of it instead.
+					if (szAliasName) {
+						sAliasName = szAliasName;
+						StrLib::vToLower(sAliasName.azChar(), sAliasName.nAreaBytes());
+					}
+				}
+			}
+			else {
+				sAliasName = szAliasName;
+			}
+
+			RASSERT(pBackend->m_pColExprList);
       RASSERT(pCorrelatedExprs);
 
       QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
       RASSERT(pOrdinalExpr);
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
-      vAppendExpr(pBackend, pExprNode, pOrdinalExpr, szAliasName);
+      vAppendExpr(pBackend, pExprNode, pOrdinalExpr, sAliasName);
       delete pOrdinalExpr;
     }
     delete pIter;
