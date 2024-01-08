@@ -22,6 +22,7 @@ void Step::vAddSteps_Pds(void)
 {
   vAddStep("Pds[]"_Stz,                     &Step::vPdsGet);
 
+  vAddStep("Pds[].addAnalyzeTable"_Stz, &Step::vPdsAddAnalyzeTable);
   vAddStep("Pds[].addBpaObjects"_Stz, &Step::vPdsAddBpaObjects);
   vAddStep("Pds[].addBpaRegions"_Stz, &Step::vPdsAddBpaRegions);
   vAddStep("Pds[].addGridSanity"_Stz,      &Step::vPdsAddGridSanity);
@@ -43,6 +44,42 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].setLglPtn"_Stz  ,               &Step::vPdsSetLglPtn);
   vAddStep("Pds[].tableDefName@"_Stz,    &Step::vPdsTableDefNameFetch);
   vAddStep("Pds[].writeCsv"_Stz,    &Step::vPdsWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addAnalyzeTable -- add a row to the Pds table analysis               */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddAnalyzeTable(void)
+{
+  ENTRY();
+
+  // get the table to be analyzed
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the tablePtn
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+
+  // get the stream set
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  i8 nBuffers = 0;
+  i8 nRows = 0;
+  i8 njRowSize = 0;
+
+  pTable->vAnalyze(i_TablePtn, nBuffers, nRows, njRowSize);
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    pTable->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
+                                    nBuffers,
+                                    nRows,
+                                    C_VARGS_END);
+
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

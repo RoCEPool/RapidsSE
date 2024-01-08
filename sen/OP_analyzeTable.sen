@@ -23,23 +23,23 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an DATA rowBuffer
-  BT_DATA TableDef[] RowBuffer[].new
+  // create an DATA Pds
+  BT_DATA TableDef[] Pds[].new
 
   // add a row for each table ptn
   [grid].ptnsPerNode 0
   do
     // analyze table
-    I Table[] TableDef[] RowBuffer[].addAnalyzeTable  not if
-      RowBuffer[].pipeOut
-      BT_DATA TableDef[] RowBuffer[].new
-      I Table[] TableDef[] RowBuffer[].addAnalyzeTable assert
+    I Table[] Pds[].addAnalyzeTable  not if
+      Pds[].pipeOut
+      BT_DATA TableDef[] Pds[].new
+      I Table[] Pds[].addAnalyzeTable assert
     then
 
   loop
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

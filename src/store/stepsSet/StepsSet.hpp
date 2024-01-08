@@ -1640,6 +1640,7 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSet(void);
 
   // pds
+  void vPdsAddAnalyzeTable(void);
   void vPdsAddBpaObjects(void);
   void vPdsAddBpaRegions(void);
   void vPdsAddGridSanity(void);
