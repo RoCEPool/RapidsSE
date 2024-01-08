@@ -166,7 +166,6 @@ namespace STORE
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);
 		static void vAddSteps_RowBufferErr(void);
-		static void vAddSteps_RowBufferWarn(void);
     static void vAddSteps_Rstack(void);
 
     static void vAddSteps_Schedule(void);

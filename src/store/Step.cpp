@@ -183,7 +183,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RowOnce();
   Step::vAddSteps_RowBuffer();
 	Step::vAddSteps_RowBufferErr();
-	Step::vAddSteps_RowBufferWarn();
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_Schedule();

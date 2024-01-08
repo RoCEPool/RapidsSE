@@ -1815,16 +1815,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferErrRows(void);
 	void vRowBufferErrSet(void);
 
-	// RowBufferWarn
-  void vRowBufferWarnDelete(void);
-  void vRowBufferWarnGet(void);
-  void vRowBufferWarnGetAndClear(void);
-  void vRowBufferWarnGetBufferIdAsAddr(void);
-  void vRowBufferWarnIsNull(void);
-  void vRowBufferWarnNew(void);
-  void vRowBufferWarnRows(void);
-  void vRowBufferWarnSet(void);
-
   // rowCounts
   void vRowCountsDelete(void);
   void vRowCountsGet(void);

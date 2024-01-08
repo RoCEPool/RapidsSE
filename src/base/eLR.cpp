@@ -81,7 +81,6 @@ Stz* aLR[LR_ENUMS]
 	/*  */ "LR_ROW"_Stz,
   /*  */ "LR_ROWBUFFER"_Stz,
 	/*  */ "LR_ROWBUFFERERR"_Stz,
-	/*  */ "LR_ROWBUFFERWARN"_Stz,
 	/*  */ "LR_ROWONCE"_Stz,
   /*  */ "LR_ROWCOUNTS"_Stz,
 

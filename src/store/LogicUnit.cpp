@@ -150,7 +150,6 @@ LogicUnit::LogicUnit(void)
 ,            m_xpRow(this,RF_SET_NULL,     nullptr,                            LR_ROW)
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,      LR_ROWBUFFER)
 ,      m_xpRowBufferErr(this,RF_REPAIR_DELETE,  RowBuffer::vRepair,   LR_ROWBUFFERERR)
-,    m_xpRowBufferWarn (this,RF_REPAIR_DELETE,  RowBuffer::vRepair,  LR_ROWBUFFERWARN)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
 ,      m_xpRowCounts(this,RF_REPAIR_DELETE,     RowCounts::vRepair,      LR_ROWCOUNTS)
 
@@ -349,7 +348,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 	RASSERT(m_xpRow.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
   RASSERT(m_xpRowBuffer.bIsNull());
-	RASSERT(m_xpRowBufferWarn.bIsNull());
 	RASSERT(m_xpRowBufferErr.bIsNull());
 
   RASSERT(m_xpSendNode.bIsNull());

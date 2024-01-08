@@ -80,7 +80,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_ROW,
   /*  */ LR_ROWBUFFER,
 	/*  */ LR_ROWBUFFERERR,
-	/*  */ LR_ROWBUFFERWARN,
   /*  */ LR_ROWONCE,
   /*  */ LR_ROWCOUNTS,
 
