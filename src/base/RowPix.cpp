@@ -123,6 +123,10 @@ RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
 
     azColNmDst += nNameSize;
     m_nTotalChars += nNameSize;
+
+    if(axColPixDst->m_uDatum == DM_VCH) {
+      axColPixDst->m_uLength = 200;
+    }
   }
 
   // i_Col falls thru
@@ -233,6 +237,9 @@ void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
 
     azColNmDst += nNameSize;
     pRowPix->m_nTotalChars += nNameSize;
+    if(axColPixDst->m_uDatum == DM_VCH) {
+      axColPixDst->m_uLength = 200;
+    }
   }
 
   pRowPix->m_nTotalChars++;
@@ -335,44 +342,52 @@ void RowPix::vCopyRowPix(RowPix* pSrcRowPix)
     azColNmDst += nNameSize;
     m_nTotalChars += nNameSize;
 
+    if(axColPixDst->m_uDatum == DM_VCH) {
+      axColPixDst->m_uLength = 200;
+    }
+
   }
 
   // i_Col falls thru
 
-  if (bAddPtnHash) {
-
-    //pRowPixDst->vPrint();
-    ASSERT(! m_nExtraCols);
-
-    m_nColumns++;
-    m_nExtraCols = 1;
-    m_bPtnHash = true;
-
-    ColPix* axColPixDst = &axaColPixDst[i_Col];
-
-    axColPixDst->m_uNumber   = (u8)i_Col;
-    // name
-    axColPixDst->m_uKind     = (u8)CX_PTNHASH;
-    axColPixDst->m_uTypeId   = (u8)CT_INTEGER;
-    axColPixDst->m_uDatum    = (u8)DM_INT;
-    axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
-    axColPixDst->m_uScale    = (u8)0;
-    axColPixDst->m_bNullable = (u8)false;
-    axColPixDst->m_bPtnKey   = (u8)false;
-    axColPixDst->m_uSpare    = (u8)0;
-
-    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
-    nNameSize = StrLib::nSize(azColNmDst);
-    iBufSpaceRemaining -= nNameSize;
-
-    nStzOfs = nDifference(axColPixDst,azColNmDst);
-    axColPixDst->m_uName = nStzOfs;
-
-    azColNmDst += nNameSize;
-    m_nTotalChars += nNameSize;
-
-    //pRowPixDst->vPrint();
-  }
+//  if (bAddPtnHash) {
+//
+//    //pRowPixDst->vPrint();
+//    ASSERT(! m_nExtraCols);
+//
+//    m_nColumns++;
+//    m_nExtraCols = 1;
+//    m_bPtnHash = true;
+//
+//    ColPix* axColPixDst = &axaColPixDst[i_Col];
+//
+//    axColPixDst->m_uNumber   = (u8)i_Col;
+//    // name
+//    axColPixDst->m_uKind     = (u8)CX_PTNHASH;
+//    axColPixDst->m_uTypeId   = (u8)CT_INTEGER;
+//    axColPixDst->m_uDatum    = (u8)DM_INT;
+//    axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
+//    axColPixDst->m_uScale    = (u8)0;
+//    axColPixDst->m_bNullable = (u8)false;
+//    axColPixDst->m_bPtnKey   = (u8)false;
+//    axColPixDst->m_uSpare    = (u8)0;
+//
+//    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
+//    nNameSize = StrLib::nSize(azColNmDst);
+//    iBufSpaceRemaining -= nNameSize;
+//
+//    nStzOfs = nDifference(axColPixDst,azColNmDst);
+//    axColPixDst->m_uName = nStzOfs;
+//
+//    azColNmDst += nNameSize;
+//    m_nTotalChars += nNameSize;
+//
+//    if(axColPixDst->m_uDatum == DM_VCH) {
+//      axColPixDst->m_uLength = 200;
+//    }
+//
+//    //pRowPixDst->vPrint();
+//  }
 
   m_nTotalChars++;
   * azColNmDst = '\0';
