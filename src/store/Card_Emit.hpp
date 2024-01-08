@@ -29,7 +29,7 @@ namespace STORE
     void vEnsureTypeId_expCol(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     Card_Emit* pInduct(CardIter* pCI);
-    void vInject_streamDef_table(CardIter* pCI);
+    void vInject_expr_nmdCol_table(CardIter* pCI);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     void vMapColumns(CardIter* pCI);

@@ -355,7 +355,7 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* inject streamDef of table into this emit                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vInject_streamDef_table(CardIter* pCI)
+void Card_Emit::vInject_expr_nmdCol_table(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -372,10 +372,10 @@ void Card_Emit::vInject_streamDef_table(CardIter* pCI)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
-    Card_Expr* p_expr_Column =
-        Card_Expr::pCast_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
+    Card_Expr* p_expr_nmdCol =
+        Card_Expr::pCraft_expr_nmdCol(pColumn, iExpCol++, cTblSyn, i_Col + 1);
 
-    pCI->G.p_emit->vAppendChild(p_expr_Column);
+    pCI->G.p_emit->vAppendChild(p_expr_nmdCol);
   }
 }
 /*----------------------------------------------------------------------------*/

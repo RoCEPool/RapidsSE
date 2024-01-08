@@ -150,8 +150,8 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* craft a casted expr for given column                                       */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr:: pCast_expr_Column(Column *pColumn, i8 iExpCol,
-                                        char cTblSyn, i8 iColOdn)
+Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
+                                          char cTblSyn, i8 iTblCol)
 {
   _static_
 
@@ -171,7 +171,7 @@ Card_Expr* Card_Expr:: pCast_expr_Column(Column *pColumn, i8 iExpCol,
   p_rpnCalc_new->vCast(xCast);
   p_expr_new->vAppendChild(p_rpnCalc_new);
 
-  Card_Term *p_term_new = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iColOdn);
+  Card_Term *p_term_new = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iTblCol);
   p_term_new->vCast(xCast);
   p_rpnCalc_new->vAppendChild(p_term_new);
 
