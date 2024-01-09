@@ -177,7 +177,6 @@ void XF::vTransform(void)
     // preliminary conversions                     //
     XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI); //
     XF_Optimise_Factor_boolPred::vOptimise(m_pCI); //
-    XF_Prolog_Review_as::vReview(m_pCI);           //
   }                                                //
                                                    //
   // sub-query analysis                            //
