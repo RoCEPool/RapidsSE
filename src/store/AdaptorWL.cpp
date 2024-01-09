@@ -1060,11 +1060,10 @@ void AdaptorWL::vPdsRowData(Pds* pPdsRowBuffer)
 
 
     for (i8 i_Row = iStartingRow; i_Row < iStartingRow + iRowsToSend; i_Row++) {
-      RASSERT(pSkipListBlock);
-      Row* pRow = pSkipListBlock->aRow();
+      Row* pRow = pPdsCursor->pCurrRow();
+      RASSERT(pRow);
       vCreateAndAddRow(&xRowList, pRow, pRowPix);
       pPdsCursor->vNext();
-      pSkipListBlock = pPdsCursor->m_pCurrentBlock;
     }
 
     pPdsCursor->m_pPds = nullptr;

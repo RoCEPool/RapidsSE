@@ -68,7 +68,7 @@ void SkipListBlock::vSetKey(i8 iKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get Row start addr                                                         */
+/* get Row start addr (assumes i8 key in pds)                                 */
 /*----------------------------------------------------------------------------*/
 Row* SkipListBlock::aRow(void)
 {

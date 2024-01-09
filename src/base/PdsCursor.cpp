@@ -91,6 +91,19 @@ void PdsCursor::vCurr(SkipListBlock *pCurr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current row                                                            */
+/*----------------------------------------------------------------------------*/
+Row* PdsCursor::pCurrRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSCURSOR,_FOOTER_);
+
+  if( ! m_pCurrentBlock)
+    return nullptr;
+
+  return m_pCurrentBlock->aRow();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the current block null?                                                 */
 /*----------------------------------------------------------------------------*/
 void PdsCursor::vNext(void)

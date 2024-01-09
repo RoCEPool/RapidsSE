@@ -17,6 +17,8 @@
 #include "Grid.hpp"
 #include "Job.hpp"
 
+extern SizeHeap  gxaSizeHeap[];
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -34,9 +36,16 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].addListIndex"_Stz,     &Step::vPdsAddListIndex);
   vAddStep("Pds[].addListPartitions"_Stz,&Step::vPdsAddListPartitions);
   vAddStep("Pds[].addLockStats"_Stz,      &Step::vPdsAddLockStats);
+  vAddStep("Pds[].addMemoryLeaks"_Stz,   &Step::vPdsAddMemoryLeaks);
+  vAddStep("Pds[].addNodeHeartbeat"_Stz, &Step::vPdsAddNodeHeartbeat);
   vAddStep("Pds[].addProgressUnits"_Stz, &Step::vPdsAddProgressUnits);
   vAddStep("Pds[].addRowCount"_Stz,      &Step::vPdsAddRowCount);
   vAddStep("Pds[].addRowVargs"_Stz,      &Step::vPdsAddRowVargs);
+  vAddStep("Pds[].addShowCluster"_Stz,   &Step::vPdsAddShowCluster);
+  vAddStep("Pds[].addSizeIndex"_Stz,     &Step::vPdsAddSizeIndex);
+  vAddStep("Pds[].addSizeTable"_Stz,     &Step::vPdsAddSizeTable);
+  vAddStep("Pds[].addSpaceInfo"_Stz,     &Step::vPdsAddSpaceInfo);
+  vAddStep("Pds[].addTableSizes"_Stz,     &Step::vPdsAddTableSizes);
   vAddStep("Pds[].bufferId"_Stz  ,          &Step::vPdsGetBufferIdAsAddr);
   vAddStep("Pds[].bufferType@"_Stz,         &Step::vPdsBufferTypeFetch);
   vAddStep("Pds[].bufferType!"_Stz,         &Step::vPdsBufferTypeStore);
@@ -325,6 +334,83 @@ void Step::vPdsAddLockStats(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Pds[].addMemoryLeaks -- add rows to Pds with memory leak info              */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddMemoryLeaks(void)
+{
+  ENTRY();
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  i8 nLeaks = 0;
+
+  ObjectSnapshot* pSnapshotThen = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnapshotNow  = AM::MEMORY::pSnapshotAtMemoryLeaks();
+
+  for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
+
+    eCN eClass = (eCN)i_Class;
+
+    if (eClass == CN_FREEPOOLBUFFER || eClass == CN_HEAPBUFFER)
+      continue;
+
+    // check if this class to be ignored for memory leak detection
+    if (gxaSizeHeap[eClass].m_bIgnoreMemoryLeak)
+      continue;
+
+    i8 nDelta = pSnapshotNow->m_nObjects[eClass] -
+                pSnapshotThen->m_nObjects[eClass];
+
+    if (nDelta <= 0)
+      continue;
+
+    ++nLeaks;
+    /*Row* pRow =*/ pPds->pAllotRow(C_VARGS_BEGIN,
+                                          aCN[eClass],
+                                          nDelta,
+                                          C_VARGS_END);
+  }
+
+  m_pDataStack->vPushBol(nLeaks > 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].AddNodeHeartbeat -- add a row to the Pds with node hb    */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddNodeHeartbeat(void)
+{
+  ENTRY();
+
+  Pds *pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Node* pThisNode = MY::pNode();
+
+  Row *pRow = nullptr;
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+
+    if (pThisNode != *oNode_I)
+      continue;
+
+    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                 (*oNode_I)->szNodeNm(),
+                                 (*oNode_I)->xGetHeartbeat().m_acRegionName,
+                                 (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
+                                 (*oNode_I)->pSendSocket() ? true : false,
+                                 (*oNode_I)->pRecvSocket() ? true : false,
+                                 C_VARGS_END);
+
+    break;
+  }
+
+  // done
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Pds[].addProgressUnits -- add row to Pds with the progressUnits            */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddProgressUnits(void)
@@ -437,6 +523,158 @@ void Step::vPdsAddRowVargs(void)
   }
 
   m_pDataStack->vPushInt(true);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addShowCluster -- add a row to Pds with the cluster info */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddShowCluster(void)
+{
+  ENTRY();
+
+  i8 i_Node = m_pDataStack->iPopInt(__func__);
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Node* pNode = AM::pGrid()->pFindNodeById(i_Node);
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    pNode->szNodeNm(),
+                                    pNode->szIPAddr(),
+                                    pNode->iPortNo(),
+                                    (i8)(pNode->pSendSocket() ? true : false),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addSizeIndex -- add a row to Pds with the index size     */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddSizeIndex(void)
+{
+  ENTRY();
+
+  i8 iSize = m_pDataStack->iPopInt(__func__);
+
+  s256 sSize;
+  m_pDataStack->vPopStr(sSize, __func__);
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    iSize,
+                                    sSize.azChar(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addSizeTable -- add a row to Pds with the table size     */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddSizeTable(void)
+{
+  ENTRY();
+
+  i8 iSize = m_pDataStack->iPopInt(__func__);
+
+  s256 sSize;
+  m_pDataStack->vPopStr(sSize, __func__);
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    iSize,
+                                    sSize.azChar(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addSpaceInfo -- add a row to the Pds with the spaceInfo  */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddSpaceInfo(void)
+{
+  ENTRY();
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Grid* pGrid = AM::pGrid();
+
+  i8 iTotalSpace = AM::POOL::iTotalSpace();
+  i8 iInUseSpace = AM::POOL::iUsedSpace();
+  i8 iFreeSpace  = AM::POOL::iFreeSpace();
+
+  i8 iFreeSpaceInPool = PoolHelper::iPoolFree();
+  i8 iTotalFreeSpace  = iFreeSpace + iFreeSpaceInPool;
+
+  s256 sTotalSpace;
+  MagLib::vByteMag(iTotalSpace, 0, sTotalSpace);
+
+  s256 sInUseSpace;
+  MagLib::vByteMag(iInUseSpace, 0, sInUseSpace);
+
+  s256 sTotalFreeSpace;
+  MagLib::vByteMag(iTotalFreeSpace, 0, sTotalFreeSpace);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    iTotalSpace,
+                                    sTotalSpace.azChar(),
+                                    iInUseSpace,
+                                    sInUseSpace.azChar(),
+                                    iTotalFreeSpace,
+                                    sTotalFreeSpace.azChar(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addTableSizes -- add a row to Pds with the table sizes   */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddTableSizes(void)
+{
+  ENTRY();
+
+  s256 sTableName;
+  m_pDataStack->vPopStr(sTableName, __func__);
+
+  s256 sSize;
+  m_pDataStack->vPopStr(sSize, __func__);
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    sTableName.azChar(),
+                                    sSize.azChar(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
 
   EXIT();
 }

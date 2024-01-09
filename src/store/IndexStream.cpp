@@ -550,6 +550,7 @@ L_Exit:
 /*-- Second Use case ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+// Experiment, not converting to pds
 /*----------------------------------------------------------------------------*/
 /* populate the indexTree of this indexStream                                 */
 /*----------------------------------------------------------------------------*/
@@ -559,6 +560,7 @@ void IndexStream::vScanPopulate(RowBuffer* pRowBuffer) {
   m_pIndexTree->vInsertEntries(pRowBuffer);
 }
 
+// Experiment, not converting to pds
 /*----------------------------------------------------------------------------*/
 /* populate the indexTree of this indexStream with top values                 */
 /*----------------------------------------------------------------------------*/

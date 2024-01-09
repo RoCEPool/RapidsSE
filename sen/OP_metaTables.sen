@@ -18,7 +18,7 @@
   PipeIn[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in the rowBuffer for each word
+  // insert a row in the Pds for each word
 
   Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
@@ -30,10 +30,10 @@
     // skip definition only tables
     Table[].isUserCreated if
 
-      sTableNm TableDef[] RowBuffer[].addListContents  not if
-        RowBuffer[].pipeOut
-        BT_DATA TableDef[] RowBuffer[].new
-        sTableNm TableDef[] RowBuffer[].addListContents assert
+      sTableNm 1 Pds[].addRowVargs  not if
+        Pds[].pipeOut
+        BT_DATA TableDef[] Pds[].new
+        sTableNm 1 Pds[].addRowVargs assert
       then
 
     then
@@ -44,7 +44,7 @@
   next
 
   // pipeout the infoset
-  RowBuffer[].pipeOut
+  Pds[].pipeOut
 
   true
 ;
@@ -69,8 +69,8 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   true
 ;

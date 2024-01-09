@@ -104,8 +104,7 @@ void ToLglPtnRow::vConvert(Table* pTable, Pds* pPdsRowBuffer)
 
   //vTrace("ToBktRow::vConvert2 table:%s Total Rows:%lld \n"_Stz,pTable->szTableNm()->azChar(), nRows);
   while( ! pCursor->bIsCurrNull()) {
-    SkipListBlock* pSkipListBlock = pCursor->m_pCurrentBlock;
-    Row* aRowSrc = pSkipListBlock->aRow();
+    Row* aRowSrc = pCursor->pCurrRow();
 
     KeyHsh tKeyHsh = aRowSrc->tKeyHsh(i_KeyHshCol);
 

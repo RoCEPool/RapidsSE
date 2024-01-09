@@ -1075,6 +1075,7 @@ void vJobIdLastJobIdFetch(void);
   void vJobsNumThreshold(void);
 
   // list
+  void vListAddPds(void);
   void vListAddRowBuffer(void);
   void vListDelete(void);
   void vListGet(void);
@@ -1650,9 +1651,16 @@ void vJobIdLastJobIdFetch(void);
   void vPdsAddListIndex(void);
   void vPdsAddListPartitions(void);
   void vPdsAddLockStats(void);
+  void vPdsAddMemoryLeaks(void);
+  void vPdsAddNodeHeartbeat(void);
   void vPdsAddProgressUnits(void);
   void vPdsAddRowCount(void);
   void vPdsAddRowVargs(void);
+  void vPdsAddShowCluster(void);
+  void vPdsAddSizeIndex(void);
+  void vPdsAddSizeTable(void);
+  void vPdsAddSpaceInfo(void);
+  void vPdsAddTableSizes(void);
   void vPdsGet(void);
   void vPdsGetBufferIdAsAddr(void);
   void vPdsBufferTypeFetch(void);

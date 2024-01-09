@@ -33,6 +33,7 @@ namespace BASE
 
     bool bIsCurrNull(void);
     void vCurr(SkipListBlock* pCurr);
+    Row* pCurrRow(void);
     void vNext(void);
     void vReset(void);
 

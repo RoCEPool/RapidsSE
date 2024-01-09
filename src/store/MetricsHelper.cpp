@@ -40,8 +40,7 @@ void MetricsHelper::vWriteCsvPds(Pds* pPdsRowBuffer, StreamDef* pStreamDef, File
   PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
 
   while( ! pCursor->bIsCurrNull()) {
-    SkipListBlock* pSkipListBlock = pCursor->m_pCurrentBlock;
-    Row* pInfoRow = pSkipListBlock->aRow();
+    Row* pInfoRow = pCursor->pCurrRow();
 
     vTrace("MetricsHelper: %s\n"_Stz,hvRecord->sz(pInfoRow));
 

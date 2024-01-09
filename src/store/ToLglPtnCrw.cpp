@@ -186,8 +186,7 @@ void ToLglPtnCrw::vAddRowsToBuffer(LglPtn tLglPtn, Pds* pPdsRowBuffer)
   PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
 
   while( ! pCursor->bIsCurrNull()) {
-    SkipListBlock* pSkipListBlock = pCursor->m_pCurrentBlock;
-    Row* aRow = pSkipListBlock->aRow();
+    Row* aRow = pCursor->pCurrRow();
 
     bool bAppended = m_pCrwBuffer->bAppendRow(aRow);
 

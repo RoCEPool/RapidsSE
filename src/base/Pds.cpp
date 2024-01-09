@@ -1153,11 +1153,8 @@ void Pds::vPrintRows(File* pFilePtr, Stz* szLabel)
 
   PdsCursor* pCursor = new PdsCursor(this);
 
-  i8 iKeySize = sizeof(m_iSynthRowKey);
-
   while( ! pCursor->bIsCurrNull()) {
-    SkipListBlock* pSkipListBlock = pCursor->m_pCurrentBlock;
-    Row* aRowCur = aAdd<Row*>(pSkipListBlock->aItem(), iKeySize);
+    Row* aRowCur = pCursor->pCurrRow();
 
     hvRecord->vToCsvRecord(aRowCur);
     hvRecord->vPrintAsRow(szLabel);
