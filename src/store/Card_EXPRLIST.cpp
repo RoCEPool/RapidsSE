@@ -210,8 +210,15 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->bMatches_term0(pSymbol, aeFacet))
+    if (xKid.p_expr()->bMatches_term0(pSymbol, aeFacet)) {
+//      if (! bTestFind_expr_Matching(xKid.p_expr(),pSymbol)) {
+//        vDump(__func__);
+//        xKid.p_expr()->vDump(__func__);
+//        pSymbol->vDump();
+//        NEVER_REACH
+//      }
       return xKid.p_expr();
+    }
   }
 
   return nullptr;

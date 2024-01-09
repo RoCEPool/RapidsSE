@@ -162,6 +162,21 @@ void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find expression which expresses the given symbol                           */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Key::pFind_scalar_expr_Of_symbol(Symbol* pSymbol, eSF* aeFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
+    if (xKey.p_expr()->bMatches_term0(pSymbol, aeFacet)) {
+      return xKey.p_expr();
+    }
+  }
+
+  return nullptr;
+}
+/*----------------------------------------------------------------------------*/
 /* map the columns of this key                                                */
 /*----------------------------------------------------------------------------*/
 void Card_Key::vMapColumns(CardIter *pCI)

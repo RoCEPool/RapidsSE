@@ -503,12 +503,12 @@ void Card_RpnCalc::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-//    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
+  Kid xRpnCalc(this);
+  while (xRpnCalc.bEach(CK_TERM)) {
+//    if (!xRpnCalc.p_term()->pSymbol()->bIs_Tbl_Col())
 //      continue;
 
-    pCI->G.p_term = xKid.p_term();
+    pCI->G.p_term = xRpnCalc.p_term();
     pCI->G.p_term->vX_tblCol_To_expCol(pCI);
   }
 

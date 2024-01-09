@@ -82,29 +82,31 @@ void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
 
   //p_key->vDump();
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
 
-    //xKid.p_expr()->vDump(__func__ );
+    //xEmit.p_expr()->vDump(__func__ );
 
-    if (! xKid.p_expr()->bIsScalarCol())
+    if (! xEmit.p_expr()->bIsScalarCol())
       continue;
 
-    Symbol* pSymbol_expr_sole = xKid.p_expr()->pGet_Symbol(0);
+    Symbol* pSymbol_expr_scalar = xEmit.p_expr()->pGet_Symbol(0);
 
-    Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term0(pSymbol_expr_sole);
-//    Card_Expr* p_expr_sole_key;
+    p_key->vDump(__func__);
+
+    Card_Expr* p_expr_scalar = p_key->pFind_scalar_expr_Of_symbol(pSymbol_expr_scalar);
+//    Card_Expr* p_expr_scalar;
 //
 //#ifdef Z_MATCHES
-//    p_expr_sole_key = p_key->pFind_expr_Matches(xKid.p_expr()->pSymbol());
+//    p_expr_scalar = p_key->pFind_expr_Matches(xEmit.p_expr()->pSymbol());
 //#else
-//    Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term0(pSymbol_expr_sole);
+//    Card_Expr* p_expr_scalar = p_key->pFind_expr_Via_term0(pSymbol_expr_scalar);
 //#endif
 
-    if (! p_expr_sole_key)
+    if (! p_expr_scalar)
       continue;
 
-    //pSymbol_expr_sole->vCastFacets(p_expr_sole_key->pSymbol());
-    pSymbol_expr_sole->vConcatFacets(p_expr_sole_key->pSymbol());
+    //pSymbol_expr_scalar->vCastFacets(p_expr_scalar->pSymbol());
+    pSymbol_expr_scalar->vConcatFacets(p_expr_scalar->pSymbol());
   }
 }
 
