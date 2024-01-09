@@ -31,6 +31,7 @@ namespace STORE
     bool bContains(Symbol* pSymbol_arg);
     void vAppend_nmdCol_synthetic(i8 iExpCol);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
+    void vEnsure_nmdCol(i8 iExpCol);
     void vEnsureTypeId_expCol(CardIter* pCI);
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);

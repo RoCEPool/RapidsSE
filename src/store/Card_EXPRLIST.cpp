@@ -157,9 +157,21 @@ void Card_EXPRLIST::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xCI_this(this);
-  while (xCI_this.bEach(CK_EXPR))
-    xCI_this.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR))
+    xKid.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure each expression has a SF_NMD_COL                                    */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vEnsure_nmdCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR))
+    xKid.p_expr()->vEnsure_nmdCol(xKid.i_Child());
 }
 
 /*----------------------------------------------------------------------------*/

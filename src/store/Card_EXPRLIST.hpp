@@ -28,6 +28,8 @@ namespace STORE
 
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
+    void vEnsure_nmdCol(void);
+
     i8 nExpr(void);
 
     Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg, eSF eFacet_ignore=SF_NONE);

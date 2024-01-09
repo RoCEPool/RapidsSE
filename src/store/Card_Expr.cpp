@@ -275,6 +275,20 @@ void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure expression has a SF_NMD_COL                                         */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol_expr = pSymbol();
+  if (pSymbol_expr->bHasFacet(SF_NMD_COL))
+    return;
+
+  vAppend_nmdCol_synthetic(iExpCol);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vEnsureTypeId_expCol(CardIter* pCI)
