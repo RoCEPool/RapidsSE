@@ -32,6 +32,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_D_PDSROWBUFFER ...                                          */
+/*----------------------------------------------------------------------------*/
+: toCsv_PdsRowBuffer \handler
+
+  PipeIn[]\clear to Pds[]
+
+  // handle BT_DATA only
+  Pds[].bufferType@ BT_DATA != if
+    Pds[].pipeout
+    true
+    exit
+  then
+
+  Tub[] Pds[].toCsv
+
+  Tub[].pipeOutCompleted
+
+  Pds[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : toCsv_RowBuffer \handler
@@ -49,7 +72,7 @@
     
   Tub[].pipeOutCompleted
 
-  nullptr to RowBuffer[]
+  RowBuffer[].delete
   
   true
 ;
@@ -88,6 +111,7 @@
 
   find: toCsv_CrwBuffer  EV_D_CRWBUFFER [op].handler!
   find: toCsv_EosMarker  EV_M_EOS       [op].handler!
+  find: toCsv_PdsRowBuffer  EV_D_PDSROWBUFFER [op].handler!
   find: toCsv_RowBuffer  EV_D_ROWBUFFER [op].handler!
   find: toCsv_StreamDef  EV_D_STREAMDEF [op].handler!
 

@@ -162,6 +162,51 @@ void Tub::vSetRowPix(Tub* pTub, RowPix* pRowPix)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert Pds into one or more csv tub buffers                               */
+/*----------------------------------------------------------------------------*/
+void Tub::vToCsv(Tub* pTub, Pds* pPds)
+{
+  _static_
+  HV_Record hvRecord(pPds->pRowPix());
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(pTub->pWorkingBuffer());
+  if (! pCsvBuffer) {
+    pCsvBuffer = new CsvBuffer;
+    pTub->vAddBuffer(pCsvBuffer);
+  }
+
+  i8 nSize = 0;
+  Stz* szRecord = nullptr;
+
+  PdsCursor* pCursor = new PdsCursor(pPds);
+  while( ! pCursor->bIsCurrNull()) {
+    Row* aRow = pCursor->pCurrRow();
+    RASSERT(aRow);
+
+    Stz* szRow = hvRecord->sz(aRow,true);
+    nSize = szRow->nSize();
+
+    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
+      pCsvBuffer = new CsvBuffer;
+      pTub->vAddBuffer(pCsvBuffer);
+    }
+
+    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
+    StrLib::vCopy(szRecord->azChar(), nSize, szRow->azChar());
+    pCursor->vNext();
+  }
+
+  pCursor->m_pPds = nullptr;
+  delete pCursor;
+
+  if (szRecord)
+    ((char*)szRecord)[nSize-1] = '\0';
+
+  //vTrace("End: %s\n"_Stz,pCsvBuffer->szRecords());
+  //vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -30,6 +30,7 @@ namespace STORE
     static void* aAllotRowPds(Tub* pTub, char** aazStrArea, i8* piErrorCode);
     static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
     static void  vSetRowPix(Tub* pTub, RowPix* pRowPix);
+    static void  vToCsv(Tub* pTub, Pds* pPds);
 
   public:
   

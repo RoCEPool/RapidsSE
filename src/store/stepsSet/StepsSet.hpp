@@ -1653,6 +1653,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsAddLockStats(void);
   void vPdsAddMemoryLeaks(void);
   void vPdsAddNodeHeartbeat(void);
+  void vPdsAddNodeStatus(void);
   void vPdsAddProgressUnits(void);
   void vPdsAddRowCount(void);
   void vPdsAddRowVargs(void);
@@ -1661,6 +1662,8 @@ void vJobIdLastJobIdFetch(void);
   void vPdsAddSizeTable(void);
   void vPdsAddSpaceInfo(void);
   void vPdsAddTableSizes(void);
+  void vPdsAddVerifyIndex(void);
+  void vPdsAddVerifyTable(void);
   void vPdsGet(void);
   void vPdsGetBufferIdAsAddr(void);
   void vPdsBufferTypeFetch(void);
@@ -1674,6 +1677,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsSet(void);
   void vPdsSetLglPtn(void);
   void vPdsTableDefNameFetch(void);
+  void vPdsToCsv(void);
   void vPdsWriteCsv(void);
 
   // PayloadObj

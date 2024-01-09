@@ -31,13 +31,14 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].addBpaRegions"_Stz, &Step::vPdsAddBpaRegions);
   vAddStep("Pds[].addColumnDef"_Stz, &Step::vPdsAddColumnDef);
   vAddStep("Pds[].addGridSanity"_Stz,      &Step::vPdsAddGridSanity);
-  vAddStep("Pds[].addNodeInfo"_Stz, &Step::vPdsAddNodeInfo);
   vAddStep("Pds[].addListFolder"_Stz,    &Step::vPdsAddListFolder);
   vAddStep("Pds[].addListIndex"_Stz,     &Step::vPdsAddListIndex);
   vAddStep("Pds[].addListPartitions"_Stz,&Step::vPdsAddListPartitions);
   vAddStep("Pds[].addLockStats"_Stz,      &Step::vPdsAddLockStats);
   vAddStep("Pds[].addMemoryLeaks"_Stz,   &Step::vPdsAddMemoryLeaks);
   vAddStep("Pds[].addNodeHeartbeat"_Stz, &Step::vPdsAddNodeHeartbeat);
+  vAddStep("Pds[].addNodeInfo"_Stz, &Step::vPdsAddNodeInfo);
+  vAddStep("Pds[].addNodeStatus"_Stz,    &Step::vPdsAddNodeStatus);
   vAddStep("Pds[].addProgressUnits"_Stz, &Step::vPdsAddProgressUnits);
   vAddStep("Pds[].addRowCount"_Stz,      &Step::vPdsAddRowCount);
   vAddStep("Pds[].addRowVargs"_Stz,      &Step::vPdsAddRowVargs);
@@ -46,6 +47,8 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].addSizeTable"_Stz,     &Step::vPdsAddSizeTable);
   vAddStep("Pds[].addSpaceInfo"_Stz,     &Step::vPdsAddSpaceInfo);
   vAddStep("Pds[].addTableSizes"_Stz,     &Step::vPdsAddTableSizes);
+  vAddStep("Pds[].addVerifyIndex"_Stz,   &Step::vPdsAddVerifyIndex);
+  vAddStep("Pds[].addVerifyTable"_Stz,   &Step::vPdsAddVerifyTable);
   vAddStep("Pds[].bufferId"_Stz  ,          &Step::vPdsGetBufferIdAsAddr);
   vAddStep("Pds[].bufferType@"_Stz,         &Step::vPdsBufferTypeFetch);
   vAddStep("Pds[].bufferType!"_Stz,         &Step::vPdsBufferTypeStore);
@@ -58,6 +61,7 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].set"_Stz  ,               &Step::vPdsSet);
   vAddStep("Pds[].setLglPtn"_Stz  ,               &Step::vPdsSetLglPtn);
   vAddStep("Pds[].tableDefName@"_Stz,    &Step::vPdsTableDefNameFetch);
+  vAddStep("Pds[].toCsv"_Stz,            &Step::vPdsToCsv);
   vAddStep("Pds[].writeCsv"_Stz,    &Step::vPdsWriteCsv);
 }
 
@@ -203,30 +207,6 @@ void Step::vPdsAddGridSanity(void)
   //pRow->vDump(pStreamDef);
   m_pDataStack->vPushInt(pRow ? true : false);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Pds[].addNodeInfo -- add a row to the Pds with the nodeInfo                */
-/*----------------------------------------------------------------------------*/
-void Step::vPdsAddNodeInfo(void)
-{
-  ENTRY();
-
-  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
-
-  Grid* pGrid = AM::pGrid();
-
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    AM::iRegionSize(),
-                                    AM::PTNMAP::nPtnsPerNode(),
-                                    (i8)AM::SYSTEM::bStarted(),
-                                    C_VARGS_END);
-  //ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-
-  m_pDataStack->vPushInt(pRow ? true : false);
   EXIT();
 }
 
@@ -402,6 +382,79 @@ void Step::vPdsAddNodeHeartbeat(void)
                                  C_VARGS_END);
 
     break;
+  }
+
+  // done
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addNodeInfo -- add a row to the Pds with the nodeInfo                */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddNodeInfo(void)
+{
+  ENTRY();
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Grid* pGrid = AM::pGrid();
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                       pGrid->pThisNode()->szNodeNm(),
+                                       AM::iRegionSize(),
+                                       AM::PTNMAP::nPtnsPerNode(),
+                                       (i8)AM::SYSTEM::bStarted(),
+                                       C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addNodeStatus -- add a row to the Pds with node status   */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddNodeStatus(void)
+{
+  ENTRY();
+
+  Pds *pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  /* commented out, the old status command which is required to go to all nodes
+   * for each node, it gets back a row and its status.
+   * With the new model, we need a grid of the requested node,
+   * each individual node in the grid will have its own status.
+   */
+  /*
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                        pGrid->pThisNode()->szNodeNm(),
+                        sRegionNm.azChar(),
+                        Region::bTest(sRegionNm) ? "running"_Stz : "not running"_Stz,
+                        C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+  */
+  Row *pRow = nullptr;
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+
+    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                 (*oNode_I)->szNodeNm(),
+                                 (*oNode_I)->xGetHeartbeat().m_acRegionName,
+                                 (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
+                                 (*oNode_I)->pSendSocket() ? true : false,
+                                 (*oNode_I)->pRecvSocket() ? true : false,
+                                 C_VARGS_END);
+
+    if (!pRow) {
+      // call again
+      m_pDataStack->vPushInt(oNode_I.i_Node());
+      break;
+    }
   }
 
   // done
@@ -670,6 +723,64 @@ void Step::vPdsAddTableSizes(void)
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     sTableName.azChar(),
                                     sSize.azChar(),
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addVerifyIndex -- add a row to Pds with the index verify */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddVerifyIndex(void)
+{
+  ENTRY();
+
+  // get the index
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+
+  // get the table from the index
+  Table* pTable = pIndex->pTable();
+
+  i8 iStatus = m_pDataStack->iPopInt(__func__);
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    pTable->szTableNm(),
+                                    pIndex->szIndexNm(),
+                                    iStatus ? "Valid"_Stz : "Invalid"_Stz,
+                                    C_VARGS_END);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addVerifyTable -- add a row to Pds with the table verify */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddVerifyTable(void)
+{
+  ENTRY();
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  i8 iStatus = m_pDataStack->iPopInt(__func__);
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    pTable->szTableNm(),
+                                    iStatus ? "valid"_Stz : "invalid"_Stz,
                                     C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
@@ -1084,6 +1195,22 @@ void Step::vPdsTableDefNameFetch(void)
   }
 
   m_pDataStack->vPushStr(sTdefNm);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].toCsv -- convert Pds operand to csvBuffer                */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsToCsv(void)
+{
+  ENTRY();
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  Tub::vToCsv(pTub, pPds);
 
   EXIT();
 }
