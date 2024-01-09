@@ -23,8 +23,6 @@
 
 #define Z_MATCHES
 
-#define Z_EMIT
-
 namespace STORE
 {
   class Card_AbsJoin;
