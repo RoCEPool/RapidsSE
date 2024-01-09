@@ -491,14 +491,7 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
   }
   else
   if (p_term->pSymbol()->bIs_Tbl_Col()) {
-    Card_Expr *p_expr_prior = this->pFind_expr_Via_term0(p_term->pSymbol());
-#ifdef Z_MATCHES
-    if (p_expr_prior != pFind_expr_Matches(p_term->pSymbol())) {
-      //pCI->vPrintBoard(__func__,__LINE__,true);
-      p_term->vDump(__func__);
-      NEVER_REACH
-    }
-#endif
+    Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
     return p_expr_prior;
   }
   return nullptr;
