@@ -194,19 +194,12 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       }
 
       // which we haven't already added
-        if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol())) {
-#ifdef Z_MATCHES
-//          if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()) != p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol())) {
-//            pCI->vPrintBoard(__func__,__LINE__,true);
-//            xCI_rpnCalc.p_term()->vDump(__func__);
-//            NEVER_REACH
-//          }
-#endif
-          continue;
-        }
+      if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol())) {
+        continue;
+      }
 
-        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
-          p_needed->vAppendChild(p_expr_col->pClone());
+      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
+        p_needed->vAppendChild(p_expr_col->pClone());
 
       else {
 
