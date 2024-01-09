@@ -175,14 +175,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
         }
 
-        if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol)) {
-#ifdef Z_MATCHES
-          if (pCI->G.p_needed->pFind_expr_Matches(pSymbol_tblCol) != pCI->G.p_needed->pFind_expr_Via_term0(pSymbol_tblCol)) {
-            pCI->vPrintBoard(__func__,__LINE__,true);
-            p_expr_key->vDump(__func__);
-            NEVER_REACH
-          }
-#endif
+        if (p_needed->pFind_expr_Matches(pSymbol_tblCol)) {
           continue;
         }
 
