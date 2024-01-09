@@ -222,7 +222,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
           if (!xCI_rpnCalc.p_term()->bIsColSym())
             continue;
           // which we haven't already added
-          if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
+          if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol()))
             continue;
 
           if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term())) {
