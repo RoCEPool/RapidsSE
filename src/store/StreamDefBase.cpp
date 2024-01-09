@@ -1392,7 +1392,10 @@ eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
   
   pTkn = pTknVec->pNextToken(); dPT();
   while ( ! pTkn->bSame(")"_Stz) ) {
-    
+
+		if (iPartKeys == 1)
+			return EC_MULTIPLE_COLUMN_PARTITION_KEY;
+
     iPartKeys++;
     
     if ( ! pTkn ) {

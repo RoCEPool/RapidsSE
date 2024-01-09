@@ -14,7 +14,7 @@ create table ${testName2}_TABLE9 (
   colg9 integer,
   ucol integer,
   ucolvc varchar(5))
-partition by (pcol9,colb9);
+partition by (pcol9);
 success
 
 create index tbl9idx1 on ${testName2}_table9(pcol9);

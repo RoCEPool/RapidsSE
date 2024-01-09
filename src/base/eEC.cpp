@@ -187,6 +187,7 @@ Stz* aEC[EC_ENUMS] =
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
   /* EC_MISSING_OP                    */ (Stz*)"missing operator",
   /* EC_MISSING_SCAN_OP               */ (Stz*)"missing scan operator",
+	/* EC_MULTIPLE_COLUMN_PARTITION_KEY */ (Stz*)"partition key on multiple columns not yet supported",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
@@ -486,8 +487,9 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"EC_MISSING_JOIN_INDEX",
   /* EC_MISSING_OP                    */ (Stz*)"EC_MISSING_OP",
   /* EC_MISSING_SCAN_OP               */ (Stz*)"EC_MISSING_SCAN_OP",
+	/* EC_MULTIPLE_COLUMN_PARTITION_KEY */ (Stz*)"EC_MULTIPLE_COLUMN_PARTITION_KEY",
 
-  /* _N_ */
+				/* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"EC_NO_COLUMNS_DIC",
   /* EC_NO_SUCH_CATALOG               */ (Stz*)"EC_NO_SUCH_CATALOG",
   /* EC_NO_SUCH_COLUMN                */ (Stz*)"EC_NO_SUCH_COLUMN",                 // SQL Compiler Subsystem
@@ -793,8 +795,9 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
   /* EC_MISSING_OP                    */ (Stz*)"missing operator",
   /* EC_MISSING_SCAN_OP               */ (Stz*)"missing scan operator",
+	/* EC_MULTIPLE_COLUMN_PARTITION_KEY */ (Stz*)"partition key on multiple columns not yet supported",
 
-  /* _N_ */
+				/* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
   /* EC_NO_SUCH_CATALOG               */ (Stz*)"no such catalog",
   /* EC_NO_SUCH_COLUMN                */ (Stz*)"No such column",

@@ -106,6 +106,10 @@ rows:
 drop table ${testName2}_createT1;
 success
 
+//
+// FOLLOWING TESTS TO BE ENABLED WHEN WE SUPPORT PARITIONING ON MULTIPLE COLUMNS
+//
+/*
 create table ${testName2}_createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
@@ -137,6 +141,20 @@ rows:
 -- drop the table
 drop table ${testName2}_createT1;
 success
+
+*/
+
+create table ${testName2}_createT1 (
+key   INTEGER NOT NULL,
+name  VARCHAR(32) NOT NULL
+) partition by (key, name);
+failure contains: "EC_MULTIPLE_COLUMN_PARTITION_KEY"
+
+create table ${testName2}_createT1 (
+key   INTEGER NOT NULL,
+name  VARCHAR(32) NOT NULL
+) partition by (name, key);
+failure contains: "EC_MULTIPLE_COLUMN_PARTITION_KEY"
 
 // get memory leaks
 memoryLeaks;
