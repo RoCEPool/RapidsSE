@@ -529,12 +529,14 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
+      pCI->G.p_emit->vEnsure_nmdCol();
       if (pCI->Flux.m_pArriving)
         pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
       break;
 
     case CK_o_PROJECT:
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
+      pCI->G.p_emit->vEnsure_nmdCol();
       if (pCI->Flux.m_pArriving)
         pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
       break;

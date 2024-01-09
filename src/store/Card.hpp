@@ -23,7 +23,7 @@
 
 #define Z_MATCHES
 
-//#define Z_EMIT
+#define Z_EMIT
 
 namespace STORE
 {
