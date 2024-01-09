@@ -340,6 +340,23 @@ void Card_EXPRLIST::vShortForm(String* pString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+bool Card_EXPRLIST::bTestFind_expr_Matching(Card_Expr* p_expr_arg,
+                                            Symbol *pSymbol_arg, eSF eFacet_ignore)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    if (xKid.p_expr()->pSymbol()->bMatches(pSymbol_arg,nullptr,eFacet_ignore) &&
+        xKid.p_expr() == p_expr_arg)
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
 StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
