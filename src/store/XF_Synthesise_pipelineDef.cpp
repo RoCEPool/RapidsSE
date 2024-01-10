@@ -663,9 +663,6 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   auto bfAddPropagatedArriving = [this, pColPpg, p_emit](Card *pCard_expr_a) {
 
-    eSF eViaFacet;
-    s256 sHow;
-
     // arriving related
     Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
     Symbol*  pExprSym_a = p_expr_a->pSymbol();
@@ -695,21 +692,11 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       if (pTermSym_a && pTermSym_a->bIs_Tbl_Col())
         bTermSym_a_Is_tblCol = true;
 
-      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Via_term0(pTermSym_a, &eViaFacet))) {
-        // 1) ARRIVING TERM: $t.c
-        sHow.vSprint("--FOUND emitted expr for arriving $t.c: %s~%s--"_Stz,
-                     pTermSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-          p_expr_e->vDump(__func__, sHow);
+      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Matches(pTermSym_a))) {
         pInSym_a = pTermSym_a;
       }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pExprSym_a, &eViaFacet))) {
-        // 2) ARRIVING EXPR: $n
-        sHow.vSprint("--FOUND emitted expr for arriving $n; %s~%s--"_Stz,
-                     pExprSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-          p_expr_e->vDump(__func__, sHow);
+      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pExprSym_a))) {
         pInSym_a = pExprSym_a;
       }
       else {
