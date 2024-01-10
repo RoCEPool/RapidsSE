@@ -696,7 +696,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         pInSym_a = pTermSym_a;
       }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pExprSym_a))) {
+      if ((p_expr_e = p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL))) {
 //        if (p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL) != p_expr_e) {
 //          p_emit->vDump(__func__);
 //          p_expr_e->vDump(__func__);
@@ -706,13 +706,13 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         pInSym_a = pExprSym_a;
       }
       else {
-        if (p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL)) {
-          m_pCI->vPrintBoard(__func__,__LINE__,true);
-          p_emit->vDump(__func__);
-          p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL)->vDump(__func__);
-          pExprSym_a->vDump();
-          NEVER_REACH;
-        }
+//        if (p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL)) {
+//          m_pCI->vPrintBoard(__func__,__LINE__,true);
+//          p_emit->vDump(__func__);
+//          p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL)->vDump(__func__);
+//          pExprSym_a->vDump();
+//          NEVER_REACH;
+//        }
 
         // not propagated
         //vTrace("--NOT-FOUND expr\n"_Stz);
