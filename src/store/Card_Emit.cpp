@@ -265,8 +265,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGet_expr(i_RunKeyExpr);
 
     Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
-    Card_Expr* p_expr_prjCol = pFind_expr_Via_term0(p_term_runkey->pSymbol());
-
+    Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
     if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc()->nChildCards()) {
 
       // annotation or direction in passing
