@@ -87,6 +87,7 @@ namespace BASE
     void*           aLastUsableByteAddr(void);
     i8              iLastUsableOffset(void);
     i8              iNumEntries(i8 iLevel);
+    Row*            pNextRow(Row* pCurr);
     void            vPrintRows(File* pFilePtr, Stz* szLabel);
     void            vReset(void);
     RowPix*         pRowPix(void);

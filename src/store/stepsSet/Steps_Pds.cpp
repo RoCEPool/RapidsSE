@@ -564,6 +564,8 @@ void Step::vPdsAddRowVargs(void)
         // STRING_DEPOSIT
         m_pDataStack->vPopStr(sStr,__func__);
         nSize = sStr.nSize();
+        if(nSize > pRowPix->m_xaColPix[i_Arg].m_uLength)
+          nSize = pRowPix->m_xaColPix[i_Arg].m_uLength;
         pPdsRowBuffer->vDepositColVal(sStr, nSize);
         // END STRING_DEPOSIT
 

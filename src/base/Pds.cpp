@@ -374,6 +374,8 @@ Row* Pds::pAllotRow(i8 iVArgsBegin, ...)
       Stz* szVal = va_arg(xVarArgs,Stz*);
       if (szVal) {
         i8 iAllotSize = StrLib::nSize(szVal->azChar());
+        if(iAllotSize > m_oRowPix.m_xaColPix[i_Col].m_uLength)
+          iAllotSize = m_oRowPix.m_xaColPix[i_Col].m_uLength;
         vDepositColVal(szVal, iAllotSize);
       }
       else {
@@ -435,7 +437,9 @@ Row* Pds::pAllotRowFull(char** aaStzSet)
       vDiscardInvalidRow();
       return nullptr;
     }
+    RASSERT(m_aStzSet);
     *aaStzSet = (char*)m_aStzSet;
+    void* pCurStzSet = m_aStzSet;
 
     RASSERT(m_oRowPix.m_bInitialised);
 
@@ -446,8 +450,8 @@ Row* Pds::pAllotRowFull(char** aaStzSet)
 
       if (DM_VCH == eDatum) {
         i8 nSize = m_oRowPix.m_xaColPix[i_Col].m_uLength;
-        String_d* azStringDyn = new(m_aStzSet) String_d(nSize);
-        m_aStzSet = aAdd<void*>(m_aStzSet, azStringDyn->iTotalSize());
+        String_d* azStringDyn = new(pCurStzSet) String_d(nSize);
+        pCurStzSet = aAdd<void*>(pCurStzSet, azStringDyn->iTotalSize());
       }
     }
   }
@@ -1081,8 +1085,14 @@ void Pds::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
     if (DM_VCH == eDatum) {
       i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
 
+      // TODO: Hack, till we get the proper length
       if (nBytes) {
-        iTotalStzArea += String_d::iBytesToAlloc(nBytes);
+        if(nBytes > 800) {
+          iTotalStzArea += String_d::iBytesToAlloc(800);
+          m_oRowPix.m_xaColPix[i_Col].m_uLength = 800;
+        }
+        else
+          iTotalStzArea += String_d::iBytesToAlloc(nBytes);
       }
     }
   }
@@ -1137,6 +1147,30 @@ i8 Pds::iNumEntries(i8 iLevel)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   RASSERT(iLevel >= 0 && iLevel < C_MAX_LVL_LEVELS);
   return m_iNumEntries[iLevel];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Number of elements at iLevel in this Skip List                             */
+/*----------------------------------------------------------------------------*/
+Row* Pds::pNextRow(Row* pCurr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  i8 iOffset = sizeof(SkipListNode) + sizeof(i8);
+
+  // Get start addr of the SkipListBlock that this Row resides in
+  void* aSLBlockAddr = aSubtract<void*>(pCurr, iOffset);
+  RASSERT(DoubleWord::bOnDoubleWordBoundary(aSLBlockAddr));
+
+  SkipListBlock* pSlBlock = (SkipListBlock*) aSLBlockAddr;
+
+  // Get the next block
+  SkipListBlock* pNext = pNextSLBlock(pSlBlock, 0);
+
+  if( ! pNext )
+    return nullptr;
+
+  return pNext->aRow();
 }
 
 /*----------------------------------------------------------------------------*/
