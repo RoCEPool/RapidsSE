@@ -176,8 +176,9 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     if (!p_term->bIsColSym())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(p_term->pSymbol()))
+    if (pCI->Early.m_pNeeded_later->pFind_expr_Matches(p_term->pSymbol(),SF_EXP_COL)) {
       return C_CONTINUE_RECURSION;
+    }
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
       //p_expr_defn->vDump();

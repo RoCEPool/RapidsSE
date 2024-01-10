@@ -1269,8 +1269,9 @@ void Symbol::vDump(void)
   s4K sProperties;
   Y_vTo_String(sProperties);
 
-  vTrace("Symbol : %s\n"_Stz
+  vTrace("Symbol : %s %p\n"_Stz
          ,szWhatIs()
+         ,this
          );
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++)
@@ -1278,7 +1279,7 @@ void Symbol::vDump(void)
            ,Stz::szTab(1)
            ,aSF[xaFacet[i_Facet].m_eFacet]
            ,(i8)xaFacet[i_Facet].m_eFacet
-           ,*szSF_chrSeq(SF_NONE)->azChar() ? szSF_chrSeq(SF_NONE) : "??Symbol"_Stz
+           ,*szSF_chrSeq(xaFacet[i_Facet].m_eFacet)->azChar() ? szSF_chrSeq(xaFacet[i_Facet].m_eFacet) : "??Symbol"_Stz
            ,i_Facet
            );
 
