@@ -164,7 +164,7 @@ void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pFind_scalar_expr_Of_symbol(Symbol* pSymbol, eSF* aeFacet)
+Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol, eSF* aeFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

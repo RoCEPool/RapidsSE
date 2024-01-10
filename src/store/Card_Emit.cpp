@@ -93,7 +93,7 @@ void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
 
     p_key->vDump(__func__);
 
-    Card_Expr* p_expr_scalar = p_key->pFind_scalar_expr_Of_symbol(pSymbol_expr_scalar);
+    Card_Expr* p_expr_scalar = p_key->pDecode_scalar_expr_Via_symbol(pSymbol_expr_scalar);
 //    Card_Expr* p_expr_scalar;
 //
 //#ifdef Z_MATCHES

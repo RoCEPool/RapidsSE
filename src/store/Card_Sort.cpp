@@ -91,7 +91,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   for (Kid xEmit_sort(p_emit_sort); xEmit_sort.bEach(); /**/) {
     Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
     p_expr_emit_sort->vDump(__func__ );
-    Card_Expr* p_expr_key = pCI->G.p_key->pFind_expr_Via_term0(p_expr_emit_sort->pSymbol());
+    Card_Expr* p_expr_key = pCI->G.p_key->pDecode_scalar_expr_Via_symbol(p_expr_emit_sort->pSymbol());
     if (! p_expr_key)
       continue;
     p_expr_key->vDump(__func__ );

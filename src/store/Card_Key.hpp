@@ -21,7 +21,7 @@ namespace STORE
     void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);
     bool bIsEqual(Card_Key* p_key_arg);
     void vEnsureTypeId_expCol(CardIter *pCI);
-    Card_Expr* pFind_scalar_expr_Of_symbol(Symbol* pSymbol, eSF* aeFacet= nullptr);
+    Card_Expr* pDecode_scalar_expr_Via_symbol(Symbol* pSymbol, eSF* aeFacet= nullptr);
 
     void vMapColumns(CardIter *pCI);
     void vShortForm(String* pString);
