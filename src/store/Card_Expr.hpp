@@ -40,6 +40,8 @@ namespace STORE
     Symbol* pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
+    bool bHasTerm(Symbol* pSymbol);
+
     bool bIsDescending(void);
     Card_Expr *pInduct(i8 iExp);
     bool bIsCompound(void);
@@ -47,10 +49,12 @@ namespace STORE
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bIsExpressionOfKey(void);
-    bool bHasTerm(Symbol* pSymbol);
+
     bool bMatches(Card_Expr* p_expr_arg);
     bool bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg= nullptr);
+
     void vPrint(Ribbon* pRibbon, i8 iDepth);
+    void vPropagate_nmdCol(CardIter* pCI, i8 iExpCol);
 
     void vRenumberForm_keyCol(i8 i_Expr);
     void vRenumberForm_expCol(i8 i_Expr);

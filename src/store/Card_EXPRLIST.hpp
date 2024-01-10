@@ -39,6 +39,8 @@ namespace STORE
     Card_Expr* pGet_expr(i8 i_Expr);
     Card_Expr* pGet_expr(Symbol* pSymbol_ordinal);
 
+    void vPropagate_nmdCol(CardIter* pCI);
+
     void vRenumberAll_expr(void);
 
     bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);

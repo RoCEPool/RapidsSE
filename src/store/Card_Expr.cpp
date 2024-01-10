@@ -285,6 +285,14 @@ void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
   if (pSymbol_expr->bHasFacet(SF_NMD_COL))
     return;
 
+  if (! bIsCompound()) {
+    Card_Term* p_term0 = pGet_term0();
+    if (p_term0->pSymbol()->bHasFacet(SF_NMD_COL)) {
+      pSymbol_expr->vAppendFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
+      return;
+    }
+  }
+
   vAppend_nmdCol_synthetic(iExpCol);
 }
 
@@ -665,6 +673,27 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             aFacet->m_sChrSeq.szStz(),
                             i_Facet);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure expression has a SF_NMD_COL                                         */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vPropagate_nmdCol(CardIter* pCI, i8 iExpCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pCI);
+  UNUSED(iExpCol);
+
+  Symbol* pSymbol_expr = pSymbol();
+  if (pSymbol_expr->bHasFacet(SF_NMD_COL))
+    return;
+
+  pCI->Flux.m_pArriving->vDump(__func__);
+  vDump(__func__);
+
+
+  vEnsure_nmdCol(iExpCol);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -227,6 +227,7 @@ namespace STORE
     bool bSame(char cArg);
     bool bSame(Stz* szChrSeq);
 
+    void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     char cSF_char(void);
     Stz* szSF_chrSeq(eSF eSymbol_xchk);
     i8   iSF_number(void);

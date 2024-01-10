@@ -266,6 +266,19 @@ Card_Expr* Card_EXPRLIST::pGet_expr(Symbol* pSymbol_ordinal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure each expression has a SF_NMD_COL                                    */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vPropagate_nmdCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR)) {
+    xKid.p_expr()->vPropagate_nmdCol(pCI, xKid.i_Child());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */
 /*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vRenumberAll_expr(void)
