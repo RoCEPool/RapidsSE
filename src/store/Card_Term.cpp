@@ -619,7 +619,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   if (pCI->X.m_pExprList_a) {
     //pCI->X.m_pExprList_a->vDump(__func__);
-    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term0(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym)) {
 
 #ifdef Z_MATCHES
 //    if (pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym) != p_expr_scalar_a) {
