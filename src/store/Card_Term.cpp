@@ -608,7 +608,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (pCI->X.m_pExprList_i) {
 		// ALKA changed 22/10/23 (compilation error on linux)
     //if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
-		if (pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
+		if (pCI->X.m_pExprList_i->pFind_expr_Matches(&xTblCol_sym,SF_EXP_COL)) {
       this->vMark1(MARK_FOUND);
       return;
     }
