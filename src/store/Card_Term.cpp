@@ -678,7 +678,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
       Symbol *pSymbol_k = p_expr_scalar_k->pFirst_keyCol();
       if (! pSymbol_k)
         return;
-      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term0(&xTblCol_sym)) {
+      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym,SF_EXP_COL)) {
         Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
         pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
