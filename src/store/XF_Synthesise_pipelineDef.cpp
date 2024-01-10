@@ -696,7 +696,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         pInSym_a = pTermSym_a;
       }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pExprSym_a))) {
+      if ((p_expr_e = p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL))) {
         pInSym_a = pExprSym_a;
       }
       else {
