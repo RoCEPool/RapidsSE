@@ -227,17 +227,6 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-//Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  while (aKid->bEach(CK_EXPR)) {
-//    if (aKid->p_expr()->pSymbol()->bMatches(pSymbol))
-//      return aKid->p_expr();
-//  }
-//
-//  return nullptr;
-//}
 Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
