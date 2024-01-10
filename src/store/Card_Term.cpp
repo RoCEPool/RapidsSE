@@ -620,15 +620,6 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     //pCI->X.m_pExprList_a->vDump(__func__);
     if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym)) {
 
-#ifdef Z_MATCHES
-//    if (pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym) != p_expr_scalar_a) {
-//      pCI->vPrintBoard(__func__,__LINE__);
-//      pCI->X.m_pExprList_a->vDump(__func__ );
-//      this->vDump(__func__ );
-//      NEVER_REACH
-//    }
-#endif
-
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
       pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
