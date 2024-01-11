@@ -676,27 +676,6 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ensure expression has a SF_NMD_COL                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vPropagate_nmdCol(CardIter* pCI, i8 iExpCol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(pCI);
-  UNUSED(iExpCol);
-
-  Symbol* pSymbol_expr = pSymbol();
-  if (pSymbol_expr->bHasFacet(SF_NMD_COL))
-    return;
-
-  pCI->Flux.m_pArriving->vDump(__func__);
-  vDump(__func__);
-
-
-  vEnsure_nmdCol(iExpCol);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vRenumberForm_keyCol(i8 i_Expr)

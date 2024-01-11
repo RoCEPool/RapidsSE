@@ -205,28 +205,6 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg, eSF eFacet_ign
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->bMatches_term0(pSymbol, aeFacet)) {
-//      if (! bTestFind_expr_Matching(xKid.p_expr(),pSymbol)) {
-//        vDump(__func__);
-//        xKid.p_expr()->vDump(__func__);
-//        pSymbol->vDump();
-//        NEVER_REACH
-//      }
-      return xKid.p_expr();
-    }
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find expression which expresses the given symbol                           */
-/*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -263,19 +241,6 @@ Card_Expr* Card_EXPRLIST::pGet_expr(Symbol* pSymbol_ordinal)
   Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Child));
 
   return p_expr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* ensure each expression has a SF_NMD_COL                                    */
-/*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vPropagate_nmdCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR)) {
-    xKid.p_expr()->vPropagate_nmdCol(pCI, xKid.i_Child());
-  }
 }
 
 /*----------------------------------------------------------------------------*/
