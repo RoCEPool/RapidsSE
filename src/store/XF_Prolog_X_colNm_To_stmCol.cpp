@@ -128,7 +128,7 @@ void XF_Prolog_X_colNm_To_stmCol::vX_colNm_To_stmCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_OP->vApply_lambdaFn_ToAll_term(pCI, fb_colNm_To_stmCol);
+  pCI->bApplyRecursive(pCI->G.p_OP,CK_TERM,fb_colNm_To_stmCol);
 }
 
 /*============================================================================*/
