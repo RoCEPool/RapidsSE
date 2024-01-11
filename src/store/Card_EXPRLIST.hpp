@@ -32,7 +32,7 @@ namespace STORE
 
     i8 nExpr(void);
 
-    Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg, eSF eFacet_ignore=SF_NONE);
+    Card_Expr* pFind_expr_Matches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore= SF_NONE);
     Card_Expr* pFind_expr_Matches(Symbol* pSymbol, Kid* aKid);
 
     Card_Expr* pGet_expr(i8 i_Expr);

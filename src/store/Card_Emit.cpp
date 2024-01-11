@@ -167,7 +167,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
         }
 
-        if (p_needed->pFind_expr_Matches(pSymbol_tblCol)) {
+        if (p_needed->pFind_expr_Matches_ignoring(pSymbol_tblCol)) {
           continue;
         }
 
@@ -186,7 +186,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       }
 
       // which we haven't already added
-      if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol())) {
+      if (p_needed->pFind_expr_Matches_ignoring(xCI_rpnCalc.p_term()->pSymbol())) {
         continue;
       }
 
@@ -214,7 +214,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
           if (!xCI_rpnCalc.p_term()->bIsColSym())
             continue;
           // which we haven't already added
-          if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol()))
+          if (p_needed->pFind_expr_Matches_ignoring(xCI_rpnCalc.p_term()->pSymbol()))
             continue;
 
           if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term())) {
@@ -265,7 +265,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGet_expr(i_RunKeyExpr);
 
     Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
-    Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
+    Card_Expr* p_expr_prjCol = pFind_expr_Matches_ignoring(p_term_runkey->pSymbol());
     if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc()->nChildCards()) {
 
       // annotation or direction in passing
@@ -482,7 +482,7 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
   }
   else
   if (p_term->pSymbol()->bIs_Tbl_Col()) {
-    Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
+    Card_Expr *p_expr_prior = this->pFind_expr_Matches_ignoring(p_term->pSymbol());
     return p_expr_prior;
   }
   return nullptr;

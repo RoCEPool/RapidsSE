@@ -692,12 +692,12 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       if (pTermSym_a && pTermSym_a->bIs_Tbl_Col())
         bTermSym_a_Is_tblCol = true;
 
-      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Matches(pTermSym_a))) {
+      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Matches_ignoring(pTermSym_a))) {
         pInSym_a = pTermSym_a;
       }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL))) {
-//        if (p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL) != p_expr_e) {
+      if ((p_expr_e = p_emit->pFind_expr_Matches_ignoring(pExprSym_a, SF_EXP_COL))) {
+//        if (p_emit->pFind_expr_Matches_ignoring(pExprSym_a,SF_EXP_COL) != p_expr_e) {
 //          p_emit->vDump(__func__);
 //          p_expr_e->vDump(__func__);
 //          pExprSym_a->vDump();
@@ -706,10 +706,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         pInSym_a = pExprSym_a;
       }
       else {
-//        if (p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL)) {
+//        if (p_emit->pFind_expr_Matches_ignoring(pExprSym_a,SF_EXP_COL)) {
 //          m_pCI->vPrintBoard(__func__,__LINE__,true);
 //          p_emit->vDump(__func__);
-//          p_emit->pFind_expr_Matches(pExprSym_a,SF_EXP_COL)->vDump(__func__);
+//          p_emit->pFind_expr_Matches_ignoring(pExprSym_a,SF_EXP_COL)->vDump(__func__);
 //          pExprSym_a->vDump();
 //          NEVER_REACH;
 //        }
@@ -778,7 +778,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
   m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
   for (Kid xKey(m_pCI->G.p_OP->pSub_key()); xKey.bEach(); /**/) {
     //xKey.p_expr()->vDump(__func__,"KEY EXPR"_Stz);
-    if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Matches(xKey.p_expr()->pSymbol()))) {
+    if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Matches_ignoring(xKey.p_expr()->pSymbol()))) {
       //m_pCI->G.p_expr->vDump(__func__, "EMIT EXPR"_Stz);
 
       i8 i_EmittedCol = m_pCI->G.p_expr->pSymbol()->iSF_ordinal() - 1;

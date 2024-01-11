@@ -76,7 +76,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
       Symbol* pSymbol_term = p_term->pSymbol();
-      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term))) {
+      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches_ignoring(pSymbol_term))) {
          Symbol oSymbol_itmCol;
         s256 sItmCol;
         sItmCol.vSprint("C%lld_%s"_Stz,
@@ -248,7 +248,7 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
     p_expr_arriving = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
   else
   if (bIsNmdCol())
-    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol());
+    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches_ignoring(pSymbol());
   else {
     RASSERT(!bIsTblCol());
     return;
@@ -612,7 +612,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   if (pCI->X.m_pExprList_i) {
 		// ALKA changed 22/10/23 (compilation error on linux)
-   	if (pCI->X.m_pExprList_i->pFind_expr_Matches(&xTblCol_sym,SF_EXP_COL)) {
+   	if (pCI->X.m_pExprList_i->pFind_expr_Matches_ignoring(&xTblCol_sym, SF_EXP_COL)) {
       this->vMark1(MARK_FOUND);
       return;
     }
@@ -623,7 +623,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   if (pCI->X.m_pExprList_a) {
     //pCI->X.m_pExprList_a->vDump(__func__);
-    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches_ignoring(&xTblCol_sym)) {
 
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
       pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
@@ -636,7 +636,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
       return;
     }
-    if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches_ignoring(&xTblCol_sym)) {
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
       pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
@@ -650,7 +650,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
       Symbol xAsNm_sym;
       xAsNm_sym.vConcatFacet(SF_NMD_COL, pSymbol_this->szSF_chrSeq(SF_NMD_COL));
 
-      if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xAsNm_sym)) {
+      if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches_ignoring(&xAsNm_sym)) {
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
         pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
@@ -669,11 +669,11 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
     //pCI->X.m_pExprList_k->vDump(__func__);
     //pSymbol_this->vDump();
-    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Matches(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Matches_ignoring(&xTblCol_sym)) {
       Symbol *pSymbol_k = p_expr_scalar_k->pFirst_keyCol();
       if (! pSymbol_k)
         return;
-      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym,SF_EXP_COL)) {
+      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches_ignoring(&xTblCol_sym, SF_EXP_COL)) {
         Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
         pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);

@@ -189,7 +189,7 @@ i8 Card_EXPRLIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg, eSF eFacet_ignore)
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches_ignoring(Symbol *pSymbol_arg, eSF eFacet_ignore)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -516,7 +516,7 @@ void Card_EXPRLIST::vUpdate_cast(Card_EXPRLIST *p_exprList_ref)
 
     Symbol* pSymbol = p_expr_this->pSymbol();
 
-    Card_Expr* p_expr_ref = p_exprList_ref->pFind_expr_Matches(pSymbol);
+    Card_Expr* p_expr_ref = p_exprList_ref->pFind_expr_Matches_ignoring(pSymbol);
 
     if (p_expr_ref) {
       p_expr_this->vCast(p_expr_ref->xCast());
