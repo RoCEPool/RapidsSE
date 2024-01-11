@@ -210,8 +210,18 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   while (aKid->bEach(CK_EXPR)) {
-    if (aKid->p_expr()->bMatches_term0(pSymbol))
+    if (aKid->p_expr()->bMatches_term0(pSymbol)) {
+//      if (! aKid->p_expr()->pSymbol()->bMatches(pSymbol,nullptr,SF_NONE)) {
+//        vDump(__func__);
+//        aKid->p_expr()->vDump(__func__);
+//        pSymbol->vDump();
+//        NEVER_REACH
+//      }
       return aKid->p_expr();
+    }
+    else {
+      RASSERT(! aKid->p_expr()->pSymbol()->bMatches(pSymbol,nullptr,SF_NONE));
+    }
   }
 
   return nullptr;
