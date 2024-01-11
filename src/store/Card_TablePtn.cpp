@@ -76,7 +76,7 @@ bool Card_TablePtn::bColumnMatchesPtn(Symbol* p_Y_tblPtn, Symbol* p_Y_tblCol)
 {
   _static_
 
-  if (p_Y_tblCol->bMatches(p_Y_tblPtn))
+  if (p_Y_tblCol->bMatches_ignoring(p_Y_tblPtn))
     return true;
 
   return false;

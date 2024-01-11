@@ -1740,7 +1740,7 @@ bool Card::bSymbolMatches(Card* pCard_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (m_xSymbol.bMatches(pCard_arg->pSymbol()))
+  if (m_xSymbol.bMatches_ignoring(pCard_arg->pSymbol()))
     return true;
 
   return false;
@@ -1753,7 +1753,7 @@ bool Card::bSymbolMatches(Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (m_xSymbol.bMatches(pSymbol_arg))
+  if (m_xSymbol.bMatches_ignoring(pSymbol_arg))
     return true;
   else
     return false;

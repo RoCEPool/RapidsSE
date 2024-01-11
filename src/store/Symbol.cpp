@@ -2616,9 +2616,11 @@ bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bMatches(Symbol* pSymbol_arg, eSF* aeFacet_matched, eSF eFacet_ignore)
+bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF* aeFacet_matched, eSF eFacet_ignore)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(nullptr == aeFacet_matched);
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     eSF eFacet_this = xaFacet[i_Facet].m_eFacet;

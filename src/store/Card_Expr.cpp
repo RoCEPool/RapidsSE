@@ -583,7 +583,7 @@ bool Card_Expr::bMatches(Card_Expr* p_expr_arg)
   Symbol* pSymbol_arg = p_expr_arg->pGet_Symbol(0);
   Symbol* pSymbol_this = this->pGet_Symbol(0);
 
-  if (pSymbol_this->bMatches(pSymbol_arg))
+  if (pSymbol_this->bMatches_ignoring(pSymbol_arg))
     return true;
   return false;
 }
@@ -597,7 +597,7 @@ bool Card_Expr::bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg)
 
   Symbol* pSymbol_term0 = pGet_term(0)->pSymbol();
 
-  if (pSymbol_term0->bMatches(pSymbol_arg, aeFacet_arg))
+  if (pSymbol_term0->bMatches_ignoring(pSymbol_arg, aeFacet_arg))
     return true;
   return false;
 }

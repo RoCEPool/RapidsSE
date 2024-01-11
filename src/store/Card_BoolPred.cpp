@@ -248,7 +248,7 @@ bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
 
     Card_Term* p_term = _pCard_Term(p_conj);
 
-    if (p_term->pSymbol()->bMatches(pGivenSymbol)) {
+    if (p_term->pSymbol()->bMatches_ignoring(pGivenSymbol)) {
       bDoesContain = true;
       return C_TERMINATE_RECURSION;
     }
@@ -517,7 +517,7 @@ bool Card_BoolPred::bHas_term(Symbol* pWithSymbol)
 
   auto bLambdaFn = [pWithSymbol, &bHas](Card* p_card)
   {
-    if (p_card->pSymbol()->bMatches(pWithSymbol)) {
+    if (p_card->pSymbol()->bMatches_ignoring(pWithSymbol)) {
       bHas = true;
       return C_TERMINATE_RECURSION;
     }

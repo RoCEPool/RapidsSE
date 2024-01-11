@@ -188,7 +188,7 @@ bool Card_RlnConj::bIsEq(Card_RlnConj* p_rlnConj_arg)
     Symbol* pSymbol_this = p_term_this->pSymbol();
     Symbol* pSymbol_that = p_term_that->pSymbol();
 
-    if (! pSymbol_this->bMatches(pSymbol_that))
+    if (!pSymbol_this->bMatches_ignoring(pSymbol_that))
       return false;
   }
 
