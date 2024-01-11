@@ -575,7 +575,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Kid xKid(p_emit);
     for (;;) {
       Card_Expr *p_expr_e =
-          p_emit->pFind_expr_Via_term0(pSym_tblCol_i, &xKid);
+          p_emit->pFind_expr_Matches(pSym_tblCol_i, &xKid);
       if (! p_expr_e)
         return C_CONTINUE_RECURSION;
 

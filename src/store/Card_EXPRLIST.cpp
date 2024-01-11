@@ -205,7 +205,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg, eSF eFacet_ign
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid)
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol* pSymbol, Kid* aKid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
