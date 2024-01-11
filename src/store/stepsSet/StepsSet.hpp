@@ -1641,6 +1641,7 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSet(void);
 
   // pds
+  void vPdsAddAnalyzeIndex(void);
   void vPdsAddAnalyzeTable(void);
   void vPdsAddBpaObjects(void);
   void vPdsAddBpaRegions(void);

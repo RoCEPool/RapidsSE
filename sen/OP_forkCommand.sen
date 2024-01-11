@@ -55,56 +55,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: forkCommand_RowBuffer \handler
-  
-  0 0 locals| eError tForkedJobId |
-
-  // handle BT_COMMAND only
-  PipeIn[].bufferType@ BT_COMMAND != if
-    Pipein[].pipeout
-    true
-    exit
-  then
-
-  PipeIn[]\clear to RowBuffer[]
-
-  // get the command to be forked and any tags to be used
-  //0 C_TDEF_COMMAND InfoSet:getCol locals| sForkCmd |
-  //1 C_TDEF_COMMAND InfoSet:getCol locals| sTags |
-
-  RowBuffer[].firstRow to Row[]
-  0 Row[].getVchColumn locals| sForkCmd |
-  1 Row[].getVchColumn locals| sTags |
-
-  RowBuffer[].delete
-
-  //sForkCmd "  forkCmd=%v" .printf
-
-  // set the responseOp for the responses coming from the forked child
-  <responseOpNm> [stream].findOp locals| pResponseOp |
-  pResponseOp [job].responseOp!
-
-  // Combine the STD_NORMALFORK_TAGs with the sTags from the infoset
-  sTags STD_NORMALFORK_TAG "%v %v" str.format locals| sForkTags |
-
-//  sForkTags "  sForkTags=%v" .printf
-//  sForkCmd  "  sForkCmd=%v" .printf
-//  debug::breakpoint
-
-  // fork a child job for the command
-  sForkTags sForkCmd nullptr api::forkChild not if
-    nullptr [job].responseOp!
-    op__execErr
-    true
-    exit
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +66,6 @@
 
   op__topology
 
-  find: forkCommand_rowbuffer  EV_D_RowBuffer   [op].handler!
   find: forkCommand_PdsRowbuffer  EV_D_PDSRowBuffer   [op].handler!
 
   op__loop

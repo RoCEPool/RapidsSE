@@ -26,6 +26,7 @@ void Step::vAddSteps_Pds(void)
 {
   vAddStep("Pds[]"_Stz,                     &Step::vPdsGet);
 
+  vAddStep("Pds[].addAnalyzeIndex"_Stz,  &Step::vPdsAddAnalyzeIndex);
   vAddStep("Pds[].addAnalyzeTable"_Stz, &Step::vPdsAddAnalyzeTable);
   vAddStep("Pds[].addBpaObjects"_Stz, &Step::vPdsAddBpaObjects);
   vAddStep("Pds[].addBpaRegions"_Stz, &Step::vPdsAddBpaRegions);
@@ -63,6 +64,45 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].tableDefName@"_Stz,    &Step::vPdsTableDefNameFetch);
   vAddStep("Pds[].toCsv"_Stz,            &Step::vPdsToCsv);
   vAddStep("Pds[].writeCsv"_Stz,    &Step::vPdsWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addAnalyzeIndex -- add a row to the Pds index analysis               */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddAnalyzeIndex(void)
+{
+  ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the index to be analyzed
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+
+  // get the tablePtn
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+
+  // get the Pds
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+
+  i8 nBuffers = 0;
+  i8 nEntries = 0;
+
+  pIndex->vAnalyze(i_TablePtn, nBuffers, nEntries);
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    pTableDef->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
+                                    nBuffers,
+                                    nEntries,
+                                    C_VARGS_END);
+
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

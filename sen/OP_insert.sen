@@ -198,7 +198,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER / EV_D_PDSROWBUFFER ...                         */
+/* handler for EV_D_PDSROWBUFFER ...                                          */
 /*----------------------------------------------------------------------------*/
 : insert_PassThrough \handler
 
@@ -227,7 +227,6 @@
   find: insert_Cleaning      EV_M_CLEANING     [op].handler!
   find: insert_DataBuffer    EV_D_CRWBUFFER    [op].handler!
   find: insert_EosMarker     EV_M_EOS          [op].handler!
-  find: insert_PassThrough   EV_D_ROWBUFFER    [op].handler!
   find: insert_PassThrough   EV_D_PDSROWBUFFER [op].handler!
   find: insert_StreamDef     EV_D_STREAMDEF    [op].handler!
   find: insert_StartMarker   EV_M_START        [op].handler!

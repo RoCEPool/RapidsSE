@@ -95,22 +95,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: dropTable_RowBuffer \handler
-
-  //"Operand:- EV_D_ROWBUFFER" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_PDSROWBUFFER ...                                          */
 /*----------------------------------------------------------------------------*/
 : dropTable_PdsRowBuffer \handler
 
-  //"Operand:- EV_D_ROWBUFFER" .verbose
+  //"Operand:- EV_D_PDSROWBUFFER" .verbose
   //PipeIn[].pipeToOutput
   "Got PdsRowBuffer" .
 
@@ -130,7 +119,6 @@
 
   find: dropTable_StartMarker   EV_M_START   [op].handler!
   find: dropTable_StreamDef     EV_D_STREAMDEF     [op].handler!
-  find: dropTable_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: dropTable_PdsRowBuffer     EV_D_PDSROWBUFFER     [op].handler!
   find: dropTable_ChildExit    EV_X_CHILDEXIT     [op].handler!
   find: dropTable_waitFinished_End       EV_M_END       [op].handler!

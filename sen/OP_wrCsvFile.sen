@@ -61,25 +61,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: wrCsvFile_RowBuffer \handler
-
-  PipeIn[]\clear to RowBuffer[]
-
-  // pipeout buffers other than BT_DATA
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
-    true
-    exit
-  then
-
-  // write the ROWBUFFER to file
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : wrCsvFile_StartMarker \handler
@@ -105,7 +86,6 @@
   find: wrCsvFile_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
   find: wrCsvFile_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
   find: wrCsvFile_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
-  find: wrCsvFile_RowBuffer   EV_D_ROWBUFFER   [op].handler!
   find: wrCsvFile_StartMarker EV_M_START       [op].handler!
 
   op__loop

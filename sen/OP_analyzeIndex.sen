@@ -23,23 +23,23 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create a DATA rowBuffer
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a DATA Pds
+  BT_DATA TableDef[] Pds[].new
 
   // add a row for each table ptn
   [grid].ptnsPerNode 0
   do
     // insert index analysis
-    I Index[] TableDef[] RowBuffer[].addAnalyzeIndex  not if
-    RowBuffer[].pipeOut
-      BT_DATA TableDef[] RowBuffer[].new
-      I Index[] TableDef[] RowBuffer[].addAnalyzeIndex assert
+    I Index[] TableDef[] Pds[].addAnalyzeIndex  not if
+    Pds[].pipeOut
+      BT_DATA TableDef[] Pds[].new
+      I Index[] TableDef[] Pds[].addAnalyzeIndex assert
     then
 
   loop
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

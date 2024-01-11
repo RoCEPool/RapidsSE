@@ -117,21 +117,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                            CRWBUFFER */
-/*----------------------------------------------------------------------------*/
-: adaptorDummy_RowBuffer \handler
-
-  EC_NONE locals| eError |
-
-  0 EV_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  "adaptorDummy_RowBuffer: GOT A ROWBUFFER" .
-  Pipein[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_STRAEMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : adaptorDummy_StreamDef \handler
@@ -157,7 +142,6 @@
 
   find: adaptorDummy_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
   find: adaptorDummy_PdsRowBuffer EV_D_PDSROWBUFFER  [op].handler!
-  find: adaptorDummy_RowBuffer    EV_D_ROWBUFFER     [op].handler!
   find: adaptorDummy_StreamDef    EV_D_STREAMDEF     [op].handler!
 
   find: adaptorDummy_Start        EV_M_START         [op].handler!

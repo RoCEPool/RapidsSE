@@ -415,26 +415,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER                                                 */
-/* Called when a row buffer is received. These are projections from a query.  */
-/*----------------------------------------------------------------------------*/
-: adaptorWL_RowBuffer \handler
-
-  "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .verbose
-
-  PipeIn[] AdaptorWL[].rowBuffer
-  Pipein[].delete
-
-  // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_X_CHILDEXIT ...                                             */
 /* Called when the submitted statement has finished being executed.           */
 /*----------------------------------------------------------------------------*/
@@ -544,7 +524,6 @@
   find: adaptorWL_StartMarker   EV_M_START          [op].handler!
   find: adaptorWL_Payload       EV_D_PAYLOAD        [op].handler!
   find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
-  find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
   find: adaptorWL_PdsRowBuffer  EV_D_PDSROWBUFFER   [op].handler!
   find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!
   find: adaptorWL_ChildExit     EV_X_CHILDEXIT      [op].handler!

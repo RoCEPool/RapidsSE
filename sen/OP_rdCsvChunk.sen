@@ -101,48 +101,6 @@
   true
 ;
 
-/*
-: rdCsvChunk_SeekOffsets \handler
-
-  PipeIn[] to RowBuffer[]
-  nullptr to PipeIn[]
-
-  RowBuffer[].firstRow to Row[]
-  begin
-    Row[].isNull
-  not while
-
-   [args].operands attachmap::operands@ [args].operands > and if
-    
-      attachmap::operands@ "Queued Arguments : %v" .printf
-      25 [task].sleepMsec
- 
-   else
-
-      // check for low memory
-      attachMap::isLowMemory if
-        //RowBuffer[].delete
-        EC_LOW_MEMORY op__execErr
-        true
-        exit
-      then
-
-      discern::rdCsvChunk discard
-      
-      Row[].get RowBuffer[].rdCsvChunk to CsvBuffer[]
-      CsvBuffer[].pipeOut
-      RowBuffer[].nextRow to Row[]
-
-    then
-
-  repeat
-
-  RowBuffer[].delete
-
-  true
-;
-*/
-
 /*----------------------------------------------------------------------------*/
 /* on EV_M_START ...                                                          */
 /*----------------------------------------------------------------------------*/

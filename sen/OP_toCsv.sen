@@ -55,29 +55,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: toCsv_RowBuffer \handler
-
-  PipeIn[]\clear to RowBuffer[]
-
-  // handle BT_DATA only
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
-    true
-    exit
-  then
-
-  Tub[] RowBuffer[].toCsv
-    
-  Tub[].pipeOutCompleted
-
-  RowBuffer[].delete
-  
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : toCsv_StreamDef \handler
@@ -112,7 +89,6 @@
   find: toCsv_CrwBuffer  EV_D_CRWBUFFER [op].handler!
   find: toCsv_EosMarker  EV_M_EOS       [op].handler!
   find: toCsv_PdsRowBuffer  EV_D_PDSROWBUFFER [op].handler!
-  find: toCsv_RowBuffer  EV_D_ROWBUFFER [op].handler!
   find: toCsv_StreamDef  EV_D_STREAMDEF [op].handler!
 
   op__loop
