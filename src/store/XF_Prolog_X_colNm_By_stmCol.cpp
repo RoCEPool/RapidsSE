@@ -101,7 +101,8 @@ void XF_Prolog_X_colNm_By_stmCol::vX_colNm_By_stmCol(void)
   auto fb_colNm_By_stmCol = [pCI](Card* pCard)
   {
     Card_Term* p_term_colNm = _pCard_Term(pCard);
-    if (!p_term_colNm->pSymbol()->bIs_Nmd_Col())
+    p_term_colNm->vDump(__func__);
+    if (! p_term_colNm->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
     //p_term_colNm->vDump(__func__);
@@ -118,8 +119,16 @@ void XF_Prolog_X_colNm_By_stmCol::vX_colNm_By_stmCol(void)
 //      }
 
       //p_term_colNm->vDump(__func__);
+
       vDebugPoint();
     }
+
+//    if (Card_Expr* p_expr_ancestor = (Card_Expr*)pCI->pAncestorFind(CK_EXPR)) {
+//      p_term_colNm->vDump(__func__);
+//      if (p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
+//        p_expr_ancestor->pSymbol()->vSetFacet(SF_TBL_COL,p_term_colNm->pSymbol()->szFacet(SF_TBL_COL));
+//    }
+
 
     return C_CONTINUE_RECURSION;
   };

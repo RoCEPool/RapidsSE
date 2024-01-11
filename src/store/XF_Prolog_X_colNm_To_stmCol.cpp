@@ -116,12 +116,19 @@ void XF_Prolog_X_colNm_To_stmCol::vX_colNm_To_stmCol(void)
       p_term_colNm->pSymbol()->vCastFacetsPpy(p_expr_found->pSymbol());
       if (Symbol* pSymbol_found = p_expr_found->pFirst_tblCol()) {
         //pSymbol_found->vDump();
-        p_term_colNm->pSymbol()->vFacet(SF_TBL_COL, pSymbol_found->szSF_chrSeq(SF_NONE));
+        p_term_colNm->pSymbol()->vFacet(SF_TBL_COL, pSymbol_found->szSF_chrSeq(SF_TBL_COL));
       }
 
       //p_term_colNm->vDump(__func__);
       vDebugPoint();
     }
+
+    if (Card_Expr* p_expr_ancestor = (Card_Expr*)pCI->pAncestorFind(CK_EXPR)) {
+      p_term_colNm->vDump(__func__);
+      if (p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
+        p_expr_ancestor->pSymbol()->vSetFacet(SF_TBL_COL,p_term_colNm->pSymbol()->szFacet(SF_TBL_COL));
+    }
+
 
     return C_CONTINUE_RECURSION;
   };
