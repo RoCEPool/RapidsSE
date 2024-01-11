@@ -247,24 +247,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: transliterate_RowBuffer \handler
-
-  // get the pipein in RowBuffer[]
-  Pipein[]\clear to RowBuffer[]
-
-  // handle BT_EXPLAIN only
-  RowBuffer[].bufferType@ BT_EXPLAIN  != if
-    RowBuffer[].pipeout
-  then
-
-  // keep the BT_EXPLAIN rowBuffer
-  // to be pipedout when the LEAVEMARKER comes along
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -282,7 +264,6 @@
   find: transliterate_PlanOperand   EV_D_PLANOPERAND   [op].handler!
   find: transliterate_StartMarker   EV_M_START         [op].handler!
 
-  find: transliterate_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: transliterate_PdsRowBuffer  EV_D_PDSROWBUFFER  [op].handler!
   find: transliterate_InternalError EV_M_INTERNALERROR [op].handler!
   find: transliterate_LeaveMarker   EV_M_LEAVE         [op].handler!

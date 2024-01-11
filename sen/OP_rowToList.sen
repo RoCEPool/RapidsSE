@@ -79,27 +79,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                     ROWBUFFER */
-/*----------------------------------------------------------------------------*/
-: rowToList_RowBuffer \handler
-
-  Pipein[]\clear to RowBuffer[]
-
-  // handle onlt BT_DATA
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
-    true
-    exit
-  then
-
-  RowBuffer[] List[].addRowBuffer
-
-  RowBuffer[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +92,6 @@
 
   find: rowToList_Cleaning    EV_M_CLEANING    [op].handler!
   find: rowToList_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
-  find: rowToList_RowBuffer   EV_D_ROWBUFFER   [op].handler!
   find: rowToList_StartMarker EV_M_START       [op].handler!
   find: rowToList_StreamDef   EV_D_STREAMDEF   [op].handler!
 

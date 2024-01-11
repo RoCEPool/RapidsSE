@@ -158,38 +158,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER...                                                       */
-/*----------------------------------------------------------------------------*/
-: progress_RowBuffer \handler
-
-  0 0 locals| iPercent eBufferType |
-
-  //"Operand:- EV_D_ROWBUFFER" .verbose
-
-  // get operand into RowBuffer[]
-  PipeIn[] to RowBuffer[]
-  nullptr to PipeIn[]
-
-  // get the buffer type
-  RowBuffer[].bufferType@ to eBufferType
-
-  // handle BT_PROGRESSUNITS
-  eBufferType BT_PROGRESSUNITS == if
-    hazard
-  then
-
-  // handle BT_TOTALUNITS
-  eBufferType BT_TOTALUNITS == if
-    hazard
-  then
-
-  // pipeout all other rowBuffer types
-  RowBuffer[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for progress req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : progress_op \operator
@@ -199,7 +167,6 @@
   op__topology
 
   find: progress_EosMarker     EV_M_EOS           [op].handler!
-  find: progress_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: progress_PdsRowBuffer  EV_D_PDSROWBUFFER  [op].handler!
 
   op__loop

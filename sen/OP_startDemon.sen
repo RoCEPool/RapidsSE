@@ -201,19 +201,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: startDemon_RowBuffer \handler
-
-  //"Operand:- EV_D_ROWBUFFER" .verbose
-  PipeIn[].bufferType@ BT_DATA != assert
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_M_TRIGGERED ...                                             */
 /*----------------------------------------------------------------------------*/
 : startDemon_TriggeredMarker \handler
@@ -274,8 +261,7 @@
   find: startDemon_LeavingMarker     EV_M_LEAVING     [op].handler!
   find: startDemon_LeftMarker        EV_M_LEFT        [op].handler!
   find: startDemon_LowMemory         EV_M_LOWMEMORY   [op].handler!
-  find: startDemon_PdsRowBuffer         EV_D_PDSROWBUFFER   [op].handler!
-  find: startDemon_RowBuffer         EV_D_ROWBUFFER   [op].handler!
+  find: startDemon_PdsRowBuffer      EV_D_PDSROWBUFFER   [op].handler!
   find: startDemon_StartedMarker     EV_M_STARTED     [op].handler!
   find: startDemon_TriggeredMarker   EV_M_TRIGGERED   [op].handler!
 

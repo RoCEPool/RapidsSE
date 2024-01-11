@@ -37,40 +37,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: OP_toStatDemon_RowBuffer \handler
-
-  //"OP_toStatD_LockStats +++ +++ +++" .
-
-  PipeIn[].bufferType@ "OP_toStatD %v" str.format .
-
-  // handle BT_LOCKSTATS only
-  PipeIn[].bufferType@ BT_LOCKSTATS != if
-    PipeIn[].pipeout
-    true
-    exit
-  then
-
-  PipeIn[] to RowBuffer[]
-  nullptr to PipeIn[]
-
-  //RowBuffer[].getBufferName .
-
-  RowBuffer[]
-    "__statDemon" find dup if
-      word.object@
-      jobId::pipeToOp0 assert
-      nullptr to RowBuffer[]
-    else
-      discard discard
-      RowBuffer[].delete
-    then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* toStatD request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : toStatDemon_op \operator
@@ -79,7 +45,6 @@
 
   op__topology
 
-  find: OP_toStatDemon_RowBuffer EV_D_ROWBUFFER [op].handler!
   find: OP_toStatDemon_PdsRowBuffer EV_D_PDSROWBUFFER [op].handler!
 
   op__loop

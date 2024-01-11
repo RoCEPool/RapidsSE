@@ -44,30 +44,6 @@
 /*----------------------------------------------------------------------------*/
 /* perform a simple pipein delete on behalf of an abnormal handler            */
 /*----------------------------------------------------------------------------*/
-: ABNORMAL_ROWBUFFER_DATA
-
-  0 locals| eBufferType |
-
-  //PipeIn[].name PipeIn[].bufferType@ [op].ptnId@ "ABNORMAL_ROWBUFFER_DATA P%v %v %v" str.format .
-
-  PipeIn[].bufferType@ to eBufferType
-
-  eBufferType BT_EXECERRORS ==
-    eBufferType BT_COMPILEERRORS ==
-    eBufferType BT_WARNINGS == or or if
-    PipeIn[].pipeout
-  else
-    //PipeIn[].bufferType@ "PIPING OUT %v" str.format .
-    PipeIn[].delete
-  then
-
-  // calling op_loop continues
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* perform a simple pipein delete on behalf of an abnormal handler            */
-/*----------------------------------------------------------------------------*/
 : ABNORMAL_PIPEIN_DELETE_END
 
   PipeIn[].delete
@@ -417,7 +393,6 @@
 
   find: ABNORMAL_PIPEIN_DELETE      locals| abnormalHandler |
   find: ABNORMAL_PDSROWBUFFER_DATA  locals| abnormalPdsRowBufferHandler |
-  find: ABNORMAL_ROWBUFFER_DATA     locals| abnormalRowBufferHandler |
   find: ABNORMAL_PIPEIN_DELETE_END  locals| abnormalHandlerEnd |
   find: STANDARD_PIPEOUT            locals| defaultHandler |
 
@@ -426,10 +401,9 @@
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
   abnormalHandler EV_D_INDEXDEF         [op].handler!
   abnormalHandler EV_D_PARCEL           [op].handler!
-  abnormalHandler EV_D_PDSROWBUFFER     [op].handler!
+  abnormalPdsRowBufferHandler EV_D_PDSROWBUFFER     [op].handler!
   abnormalHandler EV_D_PAYLOAD          [op].handler!
   abnormalHandler EV_D_PLANOPERAND      [op].handler!
-  abnormalRowBufferHandler EV_D_ROWBUFFER  [op].handler!
   abnormalHandler EV_D_STREAMDEF        [op].handler!
   abnormalHandler EV_D_TABLE            [op].handler!
 

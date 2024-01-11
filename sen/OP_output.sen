@@ -27,12 +27,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
+/* handler for EV_D_PDSROWBUFFER ...                                          */
 /*----------------------------------------------------------------------------*/
-: output_RowBuffer \handler
+: output_PdsRowBuffer \handler
 
-  //"Operand:- EV_D_ROWBUFFER" .verbose
-
+  //"Operand:- EV_D_PDSROWBUFFER" .verbose
   PipeIn[].pipeToOutput
 
   true
@@ -46,7 +45,7 @@
   "Operand:- EV_M_ERROR" .verbose
 
   "default_abnormalHandlers" FIND execute
-  find: output_RowBuffer EV_D_ROWBUFFER  [op].handler!
+  find: output_PdsRowBuffer EV_D_PDSROWBUFFER  [op].handler!
 
   PipeIn[].pipeout
 
@@ -81,17 +80,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_PDSROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_PdsRowBuffer \handler
-
-  //"Operand:- EV_D_PDSROWBUFFER" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_StreamDef \handler
@@ -113,7 +101,6 @@
 
   find: output_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
   find: output_CsvBuffer     EV_D_CSVBUFFER     [op].handler!
-  find: output_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: output_PdsRowBuffer  EV_D_PDSROWBUFFER  [op].handler!
   find: output_StreamDef     EV_D_STREAMDEF     [op].handler!
 

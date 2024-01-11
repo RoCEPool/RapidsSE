@@ -37,21 +37,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: compiler_RowBuffer \handler
-
-  // handle explain data
-  PipeIn[].bufferType@ BT_EXPLAIN == if
-    Pipein[]\clear to RowBuffer[]
-  else
-    PipeIn[].pipeout
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* common code for handling plan operand ...                                  */
 /*----------------------------------------------------------------------------*/
 : compiler_PlanOperand ( sOperatorName )

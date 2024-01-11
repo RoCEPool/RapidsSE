@@ -90,99 +90,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ... a rowBuffer with __path rows                */
-/*----------------------------------------------------------------------------*/
-: pathToDfload_Path \handler
-
-  PipeIn[].bufferType@ BT_PATH != if
-    PipeIn[].pipeout
-    true
-    exit
-  then
-
-  PipeIn[]\clear to RowBuffer[]
-
-  //C_TDEF_PATH infoSetRow:getFirstRow
-
-  C_TDEF_PATH op__tableDef assert
-  RowBuffer[].firstRow to Row[]
-
-  // extract the values
-  //0 InfoSet[].colVal@ locals| sPath   |
-  //1 InfoSet[].colVal@ locals| iPathNo |
-  //2 InfoSet[].colVal@ locals| iPathOf |
-
-  0 Row[].getVchColumn locals| sPath   |
-  1 Row[].getVchColumn locals| iPathNo |
-  2 Row[].getIntColumn locals| iPathOf |
-
-  // print the __path data
-  //iPathOf iPathNo sPath "pathToDfload: %v %v %v" .printf
-
-  RowBuffer[].delete
-  nullptr to Row[]
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  sPath <tableNm> "dfload %v \"%v\"" str.format locals| sCmd |
-
-  //sCmd "pathToDfload: %v" .printf
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // We need to pass any load-specific tags to the child command that we're
-  // going to fork. That way it will read the CSV file with the appropriate options.
-
-  ""          locals| sTags |
-  tagSet::new locals| pCmdTagSet |
-
-  "<field_delimiter>" [op].tagSet@ tagSet.hasName if
-    "<field_delimiter>" <field_delimiter> pCmdTagSet tagSet.appendStr
-  then
-
-  "<escape_char>" [op].tagSet@ tagSet.hasName if
-    "<escape_char>" <escape_char> pCmdTagSet tagSet.appendStr
-  then
-
-  "<date_format>" [op].tagSet@ tagSet.hasName if
-    "<date_format>" <date_format> pCmdTagSet tagSet.appendStr
-  then
-
-  "<enclosed_by_leading>" [op].tagSet@ tagSet.hasName if
-    "<enclosed_by_leading>" <enclosed_by_leading> pCmdTagSet tagSet.appendStr
-  then
-
-  "<enclosed_by_trailing>" [op].tagSet@ tagSet.hasName if
-    "<enclosed_by_trailing>" <enclosed_by_trailing> pCmdTagSet tagSet.appendStr
-  then
-
-  "<max_errors>" [op].tagSet@ tagSet.hasName if
-    "<max_errors>" <max_errors> pCmdTagSet tagSet.appendStr
-  then
-
-  "<record_terminator>" [op].tagSet@ tagSet.hasName if
-    "<record_terminator>" <record_terminator> pCmdTagSet tagSet.appendStr
-  then
-
-  "<record_ends>" [op].tagSet@ tagSet.hasName if
-    "<record_ends>" <record_ends> pCmdTagSet tagSet.appendStr
-  then
-
-  // Convert this tag set to a sen parsable string
-  pCmdTagSet tagSet.asSenStr to sTags
-
-  C_TDEF_COMMAND op__tableDef assert
-
-  BT_COMMAND TableDef[] Pds[].new
-
-  sTags sCmd  2 Pds[].addRowVargs assert
-
-  Pds[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : pathToDfload_op \operator
@@ -191,7 +98,6 @@
 
   op__topology
 
-  find: pathToDfload_Path  EV_D_ROWBUFFER  [op].handler!
   find: pathToDfload_PathPds  EV_D_PDSROWBUFFER  [op].handler!
 
   op__loop

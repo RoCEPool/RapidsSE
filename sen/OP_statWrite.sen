@@ -41,42 +41,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER...                                              */
-/*----------------------------------------------------------------------------*/
-: OP_statWrite_RowBuffer \handler
-
-  //"statWrite_RowBuffer --- --- ---" .
-
-//! ALKA TO CHECK WITH RAY
-//  File0[].isNull not if
-//    "File not null" .
-//    process::quit
-//  then
-
-  // open the file for writing
-  "/tmp/SE_Stats.csv" OPEN_APPEND op__file if
-
-    PipeIn[].bufferType@ BT_LOCKSTATS == assert
-
-    PipeIn[] to RowBuffer[]
-    nullptr to PipeIn[]
-
-    C_TDEF_LOCKSTATS op__tableDef assert
-
-    TableDef[] RowBuffer[].writeCsv
-
-    RowBuffer[].delete
-
-    //File0[].get file.close
-    //File0[].get file.delete
-  else
-    Pipein[].delete
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for statWrite req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : statWrite_op \operator
@@ -85,7 +49,6 @@
 
   op__topology
 
-  find: OP_statWrite_RowBuffer EV_D_ROWBUFFER [op].handler!
   find: OP_statWrite_PdsRowBuffer EV_D_PDSROWBUFFER [op].handler!
 
   op__loop

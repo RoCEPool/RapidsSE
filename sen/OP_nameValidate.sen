@@ -42,7 +42,6 @@
   // common compiler handlers
   find: compiler_LeaveMarker  EV_M_LEAVE       [op].handler!
   find: compiler_PdsRowBuffer     EV_D_PDSROWBUFFER   [op].handler!
-  find: compiler_RowBuffer    EV_D_ROWBUFFER   [op].handler!
 
   // specific handlers
   find: nameValidate_Cleaning      EV_M_CLEANING      [op].handler!
