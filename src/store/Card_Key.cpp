@@ -164,14 +164,15 @@ void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol, eSF* aeFacet)
+Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    if (xKey.p_expr()->bMatches_term0(pSymbol, aeFacet)) {
+    Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
+
+    if (pSymbol_term0->bMatches_ignoring(pSymbol))
       return xKey.p_expr();
-    }
   }
 
   return nullptr;

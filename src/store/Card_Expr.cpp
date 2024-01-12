@@ -589,20 +589,6 @@ bool Card_Expr::bMatches(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this an expression of given symbol ?                                    */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* pSymbol_term0 = pGet_term(0)->pSymbol();
-
-  if (pSymbol_term0->bMatches_ignoring(pSymbol_arg, aeFacet_arg))
-    return true;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)

@@ -51,10 +51,8 @@ namespace STORE
     bool bIsExpressionOfKey(void);
 
     bool bMatches(Card_Expr* p_expr_arg);
-    bool bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg= nullptr);
 
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    void vPropagate_nmdCol(CardIter* pCI, i8 iExpCol);
 
     void vRenumberForm_keyCol(i8 i_Expr);
     void vRenumberForm_expCol(i8 i_Expr);
