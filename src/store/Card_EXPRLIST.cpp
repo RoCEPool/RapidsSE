@@ -297,7 +297,7 @@ bool Card_EXPRLIST::bSame(Card_EXPRLIST* p_EXPRLIST_arg)
 
     if (Card_Direction* p_direction_this = p_expr_this->pSub_direction()) {
       if (Card_Direction *p_direction_arg = p_expr_arg->pSub_direction()) {
-        if (!p_direction_this->pSymbol()->bMatches_ignoring(p_direction_arg->pSymbol()))
+        if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
           return false;
       }
       else {

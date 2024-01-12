@@ -171,7 +171,7 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol)
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
 
-    if (pSymbol_term0->bMatches_ignoring(pSymbol))
+    if (pSymbol_term0->bMatches(pSymbol))
       return xKey.p_expr();
   }
 

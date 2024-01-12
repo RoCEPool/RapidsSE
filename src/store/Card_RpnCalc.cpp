@@ -106,7 +106,7 @@ bool Card_RpnCalc::bContains(Symbol* pSymbol_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bMatches_ignoring(pSymbol_arg))
+    if (xKid.p_term()->pSymbol()->bMatches(pSymbol_arg))
       return true;
 
   return false;
@@ -259,7 +259,7 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
 //    if (xKid.p_term()->bSymbolMatches(pSymbol))
-    if (xKid.p_term()->pSymbol()->bMatches_ignoring(pSymbol))
+    if (xKid.p_term()->pSymbol()->bMatches(pSymbol))
       return true;
   }
 
