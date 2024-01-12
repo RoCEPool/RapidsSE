@@ -211,7 +211,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches_ignoring(Symbol *pSymbol_arg, eSF e
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, nullptr, eFacet_ignore))
+    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore))
       return xKid.p_expr();
   }
 
@@ -226,7 +226,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol* pSymbol, Kid* aKid)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   while (aKid->bEach(CK_EXPR)) {
-    if (aKid->p_expr()->pSymbol()->bMatches_ignoring(pSymbol, nullptr, SF_NONE))
+    if (aKid->p_expr()->pSymbol()->bMatches_ignoring(pSymbol, SF_NONE))
        return aKid->p_expr();
   }
 
@@ -338,7 +338,7 @@ bool Card_EXPRLIST::bTestFind_expr_Matching(Card_Expr* p_expr_arg,
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, nullptr, eFacet_ignore) &&
+    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore) &&
         xKid.p_expr() == p_expr_arg)
       return true;
   }
