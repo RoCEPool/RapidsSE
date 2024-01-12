@@ -203,31 +203,30 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find <expr> which has same symbol as given $n stream-column                */
+/* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Matches_ignoring(Symbol *pSymbol_arg, eSF eFacet_ignore)
-
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol* pSymbol_arg, Kid* aKid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore))
-      return xKid.p_expr();
+  while (aKid->bEach(CK_EXPR)) {
+    if (aKid->p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, SF_NONE))
+      return aKid->p_expr();
   }
 
   return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* find expression which expresses the given symbol                           */
+/* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol* pSymbol, Kid* aKid)
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches_ignoring(Symbol *pSymbol_arg, eSF eFacet_ignore)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  while (aKid->bEach(CK_EXPR)) {
-    if (aKid->p_expr()->pSymbol()->bMatches_ignoring(pSymbol, SF_NONE))
-       return aKid->p_expr();
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore))
+      return xKid.p_expr();
   }
 
   return nullptr;
