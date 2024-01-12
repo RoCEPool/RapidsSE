@@ -55,7 +55,7 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 
     pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
 
-     pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches_ignoring(pCI->G.p_idxCol->pSymbol());
+     pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pCI->G.p_idxCol->pSymbol());
     if (!pCI->G.p_expr)
       continue;
 
