@@ -219,7 +219,7 @@ namespace STORE
     bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
     bool bMatches(eSF eFacet, Symbol* pSymbol_arg);
     bool bMatches(Symbol* pSymbol_arg);
-    bool bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore=SF_NONE);
+    bool bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
