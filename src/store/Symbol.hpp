@@ -217,8 +217,9 @@ namespace STORE
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
     bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
+    bool bMatches(eSF eFacet, Symbol* pSymbol_arg);
+    bool bMatches(Symbol* pSymbol_arg);
     bool bMatches_ignoring(Symbol* pSymbol_arg, eSF* aeFacet_matched=nullptr, eSF eFacet_ignore=SF_NONE);
-    bool bMatches(Symbol* pSymbol_arg, eSF eFacet);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 

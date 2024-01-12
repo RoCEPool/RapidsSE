@@ -2616,34 +2616,7 @@ bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF* aeFacet_matched, eSF eFacet_ignore)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(nullptr == aeFacet_matched);
-
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
-
-    if (SF_NONE != eFacet_ignore && eFacet_this == eFacet_ignore)
-      continue;
-
-    if (bMatches(pSymbol_arg, eFacet_this)) {
-      if (aeFacet_matched)
-        *aeFacet_matched = eFacet_this;
-      return true;
-    }
-  }
-
-  if (aeFacet_matched)
-    *aeFacet_matched = SF_NONE;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this symbol have a matching facet with given arg?                     */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bMatches(Symbol* pSymbol_arg, eSF eFacet)
+bool Symbol::bMatches(eSF eFacet, Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2661,6 +2634,51 @@ bool Symbol::bMatches(Symbol* pSymbol_arg, eSF eFacet)
   if (szChrSeq_arg->bSame(szChrSeq_this))
     return true;
 
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have a matching facet with given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bMatches(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
+
+    if (bMatches(eFacet_this, pSymbol_arg)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have a matching facet with given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF* aeFacet_matched, eSF eFacet_ignore)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(nullptr == aeFacet_matched);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
+
+    if (SF_NONE != eFacet_ignore && eFacet_this == eFacet_ignore)
+      continue;
+
+    if (bMatches(eFacet_this, pSymbol_arg)) {
+      if (aeFacet_matched)
+        *aeFacet_matched = eFacet_this;
+      return true;
+    }
+  }
+
+  if (aeFacet_matched)
+    *aeFacet_matched = SF_NONE;
   return false;
 }
 
