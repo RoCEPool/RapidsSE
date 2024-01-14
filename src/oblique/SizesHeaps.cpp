@@ -315,7 +315,6 @@
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_board_To_sqyNm.hpp"
-#include "XF_Prolog_X_colNm_By_stmCol.hpp"
 #include "XF_Prolog_X_colNm_To_stmCol.hpp"
 #include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
@@ -871,7 +870,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_REDUCE_NOT,              sizeof(XF_Prolog_Reduce_not),              HT_T_TINY    , FILL },
   {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_BOARD_TO_SQYNM,      sizeof(XF_Prolog_X_board_To_sqyNm),      HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_X_COLNM_BY_STMCOL,     sizeof(XF_Prolog_X_colNm_By_stmCol),     HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_COLNM_TO_STMCOL,     sizeof(XF_Prolog_X_colNm_To_stmCol),     HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_RPNCALC_TO_BOOLPRED, sizeof(XF_Prolog_X_rpnCalc_To_boolPred), HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },

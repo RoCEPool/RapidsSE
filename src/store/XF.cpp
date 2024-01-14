@@ -54,7 +54,6 @@
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_board_To_sqyNm.hpp"
-#include "XF_Prolog_X_colNm_By_stmCol.hpp"
 #include "XF_Prolog_X_colNm_To_stmCol.hpp"
 #include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
