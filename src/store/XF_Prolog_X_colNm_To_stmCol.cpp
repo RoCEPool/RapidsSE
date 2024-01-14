@@ -68,12 +68,12 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
     if (! m_pCI->Flux.m_pArriving)
       continue;
 
-    if (m_pCI->G.p_OP->bIsCard(CK_o_GBYAGG) &&
-        m_pCI->G.p_OP->pSub_level()->pSymbol()->Y_iGet(P_Level) != AL_PARTITION)
-      continue;
+//    if (m_pCI->G.p_OP->bIsCard(CK_o_GBYAGG) &&
+//        m_pCI->G.p_OP->pSub_level()->pSymbol()->Y_iGet(P_Level) != AL_PARTITION)
+//      continue;
 
-    if (m_pCI->G.p_OP->bIsCard(CK_o_KEYEXISTS))
-      vDebugPoint();
+//    if (m_pCI->G.p_OP->bIsCard(CK_o_KEYEXISTS))
+//      vDebugPoint();
     //m_pCI->Flux.m_pArriving->vDump(__func__);
     vX_colNm_To_stmCol();
   }
@@ -105,19 +105,20 @@ void XF_Prolog_X_colNm_To_stmCol::vX_colNm_To_stmCol(void)
   auto fb_colNm_To_stmCol = [pCI](Card* pCard)
   {
     Card_Term* p_term_colNm = _pCard_Term(pCard);
-    if (!p_term_colNm->pSymbol()->bIs_Nmd_Col())
+    if (!p_term_colNm->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
     //p_term_colNm->vDump(__func__);
 
-    if (Card_Expr* p_expr_found =
+    if (Card_Expr* p_expr_arriving =
         pCI->Flux.m_pArriving->pFind_expr_Matches(p_term_colNm->pSymbol())) {
-      //p_expr_found->vDump(__func__);
-      p_term_colNm->pSymbol()->vCastFacetsPpy(p_expr_found->pSymbol());
-      if (Symbol* pSymbol_found = p_expr_found->pFirst_tblCol()) {
-        //pSymbol_found->vDump();
-        p_term_colNm->pSymbol()->vSetFacet(SF_TBL_COL, pSymbol_found->szSF_chrSeq(SF_TBL_COL));
-      }
+      //p_expr_arriving->vDump(__func__);
+      p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
+      p_term_colNm->pSymbol()->vCastFacetsPpy(p_expr_arriving->pSymbol());
+//      if (Symbol* pSymbol_found = p_expr_arriving->pFirst_tblCol()) {
+//        //pSymbol_found->vDump();
+//        p_term_colNm->pSymbol()->vSetFacet(SF_TBL_COL, pSymbol_found->szSF_chrSeq(SF_TBL_COL));
+//      }
 
       //p_term_colNm->vDump(__func__);
       vDebugPoint();
