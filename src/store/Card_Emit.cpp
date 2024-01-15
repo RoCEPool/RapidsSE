@@ -292,6 +292,9 @@ void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
     pCI->G.p_expr = xEmit.p_expr();
     pCI->G.p_expr->vEnsureTypeId_expCol(pCI);
   }
+
+  pCI->G.p_expr = nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -456,18 +459,23 @@ void Card_Emit::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   s32 sName;
 
-  sName.vSprint("%s%lld]"_Stz,
+//  sName.vSprint("%s%lld]"_Stz,
+//                Stz::szDots(iDepth - 1),
+//                m_i_Child);
+//
+//  sName.vSprintCat("%s"_Stz,
+//                   szCardNm());
+
+  sName.vSprint("%s%lld]out"_Stz,
                 Stz::szDots(iDepth - 1),
                 m_i_Child);
 
-  sName.vSprintCat("%s"_Stz,
-                   szCardNm());
-
-  pRibbon->vSprintSnippet(false,"%c%c%s %p"_Stz,
+  pRibbon->vSprintSnippet(false,"%c%c%s %llx %lld"_Stz,
                           cMark1(),
                           cMark2(),
                           sName.szStz(),
-                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr(),
+                          m_nFunctionCount);
 
 }
 

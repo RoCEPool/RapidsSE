@@ -532,6 +532,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       pCI->G.p_emit->vEnsure_nmdCol();
       if (pCI->Flux.m_pArriving)
         pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
+      pCI->G.p_emit->vIncFunctionCount();
       break;
 
     case CK_o_PROJECT:
@@ -539,6 +540,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       pCI->G.p_emit->vEnsure_nmdCol();
       if (pCI->Flux.m_pArriving)
         pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
+      pCI->G.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -568,6 +570,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
           (pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred()))
         pCI->G.p_boolPred->vEnsureTypeId_expCol(pCI);
 
+      pCI->G.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -586,6 +589,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+      pCI->G.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

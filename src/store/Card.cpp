@@ -136,7 +136,8 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iFixedDepth = iFixedDepth;
 
   m_iFirstPrint = C_UNKNOWN;
-   m_nPrintCount = 0;
+  m_nPrintCount = 0;
+  m_nFunctionCount = 0;
   m_eFirst = CK_NONE;
 
   m_bAddedCorrectly   = false;
@@ -1034,6 +1035,16 @@ bool Card::bHasSubRecursive(Card* pSubCard)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vIncFunctionCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_nFunctionCount++;
 }
 
 /*----------------------------------------------------------------------------*/

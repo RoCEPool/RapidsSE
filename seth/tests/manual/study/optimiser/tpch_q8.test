@@ -4,6 +4,10 @@
 
 LOG 'TPC-H Q8...';
 
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
 /pipelineName = "OptQ8"
 select
   o_year,

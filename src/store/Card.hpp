@@ -277,6 +277,7 @@ namespace STORE
     i8      m_iFirstPrint;
     eCK     m_eFirst;
     i8      m_nPrintCount;
+    i8      m_nFunctionCount;
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
     i8      m_iItemise;
@@ -356,6 +357,7 @@ namespace STORE
     bool bHasFacetRecursive(eSF eFacet);
     bool bHasSubRecursive(Card* pSubCard);
 
+    void vIncFunctionCount(void);
     bool bIsCard(eCK eCard);
     bool bIsConj(void);
     bool bIsConstruction(void);
