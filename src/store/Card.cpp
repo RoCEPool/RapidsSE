@@ -2232,10 +2232,11 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
   switch (m_eCard) {
 
-    case CK_t_EMIT:    _pCard_Emit(this)->vPrint(pRibbon, iDepth);    break;
+    case CK_t_EMIT:  _pCard_Emit(this)->vPrint(pRibbon, iDepth);    break;
     case CK_EXPR:    _pCard_Expr(this)->vPrint(pRibbon, iDepth);    break;
+    case CK_s_KEY:   _pCard_Key(this)->vPrint(pRibbon, iDepth);     break;
     case CK_RPNCALC: _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth); break;
-    case CK_s_TABLE:   _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
+    case CK_s_TABLE: _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
     case CK_TERM:    _pCard_Term(this)->vPrint(pRibbon, iDepth);    break;
 
     case CK_ANDCONJ:

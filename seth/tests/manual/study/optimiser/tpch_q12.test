@@ -7,10 +7,6 @@ LOG 'TPC-H Q12...';
 trackMemory force;
 success
 
-/optimiser_trace
-/transliterated
-/weaved
-/pipeline_Def
 /pipelineName = "OptQ12"
 select
   l_shipmode,
