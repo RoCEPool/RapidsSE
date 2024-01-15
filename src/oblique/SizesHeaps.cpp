@@ -306,7 +306,6 @@
 #include "XF_Prolog_Analyse_emit.hpp"
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
-#include "XF_Prolog_Ensure_colType.hpp"
 #include "XF_Prolog_Ensure_level.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
@@ -861,7 +860,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_ANALYSE_INJECTABLE,      sizeof(XF_Prolog_Analyse_injectable),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_SUBQUERY,        sizeof(XF_Prolog_Analyse_subQuery),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_TABLE,           sizeof(XF_Prolog_Analyse_table),           HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ENSURE_COLTYPE,          sizeof(XF_Prolog_Ensure_colType),          HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ENSURE_LEVEL,            sizeof(XF_Prolog_Ensure_level),            HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ERASE_CONSTRUCTION,      sizeof(XF_Prolog_Erase_construction),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_MOVE_ON,                 sizeof(XF_Prolog_Move_on),                 HT_T_TINY    , FILL },
