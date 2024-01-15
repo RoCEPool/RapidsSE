@@ -712,13 +712,23 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_RPNCALC,
                                      CK_NONE);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (pCI->pAncestorFind(CK_s_INJECTABLE)) {
     RASSERT(m_xSymbol.bIs_Tbl_Col());
     if (! m_xSymbol.bHasType()) {
       vDump(__func__);
       vValidationFailed("Type Missing : %p"_Stz,this);
     }
+    if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+      if (m_xSymbol.nTypeLength() == 0) {
+        vDump(__func__);
+        vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+      }
+    }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMIT]) ) {
     if (m_xSymbol.bIs_Tbl_Col()) {
@@ -735,6 +745,8 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     }
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
     if (m_xSymbol.bIs_Exp_Col() ) {
       if (! m_xSymbol.bHasType()) {
@@ -749,6 +761,8 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 //      }
     }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL]) ) {
     i8 i_Ancestor;
