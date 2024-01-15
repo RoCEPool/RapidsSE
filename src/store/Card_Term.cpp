@@ -187,13 +187,18 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Expr *p_expr_arriving = nullptr;
-
   Symbol* pSymbol_term = pSymbol();
 
+  Card_Expr* p_expr_arriving = nullptr;
+  if (pCI->Flux.m_pArriving)
+    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+
+  if (p_expr_arriving)
+    pSymbol_term->vCast(p_expr_arriving->pSymbol()->xCast());
+
   if (pCI->G.p_key && pCI->G.p_expr && pCI->G.p_rpnCalc) {
-    if (Card_Expr* p_expr_matching = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term)) {
-      pSymbol_term->vCast(p_expr_matching->pSymbol()->xCast());
+    if (p_expr_arriving) {
+      pSymbol_term->vCast(p_expr_arriving->pSymbol()->xCast());
     }
   }
 
