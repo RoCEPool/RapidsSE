@@ -11,7 +11,6 @@
 #include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_Add_inflate.hpp"
 #include "XF_Epilog_Append_synthesis.hpp"
-#include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
