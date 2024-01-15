@@ -765,7 +765,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     }
   }
 
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL]) ) {
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL]) ) {
     if (m_xSymbol.bIs_Exp_Col() && ! pCI->G.p_call) {
       if (! m_xSymbol.bHasType() && ! m_xSymbol.bHasFacet(SF_SQY_PRM)) {
         pCI->vPrintBoard(__func__,__LINE__,true);
@@ -780,7 +780,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     }
   }
 
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL]) ) {
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL]) ) {
     i8 i_Ancestor;
     if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR,&i_Ancestor)))) {
       Card* p_ANCESTOR = pCI->pAncestor(i_Ancestor - 1);
@@ -829,10 +829,10 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 //  }
 
 
-//  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
+//  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL])) {
 //    if (m_xSymbol.bIs_Tbl_Col() && ! pCI->pAncestorFind(CK_s_INJECTABLE)) {
 //      vDump(__func__);
-//      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
+//      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL], this);
 //    }
 //  }
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_X_tblCol_To_stmCol.hpp -- Table-Column to Stream-Column          */
+/* XF_Epilog_X_tblCol_To_expCol.hpp -- Table-Column to Expression-Column      */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_X_tblCol_To_stmCol : public XF_EPILOG
+  class XF_Epilog_X_tblCol_To_expCol : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_X_tblCol_To_stmCol(CardIter* pCI);
-   ~XF_Epilog_X_tblCol_To_stmCol(void) noexcept(false);
+    XF_Epilog_X_tblCol_To_expCol(CardIter* pCI);
+   ~XF_Epilog_X_tblCol_To_expCol(void) noexcept(false);
 
     static void vConvert(CardIter* pCI);
 
@@ -31,7 +31,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Epilog_X_tblCol_To_stmCol* _pXF_Epilog_X_tblCol_To_stmCol(void* aAddr);
+  XF_Epilog_X_tblCol_To_expCol* _pXF_Epilog_X_tblCol_To_expCol(void* aAddr);
 }
 
 /*============================================================================*/

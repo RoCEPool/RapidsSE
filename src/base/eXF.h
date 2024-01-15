@@ -20,7 +20,7 @@ enum eXF // transform
   /* */ XF_EPILOG_REINSTATE_STAGE,
   /* */ XF_EPILOG_TYPE_CAST,
   /* */ XF_EPILOG_X_STMCOL_TO_COLNM,
-  /* */ XF_EPILOG_X_TBLCOL_TO_STMCOL,
+  /* */ XF_EPILOG_X_TBLCOL_TO_EXPCOL,
   /* */ XF_FLATTEN,
   /* */ XF_FLATTEN_10_F,
   /* */ XF_FLATTEN_24_W_A_C_RO,

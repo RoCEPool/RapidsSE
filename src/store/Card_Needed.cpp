@@ -102,7 +102,7 @@ void Card_Needed::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   UNUSED(pParent);
-//  if (! pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
+//  if (! pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL])) {
 //    Card::vValidate(pCI,iDepth,pParent);
 //    pCI->vValidateChildren(this, iDepth + 1);
 //  }
@@ -110,7 +110,7 @@ void Card_Needed::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 //    vMark1Recursive(MARK_BLANK);
 //  }
 
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL])) {
     Card::vValidate(pCI,iDepth,pParent);
     pCI->vValidateChildren(this, iDepth + 1);
   }

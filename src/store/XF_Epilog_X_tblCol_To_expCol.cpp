@@ -1,49 +1,49 @@
 /*============================================================================*/
-/* XF_Epilog_X_tblCol_To_stmCol.cpp -- Table-Column to Stream-Column                   */
+/* XF_Epilog_X_tblCol_To_expCol.cpp -- Table-Column to Stream-Column                   */
 /*============================================================================*/
 
-#include "XF_Epilog_X_tblCol_To_stmCol.hpp"
+#include "XF_Epilog_X_tblCol_To_expCol.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_X_tblCol_To_stmCol, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL)
-__aNewFunction(XF_Epilog_X_tblCol_To_stmCol, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL)
-__vDeleteFunction(XF_Epilog_X_tblCol_To_stmCol, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL)
-__aFooterFunction(XF_Epilog_X_tblCol_To_stmCol)
+__pCastFunction(STORE, XF_Epilog_X_tblCol_To_expCol, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL)
+__aNewFunction(XF_Epilog_X_tblCol_To_expCol, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL)
+__vDeleteFunction(XF_Epilog_X_tblCol_To_expCol, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL)
+__aFooterFunction(XF_Epilog_X_tblCol_To_expCol)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_X_tblCol_To_stmCol::XF_Epilog_X_tblCol_To_stmCol(CardIter* pCI)
-: XF_EPILOG(CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, pCI)
+XF_Epilog_X_tblCol_To_expCol::XF_Epilog_X_tblCol_To_expCol(CardIter* pCI)
+: XF_EPILOG(CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 
-  _checkInitialised_(CN_XF_EPILOG_X_TBLCOL_TO_STMCOL);
+  _checkInitialised_(CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_X_tblCol_To_stmCol::~XF_Epilog_X_tblCol_To_stmCol(void) noexcept(false)
+XF_Epilog_X_tblCol_To_expCol::~XF_Epilog_X_tblCol_To_expCol(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_tblCol_To_stmCol::vConvert(CardIter* pCI)
+void XF_Epilog_X_tblCol_To_expCol::vConvert(CardIter* pCI)
 {
   _static_
 
-  XF_Epilog_X_tblCol_To_stmCol* pXF_tblCol_To_stmCol = new XF_Epilog_X_tblCol_To_stmCol(pCI);
+  XF_Epilog_X_tblCol_To_expCol* pXF_tblCol_To_stmCol = new XF_Epilog_X_tblCol_To_expCol(pCI);
 
   pXF_tblCol_To_stmCol->vX_tblCol_To_expCol();
 
@@ -58,11 +58,11 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvert(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* transform table-columns to stream-columns                                  */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_expCol(void)
+void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_X_TBLCOL_TO_STMCOL, "transform table-columns to stream-columns"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_X_TBLCOL_TO_EXPCOL, "transform table-columns to stream-columns"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
@@ -93,9 +93,9 @@ void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_expCol(void)
 /*----------------------------------------------------------------------------*/
 /* tblCol to stmCol                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
+void XF_Epilog_X_tblCol_To_expCol::vTo_stmCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 
   if (m_pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt)) {
     //vDump();
