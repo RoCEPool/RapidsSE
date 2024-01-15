@@ -691,7 +691,7 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
   s4K sProperties;
   m_xSymbol.Y_vTo_String(sProperties);
 
-  vTrace("  %p %18s %s%s : %s%s %s {%s} %lld %lld\n"_Stz
+  vTrace("  %p %18s %s%s : %s%s <%s> {%s} (%s:%lld.%lld)\n"_Stz
         , this
         , aCK_short[m_eCard]
         , Stz::szTab(iDepth)
@@ -699,9 +699,12 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 
         , m_xMark1.szChrSeq()
         , m_xMark2.szChrSeq()
-        , m_xSymbol.bHasFacets() ? sFacets.szStz() : "<noFacets>"_Stz
 
-        , sProperties.szStz()
+        , m_xSymbol.bHasFacets() ? sFacets.szStz() : "noFacets"_Stz
+
+        , m_xSymbol.bHasProperties() ? sProperties.szStz() : "noPpy"_Stz
+
+        , m_xSymbol.xTypeId().bIsValid() ? m_xSymbol.xTypeId().szTypeName() : "noType"_Stz
         , m_xSymbol.xCast().m_nTypeLength
         , m_xSymbol.xCast().m_nTypeScale
   );
@@ -1002,6 +1005,16 @@ void Card::vFixedDepth(i8 iFixedDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* fetch function count                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Card::nFunctionCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_nFunctionCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasFacetRecursive(eSF eFacet)
@@ -1038,7 +1051,7 @@ bool Card::bHasSubRecursive(Card* pSubCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
+/* increment function count                                                   */
 /*----------------------------------------------------------------------------*/
 void Card::vIncFunctionCount(void)
 {

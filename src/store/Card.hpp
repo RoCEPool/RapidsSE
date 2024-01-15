@@ -353,6 +353,7 @@ namespace STORE
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);
+    i8    nFunctionCount(void);
 
     bool bHasFacetRecursive(eSF eFacet);
     bool bHasSubRecursive(Card* pSubCard);
