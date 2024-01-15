@@ -189,17 +189,25 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
 
   Card_Expr *p_expr_arriving = nullptr;
 
-  if (pSymbol()->bHasType()) {
-    RASSERT(pSymbol()->xTypeId().bIsValid());
-    rxCast_last = pSymbol()->xCast();
+  Symbol* pSymbol_term = pSymbol();
+
+  if (pCI->G.p_key && pCI->G.p_expr && pCI->G.p_rpnCalc) {
+    if (Card_Expr* p_expr_matching = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term)) {
+      pSymbol_term->vCast(p_expr_matching->pSymbol()->xCast());
+    }
+  }
+
+  if (pSymbol_term->bHasType()) {
+    RASSERT(pSymbol_term->xTypeId().bIsValid());
+    rxCast_last = pSymbol_term->xCast();
     return;
   }
 
-  if (pSymbol()->bIs_Col_Type()) {
-    Stz* szArg = pSymbol()->szFacet(SF_COL_TYPE);
+  if (pSymbol_term->bIs_Col_Type()) {
+    Stz* szArg = pSymbol_term->szFacet(SF_COL_TYPE);
 
     if (szArg->bSame("BOOLEAN"_Stz))      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
-    else if (szArg->bSame("DATE"_Stz))         rxCast_last.m_xTypeId = TypeId::xIdOf(CT_DATE);
+    else if (szArg->bSame("DATE"_Stz))    rxCast_last.m_xTypeId = TypeId::xIdOf(CT_DATE);
     else if (szArg->bSame("DECIMAL"_Stz)) {
       rxCast_last.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
       rxCast_last.m_nTypeLength = 19;
@@ -221,8 +229,8 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
     return;
   }
 
-  if (pSymbol()->bIs_Agg_Fn()) {
-    Stz* szArg = pSymbol()->szFacet(SF_AGG_FN);
+  if (pSymbol_term->bIs_Agg_Fn()) {
+    Stz* szArg = pSymbol_term->szFacet(SF_AGG_FN);
 
     if (szArg->bSame("COUNT"_Stz)) {
       rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
@@ -248,7 +256,7 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
     p_expr_arriving = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
   else
   if (bIsNmdCol())
-    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol());
+    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
   else {
     RASSERT(!bIsTblCol());
     return;
@@ -257,12 +265,12 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
   if (! p_expr_arriving)
     return;
 
-  RASSERT(! pSymbol()->xTypeId().bIsValid() &&
+  RASSERT(! pSymbol_term->xTypeId().bIsValid() &&
           p_expr_arriving->xTypeId().bIsValid());
   vCast(p_expr_arriving);
 
-  if (pSymbol()->bHasType())
-    rxCast_last = pSymbol()->xCast();
+  if (pSymbol_term->bHasType())
+    rxCast_last = pSymbol_term->xCast();
 }
 
 /*----------------------------------------------------------------------------*/

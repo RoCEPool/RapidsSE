@@ -157,8 +157,12 @@ void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypeId_expCol(pCI);
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
+    pCI->G.p_expr = xKey.p_expr();
+    pCI->G.p_expr->vEnsureTypeId_expCol(pCI);
+  }
+
+  pCI->G.p_expr = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

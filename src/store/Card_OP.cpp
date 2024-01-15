@@ -636,8 +636,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       CK_o_WHERE        == eCard_OP)
     vCorrect_expCol(pCI->Flux.m_pArriving);
 
-  if (CK_o_SORT== eCard_OP)
+  if (CK_o_SORT== eCard_OP) {
     pCI->G.p_key->vEnsureTypeId_expCol(pCI);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
