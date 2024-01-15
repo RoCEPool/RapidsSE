@@ -80,7 +80,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PROLOG_REDUCE_NOT"_Stz,
   /* */ "XF_PROLOG_VALIDATE_BOARD"_Stz,
   /* */ "XF_PROLOG_X_BOARD_TO_SQYNM"_Stz,
-  /* */ "XF_PROLOG_X_COLNM_TO_STMCOL"_Stz,
+  /* */ "XF_PROLOG_X_COLNM_TO_EXPCOL"_Stz,
   /* */ "XF_PROLOG_X_RPNCALC_TO_BOOLPRED"_Stz,
   /* */ "XF_PROLOG_X_SCAN_TO_FROM"_Stz,
   /* */ "XF_SYNTHESISE_CODE"_Stz,
@@ -161,7 +161,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_REDUCE_NOT
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_VALIDATE_BOARD
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_BOARD_TO_SQYNM
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_COLNM_TO_STMCOL
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_COLNM_TO_EXPCOL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_RPNCALC_TO_BOOLPRED
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_SCAN_TO_FROM
   /* */ "<to be supplied>"_Stz, // XF_SYNTHESISE_CODE
