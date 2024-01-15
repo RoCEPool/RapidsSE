@@ -284,7 +284,7 @@
 #include "XF_Flatten_Anchor_table.hpp"
 #include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
-#include "XF_Flatten_X_stmCol_To_tblCol.hpp"
+#include "XF_Flatten_X_expCol_To_tblCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
@@ -839,7 +839,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_PULLUP_RLNCONJ,         sizeof(XF_Flatten_Pullup_rlnConj),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SMOOSH,                 sizeof(XF_Flatten_Smoosh),                 HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SMOOTH,                 sizeof(XF_Flatten_Smooth),                 HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL,     sizeof(XF_Flatten_X_stmCol_To_tblCol),     HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL,     sizeof(XF_Flatten_X_expCol_To_tblCol),     HT_T_TINY    , FILL },
   {CN_XF_FOLD,                           sizeof(XF_Fold),                           HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, sizeof(XF_Optimise_aggreg_To_sort_ordAgg), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_CULL_BOUND,            sizeof(XF_Optimise_Cull_bound),            HT_T_TINY    , FILL },
