@@ -302,7 +302,7 @@
 #include "XF_Optimise_sortDesc_limit_To_top.hpp"
 #include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
-#include "XF_Prolog_Analyse_injected.hpp"
+#include "XF_Prolog_Analyse_injectable.hpp"
 #include "XF_Prolog_Analyse_emit.hpp"
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
@@ -858,17 +858,17 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_OPTIMISE_STATIC_CALC,           sizeof(XF_Optimise_Static_calc),           HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_EMIT,            sizeof(XF_Prolog_Analyse_emit),            HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_INDEX,           sizeof(XF_Prolog_Analyse_index),           HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_INJECTED,      sizeof(XF_Prolog_Analyse_injected),      HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_SUBQUERY,      sizeof(XF_Prolog_Analyse_subQuery),      HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_TABLE,         sizeof(XF_Prolog_Analyse_table),         HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ENSURE_COLTYPE,        sizeof(XF_Prolog_Ensure_colType),        HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ENSURE_LEVEL,          sizeof(XF_Prolog_Ensure_level),          HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction),    HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_MOVE_ON,               sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_REDUCE_NOT,            sizeof(XF_Prolog_Reduce_not),            HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),        HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_X_BOARD_TO_SQYNM,      sizeof(XF_Prolog_X_board_To_sqyNm),      HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_X_COLNM_TO_EXPCOL,     sizeof(XF_Prolog_X_colNm_To_expCol),     HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_INJECTABLE,      sizeof(XF_Prolog_Analyse_injectable),      HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_SUBQUERY,        sizeof(XF_Prolog_Analyse_subQuery),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_TABLE,           sizeof(XF_Prolog_Analyse_table),           HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ENSURE_COLTYPE,          sizeof(XF_Prolog_Ensure_colType),          HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ENSURE_LEVEL,            sizeof(XF_Prolog_Ensure_level),            HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ERASE_CONSTRUCTION,      sizeof(XF_Prolog_Erase_construction),      HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_MOVE_ON,                 sizeof(XF_Prolog_Move_on),                 HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_REDUCE_NOT,              sizeof(XF_Prolog_Reduce_not),              HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_VALIDATE_BOARD,          sizeof(XF_Prolog_Validate_Board),          HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_X_BOARD_TO_SQYNM,        sizeof(XF_Prolog_X_board_To_sqyNm),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_X_COLNM_TO_EXPCOL,       sizeof(XF_Prolog_X_colNm_To_expCol),       HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_RPNCALC_TO_BOOLPRED, sizeof(XF_Prolog_X_rpnCalc_To_boolPred), HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),              HT_T_TINY    , FILL },

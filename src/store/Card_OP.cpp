@@ -81,7 +81,7 @@ bool Card_OP::bIsOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* analyse from for injected columns                                          */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vAnalyse_injected(CardIter* pCI)
+void Card_OP::vAnalyse_injectable(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

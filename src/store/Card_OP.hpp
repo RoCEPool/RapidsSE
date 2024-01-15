@@ -17,7 +17,7 @@ namespace STORE
 
     static bool bIsOp(Card* pCard);
 
-    void vAnalyse_injected(CardIter* pCI);
+    void vAnalyse_injectable(CardIter* pCI);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
