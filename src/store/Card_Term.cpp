@@ -229,6 +229,8 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
     else
     if (szFacet_colType->bSame("VARCHAR"_Stz))
       rxCast_last.m_xTypeId = TypeId::xIdOf(CT_VARCHAR);
+    else
+     NEVER_REACH
 
     return;
   }
@@ -289,31 +291,35 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
   }
 
 
-  i8 iOdn = iGetOdn();
-
   Card_Expr *p_expr_arriving = nullptr;
 
-  if (pSymbol_term->bHasFacet(SF_KEY_COL))
+  if (pSymbol_term->bHasFacet(SF_KEY_COL)) {
+    i8 iOdn = iGetOdn();
     p_expr_arriving = pCI->G.p_key->pGet_expr(iOdn - 1);
+  }
   else
-  if (pSymbol_term->bHasFacet(SF_EXP_COL))
+  if (pSymbol_term->bHasFacet(SF_EXP_COL)) {
+    i8 iOdn = iGetOdn();
     p_expr_arriving = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
+  }
   else
   if (pSymbol_term->bHasFacet(SF_NMD_COL))
     p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
   else
   if (pSymbol_term->bHasFacet(SF_TBL_COL))
-    NEVER_REACH
+    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
   else {
-     return;
+    vDump(__func__);
+    NEVER_REACH
+    return;
   }
 
   if (! p_expr_arriving)
     return;
 
-  RASSERT(! pSymbol_term->xTypeId().bIsValid() &&
-          p_expr_arriving->xTypeId().bIsValid());
-  vCast(p_expr_arriving);
+//  RASSERT(! pSymbol_term->xTypeId().bIsValid() &&
+//          p_expr_arriving->xTypeId().bIsValid());
+  pSymbol_term->vCast(p_expr_arriving->pSymbol()->xCast());
 
   if (pSymbol_term->bHasType())
     rxCast_last = pSymbol_term->xCast();
@@ -791,13 +797,13 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
         vDump(__func__);
         vValidationFailed("Type Missing : %p"_Stz, this);
       }
-      if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
-        if (m_xSymbol.nTypeLength() == 0) {
-          pCI->vPrintBoard(__func__,__LINE__,true);
-          vDump(__func__);
-          vValidationFailed("Decimal length is 0 : %p"_Stz, this);
-        }
-      }
+//      if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+//        if (m_xSymbol.nTypeLength() == 0) {
+//          pCI->vPrintBoard(__func__,__LINE__,true);
+//          vDump(__func__);
+//          vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+//        }
+//      }
     }
   }
 
