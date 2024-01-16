@@ -291,35 +291,19 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
   }
 
 
-  Card_Expr *p_expr_arriving = nullptr;
-
+  Card_Expr *p_expr_matched = nullptr;
   if (pSymbol_term->bHasFacet(SF_KEY_COL)) {
-//    i8 iOdn = iGetOdn();
-//    p_expr_arriving = pCI->G.p_key->pGet_expr(iOdn - 1);
-    p_expr_arriving = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
+    p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
   }
-  else
-  if (pSymbol_term->bHasFacet(SF_EXP_COL)) {
-    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
-  }
-  else
-  if (pSymbol_term->bHasFacet(SF_NMD_COL))
-    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
-  else
-  if (pSymbol_term->bHasFacet(SF_TBL_COL))
-    p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
   else {
-    vDump(__func__);
-    NEVER_REACH
-    return;
+    p_expr_matched = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
   }
-
-  if (! p_expr_arriving)
+  if (! p_expr_matched)
     return;
 
 //  RASSERT(! pSymbol_term->xTypeId().bIsValid() &&
-//          p_expr_arriving->xTypeId().bIsValid());
-  pSymbol_term->vCast(p_expr_arriving->pSymbol()->xCast());
+//          p_expr_matched->xTypeId().bIsValid());
+  pSymbol_term->vCast(p_expr_matched->pSymbol()->xCast());
 
   if (pSymbol_term->bHasType())
     rxCast_last = pSymbol_term->xCast();
