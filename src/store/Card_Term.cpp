@@ -294,8 +294,9 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
   Card_Expr *p_expr_arriving = nullptr;
 
   if (pSymbol_term->bHasFacet(SF_KEY_COL)) {
-    i8 iOdn = iGetOdn();
-    p_expr_arriving = pCI->G.p_key->pGet_expr(iOdn - 1);
+//    i8 iOdn = iGetOdn();
+//    p_expr_arriving = pCI->G.p_key->pGet_expr(iOdn - 1);
+    p_expr_arriving = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
   }
   else
   if (pSymbol_term->bHasFacet(SF_EXP_COL)) {
