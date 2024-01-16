@@ -293,17 +293,19 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
 
   Card_Expr *p_expr_arriving = nullptr;
 
-  if (bIsKeyCol())
+  if (pSymbol_term->bHasFacet(SF_KEY_COL))
     p_expr_arriving = pCI->G.p_key->pGet_expr(iOdn - 1);
   else
-  if (bIs_expCol())
+  if (pSymbol_term->bHasFacet(SF_EXP_COL))
     p_expr_arriving = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
   else
-  if (bIsNmdCol())
+  if (pSymbol_term->bHasFacet(SF_NMD_COL))
     p_expr_arriving = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+  else
+  if (pSymbol_term->bHasFacet(SF_TBL_COL))
+    NEVER_REACH
   else {
-    RASSERT(!bIsTblCol());
-    return;
+     return;
   }
 
   if (! p_expr_arriving)
