@@ -108,13 +108,14 @@ void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCo
     }
 
     // new a row in pds row buffer (new another pds row buffer if necessary)
-    aDstRow = pPdsRowBuffer->pAllotRowFull(aazStrArea);
+    aDstRow = pPdsRowBuffer->pAllotRow();
     if (! aDstRow) {
       pPdsRowBuffer = new Pds(pRowPix);
       pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
-      aDstRow = pPdsRowBuffer->pAllotRowFull(aazStrArea);
+      aDstRow = pPdsRowBuffer->pAllotRow();
       RASSERT(aDstRow);
     }
+    *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
 
     pPdsRowBuffer->vLglPtn(tLglPtn);
 

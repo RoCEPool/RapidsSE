@@ -39,10 +39,10 @@ namespace BASE
     i8   m_i_RowCrs;    // current logical row number
     i8   m_i_ColCrs;    // current working column
     void* m_aStzSet;     // current pointer to string set area
-    i8   m_iCurStzSetSpace; // current space left for string set area
+    i8   m_nRowStringBytes; // current space left for string set area
 
     // Save the last usable offset for asserts
-    PdsConvergentHeap_t<C_WSP_INTERNALHEAP,SkipListBlock,Stz> m_xWsp;
+    PdsConvergentHeap_t<C_WSP_INTERNALHEAP,Stz,SkipListBlock> m_xWsp;
 
     // must be last
     Footer m_xFooter;
@@ -62,12 +62,12 @@ namespace BASE
     // public:
     Row*            pAllotRow(void);
     Row*            pAllotRow(i8 iVargsBegin, ...);
-    Row*            pAllotRowFull(char** aaStzSet);
+//    Row*            pAllotRowFull(char** aaStzSet);
     eBT             eBufferType(void);
     void            vBufferType(eBT eBufferType);
     Row*            pCopyRow(Row* pRow, bool bSrcHasPtnHash = false, bool bCopyPtnHash = false);
-		Row*            pCopyRowArray(i8* pRowArray);
-    void*           aAllotStzSet(void);
+//		Row*            pCopyRowArray(i8* pRowArray);
+//    void*           aAllotStzSet(void);
     void            vDecidedDelete(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
@@ -93,6 +93,7 @@ namespace BASE
     RowPix*         pRowPix(void);
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);
+    void            vCodeSynthUpdateRowString(i8 nSize);
     void            vValidate(void);
     bool            bVerify(void);
 
@@ -113,8 +114,8 @@ namespace BASE
     void      vDepositColVal(d8 dColVal);
     void      vDepositColVal(i8 iColVal);
     void      vDepositColVal(i8 i_Col, i8 iColVal);
-    void      vDepositColVal(Stz* szColVal, i8 iMaxStzLen);
-    String_d* azDepositString_begin(i8 nSize);
+    bool      bDepositColVal(Stz* szColVal);
+    void*     azDepositString_begin(void);
     void      vDepositString_update(i8 nTotalSize);
     void      vDepositString_end(i8 nSize);
     void      vDiscardInvalidRow(void);

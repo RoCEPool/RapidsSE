@@ -1025,9 +1025,9 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     iElemSize += 8;
   }
   else {
-    szDstStz = azStringDyn + 16;
+		szDstStz = (char*)(azStringDyn + sizeof(i8));
 
-		i8 iDstBufLen = *(i8*)(azStringDyn + 8);
+		i8 iDstBufLen = __ROW_INFO_TO__.m_nStringAreaSize;
 
 #ifdef WITH_CLANG
     nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, iDstBufLen, szSrcStz);
@@ -1036,15 +1036,37 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 //      printf("%c ", szDstStz[i_Byte]);
 //    printf("\n");
 #endif
-    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
 
-    iOffset = nDifference(amCellAddress, azStringDyn);
+    // save the string offset
+    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
+    iOffset = - nDifference(azStringDyn, amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
-    // update String_d address to point to the next String_d in the StringSet
-    azStringDyn = azStringDyn + iDstBufLen + 32;
+    // Store the len of string copied
+    i8 iDstLen = strlen(szDstStz) + 1;
+    i8* pnArea = (i8*) azStringDyn;
+    *pnArea = iDstLen;
 
+    iDstLen += sizeof(i8);
+
+    // update the tub string size
+    __ROW_INFO_TO__.m_nStringAreaSize -= iDstLen;
+    __ROW_INFO_TO__.m_acStrArea += iDstLen;
+
+    // Add SrcSize to ElemSize since payload keys are on 8 byte boundries
+    // SrcSize is rounded up to an 8 byte value
     iElemSize += nSrcSize;
+
+#ifdef WITH_CLANG
+    // Below function uses nSrcSize to update Pds
+    // So replace nSrcSize with iDstLen
+    nSrcSize = iDstLen;
+
+    // Take string size bytes from Head area of Pds
+    __EXTERN_ROWSTRSIZE__;
+#endif
+    // update string address to point to the next string area in the pds
+    azStringDyn = azStringDyn + nSrcSize;
   }
   // marker-end
 }
@@ -1138,8 +1160,8 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
   }
   else {
     // get the destination string
-    i8* piMaxLen = (i8*)(azStringDyn + 8);
-    szDstStz = azStringDyn + 16;
+
+    szDstStz = (char*)(azStringDyn + sizeof(i8));
 
 		nSrcSize = strlen(szSrcStz) + 1;
 		char *d = szDstStz;
@@ -1151,13 +1173,26 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
 
     *d = '\0';
 
-    // copy the source to the destination
+    // save the string offset
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
-    iOffset = nDifference(amCellAddress, azStringDyn);
+    iOffset = - nDifference(azStringDyn, amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
-    // update String_d address to point to the next String_d in the StringSet
-    azStringDyn = azStringDyn + *piMaxLen + 32;
+    // Update string header with size of string
+    i8* pnArea = (i8*) azStringDyn;
+    *pnArea = nSrcSize;
+
+    // Add header size to total string length
+    nSrcSize += sizeof(i8);
+
+    __ROW_INFO_TO__.m_acStrArea += nSrcSize;
+
+#ifdef WITH_CLANG
+    __EXTERN_ROWSTRSIZE__;
+#endif
+
+    // update string address to point to the next string area in the pds
+    azStringDyn = azStringDyn + nSrcSize;
   }
 
   // marker-end
@@ -1326,8 +1361,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      nSrcSize = strlen(szSrcStz) + 1;
 
      // get the destination string
-     szDstStz = azStringDyn + 16;
-     i8* piMaxLen = (i8*)(azStringDyn + 8);
+     szDstStz = (char*)(azStringDyn + sizeof(i8));
 
 		 char *d = szDstStz;
 		 const char *s = (char*)szSrcStz;
@@ -1338,13 +1372,28 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 
 		 *d = '\0';
 
-     // copy the source to the destination
+     // save the string offset
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
-     iOffset = nDifference(amCellAddress, azStringDyn);
+     iOffset = - nDifference(azStringDyn, amCellAddress);
      p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
-     // update String_d address to point to the next String_d in the StringSet
-     azStringDyn = azStringDyn + *piMaxLen + 32;
+     // Update string header with size of string
+     i8* pnArea = (i8*) azStringDyn;
+     *pnArea = nSrcSize;
+
+     // Add header size to total string length
+     nSrcSize += sizeof(i8);
+
+     // update the tub string size
+     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
+
+#ifdef WITH_CLANG
+     // Take string size bytes from Head area of Pds
+     __EXTERN_ROWSTRSIZE__;
+#endif
+
+    // update string address to point to the next string area in the pds
+     azStringDyn = azStringDyn + nSrcSize;
   }
 
   // marker-end

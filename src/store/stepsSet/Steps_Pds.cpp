@@ -584,9 +584,10 @@ void Step::vPdsAddRowVargs(void)
     return;
   }
 
-  i8   nSize;
+
   i8 iInt;
   s256 sStr;
+  bool bResult;
 
   for (i8 i_Arg = 0; i_Arg < nArgs && i_Arg < nCols; i_Arg++) {
 
@@ -603,10 +604,14 @@ void Step::vPdsAddRowVargs(void)
 
         // STRING_DEPOSIT
         m_pDataStack->vPopStr(sStr,__func__);
-        nSize = sStr.nSize();
-        if(nSize > pRowPix->m_xaColPix[i_Arg].m_uLength)
-          nSize = pRowPix->m_xaColPix[i_Arg].m_uLength;
-        pPdsRowBuffer->vDepositColVal(sStr, nSize);
+
+        bResult = pPdsRowBuffer->bDepositColVal(sStr);
+
+        if( ! bResult ) {
+          pPdsRowBuffer->vDiscardInvalidRow();
+          m_pDataStack->vPushInt(false);
+          return;
+        }
         // END STRING_DEPOSIT
 
         break;

@@ -13,31 +13,28 @@ namespace BASE
     i8    m_nUsedTail;    // bytes used in the area for tail items
 
     i8    m_nHeadItems;   // number of fixed-size head items in this wsp
-    i8    m_nHeadSize;    // size of each fixed-size head item
 
     i8    m_nTailItems;   // number of fixed-size tail items in this wsp
     i8    m_nTailSize;    // size of each fixed-size tail item
 
-    PadWord m__PadToCacheLine[1];
+//    PadWord m__PadToCacheLine[1];
 
     byte  m_yaByteArea[AREA]; // allottable area
 
   public:
     PdsConvergentHeap_t(void);
 
-    HEAD* aAllotHead(void);
+    HEAD* aAllotHead(i8 nBytes);
     TAIL* aAllotTail(void);
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
     void  vGiveTail(i8 nBytes);
     bool  bHasSpaceFor(i8 nBytes);
-    void  vInit(i8 nHeadSize, i8 nTailSize);
+    void  vInit(i8 nTailSize);
     i8    nItems(void);
     void* aLastUsableByteAddr(void);
     byte* ayLatterHead(void);
     byte* ayLatterTail(void);
-    i8    iTailSize(void);
-    void  vTailSize(i8 nSize);
     void  vTakeHead(i8 nBytes);
     void  vTakeTail(i8 nBytes);
     i8    nUsedBytes(void);
@@ -65,7 +62,6 @@ PdsConvergentHeap_t<AREA,HEAD,TAIL>::PdsConvergentHeap_t(void)
   m_nUsedTail  = 0;
 
   m_nHeadItems = 0;
-  m_nHeadSize  = C_UNKNOWN;
 
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
@@ -81,13 +77,11 @@ PdsConvergentHeap_t<AREA,HEAD,TAIL>::PdsConvergentHeap_t(void)
 /* allot a fixed-size head from byte area                                     */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-HEAD* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aAllotHead(void)
+HEAD* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aAllotHead(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
 
-  RASSERT(C_UNKNOWN != m_nHeadSize);
-
-  if(! bHasSpaceFor(m_nHeadSize)) {
+  if(! bHasSpaceFor(nBytes)) {
     return nullptr;
   }
 
@@ -105,7 +99,7 @@ HEAD* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aAllotHead(void)
   byte* ayAllottedHead = ayLatterHead();
 
   RASSERT(DoubleWord::bOnDoubleWordBoundary(ayAllottedHead));
-  vTakeHead(m_nHeadSize);
+  vTakeHead(nBytes);
 
   m_nHeadItems++;
 
@@ -123,8 +117,6 @@ template<i8 AREA, class HEAD, class TAIL>
 TAIL* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aAllotTail(void)
 {
   ASSERT(bStructurallyValid());
-
-  RASSERT(m_nTailSize != C_UNKNOWN);
 
   if(! bHasSpaceFor(m_nTailSize)) {
     return nullptr;
@@ -148,7 +140,7 @@ i8 PdsConvergentHeap_t<AREA,HEAD,TAIL>::nFreeBytes(void)
   ASSERT(bStructurallyValid());
 
   i8 nFree = AREA - m_nUsedHead - m_nUsedTail;
-  ASSERT(nFree >= 0);
+//  ASSERT(nFree >= 0);
 
   return nFree;
 }
@@ -183,8 +175,6 @@ void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vGiveTail(i8 nBytes)
 
   m_nTailItems--;
 
-  RASSERT(m_nTailSize >= 0);
-
   // !! !! !! !! !! !! !! !! !!
   // used bytes were changed
   ASSERT(bStructurallyValid());
@@ -200,23 +190,20 @@ bool PdsConvergentHeap_t<AREA,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
 
   if (nFreeBytes() >= nSizeBytes)
     return true;
-  else {
-//    RASSERT(0);
+  else
     return false;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vInit(i8 nHeadSize, i8 nTailSize)
+void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vInit(i8 nTailSize)
 {
   m_nUsedHead  = 0;
   m_nUsedTail  = 0;
 
   m_nHeadItems = 0;
-  m_nHeadSize  = nHeadSize;
 
   m_nTailItems = 0;
   m_nTailSize  = nTailSize;
@@ -274,27 +261,6 @@ byte* PdsConvergentHeap_t<AREA,HEAD,TAIL>::ayLatterTail(void)
   byte* ayLastByte = &m_yaByteArea[AREA - m_nUsedTail];
 
   return ayLastByte;
-}
-/*----------------------------------------------------------------------------*/
-/* get address of given tail item                                             */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-i8 PdsConvergentHeap_t<AREA,HEAD,TAIL>::iTailSize(void)
-{
-  ASSERT(bStructurallyValid());
-
-  return m_nTailSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of given tail item                                             */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vTailSize(i8 nSize)
-{
-  ASSERT(bStructurallyValid());
-
-  m_nTailSize = nSize;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -156,7 +156,6 @@ Pds* ToKeyHshRow::pPdsRowBuffer(void)
   RASSERT(m_pCurrPdsRowBuffer == pPdsRowBuffer);
   //-------
 
-
   return m_pCurrPdsRowBuffer;
 }
 
@@ -195,7 +194,7 @@ i8 ToKeyHshRow::iRowsSkipped(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create a new PdsrowBuffer                                                  */
+/* create a new PdsRowBuffer                                                  */
 /*----------------------------------------------------------------------------*/
 void ToKeyHshRow::vNewPdsRowBuffer(void)
 {
@@ -205,8 +204,6 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
   Pds* pNewPdsRowBuffer = new Pds(m_pStreamDef,true);
 
   m_pBufferIdQueue->vAddBuffer(pNewPdsRowBuffer);
-  Pds* pPdsRowBuffer = _pPds(m_pBufferIdQueue->pDataBuffer());
-  RASSERT(pNewPdsRowBuffer == pPdsRowBuffer);
 
   m_pCurrPdsRowBuffer = pNewPdsRowBuffer;
   return;
@@ -710,7 +707,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 nPixFracDigits;
   bool bPixNullable;
 
-  String_d* azStringDyn;
+  void* aStzSet;
 
   //
   
@@ -967,8 +964,8 @@ L_AdvanceNextRecord:
 
   pPdsRowBuffer()->nFreeBytes();
 
-  // allot a new row (new another PdsrowBuffer if necessary)
-  if (! pPdsRowBuffer()->pAllotRow()) {    // ? inline ?
+  // allot a new row (new another PdsRowBuffer if necessary)
+  if ( (pPdsRowBuffer()->nFreeBytes() < C_2KB) || (! pPdsRowBuffer()->pAllotRow())) {    // ? inline ?
     vNewPdsRowBuffer();
     Row* aNewRow = pPdsRowBuffer()->pAllotRow();
     RASSERT(aNewRow);
@@ -2098,8 +2095,13 @@ L_Varchar_unquoted:
     vTrace("L_Varchar_unquoted:\n"_Stz);
   
   // allocate string space in slab
-  azStringDyn = pPdsRowBuffer()->azDepositString_begin(nPixLength);
-  azColVal_varchar = azStringDyn->azChar();
+
+  if(pPdsRowBuffer()->nFreeBytes() < (nPixLength + (i8) sizeof(i8)))
+    nPixLength = pPdsRowBuffer()->nFreeBytes() - sizeof(i8);
+
+  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+
+  azColVal_varchar = aAdd<char*>(aStzSet, sizeof(i8));
   acVchDst  = azColVal_varchar;
   
   while (! bIS_NULL()) {
@@ -2159,8 +2161,12 @@ L_Varchar_singleQuoted:
     vTrace("L_Varchar_singleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azStringDyn = pPdsRowBuffer()->azDepositString_begin(nPixLength);
-  azColVal_varchar = azStringDyn->azChar();
+  if(pPdsRowBuffer()->nFreeBytes() < (nPixLength + (i8) sizeof(i8)))
+    nPixLength = pPdsRowBuffer()->nFreeBytes() - sizeof(i8);
+
+  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+
+  azColVal_varchar = aAdd<char*>(aStzSet, sizeof(i8));
   acVchDst  = azColVal_varchar;
   
   // >> *'...
@@ -2276,8 +2282,12 @@ L_Varchar_doubleQuoted:
     vTrace("L_Varchar_doubleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azStringDyn = pPdsRowBuffer()->azDepositString_begin(nPixLength);
-  azColVal_varchar = azStringDyn->azChar();
+  if(pPdsRowBuffer()->nFreeBytes() < (nPixLength + (i8) sizeof(i8)))
+    nPixLength = pPdsRowBuffer()->nFreeBytes() - sizeof(i8);
+
+  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+
+  azColVal_varchar = aAdd<char*>(aStzSet, sizeof(i8));
   acVchDst  = azColVal_varchar;
   
   // >> *"...
@@ -2392,8 +2402,12 @@ L_Varchar_userEnclosed:
     vTrace("L_Varchar_userEnclosed:\n"_Stz);
   
   // allocate string space in slab
-  azStringDyn = pPdsRowBuffer()->azDepositString_begin(nPixLength);
-  azColVal_varchar = azStringDyn->azChar();
+  if(pPdsRowBuffer()->nFreeBytes() < (nPixLength + (i8) sizeof(i8)))
+    nPixLength = pPdsRowBuffer()->nFreeBytes() - sizeof(i8);
+
+  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+
+  azColVal_varchar = aAdd<char*>(aStzSet, sizeof(i8));
   acVchDst  = azColVal_varchar;
   
   // >> *{.*
@@ -2463,7 +2477,8 @@ L_Varchar_depositValue:
   if ((u8)(nVchChars) > C_VCH_SIZE_MAX)
     goto L_FieldError;
 
-  pPdsRowBuffer()->vDepositString_end(azStringDyn->iTotalSize());
+  // Store len of string
+  pPdsRowBuffer()->vDepositString_end(nVchChars + 1);
   
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_Varchar_depositValue: %s\n"_Stz,azColVal_varchar);

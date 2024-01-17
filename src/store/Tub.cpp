@@ -116,15 +116,16 @@ void* Tub::aAllotRowPds(Tub* pTub, char** aazStrArea, i8* piErrorCode)
       pTub->vAddBuffer(pPdsRowBuffer);
     }
 
-    Row* pRowDst = pPdsRowBuffer->pAllotRowFull(aazStrArea);
+    Row* pRowDst = pPdsRowBuffer->pAllotRow();
 
     if (pRowDst == nullptr) {
       pPdsRowBuffer = new Pds(pRowPix);
       pTub->vAddBuffer(pPdsRowBuffer);
-      pRowDst = pPdsRowBuffer->pAllotRowFull(aazStrArea);
+      pRowDst = pPdsRowBuffer->pAllotRow();
       RASSERT(pRowDst);
     }
 
+    *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
     return pRowDst->aCellArray();
   }
   catch (LowMemory xLowMemory) {
@@ -142,9 +143,9 @@ void Tub::vRowStrSize(Tub* pTub, i8 nRowStrSize)
   
   RASSERT(CN_TUB == pTub->eGetClassNo());
 
-  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+  Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
 
-  pRowBuffer->vTakeHead(nRowStrSize);
+  pPdsRowBuffer->vCodeSynthUpdateRowString(nRowStrSize);
 
 }
 
