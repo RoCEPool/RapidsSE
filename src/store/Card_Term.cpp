@@ -270,18 +270,17 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
     return;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (! pCI->Flux.m_pArriving)
-    return;
-
-  Card_Expr* p_expr_matching = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
-  if (! p_expr_matching)
-    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.p_key && pCI->G.p_expr && pCI->G.p_rpnCalc) {
+    if (! pCI->Flux.m_pArriving)
+      return;
+
+    Card_Expr* p_expr_matching = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+    if (! p_expr_matching)
+      return;
+
     pSymbol_term->vCast(p_expr_matching->pSymbol()->xCast());
     rxCast_last = pSymbol_term->xCast();
     return;
@@ -294,6 +293,9 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
     rxCast_last = pSymbol_term->xCast();
     return;
   }
+
+  if (! pCI->Flux.m_pArriving)
+    return;
 
 
   Card_Expr *p_expr_matched = nullptr;
