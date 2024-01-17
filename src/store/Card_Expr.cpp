@@ -781,6 +781,13 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   (void)Card::eValidate_parentEither(pCI, CK_t_EMIT, CK_c_FOLD, CK_s_INJECTABLE,
                                      CK_s_KEY, CK_s_NEEDED, CK_STREAMKEY, CK_NONE);
 
+  if (pCI->pAncestorFind(CK_s_KEY)) {
+    if (! m_xSymbol.bHasFacet(SF_KEY_COL)) {
+      vDump(__func__);
+      vValidationFailed("SF_KEY_COL Missing : %p"_Stz,this);
+    }
+  }
+
   if (pCI->pAncestorFind(CK_s_INJECTABLE)) {
     if (! m_xSymbol.bHasType()) {
       vDump(__func__);
