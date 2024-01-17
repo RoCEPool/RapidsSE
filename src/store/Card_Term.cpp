@@ -294,16 +294,15 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
     return;
   }
 
-  if (! pCI->Flux.m_pArriving)
-    return;
-
-
   Card_Expr *p_expr_matched = nullptr;
   if (pSymbol_term->bHasFacet(SF_KEY_COL)) {
     p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
   }
   else {
-    p_expr_matched = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+    if (pCI->Flux.m_pArriving)
+      p_expr_matched = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+    if (! p_expr_matched && pCI->G.p_injectable)
+      p_expr_matched = pCI->G.p_injectable->pFind_expr_Matches(pSymbol_term);
   }
   if (! p_expr_matched)
     return;
