@@ -1838,7 +1838,11 @@ void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   RASSERT(bFixedDepth(iDepth));
 
-  m_xSymbol.vValidate();
+  if (! m_xSymbol.bValidate()) {
+    pCI->vPrintBoard(__func__,__LINE__,true);
+    vDump(__func__);
+    vValidationFailed("Invalid Symbol : %p"_Stz, this);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

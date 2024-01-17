@@ -80,7 +80,7 @@ namespace STORE
     static bool bIs_Interval_YM(Stz* szChrSeq);     // INTERVAL_YM
     static bool bIs_Itm_Col(Stz* szChrSeq);         // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Ivl_Fn(Stz* szChrSeq);          // extract_year etc
-    static bool bIs_List_cnt(Stz* szChrSeq);         // #n
+    static bool bIs_List_Cnt(Stz* szChrSeq);         // #n
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
     static bool bIs_Negate(Stz* szChrSeq);          // NULL
