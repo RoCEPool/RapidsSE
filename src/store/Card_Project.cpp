@@ -111,7 +111,7 @@ void Card_Project::vBump_Rightwards(i8 nBumpBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft projection for early project                                         */
+/* craft emit for early project                                               */
 /*----------------------------------------------------------------------------*/
 Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 {
@@ -126,10 +126,12 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
     //p_expr_needed->vDump(__func__);
-    if (! pCI->Flux.m_pArriving->pContains(p_expr_needed))
+    Card_Expr* p_expr_arriving = pCI->Flux.m_pArriving->pContains(p_expr_needed);
+    if (! p_expr_arriving)
       continue;
 
-    Card_Expr* p_expr_clone = p_expr_needed->pClone();
+    //Card_Expr* p_expr_clone = p_expr_needed->pClone();
+    Card_Expr* p_expr_clone = p_expr_arriving->pClone();
 
     if (! p_expr_clone->pSymbol()->bHasFacet(SF_NMD_COL)) {
       Symbol oSymbol_nmdCol;
