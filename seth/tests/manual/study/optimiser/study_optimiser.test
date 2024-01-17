@@ -5,8 +5,8 @@ LOG ' ';
 LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
-LOG 'operator.test';
-INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
+//LOG 'operator.test';
+//INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';
@@ -19,7 +19,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-INCLUDE 'tpch_q8.test';
+INCLUDE 'tpch_q10.test';
 
 
 INCLUDE 'select_star.test';

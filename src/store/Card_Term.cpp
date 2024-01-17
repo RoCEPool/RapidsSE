@@ -772,7 +772,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMIT]) ) {
-    if (m_xSymbol.bIs_Tbl_Col()) {
+    if (m_xSymbol.bHasFacet(SF_TBL_COL)) {
       if (!m_xSymbol.bHasType()) {
         pCI->vPrintBoard(__func__,__LINE__,true);
         vDump(__func__);

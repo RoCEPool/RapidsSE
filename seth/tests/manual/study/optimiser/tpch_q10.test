@@ -7,6 +7,10 @@ LOG 'TPC-H Q10...';
 trackMemory force;
 success
 
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
 /pipelineName = "OptQ10"
 select
   c_custkey,
