@@ -132,6 +132,9 @@ void XF_Epilog_Type_Cast::vCast(void)
 
       }
       else if (m_pCI->Flux.m_pArriving) {
+        if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
+          m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
+
         m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
         m_pCI->G.p_emit->vRenumberAll_expr();
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
@@ -148,8 +151,8 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_boolPred->vEnsureTypeId_expCol(m_pCI);
       }
 
-      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
-        m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
+//      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
+//        m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
 
       if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
           m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);

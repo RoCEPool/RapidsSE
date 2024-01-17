@@ -1186,6 +1186,20 @@ void Symbol::vCast(Cast xCast)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset cast                                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCastReset(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_xCast.m_xTypeId = TypeId();
+
+  m_xCast.m_nTypeLength   = C_UNKNOWN;
+  m_xCast.m_nTypeScale    = C_UNKNOWN;
+  m_xCast.m_bTypeNullable = true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set cast & facets from arg                                                 */
 /*----------------------------------------------------------------------------*/
 void Symbol::vCastFacets(Symbol* pSymbol_arg)
@@ -3280,20 +3294,6 @@ void Symbol::Y_vTo_String(String* pString)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* reset cast                                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vCastReset(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_xCast.m_xTypeId = TypeId();
-
-  m_xCast.m_nTypeLength   = C_UNKNOWN;
-  m_xCast.m_nTypeScale    = C_UNKNOWN;
-  m_xCast.m_bTypeNullable = true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given aggregate fn                                      */

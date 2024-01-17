@@ -123,6 +123,7 @@ namespace STORE
 
     Cast xCast(void);
     void vCast(Cast xCast);
+    void vCastReset(void);
     void vCastFacets(Symbol* pSymbol_arg);
     void vCastFacetsPpy(Symbol* pSymbol_arg);
     void vConcatFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
@@ -266,7 +267,6 @@ namespace STORE
     void Y_vTo_String(String* pString);
 
   private:
-    void vCastReset(void);
 
     void vFacet_Agg_Fn(Stz* szAggFn);
     void vFacet_As(Stz* szAs);

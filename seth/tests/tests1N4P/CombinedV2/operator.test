@@ -35,11 +35,81 @@ success
 load ${testName2}_Region "../DATA/TPCH/region.tbl";
 success
 
+
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - KEY VARCHAR
+//------------------------------------------------------------------------------
+
+/optimiser_trace
+/weaved
+/pipeline_Def
+/optimise_passthru
+pipeline OpTest_14
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public ${testName2}_Nation
+    | gbyAgg " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S02 on all nodes :
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S03 on origin :
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    output
+    | sink
+    | first
+end ;
+rows:
+  ('ALGERIA',0)
+  ('ARGENTINA',1)
+  ('BRAZIL',2)
+  ('CANADA',3)
+  ('CHINA',18)
+  ('EGYPT',4)
+  ('ETHIOPIA',5)
+  ('FRANCE',6)
+  ('GERMANY',7)
+  ('INDIA',8)
+  ('INDONESIA',9)
+  ('IRAN',10)
+  ('IRAQ',11)
+  ('JAPAN',12)
+  ('JORDAN',13)
+  ('KENYA',14)
+  ('MOROCCO',15)
+  ('MOZAMBIQUE',16)
+  ('PERU',17)
+  ('ROMANIA',19)
+  ('RUSSIA',22)
+  ('SAUDI ARABIA',20)
+  ('UNITED KINGDOM',23)
+  ('UNITED STATES',24)
+  ('VIETNAM',21)
+
+
+
+
+
+
 //------------------------------------------------------------------------------
 // PROJECT
 //------------------------------------------------------------------------------
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_1
 begin
   stage stageStart on origin :
     start
@@ -65,7 +135,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_2
 begin
 
   stage S00 on origin :
@@ -91,7 +161,7 @@ rows:
   (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_3
 begin
 
   stage S00 on origin :
@@ -136,7 +206,7 @@ rows:
   (24,'UNITED STATES',1,'y final packages. slow foxes cajole quickly. quickly silent platelets breach ironic accounts. unusual pinto be')
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_4
 begin
 
   stage S00 on origin :
@@ -167,7 +237,7 @@ rows:
 // INDEXJOIN -
 //------------------------------------------------------------------------------
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_5
 begin
 
   stage S00 on origin :
@@ -226,7 +296,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_6
   begin
 
   stage S00 on origin :
@@ -264,7 +334,7 @@ rows:
 
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_7
   begin
 
   stage S00 on origin :
@@ -298,7 +368,7 @@ rows:
 // SEMI-JOIN
 //------------------------------------------------------------------------------
 /optimise_passthru
-pipeline __CS2_semiJoin
+pipeline OpTest_8
 begin
 
  stage S00 on origin :
@@ -334,7 +404,7 @@ rows:
 
  
  /optimise_passthru
- pipeline __CS2_semiJoin
+ pipeline OpTest_9
  begin
 
   stage S00 on origin :
@@ -375,7 +445,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_10
 begin
   stage S00 on origin :
     start
@@ -409,7 +479,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_11
 begin
  stage S00 on origin :
    start
@@ -441,7 +511,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_12
 begin
  stage S01 on origin :
    start
@@ -481,7 +551,7 @@ rows:
 //------------------------------------------------------------------------------
  
  /optimise_passthru
- pipeline unamed
+ pipeline OpTest_13
  begin
    stage S01 on origin :
      start
@@ -522,7 +592,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_14
 begin
   stage S00 on origin :
     start
@@ -582,7 +652,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_15
 begin
   stage S00 on origin :
     start
@@ -637,7 +707,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_16
 begin
  stage S00 on origin :
    start
@@ -688,7 +758,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_17
 begin
  stage S00 on origin :
    start
@@ -749,7 +819,7 @@ load ${testName2}_R "../DATA/Joins/R.csv";
 // LEFT_OUTER with scan
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_18
 begin
   stage stageStart on origin :
     start
@@ -772,7 +842,7 @@ rows: 48
 // LEFT_OUTER with indexscan
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_19
 begin
   stage stageStart on origin :
     start
@@ -840,7 +910,7 @@ load ${testName2}_orders "../TPCH/SF_0001/orders.tbl";
 success
 
 /optimise_passthru
-pipeline unnamed
+pipeline OpTest_20
 begin
 
   stage S00 on origin :

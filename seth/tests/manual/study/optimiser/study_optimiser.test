@@ -5,8 +5,8 @@ LOG ' ';
 LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
-//LOG 'operator.test';
-//INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
+LOG 'operator.test';
+INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';
