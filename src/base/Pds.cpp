@@ -1567,7 +1567,7 @@ bool Pds::bDepositColVal(Stz* szColVal)
 
   // Ensure we have enough space for nArea + 1 byte str + null terminator
   i8 nAreaSize = sizeof(i8);
-  if(nFreeBytes() < nAreaSize + 2)
+  if(nFreeBytes() < szColVal->nLength() + nAreaSize + 2)
     return false;
 
   void* aAddr = azDepositString_begin();

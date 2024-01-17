@@ -163,7 +163,7 @@ void vInflatePdsRowCol(Dynamic_T* aDynamicT) {
 	iOffset = piColumn[i_Col];
 	if (iOffset != C_DATUM_NULL) {
 		amCellAddress = (m8*)&piColumn[i_Col];
-		piColumn[i_Col] = ADDR_ADD(i8, amCellAddress, iOffset + C_HEADER_SIZE + C_STRAREA_SIZE);
+		piColumn[i_Col] = ADDR_ADD(i8, amCellAddress, iOffset + C_HEADER_SIZE);
 	}
 
 	// marker-end

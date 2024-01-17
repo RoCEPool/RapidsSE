@@ -22,8 +22,8 @@ __aFooterFunction(Tub)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* piErrorCode) {
-  return Tub::aAllotRowPds((Tub*)pTub, aazStrArea, piErrorCode);
+extern "C" void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) {
+  return Tub::aAllotRowPds((Tub*)pTub, aazStrArea, pnMaxStrAreaLen, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ void Tub::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* allot a new row in a pds                                                   */
 /*----------------------------------------------------------------------------*/
-void* Tub::aAllotRowPds(Tub* pTub, char** aazStrArea, i8* piErrorCode)
+void* Tub::aAllotRowPds(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
 {
   _static_
 
@@ -111,7 +111,7 @@ void* Tub::aAllotRowPds(Tub* pTub, char** aazStrArea, i8* piErrorCode)
 
     Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
 
-    if (! pPdsRowBuffer) {
+    if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
       pPdsRowBuffer = new Pds(pRowPix);
       pTub->vAddBuffer(pPdsRowBuffer);
     }
@@ -126,6 +126,7 @@ void* Tub::aAllotRowPds(Tub* pTub, char** aazStrArea, i8* piErrorCode)
     }
 
     *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+    *pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
     return pRowDst->aCellArray();
   }
   catch (LowMemory xLowMemory) {

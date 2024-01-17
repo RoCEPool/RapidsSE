@@ -42,7 +42,7 @@ extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((we
 
 extern void* aExtern_PdsRowBufferCellArray(void* aPdsRowBuffer, i8 iRow) __attribute__((weak_import));
 
-extern void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
+extern void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) __attribute__((weak_import));
 extern void  vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_PotRowPix(void* pPot, void* pRowPix) __attribute__((weak_import));
 
@@ -53,7 +53,7 @@ extern i8    iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) __attri
 extern i8    iExtern_StrLibWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc) __attribute__((weak_import));
 extern i8    iExtern_StrLibWordFlipSize(char* psSrc) __attribute__((weak_import));
 
-extern void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
+extern void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) __attribute__((weak_import));
 extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_TubRowPix(void* pTub, void* pRowPix) __attribute__((weak_import));
 

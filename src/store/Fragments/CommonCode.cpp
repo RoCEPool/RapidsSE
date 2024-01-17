@@ -1013,6 +1013,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
   i8 iElemSize;
   i8 nSrcSize;
   i8 iOffset;
+  i8 nMaxStrAreaLen;
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1030,7 +1031,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 		i8 iDstBufLen = __ROW_INFO_TO__.m_nStringAreaSize;
 
 #ifdef WITH_CLANG
-    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, iDstBufLen, szSrcStz);
+    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, nMaxStrAreaLen, szSrcStz);
 
 //    for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
 //      printf("%c ", szDstStz[i_Byte]);

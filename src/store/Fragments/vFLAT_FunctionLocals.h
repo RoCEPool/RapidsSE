@@ -41,6 +41,7 @@
   i8 iInCount        __attribute__ ((unused));
   i8 *paW            __attribute__ ((unused));
   i8 iScaleDiff      __attribute__ ((unused));
+  i8 nMaxStrAreaLen  __attribute__ ((unused));
 
   union Bcd_T bcdArg1 __attribute__ ((unused));
   union Bcd_T bcdArg2 __attribute__ ((unused));

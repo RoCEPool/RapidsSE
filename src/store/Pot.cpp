@@ -26,8 +26,8 @@ __aFooterFunction(Pot)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
-  return Pot::aAllotRowPds((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
+extern "C" void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) {
+  return Pot::aAllotRowPds((Pot*)pPot, iKeyHash, (char**)aazStrArea, pnMaxStrAreaLen, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@ Pot::~Pot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
+void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
 {
   _static_
 
@@ -102,7 +102,7 @@ void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCo
 
     // get pds row buffer for given partition (new a first buffer if ncessary)
     Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
-    if (! pPdsRowBuffer) {
+    if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
       pPdsRowBuffer = new Pds(pRowPix);
       pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
     }
@@ -116,6 +116,7 @@ void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCo
       RASSERT(aDstRow);
     }
     *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+    *pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
 
     pPdsRowBuffer->vLglPtn(tLglPtn);
 
@@ -141,9 +142,9 @@ void Pot::vRowStrSize(Pot* pPot, i8 iKeyHsh, i8 nRowStrSize)
   //i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
   LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHsh);
 
-  RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
+  Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
 
-  pRowBuffer->vTakeHead(nRowStrSize);
+  pPdsRowBuffer->vCodeSynthUpdateRowString(nRowStrSize);
 
 }
 
