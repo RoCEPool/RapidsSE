@@ -762,8 +762,18 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST]))
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
     Card::vValidate_hasType();
+//    if (pCI->pAncestorFind(CK_t_EMIT) &&
+//        m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+//      if (m_xSymbol.nTypeLength() == 0) {
+//        pCI->vPrintBoard(__func__,__LINE__,true);
+//        vDump(__func__);
+//        vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+//      }
+//    }
+
+  }
 
   (void)Card::eValidate_parentEither(pCI, CK_t_EMIT, CK_c_FOLD, CK_s_INJECTABLE,
                                      CK_s_KEY, CK_s_NEEDED, CK_STREAMKEY, CK_NONE);

@@ -116,6 +116,7 @@ void XF_Epilog_Type_Cast::vCast(void)
     if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
       m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
       m_pCI->G.p_key->vRenumberAll_expr();
+      m_pCI->G.p_key = nullptr;
     }
 
     if ((m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit())) {
@@ -132,8 +133,10 @@ void XF_Epilog_Type_Cast::vCast(void)
 
       }
       else if (m_pCI->Flux.m_pArriving) {
-        if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key()))
+        if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
           m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
+          m_pCI->G.p_key = nullptr;
+        }
 
         m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
         m_pCI->G.p_emit->vRenumberAll_expr();

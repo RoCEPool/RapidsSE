@@ -193,7 +193,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "level"_Stz,           // CK_s_LEVEL
   /* */ "mapping"_Stz,         // CK_s_MAPPING
   /* */ "needed"_Stz,          // CK_s_NEEDED
-  /* */ "stream"_Stz,          // CK_s_STREAM
+  /* */ "stream----------"_Stz,// CK_s_STREAM
   /* */ "table"_Stz,           // CK_s_TABLE
 
   /* */ "emit"_Stz,            // CK_t_EMIT
