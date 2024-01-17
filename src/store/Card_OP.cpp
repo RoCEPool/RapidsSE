@@ -508,9 +508,10 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_key    = pCI->G.p_OP->pSub_key();
-  pCI->G.p_needed = pCI->G.p_OP->pSub_needed();
-  pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
+  pCI->G.p_injectable = pCI->G.p_OP->pSub_injectable();
+  pCI->G.p_key        = pCI->G.p_OP->pSub_key();
+  pCI->G.p_needed     = pCI->G.p_OP->pSub_needed();
+  pCI->G.p_stream     = pCI->G.p_OP->pSub_stream();
 
   eCK eCard_OP = pCI->G.p_OP->eCard();
   switch (eCard_OP) {
