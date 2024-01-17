@@ -604,23 +604,8 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
   // primary facet
 
   s32 sType_short = szCT_char[eCTVal()];
-  i8 i_Facet = pSymbol->i_Facet(SF_EXP_COL);
-
-  if (C_UNKNOWN != i_Facet) {
-    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
-                            cMark1(),
-                            cMark2(),
-                            Stz::szDots(iDepth - 1),
-                            m_i_Child,
-                            szCardNm(),
-                            szFacet(SF_EXP_COL),
-
-                            i_Facet,
-                            sType_short.szStz(),
-                            pSymbol->xCast().m_nTypeLength
-                            );
-  }
-  else if (C_UNKNOWN != (i_Facet = pSymbol->i_Facet(SF_KEY_COL))) {
+  i8 i_Facet_primary = C_UNKNOWN;
+  if (C_UNKNOWN != (i_Facet_primary = pSymbol->i_Facet(SF_KEY_COL))) {
     pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
                             cMark1(),
                             cMark2(),
@@ -629,37 +614,39 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             szCardNm(),
                             szFacet(SF_KEY_COL),
 
-                            i_Facet,
+                            i_Facet_primary,
                             sType_short.szStz(),
                             pSymbol->xCast().m_nTypeLength
     );
 
   }
+  else
+  if (C_UNKNOWN != (i_Facet_primary = pSymbol->i_Facet(SF_EXP_COL))) {
+    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
+                            cMark1(),
+                            cMark2(),
+                            Stz::szDots(iDepth - 1),
+                            m_i_Child,
+                            szCardNm(),
+                            szFacet(SF_EXP_COL),
 
-  else {
-//    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s"_Stz,
-//                            cMark1(),
-//                            cMark2(),
-//                            Stz::szDots(iDepth - 1),
-//                            m_i_Child,
-//                            szCardNm(),
-//                            szFacet(SF_NONE),
-//                            sType_short.szStz());
-//    RASSERT(1 == nFacets);
+                            i_Facet_primary,
+                            sType_short.szStz(),
+                            pSymbol->xCast().m_nTypeLength
+                            );
   }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // secondary facets
 
-  for (i_Facet = 0; i_Facet < nFacets; i_Facet++) {
-    Facet* aFacet = pSymbol->aFacet(i_Facet);
-    if (SF_EXP_COL == aFacet->m_eFacet)
+  for (i8 i_Facet_secondary = 0; i_Facet_secondary < nFacets; i_Facet_secondary++) {
+    if (i_Facet_secondary == i_Facet_primary)
       continue;
-    if (SF_KEY_COL == aFacet->m_eFacet)
-      continue;
+    Facet* aFacet = pSymbol->aFacet(i_Facet_secondary);
     pRibbon->vSprintSnippet(true, "%s~%lld"_Stz,
                             aFacet->m_sChrSeq.szStz(),
-                            i_Facet);
+                            i_Facet_secondary);
   }
 }
 
@@ -782,7 +769,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_s_KEY, CK_s_NEEDED, CK_STREAMKEY, CK_NONE);
 
   if (pCI->pAncestorFind(CK_s_KEY)) {
-    if (! m_xSymbol.bHasFacet(SF_KEY_COL)) {
+    //vDump(__func__);
+    if (! m_xSymbol.bHasFacet(SF_KEY_COL) || ! m_xSymbol.bValidate()) {
       vDump(__func__);
       vValidationFailed("SF_KEY_COL Missing : %p"_Stz,this);
     }
