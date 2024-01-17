@@ -191,6 +191,11 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (pSymbol_term->bIs_Lit()) {
+    rxCast_last.m_xTypeId = pSymbol_term->xCast().m_xTypeId;
+    return;
+  }
+
   if (pSymbol_term->bIs_Col_Type()) {
     Stz* szFacet_colType = pSymbol_term->szFacet(SF_COL_TYPE);
 
