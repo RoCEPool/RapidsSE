@@ -270,7 +270,6 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
     return;
   }
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.p_key && pCI->G.p_expr && pCI->G.p_rpnCalc) {
@@ -288,12 +287,6 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pSymbol_term->bHasType()) {
-    RASSERT(pSymbol_term->xTypeId().bIsValid());
-    rxCast_last = pSymbol_term->xCast();
-    return;
-  }
-
   Card_Expr *p_expr_matched = nullptr;
   if (pSymbol_term->bHasFacet(SF_KEY_COL)) {
     p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
@@ -307,8 +300,6 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
   if (! p_expr_matched)
     return;
 
-//  RASSERT(! pSymbol_term->xTypeId().bIsValid() &&
-//          p_expr_matched->xTypeId().bIsValid());
   pSymbol_term->vCast(p_expr_matched->pSymbol()->xCast());
 
   if (pSymbol_term->bHasType())
