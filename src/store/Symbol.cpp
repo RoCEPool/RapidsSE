@@ -2183,6 +2183,21 @@ bool Symbol::bIs_List_Cnt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a literal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Bol_Lit()) return true;
+  if (bIs_Dcm_Lit()) return true;
+  if (bIs_Flt_Lit()) return true;
+  if (bIs_Int_Lit()) return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a key symbol? (i.e. $Kn)                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Key_Col(void)
