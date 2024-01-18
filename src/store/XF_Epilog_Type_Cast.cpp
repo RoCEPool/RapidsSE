@@ -135,12 +135,16 @@ void XF_Epilog_Type_Cast::vCast(void)
       else if (m_pCI->Flux.m_pArriving) {
         if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
           m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
-          m_pCI->G.p_key = nullptr;
         }
+
+        if (m_pCI->m_pBench->eXform() == XF_EPILOG_TYPE_CAST &&
+            CK_o_GBYAGG == m_pCI->G.e_MainCard)
+          vDebugPoint();
 
         m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
         m_pCI->G.p_emit->vRenumberAll_expr();
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+        m_pCI->G.p_key = nullptr;
       }
       else {
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;

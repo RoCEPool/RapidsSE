@@ -219,6 +219,8 @@ namespace STORE
     bool bIs_When(void);            // WHEN
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
+    bool bIs_SF_Col(void);          // SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL
+
     bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
     bool bMatches(eSF eFacet, Symbol* pSymbol_arg);
     bool bMatches(Symbol* pSymbol_arg);

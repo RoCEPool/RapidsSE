@@ -278,6 +278,8 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI, Cast& rxCast_last)
 
     Card_Expr* p_expr_matching = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
     if (! p_expr_matching)
+      p_expr_matching = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
+    if (! p_expr_matching)
       return;
 
     pSymbol_term->vCast(p_expr_matching->pSymbol()->xCast());
@@ -791,14 +793,18 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
-    if (m_xSymbol.bIs_Exp_Col() ) {
+    if (m_xSymbol.bIs_SF_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
       if (! m_xSymbol.bHasType()) {
+         vMark("?"_Stz,"t"_Stz);
+         pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);
          pCI->vPrintBoard(__func__,__LINE__,true);
          vDump(__func__);
          vValidationFailed("Type Missing : %p"_Stz,this);
       }
 //      if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
 //        if (m_xSymbol.nTypeLength() == 0) {
+//          vMark("?"_Stz,"l"_Stz);
+//          pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
 //          pCI->vPrintBoard(__func__,__LINE__,true);
 //          vDump(__func__);
 //          vValidationFailed("Decimal length is 0 : %p"_Stz, this);

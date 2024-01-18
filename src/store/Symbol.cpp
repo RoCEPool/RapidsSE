@@ -2636,6 +2636,21 @@ bool Symbol::bIs_Xk_Cast(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is the symbol a SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_SF_Col(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bHasFacet(SF_EXP_COL))  return true;
+  if (bHasFacet(SF_KEY_COL))  return true;
+  if (bHasFacet(SF_ITM_COL))  return true;
+  if (bHasFacet(SF_TBL_COL))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
