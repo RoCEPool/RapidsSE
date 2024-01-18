@@ -155,13 +155,7 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
   }
   pCI->G.p_term = nullptr;
 
-  if (! pSymbol()->xCast().m_xTypeId.bIsValid() && xCast_last.m_xTypeId.bIsValid())
-    vCast(xCast_last);
-  else
-  if (pSymbol()->xCast().m_xTypeId == xCast_last.m_xTypeId &&
-      (pSymbol()->xCast().m_nTypeLength   != xCast_last.m_nTypeLength ||
-       pSymbol()->xCast().m_nTypeScale    != xCast_last.m_nTypeScale  ||
-       pSymbol()->xCast().m_bTypeNullable != xCast_last.m_bTypeNullable))
+  if (xCast_last.m_xTypeId.bIsValid())
     vCast(xCast_last);
 }
 

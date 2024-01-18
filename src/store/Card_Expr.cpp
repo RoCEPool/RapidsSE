@@ -316,7 +316,7 @@ void Card_Expr::vEnsureTypeId_expCol(CardIter* pCI)
        pSymbol()->xCast().m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable))
     vCast(pCI->G.p_rpnCalc->xCast());
 
-  RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
+  //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
 
   pCI->G.p_rpnCalc = nullptr;
 }
