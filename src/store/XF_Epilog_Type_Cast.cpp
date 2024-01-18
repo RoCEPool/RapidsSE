@@ -138,8 +138,10 @@ void XF_Epilog_Type_Cast::vCast(void)
         }
 
         if (m_pCI->m_pBench->eXform() == XF_EPILOG_TYPE_CAST &&
-            CK_o_GBYAGG == m_pCI->G.e_MainCard)
+            CK_o_GBYAGG == m_pCI->G.e_MainCard) {
+          m_pCI->vPrintBoard(__func__ ,__LINE__);
           vDebugPoint();
+        }
 
         m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
         m_pCI->G.p_emit->vRenumberAll_expr();
