@@ -1,300 +1,49 @@
-
-
-// /keepCodeFile /UseCodeFile = "_unnamed__NODE1_2" select * from uniqueTable;
-
-create table orders (
-O_ORDERKEY        INTEGER NOT NULL,
-O_CUSTKEY         INTEGER NOT NULL,
-O_ORDERSTATUS     CHAR(1) NOT NULL,
-O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-O_ORDERDATE       DATE NOT NULL,
-O_ORDERPRIORITY   CHAR(15) NOT NULL,
-O_CLERK           CHAR(15) NOT NULL,
-O_SHIPPRIORITY    INTEGER NOT NULL,
-O_COMMENT         VARCHAR(79) NOT NULL
-) partition by (O_CUSTKEY) ;
-
-CREATE INDEX IxO_CUSTKEY ON orders(O_CUSTKEY);
-create index IxO_ORDERKEY  ON Orders  (O_ORDERKEY)  ;
-create index IxO_ORDERDATE  ON Orders  (O_ORDERDATE)  ;
-load orders "../TPCH/SF_0001/orders.tbl";
-
-create table customer (
-C_CUSTKEY       INTEGER NOT NULL,
-C_NAME          VARCHAR(25) NOT NULL,
-C_ADDRESS       VARCHAR(40) NOT NULL,
-C_NATIONKEY     INTEGER NOT NULL,
-C_PHONE         CHAR(15) NOT NULL,
-C_ACCTBAL       DECIMAL(15,2) NOT NULL,
-C_MKTSEGMENT    CHAR(10) NOT NULL,
-C_COMMENT       VARCHAR(117) NOT NULL
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
 );
 
-create index IxC_CUSTKEY ON customer (C_CUSTKEY)  ;
-create index IxC_NATIONKEY ON customer (C_NATIONKEY)  ;
-load customer "../TPCH/SF_0001/customer.tbl";
+create index TABLE1_PCOL1 on table1(pcol1);
+create index TABLE1_COLA1 on table1(cola1);
+create index TABLE1_COLB1 on table1(colb1);
+create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_UCOLVC on table1(ucolvc);
+load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
-create table lineitem (
-  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
-  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
-  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
-  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
-  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
-  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
-  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
-  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
-  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
-  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
-  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
-  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
-  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
-  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
-  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
-  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
 );
 
-create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
-create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
-create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
-create index IxL_RECEIPTDATE  ON Lineitem (L_RECEIPTDATE)  ;
-load lineitem "../TPCH/SF_0001/lineitem.tbl";
+create index table9_colb9 on table9(colb9);
+create index table9_ucol on table9(ucol);
+create index table9_ucolvc on table9(ucolvc);
+create index table9_pcol9 on table9(pcol9);
+load TABLE9 "../DATA/Load/tbl9data.csv" ;
 
-create table supplier (
-S_SUPPKEY       INTEGER NOT NULL,
-S_NAME          VARCHAR(25) NOT NULL,
-S_ADDRESS       VARCHAR(40) NOT NULL,
-S_NATIONKEY     INTEGER NOT NULL,
-S_PHONE         VARCHAR(15) NOT NULL,
-S_ACCTBAL       DECIMAL(15,2) NOT NULL,
-S_COMMENT       VARCHAR(101) NOT NULL
-);
-
-create index IxS_SUPPKEY on supplier (S_SUPPKEY);
-load supplier "../TPCH/SF_0001/supplier.tbl";
-
-create table region (
-R_REGIONKEY       INTEGER NOT NULL,
-R_NAME            CHAR(25) NOT NULL,
-R_COMMENT         VARCHAR(152)
-)
-replicated
-tablesize 1
-;
-
-CREATE INDEX IxR_REGIONKEY ON region(R_REGIONKEY);
-loadReplicated region "../TPCH/SF_0001/region.tbl";
-
-create table nation (
-N_NATIONKEY       INTEGER NOT NULL,
-N_NAME            CHAR(25) NOT NULL,
-N_REGIONKEY       INTEGER NOT NULL,
-N_COMMENT         VARCHAR(152)
-)
-replicated
-tableSize 1
-;
-
-CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
-CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);
-loadReplicated nation "../TPCH/SF_0001/nation.tbl";
-// /UseCodeFile = "_unnamed__NODE1_2"
-/keepCodeFile
-/UseCodeFile = "_unnamed__NODE1_2"
-/optimise_passthru
-pipeline Query18
-begin
-   stage S00 on origin :
-     start
-     | pulse once
-     | next
-
-   stage S01 on all partitions :
-      indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-     | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
-     | combined 0
-     | next broadcast
-
-   stage S02 on all partitions :
-     filter  " type BOOLEAN  SUM_QTY 100.00  >  "
-     | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
-     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-                type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                type DATE as O_ORDERDATE O_ORDERDATE ,
-                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
-                type DECIMAL as SUM_QTY SUM_QTY "
-     | combined 0
-     | next
-
-   stage S03 on all partitions :
-     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
-     | project "type VARCHAR as C_NAME C_NAME ,
-                type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                type DATE as O_ORDERDATE O_ORDERDATE ,
-                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
-                type DECIMAL as SUM_QTY SUM_QTY "
-     | combined 0
-     | next
-
-   stage S04 on all partitions :
-     gbyAgg " groupBy type VARCHAR as C_NAME C_NAME ,
-                      type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                      type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                      type DATE as O_ORDERDATE O_ORDERDATE ,
-                      type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                      aggregates
-                      type VARCHAR as C_NAME $K1 ,
-                      type INTEGER as C_CUSTKEY $K2 ,
-                      type INTEGER as O_ORDERKEY $K3 ,
-                      type DATE as O_ORDERDATE $K4 ,
-                      type DECIMAL as O_TOTALPRICE $K5 ,
-                      type DECIMAL as SUM_QTY ) SUM_QTY sum  "
-     | combined 0
-     | next
-
-   stage S05 on all nodes :
-     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
-                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                       type DATE as O_ORDERDATE O_ORDERDATE ,
-                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                       aggregates
-                       type VARCHAR as C_NAME $K1 ,
-                       type INTEGER as C_CUSTKEY $K2 ,
-                       type INTEGER as O_ORDERKEY $K3 ,
-                       type DATE as O_ORDERDATE $K4 ,
-                       type DECIMAL as O_TOTALPRICE $K5 ,
-                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
-     | combined 0
-     | next
-
-   stage S06 on origin :
-     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
-                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
-                       type DATE as O_ORDERDATE O_ORDERDATE ,
-                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
-                       aggregates
-                       type VARCHAR as C_NAME $K1 ,
-                       type INTEGER as C_CUSTKEY $K2 ,
-                       type INTEGER as O_ORDERKEY $K3 ,
-                       type DATE as O_ORDERDATE $K4 ,
-                       type DECIMAL as O_TOTALPRICE $K5 ,
-                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
-     | combined 0
-     | next
-
-   stage S07 on origin :
-     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
-     | limit 100
-     | combined 0
-     | next
-
-   stage S08 on origin :
-     output
-     | sink
-     | first
- end ;
+//select pcol1, pcol9, colb1, colb9 from table1 join table9 on colb1 = colb9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
+//select pcol1, pcol9, colb1, colb9 from table1 join table9 on pcol1 = pcol9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
+//select pcol1, pcol9, colb1, colb9 from table1 join table9 on colb1 = colb9;
+/keepCodeFile /useCodeFile="_unnamed__NODE1_2"  select pcol9 from table1 join table9 on colb1 = colb9;
 /*
 ordered rows:
- ('Customer#000000047',47,647,  DATE '1998-02-27',407282.71,102.00)
- ('Customer#000000073',73,373,  DATE '1997-08-24',372279.48,108.00)
- ('Customer#000000079',79,979,  DATE '1992-08-19',371304.75,126.00)
- ('Customer#000000101',101,701, DATE '1998-03-14',368991.44,116.00)
- ('Customer#000000118',118,868, DATE '1995-10-03',367924.77,130.00)
- ('Customer#000000134',134,134, DATE '1998-02-08',355180.76,102.00)
- ('Customer#000000098',98,1298, DATE '1996-08-03',346637.90,134.00)
- ('Customer#000000007',7,907,   DATE '1996-11-20',346459.59,125.00)
- ('Customer#000000097',97,1297, DATE '1997-07-25',344824.32,106.00)
- ('Customer#000000108',108,108, DATE '1995-10-31',343254.06,104.00)
- ('Customer#000000018',18,1368, DATE '1993-04-11',342875.97,133.00)
- ('Customer#000000094',94,1294, DATE '1997-01-21',339682.58,103.00)
- ('Customer#000000008',8,158,   DATE '1992-12-01',337176.45,115.00)
- ('Customer#000000143',143,1493,DATE '1993-12-27',334683.11,126.00)
- ('Customer#000000110',110,1010,DATE '1993-11-14',333302.19,157.00)
- ('Customer#000000038',38,638,  DATE '1996-07-17',332451.75,142.00)
- ('Customer#000000082',82,232,  DATE '1995-03-02',331325.36,129.00)
- ('Customer#000000102',102,552, DATE '1995-05-01',331019.93,172.00)
- ('Customer#000000020',20,20,   DATE '1998-04-18',330793.52,115.00)
- ('Customer#000000096',96,1296, DATE '1998-07-20',329124.49,151.00)
- ('Customer#000000012',12,1062, DATE '1992-03-04',328130.28,111.00)
- ('Customer#000000124',124,124, DATE '1997-01-03',327889.57,158.00)
- ('Customer#000000107',107,1157,DATE '1998-03-05',327841.55,146.00)
- ('Customer#000000129',129,1479,DATE '1997-01-01',327457.26,141.00)
- ('Customer#000000002',2,902,   DATE '1995-05-13',324420.14,116.00)
- ('Customer#000000059',59,1409, DATE '1998-05-31',322284.72,107.00)
- ('Customer#000000119',119,869, DATE '1993-01-31',321158.00,152.00)
- ('Customer#000000099',99,249,  DATE '1995-09-10',321155.99,143.00)
- ('Customer#000000137',137,737, DATE '1996-01-03',319752.31,128.00)
- ('Customer#000000135',135,435, DATE '1996-01-06',317068.68,105.00)
- ('Customer#000000097',97,247,  DATE '1992-06-21',316887.82,135.00)
- ('Customer#000000087',87,837,  DATE '1992-09-16',316845.96,145.00)
- ('Customer#000000023',23,323,  DATE '1996-08-30',315573.61,105.00)
- ('Customer#000000051',51,1251, DATE '1996-01-06',315007.76,108.00)
- ('Customer#000000064',64,364,  DATE '1994-12-06',313834.99,113.00)
- ('Customer#000000077',77,1427, DATE '1992-07-30',310998.43,119.00)
- ('Customer#000000079',79,1279, DATE '1992-04-22',309127.93,125.00)
- ('Customer#000000049',49,799,  DATE '1994-07-15',306500.52,145.00)
- ('Customer#000000064',64,514,  DATE '1994-06-02',304485.79,121.00)
- ('Customer#000000028',28,1228, DATE '1992-06-30',304346.68,102.00)
- ('Customer#000000114',114,414, DATE '1997-08-13',303176.64,156.00)
- ('Customer#000000077',77,1277, DATE '1993-09-03',302544.84,157.00)
- ('Customer#000000078',78,378,  DATE '1992-09-21',301881.77,103.00)
- ('Customer#000000092',92,842,  DATE '1995-07-29',298819.26,101.00)
- ('Customer#000000148',148,1048,DATE '1998-04-19',298397.90,182.00)
- ('Customer#000000118',118,1168,DATE '1995-11-07',298102.04,146.00)
- ('Customer#000000142',142,742, DATE '1997-07-06',297421.11,111.00)
- ('Customer#000000142',142,292, DATE '1996-10-19',297308.42,131.00)
- ('Customer#000000121',121,1021,DATE '1992-05-13',297194.36,117.00)
- ('Customer#000000113',113,413, DATE '1995-02-08',296568.42,127.00)
- ('Customer#000000139',139,1189,DATE '1992-07-07',296154.21,138.00)
- ('Customer#000000032',32,182,  DATE '1993-01-02',295703.61,115.00)
- ('Customer#000000031',31,781,  DATE '1993-07-24',295217.85,132.00)
- ('Customer#000000045',45,645,  DATE '1998-02-28',293551.19,120.00)
- ('Customer#000000026',26,326,  DATE '1993-05-14',293396.88,144.00)
- ('Customer#000000117',117,267, DATE '1994-02-27',290211.77,121.00)
- ('Customer#000000074',74,224,  DATE '1993-03-09',285882.29,143.00)
- ('Customer#000000136',136,436, DATE '1993-11-29',285193.99,128.00)
- ('Customer#000000112',112,412, DATE '1997-06-17',284967.18,132.00)
- ('Customer#000000126',126,126, DATE '1996-03-11',284644.07,129.00)
- ('Customer#000000092',92,542,  DATE '1994-06-03',283459.87,102.00)
- ('Customer#000000113',113,713, DATE '1996-04-30',282488.42,131.00)
- ('Customer#000000095',95,545,  DATE '1997-01-20',280803.60,140.00)
- ('Customer#000000118',118,1318,DATE '1992-07-26',280392.62,110.00)
- ('Customer#000000148',148,748, DATE '1996-09-14',279365.71,106.00)
- ('Customer#000000116',116,1316,DATE '1996-02-17',278983.74,137.00)
- ('Customer#000000017',17,1217, DATE '1997-06-07',278866.99,113.00)
- ('Customer#000000004',4,154,   DATE '1995-08-02',278270.15,112.00)
- ('Customer#000000084',84,234,  DATE '1994-12-17',277890.79,140.00)
- ('Customer#000000039',39,1239, DATE '1993-05-25',277626.78,161.00)
- ('Customer#000000130',130,430, DATE '1995-05-07',277549.66,125.00)
- ('Customer#000000127',127,1027,DATE '1992-08-21',277542.23,130.00)
- ('Customer#000000023',23,23,   DATE '1998-01-24',276992.74,118.00)
- ('Customer#000000025',25,625,  DATE '1992-08-27',276801.77,151.00)
- ('Customer#000000111',111,1461,DATE '1997-01-11',276788.81,129.00)
- ('Customer#000000110',110,560, DATE '1992-03-06',276496.15,114.00)
- ('Customer#000000002',2,1052,  DATE '1998-05-15',276377.59,151.00)
- ('Customer#000000121',121,1321,DATE '1995-11-02',276131.78,112.00)
- ('Customer#000000060',60,960,  DATE '1998-07-17',275635.82,121.00)
- ('Customer#000000074',74,824,  DATE '1994-10-19',274657.96,122.00)
- ('Customer#000000059',59,1259, DATE '1997-08-30',271328.84,119.00)
- ('Customer#000000037',37,637,  DATE '1997-03-24',269844.93,135.00)
- ('Customer#000000051',51,651,  DATE '1995-12-14',269836.82,116.00)
- ('Customer#000000014',14,1364, DATE '1995-03-18',268933.45,121.00)
- ('Customer#000000042',42,942,  DATE '1995-04-30',267417.49,146.00)
- ('Customer#000000014',14,914,  DATE '1992-05-28',267415.46,157.00)
- ('Customer#000000033',33,483,  DATE '1997-07-07',266428.59,133.00)
- ('Customer#000000081',81,381,  DATE '1993-07-08',265947.58,107.00)
- ('Customer#000000137',137,437, DATE '1996-05-12',265070.67,133.00)
- ('Customer#000000091',91,241,  DATE '1995-06-04',263327.51,129.00)
- ('Customer#000000122',122,722, DATE '1995-08-22',263220.81,116.00)
- ('Customer#000000145',145,595, DATE '1998-01-07',262602.78,148.00)
- ('Customer#000000126',126,876, DATE '1994-11-24',261195.39,104.00)
- ('Customer#000000053',53,1403, DATE '1992-06-20',261057.27,134.00)
- ('Customer#000000033',33,33,   DATE '1992-11-19',261013.14,147.00)
- ('Customer#000000100',100,850, DATE '1996-05-05',260546.82,173.00)
- ('Customer#000000085',85,985,  DATE '1997-11-30',260261.19,117.00)
- ('Customer#000000056',56,56,   DATE '1994-06-18',259960.36,107.00)
- ('Customer#000000043',43,643,  DATE '1993-11-19',259320.78,126.00)
- ('Customer#000000080',80,680,  DATE '1993-06-08',259281.51,154.00)
-*/
+  (3, 3, 'green', 'green')
+  
+*/  

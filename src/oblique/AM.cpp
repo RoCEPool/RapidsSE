@@ -2349,6 +2349,8 @@ void* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
 
+  UNUSED(szStz);
+
   StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PROMPTOUT);
   if (! pStreamDef)
     return nullptr;
