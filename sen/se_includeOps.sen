@@ -54,7 +54,6 @@ assert::stack_0
 
 "d" .verbose
 
-  "OP_debug.sen"                include
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
   "OP_disconnect.sen"           include
@@ -103,7 +102,6 @@ assert::stack_0
 
 "i" .verbose
 
-  "OP_idxSort.sen"              include
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_inflateRows.sen"          include
