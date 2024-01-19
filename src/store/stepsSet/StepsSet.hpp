@@ -2484,11 +2484,6 @@ void vJobIdLastJobIdFetch(void);
   void vToLglPtnCrwDangling(void);
   void vToLglPtnCrwDelete(void);
 
-  // toLglPtnNst
-  void vToLglPtnNstConvert(void);
-  void vToLglPtnNstCreate(void);
-  void vToLglPtnNstDelete(void);
-
   // toLglPtnRow
   void vToLglPtnRowCompleted(void);
   void vToLglPtnRowConvert(void);

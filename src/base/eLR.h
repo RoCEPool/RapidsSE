@@ -110,7 +110,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_TINYC,
   /*  */ LR_TOKEYHSHROW,
   /*  */ LR_TOLGLPTNCRW,
-  /*  */ LR_TOLGLPTNNST,
   /*  */ LR_TOLGLPTNROW,
   /*  */ LR_TUB,
   /*  */ LR_TX,

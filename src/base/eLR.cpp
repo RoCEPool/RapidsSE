@@ -111,7 +111,6 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_TINYC"_Stz,
   /*  */ "LR_TOKEYHSHROW"_Stz,
   /*  */ "LR_TOLGLPTNCRW"_Stz,
-  /*  */ "LR_TOLGLPTNNST"_Stz,
   /*  */ "LR_TOLGLPTNROW"_Stz,
   /*  */ "LR_TUB"_Stz,
   /*  */ "LR_TX"_Stz,

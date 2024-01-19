@@ -773,7 +773,6 @@ SizeHeap gxaSizeHeap[]
   { CN_TOKENVEC,                 sizeof(TokenVec),               HT_T_LARGE   , FILL },
   { CN_TOKEYHSHROW,              sizeof(ToKeyHshRow),            HT_T_MEDIUM  , FILL },
   { CN_TOLGLPTNCRW,              sizeof(ToLglPtnCrw),            HT_T_LARGE   , FILL },
-  { CN_TOLGLPTNNST,              sizeof(ToLglPtnNst),            HT_T_MEDIUM  , FILL },
   { CN_TOLGLPTNROW,              sizeof(ToLglPtnRow),            HT_T_LARGE   , FILL },
   { CN_TOTUP,                    sizeof(Totup),                  HT_T_MEDIUM  , FILL },
   { CN_TRACELOCK,                sizeof(TraceLock),              HT_T_TINY    , FILL },

@@ -439,7 +439,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
     /* */ "TOKEYHSHROW"_Stz,          // CN_TOKEYHSHROW
     /* */ "TOLGLPTNCRW"_Stz,          // CN_TOLGLPTNCRW
-    /* */ "TOLGLPTNNST"_Stz,          // CN_TOLGLPTNNST
     /* */ "TOLGLPTNROW"_Stz,          // CN_TOLGLPTNROW
     /* */ "TOTUP"_Stz,                // CN_TOTUP
     /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK

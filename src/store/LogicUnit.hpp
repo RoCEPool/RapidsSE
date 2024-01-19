@@ -5,7 +5,6 @@
 
 #include "RowSingle.hpp"
 
-#include "ToLglPtnNst.hpp"
 #include "ToKeyHshRow.hpp"
 #include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
@@ -175,7 +174,6 @@ namespace STORE
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<ToKeyHshRow,    CN_TOKEYHSHROW   > m_xpToKeyHshRow;
     REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
-    REG<ToLglPtnNst,    CN_TOLGLPTNNST   > m_xpToLglPtnNst;
     REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;

@@ -242,7 +242,6 @@ assert::stack_0
   "OP_toKeyHshRow.sen"          include
   "OP_toKeyHshRow_sf.sen"       include
   "OP_toLglPtnCrw.sen"          include
-  "OP_toLglPtnNst.sen"          include
   "OP_toLglPtnRow.sen"          include
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include

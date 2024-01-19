@@ -419,7 +419,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TOKENVEC,
   /* */ CN_TOKEYHSHROW,
   /* */ CN_TOLGLPTNCRW,
-  /* */ CN_TOLGLPTNNST,
   /* */ CN_TOLGLPTNROW,
   /* */ CN_TOTUP,
   /* */ CN_TRACELOCK,

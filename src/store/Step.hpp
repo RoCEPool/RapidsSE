@@ -214,7 +214,6 @@ namespace STORE
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_ToKeyHshRow(void);
     static void vAddSteps_ToLglPtnCrw(void);
-    static void vAddSteps_ToLglPtnNst(void);
     static void vAddSteps_ToLglPtnRow(void);
     static void vAddSteps_Trace(void);
     static void vAddSteps_Tub(void);
