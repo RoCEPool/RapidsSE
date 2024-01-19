@@ -78,7 +78,6 @@ assert::stack_0
   "OP_eatSome.sen"              include
   "OP_eachPathTag.sen"          include
   "OP_echo.sen"                 include
-  "OP_emptyLoop.sen"            include
   "OP_etcTest.sen"              include
   "OP_exemplar.sen"             include
   "OP_explainPlan.sen"          include

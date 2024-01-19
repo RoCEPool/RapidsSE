@@ -263,74 +263,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                            ROWBUFFER */
-/*----------------------------------------------------------------------------*/
-: dynamic_RowBuffer \handler
-
-  0 EV_M_START EG_ZK LogicUnit[].diaryNote
-
-  0 locals| errorCode |
-
-  //"OP_dynamic got a ROWBUFFER" .
-
-  Pipein[]\clear to RowBuffer[]
-
-  // handle BT_DATA only
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
-    true
-    exit
-  then
-
-  // invoke the dunamically synthesised code
-  RowBuffer[] Fun1[] 0 dynamic[].execute not if
-    to errorCode
-
-    // cleanup
-    RowBuffer[].delete
-    Tub[].deleteAllBuffers
-    Pot[].deleteAllBuffers
-
-    errorCode EC_LOW_MEMORY == if
-
-      // not already detected low memory ?
-      [pipeline].lowMemory@ not if
-
-        Marker[].newLowMemory
-        Marker[]
-            nullptr to Marker[]
-
-        [op].pipeout
-        "dynamicOP PIPED OUT LOW MEMORY!!!" .
-      else
-        "dynamicOP ALREADY DETECTED LOW MEMORY!!!" .
-      then
-
-      //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
-      "default_abnormalHandlers" FIND execute
-      "toggle_rowBufferHandler" FIND execute
-      //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
-    else
-      errorCode op__execErr
-    then
-
-    true
-    exit
-  then
-
-  RowBuffer[].delete
-
-  // pipeout all completed Tub[]/Pot[]
-  dynamic[].hashRows@ if
-    Pot[].pipeOutCompletedPtns
-  else
-    Tub[].pipeOutCompleted
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : dynamic_StreamDef \handler
@@ -383,8 +315,7 @@
   find: dynamic_DataPulse     EV_M_DATAPULSE     [op].handler!
   find: dynamic_EosMarker     EV_M_EOS           [op].handler!
   find: dynamic_ErroringMarker EV_M_ERRORING     [op].handler!
-  find: dynamic_PdsRowBuffer     EV_D_PDSROWBUFFER     [op].handler!
-  find: dynamic_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: dynamic_PdsRowBuffer  EV_D_PDSROWBUFFER  [op].handler!
   find: dynamic_StartMarker   EV_M_START         [op].handler!
 
   find: dynamic_StreamDef     EV_D_STREAMDEF     [op].handler!
