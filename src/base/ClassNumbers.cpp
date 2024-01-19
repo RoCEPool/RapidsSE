@@ -89,7 +89,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
     /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
     /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
-    /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
     /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
     /* */ "CSVMETA"_Stz,              // CN_CSVMETA
 

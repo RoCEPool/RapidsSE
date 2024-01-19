@@ -322,13 +322,6 @@ public:
   void vCrwBufferToCsv(void);
   void vCrwBufferWriteToFile0(void);
 
-  // crw to row
-  void vCrwToRowCompleted(void);
-  void vCrwToRowConvert(void);
-  void vCrwToRowCreate(void);
-  void vCrwToRowDangling(void);
-  void vCrwToRowDelete(void);
-
   // csv buffer
   void vCsvBufferNewOld(void);
   void vCsvBufferOperandDump(void);

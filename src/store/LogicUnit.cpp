@@ -89,7 +89,6 @@ LogicUnit::LogicUnit(void)
 ,       m_xpAnswerWL(this,RF_REPAIR_DELETE,      AnswerWL::vRepair,       LR_ANSWERWL)
 
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepair,  LR_CRWBUFFER)
-,       m_xpCrwToRow(this,RF_REPAIR_DELETE,      CrwToRow::vRepair,       LR_CRWTOROW)
 ,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,     CsvBuffer::vRepair,  LR_CSVBUFFER)
 
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,    DataBuffer::vRepair,     LR_DATABUFFER)
@@ -302,7 +301,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpAggTimer.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());
-  RASSERT(m_xpCrwToRow.bIsNull());
   RASSERT(m_xpCsvBuffer.bIsNull());
 
   RASSERT(m_xpDataBuffer.bIsNull());

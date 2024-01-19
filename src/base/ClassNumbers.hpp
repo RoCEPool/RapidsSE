@@ -69,7 +69,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTABLEPTN,
-  /* */ CN_CRWTOROW,
   /* */ CN_CSVBUFFER,
   /* */ CN_CSVMETA,
 

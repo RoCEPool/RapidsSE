@@ -5,7 +5,6 @@
 
 #include "RowSingle.hpp"
 
-#include "CrwToRow.hpp"
 #include "ToLglPtnNst.hpp"
 #include "ToKeyHshRow.hpp"
 #include "ToLglPtnCrw.hpp"
@@ -87,7 +86,6 @@ namespace STORE
     REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
 
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
-    REG<CrwToRow,       CN_CRWTOROW      > m_xpCrwToRow;
     REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
 
     REG<DataBuffer,     CN_NONE          > m_xpDataBuffer;

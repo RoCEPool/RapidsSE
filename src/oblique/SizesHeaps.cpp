@@ -423,7 +423,6 @@ SizeHeap gxaSizeHeap[]
   {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
   {CN_CRWBUFFER,                sizeof(CrwBuffer),                HT_T_LARGE   , FILL },
   {CN_CRWTABLEPTN,              sizeof(CrwTablePtn),              HT_T_TINY    , FILL },
-  {CN_CRWTOROW,                 sizeof(CrwToRow),                 HT_T_TINY    , FILL },
   {CN_CSVBUFFER,                sizeof(CsvBuffer),                HT_T_LARGE   , FILL },
   {CN_CSVMETA,                  sizeof(CsvMeta),                  HT_T_TINY    , FILL },
 

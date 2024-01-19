@@ -17,7 +17,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_CHILDEXIT,
   /*  */ LR_COMBINED,
   /*  */ LR_CRWBUFFER,
-  /*  */ LR_CRWTOROW,
   /*  */ LR_CSVBUFFER,
   
   /*  */ LR_DATABUFFER,

@@ -43,7 +43,6 @@ namespace STORE
     static void vAddSteps_Column(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_CrwBuffer(void);
-    static void vAddSteps_CrwToRow(void);
     static void vAddSteps_CsvBuffer(void);
     static void vAddSteps_Cursor(void);
 
