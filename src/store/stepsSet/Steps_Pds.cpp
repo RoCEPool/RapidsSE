@@ -58,6 +58,7 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].firstRow"_Stz,            &Step::vPdsFirstRow);
   vAddStep("Pds[].isNull"_Stz  ,            &Step::vPdsIsNull);
   vAddStep("Pds[].new"_Stz,                 &Step::vPdsNew);
+  vAddStep("Pds[].operandDump"_Stz,        &Step::vPdsOperandDump);
   vAddStep("Pds[].rdCsvChunk"_Stz,                 &Step::vPdsRdCsvChunk);
   vAddStep("Pds[].set"_Stz  ,               &Step::vPdsSet);
   vAddStep("Pds[].setLglPtn"_Stz  ,               &Step::vPdsSetLglPtn);
@@ -1052,6 +1053,28 @@ void Step::vPdsNew(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   m_pLogicUnit->m_xpPds = new Pds(pStreamDef, false, eBufferType);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].operandDump -- operand dump of PdsRowBuffer                          */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsOperandDump(void)
+{
+  ENTRY();
+
+  Pds* pPds = _pPds(m_pDataStack->pPopPtr(__func__));
+
+  i8 iDetail = m_pDataStack->iPopInt(__func__);
+
+  UNUSED(pPds);
+  UNUSED(iDetail);
+  // TODO: Look at RowBox_t
+//  if (iDetail)
+//    pPds->vDumpAllRows();
+//
+//  pPds->vSlabReport();
 
   EXIT();
 }

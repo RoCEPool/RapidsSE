@@ -50,38 +50,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* ProgressUnits                                                              */
-/*----------------------------------------------------------------------------*/
-: progress_ProgressUnits
-
-  0 0 0 locals| nodeName partitionNo iPercent |
-
-  // get first row of RowBuffer[]
-  RowBuffer[].firstRow to Row[]
-
-  // get 0th Column (ProgressUnits) add to Counter
-  0 Row[].getIntColumn Counter1[] + to Counter1[]
-
-  // calculat the Load %
-  Counter1[] Counter0[] Int.percent to iPercent
-
-  // print the Load %
-  iPercent Counter2[] > if
-    iPercent 100 >= if
-      <string> StringA[]
-        "File: %v; %v Progress: 100" str.format
-      "%\n" str.cat .
-    else
-      iPercent StringA[]
-        "File: %v; Progress: %v" str.format
-      "%" str.cat .
-    then
-  then
-
-  iPercent to Counter2[]
-;
-
-/*----------------------------------------------------------------------------*/
 /* TotalUnits                                                                 */
 /*----------------------------------------------------------------------------*/
 : progress_PdsTotalUnits
@@ -90,25 +58,6 @@
 
   // get first row of Pds[]
   Pds[].firstRow to Row[]
-
-  // get 0th Column (fileName)
-  0 Row[].getVchColumn to StringA[]
-
-  // get 1st column (totalUnits)
-  1 Row[].getIntColumn to Counter0[]
-
-  //Counter0[] "Total Units: %v" .printf
-;
-
-/*----------------------------------------------------------------------------*/
-/* TotalUnits                                                                 */
-/*----------------------------------------------------------------------------*/
-: progress_TotalUnits
-
-  0 locals| iPercent |
-
-  // get first row of RowBuffer[]
-  RowBuffer[].firstRow to Row[]
 
   // get 0th Column (fileName)
   0 Row[].getVchColumn to StringA[]

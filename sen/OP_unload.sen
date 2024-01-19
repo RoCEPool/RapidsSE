@@ -26,8 +26,8 @@
 /*----------------------------------------------------------------------------*/
 : unload_Path \handler
 
-  // get the rowBuffer
-  PipeIn[]\clear to RowBuffer[]
+  // get the PdsRowBuffer
+  PipeIn[]\clear to Pds[]
 
   // pipeout buffers other than BT_PATH
   Pds[].bufferType@ BT_PATH != if

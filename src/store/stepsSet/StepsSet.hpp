@@ -32,7 +32,6 @@ public:
   void vAdaptorWLDecodePayload(void);
   void vAdaptorWLExecutionError(void);
   void vAdaptorWLExecutionWarning(void);
-  void vAdaptorWLAffectedRowCount(void);
   void vAdaptorWLAffectedRowCountPds(void);
   void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
@@ -1667,6 +1666,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsFirstRow(void);
   void vPdsIsNull(void);
   void vPdsNew(void);
+  void vPdsOperandDump(void);
   void vPdsRdCsvChunk(void);
   void vPdsSet(void);
   void vPdsSetLglPtn(void);
