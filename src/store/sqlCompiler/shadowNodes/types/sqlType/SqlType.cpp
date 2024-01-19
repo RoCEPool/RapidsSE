@@ -60,7 +60,9 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_SQLTYPE_DEFN = "/__root__/definitions/types/sqlType"_Stz;
 
-static Stz* C_TYPEID_PROP  = "typeId"_Stz;
+static Stz* C_TYPEID_PROP     = "typeId"_Stz;
+static Stz* C_PRECISION_PROP  = "precision"_Stz;  // for decimals
+static Stz* C_SCALE_PROP      = "scale"_Stz;      // for decimals
 
 
 /*----------------------------------------------------------------------------*/
@@ -167,7 +169,7 @@ void SqlType::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if (     SqlFloat::bIsOfType(pNode))     {      SqlFloat::vDescribe(pNode, sBuf, pRootNode); }
   else if (   SqlDecimal::bIsOfType(pNode))     {    SqlDecimal::vDescribe(pNode, sBuf, pRootNode); }
   else if (   SqlVarchar::bIsOfType(pNode))     {    SqlVarchar::vDescribe(pNode, sBuf, pRootNode); }
-  else if (      SqlChar::bIsOfType(pNode))     {       SqlChar::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (      SqlChar::bIsOfType(pNode))     {       SqlChar::vDescribe(pNode, sBuf, pRootNode); }
   else if (      SqlDate::bIsOfType(pNode))     {       SqlDate::vDescribe(pNode, sBuf, pRootNode); }
   else if (      SqlTime::bIsOfType(pNode))     {       SqlTime::vDescribe(pNode, sBuf, pRootNode); }
   else if ( SqlTimestamp::bIsOfType(pNode))     {  SqlTimestamp::vDescribe(pNode, sBuf, pRootNode); }
@@ -222,6 +224,64 @@ TypeId SqlType::xTypeId(PlanNode* pNode)
   TypeId xTypeId{pTypeIdNode->iValue()};
   return xTypeId;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SqlType::iPrecision(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  // Manual Polymorphism
+  if      (   SqlBoolean::bIsOfType(pNode))     { return    SqlBoolean::iPrecision(pNode, pRootNode); }
+  else if (   SqlInteger::bIsOfType(pNode))     { return    SqlInteger::iPrecision(pNode, pRootNode); }
+  else if (     SqlFloat::bIsOfType(pNode))     { return      SqlFloat::iPrecision(pNode, pRootNode); }
+  else if (   SqlDecimal::bIsOfType(pNode))     { return    SqlDecimal::iPrecision(pNode, pRootNode); }
+  else if (   SqlVarchar::bIsOfType(pNode))     { return    SqlVarchar::iPrecision(pNode, pRootNode); }
+  else if (      SqlChar::bIsOfType(pNode))     { return       SqlChar::iPrecision(pNode, pRootNode); }
+  else if (      SqlDate::bIsOfType(pNode))     { return       SqlDate::iPrecision(pNode, pRootNode); }
+  else if (      SqlTime::bIsOfType(pNode))     { return       SqlTime::iPrecision(pNode, pRootNode); }
+  else if ( SqlTimestamp::bIsOfType(pNode))     { return  SqlTimestamp::iPrecision(pNode, pRootNode); }
+  else if (SqlIntervalDT::bIsOfType(pNode))     { return SqlIntervalDT::iPrecision(pNode, pRootNode); }
+  else if (SqlIntervalYM::bIsOfType(pNode))     { return SqlIntervalYM::iPrecision(pNode, pRootNode); }
+  else if (   SqlUnknown::bIsOfType(pNode))     { return    SqlUnknown::iPrecision(pNode, pRootNode); }
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SqlType::iScale(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  // Manual Polymorphism
+  if      (   SqlBoolean::bIsOfType(pNode))     { return    SqlBoolean::iScale(pNode, pRootNode); }
+  else if (   SqlInteger::bIsOfType(pNode))     { return    SqlInteger::iScale(pNode, pRootNode); }
+  else if (     SqlFloat::bIsOfType(pNode))     { return      SqlFloat::iScale(pNode, pRootNode); }
+  else if (   SqlDecimal::bIsOfType(pNode))     { return    SqlDecimal::iScale(pNode, pRootNode); }
+  else if (   SqlVarchar::bIsOfType(pNode))     { return    SqlVarchar::iScale(pNode, pRootNode); }
+  else if (      SqlChar::bIsOfType(pNode))     { return       SqlChar::iScale(pNode, pRootNode); }
+  else if (      SqlDate::bIsOfType(pNode))     { return       SqlDate::iScale(pNode, pRootNode); }
+  else if (      SqlTime::bIsOfType(pNode))     { return       SqlTime::iScale(pNode, pRootNode); }
+  else if ( SqlTimestamp::bIsOfType(pNode))     { return  SqlTimestamp::iScale(pNode, pRootNode); }
+  else if (SqlIntervalDT::bIsOfType(pNode))     { return SqlIntervalDT::iScale(pNode, pRootNode); }
+  else if (SqlIntervalYM::bIsOfType(pNode))     { return SqlIntervalYM::iScale(pNode, pRootNode); }
+  else if (   SqlUnknown::bIsOfType(pNode))     { return    SqlUnknown::iScale(pNode, pRootNode); }
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
 
 
 /*============================================================================*/

@@ -85,6 +85,40 @@ TypeId StringFunctionExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   else NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 StringFunctionExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // manual expression polymorphism here
+
+  if      (SubstringExpr::bIsOfType(pExprNode))  { return SubstringExpr::iPrecision(pExprNode, pRootNode); }
+//else if (     TrimExpr::bIsOfType(pExprNode))  { return      TrimExpr::iPrecision(pExprNode, pRootNode); }
+//else if (   ConcatExpr::bIsOfType(pExprNode))  { return    ConcatExpr::iPrecision(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 StringFunctionExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // manual expression polymorphism here
+
+  if      (SubstringExpr::bIsOfType(pExprNode))  { return SubstringExpr::iScale(pExprNode, pRootNode); }
+//else if (     TrimExpr::bIsOfType(pExprNode))  { return      TrimExpr::iScale(pExprNode, pRootNode); }
+//else if (   ConcatExpr::bIsOfType(pExprNode))  { return    ConcatExpr::iScale(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

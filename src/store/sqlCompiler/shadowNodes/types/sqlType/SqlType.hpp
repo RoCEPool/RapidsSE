@@ -31,6 +31,12 @@ namespace Parser
     static Stz* szTypeName(PlanNode* pNode);
     static TypeId xTypeId(PlanNode* pNode);
 
+    // Returns the precision of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iPrecision(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns the scale of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iScale(QueryNode* pNode, PlanNode* pRootNode);
+
   protected:
     static void vCreateCommon(QueryNode* pNode, TypeId xTypeId);
   };

@@ -11,6 +11,7 @@
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
 #include "TypeSystem.hpp"
+#include "IntegerObject.hpp"
 
 using namespace Parser;
 
@@ -93,6 +94,44 @@ b1 SqlChar::bIsOfType(PlanNode *pNode)
 b1 SqlChar::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_SQLCHAR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SqlChar::iPrecision(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  i8 iVal = -1;
+
+  QueryNode* pPrecisionNode = _pQueryNode(GraphNav::pFindProperty(C_LENGTH_PROP_NAME, pNode));
+  if (pPrecisionNode) {
+    ASSERT(IntegerObject::bIsOfType(pPrecisionNode));
+    iVal = pPrecisionNode->iValue();
+  }
+  // NB: if no length is provided then we return the default value of -1 for precision
+  // to indicate that it hasn't been set
+
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SqlChar::iScale(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  return -1;
 }
 
 /*============================================================================*/

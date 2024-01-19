@@ -71,6 +71,34 @@ b1 SqlInteger::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, C_SQLINTEGER_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SqlInteger::iPrecision(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  return C_MAX_INT_PRECISION;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SqlInteger::iScale(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  return -1;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

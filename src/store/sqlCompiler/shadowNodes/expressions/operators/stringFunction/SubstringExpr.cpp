@@ -251,6 +251,37 @@ TypeId SubstringExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SubstringExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // The precision of a substring is the precision of the underlying source string.
+  // (Not entirely sure if this is correct).
+  QueryNode* pSrcExprNode = SubstringExpr::pSrcExpr(pExprNode);
+
+  i8 iVal = Expr::iPrecision(pSrcExprNode, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SubstringExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  ASSERT(pRootNode);
+  UNUSED(pRootNode);
+
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Modifies subexpressions by promoting/casting data types so that they       */
 /* are type compatible with this expression. Modifies the expression          */
 /* tree in place.                                                             */

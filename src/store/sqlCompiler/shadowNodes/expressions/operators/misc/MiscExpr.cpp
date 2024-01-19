@@ -77,6 +77,36 @@ TypeId MiscExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   else NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 MiscExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // manual expression polymorphism here
+
+  if      (CastExpr::bIsOfType(pExprNode))  { return CastExpr::iPrecision(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 MiscExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  // manual expression polymorphism here
+
+  if      (CastExpr::bIsOfType(pExprNode))  { return CastExpr::iScale(pExprNode, pRootNode); }
+  else NEVER_REACH
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

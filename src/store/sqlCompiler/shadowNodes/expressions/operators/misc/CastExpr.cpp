@@ -314,6 +314,38 @@ TypeId CastExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 CastExpr::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  QueryNode* pSqlTypeNode = CastExpr::pSqlTypeNode(pExprNode);
+  ASSERT(SqlType::bIsOfType(pSqlTypeNode));
+
+  i8 iVal = SqlType::iPrecision(pSqlTypeNode, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 CastExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+  ASSERT(pRootNode);
+
+  QueryNode* pSqlTypeNode = CastExpr::pSqlTypeNode(pExprNode);
+  ASSERT(SqlType::bIsOfType(pSqlTypeNode));
+
+  i8 iVal = SqlType::iScale(pSqlTypeNode, pRootNode);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be coerced to a given data type via a cast     */
 /*----------------------------------------------------------------------------*/
 b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,

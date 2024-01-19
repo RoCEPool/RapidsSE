@@ -11,6 +11,7 @@
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
 #include "TypeSystem.hpp"
+#include "IntegerObject.hpp"
 
 using namespace Parser;
 
@@ -109,6 +110,60 @@ b1 SqlDecimal::bIsOfType(PlanNode *pNode)
 b1 SqlDecimal::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_SQLDECIMAL_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SqlDecimal::iPrecision(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  QueryNode* pPrecisionNode;
+  i8 iVal = -1;
+
+  // Can have an optional precision
+  pPrecisionNode = _pQueryNode(GraphNav::pFindProperty(C_PRECISION_PROP_NAME, pNode));
+  if (pPrecisionNode) {
+    ASSERT(IntegerObject::bIsOfType(pPrecisionNode));
+    iVal = pPrecisionNode->iValue();
+
+  } else {
+    iVal = C_MAX_BCD_PRECISION;
+  }
+
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SqlDecimal::iScale(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  QueryNode* pScaleNode;
+  i8 iVal = -1;
+
+  // Can have an optional scale
+  pScaleNode = _pQueryNode(GraphNav::pFindProperty(C_SCALE_PROP_NAME, pNode));
+  if (pScaleNode) {
+    ASSERT(IntegerObject::bIsOfType(pScaleNode));
+    iVal = pScaleNode->iValue();
+
+  } else {
+    iVal = C_BCD_DEFAULT_SCALE;
+  }
+
+  return iVal;
 }
 
 

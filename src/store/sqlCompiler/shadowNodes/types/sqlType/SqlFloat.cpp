@@ -71,6 +71,34 @@ b1 SqlFloat::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, C_SQLFLOAT_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SqlFloat::iPrecision(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  return C_MAX_FLT_PRECISION;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SqlFloat::iScale(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  return -1;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

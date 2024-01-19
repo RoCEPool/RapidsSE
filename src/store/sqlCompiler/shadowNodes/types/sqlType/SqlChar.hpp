@@ -27,6 +27,12 @@ namespace Parser
 
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
+
+    // Returns the precision of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iPrecision(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns the scale of the resulting expression. Returns -1 if not set or n/a.
+    static i8 iScale(QueryNode* pNode, PlanNode* pRootNode);
   };
 
 }

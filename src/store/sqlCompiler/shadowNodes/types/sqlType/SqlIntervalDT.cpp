@@ -71,7 +71,33 @@ b1 SqlIntervalDT::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, C_SQLINTERVAL_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the precision of the resulting expression or -1 if not set or n/a  */
+/*----------------------------------------------------------------------------*/
+i8 SqlIntervalDT::iPrecision(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
 
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale of the resulting expression or -1 if not set or n/a      */
+/*----------------------------------------------------------------------------*/
+i8 SqlIntervalDT::iScale(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
+  return -1;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
