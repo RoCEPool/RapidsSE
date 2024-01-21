@@ -306,19 +306,22 @@ void Card_Expr::vEnsureTypeId_expCol(CardIter* pCI)
   pCI->G.p_rpnCalc = pSub_rpnCalc();
   pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
+  Symbol* pSymbol_expr = pSymbol();
+  RASSERT(pSymbol_expr->xCast().m_xTypeId.bIsValid());
+
 //  if (pSymbol()->xCast().m_xTypeId != pCI->G.p_rpnCalc->xCast().m_xTypeId) {
 //    vDump(__func__);
 //    pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 //    vDebugPoint();
 //  }
 
-  if (! pSymbol()->xCast().m_xTypeId.bIsValid())
-    vCast(pCI->G.p_rpnCalc->xCast());
-  else
-  if (pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId &&
-      (pSymbol()->xCast().m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
-       pSymbol()->xCast().m_nTypeScale    != pCI->G.p_rpnCalc->xCast().m_nTypeScale  ||
-       pSymbol()->xCast().m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable))
+//  if (! pSymbol_expr->xCast().m_xTypeId.bIsValid())
+//    vCast(pCI->G.p_rpnCalc->xCast());
+//  else
+  if (pSymbol_expr->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId &&
+      (pSymbol_expr->xCast().m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
+       pSymbol_expr->xCast().m_nTypeScale    != pCI->G.p_rpnCalc->xCast().m_nTypeScale  ||
+       pSymbol_expr->xCast().m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable))
     vCast(pCI->G.p_rpnCalc->xCast());
 
   //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
@@ -753,11 +756,15 @@ void Card_Expr::vX_tblCol_To_expCol(CardIter* pCI)
   i8 nAncestors = pCI->nAncestors();
   pCI->vAncestorPush(this);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
     p_boolPred->vX_tblCol_To_expCol(pCI);
+    p_boolPred = nullptr;
+  }
   else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
     p_rpnCalc->vX_tblCol_To_expCol(pCI);
+    p_rpnCalc = nullptr;
+  }
 
   pCI->vAncestorPop();
   RASSERT(pCI->nAncestors() == nAncestors);
@@ -769,6 +776,9 @@ void Card_Expr::vX_tblCol_To_expCol(CardIter* pCI)
 void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol_expr = pSymbol();
+  RASSERT(pSymbol_expr->xCast().m_xTypeId.bIsValid());
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
     Card::vValidate_hasType();

@@ -7,7 +7,7 @@ LOG 'TPC-H Q9...';
 trackMemory force;
 success
 
-/pipelineName = "OptQ9"
+/transliterated/pipelineName = "OptQ9"
 select
   nation,
   o_year,

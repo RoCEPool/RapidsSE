@@ -499,11 +499,7 @@ void Card_RpnCalc::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xRpnCalc(this);
-  while (xRpnCalc.bEach(CK_TERM)) {
-//    if (!xRpnCalc.p_term()->pSymbol()->bIs_Tbl_Col())
-//      continue;
-
+  for (Kid xRpnCalc(this);xRpnCalc.bEach(CK_TERM); /**/) {
     pCI->G.p_term = xRpnCalc.p_term();
     pCI->G.p_term->vX_tblCol_To_expCol(pCI);
   }
