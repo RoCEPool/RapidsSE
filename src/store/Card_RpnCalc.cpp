@@ -155,6 +155,8 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
     NEVER_REACH
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // rpnCalc is a set of terms
   for (Kid xRpnCalc(this); xRpnCalc.bEach(CK_TERM); /**/) {
     pCI->G.p_term = xRpnCalc.p_term();
@@ -162,15 +164,14 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
   }
   pCI->G.p_term = nullptr;
 
-//  if (xCast_last.m_xTypeId.bIsValid())
-//    vCast(xCast_last);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (xCast_last.m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId &&
-      (xCast_last.m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
-       xCast_last.m_nTypeScale    != pCI->G.p_rpnCalc->xCast().m_nTypeScale  ||
-       xCast_last.m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable))
-    vCast(pCI->G.p_rpnCalc->xCast());
-
+  if (xCast_last.m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId) {
+    if (xCast_last.m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
+        xCast_last.m_nTypeScale    != pCI->G.p_rpnCalc->xCast().m_nTypeScale  ||
+        xCast_last.m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable)
+      vCast(pCI->G.p_rpnCalc->xCast());
+  }
 
   RASSERT(xTypeId_save == xCast().m_xTypeId);
 }
