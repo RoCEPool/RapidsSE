@@ -1519,8 +1519,7 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
 
   Card_HshCol* p_hshCol = new Card_HshCol;
 
-  Card* p_card_type = p_rpnExpr->pPopChild();
-  delete p_card_type;
+  p_rpnExpr->vDiscardHead();
 
   Card_Term* p_term1 = _pCard_Term(p_rpnExpr->pPopChild());
   Cast xCast;

@@ -126,7 +126,7 @@ void ChildCards::vDeleteSub(Card* pSub)
 /*----------------------------------------------------------------------------*/
 void ChildCards::vDiscardHead(void)
 {
-  if (Card* pHeadCard = pHead()) {
+  if (Card* pHeadCard = pPopChild()) {
     delete pHeadCard;
   }
 }
