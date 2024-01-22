@@ -1405,6 +1405,10 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   xCast.m_nTypeScale = 0;
   xCast.m_bTypeNullable = 1;
 
+  if (xCast.m_xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
+    xCast.m_nTypeLength = 19;
+    xCast.m_nTypeScale = 2;
+  }
 
   // [ AS <as> ]
   Card* p_term_head = p_rpnExpr->pHead();
@@ -1567,6 +1571,15 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
 //      p_expr->vAppendChild(p_direction);
 //    }
 
+    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+      Cast xCast;
+      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+      xCast.m_nTypeLength = 19;
+      xCast.m_nTypeScale = 2;
+      p_expr->vCast(xCast);
+      p_expr->pSub_rpnCalc()->vCast(xCast);
+    }
+
     p_key->vAppendChild(p_expr);
 
     if (1 == p_key->nChildCards())
@@ -1613,6 +1626,16 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
     Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
     p_expr->v_Child(++iCardNo);
     //vAsEnsure(p_expr);
+
+    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+      Cast xCast;
+      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+      xCast.m_nTypeLength = 19;
+      xCast.m_nTypeScale = 2;
+      p_expr->vCast(xCast);
+      p_expr->pSub_rpnCalc()->vCast(xCast);
+    }
+
 
     p_emit->vAppendChild(p_expr);
   }

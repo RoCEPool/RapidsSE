@@ -757,6 +757,16 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+    if (m_xSymbol.nTypeLength() == 0) {
+      vMark("?"_Stz,"l"_Stz);
+      pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
+      pCI->vPrintBoard(__func__,__LINE__,true);
+      vDump(__func__);
+      vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+    }
+  }
+
   if (pCI->pAncestorFind(CK_s_INJECTABLE)) {
     RASSERT(m_xSymbol.bIs_Tbl_Col());
     if (! m_xSymbol.bHasType()) {
