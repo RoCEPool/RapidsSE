@@ -1348,23 +1348,23 @@ Cast Dissector::xPopCast(Card_RpnExpr* p_rpnExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // TYPE
+
   Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
   Stz* szTerm = p_term->szFacet(SF_NONE);
   RASSERT(szTerm->bSame("TYPE"_Stz));
-
   delete p_term;
   p_term = nullptr;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column type (e.g. BOOLEAN)
+
   Card_Term* p_term_type = _pCard_Term(p_rpnExpr->pPopChild());
-
   TypeId xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_NONE));
-
   delete p_term_type;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form cast
 
   Cast xCast;
   xCast.m_xTypeId = xTypeId;
@@ -1440,11 +1440,11 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // <type>
 
-  Cast xCast;
-	xCast.m_xTypeId = this->xPopTypeId(p_rpnExpr);
-  xCast.m_nTypeLength = 0;
-  xCast.m_nTypeScale = 0;
-  xCast.m_bTypeNullable = 1;
+  Cast xCast = this->xPopCast(p_rpnExpr);
+//	xCast.m_xTypeId = this->xPopTypeId(p_rpnExpr);
+//  xCast.m_nTypeLength = 0;
+//  xCast.m_nTypeScale = 0;
+//  xCast.m_bTypeNullable = 1;
 
   if (xCast.m_xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
     xCast.m_nTypeLength = 19;
@@ -1454,8 +1454,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [ AS <as> ]
 
-  Card_As* p_as = pPop_as(p_rpnExpr);
-  if (p_as) {
+  if (Card_As* p_as = pPop_as(p_rpnExpr)) {
     oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
     p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
     delete p_as;
@@ -1476,6 +1475,15 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_term_0->vCast(xCast);
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // [ AS <as> ]
+
+  if (Card_As* p_as = pPop_as(p_rpnExpr)) {
+    oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
+    p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
+    delete p_as;
+    p_as = nullptr;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [ ASC | DESC ]
@@ -1495,9 +1503,6 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (p_as) {
-   }
 
   ri_Expr++;
   return p_expr;
