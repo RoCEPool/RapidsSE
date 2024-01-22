@@ -1250,8 +1250,7 @@ Card_As* Dissector::pPop_as(Card_RpnExpr* p_rpnExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
   // test for: AS
-  Card* p_term_head = p_rpnExpr->pHead();
-  if (! p_term_head|| ! p_term_head->pSymbol()->bSame("AS"_Stz))
+  if (! p_rpnExpr->bHeadSame("AS"_Stz))
     return nullptr;
 
   // AS
@@ -1510,12 +1509,11 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card* p_term_head = p_rpnExpr->pHead();
-  if (! p_term_head)
+  if (! p_rpnExpr->pHead())
     return nullptr;
 
-  if (p_term_head->pSymbol()->szSF_chrSeq(SF_NONE)->bSame(","_Stz)) {
-    p_term_head = p_rpnExpr->pPopChild();
+  if (p_rpnExpr->bHeadSame(","_Stz)) {
+    Card*p_term_head = p_rpnExpr->pPopChild();
     delete p_term_head;
   }
 
