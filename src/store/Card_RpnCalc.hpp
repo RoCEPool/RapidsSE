@@ -22,7 +22,7 @@ namespace STORE
     bool bContains(Symbol* pSymbol_arg);
     void vCorrect_expCol(Card_Emit* p_arriving);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsureTypeId_expCol(CardIter* pCI);
+    void vEnsure_Cast(CardIter* pCI);
     Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstNmdCol(void);

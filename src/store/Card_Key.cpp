@@ -153,13 +153,13 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 /*----------------------------------------------------------------------------*/
 /* ensure cast info                                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_Key::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     pCI->G.p_expr = xKey.p_expr();
-    pCI->G.p_expr->vEnsureTypeId_expCol(pCI);
+    pCI->G.p_expr->vEnsure_Cast(pCI);
   }
 
   pCI->G.p_expr = nullptr;

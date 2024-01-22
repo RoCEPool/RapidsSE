@@ -104,12 +104,12 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_Bounds::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
-    xKid.p_bound()->vEnsureTypeId_expCol(pCI);
+    xKid.p_bound()->vEnsure_Cast(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

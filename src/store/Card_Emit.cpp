@@ -282,7 +282,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_Emit::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -290,7 +290,7 @@ void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
     pCI->G.p_expr = xEmit.p_expr();
-    pCI->G.p_expr->vEnsureTypeId_expCol(pCI);
+    pCI->G.p_expr->vEnsure_Cast(pCI);
   }
 
   pCI->G.p_expr = nullptr;
