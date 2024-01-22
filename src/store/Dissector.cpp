@@ -1342,7 +1342,7 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
 /*----------------------------------------------------------------------------*/
 /* pop detailed typeId etc                                                    */
 /*----------------------------------------------------------------------------*/
-Cast Dissector::xPopCast(Card_RpnExpr* p_rpnExpr)
+Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -1373,6 +1373,28 @@ Cast Dissector::xPopCast(Card_RpnExpr* p_rpnExpr)
   xCast.m_nTypeScale    = 0;
   xCast.m_bTypeNullable = 1;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // [ ( <length> [ , <scale> ] ]
+
+  if (p_rpnExpr->bHeadSame("("_Stz)) {
+    p_rpnExpr->vDiscardHead();
+
+    Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
+    xCast.m_nTypeLength = p_term->szFacet(SF_NONE)->iToI8();
+    delete p_term;
+
+    if (p_rpnExpr->bHeadSame(","_Stz)) {
+      p_rpnExpr->vDiscardHead();
+
+      p_term = _pCard_Term(p_rpnExpr->pPopChild());
+      xCast.m_nTypeScale = p_term->szFacet(SF_NONE)->iToI8();
+      delete p_term;
+    }
+
+    RASSERT(p_rpnExpr->bHeadSame(")"_Stz));
+    p_rpnExpr->vDiscardHead();
+  }
+
   return xCast;
 }
 
@@ -1383,7 +1405,7 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Cast xCast = xPopCast(p_rpnExpr);
+  Cast xCast = xPop_cast(p_rpnExpr);
 
   Card_Constraint* p_constraint = new Card_Constraint;
 
@@ -1440,7 +1462,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // <type>
 
-  Cast xCast = this->xPopCast(p_rpnExpr);
+  Cast xCast = this->xPop_cast(p_rpnExpr);
 
   if (xCast.m_xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
     xCast.m_nTypeLength = 19;
@@ -1523,7 +1545,7 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
 
   p_rpnExpr->vDiscardHead();
 
-  Cast xCast = xPopCast(p_rpnExpr);
+  Cast xCast = xPop_cast(p_rpnExpr);
 
   Card_Term* p_term_hsh = _pCard_Term(p_rpnExpr->pPopChild());
   p_term_hsh->vCast(xCast);
