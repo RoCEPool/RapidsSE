@@ -1341,6 +1341,41 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop detailed typeId etc                                                    */
+/*----------------------------------------------------------------------------*/
+Cast Dissector::xPopCast(Card_RpnExpr* p_rpnExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // TYPE
+  Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
+  Stz* szTerm = p_term->szFacet(SF_NONE);
+  RASSERT(szTerm->bSame("TYPE"_Stz));
+
+  delete p_term;
+  p_term = nullptr;
+
+  // column type (e.g. BOOLEAN)
+  Card_Term* p_term_type = _pCard_Term(p_rpnExpr->pPopChild());
+
+  TypeId xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_NONE));
+
+  delete p_term_type;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Cast xCast;
+  xCast.m_xTypeId = xTypeId;
+  xCast.m_nTypeLength   = 0;
+  xCast.m_nTypeScale    = 0;
+  xCast.m_bTypeNullable = 1;
+
+  return xCast;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop constraint                                                             */
 /*----------------------------------------------------------------------------*/
 Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
