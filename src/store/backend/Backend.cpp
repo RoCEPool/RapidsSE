@@ -124,6 +124,8 @@
 #include "SP_Tme.hpp"
 #include "SP_Tsp.hpp"
 
+//#define TYPE_DETAILED EndDefine
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -143,7 +145,6 @@ Backend::Backend(RootNode* pPlanRoot)
 
   // Find the /plan node
   m_pPlanRoot = pPlanRoot;
-  m_pWalkNode = nullptr;
 
   m_sPipeline        = nullptr;
   m_bHasUnionOp      = false;
@@ -287,9 +288,48 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
-  eCT eCTType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
+
+	eCT eCTType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
 	TypeId xTypeId = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot);
 	//vTrace("TypeId %s %lld %s\n"_Stz, xTypeId.szTypeName(), xTypeId.iIdVal(), aIV_field2[xTypeId.eIVVal()]);
+
+#ifdef TYPE_DETAILED
+
+	if (eCTType == CT_INTERVAL_YM || eCTType == CT_INTERVAL_DT) {
+		sPipeline->vCatSprint(
+						" type %s"
+						""_Stz,
+						aIV_field2[xTypeId.eIVVal()]);
+	}
+	else {
+		i8 iLength = pBackend->iGetLength(eCTType);
+		i8 iScale = pBackend->iGetScale(eCTType);
+
+		if (iLength == C_UNKNOWN && iScale == C_UNKNOWN)
+			sPipeline->vCatSprint(
+							" type %s"
+							""_Stz,
+							aCT[eCTType]
+							);
+		else
+			if (iScale == C_UNKNOWN)
+				sPipeline->vCatSprint(
+								" type %s(%lld)"
+								""_Stz,
+								aCT[eCTType],
+								iLength
+				);
+		else
+			sPipeline->vCatSprint(
+								" type %s(%lld,%lld)"
+								""_Stz,
+								aCT[eCTType],
+								iLength,
+								iScale
+				);
+	}
+
+#else
 
 	if (eCTType == CT_INTERVAL_YM || eCTType == CT_INTERVAL_DT) {
 		sPipeline->vCatSprint(
@@ -303,6 +343,8 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
 			""_Stz,
 			aCT[eCTType]);
 	}
+#endif
+
 
 //  if ( ! szAliasName) {
 //    if (ColumnRef::bIsOfType(pExprNode)) {
@@ -341,11 +383,56 @@ void Backend::vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNo
   String* sPipeline = pBackend->m_sPipeline;
 
   eCT eType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
+	TypeId xTypeId = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot);
 
-  sPipeline->vCatSprint(
-    " type %s"
-    ""_Stz,
-    aCT[eType]);
+#ifdef TYPE_DETAILED
+	if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+		sPipeline->vCatSprint(
+						" type %s"
+						""_Stz,
+						aIV_field2[xTypeId.eIVVal()]);
+	}
+	else {
+		i8 iLength = pBackend->iGetLength(eType);
+		i8 iScale = pBackend->iGetScale(eType);
+
+		if (iLength == C_UNKNOWN && iScale == C_UNKNOWN)
+			sPipeline->vCatSprint(
+							" type %s"
+							""_Stz,
+							aCT[eType]
+			);
+		else
+		if (iScale == C_UNKNOWN)
+			sPipeline->vCatSprint(
+							" type %s(%lld)"
+							""_Stz,
+							aCT[eType],
+							iLength
+			);
+		else
+			sPipeline->vCatSprint(
+							" type %s(%lld,%lld)"
+							""_Stz,
+							aCT[eType],
+							iLength,
+							iScale
+			);
+	}
+#else
+	if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+		sPipeline->vCatSprint(
+						" type %s"
+						""_Stz,
+						aIV_field2[xTypeId.eIVVal()]);
+	}
+	else {
+		sPipeline->vCatSprint(
+						" type %s"
+						""_Stz,
+						aCT[eType]);
+	}
+#endif
 
   sPipeline->vCatSprint(
     " $K%lld"
@@ -523,7 +610,8 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
-  pBackend->vAppendNextOp("filter \" type BOOLEAN "_Stz);
+	pBackend->vAppendNextOp("filter \" type BOOLEAN "_Stz);
+
   pBackend->m_bCombinedOp = true;
 //  sPipeline->vCatSprint(
 //      "    filter 1 \" type BOOLEAN "
@@ -958,8 +1046,57 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       QueryNode* pSymbolicExpr = Expr::pOrdinalToSymbolic(pOrdinalExpr, pBackend->m_pColExprList,
                                                           pBackend->m_pPlanRoot);
       eCT eType = CaseExpr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot).eCTVal();
+			TypeId xTypeId = Expr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot);
 
-      sPipeline->vCatSprint(" } type %s"_Stz, aCT[eType]);
+#ifdef TYPE_DETAILED
+
+			i8 iLength = pBackend->iGetLength(eType);
+			i8 iScale = pBackend->iGetScale(eType);
+
+			ASSERT(iLength == C_UNKNOWN);
+			ASSERT(iScale == C_UNKNOWN);
+
+			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+				sPipeline->vCatSprint(
+								" type %s"
+								""_Stz,
+								aIV_field2[xTypeId.eIVVal()]);
+			}
+			else {
+
+				if (iLength == C_UNKNOWN && iScale == C_UNKNOWN)
+					sPipeline->vCatSprint(
+									" type %s"
+									""_Stz,
+									aCT[eType]
+					);
+				else
+				if (iScale == C_UNKNOWN)
+					sPipeline->vCatSprint(
+									" type %s(%lld)"
+									""_Stz,
+									aCT[eType],
+									iLength
+					);
+				else
+					sPipeline->vCatSprint(
+									" type %s(%lld,%lld)"
+									""_Stz,
+									aCT[eType],
+									iLength,
+									iScale
+					);
+			}
+#else
+			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+				sPipeline->vCatSprint(
+								" } type %s"_Stz, aIV_field2[xTypeId.eIVVal()]);
+			}
+			else {
+				sPipeline->vCatSprint(" } type %s"_Stz, aCT[eType]);
+			}
+#endif
+
       delete pSymbolicExpr;
 
       // get the when expr
@@ -1449,11 +1586,67 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
                                                     pBackend->m_pPlanRoot);
 
       eCT eType = CastExpr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot).eCTVal();
+			TypeId xTypeId = Expr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot);
 
-      sPipeline->vCatSprint(
-          " casttype %s CAST "
-          ""_Stz,
-          aCT[eType]);
+#ifdef TYPE_DETAILED
+			sPipeline->vCatSprint(
+							" casttype %s(%lld,%lld) CAST "
+							""_Stz,
+							aCT[eType],
+							pBackend->iGetLength(eType),
+							pBackend->iGetScale(eType));
+
+			i8 iLength = pBackend->iGetLength(eType);
+			i8 iScale = pBackend->iGetScale(eType);
+
+			ASSERT(iLength == C_UNKNOWN);
+			ASSERT(iScale == C_UNKNOWN);
+
+			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+				sPipeline->vCatSprint(
+								" type %s"
+								""_Stz,
+								aIV_field2[xTypeId.eIVVal()]);
+			}
+			else {
+
+				if (iLength == C_UNKNOWN && iScale == C_UNKNOWN)
+					sPipeline->vCatSprint(
+									" casttype %s CAST"
+									""_Stz,
+									aCT[eType]
+					);
+				else
+				if (iScale == C_UNKNOWN)
+					sPipeline->vCatSprint(
+									" casttype %s(%lld) CAST"
+									""_Stz,
+									aCT[eType],
+									iLength
+					);
+				else
+					sPipeline->vCatSprint(
+									" casttype %s(%lld,%lld) CAST"
+									""_Stz,
+									aCT[eType],
+									iLength,
+									iScale
+					);
+			}
+#else
+			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+				sPipeline->vCatSprint(
+								" casttype %s CAST "
+								""_Stz,
+								aIV_field2[xTypeId.eIVVal()]);
+			}
+			else {
+				sPipeline->vCatSprint(
+								" casttype %s CAST "
+								""_Stz,
+								aCT[eType]);
+			}
+#endif
 
       delete pSymbolicExpr;
     }
@@ -1696,7 +1889,6 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 i
   // node is encountered.
 
   pBackend->m_pPrevStageMarker = pStageMarker;
-  pBackend->m_pWalkNode = pStageMarker;
   GraphNav::bBoundedWalkBottomUp(pStageMarker, false, true, vVisitorStatement, (void *) pBackend);
 
   // Keep walking
@@ -2014,6 +2206,70 @@ Stz* Backend::szGetRouting(Backend* pBackend, QueryNode* pStageMarker) {
     szRouting = Routing::szRoutingType(pRouting);
 
   return szRouting;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append the type                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Backend::iGetLength(eCT eCTType) {
+
+	switch(eCTType) {
+
+		case CT_BOOLEAN:
+		case CT_DATE:
+		case CT_INTERVAL_DT:
+		case CT_INTERVAL_YM:
+		case CT_TIME:
+		case CT_TIMESTAMP:
+			return C_UNKNOWN;
+		break;
+
+		case CT_DECIMAL:
+			return 19;
+		break;
+
+		case CT_FLOAT:
+		case CT_INTEGER:
+			return 19;
+		break;
+
+		case CT_CHAR:
+		case CT_VARCHAR:
+			return 0;
+		break;
+
+		default:
+		NEVER_REACH
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+/* append the type                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Backend::iGetScale(eCT eCTType) {
+
+	switch(eCTType) {
+
+		case CT_BOOLEAN:
+		case CT_CHAR:
+		case CT_DATE:
+		case CT_FLOAT:
+		case CT_INTEGER:
+		case CT_INTERVAL_DT:
+		case CT_INTERVAL_YM:
+		case CT_TIME:
+		case CT_TIMESTAMP:
+		case CT_VARCHAR:
+			return C_UNKNOWN;
+			break;
+
+		case CT_DECIMAL:
+			return 2;
+			break;
+
+		default:
+			NEVER_REACH
+	}
 }
 
 /*----------------------------------------------------------------------------*/
