@@ -121,6 +121,15 @@ void ChildCards::vDeleteSub(Card* pSub)
   delete pSub;
 }
 
+/*----------------------------------------------------------------------------*/
+/* discard head                                                               */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vDiscardHead(void)
+{
+  if (Card* pHeadCard = pHead()) {
+    delete pHeadCard;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* ensure card is first                                                       */
