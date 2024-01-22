@@ -1374,7 +1374,7 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   xCast.m_bTypeNullable = 1;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // [ ( <length> [ , <scale> ] ]
+  // [ ( <length> [ , <scale> ] ) ]
 
   if (p_rpnExpr->bHeadSame("("_Stz)) {
     p_rpnExpr->vDiscardHead();
