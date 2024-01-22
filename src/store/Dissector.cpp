@@ -1296,7 +1296,7 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
   //p_rpnExpr->vDump();
 
   // is there a bound term sequence at the top of rpnTerms?
-  Card* p_rpnItem = p_rpnExpr->pPeek(0);
+  Card* p_rpnItem = p_rpnExpr->pHead();
   if (! p_rpnItem || !p_rpnItem->pSymbol()->bIs_Bound())
     return nullptr;
 
@@ -1315,7 +1315,7 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
   for (i8 i_Loop = 0; ; i_Loop++) {
     UNUSED(i_Loop);
 
-    Card_Term* p_term_top = _pCard_Term(p_rpnExpr->pPeek(0));
+    Card_Term* p_term_top = _pCard_Term(p_rpnExpr->pHead());
     if (! p_term_top || p_term_top->pSymbol()->bIs_Bound())
       break;
     p_term_xfr = p_rpnExpr->pPopChild();
@@ -1562,7 +1562,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
   Card_Key* p_key = new Card_Key;
 
   // GROUPBY
-  Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pPeek(0));
+  Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pHead());
   if (p_term_head->pSymbol()->bSame("GROUPBY"_Stz) ||
       p_term_head->pSymbol()->bSame("ORDGROUPBY"_Stz) ) {
     p_term_head = _pCard_Term(p_rpnExpr->pPopChild());
@@ -1623,7 +1623,7 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
 
   i8 iCardNo = 0;
 
-  Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pPeek(0));
+  Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pHead());
   if (p_term_head->pSymbol()->bSame("AGGREGATES"_Stz)) {
     p_term_head = _pCard_Term(p_rpnExpr->pPopChild());
     delete p_term_head;
