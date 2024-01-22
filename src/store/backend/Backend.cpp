@@ -280,22 +280,62 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
-  eCT eCTType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
+  eCT eCTType    = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
 	TypeId xTypeId = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot);
+  i8 iPrecision  = Expr::iPrecision(pExprNode, pBackend->m_pPlanRoot);
+  i8 iScale      = Expr::iScale(pExprNode, pBackend->m_pPlanRoot);
 	//vTrace("TypeId %s %lld %s\n"_Stz, xTypeId.szTypeName(), xTypeId.iIdVal(), aIV_field2[xTypeId.eIVVal()]);
 
-	if (eCTType == CT_INTERVAL_YM || eCTType == CT_INTERVAL_DT) {
-		sPipeline->vCatSprint(
-			" type %s"
-			""_Stz,
-			aIV_field2[xTypeId.eIVVal()]);
-	}
-	else {
-		sPipeline->vCatSprint(
-			" type %s"
-			""_Stz,
-			aCT[eCTType]);
-	}
+//	if (eCTType == CT_INTERVAL_YM || eCTType == CT_INTERVAL_DT) {
+//		sPipeline->vCatSprint(
+//			" type %s"
+//			""_Stz,
+//			aIV_field2[xTypeId.eIVVal()]);
+//	}
+//	else {
+//		sPipeline->vCatSprint(
+//			" type %s"
+//			""_Stz,
+//			aCT[eCTType]);
+//	}
+
+  switch (eCTType) {
+    case CT_BOOLEAN:
+    case CT_CHAR:
+    case CT_DATE:
+    case CT_DECIMAL:
+    case CT_FLOAT:
+    case CT_INTEGER:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_VARCHAR:
+    case CT_UNKNOWN:
+      sPipeline->vCatSprint(
+          " type %s"
+          ""_Stz,
+          aCT[eCTType]);
+
+      if (iPrecision != -1) {
+        if (iScale == -1) {
+          sPipeline->vCatSprint(" (%lld)"_Stz, iPrecision);
+        } else {
+          sPipeline->vCatSprint(" (%lld , %lld)"_Stz, iPrecision, iScale);
+        }
+      }
+      break;
+
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+      sPipeline->vCatSprint(
+          " type %s"
+          ""_Stz,
+          aIV_field2[xTypeId.eIVVal()]);
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
 
   if ( ! szAliasName) {
     if (ColumnRef::bIsOfType(pExprNode)) {
