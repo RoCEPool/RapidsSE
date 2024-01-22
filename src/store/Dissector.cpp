@@ -1382,8 +1382,7 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Cast xCast;
-  xCast.m_xTypeId = xPopTypeId(p_rpnExpr);
+  Cast xCast = xPopCast(p_rpnExpr);
 
   Card_Constraint* p_constraint = new Card_Constraint;
 
@@ -1441,10 +1440,6 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   // <type>
 
   Cast xCast = this->xPopCast(p_rpnExpr);
-//	xCast.m_xTypeId = this->xPopTypeId(p_rpnExpr);
-//  xCast.m_nTypeLength = 0;
-//  xCast.m_nTypeScale = 0;
-//  xCast.m_bTypeNullable = 1;
 
   if (xCast.m_xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
     xCast.m_nTypeLength = 19;
