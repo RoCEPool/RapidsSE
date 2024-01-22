@@ -787,18 +787,14 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Symbol* pSymbol_expr = pSymbol();
   RASSERT(pSymbol_expr->xCast().m_xTypeId.bIsValid());
-
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
-    Card::vValidate_hasType();
-//    if (pCI->pAncestorFind(CK_t_EMIT) &&
-//        m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
-//      if (m_xSymbol.nTypeLength() == 0) {
-//        pCI->vPrintBoard(__func__,__LINE__,true);
-//        vDump(__func__);
-//        vValidationFailed("Decimal length is 0 : %p"_Stz, this);
-//      }
-//    }
-
+  if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+    if (m_xSymbol.nTypeLength() == 0) {
+      vMark("?"_Stz,"l"_Stz);
+      pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
+      pCI->vPrintBoard(__func__,__LINE__,true);
+      vDump(__func__);
+      vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+    }
   }
 
   (void)Card::eValidate_parentEither(pCI, CK_t_EMIT, CK_c_FOLD, CK_s_INJECTABLE,
@@ -809,23 +805,6 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (! m_xSymbol.bHasFacet(SF_KEY_COL) || ! m_xSymbol.bValidate()) {
       vDump(__func__);
       vValidationFailed("SF_KEY_COL Missing : %p"_Stz,this);
-    }
-  }
-
-  if (pCI->pAncestorFind(CK_s_INJECTABLE)) {
-    if (! m_xSymbol.bHasType()) {
-      vDump(__func__);
-      vValidationFailed("Type Missing : %p"_Stz,this);
-    }
-  }
-
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMIT]) ) {
-    if (pCI->pAncestorFind(CK_t_EMIT)) {
-      if (!m_xSymbol.bHasType()) {
-        pCI->vPrintBoard(__func__,__LINE__,true);
-        vDump(__func__);
-        vValidationFailed("Type Missing : %p"_Stz, this);
-      }
     }
   }
 
