@@ -253,7 +253,6 @@
 
   find: INVALID_OPERAND_handler EV_D_CRWBUFFER       [op].handler!
   find: INVALID_OPERAND_handler EV_D_CSVBUFFER       [op].handler!
-  find: INVALID_OPERAND_handler EV_D_ROWBUFFER       [op].handler!
   find: INVALID_OPERAND_handler EV_D_PDSROWBUFFER    [op].handler!
   find: INVALID_OPERAND_handler EV_D_STREAMDEF       [op].handler!
 

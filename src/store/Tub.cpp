@@ -146,7 +146,7 @@ void Tub::vRowStrSize(Tub* pTub, i8 nRowStrSize)
 
   Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
 
-  pPdsRowBuffer->vCodeSynthUpdateRowString(nRowStrSize);
+  pPdsRowBuffer->vDepositString_end(nRowStrSize);
 
 }
 

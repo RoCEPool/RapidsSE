@@ -17,6 +17,7 @@ create index TABLE1_COLA1 on table1(cola1);
 create index TABLE1_COLB1 on table1(colb1);
 create index TABLE1_UCOL on table1(ucol);
 create index TABLE1_UCOLVC on table1(ucolvc);
+
 load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
 create table TABLE9 (
@@ -36,12 +37,16 @@ create index table9_colb9 on table9(colb9);
 create index table9_ucol on table9(ucol);
 create index table9_ucolvc on table9(ucolvc);
 create index table9_pcol9 on table9(pcol9);
-load TABLE9 "../DATA/Load/tbl9data.csv" ;
+create index table9_cold9 on table9(cold9);
+create index table9_ucolvc on table9(ucolvc);
 
-//select pcol1, pcol9, colb1, colb9 from table1 join table9 on colb1 = colb9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
+load TABLE9 "../DATA/Load/tbl9data.csv" ;
+//dumpidx table9 table9_colb9;
+
+select pcol1, pcol9, colb1, colb9 from table1 join table9 on colb1 = colb9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
 //select pcol1, pcol9, colb1, colb9 from table1 join table9 on pcol1 = pcol9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
 //select pcol1, pcol9, colb1, colb9 from table1 join table9 on colb1 = colb9;
-/keepCodeFile /useCodeFile="_unnamed__NODE1_2"  select pcol9 from table1 join table9 on colb1 = colb9;
+///keepCodeFile /useCodeFile="_unnamed__NODE1_2"  select pcol9 from table1 join table9 on colb1 = colb9;
 /*
 ordered rows:
   (3, 3, 'green', 'green')

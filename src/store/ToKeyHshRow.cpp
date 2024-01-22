@@ -707,7 +707,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 nPixFracDigits;
   bool bPixNullable;
 
-  void* aStzSet;
+  char* aStzSet;
 
   //
   
@@ -2096,12 +2096,12 @@ L_Varchar_unquoted:
   
   // allocate string space in slab
 
-  if(pPdsRowBuffer()->nFreeBytes() < (nPixLength + (i8) sizeof(i8)))
-    nPixLength = pPdsRowBuffer()->nFreeBytes() - sizeof(i8);
+  if(pPdsRowBuffer()->nFreeBytes() < nPixLength)
+    nPixLength = pPdsRowBuffer()->nFreeBytes();
 
   aStzSet = pPdsRowBuffer()->azDepositString_begin();
 
-  azColVal_varchar = aAdd<char*>(aStzSet, sizeof(i8));
+  azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
   
   while (! bIS_NULL()) {
@@ -2161,12 +2161,12 @@ L_Varchar_singleQuoted:
     vTrace("L_Varchar_singleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  if(pPdsRowBuffer()->nFreeBytes() < (nPixLength + (i8) sizeof(i8)))
-    nPixLength = pPdsRowBuffer()->nFreeBytes() - sizeof(i8);
+  if(pPdsRowBuffer()->nFreeBytes() < nPixLength)
+    nPixLength = pPdsRowBuffer()->nFreeBytes();
 
   aStzSet = pPdsRowBuffer()->azDepositString_begin();
 
-  azColVal_varchar = aAdd<char*>(aStzSet, sizeof(i8));
+  azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
   
   // >> *'...
@@ -2282,12 +2282,12 @@ L_Varchar_doubleQuoted:
     vTrace("L_Varchar_doubleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  if(pPdsRowBuffer()->nFreeBytes() < (nPixLength + (i8) sizeof(i8)))
-    nPixLength = pPdsRowBuffer()->nFreeBytes() - sizeof(i8);
+  if(pPdsRowBuffer()->nFreeBytes() < nPixLength)
+    nPixLength = pPdsRowBuffer()->nFreeBytes();
 
   aStzSet = pPdsRowBuffer()->azDepositString_begin();
 
-  azColVal_varchar = aAdd<char*>(aStzSet, sizeof(i8));
+  azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
   
   // >> *"...
@@ -2402,12 +2402,12 @@ L_Varchar_userEnclosed:
     vTrace("L_Varchar_userEnclosed:\n"_Stz);
   
   // allocate string space in slab
-  if(pPdsRowBuffer()->nFreeBytes() < (nPixLength + (i8) sizeof(i8)))
-    nPixLength = pPdsRowBuffer()->nFreeBytes() - sizeof(i8);
+  if(pPdsRowBuffer()->nFreeBytes() < nPixLength)
+    nPixLength = pPdsRowBuffer()->nFreeBytes();
 
   aStzSet = pPdsRowBuffer()->azDepositString_begin();
 
-  azColVal_varchar = aAdd<char*>(aStzSet, sizeof(i8));
+  azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
   
   // >> *{.*

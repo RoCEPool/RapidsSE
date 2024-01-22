@@ -489,7 +489,7 @@ Stz* RowBox_t<AREA>::szColVal(i8 i_Col)
 {
   _poolAddress_(this); _footer_();
 
-  Stz* szVal = m_aRowCur->szColVal_ofs(i_Col) - sizeof(i8);
+  Stz* szVal = m_aRowCur->szColVal_ofs(i_Col);
   
   return szVal;
 }

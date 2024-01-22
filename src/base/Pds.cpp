@@ -1543,44 +1543,15 @@ bool Pds::bDepositColVal(Stz* szColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-//  i8 iTotalSize = iMaxStzLen + sizeof(i8);
-//
-//  if( nFreeBytes() < iTotalSize)
-//    return false;
-//
-//  void* aAddr = azDepositString_begin(iTotalSize);
-//  if( ! aAddr)
-//    return false;
-//
-//  Stz* szDst = aAdd<Stz*>(aAddr, sizeof(i8));
-//
-////  azStringDyn->vCopy(szColVal);
-//  StrLib::vCopy((char*)szDst, iMaxStzLen, szColVal->azChar());
-//
-////  i8 iTotalSize = azStringDyn->iTotalSize();
-//
-//  vDepositString_update(iTotalSize);
-//
-//  // TODO: Arjun - Check with Ray: nLen or iMaxStzLen?
-//  vDepositString_end(aAddr);
-//  return true;
-
-  // Ensure we have enough space for nArea + 1 byte str + null terminator
-  i8 nAreaSize = sizeof(i8);
-  if(nFreeBytes() < szColVal->nLength() + nAreaSize + 2)
+  // Ensure we have enough space for 1 byte str + null terminator
+  if(nFreeBytes() < szColVal->nLength() + 2)
     return false;
 
-  void* aAddr = azDepositString_begin();
-  if( ! aAddr)
+  char* azTgt = azDepositString_begin();
+  if( ! azTgt)
     return false;
 
-  char* azTgt = aAdd<char*>(aAddr, nAreaSize);
-
-  i8 nLen = StrLib::nCopy(azTgt, nFreeBytes() - nAreaSize, szColVal->azChar());
-
-//  nLen = nLen + nAreaSize + 1;
-
-//  vDepositString_update(nLen);
+  i8 nLen = StrLib::nCopy(azTgt, nFreeBytes(), szColVal->azChar());
 
   vDepositString_end(nLen + 1);
   return true;
@@ -1589,7 +1560,7 @@ bool Pds::bDepositColVal(Stz* szColVal)
 /*--------------------------------------------------------------------------*/
 /* begin deposit of string                                                  */
 /*--------------------------------------------------------------------------*/
-void* Pds::azDepositString_begin(void)
+char* Pds::azDepositString_begin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -1597,12 +1568,11 @@ void* Pds::azDepositString_begin(void)
 
 //  String_d* szDeposited = new(m_aStzSet) String_d(nSize);
 
-  void* aAddr = m_xWsp.ayLatterHead();
+  char* aAddr = (char*)m_xWsp.ayLatterHead();
 
   if( ! aAddr)
     return nullptr;
-//  i8 *pnArea = (i8*) aAddr;
-//  *pnArea = nSize - sizeof(i8);
+
   m_aStzSet = (char*) aAddr;
 
   // TODO: Arjun - Check type conversion with Ray
@@ -1617,37 +1587,9 @@ void* Pds::azDepositString_begin(void)
 }
 
 /*--------------------------------------------------------------------------*/
-/* update the total String space used by this row                           */
-/*--------------------------------------------------------------------------*/
-void Pds::vDepositString_update(i8 nTotalSize)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-
-  m_nRowStringBytes += nTotalSize;
-}
-
-/*--------------------------------------------------------------------------*/
 /* take bytes for deposited string                                          */
 /*--------------------------------------------------------------------------*/
 void Pds::vDepositString_end(i8 nSize)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-
-//  m_aStzSet = aAddr;
-  nSize+=sizeof(i8);
-  m_xWsp.vTakeHead(nSize);
-  m_nRowStringBytes += nSize;
-  i8* pnArea = (i8*) m_aStzSet;
-  *pnArea = nSize;
-
-//  char* szStz = aAdd<char*>(m_aStzSet, sizeof(i8));
-//  vTrace("%p %lld %s\n"_Stz, m_aStzSet, *pnArea, szStz);
-}
-
-/*--------------------------------------------------------------------------*/
-/* take bytes for deposited string                                          */
-/*--------------------------------------------------------------------------*/
-void Pds::vCodeSynthUpdateRowString(i8 nSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 

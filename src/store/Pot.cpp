@@ -144,7 +144,7 @@ void Pot::vRowStrSize(Pot* pPot, i8 iKeyHsh, i8 nRowStrSize)
 
   Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
 
-  pPdsRowBuffer->vCodeSynthUpdateRowString(nRowStrSize);
+  pPdsRowBuffer->vDepositString_end(nRowStrSize);
 
 }
 

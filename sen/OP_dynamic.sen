@@ -24,7 +24,7 @@
   Marker[].pipeOut
 
   "default_abnormalHandlers" FIND execute
-  "toggle_rowBufferHandler" FIND execute
+  "toggle_PdsRowBufferHandler" FIND execute
 
   true
 ;
@@ -84,7 +84,7 @@
 
       //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
       "default_abnormalHandlers" FIND execute
-      "toggle_rowBufferHandler" FIND execute
+      "toggle_PdsRowBufferHandler" FIND execute
       //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
     else
       errorCode op__execErr

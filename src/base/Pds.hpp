@@ -93,7 +93,6 @@ namespace BASE
     RowPix*         pRowPix(void);
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);
-    void            vCodeSynthUpdateRowString(i8 nSize);
     void            vValidate(void);
     bool            bVerify(void);
 
@@ -115,8 +114,7 @@ namespace BASE
     void      vDepositColVal(i8 iColVal);
     void      vDepositColVal(i8 i_Col, i8 iColVal);
     bool      bDepositColVal(Stz* szColVal);
-    void*     azDepositString_begin(void);
-    void      vDepositString_update(i8 nTotalSize);
+    char*     azDepositString_begin(void);
     void      vDepositString_end(i8 nSize);
     void      vDiscardInvalidRow(void);
 

@@ -761,44 +761,6 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 
       break;
 
-		case EV_D_ROWBUFFER:
-			RASSERT(i_BufferType != BT_NONE);
-
-			// These don't apply to adaptorWL
-			if (szOpNm()->bSame("adaptorWL"_Stz)) {
-				break;
-			}
-
-			// should have received a EV_M_DATAPULSE
-			if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
-
-				// EXECERRORS can come before the DATAPULSE
-				// and demon pipeline operators can receve ROWBUFFERS without a DATAPULSE
-				if (i_BufferType != BT_EXECERRORS &&  ! bDemonJob ) {
-					vTrace("%s: %s (BufferType: %s) arrived without a prior EV_M_DATAPULSE\n"_Stz,
-								 szOpNm(), aEV[i_OperandKind], aBT[i_BufferType]);
-					return false;
-				}
-			}
-
-			// should have received a EV_D_STREAMDEF if BufferType is BT_DATA
-			if (i_BufferType == BT_DATA) {
-				if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
-					vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
-								 szOpNm(), aEV[i_OperandKind]);
-					return false;
-				}
-			}
-
-			// should not have received EV_M_EOS's > EV_M_DATAPULSE's
-			if ( m_pEvMgr->m_naEventCount[EV_M_EOS] > m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
-				vTrace("%s: %s arrived after EV_M_EOS and no new EV_M_DATAPULSE\n"_Stz,
-							 szOpNm(), aEV[i_OperandKind]);
-				return false;
-			}
-
-			break;
-
     case EV_M_DATAPULSE:
       // should have received a EV_M_START
       if ( ! m_pEvMgr->m_naEventCount[EV_M_START]) {

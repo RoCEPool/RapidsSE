@@ -1026,7 +1026,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     iElemSize += 8;
   }
   else {
-		szDstStz = (char*)(azStringDyn + sizeof(i8));
+		szDstStz = azStringDyn;
 
 		i8 iDstBufLen = __ROW_INFO_TO__.m_nStringAreaSize;
 
@@ -1045,10 +1045,6 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
     // Store the len of string copied
     i8 iDstLen = strlen(szDstStz) + 1;
-    i8* pnArea = (i8*) azStringDyn;
-    *pnArea = iDstLen;
-
-    iDstLen += sizeof(i8);
 
     // update the tub string size
     __ROW_INFO_TO__.m_nStringAreaSize -= iDstLen;
@@ -1162,7 +1158,7 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
   else {
     // get the destination string
 
-    szDstStz = (char*)(azStringDyn + sizeof(i8));
+    szDstStz = azStringDyn;
 
 		nSrcSize = strlen(szSrcStz) + 1;
 		char *d = szDstStz;
@@ -1178,13 +1174,6 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
     iOffset = - nDifference(azStringDyn, amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
-
-    // Update string header with size of string
-    i8* pnArea = (i8*) azStringDyn;
-    *pnArea = nSrcSize;
-
-    // Add header size to total string length
-    nSrcSize += sizeof(i8);
 
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
 
@@ -1362,7 +1351,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      nSrcSize = strlen(szSrcStz) + 1;
 
      // get the destination string
-     szDstStz = (char*)(azStringDyn + sizeof(i8));
+     szDstStz = azStringDyn;
 
 		 char *d = szDstStz;
 		 const char *s = (char*)szSrcStz;
@@ -1377,13 +1366,6 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
      iOffset = - nDifference(azStringDyn, amCellAddress);
      p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
-
-     // Update string header with size of string
-     i8* pnArea = (i8*) azStringDyn;
-     *pnArea = nSrcSize;
-
-     // Add header size to total string length
-     nSrcSize += sizeof(i8);
 
      // update the tub string size
      __ROW_INFO_TO__.m_acStrArea += nSrcSize;

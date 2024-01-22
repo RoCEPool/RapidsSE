@@ -14,7 +14,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_PDSROWBUFFER"_Stz,
   /*    */ "EV_D_PAYLOAD"_Stz,
   /*    */ "EV_D_PLANOPERAND"_Stz,
-  /*    */ "EV_D_ROWBUFFER"_Stz,
   /*    */ "EV_D_STREAMDEF"_Stz,
   /*    */ "EV_D_TABLE"_Stz,
   /*    */ "EV_D_TABLEPTN"_Stz,

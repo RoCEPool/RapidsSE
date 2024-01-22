@@ -362,10 +362,7 @@ void Step::vPipeinSet(void)
   else {
     eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
     m_pLogicUnit->m_ePipeInOperand = eOperand;
-		if (eOperand == EV_D_ROWBUFFER) {
-			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-			m_pLogicUnit->m_ePipeInBufferType = pRowBuffer->eBufferType();
-		} else if (eOperand == EV_D_PDSROWBUFFER) {
+		if (eOperand == EV_D_PDSROWBUFFER) {
       Pds *pPdsRowBuffer = _pPds(pOperand);
       m_pLogicUnit->m_ePipeInBufferType = pPdsRowBuffer->eBufferType();
     }

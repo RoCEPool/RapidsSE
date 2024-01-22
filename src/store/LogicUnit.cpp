@@ -783,10 +783,7 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   if (pOperand) {
     eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
     m_ePipeInOperand = eOperand;
-		if (eOperand == EV_D_ROWBUFFER) {
-			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-			m_ePipeInBufferType = pRowBuffer->eBufferType();
-		} else if (eOperand == EV_D_PDSROWBUFFER) {
+		if (eOperand == EV_D_PDSROWBUFFER) {
       Pds *pPdsRowBuffer = _pPds(pOperand);
       m_ePipeInBufferType = pPdsRowBuffer->eBufferType();
     }

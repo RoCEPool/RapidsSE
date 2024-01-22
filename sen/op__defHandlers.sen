@@ -78,7 +78,6 @@
 : EV_D_PDSROWBUFFER_handler     \handler STANDARD_PIPEOUT ;
 : EV_D_PAYLOAD_handler          \handler STANDARD_PIPEOUT ;
 : EV_D_PLANOPERAND_handler      \handler STANDARD_PIPEOUT ;
-: EV_D_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
@@ -324,7 +323,7 @@
 
   //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
   "default_abnormalHandlers" FIND execute
-  "toggle_rowBufferHandler" FIND execute
+  "toggle_PdsRowBufferHandler" FIND execute
   //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
 
@@ -442,13 +441,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                 TOGGLE ROWBUFFER HANDLER                                   */
+/*                 TOGGLE PDSROWBUFFER HANDLER                                */
 /*----------------------------------------------------------------------------*/
-: toggle_rowBufferHandler
+: toggle_PdsRowBufferHandler
 
   find: ABNORMAL_PIPEIN_DELETE locals| abnormalHandler |
 
-  abnormalHandler EV_D_ROWBUFFER   [op].handler!
+  abnormalHandler EV_D_PDSROWBUFFER   [op].handler!
 ;
 
 
