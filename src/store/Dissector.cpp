@@ -1619,15 +1619,12 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
 
   i8 iCardNo = 0;
 
-  Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pHead());
-  if (p_term_head->pSymbol()->bSame("AGGREGATES"_Stz)) {
-    p_term_head = _pCard_Term(p_rpnExpr->pPopChild());
-    delete p_term_head;
-  }
+  if (p_rpnExpr->bHeadSame("AGGREGATES"_Stz))
+    p_rpnExpr->vDiscardHead();
 
   i8 i_Expr = 1;
 
-  while ( (p_term_head = _pCard_Term(p_rpnExpr->pHead())) ) {
+  while (Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pHead())) {
 
     // GROUPBY or ORDGROUPBY
     if (p_term_head->pSymbol()->bSame("GROUPBY"_Stz) ||
