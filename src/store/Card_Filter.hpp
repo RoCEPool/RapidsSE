@@ -28,6 +28,7 @@ namespace STORE
     void vEarlyProject_recurse_update(CardIter* pCI);
     void vExtend_rlnConj(Card_RlnConj *p_rlnConj);
     bool bIsEmpty(void);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

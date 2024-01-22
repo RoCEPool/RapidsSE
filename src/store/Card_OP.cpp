@@ -540,6 +540,10 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       break;
 
     case CK_o_PROJECT:
+      if (pCI->m_pBench->eXform() == XF_PROLOG_ANALYSE_EMIT) {
+        vDebugPoint();
+      }
+
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
       if (pCI->G.p_OP->i_Child() == 14 && pCI->G.p_emit->nFunctionCount() == 1) {
         if (pCI->Flux.m_pArriving)

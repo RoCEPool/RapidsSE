@@ -304,10 +304,16 @@ void Card_Expr::vEnsureTypeId_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->G.p_rpnCalc = pSub_rpnCalc();
-  pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
   Symbol* pSymbol_expr = pSymbol();
-  RASSERT(pSymbol_expr->xCast().m_xTypeId.bIsValid());
+  RASSERT(xCast().m_xTypeId.bIsValid());
+  RASSERT(xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
+
+  TypeId xTypeId_save = xCast().m_xTypeId;
+
+  pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
+
+
 
 //  if (pSymbol()->xCast().m_xTypeId != pCI->G.p_rpnCalc->xCast().m_xTypeId) {
 //    vDump(__func__);
@@ -328,6 +334,8 @@ void Card_Expr::vEnsureTypeId_expCol(CardIter* pCI)
 
 //  if (pCI->G.p_rpnCalc->xCast().m_xTypeId.bIsValid())
 //    vCast(pCI->G.p_rpnCalc->xCast());
+
+  RASSERT(xTypeId_save == xCast().m_xTypeId);
 
   pCI->G.p_rpnCalc = nullptr;
 }

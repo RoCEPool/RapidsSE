@@ -148,6 +148,13 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
   xCast_last.m_nTypeScale = 0;
   RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
+  TypeId xTypeId_save = xCast().m_xTypeId;
+  if (! xTypeId_save.bIsValid()) {
+    pCI->vPrintBoard(__func__,__LINE__,true);
+    vDump(__func__);
+    NEVER_REACH
+  }
+
   // rpnCalc is a set of terms
   for (Kid xRpnCalc(this); xRpnCalc.bEach(CK_TERM); /**/) {
     pCI->G.p_term = xRpnCalc.p_term();
@@ -155,8 +162,17 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
   }
   pCI->G.p_term = nullptr;
 
-  if (xCast_last.m_xTypeId.bIsValid())
-    vCast(xCast_last);
+//  if (xCast_last.m_xTypeId.bIsValid())
+//    vCast(xCast_last);
+
+  if (xCast_last.m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId &&
+      (xCast_last.m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
+       xCast_last.m_nTypeScale    != pCI->G.p_rpnCalc->xCast().m_nTypeScale  ||
+       xCast_last.m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable))
+    vCast(pCI->G.p_rpnCalc->xCast());
+
+
+  RASSERT(xTypeId_save == xCast().m_xTypeId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -516,6 +532,12 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Card::vValidate_hasType();
   Card::vValidate_hasChildren();
+
+  if (xCast().m_xTypeId != pCI->pAncestorFind(CK_EXPR)->xCast().m_xTypeId) {
+    pCI->vPrintBoard(__func__,__LINE__,true);
+    vDump(__func__);
+    NEVER_REACH;
+  }
 
   vValidate_mustHave(CK_TERM, CK_NONE);
 

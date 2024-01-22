@@ -261,9 +261,13 @@ Card* Dissector::pOp_absJoin(void)
   Card_AbsJoin* p_absJoin = new Card_AbsJoin;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // expr : exression list
+  // expr : expression list
 
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
+  Cast xCast;
+  xCast.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
+  p_rpnCalc->pSymbol()->vCast(xCast);
+
   Card_On* p_on = new Card_On;
   p_on->vAppendChild(p_rpnCalc);
 

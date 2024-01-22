@@ -7,6 +7,10 @@ LOG 'TPC-H Q13...';
 trackMemory force;
 success
 
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
 /pipelineName = "OptQ13"
 select
        c_count,
