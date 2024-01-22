@@ -1349,11 +1349,13 @@ Cast Dissector::xPopCast(Card_RpnExpr* p_rpnExpr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // TYPE
 
-  Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
-  Stz* szTerm = p_term->szFacet(SF_NONE);
-  RASSERT(szTerm->bSame("TYPE"_Stz));
-  delete p_term;
-  p_term = nullptr;
+  if (p_rpnExpr->bHeadSame("TYPE"_Stz)) {
+    Card_Term *p_term = _pCard_Term(p_rpnExpr->pPopChild());
+    Stz *szTerm = p_term->szFacet(SF_NONE);
+    RASSERT(szTerm->bSame("TYPE"_Stz));
+    delete p_term;
+    p_term = nullptr;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column type (e.g. BOOLEAN)
@@ -1521,10 +1523,7 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
 
   p_rpnExpr->vDiscardHead();
 
-  Card_Term* p_term1 = _pCard_Term(p_rpnExpr->pPopChild());
-  Cast xCast;
-  xCast.m_xTypeId = Symbol::xTo_TypeId(p_term1->szFacet(SF_NONE));
-  delete p_term1;
+  Cast xCast = xPopCast(p_rpnExpr);
 
   Card_Term* p_term_hsh = _pCard_Term(p_rpnExpr->pPopChild());
   p_term_hsh->vCast(xCast);
