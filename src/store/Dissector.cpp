@@ -1384,8 +1384,7 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
     xCast.m_nTypeLength = p_term->szFacet(SF_NONE)->iToI8();
     delete p_term;
 
-    if (p_rpnExpr->bHeadSame(","_Stz)) {
-      p_rpnExpr->vDiscardHead();
+    if (! p_rpnExpr->bHeadSame(")"_Stz)) {
 
       p_term = _pCard_Term(p_rpnExpr->pPopChild());
       xCast.m_nTypeScale = p_term->szFacet(SF_NONE)->iToI8();

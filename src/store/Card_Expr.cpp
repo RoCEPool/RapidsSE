@@ -306,6 +306,11 @@ void Card_Expr::vEnsure_Cast(CardIter* pCI)
   pCI->G.p_rpnCalc = pSub_rpnCalc();
 
   Symbol* pSymbol_expr = pSymbol();
+  if (! xCast().m_xTypeId.bIsValid()) {
+    pCI->vPrintBoard(__func__,__LINE__,true);
+    vDump(__func__ );
+    NEVER_REACH
+  }
   RASSERT(xCast().m_xTypeId.bIsValid());
   RASSERT(xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
 

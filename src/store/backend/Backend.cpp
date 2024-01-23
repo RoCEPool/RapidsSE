@@ -124,7 +124,7 @@
 #include "SP_Tme.hpp"
 #include "SP_Tsp.hpp"
 
-#define TYPE_DETAILED EndDefine
+//#define TYPE_DETAILED EndDefine
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -321,7 +321,7 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
 				);
 		else
 			sPipeline->vCatSprint(
-								" type %s ( %lld , %lld )"
+								" type %s ( %lld %lld )"
 								""_Stz,
 								aCT[eCTType],
 								iLength,
@@ -412,7 +412,7 @@ void Backend::vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNo
 			);
 		else
 			sPipeline->vCatSprint(
-							" type %s ( %lld , %lld )"
+							" type %s ( %lld %lld )"
 							""_Stz,
 							aCT[eType],
 							iLength,
@@ -1077,7 +1077,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 					);
 				else
 					sPipeline->vCatSprint(
-									" type %s ( %lld , %lld )"
+									" type %s ( %lld %lld )"
 									""_Stz,
 									aCT[eType],
 									iLength,
@@ -1587,7 +1587,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
 #ifdef TYPE_DETAILED
 			sPipeline->vCatSprint(
-							" casttype %s ( %lld , %lld ) CAST "
+							" casttype %s ( %lld %lld ) CAST "
 							""_Stz,
 							aCT[eType],
 							pBackend->iGetLength(eType),
@@ -1620,7 +1620,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 					);
 				else
 					sPipeline->vCatSprint(
-									" casttype %s ( %lld , %lld ) CAST"
+									" casttype %s ( %lld %lld ) CAST"
 									""_Stz,
 									aCT[eType],
 									iLength,
