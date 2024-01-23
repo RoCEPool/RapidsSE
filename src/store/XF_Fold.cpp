@@ -232,6 +232,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   vSubQuery(pCI->pBoard()->pSubQuery());
 
+  SubQuery* pSubQuery_save = m_pSubQuery;
 
   i8 i_dup_from = 0;
   pCI->vBeginEach();
@@ -279,12 +280,14 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  RASSERT(pSubQuery_save == m_pSubQuery);
+
   // 7) derive the fold (SQ result) expr
   pCI->Sqy.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
   if (pCI->G_bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
-    Board::vDerive_foldExpr_H_A_NC_ro(pCI);
+    Board::vDerive_foldExpr_H_A_NC_ro(pCI,m_pSubQuery);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
  // pCI->vPrintBoard(__func__,__LINE__);
@@ -384,6 +387,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
 
   vSubQuery(pCI->pBoard()->pSubQuery());
+  SubQuery* pSubQuery_save = m_pSubQuery;
 
   // 3) get copy of sq
   pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
@@ -422,12 +426,14 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  RASSERT(pSubQuery_save == m_pSubQuery);
+
   // 7) derive the fold (SQ result) expr
   pCI->Sqy.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
   if (pCI->G_bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
-    Board::vDerive_foldExpr_H_A_NC_ro(pCI);
+    Board::vDerive_foldExpr_H_A_NC_ro(pCI,m_pSubQuery);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
  // pCI->vPrintBoard(__func__,__LINE__);
