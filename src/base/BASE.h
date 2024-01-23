@@ -23,7 +23,7 @@
 #define TRUE(condition)  true
 #define FALSE(condition) false
 
-//#define TYPE_DETAILED EndDefine
+#define TYPE_DETAILED EndDefine
 
 //------------------------------------------------------------------------------
 
