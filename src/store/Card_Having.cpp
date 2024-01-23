@@ -65,7 +65,6 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
   bool bBump = ! bSawProject;
 
   vCorrect_After_Inject(pCI, bBump);
- // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,9 +82,6 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     vCorrect_After_Inject(pCI, bBump);
 
   pCI->Flux.m_pArriving = pSub_emit();
-
-
- // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/

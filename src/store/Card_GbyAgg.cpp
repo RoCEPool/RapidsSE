@@ -113,10 +113,6 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard(__func__,__LINE__);
-
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
@@ -192,11 +188,6 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
   }
 
- // pCI->vPrintBoard(__func__,__LINE__);
-
- // pCI->vRenumberCards();
-
- // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

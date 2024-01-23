@@ -96,19 +96,13 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->vRenumberCards();
-  pCI->vPrintBoard(__func__,__LINE__);
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  //pCI->vPrintBoard(__func__,__LINE__);
 
   pCI->G.p_OP = pCI->G.p_keyNotExists;
   pCI->G.p_keyNotExists->vRecreate_emit(pCI,true);
-
-  //pCI->vPrintBoard(__func__,__LINE__);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

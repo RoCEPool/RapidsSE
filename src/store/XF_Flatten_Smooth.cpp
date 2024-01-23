@@ -152,7 +152,6 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   }
 
   pCI->vPrintBoard(__func__,__LINE__);
- // pCI->vRenumberCards();
 }
 
 /*============================================================================*/

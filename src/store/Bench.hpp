@@ -58,7 +58,7 @@ namespace STORE
 
     void vPhase(CardIter* pCI, eOH ePhase);
 
-    void vRenumberCards(void);
+    //void vRenumberCards(void);
 
 
     void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);

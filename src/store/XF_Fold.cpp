@@ -201,9 +201,6 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
   pCI->G.p_stream = new Card_Stream;
   pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
   pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
-
- // pCI->vRenumberCards();
-
 }
 
 /*----------------------------------------------------------------------------*/

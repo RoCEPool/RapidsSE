@@ -67,7 +67,6 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
   m_pCI->vBeginEach();
   m_pCI->Flux.m_pArriving = m_pCI->G.p_emit = nullptr;
 
-  m_pCI->vRenumberCards();
   while (m_pCI->G_bEachMain_NONE()) {
 
     if (! m_pCI->G.p_OP)

@@ -67,20 +67,11 @@ void XF_Flatten_Pullup_rlnConj::vXF_Pullup_rlnConj(void)
   // @ mark where predicates wrt. table
   Card_Where::vMarkWhereConjWrtTable(m_pCI);
 
-//  m_pCI->vRenumberCards();
-//  m_pCI->vPrintBoard(__func__,__LINE__);
-
   // move @ marked where predicates to table filter
   Card_Where::vMoveWhereConjToTableFilter(m_pCI, MARK_AT);
 
-//  m_pCI->vRenumberCards();
-//  m_pCI->vPrintBoard(__func__,__LINE__);
-
   // cull @ marked where predicates
   Card_Where::vCullMarked_rlnConj(m_pCI);
-
-//  m_pCI->vRenumberCards();
-//  m_pCI->vPrintBoard(__func__,__LINE__);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

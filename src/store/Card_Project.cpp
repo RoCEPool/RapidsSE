@@ -306,10 +306,6 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 //  pCI->G_vMainResynch();
   vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard(__func__,__LINE__);
-
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   pCI->G.p_MainCard = pCI->G.p_OP = this;
@@ -321,8 +317,6 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
    pCI->G.p_OP->vRecreate_emit(pCI,true);
-
- // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

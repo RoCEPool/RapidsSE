@@ -114,14 +114,9 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   DELETE_CARD(pCI->G.p_term);
 
- // pCI->vRenumberCards();
-
- // pCI->vPrintBoard(__func__,__LINE__);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! pCI->Sqy.m_pCorrelation) {
-   // pCI->vRenumberCards();
     return;
   }
 
@@ -158,13 +153,9 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
     (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
- // pCI->vPrintBoard(__func__,__LINE__);
-
   pCI->vClearRestart();
   pCI->G_vDeleteWhenEmptySub(CK_o_WHERE, CK_BOOLPRED);
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard(__func__,__LINE__);
   vDebugPoint();
 
 }

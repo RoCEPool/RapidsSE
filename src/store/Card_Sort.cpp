@@ -102,8 +102,6 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.p_stream->vAppendChild(p_emit_sort);
 
   pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/

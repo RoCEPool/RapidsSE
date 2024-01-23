@@ -1168,8 +1168,6 @@ void CardIter::vEndTransform(i8 iLineNo)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vRenumberCards();
-
   if (G.pBoard) {
 
     G.pDeck->vCheckCorrectness();
@@ -2024,6 +2022,8 @@ void CardIter::vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce)
   if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE) && ! bForce)
     return;
 
+  G.pBoard->vRenumberCards();
+
   G.pBoard->vPrintBoard(this,szXdesc());
 
 
@@ -2331,16 +2331,6 @@ void CardIter::G_vRemoveMain(eCK eCrossCheck)
   _precondition_( _MAGIC_, _FOOTER_);
 
   this->vRemoveCurr(eCrossCheck);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove main card from deck (do not clear M members or registers)           */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRenumberCards(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  //m_pBench->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
