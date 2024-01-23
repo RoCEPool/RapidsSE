@@ -124,7 +124,7 @@
 #include "SP_Tme.hpp"
 #include "SP_Tsp.hpp"
 
-//#define TYPE_DETAILED EndDefine
+#define TYPE_DETAILED EndDefine
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

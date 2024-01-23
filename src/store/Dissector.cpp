@@ -1377,6 +1377,7 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   // [ ( <length> [ , <scale> ] ) ]
 
   if (p_rpnExpr->bHeadSame("("_Stz)) {
+    p_rpnExpr->vDump(__func__);
     p_rpnExpr->vDiscardHead();
 
     Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
@@ -1742,7 +1743,9 @@ Card_RpnExpr* Dissector::pArg_rpnExpr(i8 i_Arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
   Stz* szRpnExpr = m_pOpArgs->szValue(i_Arg);
-  
+
+  vTrace("szRpnExpr %s\n"_Stz,szRpnExpr);
+
   Card_RpnExpr* p_rpnExpr = pTo_rpnExpr(szRpnExpr);
 
   return p_rpnExpr;
