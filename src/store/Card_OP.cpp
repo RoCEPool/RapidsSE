@@ -1432,8 +1432,19 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  psRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[p_rpnCalc->eCTVal()]);
+  Symbol* pSymbol = p_rpnCalc->pSymbol();
+  Cast xCast = pSymbol->xCast();
+
+  psRpnExpr->vCatSprint(" type %s"_Stz, aCT[xCast.m_xTypeId.eCTVal()]);
+
+//#ifdef TYPE_DETAILED
+  if (xCast.m_nTypeLength || xCast.m_nTypeScale) {
+    psRpnExpr->vCatSprint(" ( %lld"_Stz, xCast.m_nTypeLength);
+    if (xCast.m_nTypeScale)
+      psRpnExpr->vCatSprint(" %lld"_Stz, xCast.m_nTypeScale);
+    psRpnExpr->vCatSprint(" )"_Stz);
+  }
+//#endif
 
   if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
     RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
