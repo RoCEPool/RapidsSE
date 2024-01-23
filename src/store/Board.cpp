@@ -98,7 +98,6 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   if (! pCI->G.p_emit)
     return;
 
-
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
@@ -110,12 +109,10 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 
   pCI->G.p_rpnCalc->vCast(p_expr_found->xCast());
 
-  pCI->G.p_expr-> SYM(SF_EXP_COL, (i8)1);
-  pCI->G.p_expr->vCast(p_expr_found->xCast());
-
+  pCI->G.p_expr->pSymbol()->vFacet(SF_EXP_COL, (i8)1);
   pCI->G.p_expr->pSymbol()->vAppendFacet(SF_NMD_COL, "__RESULT1"_Stz);
   pCI->G.p_expr->pSymbol()->vAppendFacet(SF_SQY_RSL, "$R9"_Stz);
-
+  pCI->G.p_expr->vCast(p_expr_found->xCast());
 }
 
 /*----------------------------------------------------------------------------*/
