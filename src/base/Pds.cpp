@@ -300,6 +300,21 @@ void Pds::vRepair(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the Pds buffer that contains the given address                         */
+/*----------------------------------------------------------------------------*/
+Pds* Pds::pToPds(void* aAddr)
+{
+  _static_
+
+  DataBuffer* pDataBuffer = pToDataBuffer(aAddr);
+
+  Pds* pPds =
+      reinterpret_cast<Pds*>(pDataBuffer);
+
+  return pPds;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1213,24 +1228,6 @@ RowPix* Pds::pRowPix(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   return &m_oRowPix;
 }
-
-/*----------------------------------------------------------------------------*/
-/* Set the size of the StringSet tail area                                    */
-/*----------------------------------------------------------------------------*/
-//void Pds::vStzSetSize(i8 nBytes)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-//  m_xWsp.vTailSize(nBytes);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* Get the size of the StringSet tail area                                    */
-/*----------------------------------------------------------------------------*/
-//i8 Pds::iStzSetSize(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-//  return m_xWsp.iTailSize();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* Validate this Skip List                                                    */

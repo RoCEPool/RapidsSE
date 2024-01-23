@@ -40,7 +40,6 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].queryReceipt"_Stz,        &Step::vAdaptorWLQueryReceipt);
   vAddStep("AdaptorWL[].queryStr@"_Stz,           &Step::vAdaptorWLQueryStrPush);
   vAddStep("AdaptorWL[].resultMetadata"_Stz,      &Step::vAdaptorWLResultMetadata);
-  vAddStep("AdaptorWL[].rowBuffer"_Stz,           &Step::vAdaptorWLRowBuffer);
   vAddStep("AdaptorWL[].statementToSubmit"_Stz,   &Step::vAdaptorWLStatementToSubmit);
   vAddStep("AdaptorWL[].stmtParsingErr"_Stz,      &Step::vAdaptorWLStatementParsingError);
   vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);
@@ -384,23 +383,6 @@ void Step::vAdaptorWLIsChildJobActive(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
   m_pDataStack->vPushInt(pAdaptorWL->bIsChildJobActive() ? 1 : 0);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* adaptorWL[].rowBuffer -- Received a row buffer from the execution engine   */
-/*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLRowBuffer(void)
-{
-  ENTRY();
-
-  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
-
-  pAdaptorWL->vRowData(pRowBuffer);
 
   EXIT();
 }

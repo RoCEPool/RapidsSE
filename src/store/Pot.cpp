@@ -4,7 +4,6 @@
 
 #include "BASE.h"
 
-#include "RowBuffer.hpp"
 #include "LglPtnMap.hpp"
 #include "Pot.hpp"
 
@@ -120,7 +119,7 @@ void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrA
 
     pPdsRowBuffer->vLglPtn(tLglPtn);
 
-    return aDstRow->aCellArray();;
+    return aDstRow->aCellArray();
 
   }
   catch (LowMemory xLowMemory) {
@@ -297,7 +296,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
+Row* Pot::aNewDstRow(i8 i_Ptn, Pds** ppPdsRowBuffer,bool* pbNewBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
@@ -309,40 +308,28 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
   *pbNewBuffer = false;
 
+  // get pds row buffer for given partition (new a first buffer if ncessary)
+  Pds* pPdsRowBuffer = _pPds(pBuffer(tLglPtn));
+  if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
 
-  // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(pBuffer(i_Ptn));
-  if (! pDstRowBuffer) {
-
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pRowPix);
-    vAddBuffer(i_Ptn,pDstRowBuffer);
-    //vTrace("Newed: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-  }
-  else {
-    //vTrace("Exist: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+    pPdsRowBuffer = new Pds(m_pRowPix);
+    vAddBuffer(tLglPtn,pPdsRowBuffer);
   }
 
-  // new a row in row buffer (new another row buffer if necessary)
-  aDstRow = pDstRowBuffer->pAllotRow();
+  // new a row in pds row buffer (new another pds row buffer if necessary)
+  aDstRow = pPdsRowBuffer->pAllotRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pRowPix);
-    vAddBuffer(i_Ptn,pDstRowBuffer);
-    //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-    aDstRow = pDstRowBuffer->pAllotRow();
+    pPdsRowBuffer = new Pds(m_pRowPix);
+    vAddBuffer(tLglPtn,pPdsRowBuffer);
+    aDstRow = pPdsRowBuffer->pAllotRow();
     ASSERT(aDstRow);
   }
 
   tLglPtn = i_Ptn;
-  pDstRowBuffer->vLglPtn(tLglPtn);
+  pPdsRowBuffer->vLglPtn(tLglPtn);
 
-  * ppRowBuffer = pDstRowBuffer;
-
-  //vTrace("Allot: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-  //if (pDstRowBuffer->nRows() < 2)
-  //  vDebugPoint();
+  * ppPdsRowBuffer = pPdsRowBuffer;
 
   return aDstRow;
 }

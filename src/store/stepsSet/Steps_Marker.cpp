@@ -12,8 +12,6 @@
 
 #include "Marker.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "Crw.hpp"

@@ -13,8 +13,6 @@
 #include "Marker.hpp"
 #include "Stream.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "Crw.hpp"

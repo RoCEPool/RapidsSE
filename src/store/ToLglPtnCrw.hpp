@@ -37,7 +37,7 @@ namespace STORE
     CrwBuffer* pDangling(LglPtn tLglPtn);
   
   private:
-    void vAddNst(RowBuffer* pRowBuffer);
+//    void vAddNst(RowBuffer* pRowBuffer);
     void vAddRowsToBuffer(LglPtn tLglPtn, Pds* pPdsRowBuffer);
     CrwBuffer* pNewCrwBuffer(LglPtn tLglPtn);
 

@@ -55,9 +55,6 @@ struct Dynamic_T
 	bool m_bHasRowToAgg;
   bool m_bIndexScan;
 
-  // rowBuffer T
-  void* m_aRowBuffer;
-
 	// pdsRowBuffer T
 	void* m_aPdsRowBuffer;
 

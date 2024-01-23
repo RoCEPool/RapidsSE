@@ -108,13 +108,11 @@ namespace STORE
     void vCompilerError(Pds* pPds);
     void vExecutionError(Pds* pPds);
     void vExecutionWarning(Pds* pPdsRowBuffer);
-    void vAffectedRowCount(RowBuffer* pRowBuffer);
     void vAffectedRowCountPds(Pds* pPdsRowBuffer);
     void vChildJobExited();
     bool bIsChildJobActive();
     void vResultMetadata(StreamDef* pStreamDef);
     void vRowData(CrwBuffer* pCrwBuffer);
-    void vRowData(RowBuffer* pRowBuffer);
     void vPdsRowData(Pds* pPdsRowBuffer);
     void vQueryComplete();
     void vQueryReceipt(TaskList* pTaskList);

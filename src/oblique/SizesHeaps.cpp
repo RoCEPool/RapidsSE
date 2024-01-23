@@ -50,7 +50,6 @@
 #include "Tenants.hpp"
 #include "Marker.hpp"
 #include "Record.hpp"
-#include "RowBuffer.hpp"
 #include "LglBufSet.hpp"
 #include "Pot.hpp"
 
@@ -647,7 +646,6 @@ SizeHeap gxaSizeHeap[]
   { CN_ROW,                      sizeof(Row),                HT_T_LARGE   ,FILL },
   { CN_ROWAGG,                   sizeof(Row),/*correct*/     HT_T_MEDIUM  ,FILL },
   { CN_ROWBOX,                   0,                          HT_INVALID   ,FILL },
-  { CN_ROWBUFFER,                sizeof(RowBuffer),          HT_T_LARGE   ,FILL },
   { CN_ROWCOMPACTOR,             sizeof(RowCompactor),       HT_T_SMALL   ,FILL },
   { CN_ROWCOUNTS,                sizeof(RowCounts),          HT_T_TINY   ,FILL },
   { CN_ROWONCE,                  sizeof(RowOnce),            HT_T_TINY    ,FILL },

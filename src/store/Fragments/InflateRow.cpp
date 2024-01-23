@@ -18,57 +18,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- vInflateRowBegin --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vInflateRowBegin
-void vInflateRowBegin(Dynamic_T* aDynamicT) {
-
-  i8* paW;
-  i8  i_CurrentRow;
-  i8* piColumn;
-	void* aSubReturnLabel;
-
-  // marker-start
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-
-  __L_LABEL__:
-
-	// dummy initialization of return label
-	// (caters to cases when no columns being inflated)
-	aSubReturnLabel = && __L_LABEL__;
-
-  paW = &aDynamicT->m_aW[0];
-
-  i_CurrentRow = -1;
-
-  __L_LABEL_LOOP__:
-
-  aDynamicT->m_iJoinedRows = 0;
-
-  // process the row
-	aDynamicT->m_bProcessRow = true;
-
-  i_CurrentRow++;
-  if (i_CurrentRow  >= aDynamicT->m_nRows) {
-    goto L_Return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the next row (should be able to add rowsize)
-#ifdef WITH_CLANG
-  aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_RowBufferCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
-#endif
-
-  aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
-
-  piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-
-  // marker-end
-  L_Return:
-    return;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vInflatePdsRowBegin -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vInflatePdsRowBegin

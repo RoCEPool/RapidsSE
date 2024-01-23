@@ -32,7 +32,6 @@
 
 #include "CrwBuffer.hpp"
 #include "CsvBuffer.hpp"
-#include "RowBuffer.hpp"
 
 #include "LogicUnit.hpp"
 #include "EventHandlers.hpp"
@@ -1460,11 +1459,6 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
       vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
              this->pStage()->szStageNm(), this->szOpNm()
       );
-    } else if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
-      RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-      vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows (%s)) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
-             pRowBuffer->nRows(), aBT[pRowBuffer->eBufferType()], pStage()->szStageNm(), this->szOpNm()
-      );
     } else if (CN_PDS == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
       Pds *pPdsRowBuffer = _pPds(pOperand);
       vTrace("[%6s %10s]-Pipeout : Pds (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
@@ -1590,26 +1584,27 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
         // Operand is a BufferId
         // Attempt to get its address
         pPeekOperand = (Operand*) BufferId::aAddressFromId(oBufferId);
-        if(pPeekOperand == nullptr)
-        {
-          vTrace("Pop: %p\n"_Stz, oBufferId.m_pvAsAddress);
-#ifndef WITH_PAGING
-          // If paging is not enabled, address should always be accessable via hashmap
-          NEVER_REACH;
-#endif
-          // Operand is not in memory.
-          // Queue a request to the PageIn Demon and return (Will perform pagein bide)
-          // Queue request -> PageIn Demon(BufferId + m_pTask)
-					RowBuffer* pRowBuffer = AM::PAGING::pToPageIn(m_pTask, oBufferId);
-          vTrace("Queuing request with TaskPtr %p and BufferId %p\n"_Stz, m_pTask, oBufferId.m_pvAsAddress);
-
-          Operand* pRequestOperand = _pOperand(pRowBuffer);
-          eEC eError = AM::JLIST::ePipeToOp0(AM::DEMON::tPageInDemonJobId(), pRequestOperand, m_pTask);
-          //Handle error case
-          RASSERT(eError == EC_NONE);
-          *pbPageIn = true;
-          return nullptr;
-        }
+        ASSERT(pPeekOperand);
+//        if(pPeekOperand == nullptr)
+//        {
+//          vTrace("Pop: %p\n"_Stz, oBufferId.m_pvAsAddress);
+//#ifndef WITH_PAGING
+//          // If paging is not enabled, address should always be accessable via hashmap
+//          NEVER_REACH;
+//#endif
+//          // Operand is not in memory.
+//          // Queue a request to the PageIn Demon and return (Will perform pagein bide)
+//          // Queue request -> PageIn Demon(BufferId + m_pTask)
+//					RowBuffer* pRowBuffer = AM::PAGING::pToPageIn(m_pTask, oBufferId);
+//          vTrace("Queuing request with TaskPtr %p and BufferId %p\n"_Stz, m_pTask, oBufferId.m_pvAsAddress);
+//
+//          Operand* pRequestOperand = _pOperand(pRowBuffer);
+//          eEC eError = AM::JLIST::ePipeToOp0(AM::DEMON::tPageInDemonJobId(), pRequestOperand, m_pTask);
+//          //Handle error case
+//          RASSERT(eError == EC_NONE);
+//          *pbPageIn = true;
+//          return nullptr;
+//        }
         // Operand is present in memory, so proceed as normal
       }
 
@@ -1658,17 +1653,6 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
            ,pStage()->szStageNm()
            ,szOpNm()
            );
-  }
-  else
-  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    UNUSED(pRowBuffer);
-    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows(%s))\n"_Stz
-          ,pStage()->szStageNm()
-          ,szOpNm()
-          ,pRowBuffer->nRows()
-		      ,aBT[pRowBuffer->eBufferType()]
-          );
   }
   else
   if (CN_PDS == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {

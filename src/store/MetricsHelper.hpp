@@ -8,7 +8,6 @@ namespace STORE
   class MetricsHelper
   {
   public:
-		static void vWriteCsv(RowBuffer* pIRowBuffer, StreamDef* pStreamDef, File* pFile);
 		static void vWriteCsvPds(Pds* pPdsRowBuffer, StreamDef* pStreamDef, File* pFile);
   };
 

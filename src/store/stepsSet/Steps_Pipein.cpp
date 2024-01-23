@@ -30,7 +30,6 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[].isBuffer"_Stz,       &Step::vPipeinIsBuffer);
   vAddStep("PipeIn[].isMarker"_Stz,       &Step::vPipeinIsMarker);
   vAddStep("PipeIn[].isNull"_Stz,         &Step::vPipeinIsNull);
-	vAddStep("PipeIn[].isRowBuffer"_Stz,    &Step::vPipeinIsRowBuffer);
   vAddStep("PipeIn[].isPds"_Stz,    &Step::vPipeinIsPds);
   vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
   vAddStep("PipeIn[].name"_Stz,           &Step::vPipeinName);
@@ -212,20 +211,6 @@ void Step::vPipeinIsNull(void)
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpPipein.bIsNull() ? 1 : 0);
   
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* PipeIn[].isRowBuffer -- is operand a row buffer ?                          */
-/*----------------------------------------------------------------------------*/
-void Step::vPipeinIsRowBuffer(void)
-{
-	ENTRY();
-
-	Operand* pOperand = _pOperand(*m_pLogicUnit->m_xpPipein);;
-
-	m_pDataStack->vPushInt(pOperand->bIsRowBuffer() ? 1 : 0);
-
-	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

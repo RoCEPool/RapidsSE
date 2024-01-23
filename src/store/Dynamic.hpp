@@ -5,7 +5,6 @@
 
 #include "ClangDynamic.h"
 #include "CrwBuffer.hpp"
-#include "RowBuffer.hpp"
 
 namespace STORE
 {

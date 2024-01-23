@@ -4,7 +4,6 @@
 #pragma once
 
 #include "CrwBuffer.hpp"
-#include "RowBuffer.hpp"
 
 namespace STORE
 {
@@ -38,10 +37,6 @@ namespace STORE
 
     DataBuffer* pCompletedBuffer(void);
     DataBuffer* pDanglingBuffer(void);
-    CrwBuffer*  pInCrwBuffer(void);
-    void        vInCrwBuffer(CrwBuffer* pCrwBuffer);
-    RowBuffer*  pInRowBuffer(void);
-    void        vInRowBuffer(RowBuffer* pRowBuffer);
     bool        bIsEmpty(void);
     RowPix*     pRowPix(void);
     void        vRowPix(RowPix* pRowPix);

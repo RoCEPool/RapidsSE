@@ -104,16 +104,6 @@ void Step::vDynamicExecute(void)
       aDynamicT->m_iHeadSize  = pCrwBuffer->nHeadSize();
       aDynamicT->m_nRows      = pCrwBuffer->nRows();
     }
-//    else {
-//      // ROWBUFFER
-//      RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER);
-//
-//      RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
-//
-//      aDynamicT->m_aRowBuffer  = pRowBuffer;
-//      aDynamicT->m_xRowInfoIT.m_acStrArea = (char*)pRowBuffer->szStzAllot_begin();
-//      aDynamicT->m_nRows       = pRowBuffer->nRows();
-//    }
     else {
       // PDSROWBUFFER
       RASSERT(pDataBuffer->eGetClassNo() == CN_PDS);

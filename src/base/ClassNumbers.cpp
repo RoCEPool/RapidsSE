@@ -313,7 +313,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "ROW"_Stz,                  // CN_ROW
     /* */ "ROWAGG"_Stz,               // CN_ROWAGG
     /* */ "ROWBOX"_Stz,               // CN_ROWBOX
-    /* */ "ROWBUFFER"_Stz,            // CN_ROWBUFFER
     /* */ "ROWCOMPACTOR"_Stz,         // CN_ROWCOMPACTOR
     /* */ "ROWCOUNTS"_Stz,            // CN_ROWCOUNTS
     /* */ "ROWONCE"_Stz,              // CN_ROWONCE

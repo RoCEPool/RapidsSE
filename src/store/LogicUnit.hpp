@@ -115,7 +115,6 @@ namespace STORE
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
 
     REG<Operand,        CN_NONE          > m_xpMarker;
-    REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog;
     REG<MetaGet,        CN_METAGET       > m_xpMetaGet;
 
     REG<Node,           CN_NODE          > m_xpNode;
@@ -143,8 +142,6 @@ namespace STORE
     REG<Object,         CN_NONE          > m_xpRecvdObject;
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
 		REG<Row,            CN_ROW           > m_xpRow;
-    REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
-		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferErr;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
     REG<RowCounts,      CN_ROWCOUNTS     > m_xpRowCounts;
 

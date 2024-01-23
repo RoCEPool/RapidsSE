@@ -13,7 +13,6 @@
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
-#include "RowBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "RowInflator.hpp"
 

@@ -119,7 +119,6 @@ LogicUnit::LogicUnit(void)
 ,           m_xpList(this,RF_REPAIR_DELETE,     RowSingle::vRepairList,       LR_LIST)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                         LR_MARKER)
-,      m_xpMemoryHog(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_MEMORYHOG)
 ,        m_xpMetaGet(this,RF_REPAIR_DELETE,       MetaGet::vRepair,           LR_META)
 
 ,           m_xpNode(this,RF_REPAIR_NEVER, nullptr,                           LR_NODE)
@@ -147,8 +146,6 @@ LogicUnit::LogicUnit(void)
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                    LR_RECVDOBJECT)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
 ,            m_xpRow(this,RF_SET_NULL,     nullptr,                            LR_ROW)
-,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,      LR_ROWBUFFER)
-,      m_xpRowBufferErr(this,RF_REPAIR_DELETE,  RowBuffer::vRepair,   LR_ROWBUFFERERR)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
 ,      m_xpRowCounts(this,RF_REPAIR_DELETE,     RowCounts::vRepair,      LR_ROWCOUNTS)
 
@@ -320,7 +317,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpList.bIsNull());
 
   //RASSERT(m_xpMarker.bIsNull());
-  RASSERT(m_xpMemoryHog.bIsNull());
   RASSERT(m_xpMetaGet.bIsNull());
 
   RASSERT(m_xpNode.bIsNull());
@@ -344,8 +340,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpRecvdObject.bIsNull());
 	RASSERT(m_xpRow.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
-  RASSERT(m_xpRowBuffer.bIsNull());
-	RASSERT(m_xpRowBufferErr.bIsNull());
 
   RASSERT(m_xpSendNode.bIsNull());
   RASSERT(m_xpSends.bIsNull());

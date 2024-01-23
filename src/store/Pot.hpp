@@ -40,7 +40,7 @@ namespace STORE
     DataBuffer* pBuffer(i8 i_Ptn);
     DataBuffer* pCompleted(i8 i_Ptn);
     DataBuffer* pDangling(i8 i_Ptn);
-    Row* aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer, bool* pbNewBuffer);
+    Row* aNewDstRow(i8 i_Ptn, Pds** ppPdsRowBuffer, bool* pbNewBuffer);
   
     void vRowPix(RowPix* pRowPix);
   

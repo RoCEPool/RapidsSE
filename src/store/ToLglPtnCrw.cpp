@@ -155,26 +155,26 @@ CrwBuffer* ToLglPtnCrw::pDangling(LglPtn tLglPtn)
 /*----------------------------------------------------------------------------*/
 /* add normalised strings into new crw buffer                                 */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnCrw::vAddNst(RowBuffer* pRowBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
-  
-  ASSERT(0 == m_pCrwBuffer->nRows());
-
-  NmlStr* pNmlStr = pRowBuffer->pNmlStr();
-
-  Stz* szNmlStr = nullptr;
-  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
-    //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
-
-    bool bAdded = m_pCrwBuffer->pRowCompactor()->bCompactTail(szNmlStr);
-    ASSERT(bAdded);
-    UNUSED(bAdded);
-  }
-
-
-  //vDebugPoint();
-}
+//void ToLglPtnCrw::vAddNst(RowBuffer* pRowBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
+//
+//  ASSERT(0 == m_pCrwBuffer->nRows());
+//
+//  NmlStr* pNmlStr = pRowBuffer->pNmlStr();
+//
+//  Stz* szNmlStr = nullptr;
+//  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
+//    //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
+//
+//    bool bAdded = m_pCrwBuffer->pRowCompactor()->bCompactTail(szNmlStr);
+//    ASSERT(bAdded);
+//    UNUSED(bAdded);
+//  }
+//
+//
+//  //vDebugPoint();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */

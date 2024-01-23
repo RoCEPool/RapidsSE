@@ -58,6 +58,7 @@ namespace BASE
 
     static void* aGetCellArray(Pds* pPdsRowBuffer, i8 iRow);
     static void vRepair(Object* pObject);
+    static Pds* pToPds(void* aAddr);
 
     // public:
     Row*            pAllotRow(void);

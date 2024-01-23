@@ -49,7 +49,6 @@ public:
   void vAdaptorWLQueryReceipt(void);
   void vAdaptorWLQueryStrPush(void);
   void vAdaptorWLResultMetadata(void);
-  void vAdaptorWLRowBuffer(void);
   void vAdaptorWLStatementToSubmit(void);
   void vAdaptorWLStatementParsingError(void);
   void vAdaptorWLStatementSubmitted(void);
@@ -742,10 +741,7 @@ void vDdlLockAssertNone(void);
 
   // indexStream : 2nd use case (sacn indextree)
   void vIndexStreamScanBegin(void);
-  void vIndexStreamScanNext(void);
   void vIndexStreamScanNew(void);
-  void vIndexStreamScanPopulate(void);
-  void vIndexStreamScanPopulateTop(void);
 
   // index tree
   void vIndexTreeAsAlt(void);
@@ -1068,7 +1064,6 @@ void vJobIdLastJobIdFetch(void);
 
   // list
   void vListAddPds(void);
-  void vListAddRowBuffer(void);
   void vListDelete(void);
   void vListGet(void);
   void vListNew(void);
@@ -1724,7 +1719,6 @@ void vJobIdLastJobIdFetch(void);
   void vPipeinIsBuffer(void);
   void vPipeinIsMarker(void);
   void vPipeinIsNull(void);
-  void vPipeinIsRowBuffer(void);
   void vPipeinIsPds(void);
   void vPipeinKind(void);
   void vPipeinName(void);
@@ -1821,7 +1815,7 @@ void vJobIdLastJobIdFetch(void);
   void vSchLockGrabWrite(void);
 
   // csv buffer
-  void vSeekOffsetsOperandDump(void);
+//  void vSeekOffsetsOperandDump(void);
 
   // sen
   void vSenColon(void);

@@ -8,8 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 #include "Job.hpp"
@@ -21,7 +19,6 @@ void Step::vAddSteps_List(void)
 {
   vAddStep("List[]"_Stz,              &Step::vListGet);
   vAddStep("List[].addPds"_Stz,       &Step::vListAddPds);
-  vAddStep("List[].addRowBuffer"_Stz, &Step::vListAddRowBuffer);
   vAddStep("List[].delete"_Stz,       &Step::vListDelete);
   vAddStep("List[].get"_Stz,          &Step::vListGet);
   vAddStep("List[].new"_Stz,          &Step::vListNew);
@@ -56,35 +53,6 @@ void Step::vListAddPds(void)
 
   pCursor->m_pPds = nullptr;
   delete pCursor;
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* List[].addRowBuffer-- add row buffer to list                               */
-/*----------------------------------------------------------------------------*/
-void Step::vListAddRowBuffer(void)
-{
-  ENTRY();
-  
-  //vTrace("vListAddRowBuffer\n"_Stz);
-  
-  RowBuffer* pRowBuffer = _pRowBuffer( m_pDataStack->pPopPtr(__func__) );
-
-  RowSingleList* pRowSingleList = * m_pLogicUnit->m_xpList;
-
-  for (Row* aRow = pRowBuffer->pFirstRow();
-       aRow;
-       aRow = pRowBuffer->pNextRow(aRow)) {
-
-    RowSingle* pRowSingle =
-      new RowSingle( * m_pLogicUnit->m_xpStreamDefLft );
-
-    pRowSingle->vCopyRow(aRow);
-    //pRowSingle->vPrintRow();
-
-    pRowSingleList->vAppend(pRowSingle);
-  }
-
   EXIT();
 }
 
