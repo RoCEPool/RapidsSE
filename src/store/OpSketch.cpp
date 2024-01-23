@@ -411,6 +411,12 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
 	TypeId xResultExprType;
+	i8 iResultLength;
+	i8 iResultScale;
+
+	UNUSED(iResultLength);
+	UNUSED(iResultScale);
+
   eDM eExprType = DM_UNK;
 
   bool bIndexJoin = false;
@@ -695,10 +701,41 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the final expression type
     if (pTkn->bSame("type"_Stz)) {
+
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
       xResultExprType = TypeId::xIdOf("rapids"_Stz, pTkn->szChars());
-      continue;
+
+#ifdef TYPE_DETAILED
+			// is there a ( ?
+			pTkn = pTokenVec->pGet(i_Tkn+1);
+			if (pTkn->bSame("("_Stz)) {
+
+				// skip the (
+				i_Tkn++;
+
+				// get the length
+				i_Tkn++;
+				pTkn = pTokenVec->pGet(i_Tkn);
+				iResultLength = pTkn->szChars()->iToI8();
+
+				// check next tkn
+				i_Tkn++;
+				pTkn = pTokenVec->pGet(i_Tkn);
+				if (pTkn->bSame(")"_Stz))
+					continue;
+				else {
+					// it is the scale
+					iResultScale = pTkn->szChars()->iToI8();
+
+					// skip the )
+					i_Tkn++;
+					pTkn = pTokenVec->pGet(i_Tkn);
+					RASSERT(pTkn->bSame(")"_Stz));
+				}
+			}
+#endif
+			continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -839,8 +876,37 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
       eCastType = StreamDefBase::eDatum(pTkn->szChars());
-      continue;
-    }
+#ifdef TYPE_DETAILED
+			// is there a ( ?
+			pTkn = pTokenVec->pGet(i_Tkn+1);
+			if (pTkn->bSame("("_Stz)) {
+
+				// skip the (
+				i_Tkn++;
+
+				// get the length
+				i_Tkn++;
+				pTkn = pTokenVec->pGet(i_Tkn);
+				iResultLength = pTkn->szChars()->iToI8();
+
+				// check next tkn
+				i_Tkn++;
+				pTkn = pTokenVec->pGet(i_Tkn);
+				if (pTkn->bSame(")"_Stz))
+					continue;
+				else {
+					// it is the scale
+					iResultScale = pTkn->szChars()->iToI8();
+
+					// skip the )
+					i_Tkn++;
+					pTkn = pTokenVec->pGet(i_Tkn);
+					RASSERT(pTkn->bSame(")"_Stz));
+				}
+			}
+#endif
+			continue;
+		}
 
     if (pTkn->bSame("cast"_Stz)) {
       ePreExp = PE_CST;
