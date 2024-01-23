@@ -6,11 +6,14 @@ __TPCH_SCHEMA;
 
 // NOTE: S01 ORDAGG streamdef_emitted length , scale not correct
 
+/*
 /optimiser_trace
 /weaved
-/optimise_passthru
 /pipeline_Def
 /keepCodeFile
+*/
+
+/optimise_passthru
 /pipelineName = "_ray171"
 pipeline Query18
 begin

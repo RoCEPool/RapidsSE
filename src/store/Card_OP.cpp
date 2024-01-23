@@ -546,9 +546,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
       if (pCI->G.p_OP->i_Child() == 14 && pCI->G.p_emit->nFunctionCount() == 1) {
-        if (pCI->Flux.m_pArriving)
-          pCI->Flux.m_pArriving->vDump(__func__);
-        pCI->G.p_OP->vDump(__func__);
+//        if (pCI->Flux.m_pArriving)
+//          pCI->Flux.m_pArriving->vDump(__func__);
+//        pCI->G.p_OP->vDump(__func__);
         vDebugPoint();
       }
       pCI->G.p_emit->vEnsure_nmdCol();

@@ -108,28 +108,16 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
     if (!p_term_colNm->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    //p_term_colNm->vDump(__func__);
-
     if (Card_Expr* p_expr_arriving =
         pCI->Flux.m_pArriving->pFind_expr_Matches(p_term_colNm->pSymbol())) {
-      //p_expr_arriving->vDump(__func__);
       p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
       p_term_colNm->pSymbol()->vCastFacetsPpy(p_expr_arriving->pSymbol());
-//      if (Symbol* pSymbol_found = p_expr_arriving->pFirst_tblCol()) {
-//        //pSymbol_found->vDump();
-//        p_term_colNm->pSymbol()->vSetFacet(SF_TBL_COL, pSymbol_found->szSF_chrSeq(SF_TBL_COL));
-//      }
-
-      //p_term_colNm->vDump(__func__);
-      vDebugPoint();
     }
 
     if (Card_Expr* p_expr_ancestor = (Card_Expr*)pCI->pAncestorFind(CK_EXPR)) {
-      p_term_colNm->vDump(__func__);
       if (p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
         p_expr_ancestor->pSymbol()->vSetFacet(SF_TBL_COL,p_term_colNm->pSymbol()->szFacet(SF_TBL_COL));
     }
-
 
     return C_CONTINUE_RECURSION;
   };

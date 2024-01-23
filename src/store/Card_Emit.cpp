@@ -91,8 +91,6 @@ void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
 
     Symbol* pSymbol_expr_scalar = xEmit.p_expr()->pGet_Symbol(0);
 
-    p_key->vDump(__func__);
-
     Card_Expr* p_expr_scalar = p_key->pDecode_scalar_expr_Via_symbol(pSymbol_expr_scalar);
 
     if (! p_expr_scalar)
@@ -162,9 +160,6 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
         if (p_expr_key->bIsScalarCol()) {
           p_expr_key->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
-          p_expr_key->vDump(__func__);
-          vDebugPoint();
-
         }
 
         if (p_needed->pFind_expr_Matches(pSymbol_tblCol)) {
