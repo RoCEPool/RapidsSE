@@ -1053,9 +1053,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 			i8 iLength = pBackend->iGetLength(eType);
 			i8 iScale = pBackend->iGetScale(eType);
 
-			ASSERT(iLength == C_UNKNOWN);
-			ASSERT(iScale == C_UNKNOWN);
-
 			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
 				sPipeline->vCatSprint(
 								" type %s"
@@ -1598,9 +1595,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
 			i8 iLength = pBackend->iGetLength(eType);
 			i8 iScale = pBackend->iGetScale(eType);
-
-			ASSERT(iLength == C_UNKNOWN);
-			ASSERT(iScale == C_UNKNOWN);
 
 			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
 				sPipeline->vCatSprint(
