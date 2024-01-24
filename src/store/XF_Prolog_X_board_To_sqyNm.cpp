@@ -64,9 +64,9 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_X_BOARD_TO_SQYNM, "shorten query names"_Stz);
 
-  s32 sBoardNm = m_pCI->G.pBoard->szPipelineNm();
-  if (Symbol::bIs_Sqy_Nm(sBoardNm)) {
-    i8 iSqyNo = StrLib::iGleanInt(sBoardNm.azChar());
+  s32 sPipelineNm = m_pCI->G.pBoard->szPipelineNm();
+  if (Symbol::bIs_Sqy_Nm(sPipelineNm)) {
+    i8 iSqyNo = StrLib::iGleanInt(sPipelineNm.azChar());
     Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);
     m_pCI->G.pBoard->vPipelineNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NM));
   }

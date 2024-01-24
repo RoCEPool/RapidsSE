@@ -49,7 +49,7 @@ namespace STORE
     void vEndPhase(CardIter* pCI);
 
     Board* pGetBoard(i8 i_Board);
-    Board* pGetBoard(Stz* szBoardNm);
+    Board* pGetBoard(Stz* szPipelineNm);
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
     bool bIsSqyNm(Stz* szSqyNm);
     Optimiser* pOptimiser(void);
