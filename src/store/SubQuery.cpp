@@ -239,7 +239,7 @@ void SubQuery::vDump(void)
   vTrace("SubQuery %p Board %lld (%s) Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          this,
          m_pBoard->i_Board(),
-         m_pBoard->szBoardNm(),
+         m_pBoard->szPipelineNm(),
          m_i_Caller,
          aQC[m_eClause],
          aQD[m_eDisposition],

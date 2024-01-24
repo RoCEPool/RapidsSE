@@ -174,7 +174,7 @@ namespace STORE
   {
   protected:
     i8          m_i_Board;
-    s32         m_sBoardNm;
+    s32         m_sPipelineNm;
     eBK         m_eBoard;  // joinOrdering, subquery
 
     Bench*      m_pBench;
@@ -207,8 +207,8 @@ namespace STORE
     i8   i_Board(void);
     void vBoardNo(i8 i_Board);
     eBK  eBoard(void);
-    Stz* szBoardNm(void);
-    void vBoardNm(Stz* szBoardNm);
+    Stz* szPipelineNm(void);
+    void vPipelineNm(Stz* szPipelineNm);
 
     CardCtl* pCardCtl(void);
     void vClearCardMarks(void);

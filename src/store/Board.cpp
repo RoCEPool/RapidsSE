@@ -35,7 +35,7 @@ Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_i_Board    = i_Board;
-  m_sBoardNm   = szBoardNm;
+  m_sPipelineNm   = szBoardNm;
   m_eBoard = eBoard;
 
   m_pBench     = pBench;
@@ -245,23 +245,23 @@ eBK Board::eBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get board name                                                             */
+/* get pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* Board::szBoardNm(void)
+Stz* Board::szPipelineNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_sBoardNm;
+  return m_sPipelineNm;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set board name                                                             */
+/* set pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
-void Board::vBoardNm(Stz* szBoardNm)
+void Board::vPipelineNm(Stz* szPipelineNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_sBoardNm = szBoardNm;
+  m_sPipelineNm = szPipelineNm;
 }
 
 /*----------------------------------------------------------------------------*/

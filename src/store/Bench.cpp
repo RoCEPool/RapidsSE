@@ -130,7 +130,7 @@ Board* Bench::pGetBoard(Stz* szBoardNm)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (pBoard->szBoardNm()->bSame(szBoardNm))
+    if (pBoard->szPipelineNm()->bSame(szBoardNm))
       return pBoard;
   }
 
