@@ -243,7 +243,7 @@ pipelineOperator  : opName=identifier ( pipelineOpParam (','? pipelineOpParam)* 
 pipelineOpParam   :
                       identifier
                     | TYPE  | AS | SUM | AVG | MIN | MAX
-                    | ')' | '-' | '+' | '*' | '/' | '%' | '==' | PARAM_IDENTIFIER   // some reserved words and symbols
+                    | '(' | ')' | '-' | '+' | '*' | '/' | '%' | '==' | PARAM_IDENTIFIER   // some reserved words and symbols
                     | pipelineTypeNames
                     | booleanLiteral
                     | signedIntegerLiteral
