@@ -114,16 +114,16 @@ begin
     | stageMarker44434
   stage stageMarker44434 on all partitions :
     filter " type BOOLEAN  }  __subquery0007  #1  $1 in  $4 $8 ==  and  $9 ''CANADA''  ==  and  "
-    | project " type VARCHAR as s_name $2 , type VARCHAR as s_address $3 "
-    | sort " type VARCHAR as s_name $1 ASC  "
+    | project " type VARCHAR ( 0 ) as s_name $2 , type VARCHAR ( 0 ) as s_address $3 "
+    | sort " type VARCHAR ( 0 ) as s_name $1 ASC  "
     | combined 0
     | stageMarker44437
   stage stageMarker44437 on all nodes :
-    sort " type VARCHAR as s_name $1 ASC  "
+    sort " type VARCHAR ( 0 ) as s_name $1 ASC  "
     | combined 0
     | stageMarker44440
   stage stageMarker44440 on origin :
-    sort " type VARCHAR as s_name $1 ASC  "
+    sort " type VARCHAR ( 0 ) as s_name $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

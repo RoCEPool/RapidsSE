@@ -17,7 +17,7 @@ begin
 
   stage stageMarker0186 on all partitions :
     filter " type BOOLEAN  $1 $2 ==  "
-    | project " type INTEGER as l_a $1 , type INTEGER as r_a $2 , type VARCHAR as r_b $3 , type INTEGER as r_c $4 , type VARCHAR as r_d $5 "
+    | project " type INTEGER as l_a $1 , type INTEGER as r_a $2 , type VARCHAR ( 0 ) as r_b $3 , type INTEGER as r_c $4 , type VARCHAR ( 0 ) as r_d $5 "
     | combined 0
     | stageLast
 

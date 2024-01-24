@@ -54,17 +54,17 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_Nation
-    | gbyAgg " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
+    | gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
 
   stage S02 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S03 on origin :
-    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | next
 
@@ -118,7 +118,7 @@ begin
   stage stageMarker0559 on all partitions :
     scan rapidsse public ${testName2}_Nation
     | filter " type BOOLEAN  $1 2  <  "
-    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -145,7 +145,7 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "UBOUND $I1 2 < "
-    | project   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | project   "type INTEGER ( 19 ) as N_NATIONKEY $1 , type VARCHAR ( 0 ) as N_NAME $2 , type INTEGER ( 19 ) as N_REGIONKEY $3 , type VARCHAR ( 0 ) as N_COMMENT $4 "
     | combined 0
     | next
 
@@ -171,7 +171,7 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 > "
-    | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | project  "type INTEGER ( 19 ) as N_NATIONKEY $1 , type VARCHAR ( 0 ) as N_NAME $2 , type INTEGER ( 19 ) as N_REGIONKEY $3 , type VARCHAR ( 0 ) as N_COMMENT $4 "
     | combined  0
     | next hashcast
 
@@ -216,7 +216,7 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
-    | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | project  "type INTEGER ( 19 ) as N_NATIONKEY $1 , type VARCHAR ( 0 ) as N_NAME $2 , type INTEGER ( 19 ) as N_REGIONKEY $3 , type VARCHAR ( 0 ) as N_COMMENT $4 "
     | combined 0
     | next
 
@@ -247,8 +247,8 @@ begin
 
   stage S01 on all partitions :
      scan      ${testName2}_Nation
-   | project "type INTEGER N_NATIONKEY , type VARCHAR N_NAME , type INTEGER N_REGIONKEY"
-   | hash "type INTEGER $3"
+   | project "type INTEGER ( 19 ) N_NATIONKEY , type VARCHAR ( 0 ) N_NAME , type INTEGER ( 19 ) N_REGIONKEY"
+   | hash "type INTEGER ( 19 ) $3"
    | combined 0
    | next hashcast
 
@@ -306,7 +306,7 @@ pipeline OpTest_6
 
   stage S02 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 14 >"
-    | hash "type INTEGER $3"
+    | hash "type INTEGER ( 19 ) $3"
     | combined 0
     | next hashcast
 
@@ -344,7 +344,7 @@ pipeline OpTest_7
 
   stage S02 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
-    | hash "type INTEGER $3"
+    | hash "type INTEGER ( 19 ) $3"
     | combined 0
     | next hashcast
 
@@ -378,8 +378,8 @@ begin
 
  stage S01 on all partitions :
      scan ${testName2}_Nation
-   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-   | hash "type INTEGER $3"
+   | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY , type VARCHAR ( 0 ) as N_NAME N_NAME , type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY"
+   | hash "type INTEGER ( 19 ) $3"
    | combined  0
    | next hashcast
 
@@ -414,8 +414,8 @@ rows:
 
   stage S01 on all partitions :
       scan ${testName2}_Nation
-    | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-    | hash "type INTEGER $3"
+    | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY , type VARCHAR ( 0 ) as N_NAME N_NAME , type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY"
+    | hash "type INTEGER ( 19 ) $3"
     | combined  0
     | next hashcast
 
@@ -454,15 +454,15 @@ begin
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_Nation
     | filter " type BOOLEAN  $1 5  <  "
-    | aggreg " type INTEGER )  $1 sum  "
+    | aggreg " type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
   stage S02 on all nodes :
-    aggreg " type INTEGER )  $1 sum  "
+    aggreg " type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
   stage S03 on origin :
-    aggreg " type INTEGER )  $1 sum  "
+    aggreg " type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
   stage S04 on origin :
@@ -487,15 +487,15 @@ begin
    | next
  stage S01 on all partitions :
    scan rapidsse public ${testName2}_Nation
-   | aggreg " type VARCHAR )  $2 max  "
+   | aggreg " type VARCHAR ( 0 ) )  $2 max  "
    | combined 0
    | next
  stage S02 on all nodes :
-   aggreg " type VARCHAR )  $1 max  "
+   aggreg " type VARCHAR ( 0 ) )  $1 max  "
    | combined 0
    | next
  stage S03 on origin :
-   aggreg " type VARCHAR )  $1 max  "
+   aggreg " type VARCHAR ( 0 ) )  $1 max  "
    | combined 0
    | next
  stage S04 on origin :
@@ -520,17 +520,17 @@ begin
 
  stage S02 on all partitions :
    scan rapidsse public ${testName2}_Nation
-   | gbyagg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $3 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
    | combined 0
    | next
 
  stage S03 on all nodes :
-   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $2 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
    | combined 0
    | next
 
  stage S04 on origin :
-   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $2 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
    | combined 0
    | next
 
@@ -560,17 +560,17 @@ rows:
 
    stage S02 on all partitions :
      scan rapidsse public ${testName2}_Nation
-     | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | gbyAgg " groupBy  type INTEGER ( 19 ) as n_regionkey $3 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) )  $2 max  "
      | combined 0
      | next
 
    stage S03 on all nodes :
-     gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $1 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) )  $2 max  "
      | combined 0
      | next
 
    stage S04 on origin :
-     gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $1 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) )  $2 max  "
      | combined 0
      | next
 
@@ -601,17 +601,17 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_Nation
-    | gbyAgg " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
+    | gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
 
   stage S02 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S03 on origin :
-    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | next
 
@@ -661,12 +661,12 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_Nation
-    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
     | combined 0
     | next
 
   stage S02 on all partitions :
-    project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
     | combined 0
     | next
 
@@ -716,8 +716,8 @@ begin
 
  stage S01 on all partitions :
    scan rapidsse public ${testName2}_Nation
-   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-   | sort " type INTEGER as n_nationkey $1 ASC  "
+   | project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
+   | sort " type INTEGER ( 19 ) as n_nationkey $1 ASC  "
    | combined 0
    | next
 
@@ -767,8 +767,8 @@ begin
 
  stage S01 on all partitions :
    scan rapidsse public ${testName2}_Nation
-   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-   | sort " type VARCHAR as n_name $2 ASC  "
+   | project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
+   | sort " type VARCHAR ( 0 ) as n_name $2 ASC  "
    | combined 0
    | next
 
@@ -828,7 +828,7 @@ begin
   stage stageMarker0142 on all partitions :
     scan rapidsse public ${testName2}_L
     | indexJoin ${testName2}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 =="
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
+    | project " type INTEGER ( 19 ) as l_int_col0 $1 , type INTEGER ( 19 ) as r_int_col0 $2 , type VARCHAR ( 0 ) as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -851,7 +851,7 @@ begin
   stage stageMarker0142 on all partitions :
     indexScan ${testName2}_L L_idx "LBOUND $I1 2 >"
     | indexJoin ${testName2}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
+    | project " type INTEGER ( 19 ) as l_int_col0 $1 , type INTEGER ( 19 ) as r_int_col0 $2 , type VARCHAR ( 0 ) as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -920,14 +920,14 @@ begin
 
   stage S01 on all partitions :
       scan      ${testName2}_Lineitem
-    | project "type INTEGER $1"
-    | hash "type INTEGER $1"
+    | project "type INTEGER ( 19 ) $1"
+    | hash "type INTEGER ( 19 ) $1"
     | combined  0
     | next hashcast
 
   stage S02 on all partitions :
       indexJoin ${testName2}_orders IxO_ORDERKEY " BOUND $I1 $1 == "
-    | project "type INTEGER $1 , type INTEGER $2"
+    | project "type INTEGER ( 19 ) $1 , type INTEGER ( 19 ) $2"
     | combined  0
     | next
 

@@ -97,7 +97,7 @@ begin
     indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
-               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR ( 0 ) as N_NAME J1_N_NAME ,
                type INTEGER as N_REGIONKEY J1_N_REGIONKEY"
     | combined 0
     | next
@@ -107,27 +107,27 @@ begin
     | filter " type BOOLEAN J1_R_NAME 'ASIA'  ==  "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
-               type VARCHAR as N_NAME N_NAME"
+               type VARCHAR ( 0 ) as N_NAME N_NAME"
     | combined 0
     | next
 
   stage S06 on all partitions :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
-             aggregates type VARCHAR as N_NAME $K1 ,
+    aggreg " groupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
                         type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage S07 on all nodes :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
-             aggregates type VARCHAR as N_NAME $K1 ,
+    aggreg " groupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
                         type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
   stage S08 on origin :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
-             aggregates type VARCHAR as N_NAME $K1 ,
+    aggreg " groupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
              type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next

@@ -97,16 +97,16 @@ begin
     indexScan ${testName2}_part IxP_PARTKEY "UBOUND $I1 12000  <"
     //| filter  1 " type BOOLEAN P_PARTKEY 12000  <  "
     | project "
-      type INTEGER as _partkey P_PARTKEY"
+      type INTEGER ( 19 ) as _partkey P_PARTKEY"
     | combined 0
     | Gj_PARTSUPP broadcast
 
   stage Gj_PARTSUPP on all partitions :
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 _partkey =="
     | project "
-      type INTEGER as _partkey _partkey ,
-      type INTEGER as ps_suppkey PS_SUPPKEY ,
-      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
+      type INTEGER ( 19 ) as _partkey _partkey ,
+      type INTEGER ( 19 ) as ps_suppkey PS_SUPPKEY ,
+      type DECIMAL ( 19  2 ) as ps_supplycost PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
@@ -114,12 +114,12 @@ begin
     indexJoin ${testName2}_lineitem IxL_PARTKEY "bound $I1 _partkey =="
     | filter "type BOOLEAN L_SUPPKEY ps_suppkey =="
     | project "
-      type INTEGER as _orderkey L_ORDERKEY ,
-      type DECIMAL as l_extendedprice L_EXTENDEDPRICE ,
-      type DECIMAL as l_discount L_DISCOUNT ,
-      type DECIMAL as l_quantity L_QUANTITY ,
-      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
-    | hash "type INTEGER _orderkey"
+      type INTEGER ( 19 ) as _orderkey L_ORDERKEY ,
+      type DECIMAL ( 19  2 ) as l_extendedprice L_EXTENDEDPRICE ,
+      type DECIMAL ( 19  2 ) as l_discount L_DISCOUNT ,
+      type DECIMAL ( 19  2 ) as l_quantity L_QUANTITY ,
+      type DECIMAL ( 19  2 ) as ps_supplycost PS_SUPPLYCOST"
+    | hash "type INTEGER ( 19 ) _orderkey"
     | combined 0
     | next hashCast
 
@@ -127,10 +127,10 @@ begin
     indexJoin ${testName2}_orders IxO_ORDERKEY "bound $I1 _orderkey =="
     | project "
       type TIMESTAMP as l_orderdate O_ORDERDATE ,
-      type DECIMAL as l_quantity L_QUANTITY ,
-      type DECIMAL as l_extendedprice L_EXTENDEDPRICE ,
-      type DECIMAL as l_discount L_DISCOUNT ,
-      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
+      type DECIMAL ( 19  2 ) as l_quantity L_QUANTITY ,
+      type DECIMAL ( 19  2 ) as l_extendedprice L_EXTENDEDPRICE ,
+      type DECIMAL ( 19  2 ) as l_discount L_DISCOUNT ,
+      type DECIMAL ( 19  2 ) as ps_supplycost PS_SUPPLYCOST"
     | combined 0
     | next
 
@@ -138,7 +138,7 @@ stage G_SUM_P on all partitions :
     gbyAgg "groupby type TIMESTAMP l_orderdate
       aggregates
       type TIMESTAMP as l_orderdate $K1 ,
-      type DECIMAL as amount ) l_extendedprice 1.0  l_discount -  *  ps_supplycost l_quantity *  - sum"
+      type DECIMAL ( 19  2 ) as amount ) l_extendedprice 1.0  l_discount -  *  ps_supplycost l_quantity *  - sum"
     | combined 0
     | next
 
@@ -146,7 +146,7 @@ stage G_SUM_N on all nodes :
     gbyAgg "groupby type TIMESTAMP l_orderdate
     aggregates
       type TIMESTAMP as l_orderdate $K1 ,
-      type DECIMAL as amount ) amount sum"
+      type DECIMAL ( 19  2 ) as amount ) amount sum"
     | combined 0
     | next
 
@@ -154,7 +154,7 @@ stage G_SUM_O on origin :
     gbyAgg "groupby type TIMESTAMP l_orderdate
     aggregates
       type TIMESTAMP as o_year $K1 ,
-      type DECIMAL as amount ) amount sum"
+      type DECIMAL ( 19  2 ) as amount ) amount sum"
     | combined 0
     | next
 

@@ -76,8 +76,8 @@ begin
     scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
-    | project expr type INTEGER as _orderkey O_ORDERKEY ,
-                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+    | project expr type INTEGER ( 19 ) as _orderkey O_ORDERKEY ,
+                     type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY
     | keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                          "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
@@ -204,8 +204,8 @@ begin
     | stageMarker0143
   stage stageMarker0143 on all partitions :
     scan rapidsse public ${testName2}_lineitem
-    | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
-    | sort "type INTEGER $2 ASC  "
+    | project " type INTEGER ( 19 ) as l_orderkey $1 , type INTEGER ( 19 ) as l_partkey $2 "
+    | sort "type INTEGER ( 19 ) $2 ASC  "
     | combined 0
     | next
   stage stageLast on origin :
@@ -228,7 +228,7 @@ begin
     | next
   stage stageA on all partitions :
     indexScan ${testName2}_lineitem IxL_SHIPDATE "lbound $I1 TIMESTAMP '1900-01-01 00:00:00' >= "
-    | project "type INTEGER $1 , type TIMESTAMP L_SHIPDATE"
+    | project "type INTEGER ( 19 ) $1 , type TIMESTAMP L_SHIPDATE"
     | top "type TIMESTAMP $2" 2
     | combined 0
     | next
@@ -262,8 +262,8 @@ begin
     | next
   stage stageA on all partitions :
     indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg " ORDGROUPBY type integer $1
-               aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    | ordAgg " ORDGROUPBY type integer ( 19 ) $1
+               aggregates type integer ( 19 ) $K1 , type decimal ( 19  2 ) as total )  $5 sum  "
     | combined 0
     | next
 
@@ -290,19 +290,19 @@ begin
 
   stage stageA on all partitions :
     indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg " ORDGROUPBY type integer $1
-                 aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    | ordAgg " ORDGROUPBY type integer ( 19 ) $1
+                 aggregates type integer ( 19 ) $K1 , type decimal ( 19  2 ) as total )  $5 sum  "
     | combined 0
     | next
 
  stage stageB on all nodes :
     filter " type BOOLEAN  $2 100.0  >  "
-    | top "type DECIMAL total" 10
+    | top "type DECIMAL ( 19  2 ) total" 10
     | combined 0
     | next
 
  stage stageA on origin :
-     top "type DECIMAL total" 10
+     top "type DECIMAL ( 19  2 ) total" 10
      | combined 0
      | next
 
@@ -335,8 +335,8 @@ begin
 
   stage stageA on all partitions :
     indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg " ORDGROUPBY type integer $1
-                 aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    | ordAgg " ORDGROUPBY type integer ( 19 ) $1
+                 aggregates type integer ( 19 ) $K1 , type decimal ( 19  2 ) as total )  $5 sum  "
     | combined 0
     | next
 
@@ -369,16 +369,16 @@ begin
     | next
   stage stageA on all partitions :
     indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg " ORDGROUPBY type integer $1 aggregates type integer $K1 , type decimal as total )  $5 sum  "
-    //| top "type DECIMAL total" 8
+    | ordAgg " ORDGROUPBY type integer ( 19 ) $1 aggregates type integer ( 19 ) $K1 , type decimal ( 19  2 ) as total )  $5 sum  "
+    //| top "type DECIMAL ( 19  2 ) total" 8
     | combined 0
     | next
   stage stageB on all nodes :
-    top "type DECIMAL total" 8
+    top "type DECIMAL ( 19  2 ) total" 8
     | combined 0
     | next
   stage stageC on origin :
-    top "type DECIMAL total" 8
+    top "type DECIMAL ( 19  2 ) total" 8
     | combined 0
     | next
   stage stageLast on origin :
@@ -414,8 +414,8 @@ begin
     indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
-    | gbyAgg expr groupby type INTEGER O_ORDERKEY
-       aggregates type DECIMAL as Revenue ) L_DISCOUNT sum , type INTEGER as _orderkey $K1
+    | gbyAgg expr groupby type INTEGER ( 19 ) O_ORDERKEY
+       aggregates type DECIMAL ( 19  2 ) as Revenue ) L_DISCOUNT sum , type INTEGER ( 19 ) as _orderkey $K1
     | combined 0
     | next
 
@@ -445,8 +445,8 @@ begin
     indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
-    | gbyAgg expr groupby type INTEGER O_ORDERKEY
-       aggregates type DECIMAL as Revenue ) L_DISCOUNT sum , type INTEGER as _orderkey $K1
+    | gbyAgg expr groupby type INTEGER ( 19 ) O_ORDERKEY
+       aggregates type DECIMAL ( 19  2 ) as Revenue ) L_DISCOUNT sum , type INTEGER ( 19 ) as _orderkey $K1
     | combined 0
     | next
 
@@ -482,18 +482,18 @@ begin
     indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
-    | gbyAgg expr groupby type INTEGER O_ORDERKEY
-       aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) L_DISCOUNT sum
+    | gbyAgg expr groupby type INTEGER ( 19 ) O_ORDERKEY
+       aggregates type INTEGER ( 19 ) as _orderkey $K1 , type DECIMAL ( 19  2 ) as Revenue ) L_DISCOUNT sum
     | combined 0
     | next
 
 stage Gj_LINEITEM on all nodes :
-    top "type DECIMAL Revenue" 10
+    top "type DECIMAL ( 19  2 ) Revenue" 10
     | combined 0
     | next
 
 stage Gj_LINEITEM on origin :
-    top "type DECIMAL Revenue" 10
+    top "type DECIMAL ( 19  2 ) Revenue" 10
     | combined 0
     | next
 
@@ -523,8 +523,8 @@ begin
     | next
   stage stageA on all partitions :
     indexScan ${testName2}_lineitem IxL_ORDER_PART "lbound $I1 0 >="
-    | ordAgg " ORDGROUPBY type integer $1 , type integer $2
-                 aggregates type integer $K1 , type integer $K2 , type decimal as total )  $5 sum  "
+    | ordAgg " ORDGROUPBY type integer ( 19 ) $1 , type integer ( 19 ) $2
+                 aggregates type integer ( 19 ) $K1 , type integer ( 19 ) $K2 , type decimal ( 19  2 ) as total )  $5 sum  "
     | combined 0
     | next
   stage stageLast on origin :
@@ -544,8 +544,8 @@ begin
     | next
   stage stageA on all partitions :
     indexScan ${testName2}_lineitem IxL_ORDER_PART "lbound $I1 0 >="
-    | ordAgg " ORDGROUPBY type integer $1 , type integer $2
-                 aggregates type integer $K1 , type integer $K2 , type decimal as total )  $5 sum  "
+    | ordAgg " ORDGROUPBY type integer ( 19 ) $1 , type integer ( 19 ) $2
+                 aggregates type integer ( 19 ) $K1 , type integer ( 19 ) $K2 , type decimal ( 19  2 ) as total )  $5 sum  "
     | combined 0
     | next
   stage stageLast on origin :

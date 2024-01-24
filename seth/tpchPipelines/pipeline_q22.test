@@ -19,22 +19,22 @@ begin
     scan Customer
     | filter " type BOOLEAN  C_ACCTBAL 0.00  >
                }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
-    | aggreg " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
+    | aggreg " type DECIMAL ( 19  2 ) )  C_ACCTBAL sum  , type INTEGER ( 19 ) )  C_ACCTBAL count  "
     | combined 0
     | next
 
   stage S02 on all nodes :
-    aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S03 on origin :
-    aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+    aggreg " type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $1 sum  "
     | combined 0
     | next
 
   stage S04 on origin :
-    project " type DECIMAL as acctbal $2 $1 casttype DECIMAL CAST  /  "
+    project " type DECIMAL ( 19  2 ) as acctbal $2 $1 casttype DECIMAL ( 19  2 ) CAST  /  "
     | combined 0
     | next broadcast
 
@@ -42,34 +42,34 @@ begin
     indexJoin Customer IxC_CUSTKEY "bound $I1"
     | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in
               C_ACCTBAL acctbal  >  and "
-    | project " type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as cntrycode C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL C_ACCTBAL "
+    | project " type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL "
     | combined 0
     | next
 
   stage S06 on all partitions :
     keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                    "type BOOLEAN O_CUSTKEY 0 >"
-    | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
+    | project " type VARCHAR ( 0 ) as cntrycode  cntrycode , type DECIMAL ( 19  2 ) as C_ACCTBAL  C_ACCTBAL"
     | combined 0
     | next
 
  stage S07 on all partitions :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) )  countAll  , type DECIMAL ( 19  2 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $3 sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) as numcust )  $2 sum  , type DECIMAL ( 19  2 ) as totacctbal )  $3 sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort " type VARCHAR as cntrycode $1 ASC  "
+    sort " type VARCHAR ( 0 ) as cntrycode $1 ASC  "
     | combined 0
     | next
 

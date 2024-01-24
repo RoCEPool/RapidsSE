@@ -47,10 +47,10 @@ begin
   stage S01 on all partitions :
     scan rapidsse public lineitem
     | filter " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
-    | aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    | aggreg " groupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS
       aggregates
-      type VARCHAR as L_RETURNFLAG $K1 ,
-      type VARCHAR as L_LINESTATUS $K2 ,
+      type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
+      type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
       type DECIMAL as SUM_QTY ) L_QUANTITY sum  ,
       type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
       type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
@@ -64,10 +64,10 @@ begin
     | next
 
   stage S02 on all nodes :
-    aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    aggreg " groupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS
       aggregates
-      type VARCHAR as L_RETURNFLAG $K1 ,
-      type VARCHAR as L_LINESTATUS $K2 ,
+      type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
+      type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
       type DECIMAL as SUM_QTY ) SUM_QTY sum ,
       type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
       type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
@@ -81,10 +81,10 @@ begin
     | next
 
   stage S03 on origin :
-    aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    aggreg " groupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS
       aggregates
-      type VARCHAR as L_RETURNFLAG $K1 ,
-      type VARCHAR as L_LINESTATUS $K2 ,
+      type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
+      type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
       type DECIMAL as SUM_QTY ) SUM_QTY sum ,
       type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
       type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
@@ -99,8 +99,8 @@ begin
 
   stage S04 on origin :
     project "
-      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY SUM_QTY ,
       type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
       type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,

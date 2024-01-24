@@ -135,7 +135,7 @@ begin
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
-               type VARCHAR as NATION J1_N_NAME"
+               type VARCHAR ( 0 ) as NATION J1_N_NAME"
     | combined 0
     | next
 

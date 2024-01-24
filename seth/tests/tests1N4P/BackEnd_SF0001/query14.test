@@ -40,19 +40,19 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
      | stageMarker3020
    stage stageMarker3020 on all partitions :
      filter " type BOOLEAN  $2 $17 ==  $11 DATE ''1995-09-01''  >=  and  $11 DATE ''1995-10-01''  <  and  "
-     | aggreg " type DECIMAL )  $6 1.00  $7 -  *  sum  , type DECIMAL )  } type DECIMAL }  $21 ''PROMO%''  6 matchLeading  WHEN  $6 1.00  $7 -  *  THEN  0.00  ELSE  ENDIF  CASE  sum  "
+     | aggreg " type DECIMAL ( 19  2 ) )  $6 1.00  $7 -  *  sum  , type DECIMAL ( 19  2 ) )  } type DECIMAL ( 19  2 ) }  $21 ''PROMO%''  6 matchLeading  WHEN  $6 1.00  $7 -  *  THEN  0.00  ELSE  ENDIF  CASE  sum  "
      | combined 0
      | stageMarker3023
    stage stageMarker3023 on all nodes :
-     aggreg " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+     aggreg " type DECIMAL ( 19  2 ) )  $1 sum  , type DECIMAL ( 19  2 ) )  $2 sum  "
      | combined 0
      | stageMarker3125
    stage stageMarker3125 on origin :
-     aggreg " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+     aggreg " type DECIMAL ( 19  2 ) )  $1 sum  , type DECIMAL ( 19  2 ) )  $2 sum  "
      | combined 0
      | stageMarker3026
    stage stageMarker3026 on origin :
-     project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+     project " type DECIMAL ( 19  2 ) as promo_revenue 100.00  $2 *  $1 /  "
      | combined 0
      | stageLast
    stage stageLast on origin :
@@ -73,7 +73,7 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_lineitem
-    | hash "type INTEGER L_PARTKEY"
+    | hash "type INTEGER ( 19 ) L_PARTKEY"
     | combined 0
     | next hashcast
 
@@ -82,25 +82,25 @@ begin
     | filter " type BOOLEAN $2 $17 == "
     | filter " type BOOLEAN $11 DATE '1995-09-01' >= "
     | filter " type BOOLEAN $11 DATE '1995-10-01'  < "
-    | aggreg " type DECIMAL )  $6 1.  $7 -  *  sum  ,
-                type DECIMAL )  }  }  $21 'PROMO%'  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | aggreg " type DECIMAL ( 19  2 ) )  $6 1.  $7 -  *  sum  ,
+                type DECIMAL ( 19  2 ) )  }  }  $21 'PROMO%'  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    aggreg " type DECIMAL )  $1 sum  ,
-              type DECIMAL )  $2 sum  "
+    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  ,
+              type DECIMAL ( 19  2 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S04 on origin :
-    aggreg " type DECIMAL )  $1 sum  ,
-              type DECIMAL )  $2 sum  "
+    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  ,
+              type DECIMAL ( 19  2 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+    project " type DECIMAL ( 19  2 ) as promo_revenue 100.00  $2 *  $1 /  "
     | combined 0
     | next
 
@@ -123,34 +123,34 @@ begin
 
   stage S01 on all partitions :
     indexscan ${testName2}_lineitem IxL_SHIPDATE "LBOUND DATE '1995-09-01' >= UBOUND DATE '1995-10-01' <"
-    | project "type INTEGER as L_PARTKEY L_PARTKEY ,
-               type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-               type DECIMAL as L_DISCOUNT L_DISCOUNT"
-    | hash "type INTEGER L_PARTKEY"
+    | project "type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT"
+    | hash "type INTEGER ( 19 ) L_PARTKEY"
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
     indexJoin ${testName2}_part IxP_PARTKEY "bound $I1 L_PARTKEY =="
-    | aggreg " type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-                type DECIMAL )  }  }  P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | aggreg " type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+                type DECIMAL ( 19  2 ) )  }  }  P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    aggreg " type DECIMAL ) $1 sum  ,
-              type DECIMAL ) $2 sum  "
+    aggreg " type DECIMAL ( 19  2 ) ) $1 sum  ,
+              type DECIMAL ( 19  2 ) ) $2 sum  "
     | combined 0
     | next
 
   stage S04 on origin :
-    aggreg " type DECIMAL ) $1 sum  ,
-              type DECIMAL ) $2 sum  "
+    aggreg " type DECIMAL ( 19  2 ) ) $1 sum  ,
+              type DECIMAL ( 19  2 ) ) $2 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+    project " type DECIMAL ( 19  2 ) as promo_revenue 100.00  $2 *  $1 /  "
     | combined 0
     | next
 

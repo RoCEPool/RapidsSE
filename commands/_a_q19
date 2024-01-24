@@ -72,8 +72,8 @@ begin
                 }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and
                 }  1  15  P_SIZE between  and or  "
    | project " type INTEGER as P_PARTKEY P_PARTKEY ,
-               type VARCHAR as P_BRAND P_BRAND ,
-               type VARCHAR as P_CONTAINER P_CONTAINER ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_CONTAINER P_CONTAINER ,
                type INTEGER AS P_SIZE P_SIZE"
    | combined 0
    | next broadcast
@@ -84,11 +84,11 @@ begin
                type DECIMAL as L_QUANTITY J1_L_QUANTITY ,
                type DECIMAL as L_DISCOUNT J1_L_DISCOUNT ,
                type DECIMAL as l_extendedprice j1_l_extendedprice  ,
-               type VARCHAR as L_SHIPMODE J1_L_SHIPMODE ,
-               type VARCHAR as L_SHIPINSTRUCT J1_L_SHIPINSTRUCT ,
+               type VARCHAR ( 0 ) as L_SHIPMODE J1_L_SHIPMODE ,
+               type VARCHAR ( 0 ) as L_SHIPINSTRUCT J1_L_SHIPINSTRUCT ,
                type INTEGER as P_SIZE P_SIZE ,
-               type VARCHAR as P_BRAND P_BRAND ,
-               type varchar as P_CONTAINER P_CONTAINER"
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type varchar ( 0 ) as P_CONTAINER P_CONTAINER"
    | filter " type BOOLEAN P_BRAND 'Brand#12'  ==
                 }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
                 }  L_QUANTITY 1.0 >= L_QUANTITY 11.0 <= and and

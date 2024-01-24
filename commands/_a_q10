@@ -110,25 +110,25 @@ begin
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
-               type VARCHAR as C_NAME J1_C_NAME ,
+               type VARCHAR ( 0 ) as C_NAME J1_C_NAME ,
                type DECIMAL as REVENUE ) REVENUE ,
                type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
-               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
-               type VARCHAR as C_PHONE J1_C_PHONE ,
-               type VARCHAR as C_COMMENT J1_C_COMMENT"
+               type VARCHAR ( 0 ) as C_ADDRESS J1_C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE J1_C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT J1_C_COMMENT"
     | combined 0
     | next
 
   stage S07 on all partitions :
     indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type VARCHAR as C_NAME C_NAME ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
                type DECIMAL as REVENUE ) REVENUE ,
                type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME J1_N_NAME ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+               type VARCHAR ( 0 ) as N_NAME J1_N_NAME ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 

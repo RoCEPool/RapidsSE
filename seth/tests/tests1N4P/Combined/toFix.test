@@ -42,7 +42,7 @@ success;
 load ${testName2}_nation "../TPCH/SF1/nation.tbl" ;
 success
 
-projectColumns ${testName2}_lineitem type integer 1, type integer 2, type null null;
+projectColumns ${testName2}_lineitem type integer ( 19 ) 1, type integer ( 19 ) 2, type null null;
 rows:
  (1,2,null)
  (1,2,null)

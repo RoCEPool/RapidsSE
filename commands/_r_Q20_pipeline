@@ -137,20 +137,20 @@ begin
 
   stage S07 on all partitions :
     indexJoin Supplier S_idx0 "BOUND $I1 PS_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type VARCHAR as S_NAME J1_S_NAME , type VARCHAR as S_ADDRESS J1_S_ADDRESS"
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type VARCHAR ( 0 ) as S_NAME J1_S_NAME , type VARCHAR ( 0 ) as S_ADDRESS J1_S_ADDRESS"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexJoin Nation N_idx0 "BOUND $I1 S_NATIONKEY =="
     | filter " type BOOLEAN J1_N_NAME 'CANADA' ==  "
-    | project " type VARCHAR as N_NAME J1_N_NAME , type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS "
-    | sort " type VARCHAR S_NAME ASC  "
+    | project " type VARCHAR ( 0 ) as N_NAME J1_N_NAME , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS "
+    | sort " type VARCHAR ( 0 ) S_NAME ASC  "
     | combined 0
     | next
 
   stage stageMarker1680 on origin :
-    sort " type VARCHAR S_NAME ASC  "
+    sort " type VARCHAR ( 0 ) S_NAME ASC  "
     | combined 0
     | next
 

@@ -37,7 +37,7 @@ begin
     stage stageMarker0880 on all partitions :
       scan rapidsse public supplier
       | filter " type BOOLEAN  $1 ==  "
-      | project " type INTEGER as S_SUPPKEY $1 , type VARCHAR as S_NAME $2 , type VARCHAR as S_ADDRESS $3 , type INTEGER as S_NATIONKEY $4 , type VARCHAR as S_PHONE $5 , type DECIMAL as S_ACCTBAL $6 , type VARCHAR as S_COMMENT $7 "
+      | project " type INTEGER as S_SUPPKEY $1 , type VARCHAR ( 0 ) as S_NAME $2 , type VARCHAR ( 0 ) as S_ADDRESS $3 , type INTEGER as S_NATIONKEY $4 , type VARCHAR ( 0 ) as S_PHONE $5 , type DECIMAL as S_ACCTBAL $6 , type VARCHAR ( 0 ) as S_COMMENT $7 "
       | combined 0
       | stageMarker0883
     stage stageMarker0883 on all partitions :

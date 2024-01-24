@@ -80,7 +80,7 @@ begin
       | stageMarker2584
     stage stageMarker2584 on all partitions :
       filter " type BOOLEAN  $10 $19 ==  $34 $19 ==  and  $33 $18 ==  and  $1 $18 ==  and  $38 $17 ==  and  $13 $47 ==  and  }  $2 ''%green%''  5 matchMiddle  and  "
-      | project " type VARCHAR as nation $48 , type INTEGER as o_year $42 extract_year  , type DECIMAL as amount $22 1.00  $23 -  *  $36 $21 *  -  "
+      | project " type VARCHAR ( 0 ) as nation $48 , type INTEGER ( 19 ) as o_year $42 extract_year  , type DECIMAL ( 19  2 ) as amount $22 1.00  $23 -  *  $36 $21 *  -  "
       | combined 0
       | stageMarker2587
     stage stageMarker2587 on all partitions :
@@ -98,16 +98,16 @@ begin
     | stageMarker2590
   stage stageMarker2590 on all partitions :
     call "profit "
-    | gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    | gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) )  $3 sum  "
     | combined 0
     | stageMarker2593
   stage stageMarker2593 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) )  $3 sum  "
     | combined 0
     | stageMarker2596
   stage stageMarker2596 on origin :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
-    | sort " type VARCHAR as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as sum_profit )  $3 sum  "
+    | sort " type VARCHAR ( 0 ) as nation $1 ASC  , type INTEGER ( 19 ) as o_year $2 DESC  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -129,85 +129,85 @@ pipeline unamed
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_part
     | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
-    | project "type INTEGER as P_PARTKEY P_PARTKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
-    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
-               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
   stage S03 on all partitions :
     indexJoin ${testName2}_LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
-    | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
-               type INTEGER as L_SUPPKEY L_SUPPKEY ,
-               type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
-    | hash "type INTEGER L_SUPPKEY"
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+    | hash "type INTEGER ( 19 ) L_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage S04 on all partitions :
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
-    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
-               type INTEGER as L_ORDERKEY L_ORDERKEY ,
-               type DECIMAL as AMOUNT AMOUNT "
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT "
     | combined 0
     | next broadcast
 
   stage S05 on all partitions :
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
-    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
-               type INTEGER as O_YEAR O_ORDERDATE extract_year ,
-               type DECIMAL as AMOUNT AMOUNT"
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S06 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR as NATION N_NAME ,
-               type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as AMOUNT AMOUNT"
+    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
+               type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    gbyAgg "groupBy type VARCHAR NATION ,
-                    type INTEGER O_YEAR
+    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
             aggregates
-                    type VARCHAR as NATION $K1 ,
-                    type INTEGER as O_YEAR $K2 ,
-                    type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
+                    type VARCHAR ( 0 ) as NATION $K1 ,
+                    type INTEGER ( 19 ) as O_YEAR $K2 ,
+                    type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg "groupBy type VARCHAR NATION ,
-                    type INTEGER O_YEAR
+    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
             aggregates
-                     type VARCHAR as NATION $K1 ,
-                     type INTEGER as O_YEAR $K2 ,
-                     type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
+                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type INTEGER ( 19 ) as O_YEAR $K2 ,
+                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg "groupBy type VARCHAR NATION ,
-                    type INTEGER O_YEAR
+    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
             aggregates
-                     type VARCHAR as NATION $K1 ,
-                     type INTEGER as O_YEAR $K2 ,
-                     type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
+                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type INTEGER ( 19 ) as O_YEAR $K2 ,
+                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR as NATION NATION ASC ,
-          type INTEGER as O_YEAR O_YEAR ASC"
+    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
+          type INTEGER ( 19 ) as O_YEAR O_YEAR ASC"
     | combined 0
     | next
 
@@ -232,59 +232,59 @@ pipeline Query9
   stage stageMarker2566 on all partitions :
     scan rapidsse public ${testName2}_part
     | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
-    | project "type INTEGER as P_PARTKEY P_PARTKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage stageMarker2575 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
-    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
-    | hash "type INTEGER PS_SUPPKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY , type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | hash "type INTEGER ( 19 ) PS_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2575 on all partitions :
      indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
-     | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as S_SUPPKEY S_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+     | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY , type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
      | combined 0
      | next
 
   stage stageMarker2581 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as NATION N_NAME , type INTEGER as S_SUPPKEY S_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type VARCHAR ( 0 ) as NATION N_NAME , type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY , type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
   stage stageMarker2572 on all partitions :
       indexJoin ${testName2}_LINEITEM IxL_SUPPKEY "bound $I1 S_SUPPKEY =="
       | filter "type BOOLEAN P_PARTKEY L_PARTKEY =="
-      | project " type VARCHAR as NATION NATION , type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+      | project " type VARCHAR ( 0 ) as NATION NATION , type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY , type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
       | combined 0
       | next broadcast
 
   stage stageMarker2578 on all partitions :
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
-    | project " type VARCHAR as NATION NATION , type INTEGER as O_YEAR O_ORDERDATE extract_year , type DECIMAL as AMOUNT AMOUNT"
+    | project " type VARCHAR ( 0 ) as NATION NATION , type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year , type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage stageMarker2587 on all partitions :
-    gbyAgg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as NATION NATION , type INTEGER ( 19 ) as o_year $2 aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2593 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as sum_profit )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    sort " type VARCHAR as nation $1 ASC , type INTEGER as o_year $2 DESC  "
+    sort " type VARCHAR ( 0 ) as nation $1 ASC , type INTEGER ( 19 ) as o_year $2 DESC  "
     | combined 0
     | next
 
@@ -309,62 +309,62 @@ pipeline Query9
 
   stage stageMarker2578 on all partitions :
     scan ${testName2}_ORDERS
-    | project " type INTEGER as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_ORDERDATE extract_year"
-    | hash "type INTEGER O_ORDERKEY"
+    | project " type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY , type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year"
+    | hash "type INTEGER ( 19 ) O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2572 on all partitions :
     indexJoin ${testName2}_LINEITEM IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
-    | project "type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
-    | hash "type INTEGER L_PARTKEY"
+    | project "type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY , type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT , type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY"
+    | hash "type INTEGER ( 19 ) L_PARTKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2566 on all partitions :
     indexJoin ${testName2}_PART IxP_PARTKEY "bound $I1 L_PARTKEY =="
     | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
-    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT , type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY"
     | combined 0
     | next
 
   stage stageMarker2575 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN PS_SUPPKEY L_SUPPKEY =="
-    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  -"
-    | hash "type INTEGER L_SUPPKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  -"
+    | hash "type INTEGER ( 19 ) L_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2575_a on all partitions :
      indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
-     | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+     | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
      | combined 0
      | next
 
   stage stageMarker2581 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as NATION N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+    | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type VARCHAR ( 0 ) as NATION N_NAME , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage stageMarker2587 on all partitions :
-    gbyAgg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year O_YEAR aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  AMOUNT sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as NATION NATION , type INTEGER ( 19 ) as o_year O_YEAR aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as SUM_PROFIT )  AMOUNT sum  "
     | combined 0
     | next
 
   stage stageMarker2593 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as SUM_PROFIT )  SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as SUM_PROFIT )  SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    sort " type VARCHAR as nation $1 ASC , type INTEGER as o_year $2 DESC  "
+    sort " type VARCHAR ( 0 ) as nation $1 ASC , type INTEGER ( 19 ) as o_year $2 DESC  "
     | combined 0
     | next
 
@@ -389,14 +389,14 @@ pipeline Query9
 
   stage stageMarker2572 on all partitions :
     scan ${testName2}_LINEITEM
-    | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY , type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY , type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT , type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY"
     | combined 0
     | next
 
   stage stageMarker2578 on all partitions :
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
-    | project "type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_ORDERDATE extract_year , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
-    | hash "type INTEGER L_PARTKEY"
+    | project "type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY , type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year , type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT , type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY"
+    | hash "type INTEGER ( 19 ) L_PARTKEY"
     | combined 0
     | next hashcast
 
@@ -404,47 +404,47 @@ pipeline Query9
   stage stageMarker2566 on all partitions :
     indexJoin ${testName2}_PART IxP_PARTKEY "bound $I1 L_PARTKEY =="
     | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
-    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT , type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY"
     | combined 0
     | next
 
   stage stageMarker2575 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN PS_SUPPKEY L_SUPPKEY =="
-    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  -"
-    | hash "type INTEGER L_SUPPKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  -"
+    | hash "type INTEGER ( 19 ) L_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2575_a on all partitions :
      indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
-     | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+     | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
      | combined 0
      | next
 
   stage stageMarker2581 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as NATION N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+    | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type VARCHAR ( 0 ) as NATION N_NAME , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage stageMarker2587 on all partitions :
-    gbyAgg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year O_YEAR aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  AMOUNT sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as NATION NATION , type INTEGER ( 19 ) as o_year O_YEAR aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as SUM_PROFIT )  AMOUNT sum  "
     | combined 0
     | next
 
   stage stageMarker2593 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as SUM_PROFIT )  SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as SUM_PROFIT )  SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    sort " type VARCHAR as nation $1 ASC , type INTEGER as o_year $2 DESC  "
+    sort " type VARCHAR ( 0 ) as nation $1 ASC , type INTEGER ( 19 ) as o_year $2 DESC  "
     | combined 0
     | next
 
@@ -471,59 +471,59 @@ pipeline unamed
   stage stageMarker2566 on all partitions :
     scan rapidsse public ${testName2}_part
     | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
-    | project "type INTEGER as P_PARTKEY P_PARTKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage stageMarker2575 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
-    | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY , type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY , type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
   stage stageMarker2572 on all partitions :
     indexJoin ${testName2}_LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
-    | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY , type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
     | combined 0
     | next
 
   stage stageMarker2578 on all partitions :
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
-    | project " type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_ORDERDATE extract_year , type DECIMAL as AMOUNT AMOUNT"
-    | hash "type INTEGER L_SUPPKEY"
+    | project " type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year , type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
+    | hash "type INTEGER ( 19 ) L_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2575 on all partitions :
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT "
+    | project " type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as AMOUNT AMOUNT "
     | combined 0
     | next broadcast
 
   stage stageMarker2581 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project " type VARCHAR as NATION N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+    | project " type VARCHAR ( 0 ) as NATION N_NAME , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage stageMarker2587 on all partitions :
-    gbyAgg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as NATION NATION , type INTEGER ( 19 ) as o_year $2 aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2593 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER ( 19 ) as o_year $2 aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    gbyAgg " groupBy  type VARCHAR as nation $1 ,  type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as nation $1 ,  type INTEGER ( 19 ) as o_year $2 aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) $K2 , type DECIMAL ( 19  2 ) as sum_profit )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    sort " type VARCHAR as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
+    sort " type VARCHAR ( 0 ) as nation $1 ASC  , type INTEGER ( 19 ) as o_year $2 DESC  "
     | combined 0
     | next
 
@@ -547,85 +547,85 @@ pipeline Query9
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_part
     | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
-    | project "type INTEGER as P_PARTKEY P_PARTKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
-    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
-               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
-    | hash "type INTEGER PS_SUPPKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | hash "type INTEGER ( 19 ) PS_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage S03 on all partitions :
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
-    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
-               type INTEGER as P_PARTKEY P_PARTKEY ,
-               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
   stage S04 on all partitions :
     indexJoin ${testName2}_LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
-    | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
-               type INTEGER as S_NATIONKEY S_NATIONKEY ,
-               type INTEGER as L_SUPPKEY L_SUPPKEY ,
-               type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
     | combined 0
     | next broadcast
 
   stage S05 on all partitions :
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
-    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
-               type INTEGER as O_YEAR O_ORDERDATE extract_year ,
-               type DECIMAL as AMOUNT AMOUNT"
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S06 on all partitions :
-    gbyAgg "groupBy    type INTEGER S_NATIONKEY ,
-                       type INTEGER O_YEAR
-            aggregates type INTEGER as S_NATIONKEY $K1 ,
-                       type INTEGER as O_YEAR $K2 ,
-                       type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
+    gbyAgg "groupBy    type INTEGER ( 19 ) S_NATIONKEY ,
+                       type INTEGER ( 19 ) O_YEAR
+            aggregates type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                       type INTEGER ( 19 ) as O_YEAR $K2 ,
+                       type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
   stage S07 on all nodes :
-    gbyAgg "groupBy type INTEGER S_NATIONKEY ,
-    type INTEGER O_YEAR
-    aggregates type INTEGER as S_NATIONKEY $K1 ,
-    type INTEGER as O_YEAR $K2 ,
-    type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
+    gbyAgg "groupBy type INTEGER ( 19 ) S_NATIONKEY ,
+    type INTEGER ( 19 ) O_YEAR
+    aggregates type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+    type INTEGER ( 19 ) as O_YEAR $K2 ,
+    type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S08 on origin :
-    gbyAgg "groupBy    type INTEGER S_NATIONKEY ,
-                       type INTEGER O_YEAR
-            aggregates type INTEGER as S_NATIONKEY $K1 ,
-                       type INTEGER as O_YEAR $K2 ,
-                       type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
-    | hash "type INTEGER S_NATIONKEY"
+    gbyAgg "groupBy    type INTEGER ( 19 ) S_NATIONKEY ,
+                       type INTEGER ( 19 ) O_YEAR
+            aggregates type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                       type INTEGER ( 19 ) as O_YEAR $K2 ,
+                       type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+    | hash "type INTEGER ( 19 ) S_NATIONKEY"
     | combined 0
     | next hashcast
 
   stage S09 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR as NATION N_NAME ,
-               type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as SUM_PROFIT SUM_PROFIT"
+    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
+               type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+               type DECIMAL ( 19  2 ) as SUM_PROFIT SUM_PROFIT"
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR as NATION NATION ASC ,
-          type INTEGER as O_YEAR O_YEAR ASC"
+    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
+          type INTEGER ( 19 ) as O_YEAR O_YEAR ASC"
     | combined 0
     | next
 
@@ -648,85 +648,85 @@ pipeline Query9
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_part
     | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
-    | project "type INTEGER as P_PARTKEY P_PARTKEY"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
-    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
-               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
   stage S03 on all partitions :
     indexJoin ${testName2}_LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
-    | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
-               type INTEGER as L_SUPPKEY L_SUPPKEY ,
-               type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
-    | hash "type INTEGER L_SUPPKEY"
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+    | hash "type INTEGER ( 19 ) L_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage S04 on all partitions :
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
-    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
-               type INTEGER as L_ORDERKEY L_ORDERKEY ,
-               type DECIMAL as AMOUNT AMOUNT "
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT "
     | combined 0
     | next broadcast
 
   stage S05 on all partitions :
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
-    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
-               type INTEGER as O_YEAR O_ORDERDATE extract_year ,
-               type DECIMAL as AMOUNT AMOUNT"
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S06 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR as NATION N_NAME ,
-               type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as AMOUNT AMOUNT"
+    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
+               type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    gbyAgg "groupBy type VARCHAR NATION ,
-                    type INTEGER O_YEAR
+    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
             aggregates
-                    type VARCHAR as NATION $K1 ,
-                    type INTEGER as O_YEAR $K2 ,
-                    type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
+                    type VARCHAR ( 0 ) as NATION $K1 ,
+                    type INTEGER ( 19 ) as O_YEAR $K2 ,
+                    type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg "groupBy type VARCHAR NATION ,
-                    type INTEGER O_YEAR
+    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
             aggregates
-                     type VARCHAR as NATION $K1 ,
-                     type INTEGER as O_YEAR $K2 ,
-                     type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
+                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type INTEGER ( 19 ) as O_YEAR $K2 ,
+                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg "groupBy type VARCHAR NATION ,
-                    type INTEGER O_YEAR
+    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
             aggregates
-                     type VARCHAR as NATION $K1 ,
-                     type INTEGER as O_YEAR $K2 ,
-                     type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
+                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type INTEGER ( 19 ) as O_YEAR $K2 ,
+                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR as NATION NATION ASC ,
-          type INTEGER as O_YEAR O_YEAR DESC"
+    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
+          type INTEGER ( 19 ) as O_YEAR O_YEAR DESC"
     | combined 0
     | next
 

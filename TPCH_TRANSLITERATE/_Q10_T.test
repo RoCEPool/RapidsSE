@@ -59,15 +59,15 @@ begin
     | stageMarker27171
   stage stageMarker27171 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  $18 $9 ==  and  $13 TIMESTAMP ''1993-10-01 00:00:00''  >=  and  $13 TIMESTAMP ''1994-01-01 00:00:00''  <  and  $26 ''R''  ==  and  $4 $34 ==  and  "
-    | aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $6 , type VARCHAR as c_phone $5 , type VARCHAR as n_name $35 , type VARCHAR as c_address $3 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $23 1.  $24 -  *  sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    | aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL as c_acctbal $6 , type VARCHAR ( 0 ) as c_phone $5 , type VARCHAR ( 0 ) as n_name $35 , type VARCHAR ( 0 ) as c_address $3 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL )  $23 1.  $24 -  *  sum  , type DECIMAL $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
     | combined 0
     | stageMarker27174
   stage stageMarker27174 on all nodes :
-    aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR ( 0 ) as c_phone $7 , type VARCHAR ( 0 ) as n_name $5 , type VARCHAR ( 0 ) as c_address $6 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL )  $3 sum  , type DECIMAL $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
     | combined 0
     | stageMarker27177
   stage stageMarker27177 on origin :
-    aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL as revenue )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR ( 0 ) as c_phone $7 , type VARCHAR ( 0 ) as n_name $5 , type VARCHAR ( 0 ) as c_address $6 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL as revenue )  $3 sum  , type DECIMAL $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
     | sort " type DECIMAL $3 DESC  "
     | limit 100
     | combined 0

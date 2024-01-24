@@ -37,18 +37,18 @@ pipeline unnamed
      | stageA
    stage stageA on all partitions :
      scan rapidsse public ${testName2}_LineItem
-     | gbyAgg " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
-                  aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY ) L_QUANTITY sum "
+     | gbyAgg " groupBy type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                  aggregates type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as QUANTITY ) L_QUANTITY sum "
      | combined 0
      | stageB
    stage stageB on all nodes :
-       gbyAgg " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
-       aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY )  QUANTITY sum "
+       gbyAgg " groupBy type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+       aggregates type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as QUANTITY )  QUANTITY sum "
        | combined 0
        | stageC
      stage stageC on origin :
-       gbyAgg " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
-       aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY )  QUANTITY sum "
+       gbyAgg " groupBy type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+       aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as QUANTITY )  QUANTITY sum "
        | combined 0
        | stageLast
    stage stageLast on origin :
@@ -70,18 +70,18 @@ pipeline unnamed
      | stageA
    stage stageA on all partitions :
      scan rapidsse public ${testName2}_LineItem
-     | gbyAgg " groupBy type INTEGER $1
-       aggregates type INTEGER $K1 , type DECIMAL ) $5 sum "
+     | gbyAgg " groupBy type INTEGER ( 19 ) $1
+       aggregates type INTEGER ( 19 ) $K1 , type DECIMAL ( 19  2 ) ) $5 sum "
      | combined 0
      | stageB
    stage stageB on all nodes :
-       gbyAgg " groupBy type INTEGER $1
-                  aggregates type INTEGER $K1 , type DECIMAL )  $2 sum "
+       gbyAgg " groupBy type INTEGER ( 19 ) $1
+                  aggregates type INTEGER ( 19 ) $K1 , type DECIMAL ( 19  2 ) )  $2 sum "
        | combined 0
        | stageC
      stage stageC on origin :
-       gbyAgg " groupBy type INTEGER $1
-                  aggregates type INTEGER $K1 , type DECIMAL  )  $2 sum "
+       gbyAgg " groupBy type INTEGER ( 19 ) $1
+                  aggregates type INTEGER ( 19 ) $K1 , type DECIMAL ( 19  2 )  )  $2 sum "
        | combined 0
        | stageLast
    stage stageLast on origin :
@@ -105,18 +105,18 @@ pipeline unnamed
    stage stageA on all partitions :
      scan rapidsse public ${testName2}_LineItem
      | filter " type BOOLEAN  L_ORDERKEY 2  >=  "
-     | gbyAgg " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
-                  aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY ) L_QUANTITY sum"
+     | gbyAgg " groupBy type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                  aggregates type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as QUANTITY ) L_QUANTITY sum"
      | combined 0
      | stageB
    stage stageB on all nodes :
-     gbyAgg " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
-                aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY )  QUANTITY sum"
+     gbyAgg " groupBy type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                aggregates type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as QUANTITY )  QUANTITY sum"
      | combined 0
      | stageC
    stage stageC on origin :
-     gbyAgg " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
-                aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY )  QUANTITY sum"
+     gbyAgg " groupBy type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                aggregates type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as QUANTITY )  QUANTITY sum"
      | combined 0
      | stageLast
    stage stageLast on origin :

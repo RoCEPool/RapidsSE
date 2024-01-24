@@ -189,7 +189,7 @@ begin
   stage stageA on all partitions :
     scan rapidsse public LineItem
     | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
-    | project 2 "type INTEGER L_ORDERKEY , type INTEGER L_PARTKEY , type VARCHAR L_COMMENT"
+    | project 2 "type INTEGER L_ORDERKEY , type INTEGER L_PARTKEY , type VARCHAR ( 0 ) L_COMMENT"
     | combined
     | stageLast
   stage stageLast on origin :
@@ -207,8 +207,8 @@ begin
   stage stageA on all partitions :
     scan rapidsse public LineItem
     | filter 2 " type BOOLEAN L_ORDERKEY 2 >="
-    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
-      type VARCHAR L_COMMENT"
+    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR ( 0 ) L_SHIPMODE ,
+      type VARCHAR ( 0 ) L_COMMENT"
     | combined
     | stageLast
   stage stageLast on origin :
@@ -311,7 +311,7 @@ begin
     | stageMarker0640
   stage stageMarker0640 on all partitions :
     scan rapidsse public LineItem
-    | project 1 " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
+    | project 1 " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR ( 0 ) as L_RETURNFLAG $9 , type VARCHAR ( 0 ) as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR ( 0 ) as L_SHIPINSTRUCT $14 , type VARCHAR ( 0 ) as L_SHIPMODE $15 , type VARCHAR ( 0 ) as L_COMMENT $16 "
     | stageLast
   stage stageLast on origin :
     output

@@ -2,105 +2,93 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
+__TPCH_SCHEMA;
 
-//SE-324
-create table orderby(a varchar,b varchar,c integer,d decimal,e float,f date,g time,h timestamp,i boolean,j integer);
-load orderby "../DATA/x.csv";
-
-/*
-/keepCodeFile
-/pipeline_def
-/transliterated
-/weaved
-select * from orderby order by substring(b,1,1);
-*/
-
-//select * from orderby o order by substring(b,1,1),extract(year from h),extract(month from h);
-
-
-//select * from orderby o order by substring(b,1,1),extract(year from h),extract(month from h),d+c,-e,c%3,j;
-
-
-/optimise_passthru
-/pipeline_def
-/weaved
-pipeline _unnamed_
+/time /optimise_passthru
+pipeline Q8
 begin
-
-  stage S00 on origin :
-      start
-    | pulse     once
+  stage stageStart on origin :
+    start
+    | pulse once
     | next
 
-  stage S01 on all partitions :
-      scan      orderby
-  | project   "   type VARCHAR as C0_a $1
-                , type VARCHAR as C1_b $2
-                , type INTEGER as C2_c $3
-                , type DECIMAL as C3_d $4
-                , type FLOAT as C4_e $5
-                , type DATE as C5_f $6
-                , type TIME as C6_g $7
-                , type TIMESTAMP as C7_h $8
-                , type BOOLEAN as C8_i $9
-                , type INTEGER as C9_j $10
-                , type VARCHAR as C0_COL1 $2 1 1 substring3"
-    | dynamic
+  stage stageMarkerA on all partitions :
+    indexScan ${testName2}_orders IxO_ORDERDATE "LBOUND $I1 DATE '1995-01-01' >= UBOUND $I1 DATE '1996-12-31' <="
+    | project "type integer ( 19 ) as O_CUSTKEY O_CUSTKEY , type integer ( 19 ) as O_ORDERKEY O_ORDERKEY , type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year"
+    | combined 0
     | next
 
-  stage S02 on all partitions :
-    sort      " type VARCHAR $11 "
-     | dynamic
+  stage stageMarkerB on all partitions :
+    indexJoin ${testName2}_customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY , type integer ( 19 ) as O_ORDERKEY O_ORDERKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR"
+    | combined 0
     | next
 
-  stage S03 on all nodes :
-    sort      " type VARCHAR $11 "
-     | dynamic
+  stage stageMarkerC on all partitions :
+    indexJoin ${testName2}_nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type integer ( 19 ) as N_REGIONKEY N_REGIONKEY , type integer ( 19 ) as O_ORDERKEY O_ORDERKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR"
+    | combined 0
     | next
 
-  stage S04 on origin :
-    sort      " type VARCHAR $11 "
-     | dynamic
+  stage stageMarkerD on all partitions :
+    indexJoin ${testName2}_region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
+    | filter "type BOOLEAN R_NAME 'AMERICA' =="
+    | project "type integer ( 19 ) as R_REGIONKEY R_REGIONKEY , type integer ( 19 ) as O_ORDERKEY O_ORDERKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR"
+    | hash "type INTEGER ( 19 ) O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerE on all partitions :
+    indexJoin ${testName2}_LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice , type DECIMAL ( 19  2 ) as l_discount l_discount"
+    | hash "type INTEGER ( 19 ) L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerF on all partitions :
+    indexJoin ${testName2}_part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
+    | filter "type BOOLEAN P_TYPE 'ECONOMY ANODIZED TIN' =="
+    | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice , type DECIMAL ( 19  2 ) as l_discount l_discount"
+    | hash "type INTEGER ( 19 ) L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerG on all partitions :
+    indexJoin ${testName2}_supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice , type DECIMAL ( 19  2 ) as l_discount l_discount"
+    | combined 0
     | next
 
-  stage S05 on origin :
-      output
+  stage stageMarkerH on all partitions :
+    indexJoin ${testName2}_nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY , type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * , type VARCHAR ( 0 ) as NATION N_NAME"
+    | combined 0
+    | next
+
+  stage stageMarkerI on all partitions :
+    gbyAgg " groupBy type INTEGER ( 19 ) O_YEAR aggregates type INTEGER ( 19 ) as O_YEAR $K1 , type DECIMAL ( 19  2 )  ) VOLUME sum  , type DECIMAL ( 19  2 ) )  } type DECIMAL ( 19  2 ) NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerJ on all nodes :
+    gbyAgg " groupBy type INTEGER ( 19 ) O_YEAR aggregates  type INTEGER ( 19 ) as O_YEAR $K1 , type DECIMAL ( 19  2 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $3 sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerK on origin :
+    gbyAgg " groupBy  type INTEGER ( 19 ) O_YEAR aggregates  type INTEGER ( 19 ) as O_YEAR $K1 , type DECIMAL ( 19  2 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $3 sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerL on origin :
+    project " type INTEGER ( 19 ) as O_YEAR O_YEAR , type DECIMAL ( 19  2 ) as mkt_share $3 $2 /  "
+    | sort " type INTEGER ( 19 ) as o_year $1 ASC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
     | sink
     | first
-
 end ;
 
-
-/*
-// SE-321
-create table orderby3(a float);
-load orderby3 "../DATA/y.csv";
-select * from orderby3 order by a;
-
-/keepCodeFile
-select a, a > -3.34645966e-306 from orderby3;
-
-*/
-/*
-FIXED
-// SE-320
-create table orderby1(km varchar,sid varchar,cj integer);
-create index orderby1_idx1 on orderby1(km);
-create index orderby1_idx2 on orderby1(sid);
-load orderby1 "../DATA/z.csv";
-
-select km1,sid1,cj1,sum(case when cj1<cj2 then 1 when cj1=cj2 and sid1>sid2 then 1 else 0 end)+1 f
-from
-(select zc.km km1,zc.sid sid1,zc.cj cj1,zc2.km km2,zc2.sid sid2,zc2.cj cj2 from  orderby1 zc join orderby1 zc2 on zc.km=zc2.km) a
-group by km1,sid1,cj1
-order by km1,sum(case when cj1<cj2 then 1 when cj1=cj2 and sid1>sid2 then 1 else 0 end)+1;
-*/
-
-/*
-select km1,sid1,cj1,sum(case when cj1<cj2 then 1 when cj1=cj2 and sid1>sid2 then 1 else 0 end)+1 f
-from
-(select zc.km km1,zc.sid sid1,zc.cj cj1,zc2.km km2,zc2.sid sid2,zc2.cj cj2 from  orderby1 zc join orderby1 zc2 on zc.km=zc2.km) a
-group by km1,sid1,cj1
-order by km1,f;
-
-*/

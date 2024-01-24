@@ -1,23 +1,28 @@
 /*============================================================================*/
 /* _alka1                                                                     */
 /*============================================================================*/
-_nation;
-load nation "../TPCH/SF_0001/nation.tbl";
+CREATE TABLE LINEITEM (
+l_orderkey integer NOT NULL,
+l_partkey integer NOT NULL,
+l_suppkey integer NOT NULL,
+l_linenumber integer NOT NULL,
+l_quantity decimal(15,2) NOT NULL,
+l_extendedprice decimal(15,2) NOT NULL,
+l_discount decimal(15,2) NOT NULL,
+l_tax decimal(15,2) NOT NULL,
+l_returnflag varchar NOT NULL,
+l_linestatus varchar NOT NULL,
+l_shipdate timestamp NOT NULL,
+l_commitdate timestamp NOT NULL,
+l_receiptdate timestamp NOT NULL,
+l_shipinstruct varchar(25) NOT NULL,
+l_shipmode varchar(10) NOT NULL,
+l_comment varchar(44) NOT NULL
+);
 
-select (0.3*3)+0.1 = 1.0e0 from nation where n_nationkey = 1;
-select (0.3*3)+0.1 >= 1.0e0 from nation where n_nationkey = 1;
-select (0.3*3)+0.1 > 1.0e0 from nation where n_nationkey = 1;
+create index li_idx3 on LINEITEM(l_shipinstruct);
 
-select (0.3*3)+0.1 <= 1.0e0 from nation where n_nationkey = 1;
-select (0.3*3)+0.1 < 1.0e0 from nation where n_nationkey = 1;
+load LINEITEM "../TPCH/SF_0001/lineitem.tbl";
 
-create table orderby3(a float);
-load orderby3 "../DATA/y.csv";
+/keepCodeFile select * from lineitem;
 
-/keepCodeFile
-select * from orderby3 order by a;
-//issue：The sorting result of the float column is incorrect，-3.346459668e-306 should be larger than -3.345078968e-02
-
-/useCodeFile = "_unnamed__NODE1_16" select * from orderby3;
-
-select -3.346459668e-306 >= -3.345078968e-02 from nation where n_nationkey = 1;

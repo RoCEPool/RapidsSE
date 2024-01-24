@@ -109,44 +109,44 @@ pipeline Query9
 
   stage S06 on all partitions :
     indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR as NATION J1_N_NAME ,
+    | project "type VARCHAR ( 0 ) as NATION J1_N_NAME ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    aggreg "groupBy type VARCHAR NATION ,
+    aggreg "groupBy type VARCHAR ( 0 ) NATION ,
                     type INTEGER O_YEAR
             aggregates
-                    type VARCHAR as NATION $K1 ,
+                    type VARCHAR ( 0 ) as NATION $K1 ,
                     type INTEGER as O_YEAR $K2 ,
                     type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    aggreg "groupBy type VARCHAR NATION ,
+    aggreg "groupBy type VARCHAR ( 0 ) NATION ,
                     type INTEGER O_YEAR
             aggregates
-                     type VARCHAR as NATION $K1 ,
+                     type VARCHAR ( 0 ) as NATION $K1 ,
                      type INTEGER as O_YEAR $K2 ,
                      type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    aggreg "groupBy type VARCHAR NATION ,
+    aggreg "groupBy type VARCHAR ( 0 ) NATION ,
                     type INTEGER O_YEAR
             aggregates
-                     type VARCHAR as NATION $K1 ,
+                     type VARCHAR ( 0 ) as NATION $K1 ,
                      type INTEGER as O_YEAR $K2 ,
                      type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR as NATION NATION ASC ,
+    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
           type INTEGER as O_YEAR O_YEAR DESC"
     | combined 0
     | next

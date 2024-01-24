@@ -2213,6 +2213,7 @@ i8 Backend::iGetLength(eCT eCTType) {
 		case CT_INTERVAL_YM:
 		case CT_TIME:
 		case CT_TIMESTAMP:
+		case CT_UNKNOWN:
 			return C_UNKNOWN;
 		break;
 
@@ -2226,7 +2227,6 @@ i8 Backend::iGetLength(eCT eCTType) {
 		break;
 
 		case CT_CHAR:
-		case CT_UNKNOWN:
 		case CT_VARCHAR:
 			return 0;
 		break;

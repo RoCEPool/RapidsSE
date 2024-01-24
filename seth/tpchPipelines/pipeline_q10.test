@@ -17,76 +17,76 @@ begin
 
   stage S01 on all partitions :
     indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
-    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY  O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY"
-    | hash expr type INTEGER O_ORDERKEY
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
+    | hash expr type INTEGER ( 19 ) O_ORDERKEY
     | combined 0
     | next hashcast
 
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
-    | gbyAgg  "groupby    type INTEGER O_CUSTKEY
-               aggregates type INTEGER as O_CUSTKEY $K1 ,
-                          type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
+    | gbyAgg  "groupby    type INTEGER ( 19 ) O_CUSTKEY
+               aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    gbyAgg "groupby    type INTEGER O_CUSTKEY
-            aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type DECIMAL as REVENUE ) REVENUE  sum "
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S05 on origin :
-    gbyAgg "groupby    type INTEGER O_CUSTKEY
-            aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type DECIMAL as REVENUE ) REVENUE  sum"
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
   stage S06 on origin :
-    top " type DECIMAL REVENUE " 20
-    | hash expr type INTEGER O_CUSTKEY
+    top " type DECIMAL ( 19  2 ) REVENUE " 20
+    | hash expr type INTEGER ( 19 ) O_CUSTKEY
     | combined 0
     | next hashcast
 
   stage S07 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as C_NATIONKEY C_NATIONKEY ,
-               type VARCHAR as C_NAME C_NAME ,
-               type DECIMAL as REVENUE ) REVENUE ,
-               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type VARCHAR as C_NAME C_NAME ,
-               type DECIMAL as REVENUE ) REVENUE ,
-               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME N_NAME ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S09 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    sort " type DECIMAL ( 19  2 ) REVENUE ASC  "
     | combined 0
     | next
 

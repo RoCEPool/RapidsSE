@@ -60,33 +60,33 @@ begin
     scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
-    | project expr type INTEGER as _orderkey O_ORDERKEY ,
-                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+    | project expr type INTEGER ( 19 ) as _orderkey O_ORDERKEY ,
+                     type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY
     | keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                          "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
 
   stage G_CNT_P on all partitions :
-    gbyAgg expr groupby type VARCHAR O_ORDERPRIORITY
-                  aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
-                  type INTEGER as ORDER_COUNT ) countAll
+    gbyAgg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+                  aggregates type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+                  type INTEGER ( 19 ) as ORDER_COUNT ) countAll
 
     | combined 0
     | next
 
   stage G_CNT_N on all nodes :
-    gbyAgg expr groupby type VARCHAR O_ORDERPRIORITY
-                  aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
-                  type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+    gbyAgg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+                  aggregates type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+                  type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum
 
     | combined 0
     | next
 
   stage G_CNT_O on origin :
-    gbyAgg expr groupby type VARCHAR O_ORDERPRIORITY
-                  aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
-                  type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+    gbyAgg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+                  aggregates type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+                  type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum
 
     | combined 0
     | next
@@ -139,34 +139,34 @@ begin
     scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                                  O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
-    | project expr type INTEGER as _orderkey O_ORDERKEY ,
-                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-    | hash expr type INTEGER _orderkey
+    | project expr type INTEGER ( 19 ) as _orderkey O_ORDERKEY ,
+                     type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY
+    | hash expr type INTEGER ( 19 ) _orderkey
     | combined 0
     | next hashcast
 
    stage Gs_LINEITEM on all partitions :
      keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | gbyAgg expr groupby type VARCHAR O_ORDERPRIORITY
-                    aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
-                    type INTEGER as ORDER_COUNT ) countAll
+    | gbyAgg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+                    aggregates type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+                    type INTEGER ( 19 ) as ORDER_COUNT ) countAll
 
     | combined 0
     | next
 
   stage G_CNT_N on all nodes :
-    gbyAgg expr groupby type VARCHAR O_ORDERPRIORITY
-                  aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
-                  type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+    gbyAgg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+                  aggregates type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+                  type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum
 
     | combined 0
     | next
 
   stage G_CNT_O on origin :
-    gbyAgg expr groupby type VARCHAR O_ORDERPRIORITY
-                  aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
-                  type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+    gbyAgg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+                  aggregates type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+                  type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum
 
     | combined 0
     | next
