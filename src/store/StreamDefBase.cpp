@@ -612,9 +612,6 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     
     azColNmDst += nNameSize;
     pRowPixDst->m_nTotalChars += nNameSize;
-//    if(axColPixDst->m_uDatum == DM_VCH) {
-//      axColPixDst->m_uLength = 200;
-//    }
   }
 
   // i_Col falls thru

@@ -123,10 +123,6 @@ RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
 
     azColNmDst += nNameSize;
     m_nTotalChars += nNameSize;
-
-    if(axColPixDst->m_uDatum == DM_VCH) {
-      axColPixDst->m_uLength = 200;
-    }
   }
 
   // i_Col falls thru
@@ -237,9 +233,6 @@ void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
 
     azColNmDst += nNameSize;
     pRowPix->m_nTotalChars += nNameSize;
-    if(axColPixDst->m_uDatum == DM_VCH) {
-      axColPixDst->m_uLength = 200;
-    }
   }
 
   pRowPix->m_nTotalChars++;
@@ -342,10 +335,6 @@ void RowPix::vCopyRowPix(RowPix* pSrcRowPix)
     azColNmDst += nNameSize;
     m_nTotalChars += nNameSize;
 
-    if(axColPixDst->m_uDatum == DM_VCH) {
-      axColPixDst->m_uLength = 200;
-    }
-
   }
 
   // i_Col falls thru
@@ -381,10 +370,6 @@ void RowPix::vCopyRowPix(RowPix* pSrcRowPix)
 //
 //    azColNmDst += nNameSize;
 //    m_nTotalChars += nNameSize;
-//
-//    if(axColPixDst->m_uDatum == DM_VCH) {
-//      axColPixDst->m_uLength = 200;
-//    }
 //
 //    //pRowPixDst->vPrint();
 //  }
