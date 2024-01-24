@@ -61,9 +61,6 @@ namespace STORE
     Stz* szPipelineNm(void);
     void vPipelineNm(Stz* szPipelineNm);
 
-    //void vRenumberCards(void);
-
-
     void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
 
     Stz* szXdesc(void);

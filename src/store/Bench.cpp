@@ -238,21 +238,6 @@ void Bench::vPipelineNm(Stz* szPipelineNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear marks                                                                */
-/*----------------------------------------------------------------------------*/
-//void Bench::vRenumberCards(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-//
-//  i8 nBoards = this->nBoards();
-//  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-//    Board *pBoard = this->pGet(i_Board);
-//
-//    pBoard->vRenumberCards();
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
 void Bench::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)

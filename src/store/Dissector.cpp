@@ -102,32 +102,35 @@ void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-void Dissector::vSubPipe(i8 i_SubPipeSpec)
+void Dissector::vSubPipe(i8 i_SubPipe)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
   Stz* sSubPipeNm;
   Stz* szSqyNm;
-  if (C_UNKNOWN == i_SubPipeSpec) {
-    sSubPipeNm = "mainSQ"_Stz;
-
-    if (MY::pJob()->bHasTag("<pipelineName>"_Stz))
-      szSqyNm = MY::pJob()->pJobTags()->szValue("<pipelineName>"_Stz);
-    else
+  if (C_UNKNOWN == i_SubPipe) {
+    if (MY::pJob()->bHasTag("<pipelineName>"_Stz)) {
+      sSubPipeNm = MY::pJob()->pJobTags()->szValue("<pipelineName>"_Stz);
+      szSqyNm = sSubPipeNm;
+    }
+    else {
+      sSubPipeNm = "mainSQ"_Stz;
       szSqyNm = m_pPipeSpec->szVertexNm();
+    }
+    m_pOptimiser->vQueryNm(szSqyNm);
   }
   else {
     sSubPipeNm = m_pPipeSpec->szVertexNm();
     szSqyNm = m_pPipeSpec->szVertexNm();
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   m_pBoard = new Board(sSubPipeNm,
                        szSqyNm,
-                       BK_SUBQUERY, i_SubPipeSpec + 1,
+                       BK_SUBQUERY,
+                       i_SubPipe + 1,
                        m_pBench);
-
-  m_pOptimiser->vQueryNm(szSqyNm);
-
 
   Card_SubQuery* p_subQuery = new Card_SubQuery;
   m_pBoard->pDeck()->vAppendChild(p_subQuery);
