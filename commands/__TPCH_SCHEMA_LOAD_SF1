@@ -62,15 +62,25 @@ _          _          _          _           _              _
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 trackMemory;
+/*
+old timings
+25 row(s) affected (0.57 sec)
+10,000 row(s) affected (0.97 sec)
+150,000 row(s) affected (1.55 sec)
+200,000 row(s) affected (2.94 sec)
+800,000 row(s) affected (7.05 sec)
+1,500,000 row(s) affected (38.20 sec)
+6,001,215 row(s) affected (38.21 sec)
+*/
 
-file _customer;
-file _lineitem;
-file _nation_replicated;
-file _orders_custkey;
-file _partsupp;
-file _part;
-file _region_replicated;
-file _supplier;
+_customer;
+_lineitem;
+_nation_replicated;
+_orders_custkey;
+_partsupp;
+_part;
+_region_replicated;
+_supplier;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
