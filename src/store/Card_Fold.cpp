@@ -111,6 +111,15 @@ void Card_Fold::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   UNUSED(pParent);
+
+#ifdef WITH_DEBUG_VERSION
+//  if ((pCI->G.p_expr = pSub_expr())) {
+//    pCI->vPrintBoard(__func__,__LINE__,true);
+//    vDump(__func__);
+//    vDebugPoint();
+//  }
+#endif
+
   Card::vValidate(pCI,iDepth,pParent);
   Card_CONSTRUCTION::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
