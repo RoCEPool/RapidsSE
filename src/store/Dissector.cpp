@@ -106,28 +106,27 @@ void Dissector::vSubPipe(i8 i_SubPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
-  Stz* sBoardNm;
-  Stz* szQueryNm;
+  Stz* sSubPipeNm;
+  Stz* szSqyNm;
   if (C_UNKNOWN == i_SubPipeSpec) {
-    sBoardNm = "mainSQ"_Stz;
+    sSubPipeNm = "mainSQ"_Stz;
 
     if (MY::pJob()->bHasTag("<pipelineName>"_Stz))
-      szQueryNm = MY::pJob()->pJobTags()->szValue("<pipelineName>"_Stz);
+      szSqyNm = MY::pJob()->pJobTags()->szValue("<pipelineName>"_Stz);
     else
-      szQueryNm = m_pPipeSpec->szVertexNm();
-
+      szSqyNm = m_pPipeSpec->szVertexNm();
   }
   else {
-    sBoardNm = m_pPipeSpec->szVertexNm();
-    szQueryNm = m_pPipeSpec->szVertexNm();
+    sSubPipeNm = m_pPipeSpec->szVertexNm();
+    szSqyNm = m_pPipeSpec->szVertexNm();
   }
 
-  m_pBoard = new Board(sBoardNm,
+  m_pBoard = new Board(sSubPipeNm,
+                       szSqyNm,
                        BK_SUBQUERY, i_SubPipeSpec + 1,
                        m_pBench);
 
-
-  m_pOptimiser->vQueryNm(szQueryNm);
+  m_pOptimiser->vQueryNm(szSqyNm);
 
 
   Card_SubQuery* p_subQuery = new Card_SubQuery;

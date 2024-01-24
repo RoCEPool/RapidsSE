@@ -95,7 +95,7 @@ void PipelineDef::vPipelineNm(Stz* szPipelineNm)
 
   m_sPipelineNm = szPipelineNm;
 
-  //File::vMakeTempNm(m_sFileNm,szPipelineNm);
+  //File::vMakeTempNm(m_sFileNm,szSubPipeNm);
 
   m_sFileNm.vSprint("%s_%lld"_Stz,szPipelineNm,AM::FILE::iNextFileNo());
 

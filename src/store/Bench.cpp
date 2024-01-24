@@ -122,7 +122,7 @@ Board* Bench::pGetBoard(i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(Stz* szPipelineNm)
+Board* Bench::pGetBoard(Stz* szSubPipeNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -130,7 +130,7 @@ Board* Bench::pGetBoard(Stz* szPipelineNm)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (pBoard->szPipelineNm()->bSame(szPipelineNm))
+    if (pBoard->szSubPipeNm()->bSame(szSubPipeNm))
       return pBoard;
   }
 

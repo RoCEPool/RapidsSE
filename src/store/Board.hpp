@@ -174,7 +174,7 @@ namespace STORE
   {
   protected:
     i8          m_i_Board;
-    s32         m_sPipelineNm;
+    s32         m_sSubPipeNm;
     eBK         m_eBoard;  // joinOrdering, subquery
 
     Bench*      m_pBench;
@@ -195,7 +195,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench);
+    Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBench);
    ~Board(void) noexcept(false);
 
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost);
@@ -207,8 +207,6 @@ namespace STORE
     i8   i_Board(void);
     void vBoardNo(i8 i_Board);
     eBK  eBoard(void);
-    Stz* szPipelineNm(void);
-    void vPipelineNm(Stz* szPipelineNm);
 
     CardCtl* pCardCtl(void);
     void vClearCardMarks(void);
@@ -229,6 +227,8 @@ namespace STORE
     void vRenumberCards(void);
 
     TagSet* pState(void);
+    Stz* szSubPipeNm(void);
+    void vSubPipeNm(Stz* szSubPipeNm);
     SubQuery* pSubQuery(void);
 
     void vValidate(CardIter* pCI);

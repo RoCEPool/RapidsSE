@@ -64,11 +64,14 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_X_BOARD_TO_SQYNM, "shorten query names"_Stz);
 
-  s32 sPipelineNm = m_pCI->G.pBoard->szPipelineNm();
-  if (Symbol::bIs_Sqy_Nm(sPipelineNm)) {
-    i8 iSqyNo = StrLib::iGleanInt(sPipelineNm.azChar());
+  s32 sSubPipeNm = m_pCI->G.pBoard->szSubPipeNm();
+//  s32 sSqyNm = m_pCI->G.pBoard->pSubQuery()->szSqyNm();
+//  RASSERT(sSqyNm.bSame(sSubPipeNm));
+
+  if (Symbol::bIs_Sqy_Nm(sSubPipeNm)) {
+    i8 iSqyNo = StrLib::iGleanInt(sSubPipeNm.azChar());
     Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);
-    m_pCI->G.pBoard->vPipelineNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NM));
+    m_pCI->G.pBoard->vSubPipeNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NM));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

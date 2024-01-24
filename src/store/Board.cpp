@@ -29,20 +29,21 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench)
+Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_i_Board    = i_Board;
-  m_sPipelineNm   = szBoardNm;
-  m_eBoard = eBoard;
+  m_i_Board     = i_Board;
+  m_sSubPipeNm  = szSubPipeNm;
+  m_eBoard      = eBoard;
 
-  m_pBench     = pBench;
+  m_pBench      = pBench;
 
   m_pDeck = new Card_Deck;
 
   m_pSubQuery = new SubQuery(this);
+  m_pSubQuery->vSqyNm(szSqyNm);
 
   m_pState = new TagSet;
 
@@ -247,21 +248,21 @@ eBK Board::eBoard(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* Board::szPipelineNm(void)
+Stz* Board::szSubPipeNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_sPipelineNm;
+  return m_sSubPipeNm;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
-void Board::vPipelineNm(Stz* szPipelineNm)
+void Board::vSubPipeNm(Stz* szSubPipeNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_sPipelineNm = szPipelineNm;
+  m_sSubPipeNm = szSubPipeNm;
 }
 
 /*----------------------------------------------------------------------------*/

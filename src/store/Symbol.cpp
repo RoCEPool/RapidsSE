@@ -43,7 +43,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
-	//m_xTypeId;
+  vCastReset();
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);

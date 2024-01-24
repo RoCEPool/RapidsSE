@@ -18,13 +18,13 @@ namespace STORE
 
     i8   m_iBenchNo;
 
-    i8          m_iXform;
-    s32         m_sXhand;
-    s256        m_sXfunc;
-    s256        m_sXdesc;
-    i8          m_iPrint;
+    i8   m_iXform;
+    s32  m_sXhand;
+    s256 m_sXfunc;
+    s256 m_sXdesc;
+    i8   m_iPrint;
 
-    eXF         m_eXform;
+    eXF  m_eXform;
 
 
   public:
@@ -49,7 +49,7 @@ namespace STORE
     void vEndPhase(CardIter* pCI);
 
     Board* pGetBoard(i8 i_Board);
-    Board* pGetBoard(Stz* szPipelineNm);
+    Board* pGetBoard(Stz* szSubPipeNm);
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
     bool bIsSqyNm(Stz* szSqyNm);
     Optimiser* pOptimiser(void);

@@ -239,7 +239,7 @@ void SubQuery::vDump(void)
   vTrace("SubQuery %p Board %lld (%s) Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          this,
          m_pBoard->i_Board(),
-         m_pBoard->szPipelineNm(),
+         m_pBoard->szSubPipeNm(),
          m_i_Caller,
          aQC[m_eClause],
          aQD[m_eDisposition],
@@ -325,7 +325,7 @@ Stz* SubQuery::szSqyNm(void)
 /*----------------------------------------------------------------------------*/
 void SubQuery::vSqyNm(Stz* szSqyNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
   m_sSqyNm = szSqyNm;
 }

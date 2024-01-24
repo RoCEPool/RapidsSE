@@ -382,7 +382,7 @@ void JobMetrics::vUpdate(Job* pJob)
   }
   
 //  vTrace("  Pipeline %s\n"_Stz
-//         ,pPipelineMetrics->szPipelineNm());
+//         ,pPipelineMetrics->szSubPipeNm());
 
   Vertex* pPipeWork = pPipeline->pVertexRoot();
   while (CN_STAGEMETRICS == eNextClassNo(d_MetricsCursor)) {
