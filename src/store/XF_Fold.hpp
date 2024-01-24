@@ -58,11 +58,11 @@ namespace STORE
 
     void vDerive_Correleted_fold_projection(CardIter* pCI);
 
-    void vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ, Stz* szCrlPpy);
+    void vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* szCrlPpy);
 
-    CarryForward* pFold_from(Stz* szFold, CardIter* pCI);
+    CarryForward* pFold_from(Stz* szFoldNm, CardIter* pCI);
 
-    CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
+    CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
                                     eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh);
 
     i8 nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ);

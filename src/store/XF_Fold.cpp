@@ -206,7 +206,7 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a sub-query (before outer-query)                                   */
 /*----------------------------------------------------------------------------*/
-void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ, Stz* szCrlPpy)
+void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* szCrlPpy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
@@ -216,7 +216,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ, Stz* szCr
   pCI->vBeginEachReverse();
   if (pCI->G_bEachMainWithSub_reverse_foldBreak_b(eCardWithSQ, CK_BOOLPRED)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
-      vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
+      vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
     }
   }
@@ -251,9 +251,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ, Stz* szCr
   pCI->G_vPopIter();
 
   // 5) add <fold> (before MQ)
-  //pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
-  (pCI->G.p_fold = new Card_Fold) -> SYM(SF_FLD_NM, szFold);
-  pCI->G.p_fold->pSymbol()->Y_vSet(szCrlPpy);
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, szCrlPpy);
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppendChild(pCI->G.p_level);
@@ -304,7 +302,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ, Stz* szCr
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a from                                                                */
 /*----------------------------------------------------------------------------*/
-CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
+CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
@@ -316,9 +314,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
   //vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
  // pCI->vPrintBoard(__func__,__LINE__);
 
-//  pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
-  (pCI->G.p_fold = new Card_Fold) -> SYM(SF_FLD_NM, szFold);
-  pCI->G.p_fold->pSymbol()->Y_vSet(P_CrlSqy);
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy);
 
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
@@ -363,7 +359,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
-CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
+CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
                                          eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
@@ -378,7 +374,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
-      vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
+      vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
     }
   }
@@ -401,9 +397,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   pCI->G_vPopIter();
 
   // 5) add <fold> (before MQ)
-//  pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
-  (pCI->G.p_fold = new Card_Fold) -> SYM(SF_FLD_NM, szFold);
-  pCI->G.p_fold->pSymbol()->Y_vSet(P_NonCrlSqy);
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_NonCrlSqy);
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppendChild(pCI->G.p_level);

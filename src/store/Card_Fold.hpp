@@ -16,6 +16,8 @@ namespace STORE
     Card_Fold(void);
    ~Card_Fold(void) noexcept(false);
 
+    static Card_Fold* pCraft_fold(Stz* szFoldNm, Stz* szCrlPpy);
+
     static void vMorph_to_flat(CardIter* pCI);
 
     static void vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold);

@@ -42,6 +42,21 @@ Card_Fold::~Card_Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, Stz *szCrlPpy)
+{
+  _static_
+
+  Card_Fold* p_fold = new Card_Fold;
+
+  p_fold->pSymbol()->vFacet(SF_FLD_NM, szFoldNm);
+  p_fold->pSymbol()->Y_vSet(szCrlPpy);
+
+  return p_fold;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Fold::vMorph_to_flat(CardIter* pCI)
 {
   _static_
