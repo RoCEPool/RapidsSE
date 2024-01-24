@@ -683,8 +683,6 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   UNUSED(azCsvChunk);
   UNUSED(pCsvMeta);
 
-  pPdsRowBuffer()->nFreeBytes();
-
   // change this to some no longer strib function
   ASSERT(StrLib::nSize(azCsvChunk) < C_1MB);
   
@@ -707,6 +705,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   bool bPixNullable;
 
   char* aStzSet;
+  i8 nMaxFreeBytes = 0;
 
   //
   
@@ -827,7 +826,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
-  
+
   ColPix* aColPix = pPdsRowBuffer()->m_oRowPix.axaColPixArray();
   i8 nCols = m_pStreamDef->nColumns();
 
@@ -893,8 +892,6 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // 1) advance to next record in csv chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_AdvanceNextRecord:
-
-  pPdsRowBuffer()->nFreeBytes();
   
   if (iTraceBits & C_BIT_TestMoreRecords)
     vTrace("\nL_AdvanceNextRecord: >>%s<<\n"_Stz,
@@ -961,17 +958,15 @@ L_AdvanceNextRecord:
   // reset field cursor
   i_Fld = -1;
 
-  pPdsRowBuffer()->nFreeBytes();
-
+  nMaxFreeBytes = pPdsRowBuffer()->nFreeBytes();
   // allot a new row (new another PdsRowBuffer if necessary)
-  if ( (pPdsRowBuffer()->nFreeBytes() < C_2KB) || (! pPdsRowBuffer()->pAllotRow())) {    // ? inline ?
+  if ( (nMaxFreeBytes < C_2KB) || (! pPdsRowBuffer()->pAllotRow())) {    // ? inline ?
     vNewPdsRowBuffer();
     Row* aNewRow = pPdsRowBuffer()->pAllotRow();
+    nMaxFreeBytes = pPdsRowBuffer()->nFreeBytes();
     RASSERT(aNewRow);
     UNUSED(aNewRow);
   }
-
-  pPdsRowBuffer()->nFreeBytes();
 
   //                                                      end of testMoreRecords
 
@@ -980,8 +975,6 @@ L_AdvanceNextRecord:
   // 2) while more fields of current record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_NextFieldInRecord:
-
-  pPdsRowBuffer()->nFreeBytes();
   
   ASSERT(EC_NONE == eError);
 
@@ -2095,8 +2088,8 @@ L_Varchar_unquoted:
   
   // allocate string space in slab
 
-  if(pPdsRowBuffer()->nFreeBytes() < nPixLength)
-    nPixLength = pPdsRowBuffer()->nFreeBytes();
+  if(nMaxFreeBytes < nPixLength)
+    nPixLength = nMaxFreeBytes;
 
   aStzSet = pPdsRowBuffer()->azDepositString_begin();
 
@@ -2160,8 +2153,8 @@ L_Varchar_singleQuoted:
     vTrace("L_Varchar_singleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  if(pPdsRowBuffer()->nFreeBytes() < nPixLength)
-    nPixLength = pPdsRowBuffer()->nFreeBytes();
+  if(nMaxFreeBytes < nPixLength)
+    nPixLength = nMaxFreeBytes;
 
   aStzSet = pPdsRowBuffer()->azDepositString_begin();
 
@@ -2281,8 +2274,8 @@ L_Varchar_doubleQuoted:
     vTrace("L_Varchar_doubleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  if(pPdsRowBuffer()->nFreeBytes() < nPixLength)
-    nPixLength = pPdsRowBuffer()->nFreeBytes();
+  if(nMaxFreeBytes < nPixLength)
+    nPixLength = nMaxFreeBytes;
 
   aStzSet = pPdsRowBuffer()->azDepositString_begin();
 
@@ -2401,8 +2394,8 @@ L_Varchar_userEnclosed:
     vTrace("L_Varchar_userEnclosed:\n"_Stz);
   
   // allocate string space in slab
-  if(pPdsRowBuffer()->nFreeBytes() < nPixLength)
-    nPixLength = pPdsRowBuffer()->nFreeBytes();
+  if(nMaxFreeBytes < nPixLength)
+    nPixLength = nMaxFreeBytes;
 
   aStzSet = pPdsRowBuffer()->azDepositString_begin();
 
@@ -2498,8 +2491,6 @@ L_Varchar_setNull:
   // 4) processing at end of field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_FieldEnd:
-
-  pPdsRowBuffer()->nFreeBytes();
 
   if (iTraceBits & C_BIT_PostField)
     vTrace("L_FieldEnd: prvChr=%s curChr=%s nxtChr=%s csvCrs >>%s<<\n"_Stz,
