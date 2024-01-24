@@ -52,15 +52,15 @@
   //profile.end
 
   // test for any completed
-  ToKeyHshRow[].completed to RowBuffer[]
+  ToKeyHshRow[].completed to Pds[]
   begin
-    RowBuffer[].isNull not
+    Pds[].isNull not
   while
-    RowBuffer[].pipeOut
-    ToKeyHshRow[].completed to RowBuffer[]
+    Pds[].pipeOut
+    ToKeyHshRow[].completed to Pds[]
   repeat
 
-  RowBuffer[].isNull assert
+  Pds[].isNull assert
 
   CsvBuffer[].delete
 
@@ -73,12 +73,12 @@
 : toKeyHshRow_EosMarker \handler
 
   // test for any remainders
-  ToKeyHshRow[].dangling to RowBuffer[]
+  ToKeyHshRow[].dangling to Pds[]
   begin
-    RowBuffer[].isNull not
+    Pds[].isNull not
   while
-    RowBuffer[].pipeOut
-    ToKeyHshRow[].dangling to RowBuffer[]
+    Pds[].pipeOut
+    ToKeyHshRow[].dangling to Pds[]
   repeat
 
 
@@ -86,12 +86,11 @@
   // pipeout load results
   
   ToKeyHshRow[].countersAreZero not if
-    BT_DATA TableDef[] RowBuffer[].new
-    BT_AFFECTEDROWS RowBuffer[].bufferType!
+    BT_AFFECTEDROWS TableDef[] Pds[].new
 
-    0 0 0 ToKeyHshRow[].counters@@ 6 RowBuffer[].addRowVargs
+    0 0 0 ToKeyHshRow[].counters@@ 6 Pds[].addRowVargs assert
 
-    RowBuffer[].pipeOut
+    Pds[].pipeOut
   then
 
 

@@ -35,7 +35,7 @@ namespace STORE
 
     void vListContents(i8 i_Depth, Dic* pDic);
   
-    void vSearch(RowBuffer* pInfpRowBufferoSet,
+    void vSearch(Pds* pInfoPdsSet,
                  i8 iScope,
                  Stz* szCatalogName,
                  Stz* szSchemaName,
@@ -47,63 +47,63 @@ namespace STORE
                  Dic* pCatalog = nullptr,
                  Dic* pSchema = nullptr);
 
-    void vSearchCatalogs(RowBuffer* pRowBuffer,
+    void vSearchCatalogs(Pds* pPds,
                          Dic* pCatalog);
   
-    void vSearchColumns(RowBuffer* pRowBuffer,
+    void vSearchColumns(Pds* pPds,
                         Dic* pCatalog,
                         Dic* pSchema,
                         Table* pTable,
                         Stz* szColumnName);
 
-    void vSearchIndexColumns(RowBuffer* pRowBuffer,
+    void vSearchIndexColumns(Pds* pPds,
                         Dic* pCatalog,
                         Dic* pSchema,
                         Table* pTable,
                         Index* pIndex,
                         Stz* szColumnName);
 
-    void vSearchIndexes(RowBuffer* pRowBuffer,
+    void vSearchIndexes(Pds* pPds,
                         Dic* pCatalog,
                         Dic* pSchema,
                         Table* pTable,
                         Stz* szIndexName);
 
-    void vSearchSchemas(RowBuffer* pRowBuffer,
+    void vSearchSchemas(Pds* pPds,
                         Dic* pCatalog,
                         Dic* pSchema);
   
-    void vSearchTables(RowBuffer* pRowBuffer,
+    void vSearchTables(Pds* pPds,
                        Dic* pCatalog,
                        Dic* pSchema,
                        Table* pTable);
 
-		RowBuffer* pColumnDefs(Stz* szCatalogName,
+		Pds* pColumnDefs(Stz* szCatalogName,
                          Stz* szSchemaName,
                          Stz* szTableName,
                          Stz* szColumnName);
 
-		RowBuffer* pIndexColumnDefs(Stz* szCatalogName,
+		Pds* pIndexColumnDefs(Stz* szCatalogName,
                               Stz* szSchemaName,
                               Stz* szTableName,
                               Stz* szIndexName,
                               Stz* szColumnName);
 
-		RowBuffer* pPartitionKey(Stz* szCatalogName,
+		Pds* pPartitionKey(Stz* szCatalogName,
                          Stz* szSchemaName,
                          Stz* szTableName);
 
-		RowBuffer* pLookupCatalog(Stz* szCatalogName);
+		Pds* pLookupCatalog(Stz* szCatalogName);
 
-		RowBuffer* pLookupIndex(Stz* szCatalogName,
+		Pds* pLookupIndex(Stz* szCatalogName,
                           Stz* szSchemaName,
                           Stz* szTableName,
                           Stz* szIndexName);
 
-		RowBuffer* pLookupSchema(Stz* szCatalogName,
+		Pds* pLookupSchema(Stz* szCatalogName,
                              Stz* szSchemaName);
 
-		RowBuffer* pLookupTable(Stz* szCatalogName,
+		Pds* pLookupTable(Stz* szCatalogName,
                             Stz* szSchemaName,
                             Stz* szTableName);
   

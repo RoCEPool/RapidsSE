@@ -19,7 +19,6 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "CrwTablePtn.hpp"
-#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

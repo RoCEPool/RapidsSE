@@ -5,8 +5,6 @@
 
 #include "RowSingle.hpp"
 
-#include "CrwToRow.hpp"
-#include "ToLglPtnNst.hpp"
 #include "ToKeyHshRow.hpp"
 #include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
@@ -87,7 +85,6 @@ namespace STORE
     REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
 
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
-    REG<CrwToRow,       CN_CRWTOROW      > m_xpCrwToRow;
     REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
 
     REG<DataBuffer,     CN_NONE          > m_xpDataBuffer;
@@ -118,7 +115,6 @@ namespace STORE
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
 
     REG<Operand,        CN_NONE          > m_xpMarker;
-    REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog;
     REG<MetaGet,        CN_METAGET       > m_xpMetaGet;
 
     REG<Node,           CN_NODE          > m_xpNode;
@@ -131,7 +127,10 @@ namespace STORE
 
     REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
+    REG<Pds,            CN_PDS           > m_xpPds;
     REG<PdsCursor,      CN_PDSCURSOR     > m_xpPdsCursor;
+    REG<Pds,            CN_PDS           > m_xpPdsErr;
+    REG<Pds,            CN_PDS           > m_xpPdsWarn;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
@@ -143,9 +142,6 @@ namespace STORE
     REG<Object,         CN_NONE          > m_xpRecvdObject;
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
 		REG<Row,            CN_ROW           > m_xpRow;
-    REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
-		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferErr;
-		REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBufferWarn;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
     REG<RowCounts,      CN_ROWCOUNTS     > m_xpRowCounts;
 
@@ -175,7 +171,6 @@ namespace STORE
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<ToKeyHshRow,    CN_TOKEYHSHROW   > m_xpToKeyHshRow;
     REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
-    REG<ToLglPtnNst,    CN_TOLGLPTNNST   > m_xpToLglPtnNst;
     REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
@@ -208,6 +203,7 @@ namespace STORE
 
     bool (*m_afFun0)(void*);
     bool (*m_afFun1)(void*);
+    bool (*m_afFun1_)(void*);
     bool (*m_afFun2)(void*);
     bool (*m_afFun3)(void*);
     bool (*m_afFun4)(void*);

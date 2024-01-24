@@ -413,7 +413,7 @@ void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 /*----------------------------------------------------------------------------*/
 /* Update the state after an error is received from the SQL compiler          */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vCompilerError(RowBuffer* pRowBuffer)
+void AdaptorWL::vCompilerError(Pds* pPds)
 {
   ASSERT(m_pStmtCtx);
 
@@ -425,9 +425,9 @@ void AdaptorWL::vCompilerError(RowBuffer* pRowBuffer)
     return;
   }
 
-  ASSERT(pRowBuffer->eBufferType() == BT_COMPILEERRORS);
+  ASSERT(pPds->eBufferType() == BT_COMPILEERRORS);
 
-  Row *pInfoRow = pRowBuffer->pFirstRow();
+  Row *pInfoRow = pPds->pFirstRow();
 
   //Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
@@ -453,11 +453,11 @@ void AdaptorWL::vCompilerError(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* Update the state after an error is received from the execution engine      */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vExecutionError(RowBuffer* pRowBuffer)
+void AdaptorWL::vExecutionError(Pds* pPds)
 {
-  ASSERT(pRowBuffer->eBufferType() == BT_EXECERRORS);
+  ASSERT(pPds->eBufferType() == BT_EXECERRORS);
 
-  Row *pInfoRow = pRowBuffer->pFirstRow();
+  Row *pInfoRow = pPds->pFirstRow();
 
   //Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
@@ -512,7 +512,7 @@ void AdaptorWL::vExecutionError(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* Handle a warning received from the execution engine                        */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vExecutionWarning(RowBuffer* pRowBuffer)
+void AdaptorWL::vExecutionWarning(Pds* pPdsRowBuffer)
 {
   ASSERT(m_pStmtCtx);
 
@@ -520,9 +520,9 @@ void AdaptorWL::vExecutionWarning(RowBuffer* pRowBuffer)
     return;
   }
 
-  ASSERT(pRowBuffer->eBufferType() == BT_WARNINGS);
+  ASSERT(pPdsRowBuffer->eBufferType() == BT_WARNINGS);
 
-  Row *pInfoRow = pRowBuffer->pFirstRow();
+  Row *pInfoRow = pPdsRowBuffer->pFirstRow();
 
   ASSERT(!pInfoRow->bIsColNull(0));
 
@@ -539,7 +539,7 @@ void AdaptorWL::vExecutionWarning(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* Accumulate any affected row counts for the current statement               */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vAffectedRowCount(RowBuffer* pRowBuffer)
+void AdaptorWL::vAffectedRowCountPds(Pds* pPdsRowBuffer)
 {
   if (!bCheckState( {API_STATEMENT_SUBMITTED, API_STATEMENT_COMPLETED} )) {
     return;
@@ -553,11 +553,11 @@ void AdaptorWL::vAffectedRowCount(RowBuffer* pRowBuffer)
   }
 
   ASSERT(m_pStmtCtx);
-  ASSERT(pRowBuffer->eBufferType() == BT_AFFECTEDROWS);
-  ASSERT(pRowBuffer->nRows() == 1);
+  ASSERT(pPdsRowBuffer->eBufferType() == BT_AFFECTEDROWS);
+  ASSERT(pPdsRowBuffer->nItems() == 1);
 
-  Row *pInfoRow = pRowBuffer->pFirstRow();
-  ASSERT(pRowBuffer);
+  Row *pInfoRow = pPdsRowBuffer->pFirstRow();
+  ASSERT(pPdsRowBuffer);
 
   i8 iRowsProcessed = pInfoRow->iColVal_int(0);
   i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
@@ -858,7 +858,7 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* Send row data to the client                                                */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
+void AdaptorWL::vPdsRowData(Pds* pPdsRowBuffer)
 {
   ASSERT(m_pStmtCtx);
   ASSERT(m_pStmtCtx->pStreamDef());
@@ -879,7 +879,7 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
   // Work out how many rows from this RowBuffer to serialise
   i8 iStartingRow = 0;
   d8 dScalingFactor = 1.0;  // if the serialised form doesn't fit in a single payload buffer
-  i8 iRowsInBuf = pRowBuffer->nRows();
+  i8 iRowsInBuf = pPdsRowBuffer->nItems();
   i8 iMaxRowsThatFit = 0; // how many did we sucessfully fit in a RowDataResponse?
 
   // We might need to send multiple RowDataResponses for this RowBuffer.
@@ -908,11 +908,23 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
       iMaxRowsThatFit = 0;
     }
 
+    // Find the SkipListBlock entry containing the row
+    SkipListBlock* pSkipListBlock = pPdsRowBuffer->pFind(&iStartingRow);
+    RASSERT(pSkipListBlock);
+
+    // Init a PdsCursor, and start iterating at this entry
+    PdsCursor* pPdsCursor = new PdsCursor(pPdsRowBuffer, pSkipListBlock);
+
 
     for (i8 i_Row = iStartingRow; i_Row < iStartingRow + iRowsToSend; i_Row++) {
-      Row* pRow = pRowBuffer->pRowAddress(i_Row);
+      Row* pRow = pPdsCursor->pCurrRow();
+      RASSERT(pRow);
       vCreateAndAddRow(&xRowList, pRow, pRowPix);
+      pPdsCursor->vNext();
     }
+
+    pPdsCursor->m_pPds = nullptr;
+    delete pPdsCursor;
 
     ASSERT( (i8) xRowList.size() == iRowsToSend);
 
@@ -929,7 +941,7 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
       if (dScalingFactor < 1.0 && iRowsToSend == 1) {
         m_pStmtCtx->vGotError(true);
         eEC eErrCode = EC_WL_ROW_TOO_BIG;
-        Stz* szErrMsg = "Error: %s; %s; %lld bytes"_Stz;
+        Stz* szErrMsg = "Error: %s; %s; %ldd bytes"_Stz;
         vSerialiseErrorResponse(eErrCode,
                                 szErrMsg,
                                 aEC2[eErrCode],

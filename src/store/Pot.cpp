@@ -4,7 +4,6 @@
 
 #include "BASE.h"
 
-#include "RowBuffer.hpp"
 #include "LglPtnMap.hpp"
 #include "Pot.hpp"
 
@@ -26,8 +25,8 @@ __aFooterFunction(Pot)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_PotAllotRow(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
-  return Pot::aAllotRow((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
+extern "C" void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) {
+  return Pot::aAllotRowPds((Pot*)pPot, iKeyHash, (char**)aazStrArea, pnMaxStrAreaLen, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,13 +41,6 @@ extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
 /*----------------------------------------------------------------------------*/
 extern "C" void vExtern_PotRowPix(void* pPot, void* pRowPix) {
   Pot::vSetRowPix((Pot*)pPot, (RowPix*)pRowPix);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a new row                                                            */
-/*----------------------------------------------------------------------------*/
-void* aPot_AllotRow(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
-  return Pot::aAllotRow((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +86,7 @@ Pot::~Pot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
+void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
 {
   _static_
 
@@ -105,32 +97,29 @@ void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
     //i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
     LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHash);
 
-    // get row buffer for given partition (new a first buffer if ncessary)
-    RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
+    RowPix* pRowPix = pPot->m_pRowPix;
 
-    if (! pDstRowBuffer) {
-
-      pDstRowBuffer = new RowBuffer;
-      pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-      pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
+    // get pds row buffer for given partition (new a first buffer if ncessary)
+    Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
+    if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
+      pPdsRowBuffer = new Pds(pRowPix);
+      pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
     }
 
-    // new a row in row buffer (new another row buffer if necessary)
-    aDstRow = pDstRowBuffer->pAllotRow();
+    // new a row in pds row buffer (new another pds row buffer if necessary)
+    aDstRow = pPdsRowBuffer->pAllotRow();
     if (! aDstRow) {
-      pDstRowBuffer = new RowBuffer;
-      pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-      pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
-      //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-      aDstRow = pDstRowBuffer->pAllotRow();
-      ASSERT(aDstRow);
+      pPdsRowBuffer = new Pds(pRowPix);
+      pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
+      aDstRow = pPdsRowBuffer->pAllotRow();
+      RASSERT(aDstRow);
     }
+    *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+    *pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
 
-    pDstRowBuffer->vLglPtn(tLglPtn);
+    pPdsRowBuffer->vLglPtn(tLglPtn);
 
-    *aazStrArea = pDstRowBuffer->azDepositString_begin();
-
-    return aDstRow->aCellArray();;
+    return aDstRow->aCellArray();
 
   }
   catch (LowMemory xLowMemory) {
@@ -152,9 +141,9 @@ void Pot::vRowStrSize(Pot* pPot, i8 iKeyHsh, i8 nRowStrSize)
   //i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
   LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHsh);
 
-  RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
+  Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
 
-  pRowBuffer->vTakeHead(nRowStrSize);
+  pPdsRowBuffer->vDepositString_end(nRowStrSize);
 
 }
 
@@ -193,7 +182,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   PotPdsItem oSearchKey;
-  oSearchKey.iLglPtn = i_Ptn + 1;
+  oSearchKey.iLglPtn = i_Ptn;
   oSearchKey.iSynthKey = C_INT_MAX;
 
   // Find the last block that is less than LglPtn,Max key
@@ -205,8 +194,8 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
 
     // If the LglPtn value matches, we found a buffer part of this LglPtn chain
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
-    if(pItem != nullptr && pItem->iLglPtn == (i_Ptn + 1)) {
-      RASSERT(pItem->oBufferId.m_bIdFlag == 1);
+    if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
+      RASSERT(BufferId::bIsBufferId(pItem->oBufferId));
       return _pDataBuffer(BufferId::aAddressFromId(pItem->oBufferId));
     }
   }
@@ -221,12 +210,9 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
-  // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
-  i8 iLglPtnKey = i_Ptn + 1;
-
   PotPdsItem oSearchKey;
   // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
-  oSearchKey.iLglPtn = iLglPtnKey;
+  oSearchKey.iLglPtn = i_Ptn;
   oSearchKey.iSynthKey = C_INT_MIN;
 
   // Get the first block that is greater than LglPtn,Min
@@ -237,7 +223,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
     PotPdsItem* pItem = (PotPdsItem*) pHead->aItem();
 
     // If this block doesn't match our LglPtn key, return nullptr
-    if(pItem != nullptr && pItem->iLglPtn != iLglPtnKey) {
+    if(pItem != nullptr && pItem->iLglPtn != i_Ptn) {
       return nullptr;
     }
 
@@ -249,13 +235,13 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
       PotPdsItem* pNextItem = (PotPdsItem*) pNextBlock->aItem();
       RASSERT(pNextItem != nullptr);
 
-      if(pNextItem->iLglPtn == iLglPtnKey) {
+      if(pNextItem->iLglPtn == i_Ptn) {
         // Next block exists for this LglPtn chain
         // Which means our current buffer is a completed buffer
 
         // Extract the buffer id
         BufferId oBufferId = pItem->oBufferId;
-        RASSERT(oBufferId.m_bIdFlag == 1);
+        RASSERT(BufferId::bIsBufferId(oBufferId));
 
         // Remove this block from the pds
         bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
@@ -278,7 +264,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   PotPdsItem oSearchKey;
-  oSearchKey.iLglPtn = i_Ptn + 1;
+  oSearchKey.iLglPtn = i_Ptn;
   oSearchKey.iSynthKey = C_INT_MAX;
   // Find the buffer part of this LglPtn at the front of the queue.
   // There may be more than one.
@@ -295,9 +281,9 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     // if the LglPtn matches.
-    if(pItem != nullptr && pItem->iLglPtn == (i_Ptn + 1)) {
+    if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
       BufferId oBufferId = pItem->oBufferId;
-      RASSERT(oBufferId.m_bIdFlag == 1);
+      RASSERT(BufferId::bIsBufferId(oBufferId));
       bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
       RASSERT(bResult);
       return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
@@ -310,7 +296,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
+Row* Pot::aNewDstRow(i8 i_Ptn, Pds** ppPdsRowBuffer,bool* pbNewBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
@@ -322,40 +308,28 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
   *pbNewBuffer = false;
 
+  // get pds row buffer for given partition (new a first buffer if ncessary)
+  Pds* pPdsRowBuffer = _pPds(pBuffer(tLglPtn));
+  if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
 
-  // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(pBuffer(i_Ptn));
-  if (! pDstRowBuffer) {
-
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pRowPix);
-    vAddBuffer(i_Ptn,pDstRowBuffer);
-    //vTrace("Newed: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-  }
-  else {
-    //vTrace("Exist: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+    pPdsRowBuffer = new Pds(m_pRowPix);
+    vAddBuffer(tLglPtn,pPdsRowBuffer);
   }
 
-  // new a row in row buffer (new another row buffer if necessary)
-  aDstRow = pDstRowBuffer->pAllotRow();
+  // new a row in pds row buffer (new another pds row buffer if necessary)
+  aDstRow = pPdsRowBuffer->pAllotRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pRowPix);
-    vAddBuffer(i_Ptn,pDstRowBuffer);
-    //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-    aDstRow = pDstRowBuffer->pAllotRow();
+    pPdsRowBuffer = new Pds(m_pRowPix);
+    vAddBuffer(tLglPtn,pPdsRowBuffer);
+    aDstRow = pPdsRowBuffer->pAllotRow();
     ASSERT(aDstRow);
   }
 
   tLglPtn = i_Ptn;
-  pDstRowBuffer->vLglPtn(tLglPtn);
+  pPdsRowBuffer->vLglPtn(tLglPtn);
 
-  * ppRowBuffer = pDstRowBuffer;
-
-  //vTrace("Allot: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-  //if (pDstRowBuffer->nRows() < 2)
-  //  vDebugPoint();
+  * ppPdsRowBuffer = pPdsRowBuffer;
 
   return aDstRow;
 }
@@ -400,12 +374,11 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   // Append a buffer to this pds
   // Use a synthetic key to ensure the buffers are added in ascending order
   PotPdsItem oItem;
-  oItem.iLglPtn = i_Ptn + 1;
-  oItem.iSynthKey = ++m_iSynthKey;
+  oItem.iLglPtn = i_Ptn;
+  oItem.iSynthKey = m_iSynthKey;
   oItem.oBufferId = pAddBuffer->oGetBufferId();
-
-  RASSERT(oItem.oBufferId.m_iAsI8 != 0);
-  RASSERT(oItem.oBufferId.m_bIdFlag == 1);
+  m_iSynthKey++;
+  RASSERT(BufferId::bIsBufferId(oItem.oBufferId));
 
   SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
   RASSERT(pResultBlock != nullptr);

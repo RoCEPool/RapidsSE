@@ -18,8 +18,11 @@ void Step::vAddSteps_PdsCursor(void)
 
   vAddStep("PdsCursor[].getItemAddr"_Stz,         &Step::vPdsCursorItemAddr);
   vAddStep("PdsCursor[].currIsNotNull"_Stz  ,     &Step::vPdsCursorCurrIsNotNull);
+  vAddStep("PdsCursor[].new"_Stz  ,               &Step::vPdsCursorNew);
   vAddStep("PdsCursor[].next"_Stz,                &Step::vPdsCursorNext);
+  vAddStep("PdsCursor[].row"_Stz  ,               &Step::vPdsCursorRow);
   vAddStep("PdsCursor[].set"_Stz  ,               &Step::vPdsCursorSet);
+  vAddStep("PdsCursor[].delete"_Stz  ,             &Step::vPdsCursorDelete);
 }
 /*----------------------------------------------------------------------------*/
 /* PdsCursor[].getItemAddr -- get the start addr of the item in this pds block */
@@ -61,6 +64,22 @@ void Step::vPdsCursorCurrIsNotNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* PdsCursor[].new -- new a pds cursor                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsCursorNew(void)
+{
+  ENTRY();
+
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+  RASSERT(pPds != nullptr);
+  PdsCursor* pCursor = new PdsCursor(pPds);
+
+  m_pLogicUnit->m_xpPdsCursor = pCursor;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* PdsCursor[].next -- get next block in the pds                              */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsCursorNext(void)
@@ -74,6 +93,20 @@ void Step::vPdsCursorNext(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* PdsCursor[].row -- get current row in the pds                              */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsCursorRow(void)
+{
+  ENTRY();
+
+  PdsCursor* pPdsCursor = _pPdsCursor(*m_pLogicUnit->m_xpPdsCursor);
+  SkipListBlock* pSLBlock = pPdsCursor->m_pCurrentBlock;
+  RASSERT(pSLBlock != nullptr);
+  m_pDataStack->vPushPtr((Row*)pSLBlock->aRow());
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* PdsCursor[].set -- set the cursor                                          */
@@ -83,6 +116,19 @@ void Step::vPdsCursorSet(void)
   ENTRY();
 
   m_pLogicUnit->m_xpPdsCursor = _pPdsCursor(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PdsCursor[].delete -- delete the cursor                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsCursorDelete(void)
+{
+  ENTRY();
+
+  m_pLogicUnit->m_xpPdsCursor->m_pPds = nullptr;
+  m_pLogicUnit->m_xpPdsCursor.vDeleteComponent();
 
   EXIT();
 }

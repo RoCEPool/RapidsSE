@@ -22,10 +22,10 @@
 : rowToList_seapi
 
   "rowToList_seapi" .
-  
+
   List[].new
 
-  List[].addRowBuffer
+  List[].addPds
   
   List[]
 ;
@@ -58,22 +58,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                     ROWBUFFER */
+/* handler for EV_D_PDSROWBUFFER ...                                          */
 /*----------------------------------------------------------------------------*/
-: rowToList_RowBuffer \handler
+: rowToList_PdsRowBuffer \handler
 
-  Pipein[]\clear to RowBuffer[]
+  Pipein[]\clear to Pds[]
 
-  // handle onlt BT_DATA
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
+  // handle only BT_DATA
+  Pds[].bufferType@ BT_DATA != if
+    Pds[].pipeout
     true
     exit
   then
 
-  RowBuffer[] List[].addRowBuffer
+  Pds[] List[].addPds
 
-  RowBuffer[].pipeOut
+  Pds[].pipeOut
 
   true
 ;
@@ -91,7 +91,7 @@
   op__topology
 
   find: rowToList_Cleaning    EV_M_CLEANING    [op].handler!
-  find: rowToList_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: rowToList_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
   find: rowToList_StartMarker EV_M_START       [op].handler!
   find: rowToList_StreamDef   EV_D_STREAMDEF   [op].handler!
 

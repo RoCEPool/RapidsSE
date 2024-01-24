@@ -105,15 +105,15 @@ namespace STORE
     void vStatementSubmitted();
     void vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg);
     void vStatementSubmissionFailed(eEC eErrCode);
-    void vCompilerError(RowBuffer* pRowBuffer);
-    void vExecutionError(RowBuffer* pRowBuffer);
-    void vExecutionWarning(RowBuffer* pRowBuffer);
-    void vAffectedRowCount(RowBuffer* pRowBuffer);
+    void vCompilerError(Pds* pPds);
+    void vExecutionError(Pds* pPds);
+    void vExecutionWarning(Pds* pPdsRowBuffer);
+    void vAffectedRowCountPds(Pds* pPdsRowBuffer);
     void vChildJobExited();
     bool bIsChildJobActive();
     void vResultMetadata(StreamDef* pStreamDef);
     void vRowData(CrwBuffer* pCrwBuffer);
-    void vRowData(RowBuffer* pRowBuffer);
+    void vPdsRowData(Pds* pPdsRowBuffer);
     void vQueryComplete();
     void vQueryReceipt(TaskList* pTaskList);
 

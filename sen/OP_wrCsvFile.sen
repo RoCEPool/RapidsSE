@@ -42,20 +42,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
+/* handler for EV_D_PDSROWBUFFER ...                                          */
 /*----------------------------------------------------------------------------*/
-: wrCsvFile_RowBuffer \handler
+: wrCsvFile_PdsRowBuffer \handler
 
-  PipeIn[]\clear to RowBuffer[]
+  PipeIn[]\clear to Pds[]
 
   // pipeout buffers other than BT_DATA
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
+  Pds[].bufferType@ BT_DATA != if
+    Pds[].pipeout
     true
     exit
   then
 
-  // write the ROWBUFFER to file
+  // write the PDSROWBUFFER to file
 
   true
 ;
@@ -85,7 +85,7 @@
   find: wrCsvFile_Cleaning    EV_M_CLEANING    [op].handler!
   find: wrCsvFile_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
   find: wrCsvFile_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
-  find: wrCsvFile_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: wrCsvFile_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
   find: wrCsvFile_StartMarker EV_M_START       [op].handler!
 
   op__loop

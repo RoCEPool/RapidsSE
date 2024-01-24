@@ -17,7 +17,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_CHILDEXIT,
   /*  */ LR_COMBINED,
   /*  */ LR_CRWBUFFER,
-  /*  */ LR_CRWTOROW,
   /*  */ LR_CSVBUFFER,
   
   /*  */ LR_DATABUFFER,
@@ -62,7 +61,10 @@ enum eLR // Logic Unit Registers
   /*  */ LR_OPTIMISER,
   
   /*  */ LR_PARCEL,
+  /*  */ LR_PDS,
 	/*  */ LR_PDSCURSOR,
+  /*  */ LR_PDSERR,
+  /*  */ LR_PDSWARN,
   /*  */ LR_PATHIDENTIFIER,
   /*  */ LR_PIPEIN,
   /*  */ LR_PIPELINE,
@@ -77,7 +79,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_ROW,
   /*  */ LR_ROWBUFFER,
 	/*  */ LR_ROWBUFFERERR,
-	/*  */ LR_ROWBUFFERWARN,
   /*  */ LR_ROWONCE,
   /*  */ LR_ROWCOUNTS,
 
@@ -109,7 +110,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_TINYC,
   /*  */ LR_TOKEYHSHROW,
   /*  */ LR_TOLGLPTNCRW,
-  /*  */ LR_TOLGLPTNNST,
   /*  */ LR_TOLGLPTNROW,
   /*  */ LR_TUB,
   /*  */ LR_TX,

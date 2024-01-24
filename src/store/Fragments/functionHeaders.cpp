@@ -121,6 +121,19 @@ int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
   return 0;
 }
 
+//function-__FUNCTION_PDSROW__
+
+// marker-start
+/*--------------------------------------------------------------------*/
+/* flattened function -- PDSROWBUFFER HANDLER                         */
+/*--------------------------------------------------------------------*/
+int __FUNCTION_PDSROW__(struct Dynamic_T* aDynamicT)
+{
+  // marker-end
+
+  return 0;
+}
+
 // function-vRowIndexContinue
 /*--------------------------------------------------------------------*/
 /* vRowIndexContinue --                                               */

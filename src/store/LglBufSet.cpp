@@ -59,15 +59,16 @@ void LglBufSet::vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer)
   // Use a synthetic key to ensure the buffers are added in ascending order
   LglBufSetItem oItem;
 
-  oItem.iLglPtn = tLglPtn.iAsI8() + 1;
-  oItem.iSynthKey = ++m_iSynthKey;
+  oItem.iLglPtn = tLglPtn.iAsI8();
+  oItem.iSynthKey = m_iSynthKey;
   oItem.oBufferId = pDataBuffer->oGetBufferId();
 
-  RASSERT(oItem.oBufferId.m_iAsI8 != 0);
-  RASSERT(oItem.oBufferId.m_bIdFlag == 1);
+  RASSERT(BufferId::bIsBufferId(oItem.oBufferId));
 
   SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
   RASSERT(pResultBlock != nullptr);
+
+  m_iSynthKey++;
 
   *(LglBufSetItem*)(pResultBlock->aItem()) = oItem;
 }
@@ -80,7 +81,7 @@ DataBuffer* LglBufSet::pBuffer(LglPtn tLglPtn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   LglBufSetItem oSearchKey;
-  oSearchKey.iLglPtn = tLglPtn.iAsI8() + 1;
+  oSearchKey.iLglPtn = tLglPtn.iAsI8();
   oSearchKey.iSynthKey = C_INT_MAX;
 
   // Find the last block that is less than LglPtn,Max key
@@ -92,8 +93,8 @@ DataBuffer* LglBufSet::pBuffer(LglPtn tLglPtn)
 
     // If the LglPtn value matches, we found a buffer part of this LglPtn chain
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
-    if(pItem != nullptr && pItem->iLglPtn == (tLglPtn.iAsI8() + 1)) {
-      RASSERT(pItem->oBufferId.m_bIdFlag == 1);
+    if(pItem != nullptr && pItem->iLglPtn == tLglPtn.iAsI8()) {
+      RASSERT(BufferId::bIsBufferId(pItem->oBufferId));
       return _pDataBuffer(BufferId::aAddressFromId(pItem->oBufferId));
     }
   }
@@ -117,7 +118,7 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
   // c) [Root-Block]-->NULL
 
   // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
-  i8 iLglPtnKey = tLglPtn.iAsI8() + 1;
+  i8 iLglPtnKey = tLglPtn.iAsI8();
 
   LglBufSetItem oSearchKey;
   oSearchKey.iLglPtn = iLglPtnKey;
@@ -149,7 +150,7 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
 
         // Extract the buffer id
         BufferId oBufferId = pItem->oBufferId;
-        RASSERT(oBufferId.m_bIdFlag == 1);
+        RASSERT(BufferId::bIsBufferId(oBufferId));
 
         // Remove this block from the pds
         bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
@@ -173,7 +174,7 @@ DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   LglBufSetItem oSearchKey;
-  oSearchKey.iLglPtn = tLglPtn.iAsI8() + 1;
+  oSearchKey.iLglPtn = tLglPtn.iAsI8();
   oSearchKey.iSynthKey = C_INT_MIN;
 
   // Get the first block that is greater than LglPtn,Min
@@ -185,9 +186,9 @@ DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
 
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     // If the LglPtn matches.
-    if(pItem != nullptr && pItem->iLglPtn == (tLglPtn.iAsI8() + 1)) {
+    if(pItem != nullptr && pItem->iLglPtn == tLglPtn.iAsI8()) {
       BufferId oBufferId = pItem->oBufferId;
-      RASSERT(oBufferId.m_bIdFlag == 1);
+      RASSERT(BufferId::bIsBufferId(oBufferId));
       bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
       RASSERT(bResult);
       return _pDataBuffer(BufferId::aAddressFromId(oBufferId));

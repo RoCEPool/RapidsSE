@@ -108,14 +108,14 @@
   // Create and send the stream definition. This will populate TableDef[].
   memoryleaks_sendStreamDef
 
-  // create a rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   // Record the memory object allocations
-  TableDef[] RowBuffer[].addMemoryLeaks if
-    RowBuffer[].pipeOut
+  Pds[].addMemoryLeaks if
+    Pds[].pipeOut
   else
-    RowBuffer[].delete
+    Pds[].delete
   then
 
   // Stop tracking memory

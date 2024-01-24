@@ -265,7 +265,7 @@
 
     //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
     "default_abnormalHandlers" FIND execute
-    "toggle_rowBufferHandler" FIND execute
+    "toggle_PdsRowBufferHandler" FIND execute
     //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
     true
@@ -330,7 +330,7 @@
 
     //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
     "default_abnormalHandlers" FIND execute
-    "toggle_rowBufferHandler" FIND execute
+    "toggle_PdsRowBufferHandler" FIND execute
     //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
     true

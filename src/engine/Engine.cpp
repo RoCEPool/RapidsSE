@@ -1002,7 +1002,7 @@ void Engine::vLowMemoryDiscard(void)
   gxaSizeHeap[CN_CRWBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_CSVBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_PROFILE].m_bLowMemoryDiscard   = true;
-  gxaSizeHeap[CN_ROWBUFFER].m_bLowMemoryDiscard = true;
+  gxaSizeHeap[CN_PDS].m_bLowMemoryDiscard = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1250,7 +1250,6 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_PARCEL].m_fpPostRecvFn    = (fpPOSTFN*)Parcel::vPostRecv;
   gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
   gxaSizeHeap[CN_REJECTJOB].m_fpPostRecvFn = (fpPOSTFN*)RejectJob::vPostRecv;
-  gxaSizeHeap[CN_ROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)RowBuffer::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
   gxaSizeHeap[CN_STREAMDEFRHT].m_fpPostRecvFn = (fpPOSTFN*)StreamDefRht::vPostRecv;
   gxaSizeHeap[CN_TABLE].m_fpPostRecvFn     = (fpPOSTFN*)Table::vPostRecv;

@@ -22,8 +22,8 @@ __aFooterFunction(Tub)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
-  return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea, piErrorCode);
+extern "C" void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) {
+  return Tub::aAllotRowPds((Tub*)pTub, aazStrArea, pnMaxStrAreaLen, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,13 +38,6 @@ extern "C" void vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) {
 /*----------------------------------------------------------------------------*/
 extern "C" void vExtern_TubRowPix(void* pTub, void* pRowPix) {
   Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a new row                                                            */
-/*----------------------------------------------------------------------------*/
-void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
-  return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,9 +98,9 @@ void Tub::vRepair(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a new row                                                            */
+/* allot a new row in a pds                                                   */
 /*----------------------------------------------------------------------------*/
-void* Tub::aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode)
+void* Tub::aAllotRowPds(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
 {
   _static_
 
@@ -116,25 +109,25 @@ void* Tub::aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode)
 
     RowPix* pRowPix = pTub->pRowPix();
 
-    RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
-    if (! pRowBuffer) {
-      pRowBuffer = new RowBuffer;
-      pRowBuffer->vCopyRowPix(pRowPix);
-      pTub->vAddBuffer(pRowBuffer);
+    Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
+
+    if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
+      pPdsRowBuffer = new Pds(pRowPix);
+      pTub->vAddBuffer(pPdsRowBuffer);
     }
 
-    Row* pRow = pRowBuffer->pAllotRow();
+    Row* pRowDst = pPdsRowBuffer->pAllotRow();
 
-    if (! pRow) {
-      pRowBuffer = new RowBuffer;
-      pTub->vAddBuffer(pRowBuffer);
-      pRowBuffer->vCopyRowPix(pRowPix);
-      pRow = pRowBuffer->pAllotRow();
-      ASSERT(pRow);
+    if (pRowDst == nullptr) {
+      pPdsRowBuffer = new Pds(pRowPix);
+      pTub->vAddBuffer(pPdsRowBuffer);
+      pRowDst = pPdsRowBuffer->pAllotRow();
+      RASSERT(pRowDst);
     }
 
-    *aazStrArea = pRowBuffer->azDepositString_begin();
-    return pRow->aCellArray();
+    *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+    *pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
+    return pRowDst->aCellArray();
   }
   catch (LowMemory xLowMemory) {
     *piErrorCode = EC_LOW_MEMORY;
@@ -151,9 +144,9 @@ void Tub::vRowStrSize(Tub* pTub, i8 nRowStrSize)
   
   RASSERT(CN_TUB == pTub->eGetClassNo());
 
-  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+  Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
 
-  pRowBuffer->vTakeHead(nRowStrSize);
+  pPdsRowBuffer->vDepositString_end(nRowStrSize);
 
 }
 
@@ -168,6 +161,51 @@ void Tub::vSetRowPix(Tub* pTub, RowPix* pRowPix)
 
   pTub->vRowPix(pRowPix);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert Pds into one or more csv tub buffers                               */
+/*----------------------------------------------------------------------------*/
+void Tub::vToCsv(Tub* pTub, Pds* pPds)
+{
+  _static_
+  HV_Record hvRecord(pPds->pRowPix());
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(pTub->pWorkingBuffer());
+  if (! pCsvBuffer) {
+    pCsvBuffer = new CsvBuffer;
+    pTub->vAddBuffer(pCsvBuffer);
+  }
+
+  i8 nSize = 0;
+  Stz* szRecord = nullptr;
+
+  PdsCursor* pCursor = new PdsCursor(pPds);
+  while( ! pCursor->bIsCurrNull()) {
+    Row* aRow = pCursor->pCurrRow();
+    RASSERT(aRow);
+
+    Stz* szRow = hvRecord->sz(aRow,true);
+    nSize = szRow->nSize();
+
+    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
+      pCsvBuffer = new CsvBuffer;
+      pTub->vAddBuffer(pCsvBuffer);
+    }
+
+    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
+    StrLib::vCopy(szRecord->azChar(), nSize, szRow->azChar());
+    pCursor->vNext();
+  }
+
+  pCursor->m_pPds = nullptr;
+  delete pCursor;
+
+  if (szRecord)
+    ((char*)szRecord)[nSize-1] = '\0';
+
+  //vTrace("End: %s\n"_Stz,pCsvBuffer->szRecords());
+  //vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

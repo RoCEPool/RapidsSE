@@ -25,9 +25,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                                 EACH */
+/* on EV_D_PDSROWBUFFER ...                                              EACH */
 /*----------------------------------------------------------------------------*/
-: toLglPtnRow_RowBuffer \handler
+: toLglPtnRow_PdsRowBuffer \handler
 
   // check for low memory
   /*
@@ -38,28 +38,28 @@
     exit
   then
  */
-  PipeIn[]\clear to RowBuffer[]
+  PipeIn[]\clear to Pds[]
 
   // handle BT_DATA only
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
+  Pds[].bufferType@ BT_DATA != if
+    Pds[].pipeout
     true
     exit
   then
 
-  Table[] RowBuffer[] toLglPtnRow[].convert
-  RowBuffer[].delete
+  Table[] Pds[] toLglPtnRow[].convert
+  Pds[].delete
 
   ptnmap::ptnsInGrid 0
   do
 
-    I toLglPtnRow[].completed to RowBuffer[]
+    I toLglPtnRow[].completed to Pds[]
 
     begin
-      RowBuffer[].isNull not
+      Pds[].isNull not
     while
-      RowBuffer[].pipeOut
-      I toLglPtnRow[].completed to RowBuffer[]
+      Pds[].pipeOut
+      I toLglPtnRow[].completed to Pds[]
     repeat
 
   loop
@@ -75,13 +75,13 @@
   ptnmap::ptnsInGrid 0
   do
 
-    I toLglPtnRow[].dangling to RowBuffer[]
+    I toLglPtnRow[].dangling to Pds[]
 
     begin
-      RowBuffer[].isNull not
+      Pds[].isNull not
     while
-      RowBuffer[].pipeOut
-      I toLglPtnRow[].dangling to RowBuffer[]
+      Pds[].pipeOut
+      I toLglPtnRow[].dangling to Pds[]
     repeat
 
   loop
@@ -107,7 +107,7 @@
 
   find: toLglPtnRow_EosMarker   EV_M_EOS         [op].handler!
   find: toLglPtnRow_DataMarker  EV_M_DATAPULSE   [op].handler!
-  find: toLglPtnRow_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: toLglPtnRow_PdsRowBuffer EV_D_PDSROWBUFFER   [op].handler!
   find: toLglPtnRow_StartMarker EV_M_START       [op].handler!
 
   op__loop

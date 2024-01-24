@@ -186,7 +186,7 @@ rows:
   (10,135)
   (20,1)
 
-/optimise_passthru 
+/optimise_passthru
 pipeline Query13
 begin
   stage S00 on origin :
@@ -211,7 +211,23 @@ begin
     | combined 0
     | next
 
-  stage S04 on origin :
+  stage S04 on all nodes :
+    gbyAgg " groupBy    type INTEGER as c_custkey $1
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER  )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg " groupBy    type INTEGER as c_custkey $1
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER  )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
     gbyAgg " groupBy    type INTEGER as c_count $2
              aggregates
                         type INTEGER $K1 ,
@@ -219,13 +235,13 @@ begin
     | combined 0
     | next
 
-  stage S05 on origin :
+  stage S07 on origin :
     sort " type INTEGER $1  ,
            type INTEGER as c_count $2  "
     | combined 0
     | next
 
- stage S06 on origin :
+ stage S08 on origin :
    output
    | sink
    | first

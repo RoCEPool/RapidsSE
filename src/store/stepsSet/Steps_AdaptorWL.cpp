@@ -25,13 +25,14 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].executionError"_Stz,      &Step::vAdaptorWLExecutionError);
   vAddStep("AdaptorWL[].executionWarning"_Stz,    &Step::vAdaptorWLExecutionWarning);
-  vAddStep("adaptorWL[].affectedRowCount"_Stz,    &Step::vAdaptorWLAffectedRowCount);
+  vAddStep("adaptorWL[].affectedRowCountPds"_Stz,    &Step::vAdaptorWLAffectedRowCountPds);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].hasQuery"_Stz,            &Step::vAdaptorWLHasQuery);
   vAddStep("AdaptorWL[].isAbortEarly"_Stz,        &Step::vAdaptorWLIsAbortEarly);
   vAddStep("AdaptorWL[].isChildJobActive"_Stz,    &Step::vAdaptorWLIsChildJobActive);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz,  &Step::vAdaptorWLNextPayloadToSendFetch);
   vAddStep("AdaptorWL[].payloadCreateTime@"_Stz,  &Step::vAdaptorWLPayloadCreateTime);
+  vAddStep("AdaptorWL[].pds"_Stz,                 &Step::vAdaptorWLPdsRowBuffer);
   vAddStep("AdaptorWL[].processWLMsg"_Stz,        &Step::vAdaptorWLProcessWLMsg);
   vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
   vAddStep("AdaptorWL[].protocolErrorTest"_Stz,   &Step::vAdaptorWLProtocolErrorTest);
@@ -39,7 +40,6 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].queryReceipt"_Stz,        &Step::vAdaptorWLQueryReceipt);
   vAddStep("AdaptorWL[].queryStr@"_Stz,           &Step::vAdaptorWLQueryStrPush);
   vAddStep("AdaptorWL[].resultMetadata"_Stz,      &Step::vAdaptorWLResultMetadata);
-  vAddStep("AdaptorWL[].rowBuffer"_Stz,           &Step::vAdaptorWLRowBuffer);
   vAddStep("AdaptorWL[].statementToSubmit"_Stz,   &Step::vAdaptorWLStatementToSubmit);
   vAddStep("AdaptorWL[].stmtParsingErr"_Stz,      &Step::vAdaptorWLStatementParsingError);
   vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);
@@ -100,11 +100,11 @@ void Step::vAdaptorWLCompilerError(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-	RowBuffer* pRowBuffer = * m_pLogicUnit->m_xpRowBufferErr;
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eBufferType() == BT_COMPILEERRORS);
+	Pds* pPds = * m_pLogicUnit->m_xpPdsErr;
+  ASSERT(pPds);
+  ASSERT(pPds->eBufferType() == BT_COMPILEERRORS);
 
-  pAdaptorWL->vCompilerError(pRowBuffer);
+  pAdaptorWL->vCompilerError(pPds);
 
   EXIT();
 }
@@ -151,11 +151,11 @@ void Step::vAdaptorWLExecutionError(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  RowBuffer* pRowBuffer = * m_pLogicUnit->m_xpRowBufferErr;
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eBufferType() == BT_EXECERRORS);
+  Pds* pPds = * m_pLogicUnit->m_xpPdsErr;
+  ASSERT(pPds);
+  ASSERT(pPds->eBufferType() == BT_EXECERRORS);
 
-  pAdaptorWL->vExecutionError(pRowBuffer);
+  pAdaptorWL->vExecutionError(pPds);
 
   EXIT();
 }
@@ -168,28 +168,28 @@ void Step::vAdaptorWLExecutionWarning(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-	RowBuffer* pRowBuffer = * m_pLogicUnit->m_xpRowBufferWarn;
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eBufferType() == BT_WARNINGS);
+  Pds* pPdsRowBuffer = * m_pLogicUnit->m_xpPdsWarn;
+  ASSERT(pPdsRowBuffer);
+  ASSERT(pPdsRowBuffer->eBufferType() == BT_WARNINGS);
 
-  pAdaptorWL->vExecutionWarning(pRowBuffer);
+  pAdaptorWL->vExecutionWarning(pPdsRowBuffer);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* adaptorWL[].affectedRowCount -- Accumulate affected row counts             */
+/* adaptorWL[].affectedRowCountPds -- Accumulate affected row counts             */
 /*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLAffectedRowCount(void)
+void Step::vAdaptorWLAffectedRowCountPds(void)
 {
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  RowBuffer* pRowBuffer = * m_pLogicUnit->m_xpRowBuffer;
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eBufferType() == BT_AFFECTEDROWS);
+  Pds* pPdsRowBuffer = * m_pLogicUnit->m_xpPds;
+  ASSERT(pPdsRowBuffer);
+  ASSERT(pPdsRowBuffer->eBufferType() == BT_AFFECTEDROWS);
 
-  pAdaptorWL->vAffectedRowCount(pRowBuffer);
+  pAdaptorWL->vAffectedRowCountPds(pPdsRowBuffer);
 
   EXIT();
 }
@@ -388,18 +388,18 @@ void Step::vAdaptorWLIsChildJobActive(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* adaptorWL[].rowBuffer -- Received a row buffer from the execution engine   */
+/* adaptorWL[].pds -- Received a pds row buffer from the execution engine     */
 /*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLRowBuffer(void)
+void Step::vAdaptorWLPdsRowBuffer(void)
 {
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
+  Pds* pPdsRowBuffer = _pPds(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pPdsRowBuffer);
+  ASSERT(pPdsRowBuffer->eGetClassNo() == CN_PDS);
 
-  pAdaptorWL->vRowData(pRowBuffer);
+  pAdaptorWL->vPdsRowData(pPdsRowBuffer);
 
   EXIT();
 }

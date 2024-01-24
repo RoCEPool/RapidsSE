@@ -475,6 +475,47 @@ i8 iPotTubContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- iPotTubContinue_pds -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iPotTubContinue_pds
+i8 iPotTubContinue_pds(Dynamic_T* aDynamicT) {
+
+	char* szStrArea;
+	ColumnInfo xColumnInfo;
+
+	i8 __COLUMNS_OUT__;
+	RowInfo __ROW_INFO_TO__;
+
+	__L_LABEL_LOOP__:
+
+	// marker-start
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
+
+	// process the row ?
+	if ( ! aDynamicT->m_bProcessRow ) {
+		aDynamicT->m_bProcessRow = true;
+		goto __L_LABEL_LOOP__;
+	}
+
+	// allocate a row from the tub
+#ifdef WITH_CLANG
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+#endif
+
+	// check for error
+	if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+		return 0;
+	}
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
+
+	// marker-end
+
+	return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- iEosPotTubBegin ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iEosPotTubBegin
@@ -544,6 +585,46 @@ i8 iEosPotTubBody(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- iEosPotTubBody_pds ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosPotTubBody_pds
+i8 iEosPotTubBody_pds(Dynamic_T* aDynamicT) {
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
+	RowInfo __ROW_INFO_TO__;
+
+	{
+		// marker-start
+
+		// check for error
+		if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+			return 0;
+		}
+
+		aDynamicT->m_iRowsProcessed = 1;
+		aDynamicT->m_xRowInfoAT.m_bInitialize = false;
+	}
+
+	// any rows processed ?
+	if (!aDynamicT->m_iRowsProcessed)
+		goto L_Return;
+
+	// allocate a row from the tub
+#ifdef WITH_CLANG
+  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+#endif
+	if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+		return 0;
+	}
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
+
+	// marker-end
+	L_Return:
+	return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- iEosPLPotTub ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iEosPLPotTub
@@ -565,6 +646,33 @@ i8 iEosPLPotTub(Dynamic_T* aDynamicT) {
     }
 
     p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
+
+  // marker-end
+  L_Return:
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iEosPLPotTub_pds --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosPLPotTub_pds
+i8 iEosPLPotTub_pds(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+  RowInfo __ROW_INFO_TO__;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate a row from the tub/pot
+#ifdef WITH_CLANG
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+#endif
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+    return 0;
+  }
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
 
   // marker-end
   L_Return:
@@ -898,12 +1006,14 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
   char* szSrcStz;
   char* szDstStz;
+  char* azStringDyn;
 
   void* amCellAddress;
 
   i8 iElemSize;
   i8 nSrcSize;
   i8 iOffset;
+  i8 nMaxStrAreaLen;
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -916,31 +1026,44 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     iElemSize += 8;
   }
   else {
-    szDstStz = __ROW_INFO_TO__.m_acStrArea;
+		szDstStz = azStringDyn;
 
 		i8 iDstBufLen = __ROW_INFO_TO__.m_nStringAreaSize;
 
 #ifdef WITH_CLANG
-    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, iDstBufLen, szSrcStz);
+    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, nMaxStrAreaLen, szSrcStz);
 
 //    for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
 //      printf("%c ", szDstStz[i_Byte]);
 //    printf("\n");
 #endif
-    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
 
-    iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
+    // save the string offset
+    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
+    iOffset = - nDifference(azStringDyn, amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
-    // update the tub string size
+    // Store the len of string copied
     i8 iDstLen = strlen(szDstStz) + 1;
-		__ROW_INFO_TO__.m_nStringAreaSize -= nSrcSize;
-		__ROW_INFO_TO__.m_acStrArea += iDstLen;
+
+    // update the tub string size
+    __ROW_INFO_TO__.m_nStringAreaSize -= iDstLen;
+    __ROW_INFO_TO__.m_acStrArea += iDstLen;
+
+    // Add SrcSize to ElemSize since payload keys are on 8 byte boundries
+    // SrcSize is rounded up to an 8 byte value
+    iElemSize += nSrcSize;
+
 #ifdef WITH_CLANG
+    // Below function uses nSrcSize to update Pds
+    // So replace nSrcSize with iDstLen
+    nSrcSize = iDstLen;
+
+    // Take string size bytes from Head area of Pds
     __EXTERN_ROWSTRSIZE__;
 #endif
-
-    iElemSize += nSrcSize;
+    // update string address to point to the next string area in the pds
+    azStringDyn = azStringDyn + nSrcSize;
   }
   // marker-end
 }
@@ -1020,6 +1143,8 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
   char* __STRING_AREA_TO__;
   RowInfo __ROW_INFO_TO__;
 
+  char* azStringDyn;
+
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column __COLUMN_NO__
@@ -1032,7 +1157,8 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
   }
   else {
     // get the destination string
-    szDstStz = __ROW_INFO_TO__.m_acStrArea;
+
+    szDstStz = azStringDyn;
 
 		nSrcSize = strlen(szSrcStz) + 1;
 		char *d = szDstStz;
@@ -1044,17 +1170,19 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
 
     *d = '\0';
 
-    // copy the source to the destination
+    // save the string offset
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
-    iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
+    iOffset = - nDifference(azStringDyn, amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
-    // update the tub string size
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
 
 #ifdef WITH_CLANG
     __EXTERN_ROWSTRSIZE__;
 #endif
+
+    // update string address to point to the next string area in the pds
+    azStringDyn = azStringDyn + nSrcSize;
   }
 
   // marker-end
@@ -1193,6 +1321,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 
   char* szSrcStz;
   char* szDstStz;
+  char* azStringDyn;
   m8* amCellAddress;
 
 	RowInfo __ROW_INFO_TO__;
@@ -1222,7 +1351,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      nSrcSize = strlen(szSrcStz) + 1;
 
      // get the destination string
-     szDstStz = __ROW_INFO_TO__.m_acStrArea;
+     szDstStz = azStringDyn;
 
 		 char *d = szDstStz;
 		 const char *s = (char*)szSrcStz;
@@ -1233,16 +1362,21 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 
 		 *d = '\0';
 
-     // copy the source to the destination
+     // save the string offset
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
-     iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
+     iOffset = - nDifference(azStringDyn, amCellAddress);
      p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
      // update the tub string size
      __ROW_INFO_TO__.m_acStrArea += nSrcSize;
+
 #ifdef WITH_CLANG
+     // Take string size bytes from Head area of Pds
      __EXTERN_ROWSTRSIZE__;
 #endif
+
+    // update string address to point to the next string area in the pds
+     azStringDyn = azStringDyn + nSrcSize;
   }
 
   // marker-end

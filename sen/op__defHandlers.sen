@@ -20,11 +20,11 @@
 /*----------------------------------------------------------------------------*/
 /* perform a simple pipein delete on behalf of an abnormal handler            */
 /*----------------------------------------------------------------------------*/
-: ABNORMAL_ROWBUFFER_DATA
+: ABNORMAL_PDSROWBUFFER_DATA
 
   0 locals| eBufferType |
 
-  //PipeIn[].name PipeIn[].bufferType@ [op].ptnId@ "ABNORMAL_ROWBUFFER_DATA P%v %v %v" str.format .
+  //PipeIn[].name PipeIn[].bufferType@ [op].ptnId@ "ABNORMAL_PDSROWBUFFER_DATA P%v %v %v" str.format .
 
   PipeIn[].bufferType@ to eBufferType
 
@@ -75,9 +75,9 @@
 : EV_D_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
 : EV_D_JOB_handler              \handler STANDARD_PIPEOUT ;
 : EV_D_PARCEL_handler           \handler STANDARD_PIPEOUT ;
+: EV_D_PDSROWBUFFER_handler     \handler STANDARD_PIPEOUT ;
 : EV_D_PAYLOAD_handler          \handler STANDARD_PIPEOUT ;
 : EV_D_PLANOPERAND_handler      \handler STANDARD_PIPEOUT ;
-: EV_D_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_STREAMDEF_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
@@ -323,7 +323,7 @@
 
   //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
   "default_abnormalHandlers" FIND execute
-  "toggle_rowBufferHandler" FIND execute
+  "toggle_PdsRowBufferHandler" FIND execute
   //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
 
@@ -391,7 +391,7 @@
   //[op].opName@ "SETTING default_abnormalHandlers for OP %v" str.format .
 
   find: ABNORMAL_PIPEIN_DELETE      locals| abnormalHandler |
-  find: ABNORMAL_ROWBUFFER_DATA     locals| abnormalRowBufferHandler |
+  find: ABNORMAL_PDSROWBUFFER_DATA  locals| abnormalPdsRowBufferHandler |
   find: ABNORMAL_PIPEIN_DELETE_END  locals| abnormalHandlerEnd |
   find: STANDARD_PIPEOUT            locals| defaultHandler |
 
@@ -400,9 +400,9 @@
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
   abnormalHandler EV_D_INDEXDEF         [op].handler!
   abnormalHandler EV_D_PARCEL           [op].handler!
+  abnormalPdsRowBufferHandler EV_D_PDSROWBUFFER     [op].handler!
   abnormalHandler EV_D_PAYLOAD          [op].handler!
   abnormalHandler EV_D_PLANOPERAND      [op].handler!
-  abnormalRowBufferHandler EV_D_ROWBUFFER  [op].handler!
   abnormalHandler EV_D_STREAMDEF        [op].handler!
   abnormalHandler EV_D_TABLE            [op].handler!
 
@@ -441,13 +441,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                 TOGGLE ROWBUFFER HANDLER                                   */
+/*                 TOGGLE PDSROWBUFFER HANDLER                                */
 /*----------------------------------------------------------------------------*/
-: toggle_rowBufferHandler
+: toggle_PdsRowBufferHandler
 
   find: ABNORMAL_PIPEIN_DELETE locals| abnormalHandler |
 
-  abnormalHandler EV_D_ROWBUFFER   [op].handler!
+  abnormalHandler EV_D_PDSROWBUFFER   [op].handler!
 ;
 
 

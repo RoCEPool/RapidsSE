@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToLglPtnRow.hpp -- Convert row buff to logicl partitioned row buff         */
+/* ToLglPtnRow.hpp -- Convert row buff to logicl partitioned Pds row buff     */
 /*============================================================================*/
 #pragma once
 
@@ -12,10 +12,8 @@ namespace STORE
   private:
   
     LglBufSet  m_oLglBufSet;
-  
-    RowBuffer* m_pFromRowBuffer; // the
 
-    RowBuffer* m_pIntoRowBuffer;
+    Pds* m_pIntoPdsRowBuffer;
   
     // must be last
     Footer m_xFooter;
@@ -29,14 +27,13 @@ namespace STORE
 
     static void vRepairHashSet(Object* pObject);
 
-    void vConvert(Table* pTable, RowBuffer* pRowBuffer);
-  
-    RowBuffer* pCompleted(LglPtn tLglPtn);
-    RowBuffer* pDangling(LglPtn tLglPtn);
+    void vConvert(Table* pTable, Pds* pPdsRowBuffer);
+
+    Pds* pCompleted(LglPtn tLglPtn);
+    Pds* pDangling(LglPtn tLglPtn);
   
   private:
-    void vCopyRow(LglPtn tLglPtn, Row* aRowSrc);
-    void vNewDstRow(LglPtn tLglPtn);
+    void vCopyRow(LglPtn tLglPtn, Row* aRowSrc, RowPix* pFromRowPix);
 
     Footer* aFooter(void);
   };

@@ -102,8 +102,6 @@ namespace STORE
     Index*     pIndex(void);
     IndexDef*  pIndexDef(void);
     void       vInsertEntries(CrwBuffer* pCrwBuffer);
-    void       vInsertEntries(RowBuffer* pRowBuffer);
-    void       vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop);
     Ent*       pInsertEntTop_(Ent* aEnt, Ent** ppEntBottom, i8 iTopCount);
     bool       bInsertEntry(Ent* aEnt);
     bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Rrf& xRowRef);

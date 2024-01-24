@@ -29,26 +29,24 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in the rowBuffer for each word
+  // insert a row in the Pds for each word
 
   Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
-    object@ word.name@
-    TableDef[] RowBuffer[].addListContents not if
-      RowBuffer[].pipeOut
-      BT_DATA TableDef[] RowBuffer[].new
-      object@ word.name@
-      TableDef[] RowBuffer[].addListContents assert
+    object@ word.name@ 1 Pds[].addRowVargs not if
+      Pds[].pipeOut
+      BT_DATA TableDef[] Pds[].new
+      object@ word.name@ 1 Pds[].addRowVargs assert
     then
     object@ word.prev object!      // step backwards thru words
   next
 
-  // pipeout the infoset
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

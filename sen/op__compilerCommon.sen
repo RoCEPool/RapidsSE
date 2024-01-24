@@ -9,26 +9,26 @@
 /*----------------------------------------------------------------------------*/
 : compiler_LeaveMarker \handler
 
-  // should have a rowBuffer
-  RowBuffer[].isNull not assert
+  // should have a Pds
+  Pds[].isNull not assert
 
-  // RowBuffer should be of type BT_EXPLAIN
-  RowBuffer[].bufferType@ BT_EXPLAIN == assert
+  // Pds should be of type BT_EXPLAIN
+  Pds[].bufferType@ BT_EXPLAIN == assert
 
-  // time to emit the BT_EXPLAIN RowBuffer[]
-  RowBuffer[].pipeout
+  // time to emit the BT_EXPLAIN Pds[]
+  Pds[].pipeout
 
   EV_M_LEAVE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
+/* handler for EV_D_PDSROWBUFFER ...                                          */
 /*----------------------------------------------------------------------------*/
-: compiler_RowBuffer \handler
+: compiler_PdsRowBuffer \handler
 
   // handle explain data
   PipeIn[].bufferType@ BT_EXPLAIN == if
-    Pipein[]\clear to RowBuffer[]
+    Pipein[]\clear to Pds[]
   else
     PipeIn[].pipeout
   then
@@ -46,9 +46,9 @@
   PlanOperand[].isNull if
 
     // We got an error, but were we going to do an explain?
-    RowBuffer[].isNull not if
-      RowBuffer[].bufferType@ BT_EXPLAIN == assert
-      RowBuffer[].delete
+    Pds[].isNull not if
+      Pds[].bufferType@ BT_EXPLAIN == assert
+      Pds[].delete
    then
 
     op__compileErrOut
@@ -57,15 +57,15 @@
     exit
   then
 
-  // no error, delete the RowBufferErr
-  RowBufferErr[].isNull not if
+  // no error, delete the PdsErr
+  PdsErr[].isNull not if
 
-    RowBufferErr[].bufferType@ BT_EXECERRORS == if
-      RowBufferErr[].delete
+    PdsErr[].bufferType@ BT_EXECERRORS == if
+      PdsErr[].delete
     then
 
-    RowBufferErr[].bufferType@ BT_COMPILEERRORS == if
-      RowBufferErr[].delete
+    PdsErr[].bufferType@ BT_COMPILEERRORS == if
+      PdsErr[].delete
     then
 
   then
@@ -76,8 +76,8 @@
     // execute explain for this operator
     PlanOperand[] sOperatorName sqlCompiler::doExplain
 
-    // pipeout BT_EXPLAIN RowBuffer
-    RowBuffer[].pipeout
+    // pipeout BT_EXPLAIN Pds
+    Pds[].pipeout
 
     LogicUnit[].compilerToExit if
       PlanOperand[].delete

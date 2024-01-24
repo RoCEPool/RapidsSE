@@ -11,7 +11,6 @@ namespace STORE
   class Row : public Object
   {
   friend class RowSingle;
-  friend class STORE::InfoSetBase;
   friend class STORE::Step;
   friend class STORE::RowBuffer;
 
@@ -44,9 +43,6 @@ namespace STORE
     void vColVal_ofs(i8 i_Col, i8 iOfs);
     void vColVal_ofs(i8 i_Col, Stz* szStz);
 
-    void vDeposit(va_list xVarArgs);
-    void vDeposit(i8 iVargsBegin, ...);
-
     void vDump(StreamDef* pStreamDef);
   
     bool bIsColNull(i8 i_Col);
@@ -55,7 +51,7 @@ namespace STORE
   
     void vSetColNull(i8 i_Col);
   
-    RowBuffer* pToRowBuffer(void);
+    Pds* pToPds(void);
   };
   
   Row* _pRow(void* aAddr);

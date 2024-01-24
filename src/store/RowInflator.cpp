@@ -6,8 +6,6 @@
 
 #include "IndexDef.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
@@ -102,6 +100,7 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
+/*
 void RowInflator::vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
                                                      HeadLine* aHeadLine)
 {
@@ -139,10 +138,11 @@ void RowInflator::vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
 
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
+/*
 void RowInflator::vInflate_AllColumns_into_RowBufferAt(RowBuffer* pRowBuffer,
                                                      i8 iAtCell,
                                                      HeadLine* aHeadLine,
@@ -180,7 +180,7 @@ void RowInflator::vInflate_AllColumns_into_RowBufferAt(RowBuffer* pRowBuffer,
 
   }
 }
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

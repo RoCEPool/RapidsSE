@@ -50,10 +50,7 @@ void Step::vAddSteps_IndexStream(void)
 
   vAddStep("indexStream::scanNew"_Stz,    &Step::vIndexStreamScanNew);
 
-  vAddStep("indexStream[].populate"_Stz,  &Step::vIndexStreamScanPopulate);
-  vAddStep("indexStream[].populateTop"_Stz,&Step::vIndexStreamScanPopulateTop);
   vAddStep("indexStream[].scanBegin"_Stz, &Step::vIndexStreamScanBegin);
-  vAddStep("indexStream[].scanNext"_Stz,  &Step::vIndexStreamScanNext);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,59 +267,6 @@ void Step::vIndexStreamScanNew(void)
   IndexStream* pIndexStream = new IndexStream(pStreamDef, pIndexDef);
 
   m_pDataStack->vPushPtr(pIndexStream);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* IndexStream::ScanNext -- get next buffer                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexStreamScanNext(void)
-{
-  ENTRY();
-
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
-
-  RowBuffer* pRowBuffer = pIndexStream->pScanNext();
-
-  m_pDataStack->vPushPtr(pRowBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* IndexStream[].Populate -- populate the indexTree of the indexStream        */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexStreamScanPopulate(void)
-{
-  ENTRY();
-
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
-
-  pRowBuffer->vStreamDef_dbuff(pStreamDef);
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
-
-  pIndexStream->vScanPopulate(pRowBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* IndexStream[].PopulateTop -- populate indexTree with top limit entries     */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexStreamScanPopulateTop(void)
-{
-  ENTRY();
-
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
-  i8 iTop = m_pDataStack->iPopInt(__func__);
-
-  pRowBuffer->vStreamDef_dbuff(pStreamDef);
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
-
-  pIndexStream->vScanPopulateTop(pRowBuffer, iTop);
 
   EXIT();
 }

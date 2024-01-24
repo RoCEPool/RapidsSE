@@ -7,9 +7,6 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
-
-#include "RowBuffer.hpp"
-
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 #include "Job.hpp"
@@ -37,15 +34,17 @@ void Step::vMetaTableListTables(void)
   pPot->vRowPix(pRowPix);
   
   bool bNewBuffer;
-  RowBuffer* pRowBuffer = nullptr;
+  Pds* pPdsRowBuffer = nullptr;
   
   
   Dic* pDic = m_oDicStack.pTop();
   Word* pWord = nullptr;
   while ( (pWord = pDic->pEachWord(pWord)) ) {
-    Row* aRow = pPot->aNewDstRow(0,&pRowBuffer,&bNewBuffer);
+    Row* aRow = pPot->aNewDstRow(0,&pPdsRowBuffer,&bNewBuffer);
     UNUSED((aRow));
-    pRowBuffer->vDepositColVal(0,pWord->szWordNm());
+    bool bResult = pPdsRowBuffer->bDepositColVal(pWord->szWordNm());
+    ASSERT(bResult);
+    UNUSED(bResult);
   }
 
   EXIT();

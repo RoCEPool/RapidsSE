@@ -24,7 +24,7 @@
   Marker[].pipeOut
 
   "default_abnormalHandlers" FIND execute
-  "toggle_rowBufferHandler" FIND execute
+  "toggle_PdsRowBufferHandler" FIND execute
 
   true
 ;
@@ -84,7 +84,7 @@
 
       //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
       "default_abnormalHandlers" FIND execute
-      "toggle_rowBufferHandler" FIND execute
+      "toggle_PdsRowBufferHandler" FIND execute
       //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
     else
       errorCode op__execErr
@@ -196,31 +196,30 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                            ROWBUFFER */
+/* on EV_D_PDSROWBUFFER ...                                            ROWBUFFER */
 /*----------------------------------------------------------------------------*/
-: dynamic_RowBuffer \handler
+: dynamic_PdsRowBuffer \handler
 
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   0 locals| errorCode |
 
-  //"OP_dynamic got a ROWBUFFER" .
+  //"OP_dynamic got a PDSROWBUFFER" .
 
-  Pipein[]\clear to RowBuffer[]
+  Pipein[]\clear to Pds[]
 
   // handle BT_DATA only
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
+  Pds[].bufferType@ BT_DATA != if
+    Pds[].pipeout
     true
     exit
   then
 
-  // invoke the dunamically synthesised code
-  RowBuffer[] Fun1[] 0 dynamic[].execute not if
+  Pds[] Fun1_[] 0 dynamic[].execute not if
     to errorCode
 
     // cleanup
-    RowBuffer[].delete
+    Pds[].delete
     Tub[].deleteAllBuffers
     Pot[].deleteAllBuffers
 
@@ -241,7 +240,7 @@
 
       //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
       "default_abnormalHandlers" FIND execute
-      "toggle_rowBufferHandler" FIND execute
+      "default_lowMemHandlers" FIND execute
       //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
     else
       errorCode op__execErr
@@ -251,7 +250,7 @@
     exit
   then
 
-  RowBuffer[].delete
+  Pds[].delete
 
   // pipeout all completed Tub[]/Pot[]
   dynamic[].hashRows@ if
@@ -316,7 +315,7 @@
   find: dynamic_DataPulse     EV_M_DATAPULSE     [op].handler!
   find: dynamic_EosMarker     EV_M_EOS           [op].handler!
   find: dynamic_ErroringMarker EV_M_ERRORING     [op].handler!
-  find: dynamic_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: dynamic_PdsRowBuffer  EV_D_PDSROWBUFFER  [op].handler!
   find: dynamic_StartMarker   EV_M_START         [op].handler!
 
   find: dynamic_StreamDef     EV_D_STREAMDEF     [op].handler!

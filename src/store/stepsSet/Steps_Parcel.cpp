@@ -262,12 +262,12 @@ void Step::vParcelPipeOut(void)
   //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
   i8 iCurNodeId = MY::pNode()->iNodeId();
-  i8 nCopies = AM::PTNMAP::nPtnsPerNode();
+//  i8 nCopies = AM::PTNMAP::nPtnsPerNode();
 
   eCN eClass = pOperand->eGetClassNo();
   //i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
-  RowBuffer* pRowBuffer_shared = nullptr;
+//  RowBuffer* pRowBuffer_shared = nullptr;
 
   /**************************************************************************
    * ALKA 26Oct 2022: COMMENTED the following lines whereby we share the same
@@ -298,8 +298,8 @@ void Step::vParcelPipeOut(void)
       
       //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
-      if (pRowBuffer_shared)
-        pRowBuffer_shared->vDeciderCopies(nCopies);
+//      if (pRowBuffer_shared)
+//        pRowBuffer_shared->vDeciderCopies(nCopies);
       
       
       for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
@@ -324,13 +324,13 @@ void Step::vParcelPipeOut(void)
               
         // put shared rowBuffer operand onto ptn
         
-        if (pRowBuffer_shared) {
-//          vTrace("i_Stream %lld pRowBuffer_shared %p\n"_Stz
-//                 ,i_Stream,pRowBuffer_shared);
-          AM::OP::vPipeToOp(pDstOp,pRowBuffer_shared,pCurTask);
-          nQueued++;
-          continue;
-        }
+//        if (pRowBuffer_shared) {
+////          vTrace("i_Stream %lld pRowBuffer_shared %p\n"_Stz
+////                 ,i_Stream,pRowBuffer_shared);
+//          AM::OP::vPipeToOp(pDstOp,pRowBuffer_shared,pCurTask);
+//          nQueued++;
+//          continue;
+//        }
         
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
