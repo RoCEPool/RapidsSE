@@ -200,6 +200,7 @@ extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
 extern Stz* P_SqyCall;
+extern Stz* P_SqyNo;
 extern Stz* P_Unproject;
 
 extern Stz* C_CARD_HISTORY;

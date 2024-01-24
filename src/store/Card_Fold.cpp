@@ -42,14 +42,16 @@ Card_Fold::~Card_Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, Stz *szCrlPpy)
+Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, Stz *szCrlPpy, i8 i_SqyNo)
 {
   _static_
 
   Card_Fold* p_fold = new Card_Fold;
 
   p_fold->pSymbol()->vFacet(SF_FLD_NM, szFoldNm);
+
   p_fold->pSymbol()->Y_vSet(szCrlPpy);
+  p_fold->pSymbol()->Y_vSet(P_SqyNo,i_SqyNo);
 
   Card_Level* p_level = new Card_Level(AL_NONE);
   p_fold->vAppendChild(p_level);

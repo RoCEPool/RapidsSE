@@ -251,7 +251,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* sz
   pCI->G_vPopIter();
 
   // 5) add <fold> (before MQ)
-  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, szCrlPpy);
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, szCrlPpy, m_pSubQuery->pBoard()->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   v_fold(pCI->G.p_fold);
@@ -311,7 +311,9 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
   //vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
  // pCI->vPrintBoard(__func__,__LINE__);
 
-  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy);
+  Board* pSubQueryBoard = pCI->m_pBench->pGetBoard(pCI->G.p_call->szFacet(SF_NONE));
+
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy, pSubQueryBoard->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -391,7 +393,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->G_vPopIter();
 
   // 5) add <fold> (before MQ)
-  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_NonCrlSqy);
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_NonCrlSqy, m_pSubQuery->pBoard()->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   v_fold(pCI->G.p_fold);
