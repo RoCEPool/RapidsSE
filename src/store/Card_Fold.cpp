@@ -54,24 +54,7 @@ void Card_Fold::vMorph_to_flat(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Fold::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI, Card_Expr* p_expr_fold)
-{
-  _static_
-
-  pCI->G.p_expr = new Card_Expr;
-
-  pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
-
-  pCI->G.p_expr->vAppendChild(p_expr_fold->pSub_rpnCalc()->pDupCardRecursive());
-  pCI->G.p_expr->vCast(p_expr_fold->pSub_rpnCalc());
-
-  pCI->G.p_key->vPushChild(pCI->G.p_expr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Fold::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_Expr* p_expr_fold)
+void Card_Fold::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _static_
 
@@ -96,6 +79,23 @@ void Card_Fold::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_Expr* 
   p_expr_new->vCast(p_rpnCalc_new);
 
   pCI->G.p_emit->vPushChild(p_expr_new);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
+{
+  _static_
+
+  pCI->G.p_expr = new Card_Expr;
+
+  pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
+
+  pCI->G.p_expr->vAppendChild(p_expr_fold->pSub_rpnCalc()->pDupCardRecursive());
+  pCI->G.p_expr->vCast(p_expr_fold->pSub_rpnCalc());
+
+  pCI->G.p_key->vPushChild(pCI->G.p_expr);
 }
 
 
