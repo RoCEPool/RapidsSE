@@ -45,7 +45,7 @@ begin
     stage stageMarker0967 on all partitions :
       scan rapidsse public ${testName2}_LineItem
       | filter " type BOOLEAN  $1 ==  $12 $13 <  and  "
-      | project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
+      | project " type INTEGER ( 19 ) as L_ORDERKEY $1 , type INTEGER ( 19 ) as L_PARTKEY $2 , type INTEGER ( 19 ) as L_SUPPKEY $3 , type INTEGER ( 19 ) as L_LINENUMBER $4 , type DECIMAL ( 19  2 ) as L_QUANTITY $5 , type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE $6 , type DECIMAL ( 19  2 ) as L_DISCOUNT $7 , type DECIMAL ( 19  2 ) as L_TAX $8 , type VARCHAR ( 0 ) as L_RETURNFLAG $9 , type VARCHAR ( 0 ) as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR ( 0 ) as L_SHIPINSTRUCT $14 , type VARCHAR ( 0 ) as L_SHIPMODE $15 , type VARCHAR ( 0 ) as L_COMMENT $16 "
       | combined 0
       | stageMarker0970
     stage stageMarker0970 on all partitions :
@@ -64,16 +64,16 @@ begin
   stage stageMarker0973 on all partitions :
     scan rapidsse public ${testName2}_orders
     | filter " type BOOLEAN  $5 DATE ''1993-07-01''  >=  $5 DATE ''1993-10-01''  <  and  $1 __subquery0003  exists  and  "
-    | gbyAgg " groupBy  type VARCHAR as o_orderpriority $6 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
+    | gbyAgg " groupBy  type VARCHAR ( 0 ) as o_orderpriority $6 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  countAll  "
     | combined 0
     | stageMarker0976
   stage stageMarker0976 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as o_orderpriority $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as o_orderpriority $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | stageMarker0979
   stage stageMarker0979 on origin :
-    gbyAgg " groupBy  type VARCHAR as o_orderpriority $1 aggregates  type VARCHAR $K1 , type INTEGER as order_count )  $2 sum  "
-    | sort " type VARCHAR as o_orderpriority $1 ASC  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as o_orderpriority $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) as order_count )  $2 sum  "
+    | sort " type VARCHAR ( 0 ) as o_orderpriority $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -96,35 +96,35 @@ begin
     scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
                             O_ORDERDATE DATE '1993-10-01' < and "
-    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
-    | hash "type INTEGER O_ORDERKEY"
+    | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | hash "type INTEGER ( 19 ) O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
     keyExists ${testName2}_lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    | gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
               aggregates
-              type VARCHAR as O_ORDERPRIORITY $K1 ,
-              type INTEGER as ORDER_COUNT ) countAll"
+              type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+              type INTEGER ( 19 ) as ORDER_COUNT ) countAll"
     | combined 0
     | next
 
   stage S03 on all nodes :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
   stage S04 on origin :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
@@ -157,8 +157,8 @@ begin
     scan ${testName2}_orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
                             O_ORDERDATE DATE '1993-10-01' < and "
-    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY"
     | combined 0
     | next
 
@@ -169,26 +169,26 @@ begin
     | next
 
   stage S03 on all partitions :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) countAll"
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) countAll"
     | combined 0
     | next
 
   stage S04 on all nodes :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
   stage S05 on origin :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 

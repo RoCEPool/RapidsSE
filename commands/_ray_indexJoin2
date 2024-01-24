@@ -30,7 +30,7 @@ begin
   stage S01 on all partitions :
       scan      Customer
     | indexJoin Orders Ix_CUSTKEY " BOUND $I1 $1 == "
-    | project   "   type VARCHAR as c_mktsegment $7
+    | project   "   type VARCHAR ( 0 ) as c_mktsegment $7
                   , type INTEGER as c_nationkey $4
                   , type INTEGER as c_custkey $1
                   , type INTEGER as o_custkey $10

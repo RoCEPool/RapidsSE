@@ -42,7 +42,7 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan 2 nation idx "LBOUND $I1 22 >= "
-    | project 2 "type INTEGER $1 , type VARCHAR $2"
+    | project 2 "type INTEGER $1 , type VARCHAR ( 0 ) $2"
     | combined 0
     | stageC
   stage stageC on origin:

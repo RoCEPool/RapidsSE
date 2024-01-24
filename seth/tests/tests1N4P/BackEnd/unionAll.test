@@ -16,13 +16,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan ${testName2}_lineitem
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan ${testName2}_orders
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
@@ -67,13 +67,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan ${testName2}_lineitem
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan ${testName2}_orders
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
@@ -108,13 +108,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan ${testName2}_lineitem
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan ${testName2}_orders
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
@@ -140,13 +140,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan ${testName2}_lineitem
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan ${testName2}_orders
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
@@ -185,13 +185,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan ${testName2}_lineitem
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan ${testName2}_orders
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
@@ -225,13 +225,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan ${testName2}_lineitem
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan ${testName2}_orders
-    | project "type integer as orderkey $1"
+    | project "type integer ( 19 ) as orderkey $1"
     | combined 0
     | stageD
 

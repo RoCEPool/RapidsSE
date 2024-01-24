@@ -89,7 +89,7 @@ begin
     | next
 
   stage S11 on all partitions :
-  //  project   "   type VARCHAR as C0_c_name $7
+  //  project   "   type VARCHAR ( 0 ) as C0_c_name $7
   //              , type INTEGER as C1_c_custkey $6
   //              , type INTEGER as C2_o_orderkey $1
   //              , type DATE as C3_o_orderdate $2
@@ -100,13 +100,13 @@ begin
 
   stage S12 on all partitions :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_c_name $1
+  //                type VARCHAR ( 0 ) as C0_c_name $1
   //              , type INTEGER as C1_c_custkey $2
   //              , type INTEGER as C2_o_orderkey $3
   //              , type DATE as C3_o_orderdate $4
   //              , type DECIMAL as C4_o_totalprice $5
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type INTEGER as C1_COL2 $K2
   //              , type INTEGER as C2_COL3 $K3
   //              , type DATE as C3_COL4 $K4
@@ -117,13 +117,13 @@ begin
 
   stage S13 on all nodes :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_c_name $1
+  //                type VARCHAR ( 0 ) as C0_c_name $1
   //              , type INTEGER as C1_c_custkey $2
   //              , type INTEGER as C2_o_orderkey $3
   //              , type DATE as C3_o_orderdate $4
   //              , type DECIMAL as C4_o_totalprice $5
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type INTEGER as C1_COL2 $K2
   //              , type INTEGER as C2_COL3 $K3
   //              , type DATE as C3_COL4 $K4
@@ -136,13 +136,13 @@ begin
 
   stage S14 on origin :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_c_name $1
+  //                type VARCHAR ( 0 ) as C0_c_name $1
   //              , type INTEGER as C1_c_custkey $2
   //              , type INTEGER as C2_o_orderkey $3
   //              , type DATE as C3_o_orderdate $4
   //              , type DECIMAL as C4_o_totalprice $5
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type INTEGER as C1_COL2 $K2
   //              , type INTEGER as C2_COL3 $K3
   //              , type DATE as C3_COL4 $K4
@@ -226,7 +226,7 @@ begin
 
   stage S07 on all partitions :
   //  indexJoin customer IxC_CUSTKEY " BOUND $I1 "
-  //| hash      "type VARCHAR $1"
+  //| hash      "type VARCHAR ( 0 ) $1"
       dynamic
     | next      hashcast
 
@@ -237,12 +237,12 @@ begin
     | next
 
   stage S09 on all partitions :
-  //  project   "   type VARCHAR as C0_c_name $1
+  //  project   "   type VARCHAR ( 0 ) as C0_c_name $1
   //              , type INTEGER as C1_c_custkey $2
   //              , type INTEGER as C2_o_orderkey $4
   //              , type DATE as C3_o_orderdate $8
   //              , type DECIMAL as C4_o_totalprice $7 "
-  //| hash      "type VARCHAR $1"
+  //| hash      "type VARCHAR ( 0 ) $1"
       dynamic
     | next      hashcast
 
@@ -252,7 +252,7 @@ begin
     | next
 
   stage S11 on all partitions :
-  //  project   "   type VARCHAR as C0_c_name $1
+  //  project   "   type VARCHAR ( 0 ) as C0_c_name $1
   //              , type INTEGER as C1_c_custkey $2
   //              , type INTEGER as C2_o_orderkey $3
   //              , type DATE as C3_o_orderdate $4
@@ -263,13 +263,13 @@ begin
 
   stage S12 on all partitions :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_c_name $1
+  //                type VARCHAR ( 0 ) as C0_c_name $1
   //              , type INTEGER as C1_c_custkey $2
   //              , type INTEGER as C2_o_orderkey $3
   //              , type DATE as C3_o_orderdate $4
   //              , type DECIMAL as C4_o_totalprice $5
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type INTEGER as C1_COL2 $K2
   //              , type INTEGER as C2_COL3 $K3
   //              , type DATE as C3_COL4 $K4
@@ -280,13 +280,13 @@ begin
 
   stage S13 on all nodes :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_c_name $1
+  //                type VARCHAR ( 0 ) as C0_c_name $1
   //              , type INTEGER as C1_c_custkey $2
   //              , type INTEGER as C2_o_orderkey $3
   //              , type DATE as C3_o_orderdate $4
   //              , type DECIMAL as C4_o_totalprice $5
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type INTEGER as C1_COL2 $K2
   //              , type INTEGER as C2_COL3 $K3
   //              , type DATE as C3_COL4 $K4
@@ -299,13 +299,13 @@ begin
 
   stage S14 on origin :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_c_name $1
+  //                type VARCHAR ( 0 ) as C0_c_name $1
   //              , type INTEGER as C1_c_custkey $2
   //              , type INTEGER as C2_o_orderkey $3
   //              , type DATE as C3_o_orderdate $4
   //              , type DECIMAL as C4_o_totalprice $5
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type INTEGER as C1_COL2 $K2
   //              , type INTEGER as C2_COL3 $K3
   //              , type DATE as C3_COL4 $K4

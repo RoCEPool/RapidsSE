@@ -526,7 +526,7 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_customer
     | filter "type boolean $4 4 >= "
-    | project "type integer $1 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $4 "
     | combined 0
     | stageC
 
@@ -569,7 +569,7 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_orders
     | filter "type boolean $1 4 >= "
-    | project "type integer $1 , type integer $2 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $2 "
     | combined 0
     | stageC
 
@@ -602,7 +602,7 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_customer
     | filter "type boolean $4 4 >= "
-    | project "type integer $1 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $4 "
     | combined 0
     | stageC
 
@@ -635,7 +635,7 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_orders
     | filter "type boolean $1 4 >= "
-    | project "type integer $1 , type integer $2 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $2 "
     | combined 0
     | stageC
 
@@ -668,13 +668,13 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_customer
     | filter "type boolean $4 4 >= "
-    | project "type integer $1 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin ${testName2}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
-    | project "type integer $1 , type integer $2 , type integer $4"
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $2 , type integer ( 19 ) $4"
     | combined 0
     | stageD
 
@@ -703,13 +703,13 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_orders
     | filter "type boolean $1 4 >= "
-    | project "type integer $1 , type integer $2 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $2 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin ${testName2}_customer IxC_CUSTKEY "BOUND $I1 $2 =="
-    | project "type integer $2 , type integer $3 , type integer $6"
+    | project "type integer ( 19 ) $2 , type integer ( 19 ) $3 , type integer ( 19 ) $6"
     | combined 0
     | stageD
 
@@ -738,13 +738,13 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_customer
     | filter "type boolean $4 4 >= "
-    | project "type integer $1 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin ${testName2}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
-    | project "type integer $1 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $4 "
     | combined 0
     | stageD
 
@@ -771,13 +771,13 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_orders
     | filter "type boolean $1 4 >= "
-    | project "type integer $1 , type integer $2 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $2 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin ${testName2}_customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
-    | project "type integer $2 , type integer $3 , type integer $6"
+    | project "type integer ( 19 ) $2 , type integer ( 19 ) $3 , type integer ( 19 ) $6"
     | combined 0
     | stageD
 
@@ -811,7 +811,7 @@ begin
   stage stageC on all partitions :
     indexJoin ${testName2}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
-    | project "type integer $1 , type integer $9 , type integer $10 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $9 , type integer ( 19 ) $10 "
     | combined 0
     | stageD
 
@@ -853,7 +853,7 @@ begin
   stage stageC on all partitions :
     indexJoin ${testName2}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
-    | project "type integer $1 , type integer $9 , type integer $10 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $9 , type integer ( 19 ) $10 "
     | combined 0
     | stageD
 
@@ -879,14 +879,14 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_customer
     | filter "type boolean $4 4 >= "
-    | project "type integer $1 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin ${testName2}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
-    | project "type integer $1 , type integer $3 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $3 , type integer ( 19 ) $4 "
     | combined 0
     | stageD
 
@@ -912,14 +912,14 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_customer
     | filter "type boolean $4 4 >= "
-    | project "type integer $1 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin ${testName2}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
-    | project "type integer $1 , type integer $3 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $3 , type integer ( 19 ) $4 "
     | combined 0
     | stageD
 
@@ -940,14 +940,14 @@ begin
   stage stageB on all partitions :
     scan ${testName2}_customer
     | filter "type boolean $4 4 >= "
-    | project "type integer $1 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin ${testName2}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
-    | project "type integer $1 , type integer $3 , type integer $4 "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $3 , type integer ( 19 ) $4 "
     | combined 0
     | stageD
 

@@ -83,7 +83,7 @@ begin
       scan rapidsse public ${testName2}_Customer
       | keyExists ${testName2}_ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                          "type BOOLEAN O_ORDERSTATUS 'O' =="
-      | project " type INTEGER as O_CUSTKEY C_CUSTKEY "
+      | project " type INTEGER ( 19 ) as O_CUSTKEY C_CUSTKEY "
       | combined 0
       | next
 
@@ -108,7 +108,7 @@ begin
       scan rapidsse public ${testName2}_Customer
       | keyExists ${testName2}_ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                          "type BOOLEAN O_ORDERSTATUS 'F' =="
-      | project " type INTEGER as O_CUSTKEY C_CUSTKEY "
+      | project " type INTEGER ( 19 ) as O_CUSTKEY C_CUSTKEY "
       | combined 0
       | next
 
@@ -130,7 +130,7 @@ begin
 
     stage S01 on all partitions :
       scan rapidsse public ${testName2}_orders
-      | hash "type INTEGER O_ORDERKEY"
+      | hash "type INTEGER ( 19 ) O_ORDERKEY"
       | combined 0
       | next hashcast
 
@@ -162,7 +162,7 @@ begin
       scan rapidsse public ${testName2}_Customer
       | keyNotExists ${testName2}_ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                          "type BOOLEAN O_ORDERSTATUS 'O' =="
-      | project " type INTEGER as O_CUSTKEY C_CUSTKEY "
+      | project " type INTEGER ( 19 ) as O_CUSTKEY C_CUSTKEY "
       | combined 0
       | next
 
@@ -184,7 +184,7 @@ begin
 
    stage S01 on all partitions :
       scan rapidsse public ${testName2}_orders
-      | hash "type INTEGER O_ORDERKEY"
+      | hash "type INTEGER ( 19 ) O_ORDERKEY"
       | combined 0
       | next hashcast
 

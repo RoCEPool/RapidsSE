@@ -125,7 +125,7 @@ begin
     | next
   stage stageMarker0391 on all partitions :
     scan rapidsse public LineItem
-    | project " type INTEGER as l_orderkey $1 , type DATE as l_shipdate $11 , type VARCHAR as l_comment $16 "
+    | project " type INTEGER as l_orderkey $1 , type DATE as l_shipdate $11 , type VARCHAR ( 0 ) as l_comment $16 "
     | combined 0
     | next
   stage stageMarkerXYZ on all partitions :

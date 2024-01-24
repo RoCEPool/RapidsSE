@@ -76,7 +76,7 @@ begin
     | combined 0
     | stageMarker0422
   stage stageMarker0422 on all partitions :
-    project 2 " type INTEGER as n_nationkey $1 , type VARCHAR as r_name $6 "
+    project 2 " type INTEGER as n_nationkey $1 , type VARCHAR ( 0 ) as r_name $6 "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -109,7 +109,7 @@ begin
     | abstractJoin 2 " $1 $R1 ==  "
     | stageMarker0671
   stage stageMarker0671 on all partitions :
-    project 2 " type INTEGER as n_nationkey $1 , type VARCHAR as r_name $6 "
+    project 2 " type INTEGER as n_nationkey $1 , type VARCHAR ( 0 ) as r_name $6 "
     | combined 0
     | stageLast
   stage stageLast on origin :

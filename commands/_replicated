@@ -23,16 +23,16 @@ begin
     scan region
     | project 1
         expr type INTEGER as _regionkey  R_REGIONKEY ,
-             type VARCHAR as R_NAME      R_NAME
+             type VARCHAR ( 0 ) as R_NAME      R_NAME
     | next
     
   stage Gj_NATION on all partitions :
     indexJoin 1 Nation IxN_REGIONKEY expr bound $I1 _regionkey ==
     | project 1
         expr type INTEGER as _regionkey  _regionkey     ,
-             type VARCHAR as R_NAME      R_NAME         ,
+             type VARCHAR ( 0 ) as R_NAME      R_NAME         ,
              type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
-             type VARCHAR as N_NAME      J1_N_NAME
+             type VARCHAR ( 0 ) as N_NAME      J1_N_NAME
     | next
     
   stage last on origin :

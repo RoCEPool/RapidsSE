@@ -80,40 +80,40 @@ begin
   stage Gs_CUSTOMER on all partitions :
     indexScan ${testName2}_Customer IxC_CUSTKEY "LBOUND $I1 0 >="
     | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
-    | project expr type INTEGER as _custkey C_CUSTKEY
+    | project expr type INTEGER ( 19 ) as _custkey C_CUSTKEY
     | combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
     indexJoin ${testName2}_Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
     | filter "type BOOLEAN O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
-    | project "type INTEGER as _orderkey O_ORDERKEY ,
+    | project "type INTEGER ( 19 ) as _orderkey O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
-         type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY"
-    | hash expr type INTEGER _orderkey
+         type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY"
+    | hash expr type INTEGER ( 19 ) _orderkey
     | combined 0
     | next hashcast
 
   stage Gj_LINEITEM on all partitions :
     indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
-    | ordAgg expr ordgroupby type INTEGER _orderkey
-        aggregates type INTEGER as _orderkey $K1 ,
-        type DECIMAL as Revenue ) L_EXTENDEDPRICE 1.0 L_DISCOUNT - * sum ,
+    | ordAgg expr ordgroupby type INTEGER ( 19 ) _orderkey
+        aggregates type INTEGER ( 19 ) as _orderkey $K1 ,
+        type DECIMAL ( 19  2 ) as Revenue ) L_EXTENDEDPRICE 1.0 L_DISCOUNT - * sum ,
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
-        type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+        type INTEGER ( 19 ) as O_SHIPPRIORITY  O_SHIPPRIORITY
 
     //| top "Revenue" 10
     | combined 0
     | next
 
   stage XYZ on origin :
-    top "type DECIMAL Revenue" 10
+    top "type DECIMAL ( 19  2 ) Revenue" 10
     | combined 0
     | next
 
   stage last on origin :
-    //top "type DECIMAL Revenue" 10
+    //top "type DECIMAL ( 19  2 ) Revenue" 10
     //| combined 0
     output
     | sink

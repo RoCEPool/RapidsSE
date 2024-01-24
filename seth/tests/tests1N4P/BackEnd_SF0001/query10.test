@@ -59,16 +59,16 @@ begin
     | stageMarker27171
   stage stageMarker27171 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  $18 $9 ==  and  $13 TIMESTAMP ''1993-10-01 00:00:00''  >=  and  $13 TIMESTAMP ''1994-01-01 00:00:00''  <  and  $26 ''R''  ==  and  $4 $34 ==  and  "
-    | gbyAgg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $6 , type VARCHAR as c_phone $5 , type VARCHAR as n_name $35 , type VARCHAR as c_address $3 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $23 1.  $24 -  *  sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    | gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $6 , type VARCHAR ( 0 ) as c_phone $5 , type VARCHAR ( 0 ) as n_name $35 , type VARCHAR ( 0 ) as c_address $3 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL ( 19  2 ) )  $23 1.  $24 -  *  sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
     | combined 0
     | stageMarker27174
   stage stageMarker27174 on all nodes :
-    gbyAgg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $4 , type VARCHAR ( 0 ) as c_phone $7 , type VARCHAR ( 0 ) as n_name $5 , type VARCHAR ( 0 ) as c_address $6 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL ( 19  2 ) )  $3 sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
     | combined 0
     | stageMarker27177
   stage stageMarker27177 on origin :
-    gbyAgg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL as revenue )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
-    | sort " type DECIMAL $3 DESC  "
+    gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $4 , type VARCHAR ( 0 ) as c_phone $7 , type VARCHAR ( 0 ) as n_name $5 , type VARCHAR ( 0 ) as c_address $6 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL ( 19  2 ) as revenue )  $3 sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
+    | sort " type DECIMAL ( 19  2 ) $3 DESC  "
     | limit 20
     | combined 0
     | stageLast
@@ -107,7 +107,7 @@ begin
     //scan rapidsse public ${testName2}_orders
     //| abstractJoin " 1  "
     indexjoin ${testName2}_Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="  // J1 - Orders
-    | hash "type INTEGER O_ORDERKEY"
+    | hash "type INTEGER ( 19 ) O_ORDERKEY"
     | combined 0
     | next hashcast
 
@@ -115,7 +115,7 @@ begin
     //scan rapidsse public ${testName2}_lineitem
     //| abstractJoin " 1  "
     indexjoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY ==" // J2 - Lineitem
-    | hash "type INTEGER C_NATIONKEY"
+    | hash "type INTEGER ( 19 ) C_NATIONKEY"
     | combined 0
     | next hashcast
 
@@ -134,66 +134,66 @@ begin
                                L_RETURNFLAG 'R'  ==  and"
                                //C_NATIONKEY N_NATIONKEY ==  and  "
 
-    | gbyAgg " groupBy  type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                        type VARCHAR as C_NAME C_NAME ,
-                        type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                        type VARCHAR as C_PHONE C_PHONE ,
-                        type VARCHAR as N_NAME N_NAME ,
-                        type VARCHAR as C_ADDRESS C_ADDRESS ,
-                        type VARCHAR as C_COMMENT C_COMMENT
+    | gbyAgg " groupBy  type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                        type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                        type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+                        type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+                        type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                        type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+                        type VARCHAR ( 0 ) as C_COMMENT C_COMMENT
                         aggregates
-                        type INTEGER $K1 ,
-                        type VARCHAR $K2 ,
-                        type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-                        type DECIMAL $K3 ,
-                        type VARCHAR $K5 ,
-                        type VARCHAR $K6 ,
-                        type VARCHAR $K4 ,
-                        type VARCHAR $K7 "
+                        type INTEGER ( 19 ) $K1 ,
+                        type VARCHAR ( 0 ) $K2 ,
+                        type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+                        type DECIMAL ( 19  2 ) $K3 ,
+                        type VARCHAR ( 0 ) $K5 ,
+                        type VARCHAR ( 0 ) $K6 ,
+                        type VARCHAR ( 0 ) $K4 ,
+                        type VARCHAR ( 0 ) $K7 "
 
     | combined 0
     | next
 
   stage stageMarker27174 on all nodes :
-    gbyAgg " groupBy  type INTEGER as C_CUSTKEY $1 ,
-                      type VARCHAR as C_NAME $2 ,
-                      type DECIMAL as C_ACCTBAL $4 ,
-                      type VARCHAR as C_PHONE $7 ,
-                      type VARCHAR as N_NAME $5 ,
-                      type VARCHAR as C_ADDRESS $6 ,
-                      type VARCHAR as C_COMMENT $8
+    gbyAgg " groupBy  type INTEGER ( 19 ) as C_CUSTKEY $1 ,
+                      type VARCHAR ( 0 ) as C_NAME $2 ,
+                      type DECIMAL ( 19  2 ) as C_ACCTBAL $4 ,
+                      type VARCHAR ( 0 ) as C_PHONE $7 ,
+                      type VARCHAR ( 0 ) as N_NAME $5 ,
+                      type VARCHAR ( 0 ) as C_ADDRESS $6 ,
+                      type VARCHAR ( 0 ) as C_COMMENT $8
                       aggregates
-                      type INTEGER $K1 ,
-                      type VARCHAR $K2 ,
-                      type DECIMAL )  $3 sum  ,
-                      type DECIMAL $K3 ,
-                      type VARCHAR $K5 ,
-                      type VARCHAR $K6 ,
-                      type VARCHAR $K4 ,
-                      type VARCHAR $K7 "
+                      type INTEGER ( 19 ) $K1 ,
+                      type VARCHAR ( 0 ) $K2 ,
+                      type DECIMAL ( 19  2 ) )  $3 sum  ,
+                      type DECIMAL ( 19  2 ) $K3 ,
+                      type VARCHAR ( 0 ) $K5 ,
+                      type VARCHAR ( 0 ) $K6 ,
+                      type VARCHAR ( 0 ) $K4 ,
+                      type VARCHAR ( 0 ) $K7 "
     | combined 0
     | next
   stage stageMarker27177 on origin :
-    gbyAgg " groupBy  type INTEGER as C_CUSTKEY $1 ,
-                      type VARCHAR as C_NAME $2 ,
-                      type DECIMAL as C_ACCTBAL $4 ,
-                      type VARCHAR as C_PHONE $7 ,
-                      type VARCHAR as N_NAME $5 ,
-                      type VARCHAR as C_ADDRESS $6 ,
-                      type VARCHAR as C_COMMENT $8
+    gbyAgg " groupBy  type INTEGER ( 19 ) as C_CUSTKEY $1 ,
+                      type VARCHAR ( 0 ) as C_NAME $2 ,
+                      type DECIMAL ( 19  2 ) as C_ACCTBAL $4 ,
+                      type VARCHAR ( 0 ) as C_PHONE $7 ,
+                      type VARCHAR ( 0 ) as N_NAME $5 ,
+                      type VARCHAR ( 0 ) as C_ADDRESS $6 ,
+                      type VARCHAR ( 0 ) as C_COMMENT $8
                       aggregates
-                      type INTEGER $K1 ,
-                      type VARCHAR $K2 ,
-                      type DECIMAL )  $3 sum  ,
-                      type DECIMAL $K3 ,
-                      type VARCHAR $K5 ,
-                      type VARCHAR $K6 ,
-                      type VARCHAR $K4 ,
-                      type VARCHAR $K7 "
+                      type INTEGER ( 19 ) $K1 ,
+                      type VARCHAR ( 0 ) $K2 ,
+                      type DECIMAL ( 19  2 ) )  $3 sum  ,
+                      type DECIMAL ( 19  2 ) $K3 ,
+                      type VARCHAR ( 0 ) $K5 ,
+                      type VARCHAR ( 0 ) $K6 ,
+                      type VARCHAR ( 0 ) $K4 ,
+                      type VARCHAR ( 0 ) $K7 "
       | combined 0
        | next
   stage stageNew on origin :
-    sort " type DECIMAL $3 ASC  "
+    sort " type DECIMAL ( 19  2 ) $3 ASC  "
     | limit 20
     | combined 0
     | next
@@ -239,34 +239,34 @@ pipeline unnamed
       indexScan ${testName2}_Orders IxO_ORDERDATE
           "lbound date '1993-10-01' >=  ubound date '1994-01-01' < "
       | project
-          "type INTEGER as _custkey  O_CUSTKEY , type INTEGER as _orderkey O_ORDERKEY"
+          "type INTEGER ( 19 ) as _custkey  O_CUSTKEY , type INTEGER ( 19 ) as _orderkey O_ORDERKEY"
       | combined 0
       | next
 
     stage Gj_CUSTOMER on all partitions :
       indexJoin ${testName2}_Customer IxC_CUSTKEY expr bound $I1 _custkey ==  //J1
-      | project expr  type INTEGER as _custkey _custkey ,
-                      type INTEGER as _orderkey _orderkey ,
-                      type VARCHAR as c_name c_name ,
-                      type DECIMAL as c_acctbal C_ACCTBAL ,
-                      type INTEGER as C_NATIONKEY c_nationkey ,
-                      type VARCHAR as c_address c_address ,
-                      type VARCHAR as c_phone c_phone ,
-                      type VARCHAR as c_comment c_comment
+      | project expr  type INTEGER ( 19 ) as _custkey _custkey ,
+                      type INTEGER ( 19 ) as _orderkey _orderkey ,
+                      type VARCHAR ( 0 ) as c_name c_name ,
+                      type DECIMAL ( 19  2 ) as c_acctbal C_ACCTBAL ,
+                      type INTEGER ( 19 ) as C_NATIONKEY c_nationkey ,
+                      type VARCHAR ( 0 ) as c_address c_address ,
+                      type VARCHAR ( 0 ) as c_phone c_phone ,
+                      type VARCHAR ( 0 ) as c_comment c_comment
       | combined 0
       | next
 
  stage Gj_NATION on all partitions :
     indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY ==" // J2 - Nation
-    | project expr type INTEGER as _custkey _custkey ,
-                   type INTEGER as _orderkey _orderkey ,
-                   type VARCHAR as c_name c_name ,
-                   type DECIMAL as c_acctbal c_acctbal ,
-                   type VARCHAR as n_name n_name ,
-                   type VARCHAR as c_address c_address ,
-                   type VARCHAR as c_phone c_phone ,
-                   type VARCHAR as c_comment c_comment
-    | hash expr type INTEGER _orderkey
+    | project expr type INTEGER ( 19 ) as _custkey _custkey ,
+                   type INTEGER ( 19 ) as _orderkey _orderkey ,
+                   type VARCHAR ( 0 ) as c_name c_name ,
+                   type DECIMAL ( 19  2 ) as c_acctbal c_acctbal ,
+                   type VARCHAR ( 0 ) as n_name n_name ,
+                   type VARCHAR ( 0 ) as c_address c_address ,
+                   type VARCHAR ( 0 ) as c_phone c_phone ,
+                   type VARCHAR ( 0 ) as c_comment c_comment
+    | hash expr type INTEGER ( 19 ) _orderkey
     | combined 0
     | next hashcast
 
@@ -276,49 +276,49 @@ pipeline unnamed
     stage Gj_LINEITEM on all partitions :
       indexJoin ${testName2}_Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==  //J2
       | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
-      | gbyAgg expr groupby type INTEGER _custkey
+      | gbyAgg expr groupby type INTEGER ( 19 ) _custkey
                      aggregates
-                     type INTEGER as _custkey $K1 ,
-                     type VARCHAR as c_name c_name ,
-                     type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
-                     type DECIMAL as c_acctbal c_acctbal ,
-                     type VARCHAR as n_name n_name ,
-                     type VARCHAR as c_address c_address ,
-                     type VARCHAR as c_phone c_phone ,
-                     type VARCHAR as c_comment c_comment
+                     type INTEGER ( 19 ) as _custkey $K1 ,
+                     type VARCHAR ( 0 ) as c_name c_name ,
+                     type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
+                     type DECIMAL ( 19  2 ) as c_acctbal c_acctbal ,
+                     type VARCHAR ( 0 ) as n_name n_name ,
+                     type VARCHAR ( 0 ) as c_address c_address ,
+                     type VARCHAR ( 0 ) as c_phone c_phone ,
+                     type VARCHAR ( 0 ) as c_comment c_comment
       | combined 0
       | next
 
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
     stage G_AGG_N on all nodes :
-      gbyAgg expr groupby type INTEGER _custkey
+      gbyAgg expr groupby type INTEGER ( 19 ) _custkey
                   aggregates
-                  type INTEGER as _custkey $K1 ,
-                  type VARCHAR as c_name c_name ,
-                  type DECIMAL as REVENUE ) REVENUE  sum ,
-                  type DECIMAL as c_acctbal c_acctbal ,
-                  type VARCHAR as n_name n_name ,
-                  type VARCHAR as c_address c_address ,
-                  type VARCHAR as c_phone c_phone ,
-                  type VARCHAR as c_comment c_comment
+                  type INTEGER ( 19 ) as _custkey $K1 ,
+                  type VARCHAR ( 0 ) as c_name c_name ,
+                  type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum ,
+                  type DECIMAL ( 19  2 ) as c_acctbal c_acctbal ,
+                  type VARCHAR ( 0 ) as n_name n_name ,
+                  type VARCHAR ( 0 ) as c_address c_address ,
+                  type VARCHAR ( 0 ) as c_phone c_phone ,
+                  type VARCHAR ( 0 ) as c_comment c_comment
       | combined 0
       | next
 
     stage G_GAG_O on origin :
-      gbyAgg expr groupby type INTEGER _custkey
-                  aggregates type INTEGER as _custkey $K1 ,
-                  type VARCHAR as c_name c_name ,
-                  type DECIMAL as REVENUE ) REVENUE  sum ,
-                  type DECIMAL as c_acctbal c_acctbal ,
-                  type VARCHAR as n_name n_name ,
-                  type VARCHAR as c_address c_address ,
-                  type VARCHAR as c_phone c_phone ,
-                  type VARCHAR as c_comment c_comment
+      gbyAgg expr groupby type INTEGER ( 19 ) _custkey
+                  aggregates type INTEGER ( 19 ) as _custkey $K1 ,
+                  type VARCHAR ( 0 ) as c_name c_name ,
+                  type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum ,
+                  type DECIMAL ( 19  2 ) as c_acctbal c_acctbal ,
+                  type VARCHAR ( 0 ) as n_name n_name ,
+                  type VARCHAR ( 0 ) as c_address c_address ,
+                  type VARCHAR ( 0 ) as c_phone c_phone ,
+                  type VARCHAR ( 0 ) as c_comment c_comment
       | combined 0
       | next
 
     stage stageNew on origin :
-      sort " type DECIMAL $3 ASC  "
+      sort " type DECIMAL ( 19  2 ) $3 ASC  "
       | limit 20
       | combined 0
       | next
@@ -367,80 +367,80 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
-    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY  O_CUSTKEY , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as C_NAME C_NAME ,
-               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type INTEGER as C_NATIONKEY C_NATIONKEY ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S03 on all partitions :
     indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as C_NAME C_NAME ,
-               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME N_NAME ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
-    | hash expr type INTEGER O_ORDERKEY
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+    | hash expr type INTEGER ( 19 ) O_ORDERKEY
     | combined 0
     | next hashcast
 
   stage S03 on all partitions :
     indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
-    | gbyAgg  "groupby    type INTEGER O_CUSTKEY
-               aggregates type INTEGER as O_CUSTKEY $K1 ,
-                          type VARCHAR as C_NAME C_NAME ,
-                          type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
-                          type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                          type VARCHAR as N_NAME N_NAME ,
-                          type VARCHAR as C_ADDRESS C_ADDRESS ,
-                          type VARCHAR as C_PHONE C_PHONE ,
-                          type VARCHAR as C_COMMENT C_COMMENT"
+    | gbyAgg  "groupby    type INTEGER ( 19 ) O_CUSTKEY
+               aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                          type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                          type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
+                          type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+                          type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                          type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+                          type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+                          type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S04 on all nodes :
-    gbyAgg "groupby    type INTEGER O_CUSTKEY
-            aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type VARCHAR as C_NAME C_NAME ,
-                       type DECIMAL as REVENUE ) REVENUE  sum ,
-                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                       type VARCHAR as N_NAME N_NAME ,
-                       type VARCHAR as C_ADDRESS C_ADDRESS ,
-                       type VARCHAR as C_PHONE C_PHONE ,
-                       type VARCHAR as C_COMMENT C_COMMENT"
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum ,
+                       type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+                       type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                       type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+                       type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+                       type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S05 on origin :
-    gbyAgg "groupby    type INTEGER O_CUSTKEY
-            aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type VARCHAR as C_NAME C_NAME ,
-                       type DECIMAL as REVENUE ) REVENUE  sum ,
-                       type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-                       type VARCHAR as N_NAME N_NAME ,
-                       type VARCHAR as C_ADDRESS C_ADDRESS ,
-                       type VARCHAR as C_PHONE C_PHONE ,
-                       type VARCHAR as C_COMMENT C_COMMENT"
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum ,
+                       type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+                       type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                       type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+                       type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+                       type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S06 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    sort " type DECIMAL ( 19  2 ) REVENUE ASC  "
     | limit 20
     | combined 0
     | next
@@ -486,14 +486,14 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
-    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY  O_CUSTKEY , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
-    | hash expr type INTEGER O_ORDERKEY
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
+    | hash expr type INTEGER ( 19 ) O_ORDERKEY
     | combined 0
     | next hashcast
 
@@ -504,45 +504,45 @@ begin
     | next
 
   stage S03_a on all partitions :
-     sort " type INTEGER O_CUSTKEY ASC  "
+     sort " type INTEGER ( 19 ) O_CUSTKEY ASC  "
      | combined 0
      | next
 
    stage S03 on all partitions :
-    ordAgg  "ordGroupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
+    ordAgg  "ordGroupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    gbyAgg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum "
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S05 on origin :
-    gbyAgg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum"
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
   stage stageNew on origin :
-    top "type DECIMAL REVENUE " 20
-    | hash expr type INTEGER O_CUSTKEY
+    top "type DECIMAL ( 19  2 ) REVENUE " 20
+    | hash expr type INTEGER ( 19 ) O_CUSTKEY
     | combined 0
     | next hashcast
 
   stage S07 on all partitions :
     indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY , type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY , type VARCHAR ( 0 ) as C_NAME C_NAME , type DECIMAL ( 19  2 ) as REVENUE ) REVENUE , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL , type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS , type VARCHAR ( 0 ) as C_PHONE C_PHONE , type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY , type VARCHAR ( 0 ) as C_NAME C_NAME , type DECIMAL ( 19  2 ) as REVENUE ) REVENUE , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL , type VARCHAR ( 0 ) as N_NAME N_NAME , type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS , type VARCHAR ( 0 ) as C_PHONE C_PHONE , type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S06 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    sort " type DECIMAL ( 19  2 ) REVENUE ASC  "
     | combined 0
     | next
 
@@ -585,69 +585,69 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
-    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY"
-    | hash expr type INTEGER O_ORDERKEY
+    | project "type INTEGER ( 19 ) as O_CUSTKEY  O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
+    | hash expr type INTEGER ( 19 ) O_ORDERKEY
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
     indexJoin ${testName2}_Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
-    | gbyAgg  "groupby    type INTEGER O_CUSTKEY
-               aggregates type INTEGER as O_CUSTKEY $K1 ,
-                          type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
+    | gbyAgg  "groupby    type INTEGER ( 19 ) O_CUSTKEY
+               aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    gbyAgg "groupby    type INTEGER O_CUSTKEY
-            aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type DECIMAL as REVENUE ) REVENUE  sum "
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S04 on origin :
-    gbyAgg "groupby    type INTEGER O_CUSTKEY
-            aggregates type INTEGER as O_CUSTKEY $K1 ,
-                       type DECIMAL as REVENUE ) REVENUE  sum"
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
   stage S05 on origin :
-    top "type DECIMAL REVENUE " 20
-    | hash expr type INTEGER O_CUSTKEY
+    top "type DECIMAL ( 19  2 ) REVENUE " 20
+    | hash expr type INTEGER ( 19 ) O_CUSTKEY
     | combined 0
     | next hashcast
 
   stage S06 on all partitions :
     indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as C_NATIONKEY C_NATIONKEY ,
-               type VARCHAR as C_NAME C_NAME ,
-               type DECIMAL as REVENUE ) REVENUE ,
-               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S07 on all partitions :
     indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type VARCHAR as C_NAME C_NAME ,
-               type DECIMAL as REVENUE ) REVENUE ,
-               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME N_NAME ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on origin :
-    sort " type DECIMAL REVENUE DESC  "
+    sort " type DECIMAL ( 19  2 ) REVENUE DESC  "
     | combined 0
     | next
 

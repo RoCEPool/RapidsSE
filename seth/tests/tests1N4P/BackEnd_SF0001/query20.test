@@ -62,7 +62,7 @@ begin
     stage stageMarker1353 on all partitions :
       scan rapidsse public ${testName2}_Part
       | filter " type BOOLEAN  }  $2 ''forest%''  7 matchLeading  "
-      | project " type INTEGER as p_partkey $1 "
+      | project " type INTEGER ( 19 ) as p_partkey $1 "
       | combined 0
       | stageLast
     stage stageLast on origin :
@@ -81,19 +81,19 @@ begin
     stage stageMarker1359 on all partitions :
       scan rapidsse public ${testName2}_Lineitem
       | filter " type BOOLEAN  $2 %1 ==  $3 %2 ==  and  $11 DATE ''1994-01-01''  >=  and  $11 DATE ''1995-01-01''  <  and  "
-      | aggreg " type DECIMAL )  $5 sum  "
+      | aggreg " type DECIMAL ( 19  2 ) )  $5 sum  "
       | combined 0
       | stageMarker1362
     stage stageMarker1362 on all nodes :
-      aggreg " type DECIMAL )  $1 sum  "
+      aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
       | combined 0
       | stageMarker1495
     stage stageMarker1495 on origin :
-      aggreg " type DECIMAL )  $1 sum  "
+      aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
       | combined 0
       | stageMarker1365
     stage stageMarker1365 on origin :
-      project " type DECIMAL 0.5  $1 *  "
+      project " type DECIMAL ( 19  2 ) 0.5  $1 *  "
       | combined 0
       | stageLast
     stage stageLast on origin :
@@ -110,8 +110,8 @@ begin
       | stageMarker1371
     stage stageMarker1371 on all partitions :
       scan rapidsse public ${testName2}_PartSupp
-      | filter " type BOOLEAN  }  __subquery0003  #1  $1 in  $3 casttype DECIMAL CAST  $1 $2 __subquery0005  >  and  "
-      | project " type INTEGER as ps_suppkey $2 "
+      | filter " type BOOLEAN  }  __subquery0003  #1  $1 in  $3 casttype DECIMAL ( 19  2 ) CAST  $1 $2 __subquery0005  >  and  "
+      | project " type INTEGER ( 19 ) as ps_suppkey $2 "
       | combined 0
       | stageLast
     stage stageLast on origin :
@@ -133,16 +133,16 @@ begin
     | stageMarker1383
   stage stageMarker1383 on all partitions :
     filter " type BOOLEAN  }  __subquery0007  #1  $1 in  $4 $8 ==  and  $9 ''IRAQ''  ==  and  "
-    | project " type VARCHAR as s_name $2 , type VARCHAR as s_address $3 "
-    | sort " type VARCHAR as s_name $1 ASC  "
+    | project " type VARCHAR ( 0 ) as s_name $2 , type VARCHAR ( 0 ) as s_address $3 "
+    | sort " type VARCHAR ( 0 ) as s_name $1 ASC  "
     | combined 0
     | stageMarker1386
   stage stageMarker1386 on all nodes :
-    sort " type VARCHAR as s_name $1 ASC  "
+    sort " type VARCHAR ( 0 ) as s_name $1 ASC  "
     | combined 0
     | stageMarker1389
   stage stageMarker1389 on origin :
-    sort " type VARCHAR as s_name $1 ASC  "
+    sort " type VARCHAR ( 0 ) as s_name $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -167,7 +167,7 @@ begin
     stage S01 on all partitions :
       scan rapidsse public ${testName2}_Part
       | filter " type BOOLEAN  }  $2 'forest%'  7 matchLeading "
-      | project " type INTEGER as p_partkey $1 "
+      | project " type INTEGER ( 19 ) as p_partkey $1 "
       | combined 0
       | next broadcast
 
@@ -175,67 +175,67 @@ begin
     stage S02 on all partitions :
       indexJoin ${testName2}_lineitem IxL_PARTKEY "BOUND $I1 P_PARTKEY =="
       | filter " type BOOLEAN  L_SHIPDATE DATE '1994-01-01' >= L_SHIPDATE DATE '1995-01-01'  <  and  "
-      | gbyAgg " groupBy  type integer P_PARTKEY ,
-                          type integer L_SUPPKEY
-                       aggregates type integer as P_PARTKEY $K1 ,
-                                  type integer as L_SUPPKEY $K2 ,
-                                  type DECIMAL )  $6 sum"
+      | gbyAgg " groupBy  type integer ( 19 ) P_PARTKEY ,
+                          type integer ( 19 ) L_SUPPKEY
+                       aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                                  type integer ( 19 ) as L_SUPPKEY $K2 ,
+                                  type DECIMAL ( 19  2 ) )  $6 sum"
       | combined 0
       | next
 
     stage S03 on all nodes :
-      gbyAgg " groupBy type integer P_PARTKEY ,
-                       type integer L_SUPPKEY
-                  aggregates type integer as P_PARTKEY $K1 ,
-                             type integer as L_SUPPKEY $K2 ,
-                             type DECIMAL )  $3 sum"
+      gbyAgg " groupBy type integer ( 19 ) P_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                  aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                             type integer ( 19 ) as L_SUPPKEY $K2 ,
+                             type DECIMAL ( 19  2 ) )  $3 sum"
       | combined 0
       | next
 
     stage S04 on origin :
-      gbyAgg " groupBy type integer P_PARTKEY ,
-                       type integer L_SUPPKEY
-                   aggregates type integer as P_PARTKEY $K1 ,
-                              type integer as L_SUPPKEY $K2 ,
-                              type DECIMAL )  $3 sum"
+      gbyAgg " groupBy type integer ( 19 ) P_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                   aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                              type integer ( 19 ) as L_SUPPKEY $K2 ,
+                              type DECIMAL ( 19  2 ) )  $3 sum"
       | combined 0
       | next
 
     stage S05 on origin :
-      project " type integer as P_PARTKEY P_PARTKEY , type integer as L_SUPPKEY L_SUPPKEY , type DECIMAL as sqyResult 0.5  $3 *  "
+      project " type integer ( 19 ) as P_PARTKEY P_PARTKEY , type integer ( 19 ) as L_SUPPKEY L_SUPPKEY , type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  "
       | combined 0
       | next broadcast
 
    stage S06 on all partitions :
      indexJoin ${testName2}_partSupp IxPS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
-     | filter " type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL CAST sqyResult  > and "
-     | project " type INTEGER as PS_SUPPKEY $2"
-     | hash "type INTEGER PS_SUPPKEY"
+     | filter " type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult  > and "
+     | project " type INTEGER ( 19 ) as PS_SUPPKEY $2"
+     | hash "type INTEGER ( 19 ) PS_SUPPKEY"
      | combined 0
      | next hashcast
 
    stage S06a on all partitions :
-     gbyAgg " groupBy type integer PS_SUPPKEY
-                        aggregates type integer as PS_SUPPKEY $K1"
+     gbyAgg " groupBy type integer ( 19 ) PS_SUPPKEY
+                        aggregates type integer ( 19 ) as PS_SUPPKEY $K1"
      | combined 0
      | next
 
   stage S07 on all partitions :
     indexJoin ${testName2}_Supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS"
+    | project " type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexJoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | filter " type BOOLEAN N_NAME 'IRAQ' ==  "
-    | project " type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS "
-    | sort " type VARCHAR S_NAME ASC  "
+    | project " type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS "
+    | sort " type VARCHAR ( 0 ) S_NAME ASC  "
     | combined 0
     | next
 
   stage stageMarker1680 on origin :
-    sort " type VARCHAR S_NAME ASC  "
+    sort " type VARCHAR ( 0 ) S_NAME ASC  "
     | combined 0
     | next
 

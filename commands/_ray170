@@ -62,7 +62,7 @@ pipeline Q5
     | next
 
   stage S03 on all partitions :
-  //  project   "   type VARCHAR as C0_n_name $4
+  //  project   "   type VARCHAR ( 0 ) as C0_n_name $4
   //              , type INTEGER as C1_S_SUPPKEY $1
   //              , type INTEGER as C2_S_NATIONKEY $2
   //              , type INTEGER as C3_N_REGIONKEY $5 "
@@ -76,7 +76,7 @@ pipeline Q5
     | next
 
   stage S05 on all partitions :
-  //  project   "   type VARCHAR as C0_n_name $1
+  //  project   "   type VARCHAR ( 0 ) as C0_n_name $1
   //              , type INTEGER as C1_S_SUPPKEY $2
   //              , type INTEGER as C2_S_NATIONKEY $3 "
       dynamic
@@ -88,7 +88,7 @@ pipeline Q5
     | next
 
   stage S07 on all partitions :
-  //  project   "   type VARCHAR as C0_n_name $1
+  //  project   "   type VARCHAR ( 0 ) as C0_n_name $1
   //              , type INTEGER as C1_C_CUSTKEY $4
   //              , type INTEGER as C2_S_SUPPKEY $2 "
       dynamic
@@ -100,12 +100,12 @@ pipeline Q5
     | next
 
   stage S09 on all partitions :
-  //  project   "   type VARCHAR as C0_n_name $1
+  //  project   "   type VARCHAR ( 0 ) as C0_n_name $1
   //              , type DECIMAL as C1_L_EXTENDEDPRICE $9
   //              , type DECIMAL as C2_L_DISCOUNT $10
   //              , type INTEGER as C3_C_CUSTKEY $2
   //              , type INTEGER as C4_L_ORDERKEY $4 "
-  //| hash      "type VARCHAR $1"
+  //| hash      "type VARCHAR ( 0 ) $1"
       dynamic
     | next      hashcast
 
@@ -116,7 +116,7 @@ pipeline Q5
     | next
 
   stage S11 on all partitions :
-  //  project   "   type VARCHAR as C0_n_name $1
+  //  project   "   type VARCHAR ( 0 ) as C0_n_name $1
   //              , type DECIMAL as C1_L_EXTENDEDPRICE $2
   //              , type DECIMAL as C2_L_DISCOUNT $3 "
       dynamic
@@ -124,27 +124,27 @@ pipeline Q5
 
   stage S12 on all partitions :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_n_name $1
+  //                type VARCHAR ( 0 ) as C0_n_name $1
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type DECIMAL as C1_COL2 ) $2 1.00 $3 - * sum "
       dynamic
     | next
 
   stage S13 on all nodes :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_n_name $1
+  //                type VARCHAR ( 0 ) as C0_n_name $1
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type DECIMAL as C1_COL2 ) $2 sum "
       dynamic
     | next
 
   stage S14 on origin :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_n_name $1
+  //                type VARCHAR ( 0 ) as C0_n_name $1
   //              aggregates
-  //                type VARCHAR as C0_COL1 $K1
+  //                type VARCHAR ( 0 ) as C0_COL1 $K1
   //              , type DECIMAL as C1_revenue ) $2 sum "
       dynamic
     | next

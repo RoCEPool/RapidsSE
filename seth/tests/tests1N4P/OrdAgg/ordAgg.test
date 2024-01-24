@@ -33,34 +33,34 @@ begin
   stage S01 on all partitions :
     indexScan ${testName2}_nation IxN_NATIONKEY
               " LBOUND $I1 3 > "
-    | project "type INTEGER $1 , type INTEGER $3"
+    | project "type INTEGER ( 19 ) $1 , type INTEGER ( 19 ) $3"
     | combined 0
     | next
 
   stage S02 on all partitions :
     ordAgg    " OrdGroupBy
-                  type INTEGER as C0_n_nationkey $1
+                  type INTEGER ( 19 ) as C0_n_nationkey $1
                 aggregates
-                  type INTEGER as C0_COL1 $K1
-                , type INTEGER as C1_COL2 ) $2 max "
+                  type INTEGER ( 19 ) as C0_COL1 $K1
+                , type INTEGER ( 19 ) as C1_COL2 ) $2 max "
     | combined 0
     | next
 
   stage S03 on all nodes :
     gbyAgg    " groupBy
-                  type INTEGER as C0_n_nationkey $1
+                  type INTEGER ( 19 ) as C0_n_nationkey $1
                 aggregates
-                  type INTEGER as C0_COL1 $K1
-                , type INTEGER as C1_COL2 ) $2 max "
+                  type INTEGER ( 19 ) as C0_COL1 $K1
+                , type INTEGER ( 19 ) as C1_COL2 ) $2 max "
     | combined 0
     | next
 
   stage S04 on origin :
     gbyAgg    " groupBy
-                  type INTEGER as C0_n_nationkey $1
+                  type INTEGER ( 19 ) as C0_n_nationkey $1
                 aggregates
-                  type INTEGER as C0_COL1 $K1
-                , type INTEGER as C1_COL2 ) $2 max "
+                  type INTEGER ( 19 ) as C0_COL1 $K1
+                , type INTEGER ( 19 ) as C1_COL2 ) $2 max "
     | combined 0
     | next
 

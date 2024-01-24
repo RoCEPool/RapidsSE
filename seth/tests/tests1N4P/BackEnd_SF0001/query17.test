@@ -37,19 +37,19 @@ begin
     stage stageMarker1222 on all partitions :
       scan rapidsse public ${testName2}_LineItem
       | filter " type BOOLEAN  $2 ==  "
-      | aggreg " type DECIMAL )  $5 sum  , type INTEGER )  $5 count  "
+      | aggreg " type DECIMAL ( 19  2 ) )  $5 sum  , type INTEGER ( 19 ) )  $5 count  "
       | combined 0
       | stageMarker1225
     stage stageMarker1225 on all nodes :
-      aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+      aggreg " type DECIMAL ( 19  2 ) )  $1 sum  , type INTEGER ( 19 ) )  $2 sum  "
       | combined 0
       | stageMarker1379
     stage stageMarker1379 on origin :
-      aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+      aggreg " type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $1 sum  "
       | combined 0
       | stageMarker1228
     stage stageMarker1228 on origin :
-      project " type DECIMAL 0.2  $2 $1 casttype DECIMAL CAST  /  *  "
+      project " type DECIMAL ( 19  2 ) 0.2  $2 $1 casttype DECIMAL ( 19  2 ) CAST  /  *  "
       | combined 0
       | stageMarker1231
     stage stageMarker1231 on origin :
@@ -74,19 +74,19 @@ begin
     | stageMarker1240
   stage stageMarker1240 on all partitions :
     filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#23''  ==  and  $23 ''MED BOX''  ==  and  $5 $17 __subquery0003  <  and  "
-    | aggreg " type DECIMAL )  $6 sum  "
+    | aggreg " type DECIMAL ( 19  2 ) )  $6 sum  "
     | combined 0
     | stageMarker1243
   stage stageMarker1243 on all nodes :
-    aggreg " type DECIMAL )  $1 sum  "
+    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
     | combined 0
     | stageMarker1382
   stage stageMarker1382 on origin :
-    aggreg " type DECIMAL )  $1 sum  "
+    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
     | combined 0
     | stageMarker1246
   stage stageMarker1246 on origin :
-    project " type DECIMAL as avg_yearly $1 7.0  /  "
+    project " type DECIMAL ( 19  2 ) as avg_yearly $1 7.0  /  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -111,60 +111,60 @@ begin
  stage S01 on all partitions :
      scan rapidsse public ${testName2}_part
      | filter " type BOOLEAN  P_BRAND 'Brand#23'  ==  P_CONTAINER 'MED BAG'  ==  and"
-     | project "type INTEGER as P_PARTKEY P_PARTKEY"
+     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY"
      | combined 0
      | next broadcast
 
   stage S02 on all partitions :
     indexJoin ${testName2}_lineitem IxL_PARTKEY "bound $I1 P_PARTKEY =="
-    | ordagg " ordgroupBy type integer P_PARTKEY
-               aggregates type integer as P_PARTKEY $K1 ,
-                          type DECIMAL )  L_QUANTITY sum  ,
-                          type INTEGER )  L_QUANTITY count  "
+    | ordagg " ordgroupBy type integer ( 19 ) P_PARTKEY
+               aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) )  L_QUANTITY sum  ,
+                          type INTEGER ( 19 ) )  L_QUANTITY count  "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    gbyAgg " groupBy    type integer P_PARTKEY
-             aggregates type integer as P_PARTKEY $K1 ,
-                        type DECIMAL )  $2 sum  ,
-                        type INTEGER )  $3 sum  "
+    gbyAgg " groupBy    type integer ( 19 ) P_PARTKEY
+             aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) )  $2 sum  ,
+                        type INTEGER ( 19 ) )  $3 sum  "
     | combined 0
     | next
 
   stage S04 on origin :
-    gbyAgg " groupBy    type integer P_PARTKEY
-             aggregates type integer as P_PARTKEY $K1 ,
-                        type DECIMAL )  $2 sum  ,
-                        type INTEGER )  $3 sum  "
+    gbyAgg " groupBy    type integer ( 19 ) P_PARTKEY
+             aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) )  $2 sum  ,
+                        type INTEGER ( 19 ) )  $3 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type integer as P_PARTKEY P_PARTKEY ,
-              type DECIMAL as AV $2 $3 casttype DECIMAL cast / 0.2 *"
+    project " type integer ( 19 ) as P_PARTKEY P_PARTKEY ,
+              type DECIMAL ( 19  2 ) as AV $2 $3 casttype DECIMAL ( 19  2 ) cast / 0.2 *"
     | combined 0
     | next broadcast
 
   stage S06 on all partitions :
     indexJoin ${testName2}_lineitem IxL_PARTKEY "bound $I1 $1 =="
     | filter " type BOOLEAN  L_QUANTITY AV <  "
-    | aggreg " type decimal as avg_yearly ) L_EXTENDEDPRICE sum  "
+    | aggreg " type decimal ( 19  2 ) as avg_yearly ) L_EXTENDEDPRICE sum  "
     | combined 0
     | next
 
   stage S07 on all nodes :
-    aggreg " type decimal as avg_yearly ) $1 sum  "
+    aggreg " type decimal ( 19  2 ) as avg_yearly ) $1 sum  "
     | combined 0
     | next
 
   stage S08 on origin :
-    aggreg " type DECIMAL as avg_yearly ) $1 sum "
+    aggreg " type DECIMAL ( 19  2 ) as avg_yearly ) $1 sum "
     | combined 0
     | next
 
   stage S09 on origin :
-    project " type DECIMAL as avg_yearly $1 7.0 / "
+    project " type DECIMAL ( 19  2 ) as avg_yearly $1 7.0 / "
     | combined 0
     | next
 

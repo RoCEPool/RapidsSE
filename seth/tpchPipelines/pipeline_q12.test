@@ -15,37 +15,37 @@ pipeline Query12
      | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
      | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
      | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next broadcast
 
    stage S02 on all partitions :
      indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
-     | project "type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | project "type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next
 
    stage S03 on all partitions :
-     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE L_SHIPMODE
-              aggregates type VARCHAR $K1 ,
-                         type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
-                         type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE
+              aggregates type VARCHAR ( 0 ) $K1 ,
+                         type INTEGER ( 19 ) ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
+                         type INTEGER ( 19 ) ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
      | combined 0
      | next
 
    stage S04 on all nodes :
-     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE $1
-              aggregates type VARCHAR $K1 ,
-                         type INTEGER )  $2 sum  ,
-                         type INTEGER )  $3 sum  "
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
+              aggregates type VARCHAR ( 0 ) $K1 ,
+                         type INTEGER ( 19 ) )  $2 sum  ,
+                         type INTEGER ( 19 ) )  $3 sum  "
      | combined 0
      | next
 
    stage S05 on origin :
-     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE $1
-              aggregates  type VARCHAR $K1 ,
-                          type INTEGER as high_line_count )  $2 sum  ,
-                          type INTEGER as low_line_count )  $3 sum  "
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
+              aggregates  type VARCHAR ( 0 ) $K1 ,
+                          type INTEGER ( 19 ) as high_line_count )  $2 sum  ,
+                          type INTEGER ( 19 ) as low_line_count )  $3 sum  "
      | combined 0
      | next
 

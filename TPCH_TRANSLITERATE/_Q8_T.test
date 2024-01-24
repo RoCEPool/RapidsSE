@@ -93,7 +93,7 @@ begin
       | stageMarker19016
     stage stageMarker19016 on all partitions :
       filter " type BOOLEAN  $1 $18 ==  $10 $19 ==  and  $17 $33 ==  and  $34 $42 ==  and  $45 $50 ==  and  $52 $58 ==  and  $59 ''AMERICA''  ==  and  $13 $54 ==  and  $37 TIMESTAMP ''1995-01-01 00:00:00''  >=  and  $37 TIMESTAMP ''1996-12-31 00:00:00''  <=  and  $5 ''ECONOMY ANODIZED STEEL''  ==  and  "
-      | project " type INTEGER as o_year $37 extract_year  , type DECIMAL as volume $22 1.  $23 -  *  , type VARCHAR as nation $55 "
+      | project " type INTEGER as o_year $37 extract_year  , type DECIMAL as volume $22 1.  $23 -  *  , type VARCHAR ( 0 ) as nation $55 "
       | combined 0
       | stageMarker19019
     stage stageMarker19019 on all partitions :
