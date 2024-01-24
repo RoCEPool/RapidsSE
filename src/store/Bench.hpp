@@ -17,6 +17,7 @@ namespace STORE
     Optimiser* m_pOptimiser;
 
     i8   m_iBenchNo;
+    s32  m_sPipelineNm;
 
     i8   m_iXform;
     s32  m_sXhand;
@@ -57,6 +58,8 @@ namespace STORE
     bool bPastPhase(CardIter* pCI, eOH ePhase);
 
     void vPhase(CardIter* pCI, eOH ePhase);
+    Stz* szPipelineNm(void);
+    void vPipelineNm(Stz* szPipelineNm);
 
     //void vRenumberCards(void);
 

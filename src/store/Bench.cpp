@@ -218,6 +218,26 @@ void Bench::vPhase(CardIter* pCI, eOH ePhase)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Bench::szPipelineNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_sPipelineNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+void Bench::vPipelineNm(Stz* szPipelineNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_sPipelineNm = szPipelineNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* clear marks                                                                */
 /*----------------------------------------------------------------------------*/
 //void Bench::vRenumberCards(void)
