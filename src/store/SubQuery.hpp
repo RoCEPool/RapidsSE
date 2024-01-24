@@ -20,12 +20,14 @@ namespace STORE
   {
   protected:
 
+    s32  m_sSqyNm;     // subquery name
+
     Board* m_pBoard;     // which board
 
-    i8 m_i_Caller;       // which subquery calls this subquery
+    i8  m_i_Caller;       // which subquery calls this subquery
 
     eQD m_eDisposition;  // linear/simple or aggregation
-    i8 m_nCorrCols;      // number of correlated columns
+    i8  m_nCorrCols;      // number of correlated columns
 
     eQC m_eClause;       // called via clause: from|where|having
     eQO m_eCallOp;       // connecting operator: (not)exists|(not)in|relnOp
@@ -75,6 +77,9 @@ namespace STORE
 
     eRO  eRelnOp(void);
     void vRelnOp(eRO eRelnOp);
+
+    Stz* szSqyNm(void);
+    void vSqyNm(Stz* szSqyNm);
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);
