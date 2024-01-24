@@ -253,11 +253,8 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* sz
   // 5) add <fold> (before MQ)
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, szCrlPpy);
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
-  pCI->G.p_level = new Card_Level(AL_NONE);
-  pCI->G.p_fold->vAppendChild(pCI->G.p_level);
 
   v_fold(pCI->G.p_fold);
-
 
   // 6) copy up sq (add before fold)
   pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqCopy);
@@ -315,10 +312,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
  // pCI->vPrintBoard(__func__,__LINE__);
 
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy);
-
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
-  pCI->G.p_level = new Card_Level(AL_NONE);
-  pCI->G.p_fold->vAppendChild(pCI->G.p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get copy of sq and push before mq
@@ -399,12 +393,8 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   // 5) add <fold> (before MQ)
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_NonCrlSqy);
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
-  pCI->G.p_level = new Card_Level(AL_NONE);
-  pCI->G.p_fold->vAppendChild(pCI->G.p_level);
-
 
   v_fold(pCI->G.p_fold);
-
 
   // 6) copy up sq (add before fold)
   pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqCopy);
