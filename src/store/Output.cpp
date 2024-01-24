@@ -6,8 +6,6 @@
 
 #include "Marker.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "Crw.hpp"
@@ -427,36 +425,32 @@ bool Output::bProcessOperand(Operand* pOperand)
 //      goto L_EXIT;
 //      break;
 //    }
+      // -- -- -- -- -- --
 
-    // -- -- -- -- -- --
-      
-    case CN_ROWBUFFER: {
-      RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-//        if (AM::bDeveloper())
-//          vTrace("[[RowBuffer %s ; Row=%lld]]\n"_Stz,
-//								 aBT[pRowBuffer->eBufferType()],
-//                 pRowBuffer->nRows());
-      if (pRowBuffer->eBufferType() == BT_PROMPTOUT) {
-				Row *pInfoRow = pRowBuffer->pFirstRow();
-				Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
+    case CN_PDS: {
+      Pds* pPdsRowBuffer = _pPds(pOperand);
 
-				vTrace("%s\n"_Stz, szPromptLine);
-			}
-			else if (pRowBuffer->eBufferType() == BT_AFFECTEDROWS) {
-				m_bLoadResult = true;
-				Row *pInfoRow = pRowBuffer->pFirstRow();
+      if (pPdsRowBuffer->eBufferType() == BT_PROMPTOUT) {
+        Row *pInfoRow = pPdsRowBuffer->pFirstRow();
+        Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
 
-				i8 iRowsProcessed = pInfoRow->iColVal_int(0);
-				i8 iRowsInvalid = pInfoRow->iColVal_int(1);
-				i8 iRowsSkipped = pInfoRow->iColVal_int(2);
+        vTrace("%s\n"_Stz, szPromptLine);
+      }
+      else if (pPdsRowBuffer->eBufferType() == BT_AFFECTEDROWS) {
+        m_bLoadResult = true;
+        Row *pInfoRow = pPdsRowBuffer->pFirstRow();
 
-				m_ixRowsProcessed += iRowsProcessed;
-				m_ixRowsInvalid += iRowsInvalid;
-				m_ixRowsSkipped += iRowsSkipped;
-			}
-			else if (pRowBuffer->eBufferType() == BT_EXECERRORS) {
-	      if ( ! m_bHasError) {
-          Row *pInfoRow = pRowBuffer->pFirstRow();
+        i8 iRowsProcessed = pInfoRow->iColVal_int(0);
+        i8 iRowsInvalid = pInfoRow->iColVal_int(1);
+        i8 iRowsSkipped = pInfoRow->iColVal_int(2);
+
+        m_ixRowsProcessed += iRowsProcessed;
+        m_ixRowsInvalid += iRowsInvalid;
+        m_ixRowsSkipped += iRowsSkipped;
+      }
+      else if (pPdsRowBuffer->eBufferType() == BT_EXECERRORS) {
+        if ( ! m_bHasError) {
+          Row *pInfoRow = pPdsRowBuffer->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
           eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
@@ -472,34 +466,30 @@ bool Output::bProcessOperand(Operand* pOperand)
           m_bHasError = true;
         }
       }
-			else if (pRowBuffer->eBufferType() == BT_COMPILEERRORS) {
-				if ( ! m_bHasError) {
-					Row *pInfoRow = pRowBuffer->pFirstRow();
+      else if (pPdsRowBuffer->eBufferType() == BT_COMPILEERRORS) {
+        if ( ! m_bHasError) {
+          Row *pInfoRow = pPdsRowBuffer->pFirstRow();
 
-					Stz *sNodeName = pInfoRow->szColVal_ofs(0);
-					eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
-					i8 iLineNo = pInfoRow->iColVal_int(2);
-					i8 iColumnNo = pInfoRow->iColVal_int(3);
-					Stz *szErrorText = pInfoRow->szColVal_ofs(4);
+          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
+          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
+          i8 iLineNo = pInfoRow->iColVal_int(2);
+          i8 iColumnNo = pInfoRow->iColVal_int(3);
+          Stz *szErrorText = pInfoRow->szColVal_ofs(4);
 
-					vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
-								 sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
-					m_bHasError = true;
-				}
-			}
-			else {
-				m_ixRowsProcessed += pRowBuffer->nRows();
-				vTrace("\n"_Stz);
-//        PdsRowHelper* pPdsOfRows = new PdsRowHelper;
-//        pPdsOfRows->vCopyRows(pRowBuffer);
-//        pPdsOfRows->vPrintRows(nullptr, nullptr);
-					pRowBuffer->vPrintRows(m_pFileOut, nullptr);
-
-			}
+          vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
+                 sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
+          m_bHasError = true;
+        }
+      }
+      else {
+        m_ixRowsProcessed += pPdsRowBuffer->nItems();
+        vTrace("\n"_Stz);
+        pPdsRowBuffer->vPrintRows(nullptr, nullptr);
+      }
       AM::vDeleteOperand(pOperand, nullptr);
       break;
     }
-            
+
     // -- -- -- -- -- --
 
     case CN_STREAMDEF: {

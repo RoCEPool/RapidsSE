@@ -51,11 +51,9 @@ assert::stack_0
   "OP_createTable.sen"          include
   "OP_createTableNC.sen"        include
   "OP_createTenant.sen"         include
-  "OP_crwToRow.sen"             include
 
 "d" .verbose
 
-  "OP_debug.sen"                include
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
   "OP_disconnect.sen"           include
@@ -79,7 +77,6 @@ assert::stack_0
   "OP_eatSome.sen"              include
   "OP_eachPathTag.sen"          include
   "OP_echo.sen"                 include
-  "OP_emptyLoop.sen"            include
   "OP_etcTest.sen"              include
   "OP_exemplar.sen"             include
   "OP_explainPlan.sen"          include
@@ -105,7 +102,6 @@ assert::stack_0
 
 "i" .verbose
 
-  "OP_idxSort.sen"              include
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_inflateRows.sen"          include
@@ -246,7 +242,6 @@ assert::stack_0
   "OP_toKeyHshRow.sen"          include
   "OP_toKeyHshRow_sf.sen"       include
   "OP_toLglPtnCrw.sen"          include
-  "OP_toLglPtnNst.sen"          include
   "OP_toLglPtnRow.sen"          include
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include

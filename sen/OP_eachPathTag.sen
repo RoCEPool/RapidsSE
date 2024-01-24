@@ -22,11 +22,11 @@
 
   C_TDEF_COUNT op__tableDef assert
 
-  BT_COUNT TableDef[] RowBuffer[].new
+  BT_COUNT TableDef[] Pds[].new
 
-  nPaths 1 RowBuffer[].addRowVargs
+  nPaths 1 Pds[].addRowVargs assert
 
-  RowBuffer[].pipeOut
+  Pds[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -45,11 +45,11 @@
        
     // iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
 
-      BT_PATH TableDef[] RowBuffer[].new
+      BT_PATH TableDef[] Pds[].new
 
-      iPathOf iPathNo sPath 3 RowBuffer[].addRowVargs
+      iPathOf iPathNo sPath 3 Pds[].addRowVargs assert
 
-      RowBuffer[].pipeOut
+      Pds[].pipeOut
   loop
 ;
 

@@ -26,14 +26,14 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
-  // add pingInfo to the rowBuffer
-  TableDef[] RowBuffer[].addPingInfo assert
+  // add pingInfo to the Pds
+  "pong" 1 Pds[].addRowVargs assert
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

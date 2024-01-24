@@ -85,7 +85,6 @@ namespace STORE
     TablePtn* pTablePtn(i8 i_TablePtn);
     
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);
-    //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RowBuffer* pRowBuffer);
     //void vUpsertBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     bool bVerifyIndexes(void);

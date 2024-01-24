@@ -551,26 +551,6 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* populate the indexTree of this indexStream                                 */
-/*----------------------------------------------------------------------------*/
-void IndexStream::vScanPopulate(RowBuffer* pRowBuffer) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_INDEXSTREAM, _FOOTER_);
-
-  m_pIndexTree->vInsertEntries(pRowBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* populate the indexTree of this indexStream with top values                 */
-/*----------------------------------------------------------------------------*/
-void IndexStream::vScanPopulateTop(RowBuffer* pRowBuffer, i8 iTop) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_INDEXSTREAM, _FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Insert top new entries and delete smaller entries
-  m_pIndexTree->vInsertEntriesTop(pRowBuffer, &m_aEntry, iTop);
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin indextree scan                                                       */
 /*----------------------------------------------------------------------------*/
 void IndexStream::vScanBegin(void)
@@ -582,68 +562,6 @@ void IndexStream::vScanBegin(void)
   if (m_pEntBuffer)
     m_aEntry = m_pEntBuffer->aLeadEntry();
 }
-
-/*----------------------------------------------------------------------------*/
-/* return next rowbuffer of indextree scan                                    */
-/*----------------------------------------------------------------------------*/
-RowBuffer* IndexStream::pScanNext(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
-
-  RowBuffer* pNewRowBuffer = nullptr;
-
-  if (m_aEntry && ! pNewRowBuffer ) {
-
-    pNewRowBuffer = new RowBuffer;
-    pNewRowBuffer->vResolveRowPix(m_pStreamDef);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iterate thru the buffers starting from aLowerEntry
-  while (m_aEntry) {
-
-    // get the row entry from the lowerEntry
-    Rrf xRef = m_aEntry->rxRef();
-
-    Row* pRow = pNewRowBuffer->pAllotRow();
-
-    // insert row from entry in crwBuffer
-    if ( !pRow ) {
-
-      // Buffer is full ?
-      goto L_Exit;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // copy the row reference by index entry into the new row buffer
-    RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(m_aEntry->rxRef());
-
-    // get the row
-    Row* aRowSrc = pRowBuffer->pRowAddress(m_aEntry->rxRef().iItem());
-    pNewRowBuffer->vCopyRow(aRowSrc, false, false);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // move to next entry in the buffer
-    m_aEntry = m_pEntBuffer->aNextEntry(m_aEntry, 0);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // no more entries ?
-    if ( ! m_aEntry ) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // move to next buffer
-      m_pEntBuffer = m_pEntBuffer->pNextEntBuffer();
-
-      // next buffer ?
-      if ( m_pEntBuffer )
-        m_aEntry = m_pEntBuffer->aLeadEntry();
-    }
-  }
-
-  L_Exit:
-    return pNewRowBuffer;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

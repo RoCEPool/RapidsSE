@@ -32,7 +32,6 @@
 
 #include "CrwBuffer.hpp"
 #include "CsvBuffer.hpp"
-#include "RowBuffer.hpp"
 
 #include "LogicUnit.hpp"
 #include "EventHandlers.hpp"
@@ -128,6 +127,9 @@ Op::~Op(void) noexcept(false)
 
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
+      if (BufferId::bIsBufferId(pOperand)) {
+        pOperand = _pOperand(AM::pHashMap()->pValueAt(pOperand));
+      }
       if (pOperand->bIsMarker()) {
         if ((_pMarker(pOperand))->eOpMarker() == OM_CHILDEXIT)
           AM::vDeleteOperand(pOperand, nullptr);
@@ -720,43 +722,43 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
       
       break;
 
-		case EV_D_ROWBUFFER:
-			RASSERT(i_BufferType != BT_NONE);
+    case EV_D_PDSROWBUFFER:
+      RASSERT(i_BufferType != BT_NONE);
 
-			// These don't apply to adaptorWL
-			if (szOpNm()->bSame("adaptorWL"_Stz)) {
-				break;
-			}
+      // These don't apply to adaptorWL
+      if (szOpNm()->bSame("adaptorWL"_Stz)) {
+        break;
+      }
 
-			// should have received a EV_M_DATAPULSE
-			if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
+      // should have received a EV_M_DATAPULSE
+      if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
 
-				// EXECERRORS can come before the DATAPULSE
-				// and demon pipeline operators can receve ROWBUFFERS without a DATAPULSE
-				if (i_BufferType != BT_EXECERRORS &&  ! bDemonJob ) {
-					vTrace("%s: %s (BufferType: %s) arrived without a prior EV_M_DATAPULSE\n"_Stz,
-								 szOpNm(), aEV[i_OperandKind], aBT[i_BufferType]);
-					return false;
-				}
-			}
+        // EXECERRORS can come before the DATAPULSE
+        // and demon pipeline operators can receve PDSROWBUFFERS without a DATAPULSE
+        if (i_BufferType != BT_EXECERRORS &&  ! bDemonJob ) {
+          vTrace("%s: %s (BufferType: %s) arrived without a prior EV_M_DATAPULSE\n"_Stz,
+                 szOpNm(), aEV[i_OperandKind], aBT[i_BufferType]);
+          return false;
+        }
+      }
 
-			// should have received a EV_D_STREAMDEF if BufferType is BT_DATA
-			if (i_BufferType == BT_DATA) {
-				if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
-					vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
-								 szOpNm(), aEV[i_OperandKind]);
-					return false;
-				}
-			}
+      // should have received a EV_D_STREAMDEF if BufferType is BT_DATA
+      if (i_BufferType == BT_DATA) {
+        if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
+          vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
+                 szOpNm(), aEV[i_OperandKind]);
+          return false;
+        }
+      }
 
-			// should not have received EV_M_EOS's > EV_M_DATAPULSE's
-			if ( m_pEvMgr->m_naEventCount[EV_M_EOS] > m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
-				vTrace("%s: %s arrived after EV_M_EOS and no new EV_M_DATAPULSE\n"_Stz,
-							 szOpNm(), aEV[i_OperandKind]);
-				return false;
-			}
+      // should not have received EV_M_EOS's > EV_M_DATAPULSE's
+      if ( m_pEvMgr->m_naEventCount[EV_M_EOS] > m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
+        vTrace("%s: %s arrived after EV_M_EOS and no new EV_M_DATAPULSE\n"_Stz,
+               szOpNm(), aEV[i_OperandKind]);
+        return false;
+      }
 
-			break;
+      break;
 
     case EV_M_DATAPULSE:
       // should have received a EV_M_START
@@ -1457,10 +1459,10 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
       vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
              this->pStage()->szStageNm(), this->szOpNm()
       );
-    } else if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
-      RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-      vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows (%s)) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
-             pRowBuffer->nRows(), aBT[pRowBuffer->eBufferType()], pStage()->szStageNm(), this->szOpNm()
+    } else if (CN_PDS == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+      Pds *pPdsRowBuffer = _pPds(pOperand);
+      vTrace("[%6s %10s]-Pipeout : Pds (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             pPdsRowBuffer->nItems(), this->pStage()->szStageNm(), this->szOpNm()
       );
     }
   }
@@ -1577,31 +1579,32 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
 
       BufferId oBufferId;
       oBufferId.m_pvAsAddress = (void*)pPeekOperand;
-      if(1 == oBufferId.m_bIdFlag)
+      if(BufferId::bIsBufferId(oBufferId))
       {
         // Operand is a BufferId
         // Attempt to get its address
         pPeekOperand = (Operand*) BufferId::aAddressFromId(oBufferId);
-        if(pPeekOperand == nullptr)
-        {
-          vTrace("Pop: %p\n"_Stz, oBufferId.m_pvAsAddress);
-#ifndef WITH_PAGING
-          // If paging is not enabled, address should always be accessable via hashmap
-          NEVER_REACH;
-#endif
-          // Operand is not in memory.
-          // Queue a request to the PageIn Demon and return (Will perform pagein bide)
-          // Queue request -> PageIn Demon(BufferId + m_pTask)
-					RowBuffer* pRowBuffer = AM::PAGING::pToPageIn(m_pTask, oBufferId);
-          vTrace("Queuing request with TaskPtr %p and BufferId %p\n"_Stz, m_pTask, oBufferId.m_pvAsAddress);
-
-          Operand* pRequestOperand = _pOperand(pRowBuffer);
-          eEC eError = AM::JLIST::ePipeToOp0(AM::DEMON::tPageInDemonJobId(), pRequestOperand, m_pTask);
-          //Handle error case
-          RASSERT(eError == EC_NONE);
-          *pbPageIn = true;
-          return nullptr;
-        }
+        ASSERT(pPeekOperand);
+//        if(pPeekOperand == nullptr)
+//        {
+//          vTrace("Pop: %p\n"_Stz, oBufferId.m_pvAsAddress);
+//#ifndef WITH_PAGING
+//          // If paging is not enabled, address should always be accessable via hashmap
+//          NEVER_REACH;
+//#endif
+//          // Operand is not in memory.
+//          // Queue a request to the PageIn Demon and return (Will perform pagein bide)
+//          // Queue request -> PageIn Demon(BufferId + m_pTask)
+//					RowBuffer* pRowBuffer = AM::PAGING::pToPageIn(m_pTask, oBufferId);
+//          vTrace("Queuing request with TaskPtr %p and BufferId %p\n"_Stz, m_pTask, oBufferId.m_pvAsAddress);
+//
+//          Operand* pRequestOperand = _pOperand(pRowBuffer);
+//          eEC eError = AM::JLIST::ePipeToOp0(AM::DEMON::tPageInDemonJobId(), pRequestOperand, m_pTask);
+//          //Handle error case
+//          RASSERT(eError == EC_NONE);
+//          *pbPageIn = true;
+//          return nullptr;
+//        }
         // Operand is present in memory, so proceed as normal
       }
 
@@ -1652,15 +1655,13 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
            );
   }
   else
-  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    UNUSED(pRowBuffer);
-    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows(%s))\n"_Stz
-          ,pStage()->szStageNm()
-          ,szOpNm()
-          ,pRowBuffer->nRows()
-		      ,aBT[pRowBuffer->eBufferType()]
-          );
+  if (CN_PDS == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+    Pds *pPdsRowBuffer = _pPds(pOperand);
+    vTrace("[%6s %10s]-Pipein  : Pds (%lld rows)\n"_Stz
+        ,pStage()->szStageNm()
+        ,szOpNm()
+        ,pPdsRowBuffer->nItems()
+    );
   }
   return pOperand;
 

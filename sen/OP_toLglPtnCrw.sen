@@ -38,21 +38,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                                 EACH */
+/* on EV_D_PDSROWBUFFER ...                                              EACH */
 /*----------------------------------------------------------------------------*/
-: toLglPtnCrw_RowBuffer \handler
+: toLglPtnCrw_PdsRowBuffer \handler
 
-  PipeIn[]\clear to RowBuffer[]
+  PipeIn[]\clear to Pds[]
 
   // handle BT_DATA only
-  RowBuffer[].bufferType@ BT_DATA != if
-    RowBuffer[].pipeout
+  Pds[].bufferType@ BT_DATA != if
+    Pds[].pipeout
     true
     exit
   then
 
-  RowBuffer[] ToLglPtnCrw[].convert
-  RowBuffer[].delete
+  Pds[] ToLglPtnCrw[].convert
+  Pds[].delete
 
   ptnmap::ptnsInGrid 0
   do
@@ -115,7 +115,7 @@
 
   find: toLglPtnCrw_EosMarker   EV_M_EOS         [op].handler!
   find: toLglPtnCrw_DataMarker  EV_M_DATAPULSE   [op].handler!
-  find: toLglPtnCrw_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: toLglPtnCrw_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
   find: toLglPtnCrw_StartMarker EV_M_START       [op].handler!
   find: toLglPtnCrw_StreamDef   EV_D_STREAMDEF   [op].handler!
 

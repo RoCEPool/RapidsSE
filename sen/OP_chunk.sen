@@ -36,14 +36,14 @@
       iFileSizeMb sFileNm "OP_chunk: %v : %vMB\n" .putf
     then
 
-    // create a rowBuffer operand for C_TDEF_TOTALUNITS
-    BT_TOTALUNITS TableDef[] RowBuffer[].new
+    // create a Pds operand for C_TDEF_TOTALUNITS
+    BT_TOTALUNITS TableDef[] Pds[].new
 
-    // add fileSize to the rowBuffer
-    sFileNm iFileSizeMb TableDef[] RowBuffer[].addTotalUnits assert
+    // add fileSize to the Pds
+    iFileSizeMb sFileNm 2 Pds[].addRowVargs assert
 
-    // pipeout the rowBuffer
-    RowBuffer[].pipeOut
+    // pipeout the Pds
+    Pds[].pipeOut
 
   then
 ;
@@ -97,11 +97,11 @@
   while
     //counter1[] "counter1 %v" .printf
 
-    // create an rowBuffer operand
-    BT_SEEKOFFSETS TableDef[] RowBuffer[].new
-    RowBuffer[].chunkFile counter2[] + to counter2[]
+    // create a Pds operand
+    BT_SEEKOFFSETS TableDef[] Pds[].new
+    Pds[].chunkFile counter2[] + to counter2[]
 
-    RowBuffer[].pipeOut
+    Pds[].pipeOut
   repeat
 
   "<OP_chunk>" [job].tagSet@ tagSet.hasName if

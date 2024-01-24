@@ -561,30 +561,30 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         break;
 
       case SK_INFLATE_ROW:
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // open the inflateRow code fragments file
-        bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/InflateRow.cpp"_Stz);
-        RASSERT ( bOpened );
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // new ROWBUFFER handler
-        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// open the inflateRow code fragments file
+				bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/InflateRow.cpp"_Stz);
+				RASSERT ( bOpened );
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// new ROWBUFFER handler
+				vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // append to stencil
-        vAppendStencilTo(pOpSketch);
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// operator stub
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
-        vAppendCodeFragment(pOpSketch, "vInflateRowBegin"_Stz, pOperatorFile);
-        vAppendCodeInflateRowCols(pOpSketch, "vInflateRowCol"_Stz, pOperatorFile);
-        //vAppendCodeFragment(pOpSketch, "vInflateRowReturn"_Stz, pOperatorFile);
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// append to stencil
+				vAppendStencilTo(pOpSketch);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // close the inflateRow code fragments file
-        pOperatorFile->vClose();
+				vAppendCodeFragment(pOpSketch, "vInflatePdsRowBegin"_Stz, pOperatorFile);
+				vAppendCodeInflateRowCols(pOpSketch, "vInflatePdsRowCol"_Stz, pOperatorFile);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// close the inflateRow code fragments file
+				pOperatorFile->vClose();
 
         break;
 
@@ -660,6 +660,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
       case SK_TUB:
       case SK_POT:
 
+#ifdef WITH_ROWBUFFER
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
@@ -727,6 +728,60 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
           vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
         }
         break;
+
+#endif
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// operator stub
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				vAppendStencilTo(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
+				vAppendCodePixCols(pOpSketch);
+				vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// POT/TUB in EOS handler
+				if (pOpSketch->m_eHandlerKind == HK_EOS) {
+					if (pOpSketch->m_eStencilFrom == SR_PL) {
+
+						if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+							vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
+						else
+							vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
+
+						// generate code for the hash value
+						if (pOpSketch->eSketchKind() == SK_POT)
+							vAppendCodePLToHashCols(pOpSketch);
+
+						if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
+							vAppendCodeFragment(pOpSketch, "vEosPotTubLimit"_Stz);
+						}
+
+						vAppendCodeFragment(pOpSketch, "iEosPLPotTub_pds"_Stz);
+						vAppendCodeToTubCols(pOpSketch);
+						vAppendCodeFragment(pOpSketch, "vEosPLPotTubEnd"_Stz);
+					}
+					else {
+						vAppendCodeFragment(pOpSketch, "iEosPotTubBegin"_Stz);
+						vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+						vAppendCodeFragment(pOpSketch, "iEosPotTubBody_pds"_Stz);
+						vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
+					}
+
+				}
+				else {
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// POT/TUB in CRW/ROW/INDEX handler
+
+					// generate code for the hash value
+					if (pOpSketch->eSketchKind() == SK_POT)
+						vAppendCodeHashCols(pOpSketch);
+
+					vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
+					vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
+				}
+				break;
 
       default:
         NEVER_REACH
@@ -1127,7 +1182,23 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, b
 			else
 			  szFunction = "vIndexScanEnd";
       break;
+			/*
+    case HK_PDSROWBUFFER:
+      if (bHasOrdAgg) {
+        if (bHasIndexInflate)
+          szFunction = "vInflatePdsRowIndexEnd_OA";
+        else
+          szFunction = "vInflatePdsRowEnd_OA";
+      }
+      else {
+        if (bHasIndexInflate)
+          szFunction = "vInflatePdsRowIndexEnd";
+        else
+          szFunction = "vInflatePdsRowEnd";
+      }
+      */
     case HK_ROWBUFFER:
+		case HK_PDSROWBUFFER:
 			if (bHasOrdAgg) {
 				if (bHasIndexInflate)
 					szFunction = "vInflateRowIndexEnd_OA";
@@ -1188,6 +1259,10 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
       szFunction = "__FUNCTION_INDEX__";
       sFunSignature = "iIndexHandler_";
       break;
+    case HK_PDSROWBUFFER:
+      szFunction = "__FUNCTION_PDSROW__";
+      sFunSignature = "iPdsRowHandler_";
+      break;
     case HK_ROWBUFFER:
       szFunction = "__FUNCTION_ROW__";
       sFunSignature = "iRowHandler_";
@@ -1231,6 +1306,15 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
     case HK_CRWBUFFER:
       szFunction = "vCrwContinue";
       break;
+			/*
+    case HK_PDSROWBUFFER:
+      if (bHasIndexInflate)
+        szFunction = "vPdsRowIndexContinue";
+      else
+        szFunction = "vPdsRowContinue";
+      break;
+      */
+		case HK_PDSROWBUFFER:
     case HK_ROWBUFFER:
       if (bHasIndexInflate)
         szFunction = "vRowIndexContinue";

@@ -16,6 +16,9 @@ assert::stack_0
 "<wait> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
    constant STD_WAIT_PATH_TAG
 
+"<wait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+   constant STD_NORMALFORK_WAIT_TAG
+
 "<nowait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
    constant STD_NORMALFORK_TAG
 
@@ -81,6 +84,7 @@ assert::stack_0
   "dp_answerSE.sen"         include
   "dp_connectorSE.sen"      include
   "dp_receiverSE.sen"       include
+  "se_experiments.sen"      include
 
   "dp_answerWL.sen"         include
   "dp_receiverWL.sen"       include
@@ -108,7 +112,6 @@ assert::stack_0
 
   "dp_pageInDemon.sen"      include
   "dp_pageOutDemon.sen"     include
-  "se_experiments.sen"      include
   "se_llc.sen"              include
   "se_munge.sen"            include
   "se_stepTests.sen"        include

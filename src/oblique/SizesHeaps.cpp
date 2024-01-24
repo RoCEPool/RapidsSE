@@ -50,7 +50,6 @@
 #include "Tenants.hpp"
 #include "Marker.hpp"
 #include "Record.hpp"
-#include "RowBuffer.hpp"
 #include "LglBufSet.hpp"
 #include "Pot.hpp"
 
@@ -419,7 +418,6 @@ SizeHeap gxaSizeHeap[]
   {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
   {CN_CRWBUFFER,                sizeof(CrwBuffer),                HT_T_LARGE   , FILL },
   {CN_CRWTABLEPTN,              sizeof(CrwTablePtn),              HT_T_TINY    , FILL },
-  {CN_CRWTOROW,                 sizeof(CrwToRow),                 HT_T_TINY    , FILL },
   {CN_CSVBUFFER,                sizeof(CsvBuffer),                HT_T_LARGE   , FILL },
   {CN_CSVMETA,                  sizeof(CsvMeta),                  HT_T_TINY    , FILL },
 
@@ -593,7 +591,6 @@ SizeHeap gxaSizeHeap[]
   { CN_PDSBUFFERIDQUEUE,         sizeof(PdsBufferIdQueue),   HT_T_TINY    , FILL },
   { CN_PDSCURSOR,                sizeof(PdsCursor),          HT_T_TINY    , FILL },
   { CN_PDSCONVERGENTHEAP_t,      0,                          HT_INVALID   , FILL },
-  { CN_PDSROWHELPER,             sizeof(PdsRowHelper),       HT_T_TINY    , FILL },
   { CN_PERMGEN,                  sizeof(PermGen),            HT_T_LARGE   ,FILL },
   { CN_PERMIT,                   sizeof(Permit),             HT_T_TINY    ,FILL },
   { CN_PERUSE,                   sizeof(Peruse),             HT_T_MEDIUM  ,FILL },
@@ -645,7 +642,6 @@ SizeHeap gxaSizeHeap[]
   { CN_ROW,                      sizeof(Row),                HT_T_LARGE   ,FILL },
   { CN_ROWAGG,                   sizeof(Row),/*correct*/     HT_T_MEDIUM  ,FILL },
   { CN_ROWBOX,                   0,                          HT_INVALID   ,FILL },
-  { CN_ROWBUFFER,                sizeof(RowBuffer),          HT_T_LARGE   ,FILL },
   { CN_ROWCOMPACTOR,             sizeof(RowCompactor),       HT_T_SMALL   ,FILL },
   { CN_ROWCOUNTS,                sizeof(RowCounts),          HT_T_TINY   ,FILL },
   { CN_ROWONCE,                  sizeof(RowOnce),            HT_T_TINY    ,FILL },
@@ -771,7 +767,6 @@ SizeHeap gxaSizeHeap[]
   { CN_TOKENVEC,                 sizeof(TokenVec),               HT_T_LARGE   , FILL },
   { CN_TOKEYHSHROW,              sizeof(ToKeyHshRow),            HT_T_MEDIUM  , FILL },
   { CN_TOLGLPTNCRW,              sizeof(ToLglPtnCrw),            HT_T_LARGE   , FILL },
-  { CN_TOLGLPTNNST,              sizeof(ToLglPtnNst),            HT_T_MEDIUM  , FILL },
   { CN_TOLGLPTNROW,              sizeof(ToLglPtnRow),            HT_T_LARGE   , FILL },
   { CN_TOTUP,                    sizeof(Totup),                  HT_T_MEDIUM  , FILL },
   { CN_TRACELOCK,                sizeof(TraceLock),              HT_T_TINY    , FILL },

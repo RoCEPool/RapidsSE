@@ -20,12 +20,12 @@
 /*----------------------------------------------------------------------------*/
 /* ProgressUnits                                                              */
 /*----------------------------------------------------------------------------*/
-: progress_ProgressUnits
+: progress_PdsProgressUnits
 
   0 0 0 locals| nodeName partitionNo iPercent |
 
-  // get first row of RowBuffer[]
-  RowBuffer[].firstRow to Row[]
+  // get first row of Pds[]
+  Pds[].firstRow to Row[]
 
   // get 0th Column (ProgressUnits) add to Counter
   0 Row[].getIntColumn Counter1[] + to Counter1[]
@@ -52,12 +52,12 @@
 /*----------------------------------------------------------------------------*/
 /* TotalUnits                                                                 */
 /*----------------------------------------------------------------------------*/
-: progress_TotalUnits
+: progress_PdsTotalUnits
 
   0 locals| iPercent |
 
-  // get first row of RowBuffer[]
-  RowBuffer[].firstRow to Row[]
+  // get first row of Pds[]
+  Pds[].firstRow to Row[]
 
   // get 0th Column (fileName)
   0 Row[].getVchColumn to StringA[]
@@ -69,39 +69,39 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER...                                                       */
+/* on EV_D_PDSROWBUFFER...                                                    */
 /*----------------------------------------------------------------------------*/
-: progress_RowBuffer \handler
+: progress_PdsRowBuffer \handler
 
   0 0 locals| iPercent eBufferType |
 
-  //"Operand:- EV_D_ROWBUFFER" .verbose
+  //"Operand:- EV_D_PDSROWBUFFER" .verbose
 
-  // get operand into RowBuffer[]
-  PipeIn[] to RowBuffer[]
+  // get operand into Pds[]
+  PipeIn[] to Pds[]
   nullptr to PipeIn[]
 
   // get the buffer type
-  RowBuffer[].bufferType@ to eBufferType
+  Pds[].bufferType@ to eBufferType
 
   // handle BT_PROGRESSUNITS
   eBufferType BT_PROGRESSUNITS == if
-    progress_ProgressUnits
-    RowBuffer[].delete
+    progress_PdsProgressUnits
+    Pds[].delete
     true
     exit
   then
 
   // handle BT_TOTALUNITS
   eBufferType BT_TOTALUNITS == if
-    progress_TotalUnits
-    RowBuffer[].delete
+    progress_PdsTotalUnits
+    Pds[].delete
     true
     exit
   then
 
-  // pipeout all other rowBuffer types
-  RowBuffer[].pipeout
+  // pipeout all other Pds types
+  Pds[].pipeout
 
   true
 ;
@@ -116,7 +116,7 @@
   op__topology
 
   find: progress_EosMarker     EV_M_EOS           [op].handler!
-  find: progress_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: progress_PdsRowBuffer  EV_D_PDSROWBUFFER  [op].handler!
 
   op__loop
 

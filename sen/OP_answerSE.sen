@@ -46,11 +46,11 @@
     nullptr
     exit
   then
-  
-  Socket[].object@\clear to RowBuffer[]
 
-  // get the first row from the rowBuffer
-  RowBuffer[].firstRow to Row[]
+  Socket[].object@\clear to Pds[]
+
+  // get the first row from the Pds
+  Pds[].firstRow to Row[]
 
   // get the 0th column from the row
   0 Row[].getVchColumn to sNodeName
@@ -93,8 +93,8 @@
   //  true [system].started!
   //then
 
-  // delete the rowBuffer
-  RowBuffer[].delete
+  // delete the Pds
+  Pds[].delete
 
   // return the answered node
   pAnsweredNode

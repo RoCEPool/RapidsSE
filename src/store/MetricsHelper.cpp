@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-#include "RowBuffer.hpp"
-
 #include "MetricsHelper.hpp"
 #include "Record.hpp"
 
@@ -14,20 +12,26 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-void MetricsHelper::vWriteCsv(RowBuffer* pRowBuffer, StreamDef* pStreamDef, File* pFile)
+void MetricsHelper::vWriteCsvPds(Pds* pPdsRowBuffer, StreamDef* pStreamDef, File* pFile)
 {
-	_static_
+  _static_
 
-	HV_Record hvRecord(pStreamDef->pRowPix());
+  HV_Record hvRecord(pStreamDef->pRowPix());
 
-	for (Row* pInfoRow = pRowBuffer->pFirstRow();
-			 pInfoRow;
-			 pInfoRow = pRowBuffer->pNextRow(pInfoRow)) {
+  PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
 
-		vTrace("MetricsHelper: %s\n"_Stz,hvRecord->sz(pInfoRow));
+  while( ! pCursor->bIsCurrNull()) {
+    Row* pInfoRow = pCursor->pCurrRow();
 
-		pFile->vPrint("%s\n"_Stz,hvRecord->sz(pInfoRow));
-	}
+    vTrace("MetricsHelper: %s\n"_Stz,hvRecord->sz(pInfoRow));
+
+    pFile->vPrint("%s\n"_Stz,hvRecord->sz(pInfoRow));
+
+    pCursor->vNext();
+  }
+
+  pCursor->m_pPds = nullptr;
+  delete pCursor;
 }
 
 /*============================================================================*/

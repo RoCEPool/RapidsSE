@@ -103,8 +103,8 @@
     PlanOperand[] Text[] sOperatorName sqlCompiler::doExplainTliterate
 
     // pipeout explain
-    RowBuffer[].isNull not assert
-    RowBuffer[].pipeout
+    Pds[].isNull not assert
+    Pds[].pipeout
 
     // Always exit at this point
     PlanOperand[].delete
@@ -192,14 +192,14 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_LeaveMarker \handler
 
-  // RowBuffer[] should not be null
-  RowBuffer[].isNull not assert
+  // Pds[] should not be null
+  Pds[].isNull not assert
 
   // it should have BT_EXPLAIN
-  RowBuffer[].bufferType@ BT_EXPLAIN == assert
+  Pds[].bufferType@ BT_EXPLAIN == assert
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeout
+  // pipeout the Pds
+  Pds[].pipeout
 
   EV_M_LEAVE_handler
 ;
@@ -229,19 +229,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
+/* handler for EV_D_PDSROWBUFFER ...                                          */
 /*----------------------------------------------------------------------------*/
-: transliterate_RowBuffer \handler
+: transliterate_PdsRowBuffer \handler
 
-  // get the pipein in RowBuffer[]
-  Pipein[]\clear to RowBuffer[]
+  // get the pipein in Pds[]
+  Pipein[]\clear to Pds[]
 
   // handle BT_EXPLAIN only
-  RowBuffer[].bufferType@ BT_EXPLAIN  != if
-    RowBuffer[].pipeout
+  Pds[].bufferType@ BT_EXPLAIN  != if
+    Pds[].pipeout
   then
 
-  // keep the BT_EXPLAIN rowBuffer
+  // keep the BT_EXPLAIN Pds
   // to be pipedout when the LEAVEMARKER comes along
   true
 ;
@@ -264,7 +264,7 @@
   find: transliterate_PlanOperand   EV_D_PLANOPERAND   [op].handler!
   find: transliterate_StartMarker   EV_M_START         [op].handler!
 
-  find: transliterate_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: transliterate_PdsRowBuffer  EV_D_PDSROWBUFFER  [op].handler!
   find: transliterate_InternalError EV_M_INTERNALERROR [op].handler!
   find: transliterate_LeaveMarker   EV_M_LEAVE         [op].handler!
   find: transliterate_LowMemory     EV_M_LOWMEMORY     [op].handler!

@@ -5,6 +5,7 @@
   char *szSrcStz    __attribute__ ((unused));
   char *szDstStz    __attribute__ ((unused));
   char *szStrArea   __attribute__ ((unused));
+  char *azStringDyn __attribute__ ((unused));
   char *szArg1      __attribute__ ((unused));
   char *szArg2      __attribute__ ((unused));
   char *szArg3      __attribute__ ((unused));
@@ -41,6 +42,7 @@
   i8 iInCount        __attribute__ ((unused));
   i8 *paW            __attribute__ ((unused));
   i8 iScaleDiff      __attribute__ ((unused));
+  i8 nMaxStrAreaLen  __attribute__ ((unused));
 
   union Bcd_T bcdArg1 __attribute__ ((unused));
   union Bcd_T bcdArg2 __attribute__ ((unused));

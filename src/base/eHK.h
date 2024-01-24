@@ -10,6 +10,7 @@ enum eHK // Handler kind
   /*    */ HK_CRWBUFFER,
   /*    */ HK_EOS,
   /*    */ HK_INDEXBUFFER,
+  /*    */ HK_PDSROWBUFFER,
   /*    */ HK_ROWBUFFER,
   /*    */ HK_STREAMDEF,
 

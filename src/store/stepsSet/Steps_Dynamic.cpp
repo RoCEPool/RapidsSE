@@ -105,14 +105,14 @@ void Step::vDynamicExecute(void)
       aDynamicT->m_nRows      = pCrwBuffer->nRows();
     }
     else {
-      // ROWBUFFER
-      RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER);
+      // PDSROWBUFFER
+      RASSERT(pDataBuffer->eGetClassNo() == CN_PDS);
 
-      RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
+      Pds *pPdsRowBuffer = _pPds(pDataBuffer);
 
-      aDynamicT->m_aRowBuffer  = pRowBuffer;
-      aDynamicT->m_xRowInfoIT.m_acStrArea = (char*)pRowBuffer->szStzAllot_begin();
-      aDynamicT->m_nRows       = pRowBuffer->nRows();
+      aDynamicT->m_aPdsRowBuffer  = pPdsRowBuffer;
+      //aDynamicT->m_xRowInfoIT.m_acStrArea = (char*)pPdsRowBuffer->szStzAllot_begin(); // ALKA TO COME BACK
+      aDynamicT->m_nRows       = pPdsRowBuffer->nItems();
     }
   }
 

@@ -20,8 +20,8 @@
   StreamDefLft[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   0 locals| pNode |
 
@@ -30,10 +30,10 @@
   begin
     node_I[].node to pNode
 
-    pNode node.id TableDef[] RowBuffer[].addShowCluster  not if
-      RowBuffer[].pipeOut
-      BT_DATA TableDef[] RowBuffer[].new
-      pNode node.id TableDef[] RowBuffer[].addShowCluster assert
+    pNode node.id Pds[].addShowCluster  not if
+      Pds[].pipeOut
+      BT_DATA TableDef[] Pds[].new
+      pNode node.id Pds[].addShowCluster assert
     then
 
     node_I[].next
@@ -44,8 +44,8 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

@@ -6,7 +6,6 @@
 
 
 #include "Row.hpp"
-#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -189,13 +188,8 @@ Stz* Row::szColVal_ofs(i8 i_Col)
 
   Object* pObject = aAdd<Object*>(amCellAddress,i_Ofs);
 
-  if (pObject->eGetClassNo() == CN_STRING_D) {
-    String_d* szStringd = (String_d*) pObject;
-    return szStringd->szStz();
-  } else {
-    Stz* szStz = (Stz*) pObject;
-    return szStz;
-  }
+  Stz* szStz = (Stz*) pObject;
+  return szStz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,39 +212,6 @@ void Row::vColVal_ofs(i8 i_Col, Stz* szStz)
   i8 i_Ofs = - nDifference(&m_wxaColumnCell[i_Col],szStz);
   
   m_wxaColumnCell[i_Col].m_iWrd = i_Ofs;
-}
-
-/*----------------------------------------------------------------------------*/
-/* deposit var-arg list of column values into row                             */
-/*----------------------------------------------------------------------------*/
-void Row::vDeposit(va_list xVarArgs)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-    
-  RowBuffer* pRowBuffer = pToRowBuffer();
-
-  bool b = pRowBuffer->bDepositColumns(this,xVarArgs);
-  RASSERT(b);
-}
-
-/*----------------------------------------------------------------------------*/
-/* deposit var-arg list of column values into row                             */
-/*----------------------------------------------------------------------------*/
-void Row::vDeposit(i8 iVargsBegin, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-  
-  ASSERT(C_VARGS_BEGIN == iVargsBegin);
-  
-  RowBuffer* pRowBuffer = pToRowBuffer();
-
-  va_list xVarArgs;
-  va_start(xVarArgs,iVargsBegin);
-
-  bool b = pRowBuffer->bDepositColumns(this,xVarArgs);
-  RASSERT(b);
-  
-  va_end(xVarArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,15 +286,15 @@ void Row::vSetColNull(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the row buffer that contains this row                                  */
+/* get the Pds buffer that contains this row                                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Row::pToRowBuffer(void)
+Pds* Row::pToPds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
 
-  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(this);
+  Pds* pPds = Pds::pToPds(this);
     
-  return pRowBuffer;
+  return pPds;
 }
 
 /*============================================================================*/

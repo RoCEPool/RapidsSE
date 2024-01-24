@@ -94,6 +94,7 @@ namespace BASE {
   class PoolBuffer;
   class PoolHelper;
   class PsxThd;
+  class Pds;
 
   class Queue;
 
@@ -164,7 +165,6 @@ namespace STORE {
   class Index;
   class IndexTree;
   class InfoSet;
-  class InfoSetBase;
   class InternalTables;
 
   class Job;
@@ -510,8 +510,8 @@ namespace OBLIQUE
     };
     class PAGING
     {
-    public:
-      static RowBuffer* pToPageIn(Task* pTask, BufferId oBufferId);
+//    public:
+//      static RowBuffer* pToPageIn(Task* pTask, BufferId oBufferId);
     };
     class PARCEL
     {
@@ -552,7 +552,7 @@ namespace OBLIQUE
     public:
       static bool bToPipelineStmt(String* pAsPipelineStmt,
                                   TokenVec* pFromTokenVec);
-      static RowBuffer* pToPromptOut(Stz* szStz);
+      static void* pToPromptOut(Stz* szStz);
     };
 
 

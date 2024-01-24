@@ -8,8 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "Crw.hpp"
@@ -90,9 +88,9 @@ void Step::vProfileStart(void)
       }
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case CN_ROWBUFFER: {
-        RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
-        nRowCount = pRowBuffer->nRows();
+      case CN_PDS: {
+        Pds* pPds = _pPds(pDataBuffer);
+        nRowCount = pPds->nItems();
         break;
       }
       

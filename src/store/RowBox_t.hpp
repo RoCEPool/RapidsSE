@@ -194,7 +194,7 @@ void RowBox_t<AREA>::vInitRowBox_t(void)
   
   m_sBufferNm = C_NO_NAME;
 
-  MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWBUFFER);
+  MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_PDS);
   m_caModel[sizeof(m_caModel) - 1] = '\0';
   
   StrLib::vSprint(m_caModel,
@@ -326,7 +326,7 @@ void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
 
   pAllotRowPix(pRowPixSrc->nDynamicSize());
 
-  MemLib::vCopy(pRowPix(),pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
+  MemLib::vCopy(pRowPix(),pRowPixSrc,sizeof(RowPix),CN_PDS);
 
   m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
 }
@@ -1116,7 +1116,7 @@ void RowBox_t<AREA>::vZeroRow(Row *aRow)
 
   i8 nCellBytes = pRowPix()->m_nColumns * C_BYTES_PER_WORD;
 
-  MemLib::vZero(aRow->aCellArray(),nCellBytes,CN_ROWBUFFER);
+  MemLib::vZero(aRow->aCellArray(),nCellBytes,BASE::CN_PDS);
 }
 
 /*----------------------------------------------------------------------------*/

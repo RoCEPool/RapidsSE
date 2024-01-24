@@ -92,7 +92,7 @@ void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a crw buffer into the CrwTablePtn                                      */
+/* append a crw buffer into the CrwTablePtn                                   */
 /*----------------------------------------------------------------------------*/
 void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 {
@@ -119,12 +119,14 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append a new Skip List Block to the PDS
-  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pInsert((void*)&(++m_iSynthKey));
+  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pInsert((void*)&(m_iSynthKey));
   RASSERT(pSLBlock != nullptr);
 
   PdsItem_BufferId oBufferIdStruct;
   oBufferIdStruct.iKey = m_iSynthKey;
   oBufferIdStruct.oBufferId = pCrwBuffer->oGetBufferId();
+
+  m_iSynthKey++;
 
   // Update the contents of SkipListBlock Item with the key and bufferId
   *(PdsItem_BufferId*)(pSLBlock->aItem()) = oBufferIdStruct;

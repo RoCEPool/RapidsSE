@@ -63,11 +63,11 @@ void Paging::vRandomAlgo(i8 nTotal)
 
       // Check if this entry is queued for output
       DataBuffer* pDataBuffer = _pDataBuffer(pEntry->m_pValObject);
-      if(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
-         pDataBuffer->bOutputQueued()) {
-        pEntry->m_okLock.vDropWrite();
-        continue;
-      }
+//      if(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
+//         pDataBuffer->bOutputQueued()) {
+//        pEntry->m_okLock.vDropWrite();
+//        continue;
+//      }
 
       // remove this entry from the hashmap by setting the current index
       // to point to the next entry
@@ -81,10 +81,6 @@ void Paging::vRandomAlgo(i8 nTotal)
       pDataBuffer->vSetBufferId(nullptr);
 
       switch(pDataBuffer->eGetClassNo()) {
-        case BASE::CN_ROWBUFFER:
-          delete _pRowBuffer(pDataBuffer);
-          break;
-
         case BASE::CN_CRWBUFFER:
           delete _pCrwBuffer(pDataBuffer);
           break;

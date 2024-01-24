@@ -63,6 +63,9 @@
     PdsCursor[].next
   repeat
 
+  PdsCursor[].delete
+  nullptr to PdsCursor[]
+
 
   // Finished sending all bufferIds to the next op
   // drop table ptn lock

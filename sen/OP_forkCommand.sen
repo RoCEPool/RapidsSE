@@ -5,10 +5,10 @@
 " OP_forkCommand.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
+/* handler for EV_D_PDSROWBUFFER ...                                          */
 /*----------------------------------------------------------------------------*/
-: forkCommand_RowBuffer \handler
-  
+: forkCommand_PdsRowBuffer \handler
+
   0 0 locals| eError tForkedJobId |
 
   // handle BT_COMMAND only
@@ -18,17 +18,17 @@
     exit
   then
 
-  PipeIn[]\clear to RowBuffer[]
+  PipeIn[]\clear to Pds[]
 
   // get the command to be forked and any tags to be used
   //0 C_TDEF_COMMAND InfoSet:getCol locals| sForkCmd |
   //1 C_TDEF_COMMAND InfoSet:getCol locals| sTags |
 
-  RowBuffer[].firstRow to Row[]
+  Pds[].firstRow to Row[]
   0 Row[].getVchColumn locals| sForkCmd |
   1 Row[].getVchColumn locals| sTags |
 
-  RowBuffer[].delete
+  Pds[].delete
 
   //sForkCmd "  forkCmd=%v" .printf
 
@@ -66,7 +66,7 @@
 
   op__topology
 
-  find: forkCommand_rowbuffer  EV_D_RowBuffer   [op].handler!
+  find: forkCommand_PdsRowbuffer  EV_D_PDSRowBuffer   [op].handler!
 
   op__loop
 

@@ -826,22 +826,22 @@ b1 NameValidator::bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchema
   ASSERT(pSeApi);
 
   // Look up table in SE API
-  STORE::RowBuffer* pTableInfoBuffer = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
+  Pds* pTableInfoBuffer = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
   ASSERT(pTableInfoBuffer);
 
-  if (pTableInfoBuffer->nRows() == 0) {
+  if (pTableInfoBuffer->nItems() == 0) {
     // We couldn't resolve the table in the SE metadata
     delete pTableInfoBuffer;
     return false;
   }
 
-  if (pTableInfoBuffer->nRows() > 1) {
+  if (pTableInfoBuffer->nItems() > 1) {
     // We've resolved more than one table in the metadata. The table name is ambiguous.
     delete pTableInfoBuffer;
     NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pTableInfoBuffer);
   }
 
-  ASSERT(pTableInfoBuffer->nRows() == 1);
+  ASSERT(pTableInfoBuffer->nItems() == 1);
 
   Row* pTblRow = pTableInfoBuffer->pFirstRow();
   TableMetadata* pTableMeta = static_cast<TableMetadata*>(pTblRow);
@@ -921,7 +921,7 @@ QueryNode* NameValidator::pCreateBaseTableColumnDefs(Stz* szCatalogName, Stz* sz
 
   // Retrieve the column definitions and make a node out of these
   QueryNode* pColumnDefs = ColumnDefs::pCreate();
-	RowBuffer* pColumnInfoBuffer = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
+	Pds* pColumnInfoBuffer = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
 
   for (Row* pColRow = pColumnInfoBuffer->pFirstRow();
        pColRow;
@@ -964,7 +964,7 @@ QueryNode* NameValidator::pCreateBaseTableIndexDefs(Stz* szCatalogName, Stz* szS
   ASSERT(pSeApi);
 
   QueryNode* pIndexDefs = IndexDefs::pCreate();
-	RowBuffer* pIndexInfoBuffer = pSeApi->pSearchIndexes(szCatalogName, szSchemaName, szTableName, nullptr);
+	Pds* pIndexInfoBuffer = pSeApi->pSearchIndexes(szCatalogName, szSchemaName, szTableName, nullptr);
   ASSERT(pIndexInfoBuffer);
 
   for (Row* pIndexRow = pIndexInfoBuffer->pFirstRow();
@@ -1002,7 +1002,7 @@ QueryNode* NameValidator::pCreateBaseTableIndexDef(Stz* szCatalogName, Stz* szSc
   ASSERT(pSeApi);
 
   // Get information about the columns in the index.
-	RowBuffer* pIndexColBuffer = pSeApi->pIndexColumnDefs(szCatalogName, szSchemaName, szTableName, szIndexName, nullptr);
+	Pds* pIndexColBuffer = pSeApi->pIndexColumnDefs(szCatalogName, szSchemaName, szTableName, szIndexName, nullptr);
   ASSERT(pIndexColBuffer);
 
   // We will build a list of columnRefs rather than columnDefs so we aren't repeating
@@ -1053,7 +1053,7 @@ QueryNode* NameValidator::pCreateBaseTablePartitionDef(Stz* szCatalogName, Stz* 
   ASSERT(pSeApi);
 
   QueryNode* pPartitionDef = ColumnDefs::pCreate();
-  RowBuffer* pPartitionKeyBuffer = pSeApi->pPartitionKey(szCatalogName, szSchemaName, szTableName);
+  Pds* pPartitionKeyBuffer = pSeApi->pPartitionKey(szCatalogName, szSchemaName, szTableName);
   ASSERT(pPartitionKeyBuffer);
 
   for (Row* pPtnKeyRow = pPartitionKeyBuffer->pFirstRow();

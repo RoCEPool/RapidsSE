@@ -27,15 +27,15 @@
   StreamDefLft[].pipeOut
 
   begin
-    BT_DATA TableDef[] RowBuffer[].new
+    BT_DATA TableDef[] Pds[].new
     iCursor Table[].listPartition to iCursor
     
     iCursor while
-      RowBuffer[].pipeOut
+      Pds[].pipeOut
   repeat
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

@@ -83,12 +83,12 @@ bool DataBuffer::bIsDataBuffer(eCN eClass)
 {
   _static_
 
-  if (   eClass == CN_ROWBUFFER
-      || eClass == CN_CSVBUFFER
+  if (   eClass == CN_CSVBUFFER
       || eClass == CN_CRVBUFFER
       || eClass == CN_OBJBUFFER
       || eClass == CN_CRWBUFFER
-      || eClass == CN_ENTBUFFER ) {
+      || eClass == CN_ENTBUFFER
+      || eClass == CN_PDS ) {
     return true;
   }
 
@@ -115,7 +115,7 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
          || pDataBuffer->eGetClassNo() == CN_CRWBUFFER
          || pDataBuffer->eGetClassNo() == CN_CSVBUFFER
          || pDataBuffer->eGetClassNo() == CN_ENTBUFFER
-         || pDataBuffer->eGetClassNo() == CN_ROWBUFFER
+         || pDataBuffer->eGetClassNo() == CN_PDS
          );
   
   return pDataBuffer;

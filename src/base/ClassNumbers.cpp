@@ -89,7 +89,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
     /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
     /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
-    /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
     /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
     /* */ "CSVMETA"_Stz,              // CN_CSVMETA
 
@@ -263,7 +262,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
 		/* */ "PDSBUFFERIDQUEUE"_Stz,     // CN_PDSBUFFERIDQUEUE
     /* */ "PDSCURSOR"_Stz,            // CN_PDSCURSOR
     /* */ "PDSCONVERGENTHEAP_t"_Stz,  // CN_PDSCONVERGENTHEAP_t
-    /* */ "PDSROWHELPER"_Stz,         // CN_PDSROWHELPER
     /* */ "PERMGEN"_Stz,              // CN_PERMGEN
     /* */ "PERMIT"_Stz,               // CN_PERMIT
     /* */ "PERUSE"_Stz,               // CN_PERUSE
@@ -315,7 +313,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "ROW"_Stz,                  // CN_ROW
     /* */ "ROWAGG"_Stz,               // CN_ROWAGG
     /* */ "ROWBOX"_Stz,               // CN_ROWBOX
-    /* */ "ROWBUFFER"_Stz,            // CN_ROWBUFFER
     /* */ "ROWCOMPACTOR"_Stz,         // CN_ROWCOMPACTOR
     /* */ "ROWCOUNTS"_Stz,            // CN_ROWCOUNTS
     /* */ "ROWONCE"_Stz,              // CN_ROWONCE
@@ -441,7 +438,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
     /* */ "TOKEYHSHROW"_Stz,          // CN_TOKEYHSHROW
     /* */ "TOLGLPTNCRW"_Stz,          // CN_TOLGLPTNCRW
-    /* */ "TOLGLPTNNST"_Stz,          // CN_TOLGLPTNNST
     /* */ "TOLGLPTNROW"_Stz,          // CN_TOLGLPTNROW
     /* */ "TOTUP"_Stz,                // CN_TOTUP
     /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK

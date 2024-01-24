@@ -18,7 +18,6 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_CHILDEXIT"_Stz,
   /*  */ "LR_COMBINED"_Stz,
   /*  */ "LR_CRWBUFFER"_Stz,
-  /*  */ "LR_CRWTOROW"_Stz,
   /*  */ "LR_CSVBUFFER"_Stz,
   
   /*  */ "LR_DATABUFFER"_Stz,
@@ -63,7 +62,10 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_OPTIMISER"_Stz,
   
   /*  */ "LR_PARCEL"_Stz,
-  /*  */ "LR_PDSCURSOR"_Stz,
+  /*  */ "LR_PDS"_Stz,
+	/*  */ "LR_PDSCURSOR"_Stz,
+  /*  */ "LR_PDSERR"_Stz,
+  /*  */ "LR_PDSWARN"_Stz,
   /*  */ "LR_PATHIDENTIFIER"_Stz,
   /*  */ "LR_PIPEIN"_Stz,
   /*  */ "LR_PIPELINE"_Stz,
@@ -78,7 +80,6 @@ Stz* aLR[LR_ENUMS]
 	/*  */ "LR_ROW"_Stz,
   /*  */ "LR_ROWBUFFER"_Stz,
 	/*  */ "LR_ROWBUFFERERR"_Stz,
-	/*  */ "LR_ROWBUFFERWARN"_Stz,
 	/*  */ "LR_ROWONCE"_Stz,
   /*  */ "LR_ROWCOUNTS"_Stz,
 
@@ -110,7 +111,6 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_TINYC"_Stz,
   /*  */ "LR_TOKEYHSHROW"_Stz,
   /*  */ "LR_TOLGLPTNCRW"_Stz,
-  /*  */ "LR_TOLGLPTNNST"_Stz,
   /*  */ "LR_TOLGLPTNROW"_Stz,
   /*  */ "LR_TUB"_Stz,
   /*  */ "LR_TX"_Stz,

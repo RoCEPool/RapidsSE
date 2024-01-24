@@ -12,21 +12,21 @@
   // find the __nodeinfo table
   C_TDEF_NODEINFO op__tableDef assert
 
-  // create an rowBuffer operand
-  BT_NODEINFO TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_NODEINFO TableDef[] Pds[].new
 
-  // add nodeInfo to the rowBuffer
-  TableDef[] RowBuffer[].addnodeInfo assert
+  // add nodeInfo to the Pds
+  Pds[].addnodeInfo assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
   Socket[].grabWrite
-  RowBuffer[] Socket[].sendObject assert
+  Pds[] Socket[].sendObject assert
   Socket[].dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete rowBuffer
-  RowBuffer[].delete
+  // delete Pds
+  Pds[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

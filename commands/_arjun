@@ -1,7 +1,7 @@
 /*============================================================================*/
 /* _arjun                                                                     */
 /*============================================================================*/
-/*
+
 create table uniqueTable (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -20,10 +20,31 @@ create table uniqueTable (
   vch_col14  VARCHAR(32),
   vch_col15  VARCHAR(32)
 );
-
 load uniqueTable "../DATA/Datums/datums.csv" ;
+create table uniqueTable2 (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+load uniqueTable2 "../DATA/Datums/datums.csv" ;
+drop table uniqueTable2;
 select * from uniqueTable;
 
+drop table uniqueTable2;
+/*
 /time pipeline unamed
 begin
   stage stageStart on origin :
@@ -146,7 +167,7 @@ dload lineitem paths
   "/mnt/disk2/data1/tpch/sf10/lineitem/lineitem.tbl"
 ;
 */
-
+/*
 tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
 _nation;
@@ -158,6 +179,7 @@ tag default <suffix>   = "tbl";
 _orders
 load Orders   "<tpch_dir>/orders.<suffix>"   ;
 select * from orders;
+*/
 // Pipeline to page out row buffers
 /*
 pipeline __pageout
@@ -184,7 +206,7 @@ pipeline __pageout
   end ;
 */
 //select * from nation;
-
+/*
 // pipeline to page out crw buffers
 pipeline __pageout
   begin
@@ -277,3 +299,124 @@ create table VchTbl (
 Load VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
 
 select * from VchTbl;
+
+
+/optimise_passthru
+pipeline NestedSql
+begin
+ stage S00 on origin :
+   start | pulse once | next
+
+  stage S01 on all partitions :
+    | catfile "/Users/arjun/Boray/rapidsse/commands/_arjun"
+    | next
+
+  stage S02 on origin :
+    output | sink | stageA
+end ;
+*/
+
+
+create table customer (
+C_CUSTKEY       INTEGER NOT NULL,
+C_NAME          VARCHAR(25) NOT NULL,
+C_ADDRESS       VARCHAR(40) NOT NULL,
+C_NATIONKEY     INTEGER NOT NULL,
+C_PHONE         CHAR(15) NOT NULL,
+C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+C_MKTSEGMENT    CHAR(10) NOT NULL,
+C_COMMENT       VARCHAR(117) NOT NULL
+);
+
+create index IxC_CUSTKEY ON CUSTOMER (C_CUSTKEY)  ;
+load customer "../TPCH/SF_0001/customer.tbl";
+compactidx customer IxC_CUSTKEY;
+
+create table orders (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     CHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       DATE NOT NULL,
+O_ORDERPRIORITY   CHAR(15) NOT NULL,
+O_CLERK           CHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+) partition by (O_CUSTKEY) ;
+
+CREATE INDEX IxO_CUSTKEY ON orders(O_CUSTKEY);
+create index IxO_ORDERKEY  ON  Orders (O_ORDERKEY)  ;
+create index IxO_ORDERDATE  ON  Orders (O_ORDERDATE)  ;
+load orders "../TPCH/SF_0001/orders.tbl";
+
+/keepCodeFile
+/optimise_passthru
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+           "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | combined 0
+    | next
+
+
+  stage S03 on all partitions :
+    ordAgg " ordGroupBy  type INTEGER as c_custkey $1
+             aggregates  type INTEGER $K1 ,
+                         type INTEGER )  $9 count  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg " groupBy    type INTEGER as c_custkey $1
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER  )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg " groupBy    type INTEGER as c_custkey $1
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER  )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    gbyAgg " groupBy    type INTEGER as c_count $2
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort " type INTEGER $1  ,
+           type INTEGER as c_count $2  "
+    | combined 0
+    | next
+
+ stage S08 on origin :
+   output
+   | sink
+   | first
+ end ;
+
+/*
+rows:
+  (0,1)
+  (8,2)
+  (9,11)
+  (10,135)
+  (20,1)
+*/

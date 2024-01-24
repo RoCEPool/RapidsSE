@@ -8,9 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "RowBuffer.hpp"
-
-
 #include "Node_I.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
@@ -43,33 +40,28 @@ void Step::vToLglPtnRowCompleted(void)
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
-  
-  RowBuffer* pRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
 
-  m_pDataStack->vPushPtr(pRowBuffer);
+  Pds* pPdsRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
+
+  m_pDataStack->vPushPtr(pPdsRowBuffer);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* toLglPtnRow[].convert -- convert row buffer                                */
+/* toLglPtnRow[].convert -- convert pds row buffer                            */
 /*----------------------------------------------------------------------------*/
 void Step::vToLglPtnRowConvert(void)
 {
   ENTRY();
 
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
-    
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
+  Pds* pPdsRowBuffer = _pPds(m_pDataStack->pPopPtr(__func__));
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  //vTrace("Hey, I got table:%s\n"_Stz, pTable->szTableNm()->azChar());
+  pToLglPtnRow->vConvert(pTable, pPdsRowBuffer);
 
-  pToLglPtnRow->vConvert(pTable, pRowBuffer);
-  
-  //delete pRowBuffer;
-  
   EXIT();
 }
 
@@ -97,10 +89,10 @@ void Step::vToLglPtnRowDangling(void)
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+
+  Pds* pPdsRowBuffer = pToLglPtnRow->pDangling(i_Ptn);
   
-  RowBuffer* pRowBuffer = pToLglPtnRow->pDangling(i_Ptn);
-  
-  m_pDataStack->vPushPtr(pRowBuffer);
+  m_pDataStack->vPushPtr(pPdsRowBuffer);
 
   EXIT();
 }

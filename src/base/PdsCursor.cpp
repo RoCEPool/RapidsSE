@@ -29,6 +29,24 @@ PdsCursor::PdsCursor(Pds* pPds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor (set cursor to start at a specific point in the skip list      */
+/*----------------------------------------------------------------------------*/
+PdsCursor::PdsCursor(Pds* pPds, SkipListBlock* pCurr)
+    : Object(CN_PDSCURSOR)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSCURSOR,_FOOTER_);
+
+  RASSERT(pPds);
+  RASSERT(pCurr);
+
+  m_pPds = pPds;
+
+  vCurr(pCurr);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PDSCURSOR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 PdsCursor::~PdsCursor(void) noexcept(false)
@@ -60,6 +78,29 @@ bool PdsCursor::bIsCurrNull(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current block                                                          */
+/*----------------------------------------------------------------------------*/
+void PdsCursor::vCurr(SkipListBlock *pCurr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSCURSOR,_FOOTER_);
+
+  m_pCurrentBlock = pCurr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current row                                                            */
+/*----------------------------------------------------------------------------*/
+Row* PdsCursor::pCurrRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSCURSOR,_FOOTER_);
+
+  if( ! m_pCurrentBlock)
+    return nullptr;
+
+  return m_pCurrentBlock->aRow();
 }
 
 /*----------------------------------------------------------------------------*/

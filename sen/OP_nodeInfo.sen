@@ -12,14 +12,14 @@
   // find the <streamDef> table
   <streamDef> op__tableDef assert
 
-  // create a rowBuffer operand
-  BT_NODEINFO TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_NODEINFO TableDef[] Pds[].new
 
-  // add nodeInfo to the rowBuffer
-  TableDef[] RowBuffer[].addnodeInfo assert
+  // add nodeInfo to the Pds
+  Pds[].addnodeInfo assert
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

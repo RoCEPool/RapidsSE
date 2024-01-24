@@ -5,11 +5,11 @@
 " OP_statWrite.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER...                                              */
+/* handler for EV_D_PDSROWBUFFER...                                           */
 /*----------------------------------------------------------------------------*/
-: OP_statWrite_RowBuffer \handler
+: OP_statWrite_PdsRowBuffer \handler
 
-  //"statWrite_RowBuffer --- --- ---" .
+  //"statWrite_PdsRowBuffer --- --- ---" .
 
 //! ALKA TO CHECK WITH RAY
 //  File0[].isNull not if
@@ -22,14 +22,14 @@
 
     PipeIn[].bufferType@ BT_LOCKSTATS == assert
 
-    PipeIn[] to RowBuffer[]
+    PipeIn[] to Pds[]
     nullptr to PipeIn[]
 
     C_TDEF_LOCKSTATS op__tableDef assert
 
-    TableDef[] RowBuffer[].writeCsv
+    TableDef[] Pds[].writeCsv
 
-    RowBuffer[].delete
+    Pds[].delete
 
     //File0[].get file.close
     //File0[].get file.delete
@@ -49,7 +49,7 @@
 
   op__topology
 
-  find: OP_statWrite_RowBuffer EV_D_ROWBUFFER [op].handler!
+  find: OP_statWrite_PdsRowBuffer EV_D_PDSROWBUFFER [op].handler!
 
   op__loop
 

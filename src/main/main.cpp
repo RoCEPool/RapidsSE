@@ -52,7 +52,6 @@ extern i8   giProgressPoint;
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "TagConstants.h"
-#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */

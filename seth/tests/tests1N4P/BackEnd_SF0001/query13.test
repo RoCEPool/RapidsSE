@@ -79,7 +79,7 @@ pipeline c_orders
       | abstractJoin "LEFT_OUTER $1 $R2 ==  }  $R9 ''%special%requests%''  7 8 matchMiddle1  not  and  "
       | stageMarker1086
     stage stageMarker1086 on all partitions :
-      gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 aggregates  type INTEGER ( 19 ) $K1 , type INTEGER ( 19 ) )  $9 count  "
+      gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 aggregates  type INTEGER  ( 19 ) $K1 , type INTEGER ( 19 ) )  $9 count  "
       | combined 0
       | stageMarker1089
     stage stageMarker1089 on all nodes :
@@ -186,7 +186,7 @@ rows:
   (10,135)
   (20,1)
 
-/optimise_passthru 
+/optimise_passthru
 pipeline Query13
 begin
   stage S00 on origin :
@@ -211,7 +211,23 @@ begin
     | combined 0
     | next
 
-  stage S04 on origin :
+  stage S04 on all nodes :
+    gbyAgg " groupBy    type INTEGER ( 19 ) as c_custkey $1
+             aggregates
+                        type INTEGER ( 19 ) $K1 ,
+                        type INTEGER ( 19 )  )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg " groupBy    type INTEGER ( 19 ) as c_custkey $1
+             aggregates
+                        type INTEGER ( 19 ) $K1 ,
+                        type INTEGER ( 19 )  )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
     gbyAgg " groupBy    type INTEGER ( 19 ) as c_count $2
              aggregates
                         type INTEGER ( 19 ) $K1 ,
@@ -219,13 +235,13 @@ begin
     | combined 0
     | next
 
-  stage S05 on origin :
-    sort " type INTEGER ( 19 ) $1  ,
-           type INTEGER ( 19 ) as c_count $2  "
+  stage S07 on origin :
+    sort " type INTEGER $1  ,
+           type INTEGER as c_count $2  "
     | combined 0
     | next
 
- stage S06 on origin :
+ stage S08 on origin :
    output
    | sink
    | first
@@ -270,7 +286,7 @@ begin
     | next
 
   stage S04 on origin :
-    gbyAgg " groupBy    type INTEGER ( 19 ) as c_count $2
+    gbyAgg " groupBy    type INTEGER ( 19 )as c_count $2
              aggregates
                         type INTEGER ( 19 ) $K1 ,
                         type INTEGER ( 19 ) as custdist )  countAll  "
@@ -321,17 +337,17 @@ begin
     | next
 
   stage S03 on all partitions :
-    ordAgg " ordGroupBy  type INTEGER ( 19 ) as C_CUSTKEY $1
-             aggregates  type INTEGER ( 19 ) $K1 ,
-                         type INTEGER ( 19 ) ) O_ORDERKEY count  "
+    ordAgg " ordGroupBy  type ( 19 ) INTEGER as C_CUSTKEY $1
+             aggregates  type ( 19 ) INTEGER $K1 ,
+                         type ( 19 ) INTEGER ) O_ORDERKEY count  "
     | combined 0
     | next
 
   stage S04 on origin :
-    gbyAgg " groupBy    type INTEGER ( 19 ) as c_count $2
+    gbyAgg " groupBy    type ( 19 ) INTEGER as c_count $2
              aggregates
-                        type INTEGER ( 19 ) $K1 ,
-                        type INTEGER ( 19 ) as custdist )  countAll  "
+                        type ( 19 ) INTEGER $K1 ,
+                        type ( 19 ) INTEGER as custdist )  countAll  "
     | combined 0
     | next
 

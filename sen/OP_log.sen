@@ -25,13 +25,13 @@
     // pipeout the streamDef
     StreamDefLft[].pipeOut
 
-    // create a rowBuffer operand
-    BT_DATA TableDef[] RowBuffer[].new
+    // create a Pds operand
+    BT_DATA TableDef[] Pds[].new
 
-    <pMsg> iTsp TableDef[] RowBuffer[].addLogMsg if
-      RowBuffer[].pipeOut
+    <pMsg> iTsp 2 Pds[].addRowVargs if
+      Pds[].pipeOut
     else
-      RowBuffer[].delete
+      Pds[].delete
     then
   then
 

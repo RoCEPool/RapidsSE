@@ -71,19 +71,6 @@ void Step::vTablePtnAppendBuffer(void)
   pTablePtn->vAppendBuffer(pDataBuffer, nRowsInserted);
 
   m_pDataStack->vPushInt(nRowsInserted);
-
-//  if (CN_CRWBUFFER == eClassNo) {
-//    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
-//    pTablePtn->vAppendBuffer(pCrwBuffer);
-//  }
-//  else if (CN_ROWBUFFER == eClassNo) {
-//    RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
-//    NEVER_REACH;
-//    //pTablePtn->vAppendBuffer(pRowBuffer);
-//  }
-//  else {
-//    NEVER_REACH;
-//  }
   
   EXIT();
 }

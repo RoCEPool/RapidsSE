@@ -16,9 +16,9 @@
 
 
   <bpaType> "regions" str.same if
-    // Create a warnings rowBuffer. We may not need it.
+    // Create a warnings Pds. We may not need it.
     C_TDEF_WARNINGS op__tableDef_warn assert
-    BT_WARNINGS TableDefWarn[] RowBufferWarn[].new
+    BT_WARNINGS TableDefWarn[] PdsWarn[].new
 
     // find the C_TDEF_BPAREGIONS table definition
     C_TDEF_BPAREGIONS op__tableDef assert
@@ -28,22 +28,22 @@
     StreamDefLft[].pipeOut
 
     // create a DATA rowBuffer
-    BT_DATA tableDef[] RowBuffer[].new
+    BT_DATA tableDef[] Pds[].new
 
-    // populate rowBuffer
-    TableDef[] RowBuffer[].addBpaRegions
-    RowBuffer[].pipeOut
+    // populate Pds
+    Pds[].addBpaRegions
+    Pds[].pipeOut
 
-    RowBufferWarn[].rows 0 > if
-      RowBufferWarn[].pipeOut
+    PdsWarn[].rows 0 > if
+      PdsWarn[].pipeOut
     else
-      RowBufferWarn[].delete
+      PdsWarn[].delete
     then
 
   else <bpaType> "objects" str.same if
-    // Create a warnings rowBuffer. We may not need it.
+    // Create a warnings Pds. We may not need it.
     C_TDEF_WARNINGS op__tableDef_warn assert
-    BT_WARNINGS TableDefWarn[] RowBufferWarn[].new
+    BT_WARNINGS TableDefWarn[] PdsWarn[].new
 
     // find the C_TDEF_BPAOBJECTS table definition
     C_TDEF_BPAOBJECTS op__tableDef assert
@@ -52,17 +52,17 @@
     TableDef[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
-    // create rowBuffer
-    BT_DATA TableDef[] RowBuffer[].new
+    // create Pds
+    BT_DATA TableDef[] Pds[].new
 
-    // populate rowBuffer
-    TableDef[] RowBuffer[].addBpaObjects
-    RowBuffer[].pipeOut
+    // populate Pds
+    Pds[].addBpaObjects
+    Pds[].pipeOut
 
-    RowBufferWarn[].rows 0 > if
-      RowBufferWarn[].pipeOut
+    PdsWarn[].rows 0 > if
+      PdsWarn[].pipeOut
     else
-      RowBufferWarn[].delete
+      PdsWarn[].delete
     then
 
   else

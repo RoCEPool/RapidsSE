@@ -81,7 +81,7 @@ namespace STORE
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
-    bool bTransform(Error& rxError, RowBuffer* pRowBuffer);
+    bool bTransform(Error& rxError, Pds* pPdsRowBuffer);
 
     PipelineDef* pPipelineDef(void);
     void vPipelineDef(PipelineDef* pPipelineDef);

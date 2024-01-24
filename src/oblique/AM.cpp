@@ -40,8 +40,6 @@
 #include "IndexDef.hpp"
 #include "Marker.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "Pot.hpp"
 
 #include "RowCoder.hpp"
@@ -1968,29 +1966,29 @@ InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
 // PageIn request is now a RowBuffer
 // I guess we will need to ensure that the PAGEINREQUEST rowBuffers are never paged out !!!
 
-RowBuffer* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
-{
-  _static_
-  UNUSED(pTask);
-  UNUSED(oBufferId);
-
-#ifdef WITH_PAGING
-  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
-  if (! pStreamDef)
-    return nullptr;
-  RowBuffer* pRowBuffer = new RowBuffer(pStreamDef);
-  pRowBuffer->vBufferType(BT_PAGEINREQUEST);
-  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN
-      ,pTask
-      ,oBufferId.m_iAsI8
-      ,C_VARGS_END);
-
-  return pInfoSet;
-#else
-  NEVER_REACH;
-  return nullptr;
-#endif
-}
+//RowBuffer* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
+//{
+//  _static_
+//  UNUSED(pTask);
+//  UNUSED(oBufferId);
+//
+//#ifdef WITH_PAGING
+//  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
+//  if (! pStreamDef)
+//    return nullptr;
+//  RowBuffer* pRowBuffer = new RowBuffer(pStreamDef);
+//  pRowBuffer->vBufferType(BT_PAGEINREQUEST);
+//  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN
+//      ,pTask
+//      ,oBufferId.m_iAsI8
+//      ,C_VARGS_END);
+//
+//  return pInfoSet;
+//#else
+//  NEVER_REACH;
+//  return nullptr;
+//#endif
+//}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                               PARCEL                                       */
@@ -2345,22 +2343,21 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
 /*----------------------------------------------------------------------------*/
 /* pipe string out to prompt                                                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* AM::PROMPT::pToPromptOut(Stz* szStz)
+void* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
+
+  UNUSED(szStz);
 
   StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PROMPTOUT);
   if (! pStreamDef)
     return nullptr;
 
-  RowBuffer* pRowBuffer = new RowBuffer(pStreamDef);
-	pRowBuffer->vBufferType(BT_PROMPTOUT);
+  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_PROMPTOUT);
 
-  Row* pRow = pRowBuffer->pAllotRow();
+  ASSERT(pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,szStz,C_VARGS_END));
 
-	pRowBuffer->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
-
-  return pRowBuffer;
+  return (void*)pPdsRowBuffer;
 }
 
 
@@ -3848,6 +3845,31 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
+    case CN_PDS: {
+      Pds *pPdsRowBuffer = _pPds(pOperand);
+      // permanent row buffers not to be deleted
+      if (pPdsRowBuffer->bIsPermanent()) {
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this rowbuffer
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if (!pPdsRowBuffer->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this rowbuffer
+        // should not have any locks on it
+
+        pPdsRowBuffer->vOutputQueued(false);
+        RASSERT(!AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
+        break;
+      }
+
+      pPdsRowBuffer->vDecidedDelete();
+      break;
+    }
+
     case CN_PAYLOADOBJ: {
       WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(pOperand);
       delete pPayloadObj;
@@ -3862,31 +3884,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
     case CN_PROFILE: {
       Profile* pProfile = _pProfile(pOperand);
       delete pProfile;
-      break;
-    }
-      
-    case CN_ROWBUFFER: {
-      RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-      // permanent row buffers not to be deleted
-      if (pRowBuffer->bIsPermanent()) {
-        // ensure the output queue flag is set to false
-
-        // if the output queue flag is false, then this rowbuffer
-        // is not part of m_pOutputQueue in Output.cpp
-        // someone is trying to delete it, but since it is permanent
-        // we only need to drop the hashmapentry lock
-        if(! pRowBuffer->bOutputQueued())
-          AM::pHashMap()->vDropKeyLock(pRowBuffer->oGetBufferId().m_pvAsAddress);
-
-        // if the output queue flag is true, then this rowbuffer
-        // should not have any locks on it
-
-        pRowBuffer->vOutputQueued(false);
-        RASSERT( ! AM::pHashMap()->bIsLocked(pRowBuffer->oGetBufferId().m_pvAsAddress));
-        break;
-      }
-
-      pRowBuffer->vDecidedDelete();
       break;
     }
       
@@ -4511,9 +4508,9 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       break;
     }
 
+    case CN_PDS:          eOperand = EV_D_PDSROWBUFFER;   break;
     case CN_PAYLOADOBJ:   eOperand = EV_D_PAYLOAD;        break;
     case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
-    case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;
     case CN_STREAMDEF:    eOperand = EV_D_STREAMDEF;      break;
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
     case CN_TABLE:        eOperand = EV_D_TABLE;          break;

@@ -5,6 +5,10 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 void* BASE::_pStrd(void* aAddr)
@@ -33,14 +37,16 @@ String_d::String_d(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_STRING_D);
 
-  m_nArea = nBytes;
+  i8 nTotalSize = iBytesToAlloc(nBytes);
+  i8 nCharAreaBytes = nTotalSize - 32; //- sizeof(Object) - sizeof(m_nArea) - sizeof(Footer);
+  RASSERT(nCharAreaBytes > 0);
+  m_nArea = nCharAreaBytes;
   m_caCharArea[0] = '\0';
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caCharArea,nBytes,CN_STRING_D);
 #endif
-  i8 iTotalSizeOfStz = iBytesToAlloc(nBytes);
   Footer* pFooter;
-  i8 iFooterOffset = iTotalSizeOfStz - sizeof(Footer);
+  i8 iFooterOffset = nTotalSize - sizeof(Footer);
   pFooter = aAdd<Footer*>(this, iFooterOffset);
 
   pFooter->vSetFooter();
@@ -264,7 +270,7 @@ i8 String_d::iTotalSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return iBytesToAlloc(m_nArea);
+  return m_nArea + 32; // + sizeof(Object) + sizeof(m_nArea) + sizeof(Footer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,8 +296,7 @@ Footer* String_d::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_STRING_D);
 
-  i8 iTotalSize = iBytesToAlloc(m_nArea);
-  i8 iFooterOffset = iTotalSize - sizeof(Footer);
+  i8 iFooterOffset = m_nArea + 16;
 
   Footer* aFooter = aAdd<Footer*>(this,iFooterOffset);
 

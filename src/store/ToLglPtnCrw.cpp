@@ -4,7 +4,6 @@
 
 #include "BASE.h"
 
-#include "RowBuffer.hpp"
 #include "ToLglPtnCrw.hpp"
 
 #include "RowCoder.hpp"
@@ -94,11 +93,11 @@ void ToLglPtnCrw::vRepairHashSet(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnCrw::vConvert(RowBuffer* pRowBuffer)
+void ToLglPtnCrw::vConvert(Pds* pPdsRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
 
-   LglPtn tLglPtn = pRowBuffer->tLglPtn();
+   LglPtn tLglPtn = pPdsRowBuffer->tLglPtn();
    //i8 iBktNo = pRowBuffer->iBucketNo();
    //vTrace("ToBktCrw::vValidate PtnID:%lld Bkt:%lld\n"_Stz, tLglPtn.iAsI8(), iBktNo);
   //pRowBuffer->pRowBuffer()->vDumpNst();
@@ -109,10 +108,11 @@ void ToLglPtnCrw::vConvert(RowBuffer* pRowBuffer)
   if (! m_pCrwBuffer) {
     //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
     m_pCrwBuffer = pNewCrwBuffer(tLglPtn);
-    vAddNst(pRowBuffer);
+    // Uncomment function when adding normalised strings
+//    vAddNst(pPdsRowBuffer);
   }
   
-  vAddRowsToBuffer(tLglPtn,pRowBuffer);
+  vAddRowsToBuffer(tLglPtn,pPdsRowBuffer);
   
   //delete pRowBuffer;
   
@@ -155,54 +155,59 @@ CrwBuffer* ToLglPtnCrw::pDangling(LglPtn tLglPtn)
 /*----------------------------------------------------------------------------*/
 /* add normalised strings into new crw buffer                                 */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnCrw::vAddNst(RowBuffer* pRowBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
-  
-  ASSERT(0 == m_pCrwBuffer->nRows());
-
-  NmlStr* pNmlStr = pRowBuffer->pNmlStr();
-
-  Stz* szNmlStr = nullptr;
-  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
-    //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
-
-    bool bAdded = m_pCrwBuffer->pRowCompactor()->bCompactTail(szNmlStr);
-    ASSERT(bAdded);
-    UNUSED(bAdded);
-  }
-
-
-  //vDebugPoint();
-}
+//void ToLglPtnCrw::vAddNst(RowBuffer* pRowBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
+//
+//  ASSERT(0 == m_pCrwBuffer->nRows());
+//
+//  NmlStr* pNmlStr = pRowBuffer->pNmlStr();
+//
+//  Stz* szNmlStr = nullptr;
+//  while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
+//    //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
+//
+//    bool bAdded = m_pCrwBuffer->pRowCompactor()->bCompactTail(szNmlStr);
+//    ASSERT(bAdded);
+//    UNUSED(bAdded);
+//  }
+//
+//
+//  //vDebugPoint();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnCrw::vAddRowsToBuffer(LglPtn tLglPtn, RowBuffer* pRowBuffer)
+void ToLglPtnCrw::vAddRowsToBuffer(LglPtn tLglPtn, Pds* pPdsRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
-    
-  i8 nRows = pRowBuffer->nRows();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    Row* aRow = pRowBuffer->pRowAddress(i_Row);
-    
+
+  PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
+
+  while( ! pCursor->bIsCurrNull()) {
+    Row* aRow = pCursor->pCurrRow();
+
     bool bAppended = m_pCrwBuffer->bAppendRow(aRow);
-    
-    if (bAppended)
+
+    if (bAppended) {
+      pCursor->vNext();
       continue;
+    }
 
     m_pCrwBuffer->vAppendClose();
-    
-    //m_pCrwBuffer->vPrintRows(m_pStreamDef);
-    //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
+
     m_pCrwBuffer = pNewCrwBuffer(tLglPtn);
-    vAddNst(pRowBuffer);
+    // Uncomment function when adding normalised strings
+//    vAddNst(pRowBuffer);
 
     bAppended = m_pCrwBuffer->bAppendRow(aRow);
-    ASSERT(bAppended);
+    RASSERT(bAppended);
+
+    pCursor->vNext();
   }
+  pCursor->m_pPds = nullptr;
+  delete pCursor;
 }
 
 /*----------------------------------------------------------------------------*/
