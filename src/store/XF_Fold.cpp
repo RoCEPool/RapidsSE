@@ -206,7 +206,7 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a sub-query (before outer-query)                                   */
 /*----------------------------------------------------------------------------*/
-void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
+void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ, Stz* szCrlPpy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
@@ -253,6 +253,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   // 5) add <fold> (before MQ)
   //pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
   (pCI->G.p_fold = new Card_Fold) -> SYM(SF_FLD_NM, szFold);
+  pCI->G.p_fold->pSymbol()->Y_vSet(szCrlPpy);
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppendChild(pCI->G.p_level);
@@ -317,6 +318,8 @@ CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
 
 //  pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
   (pCI->G.p_fold = new Card_Fold) -> SYM(SF_FLD_NM, szFold);
+  pCI->G.p_fold->pSymbol()->Y_vSet(P_CrlSqy);
+
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppendChild(pCI->G.p_level);
@@ -400,6 +403,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   // 5) add <fold> (before MQ)
 //  pCI->G_vNewMember(CK_c_FOLD, Symbol(SF_FLD_NM, szFold));
   (pCI->G.p_fold = new Card_Fold) -> SYM(SF_FLD_NM, szFold);
+  pCI->G.p_fold->pSymbol()->Y_vSet(P_NonCrlSqy);
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppendChild(pCI->G.p_level);
