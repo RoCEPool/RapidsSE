@@ -150,6 +150,12 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
 
   Stz* szBoardNm = m_pCI->G.p_call->szFacet(SF_NONE);
   Board* pBoard = m_pCI->m_pBench->pFindBoard_By_subPipeNm(szBoardNm);
+  if (!pBoard)
+    pBoard = m_pCI->m_pBench->pFindBoard_By_sqyNm(szBoardNm);
+  if (!pBoard) {
+    m_pCI->m_pBench->vDump();
+    NEVER_REACH;
+  }
   SubQuery *pSubQuery = pBoard->pSubQuery();
   pSubQuery->vCaller(m_pCI->G.i_Board);
   pSubQuery->vClause(QC_FROM_CLAUSE);

@@ -312,6 +312,8 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
  // pCI->vPrintBoard(__func__,__LINE__);
 
   Board* pSubQueryBoard = pCI->m_pBench->pFindBoard_By_subPipeNm(pCI->G.p_call->szFacet(SF_NONE));
+  if (! pSubQueryBoard)
+    pSubQueryBoard = pCI->m_pBench->pFindBoard_By_sqyNm(pCI->G.p_call->szFacet(SF_NONE));
 
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy, pSubQueryBoard->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);

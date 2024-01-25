@@ -2117,9 +2117,12 @@ bool CardIter::G_bPushBoard(Stz* szBoardNm)
   _precondition_(_MAGIC_, _FOOTER_);
 
   Board* pSubQueryBoard = m_pBench->pFindBoard_By_subPipeNm(szBoardNm);
-  if (! pSubQueryBoard) {
+  if (! pSubQueryBoard)
+    pSubQueryBoard = m_pBench->pFindBoard_By_sqyNm(szBoardNm);
+
+  if (! pSubQueryBoard)
      return false;
-  }
+
 
   G_vPushBoard(pSubQueryBoard);
 
