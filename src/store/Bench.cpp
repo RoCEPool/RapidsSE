@@ -65,7 +65,7 @@ void Bench::vAddBoard(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  //RASSERT(! pGetBoard(pBoard->eBoard()));
+  //RASSERT(! pFindBoard_By_subPipeNm(pBoard->eBoard()));
 
   vPush(pBoard);
 }
@@ -99,7 +99,7 @@ void Bench::vDump(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTrace("Bench %p %lld PipelineNm %s\n"_Stz,
+  vTrace("Bench Dump: %p %lld PipelineNm %s\n"_Stz,
          this,
          m_iBenchNo,
          m_sPipelineNm.szStz()
@@ -111,6 +111,8 @@ void Bench::vDump(void)
 
     pBoard->vDump(1);
   }
+
+  vTrace("End Bench Dump\n"_Stz);
 
 }
 
@@ -144,7 +146,7 @@ Board* Bench::pGetBoard(i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(Stz* szSubPipeNm)
+Board* Bench::pFindBoard_By_subPipeNm(Stz* szSubPipeNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -160,13 +162,32 @@ Board* Bench::pGetBoard(Stz* szSubPipeNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->szSqyNm()->bSame(szSqyNm))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get subquery of given name                                                 */
 /*----------------------------------------------------------------------------*/
 SubQuery* Bench::pGetSubQuery(Stz* szSubQueryNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  Board* pBoard = pGetBoard(szSubQueryNm);
+  Board* pBoard = pFindBoard_By_subPipeNm(szSubQueryNm);
   if (! pBoard)
     return nullptr;
 
@@ -182,7 +203,7 @@ bool Bench::bIsSqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pGetBoard(szSqyNm)) {
+  if (Board* pBoard = pFindBoard_By_subPipeNm(szSqyNm)) {
     UNUSED(pBoard);
     return true;
   }
