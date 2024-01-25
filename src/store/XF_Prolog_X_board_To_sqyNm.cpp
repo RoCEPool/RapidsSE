@@ -64,6 +64,9 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_X_BOARD_TO_SQYNM, "shorten query names"_Stz);
 
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    m_pCI->m_pBench->vDump();
+
   s32 sSubPipeNm = m_pCI->G.pBoard->szSubPipeNm();
 //  s32 sSqyNm = m_pCI->G.pBoard->pSubQuery()->szSqyNm();
 //  RASSERT(sSqyNm.bSame(sSubPipeNm));
@@ -95,6 +98,10 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
 
   bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNm);
   UNUSED(b);
+
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump();
+  }
 
   m_pCI->vEndTransform(__LINE__);
 }

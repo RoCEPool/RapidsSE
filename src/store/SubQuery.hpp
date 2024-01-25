@@ -69,7 +69,7 @@ namespace STORE
     eQD  eDisposition(void);
     void vDisposition(eQD eDisposition);
 
-    void vDump(void);
+    void vDump(i8 iDepth=0);
 
     bool bIsAggregation(void);
     bool bIsCorrelated(void);

@@ -212,6 +212,7 @@ namespace STORE
     void vClearCardMarks(void);
 
     Card_Deck* pDeck(void);
+    void vDump(i8 iDepth=0);
 
     void vEndPhase(void);
 

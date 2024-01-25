@@ -232,14 +232,14 @@ void SubQuery::vDisposition(eQD eDisposition)
 /*----------------------------------------------------------------------------*/
 /* dump this subquery                                                         */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vDump(void)
+void SubQuery::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  vTrace("SubQuery %p Board %lld (%s) Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+  vTrace("%sSubQuery %p SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+         Stz::szTab(iDepth),
          this,
-         m_pBoard->i_Board(),
-         m_pBoard->szSubPipeNm(),
+         m_sSqyNm.szStz(),
          m_i_Caller,
          aQC[m_eClause],
          aQD[m_eDisposition],

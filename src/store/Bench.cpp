@@ -93,6 +93,28 @@ CardCtl* Bench::pCardCtl(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump this bench                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vDump(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTrace("Bench %p %lld PipelineNm %s\n"_Stz,
+         this,
+         m_iBenchNo,
+         m_sPipelineNm.szStz()
+  );
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board* pBoard = this->pGet(i_Board);
+
+    pBoard->vDump(1);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
 void Bench::vEndPhase(CardIter* pCI)
