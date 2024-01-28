@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_X_board_To_sqyNm.hpp -- Change boardNm to sqyNm                  */
+/* XF_Prolog_X_pipe_To_sqyNm.hpp -- Change boardNm to sqyNm                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_X_board_To_sqyNm : public XF_PROLOG
+  class XF_Prolog_X_pipe_To_sqyNm : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_X_board_To_sqyNm(CardIter* pCI);
-   ~XF_Prolog_X_board_To_sqyNm(void) noexcept(false);
+    XF_Prolog_X_pipe_To_sqyNm(CardIter* pCI);
+   ~XF_Prolog_X_pipe_To_sqyNm(void) noexcept(false);
 
     static void vConvert(CardIter* pCI);
 
@@ -29,7 +29,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Prolog_X_board_To_sqyNm* _pXF_Prolog_X_board_To_sqyNm(void* aAddr);
+  XF_Prolog_X_pipe_To_sqyNm* _pXF_Prolog_X_pipe_To_sqyNm(void* aAddr);
 }
 
 /*============================================================================*/
