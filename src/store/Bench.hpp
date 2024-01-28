@@ -47,7 +47,7 @@ namespace STORE
     void vAddBoard(Board* pBoard);
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
-    void vDump(void);
+    void vDump(const char* azFunc);
 
     void vEndPhase(CardIter* pCI);
 

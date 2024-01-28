@@ -118,6 +118,7 @@ void Dissector::vSubPipe(i8 i_SubPipe)
       szSqyNm = m_pPipeSpec->szVertexNm();
     }
     m_pOptimiser->vQueryNm(szSqyNm);
+    m_pBench->vPipelineNm(sSubPipeNm);
   }
   else {
     sSubPipeNm = m_pPipeSpec->szVertexNm();

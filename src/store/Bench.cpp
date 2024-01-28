@@ -95,11 +95,12 @@ CardCtl* Bench::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* dump this bench                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vDump(void)
+void Bench::vDump(const char* azFunc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTrace("Bench Dump: %p %lld PipelineNm %s\n"_Stz,
+  vTrace("Bench Dump [%s]: %p %lld PipelineNm %s\n"_Stz,
+         azFunc,
          this,
          m_iBenchNo,
          m_sPipelineNm.szStz()
@@ -268,7 +269,7 @@ void Bench::vPhase(CardIter* pCI, eOH ePhase)
 /*----------------------------------------------------------------------------*/
 Stz* Bench::szPipelineNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   return m_sPipelineNm;
 }
@@ -278,7 +279,7 @@ Stz* Bench::szPipelineNm(void)
 /*----------------------------------------------------------------------------*/
 void Bench::vPipelineNm(Stz* szPipelineNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_sPipelineNm = szPipelineNm;
 }

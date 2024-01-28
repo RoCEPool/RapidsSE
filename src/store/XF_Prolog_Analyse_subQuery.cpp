@@ -153,7 +153,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
   if (!pBoard)
     pBoard = m_pCI->m_pBench->pFindBoard_By_sqyNm(szBoardNm);
   if (!pBoard) {
-    m_pCI->m_pBench->vDump();
+    m_pCI->m_pBench->vDump(__func__ );
     NEVER_REACH;
   }
   SubQuery *pSubQuery = pBoard->pSubQuery();

@@ -152,6 +152,9 @@ void XF::vTransform(void)
     XF_Prolog_X_pipe_To_sqyNm::vConvert_board(m_pCI);   //
     XF_Prolog_X_pipe_To_sqyNm::vConvert_deck(m_pCI);    //
   }                                                //
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump(__func__);
+  }
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_Validate_Board::vValidate(m_pCI);    //

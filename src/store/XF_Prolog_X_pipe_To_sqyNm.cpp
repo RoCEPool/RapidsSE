@@ -79,7 +79,7 @@ void XF_Prolog_X_pipe_To_sqyNm::vX_Board_pipe_To_sqyNm(void)
   m_pCI->vTransform(__func__, XF_PROLOG_X_PIPE_TO_SQYNM, "pipe to sqyNm"_Stz);
 
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    m_pCI->m_pBench->vDump();
+    m_pCI->m_pBench->vDump(__func__);
 
   s32 sSubPipeNm = m_pCI->G.pBoard->szSubPipeNm();
 //  s32 sSqyNm = m_pCI->G.pBoard->pSubQuery()->szSqyNm();
@@ -147,10 +147,6 @@ void XF_Prolog_X_pipe_To_sqyNm::vX_Deck_pipe_To_sqyNm(void)
 
   bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNm);
   UNUSED(b);
-
-  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
-    m_pCI->m_pBench->vDump();
-  }
 
   m_pCI->vEndTransform(__LINE__);
 }
