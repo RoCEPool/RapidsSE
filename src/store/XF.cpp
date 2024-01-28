@@ -149,7 +149,11 @@ void XF::vTransform(void)
                                                    //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_X_pipe_To_sqyNm::vConvert(m_pCI);   //
+    XF_Prolog_X_pipe_To_sqyNm::vConvert_board(m_pCI);   //
+    XF_Prolog_X_pipe_To_sqyNm::vConvert_deck(m_pCI);    //
+  }                                                //
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_Validate_Board::vValidate(m_pCI);    //
   }                                                //
                                                    //
@@ -279,7 +283,7 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    XF_Prolog_X_pipe_To_sqyNm::vConvert(m_pCI);
+    XF_Prolog_X_pipe_To_sqyNm::vConvert_board(m_pCI);
     XF_Prolog_Validate_Board::vValidate(m_pCI);
   }
 
@@ -353,7 +357,7 @@ void XF::vTransform_passThru(void)
   m_pCI->vUsingBoard((i8)0);
 
   XF_Epilog_X_tblCol_To_expCol::vConvert(m_pCI);       // tblCol -> stmCol
-  //XF_Epilog_X_stmCol_To_colNm::vConvert(m_pCI);        //
+  //XF_Epilog_X_stmCol_To_colNm::vConvert_board(m_pCI);        //
 
   XF_Epilog_Type_Cast::vCast(m_pCI);                   //
 

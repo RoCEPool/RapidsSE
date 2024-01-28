@@ -39,13 +39,26 @@ XF_Prolog_X_pipe_To_sqyNm::~XF_Prolog_X_pipe_To_sqyNm(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_pipe_To_sqyNm::vConvert(CardIter* pCI)
+void XF_Prolog_X_pipe_To_sqyNm::vConvert_board(CardIter* pCI)
 {
   _static_
 
   XF_Prolog_X_pipe_To_sqyNm* pXF_Shorten_QueryNames = new XF_Prolog_X_pipe_To_sqyNm(pCI);
 
   pXF_Shorten_QueryNames->vX_Board_pipe_To_sqyNm();
+
+  delete pXF_Shorten_QueryNames;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Prolog_X_pipe_To_sqyNm::vConvert_deck(CardIter* pCI)
+{
+  _static_
+
+  XF_Prolog_X_pipe_To_sqyNm* pXF_Shorten_QueryNames = new XF_Prolog_X_pipe_To_sqyNm(pCI);
+
   pXF_Shorten_QueryNames->vX_Deck_pipe_To_sqyNm();
 
   delete pXF_Shorten_QueryNames;
