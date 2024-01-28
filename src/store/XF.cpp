@@ -147,6 +147,20 @@ void XF::vTransform(void)
 
   m_pCI->vPhase(OH_PROLOG);                        //
                                                    //
+#ifdef Z_SQY_Qn
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard()) {                    //
+    XF_Prolog_X_pipe_To_sqyNm::vConvert_board(m_pCI);   //
+  }                                                //
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump(__func__);
+  }
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard()) {                    //
+    XF_Prolog_X_pipe_To_sqyNm::vConvert_deck(m_pCI);    //
+    XF_Prolog_Validate_Board::vValidate(m_pCI);    //
+  }                                                //
+#else
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_X_pipe_To_sqyNm::vConvert_board(m_pCI);   //
@@ -159,7 +173,8 @@ void XF::vTransform(void)
   while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_Validate_Board::vValidate(m_pCI);    //
   }                                                //
-                                                   //
+#endif
+
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
                                                    //
