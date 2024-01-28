@@ -45,7 +45,8 @@ void XF_Prolog_X_board_To_sqyNm::vConvert(CardIter* pCI)
 
   XF_Prolog_X_board_To_sqyNm* pXF_Shorten_QueryNames = new XF_Prolog_X_board_To_sqyNm(pCI);
 
-  pXF_Shorten_QueryNames->vX_board_To_sqyNm();
+  pXF_Shorten_QueryNames->vX_Board_pipe_To_sqyNm();
+  pXF_Shorten_QueryNames->vX_Deck_pipe_To_sqyNm();
 
   delete pXF_Shorten_QueryNames;
 }
@@ -58,7 +59,7 @@ void XF_Prolog_X_board_To_sqyNm::vConvert(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* shorten query names                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
+void XF_Prolog_X_board_To_sqyNm::vX_Board_pipe_To_sqyNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_BOARD_TO_SQYNM, _FOOTER_);
 
@@ -79,6 +80,18 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
   else {
     vDebugPoint();
   }
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* shorten query names                                                        */
+/*----------------------------------------------------------------------------*/
+void XF_Prolog_X_board_To_sqyNm::vX_Deck_pipe_To_sqyNm(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_BOARD_TO_SQYNM, _FOOTER_);
+
+  m_pCI->vTransform(__func__, XF_PROLOG_X_BOARD_TO_SQYNM, "shorten query names"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

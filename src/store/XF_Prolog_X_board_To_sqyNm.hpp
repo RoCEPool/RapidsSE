@@ -22,7 +22,8 @@ namespace STORE
 
     static void vConvert(CardIter* pCI);
 
-    void vX_board_To_sqyNm(void);
+    void vX_Board_pipe_To_sqyNm(void);
+    void vX_Deck_pipe_To_sqyNm(void);
 
   private:
     Footer* aFooter(void);
