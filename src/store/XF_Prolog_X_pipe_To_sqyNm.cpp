@@ -80,8 +80,8 @@ void XF_Prolog_X_pipe_To_sqyNm::vX_Board_pipe_To_sqyNm(void)
 
 #ifdef Z_SQY_Qn
 
-  Symbol xSymbol_sqyNm(SF_SQY_NM, m_pCI->G.pBoard->i_Board());
-  m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NM));
+  Symbol xSymbol_sqyNm(SF_SQY_NO, m_pCI->G.pBoard->i_Board());
+  m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
 
 #else
 
@@ -92,10 +92,10 @@ void XF_Prolog_X_pipe_To_sqyNm::vX_Board_pipe_To_sqyNm(void)
 //  s32 sSqyNm = m_pCI->G.pBoard->pSubQuery()->szSqyNm();
 //  RASSERT(sSqyNm.bSame(sSubPipeNm));
 
-  if (Symbol::bIs_Sqy_Nm(sSubPipeNm)) {
+  if (Symbol::bIs_Sqy_No(sSubPipeNm)) {
     i8 iSqyNo = StrLib::iGleanInt(sSubPipeNm.azChar());
-    Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);
-    m_pCI->G.pBoard->vSubPipeNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NM));
+    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
+    m_pCI->G.pBoard->vSubPipeNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
   }
   else {
     vDebugPoint();
@@ -125,7 +125,7 @@ void XF_Prolog_X_pipe_To_sqyNm::vX_Deck_pipe_To_sqyNm(void)
 
 
     eSF eFacet = p_card->pSymbol()->eFacet(0);
-    RASSERT(SF_PPE_NM == eFacet || SF_SQY_NM == eFacet);
+    RASSERT(SF_PPE_NM == eFacet || SF_SQY_NO == eFacet);
 
 
     pCI->vPrintBoard(__func__,__LINE__,true);
@@ -136,14 +136,14 @@ void XF_Prolog_X_pipe_To_sqyNm::vX_Deck_pipe_To_sqyNm(void)
       Stz* szSubPipeNm =pSymbol_card->szFacet(SF_PPE_NM);
       Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSubPipeNm);
 
-      Symbol xSymbol_sqyNm(SF_SQY_NM, pBoard_subPipeNm->i_Board());
+      Symbol xSymbol_sqyNm(SF_SQY_NO, pBoard_subPipeNm->i_Board());
       pSymbol_card->vCastFacets(&xSymbol_sqyNm);
     }
     else {
-      Stz* szSqyNm = pSymbol_card->szFacet(SF_SQY_NM);
+      Stz* szSqyNm = pSymbol_card->szFacet(SF_SQY_NO);
       Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSqyNm);
 
-      Symbol xSymbol_sqyNm(SF_SQY_NM, pBoard_sqyNm->i_Board());
+      Symbol xSymbol_sqyNm(SF_SQY_NO, pBoard_sqyNm->i_Board());
       pSymbol_card->vCastFacets(&xSymbol_sqyNm);
     }
     return C_CONTINUE_RECURSION;
@@ -161,16 +161,16 @@ void XF_Prolog_X_pipe_To_sqyNm::vX_Deck_pipe_To_sqyNm(void)
 
   CardIter* pCI = m_pCI;
   auto bfTo_sqyNm = [pCI](Card* p_card) {
-    if (! Symbol::bIs_Sqy_Nm(p_card->szFacet(SF_NONE)))
+    if (!Symbol::bIs_Sqy_No(p_card->szFacet(SF_NONE)))
       return C_CONTINUE_RECURSION;
 
 
     eSF eFacet = p_card->pSymbol()->eFacet(0);
-    RASSERT(SF_PPE_NM == eFacet || SF_SQY_NM == eFacet);
+    RASSERT(SF_PPE_NM == eFacet || SF_SQY_NO == eFacet);
 
     i8 iSqyNo = StrLib::iGleanInt(p_card->szFacet(SF_NONE)->azChar());
 
-    Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);
+    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
     p_card->pSymbol()->vCastFacets(&xSymbol_sqyNm);
 
 //    pCI->vPrintBoard(__func__,__LINE__,true);
@@ -185,7 +185,7 @@ void XF_Prolog_X_pipe_To_sqyNm::vX_Deck_pipe_To_sqyNm(void)
       RASSERT(pBoard_sqyNm == pBoard_subPipeNm);
     }
     else {
-      Stz* szSqyNm = p_card->pSymbol()->szFacet(SF_SQY_NM);
+      Stz* szSqyNm = p_card->pSymbol()->szFacet(SF_SQY_NO);
       Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSqyNm);
 
       Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_sqyNm(szSqyNm);

@@ -555,7 +555,7 @@ void CorrelatedJoin::vConvert_SqyNm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
 
     RASSERT(p_conj->bIsCard(CK_RLNCONJ));
 
-    if (!p_conj->bContains_sqyNm())
+    if (!p_conj->bContains_sqyNo())
       return;
 
     RASSERT(! p_conj->pSymbol()->Y_bHas(P_CrlKeyPred));

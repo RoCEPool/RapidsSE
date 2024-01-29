@@ -60,7 +60,7 @@ enum eSF // symbol facet
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
-  /* */ SF_SQY_NM,      // SubQuery Nm         : __sq<n>
+  /* */ SF_SQY_NO,      // SubQuery No         : $Qn
   /* */ SF_SQY_OP,      // SubQuery Op         :
   /* */ SF_SQY_PRM,     // Parameter Column    : %n
   /* */ SF_SQY_RSL,     // SubQuery Result     :

@@ -181,7 +181,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
 
     // replace sqCall with sqResult
-    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NM);
+    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NO);
     pCI->Sqy.m_pTerm_sqyCall->SYM(SF_SQY_RSL, (i8)1);
     pCI->Sqy.m_pTerm_sqyCall->SYM(SF_EXP_COL, (i8)1);
 

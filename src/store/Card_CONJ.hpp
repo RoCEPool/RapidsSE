@@ -16,7 +16,7 @@ namespace STORE
     static bool bIsConj(Card* p_card);
 
     bool bConjRecursive(std::function<bool(Card_CONJ* p_pred, bool bUpwards)> bfApply);
-    bool bContains_sqyNm(void);
+    bool bContains_sqyNo(void);
     bool bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn);
     void vEnsure_Cast(CardIter* pCI);
     Stz* szGetBoardNmInTerm(CardIter* pCI);
