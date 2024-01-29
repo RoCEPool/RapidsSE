@@ -51,7 +51,7 @@
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Validate_Board.hpp"
-#include "XF_Prolog_X_pipe_To_sqyNm.hpp"
+#include "XF_Prolog_X_pipe_To_sqyNo.hpp"
 #include "XF_Prolog_X_colNm_To_expCol.hpp"
 #include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
@@ -153,14 +153,14 @@ void XF::vTransform(void)
   }
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_X_pipe_To_sqyNm::vConvert_board(m_pCI);   //
+    XF_Prolog_X_pipe_To_sqyNo::vConvert_board(m_pCI);   //
   }                                                //
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);
   }
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_X_pipe_To_sqyNm::vConvert_deck(m_pCI);    //
+    XF_Prolog_X_pipe_To_sqyNo::vConvert_deck(m_pCI);    //
     XF_Prolog_Validate_Board::vValidate(m_pCI);    //
   }                                                //
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
@@ -173,8 +173,8 @@ void XF::vTransform(void)
   }
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_X_pipe_To_sqyNm::vConvert_board(m_pCI);   //
-    XF_Prolog_X_pipe_To_sqyNm::vConvert_deck(m_pCI);    //
+    XF_Prolog_X_pipe_To_sqyNo::vConvert_board(m_pCI);   //
+    XF_Prolog_X_pipe_To_sqyNo::vConvert_deck(m_pCI);    //
   }                                                //
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);
@@ -315,7 +315,7 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    XF_Prolog_X_pipe_To_sqyNm::vConvert_board(m_pCI);
+    XF_Prolog_X_pipe_To_sqyNo::vConvert_board(m_pCI);
     XF_Prolog_Validate_Board::vValidate(m_pCI);
   }
 
