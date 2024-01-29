@@ -37,7 +37,7 @@ readonly NODE_CFG_CLIENT_PORT_KEY="client_port"
 readonly NODE_CFG_HEARTBEAT_PORT_KEY="heartbeat_port"
 readonly NODE_CFG_HEARTBEAT_ADDRESS_KEY="heartbeat_address"
 readonly NODE_CFG_DIR_KEY="dir"
-readonly NODE_CFG_DATA_PATH_KEY="data_paths"
+readonly NODE_CFG_DISK_PATH_KEY="disk_paths"
 readonly NODE_CFG_PARTITIONS_KEY="partitions"
 readonly NODE_CFG_THREADS_KEY="threads"
 readonly NODE_CFG_MEM_KEY="mem"
@@ -55,7 +55,7 @@ declare -ra NODE_CFG_MANDATORY_KEYS=( \
   "${NODE_CFG_HEARTBEAT_PORT_KEY}" \
   "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}" \
   "${NODE_CFG_DIR_KEY}" \
-  "${NODE_CFG_DATA_PATH_KEY}" \
+  "${NODE_CFG_DISK_PATH_KEY}" \
   "${NODE_CFG_PARTITIONS_KEY}" \
   "${NODE_CFG_THREADS_KEY}" \
   "${NODE_CFG_CLUSTERID_KEY}" \
