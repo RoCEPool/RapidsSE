@@ -487,7 +487,7 @@ Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(void)
   {
     UNUSED(bUpwards);
 
-    if (p_conj->bContains_sqyCall()) {
+    if (p_conj->bContains_sqyNm()) {
       p_rlnConj = _pCard_RlnConj(p_conj);
       return C_TERMINATE_RECURSION;
     }
@@ -671,7 +671,7 @@ void Card_BoolPred::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
     if (p_card->bIsCard(CK_RLNCONJ)) {
       p_card->vMark1(MARK_COMPARE);
       pCI->vDontDescend(true);
-      if (((Card_CONJ *) p_card)->bContains_sqyCall())
+      if (((Card_CONJ *) p_card)->bContains_sqyNm())
         continue;
       Symbol* pWhichTable = ((Card_CONJ *) p_card)->pTable_WhichTableFor_Conj(pCI);
       if (pWhichTable) {

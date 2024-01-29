@@ -194,9 +194,9 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               //           $b.1
   //                               // __subquery0002
 
-  vConvert_CrlSqyPrm_Into_StmCol(pCI, pCI->G.p_boolPred);
+  vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
-  vConvert_SubQryCall_Into_StmCol(pCI, pCI->G.p_boolPred);
+  vConvert_SqryNm_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
@@ -444,7 +444,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred *p_boolPred)
+void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
@@ -526,7 +526,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPred *p_boolPred)
+void CorrelatedJoin::vConvert_SqryNm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
@@ -545,7 +545,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
 //    else
     if (p_conj->bIsCard(CK_RLNCONJ)) {
 
-      if (!p_conj->bContains_sqyCall())
+      if (!p_conj->bContains_sqyNm())
         return;
 
       RASSERT(p_conj->bIsBoolFn() ||

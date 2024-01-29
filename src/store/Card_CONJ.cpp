@@ -107,7 +107,7 @@ bool Card_CONJ::bConjRecursive(std::function<bool(Card_CONJ* p_conj, bool bUpwar
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJ::bContains_sqyCall(void)
+bool Card_CONJ::bContains_sqyNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
