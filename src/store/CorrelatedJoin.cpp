@@ -542,10 +542,9 @@ void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
     // process AND or OR
 
     if (p_conj->bIsCard(CK_ANDCONJ) || p_conj->bIsCard(CK_ORCONJ)) {
-      Kid xKid(p_conj);
-      while (xKid.bEach()) {
-        RASSERT(Card_CONJ::bIsConj(xKid.pChild()));
-        vResolve(static_cast<Card_CONJ*>(xKid.pChild()), vResolve);
+      for (Kid xConj(p_conj); xConj.bEach(); /**/) {
+        RASSERT(Card_CONJ::bIsConj(xConj.pChild()));
+        vResolve(static_cast<Card_CONJ*>(xConj.pChild()), vResolve);
       }
       return;
     }
@@ -561,39 +560,38 @@ void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
     RASSERT(! p_conj->pSymbol()->Y_bHas(P_CrlKeyPred));
     RASSERT(p_conj->bIsRelnOp());
 
-    Kid xConj(p_conj);
-    while (xConj.bEach()) {
+    for (Kid xConj(p_conj); xConj.bEach(); /**/) {
 
-      if (Card_CONJ::bIsConj(xConj.pChild())) {
-        vResolve(static_cast<Card_CONJ*>(xConj.pChild()), vResolve);
+      Card* p_child_conj = xConj.pChild();
+      if (Card_CONJ::bIsConj(p_child_conj)) {
+        vResolve(static_cast<Card_CONJ*>(p_child_conj), vResolve);
         continue;
       }
       // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-      Stz* szSubPipeNm = xConj.pChild()->szFacet(SF_NONE);
+      Stz* szSubPipeNm = p_child_conj->szFacet(SF_NONE);
       if (! pCI->m_pBench->bIsSubPipeNm(szSubPipeNm))
         continue;
 
 
 
-      Card* p_arg = xConj.pPrev();
+      Card* p_prev_conj = xConj.pPrev();
 
-      Card_Term* p_term_new = (new Card_Term) ->SYM(SF_EXP_COL, "$2"_Stz);
-      p_conj->vInsertChildAfter(p_term_new, xConj.pChild());
+      Card_Term* p_new_conj = (new Card_Term) ->SYM(SF_EXP_COL, "$2"_Stz);
+      p_conj->vInsertChildAfter(p_new_conj, p_child_conj);
 
 
       Card_Expr* p_expr_found =
           pCI->Flux.m_pArriving->pGet_expr(1);
 
-      p_term_new->vCast(p_expr_found->xCast());
+      p_new_conj->vCast(p_expr_found->xCast());
 
 
-      p_conj->vRemoveChild(p_arg);
-      DELETE_CARD(p_arg);
+      p_conj->vRemoveChild(p_prev_conj);
+      DELETE_CARD(p_prev_conj);
 
-      Card* pChild = xConj.pChild();
-      p_conj->vRemoveChild(pChild);
-      DELETE_CARD(pChild);
+      p_conj->vRemoveChild(p_child_conj);
+      DELETE_CARD(p_child_conj);
 
       p_conj->pSymbol()->Y_vSet(P_CrlRslTest);
     }
