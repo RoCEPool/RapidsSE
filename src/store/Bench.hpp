@@ -55,7 +55,7 @@ namespace STORE
     Board* pFindBoard_By_subPipeNm(Stz* szSubPipeNm);
     Board* pFindBoard_By_sqyNm(Stz* szSqyNm);
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
-    bool bIsSqyNm(Stz* szSqyNm);
+    bool bIsSubPipeNm(Stz* szArg);
     Optimiser* pOptimiser(void);
 
     bool bPastPhase(CardIter* pCI, eOH ePhase);

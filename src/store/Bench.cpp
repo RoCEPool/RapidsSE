@@ -203,11 +203,11 @@ SubQuery* Bench::pGetSubQuery(Stz* szSubQueryNm)
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bIsSqyNm(Stz* szSqyNm)
+bool Bench::bIsSubPipeNm(Stz* szArg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pFindBoard_By_subPipeNm(szSqyNm)) {
+  if (Board* pBoard = pFindBoard_By_subPipeNm(szArg)) {
     UNUSED(pBoard);
     return true;
   }

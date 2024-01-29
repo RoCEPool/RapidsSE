@@ -196,7 +196,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
-  vConvert_SqyNm_Into_ExpCol(pCI, pCI->G.p_boolPred);
+  vConvert_SqyNo_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
@@ -526,7 +526,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vConvert_SqyNm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_boolPred)
+void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
@@ -570,7 +570,8 @@ void CorrelatedJoin::vConvert_SqyNm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
       }
       // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-      if (! pCI->m_pBench->bIsSqyNm(xConj.pChild()->szFacet(SF_NONE)))
+      Stz* szSubPipeNm = xConj.pChild()->szFacet(SF_NONE);
+      if (! pCI->m_pBench->bIsSubPipeNm(szSubPipeNm))
         continue;
 
 
