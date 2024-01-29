@@ -43,7 +43,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,
   /* */ "XF_FLATTEN_SMOOSH"_Stz,
   /* */ "XF_FLATTEN_SMOOTH"_Stz,
-  /* */ "XF_FLATTEN_X_STMCOL_TO_TBLCOL"_Stz,
+  /* */ "XF_FLATTEN_X_EXPCOL_TO_TBLCOL"_Stz,
   /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz,
   /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,
   /* */ "XF_OPTIMISE_CULL_USED_BOUND"_Stz,
@@ -124,7 +124,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_REPOSITION
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOSH
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOTH
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_X_STMCOL_TO_TBLCOL
+  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_X_EXPCOL_TO_TBLCOL
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_NONUSED_BOUND
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_USED_BOUND

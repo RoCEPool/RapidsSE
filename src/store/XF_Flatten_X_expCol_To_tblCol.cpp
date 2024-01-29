@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_X_expCol_To_tblCol, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL)
-__aNewFunction(XF_Flatten_X_expCol_To_tblCol, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL)
-__vDeleteFunction(XF_Flatten_X_expCol_To_tblCol, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL)
+__pCastFunction(STORE, XF_Flatten_X_expCol_To_tblCol, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL)
+__aNewFunction(XF_Flatten_X_expCol_To_tblCol, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL)
+__vDeleteFunction(XF_Flatten_X_expCol_To_tblCol, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL)
 __aFooterFunction(XF_Flatten_X_expCol_To_tblCol)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_X_expCol_To_tblCol)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_X_expCol_To_tblCol::XF_Flatten_X_expCol_To_tblCol(CardIter* m_pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL, m_pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL, m_pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL, _FOOTER_);
 
-  _checkInitialised_(CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL);
+  _checkInitialised_(CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_X_expCol_To_tblCol::XF_Flatten_X_expCol_To_tblCol(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_X_expCol_To_tblCol::~XF_Flatten_X_expCol_To_tblCol(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,9 +60,9 @@ void XF_Flatten_X_expCol_To_tblCol::vFlatten(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_X_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_X_EXPCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
 
   m_pCI->vClearRestart();
 
