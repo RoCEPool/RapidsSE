@@ -19,7 +19,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-INCLUDE 'r_FOLD_10_F.test';
+INCLUDE 'r_FOLD_24_W_A_C_ro.test';
 
 
 INCLUDE 'select_star.test';

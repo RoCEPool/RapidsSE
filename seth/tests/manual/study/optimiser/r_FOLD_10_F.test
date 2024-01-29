@@ -9,10 +9,6 @@ success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimiser_trace
-/transliterated
-/weaved
-/pipeline_Def
 /pipelineName = "_r_FOLD_10_F"
 select count(*)
   from (select *
