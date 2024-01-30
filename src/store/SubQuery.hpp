@@ -21,7 +21,7 @@ namespace STORE
   protected:
 
     s32  m_sSqyNo;       // subquery no
-    s32  m_sSubPipeNm;   // subPipeNm
+    s32  m_sSqyNm;       // subquery name
 
     Board* m_pBoard;     // which board
 
@@ -79,10 +79,10 @@ namespace STORE
     eRO  eRelnOp(void);
     void vRelnOp(eRO eRelnOp);
 
+    Stz* szSqyNm(void);
+    void vSqyNm(Stz* szSqyNm);
     Stz* szSqyNo(void);
     void vSqyNo(Stz* szSqyNo);
-    Stz* szSubPipeNm(void);
-    void vSubPipeNm(Stz* szSubPipeNm);
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);

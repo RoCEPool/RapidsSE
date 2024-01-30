@@ -44,7 +44,7 @@ Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBen
 
   m_pSubQuery = new SubQuery(this);
   m_pSubQuery->vSqyNo(szSqyNm);
-  m_pSubQuery->vSubPipeNm(szSqyNm);
+  m_pSubQuery->vSqyNm(szSqyNm);
 
   m_pState = new TagSet;
 

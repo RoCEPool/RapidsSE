@@ -236,11 +236,11 @@ void SubQuery::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  vTrace("%sSubQuery %p SqyNo %s subPipeNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+  vTrace("%sSubQuery %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          Stz::szTab(iDepth),
          this,
          m_sSqyNo.szStz(),
-         m_sSubPipeNm.szStz(),
+         m_sSqyNm.szStz(),
          m_i_Caller,
 
          aQC[m_eClause],
@@ -313,6 +313,26 @@ void SubQuery::vRelnOp(eRO eRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get subquery name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* SubQuery::szSqyNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  return m_sSqyNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery name                                                          */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSqyNm(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  m_sSqyNm = szSqyNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get subquery number $Qn                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* SubQuery::szSqyNo(void)
@@ -330,26 +350,6 @@ void SubQuery::vSqyNo(Stz* szSqyNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
   m_sSqyNo = szSqyNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get pipeline name                                                          */
-/*----------------------------------------------------------------------------*/
-Stz* SubQuery::szSubPipeNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
-
-  return m_sSubPipeNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set pipeline name                                                          */
-/*----------------------------------------------------------------------------*/
-void SubQuery::vSubPipeNm(Stz* szSubPipeNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
-
-  m_sSubPipeNm = szSubPipeNm;
 }
 
 /*----------------------------------------------------------------------------*/
