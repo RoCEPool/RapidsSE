@@ -21,6 +21,7 @@ namespace STORE
   protected:
 
     s32  m_sSqyNo;       // subquery no
+    s32  m_sSubPipeNm;   // subPipeNm
 
     Board* m_pBoard;     // which board
 

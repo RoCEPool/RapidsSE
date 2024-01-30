@@ -36,6 +36,7 @@ Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBen
 
   m_i_Board     = i_Board;
   m_sSubPipeNm  = szSubPipeNm;
+  m_sSqyNo      = szSubPipeNm;
   m_eBoard      = eBoard;
 
   m_pBench      = pBench;
@@ -302,11 +303,12 @@ void Board::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  vTrace("%sBoard %p %lld SubPipeNm %s %s\n"_Stz,
+  vTrace("%sBoard %p %lld SubPipeNm %s SqyNo %s %s\n"_Stz,
          Stz::szTab(iDepth),
          this,
          m_i_Board,
          m_sSubPipeNm.szStz(),
+         m_sSqyNo.szStz(),
          aBK[m_eBoard]
   );
 
