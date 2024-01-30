@@ -569,13 +569,18 @@ void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
       }
       // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-      Stz* szSubPipeNm = p_child_conj->szFacet(SF_NONE);
-      if (! pCI->m_pBench->bIsSubPipeNm(szSubPipeNm))
+      if (! p_child_conj->pSymbol()->bHasFacet(SF_SQY_NO))
         continue;
 
+      Stz* szSqyNo = p_child_conj->szFacet(SF_SQY_NO);
+      RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
+      //pCI->m_pBench->vDump(__func__);
+      RASSERT(pCI->m_pBench->bIsSubPipeNm(szSqyNo));
 
 
       Card* p_prev_conj = xConj.pPrev();
+      p_conj->vRemoveChild(p_prev_conj);
+      DELETE_CARD(p_prev_conj);
 
       Card_Term* p_new_conj = (new Card_Term) ->SYM(SF_EXP_COL, "$2"_Stz);
       p_conj->vInsertChildAfter(p_new_conj, p_child_conj);
@@ -587,8 +592,6 @@ void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
       p_new_conj->vCast(p_expr_found->xCast());
 
 
-      p_conj->vRemoveChild(p_prev_conj);
-      DELETE_CARD(p_prev_conj);
 
       p_conj->vRemoveChild(p_child_conj);
       DELETE_CARD(p_child_conj);
