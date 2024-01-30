@@ -175,7 +175,6 @@ namespace STORE
   protected:
     i8          m_i_Board;
     s32         m_sSubPipeNm;
-    s32         m_sSqyNo;       // subquery no
     eBK         m_eBoard;  // joinOrdering, subquery
 
     Bench*      m_pBench;
@@ -229,8 +228,6 @@ namespace STORE
     void vRenumberCards(void);
 
     TagSet* pState(void);
-    Stz* szSqyNo(void);
-    void vSqyNo(Stz* szSqyNo);
     Stz* szSubPipeNm(void);
     void vSubPipeNm(Stz* szSubPipeNm);
     SubQuery* pSubQuery(void);
