@@ -130,21 +130,6 @@ void Bench::vEndPhase(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get board                                                                  */
-/*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (i_Board >= nBoards())
-    return nullptr;
-
-  Board *pBoard = this->pGet(i_Board);
-  ASSERT(pBoard->i_Board() == i_Board);
-  return pBoard;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
 Board* Bench::pFindBoard_By_subPipeNm(Stz* szSubPipeNm)
@@ -165,7 +150,7 @@ Board* Bench::pFindBoard_By_subPipeNm(Stz* szSubPipeNm)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
+Board* Bench::pFindBoard_By_sqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -173,7 +158,7 @@ Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (pBoard->pSubQuery()->szSqyNo()->bSame(szSqyNm))
+    if (pBoard->pSubQuery()->szSqyNo()->bSame(szSqyNo))
       return pBoard;
   }
 
@@ -184,30 +169,60 @@ Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
 /*----------------------------------------------------------------------------*/
 /* get subquery of given name                                                 */
 /*----------------------------------------------------------------------------*/
-SubQuery* Bench::pGetSubQuery(Stz* szSubQueryNm)
+SubQuery* Bench::pFindSubQuery_By_sqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  Board* pBoard = pFindBoard_By_subPipeNm(szSubQueryNm);
+  Board* pBoard = pFindBoard_By_subPipeNm(szSqyNo);
 
   if (! pBoard)
-    pBoard = pFindBoard_By_sqyNm(szSubQueryNm);
+    pBoard = pFindBoard_By_sqyNo(szSqyNo);
   if (! pBoard)
     return nullptr;
 
-  SubQuery* pSubQuery= pBoard->pSubQuery();
+  SubQuery* pSubQuery = pBoard->pSubQuery();
 
   return pSubQuery;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given name a known subquery?                                            */
+/* get board                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Bench::bIsSubPipeNm(Stz* szArg)
+Board* Bench::pGetBoard(i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pFindBoard_By_subPipeNm(szArg)) {
+  if (i_Board >= nBoards())
+    return nullptr;
+
+  Board *pBoard = this->pGet(i_Board);
+  ASSERT(pBoard->i_Board() == i_Board);
+  return pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given name a known subquery?                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bKnown_sqyNo(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard_By_sqyNo(szSqyNo)) {
+    UNUSED(pBoard);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given name a known subquery?                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bKnown_subPipeNm(Stz* szSubPipeNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard_By_subPipeNm(szSubPipeNm)) {
     UNUSED(pBoard);
     return true;
   }

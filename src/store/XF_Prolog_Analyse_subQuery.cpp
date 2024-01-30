@@ -151,7 +151,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
   Stz* szBoardNm = m_pCI->G.p_call->szFacet(SF_NONE);
   Board* pBoard = m_pCI->m_pBench->pFindBoard_By_subPipeNm(szBoardNm);
   if (!pBoard)
-    pBoard = m_pCI->m_pBench->pFindBoard_By_sqyNm(szBoardNm);
+    pBoard = m_pCI->m_pBench->pFindBoard_By_sqyNo(szBoardNm);
   if (!pBoard) {
     m_pCI->m_pBench->vDump(__func__ );
     NEVER_REACH;
@@ -232,7 +232,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
     if (! szSubBoardNm || !m_pCI->G_bIsBoardNm(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
-    // todo: m_pCI->pFindBoard_By_subPipeNm(szSubBoardNm); m_pCI->pGetSubQuery(szSubBoardNm);
+    // todo: m_pCI->pFindBoard_By_subPipeNm(szSubBoardNm); m_pCI->pFindSubQuery_By_sqyNo(szSubBoardNm);
     Board *pSubBoard = m_pCI->m_pBench->pFindBoard_By_subPipeNm(szSubBoardNm);
     SubQuery *pSubQuery = pSubBoard->pSubQuery();
 

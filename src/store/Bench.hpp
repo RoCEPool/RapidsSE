@@ -48,14 +48,17 @@ namespace STORE
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
     void vDump(const char* azFunc);
-
     void vEndPhase(CardIter* pCI);
 
-    Board* pGetBoard(i8 i_Board);
     Board* pFindBoard_By_subPipeNm(Stz* szSubPipeNm);
-    Board* pFindBoard_By_sqyNm(Stz* szSqyNm);
-    SubQuery* pGetSubQuery(Stz* szSubQueryNm);
-    bool bIsSubPipeNm(Stz* szArg);
+    Board* pFindBoard_By_sqyNo(Stz* szSqyNo);
+    SubQuery* pFindSubQuery_By_sqyNo(Stz* szSqyNo);
+
+    Board* pGetBoard(i8 i_Board);
+
+    bool bKnown_sqyNo(Stz* szSqyNo);
+    bool bKnown_subPipeNm(Stz* szSubPipeNm);
+
     Optimiser* pOptimiser(void);
 
     bool bPastPhase(CardIter* pCI, eOH ePhase);

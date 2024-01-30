@@ -2110,21 +2110,17 @@ bool CardIter::G_bPushBoard(i8 i_Board)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
+/* find and push board onto iter stack                                        */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bPushBoard(Stz* szBoardNm)
+bool CardIter::G_bPushBoard(Stz* szSubPipeNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Board* pSubQueryBoard = m_pBench->pFindBoard_By_subPipeNm(szBoardNm);
-  if (! pSubQueryBoard)
-    pSubQueryBoard = m_pBench->pFindBoard_By_sqyNm(szBoardNm);
-
-  if (! pSubQueryBoard)
+  Board* pBoard = m_pBench->pFindBoard_By_subPipeNm(szSubPipeNm);
+  if (! pBoard)
      return false;
 
-
-  G_vPushBoard(pSubQueryBoard);
+  G_vPushBoard(pBoard);
 
   return true;
 }
