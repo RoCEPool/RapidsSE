@@ -35,8 +35,8 @@ Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBen
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_i_Board     = i_Board;
-  m_sSubPipeNm  = szSubPipeNm;
-  m_sSqyNo      = szSubPipeNm;
+  vSubPipeNm(szSubPipeNm);
+  vSqyNo(szSubPipeNm);
   m_eBoard      = eBoard;
 
   m_pBench      = pBench;
@@ -45,6 +45,7 @@ Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBen
 
   m_pSubQuery = new SubQuery(this);
   m_pSubQuery->vSqyNo(szSqyNm);
+  m_pSubQuery->vSubPipeNm(szSqyNm);
 
   m_pState = new TagSet;
 
@@ -244,6 +245,26 @@ eBK Board::eBoard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   return m_eBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Board::szSqyNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_sSqyNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+void Board::vSqyNo(Stz* sSqyNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_sSqyNo = sSqyNo;
 }
 
 /*----------------------------------------------------------------------------*/

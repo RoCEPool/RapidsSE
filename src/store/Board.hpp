@@ -229,6 +229,8 @@ namespace STORE
     void vRenumberCards(void);
 
     TagSet* pState(void);
+    Stz* szSqyNo(void);
+    void vSqyNo(Stz* szSqyNo);
     Stz* szSubPipeNm(void);
     void vSubPipeNm(Stz* szSubPipeNm);
     SubQuery* pSubQuery(void);

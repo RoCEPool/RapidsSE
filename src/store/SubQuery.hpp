@@ -81,6 +81,8 @@ namespace STORE
 
     Stz* szSqyNo(void);
     void vSqyNo(Stz* szSqyNo);
+    Stz* szSubPipeNm(void);
+    void vSubPipeNm(Stz* szSubPipeNm);
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);

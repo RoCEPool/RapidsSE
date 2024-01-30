@@ -174,9 +174,6 @@ SubQuery* Bench::pFindSubQuery_By_sqyNo(Stz* szSqyNo)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   Board* pBoard = pFindBoard_By_subPipeNm(szSqyNo);
-
-  if (! pBoard)
-    pBoard = pFindBoard_By_sqyNo(szSqyNo);
   if (! pBoard)
     return nullptr;
 

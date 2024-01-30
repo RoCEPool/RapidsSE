@@ -330,7 +330,26 @@ void SubQuery::vSqyNo(Stz* szSqyNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
   m_sSqyNo = szSqyNo;
-  m_sSubPipeNm = szSqyNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* SubQuery::szSubPipeNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  return m_sSubPipeNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSubPipeNm(Stz* szSubPipeNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  m_sSubPipeNm = szSubPipeNm;
 }
 
 /*----------------------------------------------------------------------------*/
