@@ -582,19 +582,9 @@ void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
       p_conj->vRemoveChild(p_prev_conj);
       DELETE_CARD(p_prev_conj);
 
-      Card_Term* p_new_conj = (new Card_Term) ->SYM(SF_EXP_COL, "$2"_Stz);
-      p_conj->vInsertChildAfter(p_new_conj, p_child_conj);
-
-
-      Card_Expr* p_expr_found =
-          pCI->Flux.m_pArriving->pGet_expr(1);
-
-      p_new_conj->vCast(p_expr_found->xCast());
-
-
-
-      p_conj->vRemoveChild(p_child_conj);
-      DELETE_CARD(p_child_conj);
+      p_child_conj->pSymbol()->vFacet(SF_EXP_COL, "$2"_Stz);
+      Card_Expr* p_expr_found = pCI->Flux.m_pArriving->pGet_expr(1);
+      p_child_conj->vCast(p_expr_found->xCast());
 
       p_conj->pSymbol()->Y_vSet(P_CrlRslTest);
     }

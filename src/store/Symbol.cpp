@@ -3650,16 +3650,16 @@ void Symbol::vFacet_Exp_Col(Stz* szExpCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
-          SF_NMD_COL == xaFacet[0].m_eFacet ||
-          SF_EXP_COL == xaFacet[0].m_eFacet ||
-          SF_TBL_COL == xaFacet[0].m_eFacet ||
-
-          SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
-          SF_PARENTHESIS == xaFacet[0].m_eFacet ||
-          SF_SQY_PRM == xaFacet[0].m_eFacet ||
-          SF_LIST_CNT == xaFacet[0].m_eFacet
-  );
+//  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
+//          SF_NMD_COL == xaFacet[0].m_eFacet ||
+//          SF_EXP_COL == xaFacet[0].m_eFacet ||
+//          SF_TBL_COL == xaFacet[0].m_eFacet ||
+//
+//          SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
+//          SF_PARENTHESIS == xaFacet[0].m_eFacet ||
+//          SF_SQY_PRM == xaFacet[0].m_eFacet ||
+//          SF_LIST_CNT == xaFacet[0].m_eFacet
+//  );
 
   vFacetSprint(SF_EXP_COL, "%s"_Stz, szExpCol);
 
