@@ -89,7 +89,7 @@ void XF_Prolog_X_pipe_To_sqyNo::vX_Board_pipe_To_sqyNm(void)
     m_pCI->m_pBench->vDump(__func__);
 
   s32 sSubPipeNm = m_pCI->G.pBoard->szSubPipeNm();
-//  s32 sSqyNm = m_pCI->G.pBoard->pSubQuery()->szSqyNm();
+//  s32 sSqyNm = m_pCI->G.pBoard->pSubQuery()->szSqyNo();
 //  RASSERT(sSqyNm.bSame(sSubPipeNm));
 
   if (Symbol::bIs_Sqy_No(sSubPipeNm)) {
@@ -141,7 +141,7 @@ void XF_Prolog_X_pipe_To_sqyNo::vX_Deck_pipe_To_sqyNm(void)
     }
     else {
       Stz* szSqyNm = pSymbol_card->szFacet(SF_SQY_NO);
-      Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSqyNm);
+      Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSqyNo);
 
       Symbol xSymbol_sqyNm(SF_SQY_NO, pBoard_sqyNm->i_Board());
       pSymbol_card->vCastFacets(&xSymbol_sqyNm);

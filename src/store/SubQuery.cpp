@@ -236,11 +236,12 @@ void SubQuery::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  vTrace("%sSubQuery %p SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+  vTrace("%sSubQuery %p SqyNo %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          Stz::szTab(iDepth),
          this,
-         m_sSqyNm.szStz(),
+         m_sSqyNo.szStz(),
          m_i_Caller,
+
          aQC[m_eClause],
          aQD[m_eDisposition],
          aQO[m_eCallOp],
@@ -311,23 +312,23 @@ void SubQuery::vRelnOp(eRO eRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get subquery name                                                          */
+/* get subquery number $Qn                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SubQuery::szSqyNm(void)
+Stz* SubQuery::szSqyNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
-  return m_sSqyNm;
+  return m_sSqyNo;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set subquery name                                                          */
+/* set subquery number $Qn                                                    */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vSqyNm(Stz* szSqyNm)
+void SubQuery::vSqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
-  m_sSqyNm = szSqyNm;
+  m_sSqyNo = szSqyNo;
 }
 
 /*----------------------------------------------------------------------------*/

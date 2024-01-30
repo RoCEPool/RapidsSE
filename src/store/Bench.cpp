@@ -173,7 +173,7 @@ Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (pBoard->pSubQuery()->szSqyNm()->bSame(szSqyNm))
+    if (pBoard->pSubQuery()->szSqyNo()->bSame(szSqyNm))
       return pBoard;
   }
 
