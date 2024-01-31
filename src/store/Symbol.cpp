@@ -1570,7 +1570,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_NULL:        vFacet_Null(szChrSeq);        break;
     case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
     case SF_PAY_COL:     vFacet_Pay_Col(szChrSeq);     break;
-    case SF_PPE_NM:      vFacet_Ppe_Nm(szChrSeq);      break;
+    case SF_SQY_NM:      vFacet_Ppe_Nm(szChrSeq);      break;
     case SF_SQY_NO:      vFacet_Sqy_No(szChrSeq);      break;
     case SF_SQY_PRM:     vFacet_Sqy_Prm(szChrSeq);     break;
     case SF_SQY_RSL:     vFacet_Sqy_Rsl(szChrSeq);     break;
@@ -2358,7 +2358,7 @@ bool Symbol::bIs_Ppe_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_PPE_NM != xaFacet[0].m_eFacet)
+  if (SF_SQY_NM != xaFacet[0].m_eFacet)
     return false;
 
   if (bIs_Ppe_Nm(xaFacet[0].m_sChrSeq))
@@ -2979,8 +2979,8 @@ bool Symbol::bValidate(void)
       case SF_NULL:        b = bIs_Null(szFacet(i_Facet));       break;
       case SF_PARENTHESIS: b = bIs_Parenthesis(szFacet(i_Facet));break;
       case SF_PAY_COL:     b = bIs_Pay_Col(szFacet(i_Facet));    break;
-      case SF_PPE_NM:      b = bIs_Ppe_Nm(szFacet(i_Facet));     break;
       case SF_RLN_OP:      b = bIs_Rln_Op(szFacet(i_Facet));     break;
+      case SF_SQY_NM:      b = bIs_Ppe_Nm(szFacet(i_Facet));     break;
       case SF_SQY_NO:      b = bIs_Sqy_No(szFacet(i_Facet));     break;
       case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet(i_Facet));     break;
       case SF_SQY_PRM:     b = bIs_Sqy_Prm(szFacet(i_Facet));    break;
@@ -3003,71 +3003,6 @@ bool Symbol::bValidate(void)
   }
   return b;
 }
-/*----------------------------------------------------------------------------*/
-//bool Symbol::bValidate(void)
-//{
-//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-//
-//  bool b = false;
-//
-//  switch (xaFacet[0].m_eFacet) {
-//    case SF_NONE:        b = bIs_None();        break;
-//    case SF_AGG_FN:      b = bIs_Agg_Fn();      break;
-//    case SF_AS:          b = bIs_As();          break;
-//    case SF_BOL_FN:      b = bIs_Bol_Fn();      break;
-//    case SF_BOL_LIT:     b = bIs_Bol_Lit();     break;
-//    case SF_BOL_OP:      b = bIs_Bol_Op();      break;
-//    case SF_BOUND:       b = bIs_Bound();       break;
-//    case SF_BRACE:       b = bIs_Brace();       break;
-//    case SF_CAST:        b = bIs_Cast();        break;
-//    case SF_CASTTYPE:    b = bIs_CastType();    break;
-//    case SF_COL_TYPE:    b = bIs_Col_Type();    break;
-//    case SF_COMMA:       b = bIs_Comma();       break;
-//    case SF_CROSS:       b = bIs_Cross();       break;
-//    case SF_DCM_LIT:     b = bIs_Dcm_Lit();     break;
-//    case SF_DIRECTION:   b = bIs_Direction();   break;
-//    case SF_EXP_COL:     b = bIs_Exp_Col();     break;
-//    case SF_FLD_NM:      b = bIs_Fld_Nm();      break;
-//    case SF_FLT_LIT:     b = bIs_Flt_Lit();     break;
-//    case SF_GROUPBY:     b = bIs_GroupBy();     break;
-//    case SF_IDX_COL:     b = bIs_Idx_Col();     break;
-//    case SF_IDX_NM:      b = bIs_Idx_Nm();      break;
-//    case SF_INT_LIT:     b = bIs_Int_Lit();     break;
-//    case SF_INTERVAL_DT: b = bIs_Interval_DT(); break;
-//    case SF_INTERVAL_YM: b = bIs_Interval_YM(); break;
-//    case SF_IVL_FN:      b = bIs_Ivl_Fn();      break;
-//    case SF_KEY_COL:     b = bIs_Key_Col();     break;
-//    case SF_LIST_CNT:    b = bIs_List_Cnt();    break;
-//    case SF_MTH_OP:      b = bIs_Mth_Op();      break;
-//    case SF_NMD_COL:     b = bIs_Nmd_Col();     break;
-//    case SF_NOTE:        b = bIs_Note();        break;
-//    case SF_NULL:        b = bIs_Null();        break;
-//    case SF_PARENTHESIS: b = bIs_Parenthesis(); break;
-//    case SF_PAY_COL:     b = bIs_Pay_Col();     break;
-//    case SF_PPE_NM:      b = bIs_Ppe_Nm();      break;
-//    case SF_RLN_OP:      b = bIs_Rln_Op();      break;
-//    case SF_SQY_NO:      b = bIs_Sqy_No();      break;
-//    case SF_SQY_OP:      b = bIs_Sqy_Op();      break;
-//    case SF_SQY_PRM:     b = bIs_Sqy_Prm();     break;
-//    case SF_SQY_RSL:     b = bIs_Sqy_Rsl();     break;
-//    case SF_STG_NO:      b = bIs_Stg_Nm();      break;
-//    case SF_STG_CAST:    b = bIs_Stg_Cast();    break;
-//    case SF_STR_FN:      b = bIs_Str_Fn();      break;
-//    case SF_STR_LIT:     b = bIs_String();      break;
-//    case SF_TBL_COL:     b = bIs_Tbl_Col();     break;
-//    case SF_TBL_NM:      b = bIs_Tbl_Nm();      break;
-//    case SF_TBL_SYN:     b = bIs_Tbl_Syn();     break;
-//    case SF_TBL_SYN_rep: b = bIs_Tbl_Syn_rep(); break;
-//    case SF_TYPE:        b = bIs_Type();        break;
-//    case SF_WHEN:        b = bIs_When();        break;
-//    case SF_XK_CAST:     b = bIs_Xk_Cast();     break;
-//
-//    default:
-//      NEVER_REACH
-//  }
-//
-//  return b;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* validate symbol                                                            */
@@ -4044,7 +3979,7 @@ void Symbol::vFacet_Ppe_Nm(Stz* szPpeNm)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_PPE_NM,"%s"_Stz,szPpeNm);
+  vFacetSprint(SF_SQY_NM, "%s"_Stz, szPpeNm);
 
   RASSERT(bIs_Ppe_Nm());
 }

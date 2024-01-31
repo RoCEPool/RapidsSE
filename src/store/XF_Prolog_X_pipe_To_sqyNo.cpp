@@ -125,15 +125,15 @@ void XF_Prolog_X_pipe_To_sqyNo::vX_Deck_pipe_To_sqyNm(void)
 
 
     eSF eFacet = p_card->pSymbol()->eFacet(0);
-    RASSERT(SF_PPE_NM == eFacet || SF_SQY_NO == eFacet);
+    RASSERT(SF_SQY_NM == eFacet || SF_SQY_NO == eFacet);
 
 
     pCI->vPrintBoard(__func__,__LINE__,true);
     p_card->vDump(__func__);
     vDebugPoint();
     Symbol* pSymbol_card = p_card->pSymbol();
-    if (SF_PPE_NM == eFacet) {
-      Stz* szSubPipeNm =pSymbol_card->szFacet(SF_PPE_NM);
+    if (SF_SQY_NM == eFacet) {
+      Stz* szSubPipeNm =pSymbol_card->szFacet(SF_SQY_NM);
       Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSubPipeNm);
 
       Symbol xSymbol_sqyNm(SF_SQY_NO, pBoard_subPipeNm->i_Board());
@@ -166,7 +166,7 @@ void XF_Prolog_X_pipe_To_sqyNo::vX_Deck_pipe_To_sqyNm(void)
 
 
     eSF eFacet = p_card->pSymbol()->eFacet(0);
-    RASSERT(SF_PPE_NM == eFacet || SF_SQY_NO == eFacet);
+    RASSERT(SF_SQY_NM == eFacet || SF_SQY_NO == eFacet);
 
     i8 iSqyNo = StrLib::iGleanInt(p_card->szFacet(SF_NONE)->azChar());
 
@@ -176,9 +176,9 @@ void XF_Prolog_X_pipe_To_sqyNo::vX_Deck_pipe_To_sqyNm(void)
 //    pCI->vPrintBoard(__func__,__LINE__,true);
 //    p_card->vDump(__func__);
 //    vDebugPoint();
-    if (SF_PPE_NM == eFacet) {
+    if (SF_SQY_NM == eFacet) {
 
-      Stz* szSubPipeNm = p_card->pSymbol()->szFacet(SF_PPE_NM);
+      Stz* szSubPipeNm = p_card->pSymbol()->szFacet(SF_SQY_NM);
       Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_sqyNm(szSubPipeNm);
 
       Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_sqyNo(szSubPipeNm);

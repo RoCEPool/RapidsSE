@@ -338,7 +338,7 @@ Card* Dissector::pOp_call(void)
   StrLib::vStrip(szSubPipeNm->azChar(), szSubPipeNm->nSize(), ' ');
 
   Card_Call* p_call = new Card_Call;
-  p_call->SYM(SF_PPE_NM,szSubPipeNm);
+  p_call->SYM(SF_SQY_NM, szSubPipeNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

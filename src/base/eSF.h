@@ -56,10 +56,10 @@ enum eSF // symbol facet
 
   /* */ SF_PARENTHESIS, // Parenthesis         : (, )
   /* */ SF_PAY_COL,     // Key Column no       : $Pn
-  /* */ SF_PPE_NM,      // PipeName            : bIsName
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
+  /* */ SF_SQY_NM,      // Subquery name       : bIsName
   /* */ SF_SQY_NO,      // SubQuery No         : $Qn
   /* */ SF_SQY_OP,      // SubQuery Op         :
   /* */ SF_SQY_PRM,     // Parameter Column    : %n
