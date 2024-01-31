@@ -220,7 +220,6 @@ namespace STORE
     void vRenumberCards(void);
 
     TagSet* pState(void);
-    Stz* szSubPipeNm(void);
     SubQuery* pSubQuery(void);
 
     void vValidate(CardIter* pCI);

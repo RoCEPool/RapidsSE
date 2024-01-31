@@ -226,19 +226,6 @@ eBK Board::eBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipeline name                                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Board::szSubPipeNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  //return m_sSubPipeNm;
-
-  return m_pSubQuery->szSqyNm();
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* clear all marks                                                           */
 /*----------------------------------------------------------------------------*/
 void Board::vClearCardMarks(void)

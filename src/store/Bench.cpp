@@ -140,7 +140,7 @@ Board* Bench::pFindBoard_By_subPipeNm(Stz* szSubPipeNm)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (pBoard->szSubPipeNm()->bSame(szSubPipeNm))
+    if (pBoard->pSubQuery()->szSqyNm()->bSame(szSubPipeNm))
       return pBoard;
   }
 
