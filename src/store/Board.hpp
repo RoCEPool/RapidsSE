@@ -207,15 +207,12 @@ namespace STORE
     void vBoardNo(i8 i_Board);
     eBK  eBoard(void);
 
-    CardCtl* pCardCtl(void);
     void vClearCardMarks(void);
 
     Card_Deck* pDeck(void);
     void vDump(i8 iDepth=0);
 
     void vEndPhase(void);
-
-    Mark* pMark(void);
 
     void vPrintBoard(CardIter* pCI, Stz* szDescription=nullptr);
 

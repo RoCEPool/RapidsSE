@@ -271,16 +271,6 @@ void Board::vSubPipeNm(Stz* szSubPipeNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card registers                                                         */
-/*----------------------------------------------------------------------------*/
-CardCtl* Board::pCardCtl(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_pBench->pCardCtl();
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear all marks                                                           */
 /*----------------------------------------------------------------------------*/
 void Board::vClearCardMarks(void)
@@ -327,16 +317,6 @@ void Board::vEndPhase(void)
   m_pState->vInsert(aOH[m_ePhase]);
 
   m_ePhase = OH_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get mark                                                                   */
-/*----------------------------------------------------------------------------*/
-Mark* Board::pMark(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_pMark;
 }
 
 /*----------------------------------------------------------------------------*/
