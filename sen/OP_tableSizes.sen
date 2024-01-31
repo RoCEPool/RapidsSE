@@ -31,8 +31,8 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] rowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   Folder[] dic.lastWord dup
   iterate
@@ -51,10 +51,10 @@
       0 Table[].size number.magnitude >str
 
       // insert table size
-      sTableNm TableDef[] rowBuffer[].addTableSizes  not if
-        rowBuffer[].pipeOut
-        BT_DATA TableDef[] RowBuffer[].new
-        sTableNm TableDef[] rowBuffer[].addTableSizes assert
+      sTableNm Pds[].addTableSizes  not if
+        Pds[].pipeOut
+        BT_DATA TableDef[] Pds[].new
+        sTableNm Pds[].addTableSizes assert
       then
 
     then
@@ -66,8 +66,8 @@
 
   next
 
-  // pipeout the rowBuffer
-  rowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

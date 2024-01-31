@@ -89,7 +89,6 @@ LogicUnit::LogicUnit(void)
 ,       m_xpAnswerWL(this,RF_REPAIR_DELETE,      AnswerWL::vRepair,       LR_ANSWERWL)
 
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepair,  LR_CRWBUFFER)
-,       m_xpCrwToRow(this,RF_REPAIR_DELETE,      CrwToRow::vRepair,       LR_CRWTOROW)
 ,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,     CsvBuffer::vRepair,  LR_CSVBUFFER)
 
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,    DataBuffer::vRepair,     LR_DATABUFFER)
@@ -120,7 +119,6 @@ LogicUnit::LogicUnit(void)
 ,           m_xpList(this,RF_REPAIR_DELETE,     RowSingle::vRepairList,       LR_LIST)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                         LR_MARKER)
-,      m_xpMemoryHog(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_MEMORYHOG)
 ,        m_xpMetaGet(this,RF_REPAIR_DELETE,       MetaGet::vRepair,           LR_META)
 
 ,           m_xpNode(this,RF_REPAIR_NEVER, nullptr,                           LR_NODE)
@@ -133,7 +131,10 @@ LogicUnit::LogicUnit(void)
 
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, LR_PATHIDENTIFIER)
 ,         m_xpParcel(this,RF_REPAIR_DELETE,        Parcel::vRepair,         LR_PARCEL)
+,            m_xpPds(this,RF_REPAIR_DELETE,        Pds::vRepair,               LR_PDS)
 ,      m_xpPdsCursor(this,RF_REPAIR_DELETE,        PdsCursor::vRepair,   LR_PDSCURSOR)
+,         m_xpPdsErr(this,RF_REPAIR_DELETE,        Pds::vRepair,               LR_PDSERR)
+,        m_xpPdsWarn(this,RF_REPAIR_DELETE,        Pds::vRepair,               LR_PDSWARN)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                         LR_PIPEIN)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                       LR_PIPELINE)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,   PlanOperand::vRepair,    LR_PLANOPERAND)
@@ -145,9 +146,6 @@ LogicUnit::LogicUnit(void)
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                    LR_RECVDOBJECT)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
 ,            m_xpRow(this,RF_SET_NULL,     nullptr,                            LR_ROW)
-,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,      LR_ROWBUFFER)
-,      m_xpRowBufferErr(this,RF_REPAIR_DELETE,  RowBuffer::vRepair,   LR_ROWBUFFERERR)
-,    m_xpRowBufferWarn (this,RF_REPAIR_DELETE,  RowBuffer::vRepair,  LR_ROWBUFFERWARN)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
 ,      m_xpRowCounts(this,RF_REPAIR_DELETE,     RowCounts::vRepair,      LR_ROWCOUNTS)
 
@@ -177,7 +175,6 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,         Timer::vRepair,          LR_TIMER)
 ,    m_xpToKeyHshRow(this,RF_REPAIR_DELETE,   ToKeyHshRow::vRepairList,LR_TOKEYHSHROW)
 ,    m_xpToLglPtnCrw(this,RF_REPAIR_DELETE,   ToLglPtnCrw::vRepairHashSet,LR_TOLGLPTNCRW)
-,    m_xpToLglPtnNst(this,RF_REPAIR_DELETE,   ToLglPtnNst::vRepair,       LR_TOLGLPTNNST)
 ,    m_xpToLglPtnRow(this,RF_REPAIR_DELETE,   ToLglPtnRow::vRepairHashSet,LR_TOLGLPTNROW)
 ,            m_xpTub(this,RF_REPAIR_DELETE,           Tub::vRepair,            LR_TUB)
 ,             m_xpTx(this,RF_REPAIR_DELETE,            Tx::vRepair,             LR_TX)
@@ -225,6 +222,7 @@ LogicUnit::LogicUnit(void)
 
   m_afFun0 = nullptr;
   m_afFun1 = nullptr;
+  m_afFun1_ = nullptr;
   m_afFun2 = nullptr;
   m_afFun3 = nullptr;
   m_afFun4 = nullptr;
@@ -299,7 +297,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpAggTimer.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());
-  RASSERT(m_xpCrwToRow.bIsNull());
   RASSERT(m_xpCsvBuffer.bIsNull());
 
   RASSERT(m_xpDataBuffer.bIsNull());
@@ -320,7 +317,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpList.bIsNull());
 
   //RASSERT(m_xpMarker.bIsNull());
-  RASSERT(m_xpMemoryHog.bIsNull());
   RASSERT(m_xpMetaGet.bIsNull());
 
   RASSERT(m_xpNode.bIsNull());
@@ -331,7 +327,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpOperandOoO.bIsNull());
 
   RASSERT(m_xpParcel.bIsNull());
+  RASSERT(m_xpPds.bIsNull());
   RASSERT(m_xpPdsCursor.bIsNull());
+  RASSERT(m_xpPdsErr.bIsNull());
+  RASSERT(m_xpPdsWarn.bIsNull());
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
@@ -341,9 +340,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpRecvdObject.bIsNull());
 	RASSERT(m_xpRow.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
-  RASSERT(m_xpRowBuffer.bIsNull());
-	RASSERT(m_xpRowBufferWarn.bIsNull());
-	RASSERT(m_xpRowBufferErr.bIsNull());
 
   RASSERT(m_xpSendNode.bIsNull());
   RASSERT(m_xpSends.bIsNull());
@@ -364,7 +360,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpTimer.bIsNull());
   RASSERT(m_xpToLglPtnCrw.bIsNull());
   RASSERT(m_xpToLglPtnRow.bIsNull());
-  RASSERT(m_xpToLglPtnNst.bIsNull());
   RASSERT(m_xpToKeyHshRow.bIsNull());
   RASSERT(m_xpTx.bIsNull());
   
@@ -782,10 +777,10 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   if (pOperand) {
     eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
     m_ePipeInOperand = eOperand;
-		if (eOperand == EV_D_ROWBUFFER) {
-			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-			m_ePipeInBufferType = pRowBuffer->eBufferType();
-		}
+		if (eOperand == EV_D_PDSROWBUFFER) {
+      Pds *pPdsRowBuffer = _pPds(pOperand);
+      m_ePipeInBufferType = pPdsRowBuffer->eBufferType();
+    }
   }
   else {
     m_ePipeInOperand = EV_NONE;

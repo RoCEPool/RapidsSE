@@ -188,7 +188,7 @@ namespace Parser
       throw NameValidationException(EC_NO_SUCH_TABLE2, sErrMsg.szStz());
     }
 
-    static void vThrowAmbiguousTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, STORE::RowBuffer* pRowBuffer)
+    static void vThrowAmbiguousTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Pds* pPds)
     {
       s2K sErrMsg(aErrorMsg[EC_AMBIGUOUS_TABLE]);
 
@@ -202,9 +202,9 @@ namespace Parser
 
       sErrMsg.vConcat(". Could be one of:"_Stz);
 
-      for (Row* pRow = pRowBuffer->pFirstRow();
+      for (Row* pRow = pPds->pFirstRow();
            pRow;
-           pRow = pRowBuffer->pNextRow(pRow)) {
+           pRow = pPds->pNextRow(pRow)) {
 
         TableMetadata* pTableMeta = static_cast<TableMetadata*>(pRow);
         sErrMsg.vCatSprint("\n  %s.%s.%s"_Stz,
@@ -213,7 +213,7 @@ namespace Parser
                            pTableMeta->szTableName());
       }
 
-      delete pRowBuffer;
+      delete pPds;
       throw NameValidationException(EC_AMBIGUOUS_TABLE, sErrMsg.szStz());
     }
 

@@ -29,8 +29,8 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the infoSet for each word
@@ -45,10 +45,10 @@
     // skip definition only tables
     Table[].isUserCreated if
 
-      sTableNm TableDef[] RowBuffer[].addListContents  not if
-        RowBuffer[].pipeOut
-        BT_DATA TableDef[] RowBuffer[].new
-        sTableNm TableDef[] RowBuffer[].addListContents assert
+      sTableNm 1 Pds[].addRowVargs  not if
+        Pds[].pipeOut
+        BT_DATA TableDef[] Pds[].new
+        sTableNm 1 Pds[].addRowVargs assert
       then
 
     then
@@ -58,8 +58,8 @@
     object@ word.prev object!      // step backwards thru words
   next
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

@@ -8,7 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "RowBuffer.hpp"
 #include "LglPtnMap.hpp"
 
 #include "SkipRoots.hpp"

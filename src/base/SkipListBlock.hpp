@@ -31,6 +31,8 @@ namespace BASE
 
     SkipListBlock* aNext(void);
 
+    Row* aRow(void);
+
     void vSetKey(i8 iKey);
 
   };

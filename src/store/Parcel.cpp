@@ -387,12 +387,12 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
     case CN_PROFILE:      m_eSendCast = XK_ROBINDIST; break;
     case CN_STREAMDEF:    m_eSendCast = XK_BROADCAST; break;
     case CN_STREAMDEFRHT: m_eSendCast = XK_BROADCAST; break;
-		case CN_ROWBUFFER: {
-			RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-			if (pRowBuffer->eBufferType() != BT_DATA)
-				m_eSendCast = XK_ROBINDIST;
-			break;
-		}
+    case CN_PDS: {
+      Pds *pPdsRowBuffer = _pPds(pOperand);
+      if (pPdsRowBuffer->eBufferType() != BT_DATA)
+        m_eSendCast = XK_ROBINDIST;
+      break;
+    }
     default:
       RASSERT(pOperand->bIsBuffer());
   }
@@ -448,11 +448,11 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
         case XK_FANCAST    : vPTN_fancast(pSendOp);     break;
         case XK_HASHCAST   : {
 					Operand *pOperand = pGetOperand();
-					if (pOperand->bIsRowBuffer()) {
-						RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
-						RASSERT(pRowBuffer->eBufferType() == BT_DATA);
-						vPTN_hashcast(pSendOp);
-					} else
+					if(pOperand->eGetClassNo() == CN_PDS) {
+            Pds *pPdsRowBuffer = _pPds(pOperand);
+            RASSERT(pPdsRowBuffer->eBufferType() == BT_DATA);
+            vPTN_hashcast(pSendOp);
+          } else
 						vPTN_hashcast(pSendOp);
 					break;
 				}
@@ -695,10 +695,10 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
 
   Operand *pOperand = pGetOperand();
 
-	if (pOperand->eGetClassNo() == CN_ROWBUFFER) {
-		RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-		RASSERT(pRowBuffer->eBufferType() == BT_DATA);
-	}
+	if(pOperand->eGetClassNo() == CN_PDS) {
+    Pds* pPdsRowBuffer = _pPds(pOperand);
+    RASSERT(pPdsRowBuffer->eBufferType() == BT_DATA);
+  }
   m_eSendWhy = SY_HASHCAST;
   m_eRecvInstructions = RV_ONE_PTN;
 
@@ -708,11 +708,6 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
   DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
 
   LglPtn tDstLglPtn = pDataBuffer->tLglPtn();
-//	if (pDataBuffer->eGetClassNo() == CN_ROWBUFFER) {
-//		RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
-//		vTrace("DATA LGL %x: %lld\n"_Stz, pRowBuffer, tDstLglPtn.iAsI8());
-//		pRowBuffer->vDumpAllRows();
-//	}
 
   i8 iDstNodeId = AM::pLglPtnMap()->iNodeId(tDstLglPtn);
 
@@ -1044,6 +1039,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   
   // get preliminary information
   Node *pDstNode = AM::pGrid()->pFindNodeById(m_iDstNode);
+  ASSERT(pDstNode);
   //vTrace("vSendParcelViaSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeId(), pDstNode->iPortNo());
   Socket *pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nItems();

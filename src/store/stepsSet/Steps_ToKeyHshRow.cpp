@@ -8,8 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "RowBuffer.hpp"
-
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
@@ -40,7 +38,7 @@ void Step::vAddSteps_ToKeyHshRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[].completed -- fetch full/complete row buffer                  */
+/* ToKeyHshRow[].completed -- fetch full/complete pds row buffer              */
 /*----------------------------------------------------------------------------*/
 void Step::vToKeyHshRowCompleted(void)
 {
@@ -48,9 +46,9 @@ void Step::vToKeyHshRowCompleted(void)
   
   ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToKeyHshRow;
 
-  RowBuffer* pRowBuffer = pToKeyHshRow->pFullRowBuffer();
+  Pds* pPdsRowBuffer = pToKeyHshRow->pFullPdsRowBuffer();
   
-  m_pDataStack->vPushPtr(pRowBuffer);
+  m_pDataStack->vPushPtr(pPdsRowBuffer);
 
   EXIT();
 }
@@ -108,7 +106,7 @@ void Step::vToKeyHshRowCsvToRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[].dangling -- fetch dangling row buffer                        */
+/* ToKeyHshRow[].dangling -- fetch dangling pds row buffer                    */
 /*----------------------------------------------------------------------------*/
 void Step::vToKeyHshRowDangling(void)
 {
@@ -119,8 +117,8 @@ void Step::vToKeyHshRowDangling(void)
   }
   else {
     ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
-    RowBuffer* pRowBuffer = pToKeyHshRow->pDanglingRowBuffer();
-    m_pDataStack->vPushPtr(pRowBuffer);
+    Pds* pPdsRowBuffer = pToKeyHshRow->pDanglingPdsRowBuffer();
+    m_pDataStack->vPushPtr(pPdsRowBuffer);
   }
   
   EXIT();

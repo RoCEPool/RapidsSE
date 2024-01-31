@@ -27,17 +27,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
+/* handler for EV_D_PDSROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
-: namedInsert_RowBuffer \handler
+: namedInsert_PdsRowBuffer \handler
 
-  //"namedInsert_RowBuffer" .
+  //"namedInsert_PdsRowBuffer" .
 
-  PipeIn[]\clear to RowBuffer[]
+  PipeIn[]\clear to Pds[]
 
-  //RowBuffer[].bufferType@ BT_JOBOPERANDS == assert
+  //Pds[].bufferType@ BT_JOBOPERANDS == assert
 
-  RowBuffer[].tableDefName@ locals| sTableDefName |
+  Pds[].tableDefName@ locals| sTableDefName |
 
   sTableDefName .
 
@@ -49,18 +49,15 @@
   StreamDefOut[] to StreamDefLft[]
   nullptr to StreamDefOut[]
 
-  // set the lgl ptn of the rowBuffer
-  0 RowBuffer[].setLglPtn
+  // set the lgl ptn of the Pds
+  0 Pds[].setLglPtn
 
-  // set the decider copies of the rowBuffer
-  1 RowBuffer[].setDeciderCopies
-
-  // convert the rowBuffer to a CrwBuffer
+  // convert the Pds to a CrwBuffer
   ToLglPtnCrw[].create
-  RowBuffer[] ToLglPtnCrw[].convert
+  Pds[] ToLglPtnCrw[].convert
 
-  // delete the RowBuffer
-  RowBuffer[].delete
+  // delete the Pds
+  Pds[].delete
 
   // insert the crwBuffers into the table
 
@@ -115,7 +112,7 @@
 
   op__topology
 
-  find: namedInsert_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: namedInsert_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
 
   op__loop
 

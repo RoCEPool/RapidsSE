@@ -43,7 +43,6 @@ namespace STORE
     static void vAddSteps_Column(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_CrwBuffer(void);
-    static void vAddSteps_CrwToRow(void);
     static void vAddSteps_CsvBuffer(void);
     static void vAddSteps_Cursor(void);
 
@@ -129,8 +128,11 @@ namespace STORE
     static void vAddSteps_PageIn(void);
     static void vAddSteps_PageOut(void);
     static void vAddSteps_Parcel(void);
+    static void vAddSteps_Pds(void);
     static void vAddSteps_PayloadObj(void);
     static void vAddSteps_PdsCursor(void);
+    static void vAddSteps_PdsErr(void);
+    static void vAddSteps_PdsWarn(void);
     static void vAddSteps_Persistence(void);
 		static void vAddSteps_Pipein(void);
     static void vAddSteps_Pipeline(void);
@@ -161,9 +163,6 @@ namespace STORE
 		static void vAddSteps_Row(void);
     static void vAddSteps_RowCounts(void);
     static void vAddSteps_RowOnce(void);
-    static void vAddSteps_RowBuffer(void);
-		static void vAddSteps_RowBufferErr(void);
-		static void vAddSteps_RowBufferWarn(void);
     static void vAddSteps_Rstack(void);
 
     static void vAddSteps_Schedule(void);
@@ -213,7 +212,6 @@ namespace STORE
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_ToKeyHshRow(void);
     static void vAddSteps_ToLglPtnCrw(void);
-    static void vAddSteps_ToLglPtnNst(void);
     static void vAddSteps_ToLglPtnRow(void);
     static void vAddSteps_Trace(void);
     static void vAddSteps_Tub(void);

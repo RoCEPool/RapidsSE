@@ -29,7 +29,7 @@
     stage stageB on all partitions on origin :
         toKeyHshRow $table
       | toLglPtnRow $table
-      | toLglPtnNst
+      //| toLglPtnNst
       | toLglPtnCrw          
       | stageC broadcast
 
@@ -68,7 +68,7 @@
     stage stageB on all partitions on origin :
         toKeyHshRow $table // pf    (csvBuffer) => (rowBuffer w row+hash)
       | toLglPtnRow $table //       (rowBuffer) => (bkt rowBuffer)
-      | toLglPtnNst        //       (rowBuffer) => (nst rowBuffer)
+      //| toLglPtnNst        //       (rowBuffer) => (nst rowBuffer)
       | toLglPtnCrw        //       (rowBuffer) => (bkt crwBuffer)
       | stageC hashcast
 

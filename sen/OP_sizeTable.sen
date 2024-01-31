@@ -23,8 +23,8 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   0 locals| iTableSize |
   Table[].size to iTableSize
@@ -32,10 +32,10 @@
   0 iTableSize number.magnitude >str iTableSize
 
   // insert index size
-  TableDef[] RowBuffer[].addSizeTable assert
+  Pds[].addSizeTable assert
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

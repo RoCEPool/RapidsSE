@@ -5,9 +5,9 @@
 " OP_toStatDemon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                                      */
+/* on EV_D_PDSROWBUFFER ...                                                   */
 /*----------------------------------------------------------------------------*/
-: OP_toStatDemon_RowBuffer \handler
+: OP_toStatDemon_PdsRowBuffer \handler
 
   //"OP_toStatD_LockStats +++ +++ +++" .
 
@@ -20,19 +20,17 @@
     exit
   then
 
-  PipeIn[] to RowBuffer[]
+  PipeIn[] to Pds[]
   nullptr to PipeIn[]
 
-  //RowBuffer[].getBufferName .
-
-  RowBuffer[]
+  Pds[]
     "__statDemon" find dup if
       word.object@
       jobId::pipeToOp0 assert
-      nullptr to RowBuffer[]
+      nullptr to Pds[]
     else
       discard discard
-      RowBuffer[].delete
+      Pds[].delete
     then
 
   true
@@ -47,7 +45,7 @@
 
   op__topology
 
-  find: OP_toStatDemon_RowBuffer EV_D_ROWBUFFER [op].handler!
+  find: OP_toStatDemon_PdsRowBuffer EV_D_PDSROWBUFFER [op].handler!
 
   op__loop
 

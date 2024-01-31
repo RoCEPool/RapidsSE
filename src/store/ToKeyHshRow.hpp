@@ -18,7 +18,7 @@ namespace STORE
     bool       m_bFirst;
     i8         m_i_Rec;
 
-    RowBuffer*        m_pCurrRowBuffer;
+    Pds*              m_pCurrPdsRowBuffer;
     PdsBufferIdQueue* m_pBufferIdQueue;
   
     //--
@@ -61,9 +61,9 @@ namespace STORE
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
     bool bConvertCsv(CsvBuffer* pCsvBuffer);
 
-    RowBuffer* pDanglingRowBuffer(void);
-    RowBuffer* pFullRowBuffer(void);
-    RowBuffer* pRowBuffer(void);
+    Pds* pDanglingPdsRowBuffer(void);
+    Pds* pFullPdsRowBuffer(void);
+    Pds* pPdsRowBuffer(void);
 
     i8 iRowsProcessed(void);
     i8 iRowsInvalid(void);
@@ -71,7 +71,7 @@ namespace STORE
 
 
   //private:
-    void vNewRowBuffer(void);
+    void vNewPdsRowBuffer(void);
     Footer* aFooter(void);
   };
 

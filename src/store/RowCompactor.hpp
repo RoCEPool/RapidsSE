@@ -20,11 +20,8 @@ namespace STORE
     OverLine*  m_aOverLine;    // over of crw
 
     // - - - - - - - - - - - -
-    
-    RowBuffer* m_pRowSamples;  // the set of sample rows
+
     bool       m_bCollecting;  // has sample set been encoded?
-  
-    RowBuffer* m_pSampleSet;
   
     // - - - - - - - - - - - -
     i8 m_nTotalBuffers;        // total number of crw buffers created
@@ -59,9 +56,7 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Row Sampling (structural order)
-    
-    void vPackSamples(void);
-    void vAnalyzeSamples(void);
+
     void vCreateSampleTail(Column* pCol,
                            Row* pOuterRowSample,
                            Row* pInnerRowSample);

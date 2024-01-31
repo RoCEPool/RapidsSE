@@ -491,6 +491,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare the new job
+  if (pCmdTagSet->bHasName(C_TAG_NESTEDSQL))
+    pCmdTagSet->vDelete(C_TAG_NESTEDSQL);
 
   CmdHelper::vExtractCmdPaths(pCmdTagSet,pCmdTknVec);
 
@@ -613,6 +615,198 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // now the child job has a task and accessible via TLS,
   // we can remove its pointer from this thread
   
+  if(pThread)
+    pThread->vObject0(nullptr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lock the mutex
+  pParentJob->vMutexLock();
+  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // start the timer of the child job
+  pChildJob->vResponseTimerStart();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add task to scheduler
+  Scheduler::vTaskApi_Add(pChildJob->pTask());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for signal from child job
+  // if C_TAG_WAIT parent gets signalled when child job completes
+  // if C_TAG_NOWAIT parent gets signalled when pretests/ compilation are done
+
+  pParentJob->vMutexWait();
+  pParentJob->vMutexUnlock();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check for error from child job
+  eEC eChildError = pParentJob->eChildError();
+
+  if (eChildError != EC_NONE) {
+    return eChildError;
+  }
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fork a child job for given command                                         */
+/*----------------------------------------------------------------------------*/
+eEC Api::eForkJobChildNested(JobId& rtChildJobId,
+                       TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                       ExtendedText* pCodeBlock,
+                       JobId tParentId, JobId tOriginId, JobId tDistId,
+                       Job*  pParentJob,
+                       bool  bUpdateParent,
+                       bool& bIsPipeline)
+{
+  _static_
+
+  RASSERT(! pCodeBlock);
+
+  if ( AM::pGrid() &&
+       ! AM::pGrid()->bHealthy()) {
+    return EC_NODE_LOSS;
+  }
+
+  if (! AM::PROCESS::bSeRunning()) {
+    return EC_NODE_LOSS;
+  }
+
+  Job* pChildJob;
+  rtChildJobId = C_UNKNOWN;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should have a parent (deputy root job)
+
+  RASSERT(! tParentId.bIsUnknown());
+  RASSERT(pParentJob);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // prepare the new job
+
+  CmdHelper::vExtractCmdPaths(pCmdTagSet,pCmdTknVec);
+
+  bool b = CmdHelper::bExtractCmdTags(pCmdTagSet,pCmdTknVec);
+  UNUSED(b);
+
+  sSTMT sMaybePipelineSmt;
+  if (Procedure::bTranslateToPipeline(sMaybePipelineSmt.pString(),pCmdTknVec)) {
+    pCmdTknVec->vSoftReset();
+    AM::TOKENISE::vTokeniseSen(pCmdTknVec,sMaybePipelineSmt);
+  }
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)1);
+#endif
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parse the command
+
+  if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
+    rtChildJobId = C_UNKNOWN;
+    return EC_INVALID_COMMAND;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify tags
+
+  // C_TAG_JOBNM
+  if (! pCmdTagSet->bHasName(C_TAG_JOBNM)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_JOBNM"_Stz);
+  }
+
+  // C_TAG_ENTRYPOINT
+  if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
+  }
+
+  // C_TAG_PATH
+  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
+  }
+
+  // C_TAG_NOWAIT / C_TAG_WAIT
+  if ((! pCmdTagSet->bHasName(C_TAG_NOWAIT)) &&
+      (! pCmdTagSet->bHasName(C_TAG_WAIT))) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJobChild: neither C_TAG_NOWAIT or C_TAG_WAIT"_Stz);
+  }
+  if (pCmdTagSet->bHasName(C_TAG_NOWAIT) &&
+      pCmdTagSet->bHasName(C_TAG_WAIT)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJobOld: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
+  }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the child job
+
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  RASSERT(szJobNm);
+
+  pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId,pCmdTagSet);
+  bIsPipeline = pChildJob->bIsPipeline();
+
+//  vTrace("eForkJobChild: %04lld.%04lld\n"_Stz,
+//         pChildJob->tJobId().uNodeId(),
+//         pChildJob->tJobId().uJobNo());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // save child job pointer in thread object till its task is assigned
+  // and accessible via TLS
+
+  Thread* pThread = Thread::pThisTLSThread();
+  if(pThread)
+    pThread->vObject0(pChildJob);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set updateParent flag in child
+
+  pChildJob->vUpdateParent(bUpdateParent);
+
+  // return the jobId
+  rtChildJobId = pChildJob->tJobId();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy CmdTagSet to the child job tags
+
+  TagSet* pJobTagSet = pChildJob->pJobTags();
+  pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
+  pJobTagSet->vCopy(pCmdTagSet);
+
+  if (pJobTagSet->bHasName(C_SHOW_CMD_TAGS)) {
+    pJobTagSet->vDumpSet();
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // setup the child job
+
+  // sCmd
+  sSTMT sCmd;
+  pCmdTknVec->vVecToString(sCmd,0,true);
+  pChildJob->vCmdText(sCmd);
+
+  // szEntry
+  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+  pChildJob->vEntryPoint(szEntry);
+
+  // szFolderPath
+  Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
+  pChildJob->vFolderPath(szFolderPath);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the task for the child job
+  pChildJob->vTaskCreate();
+  RASSERT(pChildJob->pTask());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now the child job has a task and accessible via TLS,
+  // we can remove its pointer from this thread
+
   if(pThread)
     pThread->vObject0(nullptr);
 

@@ -18,24 +18,24 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   // get a row per partition on this node
   [grid].ptnsPerNode 0 do
 
     I [grid].tablePtnToPtnNo
-      TableDef[] RowBuffer[].addListPartitions  not if
-        RowBuffer[].pipeOut
-        BT_DATA TableDef[] RowBuffer[].new
+      Pds[].addListPartitions  not if
+        Pds[].pipeOut
+        BT_DATA TableDef[] Pds[].new
         I [grid].tablePtnToPtnNo
-        TableDef[] RowBuffer[].addListPartitions assert
+        Pds[].addListPartitions assert
       then
 
   loop
 
-  // pipeout the infoset
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

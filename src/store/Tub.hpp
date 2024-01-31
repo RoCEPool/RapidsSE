@@ -4,7 +4,6 @@
 #pragma once
 
 #include "CrwBuffer.hpp"
-#include "RowBuffer.hpp"
 
 namespace STORE
 {
@@ -27,9 +26,10 @@ namespace STORE
     
     static void vRepair(Object* pObject);
 
-    static void* aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode);
+    static void* aAllotRowPds(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode);
     static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
     static void  vSetRowPix(Tub* pTub, RowPix* pRowPix);
+    static void  vToCsv(Tub* pTub, Pds* pPds);
 
   public:
   
@@ -37,10 +37,6 @@ namespace STORE
 
     DataBuffer* pCompletedBuffer(void);
     DataBuffer* pDanglingBuffer(void);
-    CrwBuffer*  pInCrwBuffer(void);
-    void        vInCrwBuffer(CrwBuffer* pCrwBuffer);
-    RowBuffer*  pInRowBuffer(void);
-    void        vInRowBuffer(RowBuffer* pRowBuffer);
     bool        bIsEmpty(void);
     RowPix*     pRowPix(void);
     void        vRowPix(RowPix* pRowPix);
@@ -50,7 +46,6 @@ namespace STORE
   };
   
   Tub* _pTub(void* aAddr);
-  void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
   void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
   void vTub_RowPix(void* pTub, void* aRowPix);
 }

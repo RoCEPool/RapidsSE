@@ -237,6 +237,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Fun1_[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Fun1_[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Fun2[]"_Stz)) {
     pCurrentWord->vEncodeCall("Fun2[].set"_Stz);
     EXIT();
@@ -332,8 +337,23 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Pds[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Pds[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("PdsCursor[]"_Stz)) {
     pCurrentWord->vEncodeCall("PdsCursor[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("PdsErr[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PdsErr[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("PdsWarn[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PdsWarn[].set"_Stz);
     EXIT();
     return;
   }
@@ -382,21 +402,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("RowBuffer[]"_Stz)) {
-    pCurrentWord->vEncodeCall("RowBuffer[].set"_Stz);
-    EXIT();
-    return;
-  }
-	else if (szTerm->bSame("RowBufferErr[]"_Stz)) {
-		pCurrentWord->vEncodeCall("RowBufferErr[].set"_Stz);
-		EXIT();
-		return;
-	}
-	else if (szTerm->bSame("RowBufferWarn[]"_Stz)) {
-		pCurrentWord->vEncodeCall("RowBufferWarn[].set"_Stz);
-		EXIT();
-		return;
-	}
   else if (szTerm->bSame("SendNode[]"_Stz)) {
     pCurrentWord->vEncodeCall("SendNode[].set"_Stz);
     EXIT();

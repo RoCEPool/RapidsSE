@@ -5,22 +5,22 @@
 " op__errors.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create the compile error rowBuffer                                         */
+/* create the compile error Pds                                               */
 /*----------------------------------------------------------------------------*/
-: op__createCompileErrRowBuffer
+: op__createCompileErrPdsRowBuffer
 
   [ddlLock].testDrop
 
-  // delete if any rowBufferErr in the register
-  RowBufferErr[].isNotNull if
-    RowBufferErr[].delete
+  // delete if any PdsErr in the register
+  PdsErr[].isNotNull if
+    PdsErr[].delete
   then
 
   // create the tableDef for C_TDEF_COMPILEERRORS
   C_TDEF_COMPILEERRORS "op__tableDef_err" find execute assert
 
-  // create an rowBuffer operand for compileErrors
-  BT_COMPILEERRORS TableDefErr[] RowBufferErr[].new
+  // create a PdsErr operand for compileErrors
+  BT_COMPILEERRORS TableDefErr[] PdsErr[].new
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
 
-  RowBufferErr[].pipeOut
+  PdsErr[].pipeOut
   ErrorMarker[].newErrorMarker
   ErrorMarker[].pipeOut
 ;
@@ -46,22 +46,22 @@
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
 
-  // delete if any rowBufferErr in the register
-  RowBufferErr[].isNotNull if
-    RowBufferErr[].delete
+  // delete if any PdsErr in the register
+  PdsErr[].isNotNull if
+    PdsErr[].delete
   then
 
   // create the tableDef for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
 
-  // create an rowBufferErr operand for commandErrors
-  BT_EXECERRORS TableDefErr[] RowBufferErr[].new
+  // create a PdsErr operand for commandErrors
+  BT_EXECERRORS TableDefErr[] PdsErr[].new
 
   errorCode attachmap::errorText@
-    errorCode TableDefErr[] RowBufferErr[].addExecError assert
+    errorCode PdsErr[].addExecError assert
 
-  // pipeout the EXECERROR rowBufferErr
-  RowBufferErr[].pipeOut
+  // pipeout the EXECERROR PdsErr
+  PdsErr[].pipeOut
 
   ErrorMarker[].newErrorMarker
   ErrorMarker[].pipeOut
@@ -77,21 +77,21 @@
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
 
-  // delete if any rowBufferErr in the register
-  RowBufferErr[].isNotNull if
-    RowBufferErr[].delete
+  // delete if any PdsErr in the register
+  PdsErr[].isNotNull if
+    PdsErr[].delete
   then
 
   // create the tableDef for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
 
-  // create an rowBuffer operand for commandErrors
-  BT_EXECERRORS TableDefErr[] RowBufferErr[].new
+  // create an Pds operand for commandErrors
+  BT_EXECERRORS TableDefErr[] PdsErr[].new
 
-  errorMsg errorCode TableDefErr[] RowBufferErr[].addExecError assert
+  errorMsg errorCode PdsErr[].addExecError assert
 
-  // pipeout the EXECERROR rowBuffer
-  RowBufferErr[].pipeOut
+  // pipeout the EXECERROR Pds
+  PdsErr[].pipeOut
 
   ErrorMarker[].newErrorMarker
   ErrorMarker[].pipeOut

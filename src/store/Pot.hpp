@@ -32,7 +32,7 @@ namespace STORE
   
   public:
 
-    static void* aAllotRow(Pot* pPot, i8 iKeyHsh, char** aazStrArea, i8* piErrorCode);
+    static void* aAllotRowPds(Pot* pPot, i8 iKeyHsh, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode);
     static void  vRowStrSize(Pot* pPot, i8 iKeyHsh, i8 nRowStrSize);
     static void  vRepair(Object* pObject);
     static void  vSetRowPix(Pot* pPot, RowPix* pRowPix);
@@ -40,7 +40,7 @@ namespace STORE
     DataBuffer* pBuffer(i8 i_Ptn);
     DataBuffer* pCompleted(i8 i_Ptn);
     DataBuffer* pDangling(i8 i_Ptn);
-    Row* aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer, bool* pbNewBuffer);
+    Row* aNewDstRow(i8 i_Ptn, Pds** ppPdsRowBuffer, bool* pbNewBuffer);
   
     void vRowPix(RowPix* pRowPix);
   

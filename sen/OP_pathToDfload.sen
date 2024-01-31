@@ -3,11 +3,10 @@
 /*============================================================================*/
 
 " OP_pathToDfload.sen" .verbose
-
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ... a rowBuffer with __path rows                */
+/* handler for EV_D_PDSROWBUFFER ... a Pds with __path rows                   */
 /*----------------------------------------------------------------------------*/
-: pathToDfload_Path \handler
+: pathToDfload_PathPds \handler
 
   PipeIn[].bufferType@ BT_PATH != if
     PipeIn[].pipeout
@@ -15,17 +14,10 @@
     exit
   then
 
-  PipeIn[]\clear to RowBuffer[]
-
-  //C_TDEF_PATH infoSetRow:getFirstRow
+  PipeIn[]\clear to Pds[]
 
   C_TDEF_PATH op__tableDef assert
-  RowBuffer[].firstRow to Row[]
-
-  // extract the values
-  //0 InfoSet[].colVal@ locals| sPath   |
-  //1 InfoSet[].colVal@ locals| iPathNo |
-  //2 InfoSet[].colVal@ locals| iPathOf |
+  Pds[].firstRow to Row[]
 
   0 Row[].getVchColumn locals| sPath   |
   1 Row[].getVchColumn locals| iPathNo |
@@ -34,7 +26,7 @@
   // print the __path data
   //iPathOf iPathNo sPath "pathToDfload: %v %v %v" .printf
 
-  RowBuffer[].delete
+  Pds[].delete
   nullptr to Row[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,11 +80,11 @@
 
   C_TDEF_COMMAND op__tableDef assert
 
-  BT_COMMAND TableDef[] RowBuffer[].new
+  BT_COMMAND TableDef[] Pds[].new
 
-  sTags sCmd  2 RowBuffer[].addRowVargs
+  sTags sCmd  2 Pds[].addRowVargs assert
 
-  RowBuffer[].pipeOut
+  Pds[].pipeOut
 
   true
 ;
@@ -106,7 +98,7 @@
 
   op__topology
 
-  find: pathToDfload_Path  EV_D_ROWBUFFER  [op].handler!
+  find: pathToDfload_PathPds  EV_D_PDSROWBUFFER  [op].handler!
 
   op__loop
 

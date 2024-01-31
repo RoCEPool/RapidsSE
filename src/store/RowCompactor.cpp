@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-#include "RowBuffer.hpp"
-
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "OverLine.hpp"
@@ -52,11 +50,8 @@ RowCompactor::RowCompactor(void)
 
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
-  
-  m_pRowSamples   = nullptr;
+
   m_bCollecting   = false;
-  
-  m_pSampleSet = nullptr;
   
   m_nTotalBuffers = 0;
   m_nTotalCrws    = 0;
@@ -89,8 +84,6 @@ RowCompactor::~RowCompactor(void) noexcept(false)
 #endif
   
   //delete m_pSampleSet;
-  if (m_pSampleSet)
-    AM::vDeleteOperand(m_pSampleSet, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,12 +106,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
 
-  m_pRowSamples = new RowBuffer;
   m_bCollecting = bCollectSamples;
-  
-  ASSERT(!m_pSampleSet);
-  m_pSampleSet = new RowBuffer;
-  m_pSampleSet->vInitPix(m_pStreamDef,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,13 +120,12 @@ void RowCompactor::vCompactEnd(void)
   
   if (m_bCollecting) {
     m_bCollecting = false;
-    vPackSamples();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pRowSamples->vDecidedDelete();
-  m_pRowSamples = nullptr;
+//  m_pRowSamples->vDecidedDelete();
+//  m_pRowSamples = nullptr;
   m_bCollecting = false;
   
   m_aHeadLine   = nullptr;
@@ -149,11 +136,6 @@ void RowCompactor::vCompactEnd(void)
 
   m_pCrwNub    = nullptr;
   m_pStreamDef = nullptr;
-  
-  m_pSampleSet->vDecidedDelete();
-  m_pSampleSet = nullptr;
-  
-  //m_pSampleSet->vDumpAllRows();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -437,82 +419,6 @@ void RowCompactor::vEncodeDupeTailsForRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /*                            -- Row Sampling --                              */
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* pack collected samples into crw buffer                                     */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPackSamples(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  ASSERT(! m_bCollecting);
-  
-  vAnalyzeSamples();
-  
-  //vDumpTails();
-    
-  i8 nRowSize = Row::nRowProper(m_pStreamDef->nColumns());
-  UNUSED(nRowSize);
-  
-  Row* pSampleRow = m_pRowSamples->pFirstRow();
-  while (pSampleRow) {
-    
-    //pSampleRow->vDump(m_pStreamDef);
-    
-    bool bPacked = bAddRowAsCrw(pSampleRow);
-    RASSERT(bPacked);
-    
-    pSampleRow = m_pRowSamples->pNextRow(pSampleRow);
-  }
-  
-  //vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* analyze collected samples                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyzeSamples(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  i8 nCols = m_pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    eDM eDatum = pCol->eDatum();
-    
-    if (DM_VCH != eDatum)
-      continue;
-        
-    for (Row* pOuterRow = m_pRowSamples->pFirstRow();
-         pOuterRow;
-         pOuterRow = m_pRowSamples->pNextRow(pOuterRow)) {
-      
-      //pOuterRow->vDump(m_pStreamDef);
-      
-      if (pOuterRow->bIsColNull(i_Col))
-        continue;
-      
-      Stz* azOuterStr = pOuterRow->szColVal_ofs(i_Col);
-      i8 nLength = StrLib::nLength((char*)azOuterStr);
-      if (nLength < 8)
-        continue;
-      
-      for (Row* pInnerRow = m_pRowSamples->pNextRow(pOuterRow);
-           pInnerRow;
-           pInnerRow = m_pRowSamples->pNextRow(pInnerRow)) {
-        
-        if (pInnerRow->bIsColNull(i_Col))
-          continue;
-        
-        vCreateSampleTail(pCol,pOuterRow,pInnerRow);
-        
-      }
-    }
-  }
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /* potentially create a tail for duplicate vch samples                        */

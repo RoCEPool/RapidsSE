@@ -44,8 +44,8 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create an Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the infoSet for each word
@@ -55,10 +55,10 @@
 
     object@ word.name@ Folder[].findSymbol execute to pIndex
 
-    pIndex TableDef[] RowBuffer[].addListIndex  not if
-      RowBuffer[].pipeOut
-      BT_DATA TableDef[] RowBuffer[].new
-      pIndex TableDef[] RowBuffer[].addListIndex assert
+    pIndex Pds[].addListIndex  not if
+      Pds[].pipeOut
+      BT_DATA TableDef[] Pds[].new
+      pIndex Pds[].addListIndex assert
     then
 
     object@ word.prev object!      // step backwards thru words
@@ -73,7 +73,7 @@
   Folder[].isTables assert
 
   // pipeout the infoset
-  RowBuffer[].pipeOut
+  Pds[].pipeOut
 
   true
 ;

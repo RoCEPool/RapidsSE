@@ -62,7 +62,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Column();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_CrwBuffer();
-  Step::vAddSteps_CrwToRow();
   Step::vAddSteps_CsvBuffer();
   Step::vAddSteps_Cursor();
 
@@ -146,8 +145,11 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PageIn();
   Step::vAddSteps_PageOut();
   Step::vAddSteps_Parcel();
+  Step::vAddSteps_Pds();
   Step::vAddSteps_PayloadObj();
   Step::vAddSteps_PdsCursor();
+  Step::vAddSteps_PdsErr();
+  Step::vAddSteps_PdsWarn();
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
@@ -178,9 +180,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ResponseOp();
   Step::vAddSteps_RowCounts();
   Step::vAddSteps_RowOnce();
-  Step::vAddSteps_RowBuffer();
-	Step::vAddSteps_RowBufferErr();
-	Step::vAddSteps_RowBufferWarn();
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_Schedule();
@@ -231,7 +230,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_ToKeyHshRow();
   Step::vAddSteps_ToLglPtnCrw();
-  Step::vAddSteps_ToLglPtnNst();
   Step::vAddSteps_ToLglPtnRow();
   Step::vAddSteps_Trace();
   Step::vAddSteps_Tub();

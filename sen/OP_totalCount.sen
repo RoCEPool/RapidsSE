@@ -21,28 +21,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER...                                                       */
+/* on EV_D_PDSROWBUFFER...                                                    */
 /*----------------------------------------------------------------------------*/
-: totalCount_RowBuffer \handler
+: totalCount_PdsRowBuffer \handler
 
-  // get the rowBuffer
-  PipeIn[]\clear to RowBuffer[]
+  // get the Pds
+  PipeIn[]\clear to Pds[]
 
   // pipeout buffers other than BT_COUNT
-  RowBuffer[].bufferType@ BT_COUNT != if
-    RowBuffer[].pipeout
+  Pds[].bufferType@ BT_COUNT != if
+    Pds[].pipeout
     true
     exit
   then
 
-  // get first row of RowBuffer[]
-  RowBuffer[].firstRow to Row[]
+  // get first row of Pds[]
+  Pds[].firstRow to Row[]
 
   // get 0th Column (rowCount) add to Counter
   0 Row[].getIntColumn Counter0[] + to Counter0[]
 
-  // now delete the rowBuffer
-  RowBuffer[].delete
+  // now delete the Pds
+  Pds[].delete
 
   true
 ;
@@ -61,13 +61,13 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_COUNT TableDef[] Pds[].new
 
-  // insert row count into rowBuffer
-  Counter0[] TableDef[] RowBuffer[].addTotalCount assert
+  // insert row count into Pds
+  Counter0[] 1 Pds[].addRowVargs assert
 
-  RowBuffer[].Pipeout
+  Pds[].Pipeout
 
   true
 ;
@@ -85,7 +85,7 @@
 
   find: totalCount_EosMarker   EV_M_EOS        [op].handler!
   find: totalCount_DataMarker  EV_M_DATAPULSE  [op].handler!
-  find: totalCount_RowBuffer   EV_D_ROWBUFFER  [op].handler!
+  find: totalCount_PdsRowBuffer   EV_D_PDSROWBUFFER  [op].handler!
 
   op__loop
 

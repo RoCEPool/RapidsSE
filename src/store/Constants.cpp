@@ -7,7 +7,6 @@
 #include "Constants.hpp"
 
 #include "RowSingle.hpp"
-#include "RowBuffer.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -305,7 +304,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_REJECTJOB"_Stz,    CN_REJECTJOB);
-  /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
   /*    */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
   /*    */ vAddConstant("CN_PARCEL"_Stz,       CN_PARCEL);
   /*    */ vAddConstant("CN_PAYLOADOBJ"_Stz,   CN_PAYLOADOBJ);
@@ -714,9 +712,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
   /*  0 */ vAddConstant("EV_D_INDEXDEF"_Stz,        EV_D_INDEXDEF);
   /*  0 */ vAddConstant("EV_D_PARCEL"_Stz,          EV_D_PARCEL);
+  /*  0 */ vAddConstant("EV_D_PDSROWBUFFER"_Stz,    EV_D_PDSROWBUFFER);
   /*  0 */ vAddConstant("EV_D_PAYLOAD"_Stz,         EV_D_PAYLOAD);
   /*  0 */ vAddConstant("EV_D_PLANOPERAND"_Stz,     EV_D_PLANOPERAND);
-  /*  0 */ vAddConstant("EV_D_ROWBUFFER"_Stz,       EV_D_ROWBUFFER);
   /*  0 */ vAddConstant("EV_D_STREAMDEF"_Stz,       EV_D_STREAMDEF);
   /*  0 */ vAddConstant("EV_D_TABLE"_Stz,           EV_D_TABLE);
   /*  0 */ vAddConstant("EV_D_TABLEPTN"_Stz,        EV_D_TABLEPTN);

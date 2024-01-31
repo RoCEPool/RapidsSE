@@ -246,7 +246,7 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* search all metadata                                                        */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearch(RowBuffer* pRowBuffer,
+void Metadata::vSearch(Pds* pPds,
                        i8 iScope,
                        Stz* szCatalogName,
                        Stz* szSchemaName,
@@ -263,7 +263,7 @@ void Metadata::vSearch(RowBuffer* pRowBuffer,
   if (! pDic) {
     Dic* pDic = pCurrTenant();
     //vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
-    vSearch(pRowBuffer,iScope,
+    vSearch(pPds,iScope,
             szCatalogName,szSchemaName,szTableName,szColumnName,szIndexName,szIndexColumnName,
             pDic,nullptr,nullptr);
     return;
@@ -285,7 +285,7 @@ void Metadata::vSearch(RowBuffer* pRowBuffer,
           continue;
         pCatalog = pDic;
         if (1 == iScope) {
-          vSearchCatalogs(pRowBuffer,pCatalog);
+          vSearchCatalogs(pPds,pCatalog);
           continue;
         }
       }
@@ -295,11 +295,11 @@ void Metadata::vSearch(RowBuffer* pRowBuffer,
           continue;
         pSchema = pDic;
         if (2 == iScope) {
-          vSearchSchemas(pRowBuffer,pCatalog,pSchema);
+          vSearchSchemas(pPds,pCatalog,pSchema);
           continue;
         }
       }
-      vSearch(pRowBuffer,iScope,
+      vSearch(pPds,iScope,
               szCatalogName,szSchemaName,szTableName,szColumnName,szIndexName,szIndexColumnName,
               pDic,pCatalog,pSchema);
       continue;
@@ -313,10 +313,10 @@ void Metadata::vSearch(RowBuffer* pRowBuffer,
       if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
         continue;
       if (3 == iScope)
-        vSearchTables(pRowBuffer,pCatalog,pSchema,pTable);
+        vSearchTables(pPds,pCatalog,pSchema,pTable);
       else
       if (4 == iScope)
-        vSearchColumns(pRowBuffer,pCatalog,pSchema,pTable,szColumnName);
+        vSearchColumns(pPds,pCatalog,pSchema,pTable,szColumnName);
       continue;
     }
 
@@ -329,12 +329,12 @@ void Metadata::vSearch(RowBuffer* pRowBuffer,
       if (szIndexName && ! pIndex->szIndexNm()->bSame(szIndexName))
         continue;
       if (5 == iScope) {
-        vSearchIndexes(pRowBuffer, pCatalog, pSchema, pTable, szIndexName);
+        vSearchIndexes(pPds, pCatalog, pSchema, pTable, szIndexName);
         break;
       }
       else
       if (6 == iScope)
-        vSearchIndexColumns(pRowBuffer,pCatalog,pSchema,pTable,pIndex,szColumnName);
+        vSearchIndexColumns(pPds,pCatalog,pSchema,pTable,pIndex,szColumnName);
       continue;
     }
 
@@ -346,21 +346,22 @@ void Metadata::vSearch(RowBuffer* pRowBuffer,
 /*----------------------------------------------------------------------------*/
 /* search catalogs                                                            */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearchCatalogs(RowBuffer* pRowBuffer,
+void Metadata::vSearchCatalogs(Pds* pPds,
                                Dic* pCatalog)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
-  Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                   pCatalog->szDicNm(),
                                   C_VARGS_END);
+  ASSERT(pRow);
   UNUSED(pRow);
 }
 
 /*----------------------------------------------------------------------------*/
 /* search columns                                                             */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearchColumns(RowBuffer* pRowBuffer,
+void Metadata::vSearchColumns(Pds* pPds,
                               Dic* pCatalog,
                               Dic* pSchema,
                               Table* pTable,
@@ -379,7 +380,7 @@ void Metadata::vSearchColumns(RowBuffer* pRowBuffer,
     if (szColumnName && ! pColumn->szColNm()->bSame(szColumnName))
       continue;
 
-    pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
                                pTable->szTableNm(),
@@ -394,6 +395,7 @@ void Metadata::vSearchColumns(RowBuffer* pRowBuffer,
                                (i8)pColumn->bIsPtnKey(),
 
                                C_VARGS_END);
+    ASSERT(pRow);
     UNUSED(pRow);
   }
 }
@@ -401,7 +403,7 @@ void Metadata::vSearchColumns(RowBuffer* pRowBuffer,
 /*----------------------------------------------------------------------------*/
 /* search indexes                                                             */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearchIndexes(RowBuffer* pRowBuffer,
+void Metadata::vSearchIndexes(Pds* pPds,
                               Dic* pCatalog,
                               Dic* pSchema,
                               Table* pTable,
@@ -423,7 +425,7 @@ void Metadata::vSearchIndexes(RowBuffer* pRowBuffer,
     // Temporary, until we support non-unique indexes
     b1 bIsUnique = false;
 
-    pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
 
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
@@ -432,6 +434,7 @@ void Metadata::vSearchIndexes(RowBuffer* pRowBuffer,
                                (i8) bIsUnique,
 
                                C_VARGS_END);
+    ASSERT(pRow);
     UNUSED(pRow);
   }
 }
@@ -439,7 +442,7 @@ void Metadata::vSearchIndexes(RowBuffer* pRowBuffer,
 /*----------------------------------------------------------------------------*/
 /* search index columns                                                       */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearchIndexColumns(RowBuffer* pRowBuffer,
+void Metadata::vSearchIndexColumns(Pds* pPds,
                               Dic* pCatalog,
                               Dic* pSchema,
                               Table* pTable,
@@ -459,7 +462,7 @@ void Metadata::vSearchIndexColumns(RowBuffer* pRowBuffer,
     if (szColumnName && ! pColumn->szColNm()->bSame(szColumnName))
       continue;
 
-    pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
                                pTable->szTableNm(),
@@ -475,6 +478,7 @@ void Metadata::vSearchIndexColumns(RowBuffer* pRowBuffer,
                                (i8)pColumn->bIsPtnKey(),
 
                                C_VARGS_END);
+    ASSERT(pRow);
     UNUSED(pRow);
   }
 }
@@ -482,41 +486,43 @@ void Metadata::vSearchIndexColumns(RowBuffer* pRowBuffer,
 /*----------------------------------------------------------------------------*/
 /* search schemas                                                             */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearchSchemas(RowBuffer* pRowBuffer,
+void Metadata::vSearchSchemas(Pds* pPds,
                               Dic* pCatalog,
                               Dic* pSchema)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
-  Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                   pCatalog->szDicNm(),
                                   pSchema->szDicNm(),
                                   C_VARGS_END);
+  ASSERT(pRow);
   UNUSED(pRow);
 }
 
 /*----------------------------------------------------------------------------*/
 /* search tables                                                              */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearchTables(RowBuffer* pRowBuffer,
+void Metadata::vSearchTables(Pds* pPds,
                              Dic* pCatalog,
                              Dic* pSchema,
                              Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
-  Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                   pCatalog->szDicNm(),
                                   pSchema->szDicNm(),
                                   pTable->szTableNm(),
                                   C_VARGS_END);
+  ASSERT(pRow);
   UNUSED(pRow);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get column set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Metadata::pColumnDefs(Stz* szCatalogName,
+Pds* Metadata::pColumnDefs(Stz* szCatalogName,
                                Stz* szSchemaName,
                                Stz* szTableName,
                                Stz* szColumnName)
@@ -526,7 +532,7 @@ RowBuffer* Metadata::pColumnDefs(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
   
   // v1: assume szCatalogName, szSchemaName, szTableName are set
   //            szColumnName is not set
@@ -552,7 +558,7 @@ RowBuffer* Metadata::pColumnDefs(Stz* szCatalogName,
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
       
-      pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+      pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                  szCatalogName,
                                  szSchemaName,
                                  szTableName,
@@ -567,6 +573,7 @@ RowBuffer* Metadata::pColumnDefs(Stz* szCatalogName,
                                  (i8)pColumn->bIsPtnKey(),
 
                                  C_VARGS_END);
+      ASSERT(pRow);
       UNUSED(pRow);
     }
   }
@@ -574,13 +581,13 @@ RowBuffer* Metadata::pColumnDefs(Stz* szCatalogName,
 
   delete pDicStack;
   
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get index def columns set matching given arguments                         */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Metadata::pIndexColumnDefs(Stz* szCatalogName,
+Pds* Metadata::pIndexColumnDefs(Stz* szCatalogName,
                                    Stz* szSchemaName,
                                    Stz* szTableName,
                                    Stz* szIndexName,
@@ -591,7 +598,7 @@ RowBuffer* Metadata::pIndexColumnDefs(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_INDEXCOLUMNDEFS);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
 
   // v1: assume szCatalogName, szSchemaName, szTableName, szIndexName are set
   //            szColumnName is not set
@@ -620,7 +627,7 @@ RowBuffer* Metadata::pIndexColumnDefs(Stz* szCatalogName,
     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
       Column* pColumn = pIndexDef->pGetColumn(i_Col);
 
-      pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+      pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                  szCatalogName,
                                  szSchemaName,
                                  szTableName,
@@ -636,6 +643,7 @@ RowBuffer* Metadata::pIndexColumnDefs(Stz* szCatalogName,
                                  (i8)pColumn->bIsPtnKey(),
 
                                  C_VARGS_END);
+      ASSERT(pRow);
       UNUSED(pRow);
     }
 
@@ -644,13 +652,13 @@ RowBuffer* Metadata::pIndexColumnDefs(Stz* szCatalogName,
 
   delete pDicStack;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the colummns of partition key for table                                */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Metadata::pPartitionKey(Stz* szCatalogName,
+Pds* Metadata::pPartitionKey(Stz* szCatalogName,
                                  Stz* szSchemaName,
                                  Stz* szTableName)
 {
@@ -659,7 +667,7 @@ RowBuffer* Metadata::pPartitionKey(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_PARTITIONKEY);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
   
   // v1: assume szCatalogName, szSchemaName, szTableName are set
   //            szColumnName is not set
@@ -684,7 +692,7 @@ RowBuffer* Metadata::pPartitionKey(Stz* szCatalogName,
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
       Column* pColumn = pPtnDef->pGetColumn(i_Col);
       
-      pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+      pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                  szCatalogName,
                                  szSchemaName,
                                  szTableName,
@@ -693,6 +701,7 @@ RowBuffer* Metadata::pPartitionKey(Stz* szCatalogName,
                                  pColumn->szColNm(),
 
                                  C_VARGS_END);
+      ASSERT(pRow);
       UNUSED(pRow);
     }
   }
@@ -700,39 +709,40 @@ RowBuffer* Metadata::pPartitionKey(Stz* szCatalogName,
 
   delete pDicStack;
   
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
-/* lookup a catalog and return an RowBuffer about it                            */
+/* lookup a catalog and return a Pds about it                                 */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Metadata::pLookupCatalog(Stz* szCatalogName)
+Pds* Metadata::pLookupCatalog(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
   Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPCATALOG);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
   
   DicStack* pDicStack = new DicStack;
 
   if (pDicStack->bTest(szCatalogName)) {
-    Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                     szCatalogName,
                                     C_VARGS_END);
+    ASSERT(pRow);
     UNUSED(pRow);
   }
   
   delete pDicStack;
   
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
-/* lookup a index and return an RowBuffer about it                              */
+/* lookup a index and return an Pds about it                              */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Metadata::pLookupIndex(Stz* szCatalogName,
+Pds* Metadata::pLookupIndex(Stz* szCatalogName,
                                 Stz* szSchemaName,
                                 Stz* szTableName,
                                 Stz* szIndexName)
@@ -743,29 +753,30 @@ RowBuffer* Metadata::pLookupIndex(Stz* szCatalogName,
 
   StreamDef* pLookupStreamDef = pLookupIndex->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
 
   DicStack* pDicStack = new DicStack;
 
   if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName,szIndexName)) {
-    Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                     szCatalogName,
                                     szSchemaName,
                                     szTableName,
                                     szIndexName,
                                     C_VARGS_END);
+    ASSERT(pRow);
     UNUSED(pRow);
   }
 
   delete pDicStack;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
-/* lookup a schema and return an RowBuffer about it                             */
+/* lookup a schema and return an Pds about it                                 */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Metadata::pLookupSchema(Stz* szCatalogName,
+Pds* Metadata::pLookupSchema(Stz* szCatalogName,
                                  Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
@@ -773,27 +784,28 @@ RowBuffer* Metadata::pLookupSchema(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPSCHEMA);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
   
   DicStack* pDicStack = new DicStack;
   
   if (pDicStack->bTest(szCatalogName,szSchemaName)) {
-    Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                     szCatalogName,
                                     szSchemaName,
                                     C_VARGS_END);
+    ASSERT(pRow);
     UNUSED(pRow);
   }
   
   delete pDicStack;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
-/* lookup a table and return an RowBuffer about it                              */
+/* lookup a table and return an Pds about it                                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Metadata::pLookupTable(Stz* szCatalogName,
+Pds* Metadata::pLookupTable(Stz* szCatalogName,
                                 Stz* szSchemaName,
                                 Stz* szTableName)
 {
@@ -802,22 +814,23 @@ RowBuffer* Metadata::pLookupTable(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPTABLE);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
 
   DicStack* pDicStack = new DicStack;
   
   if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName)) {
-    Row* pRow = pRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
                                     szCatalogName,
                                     szSchemaName,
                                     szTableName,
                                     C_VARGS_END);
+    ASSERT(pRow);
     UNUSED(pRow);
   }
   
   delete pDicStack;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/

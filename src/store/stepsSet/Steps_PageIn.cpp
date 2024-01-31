@@ -29,7 +29,7 @@ void Step::vPageInPopRequest(void) {
 #ifdef WITH_PAGING
   BufferId oBufferId;
   oBufferId.m_iAsI8 = m_pDataStack->iPopAsInt(__func__ );
-  RASSERT(oBufferId.m_bIdFlag == 1);
+  RASSERT(BufferId::bIsBufferId(oBufferId));
 
   Task* pReqTask = _pTask(m_pDataStack->iPopAsInt(__func__));
 

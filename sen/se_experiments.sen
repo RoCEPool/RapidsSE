@@ -117,6 +117,31 @@
   pArrange arrange.delete
 ;
 
+// Usage:
+// STD_NORMALFORK_WAIT_TAG "select * from uniqueTable;" NestedSql[]
+/*----------------------------------------------------------------------------*/
+/* Step to run an sql statement as a child process                            */
+/*----------------------------------------------------------------------------*/
+: NestedSql[]
+  params| sSqlStmt |
+  params| sTagSet |
+
+  0 locals| sSmt |
+
+  sSqlStmt "sqlCompiler \"%v\"" str.format to sSmt
+
+  // sSmt "FORKING CHILD FOR PIPELINE: %v"  str.format .
+
+  // spawn a job for the smt
+  [op] [job].responseOp!
+  sTagSet sSmt nullptr api::forkChildNestedSql not if
+    "Error Code %v" .printf
+    nullptr [job].responseOp!
+    //op__execErr
+    true
+    exit
+  then
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

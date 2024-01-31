@@ -30,6 +30,13 @@ namespace STORE
                            Job* pParentJob,
                            bool bUpdateParent,
                            bool& bIsPipeline);
+    static eEC  eForkJobChildNested(JobId& rtChildJobId,
+                              TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                              ExtendedText* pCodeBlock,
+                              JobId tParentId, JobId tOriginId, JobId tDistId,
+                              Job* pParentJob,
+                              bool bUpdateParent,
+                              bool& bIsPipeline);
 
   static eEC  eForkJob2PC(JobId& rtChildJobId,
                             TokenVec* pCmdTknVec, TagSet* pCmdTagSet,

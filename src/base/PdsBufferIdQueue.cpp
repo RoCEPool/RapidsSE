@@ -82,12 +82,14 @@ void PdsBufferIdQueue::vAddBuffer(DataBuffer* pNewBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
 
   PdsItem_BufferId oItem;
-  oItem.iKey = ++m_iSynthKey;
+  oItem.iKey = m_iSynthKey;
   oItem.oBufferId = pNewBuffer->oGetBufferId();
 
   SkipListBlock* pBlock = m_pPdsOfBufferIds->pInsert((void*) &oItem);
   RASSERT(pBlock != nullptr);
   *(PdsItem_BufferId*)(pBlock->aItem()) = oItem;
+
+  m_iSynthKey++;
 
   return;
 }

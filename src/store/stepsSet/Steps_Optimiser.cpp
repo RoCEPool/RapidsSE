@@ -106,7 +106,7 @@ void Step::vOptimiserTransform(void)
   ENTRY();
 
   b8 bResult;
-  RowBuffer *pRowBuffer = nullptr;
+  Pds *pPdsRowBuffer = nullptr;
 
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
@@ -114,12 +114,12 @@ void Step::vOptimiserTransform(void)
   bool bJoinPermutations = pJobTags->bHasName("<joinPermutations>"_Stz);
 
   if (bJoinOrder || bJoinPermutations) {
-    // get the rowBuffer for joinOrder
-		pRowBuffer = _pRowBuffer(*(m_pLogicUnit)->m_xpRowBuffer);
+    // get the PdsRowBuffer for joinOrder
+		pPdsRowBuffer = _pPds(*(m_pLogicUnit)->m_xpPds);
   }
 
   Error xError;
-  bResult = m_pLogicUnit->m_xpOptimiser->bTransform(xError, pRowBuffer);
+  bResult = m_pLogicUnit->m_xpOptimiser->bTransform(xError, pPdsRowBuffer);
 
   // push error code
   if (! bResult) {

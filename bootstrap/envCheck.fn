@@ -1260,7 +1260,7 @@ if [ -d "${dirPath}" ]; then
   # Check storage path space if it exists
   maxDirSpace=\$(df -m "${dirPath}" | awk '"'"'/\/dev\//{print \$2}'"'"')
   if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-    printWarning "Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+    echo -e "WARNING: Storage disk directory (${dirPath}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
   fi
 elif [[ "${dirPath}" = "${installDir}"/* ]]; then
     # Storage path does not exist. Check if it is
@@ -1273,7 +1273,7 @@ elif [[ "${dirPath}" = "${installDir}"/* ]]; then
     done
     maxDirSpace=\$(df -m "\${dname}" | awk '"'"'/\/dev\//{print \$2}'"'"')
     if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-      printWarning "Storage disk directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+      echo -e "WARNING: Storage disk directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
     fi
 else
   # Storage path is not under the installation path
@@ -1285,7 +1285,7 @@ else
   if [ -d "\${dname}" ]; then
     maxDirSpace=\$(df -m "\${dname}" | awk '"'"'/\/dev\//{print \$2}'"'"')
     if [ "\${maxDirSpace}" -lt "${minSpacePerDisk}" ]; then
-      printWarning "Storage disk parent directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
+      echo -e "WARNING: Storage disk parent directory (\${dname}) does not have enough space: \$((\${maxDirSpace}/1024))GB available, $((${minSpacePerDisk}/1024))GB required.";
     fi
   else
     echo "Storage disk parent directory (\${dname}) does not exist.";

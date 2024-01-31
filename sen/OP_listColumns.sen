@@ -29,22 +29,22 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
-  // insert a row in the infoset for each column
+  // insert a row in the Pds for each column
   iColumns 0 do
     I Table[].column@
-    TableDef[] RowBuffer[].addColumnDef not if
-      RowBuffer[].pipeOut
-      BT_DATA TableDef[] RowBuffer[].new
+      Pds[].addColumnDef not if
+      Pds[].pipeOut
+      BT_DATA TableDef[] Pds[].new
       I Table[].column@
-      TableDef[] RowBuffer[].addColumnDef assert
+      Pds[].addColumnDef assert
     then
   loop
 
-  // pipeout the infoset
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

@@ -22,22 +22,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_CRWBUFFER / EV_D_ROWBUFFER ...                            */
+/* handler for EV_D_CRWBUFFER                                                 */
 /*----------------------------------------------------------------------------*/
 : insert_DataBuffer \handler
 
   //"insert_DataBuffer" .
 
   0 locals| rowsInserted |
-
-  // handle BT_DATA only
-  PipeIn[].isRowBuffer if
-    PipeIn[].bufferType@ BT_DATA == not if
-      PipeIn[].pipeout
-      true
-      exit
-    then
-  then
 
   // insert the buffer into the table ptn
   TablePtn[].grabWrite_msecLoop
@@ -56,14 +47,15 @@
   // send out an infoSet of ProgressUnits every 100 buffers
   Counter0[] 100 % 0 == if
 
-    // create a RowBuffer operand
-    BT_DATA TableDef[] RowBuffer[].new
+    // create a Pds operand
+    BT_PROGRESSUNITS TableDef[] Pds[].new
 
-    // insert progressUnits to the infoset
-    Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
+    // insert progressUnits to the Pds
+    //Counter0[] Pds[].addProgressUnits assert
+    Counter0[] 1 Pds[].addRowVargs assert
 
-    // pipeout the infoset
-    RowBuffer[].pipeOut
+    // pipeout the Pds
+    Pds[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -74,22 +66,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* replicated table handler for EV_D_CRWBUFFER / EV_D_ROWBUFFER ...           */
+/* replicated table handler for EV_D_CRWBUFFER                                */
 /*----------------------------------------------------------------------------*/
 : insert_Replicated \handler
 
   "insert_Replicated" .
 
   0 locals| rowsInserted |
-
-  // handle BT_DATA only
-  PipeIn[].isRowBuffer if
-    PipeIn[].bufferType@ BT_DATA == not if
-      PipeIn[].pipeout
-      true
-      exit
-    then
-  then
 
   // insert the buffer into the table ptn
   //TablePtn[].grabWrite_msecLoop
@@ -110,14 +93,15 @@
   // send out an infoSet of ProgressUnits every 100 buffers
   Counter0[] 10 % 0 == if
 
-    // create an infoSet operand
-    BT_DATA TableDef[] RowBuffer[].new
+    // create a Pds operand
+    BT_PROGRESSUNITS TableDef[] Pds[].new
 
-    // insert progressUnits to the infoset
-    Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
+    // insert progressUnits to the Pds
+    //Counter0[] Pds[].addProgressUnits assert
+    Counter0[] 1 Pds[].addRowVargs assert
 
-    // pipeout the infoset
-    RowBuffer[].pipeOut
+    // pipeout the Pds
+    Pds[].pipeOut
 
     // reset the counter
     0 to Counter0[]
@@ -136,15 +120,15 @@
 
   // send out final progress units
 
-  // create a rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_PROGRESSUNITS TableDef[] Pds[].new
 
-  // insert progressUnits to the infoset
-  Counter0[] TableDef[] RowBuffer[].addProgressUnits assert
+  // insert progressUnits to the Pds
+  //Counter0[] Pds[].addProgressUnits assert
+  Counter0[] 1 Pds[].addRowVargs assert
 
-  // pipeout the infoset
-  RowBuffer[].pipeOut
-
+  // pipeout the Pds
+  Pds[].pipeOut
 
   // send out an AFFECTEDROWS infoset with the number of rows actually inserted
   Table[].isReplicated not
@@ -156,14 +140,14 @@
 
       C_TDEF_AFFECTEDROWS op__tableDef assert
 
-      // create an rowBuffer operand
-      BT_AFFECTEDROWS TableDef[] RowBuffer[].new
+      // create a Pds operand
+      BT_AFFECTEDROWS TableDef[] Pds[].new
 
-      // insert row counts to the rowBuffer
-      rowCounts[].getCounters@@ rowCounts[].numCounters RowBuffer[].addRowVargs
+      // insert row counts to the Pds
+      rowCounts[].getCounters@@ rowCounts[].numCounters Pds[].addRowVargs assert
 
-      // pipeout the rowBuffer
-      RowBuffer[].pipeOut
+      // pipeout the Pds
+      Pds[].pipeOut
 
     then
   then
@@ -191,7 +175,6 @@
     // change handler for replicated cases
     Table[].isReplicated if
       find: insert_Replicated  EV_D_CRWBUFFER  [op].handler!
-      find: insert_Replicated  EV_D_ROWBUFFER  [op].handler!
     else
       Table[].tablePtn@ to TablePtn[]
     then
@@ -215,6 +198,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_D_PDSROWBUFFER ...                                          */
+/*----------------------------------------------------------------------------*/
+: insert_PassThrough \handler
+
+  // Never receive BT_DATA
+  PipeIn[].bufferType@ BT_DATA == not if
+    PipeIn[].pipeout
+    true
+    exit
+  then
+
+  hazard
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for insert                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : insert_op \operator
@@ -229,7 +227,7 @@
   find: insert_Cleaning      EV_M_CLEANING     [op].handler!
   find: insert_DataBuffer    EV_D_CRWBUFFER    [op].handler!
   find: insert_EosMarker     EV_M_EOS          [op].handler!
-  find: insert_DataBuffer    EV_D_ROWBUFFER    [op].handler!
+  find: insert_PassThrough   EV_D_PDSROWBUFFER [op].handler!
   find: insert_StreamDef     EV_D_STREAMDEF    [op].handler!
   find: insert_StartMarker   EV_M_START        [op].handler!
 

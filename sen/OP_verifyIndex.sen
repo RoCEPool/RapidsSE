@@ -23,17 +23,17 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create a rowBuffer operand
-  BT_DATA TableDef[] RowBuffer[].new
+  // create a Pds operand
+  BT_DATA TableDef[] Pds[].new
 
   // verify the index
   Index[].verify
 
   // insert index verify
-  Index[] TableDef[] RowBuffer[].addVerifyIndex assert
+  Index[] Pds[].addVerifyIndex assert
 
-  // pipeout the rowBuffer
-  RowBuffer[].pipeOut
+  // pipeout the Pds
+  Pds[].pipeOut
 
   true
 ;

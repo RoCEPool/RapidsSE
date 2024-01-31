@@ -464,7 +464,7 @@ void SeApi::vPrintMetadata(void)
 /*----------------------------------------------------------------------------*/
 /* search catalogs for matching name (or nullptr for all)                     */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pSearchCatalogs(Stz* szCatalogName)
+Pds* SeApi::pSearchCatalogs(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
@@ -473,19 +473,19 @@ RowBuffer* SeApi::pSearchCatalogs(Stz* szCatalogName)
   Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPCATALOG);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pRowBuffer,1,szCatalogName,nullptr,nullptr,nullptr,nullptr,nullptr);
+  pMetadata->vSearch(pPds,1,szCatalogName,nullptr,nullptr,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get column set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pSearchColumns(Stz* szCatalogName,
+Pds* SeApi::pSearchColumns(Stz* szCatalogName,
                                Stz* szSchemaName,
                                Stz* szTableName,
                                Stz* szColumnName)
@@ -497,19 +497,19 @@ RowBuffer* SeApi::pSearchColumns(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pRowBuffer,4,szCatalogName,szSchemaName,szTableName,szColumnName,nullptr,nullptr);
+  pMetadata->vSearch(pPds,4,szCatalogName,szSchemaName,szTableName,szColumnName,nullptr,nullptr);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* search indexes for matching name (or nullptr for all)                      */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pSearchIndexes(Stz* szCatalogName,
+Pds* SeApi::pSearchIndexes(Stz* szCatalogName,
                                Stz* szSchemaName,
                                Stz* szTableName,
                                Stz* szIndexName)
@@ -521,19 +521,19 @@ RowBuffer* SeApi::pSearchIndexes(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPINDEX);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pRowBuffer,5,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,nullptr);
+  pMetadata->vSearch(pPds,5,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,nullptr);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get column set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pSearchIndexColumns(Stz* szCatalogName,
+Pds* SeApi::pSearchIndexColumns(Stz* szCatalogName,
                                Stz* szSchemaName,
                                Stz* szTableName,
                                Stz* szIndexName,
@@ -546,19 +546,19 @@ RowBuffer* SeApi::pSearchIndexColumns(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_INDEXCOLUMNDEFS);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pRowBuffer,6,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,szColumnName);
+  pMetadata->vSearch(pPds,6,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,szColumnName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* search schemas for matching name (or nullptr for all)                      */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pSearchSchemas(Stz* szCatalogName,
+Pds* SeApi::pSearchSchemas(Stz* szCatalogName,
                                Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
@@ -568,19 +568,19 @@ RowBuffer* SeApi::pSearchSchemas(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPSCHEMA);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-  RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+  Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pRowBuffer,2,szCatalogName,szSchemaName,nullptr,nullptr,nullptr,nullptr);
+  pMetadata->vSearch(pPds,2,szCatalogName,szSchemaName,nullptr,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* search tables for matching name (or nullptr for all)                       */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pSearchTables(Stz* szCatalogName,
+Pds* SeApi::pSearchTables(Stz* szCatalogName,
                               Stz* szSchemaName,
                               Stz* szTableName)
 {
@@ -591,20 +591,20 @@ RowBuffer* SeApi::pSearchTables(Stz* szCatalogName,
   Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPTABLE);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
-	RowBuffer* pRowBuffer = new RowBuffer(pLookupStreamDef);
+	Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pRowBuffer,3,szCatalogName,szSchemaName,szTableName,nullptr,nullptr,nullptr);
+  pMetadata->vSearch(pPds,3,szCatalogName,szSchemaName,szTableName,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
-  return pRowBuffer;
+  return pPds;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* get column set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pColumnDefs(Stz* szCatalogName,
+Pds* SeApi::pColumnDefs(Stz* szCatalogName,
                             Stz* szSchemaName,
                             Stz* szTableName,
                             Stz* szColumnName)
@@ -613,20 +613,20 @@ RowBuffer* SeApi::pColumnDefs(Stz* szCatalogName,
     
   Metadata* pMetadata = new Metadata;
   
-  RowBuffer* pRowBuffer = pMetadata->pColumnDefs(szCatalogName,
+  Pds* pPds = pMetadata->pColumnDefs(szCatalogName,
                                              szSchemaName,
                                              szTableName,
                                              szColumnName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get index set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pIndexColumnDefs(Stz* szCatalogName,
+Pds* SeApi::pIndexColumnDefs(Stz* szCatalogName,
                            Stz* szSchemaName,
                            Stz* szTableName,
                            Stz* szIndexName,
@@ -636,7 +636,7 @@ RowBuffer* SeApi::pIndexColumnDefs(Stz* szCatalogName,
 
   Metadata* pMetadata = new Metadata;
 
-  RowBuffer* pRowBuffer = pMetadata->pIndexColumnDefs(szCatalogName,
+  Pds* pPds = pMetadata->pIndexColumnDefs(szCatalogName,
                                                   szSchemaName,
                                                   szTableName,
                                                   szIndexName,
@@ -644,29 +644,29 @@ RowBuffer* SeApi::pIndexColumnDefs(Stz* szCatalogName,
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* determine whether a catalog exists and return its full name                */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pLookupCatalog(Stz* szCatalogName)
+Pds* SeApi::pLookupCatalog(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
   Metadata* pMetadata = new Metadata;
   
-  RowBuffer* pRowBuffer = pMetadata->pLookupCatalog(szCatalogName);
+  Pds* pPds = pMetadata->pLookupCatalog(szCatalogName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* determine whether an index exists and return its full name                 */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pLookupIndex(Stz* szCatalogName,
+Pds* SeApi::pLookupIndex(Stz* szCatalogName,
                              Stz* szSchemaName,
                              Stz* szTableName,
                              Stz* szIndexName)
@@ -675,38 +675,38 @@ RowBuffer* SeApi::pLookupIndex(Stz* szCatalogName,
 
   Metadata* pMetadata = new Metadata;
 
-  RowBuffer* pRowBuffer = pMetadata->pLookupIndex(szCatalogName,
+  Pds* pPds = pMetadata->pLookupIndex(szCatalogName,
                                               szSchemaName,
                                               szTableName,
                                               szIndexName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* determine whether a schema exists and return its full name                 */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pLookupSchema(Stz* szCatalogName,
+Pds* SeApi::pLookupSchema(Stz* szCatalogName,
                                 Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
   Metadata* pMetadata = new Metadata;
  
-  RowBuffer* pRowBuffer = pMetadata->pLookupSchema(szCatalogName,
+  Pds* pPds = pMetadata->pLookupSchema(szCatalogName,
                                                szSchemaName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* determine whether a table exists and return its full name                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pLookupTable(Stz* szCatalogName,
+Pds* SeApi::pLookupTable(Stz* szCatalogName,
                                Stz* szSchemaName,
                                Stz* szTableName)
 {
@@ -714,19 +714,19 @@ RowBuffer* SeApi::pLookupTable(Stz* szCatalogName,
     
   Metadata* pMetadata = new Metadata;
   
-  RowBuffer* pRowBuffer = pMetadata->pLookupTable(szCatalogName,
+  Pds* pPds = pMetadata->pLookupTable(szCatalogName,
                                               szSchemaName,
                                               szTableName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the colummns of partition key for table                                */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pPartitionKey(Stz* szCatalogName,
+Pds* SeApi::pPartitionKey(Stz* szCatalogName,
                             Stz* szSchemaName,
                             Stz* szTableName)
 {
@@ -734,13 +734,13 @@ RowBuffer* SeApi::pPartitionKey(Stz* szCatalogName,
     
   Metadata* pMetadata = new Metadata;
   
-  RowBuffer* pRowBuffer = pMetadata->pPartitionKey(szCatalogName,
+  Pds* pPds = pMetadata->pPartitionKey(szCatalogName,
                                              szSchemaName,
                                              szTableName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pPds;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -42,10 +42,10 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   // limit
   m_xDynamicT.m_iLimitRows       = 0;
 
-  // rowbuffer T
-  m_xDynamicT.m_aRowBuffer    = nullptr;
+	// rowbuffer T
+	m_xDynamicT.m_aPdsRowBuffer = nullptr;
 
-  // inflate T (SR_IT)
+	// inflate T (SR_IT)
   m_xDynamicT.m_nRows       = 0;
   m_xDynamicT.m_nCols       = 0;
   m_xDynamicT.m_iHeadSize   = 0;

@@ -33,17 +33,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_ROWBUFFER ...                                                        */
+/* on EV_D_PDSROWBUFFER ...                                                   */
 /*----------------------------------------------------------------------------*/
-: dump_RowBuffer \handler
+: dump_PdsRowBuffer \handler
 
-  <operand> "rowBuffer" str.same if
-    "OPERAND DUMP: rowBuffer" .
+  <operand> "PdsRowBuffer" str.same if
+    "OPERAND DUMP: PdsRowBuffer" .
 
-    <detail> >int PipeIn[] rowBuffer.operandDump
+    <detail> >int PipeIn[] Pds[].operandDump
   then
 
-  EV_D_ROWBUFFER_handler
+  EV_D_PDSROWBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@
 
   find: dump_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
   find: dump_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
-  find: dump_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: dump_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
 
   op__loop
 
