@@ -175,16 +175,13 @@ namespace STORE
   protected:
     i8          m_i_Board;
     eBK         m_eBoard;  // joinOrdering, subquery
-
+    eOH         m_ePhase;
     Bench*      m_pBench;
+
     SubQuery*   m_pSubQuery;
     Card_Deck*  m_pDeck;
-
     TagSet*     m_pState;
-
     Mark*       m_pMark;
-
-    eOH         m_ePhase;
 
   private:
     // must be last

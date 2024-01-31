@@ -34,21 +34,15 @@ Board::Board(i8 i_Board, eBK eBoard, Stz* szSqyNm, Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_i_Board     = i_Board;
-  m_eBoard      = eBoard;
-
-  m_pBench      = pBench;
+  m_i_Board = i_Board;
+  m_eBoard  = eBoard;
+  m_ePhase  = OH_NONE;
+  m_pBench  = pBench;
 
   m_pSubQuery = new SubQuery(i_Board, szSqyNm, this);
-
-  m_pDeck = new Card_Deck;
-
-
-  m_pState = new TagSet;
-
-  m_pMark = new Mark;
-
-  m_ePhase = OH_NONE;
+  m_pDeck     = new Card_Deck;
+  m_pState    = new TagSet;
+  m_pMark     = new Mark;
 
   _checkInitialised_(CN_BOARD);
 
@@ -69,12 +63,9 @@ Board::~Board(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  delete m_pDeck;
-
   delete m_pSubQuery;
-
+  delete m_pDeck;
   delete m_pState;
-
   delete m_pMark;
 }
 
