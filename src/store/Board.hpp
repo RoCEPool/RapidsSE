@@ -174,7 +174,6 @@ namespace STORE
   {
   protected:
     i8          m_i_Board;
-    s32         m_sSubPipeNm;
     eBK         m_eBoard;  // joinOrdering, subquery
 
     Bench*      m_pBench;

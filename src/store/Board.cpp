@@ -34,6 +34,10 @@ Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBen
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  m_pSubQuery = new SubQuery(this);
+  m_pSubQuery->vSqyNo(szSqyNm);
+  m_pSubQuery->vSqyNm(szSqyNm);
+
   m_i_Board     = i_Board;
   vSubPipeNm(szSubPipeNm);
   m_eBoard      = eBoard;
@@ -42,9 +46,6 @@ Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBen
 
   m_pDeck = new Card_Deck;
 
-  m_pSubQuery = new SubQuery(this);
-  m_pSubQuery->vSqyNo(szSqyNm);
-  m_pSubQuery->vSqyNm(szSqyNm);
 
   m_pState = new TagSet;
 
@@ -253,7 +254,9 @@ Stz* Board::szSubPipeNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_sSubPipeNm;
+  //return m_sSubPipeNm;
+
+  return m_pSubQuery->szSqyNm();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,7 +266,8 @@ void Board::vSubPipeNm(Stz* szSubPipeNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_sSubPipeNm = szSubPipeNm;
+
+  m_pSubQuery->vSqyNm(szSubPipeNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -303,11 +307,10 @@ void Board::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  vTrace("%sBoard %p %lld SubPipeNm %s %s\n"_Stz,
+  vTrace("%sBoard %p %lld %s\n"_Stz,
          Stz::szTab(iDepth),
          this,
          m_i_Board,
-         m_sSubPipeNm.szStz(),
          aBK[m_eBoard]
   );
 
