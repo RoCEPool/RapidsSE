@@ -143,9 +143,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
-
-  s32 sQueryNm = pBoard->pBench()->pOptimiser()->szQueryNm();
+  s32 sQueryNm = m_pCI->m_pBench->pOptimiser()->szQueryNm();
 
   m_pPipelineDef = new PipelineDef(sQueryNm);
 
