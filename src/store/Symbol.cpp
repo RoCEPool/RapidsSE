@@ -792,19 +792,6 @@ bool Symbol::bIs_Pay_Col(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Ppe_Nm(Stz* szArg)
-{
-  _static_
-
-  if (! bPossibleNm(szArg))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a relational-operator?                                      */
-/*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Rln_Op(Stz* szArg)
 {
   _static_
@@ -813,6 +800,19 @@ bool Symbol::bIs_Rln_Op(Stz* szArg)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a subquery name?                                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Sqy_Nm(Stz* szArg)
+{
+  _static_
+
+  if (! bPossibleNm(szArg))
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1570,7 +1570,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_NULL:        vFacet_Null(szChrSeq);        break;
     case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
     case SF_PAY_COL:     vFacet_Pay_Col(szChrSeq);     break;
-    case SF_SQY_NM:      vFacet_Ppe_Nm(szChrSeq);      break;
+    case SF_SQY_NM:      vFacet_Sqy_Nm(szChrSeq);      break;
     case SF_SQY_NO:      vFacet_Sqy_No(szChrSeq);      break;
     case SF_SQY_PRM:     vFacet_Sqy_Prm(szChrSeq);     break;
     case SF_SQY_RSL:     vFacet_Sqy_Rsl(szChrSeq);     break;
@@ -2352,22 +2352,6 @@ bool Symbol::bIs_Pay_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a index name?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Ppe_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_SQY_NM != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Ppe_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Rln_Op(void)
@@ -2384,13 +2368,16 @@ bool Symbol::bIs_Rln_Op(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
+/* is this a subquery name?                                                   */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Prm(void)
+bool Symbol::bIs_Sqy_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Sqy_Prm(xaFacet[0].m_sChrSeq))
+  if (SF_SQY_NM != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_Sqy_Nm(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -2407,6 +2394,19 @@ bool Symbol::bIs_Sqy_No(void)
     return false;
 
   if (bIs_Sqy_No(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Sqy_Prm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Sqy_Prm(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -2980,7 +2980,7 @@ bool Symbol::bValidate(void)
       case SF_PARENTHESIS: b = bIs_Parenthesis(szFacet(i_Facet));break;
       case SF_PAY_COL:     b = bIs_Pay_Col(szFacet(i_Facet));    break;
       case SF_RLN_OP:      b = bIs_Rln_Op(szFacet(i_Facet));     break;
-      case SF_SQY_NM:      b = bIs_Ppe_Nm(szFacet(i_Facet));     break;
+      case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet(i_Facet));     break;
       case SF_SQY_NO:      b = bIs_Sqy_No(szFacet(i_Facet));     break;
       case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet(i_Facet));     break;
       case SF_SQY_PRM:     b = bIs_Sqy_Prm(szFacet(i_Facet));    break;
@@ -3971,20 +3971,6 @@ void Symbol::vFacet_Pay_Col(Stz* szPayCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given pipeline name                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Ppe_Nm(Stz* szPpeNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_SQY_NM, "%s"_Stz, szPpeNm);
-
-  RASSERT(bIs_Ppe_Nm());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given relational op                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
@@ -3996,6 +3982,20 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
   vFacetSprint(SF_RLN_OP,"%s"_Stz,szRlnOp);
 
   RASSERT(bIs_Rln_Op());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given pipeline name                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Sqy_Nm(Stz* szPpeNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_SQY_NM, "%s"_Stz, szPpeNm);
+
+  RASSERT(bIs_Sqy_Nm());
 }
 
 /*----------------------------------------------------------------------------*/

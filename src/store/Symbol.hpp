@@ -90,8 +90,8 @@ namespace STORE
     static bool bIs_Null(Stz* szChrSeq);            // NULL
     static bool bIs_Parenthesis(Stz* szChrSeq);     // ( or )
     static bool bIs_Pay_Col(Stz* szChrSeq);         // $Pn
-    static bool bIs_Ppe_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Rln_Op(Stz* szChrSeq);          // <, <=, ... >
+    static bool bIs_Sqy_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Sqy_No(Stz* szArg);             // $Qn (or __subqueryN)
     static bool bIs_Sqy_Op(Stz* szChrSeq);          // exists, in, notExists, notIn
     static bool bIs_Sqy_Prm(Stz* szChrSeq);         // %n
@@ -200,8 +200,8 @@ namespace STORE
     bool bIs_Null(void);            // NULL
     bool bIs_Parenthesis(void);     // ( or )
     bool bIs_Pay_Col(void);         // $Pn
-    bool bIs_Ppe_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Rln_Op(void);          // <, <=, ... >
+    bool bIs_Sqy_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Sqy_No(void);          // __sq%02lld
     bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
     bool bIs_Sqy_Prm(void);         // %n
@@ -316,8 +316,8 @@ namespace STORE
     void vFacet_Parenthesis(Stz* szParenthesis);
     void vFacet_Pay_Col(Stz* szPayCol);
     void vFacet_Pay_Col(i8 iPayCol);
-    void vFacet_Ppe_Nm(Stz* szPpeNm);
     void vFacet_Rln_Op(Stz* szRlnOp);
+    void vFacet_Sqy_Nm(Stz* szPpeNm);
     void vFacet_Sqy_No(i8 iSqyNo);
     void vFacet_Sqy_No(Stz* szSqyNo);
     void vFacet_Sqy_Op(Stz* szSqyOp);
