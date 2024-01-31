@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_X_pipe_To_sqyNo.hpp -- Change pipeNm to sqyNo                    */
+/* XF_Prolog_X_sqyNm_To_sqyNo.hpp -- Change pipeNm to sqyNo                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_X_pipe_To_sqyNo : public XF_PROLOG
+  class XF_Prolog_X_sqyNm_To_sqyNo : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,20 +17,20 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_X_pipe_To_sqyNo(CardIter* pCI);
-   ~XF_Prolog_X_pipe_To_sqyNo(void) noexcept(false);
+    XF_Prolog_X_sqyNm_To_sqyNo(CardIter* pCI);
+   ~XF_Prolog_X_sqyNm_To_sqyNo(void) noexcept(false);
 
     static void vConvert_board(CardIter* pCI);
     static void vConvert_deck(CardIter* pCI);
 
-    void vX_Board_pipe_To_sqyNm(void);
-    void vX_Deck_pipe_To_sqyNm(void);
+    void vX_Board_sqyNm_To_sqyNo(void);
+    void vX_Deck_sqyNm_To_sqyNo(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Prolog_X_pipe_To_sqyNo* _pXF_Prolog_X_pipe_To_sqyNo(void* aAddr);
+  XF_Prolog_X_sqyNm_To_sqyNo* _pXF_Prolog_X_sqyNm_To_sqyNo(void* aAddr);
 }
 
 /*============================================================================*/
