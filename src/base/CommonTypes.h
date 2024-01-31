@@ -20,11 +20,21 @@ static const i8 C_INT_MAX =  9223372036854775806LL;
 //36028797018963967
 static const i8 C_BCD_MIN = -99999999999999999;
 static const i8 C_BCD_MAX = 99999999999999999;
-static const i8 C_MAX_BCD_PRECISION = 17;
+static const i8 C_MAX_BCD_PRECISION = 17;  // ** See note below
 static const i8 C_MIN_BCD_SCALE = 0;
 static const i8 C_MAX_BCD_SCALE = C_MAX_BCD_PRECISION;
 static const i8 C_BCD_DEFAULT_SCALE = 0;
 
+// ** Note on BCD max precision:
+//
+// The BCD max precision is set to 17 because we represent the mantissa
+// in the Bcd_t struct with 58 bits. We need to subtract one for the sign
+// so that leaves 57 bits.
+// Now 2^57 is 144,115,188,075,855,872 which has 18 digits. But this is
+// the maximum value we can represent - we cannot represent all 18 digit
+// numbers. But we can represent all 17 digit numbers. Therefore the
+// maximum precision that we support is 17. This will increase as we
+// make the size of the mantissa in Bcd_t larger.
 
 static const i8 C_MAX_FLT_PRECISION = 19;
 static const i8 C_MAX_INT_PRECISION = 19;
