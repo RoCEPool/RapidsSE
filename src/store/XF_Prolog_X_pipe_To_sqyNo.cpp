@@ -95,7 +95,7 @@ void XF_Prolog_X_pipe_To_sqyNo::vX_Board_pipe_To_sqyNm(void)
   if (Symbol::bIs_Sqy_No(sSubPipeNm)) {
     i8 iSqyNo = StrLib::iGleanInt(sSubPipeNm.azChar());
     Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
-    m_pCI->G.pBoard->vSubPipeNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
+    m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
   }
   else {
     vDebugPoint();

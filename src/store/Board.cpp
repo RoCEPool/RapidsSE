@@ -29,7 +29,7 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBench)
+Board::Board(Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -39,7 +39,6 @@ Board::Board(Stz* szSubPipeNm, Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBen
   m_pSubQuery->vSqyNm(szSqyNm);
 
   m_i_Board     = i_Board;
-  vSubPipeNm(szSubPipeNm);
   m_eBoard      = eBoard;
 
   m_pBench      = pBench;
@@ -249,16 +248,6 @@ Stz* Board::szSubPipeNm(void)
   return m_pSubQuery->szSqyNm();
 }
 
-/*----------------------------------------------------------------------------*/
-/* set pipeline name                                                          */
-/*----------------------------------------------------------------------------*/
-void Board::vSubPipeNm(Stz* szSubPipeNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-
-  m_pSubQuery->vSqyNm(szSubPipeNm);
-}
 
 /*----------------------------------------------------------------------------*/
 /* clear all marks                                                           */
