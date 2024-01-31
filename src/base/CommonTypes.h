@@ -35,6 +35,8 @@ static const i8 C_BCD_DEFAULT_SCALE = 0;
 // numbers. But we can represent all 17 digit numbers. Therefore the
 // maximum precision that we support is 17. This will increase as we
 // make the size of the mantissa in Bcd_t larger.
+// (We would need 3 more bits, plus the sign bit, in order to represent
+// all 18 digit numbers).
 
 static const i8 C_MAX_FLT_PRECISION = 19;
 static const i8 C_MAX_INT_PRECISION = 19;

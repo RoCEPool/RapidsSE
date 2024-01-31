@@ -49,7 +49,7 @@
     iScaleDiff = (i8) bcdArg2.m_uScale - (i8) bcdArg1.m_uScale;            \
     bcdArg1.m_uScale = bcdArg2.m_uScale;                                   \
     *paW++ = bcdArg2.m_iAsI8;                                              \
-    if(iScaleDiff < 0 || iScaleDiff > 14) {                                \
+    if(iScaleDiff < 0 || iScaleDiff > C_MAX_BCD_SCALE) {                   \
       eErrorCode = EC_SCALE_OUT_OF_BOUNDS;                                 \
     } else {                                                               \
       bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[iScaleDiff];              \

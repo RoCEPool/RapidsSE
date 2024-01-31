@@ -485,7 +485,7 @@ i8 AdditionExpr::iCalcDecimalPrecision(Parser::QueryNode *pChild1,
   ASSERT(iScale1 >= 0);
   ASSERT(iScale2 >= 0);
 
-  i8 iVal = MAX__(iScale1, iScale2) + MAX__((iPrecision1 - iScale1), (iPrecision2 - iScale2));
+  i8 iVal = MAX__(iScale1, iScale2) + MAX__((iPrecision1 - iScale1), (iPrecision2 - iScale2)) + 1;
 
   if (iVal > C_MAX_BCD_PRECISION) {
     iVal = C_MAX_BCD_PRECISION;
