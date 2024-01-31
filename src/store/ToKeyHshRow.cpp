@@ -20,6 +20,9 @@
 static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
 
+
+#define NULL_STR ENDDEFINE
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -2091,7 +2094,15 @@ L_Varchar_unquoted:
   if(nMaxFreeBytes < nPixLength)
     nPixLength = nMaxFreeBytes;
 
-  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+#ifdef NULL_STR
+	char szTemp[256];
+	if (i_Fld >= 13)
+		aStzSet = szTemp;
+	else
+    aStzSet = pPdsRowBuffer()->azDepositString_begin();
+#else
+	aStzSet = pPdsRowBuffer()->azDepositString_begin();
+#endif
 
   azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
@@ -2466,6 +2477,11 @@ L_Varchar_userEnclosed:
   //                                                            deposit varchar
   
 L_Varchar_depositValue:
+#ifdef NULL_STR
+	if (i_Fld >= 13)
+		goto L_Varchar_setNull;
+#endif
+
   if ((u8)(nVchChars) > C_VCH_SIZE_MAX)
     goto L_FieldError;
 
