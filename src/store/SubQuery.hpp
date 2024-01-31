@@ -44,7 +44,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SubQuery(Board* pBoard);
+    SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard);
    ~SubQuery(void) noexcept(false);
 
     Board* pBoard(void);

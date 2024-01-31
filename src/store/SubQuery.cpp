@@ -19,7 +19,7 @@ __aFooterFunction(SubQuery)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubQuery::SubQuery(Board* pBoard)
+SubQuery::SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard)
 : Object(CN_SUBQUERY)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
@@ -35,6 +35,10 @@ SubQuery::SubQuery(Board* pBoard)
   m_eRelnOp  = RO_NONE;
 
   m_nSubQueries = 0;
+
+  vSqyNm(szSqyNm);
+  vSqyNo(szSqyNm);
+  UNUSED(i_Board);
 
   _checkInitialised_(CN_SUBQUERY);
 

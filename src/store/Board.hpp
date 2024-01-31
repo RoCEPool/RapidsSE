@@ -194,7 +194,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBench);
+    Board(i8 i_Board, eBK eBoard, Stz* szSqyNm, Bench* pBench);
    ~Board(void) noexcept(false);
 
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost);

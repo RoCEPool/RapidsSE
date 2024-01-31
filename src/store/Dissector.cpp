@@ -122,9 +122,9 @@ void Dissector::vSubPipe(i8 i_SubPipe)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pBoard = new Board(szSqyNm,
+  m_pBoard = new Board(i_SubPipe + 1,
                        BK_SUBQUERY,
-                       i_SubPipe + 1,
+                       szSqyNm,
                        m_pBench);
 
   Card_SubQuery* p_subQuery = new Card_SubQuery;

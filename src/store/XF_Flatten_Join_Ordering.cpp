@@ -183,9 +183,9 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   Card_Deck* pPipeline = m_pCI->G.pDeck;
 
-  Board* pBoard = new Board(aBK[BK_JOINORDERING],
+  Board* pBoard = new Board(C_UNKNOWN,
                             BK_JOINORDERING,
-                            C_UNKNOWN,
+                            aBK[BK_JOINORDERING],
                             m_pCI->m_pBench);
   m_pCI->G_vPushBoard(pBoard);
 

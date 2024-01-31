@@ -29,19 +29,17 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szSqyNm, eBK eBoard, i8 i_Board, Bench* pBench)
+Board::Board(i8 i_Board, eBK eBoard, Stz* szSqyNm, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_pSubQuery = new SubQuery(this);
-  m_pSubQuery->vSqyNo(szSqyNm);
-  m_pSubQuery->vSqyNm(szSqyNm);
 
   m_i_Board     = i_Board;
   m_eBoard      = eBoard;
 
   m_pBench      = pBench;
+
+  m_pSubQuery = new SubQuery(i_Board, szSqyNm, this);
 
   m_pDeck = new Card_Deck;
 
