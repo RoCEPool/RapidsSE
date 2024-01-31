@@ -179,13 +179,12 @@ namespace STORE
     bool bPastPhase(eOH ePhase);
     void vPhase(eOH ePhase);
     void G_vPopBoard(void);
-    void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
     void vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
     void G_vPushBoard(Board* pBoard);
-     bool G_bPushBoard(Stz* szSubPipeNm);
+     bool G_bPushBoard(Stz* szSqyNm);
     void G_vPushNewChild(Card* pParent, eCK eChild);
     void G_vPushIter(void);
 

@@ -131,7 +131,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
     vFlatten_recurse(iDepth + 1);
 
-    m_pCI->G_vPopIter();
+    m_pCI->G_vPopBoard();
     m_pCI->G_vSetBoard(pOuterBoard_save);
     SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
     UNUSED(pSubQuery);
@@ -169,7 +169,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       vFlatten_recurse(iDepth + 1);
 
-      pCI->G_vPopIter();
+      pCI->G_vPopBoard();
       pCI->G_vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
       UNUSED(pSubQuery);
@@ -215,7 +215,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       vFlatten_recurse(iDepth + 1);
 
-      pCI->G_vPopIter();
+      pCI->G_vPopBoard();
       pCI->G_vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
       UNUSED(pSubQuery);

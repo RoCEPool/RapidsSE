@@ -248,7 +248,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* sz
   pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCardsRecursive(i_dup_from);
 
   // 4) pop back to mq
-  pCI->G_vPopIter();
+  pCI->G_vPopBoard();
 
   // 5) add <fold> (before MQ)
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, szCrlPpy, m_pSubQuery->pBoard()->i_Board());
@@ -334,7 +334,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
 
   // x) pop back to mq
-  pCI->G_vPopIter();
+  pCI->G_vPopBoard();
 
   pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqCopy);
   pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->Sqy.m_pCard_sqCopy);
@@ -392,7 +392,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
   // 4) pop back to mq
-  pCI->G_vPopIter();
+  pCI->G_vPopBoard();
 
   // 5) add <fold> (before MQ)
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_NonCrlSqy, m_pSubQuery->pBoard()->i_Board());
@@ -489,7 +489,7 @@ i8 XF_Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   i8 nTables = Card_Table::nTables(pCI);
 
   // 4) pop back to mq
-  pCI->G_vPopIter();
+  pCI->G_vPopBoard();
 
   return nTables;
 }

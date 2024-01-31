@@ -91,7 +91,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
         m_pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
         m_pCI->G.p_scan->vAppendChild(m_pCI->G.p_outerJoin);
       }
-      m_pCI->G_vPopIter();
+      m_pCI->G_vPopBoard();
     }
 
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);

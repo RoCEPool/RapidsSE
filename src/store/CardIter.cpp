@@ -1968,7 +1968,7 @@ void CardIter::vPhase(eOH ePhase)
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vPopIter(void)
+void CardIter::G_vPopBoard(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -2082,11 +2082,11 @@ void CardIter::G_vPushBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* find and push board onto iter stack                                        */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bPushBoard(Stz* szSubPipeNm)
+bool CardIter::G_bPushBoard(Stz* szSqyNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szSubPipeNm);
+  Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szSqyNm);
   if (! pBoard)
      return false;
 
