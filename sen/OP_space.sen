@@ -25,7 +25,7 @@
   BT_DATA TableDef[] Pds[].new
 
   // add spaceInfo to the Pds
-  TableDef[] Pds[].addSpaceInfo assert
+  Pds[].addSpaceInfo assert
 
   // pipeout the Pds
   Pds[].pipeOut
