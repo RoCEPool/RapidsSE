@@ -24234,7 +24234,7 @@ void Task::vAddMunged(Task* )
     "  BT_DATA TableDef[] Pds[].new\n"
     "\n"
     "  // add spaceInfo to the Pds\n"
-    "  TableDef[] Pds[].addSpaceInfo assert\n"
+    "  Pds[].addSpaceInfo assert\n"
     "\n"
     "  // pipeout the Pds\n"
     "  Pds[].pipeOut\n"
