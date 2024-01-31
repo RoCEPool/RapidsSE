@@ -65,7 +65,7 @@ void Bench::vAddBoard(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  //RASSERT(! pFindBoard_By_subPipeNm(pBoard->eBoard()));
+  //RASSERT(! pFindBoard_By_sqyNm(pBoard->eBoard()));
 
   vPush(pBoard);
 }
@@ -132,7 +132,7 @@ void Bench::vEndPhase(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pFindBoard_By_subPipeNm(Stz* szSubPipeNm)
+Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -140,7 +140,7 @@ Board* Bench::pFindBoard_By_subPipeNm(Stz* szSubPipeNm)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (pBoard->pSubQuery()->szSqyNm()->bSame(szSubPipeNm))
+    if (pBoard->pSubQuery()->szSqyNm()->bSame(szSqyNm))
       return pBoard;
   }
 
@@ -173,7 +173,7 @@ SubQuery* Bench::pFindSubQuery_By_sqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  Board* pBoard = pFindBoard_By_subPipeNm(szSqyNo);
+  Board* pBoard = pFindBoard_By_sqyNm(szSqyNo);
   if (! pBoard)
     return nullptr;
 
@@ -200,11 +200,11 @@ Board* Bench::pGetBoard(i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bKnown_sqyNo(Stz* szSqyNo)
+bool Bench::bKnown_sqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pFindBoard_By_sqyNo(szSqyNo)) {
+  if (Board* pBoard = pFindBoard_By_sqyNm(szSqyNm)) {
     UNUSED(pBoard);
     return true;
   }
@@ -215,11 +215,11 @@ bool Bench::bKnown_sqyNo(Stz* szSqyNo)
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bKnown_subPipeNm(Stz* szSubPipeNm)
+bool Bench::bKnown_sqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pFindBoard_By_subPipeNm(szSubPipeNm)) {
+  if (Board* pBoard = pFindBoard_By_sqyNo(szSqyNo)) {
     UNUSED(pBoard);
     return true;
   }

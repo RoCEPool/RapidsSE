@@ -50,14 +50,14 @@ namespace STORE
     void vDump(const char* azFunc);
     void vEndPhase(CardIter* pCI);
 
-    Board* pFindBoard_By_subPipeNm(Stz* szSubPipeNm);
+    Board* pFindBoard_By_sqyNm(Stz* szSqyNm);
     Board* pFindBoard_By_sqyNo(Stz* szSqyNo);
     SubQuery* pFindSubQuery_By_sqyNo(Stz* szSqyNo);
 
     Board* pGetBoard(i8 i_Board);
 
+    bool bKnown_sqyNm(Stz* szSqyNm);
     bool bKnown_sqyNo(Stz* szSqyNo);
-    bool bKnown_subPipeNm(Stz* szSubPipeNm);
 
     Optimiser* pOptimiser(void);
 

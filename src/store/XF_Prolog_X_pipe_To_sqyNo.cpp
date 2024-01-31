@@ -179,14 +179,14 @@ void XF_Prolog_X_pipe_To_sqyNo::vX_Deck_pipe_To_sqyNm(void)
     if (SF_PPE_NM == eFacet) {
 
       Stz* szSubPipeNm = p_card->pSymbol()->szFacet(SF_PPE_NM);
-      Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSubPipeNm);
+      Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_sqyNm(szSubPipeNm);
 
       Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_sqyNo(szSubPipeNm);
       RASSERT(pBoard_sqyNm == pBoard_subPipeNm);
     }
     else {
       Stz* szSqyNm = p_card->pSymbol()->szFacet(SF_SQY_NO);
-      Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSqyNm);
+      Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_sqyNm(szSqyNm);
 
       Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_sqyNo(szSqyNm);
       RASSERT(pBoard_sqyNm == pBoard_subPipeNm);

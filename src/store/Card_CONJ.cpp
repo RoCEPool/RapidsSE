@@ -339,7 +339,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term1 = _pCard_Term(pGetChild(1));
-    ASSERT(pCI->m_pBench->bKnown_subPipeNm(p_term1->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term1->szFacet(SF_NONE))); //temp
 
     Symbol x_Symbol_expCol1;
     if (p_term) {
@@ -365,7 +365,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bKnown_subPipeNm(p_term_popped->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term_popped->szFacet(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
@@ -396,7 +396,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bKnown_subPipeNm(p_term_popped->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term_popped->szFacet(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));

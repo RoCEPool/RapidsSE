@@ -1497,7 +1497,7 @@ bool CardIter::G_bIsBoardNm(Stz* szBoardNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (m_pBench->pFindBoard_By_subPipeNm(szBoardNm))
+  if (m_pBench->pFindBoard_By_sqyNm(szBoardNm))
     return true;
 
   return false;
@@ -2072,7 +2072,7 @@ void CardIter::G_vPushBoard(Stz* szBoardNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Board* pBoard = m_pBench->pFindBoard_By_subPipeNm(szBoardNm);
+  Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szBoardNm);
 
   G_vPushBoard(pBoard);
 }
@@ -2116,7 +2116,7 @@ bool CardIter::G_bPushBoard(Stz* szSubPipeNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Board* pBoard = m_pBench->pFindBoard_By_subPipeNm(szSubPipeNm);
+  Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szSubPipeNm);
   if (! pBoard)
      return false;
 
