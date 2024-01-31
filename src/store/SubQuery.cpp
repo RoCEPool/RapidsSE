@@ -243,8 +243,8 @@ void SubQuery::vDump(i8 iDepth)
   vTrace("%sSubQuery %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          Stz::szTab(iDepth),
          this,
-         m_sSqyNo.szStz(),
-         m_sSqyNm.szStz(),
+         szSqyNo(),
+         szSqyNm(),
          m_i_Caller,
 
          aQC[m_eClause],
@@ -333,6 +333,9 @@ void SubQuery::vSqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
+  if (szSqyNm->bSame("$Q2"_Stz))
+    vDebugPoint();
+
   m_sSqyNm = szSqyNm;
 }
 
@@ -352,6 +355,9 @@ Stz* SubQuery::szSqyNo(void)
 void SubQuery::vSqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  if (szSqyNo->bSame("$Q2"_Stz))
+    vDebugPoint();
 
   m_sSqyNo = szSqyNo;
 }
