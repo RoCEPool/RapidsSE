@@ -2068,18 +2068,6 @@ void CardIter::vSnapFluxArriving(void)
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vPushBoard(Stz* szBoardNm)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szBoardNm);
-
-  G_vPushBoard(pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
 void CardIter::G_vPushBoard(Board* pBoard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -2089,24 +2077,6 @@ void CardIter::G_vPushBoard(Board* pBoard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   G_vSetBoard(pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push board                                                                 */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bPushBoard(i8 i_Board)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Board* pBoard = m_pBench->pGetBoard(i_Board);
-  RASSERT(pBoard);
-
-  if (pBoard) {
-    G_vPushBoard(pBoard);
-    return true;
-  }
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
