@@ -2086,6 +2086,22 @@ void vTest33(void)
 /*----------------------------------------------------------------------------*/
 void vTest34(void)
 {
+  // Integer precision calculations
+
+  u8 uVals[] = {0,
+                1, 5, 8, 9,
+                10, 11, 77, 99,
+                100, 333, 999,
+                1000, 5555, 9999,
+                10000, 88888, 99999,
+                INT64_MAX - 1, INT64_MAX,
+                UINT64_MAX - 1, UINT64_MAX};
+
+  for (u8& uVal : uVals) {
+    i8 iPrec = IntLib::iPrecision(uVal);
+    i8 iLog10 = IntLib::iLog10(uVal);
+    vTrace("iVal = %llu;  iPrec = %lld;  iLog10 = %lld\n"_Stz, uVal, iPrec, iLog10);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2093,6 +2109,24 @@ void vTest34(void)
 /*----------------------------------------------------------------------------*/
 void vTest35(void)
 {
+  for(i8 iter=0; iter<3; iter++) {
+
+    i8 iSum = 0;
+    const u8 uCount = 10000000000;
+    u8 uStart = Hardware::uReadClock();
+
+    for (i8 i = 1; i < (i8) uCount; i++) {
+      iSum += IntLib::iPrecision(i);
+      //iSum += IntLib::iLog10(i);
+      //iSum += i;
+    }
+
+    u8 uEnd = Hardware::uReadClock();
+    u8 uDiff = uEnd - uStart;
+
+    vTrace("Count = %llu; Total time = %llu ns; Avg time = %.1f ns; Sum = %lld\n"_Stz,
+           uCount, uDiff, (double)uDiff / uCount, iSum);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

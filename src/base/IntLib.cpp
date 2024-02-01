@@ -476,6 +476,105 @@ i8 IntLib::iPow(i8 iArg, i8 iRaisedTo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return the number of digits in the integer argument                        */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iPrecision(i8 iArg)
+{
+  _static_
+
+  if (iArg < 0) {
+    iArg = -iArg;
+  }
+
+  i8 iPrec = iPrecision((u8) iArg);
+  return iPrec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return the number of digits in the unsigned integer argument               */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iPrecision(u8 uArg) {
+  _static_
+
+  // The precision of an integer is basically the same as ceil(log10(uArg)).
+  // However calculating log10 can be an expensive way to determine how many
+  // digits are in a value.
+  //
+  // A cheaper & quicker way is to get a quick estimate of the number of digits
+  // by first using a cheap log2 calculation and use that result as in index
+  // into a lookup table. Then we just need to do a single comparison to check
+  // if we need to add 1 to this lookup value.
+  //
+  // This approach minimises the number of branching statements that would
+  // otherwise occur with searching through powers of 10 values.
+  // (Though for small values a brute force search would be quicker).
+  //
+  // Source of inspiration: https://stackoverflow.com/a/25934909
+  //
+  // Some rough performance numbers on Craig's Apple Studio M2 Ultra
+  // in release mode:
+  //  Calling iLog10()     takes 3.2ns/call
+  //  Calling iPrecision() takes 0.9ns/call
+  // (Yes, I verified the disassembly output)
+
+  if (uArg == 0) {
+    return 1;
+  }
+
+  // Powers of 10 for a 64 bit unsigned integer range
+  static constexpr u8 uaTenToThe[] = {
+    u8(1u),
+    u8(10u),
+    u8(100u),
+    u8(1000u),
+    u8(10000u),
+    u8(100000u),
+    u8(1000000u),
+    u8(10000000u),
+    u8(100000000u),
+    u8(1000000000u),
+    u8(10000000000u),
+    u8(100000000000u),
+    u8(1000000000000u),
+    u8(10000000000000u),
+    u8(100000000000000u),
+    u8(1000000000000000u),
+    u8(10000000000000000u),
+    u8(100000000000000000u),
+    u8(1000000000000000000u),
+    u8(10000000000000000000u),
+  };
+
+  // The lookup table of (guessed) precision given the number of base 2 digits
+  // (as the index in to the array).
+  static constexpr i8 iaGuess[65] = {
+     0 ,0 , 0 ,  0 ,  1 ,1 ,1 ,   2 ,2 ,2 ,
+    3 ,3 ,3 , 3 , 4 ,4 ,4 , 5 ,5 ,5 ,
+    6 ,6 ,6 ,6 , 7 ,7 ,7 , 8 ,8 ,8 ,
+    9 ,9 ,9 ,9 , 10,10,10, 11,11,11,
+    12,12,12,12, 13,13,13, 14,14,14,
+    15,15,15,15, 16,16,16, 17,17,17,
+    18,18,18,18, 19
+  };
+
+  // To get the fast log2 of the value we can use a compiler intrinsic that
+  // returns the count of the leading zeros in the unsigned number.
+  // Then we subtract it from 64 (width of a 64 bit unsigned integer).
+  // Most CPUs support this so it is a very quick operation (see
+  // https://en.wikipedia.org/wiki/Find_first_set#Hardware_support).
+  // The  __builtin_clzll is supported on both GCC and Clang
+  i8 iBase2Digits = 64 - __builtin_clzll(uArg);
+
+  // Lookup the estimated precision
+  i8 iDigits = iaGuess[iBase2Digits];
+
+  // Check if we need to add 1 more to it
+  i8 iPrec = iDigits + (uArg >= uaTenToThe[iDigits]);
+
+  return iPrec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* rotate integer at given subscript to end of array                          */
 /*----------------------------------------------------------------------------*/
 void IntLib::vPrint(i8 iaArray[], i8 nElements)
