@@ -240,7 +240,7 @@ void SubQuery::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  vTrace("%sSubQuery %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+  vTrace("%sSubQuery v1 %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          Stz::szTab(iDepth),
          this,
          szSqyNo(),
@@ -253,6 +253,21 @@ void SubQuery::vDump(i8 iDepth)
          aRO[m_eRelnOp],
          m_nCorrCols
          );
+
+  vTrace("%sSubQuery v2 %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+         Stz::szTab(iDepth),
+         this,
+         szSqyNo_v2(),
+         szSqyNm_v2(),
+         m_i_Caller,
+
+         aQC[m_eClause],
+         aQD[m_eDisposition],
+         aQO[m_eCallOp],
+         aRO[m_eRelnOp],
+         m_nCorrCols
+  );
+
 }
 
 
@@ -337,6 +352,7 @@ void SubQuery::vSqyNm(Stz* szSqyNm)
     vDebugPoint();
 
   m_sSqyNm = szSqyNm;
+  m_sSqyNo_v2 = szSqyNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -360,6 +376,8 @@ void SubQuery::vSqyNo(Stz* szSqyNo)
     vDebugPoint();
 
   m_sSqyNo = szSqyNo;
+  m_sSqyNm_v2 = szSqyNo;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -479,6 +497,9 @@ void SubQuery::vValidate(CardIter* pCI)
 
   if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
     return;
+
+  RASSERT(! m_sSqyNo_v2.nLength() || m_sSqyNo_v2.bSame(m_sSqyNm));
+  RASSERT(! m_sSqyNm_v2.nLength() || m_sSqyNm_v2.bSame(m_sSqyNo));
 
   pCI->vSave();
   pCI->vNullMembers();
