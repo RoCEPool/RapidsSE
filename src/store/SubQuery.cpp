@@ -38,6 +38,12 @@ SubQuery::SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard)
 
   vSqyNm(szSqyNm);
   vSqyNo(szSqyNm);
+
+  vSqyNm_v2(szSqyNm);
+  Symbol xSymbol_sqyNo(SF_SQY_NO, i_Board == -1 ? 0 : i_Board * 2);
+  vSqyNo_v2(xSymbol_sqyNo.szSF_chrSeq(SF_SQY_NO));
+
+
   UNUSED(i_Board);
 
   _checkInitialised_(CN_SUBQUERY);
@@ -501,8 +507,8 @@ void SubQuery::vValidate(CardIter* pCI)
   if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
     return;
 
-  RASSERT(! m_sSqyNo_v2.nLength() || m_sSqyNo_v2.bSame(m_sSqyNm));
-  RASSERT(! m_sSqyNm_v2.nLength() || m_sSqyNm_v2.bSame(m_sSqyNo));
+  RASSERT(! m_sSqyNo_v2.nLength() || Symbol::bIs_Sqy_No(m_sSqyNo_v2));
+  RASSERT(! m_sSqyNm_v2.nLength() || Symbol::bIs_Sqy_Nm(m_sSqyNm_v2));
 
   pCI->vSave();
   pCI->vNullMembers();
