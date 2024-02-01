@@ -223,7 +223,6 @@ namespace STORE
     SubQuery* pSubQuery(void);
 
     void vValidate(CardIter* pCI);
-    void vValidate_SubQuery(CardIter* pCI);
 
   private:
     void vPinMargin(Ribbon* pRibbon);

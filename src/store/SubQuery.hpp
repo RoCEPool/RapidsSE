@@ -15,6 +15,7 @@ namespace STORE
   class Board;
   class Card;
   class Card_SubSet;
+  class CardIter;
 
   class SubQuery : public Object
   {
@@ -90,6 +91,8 @@ namespace STORE
     bool bViaFrom(void);
     bool bViaHaving(void);
     bool bViaWhere(void);
+
+    void vValidate(CardIter* pCI);
 
   protected:
     Footer* aFooter(void);

@@ -382,30 +382,8 @@ void Board::vValidate(CardIter* pCI)
   RASSERT(pCI->G.pBoard);
 
   if (pCI->G.pBoard->eBoard() == BK_SUBQUERY) {
-    vValidate_SubQuery(pCI);
+    m_pSubQuery->vValidate(pCI);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vValidate_SubQuery(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  RASSERT(pCI->G.pBoard);
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
-
-  if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
-    return;
-
-  pCI->vSave();
-  pCI->vNullMembers();
-  pCI->G.pDeck->vValidate(pCI);
-  pCI->vRestore();
-
-  RASSERT(pCI->G.pBoard);
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
 }
 
 

@@ -421,6 +421,25 @@ bool SubQuery::bViaWhere(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vValidate(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  RASSERT(pCI->G.pBoard);
+  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
+
+  if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
+    return;
+
+  pCI->vSave();
+  pCI->vNullMembers();
+  pCI->G.pDeck->vValidate(pCI);
+  pCI->vRestore();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

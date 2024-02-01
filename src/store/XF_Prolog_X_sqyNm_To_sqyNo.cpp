@@ -161,7 +161,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
 
   CardIter* pCI = m_pCI;
   auto bfTo_sqyNm = [pCI](Card* p_card) {
-    if (!Symbol::bIs_Sqy_No(p_card->szFacet(SF_NONE)))
+    if (! Symbol::bIs_Sqy_No(p_card->szFacet(SF_NONE)))
       return C_CONTINUE_RECURSION;
 
 
