@@ -352,7 +352,7 @@ void SubQuery::vSqyNm(Stz* szSqyNm)
     vDebugPoint();
 
   m_sSqyNm = szSqyNm;
-  m_sSqyNo_v2 = szSqyNm;
+  //m_sSqyNo_v2 = szSqyNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -376,8 +376,7 @@ void SubQuery::vSqyNo(Stz* szSqyNo)
     vDebugPoint();
 
   m_sSqyNo = szSqyNo;
-  m_sSqyNm_v2 = szSqyNo;
-
+  //m_sSqyNm_v2 = szSqyNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,6 +398,8 @@ void SubQuery::vSqyNm_v2(Stz* szSqyNm)
 
   if (szSqyNm->bSame("$Q2"_Stz))
     vDebugPoint();
+
+  RASSERT(Symbol::bIs_Sqy_Nm(szSqyNm));
 
   m_sSqyNm_v2 = szSqyNm;
 }
@@ -422,6 +423,8 @@ void SubQuery::vSqyNo_v2(Stz* szSqyNo)
 
   if (szSqyNo->bSame("$Q2"_Stz))
     vDebugPoint();
+
+  RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
 
   m_sSqyNo_v2 = szSqyNo;
 }
