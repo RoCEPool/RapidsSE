@@ -183,6 +183,58 @@ SubQuery* Bench::pFindSubQuery_By_sqyNo(Stz* szSqyNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pFindBoard_By_sqyNm_v2(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->szSqyNm_v2()->bSame(szSqyNm))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pFindBoard_By_sqyNo_v2(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->szSqyNo_v2()->bSame(szSqyNo))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get subquery of given name                                                 */
+/*----------------------------------------------------------------------------*/
+SubQuery* Bench::pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard_By_sqyNo_v2(szSqyNo)) {
+    SubQuery *pSubQuery = pBoard->pSubQuery();
+    return pSubQuery;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get board                                                                  */
 /*----------------------------------------------------------------------------*/
 Board* Bench::pGetBoard(i8 i_Board)
