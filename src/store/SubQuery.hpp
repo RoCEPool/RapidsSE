@@ -24,6 +24,9 @@ namespace STORE
     s32  m_sSqyNo;       // subquery no
     s32  m_sSqyNm;       // subquery name
 
+    s32  m_sSqyNo_v2;    // subquery no
+    s32  m_sSqyNm_v2;    // subquery name
+
     Board* m_pBoard;     // which board
 
     i8  m_i_Caller;       // which subquery calls this subquery
@@ -84,6 +87,11 @@ namespace STORE
     void vSqyNm(Stz* szSqyNm);
     Stz* szSqyNo(void);
     void vSqyNo(Stz* szSqyNo);
+
+    Stz* szSqyNm_v2(void);
+    void vSqyNm_v2(Stz* szSqyNm);
+    Stz* szSqyNo_v2(void);
+    void vSqyNo_v2(Stz* szSqyNo);
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);

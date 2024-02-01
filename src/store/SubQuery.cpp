@@ -363,6 +363,52 @@ void SubQuery::vSqyNo(Stz* szSqyNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get subquery name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* SubQuery::szSqyNm_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  return m_sSqyNm_v2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery name                                                          */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSqyNm_v2(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  if (szSqyNm->bSame("$Q2"_Stz))
+    vDebugPoint();
+
+  m_sSqyNm_v2 = szSqyNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery number $Qn                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SubQuery::szSqyNo_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  return m_sSqyNo_v2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set subquery number $Qn                                                    */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSqyNo_v2(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  if (szSqyNo->bSame("$Q2"_Stz))
+    vDebugPoint();
+
+  m_sSqyNo_v2 = szSqyNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get nSubQueries                                                            */
 /*----------------------------------------------------------------------------*/
 i8 SubQuery::nSubQueries(void)
