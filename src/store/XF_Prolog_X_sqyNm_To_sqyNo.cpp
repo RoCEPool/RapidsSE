@@ -96,6 +96,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
     i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
     Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
     m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
+    m_pCI->G.pBoard->pSubQuery()->vSqyNo_v2(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
   }
   else {
     vDebugPoint();
