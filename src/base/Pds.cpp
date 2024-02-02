@@ -1546,15 +1546,18 @@ bool Pds::bDepositColVal(Stz* szColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
+	i8 iFreeBytes = nFreeBytes();
+	i8 iSrcLen = szColVal->nLength();
+
   // Ensure we have enough space for 1 byte str + null terminator
-  //if(nFreeBytes() < szColVal->nLength() + 2)
-  //  return false;
+  if(iFreeBytes < iSrcLen + 2)
+    return false;
 
   char* azTgt = azDepositString_begin();
   if( ! azTgt)
     return false;
 
-  i8 nLen = StrLib::nCopy(azTgt, nFreeBytes(), szColVal->azChar());
+  i8 nLen = StrLib::nCopy(azTgt, iFreeBytes, szColVal->azChar(), iSrcLen);
 
   vDepositString_end(nLen + 1);
   return true;
