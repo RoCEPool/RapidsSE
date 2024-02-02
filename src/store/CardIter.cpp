@@ -1493,11 +1493,11 @@ void CardIter::G_vInsertBefore(Card* pCard, Card* pBefore)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bIsBoardNm(Stz* szBoardNm)
+bool CardIter::G_bIsNextMain(eCK eMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (m_pBench->pFindBoard_By_sqyNm(szBoardNm))
+  if (this->pNextChildIf(eMember))
     return true;
 
   return false;
@@ -1506,11 +1506,11 @@ bool CardIter::G_bIsBoardNm(Stz* szBoardNm)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bIsNextMain(eCK eMember)
+bool CardIter::G_bIsSqyNo(Stz* szSqyNo)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (this->pNextChildIf(eMember))
+  if (m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo))
     return true;
 
   return false;

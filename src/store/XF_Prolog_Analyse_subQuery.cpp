@@ -187,7 +187,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
       return C_CONTINUE_RECURSION;
 
     Stz* szSubBoardNm = p_conj->szGetBoardNmInTerm(m_pCI);
-    if ( ! szSubBoardNm || !m_pCI->G_bIsBoardNm(szSubBoardNm))
+    if ( ! szSubBoardNm || !m_pCI->G_bIsSqyNo(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
     p_conj->pSymbol()->Y_vSet(P_SqyCall);
@@ -229,7 +229,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
       return C_CONTINUE_RECURSION;
 
     Stz *szSubBoardNm = p_conj->szGetBoardNmInTerm(m_pCI);
-    if (! szSubBoardNm || !m_pCI->G_bIsBoardNm(szSubBoardNm))
+    if (! szSubBoardNm || !m_pCI->G_bIsSqyNo(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
     // todo: m_pCI->pFindBoard_By_sqyNm(szSubBoardNm); m_pCI->pFindSubQuery_By_sqyNo(szSubBoardNm);

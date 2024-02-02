@@ -231,7 +231,7 @@ Card_Term* Card_CONJ::pGetTerm_boardNm(CardIter* pCI)
   while (xKid.bEach(CK_TERM)) {
 
     Stz* szValue_term = xKid.p_term()->szFacet(SF_NONE);
-    if (pCI->G_bIsBoardNm(szValue_term))
+    if (pCI->G_bIsSqyNo(szValue_term))
       return xKid.p_term();
   }
 
