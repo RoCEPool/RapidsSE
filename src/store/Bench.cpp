@@ -235,6 +235,21 @@ SubQuery* Bench::pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get subquery of given name                                                 */
+/*----------------------------------------------------------------------------*/
+SubQuery* Bench::pFindSubQuery_By_sqyNm_v2(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard_By_sqyNm_v2(szSqyNm)) {
+    SubQuery *pSubQuery = pBoard->pSubQuery();
+    return pSubQuery;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get board                                                                  */
 /*----------------------------------------------------------------------------*/
 Board* Bench::pGetBoard(i8 i_Board)
