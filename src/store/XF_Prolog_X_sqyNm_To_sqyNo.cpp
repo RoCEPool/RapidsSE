@@ -89,14 +89,11 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
     m_pCI->m_pBench->vDump(__func__);
 
   s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNm();
-//  s32 sSqyNm = m_pCI->G.pBoard->pSubQuery()->szSqyNo();
-//  RASSERT(sSqyNm.bSame(sSqyNo));
 
   if (Symbol::bIs_Sqy_No(sSqyNo)) {
     i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
     Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
     m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
-    m_pCI->G.pBoard->pSubQuery()->vSqyNo_v2(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
   }
   else {
     vDebugPoint();
@@ -173,6 +170,9 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
 
     Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
     p_card->pSymbol()->vCastFacets(&xSymbol_sqyNm);
+
+    RASSERT(pCI->m_pBench->pFindBoard_By_sqyNo_v2(p_card->szFacet(SF_SQY_NO)));
+
 
 //    pCI->vPrintBoard(__func__,__LINE__,true);
 //    p_card->vDump(__func__);
