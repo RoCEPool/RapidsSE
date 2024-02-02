@@ -295,6 +295,36 @@ bool Bench::bKnown_sqyNo(Stz* szSqyNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given name a known subquery?                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bKnown_sqyNm_v2(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard_By_sqyNm_v2(szSqyNm)) {
+    UNUSED(pBoard);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given name a known subquery?                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bKnown_sqyNo_v2(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard_By_sqyNo_v2(szSqyNo)) {
+    UNUSED(pBoard);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Optimiser* Bench::pOptimiser(void)

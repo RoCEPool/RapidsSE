@@ -62,6 +62,8 @@ namespace STORE
 
     bool bKnown_sqyNm(Stz* szSqyNm);
     bool bKnown_sqyNo(Stz* szSqyNo);
+    bool bKnown_sqyNm_v2(Stz* szSqyNm);
+    bool bKnown_sqyNo_v2(Stz* szSqyNo);
 
     Optimiser* pOptimiser(void);
 
