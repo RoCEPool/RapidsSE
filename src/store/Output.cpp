@@ -194,9 +194,9 @@ void Output::vFilePath(Stz* szFilePath)
 void Output::vPipeToThis(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-
+#ifndef WITHOUT_BUFFERIDHASHMAP
   RASSERT( ! BufferId::bIsBufferId(pOperand));
-
+#endif
   // The output queue can potentially fill up with buffers and eat up a lot of memory
   // This can trigger paging so to prevent these buffers from being paged out, we need
   // to lock them in the hashmap. Unfortunately, the Task can quickly reach the max locks
