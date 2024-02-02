@@ -85,9 +85,15 @@ Card_Term* Card_RlnConj::pGetCorrCol(void)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_RlnConj::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_RlnConj::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
   Kid xCmpConj(this);
   while (xCmpConj.bEach()) {
@@ -97,15 +103,17 @@ void Card_RlnConj::vEnsureTypeId_expCol(CardIter *pCI)
     switch (eCard) {
 
       case CK_ANDCONJ:
-        _pCard_AndConj(pCard)->vEnsureTypeId_expCol(pCI); break;
+        _pCard_AndConj(pCard)->vEnsure_Cast(pCI); break;
       case CK_NOTCONJ:
-        _pCard_NotConj(pCard)->vEnsureTypeId_expCol(pCI); break;
+        _pCard_NotConj(pCard)->vEnsure_Cast(pCI); break;
       case CK_ORCONJ:
-        _pCard_OrConj(pCard)->vEnsureTypeId_expCol(pCI);  break;
+        _pCard_OrConj(pCard)->vEnsure_Cast(pCI);  break;
       case CK_RLNCONJ:
-        _pCard_RlnConj(pCard)->vEnsureTypeId_expCol(pCI); break;
+        _pCard_RlnConj(pCard)->vEnsure_Cast(pCI); break;
 
-      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeId_expCol(pCI);     break;
+
+      case CK_TERM:
+        _pCard_Term(pCard)->vEnsure_Cast(pCI, xCast_last);  break;
 
       default:
         NEVER_REACH
@@ -180,7 +188,7 @@ bool Card_RlnConj::bIsEq(Card_RlnConj* p_rlnConj_arg)
     Symbol* pSymbol_this = p_term_this->pSymbol();
     Symbol* pSymbol_that = p_term_that->pSymbol();
 
-    if (! pSymbol_this->bMatches(pSymbol_that))
+    if (!pSymbol_this->bMatches(pSymbol_that))
       return false;
   }
 

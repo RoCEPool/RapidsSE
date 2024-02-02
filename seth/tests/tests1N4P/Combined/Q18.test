@@ -78,7 +78,7 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg " ordGroupBy  type integer $1 aggregates type integer $K1 , type decimal )  $5 sum  "
+    | ordAgg " ordGroupBy  type integer ( 19 ) $1 aggregates type integer ( 19 ) $K1 , type decimal ( 19  2 ) )  $5 sum  "
     | combined 0
     | next broadcast
 
@@ -89,7 +89,7 @@ begin
     | next broadcast
 
   stage S03 on all partitions :
-    project "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
+    project "type integer ( 19 ) as CUSTKEY $4 , type integer ( 19 ) as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal ( 19  2 ) as TOTALPRICE $6 , type decimal ( 19  2 ) as SUM_QTY $2 "
     | combined 0
     | next
 
@@ -99,32 +99,32 @@ begin
     | next
 
   stage S05 on all partitions :
-    gbyAgg " groupBy type integer $1 , type integer $2 aggregates
-               type integer as CUSTKEY $K1 ,
-               type integer as ORDERKEY $K2 ,
+    gbyAgg " groupBy type integer ( 19 ) $1 , type integer ( 19 ) $2 aggregates
+               type integer ( 19 ) as CUSTKEY $K1 ,
+               type integer ( 19 ) as ORDERKEY $K2 ,
                type timestamp as ORDERDATE $3 ,
-               type decimal as TOTALPRICE $4 ,
-               type decimal as SUM_QTY )  $5 sum "
+               type decimal ( 19  2 ) as TOTALPRICE $4 ,
+               type decimal ( 19  2 ) as SUM_QTY )  $5 sum "
     | combined 0
     | next
 
   stage S06 on all nodes :
-     gbyAgg " groupBy type integer $1 , type integer $2 aggregates
-                type integer as CUSTKEY $K1 ,
-                type integer as ORDERKEY $K2 ,
+     gbyAgg " groupBy type integer ( 19 ) $1 , type integer ( 19 ) $2 aggregates
+                type integer ( 19 ) as CUSTKEY $K1 ,
+                type integer ( 19 ) as ORDERKEY $K2 ,
                 type timestamp as ORDERDATE $3 ,
-                type decimal as TOTALPRICE $4 ,
-                type decimal as SUM_QTY )  $5 sum "
+                type decimal ( 19  2 ) as TOTALPRICE $4 ,
+                type decimal ( 19  2 ) as SUM_QTY )  $5 sum "
      | combined 0
      | next
 
   stage S07 on origin :
-    gbyAgg " groupBy type integer $1 , type integer $2 aggregates
-    type integer as CUSTKEY $K1 ,
-    type integer as ORDERKEY $K2 ,
+    gbyAgg " groupBy type integer ( 19 ) $1 , type integer ( 19 ) $2 aggregates
+    type integer ( 19 ) as CUSTKEY $K1 ,
+    type integer ( 19 ) as ORDERKEY $K2 ,
     type timestamp as ORDERDATE $3 ,
-    type decimal as TOTALPRICE $4 ,
-    type decimal as SUM_QTY )  $5 sum "
+    type decimal ( 19  2 ) as TOTALPRICE $4 ,
+    type decimal ( 19  2 ) as SUM_QTY )  $5 sum "
     | combined 0
     | next
 

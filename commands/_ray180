@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 // NOTE: The expr for sort in stage S03 is incorrectly generated
-//        ArgDef: [0] expr  type VARCHAR as C0_colb9 $1 ASC
+//        ArgDef: [0] expr  type VARCHAR ( 0 ) as C0_colb9 $1 ASC
 //        ( should have been $2)
 
 

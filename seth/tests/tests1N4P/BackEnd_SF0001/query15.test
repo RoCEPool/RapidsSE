@@ -53,15 +53,15 @@ begin
   stage stageMarker4125 on all partitions :
     scan rapidsse public ${testName2}_LineItem
     | filter " type BOOLEAN  $11 DATE ''1996-01-01''  >=  $11 DATE ''1996-04-01''  <  and  "
-    | gbyAgg " groupBy  type INTEGER as l_suppkey $3 aggregates  type INTEGER $K1 , type DECIMAL )  $6 1.00  $7 -  *  sum  "
+    | gbyAgg " groupBy  type INTEGER ( 19 ) as l_suppkey $3 aggregates  type INTEGER ( 19 ) $K1 , type DECIMAL ( 19  2 ) )  $6 1.00  $7 -  *  sum  "
     | combined 0
     | stageMarker4128
   stage stageMarker4128 on all nodes :
-    gbyAgg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type INTEGER ( 19 ) as l_suppkey $1 aggregates  type INTEGER ( 19 ) $K1 , type DECIMAL ( 19  2 ) )  $2 sum  "
     | combined 0
     | stageMarker4131
   stage stageMarker4131 on origin :
-    gbyAgg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type INTEGER ( 19 ) as l_suppkey $1 aggregates  type INTEGER ( 19 ) $K1 , type DECIMAL ( 19  2 ) )  $2 sum  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -90,15 +90,15 @@ begin
       | stageMarker4982
     stage stageMarker4982 on all partitions :
       scan rapidsse public ${testName2}_revenue
-      | aggreg " type DECIMAL )  $2 max  "
+      | aggreg " type DECIMAL ( 19  2 ) )  $2 max  "
       | combined 0
       | stageMarker4985
     stage stageMarker4985 on all nodes :
-      aggreg " type DECIMAL )  $1 max  "
+      aggreg " type DECIMAL ( 19  2 ) )  $1 max  "
       | combined 0
       | stageMarker4988
     stage stageMarker4988 on origin :
-      aggreg " type DECIMAL )  $1 max  "
+      aggreg " type DECIMAL ( 19  2 ) )  $1 max  "
       | combined 0
       | stageMarker4991
     stage stageMarker4991 on origin :
@@ -123,16 +123,16 @@ begin
     | stageMarker5000
   stage stageMarker5000 on all partitions :
     filter " type BOOLEAN  $1 $8 ==  $9 __subquery0003  >=  and  "
-    | project " type INTEGER as s_suppkey $1 , type VARCHAR as s_name $2 , type VARCHAR as s_address $3 , type VARCHAR as s_phone $5 , type DECIMAL as total_revenue $9 "
-    | sort " type INTEGER as s_suppkey $1 ASC  "
+    | project " type INTEGER ( 19 ) as s_suppkey $1 , type VARCHAR ( 0 ) as s_name $2 , type VARCHAR ( 0 ) as s_address $3 , type VARCHAR ( 0 ) as s_phone $5 , type DECIMAL ( 19  2 ) as total_revenue $9 "
+    | sort " type INTEGER ( 19 ) as s_suppkey $1 ASC  "
     | combined 0
     | stageMarker5003
   stage stageMarker5003 on all nodes :
-    sort " type INTEGER as s_suppkey $1 ASC  "
+    sort " type INTEGER ( 19 ) as s_suppkey $1 ASC  "
     | combined 0
     | stageMarker5006
   stage stageMarker5006 on origin :
-    sort " type INTEGER as s_suppkey $1 ASC  "
+    sort " type INTEGER ( 19 ) as s_suppkey $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -152,39 +152,39 @@ pipeline Query15
 
    stage S02 on all partitions :
      indexScan ${testName2}_lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1996-01-01' >= UBOUND $I1 DATE '1996-04-01' <"
-     | gbyAgg " groupBy    type INTEGER as l_suppkey $3
-                aggregates type INTEGER $K1 ,
-                           type DECIMAL )  $6 1.00  $7 -  *  sum  "
+     | gbyAgg " groupBy    type INTEGER ( 19 ) as l_suppkey $3
+                aggregates type INTEGER ( 19 ) $K1 ,
+                           type DECIMAL ( 19  2 ) )  $6 1.00  $7 -  *  sum  "
      | combined 0
      | next
 
    stage S03 on all nodes :
-     gbyAgg " groupBy    type INTEGER as l_suppkey $1
-              aggregates type INTEGER $K1 ,
-                         type DECIMAL )  $2 sum  "
+     gbyAgg " groupBy    type INTEGER ( 19 ) as l_suppkey $1
+              aggregates type INTEGER ( 19 ) $K1 ,
+                         type DECIMAL ( 19  2 ) )  $2 sum  "
      | combined 0
      | next
 
    stage S04 on origin :
-     gbyAgg " groupBy    type INTEGER as l_suppkey $1
-              aggregates type INTEGER as supplier_no $K1 ,
-                         type DECIMAL as TOTAL_REVENUE ) $2 sum  "
+     gbyAgg " groupBy    type INTEGER ( 19 ) as l_suppkey $1
+              aggregates type INTEGER ( 19 ) as supplier_no $K1 ,
+                         type DECIMAL ( 19  2 ) as TOTAL_REVENUE ) $2 sum  "
      | combined 0
      | next
 
    stage S05 on origin :
-     top "type DECIMAL $2" 1
-     | hash "type INTEGER supplier_no"
+     top "type DECIMAL ( 19  2 ) $2" 1
+     | hash "type INTEGER ( 19 ) supplier_no"
      | combined 0
      | next hashcast
 
    stage S06 on all partitions :
      indexJoin ${testName2}_supplier IxS_SUPPKEY "BOUND $I1 supplier_no =="
-     | project "type INTEGER as S_SUPPKEY S_SUPPKEY ,
-                type VARCHAR as S_NAME S_NAME ,
-                type VARCHAR as S_ADDRESS S_ADDRESS ,
-                type VARCHAR as S_PHONE S_PHONE ,
-                type DECIMAL TOTAL_REVENUE "
+     | project "type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
+                type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
+                type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
+                type DECIMAL ( 19  2 ) TOTAL_REVENUE "
      | combined 0
      | next
 

@@ -20,6 +20,9 @@
 static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
 
+
+//#define NULL_STR ENDDEFINE
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -646,7 +649,7 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
   pPdsRowBuffer()->vDepositColVal(_colVal); \
   \
   if (xColPix.m_bPtnKey) \
-    tKeyHsh.vRunningHash(_colVal);
+    tKeyHsh.vRunningHash((byte*)&_colVal, sizeof(i8));
 
 #define vDEPOSIT_NULL(_errorCode) \
   \
@@ -656,8 +659,7 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
   pPdsRowBuffer()->vDepositColVal(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
-    tKeyHsh.vRunningHash(C_DATUM_NULL);
-
+    tKeyHsh.vRunningHash((byte*)&C_DATUM_NULL,sizeof(i8));
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
@@ -2092,7 +2094,15 @@ L_Varchar_unquoted:
   if(nMaxFreeBytes < nPixLength)
     nPixLength = nMaxFreeBytes;
 
-  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+#ifdef NULL_STR
+	char szTemp[256];
+	if (i_Fld >= 13)
+		aStzSet = szTemp;
+	else
+    aStzSet = pPdsRowBuffer()->azDepositString_begin();
+#else
+	aStzSet = pPdsRowBuffer()->azDepositString_begin();
+#endif
 
   azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
@@ -2467,12 +2477,20 @@ L_Varchar_userEnclosed:
   //                                                            deposit varchar
   
 L_Varchar_depositValue:
+#ifdef NULL_STR
+	if (i_Fld >= 13)
+		goto L_Varchar_setNull;
+#endif
+
   if ((u8)(nVchChars) > C_VCH_SIZE_MAX)
     goto L_FieldError;
 
   // Store len of string
   pPdsRowBuffer()->vDepositString_end(nVchChars + 1);
-  
+
+	if (xColPix.m_bPtnKey)
+		tKeyHsh.vRunningHash((byte*)azColVal_varchar, nVchChars);
+
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_Varchar_depositValue: %s\n"_Stz,azColVal_varchar);
   

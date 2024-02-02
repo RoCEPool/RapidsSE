@@ -55,8 +55,12 @@ void Card_Bounds::vX_tblCol_To_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
-  while (xKid.bEach(CK_BOUND))
-    xKid.p_bound()->vX_tblCol_To_expCol(pCI);
+  while (xKid.bEach(CK_BOUND)) {
+    pCI->G.p_bound = xKid.p_bound();
+    pCI->G.p_bound->vX_tblCol_To_expCol(pCI);
+  }
+
+  pCI->G.p_bound = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,12 +104,12 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_Bounds::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
-    xKid.p_bound()->vEnsureTypeId_expCol(pCI);
+    xKid.p_bound()->vEnsure_Cast(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

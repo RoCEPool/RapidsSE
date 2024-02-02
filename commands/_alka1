@@ -1,44 +1,28 @@
 /*============================================================================*/
 /* _alka1                                                                     */
 /*============================================================================*/
+CREATE TABLE LINEITEM (
+l_orderkey integer NOT NULL,
+l_partkey integer NOT NULL,
+l_suppkey integer NOT NULL,
+l_linenumber integer NOT NULL,
+l_quantity decimal(15,2) NOT NULL,
+l_extendedprice decimal(15,2) NOT NULL,
+l_discount decimal(15,2) NOT NULL,
+l_tax decimal(15,2) NOT NULL,
+l_returnflag varchar NOT NULL,
+l_linestatus varchar NOT NULL,
+l_shipdate timestamp NOT NULL,
+l_commitdate timestamp NOT NULL,
+l_receiptdate timestamp NOT NULL,
+l_shipinstruct varchar(25) NOT NULL,
+l_shipmode varchar(10) NOT NULL,
+l_comment varchar(44) NOT NULL
+);
 
-_nation;
-load nation "../DATA/TPCH/nation.tbl";
+create index li_idx3 on LINEITEM(l_shipinstruct);
 
+load LINEITEM "../TPCH/SF_0001/lineitem.tbl";
 
-/pipeline_def
-/weaved
-/transliterated
-/keepCodeFile
-/pipelineName="XYZ"
-SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from nation where n_nationkey = 2;
+/keepCodeFile select * from lineitem;
 
-/*
-create table interval1(a timestamp);
-load interval1 "../DATA/QA/interval/interval1.csv";
-
-/weaved
-/transliterated
-/pipeline_def
-SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-01-19 23:58:19.123' FROM interval1;
-
-explain stage transliterate
-SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
-
-/weaved
-SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
-
-
-explain stage transliterate
-SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
-
-/weaved
-SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
-
-explain stage transliterate
-SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
-
-/weaved
-SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
-
-*/

@@ -167,7 +167,7 @@ begin
     
   stage stageMarker0780 on all partitions :
       filter 1 " type BOOLEAN  $1 $10 ==  "
-    | project 0 " type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type INTEGER as o_orderkey $9 "
+    | project 0 " type INTEGER as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type INTEGER as o_orderkey $9 "
     | limit 0 100
     | stageLast
     
@@ -256,7 +256,7 @@ begin
     
   stage stageMarker0198 on all partitions :
     scan rapidsse public customer
-    | project 0 " type INTEGER as C_CUSTKEY $1 , type VARCHAR as C_NAME $2 , type VARCHAR as C_ADDRESS $3 , type INTEGER as C_NATIONKEY $4 , type VARCHAR as C_PHONE $5 , type DECIMAL as C_ACCTBAL $6 , type VARCHAR as C_MKTSEGMENT $7 , type VARCHAR as C_COMMENT $8 "
+    | project 0 " type INTEGER as C_CUSTKEY $1 , type VARCHAR ( 0 ) as C_NAME $2 , type VARCHAR ( 0 ) as C_ADDRESS $3 , type INTEGER as C_NATIONKEY $4 , type VARCHAR ( 0 ) as C_PHONE $5 , type DECIMAL as C_ACCTBAL $6 , type VARCHAR ( 0 ) as C_MKTSEGMENT $7 , type VARCHAR ( 0 ) as C_COMMENT $8 "
     | limit 2 100
     | stageLast
     

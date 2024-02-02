@@ -91,7 +91,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
         m_pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
         m_pCI->G.p_scan->vAppendChild(m_pCI->G.p_outerJoin);
       }
-      m_pCI->G_vPopIter();
+      m_pCI->G_vPopBoard();
     }
 
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
@@ -108,6 +108,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
     m_pCI->G.p_rpnCalc->vTransfer(p_rpnCalc_on,SF_RLN_OP);
+    m_pCI->G.p_rpnCalc->vCast(p_rpnCalc_on->xCast());
 
     if (p_rpnCalc_on->nChildCards()) {
       delete p_rpnCalc_on->pPopChild_tail();

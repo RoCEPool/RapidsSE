@@ -77,12 +77,12 @@ begin
     | project 1
         "type INTEGER as _orderkey _orderkey ,
          type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
-         //type VARCHAR as C_NAME J1_C_NAME ,
+         //type VARCHAR ( 0 ) as C_NAME J1_C_NAME ,
          type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
-         //type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
+         //type VARCHAR ( 0 ) as C_ADDRESS J1_C_ADDRESS ,
          //type INTEGER as _nationkey J1_C_NATIONKEY ,
-         type VARCHAR as C_PHONE J1_C_PHONE ,
-         type VARCHAR as C_COMMENT J1_C_COMMENT"
+         type VARCHAR ( 0 ) as C_PHONE J1_C_PHONE ,
+         type VARCHAR ( 0 ) as C_COMMENT J1_C_COMMENT"
     | hash 1 expr type INTEGER _orderkey
     | next hashcast
 
@@ -93,53 +93,53 @@ begin
         "type BOOLEAN J1_L_RETURNFLAG 'R' =="
     | aggreg 1
         "type INTEGER as C_CUSTKEY C_CUSTKEY ,
-         type VARCHAR as C_NAME C_NAME ,
+         type VARCHAR ( 0 ) as C_NAME C_NAME ,
          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1  J1_L_DISCOUNT -  *  sum  ,
          type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-         type VARCHAR as C_ADDRESS C_ADDRESS ,
-         type VARCHAR as C_PHONE C_PHONE ,
-         type VARCHAR as C_COMMENT C_COMMENT
+         type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+         type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+         type VARCHAR ( 0 ) as C_COMMENT C_COMMENT
          groupby type INTEGER C_CUSTKEY ,
-           type VARCHAR C_NAME ,
+           type VARCHAR ( 0 ) C_NAME ,
            type DECIMAL C_ACCTBAL ,
-           type VARCHAR C_ADDRESS ,
-           type VARCHAR C_PHONE ,
-           type VARCHAR C_COMMENT"
+           type VARCHAR ( 0 ) C_ADDRESS ,
+           type VARCHAR ( 0 ) C_PHONE ,
+           type VARCHAR ( 0 ) C_COMMENT"
     | next
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   stage G_AGG_N on all nodes :
     | aggreg 1
             "type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
-             type VARCHAR as C_NAME J1_C_NAME ,
+             type VARCHAR ( 0 ) as C_NAME J1_C_NAME ,
              type DECIMAL as REVENUE ) REVENUE  sum  ,
              type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-             type VARCHAR as C_ADDRESS C_ADDRESS ,
-             type VARCHAR as C_PHONE C_PHONE ,
-             type VARCHAR as C_COMMENT C_COMMENT
+             type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+             type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+             type VARCHAR ( 0 ) as C_COMMENT C_COMMENT
              groupby type INTEGER C_CUSTKEY ,
-                type VARCHAR C_NAME ,
+                type VARCHAR ( 0 ) C_NAME ,
                 type DECIMAL C_ACCTBAL ,
-                type VARCHAR C_ADDRESS ,
-                type VARCHAR C_PHONE ,
-                type VARCHAR C_COMMENT"
+                type VARCHAR ( 0 ) C_ADDRESS ,
+                type VARCHAR ( 0 ) C_PHONE ,
+                type VARCHAR ( 0 ) C_COMMENT"
     | next
 
   stage G_GAG_O on origin :
     | aggreg 1
             "type INTEGER as C_CUSTKEY C_CUSTKEY ,
-             type VARCHAR as C_NAME C_NAME ,
+             type VARCHAR ( 0 ) as C_NAME C_NAME ,
              type DECIMAL as REVENUE ) REVENUE  sum  ,
              type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-             type VARCHAR as C_ADDRESS C_ADDRESS ,
-             type VARCHAR as C_PHONE C_PHONE ,
-             type VARCHAR as C_COMMENT C_COMMENT
+             type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+             type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+             type VARCHAR ( 0 ) as C_COMMENT C_COMMENT
              groupby type INTEGER C_CUSTKEY ,
-                type VARCHAR C_NAME ,
+                type VARCHAR ( 0 ) C_NAME ,
                 type DECIMAL C_ACCTBAL ,
-                type VARCHAR C_ADDRESS ,
-                type VARCHAR C_PHONE ,
-                type VARCHAR C_COMMENT"
+                type VARCHAR ( 0 ) C_ADDRESS ,
+                type VARCHAR ( 0 ) C_PHONE ,
+                type VARCHAR ( 0 ) C_COMMENT"
     | next
 
   stage last on origin :

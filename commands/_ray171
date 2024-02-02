@@ -6,12 +6,15 @@ __TPCH_SCHEMA;
 
 // NOTE: S01 ORDAGG streamdef_emitted length , scale not correct
 
+/*
 /optimiser_trace
 /weaved
-/optimise_passthru
 /pipeline_Def
 /keepCodeFile
-/pipelineName = "Query18"
+*/
+
+/optimise_passthru
+/pipelineName = "_ray171"
 pipeline Query18
 begin
    stage S00 on origin :
@@ -42,7 +45,7 @@ begin
 
    stage S04 on all partitions :
      indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
-     | project "type VARCHAR as C_NAME C_NAME ,
+     | project "type VARCHAR ( 0 ) as C_NAME C_NAME ,
                 type INTEGER as C_CUSTKEY C_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -52,13 +55,13 @@ begin
      | next
 
    stage S05 on all partitions :
-     gbyAgg " groupBy type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
                       type DATE as O_ORDERDATE O_ORDERDATE ,
                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
                       aggregates
-                      type VARCHAR as C_NAME $K1 ,
+                      type VARCHAR ( 0 ) as C_NAME $K1 ,
                       type INTEGER as C_CUSTKEY $K2 ,
                       type INTEGER as O_ORDERKEY $K3 ,
                       type DATE as O_ORDERDATE $K4 ,
@@ -68,13 +71,13 @@ begin
      | next
 
    stage S06 on all nodes :
-     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
                        aggregates
-                       type VARCHAR as C_NAME $K1 ,
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
                        type INTEGER as C_CUSTKEY $K2 ,
                        type INTEGER as O_ORDERKEY $K3 ,
                        type DATE as O_ORDERDATE $K4 ,
@@ -84,13 +87,13 @@ begin
      | next
 
    stage S07 on origin :
-     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
                        aggregates
-                       type VARCHAR as C_NAME $K1 ,
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
                        type INTEGER as C_CUSTKEY $K2 ,
                        type INTEGER as O_ORDERKEY $K3 ,
                        type DATE as O_ORDERDATE $K4 ,

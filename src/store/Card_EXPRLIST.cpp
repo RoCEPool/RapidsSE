@@ -157,9 +157,21 @@ void Card_EXPRLIST::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xCI_this(this);
-  while (xCI_this.bEach(CK_EXPR))
-    xCI_this.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR))
+    xKid.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure each expression has a SF_NMD_COL                                    */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vEnsure_nmdCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR))
+    xKid.p_expr()->vEnsure_nmdCol(xKid.i_Child());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,28 +205,28 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet)
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol* pSymbol_arg, Kid* aKid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->bMatches_term0(pSymbol, aeFacet))
-      return xKid.p_expr();
+  while (aKid->bEach(CK_EXPR)) {
+    if (aKid->p_expr()->pSymbol()->bMatches(pSymbol_arg))
+      return aKid->p_expr();
   }
 
   return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* find expression which expresses the given symbol                           */
+/* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid)
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches_ignoring(Symbol *pSymbol_arg, eSF eFacet_ignore)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  while (aKid->bEach(CK_EXPR)) {
-    if (aKid->p_expr()->bMatches_term0(pSymbol))
-      return aKid->p_expr();
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore))
+      return xKid.p_expr();
   }
 
   return nullptr;
@@ -284,7 +296,7 @@ bool Card_EXPRLIST::bSame(Card_EXPRLIST* p_EXPRLIST_arg)
 
     if (Card_Direction* p_direction_this = p_expr_this->pSub_direction()) {
       if (Card_Direction *p_direction_arg = p_expr_arg->pSub_direction()) {
-        if (! p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
+        if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
           return false;
       }
       else {
@@ -314,6 +326,23 @@ void Card_EXPRLIST::vShortForm(String* pString)
     szSep = ","_Stz;
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+bool Card_EXPRLIST::bTestFind_expr_Matching(Card_Expr* p_expr_arg,
+                                            Symbol *pSymbol_arg, eSF eFacet_ignore)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore) &&
+        xKid.p_expr() == p_expr_arg)
+      return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -520,8 +549,12 @@ void Card_EXPRLIST::vX_expCol_To_tblCol(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
-  while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vX_expCol_To_tblCol(pCI);
+  while (xKid.bEach(CK_EXPR)) {
+    pCI->G.p_expr = xKid.p_expr();
+    pCI->G.p_expr->vX_expCol_To_tblCol(pCI);
+  }
+
+  pCI->G.p_expr = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -532,8 +565,12 @@ void Card_EXPRLIST::vX_tblCol_To_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
-  while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vX_tblCol_To_expCol(pCI);
+  while (xKid.bEach(CK_EXPR)) {
+    pCI->G.p_expr = xKid.p_expr();
+    pCI->G.p_expr->vX_tblCol_To_expCol(pCI);
+  }
+
+  pCI->G.p_expr = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

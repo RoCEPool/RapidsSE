@@ -95,7 +95,7 @@ namespace STORE
 
     Card* pAncestor(i8 i_Ancestor);
     void  vAncestorDump(Card* pCard = nullptr);
-    Card* pAncestorFind(eCK eCard);
+    Card* pAncestorFind(eCK eCard, i8* ai_Ancestor=nullptr);
     bool  bAncestorIncludes(eCK eCard);
     Card* pAncestorParent(void);
     void  vAncestorPop(void);
@@ -179,15 +179,12 @@ namespace STORE
     bool bPastPhase(eOH ePhase);
     void vPhase(eOH ePhase);
     void G_vPopBoard(void);
-    void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
-    void vPrintBoard(i8 iLineNo=C_UNKNOWN, bool bForce=false);
+    void vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
     void G_vPushBoard(Board* pBoard);
-    void G_vPushBoard(Stz* szBoardNm);
-    bool G_bPushBoard(i8 i_Board);
-    bool G_bPushBoard(Stz* szBoardNm);
+     bool G_bPushBoard(Stz* szSqyNm);
     void G_vPushNewChild(Card* pParent, eCK eChild);
     void G_vPushIter(void);
 
@@ -201,8 +198,7 @@ namespace STORE
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void G_vRemoveDeleteMain(eCK eCrossCheck);
     void G_vRemoveMain(eCK eCrossCheck);
-    void vRenumberCards(void);
-    Card_Expr* pResolvePrior_expr(Card_Term* p_term);
+     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Expr* pResolvePrior_expr_prior(Card_Term* p_term);
     Card_Emit* pResolvePrior_projection(void);
     void vRestore(void);

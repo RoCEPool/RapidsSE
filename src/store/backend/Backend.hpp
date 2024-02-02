@@ -17,7 +17,6 @@ namespace STORE
   private:
 
     PlanNode*      m_pPlanRoot;
-    PlanNode*      m_pWalkNode;
     String*        m_sPipeline;
     bool           m_bHasUnionOp;
     bool           m_bNewStage;
@@ -89,6 +88,9 @@ namespace STORE
     //
     // helper functions
     //
+		i8 iGetLength(eCT eCTType);
+		i8 iGetScale(eCT eCTType);
+
     bool bInTableSubquery(QueryNode* pNode);
 
     Footer* aFooter(void);

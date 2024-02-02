@@ -1,0 +1,9 @@
+/*============================================================================*/
+/* _jira262                                                                   */
+/*============================================================================*/
+
+create table case1(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
+load case1 "../DATA/JIRA/SE_262.csv";
+
+select case when c+d<=0 then '<=0' end fd from case1 group by case when c+d<=0 then '<=0' end;
+//select case when c+d<=0 then '<=0' end fd from case1 group by fd;

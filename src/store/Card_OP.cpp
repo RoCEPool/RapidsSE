@@ -9,7 +9,7 @@
 #include "CardIter.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
-#include "Expr.hpp"
+//#include "Expr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -81,7 +81,7 @@ bool Card_OP::bIsOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* analyse from for injected columns                                          */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vAnalyse_injected(CardIter* pCI)
+void Card_OP::vAnalyse_injectable(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -457,26 +457,6 @@ bool Card_OP::bIsPartitionLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does op needs projection analysis?                                         */
-/*----------------------------------------------------------------------------*/
-bool Card_OP::bNeedsProjectionAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (bIsCard(CK_o_FROM) ||
-      bIsCard(CK_o_KEYEXISTS) ||
-      bIsCard(CK_o_KEYNOTEXISTS) ||
-      bIsCard(CK_o_INDEXSCAN) ||
-      bIsCard(CK_o_INDEXJOIN) ||
-//    bIsCard(CK_o_PROJECT)      ||
-      bIsCard(CK_o_SCAN) ||
-      bIsCard(CK_o_SORT)         )
-  return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bPeg_Chosen_index(CardIter* pCI)
@@ -524,14 +504,17 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* create/recreate emit                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRecreate_emit(CardIter* pCI)
+void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_key = pCI->G.p_OP->pSub_key();
-  pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
+  pCI->G.p_injectable = pCI->G.p_OP->pSub_injectable();
+  pCI->G.p_key        = pCI->G.p_OP->pSub_key();
+  pCI->G.p_needed     = pCI->G.p_OP->pSub_needed();
+  pCI->G.p_stream     = pCI->G.p_OP->pSub_stream();
 
-  switch (pCI->G.e_MainCard) {
+  eCK eCard_OP = pCI->G.p_OP->eCard();
+  switch (eCard_OP) {
 
     case CK_c_COMBINED:
     case CK_c_SEND:
@@ -543,13 +526,35 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_AGGREG:
+    case CK_o_CROSSJOIN:
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
+      pCI->G.p_emit->vEnsure_nmdCol();
+      if (pCI->Flux.m_pArriving) {
+        pCI->G.p_key = pCI->G.p_OP->pSub_key();
+        pCI->G.p_emit->vEnsure_Cast(pCI);
+        pCI->G.p_key = nullptr;
+      }
+      pCI->G.p_emit->vIncFunctionCount();
       break;
 
     case CK_o_PROJECT:
+      if (pCI->m_pBench->eXform() == XF_PROLOG_ANALYSE_EMIT) {
+        vDebugPoint();
+      }
+
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
+      if (pCI->G.p_OP->i_Child() == 14 && pCI->G.p_emit->nFunctionCount() == 1) {
+//        if (pCI->Flux.m_pArriving)
+//          pCI->Flux.m_pArriving->vDump(__func__);
+//        pCI->G.p_OP->vDump(__func__);
+        vDebugPoint();
+      }
+      pCI->G.p_emit->vEnsure_nmdCol();
+      if (pCI->Flux.m_pArriving)
+        pCI->G.p_emit->vEnsure_Cast(pCI);
+      pCI->G.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -564,15 +569,22 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
         pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
 
       if (pCI->Flux.m_pArriving)
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct();
+        pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
       else
         pCI->G.p_emit = new Card_Emit;
 
       pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
-      pCI->G.p_emit->vAppend_streamDef_table(pCI);
+      pCI->G.p_emit->vInject_expr_nmdCol_table(pCI);
+
 
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+
+      if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()) &&
+          (pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred()))
+        pCI->G.p_boolPred->vEnsure_Cast(pCI);
+
+      pCI->G.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -588,14 +600,14 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       if ((pCI->G.p_emit = pCI->G.p_OP->pSub_emit()))
         pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
 
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct();
+      pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+      pCI->G.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CAST:
-    case CK_o_CROSSJOIN:
     case CK_o_FILTER:
     case CK_o_INFLATE:
       pCI->G.p_OP->vDump(__func__);
@@ -609,94 +621,42 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
   } // switch(pCI->G.e_MainCard)
 
-  if (pCI->G.p_emit && pCI->G.p_key)
-    pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
-}
-
-/*----------------------------------------------------------------------------*/
-/* update projection                                                          */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vUpdate_emit_OP(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Emit* p_emit;
-
-  if (CK_o_PROJECT == eCard() && pCI->Flux.m_pArriving) {
-    p_emit = pSub_emit();
-    p_emit->vEnsureTypeId_expCol(pCI);
-    return;
-  }
-
-  if (! bNeedsProjectionAnalysis())
-    return;
-
-  vEnsure_stream(pCI);
-
-
-  if ((p_emit = pSub_emit()))
-    pCI->G.p_stream->vDeleteChild(p_emit);
-
-
-  Card_Emit* p_emitted_needed;
-  if ((p_emitted_needed = pSub_emit()))
-    vRemoveChild(p_emitted_needed);
-
-  if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_emit = _pCard_Emit(pCI->Flux.m_pArriving->pDupCardRecursive());
-    pCI->G.p_stream->vAppendChild(p_emit);
-    pCI->Flux.m_pArriving = p_emit;
-    if (p_emitted_needed)
-      vAppendChild(p_emitted_needed);
-    return;
+  if (   CK_o_HAVING == eCard_OP
+      || CK_o_WHERE  == eCard_OP) {
+    if ((pCI->G.p_boolPred = pCI->G.p_OP->pSub_boolPred()))
+      pCI->G.p_boolPred->vEnsure_Cast(pCI);
+    else
+    if ((pCI->G.p_rpnCalc = pCI->G.p_OP->pSub_rpnCalc()))
+      pCI->G.p_rpnCalc->vEnsure_Cast(pCI);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
+  if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
+    if (pCI->Flux.m_pArriving)
+      pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
 
-  if (! pCI->G.p_tableNm) {
-    vDump(__func__);
-    vDebugPoint();
+  if (! bRecreate && pCI->G.p_emit && pCI->G.p_key)
+    pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
+
+  if (bRecreate &&
+       (   CK_o_AGGREG    == eCard_OP
+        || CK_o_CROSSJOIN == eCard_OP
+        || CK_o_GBYAGG    == eCard_OP
+        || CK_o_ORDAGG    == eCard_OP
+        || CK_o_PROJECT   == eCard_OP))
+    vCorrect_expCol(pCI->Flux.m_pArriving);
+
+  pCI->Flux.m_pArriving = pCI->G.p_emit;
+
+  if (CK_o_KEYEXISTS    == eCard_OP ||
+      CK_o_KEYNOTEXISTS == eCard_OP ||
+      CK_o_WHERE        == eCard_OP)
+    vCorrect_expCol(pCI->Flux.m_pArriving);
+
+  if (CK_o_SORT== eCard_OP) {
+    pCI->G.p_key->vEnsure_Cast(pCI);
   }
-
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  if (pCI->Flux.m_pArriving) {
-//    p_emit = pCI->Flux.m_pArriving->pClone();
-    p_emit = pCI->Flux.m_pArriving->pReducedCopy();
-    //p_emit->vDump(__func__ );
-  }
-  else {
-    p_emit = new Card_Emit;
-  }
-
-  //  --  --  --  --  --  --  --  --  --  --  --  --  --
-
-  // todo: [ray A 145]
-  char cTblSyn = bIsCard(CK_s_TABLE) ? pSymbol()->cSF_char() : pSub_table()->pSymbol()->cSF_char();
-
-  i8 iExpCol = p_emit->nExpr() + 1;
-
-  i8 nCols = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    Column *pColumn = pStreamDef->pGetColumn(i_Col);
-
-    Card_Expr* p_expr_Column =
-        Card_Expr::pCast_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
-
-    p_emit->vAppendChild(p_expr_Column);
-  }
-
-  pCI->G.p_stream->vAppendChild(p_emit);
-
-  pCI->Flux.m_pArriving = p_emit;
-
-  if (p_emitted_needed)
-    vAppendChild(p_emitted_needed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1472,8 +1432,19 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  psRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[p_rpnCalc->eCTVal()]);
+  Symbol* pSymbol = p_rpnCalc->pSymbol();
+  Cast xCast = pSymbol->xCast();
+
+  psRpnExpr->vCatSprint(" type %s"_Stz, aCT[xCast.m_xTypeId.eCTVal()]);
+
+//#ifdef TYPE_DETAILED
+  if (xCast.m_nTypeLength || xCast.m_nTypeScale) {
+    psRpnExpr->vCatSprint(" ( %lld"_Stz, xCast.m_nTypeLength);
+    if (xCast.m_nTypeScale)
+      psRpnExpr->vCatSprint(" %lld"_Stz, xCast.m_nTypeScale);
+    psRpnExpr->vCatSprint(" )"_Stz);
+  }
+//#endif
 
   if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
     RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
@@ -1536,7 +1507,13 @@ void Card_OP::vRpn_term(String* psRpnExpr, Card_Term* p_term)
     }
   }
 
-  psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+  if (p_term->pSymbol()->bHasFacet(SF_ITM_COL))
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_ITM_COL));
+  else
+//  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
+//    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_EXP_COL));
+//  else
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/

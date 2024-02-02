@@ -160,10 +160,10 @@ begin
 
   stage S14 on all partitions :
   //  project   "   type DECIMAL as C0_S_ACCTBAL $8
-  //              , type VARCHAR as C1_S_NAME $4
-  //              , type VARCHAR as C2_S_ADDRESS $5
-  //              , type VARCHAR as C3_S_PHONE $7
-  //              , type VARCHAR as C4_S_COMMENT $9
+  //              , type VARCHAR ( 0 ) as C1_S_NAME $4
+  //              , type VARCHAR ( 0 ) as C2_S_ADDRESS $5
+  //              , type VARCHAR ( 0 ) as C3_S_PHONE $7
+  //              , type VARCHAR ( 0 ) as C4_S_COMMENT $9
   //              , type INTEGER as C5_PS_PARTKEY $1
   //              , type INTEGER as C6_S_NATIONKEY $6 "
       dynamic
@@ -176,11 +176,11 @@ begin
 
   stage S16 on all partitions :
   //  project   "   type DECIMAL as C0_S_ACCTBAL $1
-  //              , type VARCHAR as C1_S_NAME $2
-  //              , type VARCHAR as C2_N_NAME $9
-  //              , type VARCHAR as C3_S_ADDRESS $3
-  //              , type VARCHAR as C4_S_PHONE $4
-  //              , type VARCHAR as C5_S_COMMENT $5
+  //              , type VARCHAR ( 0 ) as C1_S_NAME $2
+  //              , type VARCHAR ( 0 ) as C2_N_NAME $9
+  //              , type VARCHAR ( 0 ) as C3_S_ADDRESS $3
+  //              , type VARCHAR ( 0 ) as C4_S_PHONE $4
+  //              , type VARCHAR ( 0 ) as C5_S_COMMENT $5
   //              , type INTEGER as C6_PS_PARTKEY $6
   //              , type INTEGER as C7_N_REGIONKEY $10 "
       dynamic
@@ -194,13 +194,13 @@ begin
 
   stage S18 on all partitions :
   //  project   "   type DECIMAL as C0_S_ACCTBAL $1
-  //              , type VARCHAR as C1_S_NAME $2
+  //              , type VARCHAR ( 0 ) as C1_S_NAME $2
 
 ~~TextBlock[1] : 1726 bytes
-  //              , type VARCHAR as C2_N_NAME $3
-  //              , type VARCHAR as C3_S_ADDRESS $4
-  //              , type VARCHAR as C4_S_PHONE $5
-  //              , type VARCHAR as C5_S_COMMENT $6
+  //              , type VARCHAR ( 0 ) as C2_N_NAME $3
+  //              , type VARCHAR ( 0 ) as C3_S_ADDRESS $4
+  //              , type VARCHAR ( 0 ) as C4_S_PHONE $5
+  //              , type VARCHAR ( 0 ) as C5_S_COMMENT $6
   //              , type INTEGER as C6_PS_PARTKEY $7 "
       dynamic
     | next      broadcast
@@ -213,28 +213,28 @@ begin
 
   stage S20 on all partitions :
   //  project   "   type DECIMAL as C0_s_acctbal $1
-  //              , type VARCHAR as C1_s_name $2
-  //              , type VARCHAR as C2_n_name $3
+  //              , type VARCHAR ( 0 ) as C1_s_name $2
+  //              , type VARCHAR ( 0 ) as C2_n_name $3
   //              , type INTEGER as C3_p_partkey $8
-  //              , type VARCHAR as C4_p_mfgr $10
-  //              , type VARCHAR as C5_s_address $4
-  //              , type VARCHAR as C6_s_phone $5
-  //              , type VARCHAR as C7_s_comment $6 "
+  //              , type VARCHAR ( 0 ) as C4_p_mfgr $10
+  //              , type VARCHAR ( 0 ) as C5_s_address $4
+  //              , type VARCHAR ( 0 ) as C6_s_phone $5
+  //              , type VARCHAR ( 0 ) as C7_s_comment $6 "
       dynamic
     | next
 
   stage S21 on all partitions :
-  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR as C1_n_name $3 ASC , type VARCHAR as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
+  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR ( 0 ) as C1_n_name $3 ASC , type VARCHAR ( 0 ) as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
       dynamic
     | next
 
   stage S22 on all nodes :
-  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR as C1_n_name $3 ASC , type VARCHAR as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
+  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR ( 0 ) as C1_n_name $3 ASC , type VARCHAR ( 0 ) as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
       dynamic
     | next
 
   stage S23 on origin :
-  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR as C1_n_name $3 ASC , type VARCHAR as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
+  //  sort      " type DECIMAL as C0_s_acctbal $1 DESC , type VARCHAR ( 0 ) as C1_n_name $3 ASC , type VARCHAR ( 0 ) as C2_s_name $2 ASC , type INTEGER as C3_p_partkey $4 ASC "
       dynamic
     | next
 */

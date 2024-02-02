@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* XF_Prolog_Review_as.hpp -- As Review                                              */
+/* XF_Epilog_X_tblCol_To_expCol.hpp -- Table-Column to Expression-Column      */
 /*============================================================================*/
 #pragma once
 
-#include "XF_PROLOG.hpp"
+#include "XF_EPILOG.hpp"
 
 namespace STORE
 {
-  class XF_Prolog_Review_as : public XF_PROLOG
+  class XF_Epilog_X_tblCol_To_expCol : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,18 +17,21 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_Review_as(CardIter* pCI);
-   ~XF_Prolog_Review_as(void) noexcept(false);
+    XF_Epilog_X_tblCol_To_expCol(CardIter* pCI);
+   ~XF_Epilog_X_tblCol_To_expCol(void) noexcept(false);
 
-    static void vReview(CardIter* pCI);
+    static void vConvert(CardIter* pCI);
 
-    void vReview_as(void);
+    void vX_tblCol_To_expCol(void);
 
   private:
+
+    void vTo_stmCol(void);
+
     Footer* aFooter(void);
   };
 
-  XF_Prolog_Review_as* _pXF_Prolog_Review_as(void* aAddr);
+  XF_Epilog_X_tblCol_To_expCol* _pXF_Epilog_X_tblCol_To_expCol(void* aAddr);
 }
 
 /*============================================================================*/

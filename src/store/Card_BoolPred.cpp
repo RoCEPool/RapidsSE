@@ -411,19 +411,25 @@ void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vEnsureTypeId_expCol(CardIter* pCI)
+void Card_BoolPred::vEnsure_Cast(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CONJ* p_conj = pRoot_conj();
 
   if (CK_TERM != p_conj->eCard()) {
-    p_conj->vEnsureTypeId_expCol(pCI);
+    p_conj->vEnsure_Cast(pCI);
     return;
   }
 
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(! xCast_last.m_xTypeId.bIsValid());
+
   for (Kid xBoolPred(this); xBoolPred.bEach(CK_TERM); /**/) {
-    xBoolPred.p_term()->vEnsureTypeId_expCol(pCI);
+    xBoolPred.p_term()->vEnsure_Cast(pCI,xCast_last);
   }
 }
 
@@ -481,7 +487,7 @@ Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(void)
   {
     UNUSED(bUpwards);
 
-    if (p_conj->bContains_sqyCall()) {
+    if (p_conj->bContains_sqyNo()) {
       p_rlnConj = _pCard_RlnConj(p_conj);
       return C_TERMINATE_RECURSION;
     }
@@ -665,7 +671,7 @@ void Card_BoolPred::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
     if (p_card->bIsCard(CK_RLNCONJ)) {
       p_card->vMark1(MARK_COMPARE);
       pCI->vDontDescend(true);
-      if (((Card_CONJ *) p_card)->bContains_sqyCall())
+      if (((Card_CONJ *) p_card)->bContains_sqyNo())
         continue;
       Symbol* pWhichTable = ((Card_CONJ *) p_card)->pTable_WhichTableFor_Conj(pCI);
       if (pWhichTable) {
@@ -834,13 +840,16 @@ void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
     if (! p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Card_Term* p_term = _pCard_Term(p_conj);
-    Symbol* pSymbol = p_term->pSymbol();
-    if (!pSymbol->bIs_Exp_Col())
+    pCI->G.p_term = _pCard_Term(p_conj);
+    Symbol* pSymbol = pCI->G.p_term->pSymbol();
+    if (!pSymbol->bIs_Exp_Col()) {
+      pCI->G.p_term = nullptr;
       return C_CONTINUE_RECURSION;
+    }
 
-    p_term->vX_expCol_To_tblCol(pCI);
+    pCI->G.p_term->vX_expCol_To_tblCol(pCI);
 
+    pCI->G.p_term = nullptr;
     return C_CONTINUE_RECURSION;
   };
 

@@ -29,26 +29,20 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench)
+Board::Board(i8 i_Board, eBK eBoard, Stz* szSqyNm, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_i_Board    = i_Board;
-  m_sBoardNm   = szBoardNm;
-  m_eBoard = eBoard;
+  m_i_Board = i_Board;
+  m_eBoard  = eBoard;
+  m_ePhase  = OH_NONE;
+  m_pBench  = pBench;
 
-  m_pBench     = pBench;
-
-  m_pDeck = new Card_Deck;
-
-  m_pSubQuery = new SubQuery(this);
-
-  m_pState = new TagSet;
-
-  m_pMark = new Mark;
-
-  m_ePhase = OH_NONE;
+  m_pSubQuery = new SubQuery(i_Board, szSqyNm, this);
+  m_pDeck     = new Card_Deck;
+  m_pState    = new TagSet;
+  m_pMark     = new Mark;
 
   _checkInitialised_(CN_BOARD);
 
@@ -69,12 +63,9 @@ Board::~Board(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  delete m_pDeck;
-
   delete m_pSubQuery;
-
+  delete m_pDeck;
   delete m_pState;
-
   delete m_pMark;
 }
 
@@ -85,7 +76,7 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
+void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost)
 {
   _static_
 
@@ -98,9 +89,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   if (! pCI->G.p_emit)
     return;
 
-
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
-  //pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_NMD_COL, "__RESULT1"_Stz));
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 
@@ -111,11 +100,15 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 
   pCI->G.p_rpnCalc->vCast(p_expr_found->xCast());
 
-  pCI->G.p_expr-> SYM(SF_EXP_COL, (i8)1);
+  s32 sResultN;
+  sResultN.vSprint("__RESULT%lld"_Stz,pSubQuery_leftmost->pBoard()->i_Board());
+  s32 sRn;
+  sRn.vSprint("$R%lld"_Stz,pSubQuery_leftmost->pBoard()->i_Board());
+
+  pCI->G.p_expr->pSymbol()->vFacet(SF_EXP_COL, (i8)1);
+  pCI->G.p_expr->pSymbol()->vAppendFacet(SF_NMD_COL, sResultN);
+  pCI->G.p_expr->pSymbol()->vAppendFacet(SF_SQY_RSL, sRn);
   pCI->G.p_expr->vCast(p_expr_found->xCast());
-
-  pCI->G.p_expr->pSymbol()->vAppendFacet(SF_NMD_COL, "__RESULT1"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,16 +198,6 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Bench* Board::pBench(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  return m_pBench;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 i8 Board::i_Board(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
@@ -243,36 +226,6 @@ eBK Board::eBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get board name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Board::szBoardNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_sBoardNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set board name                                                             */
-/*----------------------------------------------------------------------------*/
-void Board::vBoardNm(Stz* szBoardNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_sBoardNm = szBoardNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get card registers                                                         */
-/*----------------------------------------------------------------------------*/
-CardCtl* Board::pCardCtl(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_pBench->pCardCtl();
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear all marks                                                           */
 /*----------------------------------------------------------------------------*/
 void Board::vClearCardMarks(void)
@@ -293,6 +246,23 @@ Card_Deck* Board::pDeck(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump this board                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vDump(i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  vTrace("%sBoard %p %lld %s\n"_Stz,
+         Stz::szTab(iDepth),
+         this,
+         m_i_Board,
+         aBK[m_eBoard]
+  );
+
+  m_pSubQuery->vDump(iDepth+1);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vEndPhase(void)
@@ -302,16 +272,6 @@ void Board::vEndPhase(void)
   m_pState->vInsert(aOH[m_ePhase]);
 
   m_ePhase = OH_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get mark                                                                   */
-/*----------------------------------------------------------------------------*/
-Mark* Board::pMark(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_pMark;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -422,30 +382,8 @@ void Board::vValidate(CardIter* pCI)
   RASSERT(pCI->G.pBoard);
 
   if (pCI->G.pBoard->eBoard() == BK_SUBQUERY) {
-    vValidate_SubQuery(pCI);
+    m_pSubQuery->vValidate(pCI);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vValidate_SubQuery(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  RASSERT(pCI->G.pBoard);
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
-
-  if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
-    return;
-
-  pCI->vSave();
-  pCI->vNullMembers();
-  pCI->G.pDeck->vValidate(pCI);
-  pCI->vRestore();
-
-  RASSERT(pCI->G.pBoard);
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
 }
 
 
@@ -568,7 +506,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprintSnippet(false,"%s : %s : %s"_Stz,
+  pRibbon->vSprintSnippet(false,"Print Board: %s : %s : %s"_Stz,
                         aXF[m_pBench->eXform()],
                         aXF_desc[m_pBench->eXform()],
                         m_pBench->szXdesc());

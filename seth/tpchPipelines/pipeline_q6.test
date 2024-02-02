@@ -15,17 +15,17 @@ pipeline Query6
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
      | filter " type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. < and"
-     | aggreg " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
+     | aggreg " type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
      | next
 
    stage S02 on all nodes :
-     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
+     aggreg " type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
    stage S03 on origin :
-     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
+     aggreg " type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  "
      | combined 0
      | next
 

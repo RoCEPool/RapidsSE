@@ -47,7 +47,7 @@ begin
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
                               O_ORDERDATE DATE '1993-10-01' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
-                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+                     type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY
     | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
@@ -56,27 +56,27 @@ begin
    stage Gs_LINEITEM on all partitions :
      keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | aggreg expr groupby type VARCHAR O_ORDERPRIORITY
+    | aggreg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
                   aggregates
-                  type VARCHAR as O_ORDERPRIORITY $K1 ,
+                  type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
                   type INTEGER as ORDER_COUNT ) countAll
 
     | combined 0
     | next
     
   stage G_CNT_N on all nodes :
-    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
+    aggreg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
                 aggregates
-                type VARCHAR as O_ORDERPRIORITY $K1 ,
+                type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
                 type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
 
     | combined 0
     | next
     
   stage G_CNT_O on origin :
-    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
+    aggreg expr groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
                         aggregates
-                        type VARCHAR as O_ORDERPRIORITY $K1 ,
+                        type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
                         type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
 
     | combined 0

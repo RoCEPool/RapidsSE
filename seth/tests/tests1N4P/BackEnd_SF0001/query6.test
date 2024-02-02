@@ -35,15 +35,15 @@ begin
   stage stageMarker4240 on all partitions :
     scan rapidsse public ${testName2}_lineitem
     | filter " type BOOLEAN  $11 TIMESTAMP ''1994-01-01 00:00:00''  >=  $11 TIMESTAMP ''1995-01-01 00:00:00''  <  and  }  0.06  0.01  -  0.06  0.01  +  $7 between  and  $5 24.  <  and  "
-    | aggreg " type DECIMAL )  $6 $7 *  sum  "
+    | aggreg " type DECIMAL ( 19  2 ) )  $6 $7 *  sum  "
     | combined 0
     | stageMarker4243
   stage stageMarker4243 on all nodes :
-    aggreg " type DECIMAL )  $1 sum  "
+    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
     | combined 0
     | stageMarker4246
   stage stageMarker4246 on origin :
-    aggreg " type DECIMAL as revenue )  $1 sum  "
+    aggreg " type DECIMAL ( 19  2 ) as revenue )  $1 sum  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -73,17 +73,17 @@ pipeline Query6
    stage S01 on all partitions :
      indexscan ${testName2}_lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
      | filter " type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. < and"
-     | aggreg " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
+     | aggreg " type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
      | next
 
    stage S02 on all nodes :
-     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
+     aggreg " type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
    stage S03 on origin :
-     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
+     aggreg " type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  "
      | combined 0
      | next
 

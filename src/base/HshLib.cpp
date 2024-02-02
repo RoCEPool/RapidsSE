@@ -137,11 +137,11 @@ i8 HshLib::iHashRotateReverse(byte* ayaKey, i8 nBytes, i8 nRotate)
 /*----------------------------------------------------------------------------*/
 /* update running hash with given mix-in value                                */
 /*----------------------------------------------------------------------------*/
-void HshLib::vRunningHash(i8* aiHash, i8 iMixIn)
+void HshLib::vRunningHash(i8* aiHash, byte* aMixIn, i8 iSize)
 {
   _static_
   
-  * aiHash += HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+  * aiHash += HshLib::iHash(aMixIn,iSize);
 }
 
 

@@ -72,21 +72,21 @@ begin
 
   stage S01 on all partitions :
       scan      TABLE9
-    | project   "   type FLOAT ) $5 min
+    | project   "   type FLOAT ( 19 ) ( 19 ) ) $5 min
                   , type DECIMAL ) $6 min
                   , type INTEGER ) $7 min "
     | combined  0
     | next
 
   stage S02 on all nodes :
-      project   "   type FLOAT ) $1 min
+      project   "   type FLOAT ( 19 ) ( 19 ) ) $1 min
                   , type DECIMAL ) $2 min
                   , type INTEGER ) $3 min "
     | combined  0
     | next
 
   stage S03 on origin :
-      project   "   type FLOAT as x ) $1 min
+      project   "   type FLOAT ( 19 ) ( 19 ) as x ) $1 min
                   , type DECIMAL as y ) $2 min
                   , type INTEGER as z ) $3 min "
     | combined  0
@@ -98,7 +98,7 @@ begin
     | next
 
   stage S05 on origin :
-      project   "   type FLOAT as x $1
+      project   "   type FLOAT ( 19 ) ( 19 ) as x $1
                   , type DECIMAL as y $2
                   , type INTEGER as z $3 "
     | combined  0

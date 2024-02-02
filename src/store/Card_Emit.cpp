@@ -82,48 +82,21 @@ void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
 
   //p_key->vDump();
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
 
-    //xKid.p_expr()->vDump(__func__ );
+    //xEmit.p_expr()->vDump(__func__ );
 
-    if (! xKid.p_expr()->bIsScalarCol())
+    if (! xEmit.p_expr()->bIsScalarCol())
       continue;
 
-    Symbol* pSymbol_expr_sole = xKid.p_expr()->pGet_Symbol(0);
+    Symbol* pSymbol_expr_scalar = xEmit.p_expr()->pGet_Symbol(0);
 
-    Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term0(pSymbol_expr_sole);
-    if (! p_expr_sole_key)
+    Card_Expr* p_expr_scalar = p_key->pDecode_scalar_expr_Via_symbol(pSymbol_expr_scalar);
+
+    if (! p_expr_scalar)
       continue;
 
-    //pSymbol_expr_sole->vCastFacets(p_expr_sole_key->pSymbol());
-    pSymbol_expr_sole->vConcatFacets(p_expr_sole_key->pSymbol());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* append streamDef of table to this emit                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Emit::vAppend_streamDef_table(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm(C_NOT_NULL);
-
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
-
-  i8 iExpCol = pCI->G.p_emit->nExpr() + 1;
-
-  i8 nCols = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    Column *pColumn = pStreamDef->pGetColumn(i_Col);
-
-    Card_Expr* p_expr_Column =
-        Card_Expr::pCast_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
-
-    pCI->G.p_emit->vAppendChild(p_expr_Column);
+    pSymbol_expr_scalar->vConcatFacets(p_expr_scalar->pSymbol());
   }
 }
 
@@ -184,10 +157,14 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(xCI_rpnCalc.p_term()->pSymbol());
         Symbol* pSymbol_tblCol = p_expr_key->pFirst_tblCol();
 
-        vDebugPoint();
 
-        if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol))
+        if (p_expr_key->bIsScalarCol()) {
+          p_expr_key->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
+        }
+
+        if (p_needed->pFind_expr_Matches(pSymbol_tblCol)) {
           continue;
+        }
 
         Card_Expr* p_expr_cloned = p_expr_key->pClone();
         p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
@@ -197,13 +174,20 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       else
       if (xCI_rpnCalc.p_term()->bIsColSym()) {
 
-        // which we haven't already added
-        if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
-          continue;
+        if (xCI_projection.p_expr()->bIsScalarCol()) {
+          xCI_projection.p_expr()->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
+        }
 
-        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
-          p_needed->vAppendChild(p_expr_col->pClone());
       }
+
+      // which we haven't already added
+      if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol())) {
+        continue;
+      }
+
+      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
+        p_needed->vAppendChild(p_expr_col->pClone());
+
       else {
 
       }
@@ -225,7 +209,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
           if (!xCI_rpnCalc.p_term()->bIsColSym())
             continue;
           // which we haven't already added
-          if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
+          if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol()))
             continue;
 
           if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term())) {
@@ -276,8 +260,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGet_expr(i_RunKeyExpr);
 
     Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
-    Card_Expr* p_expr_prjCol = pFind_expr_Via_term0(p_term_runkey->pSymbol());
-
+    Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
     if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc()->nChildCards()) {
 
       // annotation or direction in passing
@@ -294,14 +277,19 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_Emit::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_key = pCI->G.p_OP->pSub_key();
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypeId_expCol(pCI);
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
+    pCI->G.p_expr = xEmit.p_expr();
+    pCI->G.p_expr->vEnsure_Cast(pCI);
+  }
+
+  pCI->G.p_expr = nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,7 +309,7 @@ Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* induct this arriving emit                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pInduct(void) {
+Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Emit *p_emit_inducted = new Card_Emit;
@@ -329,7 +317,12 @@ Card_Emit* Card_Emit::pInduct(void) {
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_arriving = xKid.p_expr();
 
-    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct();
+    // exclude not needed expressions
+    if (pCI->G.p_needed)
+      if (! pCI->G.p_needed->bNeeded_expr(p_expr_arriving))
+        continue;
+
+    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct(xKid.i_Child()+1);
     p_emit_inducted->vAppendChild(p_expr_inducted);
   }
 
@@ -338,6 +331,32 @@ Card_Emit* Card_Emit::pInduct(void) {
   return p_emit_inducted;
 }
 
+/*----------------------------------------------------------------------------*/
+/* inject streamDef of table into this emit                                   */
+/*----------------------------------------------------------------------------*/
+void Card_Emit::vInject_expr_nmdCol_table(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm(C_NOT_NULL);
+
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
+
+  i8 iExpCol = pCI->G.p_emit->nExpr() + 1;
+
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Card_Expr* p_expr_nmdCol =
+        Card_Expr::pCraft_expr_nmdCol(pColumn, iExpCol++, cTblSyn, i_Col + 1);
+
+    pCI->G.p_emit->vAppendChild(p_expr_nmdCol);
+  }
+}
 /*----------------------------------------------------------------------------*/
 /* is this a compound projection?                                             */
 /*----------------------------------------------------------------------------*/
@@ -435,57 +454,24 @@ void Card_Emit::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   s32 sName;
 
-  sName.vSprint("%s%lld]"_Stz,
+//  sName.vSprint("%s%lld]"_Stz,
+//                Stz::szDots(iDepth - 1),
+//                m_i_Child);
+//
+//  sName.vSprintCat("%s"_Stz,
+//                   szCardNm());
+
+  sName.vSprint("%s%lld]out"_Stz,
                 Stz::szDots(iDepth - 1),
                 m_i_Child);
 
-  sName.vSprintCat("%s"_Stz,
-                   szCardNm());
-
-  pRibbon->vSprintSnippet(false,"%c%c%s %p"_Stz,
+  pRibbon->vSprintSnippet(false,"%c%c%s %llx %lld"_Stz,
                           cMark1(),
                           cMark2(),
                           sName.szStz(),
-                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr(),
+                          m_nFunctionCount);
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* propagate this projection                                                  */
-/*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pPropagate(void) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Emit *p_emit_propagated = new Card_Emit;
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-
-    Card_Expr *p_expr_propagated = xKid.p_expr()->pPropagate();
-    p_emit_propagated->vAppendChild(p_expr_propagated);
-  }
-
-  p_emit_propagated->vRenumberAll_expr();
-
-  return p_emit_propagated;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* return a reduced copy of this projection                                   */
-/*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pReducedCopy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Emit* p_emitted_reduced = new Card_Emit;
-
-  i8 i_Expr = 0;
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    Card_Expr* p_expr_copy = xKid.p_expr()->pReducedCopy(i_Expr++);
-    p_emitted_reduced->vAppendChild(p_expr_copy);
-  }
-
-  return p_emitted_reduced;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -501,10 +487,9 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
   }
   else
   if (p_term->pSymbol()->bIs_Tbl_Col()) {
-    Card_Expr *p_expr_prior = this->pFind_expr_Via_term0(p_term->pSymbol());
+    Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
     return p_expr_prior;
   }
-
   return nullptr;
 }
 
@@ -531,7 +516,7 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(CK_s_STREAM == pParent->eCard());
 
   if (! pSub_expr())
-    pCI->vPrintBoard(__LINE__,true);
+    pCI->vPrintBoard(__func__,__LINE__,true);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
   vValidate_notHave(CK_s_KEY, CK_NONE);

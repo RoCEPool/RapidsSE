@@ -258,16 +258,22 @@ void CardIter::vAncestorDump(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* find ancestor                                                             */
 /*----------------------------------------------------------------------------*/
-Card* CardIter::pAncestorFind(eCK eCard)
+Card* CardIter::pAncestorFind(eCK eCard, i8* ai_Ancestor)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
   for (i8 i_Ancestor = m_nAncestors-1; i_Ancestor >= 0; i_Ancestor--) {
     Card *pCard_ancestor = m_apAncestry[i_Ancestor];
 
-    if (pCard_ancestor->bIsCard(eCard))
+    if (pCard_ancestor->bIsCard(eCard)) {
+      if (ai_Ancestor)
+        *ai_Ancestor = i_Ancestor;
       return pCard_ancestor;
+    }
   }
+
+  if (ai_Ancestor)
+    *ai_Ancestor = C_UNKNOWN;
 
   return nullptr;
 }
@@ -1162,8 +1168,6 @@ void CardIter::vEndTransform(i8 iLineNo)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vRenumberCards();
-
   if (G.pBoard) {
 
     G.pDeck->vCheckCorrectness();
@@ -1179,7 +1183,7 @@ void CardIter::vEndTransform(i8 iLineNo)
       xDeck.pChild()->vEnsureLast(CK_s_NEEDED);
     }
 
-    vPrintBoard(iLineNo);
+    vPrintBoard(__func__,iLineNo);
 
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
       ShortForm *pShortForm = new ShortForm(this);
@@ -1415,7 +1419,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
 
-    case CK_s_PAYLOAD:          return G.p_payload;
     case CK_PAYLOADCELLS:     return G.p_payloadCells;
     case CK_o_PROJECT:          return G.p_project;
 
@@ -1494,7 +1497,7 @@ bool CardIter::G_bIsBoardNm(Stz* szBoardNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (m_pBench->pGetBoard(szBoardNm))
+  if (m_pBench->pFindBoard_By_sqyNm(szBoardNm))
     return true;
 
   return false;
@@ -1657,7 +1660,6 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
     case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
-    case CK_s_PAYLOAD: G.p_payload           = _pCard_Payload(pCard); break;
     case CK_PAYLOADCELLS:     G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
     case CK_o_PROJECT: G.p_project           = _pCard_Project(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1966,7 +1968,7 @@ void CardIter::vPhase(eOH ePhase)
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vPopIter(void)
+void CardIter::G_vPopBoard(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -2013,13 +2015,14 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
+void CardIter::vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-  UNUSED(iLineNo);
 
   if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE) && ! bForce)
     return;
+
+  G.pBoard->vRenumberCards();
 
   G.pBoard->vPrintBoard(this,szXdesc());
 
@@ -2046,10 +2049,7 @@ void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
 
 
   s256 sWhere;
-  if (C_UNKNOWN == iLineNo)
-    sWhere.vCatSprint("%s :: %s"_Stz, aXF[m_pBench->eXform()],szXfunc());
-  else
-    sWhere.vCatSprint("%s :: %s:%lld"_Stz, aXF[m_pBench->eXform()], szXfunc(), iLineNo);
+    sWhere.vCatSprint("%s :: %s:%lld"_Stz, aXF[m_pBench->eXform()], azFunc, iLineNo);
 
   vTrace("%s\n"_Stz, sWhere.azChar());
 }
@@ -2068,18 +2068,6 @@ void CardIter::vSnapFluxArriving(void)
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vPushBoard(Stz* szBoardNm)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Board* pBoard = m_pBench->pGetBoard(szBoardNm);
-
-  G_vPushBoard(pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
 void CardIter::G_vPushBoard(Board* pBoard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -2092,36 +2080,17 @@ void CardIter::G_vPushBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push board                                                                 */
+/* find and push board onto iter stack                                        */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bPushBoard(i8 i_Board)
+bool CardIter::G_bPushBoard(Stz* szSqyNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Board* pBoard = m_pBench->pGetBoard(i_Board);
-  RASSERT(pBoard);
-
-  if (pBoard) {
-    G_vPushBoard(pBoard);
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bPushBoard(Stz* szBoardNm)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Board* pSubQueryBoard = m_pBench->pGetBoard(szBoardNm);
-  if (! pSubQueryBoard) {
+  Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szSqyNm);
+  if (! pBoard)
      return false;
-  }
 
-  G_vPushBoard(pSubQueryBoard);
+  G_vPushBoard(pBoard);
 
   return true;
 }
@@ -2331,16 +2300,6 @@ void CardIter::G_vRemoveMain(eCK eCrossCheck)
   _precondition_( _MAGIC_, _FOOTER_);
 
   this->vRemoveCurr(eCrossCheck);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove main card from deck (do not clear M members or registers)           */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRenumberCards(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  //m_pBench->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2671,7 +2630,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_OUTERCOLNM:   G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
       case CK_OUTERJOIN:    G.p_outerJoin->vValidate(this, iDepth, pCard);  break;
 
-      case CK_s_PAYLOAD:      G.p_payload->vValidate(this, iDepth, pCard);  break;
       case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
       case CK_o_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
 

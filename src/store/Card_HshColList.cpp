@@ -52,8 +52,11 @@ void Card_HshColList::vX_tblCol_To_expCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_t_HSHCOL)) {
-    xKid.p_hshCol()->vX_tblCol_To_expCol(pCI);
+    pCI->G.p_hshCol = xKid.p_hshCol();
+    pCI->G.p_hshCol->vX_tblCol_To_expCol(pCI);
   }
+
+  pCI->G.p_hshCol = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

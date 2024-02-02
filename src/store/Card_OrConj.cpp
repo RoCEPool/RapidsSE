@@ -46,9 +46,15 @@ Card_OrConj::~Card_OrConj(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_OrConj::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_OrConj::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
   Kid xOrConj(this);
   while (xOrConj.bEach()) {
@@ -58,15 +64,16 @@ void Card_OrConj::vEnsureTypeId_expCol(CardIter *pCI)
     switch (eCard) {
 
       case CK_ANDCONJ:
-        _pCard_AndConj(pCard)->vEnsureTypeId_expCol(pCI); break;
+        _pCard_AndConj(pCard)->vEnsure_Cast(pCI); break;
       case CK_NOTCONJ:
-        _pCard_NotConj(pCard)->vEnsureTypeId_expCol(pCI); break;
+        _pCard_NotConj(pCard)->vEnsure_Cast(pCI); break;
       case CK_ORCONJ:
-        _pCard_OrConj(pCard)->vEnsureTypeId_expCol(pCI);  break;
+        _pCard_OrConj(pCard)->vEnsure_Cast(pCI);  break;
       case CK_RLNCONJ:
-        _pCard_RlnConj(pCard)->vEnsureTypeId_expCol(pCI); break;
+        _pCard_RlnConj(pCard)->vEnsure_Cast(pCI); break;
 
-      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeId_expCol(pCI);     break;
+      case CK_TERM:
+        _pCard_Term(pCard)->vEnsure_Cast(pCI, xCast_last);  break;
 
       default:
         NEVER_REACH

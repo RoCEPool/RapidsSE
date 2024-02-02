@@ -114,8 +114,9 @@ void XF_Epilog_Type_Cast::vCast(void)
     } // switch
 
     if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-      m_pCI->G.p_key->vEnsureTypeId_expCol(m_pCI);
+      m_pCI->G.p_key->vEnsure_Cast(m_pCI);
       m_pCI->G.p_key->vRenumberAll_expr();
+      m_pCI->G.p_key = nullptr;
     }
 
     if ((m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit())) {
@@ -127,35 +128,46 @@ void XF_Epilog_Type_Cast::vCast(void)
 
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
 
-        m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
+        m_pCI->G.p_emit->vEnsure_Cast(m_pCI);
         m_pCI->G.p_emit->vRenumberAll_expr();
 
       }
       else if (m_pCI->Flux.m_pArriving) {
-        m_pCI->G.p_emit->vEnsureTypeId_expCol(m_pCI);
+        if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
+          m_pCI->G.p_key->vEnsure_Cast(m_pCI);
+        }
+
+        if (m_pCI->m_pBench->eXform() == XF_EPILOG_TYPE_CAST &&
+            CK_o_GBYAGG == m_pCI->G.e_MainCard) {
+          m_pCI->vPrintBoard(__func__ ,__LINE__);
+          vDebugPoint();
+        }
+
+        m_pCI->G.p_emit->vEnsure_Cast(m_pCI);
         m_pCI->G.p_emit->vRenumberAll_expr();
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+        m_pCI->G.p_key = nullptr;
       }
       else {
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
       }
 
       if ((m_pCI->G.p_streamKey = m_pCI->G.p_OP->pSub_streamKey()))
-        m_pCI->G.p_streamKey->vEnsureTypeId_expCol(m_pCI);
+        m_pCI->G.p_streamKey->vEnsure_Cast(m_pCI);
 
       if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred())) {
         //m_pCI->G.p_boolPred->vDump(__func__);
-        m_pCI->G.p_boolPred->vEnsureTypeId_expCol(m_pCI);
+        m_pCI->G.p_boolPred->vEnsure_Cast(m_pCI);
       }
 
-      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
-        m_pCI->G.p_rpnCalc->vEnsureTypeId_expCol(m_pCI);
+//      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
+//        m_pCI->G.p_rpnCalc->vEnsure_Cast(m_pCI);
 
       if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
           m_pCI->G.p_indexList->vTypes_For_expCol(m_pCI);
 
       if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-        m_pCI->G.p_constraint->vEnsureTypeId_expCol(m_pCI);
+        m_pCI->G.p_constraint->vEnsure_Cast(m_pCI);
     }
     else {
 

@@ -24,7 +24,7 @@ begin
   stage stageMarker0234 on all partitions :
     scan rapidsse public part
     | filter 2 " type BOOLEAN  $1 1000  >  $1 2000  <  and  "
-    | project 2 " type INTEGER as p_partkey $1 , type VARCHAR as p_name $2 , type VARCHAR as p_brand $4 "
+    | project 2 " type INTEGER as p_partkey $1 , type VARCHAR ( 0 ) as p_name $2 , type VARCHAR ( 0 ) as p_brand $4 "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -44,7 +44,7 @@ begin
 
   stage S01 on all partitions :
       indexScan 2 part part_partkey "LBOUND $I1 1000 > UBOUND $I1 2000 <"
-    | project   2 "type INTEGER as p_partkey P_PARTKEY , type VARCHAR as p_name P_NAME , type VARCHAR as p_brand P_BRAND"
+    | project   2 "type INTEGER as p_partkey P_PARTKEY , type VARCHAR ( 0 ) as p_name P_NAME , type VARCHAR ( 0 ) as p_brand P_BRAND"
     | combined  0
     | next
 

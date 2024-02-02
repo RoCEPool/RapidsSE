@@ -143,7 +143,6 @@ Backend::Backend(RootNode* pPlanRoot)
 
   // Find the /plan node
   m_pPlanRoot = pPlanRoot;
-  m_pWalkNode = nullptr;
 
   m_sPipeline        = nullptr;
   m_bHasUnionOp      = false;
@@ -272,11 +271,18 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
   _static_
 
   String* sPipeline = pBackend->m_sPipeline;
-  s256 sAliasName;
+  //s256 sAliasName;
 
-  if (szAliasName) {
-    sAliasName = szAliasName;
-  }
+	// check if the ordinalExpr is an aliasRef
+	if (AliasRef::bIsOfType(pOrdinalExpr)) {
+		QueryNode* pAliasExpr = AliasRef::pAliasedExpr(pOrdinalExpr);
+		vAppendExpr(pBackend, pExprNode, pAliasExpr, nullptr);
+		return;
+	}
+
+//  if (szAliasName) {
+//    sAliasName = szAliasName;
+//  }
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
@@ -286,76 +292,81 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
   i8 iScale      = Expr::iScale(pExprNode, pBackend->m_pPlanRoot);
 	//vTrace("TypeId %s %lld %s\n"_Stz, xTypeId.szTypeName(), xTypeId.iIdVal(), aIV_field2[xTypeId.eIVVal()]);
 
-//	if (eCTType == CT_INTERVAL_YM || eCTType == CT_INTERVAL_DT) {
-//		sPipeline->vCatSprint(
-//			" type %s"
-//			""_Stz,
-//			aIV_field2[xTypeId.eIVVal()]);
-//	}
-//	else {
-//		sPipeline->vCatSprint(
-//			" type %s"
-//			""_Stz,
-//			aCT[eCTType]);
-//	}
-
+#ifdef TYPE_DETAILED
+    
   switch (eCTType) {
-    case CT_BOOLEAN:
-    case CT_CHAR:
-    case CT_DATE:
-    case CT_DECIMAL:
-    case CT_FLOAT:
-    case CT_INTEGER:
-    case CT_TIME:
-    case CT_TIMESTAMP:
-    case CT_VARCHAR:
-    case CT_UNKNOWN:
-      sPipeline->vCatSprint(
-          " type %s"
-          ""_Stz,
-          aCT[eCTType]);
+      case CT_BOOLEAN:
+      case CT_CHAR:
+      case CT_DATE:
+      case CT_DECIMAL:
+      case CT_FLOAT:
+      case CT_INTEGER:
+      case CT_TIME:
+      case CT_TIMESTAMP:
+      case CT_VARCHAR:
+      case CT_UNKNOWN:
+          sPipeline->vCatSprint(
+                                " type %s"
+                                ""_Stz,
+                                aCT[eCTType]);
 
-      if (iPrecision != -1) {
-        if (iScale == -1) {
-          sPipeline->vCatSprint(" (%lld)"_Stz, iPrecision);
-        } else {
-          sPipeline->vCatSprint(" (%lld , %lld)"_Stz, iPrecision, iScale);
-        }
-      }
-      break;
+          if (iPrecision != -1) {
+              if (iScale == -1) {
+                  sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
+              } else {
+                  sPipeline->vCatSprint(" ( %lld %lld )"_Stz, iPrecision, iScale);
+              }
+          }
+          break;
 
-    case CT_INTERVAL_DT:
-    case CT_INTERVAL_YM:
-      sPipeline->vCatSprint(
-          " type %s"
-          ""_Stz,
-          aIV_field2[xTypeId.eIVVal()]);
-      break;
+      case CT_INTERVAL_DT:
+      case CT_INTERVAL_YM:
+          sPipeline->vCatSprint(
+                                " type %s"
+                                ""_Stz,
+                                aIV_field2[xTypeId.eIVVal()]);
+          break;
 
-    default:
-      NEVER_REACH
+      default:
+          NEVER_REACH
   }
 
+#else
 
-  if ( ! szAliasName) {
-    if (ColumnRef::bIsOfType(pExprNode)) {
-      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-      szAliasName = ColumnRef::szColumn(pColumnRef);
+	if (eCTType == CT_INTERVAL_YM || eCTType == CT_INTERVAL_DT) {
+		sPipeline->vCatSprint(
+			" type %s"
+			""_Stz,
+			aIV_field2[xTypeId.eIVVal()]);
+	}
+	else {
+		sPipeline->vCatSprint(
+			" type %s"
+			""_Stz,
+			aCT[eCTType]);
+	}
+#endif
 
-      // We cannot modify the szAliasName directly because we don't know the
-      // size of the underlying buffer. We need to modify a copy of it instead.
-      if (szAliasName) {
-        sAliasName = szAliasName;
-        StrLib::vToLower(sAliasName.azChar(), sAliasName.nAreaBytes());
-      }
-    }
-  }
 
-  if (szAliasName) {
+//  if ( ! szAliasName) {
+//    if (ColumnRef::bIsOfType(pExprNode)) {
+//      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+//      szAliasName = ColumnRef::szColumn(pColumnRef);
+//
+//      // We cannot modify the szAliasName directly because we don't know the
+//      // size of the underlying buffer. We need to modify a copy of it instead.
+//      if (szAliasName) {
+//        sAliasName = szAliasName;
+//        StrLib::vToLower(sAliasName.azChar(), sAliasName.nAreaBytes());
+//      }
+//    }
+//  }
+
+  if (szAliasName && !szAliasName->bSame(""_Stz)) {
     sPipeline->vCatSprint(
         " as %s"
         ""_Stz,
-        sAliasName.azChar());
+        szAliasName->azChar());
   }
 
   // Walk the expr node plan graph
@@ -373,12 +384,64 @@ void Backend::vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNo
 
   String* sPipeline = pBackend->m_sPipeline;
 
-  eCT eType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
+  eCT eType      = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
+	TypeId xTypeId = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot);
+  i8 iPrecision  = Expr::iPrecision(pExprNode, pBackend->m_pPlanRoot);
+  i8 iScale      = Expr::iScale(pExprNode, pBackend->m_pPlanRoot);
 
-  sPipeline->vCatSprint(
-    " type %s"
-    ""_Stz,
-    aCT[eType]);
+#ifdef TYPE_DETAILED
+
+  switch (eType) {
+    case CT_BOOLEAN:
+    case CT_CHAR:
+    case CT_DATE:
+    case CT_DECIMAL:
+    case CT_FLOAT:
+    case CT_INTEGER:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_VARCHAR:
+    case CT_UNKNOWN:
+      sPipeline->vCatSprint(
+          " type %s"
+          ""_Stz,
+          aCT[eType]);
+
+      if (iPrecision != -1) {
+        if (iScale == -1) {
+          sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
+        } else {
+          sPipeline->vCatSprint(" ( %lld %lld )"_Stz, iPrecision, iScale);
+        }
+      }
+      break;
+
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+      sPipeline->vCatSprint(
+          " type %s"
+          ""_Stz,
+          aIV_field2[xTypeId.eIVVal()]);
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
+#else
+	if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+		sPipeline->vCatSprint(
+						" type %s"
+						""_Stz,
+						aIV_field2[xTypeId.eIVVal()]);
+	}
+	else {
+		sPipeline->vCatSprint(
+						" type %s"
+						""_Stz,
+						aCT[eType]);
+	}
+#endif
 
   sPipeline->vCatSprint(
     " $K%lld"
@@ -449,8 +512,13 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pGroupByExpr, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
       RASSERT(pOrdinalExpr);
 
-      //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
-      vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
+			if (AliasRef::bIsOfType(pOrdinalExpr)) {
+				QueryNode* pAliasExpr = AliasRef::pAliasedExpr(pOrdinalExpr);
+				vAppendExpr(pBackend, pGroupByExpr, pAliasExpr, nullptr);
+			}
+			else
+        vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
+
       delete pOrdinalExpr;
     }
 
@@ -551,7 +619,8 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
-  pBackend->vAppendNextOp("filter \" type BOOLEAN "_Stz);
+	pBackend->vAppendNextOp("filter \" type BOOLEAN "_Stz);
+
   pBackend->m_bCombinedOp = true;
 //  sPipeline->vCatSprint(
 //      "    filter 1 \" type BOOLEAN "
@@ -722,6 +791,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
 
   bool bFirstExpr = false;
   String* sPipeline = pBackend->m_sPipeline;
+	s256 sAliasName;
 
   // Get the list of projected expressions from ProjectOp
   ASSERT(pNode->nChildren() == 1);
@@ -791,14 +861,31 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      RASSERT(pBackend->m_pColExprList);
+			if ( ! szAliasName) {
+				if (ColumnRef::bIsOfType(pExprNode)) {
+					QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+					szAliasName = ColumnRef::szColumn(pColumnRef);
+
+					// We cannot modify the szAliasName directly because we don't know the
+					// size of the underlying buffer. We need to modify a copy of it instead.
+					if (szAliasName) {
+						sAliasName = szAliasName;
+						StrLib::vToLower(sAliasName.azChar(), sAliasName.nAreaBytes());
+					}
+				}
+			}
+			else {
+				sAliasName = szAliasName;
+			}
+
+			RASSERT(pBackend->m_pColExprList);
       RASSERT(pCorrelatedExprs);
 
       QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
       RASSERT(pOrdinalExpr);
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
-      vAppendExpr(pBackend, pExprNode, pOrdinalExpr, szAliasName);
+      vAppendExpr(pBackend, pExprNode, pOrdinalExpr, sAliasName);
       delete pOrdinalExpr;
     }
     delete pIter;
@@ -968,8 +1055,59 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       QueryNode* pSymbolicExpr = Expr::pOrdinalToSymbolic(pOrdinalExpr, pBackend->m_pColExprList,
                                                           pBackend->m_pPlanRoot);
       eCT eType = CaseExpr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot).eCTVal();
+			TypeId xTypeId = Expr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot);
 
-      sPipeline->vCatSprint(" } type %s"_Stz, aCT[eType]);
+#ifdef TYPE_DETAILED
+
+      i8 iPrecision  = Expr::iPrecision(pSymbolicExpr, pBackend->m_pPlanRoot);
+      i8 iScale      = Expr::iScale(pSymbolicExpr, pBackend->m_pPlanRoot);
+
+      switch (eType) {
+        case CT_BOOLEAN:
+        case CT_CHAR:
+        case CT_DATE:
+        case CT_DECIMAL:
+        case CT_FLOAT:
+        case CT_INTEGER:
+        case CT_TIME:
+        case CT_TIMESTAMP:
+        case CT_VARCHAR:
+        case CT_UNKNOWN:
+          sPipeline->vCatSprint(
+              " type %s"
+              ""_Stz,
+              aCT[eType]);
+
+          if (iPrecision != -1) {
+            if (iScale == -1) {
+              sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
+            } else {
+              sPipeline->vCatSprint(" ( %lld %lld )"_Stz, iPrecision, iScale);
+            }
+          }
+          break;
+
+        case CT_INTERVAL_DT:
+        case CT_INTERVAL_YM:
+          sPipeline->vCatSprint(
+              " type %s"
+              ""_Stz,
+              aIV_field2[xTypeId.eIVVal()]);
+          break;
+
+        default:
+          NEVER_REACH
+      }
+#else
+			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+				sPipeline->vCatSprint(
+								" } type %s"_Stz, aIV_field2[xTypeId.eIVVal()]);
+			}
+			else {
+				sPipeline->vCatSprint(" } type %s"_Stz, aCT[eType]);
+			}
+#endif
+
       delete pSymbolicExpr;
 
       // get the when expr
@@ -1459,11 +1597,105 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
                                                     pBackend->m_pPlanRoot);
 
       eCT eType = CastExpr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot).eCTVal();
+			TypeId xTypeId = Expr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot);
+      i8 iPrecision  = Expr::iPrecision(pSymbolicExpr, pBackend->m_pPlanRoot);
+      i8 iScale      = Expr::iScale(pSymbolicExpr, pBackend->m_pPlanRoot);
 
-      sPipeline->vCatSprint(
-          " casttype %s CAST "
-          ""_Stz,
-          aCT[eType]);
+#ifdef TYPE_DETAILED
+			sPipeline->vCatSprint(
+							" casttype %s ( %lld %lld ) CAST "
+							""_Stz,
+							aCT[eType],
+							iPrecision,
+							iScale);
+
+//			i8 iLength = pBackend->iGetLength(eType);
+//			i8 iScale = pBackend->iGetScale(eType);
+//
+//			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+//				sPipeline->vCatSprint(
+//								" type %s"
+//								""_Stz,
+//								aIV_field2[xTypeId.eIVVal()]);
+//			}
+//			else {
+//
+//				if (iLength == C_UNKNOWN && iScale == C_UNKNOWN)
+//					sPipeline->vCatSprint(
+//									" casttype %s CAST"
+//									""_Stz,
+//									aCT[eType]
+//					);
+//				else
+//				if (iScale == C_UNKNOWN)
+//					sPipeline->vCatSprint(
+//									" casttype %s ( %lld ) CAST"
+//									""_Stz,
+//									aCT[eType],
+//									iLength
+//					);
+//				else
+//					sPipeline->vCatSprint(
+//									" casttype %s ( %lld %lld ) CAST"
+//									""_Stz,
+//									aCT[eType],
+//									iLength,
+//									iScale
+//					);
+//			}
+
+      switch (eType) {
+        case CT_BOOLEAN:
+        case CT_CHAR:
+        case CT_DATE:
+        case CT_DECIMAL:
+        case CT_FLOAT:
+        case CT_INTEGER:
+        case CT_TIME:
+        case CT_TIMESTAMP:
+        case CT_VARCHAR:
+        case CT_UNKNOWN:
+          sPipeline->vCatSprint(
+              " type %s"
+              ""_Stz,
+              aCT[eType]);
+
+          if (iPrecision != -1) {
+            if (iScale == -1) {
+              sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
+            } else {
+              sPipeline->vCatSprint(" ( %lld %lld )"_Stz, iPrecision, iScale);
+            }
+          }
+
+          sPipeline->vConcat(" CAST"_Stz);
+          break;
+
+        case CT_INTERVAL_DT:
+        case CT_INTERVAL_YM:
+          sPipeline->vCatSprint(
+              " type %s"
+              ""_Stz,
+              aIV_field2[xTypeId.eIVVal()]);
+          break;
+
+        default:
+          NEVER_REACH
+      }
+#else
+			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
+				sPipeline->vCatSprint(
+								" casttype %s CAST "
+								""_Stz,
+								aIV_field2[xTypeId.eIVVal()]);
+			}
+			else {
+				sPipeline->vCatSprint(
+								" casttype %s CAST "
+								""_Stz,
+								aCT[eType]);
+			}
+#endif
 
       delete pSymbolicExpr;
     }
@@ -1706,7 +1938,6 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 i
   // node is encountered.
 
   pBackend->m_pPrevStageMarker = pStageMarker;
-  pBackend->m_pWalkNode = pStageMarker;
   GraphNav::bBoundedWalkBottomUp(pStageMarker, false, true, vVisitorStatement, (void *) pBackend);
 
   // Keep walking
@@ -2024,6 +2255,72 @@ Stz* Backend::szGetRouting(Backend* pBackend, QueryNode* pStageMarker) {
     szRouting = Routing::szRoutingType(pRouting);
 
   return szRouting;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append the type                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Backend::iGetLength(eCT eCTType) {
+
+	switch(eCTType) {
+
+		case CT_BOOLEAN:
+		case CT_DATE:
+		case CT_INTERVAL_DT:
+		case CT_INTERVAL_YM:
+		case CT_TIME:
+		case CT_TIMESTAMP:
+		case CT_UNKNOWN:
+			return C_UNKNOWN;
+		break;
+
+		case CT_DECIMAL:
+			return 19;
+		break;
+
+		case CT_FLOAT:
+		case CT_INTEGER:
+			return 19;
+		break;
+
+		case CT_CHAR:
+		case CT_VARCHAR:
+			return 0;
+		break;
+
+		default:
+		NEVER_REACH
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+/* append the type                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Backend::iGetScale(eCT eCTType) {
+
+	switch(eCTType) {
+
+		case CT_BOOLEAN:
+		case CT_CHAR:
+		case CT_DATE:
+		case CT_FLOAT:
+		case CT_INTEGER:
+		case CT_INTERVAL_DT:
+		case CT_INTERVAL_YM:
+		case CT_TIME:
+		case CT_TIMESTAMP:
+		case CT_UNKNOWN:
+		case CT_VARCHAR:
+			return C_UNKNOWN;
+			break;
+
+		case CT_DECIMAL:
+			return 2;
+			break;
+
+		default:
+			NEVER_REACH
+	}
 }
 
 /*----------------------------------------------------------------------------*/

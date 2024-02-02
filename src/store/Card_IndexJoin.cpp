@@ -87,7 +87,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard();
+   // pCI->vPrintBoard(__func__,__LINE__);
     return;
 
 
@@ -105,38 +105,19 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard();
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-//  pCI->vRenumberCards();
-//  pCI->vPrintBoard();
-
   pCI->G.p_table = pSub_table();
-  vUpdate_emit_OP(pCI);
+  pCI->G.p_OP = pCI->G.p_indexJoin;
+  pCI->G.p_indexJoin->vRecreate_emit(pCI,true);
 
-//  pCI->vRenumberCards();
-//  pCI->vPrintBoard();
-
-  //pCI->Flux.m_pArriving->vDump(__func__);
-  vCorrect_expCol(pCI->Flux.m_pArriving);
-
- // pCI->vPrintBoard();
+  //pCI->vPrintBoard(__func__,__LINE__,true);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
-
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +139,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   //pCI->G.p_term->vDump();
 
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(pCI->G.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->G.p_term->pSymbol())) {
 
     if (pCI->G.p_term->bIs_expCol()) {
       Card_Expr* p_expr_expCol = Card_Expr::pCast_expr_term_expCol(pCI->G.p_term);
@@ -189,8 +170,9 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     if (!p_term->bIsColSym())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(p_term->pSymbol()))
+    if (pCI->Early.m_pNeeded_later->pFind_expr_Matches_ignoring(p_term->pSymbol(), SF_EXP_COL)) {
       return C_CONTINUE_RECURSION;
+    }
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
       //p_expr_defn->vDump();
@@ -240,31 +222,15 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->vRenumberCards();
-  pCI->vPrintBoard();
-
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  pCI->G.p_indexJoin->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
-
-  pCI->G.p_key = pSub_key();
-
- // pCI->vPrintBoard();
-
-  pCI->G.p_emit = pSub_emit();
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
+ // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

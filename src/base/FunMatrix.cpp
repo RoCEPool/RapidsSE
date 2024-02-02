@@ -41,6 +41,11 @@ eDM eMacro_CastResult[DM_ENUMS][DM_ENUMS] = {
 /* 11 UNK  */ { DM_NONE, DM_UNK,  DM_UNK,  DM_UNK,  DM_UNK,  DM_UNK,  DM_UNK,  DM_UNK,  DM_UNK,  DM_UNK,  DM_UNK,  DM_UNK }
 };
 
+eFM eMacro_CastIntIvl[IVL_ENUMS] =
+	// IVL_NONE   IVL_YM_START IVL_YEAR       IVL_MONTH       IVL_YM      IVL_YM_END  IVL_DT_START IVL_DAY       IVL_HOUR       IVL_MINUTE       IVL_SECOND       IVL_DH      IVL_DM      IVL_DS      IVL_HM      IVL_HS      IVL_MS      IVL_DT_END
+  { FM_OPR_INV, FM_OPR_INV,  FM_INT_TOYEAR, FM_INT_TOMONTH, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV,  FM_INT_TODAY, FM_INT_TOHOUR, FM_INT_TOMINUTE, FM_INT_TOSECOND, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV};
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT OPERATORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

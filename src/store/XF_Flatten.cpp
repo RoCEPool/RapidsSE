@@ -23,7 +23,7 @@
 #include "XF_Flatten_Delete_flat.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
-#include "XF_Flatten_X_stmCol_To_tblCol.hpp"
+#include "XF_Flatten_X_expCol_To_tblCol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -111,7 +111,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // things before sub-queries
 
 
-  XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
+  XF_Flatten_X_expCol_To_tblCol::vFlatten(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // flatten the sub-queries of this outer query
@@ -125,21 +125,21 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
     s256 sSubQueryNm = m_pCI->G.p_call->szFacet(SF_NONE);
 
     Board *pOuterBoard_save = m_pCI->G.pBoard;
-    m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+    m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
     m_pCI->G_vPushBoard(m_pCI->Sqy.m_pSubQuery->pBoard());
     m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
     vFlatten_recurse(iDepth + 1);
 
-    m_pCI->G_vPopIter();
+    m_pCI->G_vPopBoard();
     m_pCI->G_vSetBoard(pOuterBoard_save);
-    SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+    SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
     UNUSED(pSubQuery);
-   // m_pCI->vPrintBoard(__LINE__);
+   // m_pCI->vPrintBoard(__func__,__LINE__);
 
     vFlattenByDecisionTree();
 
-   // m_pCI->vPrintBoard(__LINE__);
+   // m_pCI->vPrintBoard(__func__,__LINE__);
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -163,21 +163,21 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
       s256 sSubQueryNm = p_term->szFacet(SF_NONE);
 
       Board* pOuterBoard_save = pCI->G.pBoard;
-      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
       pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
-      pCI->G_vPopIter();
+      pCI->G_vPopBoard();
       pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
       UNUSED(pSubQuery);
-     // pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__func__,__LINE__);
 
       vFlattenByDecisionTree();
 
-     // pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__func__,__LINE__);
 
       bFound = true;
       return C_TERMINATE_RECURSION;
@@ -209,21 +209,21 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
       s256 sSubQueryNm = p_term->szFacet(SF_NONE);
 
       Board* pOuterBoard_save = pCI->G.pBoard;
-      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
       pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
-      pCI->G_vPopIter();
+      pCI->G_vPopBoard();
       pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
       UNUSED(pSubQuery);
-     // pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__func__,__LINE__);
 
       vFlattenByDecisionTree();
 
-      pCI->vPrintBoard(__LINE__);
+      pCI->vPrintBoard(__func__,__LINE__);
 
      // XF_Flatten_Left_subQuery::vRemove_LeftMost(pCI);
 
@@ -255,7 +255,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   Card_Fold::vMorph_to_flat(m_pCI);
 
 
-  // m_pCI->vPrintBoard(__LINE__);
+  // m_pCI->vPrintBoard(__func__,__LINE__);
 
   vDebugPoint();
 }

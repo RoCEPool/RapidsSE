@@ -601,7 +601,9 @@ void CardCtl::vReset(void)
   vHeatNext(CK_c_STAGE, true);
 
   vPrintByKind(CK_t_EMIT, true);
+  vPrintByKind(CK_s_KEY, true);
   vPrintByKind(CK_EXPR,true);
+  vPrintByKind(CK_o_FILTER,true);
   vPrintByKind(CK_ANDCONJ,true);
   vPrintByKind(CK_NOTCONJ,true);
   vPrintByKind(CK_ORCONJ,true);

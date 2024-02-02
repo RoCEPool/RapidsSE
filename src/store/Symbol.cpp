@@ -43,7 +43,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
-	//m_xTypeId;
+  vCastReset();
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -161,7 +161,7 @@ eSF Symbol::eEvalSymbol(Stz* szArg)
   if (bIs_Parenthesis(szArg))  return SF_PARENTHESIS;
   if (bIs_Pay_Col(szArg))      return SF_PAY_COL;
   if (bIs_Rln_Op(szArg))       return SF_RLN_OP;
-  if (bIs_Sqy_Nm(szArg))       return SF_SQY_NM;
+  if (bIs_Sqy_No(szArg))       return SF_SQY_NO;
   if (bIs_Sqy_Prm(szArg))      return SF_SQY_PRM;
   if (bIs_Sqy_Op(szArg))       return SF_SQY_OP;
   if (bIs_Sqy_Rsl(szArg))      return SF_SQY_RSL;
@@ -173,7 +173,7 @@ eSF Symbol::eEvalSymbol(Stz* szArg)
   if (bIs_Then(szArg))         return SF_THEN;
   if (bIs_Type(szArg))         return SF_TYPE;
   if (bIs_When(szArg))         return SF_WHEN;
-  if (bIs_List_cnt(szArg))       return SF_LIST_CNT;
+  if (bIs_List_Cnt(szArg))     return SF_LIST_CNT;
 
   return SF_NONE;
 }
@@ -197,13 +197,13 @@ bool Symbol::bIs_Agg_Fn(Stz* szArg)
 {
   _static_
 
-       if (szArg->bSame("avg"_Stz))      return true;
-  else if (szArg->bSame("count"_Stz))    return true;
-  else if (szArg->bSame("countAll"_Stz)) return true;
-  else if (szArg->bSame("max"_Stz))      return true;
-  else if (szArg->bSame("min"_Stz))      return true;
-//else if (szArg->bSame("stddev"_Stz))   return true;
-  else if (szArg->bSame("sum"_Stz))      return true;
+       if (szArg->bSame("AVG"_Stz))      return true;
+  else if (szArg->bSame("COUNT"_Stz))    return true;
+  else if (szArg->bSame("COUNTALL"_Stz)) return true;
+  else if (szArg->bSame("MAX"_Stz))      return true;
+  else if (szArg->bSame("MIN"_Stz))      return true;
+//else if (szArg->bSame("STDDEV"_Stz))   return true;
+  else if (szArg->bSame("SUM"_Stz))      return true;
 
   return false;
 }
@@ -579,7 +579,7 @@ bool Symbol::bIs_Itm_Col(Stz* szArg)
   if (bIs_Ivl_Fn(szArg))      return false;
   if (bIs_Negate(szArg))      return false;
   if (bIs_Null(szArg))        return false;
-  if (bIs_Sqy_Nm(szArg))      return false;
+  if (bIs_Sqy_No(szArg))      return false;
   if (bIs_Sqy_Op(szArg))      return false;
   if (bIs_Stg_Cast(szArg))    return false;
   if (bIs_Str_Fn(szArg))      return false;
@@ -612,7 +612,7 @@ bool Symbol::bIs_Ivl_Fn(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a list count  (i.e. #n)                               */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_List_cnt(Stz* szChrSeq)
+bool Symbol::bIs_List_Cnt(Stz* szChrSeq)
 {
   _static_
 
@@ -705,7 +705,7 @@ bool Symbol::bIs_Nmd_Col(Stz* szChrSeq)
   if (bIs_Ivl_Fn(szChrSeq))      return false;
   if (bIs_Negate(szChrSeq))      return false;
   if (bIs_Null(szChrSeq))        return false;
-  if (bIs_Sqy_Nm(szChrSeq))      return false;
+  if (bIs_Sqy_No(szChrSeq))      return false;
   if (bIs_Sqy_Op(szChrSeq))      return false;
   if (bIs_Stg_Cast(szChrSeq))    return false;
   if (bIs_Str_Fn(szChrSeq))      return false;
@@ -792,19 +792,6 @@ bool Symbol::bIs_Pay_Col(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Ppe_Nm(Stz* szArg)
-{
-  _static_
-
-  if (! bPossibleNm(szArg))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a relational-operator?                                      */
-/*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Rln_Op(Stz* szArg)
 {
   _static_
@@ -816,9 +803,22 @@ bool Symbol::bIs_Rln_Op(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a __subquery or $Qn like name?                                    */
+/* is this symbol a subquery name?                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Nm(BASE::Stz *szArg)
+bool Symbol::bIs_Sqy_Nm(Stz* szArg)
+{
+  _static_
+
+  if (! bPossibleNm(szArg))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is arg a __subquery or $Qn like name?                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Sqy_No(Stz *szArg)
 {
   _static_
 
@@ -1186,6 +1186,20 @@ void Symbol::vCast(Cast xCast)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset cast                                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCastReset(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_xCast.m_xTypeId = TypeId();
+
+  m_xCast.m_nTypeLength   = C_UNKNOWN;
+  m_xCast.m_nTypeScale    = C_UNKNOWN;
+  m_xCast.m_bTypeNullable = true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set cast & facets from arg                                                 */
 /*----------------------------------------------------------------------------*/
 void Symbol::vCastFacets(Symbol* pSymbol_arg)
@@ -1205,6 +1219,16 @@ void Symbol::vCastFacetsPpy(Symbol* pSymbol_arg)
 
   vCastFacets(pSymbol_arg);
   Y_vAll(pSymbol_arg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vConcatFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacetRotateSet(eFacet_arg,szChrSeq_arg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1259,8 +1283,9 @@ void Symbol::vDump(void)
   s4K sProperties;
   Y_vTo_String(sProperties);
 
-  vTrace("Symbol : %s\n"_Stz
+  vTrace("Symbol : %s %p\n"_Stz
          ,szWhatIs()
+         ,this
          );
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++)
@@ -1268,7 +1293,7 @@ void Symbol::vDump(void)
            ,Stz::szTab(1)
            ,aSF[xaFacet[i_Facet].m_eFacet]
            ,(i8)xaFacet[i_Facet].m_eFacet
-           ,*szSF_chrSeq(SF_NONE)->azChar() ? szSF_chrSeq(SF_NONE) : "??Symbol"_Stz
+           ,*szSF_chrSeq(xaFacet[i_Facet].m_eFacet)->azChar() ? szSF_chrSeq(xaFacet[i_Facet].m_eFacet) : "??Symbol"_Stz
            ,i_Facet
            );
 
@@ -1370,6 +1395,16 @@ Stz* Symbol::szFacet(eSF eFacet)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* scan for symbol facet                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szFacet(i8 i_Facet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(i_Facet < nFacets());
+  return xaFacet[i_Facet].m_sChrSeq;
+}
 
 /*----------------------------------------------------------------------------*/
 /* scan for symbol facet                                                      */
@@ -1460,7 +1495,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
     case SF_PAY_COL:    vFacet_Pay_Col(iInt);    break;
     case SF_SQY_PRM:    vFacet_Sqy_Prm(iInt);    break;
     case SF_SQY_RSL:    vFacet_Sqy_Rsl(iInt);    break;
-    case SF_SQY_NM:     vFacet_Sqy_Nm(iInt);     break;
+    case SF_SQY_NO:     vFacet_Sqy_No(iInt);     break;
     case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
     case SF_LIST_CNT:   vFacet_List_Cnt(iInt);   break;
 
@@ -1535,8 +1570,8 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_NULL:        vFacet_Null(szChrSeq);        break;
     case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
     case SF_PAY_COL:     vFacet_Pay_Col(szChrSeq);     break;
-    case SF_PPE_NM:      vFacet_Ppe_Nm(szChrSeq);      break;
     case SF_SQY_NM:      vFacet_Sqy_Nm(szChrSeq);      break;
+    case SF_SQY_NO:      vFacet_Sqy_No(szChrSeq);      break;
     case SF_SQY_PRM:     vFacet_Sqy_Prm(szChrSeq);     break;
     case SF_SQY_RSL:     vFacet_Sqy_Rsl(szChrSeq);     break;
     case SF_RLN_OP:      vFacet_Rln_Op(szChrSeq);      break;
@@ -2151,8 +2186,23 @@ bool Symbol::bIs_List_Cnt(void)
   if (SF_LIST_CNT != xaFacet[0].m_eFacet)
     return false;
 
-  if (bIs_List_cnt(xaFacet[0].m_sChrSeq))
+  if (bIs_List_Cnt(xaFacet[0].m_sChrSeq))
     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a literal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Bol_Lit()) return true;
+  if (bIs_Dcm_Lit()) return true;
+  if (bIs_Flt_Lit()) return true;
+  if (bIs_Int_Lit()) return true;
 
   return false;
 }
@@ -2302,22 +2352,6 @@ bool Symbol::bIs_Pay_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a index name?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Ppe_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_PPE_NM != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Ppe_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Rln_Op(void)
@@ -2334,20 +2368,7 @@ bool Symbol::bIs_Rln_Op(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Prm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (bIs_Sqy_Prm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-operator?                                  */
+/* is this a subquery name?                                                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Nm(void)
 {
@@ -2357,6 +2378,35 @@ bool Symbol::bIs_Sqy_Nm(void)
     return false;
 
   if (bIs_Sqy_Nm(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a subQuery-no?                                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Sqy_No(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_SQY_NO != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_Sqy_No(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Sqy_Prm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Sqy_Prm(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -2586,6 +2636,21 @@ bool Symbol::bIs_Xk_Cast(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is the symbol a SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_SF_Col(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bHasFacet(SF_EXP_COL))  return true;
+  if (bHasFacet(SF_KEY_COL))  return true;
+  if (bHasFacet(SF_ITM_COL))  return true;
+  if (bHasFacet(SF_TBL_COL))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
@@ -2605,29 +2670,7 @@ bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bMatches(Symbol* pSymbol_arg, eSF* aeFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
-
-    if (bMatches(pSymbol_arg, eFacet_this)) {
-      if (aeFacet)
-        *aeFacet = eFacet_this;
-      return true;
-    }
-  }
-
-  if (aeFacet)
-    *aeFacet = SF_NONE;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this symbol have a matching facet with given arg?                     */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bMatches(Symbol* pSymbol_arg, eSF eFacet)
+bool Symbol::bMatches(eSF eFacet, Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2644,6 +2687,45 @@ bool Symbol::bMatches(Symbol* pSymbol_arg, eSF eFacet)
 
   if (szChrSeq_arg->bSame(szChrSeq_this))
     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have a matching facet with given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bMatches(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
+
+    if (bMatches(eFacet_this, pSymbol_arg)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have a matching facet with given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
+
+    if (SF_NONE != eFacet_ignore && eFacet_this == eFacet_ignore)
+      continue;
+
+    if (bMatches(eFacet_this, pSymbol_arg)) {
+      return true;
+    }
+  }
 
   return false;
 }
@@ -2712,6 +2794,21 @@ bool Symbol::bSame(Stz* szArg)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set facet                                                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSetFacet(eSF eFacet, Stz* szFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 i_Facet = this->i_Facet(eFacet);
+
+  if (C_UNKNOWN == i_Facet)
+    vFacetSet(m_nFacets++,eFacet,szFacet);
+  else
+    vFacetSet(i_Facet,eFacet,szFacet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2841,64 +2938,69 @@ bool Symbol::bValidate(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (! nFacets())
+    return true;
+
   bool b = false;
+  for (i8 i_Facet = 0; i_Facet < nFacets(); i_Facet++) {
+    eSF eFacet = xaFacet[i_Facet].m_eFacet;
+    switch (eFacet) {
+      case SF_NONE:        b = bIs_None(szFacet(i_Facet));       break;
+      case SF_AGG_FN:      b = bIs_Agg_Fn(szFacet(i_Facet));     break;
+      case SF_AS:          b = bIs_As(szFacet(i_Facet));         break;
+      case SF_BOL_FN:      b = bIs_Bol_Fn(szFacet(i_Facet));     break;
+      case SF_BOL_LIT:     b = bIs_Bol_Lit(szFacet(i_Facet));    break;
+      case SF_BOL_OP:      b = bIs_Bol_Op(szFacet(i_Facet));     break;
+      case SF_BOUND:       b = bIs_Bound(szFacet(i_Facet));      break;
+      case SF_BRACE:       b = bIs_Brace(szFacet(i_Facet));      break;
+      case SF_CAST:        b = bIs_Cast(szFacet(i_Facet));       break;
+      case SF_CASTTYPE:    b = bIs_CastType(szFacet(i_Facet));   break;
+      case SF_COL_TYPE:    b = bIs_Col_Type(szFacet(i_Facet));   break;
+      case SF_COMMA:       b = bIs_Comma(szFacet(i_Facet));      break;
+      case SF_CROSS:       b = bIs_Cross(szFacet(i_Facet));      break;
+      case SF_DCM_LIT:     b = bIs_Dcm_Lit(szFacet(i_Facet));    break;
+      case SF_DIRECTION:   b = bIs_Direction(szFacet(i_Facet));  break;
+      case SF_EXP_COL:     b = bIs_Exp_Col(szFacet(i_Facet));    break;
+      case SF_FLD_NM:      b = bIs_Fld_Nm(szFacet(i_Facet));     break;
+      case SF_FLT_LIT:     b = bIs_Flt_Lit(szFacet(i_Facet));    break;
+      case SF_GROUPBY:     b = bIs_GroupBy(szFacet(i_Facet));    break;
+      case SF_IDX_COL:     b = bIs_Idx_Col(szFacet(i_Facet));    break;
+      case SF_IDX_NM:      b = bIs_Idx_Nm(szFacet(i_Facet));     break;
+      case SF_INT_LIT:     b = bIs_Int_Lit(szFacet(i_Facet));    break;
+      case SF_INTERVAL_DT: b = bIs_Interval_DT(szFacet(i_Facet));break;
+      case SF_INTERVAL_YM: b = bIs_Interval_YM(szFacet(i_Facet));break;
+      case SF_IVL_FN:      b = bIs_Ivl_Fn(szFacet(i_Facet));     break;
+      case SF_ITM_COL:     b = bIs_Itm_Col(szFacet(i_Facet));    break;
+      case SF_KEY_COL:     b = bIs_Key_Col(szFacet(i_Facet));    break;
+      case SF_LIST_CNT:    b = bIs_List_Cnt(szFacet(i_Facet));   break;
+      case SF_MTH_OP:      b = bIs_Mth_Op(szFacet(i_Facet));     break;
+      case SF_NMD_COL:     b = bIs_Nmd_Col(szFacet(i_Facet));    break;
+      case SF_NOTE:        b = bIs_Note(szFacet(i_Facet));       break;
+      case SF_NULL:        b = bIs_Null(szFacet(i_Facet));       break;
+      case SF_PARENTHESIS: b = bIs_Parenthesis(szFacet(i_Facet));break;
+      case SF_PAY_COL:     b = bIs_Pay_Col(szFacet(i_Facet));    break;
+      case SF_RLN_OP:      b = bIs_Rln_Op(szFacet(i_Facet));     break;
+      case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet(i_Facet));     break;
+      case SF_SQY_NO:      b = bIs_Sqy_No(szFacet(i_Facet));     break;
+      case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet(i_Facet));     break;
+      case SF_SQY_PRM:     b = bIs_Sqy_Prm(szFacet(i_Facet));    break;
+      case SF_SQY_RSL:     b = bIs_Sqy_Rsl(szFacet(i_Facet));    break;
+      case SF_STG_NO:      b = bIs_Stg_Nm(szFacet(i_Facet));     break;
+      case SF_STG_CAST:    b = bIs_Stg_Cast(szFacet(i_Facet));   break;
+      case SF_STR_FN:      b = bIs_Str_Fn(szFacet(i_Facet));     break;
+      case SF_STR_LIT:     b = bIs_String(szFacet(i_Facet));     break;
+      case SF_TBL_COL:     b = bIs_Tbl_Col(szFacet(i_Facet));    break;
+      case SF_TBL_NM:      b = bIs_Tbl_Nm(szFacet(i_Facet));     break;
+      case SF_TBL_SYN:     b = bIs_Tbl_Syn(szFacet(i_Facet));    break;
+      case SF_TBL_SYN_rep: b = bIs_Tbl_Syn_rep(szFacet(i_Facet));break;
+      case SF_TYPE:        b = bIs_Type(szFacet(i_Facet));       break;
+      case SF_WHEN:        b = bIs_When(szFacet(i_Facet));       break;
+      case SF_XK_CAST:     b = bIs_Xk_Cast(szFacet(i_Facet));    break;
 
-  switch (xaFacet[0].m_eFacet) {
-    case SF_NONE:        b = bIs_None();        break;
-    case SF_AGG_FN:      b = bIs_Agg_Fn();      break;
-    case SF_AS:          b = bIs_As();          break;
-    case SF_BOL_FN:      b = bIs_Bol_Fn();      break;
-    case SF_BOL_LIT:     b = bIs_Bol_Lit();     break;
-    case SF_BOL_OP:      b = bIs_Bol_Op();      break;
-    case SF_BOUND:       b = bIs_Bound();       break;
-    case SF_BRACE:       b = bIs_Brace();       break;
-    case SF_CAST:        b = bIs_Cast();        break;
-    case SF_CASTTYPE:    b = bIs_CastType();    break;
-    case SF_COL_TYPE:    b = bIs_Col_Type();    break;
-    case SF_COMMA:       b = bIs_Comma();       break;
-    case SF_CROSS:       b = bIs_Cross();       break;
-    case SF_DCM_LIT:     b = bIs_Dcm_Lit();     break;
-    case SF_DIRECTION:   b = bIs_Direction();   break;
-    case SF_EXP_COL:     b = bIs_Exp_Col();     break;
-    case SF_FLD_NM:      b = bIs_Fld_Nm();      break;
-    case SF_FLT_LIT:     b = bIs_Flt_Lit();     break;
-    case SF_GROUPBY:     b = bIs_GroupBy();     break;
-    case SF_IDX_COL:     b = bIs_Idx_Col();     break;
-    case SF_IDX_NM:      b = bIs_Idx_Nm();      break;
-    case SF_INT_LIT:     b = bIs_Int_Lit();     break;
-    case SF_INTERVAL_DT: b = bIs_Interval_DT(); break;
-    case SF_INTERVAL_YM: b = bIs_Interval_YM(); break;
-    case SF_IVL_FN:      b = bIs_Ivl_Fn();      break;
-    case SF_KEY_COL:     b = bIs_Key_Col();     break;
-    case SF_LIST_CNT:    b = bIs_List_Cnt();    break;
-    case SF_MTH_OP:      b = bIs_Mth_Op();      break;
-    case SF_NMD_COL:     b = bIs_Nmd_Col();     break;
-    case SF_NOTE:        b = bIs_Note();        break;
-    case SF_NULL:        b = bIs_Null();        break;
-    case SF_PARENTHESIS: b = bIs_Parenthesis(); break;
-    case SF_PAY_COL:     b = bIs_Pay_Col();     break;
-    case SF_PPE_NM:      b = bIs_Ppe_Nm();      break;
-    case SF_RLN_OP:      b = bIs_Rln_Op();      break;
-    case SF_SQY_NM:      b = bIs_Sqy_Nm();      break;
-    case SF_SQY_OP:      b = bIs_Sqy_Op();      break;
-    case SF_SQY_PRM:     b = bIs_Sqy_Prm();     break;
-    case SF_SQY_RSL:     b = bIs_Sqy_Rsl();     break;
-    case SF_STG_NO:      b = bIs_Stg_Nm();      break;
-    case SF_STG_CAST:    b = bIs_Stg_Cast();    break;
-    case SF_STR_FN:      b = bIs_Str_Fn();      break;
-    case SF_STR_LIT:     b = bIs_String();      break;
-    case SF_TBL_COL:     b = bIs_Tbl_Col();     break;
-    case SF_TBL_NM:      b = bIs_Tbl_Nm();      break;
-    case SF_TBL_SYN:     b = bIs_Tbl_Syn();     break;
-    case SF_TBL_SYN_rep: b = bIs_Tbl_Syn_rep(); break;
-    case SF_TYPE:        b = bIs_Type();        break;
-    case SF_WHEN:        b = bIs_When();        break;
-    case SF_XK_CAST:     b = bIs_Xk_Cast();     break;
-
-    default:
-      NEVER_REACH
+      default:
+        NEVER_REACH
+    }
   }
-
   return b;
 }
 
@@ -3239,20 +3341,6 @@ void Symbol::Y_vTo_String(String* pString)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* reset cast                                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vCastReset(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_xCast.m_xTypeId = TypeId();
-
-  m_xCast.m_nTypeLength   = C_UNKNOWN;
-  m_xCast.m_nTypeScale    = C_UNKNOWN;
-  m_xCast.m_bTypeNullable = true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given aggregate fn                                      */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Agg_Fn(Stz* szAggFn)
@@ -3497,16 +3585,16 @@ void Symbol::vFacet_Exp_Col(Stz* szExpCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
-          SF_NMD_COL == xaFacet[0].m_eFacet ||
-          SF_EXP_COL == xaFacet[0].m_eFacet ||
-          SF_TBL_COL == xaFacet[0].m_eFacet ||
-
-          SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
-          SF_PARENTHESIS == xaFacet[0].m_eFacet ||
-          SF_SQY_PRM == xaFacet[0].m_eFacet ||
-          SF_LIST_CNT == xaFacet[0].m_eFacet
-  );
+//  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
+//          SF_NMD_COL == xaFacet[0].m_eFacet ||
+//          SF_EXP_COL == xaFacet[0].m_eFacet ||
+//          SF_TBL_COL == xaFacet[0].m_eFacet ||
+//
+//          SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
+//          SF_PARENTHESIS == xaFacet[0].m_eFacet ||
+//          SF_SQY_PRM == xaFacet[0].m_eFacet ||
+//          SF_LIST_CNT == xaFacet[0].m_eFacet
+//  );
 
   vFacetSprint(SF_EXP_COL, "%s"_Stz, szExpCol);
 
@@ -3883,20 +3971,6 @@ void Symbol::vFacet_Pay_Col(Stz* szPayCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given pipeline name                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Ppe_Nm(Stz* szPpeNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_PPE_NM,"%s"_Stz,szPpeNm);
-
-  RASSERT(bIs_Ppe_Nm());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given relational op                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
@@ -3911,31 +3985,45 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given subquery-number                                   */
+/* set this symbol to given pipeline name                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Sqy_Nm(i8 iSqyNo)
+void Symbol::vFacet_Sqy_Nm(Stz* szPpeNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_SQY_NM,"$Q%lld"_Stz, iSqyNo);
+  vFacetSprint(SF_SQY_NM, "%s"_Stz, szPpeNm);
 
   RASSERT(bIs_Sqy_Nm());
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given subquery name                                     */
+/* set this symbol to given subquery-number                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Sqy_Nm(Stz* szSqyNm)
+void Symbol::vFacet_Sqy_No(i8 iSqyNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_SQY_NM, "%s"_Stz, szSqyNm);
+  vFacetSprint(SF_SQY_NO, "$Q%lld"_Stz, iSqyNo);
 
-  RASSERT(bIs_Sqy_Nm());
+  RASSERT(bIs_Sqy_No());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given subquery-number                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Sqy_No(Stz* szSqyNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_SQY_NO, "%s"_Stz, szSqyNo);
+
+  RASSERT(bIs_Sqy_No());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -35,11 +35,81 @@ success
 load ${testName2}_Region "../DATA/TPCH/region.tbl";
 success
 
+
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - KEY VARCHAR
+//------------------------------------------------------------------------------
+
+/optimiser_trace
+/weaved
+/pipeline_Def
+/optimise_passthru
+pipeline OpTest_14
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public ${testName2}_Nation
+    | gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S02 on all nodes :
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S03 on origin :
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    output
+    | sink
+    | first
+end ;
+rows:
+  ('ALGERIA',0)
+  ('ARGENTINA',1)
+  ('BRAZIL',2)
+  ('CANADA',3)
+  ('CHINA',18)
+  ('EGYPT',4)
+  ('ETHIOPIA',5)
+  ('FRANCE',6)
+  ('GERMANY',7)
+  ('INDIA',8)
+  ('INDONESIA',9)
+  ('IRAN',10)
+  ('IRAQ',11)
+  ('JAPAN',12)
+  ('JORDAN',13)
+  ('KENYA',14)
+  ('MOROCCO',15)
+  ('MOZAMBIQUE',16)
+  ('PERU',17)
+  ('ROMANIA',19)
+  ('RUSSIA',22)
+  ('SAUDI ARABIA',20)
+  ('UNITED KINGDOM',23)
+  ('UNITED STATES',24)
+  ('VIETNAM',21)
+
+
+
+
+
+
 //------------------------------------------------------------------------------
 // PROJECT
 //------------------------------------------------------------------------------
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_1
 begin
   stage stageStart on origin :
     start
@@ -48,7 +118,7 @@ begin
   stage stageMarker0559 on all partitions :
     scan rapidsse public ${testName2}_Nation
     | filter " type BOOLEAN  $1 2  <  "
-    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -65,7 +135,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_2
 begin
 
   stage S00 on origin :
@@ -75,7 +145,7 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "UBOUND $I1 2 < "
-    | project   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | project   "type INTEGER ( 19 ) as N_NATIONKEY $1 , type VARCHAR ( 0 ) as N_NAME $2 , type INTEGER ( 19 ) as N_REGIONKEY $3 , type VARCHAR ( 0 ) as N_COMMENT $4 "
     | combined 0
     | next
 
@@ -91,7 +161,7 @@ rows:
   (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_3
 begin
 
   stage S00 on origin :
@@ -101,7 +171,7 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 > "
-    | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | project  "type INTEGER ( 19 ) as N_NATIONKEY $1 , type VARCHAR ( 0 ) as N_NAME $2 , type INTEGER ( 19 ) as N_REGIONKEY $3 , type VARCHAR ( 0 ) as N_COMMENT $4 "
     | combined  0
     | next hashcast
 
@@ -136,7 +206,7 @@ rows:
   (24,'UNITED STATES',1,'y final packages. slow foxes cajole quickly. quickly silent platelets breach ironic accounts. unusual pinto be')
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_4
 begin
 
   stage S00 on origin :
@@ -146,7 +216,7 @@ begin
 
   stage S01 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
-    | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | project  "type INTEGER ( 19 ) as N_NATIONKEY $1 , type VARCHAR ( 0 ) as N_NAME $2 , type INTEGER ( 19 ) as N_REGIONKEY $3 , type VARCHAR ( 0 ) as N_COMMENT $4 "
     | combined 0
     | next
 
@@ -167,7 +237,7 @@ rows:
 // INDEXJOIN -
 //------------------------------------------------------------------------------
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_5
 begin
 
   stage S00 on origin :
@@ -177,8 +247,8 @@ begin
 
   stage S01 on all partitions :
      scan      ${testName2}_Nation
-   | project "type INTEGER N_NATIONKEY , type VARCHAR N_NAME , type INTEGER N_REGIONKEY"
-   | hash "type INTEGER $3"
+   | project "type INTEGER ( 19 ) N_NATIONKEY , type VARCHAR ( 0 ) N_NAME , type INTEGER ( 19 ) N_REGIONKEY"
+   | hash "type INTEGER ( 19 ) $3"
    | combined 0
    | next hashcast
 
@@ -226,7 +296,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_6
   begin
 
   stage S00 on origin :
@@ -236,7 +306,7 @@ pipeline _unnamed_
 
   stage S02 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 14 >"
-    | hash "type INTEGER $3"
+    | hash "type INTEGER ( 19 ) $3"
     | combined 0
     | next hashcast
 
@@ -264,7 +334,7 @@ rows:
 
 
 /optimise_passthru
-pipeline _unnamed_
+pipeline OpTest_7
   begin
 
   stage S00 on origin :
@@ -274,7 +344,7 @@ pipeline _unnamed_
 
   stage S02 on all partitions :
     indexScan ${testName2}_Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
-    | hash "type INTEGER $3"
+    | hash "type INTEGER ( 19 ) $3"
     | combined 0
     | next hashcast
 
@@ -298,7 +368,7 @@ rows:
 // SEMI-JOIN
 //------------------------------------------------------------------------------
 /optimise_passthru
-pipeline __CS2_semiJoin
+pipeline OpTest_8
 begin
 
  stage S00 on origin :
@@ -308,8 +378,8 @@ begin
 
  stage S01 on all partitions :
      scan ${testName2}_Nation
-   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-   | hash "type INTEGER $3"
+   | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY , type VARCHAR ( 0 ) as N_NAME N_NAME , type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY"
+   | hash "type INTEGER ( 19 ) $3"
    | combined  0
    | next hashcast
 
@@ -334,7 +404,7 @@ rows:
 
  
  /optimise_passthru
- pipeline __CS2_semiJoin
+ pipeline OpTest_9
  begin
 
   stage S00 on origin :
@@ -344,8 +414,8 @@ rows:
 
   stage S01 on all partitions :
       scan ${testName2}_Nation
-    | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-    | hash "type INTEGER $3"
+    | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY , type VARCHAR ( 0 ) as N_NAME N_NAME , type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY"
+    | hash "type INTEGER ( 19 ) $3"
     | combined  0
     | next hashcast
 
@@ -375,7 +445,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_10
 begin
   stage S00 on origin :
     start
@@ -384,15 +454,15 @@ begin
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_Nation
     | filter " type BOOLEAN  $1 5  <  "
-    | aggreg " type INTEGER )  $1 sum  "
+    | aggreg " type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
   stage S02 on all nodes :
-    aggreg " type INTEGER )  $1 sum  "
+    aggreg " type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
   stage S03 on origin :
-    aggreg " type INTEGER )  $1 sum  "
+    aggreg " type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
   stage S04 on origin :
@@ -409,7 +479,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_11
 begin
  stage S00 on origin :
    start
@@ -417,15 +487,15 @@ begin
    | next
  stage S01 on all partitions :
    scan rapidsse public ${testName2}_Nation
-   | aggreg " type VARCHAR )  $2 max  "
+   | aggreg " type VARCHAR ( 0 ) )  $2 max  "
    | combined 0
    | next
  stage S02 on all nodes :
-   aggreg " type VARCHAR )  $1 max  "
+   aggreg " type VARCHAR ( 0 ) )  $1 max  "
    | combined 0
    | next
  stage S03 on origin :
-   aggreg " type VARCHAR )  $1 max  "
+   aggreg " type VARCHAR ( 0 ) )  $1 max  "
    | combined 0
    | next
  stage S04 on origin :
@@ -441,7 +511,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_12
 begin
  stage S01 on origin :
    start
@@ -450,17 +520,17 @@ begin
 
  stage S02 on all partitions :
    scan rapidsse public ${testName2}_Nation
-   | gbyagg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $3 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
    | combined 0
    | next
 
  stage S03 on all nodes :
-   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $2 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
    | combined 0
    | next
 
  stage S04 on origin :
-   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $2 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
    | combined 0
    | next
 
@@ -481,7 +551,7 @@ rows:
 //------------------------------------------------------------------------------
  
  /optimise_passthru
- pipeline unamed
+ pipeline OpTest_13
  begin
    stage S01 on origin :
      start
@@ -490,17 +560,17 @@ rows:
 
    stage S02 on all partitions :
      scan rapidsse public ${testName2}_Nation
-     | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | gbyAgg " groupBy  type INTEGER ( 19 ) as n_regionkey $3 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) )  $2 max  "
      | combined 0
      | next
 
    stage S03 on all nodes :
-     gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $1 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) )  $2 max  "
      | combined 0
      | next
 
    stage S04 on origin :
-     gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $1 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) )  $2 max  "
      | combined 0
      | next
 
@@ -522,7 +592,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_14
 begin
   stage S00 on origin :
     start
@@ -531,17 +601,17 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_Nation
-    | gbyAgg " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
+    | gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $1 sum  "
     | combined 0
     | next
 
   stage S02 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S03 on origin :
-    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as n_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | next
 
@@ -582,7 +652,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_15
 begin
   stage S00 on origin :
     start
@@ -591,12 +661,12 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public ${testName2}_Nation
-    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
     | combined 0
     | next
 
   stage S02 on all partitions :
-    project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
     | combined 0
     | next
 
@@ -637,7 +707,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_16
 begin
  stage S00 on origin :
    start
@@ -646,8 +716,8 @@ begin
 
  stage S01 on all partitions :
    scan rapidsse public ${testName2}_Nation
-   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-   | sort " type INTEGER as n_nationkey $1 ASC  "
+   | project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
+   | sort " type INTEGER ( 19 ) as n_nationkey $1 ASC  "
    | combined 0
    | next
 
@@ -688,7 +758,7 @@ rows:
 //------------------------------------------------------------------------------
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_17
 begin
  stage S00 on origin :
    start
@@ -697,8 +767,8 @@ begin
 
  stage S01 on all partitions :
    scan rapidsse public ${testName2}_Nation
-   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-   | sort " type VARCHAR as n_name $2 ASC  "
+   | project " type INTEGER ( 19 ) as n_nationkey $1 , type VARCHAR ( 0 ) as n_name $2 "
+   | sort " type VARCHAR ( 0 ) as n_name $2 ASC  "
    | combined 0
    | next
 
@@ -749,7 +819,7 @@ load ${testName2}_R "../DATA/Joins/R.csv";
 // LEFT_OUTER with scan
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_18
 begin
   stage stageStart on origin :
     start
@@ -758,7 +828,7 @@ begin
   stage stageMarker0142 on all partitions :
     scan rapidsse public ${testName2}_L
     | indexJoin ${testName2}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 =="
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
+    | project " type INTEGER ( 19 ) as l_int_col0 $1 , type INTEGER ( 19 ) as r_int_col0 $2 , type VARCHAR ( 0 ) as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -772,7 +842,7 @@ rows: 48
 // LEFT_OUTER with indexscan
 
 /optimise_passthru
-pipeline unamed
+pipeline OpTest_19
 begin
   stage stageStart on origin :
     start
@@ -781,7 +851,7 @@ begin
   stage stageMarker0142 on all partitions :
     indexScan ${testName2}_L L_idx "LBOUND $I1 2 >"
     | indexJoin ${testName2}_R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
+    | project " type INTEGER ( 19 ) as l_int_col0 $1 , type INTEGER ( 19 ) as r_int_col0 $2 , type VARCHAR ( 0 ) as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -840,7 +910,7 @@ load ${testName2}_orders "../TPCH/SF_0001/orders.tbl";
 success
 
 /optimise_passthru
-pipeline unnamed
+pipeline OpTest_20
 begin
 
   stage S00 on origin :
@@ -850,14 +920,14 @@ begin
 
   stage S01 on all partitions :
       scan      ${testName2}_Lineitem
-    | project "type INTEGER $1"
-    | hash "type INTEGER $1"
+    | project "type INTEGER ( 19 ) $1"
+    | hash "type INTEGER ( 19 ) $1"
     | combined  0
     | next hashcast
 
   stage S02 on all partitions :
       indexJoin ${testName2}_orders IxO_ORDERKEY " BOUND $I1 $1 == "
-    | project "type INTEGER $1 , type INTEGER $2"
+    | project "type INTEGER ( 19 ) $1 , type INTEGER ( 19 ) $2"
     | combined  0
     | next
 

@@ -22,7 +22,7 @@ namespace STORE
     bool bContains(Symbol* pSymbol_arg);
     void vCorrect_expCol(Card_Emit* p_arriving);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsureTypeId_expCol(CardIter* pCI);
+    void vEnsure_Cast(CardIter* pCI);
     Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstNmdCol(void);
@@ -38,10 +38,7 @@ namespace STORE
     bool bIsScalarKey(void);
     bool bNeedsBrace(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    Card_RpnCalc* pPropagate(Card_Expr* p_expr_encasing);
-    Card_RpnCalc *pReducedCopy(i8 i_Expr,  bool bIs_SQCRLKEY);
-    Card_RpnCalc *pReducedCopy_key(void);
-    bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
+     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     void vShortForm(String* pString, Stz* szSep);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolPred* pTo_boolPred(void);

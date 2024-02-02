@@ -95,13 +95,13 @@ begin
     | filter 1 " J2_L_SHIPDATE DATE '1995-03-15 00:00:00'  >  "
     | stageMarker8570
   stage stageMarker8570 on all partitions :
-    aggreg 0 " type INTEGER as l_orderkey $18 , type FLOAT )  $23 1  $24 -  *  sum  , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 groupBy  type INTEGER as l_orderkey $18 , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 "
+    aggreg 0 " type INTEGER as l_orderkey $18 , type FLOAT ( 19 ) ( 19 ) )  $23 1  $24 -  *  sum  , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 groupBy  type INTEGER as l_orderkey $18 , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 "
     | stageMarker8573
   stage stageMarker8573 on all nodes :
-    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT )  $2 sum  , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 "
+    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT ( 19 ) ( 19 ) )  $2 sum  , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 "
     | stageMarker8576
   stage stageMarker8576 on origin :
-    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT as Revenue )  $2 sum  , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 "
+    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT ( 19 ) ( 19 ) as Revenue )  $2 sum  , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 "
     | stageLast
   stage stageLast on origin :
     output

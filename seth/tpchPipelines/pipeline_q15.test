@@ -14,29 +14,29 @@ pipeline Query15
 
    stage S01 on all partitions :
      indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
-     | gbyAgg " GroupBy    type INTEGER as l_suppkey $3
-                aggregates type INTEGER $K1 ,
-                           type DECIMAL )  $6 1.00  $7 -  *  sum  "
+     | gbyAgg " GroupBy    type INTEGER ( 19 ) as l_suppkey $3
+                aggregates type INTEGER ( 19 ) $K1 ,
+                           type DECIMAL ( 19  2 ) )  $6 1.00  $7 -  *  sum  "
      | combined 0
      | next
 
    stage S02 on all nodes :
-     gbyAgg " GroupBy    type INTEGER as l_suppkey $1
-              aggregates type INTEGER $K1 ,
-                         type DECIMAL )  $2 sum  "
+     gbyAgg " GroupBy    type INTEGER ( 19 ) as l_suppkey $1
+              aggregates type INTEGER ( 19 ) $K1 ,
+                         type DECIMAL ( 19  2 ) )  $2 sum  "
      | combined 0
      | next
 
    stage S03 on origin :
-     gbyAgg " GroupBy    type INTEGER as l_suppkey $1
-              aggregates type INTEGER as supplier_no $K1 ,
-                         type DECIMAL )  $2 sum  "
+     gbyAgg " GroupBy    type INTEGER ( 19 ) as l_suppkey $1
+              aggregates type INTEGER ( 19 ) as supplier_no $K1 ,
+                         type DECIMAL ( 19  2 ) )  $2 sum  "
      | combined 0
      | next
 
    stage S04 on origin :
-     top "type DECIMAL $2" 1
-     | hash "type INTEGER supplier_no"
+     top "type DECIMAL ( 19  2 ) $2" 1
+     | hash "type INTEGER ( 19 ) supplier_no"
      | combined 0
      | next hashcast
 

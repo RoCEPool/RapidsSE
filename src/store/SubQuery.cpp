@@ -19,7 +19,7 @@ __aFooterFunction(SubQuery)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubQuery::SubQuery(Board* pBoard)
+SubQuery::SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard)
 : Object(CN_SUBQUERY)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
@@ -35,6 +35,16 @@ SubQuery::SubQuery(Board* pBoard)
   m_eRelnOp  = RO_NONE;
 
   m_nSubQueries = 0;
+
+  vSqyNm(szSqyNm);
+  vSqyNo(szSqyNm);
+
+  vSqyNm_v2(szSqyNm);
+  Symbol xSymbol_sqyNo(SF_SQY_NO, i_Board == -1 ? 0 : i_Board * 2);
+  vSqyNo_v2(xSymbol_sqyNo.szSF_chrSeq(SF_SQY_NO));
+
+
+  UNUSED(i_Board);
 
   _checkInitialised_(CN_SUBQUERY);
 
@@ -232,21 +242,38 @@ void SubQuery::vDisposition(eQD eDisposition)
 /*----------------------------------------------------------------------------*/
 /* dump this subquery                                                         */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vDump(void)
+void SubQuery::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  vTrace("SubQuery %p Board %lld (%s) Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+  vTrace("%sSubQuery v1 %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+         Stz::szTab(iDepth),
          this,
-         m_pBoard->i_Board(),
-         m_pBoard->szBoardNm(),
+         szSqyNo(),
+         szSqyNm(),
          m_i_Caller,
+
          aQC[m_eClause],
          aQD[m_eDisposition],
          aQO[m_eCallOp],
          aRO[m_eRelnOp],
          m_nCorrCols
          );
+
+  vTrace("%sSubQuery v2 %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
+         Stz::szTab(iDepth),
+         this,
+         szSqyNo_v2(),
+         szSqyNm_v2(),
+         m_i_Caller,
+
+         aQC[m_eClause],
+         aQD[m_eDisposition],
+         aQO[m_eCallOp],
+         aRO[m_eRelnOp],
+         m_nCorrCols
+  );
+
 }
 
 
@@ -311,6 +338,104 @@ void SubQuery::vRelnOp(eRO eRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get subquery name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* SubQuery::szSqyNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  return m_sSqyNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery name                                                          */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSqyNm(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  if (szSqyNm->bSame("$Q2"_Stz))
+    vDebugPoint();
+
+  m_sSqyNm = szSqyNm;
+  //m_sSqyNo_v2 = szSqyNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery number $Qn                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SubQuery::szSqyNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  return m_sSqyNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set subquery number $Qn                                                    */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSqyNo(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  if (szSqyNo->bSame("$Q2"_Stz))
+    vDebugPoint();
+
+  m_sSqyNo = szSqyNo;
+  //m_sSqyNm_v2 = szSqyNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* SubQuery::szSqyNm_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  return m_sSqyNm_v2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery name                                                          */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSqyNm_v2(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  if (szSqyNm->bSame("$Q2"_Stz))
+    vDebugPoint();
+
+  RASSERT(Symbol::bIs_Sqy_Nm(szSqyNm));
+
+  m_sSqyNm_v2 = szSqyNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery number $Qn                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SubQuery::szSqyNo_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  return m_sSqyNo_v2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set subquery number $Qn                                                    */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vSqyNo_v2(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
+
+  if (szSqyNo->bSame("$Q2"_Stz))
+    vDebugPoint();
+
+  RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
+
+  m_sSqyNo_v2 = szSqyNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get nSubQueries                                                            */
 /*----------------------------------------------------------------------------*/
 i8 SubQuery::nSubQueries(void)
@@ -367,6 +492,28 @@ bool SubQuery::bViaWhere(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void SubQuery::vValidate(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  RASSERT(pCI->G.pBoard);
+  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
+
+  if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
+    return;
+
+  RASSERT(! m_sSqyNo_v2.nLength() || Symbol::bIs_Sqy_No(m_sSqyNo_v2));
+  RASSERT(! m_sSqyNm_v2.nLength() || Symbol::bIs_Sqy_Nm(m_sSqyNm_v2));
+
+  pCI->vSave();
+  pCI->vNullMembers();
+  pCI->G.pDeck->vValidate(pCI);
+  pCI->vRestore();
 }
 
 /*============================================================================*/

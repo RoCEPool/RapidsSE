@@ -75,7 +75,7 @@ begin
       | stageMarker24012
     stage stageMarker24012 on all partitions :
       filter " type BOOLEAN  $10 $19 ==  $34 $19 ==  and  $33 $18 ==  and  $1 $18 ==  and  $38 $17 ==  and  $13 $47 ==  and  }  $2 ''%green%''  5 matchMiddle  and  "
-      | project " type VARCHAR as nation $48 , type INTEGER as o_year $42 extract_year  , type DECIMAL as amount $22 1.  $23 -  *  $36 $21 *  -  "
+      | project " type VARCHAR ( 0 ) as nation $48 , type INTEGER as o_year $42 extract_year  , type DECIMAL as amount $22 1.  $23 -  *  $36 $21 *  -  "
       | combined 0
       | stageMarker24015
     stage stageMarker24015 on all partitions :
@@ -93,16 +93,16 @@ begin
     | stageMarker24018
   stage stageMarker24018 on all partitions :
     call "profit "
-    | aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    | aggreg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
     | stageMarker24021
   stage stageMarker24021 on all nodes :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    aggreg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
     | stageMarker24024
   stage stageMarker24024 on origin :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
-    | sort " type VARCHAR as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
+    aggreg " groupBy  type VARCHAR ( 0 ) as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
+    | sort " type VARCHAR ( 0 ) as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

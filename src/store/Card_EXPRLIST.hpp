@@ -28,21 +28,24 @@ namespace STORE
 
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
+    void vEnsure_nmdCol(void);
+
     i8 nExpr(void);
 
     Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg);
-    Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet= nullptr);
-    Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid);
+    Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg, Kid* aKid);
+    Card_Expr* pFind_expr_Matches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
 
     Card_Expr* pGet_expr(i8 i_Expr);
     Card_Expr* pGet_expr(Symbol* pSymbol_ordinal);
-
+    
     void vRenumberAll_expr(void);
 
     bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);
 
     void vShortForm(String* pString);
 
+    bool bTestFind_expr_Matching(Card_Expr* p_expr_arg, Symbol* pSymbol_arg, eSF eFacet_ignore);
     StreamDef* pToStreamDef(ColMap* pColMap,
                             Card_Key* p_key,
                             Card* p_OP);

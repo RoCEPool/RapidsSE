@@ -95,7 +95,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard();
+   // pCI->vPrintBoard(__func__,__LINE__);
     return;
   }
 
@@ -113,31 +113,15 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard();
-
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  pCI->G.p_gbyAgg->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
-
-  pCI->G.p_key = pSub_key();
-
- // pCI->vPrintBoard();
-
-  pCI->G.p_emit = pSub_emit();
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
+ // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,8 +138,8 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
   pCI->G.p_emit->vBump_KeyCol_In_rpnCalc(pCI);
   pCI->G.p_emit->vBump_expCol_In_rpnCalc(pCI);
 
-  Card_Fold::vPush_foldExpr_Into_gbyAgg_projection(pCI,pCI->Sqy.m_pExpr_fold);
-  Card_Fold::vPush_foldExpr_Into_gbyAgg_key(pCI,pCI->Sqy.m_pExpr_fold);
+  Card_Fold::vPush_foldExpr_Into_emit(pCI, pCI->Sqy.m_pExpr_fold);
+  Card_Fold::vPush_foldExpr_Into_key(pCI, pCI->Sqy.m_pExpr_fold);
 
   pCI->G.p_key->vRenumberAll_expr();
   pCI->G.p_emit->vRenumberAll_expr();
@@ -196,7 +180,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
- // pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   pCI->G.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 
@@ -204,35 +188,6 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
   }
 
- // pCI->vPrintBoard(__LINE__);
-
- // pCI->vRenumberCards();
-
- // pCI->vPrintBoard(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-    if (pCI->Flux.m_pArriving) {
-      pCI->G.p_key->vEnsureTypeId_expCol(pCI);
-      pCI->G.p_key->vRenumberAll_expr();
-    }
-  }
-
-  if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
-
-    if (pCI->Flux.m_pArriving) {
-      pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
-      pCI->G.p_emit->vRenumberAll_expr();
-    }
-
-  }
 }
 
 /*----------------------------------------------------------------------------*/

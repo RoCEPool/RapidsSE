@@ -65,7 +65,7 @@ void Bench::vAddBoard(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  //RASSERT(! pGetBoard(pBoard->eBoard()));
+  //RASSERT(! pFindBoard_By_sqyNm(pBoard->eBoard()));
 
   vPush(pBoard);
 }
@@ -93,6 +93,31 @@ CardCtl* Bench::pCardCtl(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump this bench                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vDump(const char* azFunc)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  vTrace("Bench Dump [%s]: %p %lld PipelineNm %s\n"_Stz,
+         azFunc,
+         this,
+         m_iBenchNo,
+         m_sPipelineNm.szStz()
+  );
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board* pBoard = this->pGet(i_Board);
+
+    pBoard->vDump(1);
+  }
+
+  vTrace("End Bench Dump\n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
 void Bench::vEndPhase(CardIter* pCI)
@@ -102,6 +127,126 @@ void Bench::vEndPhase(CardIter* pCI)
   pCI->vBoardIteration();
   while (pCI->bEachBoard())
     pCI->pBoard()->vEndPhase();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->szSqyNm()->bSame(szSqyNm))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pFindBoard_By_sqyNo(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->szSqyNo()->bSame(szSqyNo))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get subquery of given name                                                 */
+/*----------------------------------------------------------------------------*/
+SubQuery* Bench::pFindSubQuery_By_sqyNo(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  Board* pBoard = pFindBoard_By_sqyNm(szSqyNo);
+  if (! pBoard)
+    return nullptr;
+
+  SubQuery* pSubQuery = pBoard->pSubQuery();
+
+  return pSubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pFindBoard_By_sqyNm_v2(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->szSqyNm_v2()->bSame(szSqyNm))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pFindBoard_By_sqyNo_v2(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->szSqyNo_v2()->bSame(szSqyNo))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get subquery of given name                                                 */
+/*----------------------------------------------------------------------------*/
+SubQuery* Bench::pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard_By_sqyNo_v2(szSqyNo)) {
+    SubQuery *pSubQuery = pBoard->pSubQuery();
+    return pSubQuery;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subquery of given name                                                 */
+/*----------------------------------------------------------------------------*/
+SubQuery* Bench::pFindSubQuery_By_sqyNm_v2(Stz* szSqyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard_By_sqyNm_v2(szSqyNm)) {
+    SubQuery *pSubQuery = pBoard->pSubQuery();
+    return pSubQuery;
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,47 +265,28 @@ Board* Bench::pGetBoard(i8 i_Board)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get board of given name                                                    */
+/* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(Stz* szBoardNm)
+bool Bench::bKnown_sqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  i8 nBoards = this->nBoards();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
-
-    if (pBoard->szBoardNm()->bSame(szBoardNm))
-      return pBoard;
+  if (Board* pBoard = pFindBoard_By_sqyNm(szSqyNm)) {
+    UNUSED(pBoard);
+    return true;
   }
 
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get subquery of given name                                                 */
-/*----------------------------------------------------------------------------*/
-SubQuery* Bench::pGetSubQuery(Stz* szSubQueryNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  Board* pBoard = pGetBoard(szSubQueryNm);
-  if (! pBoard)
-    return nullptr;
-
-  SubQuery* pSubQuery= pBoard->pSubQuery();
-
-  return pSubQuery;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bIsSqyNm(Stz* szSqyNm)
+bool Bench::bKnown_sqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pGetBoard(szSqyNm)) {
+  if (Board* pBoard = pFindBoard_By_sqyNo(szSqyNo)) {
     UNUSED(pBoard);
     return true;
   }
@@ -218,18 +344,23 @@ void Bench::vPhase(CardIter* pCI, eOH ePhase)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear marks                                                                */
+/* get pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
-void Bench::vRenumberCards(void)
+Stz* Bench::szPipelineNm(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  i8 nBoards = this->nBoards();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
+  return m_sPipelineNm;
+}
 
-    pBoard->vRenumberCards();
-  }
+/*----------------------------------------------------------------------------*/
+/* set pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+void Bench::vPipelineNm(Stz* szPipelineNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_sPipelineNm = szPipelineNm;
 }
 
 /*----------------------------------------------------------------------------*/

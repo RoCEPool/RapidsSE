@@ -20,6 +20,7 @@ extern eFM eMacro_ExtractYear[DM_ENUMS];
 extern eFM eMacro_ExtractHour[DM_ENUMS];
 extern eFM eMacro_ExtractMinute[DM_ENUMS];
 extern eFM eMacro_ExtractSecond[DM_ENUMS];
+extern eFM eMacro_CastIntIvl[IVL_ENUMS];
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MATHEMATICAL OPERATORS

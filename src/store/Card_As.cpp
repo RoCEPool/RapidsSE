@@ -109,8 +109,6 @@ void Card_As::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   NEVER_REACH
-
-  vValidationPassed();
 }
 
 /*============================================================================*/

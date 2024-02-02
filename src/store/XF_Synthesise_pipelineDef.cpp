@@ -143,9 +143,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
-
-  s32 sQueryNm = pBoard->pBench()->pOptimiser()->szQueryNm();
+  s32 sQueryNm = m_pCI->m_pBench->pOptimiser()->szQueryNm();
 
   m_pPipelineDef = new PipelineDef(sQueryNm);
 
@@ -575,7 +573,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Kid xKid(p_emit);
     for (;;) {
       Card_Expr *p_expr_e =
-          p_emit->pFind_expr_Via_term0(pSym_tblCol_i, &xKid);
+          p_emit->pFind_expr_Matches(pSym_tblCol_i, &xKid);
       if (! p_expr_e)
         return C_CONTINUE_RECURSION;
 
@@ -647,10 +645,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   Card_Emit* p_arriving = m_pCI->Flux.m_pArriving;
   Card_Emit* p_emit  = pSubCard->pSub_emit();
 
-  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
-    p_arriving->vDump(__func__, "--ARRIVING at SubCard--"_Stz);
-    p_emit->vDump(__func__, "--EMITTED by SubCard--"_Stz);
-  }
+//  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+//    p_arriving->vDump(__func__, "--ARRIVING at SubCard--"_Stz);
+//    p_emit->vDump(__func__, "--EMITTED by SubCard--"_Stz);
+//  }
 
   if (m_pStageDef->i_Stage() == 1) {
     vDebugPoint();
@@ -663,9 +661,6 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   auto bfAddPropagatedArriving = [this, pColPpg, p_emit](Card *pCard_expr_a) {
 
-    eSF eViaFacet;
-    s256 sHow;
-
     // arriving related
     Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
     Symbol*  pExprSym_a = p_expr_a->pSymbol();
@@ -677,8 +672,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     Symbol* pInSym_a;
     Symbol* pOutSym_e;
 
-    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-      p_expr_a->vDump(__func__,"--EXPR ARRIVING at SubCard--"_Stz);
+//    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+//      p_expr_a->vDump(__func__,"--EXPR ARRIVING at SubCard--"_Stz);
 
     if (m_pStageDef->i_Stage() == 4) {
       vDebugPoint();
@@ -695,24 +690,15 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       if (pTermSym_a && pTermSym_a->bIs_Tbl_Col())
         bTermSym_a_Is_tblCol = true;
 
-      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Via_term0(pTermSym_a, &eViaFacet))) {
-        // 1) ARRIVING TERM: $t.c
-        sHow.vSprint("--FOUND emitted expr for arriving $t.c: %s~%s--"_Stz,
-                     pTermSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-          p_expr_e->vDump(__func__, sHow);
+      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Matches(pTermSym_a))) {
         pInSym_a = pTermSym_a;
       }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pExprSym_a, &eViaFacet))) {
-        // 2) ARRIVING EXPR: $n
-        sHow.vSprint("--FOUND emitted expr for arriving $n; %s~%s--"_Stz,
-                     pExprSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-          p_expr_e->vDump(__func__, sHow);
+      if ((p_expr_e = p_emit->pFind_expr_Matches_ignoring(pExprSym_a, SF_EXP_COL))) {
         pInSym_a = pExprSym_a;
       }
       else {
+
         // not propagated
         //vTrace("--NOT-FOUND expr\n"_Stz);
         return C_CONTINUE_RECURSION;
@@ -742,8 +728,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //      p_expr_a->vDump(__func__);
 //      p_expr_e->vDump(__func__);
 
-        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-          p_expr_e->vDump(__func__,"--EXPR EMITTED at SubCard--"_Stz);
+//        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+//          p_expr_e->vDump(__func__,"--EXPR EMITTED at SubCard--"_Stz);
 
         pColPpg->vAdd(pExprSym_a->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
@@ -777,7 +763,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
   m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
   for (Kid xKey(m_pCI->G.p_OP->pSub_key()); xKey.bEach(); /**/) {
     //xKey.p_expr()->vDump(__func__,"KEY EXPR"_Stz);
-    if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Via_term0(xKey.p_expr()->pSymbol()))) {
+    if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Matches(xKey.p_expr()->pSymbol()))) {
       //m_pCI->G.p_expr->vDump(__func__, "EMIT EXPR"_Stz);
 
       i8 i_EmittedCol = m_pCI->G.p_expr->pSymbol()->iSF_ordinal() - 1;

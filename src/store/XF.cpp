@@ -11,7 +11,6 @@
 #include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_Add_inflate.hpp"
 #include "XF_Epilog_Append_synthesis.hpp"
-#include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
@@ -21,10 +20,10 @@
 #include "XF_Epilog_Reinstate_stage.hpp"
 #include "XF_Epilog_Type_Cast.hpp"
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
-#include "XF_Epilog_X_tblCol_To_stmCol.hpp"
+#include "XF_Epilog_X_tblCol_To_expCol.hpp"
 #include "XF_Flatten.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
-#include "XF_Flatten_X_stmCol_To_tblCol.hpp"
+#include "XF_Flatten_X_expCol_To_tblCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
@@ -43,20 +42,17 @@
 #include "XF_Optimise_sortDesc_limit_To_top.hpp"
 #include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
-#include "XF_Prolog_Analyse_injected.hpp"
+#include "XF_Prolog_Analyse_injectable.hpp"
 #include "XF_Prolog_Analyse_emit.hpp"
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Prolog_Ensure_level.hpp"
-#include "XF_Prolog_Ensure_colType.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
-#include "XF_Prolog_Review_as.hpp"
 #include "XF_Prolog_Validate_Board.hpp"
-#include "XF_Prolog_X_board_To_sqyNm.hpp"
-#include "XF_Prolog_X_colNm_By_stmCol.hpp"
-#include "XF_Prolog_X_colNm_To_stmCol.hpp"
+#include "XF_Prolog_X_sqyNm_To_sqyNo.hpp"
+#include "XF_Prolog_X_colNm_To_expCol.hpp"
 #include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
 #include "XF_Synthesise_code.hpp"
@@ -151,12 +147,52 @@ void XF::vTransform(void)
 
   m_pCI->vPhase(OH_PROLOG);                        //
                                                    //
+#ifdef Z_SQY_Qn
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump(__func__);
+  }
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_X_board_To_sqyNm::vConvert(m_pCI);   //
+    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);   //
+  }                                                //
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump(__func__);
+  }
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard()) {                    //
+    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck(m_pCI);    //
     XF_Prolog_Validate_Board::vValidate(m_pCI);    //
   }                                                //
-                                                   //
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump(__func__);
+  }
+
+#else
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump(__func__);
+  }
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard()) {                    //
+    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);   //
+    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck(m_pCI);    //
+  }                                                //
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard()) {                    //
+    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(m_pCI);    //
+  }                                                //
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump(__func__);
+  }
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard()) {                    //
+    XF_Prolog_Validate_Board::vValidate(m_pCI);    //
+  }                                                //
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    m_pCI->m_pBench->vDump(__func__);
+  }
+
+#endif
+
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
                                                    //
@@ -169,15 +205,13 @@ void XF::vTransform(void)
                                                    //
     // meta analysis                               //
     XF_Prolog_Analyse_table::vAnalyse(m_pCI);      //
-    XF_Prolog_Analyse_injected::vAnalyse(m_pCI);   //
+    XF_Prolog_Analyse_injectable::vAnalyse(m_pCI);   //
     XF_Prolog_Analyse_emit::vAnalyse(m_pCI);    //
     XF_Prolog_Analyse_index::vAnalyse(m_pCI);      //
-    XF_Prolog_Ensure_colType::vEnsure(m_pCI);      //
                                                    //
     // preliminary conversions                     //
     XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI); //
     XF_Optimise_Factor_boolPred::vOptimise(m_pCI); //
-    XF_Prolog_Review_as::vReview(m_pCI);           //
   }                                                //
                                                    //
   // sub-query analysis                            //
@@ -238,7 +272,7 @@ void XF::vTransform(void)
   XF_Epilog_Promote_filter::vPromote(m_pCI);           //
   XF_Epilog_Reinstate_stage::vReinstate(m_pCI);        //
   XF_Epilog_Add_hash_cast::vAdd(m_pCI);                //
-  XF_Epilog_X_tblCol_To_stmCol::vConvert(m_pCI);       //
+  XF_Epilog_X_tblCol_To_expCol::vConvert(m_pCI);       //
   XF_Epilog_X_stmCol_To_colNm::vConvert(m_pCI);        //
                                                        //
   // - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -285,7 +319,7 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    XF_Prolog_X_board_To_sqyNm::vConvert(m_pCI);
+    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);
     XF_Prolog_Validate_Board::vValidate(m_pCI);
   }
 
@@ -293,14 +327,14 @@ void XF::vTransform_passThru(void)
   while (m_pCI->bEachBoard()) {
 
     XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(m_pCI);
-    XF_Prolog_Analyse_injected::vAnalyse_injected_passThru(m_pCI);   //
+    XF_Prolog_Analyse_injectable::vAnalyse_injected_passThru(m_pCI);   //
     XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 
-    XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
+    XF_Flatten_X_expCol_To_tblCol::vFlatten(m_pCI);
 
     // todo: needs discussion with Alka re constraint
-    XF_Prolog_X_colNm_By_stmCol::vXF_colNm_By_stmCol(m_pCI);
-    XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
+    //XF_Prolog_X_colNm_By_stmCol::vXF_colNm_By_stmCol(m_pCI);
+    XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(m_pCI);
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
     m_pCI->vBeginEach();
@@ -358,8 +392,8 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vUsingBoard((i8)0);
 
-  XF_Epilog_X_tblCol_To_stmCol::vConvert(m_pCI);       // tblCol -> stmCol
-  //XF_Epilog_X_stmCol_To_colNm::vConvert(m_pCI);        //
+  XF_Epilog_X_tblCol_To_expCol::vConvert(m_pCI);       // tblCol -> stmCol
+  //XF_Epilog_X_stmCol_To_colNm::vConvert_board(m_pCI);        //
 
   XF_Epilog_Type_Cast::vCast(m_pCI);                   //
 
@@ -411,7 +445,7 @@ void XF::vCrosscheck_Optimisations(void)
     if (m_pCI->pBoard()->pState()->bHasName(szOptimisation))
       continue;
 
-   // m_pCI->vPrintBoard();
+   // m_pCI->vPrintBoard(__func__,__LINE__);
     vTrace("Missing optimisation : %lld %lls\n"_Stz,i_OT,szOptimisation);
     NEVER_REACH
   }

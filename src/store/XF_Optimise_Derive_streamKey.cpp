@@ -134,7 +134,7 @@ void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
         break;
     }
 
-   // m_pCI->vPrintBoard(__LINE__);
+   // m_pCI->vPrintBoard(__func__,__LINE__);
 
     if (! m_pCI->StreamOrder.m_pStreamKey)
       break;

@@ -334,6 +334,10 @@ rows:
 drop table ${testName2}_T1 ;
 success
 
+//
+// FOLLOWING TESTS TO BE ENABLED WHEN WE SUPPORT PARITIONING ON MULTIPLE COLUMNS
+//
+/*
 // (17) create table t1
 create table ${testName2}_T1 (
   key   INTEGER NOT NULL,
@@ -350,6 +354,7 @@ rows:
 // () drop table t1
 drop table ${testName2}_T1 ;
 success
+*/
 
 ////////////
 // drop   //

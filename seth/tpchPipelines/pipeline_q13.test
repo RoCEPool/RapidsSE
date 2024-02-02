@@ -23,27 +23,27 @@ begin
     | next
 
   stage S03 on all partitions :
-    //ordAgg " ordGroupBy  type INTEGER as c_custkey $1
-    //         aggregates  type INTEGER $K1 ,
-    //                     type INTEGER )  $9 count  "
-    gbyAgg " GroupBy     type INTEGER as c_custkey $1
+    //ordAgg " ordGroupBy  type INTEGER ( 19 ) as c_custkey $1
+    //         aggregates  type INTEGER ( 19 ) $K1 ,
+    //                     type INTEGER ( 19 ) )  $9 count  "
+    gbyAgg " GroupBy     type INTEGER ( 19 ) as c_custkey $1
               aggregates
-                         type INTEGER $K1 ,
-                         type INTEGER )  $9 count  "
+                         type INTEGER ( 19 ) $K1 ,
+                         type INTEGER ( 19 ) )  $9 count  "
     | combined 0
     | next
 
   stage S04 on origin :
-    gbyAgg " GroupBy    type INTEGER as c_count $2
+    gbyAgg " GroupBy    type INTEGER ( 19 ) as c_count $2
              aggregates
-                        type INTEGER $K1 ,
-                        type INTEGER as custdist )  countAll  "
+                        type INTEGER ( 19 ) $K1 ,
+                        type INTEGER ( 19 ) as custdist )  countAll  "
     | combined 0
     | next
 
   stage S05 on origin :
-    sort " type INTEGER $1  ,
-           type INTEGER as c_count $2  "
+    sort " type INTEGER ( 19 ) $1  ,
+           type INTEGER ( 19 ) as c_count $2  "
     | combined 0
     | next
 

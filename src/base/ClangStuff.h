@@ -35,7 +35,7 @@ extern void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, v
 extern void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void *aExtern_IndexTreePositionLT(void* aIndexTree, void* aKey) __attribute__((weak_import));
 
-extern void vExtern_RunningHash(i8* piKeyHash, i8 iMixVal) __attribute__((weak_import));
+extern void vExtern_RunningHash(i8* piKeyHash, byte* aMixVal, i8 iSize) __attribute__((weak_import));
 
 extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
 extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));

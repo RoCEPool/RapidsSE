@@ -40,8 +40,8 @@ begin
                   and
     | project 2
         expr type INTEGER as _PARTKEY   P_PARTKEY ,
-             type VARCHAR as _BRAND     P_BRAND ,
-             type VARCHAR as _CONTAINER P_CONTAINER
+             type VARCHAR ( 0 ) as _BRAND     P_BRAND ,
+             type VARCHAR ( 0 ) as _CONTAINER P_CONTAINER
     | combined 0
     | next
 

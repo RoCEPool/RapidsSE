@@ -58,11 +58,11 @@ Stz* aSF[SF_ENUMS]
 
   /* */ "SF_PARENTHESIS"_Stz,
   /* */ "SF_PAY_COL"_Stz,
-  /* */ "SF_PPE_NM"_Stz,
 
   /* */ "SF_RLN_OP"_Stz,
 
   /* */ "SF_SQY_NM"_Stz,
+  /* */ "SF_SQY_NO"_Stz,
   /* */ "SF_SQY_OP"_Stz,
   /* */ "SF_SQY_PRM"_Stz,
   /* */ "SF_SQY_RSL"_Stz,

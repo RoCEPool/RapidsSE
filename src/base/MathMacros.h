@@ -343,14 +343,14 @@
     xDateTime.tm_min  = 0;                                                 \
     xDateTime.tm_sec  = iArg2/_C_1M;                                       \
                                                                            \
-    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
+		time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
                                                                            \
     i8 iMicroSeconds = iArg2%_C_1M;                                        \
                                                                            \
-    if (iMicroSeconds && iArg2 < 0) {                                      \
+		if (iMicroSeconds < 0) {                                               \
       xDateTime.tm_sec--;                                                  \
-      iMicroSeconds = _C_1M - iMicroSeconds;                               \
-    }                                                                      \
+      iMicroSeconds = _C_1M + iMicroSeconds;                               \
+		}                                                                      \
     xTsp2.m_iAsI8 = 0;                                                     \
                                                                            \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
@@ -434,13 +434,15 @@
     xDateTime.tm_min  = 0;                                                 \
     xDateTime.tm_sec  = iArg1/_C_1M;                                       \
                                                                            \
-      if (iMicroSeconds && iArg2 < 0) {                                    \
-      xDateTime.tm_sec--;                                                  \
-      iMicroSeconds = _C_1M - iMicroSeconds;                               \
-    }                                                                      \
-                                                                           \
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
                                                                            \
+    i8 iMicroSeconds = iArg1%_C_1M;                                        \
+                                                                           \
+		if (iMicroSeconds < 0) {                                               \
+      xDateTime.tm_sec--;                                                  \
+      iMicroSeconds = _C_1M + iMicroSeconds;                               \
+    }                                                                      \
+		                                                                       \
     xTsp2.m_iAsI8 = 0;                                                     \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
     xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
@@ -448,10 +450,9 @@
     xTsp2.m_uHour      = xDateTime.tm_hour;                                \
     xTsp2.m_uMinute    = xDateTime.tm_min;                                 \
     xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
-    xTsp2.m_uMicro     = 0;                                                \
+    xTsp2.m_uMicro     = iMicroSeconds;                                    \
                                                                            \
     *paW++ = xTsp2.m_iAsI8;                                                \
-    xTsp2.m_uMicro     = iMicroSeconds;                                    \
   }                                                                        \
 }
 
@@ -563,7 +564,7 @@
                                                                            \
     iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                           \
                                                                            \
-    if (ivlArg2.m_xIvl.m_bIsNeg)                                           \
+    if ( ! ivlArg2.m_xIvl.m_bIsNeg)                                        \
       iArg2 = (-1) * iArg2;                                                \
                                                                            \
     struct tm xDateTime = {0} ;                                            \
@@ -573,13 +574,13 @@
     xDateTime.tm_mday = xDte1.m_uDay;                                      \
     xDateTime.tm_hour = 0;                                                 \
     xDateTime.tm_min  = 0;                                                 \
-    xDateTime.tm_sec  -= iArg2/_C_1M;                                      \
+    xDateTime.tm_sec  = iArg2/_C_1M;                                       \
                                                                            \
     i8 iMicroSeconds = iArg2%_C_1M;                                        \
                                                                            \
-    if (iMicroSeconds) {                                                   \
+    if (iMicroSeconds < 0) {                                               \
       xDateTime.tm_sec--;                                                  \
-      iMicroSeconds = _C_1M - iMicroSeconds;                               \
+      iMicroSeconds = _C_1M + iMicroSeconds;                               \
     }                                                                      \
                                                                            \
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
@@ -1610,8 +1611,7 @@
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
         iArg2 = (-1) * iArg2;                                              \
       else                                                                 \
-                                                                           \
-      iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                   \
+        iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                 \
                                                                            \
      if (iArg2 > iArg1)                                                    \
       iArg1 += _C_SECS_PER_DAY *  _C_1M;                                   \
@@ -1706,6 +1706,10 @@
                                                                            \
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
       time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
+                                                                           \
+     if (xDateTime.tm_year > C_YEAR_RANGE) {                               \
+        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
+      }                                                                    \
                                                                            \
       xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
@@ -1902,6 +1906,10 @@
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
       time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
                                                                            \
+      if (xDateTime.tm_year > C_YEAR_RANGE) {                              \
+        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
+      }                                                                    \
+			                                                                     \
       xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
       xTsp2.m_uYearDelta = xDateTime.tm_year;                              \
@@ -1973,7 +1981,7 @@
     xTsp2.m_iAsI8 = *(--paW);                                              \
     xTsp1.m_iAsI8 = *(--paW);                                              \
                                                                            \
-    if (eErrorCode != EC_NONE ||                                           \
+		if (eErrorCode != EC_NONE ||                                           \
         xTsp2.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTsp1.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = C_DATUM_NULL;                                               \
@@ -2010,14 +2018,14 @@
                                                                            \
     if (iSeconds < 0) {                                                    \
       wIvlResult.m_xIvl.m_bIsNeg = 1;                                      \
-      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  (-1)*iSeconds*_C_1M +            \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  (-1)*iSeconds*_C_1M +      \
       (xTsp2.m_uMicro - xTsp1.m_uMicro);                                   \
-      }                                                                      \
+      }                                                                    \
     else {                                                                 \
-      wIvlResult.m_xIvl.m_bIsNeg = 0;                                      \
-      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M +            \
+			wIvlResult.m_xIvl.m_bIsNeg = 0;                                      \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M +           \
       (xTsp1.m_uMicro - xTsp2.m_uMicro);                                   \
-      }                                                                      \
+      }                                                                    \
     *paW++ = wIvlResult.m_iAsI8;                                           \
   }                                                                        \
 }

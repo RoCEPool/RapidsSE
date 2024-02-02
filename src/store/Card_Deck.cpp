@@ -83,7 +83,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              pCI->G.p_OP);
         UNUSED(eStageCast);
         pCI->G_vMainResynch();
-       // pCI->vPrintBoard(__LINE__);
+       // pCI->vPrintBoard(__func__,__LINE__);
         vDebugPoint();
       }
 
@@ -112,7 +112,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   delete p_streamPtn;
 
- // pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__func__,__LINE__);
   vDebugPoint();
 }
 
@@ -273,75 +273,6 @@ Card_Emit* Card_Deck::p_emit_fold(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* update projections after some change                                       */
-/*----------------------------------------------------------------------------*/
-void Card_Deck::vProjectionUpdate(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->vBeginEach();
-  while (pCI->G_bEachMainWith2Sub(CK_o_FROM, CK_s_STREAM, CK_t_EMIT))
-    pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
-
-
-  pCI->vBeginEach();
-  pCI->Flux.m_pArriving = pCI->G.p_emit = nullptr;
-
-  while (pCI->G_bEachMain_NONE()) {
-
-    if (CK_c_FOLD == pCI->G.e_MainCard)
-      continue;
-
-    switch (pCI->G.e_MainCard) {
-
-      case CK_o_LIMIT:   break;
-      case CK_o_SORT:    break;
-
-      case CK_o_AGGREG:  pCI->G.p_aggreg->Card_Aggreg::vUpdate_emit(pCI); break;
-      case CK_o_GBYAGG:  pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_emit(pCI); break;
-      case CK_o_HAVING:  pCI->G.p_having->Card_Having::vUpdate_emit(pCI); break;
-      case CK_o_ORDAGG:  pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_emit(pCI); break;
-      case CK_o_PROJECT: pCI->G.p_project->Card_Project::vUpdate_emit_OP(pCI); break;
-      case CK_o_WHERE:   pCI->G.p_where->Card_Where::vUpdate_emit(pCI); break;
-
-      case CK_o_FROM:
-        pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-        //pCI->vPrintBoard(__LINE__);
-        pCI->G.p_from->vUpdate_emit_OP(pCI);
-
-        if ((pCI->G.p_filter = pCI->G.p_from->pSub_filter())) {
-          if ((pCI->G.p_stream = pCI->G.p_filter->pSub_stream())) {
-            if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit())) {
-              pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
-              pCI->G.p_stream->vAppendChild(pCI->G.p_from->pSub_emit()->pClone());
-            }
-          }
-        }
-        break;
-
-      default:
-        if (pCI->G.p_MainCard->pSub_emit()) {
-          vTrace("UPDATE? %s"_Stz, pCI->G.p_MainCard->szCardNm());
-          vDebugPoint();
-        }
-        break;
-    }
-
-//    if (pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()) {
-//      pCI->G.p_filter->Card_Filter::vUpdate_emit(pCI);
-//    }
-
-    if (pCI->G.p_MainCard->pSub_emit()) {
-      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
-    }
-
-    //pCI->vPrintBoard(__LINE__);
-  }
-
-  pCI->vValidateBench();
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate children                                                          */
 /*----------------------------------------------------------------------------*/
 void Card_Deck::vValidate(CardIter* pCI)
@@ -490,14 +421,14 @@ void Card_Deck::vValidate(CardIter* pCI)
   vMark1RecursiveIf(MARK_BLANK, MARK_VALID);
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_UNVALID)) {
-   // pCI->vPrintBoard(__LINE__,true);
+   // pCI->vPrintBoard(__func__,__LINE__,true);
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH
   }
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_DUPLICATE)) {
-   // pCI->vPrintBoard(__LINE__,true);
+   // pCI->vPrintBoard(__func__,__LINE__,true);
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH

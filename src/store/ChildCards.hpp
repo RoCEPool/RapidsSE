@@ -31,6 +31,8 @@ namespace STORE
     void vDeleteChild(Card* pChild);
     void vDeleteSub(Card* pSub);
 
+    void vDiscardHead(void);
+
     void vEnsureFirst(eCK eChild);
     void vEnsureLast(eCK eChild);
 
@@ -46,10 +48,12 @@ namespace STORE
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reChild);
 
+    bool  bHeadSame(Stz* szArg);
+
     void  vInsertChildAfter(Card* pChild, Card* pAfter);
     void  vInsertChildBefore(Card* pChild, Card* pBefore);
 
-    void vMorphChildrenTo(eCK eFrom, eCK eTo);
+    void  vMorphChildrenTo(eCK eFrom, eCK eTo);
 
     eCK   ePeekChild(i8 i_Child=0);
     Card* pPeekChild(i8 i_Child=0);

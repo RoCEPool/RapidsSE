@@ -19,13 +19,11 @@ namespace STORE
 
     void vBump_Rightwards(i8 nBumpBy);
 
-    void vComputeProjection(CardIter* pCI); // prototype
     void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_root(CardIter* pCI);
 
     void vSmooth(CardIter* pCI);
-    void vUpdate_emit(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

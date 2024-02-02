@@ -56,15 +56,6 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Scan::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
  void Card_Scan::vEarlyProject_leaf(CardIter* pCI)
@@ -77,7 +68,7 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 
    pCI->Flux.m_pArriving = pSub_emit();
 
-  // pCI->vPrintBoard();
+  // pCI->vPrintBoard(__func__,__LINE__);
 
    vDebugPoint();
 }

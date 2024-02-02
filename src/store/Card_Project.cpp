@@ -64,7 +64,6 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
   Card_Level* p_level = new Card_Level(AL_ORIGIN);
   p_project_unproject->vAppendChild(p_level);
-  //pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
 
   Card_Stream* p_stream = new Card_Stream;
   p_project_unproject->vAppendChild(p_stream);
@@ -84,13 +83,10 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     if (pCI->G.p_expr->pSymbol()->bMatches(SF_EXP_COL, "$1"_Stz))
       continue;
 
-   // pCI->vPrintBoard(__LINE__);
-
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
+    p_expr_simple->vDeleteFacetRecursive(SF_KEY_COL);
 
     p_emitted_unproject->vAppendChild(p_expr_simple);
-
-   // pCI->vPrintBoard(__LINE__);
 
     vDebugPoint();
   }
@@ -114,18 +110,8 @@ void Card_Project::vBump_Rightwards(i8 nBumpBy)
     p_emit->vBump_Rightwards(nBumpBy);
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft projection for early project                                         */
+/* craft emit for early project                                               */
 /*----------------------------------------------------------------------------*/
 Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 {
@@ -133,17 +119,17 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 
   Card_Emit* p_emit_early = new Card_Emit;
 
-  pCI->Early.m_pNeeded_later->vDump(__func__);
-  pCI->Flux.m_pArriving->vDump(__func__);
+//  pCI->Early.m_pNeeded_later->vDump(__func__);
+//  pCI->Flux.m_pArriving->vDump(__func__);
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
-    //p_expr_needed->vDump(__func__);
-    if (! pCI->Flux.m_pArriving->pContains(p_expr_needed))
+    Card_Expr* p_expr_arriving = pCI->Flux.m_pArriving->pContains(p_expr_needed);
+    if (! p_expr_arriving)
       continue;
 
-    Card_Expr* p_expr_clone = p_expr_needed->pClone();
+    Card_Expr* p_expr_clone = p_expr_arriving->pClone();
 
     if (! p_expr_clone->pSymbol()->bHasFacet(SF_NMD_COL)) {
       Symbol oSymbol_nmdCol;
@@ -199,7 +185,7 @@ void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 
   pCI->Early.m_pOP_leaf = this;
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   vDebugPoint();
 }
@@ -219,8 +205,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
-
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  RASSERT(pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
@@ -235,7 +220,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   vDebugPoint();
 }
@@ -321,49 +306,17 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 //  pCI->G_vMainResynch();
   vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard();
-
-
   Card_OP::vEarlyProject_backstep(pCI);
+
+  pCI->G.p_MainCard = pCI->G.p_OP = this;
+  pCI->G.e_MainCard = CK_o_PROJECT;
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
+  RASSERT(! pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
-
- // pCI->vPrintBoard();
-
-  pCI->G.p_key = pSub_key();
-
- // pCI->vPrintBoard();
-
-  pCI->G.p_emit = pSub_emit();
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* smooth                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_project->pSymbol()->Y_vSet(P_Smoothed);
-
-  if (nBumpBy) {
-    pCI->G.p_project->vBump_Rightwards(nBumpBy);
-  }
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
+   pCI->G.p_OP->vRecreate_emit(pCI,true);
 }
 
 /*----------------------------------------------------------------------------*/

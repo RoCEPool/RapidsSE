@@ -153,14 +153,34 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 /*----------------------------------------------------------------------------*/
 /* ensure cast info                                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_Key::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypeId_expCol(pCI);
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
+    pCI->G.p_expr = xKey.p_expr();
+    pCI->G.p_expr->vEnsure_Cast(pCI);
+  }
+
+  pCI->G.p_expr = nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find expression which expresses the given symbol                           */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
+    Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
+
+    if (pSymbol_term0->bMatches(pSymbol))
+      return xKey.p_expr();
+  }
+
+  return nullptr;
+}
 /*----------------------------------------------------------------------------*/
 /* map the columns of this key                                                */
 /*----------------------------------------------------------------------------*/
@@ -180,6 +200,31 @@ void Card_Key::vMapColumns(CardIter *pCI)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(iDepth);
+
+  s32 sName;
+
+  sName.vSprint("%s%lld]"_Stz,
+                Stz::szDots(iDepth - 1),
+                m_i_Child);
+
+  sName.vSprintCat("%s"_Stz,
+                   szCardNm());
+
+  pRibbon->vSprintSnippet(false,"%c%c%s %p"_Stz,
+                          cMark1(),
+                          cMark2(),
+                          sName.szStz(),
+                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+
+}
 /*----------------------------------------------------------------------------*/
 /* short form                                                                 */
 /*----------------------------------------------------------------------------*/

@@ -139,7 +139,7 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
@@ -152,21 +152,16 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
-  vUpdate_emit(pCI);
+  pCI->G.p_OP = pCI->G.p_where;
+  pCI->G.p_OP->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
-
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 
@@ -186,7 +181,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
 
     // replace sqCall with sqResult
-    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NM);
+    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NO);
     pCI->Sqy.m_pTerm_sqyCall->SYM(SF_SQY_RSL, (i8)1);
     pCI->Sqy.m_pTerm_sqyCall->SYM(SF_EXP_COL, (i8)1);
 
@@ -195,24 +190,8 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   }
 
-  pCI->G.p_where->vUpdate_emit(pCI);
-
- // pCI->vRenumberCards();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Where::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_stream = pCI->G.p_where->pSub_stream())) {
-    if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit())) {
-      pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
-      pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pClone());
-    }
-  }
+  RASSERT(pCI->G.p_OP == pCI->G.p_where);
+  pCI->G.p_where->vRecreate_emit(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

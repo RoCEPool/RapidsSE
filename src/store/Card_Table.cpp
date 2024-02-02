@@ -385,11 +385,11 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
   }
     // b) KEYEXISTS
   else if (pCI->G.p_from->pSub_keyExists()) {
-    Card_KeyExists::vMorph_table_To_keyExists(pCI);
+    Card_KeyExists::vMorph_from_To_keyExists(pCI);
   }
     // c) KEYNOTEXISTS
   else if (pCI->G.p_from->pSub_keyNotExists()) {
-    Card_KeyNotExists::vMorph_table_To_keyNotExists(pCI);
+    Card_KeyNotExists::vMorph_from_To_keyNotExists(pCI);
   }
     // d) CROSSJOIN
   else if (! pCI->G.p_from->pSub_bounds()) { // && bFold && pCI->G.i_MainCard == i_Fold+1) {

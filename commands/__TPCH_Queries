@@ -22,22 +22,22 @@ begin
   stage S01 on all partitions :
     scan rapidsse public lineitem
     | filter " type BOOLEAN  $11 DATE '1998-10-01'  <=  "
-    | gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) L_QUANTITY sum  , type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  , type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  , type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  , type INTEGER ) L_EXTENDEDPRICE count  , type INTEGER ) L_QUANTITY count  , type DECIMAL ) L_DISCOUNT sum  , type INTEGER ) L_DISCOUNT count  , type INTEGER ) countAll  "
+    | gbyAgg " groupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS aggregates type VARCHAR ( 0 ) as L_RETURNFLAG $K1 , type VARCHAR ( 0 ) as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) L_QUANTITY sum  , type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  , type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  , type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  , type INTEGER ) L_EXTENDEDPRICE count  , type INTEGER ) L_QUANTITY count  , type DECIMAL ) L_DISCOUNT sum  , type INTEGER ) L_DISCOUNT count  , type INTEGER ) countAll  "
     | combined 0
     | next
 
   stage S02 on all nodes :
-    gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) SUM_QTY sum , type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum , type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum , type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum , type INTEGER ) $7 sum , type INTEGER ) $8 sum , type DECIMAL ) $9 sum , type INTEGER ) $10 sum , type INTEGER ) $11 sum "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS aggregates type VARCHAR ( 0 ) as L_RETURNFLAG $K1 , type VARCHAR ( 0 ) as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) SUM_QTY sum , type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum , type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum , type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum , type INTEGER ) $7 sum , type INTEGER ) $8 sum , type DECIMAL ) $9 sum , type INTEGER ) $10 sum , type INTEGER ) $11 sum "
     | combined 0
     | next
 
   stage S03 on origin :
-    gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) SUM_QTY sum , type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum , type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum , type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum , type INTEGER ) $7 sum , type INTEGER ) $8 sum , type DECIMAL ) $9 sum , type INTEGER ) $10 sum , type INTEGER as COUNT_ORDER ) $11 sum"
+    gbyAgg " groupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS aggregates type VARCHAR ( 0 ) as L_RETURNFLAG $K1 , type VARCHAR ( 0 ) as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) SUM_QTY sum , type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum , type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum , type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum , type INTEGER ) $7 sum , type INTEGER ) $8 sum , type DECIMAL ) $9 sum , type INTEGER ) $10 sum , type INTEGER as COUNT_ORDER ) $11 sum"
     | combined 0
     | next
 
   stage S04 on origin :
-    project " type VARCHAR as L_RETURNFLAG L_RETURNFLAG , type VARCHAR as L_LINESTATUS L_LINESTATUS , type DECIMAL as SUM_QTY SUM_QTY , type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE , type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE , type DECIMAL as SUM_CHARGE SUM_CHARGE , type DECIMAL as AVG_QTY SUM_QTY $8 casttype DECIMAL CAST  / , type DECIMAL as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL CAST  / , type DECIMAL as AVG_DISC $9 $10 casttype DECIMAL CAST  / , type INTEGER as COUNT_ORDER COUNT_ORDER "
+    project " type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS , type DECIMAL as SUM_QTY SUM_QTY , type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE , type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE , type DECIMAL as SUM_CHARGE SUM_CHARGE , type DECIMAL as AVG_QTY SUM_QTY $8 casttype DECIMAL CAST  / , type DECIMAL as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL CAST  / , type DECIMAL as AVG_DISC $9 $10 casttype DECIMAL CAST  / , type INTEGER as COUNT_ORDER COUNT_ORDER "
     | combined 0
     | next
 
@@ -59,10 +59,10 @@ begin
   stage S01 on all partitions :
     scan rapidsse public lineitem
     | filter " type BOOLEAN  $11 DATE '1998-10-01'  <=  "
-    | gbyAgg " GroupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    | gbyAgg " GroupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS
       aggregates
-      type VARCHAR as L_RETURNFLAG $K1 ,
-      type VARCHAR as L_LINESTATUS $K2 ,
+      type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
+      type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
       type DECIMAL as SUM_QTY ) L_QUANTITY sum  ,
       type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
       type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
@@ -76,10 +76,10 @@ begin
     | next
 
   stage S02 on all nodes :
-    gbyAgg " GroupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    gbyAgg " GroupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS
       aggregates
-      type VARCHAR as L_RETURNFLAG $K1 ,
-      type VARCHAR as L_LINESTATUS $K2 ,
+      type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
+      type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
       type DECIMAL as SUM_QTY ) SUM_QTY sum ,
       type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
       type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
@@ -93,10 +93,10 @@ begin
     | next
 
   stage S03 on origin :
-    gbyAgg " GroupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    gbyAgg " GroupBy  type VARCHAR ( 0 ) L_RETURNFLAG , type VARCHAR ( 0 ) L_LINESTATUS
       aggregates
-      type VARCHAR as L_RETURNFLAG $K1 ,
-      type VARCHAR as L_LINESTATUS $K2 ,
+      type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
+      type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
       type DECIMAL as SUM_QTY ) SUM_QTY sum ,
       type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
       type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
@@ -111,8 +111,8 @@ begin
 
   stage S04 on origin :
     project "
-      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY SUM_QTY ,
       type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
       type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
@@ -202,33 +202,33 @@ begin
 
   stage S09 on all partitions :
     indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
-    | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type VARCHAR as P_MFGR P_MFGR"
+    | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type VARCHAR ( 0 ) as P_MFGR P_MFGR"
     | hash "type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage S10 on all partitions :
     indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_MFGR P_MFGR , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR ( 0 ) as S_NAME S_NAME , type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR ( 0 ) as P_MFGR P_MFGR , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS , type VARCHAR ( 0 ) as S_PHONE S_PHONE , type VARCHAR ( 0 ) as S_COMMENT S_COMMENT "
     | combined 0
     | next
 
   stage S11 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
-    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR as S_NAME S_NAME , type VARCHAR as N_NAME N_NAME , type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_MFGR P_MFGR , type VARCHAR as S_ADDRESS S_ADDRESS , type VARCHAR as S_PHONE S_PHONE , type VARCHAR as S_COMMENT S_COMMENT "
-    | sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
+    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as N_NAME N_NAME , type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR ( 0 ) as P_MFGR P_MFGR , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS , type VARCHAR ( 0 ) as S_PHONE S_PHONE , type VARCHAR ( 0 ) as S_COMMENT S_COMMENT "
+    | sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR ( 0 ) N_NAME ASC , type VARCHAR ( 0 ) S_NAME ASC , type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
 
   stage S12 on all nodes :
-    sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
+    sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR ( 0 ) N_NAME ASC , type VARCHAR ( 0 ) S_NAME ASC , type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
 
   stage S13 on origin :
-    sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR N_NAME ASC , type VARCHAR S_NAME ASC , type INTEGER P_PARTKEY ASC"
+    sort "type DECIMAL S_ACCTBAL ASC , type VARCHAR ( 0 ) N_NAME ASC , type VARCHAR ( 0 ) S_NAME ASC , type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
     | next
@@ -319,7 +319,7 @@ begin
     indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project " type INTEGER as P_PARTKEY P_PARTKEY ,
                 type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-                type VARCHAR as P_MFGR P_MFGR"
+                type VARCHAR ( 0 ) as P_MFGR P_MFGR"
     | hash "type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -328,28 +328,28 @@ begin
     indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
     | project " type INTEGER as S_NATIONKEY S_NATIONKEY ,
                 type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-                type VARCHAR as S_NAME S_NAME ,
+                type VARCHAR ( 0 ) as S_NAME S_NAME ,
                 type INTEGER as P_PARTKEY P_PARTKEY ,
-                type VARCHAR as P_MFGR P_MFGR ,
-                type VARCHAR as S_ADDRESS S_ADDRESS ,
-                type VARCHAR as S_PHONE S_PHONE ,
-                type VARCHAR as S_COMMENT S_COMMENT "
+                type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
+                type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
+                type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
+                type VARCHAR ( 0 ) as S_COMMENT S_COMMENT "
     | combined 0
     | next
 
   stage S11 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
-                type VARCHAR as S_NAME S_NAME ,
-                type VARCHAR as N_NAME N_NAME ,
+                type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                type VARCHAR ( 0 ) as N_NAME N_NAME ,
                  type INTEGER as P_PARTKEY P_PARTKEY ,
-                 type VARCHAR as P_MFGR P_MFGR ,
-                 type VARCHAR as S_ADDRESS S_ADDRESS ,
-                 type VARCHAR as S_PHONE S_PHONE ,
-                 type VARCHAR as S_COMMENT S_COMMENT "
+                 type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
+                 type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
+                 type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
+                 type VARCHAR ( 0 ) as S_COMMENT S_COMMENT "
     | sort "type DECIMAL S_ACCTBAL ASC ,
-            type VARCHAR N_NAME ASC ,
-            type VARCHAR S_NAME ASC ,
+            type VARCHAR ( 0 ) N_NAME ASC ,
+            type VARCHAR ( 0 ) S_NAME ASC ,
             type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
@@ -357,8 +357,8 @@ begin
 
   stage S12 on all nodes :
     sort "type DECIMAL S_ACCTBAL ASC ,
-          type VARCHAR N_NAME ASC ,
-          type VARCHAR S_NAME ASC ,
+          type VARCHAR ( 0 ) N_NAME ASC ,
+          type VARCHAR ( 0 ) S_NAME ASC ,
           type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
@@ -366,8 +366,8 @@ begin
 
   stage S13 on origin :
     sort "type DECIMAL S_ACCTBAL ASC ,
-          type VARCHAR N_NAME ASC ,
-          type VARCHAR S_NAME ASC ,
+          type VARCHAR ( 0 ) N_NAME ASC ,
+          type VARCHAR ( 0 ) S_NAME ASC ,
           type INTEGER P_PARTKEY ASC"
     | limit 100
     | combined 0
@@ -542,24 +542,24 @@ begin
   stage S01 on all partitions :
     scan orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >= O_ORDERDATE DATE '1993-10-01' < and "
-    | project "type INTEGER as O_ORDERKEY O_ORDERKEY , type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | project "type INTEGER as O_ORDERKEY O_ORDERKEY , type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY"
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY ==" "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | gbyAgg "groupby type VARCHAR O_ORDERPRIORITY  aggregates type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) countAll"
+    | gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY  aggregates type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) countAll"
     | combined 0
     | next
 
   stage S03 on all nodes :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY aggregates type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY aggregates type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
   stage S04 on origin :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY aggregates  type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY aggregates  type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
@@ -584,7 +584,7 @@ begin
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
                             O_ORDERDATE DATE '1993-10-01' < and "
     | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+               type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY"
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
@@ -592,25 +592,25 @@ begin
   stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    | gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
               aggregates
-              type VARCHAR as O_ORDERPRIORITY $K1 ,
+              type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
               type INTEGER as ORDER_COUNT ) countAll"
     | combined 0
     | next
 
   stage S03 on all nodes :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
             type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
   stage S04 on origin :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
             type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
@@ -671,7 +671,7 @@ begin
 
   stage S05 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
-    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type VARCHAR ( 0 ) as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
     | hash "type INTEGER N_REGIONKEY"
     | combined 0
     | next hashcast
@@ -679,22 +679,22 @@ begin
   stage S06 on all partitions :
     indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
     | filter " type BOOLEAN R_NAME 'ASIA'  ==  "
-    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type VARCHAR as N_NAME N_NAME"
+    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type VARCHAR ( 0 ) as N_NAME N_NAME"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME aggregates type VARCHAR as N_NAME $K1 , type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
+    gbyAgg " GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME aggregates type VARCHAR ( 0 ) as N_NAME $K1 , type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME aggregates type VARCHAR as N_NAME $K1 , type DECIMAL as REVENUE ) REVENUE sum  "
+    gbyAgg " GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME aggregates type VARCHAR ( 0 ) as N_NAME $K1 , type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME aggregates type VARCHAR as N_NAME $K1 , type DECIMAL as REVENUE ) REVENUE sum  "
+    gbyAgg " GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME aggregates type VARCHAR ( 0 ) as N_NAME $K1 , type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
@@ -761,7 +761,7 @@ begin
     indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
-               type VARCHAR as N_NAME N_NAME ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME ,
                type INTEGER as N_REGIONKEY N_REGIONKEY"
     | hash "type INTEGER N_REGIONKEY"
     | combined 0
@@ -772,27 +772,27 @@ begin
     | filter " type BOOLEAN R_NAME 'ASIA'  ==  "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
-               type VARCHAR as N_NAME N_NAME"
+               type VARCHAR ( 0 ) as N_NAME N_NAME"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME
-             aggregates type VARCHAR as N_NAME $K1 ,
+    gbyAgg " GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
                         type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME
-             aggregates type VARCHAR as N_NAME $K1 ,
+    gbyAgg " GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
                         type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME
-             aggregates type VARCHAR as N_NAME $K1 ,
+    gbyAgg " GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
              type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
@@ -905,19 +905,19 @@ begin
    stage S01 on all partitions :
      scan nation
      | filter "type BOOLEAN N_NAME 'FRANCE' == N_NAME 'GERMANY' == OR"
-     | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N2_N_NAME N_NAME"
+     | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR ( 0 ) as N2_N_NAME N_NAME"
      | combined 0
      | next
 
    stage S02 on all partitions :
      indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
-     | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as N2_N_NAME N2_N_NAME"
+     | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
      | combined 0
      | next
 
    stage S03 on all partitions :
      indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
-     | project "type integer as O_ORDERKEY O_ORDERKEY , type VARCHAR as N2_N_NAME N2_N_NAME"
+     | project "type integer as O_ORDERKEY O_ORDERKEY , type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
      | hash "type INTEGER O_ORDERKEY"
      | combined 0
      | next hashcast
@@ -925,36 +925,36 @@ begin
    stage S04 on all partitions :
      indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
      | filter "type BOOLEAN } DATE '1995-01-01'  DATE '1996-12-31' L_SHIPDATE between"
-     | project "type INTEGER as L_SUPPKEY L_SUPPKEY , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_SHIPDATE extract_year , type DECIMAL as volume L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * "
+     | project "type INTEGER as L_SUPPKEY L_SUPPKEY , type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_SHIPDATE extract_year , type DECIMAL as volume L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * "
      | hash "type INTEGER L_SUPPKEY "
      | combined 0
      | next hashcast
 
    stage S05 on all partitions :
      indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
-     | project "type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as VOLUME VOLUME"
+     | project "type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as VOLUME VOLUME"
      | combined 0
      | next
 
    stage S06 on all partitions :
      indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
      | filter "type BOOLEAN N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
-     | project "type VARCHAR as N1_N_NAME N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as VOLUME VOLUME"
+     | project "type VARCHAR ( 0 ) as N1_N_NAME N_NAME , type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as VOLUME VOLUME"
      | combined 0
      | next
 
   stage S07 on all partitions :
-     gbyAgg " GroupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) VOLUME sum  "
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME , type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR ( 0 ) as N1_N_NAME $K1 , type VARCHAR ( 0 ) as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) VOLUME sum  "
      | combined 0
      | next
 
    stage S08 on all nodes :
-    gbyAgg " GroupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME , type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR ( 0 ) as N1_N_NAME $K1 , type VARCHAR ( 0 ) as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
    stage S09 on origin :
-     gbyAgg " GroupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME , type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates type VARCHAR ( 0 ) as N1_N_NAME $K1 , type VARCHAR ( 0 ) as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
@@ -977,21 +977,21 @@ begin
      scan nation
      | filter "type BOOLEAN N_NAME 'FRANCE' == N_NAME 'GERMANY' == OR"
      | project "type INTEGER as N_NATIONKEY N_NATIONKEY ,
-                type VARCHAR as N2_N_NAME N_NAME"
+                type VARCHAR ( 0 ) as N2_N_NAME N_NAME"
      | combined 0
      | next
 
    stage S02 on all partitions :
      indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
      | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
-                type VARCHAR as N2_N_NAME N2_N_NAME"
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
      | combined 0
      | next
 
    stage S03 on all partitions :
      indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
      | project "type integer as O_ORDERKEY O_ORDERKEY ,
-                type VARCHAR as N2_N_NAME N2_N_NAME"
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
      | hash "type INTEGER O_ORDERKEY"
      | combined 0
      | next hashcast
@@ -1000,7 +1000,7 @@ begin
      indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
      | filter "type BOOLEAN } DATE '1995-01-01'  DATE '1996-12-31' L_SHIPDATE between"
      | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
-                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR L_SHIPDATE extract_year ,
                 type DECIMAL as volume L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * "
      | hash "type INTEGER L_SUPPKEY "
@@ -1010,7 +1010,7 @@ begin
    stage S05 on all partitions :
      indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
      | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
-                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR L_YEAR ,
                 type DECIMAL as VOLUME VOLUME"
      | combined 0
@@ -1020,43 +1020,43 @@ begin
      indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
      | filter "type BOOLEAN N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and
                             N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
-     | project "type VARCHAR as N1_N_NAME N_NAME ,
-                type VARCHAR as N2_N_NAME N2_N_NAME ,
+     | project "type VARCHAR ( 0 ) as N1_N_NAME N_NAME ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR L_YEAR ,
                 type DECIMAL as VOLUME VOLUME"
      | combined 0
      | next
 
   stage S07 on all partitions :
-     gbyAgg " GroupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
-                      type VARCHAR as N2_N_NAME N2_N_NAME ,
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
+                      type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                       type INTEGER as L_YEAR L_YEAR aggregates
-                      type VARCHAR as N1_N_NAME $K1 ,
-                      type VARCHAR as N2_N_NAME $K2 ,
+                      type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                      type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
                       type INTEGER as L_YEAR $K3 ,
                       type DECIMAL AS REVENUE ) VOLUME sum  "
      | combined 0
      | next
 
    stage S08 on all nodes :
-    gbyAgg " GroupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
-                     type VARCHAR as N2_N_NAME N2_N_NAME ,
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
+                     type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                      type INTEGER as L_YEAR L_YEAR
                      aggregates
-                     type VARCHAR as N1_N_NAME $K1 ,
-                     type VARCHAR as N2_N_NAME $K2 ,
+                     type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                     type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
                      type INTEGER as L_YEAR $K3 ,
                      type DECIMAL AS REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
    stage S09 on origin :
-     gbyAgg " GroupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
-                      type VARCHAR as CUST_NATION N2_N_NAME ,
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as SUPP_NATION N1_N_NAME ,
+                      type VARCHAR ( 0 ) as CUST_NATION N2_N_NAME ,
                       type INTEGER as L_YEAR L_YEAR
                       aggregates
-                      type VARCHAR as N1_N_NAME $K1 ,
-                      type VARCHAR as N2_N_NAME $K2 ,
+                      type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                      type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
                       type INTEGER as L_YEAR $K3 ,
                       type DECIMAL AS REVENUE ) REVENUE sum  "
      | combined 0
@@ -1138,7 +1138,7 @@ begin
 
   stage S08 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
-    | project "type INTEGER as O_YEAR O_YEAR , type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * , type VARCHAR as NATION N_NAME"
+    | project "type INTEGER as O_YEAR O_YEAR , type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * , type VARCHAR ( 0 ) as NATION N_NAME"
     | combined 0
     | next
 
@@ -1241,7 +1241,7 @@ begin
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
-               type VARCHAR as NATION N_NAME"
+               type VARCHAR ( 0 ) as NATION N_NAME"
     | combined 0
     | next
 
@@ -1338,27 +1338,27 @@ QUERY 9
 
   stage S06 on all partitions :
     indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR as NATION N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
+    | project "type VARCHAR ( 0 ) as NATION N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    aggreg "groupBy type VARCHAR NATION , type INTEGER O_YEAR aggregates type VARCHAR as NATION $K1 , type INTEGER as O_YEAR $K2 , type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
+    aggreg "groupBy type VARCHAR ( 0 ) NATION , type INTEGER O_YEAR aggregates type VARCHAR ( 0 ) as NATION $K1 , type INTEGER as O_YEAR $K2 , type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    aggreg "groupBy type VARCHAR NATION , type INTEGER O_YEAR aggregates type VARCHAR as NATION $K1 , type INTEGER as O_YEAR $K2 , type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
+    aggreg "groupBy type VARCHAR ( 0 ) NATION , type INTEGER O_YEAR aggregates type VARCHAR ( 0 ) as NATION $K1 , type INTEGER as O_YEAR $K2 , type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    aggreg "groupBy type VARCHAR NATION , type INTEGER O_YEAR aggregates type VARCHAR as NATION $K1 , type INTEGER as O_YEAR $K2 , type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
+    aggreg "groupBy type VARCHAR ( 0 ) NATION , type INTEGER O_YEAR aggregates type VARCHAR ( 0 ) as NATION $K1 , type INTEGER as O_YEAR $K2 , type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR as NATION NATION ASC , type INTEGER as O_YEAR O_YEAR DESC"
+    sort "type VARCHAR ( 0 ) as NATION NATION ASC , type INTEGER as O_YEAR O_YEAR DESC"
     | combined 0
     | next
 
@@ -1421,44 +1421,44 @@ pipeline Query9
 
   stage S06 on all partitions :
     indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR as NATION N_NAME ,
+    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    aggreg "groupBy type VARCHAR NATION ,
+    aggreg "groupBy type VARCHAR ( 0 ) NATION ,
                     type INTEGER O_YEAR
             aggregates
-                    type VARCHAR as NATION $K1 ,
+                    type VARCHAR ( 0 ) as NATION $K1 ,
                     type INTEGER as O_YEAR $K2 ,
                     type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    aggreg "groupBy type VARCHAR NATION ,
+    aggreg "groupBy type VARCHAR ( 0 ) NATION ,
                     type INTEGER O_YEAR
             aggregates
-                     type VARCHAR as NATION $K1 ,
+                     type VARCHAR ( 0 ) as NATION $K1 ,
                      type INTEGER as O_YEAR $K2 ,
                      type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    aggreg "groupBy type VARCHAR NATION ,
+    aggreg "groupBy type VARCHAR ( 0 ) NATION ,
                     type INTEGER O_YEAR
             aggregates
-                     type VARCHAR as NATION $K1 ,
+                     type VARCHAR ( 0 ) as NATION $K1 ,
                      type INTEGER as O_YEAR $K2 ,
                      type DECIMAL as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR as NATION NATION ASC ,
+    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
           type INTEGER as O_YEAR O_YEAR DESC"
     | combined 0
     | next
@@ -1527,13 +1527,13 @@ begin
 
   stage S07 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY , type VARCHAR ( 0 ) as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS , type VARCHAR ( 0 ) as C_PHONE C_PHONE , type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type VARCHAR ( 0 ) as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR ( 0 ) as N_NAME N_NAME , type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS , type VARCHAR ( 0 ) as C_PHONE C_PHONE , type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
@@ -1610,25 +1610,25 @@ begin
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type INTEGER as C_NATIONKEY C_NATIONKEY ,
-               type VARCHAR as C_NAME C_NAME ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
                type DECIMAL as REVENUE ) REVENUE ,
                type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type VARCHAR as C_NAME C_NAME ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
                type DECIMAL as REVENUE ) REVENUE ,
                type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME N_NAME ,
-               type VARCHAR as C_ADDRESS C_ADDRESS ,
-               type VARCHAR as C_PHONE C_PHONE ,
-               type VARCHAR as C_COMMENT C_COMMENT"
+               type VARCHAR ( 0 ) as N_NAME N_NAME ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
@@ -1844,28 +1844,28 @@ QUERY 12
      | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
      | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
      | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next broadcast
 
    stage S02 on all partitions :
      indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
-     | project "type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | project "type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next
 
    stage S03 on all partitions :
-     gbyAgg " GroupBy  type VARCHAR as L_SHIPMODE L_SHIPMODE aggregates type VARCHAR $K1 , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE aggregates type VARCHAR ( 0 ) $K1 , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
      | combined 0
      | next
 
    stage S04 on all nodes :
-     gbyAgg " GroupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as L_SHIPMODE $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
      | combined 0
      | next
 
    stage S05 on origin :
-     gbyAgg " GroupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as L_SHIPMODE $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
      | combined 0
      | next
 
@@ -1890,35 +1890,35 @@ pipeline Query12
      | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
      | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
      | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next broadcast
 
    stage S02 on all partitions :
      indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
-     | project "type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | project "type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next
 
    stage S03 on all partitions :
-     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE L_SHIPMODE
-              aggregates type VARCHAR $K1 ,
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE
+              aggregates type VARCHAR ( 0 ) $K1 ,
                          type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
                          type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
      | combined 0
      | next
 
    stage S04 on all nodes :
-     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE $1
-              aggregates type VARCHAR $K1 ,
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
+              aggregates type VARCHAR ( 0 ) $K1 ,
                          type INTEGER )  $2 sum  ,
                          type INTEGER )  $3 sum  "
      | combined 0
      | next
 
    stage S05 on origin :
-     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE $1
-              aggregates  type VARCHAR $K1 ,
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
+              aggregates  type VARCHAR ( 0 ) $K1 ,
                           type INTEGER as high_line_count )  $2 sum  ,
                           type INTEGER as low_line_count )  $3 sum  "
      | combined 0
@@ -2234,13 +2234,13 @@ begin
   stage S01 on all partitions :
     scan rapidsse public part
     | filter " type BOOLEAN  P_BRAND 'Brand#45' != }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not and }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
-    | project "type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE"
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE"
     | combined 0
     | next
 
   stage S02 on all partitions :
       indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
-      | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE"
+      | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY , type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE"
       | hash " type INTEGER PS_SUPPKEY"
       | combined 0
       | next hashcast
@@ -2248,38 +2248,38 @@ begin
     stage S03 on all partitions :
       keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                  "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
-      | gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as PS_SUPPKEY $K4"
+      | gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY aggregates type VARCHAR ( 0 )  as P_BRAND $K1 , type VARCHAR ( 0 )  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as PS_SUPPKEY $K4"
       | combined 0
       | next
 
     stage S04 on all nodes :
-      gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as PS_SUPPKEY $K4"
+      gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY aggregates type VARCHAR ( 0 )  as P_BRAND $K1 , type VARCHAR ( 0 )  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as PS_SUPPKEY $K4"
       | combined 0
       | next
 
     stage S05 on origin :
-      gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as PS_SUPPKEY $K4"
+      gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY aggregates type VARCHAR ( 0 )  as P_BRAND $K1 , type VARCHAR ( 0 )  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as PS_SUPPKEY $K4"
       | hash " type INTEGER PS_SUPPKEY"
       | combined 0
       | next hashcast
 
     stage S06 on all partitions :
-      gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE  aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) PS_SUPPKEY COUNT"
+      gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE  aggregates type VARCHAR ( 0 )  as P_BRAND $K1 , type VARCHAR ( 0 )  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) PS_SUPPKEY COUNT"
       | combined 0
       | next
 
     stage S07 on all nodes :
-      gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE  aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) supplier_cnt SUM"
+      gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE  aggregates type VARCHAR ( 0 )  as P_BRAND $K1 , type VARCHAR ( 0 )  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) supplier_cnt SUM"
       | combined 0
       | next
 
     stage S08 on origin :
-      gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE  aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) supplier_cnt SUM"
+      gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE  aggregates type VARCHAR ( 0 )  as P_BRAND $K1 , type VARCHAR ( 0 )  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) supplier_cnt SUM"
       | combined 0
       | next
 
     stage S09 on origin :
-      sort " type INTEGER $4 DESC  , type VARCHAR as P_BRAND P_BRAND ASC , type VARCHAR as P_TYPE P_TYPE ASC , type INTEGER as P_SIZE P_SIZE ASC "
+      sort " type INTEGER $4 DESC  , type VARCHAR ( 0 ) as P_BRAND P_BRAND ASC , type VARCHAR ( 0 ) as P_TYPE P_TYPE ASC , type INTEGER as P_SIZE P_SIZE ASC "
       | combined 0
       | next
 
@@ -2305,8 +2305,8 @@ begin
               }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not and
               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
-               type VARCHAR as P_BRAND P_BRAND ,
-               type VARCHAR as P_TYPE P_TYPE ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
                type INTEGER as P_SIZE P_SIZE"
     | combined 0
     | next
@@ -2314,8 +2314,8 @@ begin
   stage S02 on all partitions :
     indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
-               type VARCHAR as P_BRAND P_BRAND ,
-               type VARCHAR as P_TYPE P_TYPE ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
                type INTEGER as P_SIZE P_SIZE"
     | hash " type INTEGER PS_SUPPKEY"
     | combined 0
@@ -2324,13 +2324,13 @@ begin
   stage S03 on all partitions :
     keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
-    | gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND ,
-                       type VARCHAR as P_TYPE P_TYPE ,
+    | gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
                        type INTEGER as P_SIZE P_SIZE ,
                        type INTEGER as PS_SUPPKEY PS_SUPPKEY
                aggregates
-                       type VARCHAR  as P_BRAND $K1 ,
-                       type VARCHAR  as P_TYPE $K2 ,
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
                        type INTEGER  as P_SIZE $K3 ,
                        type INTEGER  as PS_SUPPKEY $K4"
 
@@ -2338,26 +2338,26 @@ begin
     | next
 
   stage S04 on all nodes :
-    gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND ,
-                     type VARCHAR as P_TYPE P_TYPE ,
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
                      type INTEGER as P_SIZE P_SIZE ,
                      type INTEGER as PS_SUPPKEY PS_SUPPKEY
              aggregates
-                    type VARCHAR  as P_BRAND $K1 ,
-                    type VARCHAR  as P_TYPE $K2 ,
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
                     type INTEGER  as P_SIZE $K3 ,
                     type INTEGER  as PS_SUPPKEY $K4 "
     | combined 0
     | next
 
   stage S05 on origin :
-    gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND ,
-                     type VARCHAR as P_TYPE P_TYPE ,
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
                      type INTEGER as P_SIZE P_SIZE ,
                      type INTEGER as PS_SUPPKEY PS_SUPPKEY
              aggregates
-                    type VARCHAR  as P_BRAND $K1 ,
-                    type VARCHAR  as P_TYPE $K2 ,
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
                     type INTEGER  as P_SIZE $K3 ,
                     type INTEGER  as PS_SUPPKEY $K4 "
     | hash " type INTEGER PS_SUPPKEY"
@@ -2365,36 +2365,36 @@ begin
     | next hashcast
 
   stage S06 on all partitions :
-    gbyAgg " GroupBy  type VARCHAR as P_BRAND P_BRAND ,
-                       type VARCHAR as P_TYPE P_TYPE ,
+    gbyAgg " GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
                        type INTEGER as P_SIZE P_SIZE
                        aggregates
-                       type VARCHAR  as P_BRAND $K1 ,
-                       type VARCHAR  as P_TYPE $K2 ,
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
                        type INTEGER  as P_SIZE $K3 ,
                        type INTEGER  as supplier_cnt ) PS_SUPPKEY COUNT"
     | combined 0
     | next
 
   stage S07 on all nodes :
-    gbyAgg " GroupBy type VARCHAR as P_BRAND P_BRAND ,
-                     type VARCHAR as P_TYPE P_TYPE ,
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
                      type INTEGER as P_SIZE P_SIZE
                      aggregates
-                     type VARCHAR  as P_BRAND $K1 ,
-                     type VARCHAR  as P_TYPE $K2 ,
+                     type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                     type VARCHAR ( 0 )  as P_TYPE $K2 ,
                      type INTEGER  as P_SIZE $K3 ,
                      type INTEGER  as supplier_cnt ) supplier_cnt SUM"
     | combined 0
     | next
 
   stage S08 on origin :
-    gbyAgg " GroupBy  type VARCHAR as P_BRAND P_BRAND ,
-                      type VARCHAR as P_TYPE P_TYPE ,
+    gbyAgg " GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
                       type INTEGER as P_SIZE P_SIZE
                       aggregates
-                      type VARCHAR  as P_BRAND $K1 ,
-                      type VARCHAR  as P_TYPE $K2 ,
+                      type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                      type VARCHAR ( 0 )  as P_TYPE $K2 ,
                       type INTEGER  as P_SIZE $K3 ,
                       type INTEGER  as supplier_cnt ) supplier_cnt SUM"
     | combined 0
@@ -2402,8 +2402,8 @@ begin
 
   stage S09 on origin :
     sort " type INTEGER $4 DESC  ,
-           type VARCHAR as P_BRAND P_BRAND ASC ,
-           type VARCHAR as P_TYPE P_TYPE ASC ,
+           type VARCHAR ( 0 ) as P_BRAND P_BRAND ASC ,
+           type VARCHAR ( 0 ) as P_TYPE P_TYPE ASC ,
            type INTEGER as P_SIZE P_SIZE ASC "
     | combined 0
     | next
@@ -2602,22 +2602,22 @@ QUERY 18
 
    stage S03 on all partitions :
      indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
-     | project "type VARCHAR as C_NAME C_NAME , type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE , type DECIMAL as SUM_QTY SUM_QTY "
+     | project "type VARCHAR ( 0 ) as C_NAME C_NAME , type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE , type DECIMAL as SUM_QTY SUM_QTY "
      | combined 0
      | next
 
    stage S04 on all partitions :
-     gbyAgg " GroupBy  type VARCHAR as C_NAME C_NAME , type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE aggregates type VARCHAR as C_NAME $K1 , type INTEGER as C_CUSTKEY $K2 , type INTEGER as O_ORDERKEY $K3 , type DATE as O_ORDERDATE $K4 , type DECIMAL as O_TOTALPRICE $K5 , type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME , type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE aggregates type VARCHAR ( 0 ) as C_NAME $K1 , type INTEGER as C_CUSTKEY $K2 , type INTEGER as O_ORDERKEY $K3 , type DATE as O_ORDERDATE $K4 , type DECIMAL as O_TOTALPRICE $K5 , type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
    stage S05 on all nodes :
-     gbyAgg " GroupBy  type VARCHAR as C_NAME C_NAME , type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE aggregates type VARCHAR as C_NAME $K1 , type INTEGER as C_CUSTKEY $K2 , type INTEGER as O_ORDERKEY $K3 , type DATE as O_ORDERDATE $K4 , type DECIMAL as O_TOTALPRICE $K5 , type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME , type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE aggregates type VARCHAR ( 0 ) as C_NAME $K1 , type INTEGER as C_CUSTKEY $K2 , type INTEGER as O_ORDERKEY $K3 , type DATE as O_ORDERDATE $K4 , type DECIMAL as O_TOTALPRICE $K5 , type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
    stage S06 on origin :
-     gbyAgg " GroupBy  type VARCHAR as C_NAME C_NAME , type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE aggregates type VARCHAR as C_NAME $K1 , type INTEGER as C_CUSTKEY $K2 , type INTEGER as O_ORDERKEY $K3 , type DATE as O_ORDERDATE $K4 , type DECIMAL as O_TOTALPRICE $K5 , type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME , type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE aggregates type VARCHAR ( 0 ) as C_NAME $K1 , type INTEGER as C_CUSTKEY $K2 , type INTEGER as O_ORDERKEY $K3 , type DATE as O_ORDERDATE $K4 , type DECIMAL as O_TOTALPRICE $K5 , type DECIMAL as SUM_QTY ) SUM_QTY sum  "
      | combined 0
      | next
 
@@ -2664,7 +2664,7 @@ begin
 
    stage S03 on all partitions :
      indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
-     | project "type VARCHAR as C_NAME C_NAME ,
+     | project "type VARCHAR ( 0 ) as C_NAME C_NAME ,
                 type INTEGER as C_CUSTKEY C_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -2674,13 +2674,13 @@ begin
      | next
 
    stage S04 on all partitions :
-     gbyAgg " GroupBy type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
                       type DATE as O_ORDERDATE O_ORDERDATE ,
                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
                       aggregates
-                      type VARCHAR as C_NAME $K1 ,
+                      type VARCHAR ( 0 ) as C_NAME $K1 ,
                       type INTEGER as C_CUSTKEY $K2 ,
                       type INTEGER as O_ORDERKEY $K3 ,
                       type DATE as O_ORDERDATE $K4 ,
@@ -2690,13 +2690,13 @@ begin
      | next
 
    stage S05 on all nodes :
-     gbyAgg " GroupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
                        aggregates
-                       type VARCHAR as C_NAME $K1 ,
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
                        type INTEGER as C_CUSTKEY $K2 ,
                        type INTEGER as O_ORDERKEY $K3 ,
                        type DATE as O_ORDERDATE $K4 ,
@@ -2706,13 +2706,13 @@ begin
      | next
 
    stage S06 on origin :
-     gbyAgg " GroupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
                        aggregates
-                       type VARCHAR as C_NAME $K1 ,
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
                        type INTEGER as C_CUSTKEY $K2 ,
                        type INTEGER as O_ORDERKEY $K3 ,
                        type DATE as O_ORDERDATE $K4 ,
@@ -2756,13 +2756,13 @@ begin
  stage S01 on all partitions :
    scan rapidsse public part
    | filter " type BOOLEAN P_BRAND 'Brand#12'  == } 'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and }  1  5  P_SIZE between  and P_BRAND 'Brand#23'  == }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4 P_CONTAINER in and }  1  10  P_SIZE between  and  or P_BRAND 'Brand#34'  == }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and }  1  15  P_SIZE between  and or  "
-   | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_CONTAINER P_CONTAINER , type INTEGER AS P_SIZE P_SIZE"
+   | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR ( 0 ) as P_BRAND P_BRAND , type VARCHAR ( 0 ) as P_CONTAINER P_CONTAINER , type INTEGER AS P_SIZE P_SIZE"
    | combined 0
    | next broadcast
 
  stage S02 on all partitions :
    indexJoin lineitem IxL_PARTKEY "BOUND $I1 p_partkey ==" //J1
-   | project " type INTEGER as L_PARTKEY l_partkey , type DECIMAL as L_QUANTITY L_QUANTITY , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as l_extendedprice l_extendedprice  , type VARCHAR as L_SHIPMODE L_SHIPMODE , type VARCHAR as L_SHIPINSTRUCT L_SHIPINSTRUCT , type INTEGER as P_SIZE P_SIZE , type VARCHAR as P_BRAND P_BRAND , type varchar as P_CONTAINER P_CONTAINER"
+   | project " type INTEGER as L_PARTKEY l_partkey , type DECIMAL as L_QUANTITY L_QUANTITY , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as l_extendedprice l_extendedprice  , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE , type VARCHAR ( 0 ) as L_SHIPINSTRUCT L_SHIPINSTRUCT , type INTEGER as P_SIZE P_SIZE , type VARCHAR ( 0 ) as P_BRAND P_BRAND , type varchar ( 0 ) as P_CONTAINER P_CONTAINER"
    | filter " type BOOLEAN P_BRAND 'Brand#12'  == }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and }  L_QUANTITY 1.0 >= L_QUANTITY 11.0 <= and and }  1  5  P_SIZE between  and }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and P_BRAND 'Brand#23'  == }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4 P_CONTAINER in and }  L_QUANTITY 10.0 >= L_QUANTITY 20.0 <= and and }  1  10  P_SIZE between  and }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and  or P_BRAND 'Brand#34'  == }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and  }  L_QUANTITY 20.0 >= L_QUANTITY 30.0 <= and and }  1  15  P_SIZE between  and }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and  or  "
    | combined 0
    | next
@@ -2809,8 +2809,8 @@ begin
                 }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and
                 }  1  15  P_SIZE between  and or  "
    | project " type INTEGER as P_PARTKEY P_PARTKEY ,
-               type VARCHAR as P_BRAND P_BRAND ,
-               type VARCHAR as P_CONTAINER P_CONTAINER ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_CONTAINER P_CONTAINER ,
                type INTEGER AS P_SIZE P_SIZE"
    | combined 0
    | next broadcast
@@ -2821,11 +2821,11 @@ begin
                type DECIMAL as L_QUANTITY L_QUANTITY ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
                type DECIMAL as l_extendedprice l_extendedprice  ,
-               type VARCHAR as L_SHIPMODE L_SHIPMODE ,
-               type VARCHAR as L_SHIPINSTRUCT L_SHIPINSTRUCT ,
+               type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE ,
+               type VARCHAR ( 0 ) as L_SHIPINSTRUCT L_SHIPINSTRUCT ,
                type INTEGER as P_SIZE P_SIZE ,
-               type VARCHAR as P_BRAND P_BRAND ,
-               type varchar as P_CONTAINER P_CONTAINER"
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type varchar ( 0 ) as P_CONTAINER P_CONTAINER"
    | filter " type BOOLEAN P_BRAND 'Brand#12'  ==
                 }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
                 }  L_QUANTITY 1.0 >= L_QUANTITY 11.0 <= and and
@@ -2933,20 +2933,20 @@ begin
 
   stage S08 on all partitions :
     indexJoin Supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS"
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS"
     | combined 0
     | next
 
   stage S09 on all partitions :
     indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | filter " type BOOLEAN N_NAME 'IRAQ' ==  "
-    | project " type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS "
-    | sort " type VARCHAR S_NAME ASC  "
+    | project " type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS "
+    | sort " type VARCHAR ( 0 ) S_NAME ASC  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort " type VARCHAR S_NAME ASC  "
+    sort " type VARCHAR ( 0 ) S_NAME ASC  "
     | combined 0
     | next
 
@@ -3026,20 +3026,20 @@ begin
 
   stage S08 on all partitions :
     indexJoin Supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS"
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS"
     | combined 0
     | next
 
   stage S09 on all partitions :
     indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | filter " type BOOLEAN N_NAME 'IRAQ' ==  "
-    | project " type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS "
-    | sort " type VARCHAR S_NAME ASC  "
+    | project " type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS "
+    | sort " type VARCHAR ( 0 ) S_NAME ASC  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort " type VARCHAR S_NAME ASC  "
+    sort " type VARCHAR ( 0 ) S_NAME ASC  "
     | combined 0
     | next
 
@@ -3097,33 +3097,33 @@ begin
   stage S05 on all partitions :
     indexJoin Customer IxC_CUSTKEY "bound $I1"
     | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in C_ACCTBAL acctbal  >  and "
-    | project " type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as cntrycode C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL C_ACCTBAL "
+    | project " type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL C_ACCTBAL "
     | combined 0
     | next
 
   stage S06 on all partitions :
     keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY ==" "type BOOLEAN O_CUSTKEY 0 >"
-    | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
+    | project " type VARCHAR ( 0 ) as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
     | combined 0
     | next
 
  stage S07 on all partitions :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort " type VARCHAR as cntrycode $1 ASC  "
+    sort " type VARCHAR ( 0 ) as cntrycode $1 ASC  "
     | combined 0
     | next
 
@@ -3172,34 +3172,34 @@ begin
     indexJoin Customer IxC_CUSTKEY "bound $I1"
     | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in
               C_ACCTBAL acctbal  >  and "
-    | project " type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as cntrycode C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL C_ACCTBAL "
+    | project " type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL C_ACCTBAL "
     | combined 0
     | next
 
   stage S06 on all partitions :
     keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                    "type BOOLEAN O_CUSTKEY 0 >"
-    | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
+    | project " type VARCHAR ( 0 ) as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
     | combined 0
     | next
 
  stage S07 on all partitions :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort " type VARCHAR as cntrycode $1 ASC  "
+    sort " type VARCHAR ( 0 ) as cntrycode $1 ASC  "
     | combined 0
     | next
 

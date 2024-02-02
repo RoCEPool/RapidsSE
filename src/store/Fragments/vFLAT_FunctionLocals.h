@@ -9,6 +9,7 @@
   char *szArg1      __attribute__ ((unused));
   char *szArg2      __attribute__ ((unused));
   char *szArg3      __attribute__ ((unused));
+	char *szMixVal    __attribute__ ((unused));
 
   bool bLeftOuterRow __attribute__ ((unused));
 

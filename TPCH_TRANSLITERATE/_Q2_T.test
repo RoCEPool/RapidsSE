@@ -121,16 +121,16 @@ begin
     | stageMarker3920
   stage stageMarker3920 on all partitions :
     filter " type BOOLEAN  $1 $17 ==  $10 $18 ==  and  $6 15  <  and  }  $5 ''%BRASS''  6 matchTrailing  and  $13 $22 ==  and  $24 $26 ==  and  $27 ''EUROPE''  ==  and  $20 $1 __subquery0003  ==  and  "
-    | project " type DECIMAL as s_acctbal $15 , type VARCHAR as s_name $11 , type VARCHAR as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR as p_mfgr $3 , type VARCHAR as s_address $12 , type VARCHAR as s_phone $14 , type VARCHAR as s_comment $16 "
-    | sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | project " type DECIMAL as s_acctbal $15 , type VARCHAR ( 0 ) as s_name $11 , type VARCHAR ( 0 ) as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR ( 0 ) as p_mfgr $3 , type VARCHAR ( 0 ) as s_address $12 , type VARCHAR ( 0 ) as s_phone $14 , type VARCHAR ( 0 ) as s_comment $16 "
+    | sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR ( 0 ) as n_name $3 ASC  , type VARCHAR ( 0 ) as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
     | combined 0
     | stageMarker3923
   stage stageMarker3923 on all nodes :
-    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR ( 0 ) as n_name $3 ASC  , type VARCHAR ( 0 ) as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
     | combined 0
     | stageMarker3926
   stage stageMarker3926 on origin :
-    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR ( 0 ) as n_name $3 ASC  , type VARCHAR ( 0 ) as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

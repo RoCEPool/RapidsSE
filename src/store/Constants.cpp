@@ -412,6 +412,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("EC_MAX_TABLE_NAME_LENGTH"_Stz,EC_MAX_TABLE_NAME_LENGTH);
   /*    */ vAddConstant("EC_MEMORY_ALREADY_TRACKED"_Stz,EC_MEMORY_ALREADY_TRACKED);
   /*    */ vAddConstant("EC_MEMORY_NOT_BEING_TRACKED"_Stz,EC_MEMORY_NOT_BEING_TRACKED);
+	/*    */ vAddConstant("EC_MULTIPLE_COLUMN_PARTITION_KEY"_Stz,EC_MULTIPLE_COLUMN_PARTITION_KEY);
 
   /* 25 */ vAddConstant("EC_NO_COLUMNS_DIC"_Stz,     EC_NO_COLUMNS_DIC);
   /* 26 */ vAddConstant("EC_NO_SUCH_CATALOG"_Stz,    EC_NO_SUCH_CATALOG);

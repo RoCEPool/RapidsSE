@@ -16,15 +16,11 @@ namespace STORE
     Card_KeyExists(void);
    ~Card_KeyExists(void) noexcept(false);
 
-    void vComputeProjection(CardIter* pCI); // prototype
-
     void vEarlyProject_add_transients(CardIter* pCI);
 
     void vEarlyProject_recurse_add(CardIter* pCI);
 
-    static void vMorph_table_To_keyExists(CardIter* pCI);
-
-    void vUpdate_emit(CardIter* pCI);
+    static void vMorph_from_To_keyExists(CardIter *pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

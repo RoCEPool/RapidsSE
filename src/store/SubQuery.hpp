@@ -15,17 +15,24 @@ namespace STORE
   class Board;
   class Card;
   class Card_SubSet;
+  class CardIter;
 
   class SubQuery : public Object
   {
   protected:
 
+    s32  m_sSqyNo;       // subquery no
+    s32  m_sSqyNm;       // subquery name
+
+    s32  m_sSqyNo_v2;    // subquery no
+    s32  m_sSqyNm_v2;    // subquery name
+
     Board* m_pBoard;     // which board
 
-    i8 m_i_Caller;       // which subquery calls this subquery
+    i8  m_i_Caller;       // which subquery calls this subquery
 
     eQD m_eDisposition;  // linear/simple or aggregation
-    i8 m_nCorrCols;      // number of correlated columns
+    i8  m_nCorrCols;      // number of correlated columns
 
     eQC m_eClause;       // called via clause: from|where|having
     eQO m_eCallOp;       // connecting operator: (not)exists|(not)in|relnOp
@@ -41,7 +48,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SubQuery(Board* pBoard);
+    SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard);
    ~SubQuery(void) noexcept(false);
 
     Board* pBoard(void);
@@ -67,7 +74,7 @@ namespace STORE
     eQD  eDisposition(void);
     void vDisposition(eQD eDisposition);
 
-    void vDump(void);
+    void vDump(i8 iDepth=0);
 
     bool bIsAggregation(void);
     bool bIsCorrelated(void);
@@ -76,12 +83,24 @@ namespace STORE
     eRO  eRelnOp(void);
     void vRelnOp(eRO eRelnOp);
 
+    Stz* szSqyNm(void);
+    void vSqyNm(Stz* szSqyNm);
+    Stz* szSqyNo(void);
+    void vSqyNo(Stz* szSqyNo);
+
+    Stz* szSqyNm_v2(void);
+    void vSqyNm_v2(Stz* szSqyNm);
+    Stz* szSqyNo_v2(void);
+    void vSqyNo_v2(Stz* szSqyNo);
+
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);
 
     bool bViaFrom(void);
     bool bViaHaving(void);
     bool bViaWhere(void);
+
+    void vValidate(CardIter* pCI);
 
   protected:
     Footer* aFooter(void);

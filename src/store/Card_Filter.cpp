@@ -106,15 +106,6 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vCorrect_expCol(Card_Emit* p_arriving)
@@ -156,7 +147,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
@@ -169,19 +160,15 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
- // pCI->vPrintBoard();
+ // pCI->vPrintBoard(__func__,__LINE__);
 
-  vUpdate_emit(pCI);
+  pCI->G.p_OP->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
+  //pCI->vPrintBoard(__func__,__LINE__);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,18 +202,26 @@ bool Card_Filter::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vUpdate_emit(CardIter* pCI)
+void Card_Filter::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_emit = pCI->G.p_filter->pSub_emit())) {
+  UNUSED(iDepth);
 
-    pCI->G.p_filter->vDeleteChild(pCI->G.p_emit);
-    pCI->G.p_filter->vAppendChild(pCI->Flux.m_pArriving->pClone());
+  s32 sName;
 
-  }
+  sName.vSprint("%s%lld]filter"_Stz,
+                Stz::szDots(iDepth - 1),
+                m_i_Child);
+
+  pRibbon->vSprintSnippet(false,"%c%c%s %llx %lld"_Stz,
+                          cMark1(),
+                          cMark2(),
+                          sName.szStz(),
+                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr(),
+                          m_nFunctionCount);
+
 }
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -237,7 +232,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mustHave(CK_BOOLPRED, CK_NONE);
 
   if (iDepth > 2) {
-   // pCI->vPrintBoard();
+   // pCI->vPrintBoard(__func__,__LINE__);
     vValidationFailed("Filter is at depth %lld"_Stz, iDepth);
   }
 

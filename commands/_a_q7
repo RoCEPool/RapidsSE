@@ -85,14 +85,14 @@ begin
   stage S02 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | filter "type BOOLEAN J1_N_NAME 'FRANCE' == J1_N_NAME 'GERMANY' == OR"
-    | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as N2_N_NAME J1_N_NAME"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as N2_N_NAME J1_N_NAME"
     | combined 0
     | next
 
    stage S03 on all partitions :
      indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
      | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
-                type VARCHAR as N2_N_NAME N2_N_NAME"
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
      | hash "type INTEGER O_ORDERKEY"
      | combined 0
      | next hashcast
@@ -101,7 +101,7 @@ begin
      indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
      | filter "type BOOLEAN } DATE '1995-01-01'  DATE '1996-12-31' J1_L_SHIPDATE between"
      | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
-                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR J1_L_SHIPDATE extract_year ,
                 type DECIMAL as volume J1_L_EXTENDEDPRICE 1.00 J1_L_DISCOUNT -  * "
      | hash "type INTEGER L_SUPPKEY "
@@ -111,7 +111,7 @@ begin
    stage S05 on all partitions :
      indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
      | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
-                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR L_YEAR ,
                 type DECIMAL as VOLUME VOLUME"
      | combined 0
@@ -121,43 +121,43 @@ begin
      indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
      | filter "type BOOLEAN J1_N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and
                             J1_N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
-     | project "type VARCHAR as N1_N_NAME J1_N_NAME ,
-                type VARCHAR as N2_N_NAME N2_N_NAME ,
+     | project "type VARCHAR ( 0 ) as N1_N_NAME J1_N_NAME ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR L_YEAR ,
                 type DECIMAL as VOLUME VOLUME"
      | combined 0
      | next
 
   stage S07 on all partitions :
-     aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
-                      type VARCHAR as N2_N_NAME N2_N_NAME ,
+     aggreg " groupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
+                      type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                       type INTEGER as L_YEAR L_YEAR aggregates
-                      type VARCHAR as N1_N_NAME $K1 ,
-                      type VARCHAR as N2_N_NAME $K2 ,
+                      type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                      type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
                       type INTEGER as L_YEAR $K3 ,
                       type DECIMAL AS REVENUE ) VOLUME sum  "
      | combined 0
      | next
 
    stage S08 on all nodes :
-    aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
-                     type VARCHAR as N2_N_NAME N2_N_NAME ,
+    aggreg " groupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
+                     type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
                      type INTEGER as L_YEAR L_YEAR
                      aggregates
-                     type VARCHAR as N1_N_NAME $K1 ,
-                     type VARCHAR as N2_N_NAME $K2 ,
+                     type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                     type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
                      type INTEGER as L_YEAR $K3 ,
                      type DECIMAL AS REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
    stage S09 on origin :
-     aggreg " groupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
-                      type VARCHAR as CUST_NATION N2_N_NAME ,
+     aggreg " groupBy type VARCHAR ( 0 ) as SUPP_NATION N1_N_NAME ,
+                      type VARCHAR ( 0 ) as CUST_NATION N2_N_NAME ,
                       type INTEGER as L_YEAR L_YEAR
                       aggregates
-                      type VARCHAR as N1_N_NAME $K1 ,
-                      type VARCHAR as N2_N_NAME $K2 ,
+                      type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                      type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
                       type INTEGER as L_YEAR $K3 ,
                       type DECIMAL AS REVENUE ) REVENUE sum  "
      | combined 0

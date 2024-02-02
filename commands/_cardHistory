@@ -454,7 +454,7 @@ PipelineDef: _unnamed_
             Col [0] : $1 C0_NATION (VARCHAR)
             Col [1] : $2 C1_O_YEAR (INTEGER)
             Col [2] : $3 C2_AMOUNT (DECIMAL)
-      ArgDef: [0] expr    type VARCHAR as NATION $5
+      ArgDef: [0] expr    type VARCHAR ( 0 ) as NATION $5
                   , type INTEGER as O_YEAR $2
                   , type DECIMAL as AMOUNT $3
   StageDef: [6] S07 Code 0x0 (YG_ALL_PARTITIONS)
@@ -469,17 +469,17 @@ PipelineDef: _unnamed_
             Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
          : IndexDef_gbyAgg 0x204888c37040
             IndexDef --NO_NAME-- NoDescending
-              Column 00 $1 type VARCHAR length 0 scale 0 datum VARCHAR nullable
+              Column 00 $1 type VARCHAR ( 0 ) length 0 scale 0 datum VARCHAR nullable
               Column 01 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
          : ColMap_gbyAgg  0x204851040040
                [0] key cell 1 -> $1
                [1] key cell 2 -> $2
                [2] payload cell 1 -> $3
       ArgDef: [0] expr  groupBy
-                    type VARCHAR as COL1 $1
+                    type VARCHAR ( 0 ) as COL1 $1
                   , type INTEGER as COL2 $2
                   aggregates
-                    type VARCHAR as NATION $K1
+                    type VARCHAR ( 0 ) as NATION $K1
                   , type INTEGER as O_YEAR $K2
                   , type DECIMAL as SUM_PROFIT ) $3 sum
   StageDef: [7] S08 Code 0x0 (YG_ALL_NODES)
@@ -494,17 +494,17 @@ PipelineDef: _unnamed_
             Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
          : IndexDef_gbyAgg 0x204888c35040
             IndexDef --NO_NAME-- NoDescending
-              Column 00 $1 type VARCHAR length 0 scale 0 datum VARCHAR nullable
+              Column 00 $1 type VARCHAR ( 0 ) length 0 scale 0 datum VARCHAR nullable
               Column 01 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
          : ColMap_gbyAgg  0x20484cc50040
                [0] key cell 1 -> $1
                [1] key cell 2 -> $2
                [2] payload cell 1 -> $3
       ArgDef: [0] expr  groupBy
-                    type VARCHAR as COL1 $1
+                    type VARCHAR ( 0 ) as COL1 $1
                   , type INTEGER as COL2 $2
                   aggregates
-                    type VARCHAR as NATION $K1
+                    type VARCHAR ( 0 ) as NATION $K1
                   , type INTEGER as O_YEAR $K2
                   , type DECIMAL as SUM_PROFIT ) $3 sum
   StageDef: [8] S09 Code 0x0 (YG_ORIGIN_NODE)
@@ -519,17 +519,17 @@ PipelineDef: _unnamed_
             Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
          : IndexDef_gbyAgg 0x204888c33040
             IndexDef --NO_NAME-- NoDescending
-              Column 00 $1 type VARCHAR length 0 scale 0 datum VARCHAR nullable
+              Column 00 $1 type VARCHAR ( 0 ) length 0 scale 0 datum VARCHAR nullable
               Column 01 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
          : ColMap_gbyAgg  0x20484ebe0040
                [0] key cell 1 -> $1
                [1] key cell 2 -> $2
                [2] payload cell 1 -> $3
       ArgDef: [0] expr  groupBy
-                    type VARCHAR as COL1 $1
+                    type VARCHAR ( 0 ) as COL1 $1
                   , type INTEGER as COL2 $2
                   aggregates
-                    type VARCHAR as NATION $K1
+                    type VARCHAR ( 0 ) as NATION $K1
                   , type INTEGER as O_YEAR $K2
                   , type DECIMAL as SUM_PROFIT ) $3 sum
   StageDef: [9] S10 Code 0x0 (YG_ORIGIN_NODE)
@@ -544,13 +544,13 @@ PipelineDef: _unnamed_
             Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
          : IndexDef_sort   0x204888c31040
             IndexDef --NO_NAME-- NoDescending
-              Column 00 $1 type VARCHAR length 0 scale 0 datum VARCHAR nullable
+              Column 00 $1 type VARCHAR ( 0 ) length 0 scale 0 datum VARCHAR nullable
               Column 01 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
          : ColMap_sort     0x204851f50040
                [0] key cell 1 -> $1
                [1] key cell 2 -> $2
                [2] payload cell 1 -> $3
-      ArgDef: [0] expr  type VARCHAR as NATION $1 ASC , type INTEGER as O_YEAR $2 ASC
+      ArgDef: [0] expr  type VARCHAR ( 0 ) as NATION $1 ASC , type INTEGER as O_YEAR $2 ASC
 End PipelineDef
 ~~ExtendedText : 1 blocks 291 lines 3081 bytes
 ~~TextBlock[0] : 3081 bytes
@@ -606,7 +606,7 @@ begin
 
   stage S06 on all partitions :
   //  indexJoin NATION IxN_NATIONKEY " BOUND $I1 $1 == "
-  //| project   "   type VARCHAR as NATION $5
+  //| project   "   type VARCHAR ( 0 ) as NATION $5
   //              , type INTEGER as O_YEAR $2
   //              , type DECIMAL as AMOUNT $3 "
       dynamic
@@ -614,10 +614,10 @@ begin
 
   stage S07 on all partitions :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as COL1 $1
+  //                type VARCHAR ( 0 ) as COL1 $1
   //              , type INTEGER as COL2 $2
   //              aggregates
-  //                type VARCHAR as NATION $K1
+  //                type VARCHAR ( 0 ) as NATION $K1
   //              , type INTEGER as O_YEAR $K2
   //              , type DECIMAL as SUM_PROFIT ) $3 sum "
       dynamic
@@ -625,10 +625,10 @@ begin
 
   stage S08 on all nodes :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as COL1 $1
+  //                type VARCHAR ( 0 ) as COL1 $1
   //              , type INTEGER as COL2 $2
   //              aggregates
-  //                type VARCHAR as NATION $K1
+  //                type VARCHAR ( 0 ) as NATION $K1
   //              , type INTEGER as O_YEAR $K2
   //              , type DECIMAL as SUM_PROFIT ) $3 sum "
       dynamic
@@ -636,17 +636,17 @@ begin
 
   stage S09 on origin :
   //  gbyAgg    " groupBy
-  //                type VARCHAR as COL1 $1
+  //                type VARCHAR ( 0 ) as COL1 $1
   //              , type INTEGER as COL2 $2
   //              aggregates
-  //                type VARCHAR as NATION $K1
+  //                type VARCHAR ( 0 ) as NATION $K1
   //              , type INTEGER as O_YEAR $K2
   //              , type DECIMAL as SUM_PROFIT ) $3 sum "
       dynamic
     | next
 
   stage S10 on origin :
-  //  sort      " type VARCHAR as NATION $1 ASC , type INTEGER as O_YEAR $2 ASC "
+  //  sort      " type VARCHAR ( 0 ) as NATION $1 ASC , type INTEGER as O_YEAR $2 ASC "
       dynamic
     | next
 

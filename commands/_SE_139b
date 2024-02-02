@@ -62,7 +62,7 @@ begin
     | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
-                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+                     type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY
     | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                          "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0

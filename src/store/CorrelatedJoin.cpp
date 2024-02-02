@@ -194,9 +194,9 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               //           $b.1
   //                               // __subquery0002
 
-  vConvert_CrlSqyPrm_Into_StmCol(pCI, pCI->G.p_boolPred);
+  vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
-  vConvert_SubQryCall_Into_StmCol(pCI, pCI->G.p_boolPred);
+  vConvert_SqyNo_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
@@ -444,7 +444,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred *p_boolPred)
+void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
@@ -526,12 +526,11 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPred *p_boolPred)
+void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
 
   auto vResolve = [pCI](Card_CONJ* p_conj,
                         auto&& vResolve /*oddity permits recursive lambda*/)
@@ -539,67 +538,58 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
     if (!Card_CONJ::bIsConj(p_conj))
       return; /* this effectively declares resolve as void */
 
-//    if (p_conj->bIsCard(CK_RLNCONJ)) {
-//      return;
-//    }
-//    else
-    if (p_conj->bIsCard(CK_RLNCONJ)) {
+    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // process AND or OR
 
-      if (!p_conj->bContains_sqyCall())
-        return;
-
-      RASSERT(p_conj->bIsBoolFn() ||
-              p_conj->bIsRelnOp() ||
-                  p_conj->bIsSqyOp());
-
-      RASSERT(!p_conj->pSymbol()->Y_bHas(P_CrlKeyPred));
-
-      p_conj->vCard(CK_RLNCONJ);
-      Kid xKid(p_conj);
-      while (xKid.bEach()) {
-        if (Card_CONJ::bIsConj(xKid.pChild())) {
-          vResolve(static_cast<Card_CONJ*>(xKid.pChild()), vResolve);
-          continue;
-        }
-        // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
-
-        if (pCI->m_pBench->bIsSqyNm(xKid.pChild()->szFacet(SF_NONE))) {
-          Card* p_arg = xKid.pPrev();
-
-          Card_Term* p_term_new = (new Card_Term) ->SYM(SF_EXP_COL, "$2"_Stz);
-          p_conj->vInsertChildAfter(p_term_new,xKid.pChild());
-
-
-          Card_Expr* p_expr_found =
-              pCI->Flux.m_pArriving->pGet_expr(1);
-
-          p_term_new->vCast(p_expr_found->xCast());
-
-
-          p_conj->vRemoveChild(p_arg);
-          DELETE_CARD(p_arg);
-
-          Card* pChild = xKid.pChild();
-          p_conj->vRemoveChild(pChild);
-          DELETE_CARD(pChild);
-
-          p_conj->pSymbol()->Y_vSet(P_CrlRslTest);
-        }
+    if (p_conj->bIsCard(CK_ANDCONJ) || p_conj->bIsCard(CK_ORCONJ)) {
+      for (Kid xConj(p_conj); xConj.bEach(); /**/) {
+        RASSERT(Card_CONJ::bIsConj(xConj.pChild()));
+        vResolve(static_cast<Card_CONJ*>(xConj.pChild()), vResolve);
       }
       return;
     }
-    else
-    if (p_conj->bIsCard(CK_ANDCONJ) || p_conj->bIsCard(CK_ORCONJ)) {
-      Kid xKid(p_conj);
-      while (xKid.bEach()) {
-        RASSERT(Card_CONJ::bIsConj(xKid.pChild()));
-        vResolve(static_cast<Card_CONJ*>(xKid.pChild()), vResolve);
+
+    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // process <RLNCONJ>
+
+    RASSERT(p_conj->bIsCard(CK_RLNCONJ));
+
+    if (!p_conj->bContains_sqyNo())
+      return;
+
+    RASSERT(! p_conj->pSymbol()->Y_bHas(P_CrlKeyPred));
+    RASSERT(p_conj->bIsRelnOp());
+
+    for (Kid xConj(p_conj); xConj.bEach(); /**/) {
+
+      Card* p_child_conj = xConj.pChild();
+      if (Card_CONJ::bIsConj(p_child_conj)) {
+        vResolve(static_cast<Card_CONJ*>(p_child_conj), vResolve);
+        continue;
       }
-    }
-    else {
-      NEVER_REACH;
+      // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
+
+      if (! p_child_conj->pSymbol()->bHasFacet(SF_SQY_NO))
+        continue;
+
+      Stz* szSqyNo = p_child_conj->szFacet(SF_SQY_NO);
+      RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
+      pCI->m_pBench->vDump(__func__);
+      RASSERT(pCI->m_pBench->bKnown_sqyNm(szSqyNo));
+
+
+      Card* p_prev_conj = xConj.pPrev();
+      p_conj->vRemoveChild(p_prev_conj);
+      DELETE_CARD(p_prev_conj);
+
+      p_child_conj->pSymbol()->vFacet(SF_EXP_COL, "$2"_Stz);
+      Card_Expr* p_expr_found = pCI->Flux.m_pArriving->pGet_expr(1);
+      p_child_conj->vCast(p_expr_found->xCast());
+
+      p_conj->pSymbol()->Y_vSet(P_CrlRslTest);
     }
 
+    return;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

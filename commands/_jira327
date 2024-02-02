@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* _jira327                                                                   */
+/*============================================================================*/
+
+// NOTE: getting a missing index error
+
+create table join_3mutil_type1(a varchar,b char,c integer,d decimal,e float,f date,g time,i timestamp,j boolean,h integer);
+load join_3mutil_type1 "../DATA/JIRA/SE_327.csv";
+
+create index join_3mutil_type1_idx3 on join_3mutil_type1(c);
+create index join_3mutil_type1_idx4 on join_3mutil_type1(d);
+
+/optimiser_trace
+select * from join_3mutil_type1 jmt inner join join_3mutil_type1 jmt2 on jmt.c = jmt2.d;
+
+/*
+
+// The following works
+
+_nation;
+_nation2;
+create index idx on nation (n_nationkey);
+create index idx2 on nation2 (n_nationkey);
+
+/optimiser_trace
+select * from nation join nation2 on nation.n_nationkey = nation2.n_nationkey;
+
+*/

@@ -42,6 +42,26 @@ Card_Fold::~Card_Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, Stz *szCrlPpy, i8 i_SqyNo)
+{
+  _static_
+
+  Card_Fold* p_fold = new Card_Fold;
+
+  p_fold->pSymbol()->vFacet(SF_FLD_NM, szFoldNm);
+
+  p_fold->pSymbol()->Y_vSet(szCrlPpy);
+  p_fold->pSymbol()->Y_vSet(P_SqyNo,i_SqyNo);
+
+  Card_Level* p_level = new Card_Level(AL_NONE);
+  p_fold->vAppendChild(p_level);
+
+  return p_fold;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Fold::vMorph_to_flat(CardIter* pCI)
 {
   _static_
@@ -54,24 +74,7 @@ void Card_Fold::vMorph_to_flat(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Fold::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI, Card_Expr* p_expr_fold)
-{
-  _static_
-
-  pCI->G.p_expr = new Card_Expr;
-
-  pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
-
-  pCI->G.p_expr->vAppendChild(p_expr_fold->pSub_rpnCalc()->pDupCardRecursive());
-  pCI->G.p_expr->vCast(p_expr_fold->pSub_rpnCalc());
-
-  pCI->G.p_key->vPushChild(pCI->G.p_expr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Fold::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_Expr* p_expr_fold)
+void Card_Fold::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _static_
 
@@ -98,6 +101,23 @@ void Card_Fold::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_Expr* 
   pCI->G.p_emit->vPushChild(p_expr_new);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
+{
+  _static_
+
+  pCI->G.p_expr = new Card_Expr;
+
+  pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
+
+  pCI->G.p_expr->vAppendChild(p_expr_fold->pSub_rpnCalc()->pDupCardRecursive());
+  pCI->G.p_expr->vCast(p_expr_fold->pSub_rpnCalc());
+
+  pCI->G.p_key->vPushChild(pCI->G.p_expr);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -111,6 +131,20 @@ void Card_Fold::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   UNUSED(pParent);
+
+//#ifdef WITH_DEBUG_VERSION
+//  if ((pCI->G.p_expr = pSub_expr())) {
+//    pCI->vPrintBoard(__func__,__LINE__,true);
+//    vDump(__func__);
+//    vDebugPoint();
+//  }
+//#endif
+  if (! pSymbol()->Y_bHas(P_CrlSqy) && ! pSymbol()->Y_bHas(P_NonCrlSqy)) {
+    pCI->vPrintBoard(__func__,__LINE__);
+    vDump(__func__);
+    NEVER_REACH;
+  }
+
   Card::vValidate(pCI,iDepth,pParent);
   Card_CONSTRUCTION::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

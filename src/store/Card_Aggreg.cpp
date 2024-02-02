@@ -53,15 +53,6 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vDerive_streamKey(CardIter* pCI)
@@ -100,31 +91,15 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard();
-
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  pCI->G.p_aggreg->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
-
-  pCI->G.p_key = pSub_key();
-
- // pCI->vPrintBoard();
-
-  pCI->G.p_emit = pSub_emit();
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
+ // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,25 +110,6 @@ void Card_Aggreg::vSmooth(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_aggreg->pSymbol()->Y_vSet(P_Smoothed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* update existing emit                                                       */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
-
-    if (pCI->Flux.m_pArriving) {
-      pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
-      pCI->G.p_emit->vRenumberAll_expr();
-    }
-
-  }
-
-  vValidationPassed();
 }
 
 /*----------------------------------------------------------------------------*/

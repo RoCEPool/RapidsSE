@@ -534,7 +534,7 @@ bool Dynamo::bCollectOpArgsExpr(StageSpec *p_StageSpec,
     vTokenAccept();
   }
 
-//  vTrace("expr: %s\n"_Stz,pArgVal->szStz());
+  vTrace("expr: %s\n"_Stz,pArgVal->szStz());
   
   return true;
 }

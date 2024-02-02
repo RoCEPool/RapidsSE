@@ -17,7 +17,7 @@ namespace STORE
 
     static bool bIsOp(Card* pCard);
 
-    void vAnalyse_injected(CardIter* pCI);
+    void vAnalyse_injectable(CardIter* pCI);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
@@ -38,15 +38,12 @@ namespace STORE
     bool bIsPartitionLevel(void);
 
     void vMapColumns(CardIter *pCI);
-    bool bNeedsProjectionAnalysis(void);
 
     bool bPeg_Chosen_index(CardIter* pCI);
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
-    void vRecreate_emit(CardIter* pCI);
-
-    void vUpdate_emit_OP(CardIter* pCI);
+    void vRecreate_emit(CardIter* pCI, bool bRecreate=false);
 
     void vRpn_aggreg      (String* psRpnExpr, Card_Aggreg*    p_aggreg);
     void vRpn_crossJoin   (String* psRpnExpr, Card_CrossJoin* p_crossJoin);

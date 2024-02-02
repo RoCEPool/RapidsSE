@@ -21,6 +21,8 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
+//#define Z_SQY_Qn
+
 namespace STORE
 {
   class Card_AbsJoin;
@@ -177,6 +179,7 @@ extern Stz* P_CrlKeyExpr;
 extern Stz* P_CrlKeyPred;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_CrlRslTest;
+extern Stz* P_CrlSqy;
 extern Stz* P_DebugOption;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
@@ -186,10 +189,9 @@ extern Stz* P_HashOf;
 extern Stz* P_InjCrlKey;
 extern Stz* P_Injected;
 extern Stz* P_Invalid;
-extern Stz* P_Itemised;
 extern Stz* P_Key;
-extern Stz* P_KeyCol;
 extern Stz* P_Level;
+extern Stz* P_NonCrlSqy;
 extern Stz* P_ParamOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;
@@ -200,6 +202,7 @@ extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
 extern Stz* P_SqyCall;
+extern Stz* P_SqyNo;
 extern Stz* P_Unproject;
 
 extern Stz* C_CARD_HISTORY;
@@ -248,7 +251,8 @@ namespace STORE
   static const bool C_LEFT_ORIENTATION  = true;
   static const bool C_RIGHT_ORIENTATION = false;
 
-  static const bool C_NOT_NULL  = true;
+  static const bool C_NOT_NULL = true;
+  static const bool C_EXCLUDE_NOT_NEED = true;
 
   class Card : public Object
              , public ChildCards
@@ -275,7 +279,8 @@ namespace STORE
     i8 md__LeakDetected;
     i8      m_iFirstPrint;
     eCK     m_eFirst;
-    i8      m_iLastPrint;
+    i8      m_nPrintCount;
+    i8      m_nFunctionCount;
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
     i8      m_iItemise;
@@ -317,10 +322,10 @@ namespace STORE
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
-    Cast xCast(void);
     void vCast(Card* pCard_arg);
     void vCast(Cast xCast);
     void vCheckCorrectness(void);
+    Cast xCast(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     eFC  eConjForm(void);
@@ -332,6 +337,7 @@ namespace STORE
     Stz* szCoord(void);
     eCT  eCTVal(void);
 
+    void  vDeleteFacetRecursive(eSF eFacet);
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
     void  vDumpShort(const char* azFunc, Stz* szTitle);
     Card* pDupCard(void);
@@ -350,9 +356,12 @@ namespace STORE
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);
+    i8    nFunctionCount(void);
 
+    bool bHasFacetRecursive(eSF eFacet);
     bool bHasSubRecursive(Card* pSubCard);
 
+    void vIncFunctionCount(void);
     bool bIsCard(eCK eCard);
     bool bIsConj(void);
     bool bIsConstruction(void);
@@ -503,7 +512,6 @@ namespace STORE
     Card_On*            pSub_on(bool bNotNull=false);
     Card_OuterColNm*    pSub_outerColNm(bool bNotNull=false);
     Card_OuterJoin*     pSub_outerJoin(bool bNotNull=false);
-    Card_Payload*       pSub_payload(bool bNotNull=false);
     Card_PayloadCells*  pSub_payloadCells(bool bNotNull=false);
     Card_RelnOp*        pSub_relnOp(bool bNotNull=false);
     Card_Required*      pSub_required(bool bNotNull=false);

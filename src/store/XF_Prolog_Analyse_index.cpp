@@ -68,7 +68,7 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index(void)
   // Append Index List Under All Table
   Card_Table::vAppendIndexList(m_pCI);
 
- // m_pCI->vPrintBoard();
+ // m_pCI->vPrintBoard(__func__,__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix TblCol To All IdxCol

@@ -107,7 +107,7 @@ bool Card_CONJ::bConjRecursive(std::function<bool(Card_CONJ* p_conj, bool bUpwar
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJ::bContains_sqyCall(void)
+bool Card_CONJ::bContains_sqyNo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -115,7 +115,7 @@ bool Card_CONJ::bContains_sqyCall(void)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_SQY_NM)) {
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_SQY_NO)) {
       return true;
     }
 
@@ -145,24 +145,31 @@ bool Card_CONJ::bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJ::vEnsureTypeId_expCol(CardIter *pCI)
+void Card_CONJ::vEnsure_Cast(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
   eCK eCard = this->eCard();
 
   switch (eCard) {
 
     case CK_ANDCONJ:
-      _pCard_AndConj(this)->vEnsureTypeId_expCol(pCI); break;
+      _pCard_AndConj(this)->vEnsure_Cast(pCI); break;
     case CK_NOTCONJ:
-      _pCard_NotConj(this)->vEnsureTypeId_expCol(pCI); break;
+      _pCard_NotConj(this)->vEnsure_Cast(pCI); break;
     case CK_ORCONJ:
-      _pCard_OrConj(this)->vEnsureTypeId_expCol(pCI);  break;
+      _pCard_OrConj(this)->vEnsure_Cast(pCI);  break;
     case CK_RLNCONJ:
-      _pCard_RlnConj(this)->vEnsureTypeId_expCol(pCI); break;
+      _pCard_RlnConj(this)->vEnsure_Cast(pCI); break;
 
-    case CK_TERM:    _pCard_Term(this)->vEnsureTypeId_expCol(pCI);     break;
+    case CK_TERM:
+      _pCard_Term(this)->vEnsure_Cast(pCI, xCast_last);  break;
 
     default:
       NEVER_REACH
@@ -327,12 +334,12 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
   if (pSymbol()->bSame("exists"_Stz)) {
 
-   // pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__func__,__LINE__);
 
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term1 = _pCard_Term(pGetChild(1));
-    ASSERT(pCI->m_pBench->bIsSqyNm(p_term1->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term1->szFacet(SF_NONE))); //temp
 
     Symbol x_Symbol_expCol1;
     if (p_term) {
@@ -349,7 +356,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     p_term1->vCast(p_expr_found->xCast());
 
-   // pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__func__,__LINE__);
     return;
   }
 
@@ -358,7 +365,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSqyNm(p_term_popped->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term_popped->szFacet(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
@@ -379,7 +386,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     p_term_head->vCast(p_expr_found->xCast());
 
-   // pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__func__,__LINE__);
 
     return;
   }
@@ -389,7 +396,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSqyNm(p_term_popped->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term_popped->szFacet(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
@@ -530,7 +537,7 @@ void Card_CONJ::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       _pCard_RlnConj(this)->vValidate(pCI, iDepth + 1, this); break;
 
     default:
-     // pCI->vPrintBoard(__LINE__,true);
+     // pCI->vPrintBoard(__func__,__LINE__,true);
       vDump(__func__);
       vValidationFailed("<<replace>> %p"_Stz,this);
   }

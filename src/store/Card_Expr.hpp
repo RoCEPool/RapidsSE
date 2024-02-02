@@ -22,15 +22,17 @@ namespace STORE
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
-    static Card_Expr* pCast_expr_Column(Column *pColumn, i8 iExpCol,
-                                        char cTblSyn, i8 iColOdn);
+    static Card_Expr* pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
+                                         char cTblSyn, i8 iTblCol);
     static Card_Expr* pCast_expr_term_expCol(Card_Term* p_term);
 
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
+    void vAppend_nmdCol_synthetic(i8 iExpCol);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsureTypeId_expCol(CardIter* pCI);
+    void vEnsure_nmdCol(i8 iExpCol);
+    void vEnsure_Cast(CardIter* pCI);
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
     Symbol* pFirst_nmdCol(void);
@@ -38,19 +40,19 @@ namespace STORE
     Symbol* pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
+    bool bHasTerm(Symbol* pSymbol);
+
     bool bIsDescending(void);
-    Card_Expr* pInduct(void);
+    Card_Expr *pInduct(i8 iExp);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bIsExpressionOfKey(void);
-    bool bHasTerm(Symbol* pSymbol);
+
     bool bMatches(Card_Expr* p_expr_arg);
-    bool bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg= nullptr);
+
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    Card_Expr* pPropagate(void);
-    Card_Expr *pReducedCopy(i8 i_Expr);
 
     void vRenumberForm_keyCol(i8 i_Expr);
     void vRenumberForm_expCol(i8 i_Expr);

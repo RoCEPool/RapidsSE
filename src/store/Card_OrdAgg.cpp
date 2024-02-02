@@ -43,15 +43,6 @@ Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
@@ -80,55 +71,15 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard();
-
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  pCI->G.p_ordAgg->vRecreate_emit(pCI,true);
 
- // pCI->vPrintBoard();
-
-  pCI->G.p_key = pSub_key();
-
- // pCI->vPrintBoard();
-
-  pCI->G.p_emit = pSub_emit();
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-    if (pCI->Flux.m_pArriving) {
-      pCI->G.p_key->vEnsureTypeId_expCol(pCI);
-      pCI->G.p_key->vRenumberAll_expr();
-    }
-  }
-
-  if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
-
-    if (pCI->Flux.m_pArriving) {
-      pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
-      pCI->G.p_emit->vRenumberAll_expr();
-    }
-
-  }
+ // pCI->vPrintBoard(__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

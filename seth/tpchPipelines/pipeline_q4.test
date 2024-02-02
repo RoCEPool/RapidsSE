@@ -15,35 +15,35 @@ begin
     scan orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
                             O_ORDERDATE DATE '1993-10-01' < and "
-    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
-    | hash "type INTEGER O_ORDERKEY"
+    | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | hash "type INTEGER ( 19 ) O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    | gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
               aggregates
-              type VARCHAR as O_ORDERPRIORITY $K1 ,
-              type INTEGER as ORDER_COUNT ) countAll"
+              type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+              type INTEGER ( 19 ) as ORDER_COUNT ) countAll"
     | combined 0
     | next
 
   stage S03 on all nodes :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
   stage S04 on origin :
-    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
             aggregates
-            type VARCHAR as O_ORDERPRIORITY $K1 ,
-            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 

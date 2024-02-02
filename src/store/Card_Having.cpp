@@ -65,7 +65,6 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
   bool bBump = ! bSawProject;
 
   vCorrect_After_Inject(pCI, bBump);
- // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,12 +81,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->G.p_having->vUpdate_emit(pCI);
-
   pCI->Flux.m_pArriving = pSub_emit();
-
-
- // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,24 +137,6 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->G.p_boolPred->bApplyRecursive(CK_RLNCONJ, bLambdaFn_ro);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Having::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_stream = pCI->G.p_having->pSub_stream())) {
-    if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit())) {
-
-      pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
-      pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pPropagate());
-    }
-  }
-
-  pCI->Flux.m_pArriving = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/

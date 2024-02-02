@@ -413,6 +413,18 @@ select date '2023-04-13' - interval '1-4' YEAR TO MONTH from ${testName2}_nation
 rows:
   (DATE '2021-12-13')
 
+select date '2023-02-16'+ interval '-30 23:1:59.000001' day to second from ${testName2}_nation where n_nationkey = 2;
+rows:
+  (TIMESTAMP '2023-01-16 00:58:00.999999')
+
+select date '2023-02-16'+ interval -'23.901234' second from ${testName2}_nation where n_nationkey = 2;
+rows:
+(TIMESTAMP '2023-02-15 23:59:36.098766')
+
+select date '2023-02-16'+ interval '-23.901234' second from ${testName2}_nation where n_nationkey = 2;
+rows:
+(TIMESTAMP '2023-02-15 23:59:36.098766')
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Date - Interval (YEAR MONTH)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -617,6 +629,10 @@ SELECT INTERVAL '32 9' DAY TO HOUR = INTERVAL '32 9' DAY TO HOUR FROM ${testName
 rows:
   (true)
 
+SELECT (INTERVAL '-31 0:0:0' DAY TO second > INTERVAL '1 0:0:0' DAY TO second) from ${testName2}_nation where n_nationkey = 2;
+rows:
+  (false)
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval in
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -663,7 +679,8 @@ rows:
 //  Cast as Interval
 // NB: We add zero to these so they aren't short-circuited in the SQL compiler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+// TODO : V2
+/*
 SELECT CAST(1 + 0  AS INTERVAL YEAR) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
@@ -672,7 +689,7 @@ failure contains: 'EC_NOT_IMPLEMENTED'
 
 SELECT CAST(1.0e1 + 0 AS INTERVAL DAY) FROM ${testName2}_nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
-
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cast Interval as
 // NB: We add zero to these so they aren't short-circuited in the SQL compiler
@@ -769,6 +786,77 @@ success
 drop table ${testName2}_TABLE4;
 success
 
+create table  ${testName2}_intervalD(xh integer,a date,b date,c time,d time,e timestamp,f timestamp);
+success
+
+Load  ${testName2}_intervalD "../DATA/Expressions/intervalD.csv";
+success
+
+SELECT e-f,e,f from ${testName2}_intervald i where e-f > INTERVAL '1 0:0:0' DAY TO second;
+rows:
+  (INTERVAL '31 0:0:0' DAY TO SECOND,2022-08-08 17:22:34,2022-07-08 17:22:34)
+  (INTERVAL '365 0:0:0' DAY TO SECOND,2022-08-08 17:22:34,2021-08-08 17:22:34)
+
+SELECT (INTERVAL '-31 0:0:0' DAY TO second > INTERVAL '1 0:0:0' DAY TO second) from ${testName2}_intervald where xh=1;
+rows:
+ (false)
+
+SELECT a-b,a,b from ${testName2}_intervald i where a-b=interval '1' day;
+rows:
+    (INTERVAL '1' DAY, DATE '2022-08-08', DATE '2022-08-07')
+    (INTERVAL '1' DAY, DATE '2023-05-02', DATE '2023-05-01')
+    (INTERVAL '1' DAY, DATE '2023-05-08', DATE '2023-05-07')
+    (INTERVAL '1' DAY, DATE '2023-05-03', DATE '2023-05-02')
+    (INTERVAL '1' DAY, DATE '2023-05-04', DATE '2023-05-03')
+    (INTERVAL '1' DAY, DATE '2023-05-06', DATE '2023-05-05')
+    (INTERVAL '1' DAY, DATE '2023-05-07', DATE '2023-05-06')
+    (INTERVAL '1' DAY, DATE '2055-12-31', DATE '2055-12-30')
+    (INTERVAL '1' DAY, DATE '2023-05-09', DATE '2023-05-08')
+    (INTERVAL '1' DAY, DATE '2023-05-10', DATE '2023-05-09')
+
+SELECT INTERVAL '3' DAY + date '2021-02-28' from ${testName2}_intervalD where xh = 1;
+rows:
+ (DATE '2021-03-03')
+
+SELECT date '2021-02-28' + INTERVAL '3' DAY from ${testName2}_intervalD where xh = 1;
+rows:
+ (DATE '2021-03-03')
+
+SELECT INTERVAL -'5:6.789012' MINUTE TO SECOND + date '2021-03-01' from ${testName2}_intervalD where xh = 1;
+rows:
+ (TIMESTAMP '2021-02-28 23:54:53.210988')
+
+SELECT INTERVAL '3 4:5:6' DAY TO SECOND + date '2021-04-28' from ${testName2}_intervalD where xh = 1;
+rows:
+  (TIMESTAMP '2021-05-01 04:05:06')
+
+SELECT date '2021-03-01' + INTERVAL -'5:6.789012' MINUTE TO SECOND from ${testName2}_intervalD where xh = 1;
+rows:
+  (TIMESTAMP '2021-02-28 23:54:53.210988')
+
+SELECT date '2021-03-01' - INTERVAL '5:6.789012' MINUTE TO SECOND from ${testName2}_intervalD where xh = 1;
+rows:
+  (TIMESTAMP '2021-02-28 23:54:53.210988')
+
+SELECT xh,a,e,a-e from ${testName2}_intervalD i where xh=2;
+rows:
+  (2,DATE '2055-12-31', TIMESTAMP '2021-01-02 12:59:59',INTERVAL '12780 11:0:1' DAY TO SECOND)
+
+SELECT xh,a,e,e-a from ${testName2}_intervalD i where xh=2;
+rows:
+  (2,DATE '2055-12-31', TIMESTAMP '2021-01-02 12:59:59',INTERVAL -'12780 11:0:1' DAY TO SECOND)
+
+
+// date of of range
+select timestamp '2155-05-31 00:00:00' +interval '-833999' day from ${testName2}_intervalD;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
+
+select timestamp '1900-01-01 00:00:00' +interval '833999' day from ${testName2}_intervalD;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
+
+DROP TABLE ${testName2}_intervald;
+success
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -787,4 +875,6 @@ CLEANUP {
   DROP TABLE ${testName2}_table4;
   mute
 
+  DROP TABLE ${testName2}_intervald;
+  mute
 }

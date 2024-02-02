@@ -133,8 +133,22 @@ eDM StreamDefBase::eDatum(Stz* szType)
       return (eDM)i_Type;
   }
 
-  if (szType->bSame("interval"_Stz))
+  if (szType->bSame("day"_Stz) ||
+			szType->bSame("hour"_Stz) ||
+			szType->bSame("minute"_Stz) ||
+		  szType->bSame("second"_Stz) ||
+			szType->bSame("day_to_second"_Stz) ||
+			szType->bSame("day_to_minute"_Stz) ||
+			szType->bSame("day_to_hour"_Stz) ||
+			szType->bSame("hour_to_second"_Stz) ||
+			szType->bSame("hour_to_minute"_Stz) ||
+			szType->bSame("minute_to_second"_Stz))
     return DM_IVD;
+
+	if (szType->bSame("year"_Stz) ||
+			szType->bSame("month"_Stz) ||
+			szType->bSame("month_to_year"_Stz))
+		return DM_IVY;
 
   return (eDM)DM_UNK;
 }
@@ -1378,7 +1392,10 @@ eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
   
   pTkn = pTknVec->pNextToken(); dPT();
   while ( ! pTkn->bSame(")"_Stz) ) {
-    
+
+		if (iPartKeys == 1)
+			return EC_MULTIPLE_COLUMN_PARTITION_KEY;
+
     iPartKeys++;
     
     if ( ! pTkn ) {

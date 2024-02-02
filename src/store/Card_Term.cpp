@@ -48,6 +48,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 {
   _static_
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   auto bfItemise_colNm = [pCI](Card* pCard)
   {
     UNUSED(pCI);
@@ -97,6 +99,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
+
     NEVER_REACH;
   };
 
@@ -180,29 +183,129 @@ void Card_Term::vBump_expCol(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vEnsureTypeId_expCol(CardIter* pCI)
+void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Expr *p_expr_found;
+  Symbol* pSymbol_term = pSymbol();
 
-  // rpnCalc is a set of terms
-  if (pSymbol()->bHasType())
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pSymbol_term->bIs_Lit()) {
+    rxCast_last.m_xTypeId = pSymbol_term->xCast().m_xTypeId;
+    return;
+  }
+
+  if (pSymbol_term->bIs_Col_Type()) {
+    Stz* szFacet_colType = pSymbol_term->szFacet(SF_COL_TYPE);
+
+    if (szFacet_colType->bSame("BOOLEAN"_Stz))
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
+    else
+    if (szFacet_colType->bSame("DATE"_Stz))
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_DATE);
+    else
+    if (szFacet_colType->bSame("DECIMAL"_Stz)) {
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+      rxCast_last.m_nTypeLength = 19;
+      rxCast_last.m_nTypeScale  = 2;
+    }
+    else
+    if (szFacet_colType->bSame("INTEGER"_Stz)) {
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+      rxCast_last.m_nTypeLength = 0;
+      rxCast_last.m_nTypeScale  = 0;
+    }
+    else
+    if (szFacet_colType->bSame("INTERVAL_DT"_Stz))
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_DT);
+    else
+    if (szFacet_colType->bSame("INTERVAL_YM"_Stz))
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTERVAL_YM);
+    else
+    if (szFacet_colType->bSame("FLOAT"_Stz))
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_FLOAT);
+    else
+    if (szFacet_colType->bSame("TIME"_Stz))
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_TIME);
+    else
+    if (szFacet_colType->bSame("TIMESTAMP"_Stz))
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_TIMESTAMP);
+    else
+    if (szFacet_colType->bSame("VARCHAR"_Stz))
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_VARCHAR);
+    else
+     NEVER_REACH
+
+    return;
+  }
+
+  if (pSymbol_term->bIs_Agg_Fn()) {
+    Stz* szFacet_aggFn = pSymbol_term->szFacet(SF_AGG_FN);
+
+    if (szFacet_aggFn->bSame("COUNT"_Stz)) {
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+      rxCast_last.m_nTypeLength = 0;
+      rxCast_last.m_nTypeScale  = 0;
+    }
+    else
+    if (szFacet_aggFn->bSame("COUNTALL"_Stz)) {
+      rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+      rxCast_last.m_nTypeLength = 0;
+      rxCast_last.m_nTypeScale  = 0;
+    }
+    else
+    if (szFacet_aggFn->bSame("SUM"_Stz)) {
+    }
+    else
+    if (szFacet_aggFn->bSame("MAX"_Stz)) {
+    }
+    else
+    if (szFacet_aggFn->bSame("MIN"_Stz)) {
+    }
+    else {
+      NEVER_REACH
+    }
+
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pCI->G.p_key && pCI->G.p_expr && pCI->G.p_rpnCalc) {
+    if (! pCI->Flux.m_pArriving)
+      return;
+
+    Card_Expr* p_expr_matching = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+    if (! p_expr_matching)
+      p_expr_matching = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
+    if (! p_expr_matching)
+      return;
+
+    pSymbol_term->vCast(p_expr_matching->pSymbol()->xCast());
+    rxCast_last = pSymbol_term->xCast();
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Expr *p_expr_matched = nullptr;
+  if (pSymbol_term->bHasFacet(SF_KEY_COL)) {
+    p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
+  }
+  else {
+    if (pCI->Flux.m_pArriving)
+      p_expr_matched = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+    if (! p_expr_matched && pCI->G.p_injectable)
+      p_expr_matched = pCI->G.p_injectable->pFind_expr_Matches(pSymbol_term);
+  }
+  if (! p_expr_matched)
     return;
 
-  i8 iOdn = iGetOdn();
+  pSymbol_term->vCast(p_expr_matched->pSymbol()->xCast());
 
-  if (bIsKeyCol())
-    p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
-  else
-  if (bIs_expCol())
-    p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
-  else
-    return;
-
-  Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
-
-  vCast(p_rpnCalc_found);
+  if (pSymbol_term->bHasType())
+    rxCast_last = pSymbol_term->xCast();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -486,6 +589,17 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
       pSymbol_this->vDeleteFacet(SF_EXP_COL);
       pSymbol_this->vCastFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
+
+      if (pCI->G.p_expr && pCI->G.p_expr->bIsScalarCol() && pCI->G.p_rpnCalc) {
+//        if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_TBL_COL))
+//          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
+        pCI->G.p_expr->pSymbol()->vSetFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
+
+        if (pSymbol_term0->bHasFacet(SF_NMD_COL))
+          pCI->G.p_expr->pSymbol()->vSetFacet(SF_NMD_COL,pSymbol_term0->szFacet(SF_NMD_COL));
+
+      }
+
     }
     else {
       eSF eSymbol = pSymbol_this->eFacet();
@@ -507,7 +621,26 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  RASSERT(pCI->G.p_boolPred || pCI->G.p_bound || pCI->G.p_expr || pCI->G.p_hshCol || pCI->G.p_rpnCalc);
+
   Symbol* pSymbol_this = this->pSymbol();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ../<key>/<expr>|?|/<rpnCalc>/<term>|?|
+
+  if (pCI->G.p_key && pCI->G.p_expr) {
+    Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
+
+//    if (pSymbol_this->bHasFacet(SF_EXP_COL) && ! pSymbol_expr->bHasFacet(SF_EXP_COL))
+//      pSymbol_expr->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+    if (pSymbol_this->bHasFacet(SF_KEY_COL) && ! pSymbol_expr->bHasFacet(SF_KEY_COL))
+      pSymbol_expr->vAppendFacet(SF_KEY_COL,pSymbol_this->szFacet(SF_KEY_COL));
+    if (pSymbol_this->bHasFacet(SF_TBL_COL) && ! pSymbol_expr->bHasFacet(SF_TBL_COL))
+      pSymbol_expr->vAppendFacet(SF_TBL_COL,pSymbol_this->szFacet(SF_TBL_COL));
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (! pSymbol_this->bIs_Tbl_Col())
     return;
 
@@ -522,8 +655,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   if (pCI->X.m_pExprList_i) {
 		// ALKA changed 22/10/23 (compilation error on linux)
-    //if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
-		if (pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
+   	if (pCI->X.m_pExprList_i->pFind_expr_Matches_ignoring(&xTblCol_sym, SF_EXP_COL)) {
       this->vMark1(MARK_FOUND);
       return;
     }
@@ -534,27 +666,41 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   if (pCI->X.m_pExprList_a) {
     //pCI->X.m_pExprList_a->vDump(__func__);
-    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term0(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym)) {
+
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
-      pSymbol_this->vFacet(SF_EXP_COL, szStmCol_expr_a);
+      pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
+
+      if (pCI->G.p_key && pCI->G.p_expr) {
+        if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
+          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+      }
+
       return;
     }
-    if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Via_term0(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xTblCol_sym)) {
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
-      pSymbol_this->vFacet(SF_EXP_COL, szStmCol_expr_a);
+      pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
+      if (pCI->G.p_key && pCI->G.p_expr) {
+        pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+      }
       return;
     }
 
     if (pSymbol_this->bHasFacet(SF_NMD_COL)) {
       Symbol xAsNm_sym;
-      xAsNm_sym.vFacet(SF_NMD_COL, pSymbol_this->szSF_chrSeq(SF_NMD_COL));
+      xAsNm_sym.vConcatFacet(SF_NMD_COL, pSymbol_this->szSF_chrSeq(SF_NMD_COL));
 
       if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xAsNm_sym)) {
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
-        pSymbol_this->vFacet(SF_EXP_COL, szStmCol_expr_a);
+        pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
+        if (pCI->G.p_key && pCI->G.p_expr) {
+          if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
+            pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+        }
         return;
       }
     }
@@ -566,14 +712,17 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
     //pCI->X.m_pExprList_k->vDump(__func__);
     //pSymbol_this->vDump();
-    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Via_term0(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Matches(&xTblCol_sym)) {
       Symbol *pSymbol_k = p_expr_scalar_k->pFirst_keyCol();
       if (! pSymbol_k)
         return;
-      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term0(&xTblCol_sym)) {
+      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches_ignoring(&xTblCol_sym, SF_EXP_COL)) {
         Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
-        pSymbol_this->vFacet(SF_EXP_COL, szStmCol_expr_a);
+        pSymbol_this->vConcatFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
+        if (pCI->G.p_key && pCI->G.p_expr) {
+          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+        }
       }
       return;
     }
@@ -595,18 +744,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Card::vValidate_noChildren();
 
-//  RASSERT(
-//          pParent->eCard() == CK_t_HSHCOL || // todo: NO!
-//
-//          pParent->eCard() == CK_ANDCONJ ||
-//          pParent->eCard() == CK_BOUND || // todo: is a bound a boolPred?
-//          pParent->eCard() == CK_BOOLPRED ||
-//          pParent->eCard() == CK_RLNCONJ ||
-//          pParent->eCard() == CK_s_HASHING ||
-//          pParent->eCard() == CK_NOTCONJ ||
-//          pParent->eCard() == CK_ORCONJ ||
-//          pParent->eCard() == CK_RPNCALC);
-
   (void)Card::eValidate_parentEither(pCI, CK_t_HSHCOL,// todo: NO!?
                                      CK_ANDCONJ,
                                      CK_BOUND,
@@ -618,45 +755,57 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_RPNCALC,
                                      CK_NONE);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
-    if (m_xSymbol.bIs_Exp_Col() ) {
+    if (m_xSymbol.bIs_SF_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
       if (! m_xSymbol.bHasType()) {
+         vMark("?"_Stz,"t"_Stz);
+         pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);
+         pCI->vPrintBoard(__func__,__LINE__,true);
          vDump(__func__);
-         pCI->vPrintBoard(__LINE__,true);
          vValidationFailed("Type Missing : %p"_Stz,this);
+      }
+      if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+        if (m_xSymbol.nTypeLength() == 0) {
+          vMark("?"_Stz,"l"_Stz);
+          pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
+          pCI->vPrintBoard(__func__,__LINE__,true);
+          vDump(__func__);
+          vValidationFailed("Decimal length is 0 : %p"_Stz, this);
+        }
       }
     }
   }
 
-//  if (pCI->G.pBoard->pState()->bHasName(aOH[OH_OPTIMISE])) {
-//    if (m_xSymbol.bIs_Exp_Col() || m_xSymbol.bIs_Tbl_Col()) {
-//      if (! m_xSymbol.bHasType()) {
-//        if (! pCI->G.p_call) {
-//          vDump(__func__);
-//          vValidationFailed("Type Missing : %p"_Stz,this);
-//        }
-//      }
-//    }
-//  }
-//  else
-//  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMIT]) ) {
-//    if (m_xSymbol.bIs_Tbl_Col()) {
-//      if (! m_xSymbol.bHasType()) {
-//        if (! pCI->G.p_call) {
-//          vDump(__func__);
-//          vValidationFailed("Type Missing : %p"_Stz,this);
-//        }
-//      }
-//    }
-//  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL]) ) {
+    i8 i_Ancestor;
+    if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR,&i_Ancestor)))) {
+      Card* p_ANCESTOR = pCI->pAncestor(i_Ancestor - 1);
+      eCK eAncestor = p_ANCESTOR->eCard();
+      RASSERT(CK_t_EMIT == eAncestor ||
+              CK_s_KEY == eAncestor  ||
+              CK_s_NEEDED == eAncestor  ||
+              CK_STREAMKEY == eAncestor  ||
+              CK_s_INJECTABLE == eAncestor);
+      Symbol* pSymbol_this = pSymbol();
+      if (CK_s_KEY != eAncestor && CK_STREAMKEY != eAncestor && pCI->G.p_expr->bIsScalarCol()
+           && (pSymbol_this->nFacets() > 1 || ! pSymbol_this->bHasFacet(SF_EXP_COL))
+           ) {
+        Card_EXPRLIST* p_EXPRLIST = (Card_EXPRLIST*)p_ANCESTOR;
+        if (! p_EXPRLIST->bTestFind_expr_Matching(pCI->G.p_expr,this->pSymbol(),SF_EXP_COL)) {
+          pCI->vPrintBoard(__func__,__LINE__,true);
+          p_EXPRLIST->vDump(__func__ );
+          pCI->G.p_expr->vDump(__func__ );
+          NEVER_REACH
+        }
+      }
+    }
+  }
 
-//  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
-//    if (m_xSymbol.bIs_Tbl_Col() && ! pCI->pAncestorFind(CK_s_INJECTABLE)) {
-//      vDump(__func__);
-//      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
-//    }
-//  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vValidationPassed();
 }

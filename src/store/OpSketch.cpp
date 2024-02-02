@@ -410,7 +410,13 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  eDM eResultExprType = DM_UNK;
+	TypeId xResultExprType;
+	i8 iResultLength;
+	i8 iResultScale;
+
+	UNUSED(iResultLength);
+	UNUSED(iResultScale);
+
   eDM eExprType = DM_UNK;
 
   bool bIndexJoin = false;
@@ -476,7 +482,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
       //nExpr = pExprType->nItems();
       //RASSERT(eResultExprType == (eDM)pExprType->iPeek(nExpr-1));
-      eResultExprType = DM_UNK;
+      //xResultExprType(C_UNKNOWN);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to normal expstack
@@ -511,6 +517,16 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
       continue;
     }
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// save the column name
+		if (pTkn->bIsString()) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// push literal
+			vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_VCH);
+			continue;
+		}
 
     if (pTkn->bSame("groupby"_Stz)) {
 
@@ -685,10 +701,41 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the final expression type
     if (pTkn->bSame("type"_Stz)) {
+
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
-      eResultExprType = StreamDefBase::eDatum(pTkn->szChars());
-      continue;
+      xResultExprType = TypeId::xIdOf("rapids"_Stz, pTkn->szChars());
+
+#ifdef TYPE_DETAILED
+			// is there a ( ?
+			pTkn = pTokenVec->pGet(i_Tkn+1);
+			if (pTkn->bSame("("_Stz)) {
+
+				// skip the (
+				i_Tkn++;
+
+				// get the length
+				i_Tkn++;
+				pTkn = pTokenVec->pGet(i_Tkn);
+				iResultLength = pTkn->szChars()->iToI8();
+
+				// check next tkn
+				i_Tkn++;
+				pTkn = pTokenVec->pGet(i_Tkn);
+				if (pTkn->bSame(")"_Stz))
+					continue;
+				else {
+					// it is the scale
+					iResultScale = pTkn->szChars()->iToI8();
+
+					// skip the )
+					i_Tkn++;
+					pTkn = pTokenVec->pGet(i_Tkn);
+					RASSERT(pTkn->bSame(")"_Stz));
+				}
+			}
+#endif
+			continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -829,12 +876,41 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
       eCastType = StreamDefBase::eDatum(pTkn->szChars());
-      continue;
-    }
+#ifdef TYPE_DETAILED
+			// is there a ( ?
+			pTkn = pTokenVec->pGet(i_Tkn+1);
+			if (pTkn->bSame("("_Stz)) {
+
+				// skip the (
+				i_Tkn++;
+
+				// get the length
+				i_Tkn++;
+				pTkn = pTokenVec->pGet(i_Tkn);
+				iResultLength = pTkn->szChars()->iToI8();
+
+				// check next tkn
+				i_Tkn++;
+				pTkn = pTokenVec->pGet(i_Tkn);
+				if (pTkn->bSame(")"_Stz))
+					continue;
+				else {
+					// it is the scale
+					iResultScale = pTkn->szChars()->iToI8();
+
+					// skip the )
+					i_Tkn++;
+					pTkn = pTokenVec->pGet(i_Tkn);
+					RASSERT(pTkn->bSame(")"_Stz));
+				}
+			}
+#endif
+			continue;
+		}
 
     if (pTkn->bSame("cast"_Stz)) {
       ePreExp = PE_CST;
-      vPushCast(pExprStack, pExprType, eCastType);
+      vPushCast(pExprStack, pExprType, eCastType, xResultExprType);
       continue;
     }
 
@@ -1000,7 +1076,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // endif
     if (pTkn->bSame("endif"_Stz)) {
-      pExprType->vPush(eResultExprType);
+      pExprType->vPush(Column::eDatum(xResultExprType.eCTVal()));
       pExprStack->vPushStz("}"_Stz);
       continue;
     }
@@ -1106,17 +1182,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       continue;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // save the column name
-    if (pTkn->bIsString()) {
+		vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn, bConstraint);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // push literal
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_VCH);
-    }
-    else {
-      vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn, bConstraint);
-    }
 
   }
 
@@ -1595,13 +1662,13 @@ void OpSketch::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push cast expression                                                       */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastType) {
+void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastType, TypeId xResultExprType) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
   s4K sOperation;
   eDM eResult;
-
+	UNUSED(xResultExprType);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get column type
   eDM eColType1 = (eDM) pExprType->iPop();
@@ -1610,8 +1677,16 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
   // generate the code for the cast operator if different types
 
   if (eColType1 != eCastType) {
-    sOperation = aFM[eMacro_Cast[eColType1][eCastType]];
-    eResult = eMacro_CastResult[eColType1][eCastType];
+		if (eCastType == DM_IVD || eCastType == DM_IVY) {
+			//xResultExprType.eIVVal()
+			sOperation = aFM[eMacro_CastIntIvl[IVL_DAY]];
+			eResult = eCastType;
+		}
+		else {
+			//RASSERT(eCastType == Column::eDatum(xResultExprType.eCTVal()));
+			sOperation = aFM[eMacro_Cast[eColType1][eCastType]];
+			eResult = eMacro_CastResult[eColType1][eCastType];
+		}
 
     if (eResult == DM_VCH) {
       sOperation.vConcat("(aDynamicT->m_iErrorCode, szStrArea)"_Stz);

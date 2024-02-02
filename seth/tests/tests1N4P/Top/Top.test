@@ -50,7 +50,7 @@ begin
     | next
   stage stageA on all partitions :
     scan ${testName2}_lineitem
-    | project "type INTEGER $1 , type DATE $11"
+    | project "type INTEGER ( 19 ) $1 , type DATE $11"
     | top "type DATE $2" 2
     | combined 0
     | next
@@ -81,16 +81,16 @@ begin
     | next
   stage stageA on all partitions :
     scan ${testName2}_lineitem
-    | project "type INTEGER $1 , type DATE $11"
-    | top "type INTEGER $1" 2
+    | project "type INTEGER ( 19 ) $1 , type DATE $11"
+    | top "type INTEGER ( 19 ) $1" 2
     | combined 0
     | next
   stage stageB on all nodes :
-    top "type INTEGER $1" 2
+    top "type INTEGER ( 19 ) $1" 2
     | combined 0
     | next
   stage stageC on origin :
-    top "type INTEGER $1" 2
+    top "type INTEGER ( 19 ) $1" 2
     | combined 0
     | next
   stage stageLast on origin :

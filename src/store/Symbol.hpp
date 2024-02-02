@@ -80,7 +80,7 @@ namespace STORE
     static bool bIs_Interval_YM(Stz* szChrSeq);     // INTERVAL_YM
     static bool bIs_Itm_Col(Stz* szChrSeq);         // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Ivl_Fn(Stz* szChrSeq);          // extract_year etc
-    static bool bIs_List_cnt(Stz* szChrSeq);         // #n
+    static bool bIs_List_Cnt(Stz* szChrSeq);         // #n
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
     static bool bIs_Negate(Stz* szChrSeq);          // NULL
@@ -90,9 +90,9 @@ namespace STORE
     static bool bIs_Null(Stz* szChrSeq);            // NULL
     static bool bIs_Parenthesis(Stz* szChrSeq);     // ( or )
     static bool bIs_Pay_Col(Stz* szChrSeq);         // $Pn
-    static bool bIs_Ppe_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Rln_Op(Stz* szChrSeq);          // <, <=, ... >
-    static bool bIs_Sqy_Nm(Stz* szArg);             // $Qn (or __subqueryN)
+    static bool bIs_Sqy_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Sqy_No(Stz* szArg);             // $Qn (or __subqueryN)
     static bool bIs_Sqy_Op(Stz* szChrSeq);          // exists, in, notExists, notIn
     static bool bIs_Sqy_Prm(Stz* szChrSeq);         // %n
     static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
@@ -123,8 +123,10 @@ namespace STORE
 
     Cast xCast(void);
     void vCast(Cast xCast);
+    void vCastReset(void);
     void vCastFacets(Symbol* pSymbol_arg);
     void vCastFacetsPpy(Symbol* pSymbol_arg);
+    void vConcatFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vConcatFacets(Symbol* pSymbol_arg);
 
     void vDeleteFacet(eSF eFacet);
@@ -140,6 +142,7 @@ namespace STORE
     i8   i_Facet(eSF eFacet);
     i8   i_Facet(eSF eFacet, char cTblSyn);
     Stz* szFacet(eSF eFacet);
+    Stz* szFacet(i8 i_Facet);
     void vFacet(eSF eFacet);
     void vFacet(eSF eFacet, char cChr);
     void vFacet(eSF eFacet, char cChr, i8 iInt);
@@ -187,6 +190,7 @@ namespace STORE
     bool bIs_Itm_Col(void);         // C_n
     bool bIs_Ivl_Fn(void);          // extract_year etc
     bool bIs_List_Cnt(void);        // #n
+    bool bIs_Lit(void);             // FALSE, TRUE, ...
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_Negate(void);          // NEGATE
@@ -196,9 +200,9 @@ namespace STORE
     bool bIs_Null(void);            // NULL
     bool bIs_Parenthesis(void);     // ( or )
     bool bIs_Pay_Col(void);         // $Pn
-    bool bIs_Ppe_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Rln_Op(void);          // <, <=, ... >
-    bool bIs_Sqy_Nm(void);          // __sq%02lld
+    bool bIs_Sqy_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
+    bool bIs_Sqy_No(void);          // __sq%02lld
     bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
     bool bIs_Sqy_Prm(void);         // %n
     bool bIs_Sqy_Rsl(void);         // __n
@@ -215,9 +219,12 @@ namespace STORE
     bool bIs_When(void);            // WHEN
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
+    bool bIs_SF_Col(void);          // SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL
+
     bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
-    bool bMatches(Symbol* pSymbol_arg, eSF* aeFacet=nullptr);
-    bool bMatches(Symbol* pSymbol_arg, eSF eFacet);
+    bool bMatches(eSF eFacet, Symbol* pSymbol_arg);
+    bool bMatches(Symbol* pSymbol_arg);
+    bool bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
@@ -226,6 +233,7 @@ namespace STORE
     bool bSame(char cArg);
     bool bSame(Stz* szChrSeq);
 
+    void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     char cSF_char(void);
     Stz* szSF_chrSeq(eSF eSymbol_xchk);
     i8   iSF_number(void);
@@ -263,7 +271,6 @@ namespace STORE
     void Y_vTo_String(String* pString);
 
   private:
-    void vCastReset(void);
 
     void vFacet_Agg_Fn(Stz* szAggFn);
     void vFacet_As(Stz* szAs);
@@ -309,10 +316,10 @@ namespace STORE
     void vFacet_Parenthesis(Stz* szParenthesis);
     void vFacet_Pay_Col(Stz* szPayCol);
     void vFacet_Pay_Col(i8 iPayCol);
-    void vFacet_Ppe_Nm(Stz* szPpeNm);
     void vFacet_Rln_Op(Stz* szRlnOp);
-    void vFacet_Sqy_Nm(i8 iSqyNo);
-    void vFacet_Sqy_Nm(Stz* szSqyNm);
+    void vFacet_Sqy_Nm(Stz* szPpeNm);
+    void vFacet_Sqy_No(i8 iSqyNo);
+    void vFacet_Sqy_No(Stz* szSqyNo);
     void vFacet_Sqy_Op(Stz* szSqyOp);
     void vFacet_Sqy_Prm(i8 iOrdinal);
     void vFacet_Sqy_Prm(Stz* szSqyPrm);

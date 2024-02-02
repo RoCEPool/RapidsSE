@@ -1,0 +1,12 @@
+/*============================================================================*/
+/* _jira330                                                                   */
+/*============================================================================*/
+
+// NOTE: optimiser crashes when executing the select statement.
+
+create table subquery_1xxb(userid varchar,bbq varchar,btype integer,yye decimal,lrze decimal,hydm varchar,qymc varchar);
+create table subquery_1hwlw(userid varchar,bbq varchar,btype integer,cpdm varchar,zb1 decimal,zb2 decimal);
+load subquery_1xxb "../DATA/JIRA/SE_330_1.csv";
+load subquery_1hwlw "../DATA/JIRA/SE_330_2.csv";
+
+select * from subquery_1xxb sx where yye<(select sum(zb1) from subquery_1hwlw sh where sh.userid=sx.userid and sh.bbq=sx.bbq);

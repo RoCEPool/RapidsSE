@@ -41,15 +41,14 @@ Card_KeyExists::~Card_KeyExists(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* table morphs to keyExists                                                  */
+/* from morphs to keyExists                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
+void Card_KeyExists::vMorph_from_To_keyExists(CardIter *pCI)
 {
   _static_
 
   pCI->G.p_keyExists = pCI->G.p_from->pSub_keyExists();
 
-  //pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_keyExists);
   pCI->G.p_from->vDeleteChild(pCI->G.p_keyExists);
 
   pCI->G.p_keyExists = _pCard_KeyExists(pCI->G.p_from->pCard(CK_o_KEYEXISTS));
@@ -69,16 +68,6 @@ void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_KeyExists::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
@@ -92,7 +81,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard();
+   // pCI->vPrintBoard(__func__,__LINE__);
     return;
 
   }
@@ -111,31 +100,17 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
- // pCI->vRenumberCards();
- // pCI->vPrintBoard();
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
- // pCI->vPrintBoard();
-
-  vUpdate_emit(pCI);
-
- // pCI->vPrintBoard();
-
-  vCorrect_expCol(pCI->Flux.m_pArriving);
+  pCI->G.p_OP = pCI->G.p_keyExists;
+  pCI->G.p_keyExists->vRecreate_emit(pCI,true);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +139,7 @@ void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(pCI->G.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->G.p_term->pSymbol())) {
 
     //pCI->Early.m_pNeeded_later->vDump();
 
@@ -183,24 +158,6 @@ void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
   vDebugPoint();
 
  }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_KeyExists::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ( (pCI->G.p_emit = pSub_emit()) ) {
-    vDeleteSub(pCI->G.p_emit);
-  }
-
-  if (pCI->Flux.m_pArriving) {
-    vEnsure_stream(pCI);
-    pCI->G.p_emit = pCI->Flux.m_pArriving->pClone();
-    pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

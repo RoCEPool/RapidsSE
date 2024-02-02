@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_Ensure_colType.hpp -- Ensure Column Type                         */
+/* XF_Prolog_Analyse_injectable.hpp -- Analyse Injected                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_Ensure_colType : public XF_PROLOG
+  class XF_Prolog_Analyse_injectable : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,18 +17,20 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_Ensure_colType(CardIter* pCI);
-   ~XF_Prolog_Ensure_colType(void) noexcept(false);
+    XF_Prolog_Analyse_injectable(CardIter* pCI);
+   ~XF_Prolog_Analyse_injectable(void) noexcept(false);
 
-    static void vEnsure(CardIter* pCI);
+    static void vAnalyse(CardIter* pCI);
+    static void vAnalyse_injected_passThru(CardIter* pCI);
 
-    void vEnsure(void);
+    void vAnalyse_injectable(void);
+    void vAnalyse_injectable_passThru(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Prolog_Ensure_colType* _pXF_Prolog_Ensure_colType(void* aAddr);
+  XF_Prolog_Analyse_injectable* _pXF_Prolog_Analyse_injectable(void* aAddr);
 }
 
 /*============================================================================*/

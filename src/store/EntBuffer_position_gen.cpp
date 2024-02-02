@@ -170,7 +170,7 @@ void EntBuffer::vPosVecPriorToBuffer_gen(EntBuffer* pToRefdBuffer,
   RASSERT(KE_GENERAL == m_eEntKind);
 
   ASSERT(0 != m_iBufferHeight);
-
+  UNUSED(pToRefdBuffer);
   /*
 
    nb. duplicates are fully qualified by their ref'd buffer
@@ -249,14 +249,16 @@ void EntBuffer::vPosVecPriorToBuffer_gen(EntBuffer* pToRefdBuffer,
 
       // - keys are equal
 
-      if (pToRefdBuffer != pRefdEntBuffer(aNextEntry_sl)->pPrevEntBuffer()) {
-        // found key but haven't reached buffer, go right at this level
-        aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
-        if (! aNextEntry(aNextEntry_sl,i_ScanLevel) )
-          break;
-        aPriorEntry_sl = aNextEntry_sl;
-        continue;
-      }
+			// RAY TO LOOK AT : 18/1/24
+
+//      if (pToRefdBuffer != pRefdEntBuffer(aNextEntry_sl)->pPrevEntBuffer()) {
+//        // found key but haven't reached buffer, go right at this level
+//        aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
+//        if (! aNextEntry(aNextEntry_sl,i_ScanLevel) )
+//          break;
+//        aPriorEntry_sl = aNextEntry_sl;
+//        continue;
+//      }
 
       // reached key & buffer at this level, insert at this level after prior entry
       // go down one level, same entry

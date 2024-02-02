@@ -17,14 +17,15 @@ namespace STORE
     Optimiser* m_pOptimiser;
 
     i8   m_iBenchNo;
+    s32  m_sPipelineNm;
 
-    i8          m_iXform;
-    s32         m_sXhand;
-    s256        m_sXfunc;
-    s256        m_sXdesc;
-    i8          m_iPrint;
+    i8   m_iXform;
+    s32  m_sXhand;
+    s256 m_sXfunc;
+    s256 m_sXdesc;
+    i8   m_iPrint;
 
-    eXF         m_eXform;
+    eXF  m_eXform;
 
 
   public:
@@ -46,20 +47,29 @@ namespace STORE
     void vAddBoard(Board* pBoard);
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
+    void vDump(const char* azFunc);
     void vEndPhase(CardIter* pCI);
 
+    Board* pFindBoard_By_sqyNm(Stz* szSqyNm);
+    Board* pFindBoard_By_sqyNo(Stz* szSqyNo);
+    SubQuery* pFindSubQuery_By_sqyNo(Stz* szSqyNo);
+    Board* pFindBoard_By_sqyNm_v2(Stz* szSqyNm);
+    Board* pFindBoard_By_sqyNo_v2(Stz* szSqyNo);
+    SubQuery* pFindSubQuery_By_sqyNm_v2(Stz* szSqyNm);
+    SubQuery* pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo);
+
     Board* pGetBoard(i8 i_Board);
-    Board* pGetBoard(Stz* szBoardNm);
-    SubQuery* pGetSubQuery(Stz* szSubQueryNm);
-    bool bIsSqyNm(Stz* szSqyNm);
+
+    bool bKnown_sqyNm(Stz* szSqyNm);
+    bool bKnown_sqyNo(Stz* szSqyNo);
+
     Optimiser* pOptimiser(void);
 
     bool bPastPhase(CardIter* pCI, eOH ePhase);
 
     void vPhase(CardIter* pCI, eOH ePhase);
-
-    void vRenumberCards(void);
-
+    Stz* szPipelineNm(void);
+    void vPipelineNm(Stz* szPipelineNm);
 
     void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
 

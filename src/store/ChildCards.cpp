@@ -121,6 +121,15 @@ void ChildCards::vDeleteSub(Card* pSub)
   delete pSub;
 }
 
+/*----------------------------------------------------------------------------*/
+/* discard head                                                               */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vDiscardHead(void)
+{
+  if (Card* pHeadCard = pPopChild()) {
+    delete pHeadCard;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* ensure card is first                                                       */
@@ -350,6 +359,19 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reChild)
     reChild = CK_NONE;
 
   return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the head card same as given arg                                         */
+/*----------------------------------------------------------------------------*/
+bool ChildCards::bHeadSame(Stz* szArg)
+{
+  if (Card* pHeadCard = pHead()) {
+    if (pHeadCard->szFacet(SF_NONE)->bSame(szArg))
+      return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

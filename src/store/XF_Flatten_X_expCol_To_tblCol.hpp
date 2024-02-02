@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Flatten_X_stmCol_To_tblCol.hpp -- StmCol to TblCol                                 */
+/* XF_Flatten_X_expCol_To_tblCol.hpp -- StmCol to TblCol                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Flatten_X_stmCol_To_tblCol : public XF_TRANSFORM
+  class XF_Flatten_X_expCol_To_tblCol : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Flatten_X_stmCol_To_tblCol(CardIter* pCI);
-   ~XF_Flatten_X_stmCol_To_tblCol(void) noexcept(false);
+    XF_Flatten_X_expCol_To_tblCol(CardIter* pCI);
+   ~XF_Flatten_X_expCol_To_tblCol(void) noexcept(false);
 
     static void vFlatten(CardIter* pCI);
 
@@ -29,7 +29,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Flatten_X_stmCol_To_tblCol* _pXF_Flatten_X_stmCol_To_tblCol(void* aAddr);
+  XF_Flatten_X_expCol_To_tblCol* _pXF_Flatten_X_expCol_To_tblCol(void* aAddr);
 }
 
 /*============================================================================*/

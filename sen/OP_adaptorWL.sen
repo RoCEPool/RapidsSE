@@ -57,10 +57,7 @@
   Pds[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
+  adaptorWL_sendAnyWLResponses discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -83,10 +80,7 @@
   PdsErr[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
+  adaptorWL_sendAnyWLResponses discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -106,10 +100,7 @@
   PdsErr[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
+  adaptorWL_sendAnyWLResponses discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -128,12 +119,7 @@
   PdsWarn[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
-
-  true
+  adaptorWL_sendAnyWLResponses discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -336,10 +322,7 @@
   PipeIn[]\clear AdaptorWL[].resultMetadata
 
   // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
+  adaptorWL_sendAnyWLResponses discard
 
   true
 ;
@@ -358,10 +341,7 @@
   Pipein[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
+  adaptorWL_sendAnyWLResponses discard
 
   true
 ;
@@ -406,10 +386,7 @@
   Pipein[].delete
 
   // Pipeout any payloads that were just generated so they can be sent straight away
-  adaptorWL_sendAnyWLResponses not if
-    true
-    exit
-  then
+  adaptorWL_sendAnyWLResponses discard
 
   true
 ;

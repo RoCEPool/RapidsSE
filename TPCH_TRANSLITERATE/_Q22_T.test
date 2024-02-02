@@ -49,7 +49,7 @@ begin
     stage stageMarker45947 on all partitions :
       scan rapidsse public orders
       | filter " type BOOLEAN  $2 ==  "
-      | project " type INTEGER as O_ORDERKEY $1 , type INTEGER as O_CUSTKEY $2 , type VARCHAR as O_ORDERSTATUS $3 , type DECIMAL as O_TOTALPRICE $4 , type TIMESTAMP as O_ORDERDATE $5 , type VARCHAR as O_ORDERPRIORITY $6 , type VARCHAR as O_CLERK $7 , type INTEGER as O_SHIPPRIORITY $8 , type VARCHAR as O_COMMENT $9 "
+      | project " type INTEGER as O_ORDERKEY $1 , type INTEGER as O_CUSTKEY $2 , type VARCHAR ( 0 ) as O_ORDERSTATUS $3 , type DECIMAL as O_TOTALPRICE $4 , type TIMESTAMP as O_ORDERDATE $5 , type VARCHAR ( 0 ) as O_ORDERPRIORITY $6 , type VARCHAR ( 0 ) as O_CLERK $7 , type INTEGER as O_SHIPPRIORITY $8 , type VARCHAR ( 0 ) as O_COMMENT $9 "
       | combined 0
       | stageMarker45950
     stage stageMarker45950 on all partitions :
@@ -79,7 +79,7 @@ begin
     stage stageMarker45965 on all partitions :
       scan rapidsse public customer
       | filter " type BOOLEAN  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  $6 __subquery0003  >  and  $1 __subquery0005  exists  not  and  "
-      | project " type VARCHAR as cntrycode $5 1  2  substring3  , type DECIMAL as c_acctbal $6 "
+      | project " type VARCHAR ( 0 ) as cntrycode $5 1  2  substring3  , type DECIMAL as c_acctbal $6 "
       | combined 0
       | stageMarker45968
     stage stageMarker45968 on all partitions :
@@ -97,16 +97,16 @@ begin
     | stageMarker45971
   stage stageMarker45971 on all partitions :
     call "custsale "
-    | aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    | aggreg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
     | combined 0
     | stageMarker45974
   stage stageMarker45974 on all nodes :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    aggreg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | stageMarker45977
   stage stageMarker45977 on origin :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
-    | sort " type VARCHAR as cntrycode $1 ASC  "
+    aggreg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    | sort " type VARCHAR ( 0 ) as cntrycode $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

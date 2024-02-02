@@ -1,0 +1,123 @@
+/*----------------------------------------------------------------------------*/
+/* General syntax & semantics tests for IN expressions                        */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE ${testName2}_nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+create index IxN_NATIONKEY on ${testName2}_nation( N_NATIONKEY);
+
+load ${testName2}_nation "../DATA/TPCH/nation.tbl" ;
+success
+
+CREATE TABLE ${testName2}_region (
+	 R_REGIONKEY       INTEGER NOT NULL,
+	 R_NAME            CHAR(25) NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
+success
+
+load ${testName2}_region "../DATA/TPCH/region.tbl" ;
+success
+
+trackmemory force;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  IN expressions without subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT n_name FROM ${testName2}_nation WHERE n_nationkey IN (1, 2, 3, 4);
+rows:
+  ('BRAZIL')
+  ('ARGENTINA')
+  ('CANADA')
+  ('EGYPT')
+
+// TODO V2 : RAY
+/*
+SELECT n_name FROM ${testName2}_nation WHERE n_nationkey IN ((SELECT n_nationkey FROM ${testName2}_nation));
+rows: 25
+
+SELECT n_name FROM ${testName2}_nation WHERE n_nationkey IN (1, (SELECT n_nationkey FROM ${testName2}_nation));
+rows: 25
+
+SELECT n_name FROM ${testName2}_nation WHERE n_nationkey IN (1, (WITH t1 AS (SELECT n_nationkey FROM ${testName2}_nation) SELECT * FROM t1));
+rows: 25
+
+*/
+
+SELECT n_name FROM ${testName2}_nation WHERE n_nationkey IN (n_nationkey);
+rows: 25
+
+SELECT n_name FROM ${testName2}_nation WHERE n_nationkey IN (n_nationkey, n_regionkey);
+rows: 25
+
+SELECT n_name FROM ${testName2}_nation WHERE n_nationkey IN (n_nationkey + 1, n_regionkey - 1);
+rows: 0
+
+DROP TABLE ${testName2}_nation;
+success
+
+DROP TABLE ${testName2}_region;
+success
+
+CREATE TABLE ${testName2}_table2 (
+   pcol2   integer not null,
+   scol2   integer not null,
+   cola2   integer,
+   colb2   varchar(30) ,
+   colc2   timestamp NOT NULL ,
+   ucol    integer,
+   ucolvc  varchar(5)
+   );
+success
+
+load ${testName2}_table2 "../DATA/Load/tbl2data.csv";
+
+SELECT pcol2, colb2, ucolvc FROM ${testName2}_table2 WHERE colb2 IN (
+       'Do','an','IN','with','a','constant','RHS','but','where','the',
+       'has','many','green','We','need','to','test','that',
+       'collisions','hash','table','are','resolved','properly',
+       'This','in-set','contains','thirty','one','entries','hello');
+rows:
+ (38,'green','hhh')
+ (10,'green','sss')
+ (18,'green','qqq')
+ (64,'green','rrr')
+ (69,'green','aaa')
+
+DROP TABLE ${testName2}_table2;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE ${testName2}_nation;
+  mute
+
+  DROP TABLE ${testName2}_region;
+  mute
+
+  DROP TABLE ${testName2}_table2;
+  mute
+}

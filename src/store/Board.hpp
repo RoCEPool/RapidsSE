@@ -106,7 +106,6 @@
 #include "Card_OuterColNm.hpp"
 #include "Card_OuterJoin.hpp"
 
-#include "Card_Payload.hpp"
 #include "Card_PayloadCells.hpp"
 #include "Card_Project.hpp"
 
@@ -175,18 +174,14 @@ namespace STORE
   {
   protected:
     i8          m_i_Board;
-    s32         m_sBoardNm;
     eBK         m_eBoard;  // joinOrdering, subquery
-
+    eOH         m_ePhase;
     Bench*      m_pBench;
+
     SubQuery*   m_pSubQuery;
     Card_Deck*  m_pDeck;
-
     TagSet*     m_pState;
-
     Mark*       m_pMark;
-
-    eOH         m_ePhase;
 
   private:
     // must be last
@@ -196,29 +191,24 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench);
+    Board(i8 i_Board, eBK eBoard, Stz* szSqyNm, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
+    static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
     static bool bFindAndMarkSubQryCall(CardIter* p_conj);
 
-    Bench* pBench(void);
     i8   i_Board(void);
     void vBoardNo(i8 i_Board);
     eBK  eBoard(void);
-    Stz* szBoardNm(void);
-    void vBoardNm(Stz* szBoardNm);
 
-    CardCtl* pCardCtl(void);
     void vClearCardMarks(void);
 
     Card_Deck* pDeck(void);
+    void vDump(i8 iDepth=0);
 
     void vEndPhase(void);
-
-    Mark* pMark(void);
 
     void vPrintBoard(CardIter* pCI, Stz* szDescription=nullptr);
 
@@ -233,7 +223,6 @@ namespace STORE
     SubQuery* pSubQuery(void);
 
     void vValidate(CardIter* pCI);
-    void vValidate_SubQuery(CardIter* pCI);
 
   private:
     void vPinMargin(Ribbon* pRibbon);

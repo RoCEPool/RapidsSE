@@ -20,22 +20,20 @@ namespace STORE
     static Card_Emit* pResolvePriorProjection(CardIter* pCI);
 
     void vConcatFacets_From_key(Card_Key* p_key);
-    void vAppend_streamDef_table(CardIter* pCI);
 
     Card_Emit* pClone(void);
     void vCorrect_expCol(Card_Emit* p_arriving);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
-    void vEnsureTypeId_expCol(CardIter* pCI);
+    void vEnsure_Cast(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
-    Card_Emit* pInduct(void);
+    Card_Emit* pInduct(CardIter* pCI);
+    void vInject_expr_nmdCol_table(CardIter* pCI);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     void vMapColumns(CardIter* pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    Card_Emit* pPropagate(void);
-    Card_Emit* pReducedCopy(void);
     Card_Expr* pResolve_expr(Card_Term* p_term);
 
     void vShortForm(String* pString);

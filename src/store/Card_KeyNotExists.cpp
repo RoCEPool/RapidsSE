@@ -41,9 +41,9 @@ Card_KeyNotExists::~Card_KeyNotExists(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* table morphs to keyNotExists                                               */
+/* from morphs to keyNotExists                                                */
 /*----------------------------------------------------------------------------*/
-void Card_KeyNotExists::vMorph_table_To_keyNotExists(STORE::CardIter *pCI)
+void Card_KeyNotExists::vMorph_from_To_keyNotExists(CardIter *pCI)
 {
   _static_
 
@@ -67,15 +67,6 @@ void Card_KeyNotExists::vMorph_table_To_keyNotExists(STORE::CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_KeyNotExists::vComputeProjection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
@@ -87,7 +78,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard();
+   // pCI->vPrintBoard(__func__,__LINE__);
     return;
 
 
@@ -105,30 +96,17 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->vRenumberCards();
-  pCI->vPrintBoard();
-
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  pCI->vPrintBoard();
 
-  vUpdate_emit(pCI);
-
-  vCorrect_expCol(pCI->Flux.m_pArriving);
-
-  pCI->vPrintBoard();
+  pCI->G.p_OP = pCI->G.p_keyNotExists;
+  pCI->G.p_keyNotExists->vRecreate_emit(pCI,true);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vPrintBoard();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +135,7 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(pCI->G.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->G.p_term->pSymbol())) {
 
     //pCI->Early.m_pNeeded_later->vDump();
 
@@ -174,24 +152,6 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
   }
 
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_KeyNotExists::vUpdate_emit(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ( (pCI->G.p_emit = pSub_emit()) ) {
-    vDeleteSub(pCI->G.p_emit);
-  }
-
-  if (pCI->Flux.m_pArriving) {
-    vEnsure_stream(pCI);
-    pCI->G.p_emit = pCI->Flux.m_pArriving->pClone();
-    pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
