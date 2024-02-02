@@ -4,7 +4,7 @@
 
 create table ${testName2}_decTest (
   dec1   DECIMAL(2,2),
-  dec2  DECIMAL(19,2)
+  dec2  DECIMAL(17,2)
 );
 success
 
