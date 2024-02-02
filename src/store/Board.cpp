@@ -153,7 +153,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (! (pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm_boardNm(pCI)))
+    if (! (pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
       return C_CONTINUE_RECURSION;
 
     pCI->Sqy.m_sSqyNo  = pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO);

@@ -183,7 +183,7 @@ Stz* Card_CONJ::szGetBoardNmInTerm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card_Term* p_term = pGetTerm_boardNm(pCI))
+  if (Card_Term* p_term = pGetTerm_sqyNo(pCI))
     return p_term->szFacet(SF_NONE);
 
   return nullptr;
@@ -223,16 +223,18 @@ Card_Term* Card_CONJ::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /* attempt to get term which is a board name from this predicate              */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CONJ::pGetTerm_boardNm(CardIter* pCI)
+Card_Term* Card_CONJ::pGetTerm_sqyNo(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
+    Card_Term* p_term = xKid.p_term();
+    if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
+      continue;
 
-    Stz* szValue_term = xKid.p_term()->szFacet(SF_NONE);
-    if (pCI->G_bIsSqyNo(szValue_term))
-      return xKid.p_term();
+    return p_term;
   }
 
   return nullptr;
