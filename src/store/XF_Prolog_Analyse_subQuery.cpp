@@ -186,13 +186,13 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
     if (RO_NONE == eRelnOp)
       return C_CONTINUE_RECURSION;
 
-    Stz* szSubBoardNm = p_conj->szGetBoardNmInTerm(m_pCI);
-    if ( ! szSubBoardNm || !m_pCI->G_bIsSqyNo(szSubBoardNm))
+    Stz* szSqyNo = p_conj->szGetTerm_sqyNo(m_pCI);
+    if (! szSqyNo || !m_pCI->G_bIsSqyNo(szSqyNo))
       return C_CONTINUE_RECURSION;
 
     p_conj->pSymbol()->Y_vSet(P_SqyCall);
 
-    Board* pSubBoard = m_pCI->m_pBench->pFindBoard_By_sqyNm(szSubBoardNm);
+    Board* pSubBoard = m_pCI->m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo);
     SubQuery* pSubQuery = pSubBoard->pSubQuery();
 
     pSubQuery->vCaller(m_pCI->G.i_Board);
@@ -228,12 +228,12 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
     if (p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Stz *szSubBoardNm = p_conj->szGetBoardNmInTerm(m_pCI);
-    if (! szSubBoardNm || !m_pCI->G_bIsSqyNo(szSubBoardNm))
+    Stz *szSqyNo = p_conj->szGetTerm_sqyNo(m_pCI);
+    if (! szSqyNo || !m_pCI->G_bIsSqyNo(szSqyNo))
       return C_CONTINUE_RECURSION;
 
-    // todo: m_pCI->pFindBoard_By_sqyNm(szSubBoardNm); m_pCI->pFindSubQuery_By_sqyNo(szSubBoardNm);
-    Board *pSubBoard = m_pCI->m_pBench->pFindBoard_By_sqyNm(szSubBoardNm);
+    // todo: m_pCI->pFindBoard_By_sqyNm(szSqyNo); m_pCI->pFindSubQuery_By_sqyNo(szSqyNo);
+    Board *pSubBoard = m_pCI->m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo);
     SubQuery *pSubQuery = pSubBoard->pSubQuery();
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --

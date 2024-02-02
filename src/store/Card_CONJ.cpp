@@ -179,12 +179,12 @@ void Card_CONJ::vEnsure_Cast(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* attempt to get board name from one of the terms of this predicate          */
 /*----------------------------------------------------------------------------*/
-Stz* Card_CONJ::szGetBoardNmInTerm(CardIter* pCI)
+Stz* Card_CONJ::szGetTerm_sqyNo(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Term* p_term = pGetTerm_sqyNo(pCI))
-    return p_term->szFacet(SF_NONE);
+    return p_term->szFacet(SF_SQY_NO);
 
   return nullptr;
 }
