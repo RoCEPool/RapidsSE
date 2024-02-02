@@ -909,7 +909,8 @@ SkipListBlock* Pds::pFindLessThan(void* pKey)
 
     SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
     if(pNext == nullptr)
-      ASSERT(0);
+      RASSERT(0);
+
     while(pNext != nullptr) {
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
 
