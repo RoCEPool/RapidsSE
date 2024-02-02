@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "DataBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -36,13 +37,17 @@ BufferId::BufferId(i8 iVal)
 void* BufferId::aAddressFromId(BufferId oBufferId)
 {
   _static_
-
+#ifdef WITHOUT_BUFFERIDHASHMAP
+// TODO: Hack for performance test
+  return oBufferId.m_pvAsAddress;
+#else
   if(oBufferId.m_iAsI8 == 0)
     return nullptr;
 
   RASSERT(oBufferId.m_bIdFlag == 1);
 
   return AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,9 +84,17 @@ bool BufferId::bIsAddress(BufferId oBufferId)
 bool BufferId::bIsBufferId(BufferId oBufferId)
 {
   _static_
-
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  if (oBufferId.m_pvAsAddress == nullptr)
+    return false;
+  Object* pAddr = (Object*) oBufferId.m_pvAsAddress;
+  if(DataBuffer::bIsDataBuffer(pAddr->eGetClassNo()) )
+    return true;
+  return false;
+#else
   return oBufferId.m_bIdFlag == 1;
-
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,10 +103,18 @@ bool BufferId::bIsBufferId(BufferId oBufferId)
 bool BufferId::bIsBufferId(void* aAddr)
 {
   _static_
-
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  if (aAddr == nullptr)
+    return false;
+  Object* pAddr = (Object*) aAddr;
+  if(DataBuffer::bIsDataBuffer(pAddr->eGetClassNo()) )
+    return true;
+  return false;
+#else
   BufferId oBufferId(aAddr);
   return oBufferId.m_bIdFlag == 1;
-
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
