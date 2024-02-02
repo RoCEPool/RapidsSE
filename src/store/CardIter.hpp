@@ -184,7 +184,7 @@ namespace STORE
     void vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
     void G_vPushBoard(Board* pBoard);
-     bool G_bPushBoard(Stz* szSqyNm);
+     bool G_bPushBoard(Stz* szSqyNo);
     void G_vPushNewChild(Card* pParent, eCK eChild);
     void G_vPushIter(void);
 

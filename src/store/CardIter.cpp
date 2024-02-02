@@ -2082,13 +2082,11 @@ void CardIter::G_vPushBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* find and push board onto iter stack                                        */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bPushBoard(Stz* szSqyNm)
+bool CardIter::G_bPushBoard(Stz* szSqyNo)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szSqyNm);
-  if (! pBoard)
-    pBoard = m_pBench->pFindBoard_By_sqyNo_v2(szSqyNm);
+  Board*  pBoard = m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo);
   if (! pBoard)
      return false;
 
