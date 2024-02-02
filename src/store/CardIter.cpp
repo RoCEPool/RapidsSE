@@ -2088,6 +2088,8 @@ bool CardIter::G_bPushBoard(Stz* szSqyNm)
 
   Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szSqyNm);
   if (! pBoard)
+    pBoard = m_pBench->pFindBoard_By_sqyNo_v2(szSqyNm);
+  if (! pBoard)
      return false;
 
   G_vPushBoard(pBoard);

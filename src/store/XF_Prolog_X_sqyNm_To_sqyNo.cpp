@@ -264,9 +264,23 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo_v2(void)
   CardIter* pCI = m_pCI;
   auto bfTo_sqyNm = [pCI](Card* p_card) {
     UNUSED(pCI);
-    if (! Symbol::bIs_Sqy_No(p_card->szFacet(SF_NONE)))
+    Symbol* pSymbol_card = p_card->pSymbol();
+    if (! pSymbol_card->nFacets())
       return C_CONTINUE_RECURSION;
 
+    Stz* szFacet_symbol = pSymbol_card->szFacet(0);
+    Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNm_v2(szFacet_symbol);
+    if (! pBoard)
+      pBoard = pCI->m_pBench->pFindBoard_By_sqyNo_v2(szFacet_symbol);
+    if (! pBoard)
+      return C_CONTINUE_RECURSION;
+
+    SubQuery* pSubQuery = pBoard->pSubQuery();
+
+    Symbol xSymbol_sqyNo(SF_SQY_NO,pSubQuery->szSqyNo_v2());
+
+    pSymbol_card->vDeleteFacet(SF_SQY_NM);
+    pSymbol_card->vCastFacets(&xSymbol_sqyNo);
 
     return C_CONTINUE_RECURSION;
   };

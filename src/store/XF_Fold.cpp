@@ -312,7 +312,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
  // pCI->vPrintBoard(__func__,__LINE__);
 
   //RASSERT(Symbol::bIs_Sqy_No(pCI->G.p_call->szFacet(SF_NONE)));
-  Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNm(pCI->G.p_call->szFacet(SF_NONE));
+  Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNo_v2(pCI->G.p_call->szFacet(SF_SQY_NO));
 
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy, pBoard->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
@@ -321,8 +321,8 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // get copy of sq and push before mq
 
   // x) push to sq
-  if (! pCI->G_bPushBoard(pCI->G.p_call->szFacet(SF_NONE))) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
+  if (! pCI->G_bPushBoard(pCI->G.p_call->szFacet(SF_SQY_NO))) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 

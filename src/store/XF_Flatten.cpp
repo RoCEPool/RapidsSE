@@ -122,10 +122,10 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
     if (! m_pCI->G_bEachMain(CK_o_CALL))
       break;
 
-    s256 sSubQueryNm = m_pCI->G.p_call->szFacet(SF_NONE);
+    s256 sSqyNo = m_pCI->G.p_call->szFacet(SF_SQY_NO);
 
     Board *pOuterBoard_save = m_pCI->G.pBoard;
-    m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
+    m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
     m_pCI->G_vPushBoard(m_pCI->Sqy.m_pSubQuery->pBoard());
     m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
@@ -133,7 +133,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
     m_pCI->G_vPopBoard();
     m_pCI->G_vSetBoard(pOuterBoard_save);
-    SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
+    SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
     UNUSED(pSubQuery);
    // m_pCI->vPrintBoard(__func__,__LINE__);
 

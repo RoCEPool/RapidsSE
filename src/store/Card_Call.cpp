@@ -46,7 +46,7 @@ void Card_Call::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
-  RASSERT(pSymbol()->bHasFacet(SF_SQY_NM));
+  RASSERT(pSymbol()->bHasFacet(SF_SQY_NO));
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

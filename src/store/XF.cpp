@@ -174,7 +174,7 @@ void XF::vTransform(void)
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);   //
-    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck(m_pCI);    //
+    //XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck(m_pCI);    //
   }                                                //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
