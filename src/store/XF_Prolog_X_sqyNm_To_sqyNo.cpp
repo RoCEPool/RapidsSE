@@ -78,13 +78,6 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "pipe to sqyNo"_Stz);
 
-#ifdef Z_SQY_Qn
-
-  Symbol xSymbol_sqyNm(SF_SQY_NO, m_pCI->G.pBoard->i_Board());
-  m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
-
-#else
-
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
     m_pCI->m_pBench->vDump(__func__);
 
@@ -98,8 +91,6 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
   else {
     vDebugPoint();
   }
-
-#endif
 
   m_pCI->vEndTransform(__LINE__);
 }
