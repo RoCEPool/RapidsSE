@@ -575,7 +575,7 @@ void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
       Stz* szSqyNo = p_child_conj->szFacet(SF_SQY_NO);
       RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
       pCI->m_pBench->vDump(__func__);
-      RASSERT(pCI->m_pBench->bKnown_sqyNm(szSqyNo));
+      RASSERT(pCI->m_pBench->bKnown_sqyNo_v2(szSqyNo));
 
 
       Card* p_prev_conj = xConj.pPrev();
