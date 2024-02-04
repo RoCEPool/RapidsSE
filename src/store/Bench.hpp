@@ -52,7 +52,8 @@ namespace STORE
     Board* pFindBoard_By_sqyNm_v2(Stz* szSqyNm);
     Board* pFindBoard_By_sqyNo_v2(Stz* szSqyNo);
     Board* pFindBoard(Symbol* pSymbol_arg);
-     SubQuery* pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo);
+    SubQuery* pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo);
+    SubQuery* pFindSubQuery(Symbol* pSymbol_arg);
 
     Board* pGetBoard(i8 i_Board);
 

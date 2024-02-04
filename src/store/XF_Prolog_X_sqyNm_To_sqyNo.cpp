@@ -39,20 +39,6 @@ XF_Prolog_X_sqyNm_To_sqyNo::~XF_Prolog_X_sqyNm_To_sqyNo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(CardIter* pCI)
-{
-  _static_
-
-  XF_Prolog_X_sqyNm_To_sqyNo* pXF_Shorten_QueryNames = new XF_Prolog_X_sqyNm_To_sqyNo(pCI);
-
-  pXF_Shorten_QueryNames->vX_Board_sqyNm_To_sqyNo();
-
-  delete pXF_Shorten_QueryNames;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(CardIter* pCI)
 {
   _static_
@@ -91,23 +77,6 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
 //  else {
 //    vDebugPoint();
 //  }
-
-  m_pCI->vEndTransform(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* shorten query names                                                        */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo_v2(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SQYNM_TO_SQYNO, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "pipe to sqyNo"_Stz);
-
-
-  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    m_pCI->m_pBench->vDump(__func__);
-
 
   m_pCI->vEndTransform(__LINE__);
 }
