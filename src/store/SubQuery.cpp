@@ -327,7 +327,7 @@ Stz* SubQuery::szSqyNm_v2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
-  return m_sSqyNm_v2;
+  return m_xSymbol.szFacet(SF_SQY_NM);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,8 +339,6 @@ void SubQuery::vSqyNm_v2(Stz* szSqyNm)
 
   RASSERT(Symbol::bIs_Sqy_Nm(szSqyNm));
 
-  m_sSqyNm_v2 = szSqyNm;
-
   m_xSymbol.vAppendFacet(SF_SQY_NM,szSqyNm);
 }
 
@@ -351,7 +349,7 @@ Stz* SubQuery::szSqyNo_v2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
-  return m_sSqyNo_v2;
+  return m_xSymbol.szFacet(SF_SQY_NO);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,8 +360,6 @@ void SubQuery::vSqyNo_v2(Stz* szSqyNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
   RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
-
-  m_sSqyNo_v2 = szSqyNo;
 
   m_xSymbol.vAppendFacet(SF_SQY_NO,szSqyNo);
 }
@@ -440,8 +436,7 @@ void SubQuery::vValidate(CardIter* pCI)
   if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
     return;
 
-  RASSERT(! m_sSqyNo_v2.nLength() || Symbol::bIs_Sqy_No(m_sSqyNo_v2));
-  RASSERT(! m_sSqyNm_v2.nLength() || Symbol::bIs_Sqy_Nm(m_sSqyNm_v2));
+  RASSERT(m_xSymbol.bValidate());
 
   pCI->vSave();
   pCI->vNullMembers();

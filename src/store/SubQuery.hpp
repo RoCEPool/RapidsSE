@@ -23,9 +23,7 @@ namespace STORE
   {
   protected:
 
-    s32  m_sSqyNo_v2;    // subquery no
-    s32  m_sSqyNm_v2;    // subquery name
-    Symbol m_xSymbol;
+    Symbol m_xSymbol;    // SF_SQY_NM and SF_SQY_NO
 
     Board* m_pBoard;     // which board
 
