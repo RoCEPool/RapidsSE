@@ -156,8 +156,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
     auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
     {
-      //p_term->vDump(__func__,"Looking for boardNm"_Stz);
-       if (!pCI->G_bIsSqyNo(p_term->szFacet(SF_NONE)))
+       if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
          return C_CONTINUE_RECURSION;
 
       s256 sSqyNo = p_term->szFacet(SF_SQY_NO);
