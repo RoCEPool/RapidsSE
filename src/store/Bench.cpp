@@ -155,6 +155,25 @@ Board* Bench::pFindBoard_By_sqyNo_v2(Stz* szSqyNo)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find board matching given symbol                                           */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pFindBoard(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->pSymbol()->bMatches(pSymbol_arg))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get subquery of given name                                                 */

@@ -89,6 +89,8 @@ namespace STORE
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);
 
+    Symbol* pSymbol(void);
+
     bool bViaFrom(void);
     bool bViaHaving(void);
     bool bViaWhere(void);

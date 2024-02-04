@@ -385,6 +385,16 @@ void SubQuery::vSubQueries(i8 nSubQueries)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return pointer to m_xSymbol                                                */
+/*----------------------------------------------------------------------------*/
+Symbol* SubQuery::pSymbol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
+
+  return & m_xSymbol;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this sub-query called via a from clause?                                */
 /*----------------------------------------------------------------------------*/
 bool SubQuery::bViaFrom(void)
