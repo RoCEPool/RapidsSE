@@ -246,20 +246,6 @@ void SubQuery::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
-  vTrace("%sSubQuery v1 %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
-         Stz::szTab(iDepth),
-         this,
-         szSqyNo(),
-         szSqyNm(),
-         m_i_Caller,
-
-         aQC[m_eClause],
-         aQD[m_eDisposition],
-         aQO[m_eCallOp],
-         aRO[m_eRelnOp],
-         m_nCorrCols
-         );
-
   vTrace("%sSubQuery v2 %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          Stz::szTab(iDepth),
          this,

@@ -78,19 +78,19 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "pipe to sqyNo"_Stz);
 
-  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    m_pCI->m_pBench->vDump(__func__);
-
-  s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNm();
-
-  if (Symbol::bIs_Sqy_No(sSqyNo)) {
-    i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
-    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
-    m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
-  }
-  else {
-    vDebugPoint();
-  }
+//  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+//    m_pCI->m_pBench->vDump(__func__);
+//
+//  s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNo_v2();
+//
+//  if (Symbol::bIs_Sqy_No(sSqyNo)) {
+//    i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
+//    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
+//    m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
+//  }
+//  else {
+//    vDebugPoint();
+//  }
 
   m_pCI->vEndTransform(__LINE__);
 }
