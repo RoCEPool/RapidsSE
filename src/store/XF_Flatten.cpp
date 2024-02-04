@@ -171,7 +171,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       pCI->G_vPopBoard();
       pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSqyNo);
+      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
       UNUSED(pSubQuery);
      // pCI->vPrintBoard(__func__,__LINE__);
 
