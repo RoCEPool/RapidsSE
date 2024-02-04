@@ -282,21 +282,6 @@ bool Bench::bKnown_sqyNm(Stz* szSqyNm)
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bKnown_sqyNo(Stz* szSqyNo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (Board* pBoard = pFindBoard_By_sqyNo(szSqyNo)) {
-    UNUSED(pBoard);
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given name a known subquery?                                            */
-/*----------------------------------------------------------------------------*/
 bool Bench::bKnown_sqyNm_v2(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
