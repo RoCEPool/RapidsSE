@@ -36,9 +36,6 @@ SubQuery::SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard)
 
   m_nSubQueries = 0;
 
-  vSqyNm(szSqyNm);
-  vSqyNo(szSqyNm);
-
   vSqyNm_v2(szSqyNm);
   Symbol xSymbol_sqyNo(SF_SQY_NO, i_Board == -1 ? 0 : i_Board * 2);
   vSqyNo_v2(xSymbol_sqyNo.szSF_chrSeq(SF_SQY_NO));
@@ -61,7 +58,7 @@ SubQuery::~SubQuery(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Public -------------e-----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -321,54 +318,6 @@ void SubQuery::vRelnOp(eRO eRelnOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   m_eRelnOp = eRelnOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get subquery name                                                          */
-/*----------------------------------------------------------------------------*/
-Stz* SubQuery::szSqyNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
-
-  return m_sSqyNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get subquery name                                                          */
-/*----------------------------------------------------------------------------*/
-void SubQuery::vSqyNm(Stz* szSqyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
-
-  if (szSqyNm->bSame("$Q2"_Stz))
-    vDebugPoint();
-
-  m_sSqyNm = szSqyNm;
-  //m_sSqyNo_v2 = szSqyNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get subquery number $Qn                                                    */
-/*----------------------------------------------------------------------------*/
-Stz* SubQuery::szSqyNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
-
-  return m_sSqyNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set subquery number $Qn                                                    */
-/*----------------------------------------------------------------------------*/
-void SubQuery::vSqyNo(Stz* szSqyNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
-
-  if (szSqyNo->bSame("$Q2"_Stz))
-    vDebugPoint();
-
-  m_sSqyNo = szSqyNo;
-  //m_sSqyNm_v2 = szSqyNo;
 }
 
 /*----------------------------------------------------------------------------*/

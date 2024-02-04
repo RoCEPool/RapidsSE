@@ -21,9 +21,6 @@ namespace STORE
   {
   protected:
 
-    s32  m_sSqyNo;       // subquery no
-    s32  m_sSqyNm;       // subquery name
-
     s32  m_sSqyNo_v2;    // subquery no
     s32  m_sSqyNm_v2;    // subquery name
 
@@ -82,11 +79,6 @@ namespace STORE
 
     eRO  eRelnOp(void);
     void vRelnOp(eRO eRelnOp);
-
-    Stz* szSqyNm(void);
-    void vSqyNm(Stz* szSqyNm);
-    Stz* szSqyNo(void);
-    void vSqyNo(Stz* szSqyNo);
 
     Stz* szSqyNm_v2(void);
     void vSqyNm_v2(Stz* szSqyNm);
