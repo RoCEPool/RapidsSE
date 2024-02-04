@@ -337,12 +337,11 @@ void SubQuery::vSqyNm_v2(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
-  if (szSqyNm->bSame("$Q2"_Stz))
-    vDebugPoint();
-
   RASSERT(Symbol::bIs_Sqy_Nm(szSqyNm));
 
   m_sSqyNm_v2 = szSqyNm;
+
+  m_xSymbol.vAppendFacet(SF_SQY_NM,szSqyNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,12 +361,11 @@ void SubQuery::vSqyNo_v2(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
-  if (szSqyNo->bSame("$Q2"_Stz))
-    vDebugPoint();
-
   RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
 
   m_sSqyNo_v2 = szSqyNo;
+
+  m_xSymbol.vAppendFacet(SF_SQY_NO,szSqyNo);
 }
 
 /*----------------------------------------------------------------------------*/

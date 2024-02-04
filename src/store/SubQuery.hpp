@@ -10,6 +10,8 @@
 #include "eQO.h"
 #include "eRO.h"
 
+#include "Symbol.hpp"
+
 namespace STORE
 {
   class Board;
@@ -23,6 +25,7 @@ namespace STORE
 
     s32  m_sSqyNo_v2;    // subquery no
     s32  m_sSqyNm_v2;    // subquery name
+    Symbol m_xSymbol;
 
     Board* m_pBoard;     // which board
 
