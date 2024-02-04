@@ -203,13 +203,13 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
     auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
     {
-      if (!pCI->G_bIsSqyNo(p_term->szFacet(SF_NONE)))
+      if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
         return C_CONTINUE_RECURSION;
 
-      s256 sSubQueryNm = p_term->szFacet(SF_NONE);
+      s256 sSqyNo = p_term->szFacet(SF_SQY_NO);
 
       Board* pOuterBoard_save = pCI->G.pBoard;
-      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
+      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
       pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
@@ -217,7 +217,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       pCI->G_vPopBoard();
       pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo(sSubQueryNm);
+      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
       UNUSED(pSubQuery);
      // pCI->vPrintBoard(__func__,__LINE__);
 
