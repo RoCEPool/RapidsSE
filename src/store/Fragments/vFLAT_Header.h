@@ -36,8 +36,15 @@ static const void* C_ADR_REGION = (void*)0x204800000000;
 static const i8 C_DATUM_NULL = -9223372036854775807;
 static const i8 C_I8_MIN = -9223372036854775806;
 static const i8 C_I8_MAX = 9223372036854775806;
+
+// Need to include the constants from CommonTypes.h rather than duplicating here.
 static const i8 C_BCD_MIN = -99999999999999999;
 static const i8 C_BCD_MAX = 99999999999999999;
+static const i8 C_MAX_BCD_PRECISION = 17;
+static const i8 C_MIN_BCD_SCALE = 0;
+static const i8 C_MAX_BCD_SCALE = C_MAX_BCD_PRECISION;
+static const i8 C_BCD_DEFAULT_SCALE = 0;
+
 static const i8 C_CRW_HEADBYTES = 32;
 static const i8 C_CRW_FIRSTHEAD = 640;
 static const tET C_ENT_END_TICKET = 0xFFFF;
