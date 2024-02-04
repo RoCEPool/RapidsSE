@@ -150,10 +150,10 @@ void XF::vTransform(void)
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);
   }
-  m_pCI->vBoardIteration();                        //
-  while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);   //
-   }                                                //
+//  m_pCI->vBoardIteration();                        //
+//  while (m_pCI->bEachBoard()) {                    //
+//    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);   //
+//   }                                                //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(m_pCI);    //
@@ -296,7 +296,7 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);
+    //XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);
     XF_Prolog_Validate_Board::vValidate(m_pCI);
   }
 
