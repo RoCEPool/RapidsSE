@@ -398,7 +398,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bKnown_sqyNo_v2(p_term_popped->szFacet(SF_SQY_NO))); //temp
+    ASSERT(pCI->m_pBench->bKnown_sqy(p_term_popped->pSymbol())); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));

@@ -56,7 +56,6 @@ namespace STORE
 
     Board* pGetBoard(i8 i_Board);
 
-    bool bKnown_sqyNo_v2(Stz* szSqyNo);
     bool bKnown_sqy(Symbol* pSymbol_arg);
 
     Optimiser* pOptimiser(void);

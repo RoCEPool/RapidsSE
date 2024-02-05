@@ -206,21 +206,6 @@ Board* Bench::pGetBoard(i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bKnown_sqyNo_v2(Stz* szSqyNo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (Board* pBoard = pFindBoard_By_sqyNo_v2(szSqyNo)) {
-    UNUSED(pBoard);
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given name a known subquery?                                            */
-/*----------------------------------------------------------------------------*/
 bool Bench::bKnown_sqy(Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
