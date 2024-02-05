@@ -856,6 +856,37 @@ i8 StrLib::nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy src into dst, return bytes copied (not including '\0' terminator)     */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, i8 iSrcLen, bool* pbResult)
+{
+	_static_
+
+	//i8 iReqBufSize = nLength(psSrc) + 1;  // how much space required (including the null terminator)
+
+	i8 iReqBufSize = iSrcLen + 1;
+
+	bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+	UNUSED(bWillTruncate);
+	// We continue whether it will truncate or not.
+
+	void* pvLastAddr = psDst + iDstBufSize - 1;
+
+	i8 nBytes = 0;
+
+	while ( (psDst != pvLastAddr) && (*psDst++ = *psSrc++)) {
+		nBytes++; // won't be executed when \0 is copied
+	}
+
+	if (psDst == pvLastAddr) {
+		// We need to null terminate the truncated string
+		*psDst = 0;
+	}
+
+	return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* vCopy: copy src into dst                                                   */
 /*----------------------------------------------------------------------------*/
 void StrLib::vCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)

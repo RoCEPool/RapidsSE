@@ -131,9 +131,13 @@ Object* Object::pMemoryCopy(void)
     DataBuffer* pDataBuffer = _pDataBuffer(pCopy);
     i8 iPoolBufferNo = pDataBuffer->iBufferNo();
     pDataBuffer->vSetBufferNo(iPoolBufferNo);
+#ifdef WITHOUT_BUFFERIDHASHMAP
+    // TODO: Hack for performance test
+    pDataBuffer->vSetBufferId((void*) pDataBuffer);
+#else
     pDataBuffer->vSetBufferId(
         AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
-
+#endif
     AM::pHashMap()->vInsertKeyValue(
         (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
         (Object *) pCopy);

@@ -66,7 +66,7 @@ PdsConvergentHeap_t<AREA,HEAD,TAIL>::PdsConvergentHeap_t(void)
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
 
-  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
+  //MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
 
   // !! !! !! !! !! !! !! !! !!
   // used bytes were changed
@@ -208,7 +208,7 @@ void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vInit(i8 nTailSize)
   m_nTailItems = 0;
   m_nTailSize  = nTailSize;
 
-  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
+  //MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
 
   // !! !! !! !! !! !! !! !! !!
   // used bytes were changed
