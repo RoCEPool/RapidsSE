@@ -223,8 +223,8 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* sz
  // pCI->vPrintBoard(__func__,__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNo)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNo.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -377,8 +377,8 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
  // pCI->vPrintBoard(__func__,__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNo)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNo.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -479,8 +479,8 @@ i8 XF_Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   // pCI->vPrintBoard(__func__,__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNo)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNo.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 

@@ -156,8 +156,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     if (! (pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
       return C_CONTINUE_RECURSION;
 
-    pCI->Sqy.m_sSqyNo  = pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO);
-    pCI->Sqy.m_pConj_sqyCall = p_conj;
+   pCI->Sqy.m_pConj_sqyCall = p_conj;
     pCI->Sqy.m_pConj_sqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
@@ -167,7 +166,6 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
       RASSERT(p_conj->bIsSqyOp());
 
       pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(0)->szFacet(SF_NONE);
-      pCI->Sqy.m_sSqyNo  = p_conj->pGetTerm(1)->szFacet(SF_SQY_NO);
       pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm(1);
       return C_TERMINATE_RECURSION;
     }
