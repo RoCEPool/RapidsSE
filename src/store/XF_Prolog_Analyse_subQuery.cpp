@@ -186,13 +186,13 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
     if (RO_NONE == eRelnOp)
       return C_CONTINUE_RECURSION;
 
-    Stz* szSqyNo = p_conj->szGetTerm_sqyNo(m_pCI);
-    if (! szSqyNo || !m_pCI->G_bIsSqyNo(szSqyNo))
+    Card_Term* p_term = p_conj->pGetTerm_sqyNo(m_pCI);
+    if (! p_term)
       return C_CONTINUE_RECURSION;
 
     p_conj->pSymbol()->Y_vSet(P_SqyCall);
 
-    Board* pSubBoard = m_pCI->m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo);
+    Board* pSubBoard = m_pCI->m_pBench->pFindBoard(p_term->pSymbol());
     SubQuery* pSubQuery = pSubBoard->pSubQuery();
 
     pSubQuery->vCaller(m_pCI->G.i_Board);
