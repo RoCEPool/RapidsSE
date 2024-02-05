@@ -31,8 +31,8 @@ Column::Column(void)
   m_bIsLastColumn = false;
 
   m_eDatum        = DM_NONE;
-  m_iColumnLength = 0;
-  m_iColumnScale  = 0;
+  m_iColumnLength = C_DATUM_NULL;
+  m_iColumnScale  = C_DATUM_NULL;
   m_bIsNullable   = true;
   m_bIsPtnKey     = false;
 

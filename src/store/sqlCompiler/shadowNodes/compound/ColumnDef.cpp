@@ -67,11 +67,17 @@ QueryNode* ColumnDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTabl
   ASSERT(szColumnName);
   ASSERT(szColumnName->nLength() > 0);
   ASSERT(iOrdinal >= 0);
-  ASSERT(iPrecision >= -1);
-  ASSERT(iScale >= -1);
+  ASSERT(iPrecision >= -1 || iPrecision == C_DATUM_NULL);
+  ASSERT(iScale >= -1 || iScale == C_DATUM_NULL);
   ASSERT(iOrdinal >= 0);
-  ASSERT(iPrecision >= -1);
-  ASSERT(iScale >= -1);
+
+  if (iPrecision == C_DATUM_NULL) {
+    iPrecision = -1;
+  }
+
+  if (iScale == C_DATUM_NULL) {
+    iScale = -1;
+  }
 
   // Create the columnDef object
   QueryNode* pColumnDef = new QueryNode(szColumnName, C_COLUMNDEF_DEFN);

@@ -1122,6 +1122,7 @@ eEC StreamDefBase::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
   pCol->vColumnTypeId(TypeId::xIdOf(CT_INTEGER));
   pCol->vDatum(DM_INT);
   pCol->vColumnLength(C_MAX_INT_PRECISION);
+  pCol->vColumnScale(0);
   
   return EC_NONE;
 }
@@ -1179,7 +1180,7 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // set default size
-  i8 iSize = 0;
+  i8 iSize = C_DATUM_NULL;
   
   // set column type
   pCol->vColumnTypeId(TypeId::xIdOf(CT_VARCHAR));
