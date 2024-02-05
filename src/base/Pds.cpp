@@ -158,7 +158,7 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
 
   // Initialise the workspace --------------------------
   m_iFreeListEntries = 0;
-  m_xWsp.vInit(m_nBlockSize);
+	m_xWsp.vInit(m_nBlockSize);
 
   // Add dummy root nodes to the Free and In Use skip lists
   // Note: Dummy root blocks are zeroed since we don't know what the key type is
