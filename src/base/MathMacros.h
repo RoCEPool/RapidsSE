@@ -209,7 +209,7 @@
         /* and any rounding/truncation that may be required. */            \
         /* The scale is the smaller of the theoretical operation */        \
         /* scale, and the max precision minus the num digits in the */     \
-        /* integral part (accounting for possible overflow).               \
+        /* integral part (accounting for possible overflow). */            \
                                                                            \
         i8 iScaleResult = _MIN_I8(iScaleOp, iPrecMax - iIntegralPrecResult); \
         if (iScaleResult > C_MAX_BCD_SCALE) {                              \

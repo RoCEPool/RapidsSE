@@ -88,8 +88,6 @@ namespace STORE
     //
     // helper functions
     //
-		i8 iGetLength(eCT eCTType);
-		i8 iGetScale(eCT eCTType);
 
     bool bInTableSubquery(QueryNode* pNode);
 
