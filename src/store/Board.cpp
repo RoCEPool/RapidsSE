@@ -165,14 +165,14 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
       RASSERT(p_conj->bIsSqyOp());
 
-      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(0)->szFacet(SF_NONE);
+      pCI->Sqy.m_pTerm_sqyArg = p_conj->pGetTerm(0);
       pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm(1);
       return C_TERMINATE_RECURSION;
     }
 
     if (p_conj->pSymbol()->bSame("in"_Stz) || p_conj->pSymbol()->bSame("notIn"_Stz)) {
       RASSERT(p_conj->bIsSqyOp());
-      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(2)->szFacet(SF_NONE);
+      pCI->Sqy.m_pTerm_sqyArg = p_conj->pGetTerm(2);
       return C_TERMINATE_RECURSION;
     }
 

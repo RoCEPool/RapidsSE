@@ -132,15 +132,15 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   Card_Term* p_term_found = p_expr_found->pGet_term(0);
 
 
-  Card_Term* p_term_sqarg = (new Card_Term) ->SYM(SF_TBL_COL, pCI->Sqy.m_sSqyArg);
-  p_term_sqarg->vCast(p_term_found);
-  //p_term_sqarg->vDump();
+  Card_Term* p_term_sqyArg = pCI->Sqy.m_pTerm_sqyArg->pClone();
+  p_term_sqyArg->vCast(p_term_found);
+  //p_term_sqyArg->vDump();
 
 
   Symbol xSymbol_prmCol(SF_SQY_PRM, 1);
-  p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmCol, p_term_sqarg->pSymbol());
+  p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmCol, p_term_sqyArg->pSymbol());
 
-  delete p_term_sqarg;
+  delete p_term_sqyArg;
 
  // pCI->vPrintBoard(__func__,__LINE__);
 
