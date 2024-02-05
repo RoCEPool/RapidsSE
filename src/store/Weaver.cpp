@@ -246,7 +246,7 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
 
   vPreStage();
   vTabStage();
-  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_NONE), aYG_weave[eStageTopo]);
+  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_STG_NO), aYG_weave[eStageTopo]);
   vEolStage();
 
   m_i_Stage++;
@@ -433,8 +433,8 @@ void Weaver::vArg_crossJoin(String* psOpArgs, Card_CrossJoin* pCard_CrossJoin)
   pCard_CrossJoin->vRpn_crossJoin(sRpnExpr, pCard_CrossJoin);
 
   psOpArgs->vCatSprint("%s %s \"%s \""_Stz
-      , p_tableNm->szFacet(SF_NONE)
-      , p_indexNm->szFacet(SF_NONE)
+      , p_tableNm->szFacet(SF_TBL_NM)
+      , p_indexNm->szFacet(SF_IDX_NM)
       , sRpnExpr.szStz());
 
 }
@@ -534,7 +534,7 @@ void Weaver::vArg_indexJoin(String* psOpArgs, Card_IndexJoin* pCard_IndexJoin)
   pCard_IndexJoin->vRpn_indexJoin(sRpnExpr, pCard_IndexJoin);
 
   psOpArgs->vCatSprint("%s %s \"%s \""_Stz,
-                       p_tableNm->szFacet(SF_NONE), p_indexNm->szFacet(SF_NONE), sRpnExpr.szStz());
+                       p_tableNm->szFacet(SF_TBL_NM), p_indexNm->szFacet(SF_IDX_NM), sRpnExpr.szStz());
 
   if (pCard_IndexJoin->pSub_constraint()) {
     s4K sRpnConstraint;
@@ -567,7 +567,7 @@ void Weaver::vArg_indexScan(String* psOpArgs, Card_IndexScan* pCard_IndexScan)
 
   pCard_IndexScan->vRpn_indexScan(sRpnExpr, pCard_IndexScan);
   
-  psOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szFacet(SF_NONE), p_indexNm->szFacet(SF_NONE));
+  psOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szFacet(SF_TBL_NM), p_indexNm->szFacet(SF_IDX_NM));
   psOpArgs->vCatSprint("                \"%s \""_Stz, sRpnExpr.szStz());
 
 }

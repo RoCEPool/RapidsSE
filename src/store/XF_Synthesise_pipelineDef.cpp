@@ -359,7 +359,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
     case CK_o_TOP:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
-      m_pOpDef->vAppend(new ArgDef(0, "count"_Stz, _pCard_Top(p_OP)->pSub_count()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "count"_Stz, _pCard_Top(p_OP)->pSub_count()->szFacet(SF_INT_LIT)));
       break;
 
     case CK_o_WHERE:
