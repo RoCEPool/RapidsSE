@@ -341,7 +341,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term1 = _pCard_Term(pGetChild(1));
-    RASSERT(pCI->m_pBench->bKnown_sqyNo_v2(p_term1->szFacet(SF_SQY_NO))); //temp
+    RASSERT(pCI->m_pBench->bKnown_sqy(p_term1->pSymbol())); //temp
 
     Symbol x_Symbol_expCol1;
     if (p_term) {

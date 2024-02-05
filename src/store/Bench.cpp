@@ -236,6 +236,21 @@ bool Bench::bKnown_sqyNo_v2(Stz* szSqyNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given name a known subquery?                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bKnown_sqy(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (Board* pBoard = pFindBoard(pSymbol_arg)) {
+    UNUSED(pBoard);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Optimiser* Bench::pOptimiser(void)
