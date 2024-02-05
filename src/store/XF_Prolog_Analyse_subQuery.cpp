@@ -228,13 +228,13 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
     if (p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Stz *szSqyNo = p_conj->szGetTerm_sqyNo(m_pCI);
-    if (! szSqyNo || !m_pCI->G_bIsSqyNo(szSqyNo))
+    Card_Term* p_term = p_conj->pGetTerm_sqyNo(m_pCI);
+    if (! p_term)
       return C_CONTINUE_RECURSION;
 
-    // todo: m_pCI->pFindBoard_By_sqyNm(szSqyNo); m_pCI->pFindSubQuery_By_sqyNo(szSqyNo);
-    Board *pSubBoard = m_pCI->m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo);
-    SubQuery *pSubQuery = pSubBoard->pSubQuery();
+    SubQuery *pSubQuery = m_pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
+    if (! pSubQuery)
+      return C_CONTINUE_RECURSION;
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
