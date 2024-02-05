@@ -102,8 +102,6 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo_v2(void)
     Stz* szFacet_symbol = pSymbol_card->szFacet(0);
     Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNm_v2(szFacet_symbol);
     if (! pBoard)
-      pBoard = pCI->m_pBench->pFindBoard_By_sqyNo_v2(szFacet_symbol);
-    if (! pBoard)
       return C_CONTINUE_RECURSION;
 
     SubQuery* pSubQuery = pBoard->pSubQuery();
