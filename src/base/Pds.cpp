@@ -822,10 +822,13 @@ SkipListBlock* Pds::pInsert(void* pKey)
   vPriorVecToKey(pKey, xPriorVec);
 
   // Iterate this vector for each level, and we may or may not
-  // insert the key
+  // insert the key based on a random number
+//  u8 uSkipLevels = (RndLib::uInteger() % C_MAX_LVL_LEVELS) + 1;
+
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
 
-    i8 iRMod = rand() % (i_Level+1);
+//    i8 iRMod = rand() % (i_Level+1);
+    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
     if(iRMod != 0) {
       break;
     }
