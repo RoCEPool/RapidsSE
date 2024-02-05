@@ -320,7 +320,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // get copy of sq and push before mq
 
   // x) push to sq
-  if (! pCI->G_bPushBoard(pCI->G.p_call->szFacet(SF_SQY_NO))) {
+  if (! pCI->G_bPushBoard(pCI->G.p_call->pSymbol())) {
     vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
