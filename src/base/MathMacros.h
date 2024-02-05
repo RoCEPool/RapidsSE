@@ -7,8 +7,23 @@
 // Utilities
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// MIN & MAX
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _MIN_I8(iArg1, iArg2)                                              \
+(                                                                          \
+  (iArg1) < (iArg2) ? (iArg1) : (iArg2)                                    \
+)
+
+#define _MAX_I8(iArg1, iArg2)                                              \
+(                                                                          \
+  (iArg1) > (iArg2) ? (iArg1) : (iArg2)                                    \
+)
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Overflow detection bcd
+// Assumption is that the scales of the arguments are compatible
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #define _OF_BCDADD                                                         \
@@ -19,10 +34,13 @@
   (bcdArg1.m_iMantissa < 0 &&                                              \
   bcdArg2.m_iMantissa < C_BCD_MIN - bcdArg1.m_iMantissa) ?                 \
   EC_ARITHMETIC_UNDERFLOW :                                                \
+  (bcdArg1.m_iMantissa == 0 && bcdArg2.m_iMantissa > C_BCD_MAX) ?          \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  (bcdArg1.m_iMantissa == 0 && bcdArg2.m_iMantissa < C_BCD_MIN) ?          \
+  EC_ARITHMETIC_UNDERFLOW :                                                \
   EC_NONE                                                                  \
 )
 
-// TODO: OVERFLOW CHECK NOT WORKING WITH arg1 = 0 and arg2 is C_MIN
 #define _OF_BCDSUB                                                         \
 (                                                                          \
   (bcdArg1.m_iMantissa < 0 &&                                              \
@@ -31,14 +49,20 @@
   (bcdArg1.m_iMantissa > 0 &&                                              \
   bcdArg2.m_iMantissa < C_BCD_MIN + bcdArg1.m_iMantissa) ?                 \
   EC_ARITHMETIC_UNDERFLOW :                                                \
+  (bcdArg1.m_iMantissa == 0 && bcdArg2.m_iMantissa > C_BCD_MAX) ?          \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  (bcdArg1.m_iMantissa == 0 && bcdArg2.m_iMantissa < C_BCD_MIN) ?          \
+  EC_ARITHMETIC_UNDERFLOW :                                                \
   EC_NONE                                                                  \
 )
 
+// TODO: Craig
 #define _OF_BCDMUL                                                         \
 (                                                                          \
   EC_NONE                                                                  \
 )
 
+// TODO: Craig
 #define _OF_BCDDIV                                                         \
 (                                                                          \
   (bcdArg2.m_iMantissa == 0) ?                                             \
@@ -97,33 +121,123 @@
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
                                                                            \
+    const i8 iPrecMax = C_MAX_BCD_PRECISION;                               \
+                                                                           \
+    i8 iPrecArg1  = iPrecision(bcdArg1.m_iMantissa);                       \
+    i8 iPrecArg2  = iPrecision(bcdArg2.m_iMantissa);                       \
+    i8 iScaleArg1 = (i8) bcdArg1.m_uScale;                                 \
+    i8 iScaleArg2 = (i8) bcdArg2.m_uScale;                                 \
+                                                                           \
+    /* Num integral digits in each operand */                              \
+    i8 iIntegralPrec1 = iPrecArg1 - iScaleArg1;                            \
+    i8 iIntegralPrec2 = iPrecArg2 - iScaleArg2;                            \
+                                                                           \
+    /* Calc theoretical precision & scale of the operation */              \
+    i8 iPrecOp  =   _MAX_I8(iScaleArg1, iScaleArg2)                        \
+                  + _MAX_I8(iIntegralPrec1, iIntegralPrec2)                \
+                  + 1;                                                     \
+    i8 iScaleOp = _MAX_I8(iScale1, iScale2);                               \
+                                                                           \
+    /* How many digits in the result? */                                   \
+    /* We add +1 because an overflow to the next digit could occur */      \
+    i8 iIntegralPrecResult = _MAX_I8(iIntegralPrec1, iIntegralPrec2) + 1;  \                                                                           \
+                                                                           \
+                                                                           \
     if (eErrorCode != EC_NONE ||                                           \
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
       bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
                                                                            \
-        if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                        \
+    } else {                                                               \
+                                                                           \
+        if (iIntegralPrecResult > iPrecMax + 1) {                          \
+          eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
+                                                                           \
+        } else {                                                           \
+          /* Need to work out the actual number of integral digits */      \
+          /* in the result. We will use this to further check for */       \
+          /* precision overflow, as well as determine the biggest */       \
+          /* scale we can support for this result before rounding. */      \
+                                                                           \
+          /* To check for this potential integral overflow we first */     \
+             rescale all args to the smaller of the two scales. Then */    \
+             we subtract arg1 from the smallest value with */              \
+             iIntegralResult digits and compare this to arg2. */           \
+             All values need to be in the same scale. */                   \
+                                                                           \
+          i8 iSmallerScale = _MIN_I8(iScaleArg1, iScaleArg2);              \
+                                                                           \
+          Bcd_T bcdUpperBound;                                             \
+          Bcd_T bcdTemp1;                                                  \
+          Bcd_T bcdTemp2;                                                  \
+                                                                           \
+          if (eErrorCode == EC_NONE) {                                     \
+            bcdUpperBound.m_iSpare = 0;                                    \
+            bcdUpperBound.m_uScale = 0;                                    \
+            bcdUpperBound.m_iMantissa = aDynamicT->m_iaPow10[iIntegralPrecResult - 1]; \
+            *paW++ = bcdUpperBound.m_iAsI8;                                \
+            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale)               \
+            bcdUpperBound.m_iAsI8 = *(--paW);                              \
+          }                                                                 \
+                                                                           \
+          if (eErrorCode == EC_NONE) {                                     \
+            *paW++ = bcdArg1.m_iAsI8;                                      \
+            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale)               \
+            bcdTemp1.m_iAsI8 = *(--paW);                                   \
+          }                                                                \
+                                                                           \
+          if (eErrorCode == EC_NONE) {                                     \
+            *paW++ = bcdArg2.m_iAsI8;                                      \
+            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale)               \
+            bcdTemp2.m_iAsI8 = *(--paW);                                   \
+          }                                                                \
+                                                                           \
+          if (eErrorCode != EC_NONE &&                                     \
+              bcdUpperBound.m_iMantissa - bcdTemp1.m_iMantissa > bcdTemp2.m_iMantissa) {                                                               \
+            /* No overflow will occur. */                                  \
+            /* The actual integral digits is one less */                   \
+            --iIntegralPrecResult;                                         \
+          }                                                                \
+        }                                                                  \
+                                                                           \
+        /* We can now do a hard check for precision overflow */            \
+        if (eErrorCode == EC_NONE && iIntegralPrecResult > iPrecMax) {     \
+          eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
+        }                                                                  \
+                                                                           \
+        /* And we can now calculate the scale of the result, */            \
+        /* and any rounding/truncation that may be required. */            \
+        /* The scale is the smaller of the theoretical operation */        \
+        /* scale, and the max precision minus the num digits in the */     \
+        /* integral part (accounting for possible overflow).               \
+                                                                           \
+        i8 iScaleResult = _MIN_I8(iScaleOp, iPrecMax - iIntegralPrecResult); \
+        if (iScaleResult > C_MAX_BCD_SCALE) {                              \
+          iScaleResult = C_MAX_BCD_SCALE;                                  \
+        }                                                                  \
+                                                                           \
+        /* Now we can scale and round the arguments to the desired scale*/ \
+        if (eErrorCode == EC_NONE) {                                       \
           *paW++ = bcdArg1.m_iAsI8;                                        \
+          _RESCALE_BCD_TO_SCALE(eErrorCode, iScaleResult)                  \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \                                                                   \
+        }                                                                  \
+                                                                           \
+        if (eErrorCode == EC_NONE) {                                       \
           *paW++ = bcdArg2.m_iAsI8;                                        \
-          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
-          bcdArg2.m_iAsI8 = *(--paW);                                      \
-          bcdArg1.m_iAsI8 = *(--paW);                                      \
+          _RESCALE_BCD_TO_SCALE(eErrorCode, iScaleResult)                  \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \                                                                   \
         }                                                                  \
                                                                            \
-        if(eErrorCode != EC_NONE) {                                        \
-          *paW++ = C_DATUM_NULL;                                           \
-        }                                                                  \
-        else {                                                             \
-        eErrorCode = _OF_BCDADD;                                           \
-        if(eErrorCode != EC_NONE) {                                        \
-          *paW++ = C_DATUM_NULL;                                           \
-        }                                                                  \
-        else {                                                             \
+        if (eErrorCode == EC_NONE) {                                       \
+          /* We've already checked that this won't overflow */             \
           bcdArg1.m_iMantissa = bcdArg1.m_iMantissa + bcdArg2.m_iMantissa; \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
+          *paW++ = bcdArg1.m_iAsI8;                                        \                                                                 \
+                                                                           \
+        } else {                                                           \
+          *paW++ = C_DATUM_NULL;                                           \
         }                                                                  \
+                                                                           \
       }                                                                    \
     }                                                                      \
   }

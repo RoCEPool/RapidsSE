@@ -60,7 +60,39 @@
     }                                                                      \
     *paW++ = bcdArg1.m_iAsI8;                                              \
   }
-  
+
+// Rescale a BCD on the stack to a given scale
+#define _RESCALE_BCD_TO_SCALE(eErrorcode, iScale)                          \
+  {                                                                        \
+    bcdReScale1.m_iAsI8 = *(--paW);                                        \
+    iScaleDiff = (iScale) - (i8) bcdReScale1.m_uScale;                     \
+    if (iScaleDiff > 0) {                                                  \
+      /* Need to check for overflow */                                     \
+      if (C_I8_MAX / aDynamicT->m_iaPow10[iScaleDiff] < bcdReScale1.m_iMantissa) { \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+      } else {                                                             \
+        bcdReScale1.m_uScale = (u8) (iScale);                              \
+        bcdReScale1.m_iMantissa =                                          \
+          bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];      \
+      }                                                                    \
+    } else if (iScaleDiff < 0) {                                           \
+      /* No over/underflow check required for division. */                 \
+      /* Adjust BCD, then round the last digit as needed. */               \
+                                                                           \
+      if (iScaleDiff < -1) {                                               \
+        bcdReScale1.m_uScale = (u8) (iScale) + 1;                          \
+        bcdReScale1.m_iMantissa =                                          \
+          bcdReScale1.m_iMantissa / aDynamicT->m_iaPow10[(-iScaleDiff)-1]; \
+      }                                                                    \
+                                                                           \
+      /* Now round the number */                                           \
+      *paW++ = bcdReScale1.m_iAsI8;                                        \
+      _ROUND_BCD(eErrorCode)                                               \
+      bcdReScale1.m_iAsI8 = *(--paW);                                      \
+    }                                                                      \
+                                                                           \
+    *paW++ = bcdReScale1.m_iAsI8;                                          \
+  }
                                                                            \
 #define _EQ_BCDBCD(eErrorCode)                                             \
   {                                                                        \
