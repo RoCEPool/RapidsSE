@@ -62,7 +62,7 @@
   }
 
 // Rescale a BCD on the stack to a given scale
-#define _RESCALE_BCD_TO_SCALE(eErrorcode, iScale)                          \
+#define _RESCALE_BCD_TO_SCALE(eErrorCode, iScale)                          \
   {                                                                        \
     bcdReScale1.m_iAsI8 = *(--paW);                                        \
     iScaleDiff = (iScale) - (i8) bcdReScale1.m_uScale;                     \

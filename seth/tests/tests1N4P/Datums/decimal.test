@@ -40,14 +40,14 @@ rows:
 // check columns of index
 lsidxcol ${testName2}_decTbl dec_idx2;
 rows:
-('dec_col6', 'DECIMAL',19, 2, true, false)
+('dec_col6', 'DECIMAL',17, 0, true, false)
 
 Load ${testName2}_decTbl "../DATA/Datums/decimal.csv" ;
-warning contains: '15 rows were invalid'
+warning contains: '13 rows were invalid'
 
 // check no of rows
 select * from ${testName2}_decTbl;
-rows: 101
+rows: 103
 
 // dump dec_idx1
 // dumpidx ${testName2}_decTbl dec_idx1;
