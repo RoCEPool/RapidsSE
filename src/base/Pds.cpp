@@ -100,19 +100,18 @@ Pds::Pds(RowPix* pRowPix, eBT eBufferType)
   SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
-  // Assert the offset isn't some large garbage value
-//  ASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
 
   SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
   m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
-//  ASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
 
 
   // Reset the number of entries to zero since we don't count the dummy blocks
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
+    // Init the tail vector to the dummy root
+    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
 
   // Init RowPix object -------------------------------
@@ -180,6 +179,8 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
+    // Init the tail vector to the dummy root
+    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
 
   // Init RowPix object -------------------------------
@@ -254,6 +255,8 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
+    // Init the tail vector to the dummy root
+    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
 
   m_oRowPix.m_bInitialised = false;
@@ -329,9 +332,8 @@ Row* Pds::pAllotRow(void)
   if (nFreeBytes() < m_nBlockSize)
     return nullptr;
 
-  // Pass an integer key to Pds that we increment each time we insert
-  // Essentially append
-  SkipListBlock* pSkipListBlock = pInsert((void*) &(m_iSynthRowKey));
+  // Pass an integer key to Pds that we increment each time we append
+  SkipListBlock* pSkipListBlock = pAppend((void*) &(m_iSynthRowKey));
   i8* pKey = (i8*)pSkipListBlock->aItem();
   *pKey = m_iSynthRowKey;
 
@@ -465,6 +467,63 @@ Row* Pds::pAllotRow(i8 iVArgsBegin, ...)
 //
 //  return aRowCur;
 //}
+
+/*----------------------------------------------------------------------------*/
+/* Append Key to end of the skip list                                         */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds::pAppend(void* pKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  // try to allocate a block as mini-Heap may be full
+  SkipListBlock* pNewSLBlock = aAllotSkipListBlock();
+  if(pNewSLBlock == nullptr) {
+//    ASSERT(0);
+    return nullptr;
+  }
+
+  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
+
+  // Iterate this vector for each level, and we may or may not
+  // insert the key based on a random number
+//  u8 uSkipLevels = (RndLib::uInteger() % C_MAX_LVL_LEVELS) + 1;
+
+  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
+
+//    i8 iRMod = rand() % (i_Level+1);
+    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
+    if(iRMod != 0) {
+      break;
+    }
+
+    u2 uTailOffset = m_auTailOffsets[i_Level];
+    SkipListBlock* pCurrTail = (SkipListBlock*) pGetAddrFromOffset(uTailOffset);
+
+    if( uTailOffset != m_uInUseRootOffset) {
+      i8 iCompareRes = m_fpCompare(pCurrTail->aItem(), pKey);
+      UNUSED(iCompareRes);
+
+      // Assert the new key being added is greater than the last key at this level
+      ASSERT(iCompareRes < 0);
+      ASSERT(m_iNumEntries[i_Level] != 0);
+    }
+
+    // Assert next is null
+    SkipListBlock* pNext = pNextSLBlock(pCurrTail, i_Level);
+    UNUSED(pNext);
+    ASSERT(pNext == nullptr);
+
+    // Insert element, update offset values
+    pCurrTail->m_xNode.vNext(i_Level, uNewOffset);
+    pNewSLBlock->m_xNode.vNext(i_Level, 0);
+    m_auTailOffsets[i_Level] = uNewOffset;
+
+    m_iNumEntries[i_Level]++;
+  }
+
+//  vValidate();
+  return pNewSLBlock;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the buffer type                                                        */
@@ -669,6 +728,15 @@ bool Pds::bDelete(void* pKey)
 
         m_iNumEntries[i_Level]--;
         ASSERT(m_iNumEntries[i_Level] >= 0);
+
+        // Update tail offset array if we are removing an element at the end
+        u2 uDeletedOffset = uGetOffsetFromBase(pDeleteEntry);
+        if(m_auTailOffsets[i_Level] == uDeletedOffset) {
+          // Assert the next next is null as this entry being deleted
+          // should be the end of the list
+          ASSERT(pNextNext == nullptr);
+          m_auTailOffsets[i_Level] = uGetOffsetFromBase(pCursor);
+        }
       }
     }
   }
@@ -814,6 +882,8 @@ SkipListBlock* Pds::pInsert(void* pKey)
     return nullptr;
   }
 
+  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
+
   SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
 
   // Get the prior vector at all levels for this key, i.e
@@ -848,15 +918,14 @@ SkipListBlock* Pds::pInsert(void* pKey)
         vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
         return nullptr;
       }
+    } else {
+      // Next is null, which means we are appending to the end of the skiplist at this level
+      // Update the tail elements array
+      m_auTailOffsets[i_Level] = uNewOffset;
     }
 
-    bool bResult = bSetNextSLBlock(pCursor, pNewSLBlock, i_Level);
-		UNUSED(bResult);
-    ASSERT(bResult);
-
-    bResult = bSetNextSLBlock(pNewSLBlock, pNext, i_Level);
-		UNUSED(bResult);
-    ASSERT(bResult);
+    pCursor->m_xNode.vNext(i_Level, uNewOffset);
+    pNewSLBlock->m_xNode.vNext(i_Level, uGetOffsetFromBase(pNext));
 
     m_iNumEntries[i_Level]++;
   }

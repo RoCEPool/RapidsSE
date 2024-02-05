@@ -119,7 +119,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append a new Skip List Block to the PDS
-  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pInsert((void*)&(m_iSynthKey));
+  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pAppend((void*)&(m_iSynthKey));
   RASSERT(pSLBlock != nullptr);
 
   PdsItem_BufferId oBufferIdStruct;
