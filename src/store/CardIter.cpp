@@ -39,7 +39,7 @@ CardIter::CardIter(Bench* pBench)
 
   G.m_bDontDescend = false;
 
-  Sqy.m_pCard_sqCopy = nullptr;
+  Sqy.m_pCard_sqyCopy = nullptr;
 
   Sqy.m_pExpr_fold = nullptr;
   Sqy.m_pExpr_corr = nullptr;
@@ -444,7 +444,15 @@ void CardIter::G_vClearRegisters(void)
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
 
+  Sqy.m_pTerm_sqyPrm   = nullptr;
   Sqy.m_pTerm_corrCol  = nullptr;
+  Sqy.m_pTerm_sqyCall  = nullptr;
+  Sqy.m_pConj_sqyCall  = nullptr;
+  Sqy.m_pCorrelation   = nullptr;
+  Sqy.m_i_FoldCard     = C_UNKNOWN;
+  Sqy.m_pExpr_fold     = nullptr;
+  Sqy.m_pExpr_corr     = nullptr;
+  Sqy.m_pCard_sqyCopy  = nullptr;
 
   Flux.m_pArriving  = nullptr;
 
@@ -462,7 +470,6 @@ void CardIter::G_vClearRegisters(void)
   X.m_pExprList_i = nullptr;
   X.m_pExprList_k = nullptr;
 
-  Sqy.m_i_FoldCard = C_UNKNOWN;
 
 }
 
