@@ -148,10 +148,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Stz* szSqyNo = m_pCI->G.p_call->szFacet(SF_NONE);
-//  Board* pBoard = m_pCI->m_pBench->pFindBoard_By_sqyNm(szSqyNo);
-//  if (!pBoard)
-  Board* pBoard = m_pCI->m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo);
+  Board* pBoard = m_pCI->m_pBench->pFindBoard(m_pCI->G.p_call->pSymbol());
   if (!pBoard) {
     m_pCI->m_pBench->vDump(__func__ );
     NEVER_REACH;
