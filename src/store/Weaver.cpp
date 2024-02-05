@@ -587,7 +587,7 @@ void Weaver::vArg_inflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
 
   Card_TableNm* p_tableNm = pCard_Inflate->pSub_tableNm();
 
-  Stz* szTableNm = p_tableNm->szFacet(SF_NONE);
+  Stz* szTableNm = p_tableNm->szFacet(SF_TBL_NM);
   //m_i_Op_stage++;
 
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
@@ -620,8 +620,8 @@ void Weaver::vArg_keyExists(String* psOpArgs, Card_KeyExists* pCard_KeyExists)
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
   psOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
-      , p_tableNm->szFacet(SF_NONE)
-      , p_indexNm->szFacet(SF_NONE)
+      , p_tableNm->szFacet(SF_TBL_NM)
+      , p_indexNm->szFacet(SF_IDX_NM)
       , sRpnExpr.szStz()
       , sRpnConstraint.szStz());
 }
@@ -646,8 +646,8 @@ void Weaver::vArg_keyNotExists(String* psOpArgs, Card_KeyNotExists* pCard_KeyNot
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
   psOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
-      , p_tableNm->szFacet(SF_NONE)
-      , p_indexNm->szFacet(SF_NONE)
+      , p_tableNm->szFacet(SF_TBL_NM)
+      , p_indexNm->szFacet(SF_IDX_NM)
       , sRpnExpr.szStz()
       , sRpnConstraint.szStz());
 }
@@ -716,7 +716,7 @@ void Weaver::vArg_scan(String* psOpArgs, Card_Scan* pCard_Scan)
 
   Card_TableNm* p_tableNm = pCard_Scan->pSub_tableNm();
   
-  Stz* szTableNm = p_tableNm->szFacet(SF_NONE);
+  Stz* szTableNm = p_tableNm->szFacet(SF_TBL_NM);
   //m_i_Op_stage++;
   
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
@@ -775,7 +775,7 @@ void Weaver::vArg_table(String* psOpArgs, Card_Table* pCard_Table)
 
   Card_TableNm* p_tableNm = pCard_Table->pSub_tableNm();
 
-  Stz* szTableNm = p_tableNm->szFacet(SF_NONE);
+  Stz* szTableNm = p_tableNm->szFacet(SF_TBL_NM);
 
 
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
@@ -796,7 +796,7 @@ void Weaver::vArg_top(String* psOpArgs, Card_Top* pCard_op)
 
   psOpArgs->vCatSprint("\"%s\" %s"_Stz,
                        sRpnExpr.szStz(),
-                       pCard_op->pSub_count()->szFacet(SF_NONE));
+                       pCard_op->pSub_count()->szFacet(SF_INT_LIT));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1216,7 +1216,7 @@ void Card_OP::vRpn_limit(String* psRpnExpr, Card_Limit*  p_limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  psRpnExpr->vCatSprint(" %s"_Stz, p_limit->szFacet(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, p_limit->szFacet(SF_INT_LIT));
 }
 
 /*----------------------------------------------------------------------------*/

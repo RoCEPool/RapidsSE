@@ -80,7 +80,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   p_expr_new->vCast(p_expr->xCast());
 
   if (p_expr->pSub_direction()) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_NONE));
+    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_DIRECTION));
     p_expr_new->vAppendChild(p_direction);
   }
   else
