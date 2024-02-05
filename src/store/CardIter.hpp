@@ -47,7 +47,6 @@ namespace STORE
       SubQuery*  m_pSubQuery;
 
       s32        m_sSqyArg;
-      Card_Term* m_pTerm_sqyPrm;
       Card_Term* m_pTerm_corrCol;
       Card_Term* m_pTerm_sqyCall;
       Card_CONJ* m_pConj_sqyCall;
@@ -55,7 +54,7 @@ namespace STORE
       i8         m_i_FoldCard;
       Card_Expr* m_pExpr_fold;
       Card_Expr* m_pExpr_corr;
-      Card*      m_pCard_sqyCopy;
+      Card*      m_pCard_sqCopy;
     } Sqy;
 
     struct {
