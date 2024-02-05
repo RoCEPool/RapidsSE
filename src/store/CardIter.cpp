@@ -1506,19 +1506,6 @@ bool CardIter::G_bIsNextMain(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bIsSqyNo(Stz* szSqyNo)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::G_vMainResynch(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
