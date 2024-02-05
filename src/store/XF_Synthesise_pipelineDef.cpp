@@ -174,7 +174,7 @@ void XF_Synthesise_pipelineDef::vCraftStageDef(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
-                             m_pCI->G.p_stage->szFacet(SF_NONE),
+                             m_pCI->G.p_stage->szFacet(SF_STG_NO),
                              m_pCI->G.p_stage);
   m_pPipelineDef->vAppend(m_pStageDef);
 }
@@ -269,13 +269,9 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_o_CAST:
-      m_pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szFacet(SF_NONE)));
-      break;
-
     case CK_o_CROSSJOIN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
@@ -300,8 +296,8 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_o_INDEXJOIN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
 
       if (p_OP->pSub_constraint()) {
@@ -311,20 +307,20 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_o_INDEXSCAN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
     case CK_o_INFLATE:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
       break;
 
     case CK_o_KEYEXISTS:
       p_OP->vRpn_keyExists_constraint(sConstraint, _pCard_KeyExists(p_OP));
 
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_indexNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_indexNm()->szFacet(SF_IDX_NM)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
       break;
@@ -332,8 +328,8 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_o_KEYNOTEXISTS:
       p_OP->vRpn_keyNotExists_constraint(sConstraint, _pCard_KeyNotExists(p_OP));
 
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_indexNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_indexNm()->szFacet(SF_IDX_NM)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
       break;
@@ -351,7 +347,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_o_SCAN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
       break;
 
     case CK_c_SEND:

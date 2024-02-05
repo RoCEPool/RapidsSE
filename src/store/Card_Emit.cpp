@@ -340,7 +340,7 @@ void Card_Emit::vInject_expr_nmdCol_table(CardIter* pCI)
 
   pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm(C_NOT_NULL);
 
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_TBL_NM));
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();

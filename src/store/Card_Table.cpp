@@ -124,7 +124,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
   pCI->vBeginEach();
   while (pCI->G_bEachMainWithSub(CK_o_FROM, CK_s_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
+    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_TBL_NM));
 
     pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
 
@@ -262,7 +262,7 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 
   Card_TableNm* p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -474,7 +474,7 @@ void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
   this->vMark1(MARK_CHANGED);
 
   Card_TableNm* p_tableNm = pSub_tableNm();
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
   if (pTable->bIsReplicated())
     SYM(SF_TBL_SYN_rep);
 
@@ -498,7 +498,7 @@ void Card_Table::vShortForm(String* pString_m, String* pString_b)
 
   if (Card_Index* p_index = pFindChosenIndex()) {
     if (Card_IndexNm* p_indexNm = p_index->pSub_indexNm())
-      pString_m->vCatSprint("%s%s"_Stz, szSep, p_indexNm->szFacet(SF_NONE));
+      pString_m->vCatSprint("%s%s"_Stz, szSep, p_indexNm->szFacet(SF_IDX_NM));
     if (Card_Bounds* p_bounds = p_index->pSub_bounds())
       p_bounds->vShortForm(pString_b);
   }

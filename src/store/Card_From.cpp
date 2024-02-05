@@ -52,7 +52,7 @@ Stz* Card_From::szColNm(i8 i_Col_base0)
 
   Card_TableNm* p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 

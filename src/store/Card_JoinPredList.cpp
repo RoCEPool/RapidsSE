@@ -82,9 +82,9 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
       continue;
 
     if (! pString->nLength())
-      pString->vSprint("Tables: %s"_Stz, xKid.p_table()->pSub_tableNm()->szFacet(SF_NONE));
+      pString->vSprint("Tables: %s"_Stz, xKid.p_table()->pSub_tableNm()->szFacet(SF_TBL_NM));
     else
-      pString->vCatSprint(", %s"_Stz, xKid.p_table()->pSub_tableNm()->szFacet(SF_NONE));
+      pString->vCatSprint(", %s"_Stz, xKid.p_table()->pSub_tableNm()->szFacet(SF_TBL_NM));
   }
 
 }
