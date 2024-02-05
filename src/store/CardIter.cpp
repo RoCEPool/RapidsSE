@@ -39,7 +39,7 @@ CardIter::CardIter(Bench* pBench)
 
   G.m_bDontDescend = false;
 
-  Sqy.m_pCard_sqCopy = nullptr;
+  Sqy.m_pCard_sqyCopy = nullptr;
 
   Sqy.m_pExpr_fold = nullptr;
   Sqy.m_pExpr_corr = nullptr;
@@ -47,6 +47,7 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_pCorrelation = nullptr;
   Sqy.m_i_SubQuery   = C_UNKNOWN;
   Sqy.m_pSubQuery    = nullptr;
+  Sqy.m_pTerm_sqyArg  = nullptr;
   Sqy.m_pTerm_sqyCall = nullptr;
   Sqy.m_pConj_sqyCall = nullptr;
 
