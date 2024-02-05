@@ -159,11 +159,11 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
        if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
          return C_CONTINUE_RECURSION;
 
-      s256 sSqyNo = p_term->szFacet(SF_SQY_NO);
-      RASSERT(pCI->m_pBench->bKnown_sqyNo_v2(sSqyNo)); //temp
+//      s256 sSqyNo = p_term->szFacet(SF_SQY_NO);
+//      RASSERT(pCI->m_pBench->bKnown_sqyNo_v2(sSqyNo)); //temp
 
       Board* pOuterBoard_save = pCI->G.pBoard;
-      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
+      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
@@ -171,7 +171,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       pCI->G_vPopBoard();
       pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
+      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       UNUSED(pSubQuery);
      // pCI->vPrintBoard(__func__,__LINE__);
 
@@ -206,10 +206,10 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
       if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
         return C_CONTINUE_RECURSION;
 
-      s256 sSqyNo = p_term->szFacet(SF_SQY_NO);
+      //s256 sSqyNo = p_term->szFacet(SF_SQY_NO);
 
       Board* pOuterBoard_save = pCI->G.pBoard;
-      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
+      pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
@@ -217,7 +217,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       pCI->G_vPopBoard();
       pCI->G_vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery_By_sqyNo_v2(sSqyNo);
+      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       UNUSED(pSubQuery);
      // pCI->vPrintBoard(__func__,__LINE__);
 
