@@ -259,7 +259,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     p_streamJoin->SYM(SF_TBL_SYN,cTblSyn_ith);
     vAppendChild(p_streamJoin);
 
-    p_streamJoin->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM, p_table_ith->pSub_tableNm()->szFacet(SF_NONE)));
+    p_streamJoin->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM, p_table_ith->pSub_tableNm()->szFacet(SF_TBL_NM)));
 
     if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
       if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {

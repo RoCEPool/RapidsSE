@@ -211,7 +211,7 @@ Stz* Card_TableList::szToTableNm(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Table* p_table = pFind(cTblSyn))
-    return p_table->pSub_tableNm()->szFacet(SF_NONE);
+    return p_table->pSub_tableNm()->szFacet(SF_TBL_NM);
 
   return nullptr;
 }

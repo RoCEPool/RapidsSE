@@ -145,8 +145,7 @@ bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAc
     Card_TableNm* pCard_TableNm = xKid.pChild()->pSub_tableNm();
     if(pCard_TableNm != nullptr)
     {
-      Card* pTableCard = _pCard(pCard_TableNm);
-      vTrace("%s "_Stz, pTableCard->szFacet(SF_NONE)->azChar());
+       vTrace("%s "_Stz, pCard_TableNm->szFacet(SF_TBL_NM)->azChar());
     }
   }
 
