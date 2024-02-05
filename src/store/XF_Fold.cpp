@@ -311,8 +311,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
   //vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
  // pCI->vPrintBoard(__func__,__LINE__);
 
-  //RASSERT(Symbol::bIs_Sqy_No(pCI->G.p_call->szFacet(SF_NONE)));
-  Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNo_v2(pCI->G.p_call->szFacet(SF_SQY_NO));
+  Board* pBoard = pCI->m_pBench->pFindBoard(pCI->G.p_call->pSymbol());
 
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy, pBoard->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
