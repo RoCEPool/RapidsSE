@@ -136,6 +136,11 @@ void HashMap::vAppendHistory(void* pKey, bool bDeleted, bool bInserted)
 /*----------------------------------------------------------------------------*/
 void HashMap::vDeleteKey(void* pKey)
 {
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  UNUSED(pKey);
+  return;
+#else
   u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
 
 //  m_okLock.vGrabWrite();
@@ -196,6 +201,7 @@ void HashMap::vDeleteKey(void* pKey)
   }
   m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
 //  m_okLock.vDropWrite();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,6 +209,11 @@ void HashMap::vDeleteKey(void* pKey)
 /*----------------------------------------------------------------------------*/
 void HashMap::vDropKeyLock(void* pKey)
 {
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  UNUSED(pKey);
+  return;
+#else
   u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
 
   HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
@@ -221,6 +232,7 @@ void HashMap::vDropKeyLock(void* pKey)
     pIter = pIter->m_pNext;
   }
   NEVER_REACH;
+#endif
 }
 /*----------------------------------------------------------------------------*/
 /* Does the given key exist in the hashmap                                    */
@@ -290,6 +302,12 @@ u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 {
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  UNUSED(pKey);
+  UNUSED(pValue);
+  return;
+#else
 //  if(m_uNoOfEntries/m_pHashMapSlot->uGetNoSlots() > 0.75) {
 //    vReHash();
 //  }
@@ -337,6 +355,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 #ifdef WITH_HASHMAP_DEBUG
   vAppendHistory(pKey, false, true);
 #endif
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,6 +363,11 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 /*----------------------------------------------------------------------------*/
 bool HashMap::bIsLocked(void* pKey)
 {
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  UNUSED(pKey);
+  return false;
+#else
   u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
 
 //  m_okLock.vGrabRead();
@@ -363,6 +387,7 @@ bool HashMap::bIsLocked(void* pKey)
 
 //  m_okLock.vDropRead();
   return false;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,6 +448,10 @@ bool HashMap::bIsLocked(void* pKey)
 /*----------------------------------------------------------------------------*/
 Object* HashMap::pValueAt(void* pKey)
 {
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  return (Object*) pKey;
+#else
   u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
 
 //  m_okLock.vGrabRead();
@@ -451,6 +480,7 @@ Object* HashMap::pValueAt(void* pKey)
   m_pHashMapSlot->m_okSlotLock[uIndex].vDropRead();
 //  m_okLock.vDropRead();
   return nullptr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

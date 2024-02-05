@@ -62,7 +62,7 @@ Pds::Pds(RowPix* pRowPix, eBT eBufferType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(CacheLine::bOnCacheLineBoundary(this));
+  ASSERT(CacheLine::bOnCacheLineBoundary(this));
 
   i8 iRowSizeProper = Row::nRowProper(pRowPix->m_nColumns);
 
@@ -100,19 +100,18 @@ Pds::Pds(RowPix* pRowPix, eBT eBufferType)
   SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
-  // Assert the offset isn't some large garbage value
-//  RASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
 
   SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
   m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
-//  RASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
 
 
   // Reset the number of entries to zero since we don't count the dummy blocks
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
+    // Init the tail vector to the dummy root
+    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
 
   // Init RowPix object -------------------------------
@@ -129,7 +128,7 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(CacheLine::bOnCacheLineBoundary(this));
+  ASSERT(CacheLine::bOnCacheLineBoundary(this));
 
   i8 iRowSizeProper = Row::nRowProper(pStreamDef->nColumns() + (bAddKeyHash ? 1 : 0));
 
@@ -159,7 +158,7 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
 
   // Initialise the workspace --------------------------
   m_iFreeListEntries = 0;
-  m_xWsp.vInit(m_nBlockSize);
+	m_xWsp.vInit(m_nBlockSize);
 
   // Add dummy root nodes to the Free and In Use skip lists
   // Note: Dummy root blocks are zeroed since we don't know what the key type is
@@ -168,18 +167,20 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
   MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
   // Assert the offset isn't some large garbage value
-//  RASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
+//  ASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
 
   SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
   m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
-//  RASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
+//  ASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
 
 
   // Reset the number of entries to zero since we don't count the dummy blocks
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
+    // Init the tail vector to the dummy root
+    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
 
   // Init RowPix object -------------------------------
@@ -196,10 +197,10 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(CacheLine::bOnCacheLineBoundary(this));
+  ASSERT(CacheLine::bOnCacheLineBoundary(this));
 
   // Assert that there is enough bytes for the default key (i8)
-  RASSERT(nBytes >= C_MIN_KEY_LEN);
+  ASSERT(nBytes >= C_MIN_KEY_LEN);
 
   // Calculate block size and padding ------------------
   m_nBlockSize = sizeof(SkipListNode) + nBytes;
@@ -242,18 +243,20 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
   MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
   // Assert the offset isn't some large garbage value
-//  RASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
+//  ASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
 
   SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
   m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
-//  RASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
+//  ASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
 
 
   // Reset the number of entries to zero since we don't count the dummy blocks
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
+    // Init the tail vector to the dummy root
+    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
 
   m_oRowPix.m_bInitialised = false;
@@ -329,9 +332,8 @@ Row* Pds::pAllotRow(void)
   if (nFreeBytes() < m_nBlockSize)
     return nullptr;
 
-  // Pass an integer key to Pds that we increment each time we insert
-  // Essentially append
-  SkipListBlock* pSkipListBlock = pInsert((void*) &(m_iSynthRowKey));
+  // Pass an integer key to Pds that we increment each time we append
+  SkipListBlock* pSkipListBlock = pAppend((void*) &(m_iSynthRowKey));
   i8* pKey = (i8*)pSkipListBlock->aItem();
   *pKey = m_iSynthRowKey;
 
@@ -444,11 +446,11 @@ Row* Pds::pAllotRow(i8 iVArgsBegin, ...)
 //      vDiscardInvalidRow();
 //      return nullptr;
 //    }
-//    RASSERT(m_aStzSet);
+//    ASSERT(m_aStzSet);
 //    *aaStzSet = (char*)m_aStzSet;
 //    void* pCurStzSet = m_aStzSet;
 //
-//    RASSERT(m_oRowPix.m_bInitialised);
+//    ASSERT(m_oRowPix.m_bInitialised);
 //
 //    // do a new() for each string area inside the string set where the column is of type VCH
 //    i8 nCols = m_oRowPix.m_nColumns;
@@ -465,6 +467,63 @@ Row* Pds::pAllotRow(i8 iVArgsBegin, ...)
 //
 //  return aRowCur;
 //}
+
+/*----------------------------------------------------------------------------*/
+/* Append Key to end of the skip list                                         */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds::pAppend(void* pKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  // try to allocate a block as mini-Heap may be full
+  SkipListBlock* pNewSLBlock = aAllotSkipListBlock();
+  if(pNewSLBlock == nullptr) {
+//    ASSERT(0);
+    return nullptr;
+  }
+
+  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
+
+  // Iterate this vector for each level, and we may or may not
+  // insert the key based on a random number
+//  u8 uSkipLevels = (RndLib::uInteger() % C_MAX_LVL_LEVELS) + 1;
+
+  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
+
+//    i8 iRMod = rand() % (i_Level+1);
+    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
+    if(iRMod != 0) {
+      break;
+    }
+
+    u2 uTailOffset = m_auTailOffsets[i_Level];
+    SkipListBlock* pCurrTail = (SkipListBlock*) pGetAddrFromOffset(uTailOffset);
+
+    if( uTailOffset != m_uInUseRootOffset) {
+      i8 iCompareRes = m_fpCompare(pCurrTail->aItem(), pKey);
+      UNUSED(iCompareRes);
+
+      // Assert the new key being added is greater than the last key at this level
+      ASSERT(iCompareRes < 0);
+      ASSERT(m_iNumEntries[i_Level] != 0);
+    }
+
+    // Assert next is null
+    SkipListBlock* pNext = pNextSLBlock(pCurrTail, i_Level);
+    UNUSED(pNext);
+    ASSERT(pNext == nullptr);
+
+    // Insert element, update offset values
+    pCurrTail->m_xNode.vNext(i_Level, uNewOffset);
+    pNewSLBlock->m_xNode.vNext(i_Level, 0);
+    m_auTailOffsets[i_Level] = uNewOffset;
+
+    m_iNumEntries[i_Level]++;
+  }
+
+//  vValidate();
+  return pNewSLBlock;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the buffer type                                                        */
@@ -492,7 +551,7 @@ void Pds::vBufferType(eBT eBufferType)
 Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-  RASSERT(m_oRowPix.m_bInitialised);
+  ASSERT(m_oRowPix.m_bInitialised);
 
   Row* pNewRow = pAllotRow();
   if (! pNewRow) {
@@ -548,7 +607,7 @@ Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
 //Row* Pds::pCopyRowArray(i8* pRowArray)
 //{
 //	_precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-//	RASSERT(m_oRowPix.m_bInitialised);
+//	ASSERT(m_oRowPix.m_bInitialised);
 //
 //	Row* pNewRow = pAllotRow();
 //	if (! pNewRow) {
@@ -572,7 +631,7 @@ Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
 //				vDepositColVal(C_DATUM_NULL);
 //			}
 //			else {
-//				RASSERT(m_aStzSet != nullptr);
+//				ASSERT(m_aStzSet != nullptr);
 //				szSrcStz = (Stz*) pRowArray[i_Col];
 //				vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
 //			}
@@ -596,7 +655,7 @@ Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
 //void* Pds::aAllotStzSet(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-//  RASSERT(iStzSetSize());
+//  ASSERT(iStzSetSize());
 //  if (nFreeBytes() < iStzSetSize())
 //    return nullptr;
 //
@@ -605,7 +664,7 @@ Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
 //  if(aStzSet == nullptr)
 //    return nullptr;
 //
-//  RASSERT(DoubleWord::bOnDoubleWordBoundary(aStzSet));
+//  ASSERT(DoubleWord::bOnDoubleWordBoundary(aStzSet));
 //
 //  m_iCurStzSetSpace = iStzSetSize();
 //  m_aStzSet = aStzSet;
@@ -664,10 +723,20 @@ bool Pds::bDelete(void* pKey)
 
         SkipListBlock* pNextNext = pNextSLBlock(pNext, i_Level);
         bool bResult = bSetNextSLBlock(pCursor, pNextNext, i_Level);
-        RASSERT(bResult);
+				UNUSED(bResult);
+        ASSERT(bResult);
 
         m_iNumEntries[i_Level]--;
-        RASSERT(m_iNumEntries[i_Level] >= 0);
+        ASSERT(m_iNumEntries[i_Level] >= 0);
+
+        // Update tail offset array if we are removing an element at the end
+        u2 uDeletedOffset = uGetOffsetFromBase(pDeleteEntry);
+        if(m_auTailOffsets[i_Level] == uDeletedOffset) {
+          // Assert the next next is null as this entry being deleted
+          // should be the end of the list
+          ASSERT(pNextNext == nullptr);
+          m_auTailOffsets[i_Level] = uGetOffsetFromBase(pCursor);
+        }
       }
     }
   }
@@ -775,7 +844,7 @@ SkipListBlock* Pds::pHeadSL(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(m_uInUseRootOffset != 0);
+  ASSERT(m_uInUseRootOffset != 0);
 
   return (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
 }
@@ -787,7 +856,7 @@ SkipListBlock* Pds::pHeadFreeList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(m_uFreeListRootOffset != 0);
+  ASSERT(m_uFreeListRootOffset != 0);
 
   return (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
 }
@@ -803,15 +872,17 @@ SkipListBlock* Pds::pInsert(void* pKey)
   // Assert the key is greater than the root dummy block key of zero
 //  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
 //  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
-//  RASSERT(iCompareRes == -1);
+//  ASSERT(iCompareRes == -1);
   // --------------------------------------------
 
   // try to allocate a block as mini-Heap may be full
   SkipListBlock* pNewSLBlock = aAllotSkipListBlock();
   if(pNewSLBlock == nullptr) {
-//    RASSERT(0);
+//    ASSERT(0);
     return nullptr;
   }
+
+  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
 
   SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
 
@@ -821,10 +892,13 @@ SkipListBlock* Pds::pInsert(void* pKey)
   vPriorVecToKey(pKey, xPriorVec);
 
   // Iterate this vector for each level, and we may or may not
-  // insert the key
+  // insert the key based on a random number
+//  u8 uSkipLevels = (RndLib::uInteger() % C_MAX_LVL_LEVELS) + 1;
+
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
 
-    i8 iRMod = rand() % (i_Level+1);
+//    i8 iRMod = rand() % (i_Level+1);
+    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
     if(iRMod != 0) {
       break;
     }
@@ -844,13 +918,14 @@ SkipListBlock* Pds::pInsert(void* pKey)
         vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
         return nullptr;
       }
+    } else {
+      // Next is null, which means we are appending to the end of the skiplist at this level
+      // Update the tail elements array
+      m_auTailOffsets[i_Level] = uNewOffset;
     }
 
-    bool bResult = bSetNextSLBlock(pCursor, pNewSLBlock, i_Level);
-    RASSERT(bResult);
-
-    bResult = bSetNextSLBlock(pNewSLBlock, pNext, i_Level);
-    RASSERT(bResult);
+    pCursor->m_xNode.vNext(i_Level, uNewOffset);
+    pNewSLBlock->m_xNode.vNext(i_Level, uGetOffsetFromBase(pNext));
 
     m_iNumEntries[i_Level]++;
   }
@@ -907,6 +982,7 @@ SkipListBlock* Pds::pFindLessThan(void* pKey)
     SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
     if(pNext == nullptr)
       RASSERT(0);
+
     while(pNext != nullptr) {
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
 
@@ -1008,8 +1084,8 @@ SkipListBlock* Pds::pFirstBlock(void)
 
   SkipListBlock* pFirstBlock = pNextSLBlock(pRootBlock, 0);
 
-  RASSERT(pFirstBlock != nullptr);
-  RASSERT(pFirstBlock != pRootBlock);
+  ASSERT(pFirstBlock != nullptr);
+  ASSERT(pFirstBlock != pRootBlock);
 
   return pFirstBlock;
 }
@@ -1028,8 +1104,8 @@ Row* Pds::pFirstRow(void)
 
   SkipListBlock* pFirstBlock = pNextSLBlock(pRootBlock, 0);
 
-  RASSERT(pFirstBlock != nullptr);
-  RASSERT(pFirstBlock != pRootBlock);
+  ASSERT(pFirstBlock != nullptr);
+  ASSERT(pFirstBlock != pRootBlock);
 
   return pFirstBlock->aRow();
 }
@@ -1049,7 +1125,7 @@ i8 Pds::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 void Pds::vInitPix(RowPix* pRowPix)
 {
-  RASSERT(pRowPix);
+  ASSERT(pRowPix);
 
   m_oRowPix.vCopyRowPix(pRowPix);
 
@@ -1071,9 +1147,9 @@ void Pds::vInitPix(RowPix* pRowPix)
 //  vStzSetSize(iTotalStzArea);
 
   i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
-
+	UNUSED(iRowSizeProper);
   // Assert the space we are allocating for the row + key is less than or equal to the block size
-  RASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
+  ASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
 
 }
 
@@ -1109,9 +1185,10 @@ void Pds::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
 //  vStzSetSize(iTotalStzArea);
 
   i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
+	UNUSED(iRowSizeProper);
 
   // Assert the space we are allocating for the row + key is less than or equal to the block size
-  RASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
+  ASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
 
 }
 /*----------------------------------------------------------------------------*/
@@ -1154,7 +1231,7 @@ i8 Pds::iLastUsableOffset(void)
 i8 Pds::iNumEntries(i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-  RASSERT(iLevel >= 0 && iLevel < C_MAX_LVL_LEVELS);
+  ASSERT(iLevel >= 0 && iLevel < C_MAX_LVL_LEVELS);
   return m_iNumEntries[iLevel];
 }
 
@@ -1169,7 +1246,7 @@ Row* Pds::pNextRow(Row* pCurr)
 
   // Get start addr of the SkipListBlock that this Row resides in
   void* aSLBlockAddr = aSubtract<void*>(pCurr, iOffset);
-  RASSERT(DoubleWord::bOnDoubleWordBoundary(aSLBlockAddr));
+  ASSERT(DoubleWord::bOnDoubleWordBoundary(aSLBlockAddr));
 
   SkipListBlock* pSlBlock = (SkipListBlock*) aSLBlockAddr;
 
@@ -1190,7 +1267,7 @@ void Pds::vPrintRows(File* pFilePtr, Stz* szLabel)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   UNUSED(pFilePtr);
 
-  RASSERT(m_oRowPix.m_bInitialised);
+  ASSERT(m_oRowPix.m_bInitialised);
 
   HV_Record hvRecord(&m_oRowPix);
 
@@ -1250,7 +1327,7 @@ void Pds::vValidate(void)
       iCount++;
       pNext = pNextSLBlock(pNext, i_Level);
     }
-    RASSERT(iCount == m_iNumEntries[i_Level]);
+    ASSERT(iCount == m_iNumEntries[i_Level]);
   }
 
   // Validate free list
@@ -1265,7 +1342,7 @@ void Pds::vValidate(void)
     iCount++;
     pNext = pNextSLBlock(pNext, 0);
   }
-    RASSERT(iCount == m_iFreeListEntries);
+    ASSERT(iCount == m_iFreeListEntries);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1299,7 +1376,7 @@ SkipListBlock* Pds::aAllotSkipListBlock(void)
 
     // Get the next block (It should exist)
     SkipListBlock* pNextFree = pNextSLBlock(pFreeListDummyRoot, 0);
-    RASSERT(pNextFree != nullptr);
+    ASSERT(pNextFree != nullptr);
 
     pAllocBlock = pNextFree;
 
@@ -1308,10 +1385,11 @@ SkipListBlock* Pds::aAllotSkipListBlock(void)
     // Set the dummy root to point to next->next
     // next->next can be null, which is ok
     bool bResult = bSetNextSLBlock(pFreeListDummyRoot, pNextNext, 0);
-    RASSERT(bResult == 1);
+		UNUSED(bResult);
+    ASSERT(bResult == 1);
 
     m_iFreeListEntries--;
-    RASSERT(m_iFreeListEntries >= 0);
+    ASSERT(m_iFreeListEntries >= 0);
   } else {
     pAllocBlock = m_xWsp.aAllotTail();
   }
@@ -1347,10 +1425,10 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
   char* aAddr0 = reinterpret_cast<char*>(this);
   char* aAddr1 = reinterpret_cast<char*>(aAddress);
 
-  RASSERT((aAddr1 - aAddr0)%16 == 0);
+  ASSERT((aAddr1 - aAddr0)%16 == 0);
   i8 iOffset = (aAddr1 - aAddr0)/16; // offset is in multiples of 2 words
 
-  RASSERT((iOffset >= 0) && (iOffset <= iLastUsableOffset()));
+  ASSERT((iOffset >= 0) && (iOffset <= iLastUsableOffset()));
 
   return (u2) iOffset;
 }
@@ -1373,10 +1451,11 @@ void Pds::vMoveToFreeList(SkipListBlock* pSLBlock)
   SkipListBlock* pNext = pNextSLBlock(pCursor, 0);
 
   bool bResult = bSetNextSLBlock(pSLBlock, pNext, 0);
-  RASSERT(bResult);
+	UNUSED(bResult);
+  ASSERT(bResult);
 
   bResult = bSetNextSLBlock(pCursor, pSLBlock, 0);
-  RASSERT(bResult);
+  ASSERT(bResult);
 
   m_iFreeListEntries++;
 }
@@ -1491,7 +1570,7 @@ void Pds::vAdvanceCursor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(m_i_ColCrs != C_UNKNOWN);
+  ASSERT(m_i_ColCrs != C_UNKNOWN);
   m_i_ColCrs++;
 }
 
@@ -1503,7 +1582,7 @@ void Pds::vDepositColVal(d8 dColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(m_i_ColCrs != C_UNKNOWN);
+  ASSERT(m_i_ColCrs != C_UNKNOWN);
   m_aRowCur->vColVal_flt(m_i_ColCrs,dColVal);
 
   vAdvanceCursor();
@@ -1517,7 +1596,7 @@ void Pds::vDepositColVal(i8 iColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(m_i_ColCrs != C_UNKNOWN);
+  ASSERT(m_i_ColCrs != C_UNKNOWN);
   m_aRowCur->vColVal_int(m_i_ColCrs,iColVal);
 
   vAdvanceCursor();
@@ -1540,15 +1619,18 @@ bool Pds::bDepositColVal(Stz* szColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
+	i8 iFreeBytes = nFreeBytes();
+	i8 iSrcLen = szColVal->nLength();
+
   // Ensure we have enough space for 1 byte str + null terminator
-  if(nFreeBytes() < szColVal->nLength() + 2)
+  if(iFreeBytes < iSrcLen + 2)
     return false;
 
   char* azTgt = azDepositString_begin();
   if( ! azTgt)
     return false;
 
-  i8 nLen = StrLib::nCopy(azTgt, nFreeBytes(), szColVal->azChar());
+  i8 nLen = StrLib::nCopy(azTgt, iFreeBytes, szColVal->azChar(), iSrcLen);
 
   vDepositString_end(nLen + 1);
   return true;
@@ -1561,7 +1643,7 @@ char* Pds::azDepositString_begin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RASSERT(m_i_ColCrs != C_UNKNOWN);
+  ASSERT(m_i_ColCrs != C_UNKNOWN);
 
 //  String_d* szDeposited = new(m_aStzSet) String_d(nSize);
 
