@@ -173,23 +173,6 @@ Board* Bench::pFindBoard(Symbol* pSymbol_arg)
   return nullptr;
 }
 
-
-
-/*----------------------------------------------------------------------------*/
-/* get subquery of given name                                                 */
-/*----------------------------------------------------------------------------*/
-SubQuery* Bench::pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (Board* pBoard = pFindBoard_By_sqyNo_v2(szSqyNo)) {
-    SubQuery *pSubQuery = pBoard->pSubQuery();
-    return pSubQuery;
-  }
-
-  return nullptr;
-}
-
 /*----------------------------------------------------------------------------*/
 /* find subquery given symbol                                                 */
 /*----------------------------------------------------------------------------*/
