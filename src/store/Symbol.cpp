@@ -2822,9 +2822,11 @@ char Symbol::cSF_char(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasFacets());
+//  RASSERT(bHasFacets());
+//
+//  return * xaFacet[0].m_sChrSeq.azChar();
 
-  return * xaFacet[0].m_sChrSeq.azChar();
+  return cTblSyn();
 }
 
 /*----------------------------------------------------------------------------*/
