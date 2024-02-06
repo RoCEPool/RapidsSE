@@ -248,7 +248,7 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
   if (! pCI->G.p_bounds) {
     s256 sErrorMsg;
     sErrorMsg.vSprint("No index for table(%c) %s"_Stz,
-                      pCI->G.p_table->pSymbol()->cSF_char(),
+                      pCI->G.p_table->pSymbol()->cTblSyn(),
                       pCI->G.p_table->pSub_tableNm()->szFacet(SF_TBL_NM));
     Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
     throw xError;

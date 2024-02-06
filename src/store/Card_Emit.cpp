@@ -343,7 +343,7 @@ void Card_Emit::vInject_expr_nmdCol_table(CardIter* pCI)
   Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_TBL_NM));
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
+  char cTblSyn = pCI->G.p_table->pSymbol()->cTblSyn();
 
   i8 iExpCol = pCI->G.p_emit->nExpr() + 1;
 

@@ -162,7 +162,7 @@ Card_OP* Card_Table::pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before)
     Card_OP *p_OP = (Card_OP*)pCI->G.pDeck->pGetChild(i_Main);
     if (p_OP->bIsCard(CK_o_FROM)) {
       Card_Table* p_table_test = p_OP->pSub_table();
-      if (cTblSyn == p_table_test->pSymbol()->cSF_char()) {
+      if (cTblSyn == p_table_test->pSymbol()->cTblSyn()) {
         return p_OP;
       }
     }
@@ -233,7 +233,7 @@ void Card_Table::vBounds_AddConj(Card_Index* p_index,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char cTblSyn = this->pSymbol()->cSF_char();
+  char cTblSyn = this->pSymbol()->cTblSyn();
 
   Card_Bound* p_bound;
   Card_CONJ* p_childPRED;
@@ -330,7 +330,7 @@ void Card_Table::vDerive_bounds_From_filter(CardIter *pCI)
         p_index->vAppendChild(p_bounds);
       }
 
-      char cTblSyn = this->pSymbol()->cSF_char();
+      char cTblSyn = this->pSymbol()->cTblSyn();
       Card_Bound *p_bound = Card_Bound::pCreateFrom_rlnConj(p_rlnConj_filter, cTblSyn);
       p_bounds->vAppendChild(p_bound);
 
@@ -491,7 +491,7 @@ void Card_Table::vShortForm(String* pString_m, String* pString_b)
   Stz* szSep = ""_Stz;
   if (Card_TableNm* p_tableNm = pSub_tableNm()) {
     pString_m->vCatSprint("%c.%s"_Stz,
-                          pSymbol()->bHasFacets() ? pSymbol()->cSF_char() : ' ',
+                          pSymbol()->bHasFacets() ? pSymbol()->cTblSyn() : ' ',
                           p_tableNm->szFacet(SF_TBL_NM));
     szSep = ","_Stz;
   }

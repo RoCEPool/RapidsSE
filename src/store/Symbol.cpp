@@ -1719,9 +1719,9 @@ void Symbol::vInc_Tbl_Syn(void)
 
   RASSERT(SF_TBL_SYN == xaFacet[0].m_eFacet);
 
-  char cTblSyn = cSF_char();
+  char cSyn = cTblSyn();
 
-  vFacetSprint(SF_TBL_SYN,"%c"_Stz, cTblSyn + 1);
+  vFacetSprint(SF_TBL_SYN,"%c"_Stz, cSyn + 1);
 
   RASSERT(bIs_Tbl_Syn());
 }
@@ -2813,20 +2813,6 @@ void Symbol::vSetFacet(eSF eFacet, Stz* szFacet)
     vFacetSet(m_nFacets++,eFacet,szFacet);
   else
     vFacetSet(i_Facet,eFacet,szFacet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-char Symbol::cSF_char(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(bHasFacets());
-//
-//  return * xaFacet[0].m_sChrSeq.azChar();
-
-  return cTblSyn();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4243,7 +4229,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_TBL_SYN == xaFacet[0].m_eFacet);
 
-  char cTableSyn_actual = cSF_char();
+  char cTableSyn_actual = cTblSyn();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
   vFacetReset();

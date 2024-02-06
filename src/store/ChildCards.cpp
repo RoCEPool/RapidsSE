@@ -317,7 +317,7 @@ Card_Table* ChildCards::pFind_table(char cTableSyn, Card*& rpMainCard)
     if (! p_table)
       continue;
 
-    if (cTableSyn == p_table->pSymbol()->cSF_char())
+    if (cTableSyn == p_table->pSymbol()->cTblSyn())
       return p_table;
   }
 

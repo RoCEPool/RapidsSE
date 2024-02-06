@@ -87,7 +87,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     if (xKid.pChild()->bIsCard(CK_STREAMHEAD)) {
 
       // get info of stream start
-      char cTblSyn_head = xKid.p_streamHead()->pSymbol()->cSF_char();
+      char cTblSyn_head = xKid.p_streamHead()->pSymbol()->cTblSyn();
 
       nUnfiltBuff_producedBy_join = p_tableList->nGetTableSize(cTblSyn_head) * C_EXPANSION_COEFF;
 
@@ -104,7 +104,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
       continue;
 
     // get info for this join
-    char cTblSyn_join = xKid.p_streamJoin()->pSymbol()->cSF_char();
+    char cTblSyn_join = xKid.p_streamJoin()->pSymbol()->cTblSyn();
 
     eXK eJoinCast = this->eJoinCast(p_streamPtn,
                                     p_tableList,
@@ -163,7 +163,7 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
   Card_Term* p_term_0_cmp = p_rlnConj->pGetTerm_0();
   Card_Term* p_term_1_cmp = p_rlnConj->pGetTerm_1();
 
-  char cTblSyn_join  = p_streamJoin->pSymbol()->cSF_char();
+  char cTblSyn_join  = p_streamJoin->pSymbol()->cTblSyn();
   char cTblSyn_prior = p_rlnConj->cOtherTable(cTblSyn_join);
 
   Card_TablePtn* p_tablePtn_prior = p_tableList->pGetTablePtn(cTblSyn_prior);
@@ -215,7 +215,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     // get the ith table of this permutation
     i8 i_Table = pPermGen->iElement(i_Elm);
     Card_Table* p_table_ith = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn_ith = p_table_ith->pSymbol()->cSF_char();
+    char cTblSyn_ith = p_table_ith->pSymbol()->cTblSyn();
 
     if ('F' == cTblSyn_ith)
       vDebugPoint();
@@ -328,7 +328,7 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     // get the ith table of this permutation
     i8 i_Table = pPermGen->iElement(i_Item);
     Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn_ith = p_table->pSymbol()->cSF_char();
+    char cTblSyn_ith = p_table->pSymbol()->cTblSyn();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -375,7 +375,7 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     // get the ith table of this permutation
     i8 i_Table = pPermGen->iElement(i_Item);
     Card_Table *p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn_ith = p_table->pSymbol()->cSF_char();
+    char cTblSyn_ith = p_table->pSymbol()->cTblSyn();
 
     if (0 == i_Item) {
       Card_StreamHead *p_dataStart = new Card_StreamHead;
@@ -477,7 +477,7 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
 
   while (xKid.bEach()) {
 
-    if (xKid.pChild()->pSymbol()->cSF_char() == cTblSyn_prior)
+    if (xKid.pChild()->pSymbol()->cTblSyn() == cTblSyn_prior)
       break;
 
     if (! xKid.pChild()->bIsCard(CK_STREAMJOIN))
@@ -494,7 +494,7 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
     if (p_joinCast && ! p_joinCast->pSymbol()->bSame("XK_UNICAST"_Stz))
       return false;
 
-    if (xKid.pChild()->pSymbol()->cSF_char() == cTblSyn_prev)
+    if (xKid.pChild()->pSymbol()->cTblSyn() == cTblSyn_prev)
       break;
   }
 

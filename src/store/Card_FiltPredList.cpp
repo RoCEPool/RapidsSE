@@ -105,7 +105,7 @@ i8 Card_FiltPredList::nFiltersFor(char cTblSyn)
   while (xCI_filtPred.bEach()) {
     Card_FiltPred* p_filtPred = _pCard_FiltPred(xCI_filtPred.pChild());
 
-    if (p_filtPred->pSymbol()->cSF_char() == cTblSyn) {
+    if (p_filtPred->pSymbol()->cTblSyn() == cTblSyn) {
       i8 nFilter = p_filtPred->pSymbol()->Y_iGet(P_Count);
       return nFilter;
     }

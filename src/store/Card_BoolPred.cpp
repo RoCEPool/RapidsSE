@@ -676,7 +676,7 @@ void Card_BoolPred::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
       Symbol* pWhichTable = ((Card_CONJ *) p_card)->pTable_WhichTableFor_Conj(pCI);
       if (pWhichTable) {
         p_card->vMark1(szWithMark);
-        p_card->vMark2(pWhichTable->cSF_char());
+        p_card->vMark2(pWhichTable->cTblSyn());
       }
       continue;
     }
