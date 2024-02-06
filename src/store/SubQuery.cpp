@@ -37,7 +37,7 @@ SubQuery::SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard)
   m_nSubQueries = 0;
 
   vSqyNm_v2(szSqyNm);
-  Symbol xSymbol_sqyNo(SF_SQY_NO, i_Board == -1 ? 0 : i_Board * 2);
+  Symbol xSymbol_sqyNo(SF_SQY_NO, i_Board == -1 ? 0 : i_Board);
   vSqyNo_v2(xSymbol_sqyNo.szSF_chrSeq(SF_SQY_NO));
 
 
