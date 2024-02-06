@@ -4219,11 +4219,20 @@ void Symbol::vFacet_Tbl_Col(char cTblSyn, i8 iTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+#ifdef Z_DOUBLE_DOLLAR
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_TBL_COL, "$$%c.%lld"_Stz, cTblSyn, iTblCol);
+
+  RASSERT(bIs_Tbl_Col());
+
+#else
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_TBL_COL, "$%c.%lld"_Stz, cTblSyn, iTblCol);
 
   RASSERT(bIs_Tbl_Col());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
