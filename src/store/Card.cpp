@@ -804,7 +804,7 @@ Stz* Card::szFacet(eSF eFacet_xchk)
   if (! m_xSymbol.nFacets())
     return nullptr;
 
-  Stz* szChrSeq = m_xSymbol.szSF_chrSeq(eFacet_xchk);
+  Stz* szChrSeq = m_xSymbol.szFacet(eFacet_xchk);
 
   return szChrSeq;
 }

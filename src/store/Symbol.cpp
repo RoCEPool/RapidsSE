@@ -1387,6 +1387,9 @@ Stz* Symbol::szFacet(eSF eFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_NONE == eFacet)
+    return xaFacet[0].m_sChrSeq.szStz();
+
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (eFacet == xaFacet[i_Facet].m_eFacet)
       return xaFacet[i_Facet].m_sChrSeq;
@@ -2831,17 +2834,19 @@ Stz* Symbol::szSF_chrSeq(eSF eSymbol_xchk)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasFacets());
+//  RASSERT(bHasFacets());
+//
+//  if (SF_NONE == eSymbol_xchk)
+//    return xaFacet[0].m_sChrSeq.szStz();
+//
+//  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+//    if (eSymbol_xchk == xaFacet[i_Facet].m_eFacet)
+//      return xaFacet[i_Facet].m_sChrSeq.szStz();
+//  }
+//
+//  NEVER_REACH
 
-  if (SF_NONE == eSymbol_xchk)
-    return xaFacet[0].m_sChrSeq.szStz();
-
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    if (eSymbol_xchk == xaFacet[i_Facet].m_eFacet)
-      return xaFacet[i_Facet].m_sChrSeq.szStz();
-  }
-
-  NEVER_REACH
+  return szFacet(eSymbol_xchk);
 }
 
 /*----------------------------------------------------------------------------*/
