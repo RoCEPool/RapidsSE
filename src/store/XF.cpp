@@ -156,7 +156,7 @@ void XF::vTransform(void)
 //   }                                                //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(m_pCI);    //
+    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_sqyNm_toSqyNo(m_pCI);    //
   }                                                //
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);

@@ -39,13 +39,13 @@ XF_Prolog_X_sqyNm_To_sqyNo::~XF_Prolog_X_sqyNm_To_sqyNo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(CardIter* pCI)
+void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_sqyNm_toSqyNo(CardIter* pCI)
 {
   _static_
 
   XF_Prolog_X_sqyNm_To_sqyNo* pXF_Shorten_QueryNames = new XF_Prolog_X_sqyNm_To_sqyNo(pCI);
 
-  pXF_Shorten_QueryNames->vX_Deck_sqyNm_To_sqyNo_v2();
+  pXF_Shorten_QueryNames->vX_Deck_sqyNm_To_sqyNo();
 
   delete pXF_Shorten_QueryNames;
 }
@@ -58,33 +58,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* shorten query names                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SQYNM_TO_SQYNO, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "pipe to sqyNo"_Stz);
-
-//  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-//    m_pCI->m_pBench->vDump(__func__);
-//
-//  s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNo();
-//
-//  if (Symbol::bIs_Sqy_No(sSqyNo)) {
-//    i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
-//    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
-//    m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
-//  }
-//  else {
-//    vDebugPoint();
-//  }
-
-  m_pCI->vEndTransform(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* shorten query names                                                        */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo_v2(void)
+void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SQYNM_TO_SQYNO, _FOOTER_);
 
