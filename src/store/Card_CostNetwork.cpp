@@ -54,7 +54,8 @@ void Card_CostNetwork::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pParent);
+  RASSERT(pSymbol()->bHasFacet(SF_INT_LIT));
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
