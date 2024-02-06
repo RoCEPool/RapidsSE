@@ -1648,7 +1648,7 @@ void OpSketch::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
 //    sOperation.vConcat("_NC"_Stz);
 //  }
 
-  sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+  sOperation.vConcat("(&paW, aDynamicT);"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push new expr string on the ExprStack
