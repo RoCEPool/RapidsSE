@@ -7,7 +7,7 @@
 #include "SketchTkn.hpp"
 #include "TypeSystem.hpp"
 
-//#define Z_DOUBLE_DOLLAR
+#define Z_DOUBLE_DOLLAR
 
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/

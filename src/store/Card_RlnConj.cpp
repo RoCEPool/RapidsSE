@@ -129,7 +129,7 @@ char Card_RlnConj::cGetTable_a(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_a = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_a = p_term_this_a->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_a = p_term_this_a->pSymbol()->cSF_tblSyn();
 
   return cTableSyn_this_a;
 }
@@ -142,7 +142,7 @@ char Card_RlnConj::cGetTable_b(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_b = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_b = p_term_this_b->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_b = p_term_this_b->pSymbol()->cSF_tblSyn();
 
   return cTableSyn_this_b;
 }
@@ -287,9 +287,9 @@ char Card_RlnConj::cOtherTable(char cTblSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->pSymbol()->cSF_tblSyn();
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->pSymbol()->cSF_tblSyn();
 
   if (cTableSyn_this_0 == cTblSyn)
     return cTableSyn_this_1;
@@ -340,9 +340,9 @@ bool Card_RlnConj::bUsesTable(char cTblSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->pSymbol()->cSF_tblSyn();
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->pSymbol()->cSF_tblSyn();
 
   if (cTableSyn_this_0 == cTblSyn || cTableSyn_this_1 == cTblSyn)
     return true;
