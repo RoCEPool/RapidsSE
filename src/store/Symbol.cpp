@@ -816,7 +816,7 @@ bool Symbol::bIs_Sqy_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is arg a __subquery or $Qn like name?                                      */
+/* is arg a $Qn like name?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_No(Stz *szArg)
 {
@@ -910,7 +910,7 @@ bool Symbol::bIs_Stg_Cast(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a __subQuery like name?                                           */
+/* is value a stage name?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Stg_Nm(BASE::Stz *szArg)
 {
