@@ -67,7 +67,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
 //  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
 //    m_pCI->m_pBench->vDump(__func__);
 //
-//  s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNo_v2();
+//  s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNo();
 //
 //  if (Symbol::bIs_Sqy_No(sSqyNo)) {
 //    i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
@@ -106,7 +106,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo_v2(void)
 
     SubQuery* pSubQuery = pBoard->pSubQuery();
 
-    Symbol xSymbol_sqyNo(SF_SQY_NO,pSubQuery->szSqyNo_v2());
+    Symbol xSymbol_sqyNo(SF_SQY_NO, pSubQuery->szSqyNo());
 
     pSymbol_card->vDeleteFacet(SF_SQY_NM);
     pSymbol_card->vCastFacets(&xSymbol_sqyNo);

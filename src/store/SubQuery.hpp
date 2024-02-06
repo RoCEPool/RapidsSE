@@ -81,10 +81,10 @@ namespace STORE
     eRO  eRelnOp(void);
     void vRelnOp(eRO eRelnOp);
 
-    Stz* szSqyNm_v2(void);
-    void vSqyNm_v2(Stz* szSqyNm);
-    Stz* szSqyNo_v2(void);
-    void vSqyNo_v2(Stz* szSqyNo);
+    Stz* szSqyNm(void);
+    void vSqyNm(Stz* szSqyNm);
+    Stz* szSqyNo(void);
+    void vSqyNo(Stz* szSqyNo);
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);

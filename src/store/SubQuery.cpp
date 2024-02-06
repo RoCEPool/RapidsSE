@@ -36,9 +36,9 @@ SubQuery::SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard)
 
   m_nSubQueries = 0;
 
-  vSqyNm_v2(szSqyNm);
+  vSqyNm(szSqyNm);
   Symbol xSymbol_sqyNo(SF_SQY_NO, i_Board == -1 ? 0 : i_Board);
-  vSqyNo_v2(xSymbol_sqyNo.szSF_chrSeq(SF_SQY_NO));
+  vSqyNo(xSymbol_sqyNo.szSF_chrSeq(SF_SQY_NO));
 
 
   UNUSED(i_Board);
@@ -246,8 +246,8 @@ void SubQuery::vDump(i8 iDepth)
   vTrace("%sSubQuery v2 %p SqyNo %s SqyNm %s Caller %lld; %s %s %s %s (%lld nCorrCols)\n"_Stz,
          Stz::szTab(iDepth),
          this,
-         szSqyNo_v2(),
-         szSqyNm_v2(),
+         szSqyNo(),
+         szSqyNm(),
          m_i_Caller,
 
          aQC[m_eClause],
@@ -323,7 +323,7 @@ void SubQuery::vRelnOp(eRO eRelnOp)
 /*----------------------------------------------------------------------------*/
 /* get subquery name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* SubQuery::szSqyNm_v2(void)
+Stz* SubQuery::szSqyNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
@@ -333,7 +333,7 @@ Stz* SubQuery::szSqyNm_v2(void)
 /*----------------------------------------------------------------------------*/
 /* get subquery name                                                          */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vSqyNm_v2(Stz* szSqyNm)
+void SubQuery::vSqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
@@ -345,7 +345,7 @@ void SubQuery::vSqyNm_v2(Stz* szSqyNm)
 /*----------------------------------------------------------------------------*/
 /* get subquery number $Qn                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SubQuery::szSqyNo_v2(void)
+Stz* SubQuery::szSqyNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
@@ -355,7 +355,7 @@ Stz* SubQuery::szSqyNo_v2(void)
 /*----------------------------------------------------------------------------*/
 /* set subquery number $Qn                                                    */
 /*----------------------------------------------------------------------------*/
-void SubQuery::vSqyNo_v2(Stz* szSqyNo)
+void SubQuery::vSqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBQUERY,_FOOTER_);
 
