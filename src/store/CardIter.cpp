@@ -2090,7 +2090,7 @@ bool CardIter::G_bPushBoard(Stz* szSqyNo)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Board*  pBoard = m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo);
+  Board*  pBoard = m_pBench->pFindBoard_By_sqyNo(szSqyNo);
   if (! pBoard)
      return false;
 

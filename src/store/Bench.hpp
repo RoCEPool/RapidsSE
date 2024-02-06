@@ -49,8 +49,8 @@ namespace STORE
     void vDump(const char* azFunc);
     void vEndPhase(CardIter* pCI);
 
-    Board* pFindBoard_By_sqyNm_v2(Stz* szSqyNm);
-    Board* pFindBoard_By_sqyNo_v2(Stz* szSqyNo);
+    Board* pFindBoard_By_sqyNm(Stz* szSqyNm);
+    Board* pFindBoard_By_sqyNo(Stz* szSqyNo);
     Board* pFindBoard(Symbol* pSymbol_arg);
     SubQuery* pFindSubQuery(Symbol* pSymbol_arg);
 

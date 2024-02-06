@@ -122,7 +122,7 @@ void Bench::vEndPhase(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pFindBoard_By_sqyNm_v2(Stz* szSqyNm)
+Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -140,7 +140,7 @@ Board* Bench::pFindBoard_By_sqyNm_v2(Stz* szSqyNm)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pFindBoard_By_sqyNo_v2(Stz* szSqyNo)
+Board* Bench::pFindBoard_By_sqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
