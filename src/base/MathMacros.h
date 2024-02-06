@@ -114,7 +114,8 @@
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
                                                                            \
-    const i8 iPrecMax = C_MAX_BCD_PRECISION;                               \
+    const i8 iPrecMax = 5;                                                 \
+    /*const i8 iPrecMax = C_MAX_BCD_PRECISION;*/                           \
                                                                            \
     i8 iPrecArg1  = iPrecision(bcdArg1.m_iMantissa);                       \
     i8 iPrecArg2  = iPrecision(bcdArg2.m_iMantissa);                       \
@@ -131,10 +132,24 @@
                   + 1;                                                     \
     i8 iScaleOp = _MAX_I8(iScaleArg1, iScaleArg2);                         \
                                                                            \
+    /*printf("\n");                                              */        \
+    /*printf("bcdArg1 mantissa = %lld\n", bcdArg1.m_iMantissa);  */        \
+    /*printf("bcdArg2 mantissa = %lld\n", bcdArg2.m_iMantissa);  */        \
+    /*printf("iPrecArg1 = %lld\n", iPrecArg1);                   */        \
+    /*printf("iPrecArg2 = %lld\n", iPrecArg2);                   */        \
+    /*printf("iScaleArg1 = %lld\n", iScaleArg1);                 */        \
+    /*printf("iScaleArg2 = %lld\n", iScaleArg2);                 */        \
+    /*printf("iIntegralPrec1 = %lld\n", iIntegralPrec1);         */        \
+    /*printf("iIntegralPrec2 = %lld\n", iIntegralPrec2);         */        \
+    /*printf("iPrecOp = %lld\n", iPrecOp);                       */        \
+    /*printf("iScaleOp = %lld\n", iScaleOp);                     */        \
+                                                                           \
+                                                                           \
     /* How many digits in the result? */                                   \
     /* We add +1 because an overflow to the next digit could occur */      \
     i8 iIntegralPrecResult = _MAX_I8(iIntegralPrec1, iIntegralPrec2) + 1;  \
                                                                            \
+    /*printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult); */      \
                                                                            \
     if (eErrorCode != EC_NONE ||                                           \
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
@@ -163,35 +178,44 @@
           union Bcd_T bcdUpperBound;                                       \
           union Bcd_T bcdTemp1;                                            \
           union Bcd_T bcdTemp2;                                            \
+          i1 iRoundedUp = 0;                                               \
                                                                            \
           if (eErrorCode == EC_NONE) {                                     \
             bcdUpperBound.m_iSpare = 0;                                    \
             bcdUpperBound.m_uScale = 0;                                    \
             bcdUpperBound.m_iMantissa = aDynamicT->m_iaPow10[iIntegralPrecResult - 1]; \
             *paW++ = bcdUpperBound.m_iAsI8;                                \
-            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale)               \
+            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale, iRoundedUp)   \
             bcdUpperBound.m_iAsI8 = *(--paW);                              \
           }                                                                \
                                                                            \
           if (eErrorCode == EC_NONE) {                                     \
             *paW++ = bcdArg1.m_iAsI8;                                      \
-            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale)               \
+            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale, iRoundedUp)   \
             bcdTemp1.m_iAsI8 = *(--paW);                                   \
           }                                                                \
                                                                            \
           if (eErrorCode == EC_NONE) {                                     \
             *paW++ = bcdArg2.m_iAsI8;                                      \
-            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale)               \
+            _RESCALE_BCD_TO_SCALE(eErrorCode, iSmallerScale, iRoundedUp)   \
             bcdTemp2.m_iAsI8 = *(--paW);                                   \
           }                                                                \
                                                                            \
-          if (eErrorCode != EC_NONE &&                                     \
+          /*printf("bcdUpperBound = %lld\n", bcdUpperBound.m_iMantissa);*/ \
+          /*printf("bcdTemp1 = %lld\n", bcdTemp1.m_iMantissa);          */ \
+          /*printf("bcdTemp2 = %lld\n", bcdTemp2.m_iMantissa);          */ \
+                                                                           \
+                                                                           \
+          if (eErrorCode == EC_NONE &&                                     \
               bcdUpperBound.m_iMantissa - bcdTemp1.m_iMantissa > bcdTemp2.m_iMantissa) { \
             /* No overflow will occur. */                                  \
             /* The actual integral digits is one less */                   \
             --iIntegralPrecResult;                                         \
           }                                                                \
         }                                                                  \
+                                                                           \
+        /*printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult); */  \
+                                                                           \
                                                                            \
         /* We can now do a hard check for precision overflow */            \
         if (eErrorCode == EC_NONE && iIntegralPrecResult > iPrecMax) {     \
@@ -209,22 +233,41 @@
           iScaleResult = C_MAX_BCD_SCALE;                                  \
         }                                                                  \
                                                                            \
+        /*printf("iScaleResult = %lld\n", iScaleResult);   */              \
+                                                                           \
+        /* When we calculate the result we will convert and round */       \
+        /* the arguments to have a scale of iScaleResult before */         \
+        /* they are added. When they are rounded to this scale it */       \
+        /* is possible that both values are rounded up, which will */      \
+        /* give a final result that is off by 1. So we need to adjust */   \
+        /* for that. */                                                    \
+                                                                           \
+        i1 iRoundedUp1 = 0;                                                \
+        i1 iRoundedUp2 = 0;                                                \
+                                                                           \
         /* Now we can scale and round the arguments to the desired scale*/ \
         if (eErrorCode == EC_NONE) {                                       \
           *paW++ = bcdArg1.m_iAsI8;                                        \
-          _RESCALE_BCD_TO_SCALE(eErrorCode, iScaleResult)                  \
+          _RESCALE_BCD_TO_SCALE(eErrorCode, iScaleResult, iRoundedUp1)     \
           bcdArg1.m_iAsI8 = *(--paW);                                      \
         }                                                                  \
                                                                            \
         if (eErrorCode == EC_NONE) {                                       \
           *paW++ = bcdArg2.m_iAsI8;                                        \
-          _RESCALE_BCD_TO_SCALE(eErrorCode, iScaleResult)                  \
+          _RESCALE_BCD_TO_SCALE(eErrorCode, iScaleResult, iRoundedUp2)     \
           bcdArg2.m_iAsI8 = *(--paW);                                      \
         }                                                                  \
                                                                            \
         if (eErrorCode == EC_NONE) {                                       \
+                                                                           \
+          /*printf("bcdArg1 = %lld\n", bcdArg1.m_iMantissa);      */       \
+          /*printf("bcdArg2 = %lld\n", bcdArg2.m_iMantissa);      */       \
+          /*printf("\n\n");                                       */       \
+                                                                           \
           /* We've already checked that this won't overflow */             \
-          bcdArg1.m_iMantissa = bcdArg1.m_iMantissa + bcdArg2.m_iMantissa; \
+          bcdArg1.m_iMantissa = bcdArg1.m_iMantissa                        \
+                                + bcdArg2.m_iMantissa                      \
+                                - (iRoundedUp1 & iRoundedUp2);             \
           *paW++ = bcdArg1.m_iAsI8;                                        \
                                                                            \
         } else {                                                           \

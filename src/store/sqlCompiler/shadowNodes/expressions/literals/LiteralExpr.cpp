@@ -778,15 +778,7 @@ QueryNode* LiteralExpr::pIntegerToDecimal(QueryNode* pExpr, PlanNode* pRootNode)
     SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, sBuf.szStz());
   }
 
-  // REVISE: If the value is small enough then represent it with 2 decimal places
-  // so it prints nicely. It should strictly have a scale of 0.
-  if ( (iVal * 100) < C_BCD_MAX &&
-       (iVal * 100) > C_BCD_MIN ) {
-    xBcd.vSet(iVal * 100, 2);
-
-  } else {
-    xBcd.vSet(pExpr->iValue(), 0);
-  }
+  xBcd.vSet(pExpr->iValue(), 0);
 
   return DecimalLiteral::pCreate(xBcd);
 }

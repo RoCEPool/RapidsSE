@@ -19,6 +19,21 @@
     *paW++ = bcdRound.m_iAsI8;                                       \
   }
 
+#define _ROUND_BCD_CHECK_ROUNDUP(eErrorCode, bRoundedUp)             \
+  {                                                                  \
+    bcdRound.m_iAsI8 = *(--paW);                                     \
+    if (bcdRound.m_iMantissa % 10 >= 5) {                            \
+      bcdRound.m_iMantissa = (bcdRound.m_iMantissa / 10) + 1;        \
+      bRoundedUp = 1;                                                \
+    }                                                                \
+    else {                                                           \
+      bcdRound.m_iMantissa = bcdRound.m_iMantissa / 10;              \
+      bRoundedUp = 0;                                                \
+    }                                                                \
+    bcdRound.m_uScale--;                                             \
+    *paW++ = bcdRound.m_iAsI8;                                       \
+  }
+
 // rescale BCD to max scale of the two bcd's
 // CHECK FOR OVERFLOW !!!
 #define _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                           \
@@ -62,7 +77,7 @@
   }
 
 // Rescale a BCD on the stack to a given scale
-#define _RESCALE_BCD_TO_SCALE(eErrorCode, iScale)                          \
+#define _RESCALE_BCD_TO_SCALE(eErrorCode, iScale, iRoundedUp)              \
   {                                                                        \
     bcdReScale1.m_iAsI8 = *(--paW);                                        \
     iScaleDiff = (iScale) - (i8) bcdReScale1.m_uScale;                     \
@@ -87,7 +102,7 @@
                                                                            \
       /* Now round the number */                                           \
       *paW++ = bcdReScale1.m_iAsI8;                                        \
-      _ROUND_BCD(eErrorCode)                                               \
+      _ROUND_BCD_CHECK_ROUNDUP(eErrorCode, iRoundedUp)                     \
       bcdReScale1.m_iAsI8 = *(--paW);                                      \
     }                                                                      \
                                                                            \
