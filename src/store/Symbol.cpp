@@ -7,6 +7,8 @@
 #include "SketchTkn.hpp"
 #include "TypeSystem.hpp"
 
+//#define Z_DOUBLE_DOLLAR
+
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -429,7 +431,7 @@ bool Symbol::bIs_EndIf(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/* is this a symbol for a expr-column?  (i.e. $n)                             */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Exp_Col(Stz* szArg)
 {
@@ -952,12 +954,14 @@ bool Symbol::bIs_String(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $c.n)                            */
+/* is this a symbol for a table-column (i.e. $$c.n)                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Col(Stz* szArg)
 {
   _static_
 
+#ifdef Z_DOUBLE_DOLLAR
+#else
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
   char acThird  = szArg->azChar()[2];
@@ -970,6 +974,8 @@ bool Symbol::bIs_Tbl_Col(Stz* szArg)
     return true;
   else
     return false;
+
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1410,6 +1416,9 @@ i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+#ifdef Z_DOUBLE_DOLLAR
+
+#else
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (eFacet  == xaFacet[i_Facet].m_eFacet &&
         '$'     == xaFacet[i_Facet].m_sChrSeq.azChar()[0] &&
@@ -1417,6 +1426,7 @@ i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
       return i_Facet;
   }
   return C_UNKNOWN;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1483,7 +1493,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_EXP_COL:    vFacet_Stm_Col(iInt);    break;
+    case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
@@ -2869,13 +2879,17 @@ i8 Symbol::iSF_ordinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table synonym from $c.n                                                */
+/* get table synonym from %$c.n                                               */
 /*----------------------------------------------------------------------------*/
 char Symbol::cSF_tblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(bHasFacets());
+
+#ifdef Z_DOUBLE_DOLLAR
+
+#else
 
   char acFirst  = xaFacet[0].m_sChrSeq.azChar()[0];
   char acSecond = xaFacet[0].m_sChrSeq.azChar()[1];
@@ -2886,6 +2900,8 @@ char Symbol::cSF_tblSyn(void)
     return acSecond;
   else
     return acFirst;
+
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4124,7 +4140,7 @@ void Symbol::vFacet_Stg_Nm(i8 iStgNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given column number                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Stm_Col(i8 iStmCol)
+void Symbol::vFacet_Exp_Col(i8 iExpCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -4138,7 +4154,7 @@ void Symbol::vFacet_Stm_Col(i8 iStmCol)
             SF_KEY_COL == eFacet);
   }
 
-  vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iStmCol);
+  vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
 
   RASSERT(bIs_Exp_Col());
 }

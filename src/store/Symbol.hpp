@@ -327,7 +327,7 @@ namespace STORE
     void vFacet_Sqy_Rsl(Stz* szSqyRsl);
     void vFacet_Stg_Cast(Stz* szStgCast);
     void vFacet_Stg_Nm(i8 iStgNo);
-    void vFacet_Stm_Col(i8 iStmCol);
+    void vFacet_Exp_Col(i8 iExpCol);
     void vFacet_Str_Fn(Stz* szStrFn);
     void vFacet_String(Stz* szString);
     void vFacet_Tbl_Col(Stz* szTblCol);
