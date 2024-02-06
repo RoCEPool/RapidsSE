@@ -391,7 +391,7 @@ char Card_Term::cGetTblSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  char cSyn = pSymbol()->cSF_tblSyn();
+  char cSyn = pSymbol()->cTblSyn();
 
   return cSyn;
 }

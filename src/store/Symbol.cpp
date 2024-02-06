@@ -2856,9 +2856,9 @@ i8 Symbol::iSF_ordinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table synonym from %$c.n                                               */
+/* get table synonym from $$c.n (or c)                                        */
 /*----------------------------------------------------------------------------*/
-char Symbol::cSF_tblSyn(void)
+char Symbol::cTblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

@@ -237,8 +237,8 @@ namespace STORE
     char cSF_char(void);
     i8   iSF_number(void);
     i8   iSF_ordinal(void);
-    char cSF_tblSyn(void);
 
+    char   cTblSyn(void);
     TypeId xTypeId(void);
     i8     nTypeLength(void);
     bool   bTypeNullable(void);
