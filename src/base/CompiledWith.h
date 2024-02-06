@@ -95,7 +95,7 @@
 
 #define WITH_TSCP_TIMER EndDefine    // Arjun: Use tscp as a timer instead of the GetTimeOfDay() for unload/reload timing
 
-#define WITHOUT_BUFFERIDHASHMAP EndDefine
+//#define WITHOUT_BUFFERIDHASHMAP EndDefine
 
 /*============================================================================*/
 /* end                                                                        */

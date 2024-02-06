@@ -3121,6 +3121,128 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   delete PDS_i8;
 
 /*----------------------------------------------------------------------------*/
+  // Test Case - Basic single element tests using append
+/*----------------------------------------------------------------------------*/
+
+  bResult = false;
+  PDS_i8 = new Pds_i8(nullptr);
+  pResultBlock = nullptr;
+
+  // Insert single element
+  iTest = 1;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+//  PDS_i8->vDumpInUseList();
+//  PDS_i8->vDumpFreeList();
+
+  RASSERT(PDS_i8->m_iNumEntries[0] == 1);
+  RASSERT(PDS_i8->m_iFreeListEntries == 0);
+
+
+  // Find existing element
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 1);
+
+
+  iTest = 2;
+  // Find non-existent element
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
+  RASSERT(pSearchBlock == nullptr);
+
+
+  iTest = 1;
+  // Delete single existing element
+  bResult = PDS_i8->bDelete((void*) &iTest);
+  RASSERT(bResult);
+
+//  PDS_i8->vDumpInUseList();
+//  PDS_i8->vDumpFreeList();
+
+  RASSERT(PDS_i8->m_iNumEntries[0] == 0);
+  RASSERT(PDS_i8->m_iFreeListEntries == 1);
+
+
+  // Find deleted element
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
+  RASSERT(pSearchBlock == nullptr);
+
+
+  // Delete non-existent element
+  bResult = PDS_i8->bDelete((void*) &iTest);
+  RASSERT( ! bResult);
+  RASSERT(PDS_i8->m_iNumEntries[0] == 0);
+  RASSERT(PDS_i8->m_iFreeListEntries == 1);
+
+  delete PDS_i8;
+
+/*----------------------------------------------------------------------------*/
+  // Test Case - 10 element tests using append
+/*----------------------------------------------------------------------------*/
+
+  PDS_i8 = new Pds_i8(nullptr);
+
+  // Insert 10 elements out of order
+  iTest = 1;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 2;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 3;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 4;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 5;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 6;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 7;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 8;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 9;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 10;
+  pResultBlock = PDS_i8->pAppend((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  RASSERT(PDS_i8->m_iNumEntries[0] == 10);
+  RASSERT(PDS_i8->m_iFreeListEntries == 0);
+
+  PDS_i8->vDumpInUseList();
+  PDS_i8->vDumpFreeList();
+  delete PDS_i8;
+/*----------------------------------------------------------------------------*/
   // Test Case - 10 element tests
 /*----------------------------------------------------------------------------*/
 
@@ -3228,8 +3350,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT(bResult);
 
-//  PDS_i8->vDumpInUseList();
-//  PDS_i8->vDumpFreeList();
+  PDS_i8->vDumpInUseList();
+  PDS_i8->vDumpFreeList();
 
   RASSERT(PDS_i8->m_iNumEntries[0] == 5);
   RASSERT(PDS_i8->m_iFreeListEntries == 5);
