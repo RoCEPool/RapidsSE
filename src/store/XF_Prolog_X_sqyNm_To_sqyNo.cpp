@@ -67,8 +67,8 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   CardIter* pCI = m_pCI;
-  auto bfTo_sqyNm = [pCI](Card* p_card) {
-    UNUSED(pCI);
+  auto bfTo_sqyNo = [pCI](Card* p_card)
+  {
     Symbol* pSymbol_card = p_card->pSymbol();
     if (! pSymbol_card->nFacets())
       return C_CONTINUE_RECURSION;
@@ -82,7 +82,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
 
     Symbol xSymbol_sqyNo(SF_SQY_NO, pSubQuery->szSqyNo());
 
-    pSymbol_card->vDeleteFacet(SF_SQY_NM);
+    pSymbol_card->vDeleteFacet(SF_NMD_COL);
     pSymbol_card->vCastFacets(&xSymbol_sqyNo);
 
     return C_CONTINUE_RECURSION;
@@ -90,9 +90,8 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNm);
+  bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNo);
   UNUSED(b);
-
 
   m_pCI->vEndTransform(__LINE__);
 }

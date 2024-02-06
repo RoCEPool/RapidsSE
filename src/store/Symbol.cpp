@@ -825,9 +825,6 @@ bool Symbol::bIs_Sqy_No(Stz *szArg)
   if (! szArg)
     return false;
 
-  if (StrLib::bBeginsWith(szArg->azChar(), "__subquery"))
-    return true;
-
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
   char acThird  = szArg->azChar()[2];
