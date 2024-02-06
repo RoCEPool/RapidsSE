@@ -2,7 +2,7 @@
 /* HashMap.hpp -- HashMap                                                     */
 /*============================================================================*/
 #pragma once
-
+#define C_INIT_HASHMAP_SIZE 100
 #ifdef WITH_HASHMAP_DEBUG
 #define C_HISTORY_DUR 100
 #endif
@@ -15,8 +15,9 @@ namespace BASE
   public:
     Lock          m_okLock;        // lock for the entire hash map
     u8            m_uNoOfEntries;
+    u8            m_uNoOfSlots;
 
-    HashMapSlot* m_pHashMapSlot;
+    HashMapSlot  m_pHashMapSlot[C_INIT_HASHMAP_SIZE];
 
 #ifdef WITH_HASHMAP_DEBUG
     u8 m_uCollison;
@@ -47,7 +48,7 @@ namespace BASE
     bool    bExists(void* pKey);
     HashMapEntry* pGetEntryAtIndex(u8 uIndex);
 
-    static u8 uHashFunction(void* pKey, u8 NoOfSlots);
+    u8 uHashFunction(void* pKey);
 
     void    vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
     void    vInsertKeyValue(void* pKey, Object* pValue);

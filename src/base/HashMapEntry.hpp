@@ -11,7 +11,6 @@ namespace BASE
     friend HashMapSlot;
 
   public:
-    Lock          m_okLock;        // lock
     void*         m_pKeyObject;
     Object*       m_pValObject;
 
@@ -26,6 +25,8 @@ namespace BASE
 
     HashMapEntry(void* pKey, Object* pValue);
     ~HashMapEntry(void) noexcept(false);
+
+    bool bInUse(void);
 
   private:
 

@@ -38,7 +38,7 @@ void Paging::vRandomAlgo(i8 nTotal)
   pFileMap->vStartPageOut();
   pHashMap->m_okLock.vGrabWrite();
 
-  u8 uSize = pHashMap->m_pHashMapSlot->uGetNoSlots();
+  u8 uSize = pHashMap->m_uNoOfSlots;
 
   i8 iTimeOut = 0;
   i8 nPagedOut = 0;
@@ -57,9 +57,9 @@ void Paging::vRandomAlgo(i8 nTotal)
         continue;
 
       // Check if this entry is in use (locked)
-      if(pEntry->m_okLock.bIsLocked())
+      if(pEntry->bInUse())
         continue;
-      pEntry->m_okLock.vGrabWrite();
+//      pEntry->m_okLock.vGrabWrite();
 
       // Check if this entry is queued for output
       DataBuffer* pDataBuffer = _pDataBuffer(pEntry->m_pValObject);
@@ -71,7 +71,7 @@ void Paging::vRandomAlgo(i8 nTotal)
 
       // remove this entry from the hashmap by setting the current index
       // to point to the next entry
-      pHashMap->m_pHashMapSlot->m_pEntry[i] = pEntry->m_pNext;
+//      pHashMap->m_pHashMapSlot->m_pEntry[i] = pEntry->m_pNext;
 
       // Write the buffer to disk
       pFileMap->vToDisk(pDataBuffer);
@@ -89,7 +89,7 @@ void Paging::vRandomAlgo(i8 nTotal)
           NEVER_REACH;
       }
 
-      pEntry->m_okLock.vDropWrite();
+//      pEntry->m_okLock.vDropWrite();
       delete pEntry;
 
       pHashMap->m_uNoOfEntries--;

@@ -3780,7 +3780,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
         // should not have any locks on it
 
         pCrwBuffer->vOutputQueued(false);
-        RASSERT( ! AM::pHashMap()->bIsLocked(pCrwBuffer->oGetBufferId().m_pvAsAddress));
+        ASSERT( ! AM::pHashMap()->bIsLocked(pCrwBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
 
@@ -3805,7 +3805,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
         // should not have any locks on it
 
         pCsvBuffer->vOutputQueued(false);
-        RASSERT( ! AM::pHashMap()->bIsLocked(pCsvBuffer->oGetBufferId().m_pvAsAddress));
+        ASSERT( ! AM::pHashMap()->bIsLocked(pCsvBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
 
@@ -3862,7 +3862,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
         // should not have any locks on it
 
         pPdsRowBuffer->vOutputQueued(false);
-        RASSERT(!AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
+        ASSERT(!AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
 

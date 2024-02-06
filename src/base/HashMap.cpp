@@ -49,9 +49,8 @@ HashMap::HashMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 
-  m_pHashMapSlot = new HashMapSlot();
-  //HashMapEntry* test = m_pHashMapSlot->m_pEntry[0];
   m_uNoOfEntries        = 0;
+  m_uNoOfSlots          = C_INIT_HASHMAP_SIZE;
 
 #ifdef WITH_HASHMAP_DEBUG
   m_uCollison           = 0;
@@ -66,6 +65,12 @@ HashMap::HashMap(void)
   }
 #endif
 
+  for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
+    HashMapEntry* pDummyEntry = new HashMapEntry(nullptr, nullptr);
+    pDummyEntry->m_pNext = nullptr;
+    m_pHashMapSlot[u_slot].m_pEntry = pDummyEntry;
+  }
+
   _checkInitialised_(CN_HASHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
@@ -77,7 +82,12 @@ HashMap::HashMap(void)
 HashMap::~HashMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-  delete m_pHashMapSlot;
+//  for(i8 i_slot = 0; i_slot < m_uNoOfSlots; i_slot++) {
+//    HashMapEntry* pDummyEntry = new HashMapEntry(nullptr, nullptr);
+//    pDummyEntry->m_pNext = nullptr;
+//    m_pHashMapSlot[i_slot].m_pEntry = pDummyEntry;
+//  }
+//  delete m_pHashMapSlot;
 }
 
 
@@ -93,9 +103,9 @@ void HashMap::vAnalysis(void)
   vTrace("HM: (with %llu buckets/slots and %llu total entries)\n"
          "    Current Load Factor: %f\n"_Stz,
 
-         m_pHashMapSlot->uGetNoSlots(),
+         m_uNoOfSlots,
          m_uNoOfEntries,
-         (d8)m_uNoOfEntries/m_pHashMapSlot->uGetNoSlots());
+         (d8)m_uNoOfEntries/m_uNoOfSlots);
 
 #ifdef WITH_HASHMAP_DEBUG
 
@@ -141,13 +151,13 @@ void HashMap::vDeleteKey(void* pKey)
   UNUSED(pKey);
   return;
 #else
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
-//  m_okLock.vGrabWrite();
+  m_pHashMapSlot[uIndex].m_okSlotLock.vGrabWrite();
+
   HashMapEntry* pDummyEntry = pGetEntryAtIndex(uIndex);
-  RASSERT(pDummyEntry != nullptr);
+  ASSERT(pDummyEntry != nullptr);
 
-  m_pHashMapSlot->m_okSlotLock[uIndex].vGrabWrite();
   // First entry is a dummy entry
   HashMapEntry* pPrevIter = pDummyEntry;
   HashMapEntry* pIter = pDummyEntry->m_pNext;
@@ -159,6 +169,7 @@ void HashMap::vDeleteKey(void* pKey)
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
+      //ASSERT(1 <= m_uNoOfEntries);
 #ifdef WITH_PAGING
       // Arjun Hack:check if this databuffer is part of m_pOutputQueue
       // If it is, it should not be locked
@@ -178,34 +189,28 @@ void HashMap::vDeleteKey(void* pKey)
 //      if(pIter->m_okLock.bIsLocked())
 //        pIter->m_okLock.vResetLock();
 #endif
-      RASSERT(pPrevIter != nullptr);
+      ASSERT(pPrevIter != nullptr);
       pPrevIter->m_pNext = pIter->m_pNext;
       delete pIter;
-      // Assert before decrement
-      // since unsigned underflow could occur
-      //ASSERT(1 <= m_uNoOfEntries);
-      //m_uNoOfEntries--;
-      m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
 
-//      if ( pPrevIter != nullptr )
-//        pPrevIter->m_pNext = pIter->m_pNext;
-//      else
-//        vSetEntryAtIndex(pIter->m_pNext, uIndex);
-//      delete pIter;
-//      m_okLock.vDropWrite();
+      //m_uNoOfEntries--;
+      m_pHashMapSlot[uIndex].m_okSlotLock.vDropWrite();
       return;
     }
 
     pPrevIter = pIter;
     pIter = pIter->m_pNext;
   }
-  m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
-//  m_okLock.vDropWrite();
+  m_pHashMapSlot[uIndex].m_okSlotLock.vDropWrite();
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* Drop read lock on this key                                                 */
+/* Drop read lock on this key
+ *
+ * NOTE: This function is used to tell the paging demon that it's now safe to
+ * page out this buffer. Instead of using locks on each entry, better to set a
+ * bit flag. Marked as TODO                                                   */
 /*----------------------------------------------------------------------------*/
 void HashMap::vDropKeyLock(void* pKey)
 {
@@ -214,7 +219,7 @@ void HashMap::vDropKeyLock(void* pKey)
   UNUSED(pKey);
   return;
 #else
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
   HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
 
@@ -234,44 +239,48 @@ void HashMap::vDropKeyLock(void* pKey)
   NEVER_REACH;
 #endif
 }
+
 /*----------------------------------------------------------------------------*/
 /* Does the given key exist in the hashmap                                    */
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(void* pKey)
 {
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
-  m_okLock.vGrabRead();
+  m_pHashMapSlot[uIndex].m_okSlotLock.vGrabRead();
 
   HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
 
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
-      m_okLock.vDropRead();
+      m_pHashMapSlot[uIndex].m_okSlotLock.vDropRead();
       return true;
     }
 
     pIter = pIter->m_pNext;
   }
 
-  m_okLock.vDropRead();
+  m_pHashMapSlot[uIndex].m_okSlotLock.vDropRead();
   return false;
 }
+
 /*----------------------------------------------------------------------------*/
 /* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
 HashMapEntry* HashMap::pGetEntryAtIndex(u8 uIndex)
 {
-  return m_pHashMapSlot->m_pEntry[uIndex];
+  if(uIndex >= m_uNoOfSlots)
+    return nullptr;
+  return m_pHashMapSlot[uIndex].m_pEntry;
 }
+
 /*----------------------------------------------------------------------------*/
 /* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
-u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
+u8 HashMap::uHashFunction(void* pKey)
 {
-  _static_
-  return ( (u8) pKey % NoOfSlots );
+  return ( (u8) pKey % m_uNoOfSlots );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,30 +321,27 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 //    vReHash();
 //  }
 
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
-//  m_okLock.vGrabWrite();
-
+  m_pHashMapSlot[uIndex].m_okSlotLock.vGrabWrite();
 
   HashMapEntry* pDummyEntry = pGetEntryAtIndex(uIndex);
   RASSERT(pDummyEntry != nullptr);
 
-  m_pHashMapSlot->m_okSlotLock[uIndex].vGrabWrite();
   // First entry is a dummy entry
   HashMapEntry* pIter = pDummyEntry->m_pNext;
 
   while ( pIter != nullptr ) {
 
+    // Key already exists, update the value
     if ( pIter->m_pKeyObject == pKey ) {
       pIter->m_pValObject = pValue;
-      m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
+      m_pHashMapSlot[uIndex].m_okSlotLock.vDropWrite();
 
 #ifdef WITH_HASHMAP_DEBUG
       vTrace("Key %p already exists, updating value\n"_Stz, pKey);
       vAppendHistory(pKey, false, true);
 #endif
-//      m_okLock.vDropWrite();
-//      m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
       return;
     }
 
@@ -346,11 +352,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
   pEntry->m_pNext = pDummyEntry->m_pNext;
   pDummyEntry->m_pNext = pEntry;
   //m_uNoOfEntries++;
-  m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
-
-//  vInsertEntryAtIndex(pTmpEntry, uIndex);
-
-//  m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
+  m_pHashMapSlot[uIndex].m_okSlotLock.vDropWrite();
 
 #ifdef WITH_HASHMAP_DEBUG
   vAppendHistory(pKey, false, true);
@@ -359,18 +361,17 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Is this HashMapEntry locked?                                               */
+/* Is this HashMapEntry locked?
+ *
+ * NOTE: Currently no used. Will be implemented when bit flag lock is added
+ * to HashMapEntry                                                            */
 /*----------------------------------------------------------------------------*/
 bool HashMap::bIsLocked(void* pKey)
 {
-#ifdef WITHOUT_BUFFERIDHASHMAP
-  // TODO: Hack for performance test
   UNUSED(pKey);
   return false;
-#else
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
-
-//  m_okLock.vGrabRead();
+/*
+  u8 uIndex = uHashFunction(pKey);
 
   HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
 
@@ -379,7 +380,8 @@ bool HashMap::bIsLocked(void* pKey)
     // Find the entry that matches this key
     if ( pIter->m_pKeyObject == pKey ) {
 //      m_okLock.vDropRead();
-      return pIter->m_okLock.bIsLocked();
+//      return pIter->m_okLock.bIsLocked();
+      return false;
     }
 
     pIter = pIter->m_pNext;
@@ -387,7 +389,7 @@ bool HashMap::bIsLocked(void* pKey)
 
 //  m_okLock.vDropRead();
   return false;
-#endif
+  */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -452,33 +454,24 @@ Object* HashMap::pValueAt(void* pKey)
   // TODO: Hack for performance test
   return (Object*) pKey;
 #else
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
-
-//  m_okLock.vGrabRead();
+  u8 uIndex = uHashFunction(pKey);
 
   HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
   RASSERT(pIter != nullptr);
-  m_pHashMapSlot->m_okSlotLock[uIndex].vGrabRead();
+
+  m_pHashMapSlot[uIndex].m_okSlotLock.vGrabRead();
 
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
-      // Grab HashMapEntry read lock, to prevent it from potentially
-      // being paged out immediately
-//      pIter->m_okLock.vGrabRead();
-//      vTrace("Value at key %p read locks task\n"_Stz, pIter->m_pKeyObject);
-
-      // Release the HashMap lock
-//      m_okLock.vDropRead();
-      m_pHashMapSlot->m_okSlotLock[uIndex].vDropRead();
+      m_pHashMapSlot[uIndex].m_okSlotLock.vDropRead();
       return pIter->m_pValObject;
     }
 
     pIter = pIter->m_pNext;
   }
 
-  m_pHashMapSlot->m_okSlotLock[uIndex].vDropRead();
-//  m_okLock.vDropRead();
+  m_pHashMapSlot[uIndex].m_okSlotLock.vDropRead();
   return nullptr;
 #endif
 }

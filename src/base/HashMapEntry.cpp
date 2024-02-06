@@ -45,7 +45,6 @@ void HashMapEntry::operator delete(void* pHashMapEntryAddress)
 /*----------------------------------------------------------------------------*/
 HashMapEntry::HashMapEntry(void* pKey, Object* pValue)
 : Object(CN_HASHMAPENTRY)
-, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
 
@@ -67,9 +66,13 @@ HashMapEntry::~HashMapEntry(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+bool HashMapEntry::bInUse(void)
+{
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
