@@ -64,7 +64,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
     Card_Term* p_term = _pCard_Term(pCard);
 
-    if (p_term->pSymbol()->szSF_chrSeq(SF_NONE)->bSame("O_COMMENT"_Stz))
+    if (p_term->pSymbol()->szFacet(SF_NONE)->bSame("O_COMMENT"_Stz))
       vDebugPoint();
 
     if (! pCard->pSymbol()->bIs_Nmd_Col())
@@ -643,7 +643,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     return;
 
   Symbol xTblCol_sym;
-  xTblCol_sym.vFacet(SF_TBL_COL,pSymbol_this->szSF_chrSeq(SF_TBL_COL));
+  xTblCol_sym.vFacet(SF_TBL_COL,pSymbol_this->szFacet(SF_TBL_COL));
 
 
   //i8 nCols_a = 0;
@@ -689,7 +689,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
     if (pSymbol_this->bHasFacet(SF_NMD_COL)) {
       Symbol xAsNm_sym;
-      xAsNm_sym.vConcatFacet(SF_NMD_COL, pSymbol_this->szSF_chrSeq(SF_NMD_COL));
+      xAsNm_sym.vConcatFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
 
       if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xAsNm_sym)) {
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);

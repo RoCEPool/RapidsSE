@@ -1293,7 +1293,7 @@ void Symbol::vDump(void)
            ,Stz::szTab(1)
            ,aSF[xaFacet[i_Facet].m_eFacet]
            ,(i8)xaFacet[i_Facet].m_eFacet
-           ,*szSF_chrSeq(xaFacet[i_Facet].m_eFacet)->azChar() ? szSF_chrSeq(xaFacet[i_Facet].m_eFacet) : "??Symbol"_Stz
+           ,*szFacet(xaFacet[i_Facet].m_eFacet)->azChar() ? szFacet(xaFacet[i_Facet].m_eFacet) : "??Symbol"_Stz
            ,i_Facet
            );
 
@@ -2828,28 +2828,6 @@ char Symbol::cSF_char(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol stz                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szSF_chrSeq(eSF eSymbol_xchk)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(bHasFacets());
-//
-//  if (SF_NONE == eSymbol_xchk)
-//    return xaFacet[0].m_sChrSeq.szStz();
-//
-//  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-//    if (eSymbol_xchk == xaFacet[i_Facet].m_eFacet)
-//      return xaFacet[i_Facet].m_sChrSeq.szStz();
-//  }
-//
-//  NEVER_REACH
-
-  return szFacet(eSymbol_xchk);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get symbol int                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Symbol::iSF_number(void)
@@ -3775,7 +3753,7 @@ void Symbol::vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol)
 
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz,
                i_Child,
-               pSymbol->szSF_chrSeq(SF_NMD_COL));
+               pSymbol->szFacet(SF_NMD_COL));
 
   RASSERT(bIs_Itm_Col());
 }

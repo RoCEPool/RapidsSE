@@ -559,7 +559,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     i8    i_CrwCol_expr_i = StrLib::iGleanInt(p_expr_i->szFacet(SF_ITM_COL)->azChar());
 
     Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol();
-    Stz*       szTblCol_i = pSym_tblCol_i->szSF_chrSeq(SF_NONE);
+    Stz*       szTblCol_i = pSym_tblCol_i->szFacet(SF_NONE);
     //pSym_tblCol_i->vDump();
 
     // test if the injected column is actually emitted?
@@ -708,8 +708,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       pColPpg->vAdd(i_CellIn,
                     i_CellOut,
                     p_expr_e->szFacet(SF_NONE),
-                    pInSym_a->szSF_chrSeq(SF_NONE),
-                    pOutSym_e->szSF_chrSeq(SF_NONE));
+                    pInSym_a->szFacet(SF_NONE),
+                    pOutSym_e->szFacet(SF_NONE));
 
       return C_CONTINUE_RECURSION;
     }
@@ -730,8 +730,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         pColPpg->vAdd(pExprSym_a->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->szFacet(SF_NONE),
-                      pExprSym_a->szSF_chrSeq(SF_NONE),
-                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
+                      pExprSym_a->szFacet(SF_NONE),
+                      p_expr_e->pSymbol()->szFacet(SF_NONE));
         return C_CONTINUE_RECURSION;
       }
 

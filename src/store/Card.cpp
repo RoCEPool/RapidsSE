@@ -207,7 +207,7 @@ void Card::vCardLeaks(void)
 //    if (gapCard[i_Card]) {
 //      Card *pLeaked = gapCard[i_Card];
 //      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSF_chrSeq());
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szFacet());
 //      vDebugPoint();
 //    }
 //  }
@@ -252,7 +252,7 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //         i_Card,
 //         p_cardInQuestion,
 //         aCK[p_cardInQuestion->eCard()],
-//         p_cardInQuestion->szSF_chrSeq());
+//         p_cardInQuestion->szFacet());
 //    vDebugPoint();
 //  }
 //

@@ -38,7 +38,7 @@ SubQuery::SubQuery(i8 i_Board, Stz* szSqyNm, Board* pBoard)
 
   vSqyNm(szSqyNm);
   Symbol xSymbol_sqyNo(SF_SQY_NO, i_Board == -1 ? 0 : i_Board);
-  vSqyNo(xSymbol_sqyNo.szSF_chrSeq(SF_SQY_NO));
+  vSqyNo(xSymbol_sqyNo.szFacet(SF_SQY_NO));
 
 
   UNUSED(i_Board);
