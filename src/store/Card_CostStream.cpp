@@ -57,8 +57,8 @@ bool Card_CostStream::bIsHigherCost(Card_CostStream* p_costQuery_arg)
   Card_CostNetwork* p_costNetwork_this = pSub_costNetwork();
   Card_CostNetwork* p_costNetwork_arg  = p_costQuery_arg->pSub_costNetwork();
 
-  i8 iCostNetwork_this = p_costNetwork_this->pSymbol()->iSF_number();
-  i8 iCostNetwork_arg  = p_costNetwork_arg->pSymbol()->iSF_number();
+  i8 iCostNetwork_this = p_costNetwork_this->pSymbol()->iTo_integer();
+  i8 iCostNetwork_arg  = p_costNetwork_arg->pSymbol()->iTo_integer();
 
   if (iCostNetwork_this > iCostNetwork_arg)
     return true;
@@ -71,8 +71,8 @@ bool Card_CostStream::bIsHigherCost(Card_CostStream* p_costQuery_arg)
   Card_CostUnicast* p_costUnicast_this = pSub_costUnicast();
   Card_CostUnicast* p_costUnicast_arg  = p_costQuery_arg->pSub_costUnicast();
 
-  i8 iloadUnicast_this = p_costUnicast_this->pSymbol()->iSF_number();
-  i8 iloadUnicast_arg  = p_costUnicast_arg->pSymbol()->iSF_number();
+  i8 iloadUnicast_this = p_costUnicast_this->pSymbol()->iTo_integer();
+  i8 iloadUnicast_arg  = p_costUnicast_arg->pSymbol()->iTo_integer();
 
   if (iloadUnicast_this > iloadUnicast_arg)
     return true;
@@ -90,8 +90,8 @@ bool Card_CostStream::bIsLowerCost(Card_CostStream* p_costQuery_arg)
   Card_CostNetwork* p_costNetwork_this = pSub_costNetwork();
   Card_CostNetwork* p_costNetwork_arg  = p_costQuery_arg->pSub_costNetwork();
 
-  i8 iCostNetwork_this = p_costNetwork_this->pSymbol()->iSF_number();
-  i8 iCostNetwork_arg  = p_costNetwork_arg->pSymbol()->iSF_number();
+  i8 iCostNetwork_this = p_costNetwork_this->pSymbol()->iTo_integer();
+  i8 iCostNetwork_arg  = p_costNetwork_arg->pSymbol()->iTo_integer();
 
   if (iCostNetwork_this < iCostNetwork_arg)
     return true;
@@ -104,8 +104,8 @@ bool Card_CostStream::bIsLowerCost(Card_CostStream* p_costQuery_arg)
   Card_CostUnicast* p_costUnicast_this = pSub_costUnicast();
   Card_CostUnicast* p_costUnicast_arg  = p_costQuery_arg->pSub_costUnicast();
 
-  i8 iloadUnicast_this = p_costUnicast_this->pSymbol()->iSF_number();
-  i8 iloadUnicast_arg  = p_costUnicast_arg->pSymbol()->iSF_number();
+  i8 iloadUnicast_this = p_costUnicast_this->pSymbol()->iTo_integer();
+  i8 iloadUnicast_arg  = p_costUnicast_arg->pSymbol()->iTo_integer();
 
   if (iloadUnicast_this < iloadUnicast_arg)
     return true;

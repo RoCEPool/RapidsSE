@@ -125,9 +125,9 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     // running sum of the network and unicast costs
     Card_JoinEstimate* p_joinEstimate = xKid.p_streamJoin()->pSub_joinEstimate();
     Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
-    nSumNetworkCost += p_costNetwork->pSymbol()->iSF_number();
+    nSumNetworkCost += p_costNetwork->pSymbol()->iTo_integer();
     Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();
-    nSumUnicastCost += p_costUnicast->pSymbol()->iSF_number();
+    nSumUnicastCost += p_costUnicast->pSymbol()->iTo_integer();
 
     nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_join);
 

@@ -2816,34 +2816,6 @@ void Symbol::vSetFacet(eSF eFacet, Stz* szFacet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol int                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::iSF_number(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bHasFacets());
-
-  i8 i = xaFacet[0].m_sChrSeq.iToI8();
-
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::iSF_ordinal(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bHasFacets());
-
-  i8 i_Col = StrLib::iGleanInt(xaFacet[0].m_sChrSeq.azChar());
-
-  return i_Col;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get table synonym from $$c.n (or c)                                        */
 /*----------------------------------------------------------------------------*/
 char Symbol::cTblSyn(void)
@@ -2862,6 +2834,34 @@ char Symbol::cTblSyn(void)
     return acThird;
   else
     return acFirst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get integer                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::iTo_integer(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(bHasFacets());
+
+  i8 i = xaFacet[0].m_sChrSeq.iToI8();
+
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::iTo_ordinal(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(bHasFacets());
+
+  i8 i_Col = StrLib::iGleanInt(xaFacet[0].m_sChrSeq.azChar());
+
+  return i_Col;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -232,12 +232,11 @@ namespace STORE
 
     bool bSame(char cArg);
     bool bSame(Stz* szChrSeq);
-
     void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
-    i8   iSF_number(void);
-    i8   iSF_ordinal(void);
 
     char   cTblSyn(void);
+    i8     iTo_integer(void);
+    i8     iTo_ordinal(void);
     TypeId xTypeId(void);
     i8     nTypeLength(void);
     bool   bTypeNullable(void);
