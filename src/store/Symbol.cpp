@@ -961,6 +961,20 @@ bool Symbol::bIs_Tbl_Col(Stz* szArg)
   _static_
 
 #ifdef Z_DOUBLE_DOLLAR
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+  char acFifth  = szArg->azChar()[4];
+
+  if ('$' == acFirst
+      && '$' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '.' == acFourth
+      && StrLib::bIsDigit(acFifth))
+    return true;
+  else
+    return false;
 #else
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
@@ -974,7 +988,6 @@ bool Symbol::bIs_Tbl_Col(Stz* szArg)
     return true;
   else
     return false;
-
 #endif
 }
 
@@ -1417,7 +1430,14 @@ i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
 #ifdef Z_DOUBLE_DOLLAR
-
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (eFacet  == xaFacet[i_Facet].m_eFacet &&
+        '$'     == xaFacet[i_Facet].m_sChrSeq.azChar()[0] &&
+        '$'     == xaFacet[i_Facet].m_sChrSeq.azChar()[1] &&
+        cTblSyn == xaFacet[i_Facet].m_sChrSeq.azChar()[2])
+      return i_Facet;
+  }
+  return C_UNKNOWN;
 #else
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (eFacet  == xaFacet[i_Facet].m_eFacet &&
@@ -2888,19 +2908,24 @@ char Symbol::cSF_tblSyn(void)
   RASSERT(bHasFacets());
 
 #ifdef Z_DOUBLE_DOLLAR
-
-#else
-
   char acFirst  = xaFacet[0].m_sChrSeq.azChar()[0];
   char acSecond = xaFacet[0].m_sChrSeq.azChar()[1];
-//  char acThird  = xaFacet[0].m_sChrSeq.azChar()[2];
-//  char acFourth = xaFacet[0].m_sChrSeq.azChar()[3];
+  char acThird  = xaFacet[0].m_sChrSeq.azChar()[2];
+
+  if ('$' == acFirst
+      && '$' == acSecond
+      && StrLib::bIsAlpha(acThird))
+    return acThird;
+  else
+    return acFirst;
+#else
+  char acFirst  = xaFacet[0].m_sChrSeq.azChar()[0];
+  char acSecond = xaFacet[0].m_sChrSeq.azChar()[1];
 
   if ('$' == acFirst && StrLib::bIsAlpha(acSecond))
     return acSecond;
   else
     return acFirst;
-
 #endif
 }
 
