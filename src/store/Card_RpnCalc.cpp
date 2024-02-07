@@ -315,7 +315,7 @@ bool Card_RpnCalc::bIsAggCalc(void)
     return false;
 
   Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->pSymbol()->bSame(')'))
+  if (! p_term_0->pSymbol()->bHasFacet((SF_PARENTHESIS)))
     return true;
 
   return false;
