@@ -7,8 +7,6 @@
 #include "SketchTkn.hpp"
 #include "TypeSystem.hpp"
 
-//#define Z_DOLLAR_TBLSYN
-
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -187,15 +185,9 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-#ifdef Z_DOLLAR_TBLSYN
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cTblSyn);
 
   RASSERT(bIs_Tbl_Syn());
-#else
-  vFacetSprint(SF_TBL_SYN,"%c"_Stz, cTblSyn);
-
-  RASSERT(bIs_Tbl_Syn());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1002,7 +994,6 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 {
   _static_
 
-#ifdef Z_DOLLAR_TBLSYN
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
   char acThird  = szArg->azChar()[2];
@@ -1015,16 +1006,6 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
     return true;
 
   return false;
-#else
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-
-  if (   StrLib::bIsAlpha(acFirst)
-         && '\0' == acSecond)
-    return true;
-
-  return false;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1034,7 +1015,6 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
 {
   _static_
 
-#ifdef Z_DOLLAR_TBLSYN
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
   char acThird  = szArg->azChar()[2];
@@ -1047,17 +1027,6 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
     return true;
 
   return false;
-
-#else
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-
-  if (   StrLib::bIsUpperCase(acFirst)
-         && '\0' == acSecond)
-    return true;
-
-  return false;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1753,7 +1722,6 @@ void Symbol::vInc_Tbl_Syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-#ifdef Z_DOLLAR_TBLSYN
   RASSERT(SF_TBL_SYN == xaFacet[0].m_eFacet);
 
   char cSyn = cTblSyn();
@@ -1761,17 +1729,6 @@ void Symbol::vInc_Tbl_Syn(void)
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cSyn + 1);
 
   RASSERT(bIs_Tbl_Syn());
-#else
-  RASSERT(bHasFacets());
-
-  RASSERT(SF_TBL_SYN == xaFacet[0].m_eFacet);
-
-  char cSyn = cTblSyn();
-
-  vFacetSprint(SF_TBL_SYN,"%c"_Stz, cSyn + 1);
-
-  RASSERT(bIs_Tbl_Syn());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4221,19 +4178,11 @@ void Symbol::vFacet_Tbl_Syn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-#ifdef Z_DOLLAR_TBLSYN
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cTblSyn);
 
   RASSERT(bIs_Tbl_Syn());
-#else
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_TBL_SYN,"%c"_Stz, cTblSyn);
-
-  RASSERT(bIs_Tbl_Syn());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4262,13 +4211,9 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
   char cTableSyn_actual = cTblSyn();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
-#ifdef Z_DOLLAR_TBLSYN
   vFacetReset();
   vFacetSprint(SF_TBL_SYN_rep,"$T%c"_Stz, cTableSyn_actual);
-#else
-  vFacetReset();
-  vFacetSprint(SF_TBL_SYN_rep,"%c"_Stz, cTableSyn_actual);
-#endif
+
   RASSERT(bIs_Tbl_Syn_rep());
 }
 
