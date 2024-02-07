@@ -1708,102 +1708,6 @@ void Symbol::vInc_Tbl_Syn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for CASE?                                                 */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Case(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_CASE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Case(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for CAST?                                                 */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Cast(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_CAST != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Cast(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for CASTTYPE?                                             */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_CastType(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_CASTTYPE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_CastType(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $c.n)                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Type(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_COL_TYPE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Col_Type(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Comma(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_COMMA != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Comma(xaFacet[0].m_sChrSeq))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Cross(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_CROSS != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Cross(xaFacet[0].m_sChrSeq))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a decimal literal?                                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Dcm_Lit(void)
@@ -2829,7 +2733,7 @@ Stz* Symbol::szWhatIs(void)
   if (bHasFacet(SF_BOUND))        return "Bound"_Stz;
   if (bIs_Exp_Col())      return "StreamOrdinal"_Stz;
   if (bIs_Tbl_Col())      return "ColumnOrdinal"_Stz;
-  if (bIs_Comma())        return "Comma"_Stz;
+  if (bHasFacet(SF_COMMA))        return "Comma"_Stz;
   if (bIs_Idx_Col())      return "IndexColumn"_Stz;
   if (bIs_Key_Col())      return "KeyOrdinal"_Stz;
   if (bIs_Mth_Op())       return "NumbOp"_Stz;
@@ -3248,7 +3152,7 @@ void Symbol::vFacet_Case(Stz* szCase)
 
   vFacetSprint(SF_CASE,"%s"_Stz,szCase);
 
-  RASSERT(bIs_Case());
+  RASSERT(bHasFacet(SF_CASE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3262,7 +3166,7 @@ void Symbol::vFacet_Cast(Stz* szCast)
 
   vFacetSprint(SF_CAST,"%s"_Stz,szCast);
 
-  RASSERT(bIs_Cast());
+  RASSERT(bHasFacet(SF_CAST));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3276,7 +3180,7 @@ void Symbol::vFacet_CastType(Stz* szCastType)
 
   vFacetSprint(SF_CASTTYPE,"%s"_Stz,szCastType);
 
-  RASSERT(bIs_CastType());
+  RASSERT(bHasFacet(SF_CASTTYPE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3290,7 +3194,7 @@ void Symbol::vFacet_Comma(Stz* szComma)
 
   vFacetSprint(SF_COMMA,"%s"_Stz,szComma);
 
-  RASSERT(bIs_Comma());
+  RASSERT(bHasFacet(SF_COMMA));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3304,7 +3208,7 @@ void Symbol::vFacet_Cross(Stz* szCross)
 
   vFacetSprint(SF_CROSS,"%s"_Stz,szCross);
 
-  RASSERT(bIs_Cross());
+  RASSERT(bHasFacet(SF_CROSS));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3318,7 +3222,7 @@ void Symbol::vFacet_Col_Type(Stz* szColType)
 
   vFacetSprint(SF_COL_TYPE,"%s"_Stz,szColType);
 
-  RASSERT(bIs_Col_Type());
+  RASSERT(bHasFacet(SF_COL_TYPE));
 }
 
 /*----------------------------------------------------------------------------*/

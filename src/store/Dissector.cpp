@@ -1594,7 +1594,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
     }
 
     // SEPARATOR
-    if (p_term_head->pSymbol()->bIs_Comma()) {
+    if (p_term_head->pSymbol()->bHasFacet(SF_COMMA)) {
       delete p_rpnExpr->pPopChild();
       continue;
     }
@@ -1651,7 +1651,7 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
     }
 
     // SEPARATOR
-    if (p_term_head->pSymbol()->bIs_Comma()) {
+    if (p_term_head->pSymbol()->bHasFacet(SF_COMMA)) {
       delete p_rpnExpr->pPopChild();
       continue;
     }
@@ -1695,7 +1695,7 @@ Card_RpnCalc* Dissector::pPop_rpnCalc(Card_RpnExpr* p_rpnExpr)
         || p_term_popped->pSymbol()->bHasFacet("ASC"_Stz)
         || p_term_popped->pSymbol()->bHasFacet("DESC"_Stz)
         || p_term_popped->pSymbol()->bHasFacet("GROUPBY"_Stz)
-        || p_term_popped->pSymbol()->bIs_Comma()
+        || p_term_popped->pSymbol()->bHasFacet(SF_COMMA)
         ) {
       p_rpnExpr->vPushChild(p_term_popped);
       break;

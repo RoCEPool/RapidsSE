@@ -196,7 +196,7 @@ void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
     return;
   }
 
-  if (pSymbol_term->bIs_Col_Type()) {
+  if (pSymbol_term->bHasFacet(SF_COL_TYPE)) {
     Stz* szFacet_colType = pSymbol_term->szFacet(SF_COL_TYPE);
 
     if (szFacet_colType->bSame("BOOLEAN"_Stz))

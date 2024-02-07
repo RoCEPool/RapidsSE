@@ -167,12 +167,12 @@ namespace STORE
 //    bool bIs_Bol_Op(void);          // and, not, or
 //    bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
 //    bool bIs_Brace(void);           // BRACE
-    bool bIs_Case(void);            // CASE
-    bool bIs_Cast(void);            // CAST
-    bool bIs_CastType(void);        // CASTTYPE
-    bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
-    bool bIs_Comma(void);           // ,
-    bool bIs_Cross(void);           // CROSS
+//    bool bIs_Case(void);            // CASE
+//    bool bIs_Cast(void);            // CAST
+//    bool bIs_CastType(void);        // CASTTYPE
+//    bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
+//    bool bIs_Comma(void);           // ,
+//    bool bIs_Cross(void);           // CROSS
     bool bIs_Dcm_Lit(void);         // StrLib::bIsDecimal()
     bool bIs_Direction(void);       // asc, desc
     bool bIs_Else(void);            // ELSE
