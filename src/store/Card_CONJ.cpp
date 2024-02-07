@@ -308,7 +308,7 @@ bool Card_CONJ::bIsRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Rln_Op())
+  if (pSymbol()->bHasFacet(SF_RLN_OP))
     return true;
 
   return false;

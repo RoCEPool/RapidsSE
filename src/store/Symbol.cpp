@@ -1771,37 +1771,6 @@ bool Symbol::bIs_None(void)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* is this symbol a parenthesis?                                              */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Parenthesis(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_PARENTHESIS != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Parenthesis(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a relational-operator?                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Rln_Op(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_RLN_OP != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Rln_Op(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* is this a subquery name?                                                   */
@@ -2412,8 +2381,8 @@ Stz* Symbol::szWhatIs(void)
   if (bHasFacet(SF_IDX_COL))      return "IndexColumn"_Stz;
   if (bHasFacet(SF_KEY_COL))      return "KeyOrdinal"_Stz;
   if (bHasFacet(SF_MTH_OP))       return "NumbOp"_Stz;
-  if (bIs_Parenthesis())  return "Parenthesis"_Stz;
-  if (bIs_Rln_Op())       return "RelnOp"_Stz;
+  if (bHasFacet(SF_PARENTHESIS))  return "Parenthesis"_Stz;
+  if (bHasFacet(SF_RLN_OP))       return "RelnOp"_Stz;
   if (bIs_Sqy_Op())       return "SubQueryOp"_Stz;
   if (bIs_Sqy_Prm())      return "ParameterOrdinal"_Stz;
   if (bIs_Sqy_Rsl())      return "SubQueryColumn"_Stz;
@@ -3317,7 +3286,7 @@ void Symbol::vFacet_Parenthesis(Stz* szParenthesis)
 
   vFacetSprint(SF_PARENTHESIS,"%s"_Stz,szParenthesis);
 
-  RASSERT(bIs_Parenthesis());
+  RASSERT(bHasFacet(SF_PARENTHESIS));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3331,7 +3300,7 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
 
   vFacetSprint(SF_RLN_OP,"%s"_Stz,szRlnOp);
 
-  RASSERT(bIs_Rln_Op());
+  RASSERT(bHasFacet(SF_RLN_OP));
 }
 
 /*----------------------------------------------------------------------------*/

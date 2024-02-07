@@ -365,7 +365,7 @@ eTE Card_Term::eEvalTerm(void)
     else if (pSymbol()->bHasFacet("notIn"_Stz)) return TE_NOTIN;
   }
 
-       if (pSymbol()->bIs_Rln_Op())     return TE_RELNOP;
+       if (pSymbol()->bHasFacet(SF_RLN_OP))     return TE_RELNOP;
   else if (pSymbol()->bHasFacet(SF_BOL_FN))     return TE_BOOLFN;
 
   else return TE_OTHER;
