@@ -1837,70 +1837,6 @@ bool Symbol::bIs_Tbl_Syn_rep(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol THEN?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Then(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_THEN != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Then(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol TYPE?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Type(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_TYPE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Type(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a parenthesis?                                              */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_When(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_WHEN != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_When(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Xk_Cast(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_XK_CAST != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Xk_Cast(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is the symbol a SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_SF_Col(void)
@@ -3455,7 +3391,7 @@ void Symbol::vFacet_Then(Stz* szThen)
 
   vFacetSprint(SF_THEN,"%s"_Stz,szThen);
 
-  RASSERT(bIs_Then());
+  RASSERT(bHasFacet(SF_THEN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3469,7 +3405,7 @@ void Symbol::vFacet_Type(Stz* szType)
 
   vFacetSprint(SF_TYPE,"%s"_Stz,szType);
 
-  RASSERT(bIs_Type());
+  RASSERT(bHasFacet(SF_TYPE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3483,7 +3419,7 @@ void Symbol::vFacet_When(Stz* szWhen)
 
   vFacetSprint(SF_WHEN,"%s"_Stz,szWhen);
 
-  RASSERT(bIs_When());
+  RASSERT(bHasFacet(SF_WHEN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3497,7 +3433,7 @@ void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
 
   vFacetSprint(SF_XK_CAST,"%s"_Stz,szXkCast);
 
-  RASSERT(bIs_Xk_Cast());
+  RASSERT(bHasFacet(SF_XK_CAST));
 }
 
 /*----------------------------------------------------------------------------*/

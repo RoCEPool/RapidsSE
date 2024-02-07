@@ -212,10 +212,10 @@ namespace STORE
     bool bIs_Tbl_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
     bool bIs_Tbl_Syn_rep(void);     // C
-    bool bIs_Then(void);            // THEN
-    bool bIs_Type(void);            // TYPE
-    bool bIs_When(void);            // WHEN
-    bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
+//    bool bIs_Then(void);            // THEN
+//    bool bIs_Type(void);            // TYPE
+//    bool bIs_When(void);            // WHEN
+//    bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
     bool bIs_SF_Col(void);          // SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL
 
