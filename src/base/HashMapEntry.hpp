@@ -2,6 +2,7 @@
 /* HashMapEntry.hpp -- HashMapEntry                                           */
 /*============================================================================*/
 #pragma once
+#include "eBI.h"
 
 namespace BASE
 {
@@ -11,6 +12,8 @@ namespace BASE
     friend HashMapSlot;
 
   public:
+    eBI           m_eBufferIdType;
+    Atomic        m_ixInUse;
     void*         m_pKeyObject;
     Object*       m_pValObject;
 
@@ -23,7 +26,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void* pHashMapEntryAddr);
 
-    HashMapEntry(void* pKey, Object* pValue);
+    HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType = BI_NONE);
     ~HashMapEntry(void) noexcept(false);
 
     bool bInUse(void);

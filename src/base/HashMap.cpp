@@ -66,7 +66,7 @@ HashMap::HashMap(void)
 #endif
 
   for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
-    HashMapEntry* pDummyEntry = new HashMapEntry(nullptr, nullptr);
+    HashMapEntry* pDummyEntry = new HashMapEntry(nullptr, nullptr, BI_NONE);
     pDummyEntry->m_pNext = nullptr;
     m_pHashMapSlot[u_slot].m_pEntry = pDummyEntry;
   }

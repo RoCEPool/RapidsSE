@@ -43,14 +43,17 @@ void HashMapEntry::operator delete(void* pHashMapEntryAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMapEntry::HashMapEntry(void* pKey, Object* pValue)
+HashMapEntry::HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType)
 : Object(CN_HASHMAPENTRY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
 
+  m_eBufferIdType = eBufferIdType;
   m_pKeyObject = pKey;
   m_pValObject = pValue;
   m_pNext = nullptr;
+
+  m_ixInUse.vCheckInit();
 
   _checkInitialised_(CN_HASHMAPENTRY);
 
