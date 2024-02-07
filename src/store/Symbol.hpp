@@ -192,11 +192,11 @@ namespace STORE
     bool bIs_Lit(void);             // FALSE, TRUE, ...
 //    bool bIs_Key_Col(void);         // $Kn
 //    bool bIs_Mth_Op(void);          // +, -, *, /
-    bool bIs_Negate(void);          // NEGATE
+//    bool bIs_Negate(void);          // NEGATE
     bool bIs_Nmd_Col(void);         // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_None(void);            //
-    bool bIs_Note(void);            // ...any...
-    bool bIs_Null(void);            // NULL
+//    bool bIs_Note(void);            // ...any...
+//    bool bIs_Null(void);            // NULL
     bool bIs_Parenthesis(void);     // ( or )
     bool bIs_Rln_Op(void);          // <, <=, ... >
     bool bIs_Sqy_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc

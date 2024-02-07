@@ -1740,22 +1740,6 @@ bool Symbol::bIs_Lit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol NEGATE ?                                                    */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Negate(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_NEGATE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Negate(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a column name?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Nmd_Col(void)
@@ -1782,38 +1766,6 @@ bool Symbol::bIs_None(void)
     return false;
 
   if (bIs_None(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a note                                                             */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Note(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_NOTE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Note(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol NULL ?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Null(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_NULL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Null(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -3294,7 +3246,7 @@ void Symbol::vFacet_Negate(Stz* szNegate)
 
   vFacetSprint(SF_NEGATE,"%s"_Stz,szNegate);
 
-  RASSERT(bIs_Negate());
+  RASSERT(bHasFacet(SF_NEGATE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3337,7 +3289,7 @@ void Symbol::vFacet_Note(Stz* szNote)
 
   vFacetSprint(SF_NOTE,"%s"_Stz,szNote);
 
-  RASSERT(bIs_Note());
+  RASSERT(bHasFacet(SF_NOTE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3351,7 +3303,7 @@ void Symbol::vFacet_Null(Stz* szNull)
 
   vFacetSprint(SF_NULL,"%s"_Stz,szNull);
 
-  RASSERT(bIs_Null());
+  RASSERT(bHasFacet(SF_NULL));
 }
 
 /*----------------------------------------------------------------------------*/
