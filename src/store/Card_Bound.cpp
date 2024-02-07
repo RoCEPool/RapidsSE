@@ -59,7 +59,7 @@ Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
 
   Symbol xSymbol_idxCol(SF_IDX_COL,1);
 
-  if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
+  if (pTerm_0->pSymbol()->bHasFacet(SF_TBL_COL)) {
     char cTblSyn_term_0 = pTerm_0->pSymbol()->cTblSyn();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
@@ -68,7 +68,7 @@ Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
       p_bound->vAppendChild(p_term);
     }
     else
-    if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
+    if (pTerm_1->pSymbol()->bHasFacet(SF_TBL_COL)) {
       char cTblSyn_term_1 = pTerm_1->pSymbol()->cTblSyn();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
@@ -81,7 +81,7 @@ Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
+  if (pTerm_1->pSymbol()->bHasFacet(SF_TBL_COL)) {
     char cTblSyn_term_1 = pTerm_1->pSymbol()->cTblSyn();
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
@@ -169,7 +169,7 @@ void Card_Bound::vX_tblCol_To_expCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
+    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       continue;
 
     xKid.p_term()->vX_tblCol_To_expCol(pCI);
