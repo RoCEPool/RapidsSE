@@ -186,7 +186,7 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
 
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cTblSyn);
 
-  RASSERT(bIs_Tbl_Syn());
+  RASSERT(bHasFacet(SF_TBL_SYN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1705,7 +1705,7 @@ void Symbol::vInc_Tbl_Syn(void)
 
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cSyn + 1);
 
-  RASSERT(bIs_Tbl_Syn());
+  RASSERT(bHasFacet(SF_TBL_SYN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1783,38 +1783,6 @@ bool Symbol::bIs_Tbl_Col(void)
     return false;
 
   if (bIs_Tbl_Col(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol a table synonym?  (i.e. c)                                */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Tbl_Syn(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_TBL_SYN != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Tbl_Syn(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol a table synonym?  (i.e. c)                                */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Tbl_Syn_rep(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_TBL_SYN_rep != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Tbl_Syn_rep(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -3329,7 +3297,7 @@ void Symbol::vFacet_Tbl_Syn(char cTblSyn)
 
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cTblSyn);
 
-  RASSERT(bIs_Tbl_Syn());
+  RASSERT(bHasFacet(SF_TBL_SYN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3343,7 +3311,7 @@ void Symbol::vFacet_Tbl_Syn(Stz* szTblSyn)
 
   vFacetSprint(SF_TBL_SYN,"%s"_Stz,szTblSyn);
 
-  RASSERT(bIs_Tbl_Syn());
+  RASSERT(bHasFacet(SF_TBL_SYN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3361,7 +3329,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
   vFacetReset();
   vFacetSprint(SF_TBL_SYN_rep,"$T%c"_Stz, cTableSyn_actual);
 
-  RASSERT(bIs_Tbl_Syn_rep());
+  RASSERT(bHasFacet(SF_TBL_SYN_rep));
 }
 
 /*----------------------------------------------------------------------------*/

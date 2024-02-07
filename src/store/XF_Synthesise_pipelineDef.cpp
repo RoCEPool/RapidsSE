@@ -507,7 +507,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 
   eCK eCard_OP = p_OP_curr->eCard();
   Card_Table* p_table = p_OP_curr->pSub_table();
-  RASSERT(p_table->pSymbol()->bIs_Tbl_Syn() || p_table->pSymbol()->bIs_Tbl_Syn_rep());
+  RASSERT(p_table->pSymbol()->bHasFacet(SF_TBL_SYN) || p_table->pSymbol()->bHasFacet(SF_TBL_SYN_rep));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
