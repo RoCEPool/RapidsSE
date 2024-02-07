@@ -184,7 +184,7 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr)
         break;
       case CK_TERM:
         if (pChild->pSymbol()->bIs_Exp_Col() ||
-            pChild->pSymbol()->bHasFacet(SF_TBL_COL)) {
+            pChild->pSymbol()->bIs_Tbl_Col()) {
 
           // TODO: this rule should be in validate?
           if (!pChild->pSymbol()->bHasType()) {

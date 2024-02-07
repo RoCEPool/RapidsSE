@@ -208,10 +208,10 @@ namespace STORE
 //    bool bIs_Stg_Nm(void);          // Sn
 //    bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
 //    bool bIs_String(void);          // 'abc''
-//    bool bIs_Tbl_Col(void);         // $t.c
-//    bool bIs_Tbl_Nm(void);          // Sn
-//    bool bIs_Tbl_Syn(void);         // c
-//    bool bIs_Tbl_Syn_rep(void);     // C
+    bool bIs_Tbl_Col(void);         // $t.c
+    bool bIs_Tbl_Nm(void);          // Sn
+    bool bIs_Tbl_Syn(void);         // c
+    bool bIs_Tbl_Syn_rep(void);     // C
     bool bIs_Then(void);            // THEN
     bool bIs_Type(void);            // TYPE
     bool bIs_When(void);            // WHEN

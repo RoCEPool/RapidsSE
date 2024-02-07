@@ -480,7 +480,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
 
         }
         else
-        if (xKid.pChild()->bIsCard(CK_TERM) && xKid.pChild()->pSymbol()->bHasFacet(SF_TBL_COL)) {
+        if (xKid.pChild()->bIsCard(CK_TERM) && xKid.pChild()->pSymbol()->bIs_Tbl_Col()) {
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack

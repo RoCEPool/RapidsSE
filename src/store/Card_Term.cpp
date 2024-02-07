@@ -490,7 +490,7 @@ bool Card_Term::bIsTblCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bHasFacet(SF_TBL_COL))
+  if (pSymbol()->bIs_Tbl_Col())
     return true;
 
   return false;
@@ -583,7 +583,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
   if (Card_Term* p_term0 = pCI->Flux.m_pArriving->pDecode_expr_term0(pSymbol_this)) {
     Symbol* pSymbol_term0 = p_term0->pSymbol();
 
-    if (pSymbol_term0->bHasFacet(SF_TBL_COL)) {
+    if (pSymbol_term0->bIs_Tbl_Col()) {
       pSymbol_this->vDeleteFacet(SF_EXP_COL);
       pSymbol_this->vCastFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
@@ -639,7 +639,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! pSymbol_this->bHasFacet(SF_TBL_COL))
+  if (! pSymbol_this->bIs_Tbl_Col())
     return;
 
   Symbol xTblCol_sym;

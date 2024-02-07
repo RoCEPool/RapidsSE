@@ -507,7 +507,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 
   eCK eCard_OP = p_OP_curr->eCard();
   Card_Table* p_table = p_OP_curr->pSub_table();
-  RASSERT(p_table->pSymbol()->bHasFacet(SF_TBL_SYN) || p_table->pSymbol()->bHasFacet(SF_TBL_SYN_rep));
+  RASSERT(p_table->pSymbol()->bIs_Tbl_Syn() || p_table->pSymbol()->bIs_Tbl_Syn_rep());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -683,7 +683,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
       bool bTermSym_a_Is_tblCol = false;
       Symbol*  pTermSym_a = p_expr_a->pGet_term0()->pSymbol();
-      if (pTermSym_a && pTermSym_a->bHasFacet(SF_TBL_COL))
+      if (pTermSym_a && pTermSym_a->bIs_Tbl_Col())
         bTermSym_a_Is_tblCol = true;
 
       if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Matches(pTermSym_a))) {

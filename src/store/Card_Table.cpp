@@ -446,7 +446,7 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
     return true;
 
   // literals are considered within scope
-  if (!p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
+  if (!p_term->pSymbol()->bIs_Tbl_Col()) {
     return true;
   }
 

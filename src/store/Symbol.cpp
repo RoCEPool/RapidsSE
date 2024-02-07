@@ -186,7 +186,7 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
 
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cTblSyn);
 
-  RASSERT(bHasFacet(SF_TBL_SYN));
+  RASSERT(bIs_Tbl_Syn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1705,7 +1705,7 @@ void Symbol::vInc_Tbl_Syn(void)
 
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cSyn + 1);
 
-  RASSERT(bHasFacet(SF_TBL_SYN));
+  RASSERT(bIs_Tbl_Syn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1767,6 +1767,70 @@ bool Symbol::bIs_None(void)
     return false;
 
   if (bIs_None(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a table-column (i.e. $c.n)                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Tbl_Col(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_TBL_COL != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_Tbl_Col(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a table name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Tbl_Nm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_TBL_NM != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_Tbl_Nm(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol a table synonym?  (i.e. c)                                */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Tbl_Syn(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_TBL_SYN != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_Tbl_Syn(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol a table synonym?  (i.e. c)                                */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Tbl_Syn_rep(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_TBL_SYN_rep != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_Tbl_Syn_rep(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -2172,7 +2236,7 @@ Stz* Symbol::szWhatIs(void)
   if (bHasFacet(SF_BOL_FN))       return "BoolFn"_Stz;
   if (bHasFacet(SF_BOUND))        return "Bound"_Stz;
   if (bIs_Exp_Col())      return "StreamOrdinal"_Stz;
-  if (bHasFacet(SF_TBL_COL))      return "ColumnOrdinal"_Stz;
+  if (bIs_Tbl_Col())      return "ColumnOrdinal"_Stz;
   if (bHasFacet(SF_COMMA))        return "Comma"_Stz;
   if (bHasFacet(SF_IDX_COL))      return "IndexColumn"_Stz;
   if (bHasFacet(SF_KEY_COL))      return "KeyOrdinal"_Stz;
@@ -3300,7 +3364,7 @@ void Symbol::vFacet_Tbl_Col(char cTblSyn, i8 iTblCol)
 
   vFacetSprint(SF_TBL_COL, "$$%c.%lld"_Stz, cTblSyn, iTblCol);
 
-  RASSERT(bHasFacet(SF_TBL_COL));
+  RASSERT(bIs_Tbl_Col());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3317,7 +3381,7 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
 
   vFacetSprint(SF_TBL_COL, "%s"_Stz, szTblCol);
 
-  RASSERT(bHasFacet(SF_TBL_COL));
+  RASSERT(bIs_Tbl_Col());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3331,7 +3395,7 @@ void Symbol::vFacet_Tbl_Nm(Stz* szTblNm)
 
   vFacetSprint(SF_TBL_NM,"%s"_Stz,szTblNm);
 
-  RASSERT(bHasFacet(SF_TBL_NM));
+  RASSERT(bIs_Tbl_Nm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3345,7 +3409,7 @@ void Symbol::vFacet_Tbl_Syn(char cTblSyn)
 
   vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cTblSyn);
 
-  RASSERT(bHasFacet(SF_TBL_SYN));
+  RASSERT(bIs_Tbl_Syn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3359,7 +3423,7 @@ void Symbol::vFacet_Tbl_Syn(Stz* szTblSyn)
 
   vFacetSprint(SF_TBL_SYN,"%s"_Stz,szTblSyn);
 
-  RASSERT(bHasFacet(SF_TBL_SYN));
+  RASSERT(bIs_Tbl_Syn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3377,7 +3441,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
   vFacetReset();
   vFacetSprint(SF_TBL_SYN_rep,"$T%c"_Stz, cTableSyn_actual);
 
-  RASSERT(bHasFacet(SF_TBL_SYN_rep));
+  RASSERT(bIs_Tbl_Syn_rep());
 }
 
 /*----------------------------------------------------------------------------*/
