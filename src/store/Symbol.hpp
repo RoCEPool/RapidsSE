@@ -230,7 +230,6 @@ namespace STORE
 
     void vPushFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
 
-    bool bSame(char cArg);
     bool bSame(Stz* szChrSeq);
     void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
 

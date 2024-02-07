@@ -2817,22 +2817,6 @@ void Symbol::vPushFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this card have same symbol as given argument?                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bSame(char cArg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(1 == nFacets());
-
-  if (*xaFacet[0].m_sChrSeq.azChar() == cArg) {
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSame(Stz* szArg)

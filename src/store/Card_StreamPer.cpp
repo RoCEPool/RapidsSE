@@ -427,7 +427,7 @@ bool Card_StreamPer::bHasKnownJoin(char cTblSyn)
   Kid xKid(this);
   while (xKid.bEach()) {
     ASSERT(xKid.pChild()->bIsCard(CK_STREAMHEAD) || xKid.pChild()->bIsCard(CK_STREAMJOIN))
-    if (xKid.pChild()->pSymbol()->bSame(cTblSyn))
+    if (xKid.pChild()->pSymbol()->cTblSyn() == cTblSyn)
       return true;
   }
 
