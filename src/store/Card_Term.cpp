@@ -63,11 +63,11 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     Card_Term* p_term = _pCard_Term(pCard);
     Symbol* pSymbol_term = p_term->pSymbol();
 
-    if (! pSymbol_term->bIs_Nmd_Col())
-      return C_CONTINUE_RECURSION;
-
     if ((pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_o_INDEXJOIN))) &&
         (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT))) ) {
+
+      if (! pSymbol_term->bHasFacet(SF_NMD_COL))
+        return C_CONTINUE_RECURSION;
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
       pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term);
@@ -75,15 +75,14 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       pSymbol_term->vFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
-    else
-		if (_pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
-      pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
-      i8 iItemise = pCI->G.p_expr->iItemise();
-      pSymbol_term->vFacet(SF_ITM_COL, iItemise);
-      return C_CONTINUE_RECURSION;
-    }
 
-    NEVER_REACH;
+    if (! pSymbol_term->bIs_Nmd_Col())
+      return C_CONTINUE_RECURSION;
+
+    pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
+    i8 iItemise = pCI->G.p_expr->iItemise();
+    pSymbol_term->vFacet(SF_ITM_COL, iItemise);
+    return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
