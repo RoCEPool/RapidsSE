@@ -310,11 +310,11 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
                                 ""_Stz,
                                 aCT[eCTType]);
 
-          if (iPrecision != -1) {
-              if (iScale == -1) {
-                  sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
-              } else {
+          if (iPrecision >= 0) {
+              if (iScale >= 0) {
                   sPipeline->vCatSprint(" ( %lld %lld )"_Stz, iPrecision, iScale);
+              } else {
+                  sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
               }
           }
           break;
@@ -407,11 +407,11 @@ void Backend::vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNo
           ""_Stz,
           aCT[eType]);
 
-      if (iPrecision != -1) {
-        if (iScale == -1) {
-          sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
-        } else {
+      if (iPrecision >= 0) {
+        if (iScale >= 0) {
           sPipeline->vCatSprint(" ( %lld %lld )"_Stz, iPrecision, iScale);
+        } else {
+          sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
         }
       }
       break;
@@ -1078,11 +1078,11 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
               ""_Stz,
               aCT[eType]);
 
-          if (iPrecision != -1) {
-            if (iScale == -1) {
-              sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
-            } else {
+          if (iPrecision >= 0) {
+            if (iScale >= 0) {
               sPipeline->vCatSprint(" ( %lld %lld )"_Stz, iPrecision, iScale);
+            } else {
+              sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
             }
           }
           break;
@@ -1660,11 +1660,11 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
               ""_Stz,
               aCT[eType]);
 
-          if (iPrecision != -1) {
-            if (iScale == -1) {
-              sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
-            } else {
+          if (iPrecision >= 0) {
+            if (iScale >= 0) {
               sPipeline->vCatSprint(" ( %lld %lld )"_Stz, iPrecision, iScale);
+            } else {
+              sPipeline->vCatSprint(" ( %lld )"_Stz, iPrecision);
             }
           }
 

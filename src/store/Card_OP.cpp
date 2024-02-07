@@ -1438,9 +1438,9 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
   psRpnExpr->vCatSprint(" type %s"_Stz, aCT[xCast.m_xTypeId.eCTVal()]);
 
 //#ifdef TYPE_DETAILED
-  if (xCast.m_nTypeLength || xCast.m_nTypeScale) {
+  if (xCast.m_nTypeLength >= 0 || xCast.m_nTypeScale >= 0) {
     psRpnExpr->vCatSprint(" ( %lld"_Stz, xCast.m_nTypeLength);
-    if (xCast.m_nTypeScale)
+    if (xCast.m_nTypeScale >= 0)
       psRpnExpr->vCatSprint(" %lld"_Stz, xCast.m_nTypeScale);
     psRpnExpr->vCatSprint(" )"_Stz);
   }

@@ -222,7 +222,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
   Card_OP* p_OP = m_pCI->G.p_OP;
 
-  s2K sExpr;
+  s4K sExpr;
   s2K sConstraint;
 
   eCK eCard = p_OP->eCard();
