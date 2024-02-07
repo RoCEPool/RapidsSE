@@ -180,10 +180,10 @@ namespace STORE
     bool bIs_Exp_Col(void);         // $n
 //    bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
 //    bool bIs_Flt_Lit(void);         // StrLib::bIsFloat()
-    bool bIs_GroupBy(void);         // GROUPBY
-    bool bIs_Idx_Col(void);         // $In
-    bool bIs_Idx_Nm(void);          // Sn
-    bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
+//    bool bIs_GroupBy(void);         // GROUPBY
+//    bool bIs_Idx_Col(void);         // $In
+//    bool bIs_Idx_Nm(void);          // Sn
+//    bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
     bool bIs_Interval_DT(void);     // INTERVAL_DT
     bool bIs_Interval_YM(void);     // INTERVAL_YM
     bool bIs_Itm_Col(void);         // C_n

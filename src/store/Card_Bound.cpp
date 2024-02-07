@@ -298,7 +298,7 @@ Card_Term* Card_Bound::pGet_idxCol(void)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bIs_Idx_Col())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
       return xKid.p_term();
 
   return nullptr;
@@ -313,7 +313,7 @@ Card_Term* Card_Bound::pGet_IfNot_idxCol(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (!xKid.p_term()->pSymbol()->bIs_Idx_Col())
+    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
       return xKid.p_term();
 
   return nullptr;
@@ -369,7 +369,7 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Idx_Col()) {
+  if (pSymbol()->bHasFacet(SF_IDX_COL)) {
     Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
     vValidationPassed();

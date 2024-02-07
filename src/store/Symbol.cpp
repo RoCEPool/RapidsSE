@@ -1725,70 +1725,6 @@ bool Symbol::bIs_Exp_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol GROUPBY ?                                                   */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_GroupBy(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_GROUPBY != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_GroupBy(xaFacet[0].m_sChrSeq))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for an index-column?  (i.e. $In)                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Idx_Col(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_IDX_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Idx_Col(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a index name?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Idx_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_IDX_NM != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Idx_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a integer literal?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Int_Lit(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_INT_LIT != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Int_Lit(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol INTERVAL_DT ?                                               */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Interval_DT(void)
@@ -1883,7 +1819,7 @@ bool Symbol::bIs_Lit(void)
   if (bHasFacet(SF_BOL_LIT)) return true;
   if (bHasFacet(SF_DCM_LIT)) return true;
   if (bHasFacet(SF_FLT_LIT)) return true;
-  if (bIs_Int_Lit()) return true;
+  if (bHasFacet(SF_INT_LIT)) return true;
 
   return false;
 }
@@ -2638,7 +2574,7 @@ Stz* Symbol::szWhatIs(void)
   if (bIs_Exp_Col())      return "StreamOrdinal"_Stz;
   if (bIs_Tbl_Col())      return "ColumnOrdinal"_Stz;
   if (bHasFacet(SF_COMMA))        return "Comma"_Stz;
-  if (bIs_Idx_Col())      return "IndexColumn"_Stz;
+  if (bHasFacet(SF_IDX_COL))      return "IndexColumn"_Stz;
   if (bIs_Key_Col())      return "KeyOrdinal"_Stz;
   if (bIs_Mth_Op())       return "NumbOp"_Stz;
   if (bIs_Parenthesis())  return "Parenthesis"_Stz;
@@ -3247,7 +3183,7 @@ void Symbol::vFacet_GroupBy(Stz* szGroupBy)
 
   vFacetSprint(SF_GROUPBY,"%s"_Stz,szGroupBy);
 
-  RASSERT(bIs_GroupBy());
+  RASSERT(bHasFacet(SF_GROUPBY));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3261,7 +3197,7 @@ void Symbol::vFacet_Idx_Col(i8 iIdxCol)
 
   vFacetSprint(SF_IDX_COL,"$I%lld"_Stz, iIdxCol);
 
-  RASSERT(bIs_Idx_Col());
+  RASSERT(bHasFacet(SF_IDX_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3275,7 +3211,7 @@ void Symbol::vFacet_Idx_Col(Stz* szIdxCol)
 
   vFacetSprint(SF_IDX_COL,"%s"_Stz,szIdxCol);
 
-  RASSERT(bIs_Idx_Col());
+  RASSERT(bHasFacet(SF_IDX_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3289,7 +3225,7 @@ void Symbol::vFacet_Idx_Nm(Stz* szIdxNm)
 
   vFacetSprint(SF_IDX_NM,"%s"_Stz,szIdxNm);
 
-  RASSERT(bIs_Idx_Nm());
+  RASSERT(bHasFacet(SF_IDX_NM));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3303,7 +3239,7 @@ void Symbol::vFacet_Int_Lit(i8 iIntLit)
 
   vFacetSprint(SF_INT_LIT, "%lld"_Stz, iIntLit);
 
-  RASSERT(bIs_Int_Lit());
+  RASSERT(bHasFacet(SF_INT_LIT));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3317,7 +3253,7 @@ void Symbol::vFacet_Int_Lit(Stz* szIntLit)
 
   vFacetSprint(SF_INT_LIT,"%s"_Stz,szIntLit);
 
-  RASSERT(bIs_Int_Lit());
+  RASSERT(bHasFacet(SF_INT_LIT));
 }
 
 /*----------------------------------------------------------------------------*/
