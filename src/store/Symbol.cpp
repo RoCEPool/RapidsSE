@@ -1708,70 +1708,6 @@ void Symbol::vInc_Tbl_Syn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a decimal literal?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Dcm_Lit(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_DCM_LIT != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Dcm_Lit(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a sort direction?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Direction(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_DIRECTION != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Direction(xaFacet[0].m_sChrSeq))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol ELSE?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Else(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_ELSE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Else(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol ENDIF?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_EndIf(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_ENDIF != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_EndIf(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a expr-column?  (i.e. $n)                             */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Exp_Col(void)
@@ -1977,7 +1913,7 @@ bool Symbol::bIs_Lit(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bHasFacet(SF_BOL_LIT)) return true;
-  if (bIs_Dcm_Lit()) return true;
+  if (bHasFacet(SF_DCM_LIT)) return true;
   if (bIs_Flt_Lit()) return true;
   if (bIs_Int_Lit()) return true;
 
@@ -3236,7 +3172,7 @@ void Symbol::vFacet_Dcm_Lit(Stz* szDcmLit)
 
   vFacetSprint(SF_DCM_LIT,"%s"_Stz,szDcmLit);
 
-  RASSERT(bIs_Dcm_Lit());
+  RASSERT(bHasFacet(SF_DCM_LIT));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3250,7 +3186,7 @@ void Symbol::vFacet_Direction(Stz* szDirection)
 
   vFacetSprint(SF_DIRECTION,"%s"_Stz,szDirection);
 
-  RASSERT(bIs_Direction());
+  RASSERT(bHasFacet(SF_DIRECTION));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3264,7 +3200,7 @@ void Symbol::vFacet_Else(Stz* szElse)
 
   vFacetSprint(SF_ELSE,"%s"_Stz,szElse);
 
-  RASSERT(bIs_Else());
+  RASSERT(bHasFacet(SF_ELSE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3278,7 +3214,7 @@ void Symbol::vFacet_EndIf(Stz* szEndIf)
 
   vFacetSprint(SF_ENDIF,"%s"_Stz,szEndIf);
 
-  RASSERT(bIs_EndIf());
+  RASSERT(bHasFacet(SF_ENDIF));
 }
 
 /*----------------------------------------------------------------------------*/

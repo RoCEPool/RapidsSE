@@ -173,10 +173,10 @@ namespace STORE
 //    bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
 //    bool bIs_Comma(void);           // ,
 //    bool bIs_Cross(void);           // CROSS
-    bool bIs_Dcm_Lit(void);         // StrLib::bIsDecimal()
-    bool bIs_Direction(void);       // asc, desc
-    bool bIs_Else(void);            // ELSE
-    bool bIs_EndIf(void);           // ENDIF
+//    bool bIs_Dcm_Lit(void);         // StrLib::bIsDecimal()
+//    bool bIs_Direction(void);       // asc, desc
+//    bool bIs_Else(void);            // ELSE
+//    bool bIs_EndIf(void);           // ENDIF
     bool bIs_Exp_Col(void);         // $n
     bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Flt_Lit(void);         // StrLib::bIsFloat()
