@@ -2881,6 +2881,12 @@ char Symbol::cTblSyn(void)
       && StrLib::bIsAlpha(acThird))
     return acThird;
   else
+  if ('$' == acFirst
+      && 'T' == acSecond
+      && StrLib::bIsAlpha(acThird))
+    return acThird;
+
+  else
     return acFirst;
 }
 

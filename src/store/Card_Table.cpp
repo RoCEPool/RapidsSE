@@ -414,7 +414,7 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
     sName.vToUpper();
 
   if (m_xSymbol.bHasFacets())
-    sName.vCatSprint(" %c"_Stz, pSymbol()->cTblSyn());
+    sName.vCatSprint(" %s"_Stz, pSymbol()->szFacet(SF_TBL_SYN));
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }

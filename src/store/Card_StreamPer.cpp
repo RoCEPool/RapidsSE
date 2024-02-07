@@ -209,13 +209,16 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
   i8 nElements = pPermGen->nElements();
   RASSERT(nTables == pPermGen->nElements());
 
+  char cTblSyn_ith;
+  char cTblSyn_other;
+
   //vTrace("%lld :"_Stz,pPermGen->nPermutations());
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
 
     // get the ith table of this permutation
     i8 i_Table = pPermGen->iElement(i_Elm);
     Card_Table* p_table_ith = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn_ith = p_table_ith->pSymbol()->cTblSyn();
+    cTblSyn_ith = p_table_ith->pSymbol()->cTblSyn();
 
     if ('F' == cTblSyn_ith)
       vDebugPoint();
@@ -283,7 +286,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       // have a join cmpPred which uses the ith table
 
       // get the other table in the cmpPred
-      char cTblSyn_other = xKid.p_rlnConj()->cOtherTable(cTblSyn_ith);
+      cTblSyn_other = xKid.p_rlnConj()->cOtherTable(cTblSyn_ith);
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;

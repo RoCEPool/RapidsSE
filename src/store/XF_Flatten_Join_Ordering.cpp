@@ -193,14 +193,14 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   // 1) Extract tableList from pipeline
 
   m_pCI->G.p_tableList = Card_TableList::pExtractList(pPipeline);
-  //m_pCI->G.p_tableList->vDump(__func__);
+  m_pCI->G.p_tableList->vDump(__func__);
 
   m_pCI->G.pDeck->vAppendChild(m_pCI->G.p_tableList);
 
   // 2) Extract joinPredList from pipeline
 
   m_pCI->G.p_joinPredList = Card_JoinPredList::pExtractList(pPipeline);
-  //m_pCI->G.p_joinPredList->vDump(__func__);
+  m_pCI->G.p_joinPredList->vDump(__func__);
   m_pCI->G.pDeck->vAppendChild(m_pCI->G.p_joinPredList);
 
   if (! m_pCI->G.p_joinPredList->nChildCards()) {
@@ -214,7 +214,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   // 3) Extract filtPredList from pipeline
 
   m_pCI->G.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
-  //m_pCI->G.p_filtPredList->vDump(__func__);
+  m_pCI->G.p_filtPredList->vDump(__func__);
   m_pCI->G.pDeck->vAppendChild(m_pCI->G.p_filtPredList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -222,7 +222,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   Card_StreamSet* p_streamPrmAll =
       Card_StreamSet::pComputeAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
-  //p_streamPrmAll->vDump(__func__);
+  p_streamPrmAll->vDump(__func__);
 
   m_pCI->G.pDeck->vAppendChild((new Card_Section) ->SYM(SF_NOTE,"All Permutations"_Stz));
   Kid xKid(p_streamPrmAll);
@@ -232,7 +232,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   // 5) Remove invalid permutations
 
   p_streamPrmAll->vRemoveInvalid();
-  //p_streamPrmAll->vDump(__func__);
+  p_streamPrmAll->vDump(__func__);
   m_pCI->G.pDeck->vAppendChild((new Card_Section) ->SYM(SF_NOTE,"Valid Permutations"_Stz));
 
   xKid.vEnded();
