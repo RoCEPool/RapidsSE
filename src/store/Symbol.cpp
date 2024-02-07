@@ -1757,22 +1757,6 @@ bool Symbol::bIs_Nmd_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a math operator ?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_None(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_NONE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_None(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Col(void)

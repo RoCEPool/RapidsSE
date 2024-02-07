@@ -194,7 +194,6 @@ namespace STORE
 //    bool bIs_Mth_Op(void);          // +, -, *, /
 //    bool bIs_Negate(void);          // NEGATE
     bool bIs_Nmd_Col(void);         // bIsName() but not bIs_Agg_Fn() etc
-    bool bIs_None(void);            //
 //    bool bIs_Note(void);            // ...any...
 //    bool bIs_Null(void);            // NULL
 //    bool bIs_Parenthesis(void);     // ( or )

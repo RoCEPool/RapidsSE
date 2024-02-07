@@ -376,7 +376,7 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     return;
   }
 
-  RASSERT(pSymbol()->bHasFacet(SF_RLN_OP) || pSymbol()->bIs_None());
+  RASSERT(pSymbol()->bHasFacet(SF_RLN_OP) || ! pSymbol()->nFacets());
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);
