@@ -160,63 +160,13 @@ namespace STORE
 
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
-//    bool bIs_Agg_Fn(void);          // avg, count, ... sum
-//    bool bIs_As(void);              // AS
-//    bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
-//    bool bIs_Bol_Lit(void);         // FALSE, TRUE
-//    bool bIs_Bol_Op(void);          // and, not, or
-//    bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
-//    bool bIs_Brace(void);           // BRACE
-//    bool bIs_Case(void);            // CASE
-//    bool bIs_Cast(void);            // CAST
-//    bool bIs_CastType(void);        // CASTTYPE
-//    bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
-//    bool bIs_Comma(void);           // ,
-//    bool bIs_Cross(void);           // CROSS
-//    bool bIs_Dcm_Lit(void);         // StrLib::bIsDecimal()
-//    bool bIs_Direction(void);       // asc, desc
-//    bool bIs_Else(void);            // ELSE
-//    bool bIs_EndIf(void);           // ENDIF
-    bool bIs_Exp_Col(void);         // $n
-//    bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
-//    bool bIs_Flt_Lit(void);         // StrLib::bIsFloat()
-//    bool bIs_GroupBy(void);         // GROUPBY
-//    bool bIs_Idx_Col(void);         // $In
-//    bool bIs_Idx_Nm(void);          // Sn
-//    bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
-//    bool bIs_Interval_DT(void);     // INTERVAL_DT
-//    bool bIs_Interval_YM(void);     // INTERVAL_YM
-//    bool bIs_Itm_Col(void);         // C_n
-//    bool bIs_Ivl_Fn(void);          // extract_year etc
-//    bool bIs_List_Cnt(void);        // #n
-    bool bIs_Lit(void);             // FALSE, TRUE, ...
-//    bool bIs_Key_Col(void);         // $Kn
-//    bool bIs_Mth_Op(void);          // +, -, *, /
-//    bool bIs_Negate(void);          // NEGATE
-    bool bIs_Nmd_Col(void);         // bIsName() but not bIs_Agg_Fn() etc
-//    bool bIs_Note(void);            // ...any...
-//    bool bIs_Null(void);            // NULL
-//    bool bIs_Parenthesis(void);     // ( or )
-//    bool bIs_Rln_Op(void);          // <, <=, ... >
-//    bool bIs_Sqy_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
-//    bool bIs_Sqy_No(void);          // __sq%02lld
-//    bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
-//    bool bIs_Sqy_Prm(void);         // %n
-//    bool bIs_Sqy_Rsl(void);         // __n
-//    bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
-//    bool bIs_Stg_Nm(void);          // Sn
-//    bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
-//    bool bIs_String(void);          // 'abc''
-    bool bIs_Tbl_Col(void);         // $t.c
-//    bool bIs_Tbl_Nm(void);          // Sn
-//    bool bIs_Tbl_Syn(void);         // c
-//    bool bIs_Tbl_Syn_rep(void);     // C
-//    bool bIs_Then(void);            // THEN
-//    bool bIs_Type(void);            // TYPE
-//    bool bIs_When(void);            // WHEN
-//    bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
-    bool bIs_SF_Col(void);          // SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL
+    bool bIs_Exp_Col(void);         // $n
+    bool bIs_Nmd_Col(void);         // bIsName() but not bIs_Agg_Fn() etc
+    bool bIs_Tbl_Col(void);         // $t.c
+
+    bool bIs_Col(void);          // SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL
+    bool bIs_Lit(void);             // FALSE, TRUE, ...
 
     bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
     bool bMatches(eSF eFacet, Symbol* pSymbol_arg);

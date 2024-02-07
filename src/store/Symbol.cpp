@@ -1775,7 +1775,7 @@ bool Symbol::bIs_Tbl_Col(void)
 /*----------------------------------------------------------------------------*/
 /* is the symbol a SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_SF_Col(void)
+bool Symbol::bIs_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

@@ -756,7 +756,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
-    if (m_xSymbol.bIs_SF_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
+    if (m_xSymbol.bIs_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
       if (! m_xSymbol.bHasType()) {
          vMark("?"_Stz,"t"_Stz);
          pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);
