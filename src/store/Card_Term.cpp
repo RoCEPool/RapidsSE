@@ -124,7 +124,7 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
 
     //pCI->vAncestorDump(pCard);
 
-    if (!pCard->pSymbol()->bIs_Nmd_Col())
+    if (!pCard->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
     return C_CONTINUE_RECURSION;
