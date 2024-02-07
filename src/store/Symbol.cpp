@@ -1725,38 +1725,6 @@ bool Symbol::bIs_Exp_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a sort direction?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Fld_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_FLD_NM != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Fld_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a float literal?                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Flt_Lit(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_FLT_LIT != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Flt_Lit(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol GROUPBY ?                                                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_GroupBy(void)
@@ -1914,7 +1882,7 @@ bool Symbol::bIs_Lit(void)
 
   if (bHasFacet(SF_BOL_LIT)) return true;
   if (bHasFacet(SF_DCM_LIT)) return true;
-  if (bIs_Flt_Lit()) return true;
+  if (bHasFacet(SF_FLT_LIT)) return true;
   if (bIs_Int_Lit()) return true;
 
   return false;
@@ -3251,7 +3219,7 @@ void Symbol::vFacet_Fld_Nm(Stz* szFldNm)
 
   vFacetSprint(SF_FLD_NM,"%s"_Stz,szFldNm);
 
-  RASSERT(bIs_Fld_Nm());
+  RASSERT(bHasFacet(SF_FLD_NM));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3265,7 +3233,7 @@ void Symbol::vFacet_Flt_Lit(Stz* szFltLit)
 
   vFacetSprint(SF_FLT_LIT,"%s"_Stz,szFltLit);
 
-  RASSERT(bIs_Flt_Lit());
+  RASSERT(bHasFacet(SF_FLT_LIT));
 }
 
 /*----------------------------------------------------------------------------*/
