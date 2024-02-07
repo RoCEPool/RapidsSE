@@ -1274,7 +1274,7 @@ void Symbol::vDump(void)
          );
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++)
-    vTrace("%s%-12s:%lld %-18s~%lld\n"_Stz
+    vTrace("%s%-12s:%lld %s~%lld\n"_Stz
            ,Stz::szTab(1)
            ,aSF[xaFacet[i_Facet].m_eFacet]
            ,(i8)xaFacet[i_Facet].m_eFacet
