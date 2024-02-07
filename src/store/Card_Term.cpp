@@ -70,16 +70,10 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
         (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT))) ) {
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
-      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term))) {
-        if (! pSymbol_term->bHasFacet(SF_ITM_COL)) {
-          i8 iItemise = pCI->G.p_expr->iItemise();
-          pSymbol_term->vFacet(SF_ITM_COL, iItemise);
-        }
-        else
-          vDebugPoint();
-        return C_CONTINUE_RECURSION;
-      }
-      NEVER_REACH;
+      pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term);
+      i8 iItemise = pCI->G.p_expr->iItemise();
+      pSymbol_term->vFacet(SF_ITM_COL, iItemise);
+      return C_CONTINUE_RECURSION;
     }
     else
 		if (_pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
