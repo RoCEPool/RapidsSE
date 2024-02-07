@@ -75,6 +75,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
           i8 iItemise = pCI->G.p_expr->iItemise();
           pSymbol_term->vFacet(SF_ITM_COL, iItemise);
         }
+        else
+          vDebugPoint();
         return C_CONTINUE_RECURSION;
       }
       NEVER_REACH;
