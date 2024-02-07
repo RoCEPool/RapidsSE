@@ -1008,8 +1008,8 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
   char acThird  = szArg->azChar()[2];
   char acFourth = szArg->azChar()[3];
 
-  if ('$' == acFirst
-      'T' == acSecond
+  if ('$' == acFirst &&
+      'T' == acSecond &&
       StrLib::bIsAlpha(acThird) &&
       '\0' == acFourth)
     return true;
@@ -1040,8 +1040,8 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
   char acThird  = szArg->azChar()[2];
   char acFourth = szArg->azChar()[3];
 
-  if ('$' == acFirst
-      'T' == acSecond
+  if ('$' == acFirst &&
+      'T' == acSecond &&
       StrLib::bIsUpperCase(acThird) &&
       '\0' == acFourth)
     return true;
@@ -4250,7 +4250,7 @@ void Symbol::vFacet_Tbl_Syn(char cTblSyn)
 #ifdef Z_DOLLAR_TBLSYN
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_TBL_SYN,$T%c"_Stz, cTblSyn);
+  vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cTblSyn);
 
   RASSERT(bIs_Tbl_Syn());
 #else
