@@ -188,6 +188,9 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
 #ifdef Z_DOLLAR_TBLSYN
+  vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cTblSyn);
+
+  RASSERT(bIs_Tbl_Syn());
 #else
   vFacetSprint(SF_TBL_SYN,"%c"_Stz, cTblSyn);
 
@@ -1000,6 +1003,18 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
   _static_
 
 #ifdef Z_DOLLAR_TBLSYN
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+
+  if ('$' == acFirst
+      'T' == acSecond
+      StrLib::bIsAlpha(acThird) &&
+      '\0' == acFourth)
+    return true;
+
+  return false;
 #else
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
@@ -1020,6 +1035,19 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
   _static_
 
 #ifdef Z_DOLLAR_TBLSYN
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+
+  if ('$' == acFirst
+      'T' == acSecond
+      StrLib::bIsUpperCase(acThird) &&
+      '\0' == acFourth)
+    return true;
+
+  return false;
+
 #else
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
@@ -1726,6 +1754,13 @@ void Symbol::vInc_Tbl_Syn(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
 #ifdef Z_DOLLAR_TBLSYN
+  RASSERT(SF_TBL_SYN == xaFacet[0].m_eFacet);
+
+  char cSyn = cTblSyn();
+
+  vFacetSprint(SF_TBL_SYN,"$T%c"_Stz, cSyn + 1);
+
+  RASSERT(bIs_Tbl_Syn());
 #else
   RASSERT(bHasFacets());
 
@@ -4213,6 +4248,11 @@ void Symbol::vFacet_Tbl_Syn(char cTblSyn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
 #ifdef Z_DOLLAR_TBLSYN
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_TBL_SYN,$T%c"_Stz, cTblSyn);
+
+  RASSERT(bIs_Tbl_Syn());
 #else
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
@@ -4249,6 +4289,8 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
 #ifdef Z_DOLLAR_TBLSYN
+  vFacetReset();
+  vFacetSprint(SF_TBL_SYN_rep,"$T%c"_Stz, cTableSyn_actual);
 #else
   vFacetReset();
   vFacetSprint(SF_TBL_SYN_rep,"%c"_Stz, cTableSyn_actual);
