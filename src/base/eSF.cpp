@@ -57,7 +57,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_NULL"_Stz,
 
   /* */ "SF_PARENTHESIS"_Stz,
-  /* */ "SF_PAY_COL"_Stz,
 
   /* */ "SF_RLN_OP"_Stz,
 

@@ -55,7 +55,6 @@ enum eSF // symbol facet
   /* */ SF_NULL,        // Null                : NULL
 
   /* */ SF_PARENTHESIS, // Parenthesis         : (, )
-  /* */ SF_PAY_COL,     // Key Column no       : $Pn
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
