@@ -2817,22 +2817,6 @@ void Symbol::vPushFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bSame(Stz* szArg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(1 == nFacets());
-
-  if (xaFacet[0].m_sChrSeq.bSame(szArg)) {
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set facet                                                                  */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetFacet(eSF eFacet, Stz* szFacet)

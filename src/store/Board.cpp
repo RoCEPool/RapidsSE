@@ -160,8 +160,8 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     pCI->Sqy.m_pConj_sqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
-    if (p_conj->pSymbol()->bSame("exists"_Stz) ||
-        p_conj->pSymbol()->bSame("notExists"_Stz)) {
+    if (p_conj->pSymbol()->bHasFacet("exists"_Stz) ||
+        p_conj->pSymbol()->bHasFacet("notExists"_Stz)) {
 
       RASSERT(p_conj->bIsSqyOp());
 
@@ -170,7 +170,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
       return C_TERMINATE_RECURSION;
     }
 
-    if (p_conj->pSymbol()->bSame("in"_Stz) || p_conj->pSymbol()->bSame("notIn"_Stz)) {
+    if (p_conj->pSymbol()->bHasFacet("in"_Stz) || p_conj->pSymbol()->bHasFacet("notIn"_Stz)) {
       RASSERT(p_conj->bIsSqyOp());
       pCI->Sqy.m_pTerm_sqyArg = p_conj->pGetTerm(2);
       return C_TERMINATE_RECURSION;

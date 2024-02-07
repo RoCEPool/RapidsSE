@@ -462,7 +462,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
       if (!p_conj->pSymbol()->Y_bHas(P_CrlKeyTest))
         return;
 
-      RASSERT(p_conj->pSymbol()->bSame("=="_Stz));
+      RASSERT(p_conj->pSymbol()->bHasFacet("=="_Stz));
 
       Kid xKid(p_conj);
       while (xKid.bEach()) {

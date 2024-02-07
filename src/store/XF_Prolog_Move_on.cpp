@@ -95,7 +95,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     }
 
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
-    if (p_term_0->pSymbol()->bSame("CROSS"_Stz))
+    if (p_term_0->pSymbol()->bHasFacet("CROSS"_Stz))
       continue;
 
     if (! m_pCI->G.p_where) {

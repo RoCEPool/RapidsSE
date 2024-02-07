@@ -209,7 +209,7 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_conj);
-    if (bSkipFoldExpr && p_term->pSymbol()->bSame("$1"_Stz))
+    if (bSkipFoldExpr && p_term->pSymbol()->bHasFacet("$1"_Stz))
       return C_CONTINUE_RECURSION;
 
     if (p_term->pSymbol()->bIs_Exp_Col()) {

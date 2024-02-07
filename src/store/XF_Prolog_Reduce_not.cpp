@@ -75,11 +75,11 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
       if (! xKid.bMore())
         break;
 
-      if (p_term->pSymbol()->bSame("exists"_Stz)) {
+      if (p_term->pSymbol()->bHasFacet("exists"_Stz)) {
 
         RASSERT(xKid.bEach(CK_TERM));
         Card_Term* p_term_next = xKid.p_term();
-        if (p_term_next->pSymbol()->bSame("not"_Stz)) {
+        if (p_term_next->pSymbol()->bHasFacet("not"_Stz)) {
           xKid.vBackstep();
           m_pCI->G.p_rpnCalc->vRemoveChild(p_term_next);
           p_term->SYM(SF_SQY_OP,"notExists"_Stz);
@@ -88,11 +88,11 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
         continue;
       }
 
-      if (xKid.p_term()->pSymbol()->bSame("in"_Stz)) {
+      if (xKid.p_term()->pSymbol()->bHasFacet("in"_Stz)) {
 
         RASSERT(xKid.bEach(CK_TERM));
         Card_Term* p_term_next = xKid.p_term();
-        if (p_term_next->pSymbol()->bSame("not"_Stz)) {
+        if (p_term_next->pSymbol()->bHasFacet("not"_Stz)) {
           xKid.vBackstep();
           m_pCI->G.p_rpnCalc->vRemoveChild(p_term_next);
           p_term->SYM(SF_SQY_OP,"notIn"_Stz);

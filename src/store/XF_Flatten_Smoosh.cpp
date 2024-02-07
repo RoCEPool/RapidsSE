@@ -101,12 +101,12 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->G.p_boolPred = pCI->G.p_where->pSub_boolPred();
   pCI->G.p_rlnConj = pCI->G.p_boolPred->pFind_rlnConj_With_sqyCall();
 
-  if (pCI->G.p_rlnConj->pSymbol()->bSame("in"_Stz) ||
-      pCI->G.p_rlnConj->pSymbol()->bSame("exists"_Stz))
+  if (pCI->G.p_rlnConj->pSymbol()->bHasFacet("in"_Stz) ||
+      pCI->G.p_rlnConj->pSymbol()->bHasFacet("exists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyExists);
   else
-  if (pCI->G.p_rlnConj->pSymbol()->bSame("notIn"_Stz) ||
-      pCI->G.p_rlnConj->pSymbol()->bSame("notExists"_Stz))
+  if (pCI->G.p_rlnConj->pSymbol()->bHasFacet("notIn"_Stz) ||
+      pCI->G.p_rlnConj->pSymbol()->bHasFacet("notExists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyNotExists);
 
   pCI->Flux.m_pArriving = p_emitted_table;

@@ -260,7 +260,7 @@ bool Card_CONJ::bIsCorrConj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!pSymbol()->bSame("=="_Stz))
+  if (!pSymbol()->bHasFacet("=="_Stz))
     return false;
 
   i8 nChildren = nChildCards();
@@ -284,7 +284,7 @@ bool Card_CONJ::bIsJoinConj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! pSymbol()->bSame("=="_Stz))
+  if (! pSymbol()->bHasFacet("=="_Stz))
     return false;
 
   i8 nChildren = nChildCards();
@@ -334,7 +334,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bSame("exists"_Stz)) {
+  if (pSymbol()->bHasFacet("exists"_Stz)) {
 
    // pCI->vPrintBoard(__func__,__LINE__);
 
@@ -362,7 +362,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     return;
   }
 
-  if (pSymbol()->bSame("in"_Stz)) {
+  if (pSymbol()->bHasFacet("in"_Stz)) {
 
     SYM(SF_RLN_OP,"=="_Stz);
 
@@ -371,7 +371,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
-    ASSERT(p_term_head->pSymbol()->bSame("#1"_Stz)); //temp
+    ASSERT(p_term_head->pSymbol()->bHasFacet("#1"_Stz)); //temp
 
     if (p_term) {
       Symbol x_Symbol_expCol1;
@@ -393,7 +393,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     return;
   }
 
-  if (pSymbol()->bSame("notIn"_Stz)) {
+  if (pSymbol()->bHasFacet("notIn"_Stz)) {
 
     SYM(SF_RLN_OP,"=="_Stz);
 
@@ -402,7 +402,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
-    ASSERT(p_term_head->pSymbol()->bSame("#1"_Stz)); //temp
+    ASSERT(p_term_head->pSymbol()->bHasFacet("#1"_Stz)); //temp
 
     Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
     if (p_term)

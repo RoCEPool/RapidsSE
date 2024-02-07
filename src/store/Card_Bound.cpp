@@ -134,20 +134,20 @@ bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
 {
   _static_
 
-  if (pBound->bSame("BOUND"_Stz))
-    if (pRelnOp->bSame("="_Stz) || pRelnOp->bSame("=="_Stz))
+  if (pBound->bHasFacet("BOUND"_Stz))
+    if (pRelnOp->bHasFacet("="_Stz) || pRelnOp->bHasFacet("=="_Stz))
       return true;
     else
       return false;
   else
-  if (pBound->bSame("LBOUND"_Stz))
-    if (pRelnOp->bSame(">"_Stz) || pRelnOp->bSame(">="_Stz))
+  if (pBound->bHasFacet("LBOUND"_Stz))
+    if (pRelnOp->bHasFacet(">"_Stz) || pRelnOp->bHasFacet(">="_Stz))
       return true;
     else
       return false;
   else
-  if (pBound->bSame("UBOUND"_Stz))
-    if (pRelnOp->bSame("<="_Stz) || pRelnOp->bSame("<"_Stz))
+  if (pBound->bHasFacet("UBOUND"_Stz))
+    if (pRelnOp->bHasFacet("<="_Stz) || pRelnOp->bHasFacet("<"_Stz))
       return true;
     else
       return false;
@@ -257,7 +257,7 @@ bool Card_Bound::bIsEBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bSame("=="_Stz))
+  if (pSymbol()->bHasFacet("=="_Stz))
     return true;
 
   return false;
@@ -270,7 +270,7 @@ bool Card_Bound::bIsLBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bSame(">"_Stz) || pSymbol()->bSame(">="_Stz))
+  if (pSymbol()->bHasFacet(">"_Stz) || pSymbol()->bHasFacet(">="_Stz))
     return true;
 
   return false;
@@ -283,7 +283,7 @@ bool Card_Bound::bIsUBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bSame("<"_Stz) || pSymbol()->bSame("<="_Stz))
+  if (pSymbol()->bHasFacet("<"_Stz) || pSymbol()->bHasFacet("<="_Stz))
     return true;
 
   return false;

@@ -888,7 +888,7 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
   }
 
   if (p_indexJoin->pSub_outerJoin()) {
-    if (p_indexJoin->pSub_outerJoin()->pSymbol()->bSame("LEFT_OUTER"_Stz)) {
+    if (p_indexJoin->pSub_outerJoin()->pSymbol()->Symbol::bHasFacet("LEFT_OUTER"_Stz)) {
       psRpnExpr->vCatSprint(" %s"_Stz, "LEFT_OUTER"_Stz);
     }
   }

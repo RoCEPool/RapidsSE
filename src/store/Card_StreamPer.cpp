@@ -494,7 +494,7 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
       continue;
 
     Card_JoinCast* p_joinCast = xKid.p_streamJoin()->pSub_joinCast();
-    if (p_joinCast && ! p_joinCast->pSymbol()->bSame("XK_UNICAST"_Stz))
+    if (p_joinCast && ! p_joinCast->pSymbol()->bHasFacet("XK_UNICAST"_Stz))
       return false;
 
     if (xKid.pChild()->pSymbol()->cTblSyn() == cTblSyn_prev)
