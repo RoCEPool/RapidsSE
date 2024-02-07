@@ -68,28 +68,22 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
     if ((pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_o_INDEXJOIN))) &&
         (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT))) ) {
-      //pCI->G.p_indexJoin->vDump(__func__);
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
       if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term))) {
-        if (! p_term->pSymbol()->bHasFacet(SF_ITM_COL)) {
-          s256 sItmCol;
-          sItmCol.vSprint("C%lld_%s"_Stz,
-                          pCI->G.p_expr->iItemise(),
-                          pCI->G.p_expr->szFacet(SF_NMD_COL));
-          p_term->pSymbol()->vPushFacet(SF_ITM_COL, sItmCol.szStz());
+        if (! pSymbol_term->bHasFacet(SF_ITM_COL)) {
+          i8 iItemise = pCI->G.p_expr->iItemise();
+          pSymbol_term->vFacet(SF_ITM_COL, iItemise);
         }
         return C_CONTINUE_RECURSION;
       }
       NEVER_REACH;
     }
     else
-		// getting build error on AWS. ALka changed this : 22/10/23
-    //if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
 		if (_pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
-      Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
-      i8 iItemise = p_expr->iItemise();
-      p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
+      pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
+      i8 iItemise = pCI->G.p_expr->iItemise();
+      pSymbol_term->vFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
 
