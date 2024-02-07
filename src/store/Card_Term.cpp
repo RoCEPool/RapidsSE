@@ -59,15 +59,11 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
     if (pCI->pAncestorFind(CK_o_KEYEXISTS) || pCI->pAncestorFind(CK_o_KEYNOTEXISTS))
       return C_CONTINUE_RECURSION;
-//    if (pCI->pAncestorFind(CK_s_CONSTRAINT))ø
-//      return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(pCard);
+    Symbol* pSymbol_term = p_term->pSymbol();
 
-    if (p_term->pSymbol()->szFacet(SF_NONE)->bSame("O_COMMENT"_Stz))
-      vDebugPoint();
-
-    if (! pCard->pSymbol()->bIs_Nmd_Col())
+    if (! pSymbol_term->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
     if ((pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_o_INDEXJOIN))) &&
@@ -75,17 +71,14 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       //pCI->G.p_indexJoin->vDump(__func__);
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
-      Symbol* pSymbol_term = p_term->pSymbol();
       if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term))) {
-         Symbol oSymbol_itmCol;
-        s256 sItmCol;
-        sItmCol.vSprint("C%lld_%s"_Stz,
-                        pCI->G.p_expr->iItemise(),
-                        pCI->G.p_expr->szFacet(SF_NMD_COL));
-
-        if (! p_term->pSymbol()->bHasFacet(SF_ITM_COL))
-          p_term->pSymbol()->vPushFacet(SF_ITM_COL,sItmCol.szStz());
-
+        if (! p_term->pSymbol()->bHasFacet(SF_ITM_COL)) {
+          s256 sItmCol;
+          sItmCol.vSprint("C%lld_%s"_Stz,
+                          pCI->G.p_expr->iItemise(),
+                          pCI->G.p_expr->szFacet(SF_NMD_COL));
+          p_term->pSymbol()->vPushFacet(SF_ITM_COL, sItmCol.szStz());
+        }
         return C_CONTINUE_RECURSION;
       }
       NEVER_REACH;
