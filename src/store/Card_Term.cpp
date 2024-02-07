@@ -240,7 +240,7 @@ void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
     return;
   }
 
-  if (pSymbol_term->bIs_Agg_Fn()) {
+  if (pSymbol_term->bHasFacet(SF_AGG_FN)) {
     Stz* szFacet_aggFn = pSymbol_term->szFacet(SF_AGG_FN);
 
     if (szFacet_aggFn->bSame("COUNT"_Stz)) {
@@ -366,7 +366,7 @@ eTE Card_Term::eEvalTerm(void)
   }
 
        if (pSymbol()->bIs_Rln_Op())     return TE_RELNOP;
-  else if (pSymbol()->bIs_Bol_Fn())     return TE_BOOLFN;
+  else if (pSymbol()->bHasFacet(SF_BOL_FN))     return TE_BOOLFN;
 
   else return TE_OTHER;
 }

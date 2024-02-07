@@ -160,13 +160,13 @@ namespace STORE
 
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
-    bool bIs_Agg_Fn(void);          // avg, count, ... sum
-    bool bIs_As(void);              // AS
-    bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
-    bool bIs_Bol_Lit(void);         // FALSE, TRUE
-    bool bIs_Bol_Op(void);          // and, not, or
-    bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
-    bool bIs_Brace(void);           // BRACE
+//    bool bIs_Agg_Fn(void);          // avg, count, ... sum
+//    bool bIs_As(void);              // AS
+//    bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
+//    bool bIs_Bol_Lit(void);         // FALSE, TRUE
+//    bool bIs_Bol_Op(void);          // and, not, or
+//    bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
+//    bool bIs_Brace(void);           // BRACE
     bool bIs_Case(void);            // CASE
     bool bIs_Cast(void);            // CAST
     bool bIs_CastType(void);        // CASTTYPE

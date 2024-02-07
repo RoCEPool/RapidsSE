@@ -247,7 +247,7 @@ bool Card_CONJ::bIsBoolFn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Bol_Fn())
+  if (pSymbol()->bHasFacet(SF_BOL_FN))
     return true;
 
   return false;

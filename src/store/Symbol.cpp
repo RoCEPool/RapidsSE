@@ -1708,118 +1708,6 @@ void Symbol::vInc_Tbl_Syn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol an aggregate op?                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Agg_Fn(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_AGG_FN != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Agg_Fn(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_As(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_AS != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_As(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a boolean function?                                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Bol_Fn(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_BOL_FN != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Bol_Fn(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a boolean literal?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Bol_Lit(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_BOL_LIT != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Bol_Lit(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a boolean operator?                                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Bol_Op(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_BOL_OP != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Bol_Op(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a bound?                                                    */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Bound(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_BOUND != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Bound(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a bound?                                                    */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Brace(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_BRACE != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Brace(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for CASE?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Case(void)
@@ -2184,7 +2072,7 @@ bool Symbol::bIs_Lit(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Bol_Lit()) return true;
+  if (bHasFacet(SF_BOL_LIT)) return true;
   if (bIs_Dcm_Lit()) return true;
   if (bIs_Flt_Lit()) return true;
   if (bIs_Int_Lit()) return true;
@@ -2936,9 +2824,9 @@ Stz* Symbol::szWhatIs(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Agg_Fn())       return "AggOp"_Stz;
-  if (bIs_Bol_Fn())       return "BoolFn"_Stz;
-  if (bIs_Bound())        return "Bound"_Stz;
+  if (bHasFacet(SF_AGG_FN))       return "AggOp"_Stz;
+  if (bHasFacet(SF_BOL_FN))       return "BoolFn"_Stz;
+  if (bHasFacet(SF_BOUND))        return "Bound"_Stz;
   if (bIs_Exp_Col())      return "StreamOrdinal"_Stz;
   if (bIs_Tbl_Col())      return "ColumnOrdinal"_Stz;
   if (bIs_Comma())        return "Comma"_Stz;
@@ -3262,7 +3150,7 @@ void Symbol::vFacet_Agg_Fn(Stz* szAggFn)
 
   vFacetSprint(SF_AGG_FN,"%s"_Stz,szAggFn);
 
-  RASSERT(bIs_Agg_Fn());
+  RASSERT(bHasFacet(SF_AGG_FN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3276,7 +3164,7 @@ void Symbol::vFacet_As(Stz* szAs)
 
   vFacetSprint(SF_AS,"%s"_Stz,szAs);
 
-  RASSERT(bIs_As());
+  RASSERT(bHasFacet(SF_AS));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3290,7 +3178,7 @@ void Symbol::vFacet_Bol_Fn(Stz* szBolFn)
 
   vFacetSprint(SF_BOL_FN,"%s"_Stz,szBolFn);
 
-  RASSERT(bIs_Bol_Fn());
+  RASSERT(bHasFacet(SF_BOL_FN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3304,7 +3192,7 @@ void Symbol::vFacet_Bol_Lit(Stz* szBolLit)
 
   vFacetSprint(SF_BOL_LIT,"%s"_Stz,szBolLit);
 
-  RASSERT(bIs_Bol_Lit());
+  RASSERT(bHasFacet(SF_BOL_LIT));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3318,7 +3206,7 @@ void Symbol::vFacet_Bol_Op(Stz* szBolOp)
 
   vFacetSprint(SF_BOL_OP,"%s"_Stz,szBolOp);
 
-  RASSERT(bIs_Bol_Op());
+  RASSERT(bHasFacet(SF_BOL_OP));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3332,7 +3220,7 @@ void Symbol::vFacet_Bound(Stz* szBound)
 
   vFacetSprint(SF_BOUND,"%s"_Stz,szBound);
 
-  RASSERT(bIs_Bound());
+  RASSERT(bHasFacet(SF_BOUND));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3346,7 +3234,7 @@ void Symbol::vFacet_Brace(Stz* szBrace)
 
   vFacetSprint(SF_BRACE,"%s"_Stz,szBrace);
 
-  RASSERT(bIs_Brace());
+  RASSERT(bHasFacet(SF_BRACE));
 }
 
 /*----------------------------------------------------------------------------*/
