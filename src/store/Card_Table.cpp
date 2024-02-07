@@ -293,10 +293,6 @@ void Card_Table::vDerive_bounds_From_filter(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bSame('I'))
-    vDebugPoint();
-
-
   Card_BoolPred* p_boolPred = pCI->G.p_filter->pSub_boolPred();
   RASSERT(1 == p_boolPred->nChildCards());
   Card_CONJ* p_conj_root = p_boolPred->pRoot_conj();
