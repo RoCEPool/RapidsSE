@@ -117,8 +117,7 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   bcdArg2.m_iAsI8 = *(--(*ppaW));
   bcdArg1.m_iAsI8 = *(--(*ppaW));
 
-  const i8 iPrecMax = 5;
-  //const i8 iPrecMax = C_MAX_BCD_PRECISION;
+  const i8 iPrecMax = C_MAX_BCD_PRECISION;
 
   i8 iPrecArg1  = iPrecision(bcdArg1.m_iMantissa);
   i8 iPrecArg2  = iPrecision(bcdArg2.m_iMantissa);
@@ -154,8 +153,8 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
 //    printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult);
 
-  if (aDynamicT->m_iErrorCode != EC_NONE |
-    bcdArg1.m_iAsI8 == C_DATUM_NULL |
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+    bcdArg1.m_iAsI8 == C_DATUM_NULL ||
     bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
 
@@ -280,164 +279,182 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 }
 
-#define _DIV_BCDBCD(eErrorCode)                                            \
-  {                                                                        \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-      bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
-      bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                          \
-        *paW++ = bcdArg1.m_iAsI8;                                          \
-        *paW++ = bcdArg2.m_iAsI8;                                          \
-        _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                                \
-        bcdArg2.m_iAsI8 = *(--paW);                                        \
-        bcdArg1.m_iAsI8 = *(--paW);                                        \
-      }                                                                    \
-                                                                           \
-      if(eErrorCode != EC_NONE) {                                        \
-        *paW++ = C_DATUM_NULL;                                           \
-      }                                                                  \
-      else {                                                             \
-        eErrorCode = _OF_BCDDIV;                                         \
-        if(eErrorCode != EC_NONE) {                                      \
-          *paW++ = C_DATUM_NULL;                                         \
-        }                                                                \
-        else {                                                           \
-          fltArg1.m_dFlt = ((d8)bcdArg1.m_iMantissa) / ((d8)bcdArg2.m_iMantissa); \
-          *paW++ = bcdArg1.m_uScale + 1;                                 \
-          _PSH_FLT(fltArg1.m_dFlt)                                       \
-          _FLT_TOBCD_TO_SCALE(eErrorCode)                                \
-          _ROUND_BCD(eErrorCode)                                         \
-          if(eErrorCode != EC_NONE) {                                    \
-            --paW;                                                       \
-            *paW++ = C_DATUM_NULL;                                       \
-          }                                                              \
-        }                                                                \
-     }                                                                   \
-   }                                                                     \
- }
+static inline void _DIV_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Bcd_T bcdArg1;
+  union Bcd_T bcdArg2;
+  union Flt_T fltArg1;
 
-#define _MUL_BCDBCD(eErrorCode)                                          \
-{                                                                        \
-  bcdArg2.m_iAsI8 = *(--paW);                                            \
-  bcdArg1.m_iAsI8 = *(--paW);                                            \
-  if (eErrorCode != EC_NONE ||                                           \
-      bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-      bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else {                                                                 \
-    eErrorCode = _OF_BCDMUL;                                             \
-    if (eErrorCode != EC_NONE) {                                         \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else {                                                               \
-      i8 iScaleNew = bcdArg1.m_uScale > bcdArg2.m_uScale ? bcdArg1.m_uScale : bcdArg2.m_uScale;  \
-      i8 iResult = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;            \
-      iScale = bcdArg1.m_uScale + bcdArg2.m_uScale;                      \
-      if (iScale != iScaleNew) {                                         \
-        bcdArg1.m_iMantissa = iResult / aDynamicT->m_iaPow10[iScale - iScaleNew - 1]; \
-        bcdArg1.m_uScale = iScaleNew + 1;                                \
-        *paW++ = bcdArg1.m_iAsI8;                                        \
-        _ROUND_BCD(eErrorCode)                                           \
-      }                                                                  \
-      else {                                                             \
-        bcdArg1.m_iMantissa = iResult;                                   \
-        bcdArg1.m_uScale = iScaleNew;                                    \
-       *paW++ = bcdArg1.m_iAsI8;                                         \
-       }                                                                 \
-    }                                                                    \
-  }                                                                      \
+  bcdArg2.m_iAsI8 = *(--(*ppaW));
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode!= EC_NONE ||
+    bcdArg1.m_iAsI8 == C_DATUM_NULL ||
+    bcdArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
+      *(*ppaW)++ = bcdArg1.m_iAsI8;
+      *(*ppaW)++ = bcdArg2.m_iAsI8;
+      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
+      bcdArg2.m_iAsI8 = *(--(*ppaW));
+      bcdArg1.m_iAsI8 = *(--(*ppaW));
+    }
+
+    if(aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      aDynamicT->m_iErrorCode = _OF_BCDDIV;
+      if(aDynamicT->m_iErrorCode != EC_NONE) {
+        *(*ppaW)++ = C_DATUM_NULL;
+      }
+      else {
+        fltArg1.m_dFlt = ((d8)bcdArg1.m_iMantissa) / ((d8)bcdArg2.m_iMantissa);
+        *(*ppaW)++ = bcdArg1.m_uScale + 1;
+        *(*ppaW)++ = fltArg1.m_iAsI8;
+
+        vFltToBcdToScale(ppaW, aDynamicT);
+        vRoundBcd(ppaW);
+
+        if(aDynamicT->m_iErrorCode != EC_NONE) {
+          --(*ppaW);
+          *(*ppaW)++ = C_DATUM_NULL;
+        }
+      }
+    }
+  }
 }
 
-#define _NEG_BCD(eErrorCode)                                               \
-  {                                                                        \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-    if (eErrorCode != EC_NONE ||                                           \
-       bcdArg1.m_iAsI8 == C_DATUM_NULL) {                                  \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      bcdArg1.m_iMantissa = - bcdArg1.m_iMantissa;                         \
-      *paW++ = bcdArg1.m_iAsI8;                                            \
-    }                                                                      \
-  }
+static inline void _MUL_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Bcd_T bcdArg1;
+  union Bcd_T bcdArg2;
+  i8 iScale;
 
-#define _SUB_BCDBCD(eErrorCode)                                            \
-  {                                                                        \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-    if (eErrorCode != EC_NONE ||                                           \
-        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-        if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                        \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-          *paW++ = bcdArg2.m_iAsI8;                                       \
-          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
-          bcdArg2.m_iAsI8 = *(--paW);                                      \
-          bcdArg1.m_iAsI8 = *(--paW);                                      \
-        }                                                                  \
-                                                                           \
-        if(eErrorCode != EC_NONE) {                                        \
-          *paW++ = C_DATUM_NULL;                                           \
-        }                                                                  \
-        else {                                                             \
-        eErrorCode = _OF_BCDSUB;                                           \
-        if(eErrorCode != EC_NONE) {                                        \
-          *paW++ = C_DATUM_NULL;                                           \
-        }                                                                  \
-        else {                                                             \
-          bcdArg1.m_iMantissa = bcdArg1.m_iMantissa - bcdArg2.m_iMantissa; \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-        }                                                                  \
-      }                                                                    \
-    }                                                                      \
+  bcdArg2.m_iAsI8 = *(--(*ppaW));
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      bcdArg1.m_iAsI8 == C_DATUM_NULL ||
+      bcdArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  else {
+    aDynamicT->m_iErrorCode = _OF_BCDMUL;
 
-#define _SUM_BCDBCD(eErrorCode)                                            \
-  {                                                                        \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-    if (eErrorCode != EC_NONE) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else if (bcdArg1.m_iAsI8 == C_DATUM_NULL) {                            \
-      *paW++ = bcdArg2.m_iAsI8;                                            \
-    }                                                                      \
-    else if (bcdArg2.m_iAsI8 == C_DATUM_NULL) {                            \
-      *paW++ = bcdArg1.m_iAsI8;                                            \
-    }                                                                      \
-    else {                                                                 \
-       if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                         \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-          *paW++ = bcdArg2.m_iAsI8;                                        \
-          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
-          bcdArg2.m_iAsI8 = *(--paW);                                      \
-          bcdArg1.m_iAsI8 = *(--paW);                                      \
-        }                                                                  \
-        if(eErrorCode != EC_NONE) {                                        \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        eErrorCode = _OF_BCDADD;                                           \
-        if(eErrorCode != EC_NONE) {                                        \
-          *paW++ = C_DATUM_NULL;                                           \
-        }                                                                  \
-        else {                                                             \
-          bcdArg1.m_iMantissa = bcdArg1.m_iMantissa + bcdArg2.m_iMantissa; \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-        }                                                                  \
-      }                                                                    \
-    }                                                                      \
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      i8 iScaleNew = bcdArg1.m_uScale > bcdArg2.m_uScale ? bcdArg1.m_uScale : bcdArg2.m_uScale;
+      i8 iResult = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;
+      iScale = bcdArg1.m_uScale + bcdArg2.m_uScale;
+      if (iScale != iScaleNew) {
+        bcdArg1.m_iMantissa = iResult / aDynamicT->m_iaPow10[iScale - iScaleNew - 1];
+        bcdArg1.m_uScale = iScaleNew + 1;
+        *(*ppaW)++ = bcdArg1.m_iAsI8;
+        vRoundBcd(ppaW);
+      }
+      else {
+        bcdArg1.m_iMantissa = iResult;
+        bcdArg1.m_uScale = iScaleNew;
+       *(*ppaW)++ = bcdArg1.m_iAsI8;
+       }
+    }
   }
+}
+
+static inline void _NEG_BCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Bcd_T bcdArg1;
+
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+    bcdArg1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    bcdArg1.m_iMantissa = - bcdArg1.m_iMantissa;
+    *(*ppaW)++ = bcdArg1.m_iAsI8;
+  }
+}
+
+static inline void _SUB_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Bcd_T bcdArg1;
+  union Bcd_T bcdArg2;
+
+  bcdArg2.m_iAsI8 = *(--(*ppaW));
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      bcdArg1.m_iAsI8 == C_DATUM_NULL ||
+      bcdArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
+      *(*ppaW)++ = bcdArg1.m_iAsI8;
+      *(*ppaW)++ = bcdArg2.m_iAsI8;
+      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
+      bcdArg2.m_iAsI8 = *(--(*ppaW));
+      bcdArg1.m_iAsI8 = *(--(*ppaW));
+    }
+
+    if(aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      aDynamicT->m_iErrorCode = _OF_BCDSUB;
+      if(aDynamicT->m_iErrorCode != EC_NONE) {
+        *(*ppaW)++ = C_DATUM_NULL;
+      }
+      else {
+        bcdArg1.m_iMantissa = bcdArg1.m_iMantissa - bcdArg2.m_iMantissa;
+        *(*ppaW)++ = bcdArg1.m_iAsI8;
+      }
+    }
+  }
+}
+
+static inline void _SUM_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Bcd_T bcdArg1;
+  union Bcd_T bcdArg2;
+
+  bcdArg2.m_iAsI8 = *(--(*ppaW));
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+
+  } else if (bcdArg1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = bcdArg2.m_iAsI8;
+
+  } else if (bcdArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = bcdArg1.m_iAsI8;
+
+  } else {
+    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
+      *(*ppaW)++ = bcdArg1.m_iAsI8;
+      *(*ppaW)++ = bcdArg2.m_iAsI8;
+      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
+      bcdArg2.m_iAsI8 = *(--(*ppaW));
+      bcdArg1.m_iAsI8 = *(--(*ppaW));
+   }
+
+    if(aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    } else {
+       aDynamicT->m_iErrorCode = _OF_BCDADD;
+      if(aDynamicT->m_iErrorCode != EC_NONE) {
+        *(*ppaW)++ = C_DATUM_NULL;
+      } else {
+        bcdArg1.m_iMantissa = bcdArg1.m_iMantissa + bcdArg2.m_iMantissa;
+        *(*ppaW)++ = bcdArg1.m_iAsI8;
+      }
+    }
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DATE
@@ -490,7 +507,7 @@ static inline void _ADD_DTEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     if (ivlArg2.m_xIvl.m_bIsNeg)
       iArg2 = (-1) * iArg2;
 
-    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,nullptr} ;
+    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
 
     xDateTime.tm_year = xDte1.m_uYearDelta;
     xDateTime.tm_mon  = xDte1.m_uMonth - 1;
@@ -591,7 +608,7 @@ static inline void _ADD_IVDDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
     if (ivlArg1.m_xIvl.m_bIsNeg)
       iArg1 = (-1) * iArg1;
 
-    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,nullptr} ;
+    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
 
     xDateTime.tm_year = xDte2.m_uYearDelta;
     xDateTime.tm_mon  = xDte2.m_uMonth - 1;
@@ -670,146 +687,159 @@ static inline void _ADD_IVYDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
  }
 }
 
-#define _SUB_DTEDTE(eErrorCode)                                            \
-  {                                                                        \
-    xDte2.m_iAsI8 = *(--paW);                                              \
-    xDte1.m_iAsI8 = *(--paW);                                              \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
-        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-      struct tm xDateTime1 = {0} ;                                         \
-                                                                           \
-      xDateTime1.tm_year = xDte1.m_uYearDelta;                             \
-      xDateTime1.tm_mon  = xDte1.m_uMonth - 1;                             \
-      xDateTime1.tm_mday = xDte1.m_uDay;                                   \
-      xDateTime1.tm_hour = 0;                                              \
-      xDateTime1.tm_min  = 0;                                              \
-      xDateTime1.tm_sec  = 0;                                              \
-                                                                           \
-      time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);               \
-                                                                           \
-      struct tm xDateTime2 = {0} ;                                         \
-                                                                           \
-      xDateTime2.tm_year = xDte2.m_uYearDelta;                             \
-      xDateTime2.tm_mon  = xDte2.m_uMonth - 1;                             \
-      xDateTime2.tm_mday = xDte2.m_uDay;                                   \
-      xDateTime2.tm_hour = 0;                                              \
-      xDateTime2.tm_min  = 0;                                              \
-      xDateTime2.tm_sec  = 0;                                              \
-                                                                           \
-      time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);               \
-                                                                           \
-      i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;   \
-                                                                           \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = IVL_DAY;                                 \
-                                                                           \
-      if (iSeconds < 0) {                                                  \
-        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  -1 * iSeconds * _C_1M;   \
-        wIvlResult.m_xIvl.m_bIsNeg = 1;                                    \
-      }                                                                    \
-      else {                                                               \
-        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M;          \
-        wIvlResult.m_xIvl.m_bIsNeg = 0;                                    \
-      }                                                                    \
-      *paW++ = wIvlResult.m_iAsI8;                                         \
-  }                                                                        \
+static inline void _SUB_DTEDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Dte_T xDte1;
+  union Dte_T xDte2;
+  union Ivl_T wIvlResult;
+
+  xDte2.m_iAsI8 = *(--(*ppaW));
+  xDte1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xDte1.m_iAsI8 == C_DATUM_NULL ||
+      xDte2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+
+    struct tm xDateTime1 = {0,0,0,0,0,0,0,0,0,0,NULL} ;
+
+    xDateTime1.tm_year = xDte1.m_uYearDelta;
+    xDateTime1.tm_mon  = xDte1.m_uMonth - 1;
+    xDateTime1.tm_mday = xDte1.m_uDay;
+    xDateTime1.tm_hour = 0;
+    xDateTime1.tm_min  = 0;
+    xDateTime1.tm_sec  = 0;
+
+    time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);
+
+    struct tm xDateTime2 = {0,0,0,0,0,0,0,0,0,0,NULL} ;
+
+    xDateTime2.tm_year = xDte2.m_uYearDelta;
+    xDateTime2.tm_mon  = xDte2.m_uMonth - 1;
+    xDateTime2.tm_mday = xDte2.m_uDay;
+    xDateTime2.tm_hour = 0;
+    xDateTime2.tm_min  = 0;
+    xDateTime2.tm_sec  = 0;
+
+    time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);
+
+    i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;
+
+    wIvlResult.m_iAsI8 = 0;
+    wIvlResult.m_xIvl.m_eType = IVL_DAY;
+
+    if (iSeconds < 0) {
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  -1 * iSeconds * _C_1M;
+      wIvlResult.m_xIvl.m_bIsNeg = 1;
+    } else {
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M;
+      wIvlResult.m_xIvl.m_bIsNeg = 0;
+    }
+
+    *(*ppaW)++ = wIvlResult.m_iAsI8;
+  }
 }
 
-#define _SUB_DTEIVD(eErrorCode)                                            \
-  {                                                                        \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    xDte1.m_iAsI8 = *(--paW);                                              \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-    iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                           \
-                                                                           \
-    if ( ! ivlArg2.m_xIvl.m_bIsNeg)                                        \
-      iArg2 = (-1) * iArg2;                                                \
-                                                                           \
-    struct tm xDateTime = {0} ;                                            \
-                                                                           \
-    xDateTime.tm_year = xDte1.m_uYearDelta;                                \
-    xDateTime.tm_mon  = xDte1.m_uMonth - 1;                                \
-    xDateTime.tm_mday = xDte1.m_uDay;                                      \
-    xDateTime.tm_hour = 0;                                                 \
-    xDateTime.tm_min  = 0;                                                 \
-    xDateTime.tm_sec  = iArg2/_C_1M;                                       \
-                                                                           \
-    i8 iMicroSeconds = iArg2%_C_1M;                                        \
-                                                                           \
-    if (iMicroSeconds < 0) {                                               \
-      xDateTime.tm_sec--;                                                  \
-      iMicroSeconds = _C_1M + iMicroSeconds;                               \
-    }                                                                      \
-                                                                           \
-    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
-    xTsp2.m_iAsI8 = 0;                                                     \
-    xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
-    xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
-    xTsp2.m_uDay       = xDateTime.tm_mday;                                \
-    xTsp2.m_uHour      = xDateTime.tm_hour;                                \
-    xTsp2.m_uMinute    = xDateTime.tm_min;                                 \
-    xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
-    xTsp2.m_uMicro     = iMicroSeconds;                                    \
-                                                                           \
-    *paW++ = xTsp2.m_iAsI8;                                                \
-  }                                                                        \
+static inline void _SUB_DTEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg2;
+  union Dte_T xDte1;
+  i8 iArg2;
+  union Tsp_T xTsp2;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  xDte1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xDte1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;
+
+    if ( ! ivlArg2.m_xIvl.m_bIsNeg)
+      iArg2 = (-1) * iArg2;
+
+    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
+
+    xDateTime.tm_year = xDte1.m_uYearDelta;
+    xDateTime.tm_mon  = xDte1.m_uMonth - 1;
+    xDateTime.tm_mday = xDte1.m_uDay;
+    xDateTime.tm_hour = 0;
+    xDateTime.tm_min  = 0;
+    xDateTime.tm_sec  = iArg2/_C_1M;
+
+    i8 iMicroSeconds = iArg2%_C_1M;
+
+    if (iMicroSeconds < 0) {
+      xDateTime.tm_sec--;
+      iMicroSeconds = _C_1M + iMicroSeconds;
+    }
+
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
+    xTsp2.m_iAsI8 = 0;
+    xTsp2.m_uYearDelta = xDateTime.tm_year;
+    xTsp2.m_uMonth     = xDateTime.tm_mon + 1;
+    xTsp2.m_uDay       = xDateTime.tm_mday;
+    xTsp2.m_uHour      = xDateTime.tm_hour;
+    xTsp2.m_uMinute    = xDateTime.tm_min;
+    xTsp2.m_uSecond    = xDateTime.tm_sec;
+    xTsp2.m_uMicro     = iMicroSeconds;
+
+    *(*ppaW)++ = xTsp2.m_iAsI8;
+  }
 }
 
-#define _SUB_DTEIVY(eErrorCode)                                            \
-  {                                                                        \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    xDte1.m_iAsI8 = *(--paW);                                              \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
-                                                                           \
-      i8 iYear_arg2 = iArg2/12;                                            \
-      i8 iMonth_arg2 = iArg2%12;                                           \
-                                                                           \
-      if (ivlArg2.m_xIvl.m_bIsNeg) {                                       \
-        iYear_arg2 = (-1) * iYear_arg2;                                    \
-        iMonth_arg2 = (-1) * iMonth_arg2;                                  \
-      }                                                                    \
-                                                                           \
-      i8 iYearDelta;                                                       \
-      i8 iMonth;                                                           \
-      i8 iDay;                                                             \
-      iYearDelta = xDte1.m_uYearDelta - iYear_arg2;                        \
-      iMonth = xDte1.m_uMonth - iMonth_arg2;                               \
-      iDay = xDte1.m_uDay;                                                 \
-                                                                           \
-      if (iYearDelta > C_YEAR_RANGE) {                                     \
-        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
-      }                                                                    \
-      else {                                                               \
-        _CONVERT_TO_VALID_DATE                                             \
-        xDte2.m_uYearDelta = iYearDelta;                                   \
-        xDte2.m_uMonth = iMonth;                                           \
-        xDte2.m_uDay = iDay;                                               \
-        xDte1.m_uSpare = 0;                                                \
-        *paW++ = xDte2.m_iAsI8;                                            \
-      }                                                                    \
-   }                                                                       \
- }
+static inline void _SUB_DTEIVY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg2;
+  union Dte_T xDte1;
+  union Dte_T xDte2;
+  i8 iArg2;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  xDte1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xDte1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+
+  } else {
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;
+
+    i8 iYear_arg2 = iArg2/12;
+    i8 iMonth_arg2 = iArg2%12;
+
+    if (ivlArg2.m_xIvl.m_bIsNeg) {
+      iYear_arg2 = (-1) * iYear_arg2;
+      iMonth_arg2 = (-1) * iMonth_arg2;
+    }
+
+    i8 iYearDelta;
+    i8 iMonth;
+    i8 iDay;
+    iYearDelta = xDte1.m_uYearDelta - iYear_arg2;
+    iMonth = xDte1.m_uMonth - iMonth_arg2;
+    iDay = xDte1.m_uDay;
+
+    if (iYearDelta > (i8) C_YEAR_RANGE) {
+      aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
+
+    } else {
+      _CONVERT_TO_VALID_DATE
+      xDte2.m_uYearDelta = iYearDelta;
+      xDte2.m_uMonth = iMonth;
+      xDte2.m_uDay = iDay;
+      xDte1.m_uSpare = 0;
+      *(*ppaW)++ = xDte2.m_iAsI8;
+    }
+  }
+}
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -860,154 +890,166 @@ static inline void _ADD_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 }
 
+static inline void _SUM_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Flt_T fltArg1;
+  union Flt_T fltArg2;
 
-#define _SUM_FLTFLT(eErrorCode)                                          \
-{                                                                        \
-  fltArg2.m_iAsI8 = *(--paW);                                            \
-  fltArg1.m_iAsI8 = *(--paW);                                            \
-  if (eErrorCode != EC_NONE) {                                           \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else if (fltArg1.m_iAsI8 == C_DATUM_NULL) {                            \
-    *paW++ = fltArg2.m_iAsI8;                                            \
-  }                                                                      \
-  else if (fltArg2.m_iAsI8 == C_DATUM_NULL) {                            \
-     *paW++ = fltArg1.m_iAsI8;                                           \
-  }                                                                      \
-  else {                                                                 \
-    if (fltArg1.m_dFlt >= C_FLT_MAX ||                                   \
-        fltArg2.m_dFlt >= C_FLT_MAX) {                                   \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else if (fltArg1.m_dFlt <  (d8)C_FLT_MIN ||                          \
-      fltArg2.m_dFlt < (d8)C_FLT_MIN) {                                  \
-      eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else {                                                               \
-      fltArg1.m_dFlt += fltArg2.m_dFlt;                                  \
-      if(fltArg1.m_dFlt > C_FLT_MAX) {                                   \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
-        *paW++ = C_DATUM_NULL;                                           \
-      }                                                                  \
-      else                                                               \
-        *paW++ = fltArg1.m_iAsI8;                                        \
-    }                                                                    \
-  }                                                                      \
+  fltArg2.m_iAsI8 = *(--(*ppaW));
+  fltArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else if (fltArg1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = fltArg2.m_iAsI8;
+  }
+  else if (fltArg2.m_iAsI8 == C_DATUM_NULL) {
+     *(*ppaW)++ = fltArg1.m_iAsI8;
+  }
+  else {
+    if (fltArg1.m_dFlt >= C_FLT_MAX ||
+        fltArg2.m_dFlt >= C_FLT_MAX) {
+      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else if (fltArg1.m_dFlt <  (d8)C_FLT_MIN ||
+      fltArg2.m_dFlt < (d8)C_FLT_MIN) {
+      aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      fltArg1.m_dFlt += fltArg2.m_dFlt;
+      if(fltArg1.m_dFlt > C_FLT_MAX) {
+        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+        *(*ppaW)++ = C_DATUM_NULL;
+      }
+      else
+        *(*ppaW)++ = fltArg1.m_iAsI8;
+    }
+  }
+}
+
+static inline void _DIV_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Flt_T fltArg1;
+  union Flt_T fltArg2;
+
+  fltArg2.m_iAsI8 = *(--(*ppaW));
+  fltArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if (fltArg2.m_iAsI8 == 0) {
+      *(*ppaW)++ = C_DATUM_NULL;
+      aDynamicT->m_iErrorCode = EC_DIVIDE_BY_ZERO;
+    }
+    else {
+      if(fltArg1.m_dFlt > C_FLT_MAX ||
+        fltArg2.m_dFlt > C_FLT_MAX) {
+        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+        *(*ppaW)++ = C_DATUM_NULL;
+      }
+      else if(fltArg1.m_dFlt <  C_FLT_MIN ||
+        fltArg2.m_dFlt < C_FLT_MIN) {
+        aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+        *(*ppaW)++ = C_DATUM_NULL;
+      }
+      else {
+        fltArg1.m_dFlt /= fltArg2.m_dFlt;
+        *(*ppaW)++ = fltArg1.m_iAsI8;
+      }
+    }
+  }
+}
+
+static inline void _NEG_FLT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Flt_T fltArg1;
+
+  fltArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    fltArg1.m_dFlt = (double)(-1)*fltArg1.m_dFlt;
+    *(*ppaW)++ = fltArg1.m_iAsI8;
+  }
+}
+
+static inline void _SUB_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Flt_T fltArg1;
+  union Flt_T fltArg2;
+
+  fltArg2.m_iAsI8 = *(--(*ppaW));
+  fltArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if(fltArg1.m_dFlt > C_FLT_MAX ||
+      fltArg2.m_dFlt > C_FLT_MAX) {
+      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else if(fltArg1.m_dFlt <  C_FLT_MIN ||
+    fltArg2.m_dFlt < C_FLT_MIN) {
+      aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      fltArg1.m_dFlt -= fltArg2.m_dFlt;
+      *(*ppaW)++ = fltArg1.m_iAsI8;
+    }
+  }
 }
 
 
-#define _DIV_FLTFLT(eErrorCode)                                          \
-{                                                                        \
-  fltArg2.m_iAsI8 = *(--paW);                                            \
-  fltArg1.m_iAsI8 = *(--paW);                                            \
-  if (eErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
-    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else {                                                                 \
-    if (fltArg2.m_iAsI8 == 0) {                                          \
-      *paW++ = C_DATUM_NULL;                                             \
-      eErrorCode = EC_DIVIDE_BY_ZERO;                                    \
-    }                                                                    \
-    else {                                                               \
-      if(fltArg1.m_dFlt > C_FLT_MAX ||                                   \
-        fltArg2.m_dFlt > C_FLT_MAX) {                                    \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
-        *paW++ = C_DATUM_NULL;                                           \
-      }                                                                  \
-      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                             \
-        fltArg2.m_dFlt < C_FLT_MIN) {                                    \
-          eErrorCode = EC_ARITHMETIC_UNDERFLOW;                          \
-          *paW++ = C_DATUM_NULL;                                         \
-      }                                                                  \
-      else {                                                             \
-        fltArg1.m_dFlt /= fltArg2.m_dFlt;                                \
-        *paW++ = fltArg1.m_iAsI8;                                        \
-      }                                                                  \
-    }                                                                    \
-  }                                                                      \
-}
+static inline void _MUL_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Flt_T fltArg1;
+  union Flt_T fltArg2;
 
-#define _NEG_FLT(eErrorCode)                                             \
-{                                                                        \
-  fltArg1.m_iAsI8 = *(--paW);                                            \
-  if (eErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else {                                                                 \
-    fltArg1.m_dFlt = (double)(-1)*fltArg1.m_dFlt;                        \
-    *paW++ = fltArg1.m_iAsI8;                                            \
-  }                                                                      \
-}
-
-#define _SUB_FLTFLT(eErrorCode)                                          \
-{                                                                        \
-  fltArg2.m_iAsI8 = *(--paW);                                            \
-  fltArg1.m_iAsI8 = *(--paW);                                            \
-  if (eErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
-    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else {                                                                 \
-    if(fltArg1.m_dFlt > C_FLT_MAX ||                                     \
-      fltArg2.m_dFlt > C_FLT_MAX) {                                      \
-      eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else if(fltArg1.m_dFlt <  C_FLT_MIN ||                               \
-    fltArg2.m_dFlt < C_FLT_MIN) {                                        \
-      eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else {                                                               \
-      fltArg1.m_dFlt -= fltArg2.m_dFlt;                                  \
-      *paW++ = fltArg1.m_iAsI8;                                          \
-    }                                                                    \
-  }                                                                      \
-}
-
-
-
-#define _MUL_FLTFLT(eErrorCode)                                          \
-{                                                                        \
-  fltArg2.m_iAsI8 = *(--paW);                                            \
-  fltArg1.m_iAsI8 = *(--paW);                                            \
-  if (eErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
-    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else {                                                                 \
-    if(fltArg1.m_dFlt > C_FLT_MAX ||                                   \
-      fltArg2.m_dFlt > C_FLT_MAX) {                                    \
-      eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
-      *paW++ = C_DATUM_NULL;                                           \
-    }                                                                  \
-    else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                        \
-    fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                                 \
-      eErrorCode = EC_ARITHMETIC_UNDERFLOW;                            \
-      *paW++ = C_DATUM_NULL;                                           \
-    }                                                                  \
-    else {                                                             \
-      fltArg1.m_dFlt *= fltArg2.m_dFlt;                                \
-      if(fltArg1.m_dFlt > C_FLT_MAX) {                                 \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                           \
-        *paW++ = C_DATUM_NULL;                                         \
-      }                                                                \
-      else                                                             \
-      if(fltArg1.m_dFlt < C_FLT_MIN) {                                 \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                           \
-        *paW++ = C_DATUM_NULL;                                         \
-      }                                                                \
-      else                                                             \
-        *paW++ = fltArg1.m_iAsI8 ;                                     \
-    }                                                                  \
-  }                                                                    \
+  fltArg2.m_iAsI8 = *(--(*ppaW));
+  fltArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if(fltArg1.m_dFlt > C_FLT_MAX ||
+      fltArg2.m_dFlt > C_FLT_MAX) {
+      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||
+    fltArg2.m_dFlt < (d8)-C_FLT_MAX) {
+      aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      fltArg1.m_dFlt *= fltArg2.m_dFlt;
+      if(fltArg1.m_dFlt > C_FLT_MAX) {
+        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+        *(*ppaW)++ = C_DATUM_NULL;
+      }
+      else
+      if(fltArg1.m_dFlt < C_FLT_MIN) {
+        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+        *(*ppaW)++ = C_DATUM_NULL;
+      }
+      else
+        *(*ppaW)++ = fltArg1.m_iAsI8 ;
+    }
+  }
 }
 
 
@@ -1189,512 +1231,578 @@ static inline void _ADD_IVYIVY(i8** ppaW, struct Dynamic_T* aDynamicT)
  }
 }
 
-#define _DIV_IVDINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    ivlArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if (iArg2 == 0) {                                                    \
-        *paW++ = C_DATUM_NULL;                                             \
-        eErrorCode = EC_DIVIDE_BY_ZERO;                                    \
-      }                                                                    \
-      else {                                                               \
-                                                                           \
-       wIvlResult.m_iAsI8 = 0;                                             \
-       wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                 \
-                                                                           \
-       iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                        \
-                                                                           \
-       if ( (iArg2 < 0 && ! ivlArg1.m_xIvl.m_bIsNeg) ||                    \
-            (iArg2 > 0 && ivlArg1.m_xIvl.m_bIsNeg) )                       \
-          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
-                                                                           \
-       if (iArg2 < 0)                                                      \
-         iArg2 = (-1) * iArg2;                                             \
-                                                                           \
-       d8 dMicros = (d8)iArg1 / (d8)iArg2;                                 \
-       i8 iMicros = 0;                                                     \
-       i8 iRound = (dMicros * 10);                                         \
-       iRound %= 10;                                                       \
-       if ( iRound >= 5)                                                   \
-         iMicros = dMicros + 1;                                            \
-       else                                                                \
-         iMicros = dMicros;                                                \
-                                                                           \
-        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
-        *paW++ = wIvlResult.m_iAsI8;                                       \
-      }                                                                    \
-    }                                                                      \
-                                                                           \
-  }
+static inline void _DIV_IVDINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T ivlArg1;
+  union Ivl_T wIvlResult;
 
-#define _DIV_IVYINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    ivlArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if (iArg2 == 0) {                                                    \
-        *paW++ = C_DATUM_NULL;                                             \
-        eErrorCode = EC_DIVIDE_BY_ZERO;                                    \
-      }                                                                    \
-      else {                                                               \
-                                                                           \
-       wIvlResult.m_iAsI8 = 0;                                             \
-       wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                 \
-                                                                           \
-       iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                        \
-                                                                           \
-       if ( (iArg2 < 0 && ! ivlArg1.m_xIvl.m_bIsNeg) ||                    \
-            (iArg2 > 0 && ivlArg1.m_xIvl.m_bIsNeg) )                       \
-          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
-                                                                           \
-       if (iArg2 < 0)                                                      \
-         iArg2 = (-1) * iArg2;                                             \
-                                                                           \
-       i8 iMonths = iArg1 / iArg2;                                         \
-                                                                           \
-       wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                   \
-       *paW++ = wIvlResult.m_iAsI8;                                        \
-     }                                                                     \
-   }                                                                       \
+  iArg2 = *(--(*ppaW));
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if (iArg2 == 0) {
+      *(*ppaW)++ = C_DATUM_NULL;
+      aDynamicT->m_iErrorCode = EC_DIVIDE_BY_ZERO;
+    }
+    else {
+
+     wIvlResult.m_iAsI8 = 0;
+     wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;
+
+     iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;
+
+     if ( (iArg2 < 0 && ! ivlArg1.m_xIvl.m_bIsNeg) ||
+          (iArg2 > 0 && ivlArg1.m_xIvl.m_bIsNeg) )
+        wIvlResult.m_xIvl.m_bIsNeg = 1;
+
+     if (iArg2 < 0)
+       iArg2 = (-1) * iArg2;
+
+     d8 dMicros = (d8)iArg1 / (d8)iArg2;
+     i8 iMicros = 0;
+     i8 iRound = (dMicros * 10);
+     iRound %= 10;
+     if ( iRound >= 5)
+       iMicros = dMicros + 1;
+     else
+       iMicros = dMicros;
+
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;
+      *(*ppaW)++ = wIvlResult.m_iAsI8;
+    }
+  }
+}
+
+static inline void _DIV_IVYINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T ivlArg1;
+  union Ivl_T wIvlResult;
+
+  iArg2 = *(--(*ppaW));
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if (iArg2 == 0) {
+      *(*ppaW)++ = C_DATUM_NULL;
+      aDynamicT->m_iErrorCode = EC_DIVIDE_BY_ZERO;
+    }
+    else {
+
+     wIvlResult.m_iAsI8 = 0;
+     wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;
+
+     iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;
+
+     if ( (iArg2 < 0 && ! ivlArg1.m_xIvl.m_bIsNeg) ||
+          (iArg2 > 0 && ivlArg1.m_xIvl.m_bIsNeg) )
+        wIvlResult.m_xIvl.m_bIsNeg = 1;
+
+     if (iArg2 < 0) {
+       iArg2 = (-1) * iArg2;
+     }
+
+     i8 iMonths = iArg1 / iArg2;
+
+     wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;
+     *(*ppaW)++ = wIvlResult.m_iAsI8;
+   }
  }
+}
 
 
-#define _MUL_INTIVD(eErrorCode)                                            \
-  {                                                                        \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    iArg1 = *(--paW);                                                      \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL ||                                 \
-        iArg1 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                  \
-                                                                           \
-      if (iArg1 < 0 || ivlArg2.m_xIvl.m_bIsNeg)                            \
-         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
-                                                                           \
-      if (iArg1 < 0)                                                       \
-        iArg1 = (-1) * iArg1;                                              \
-                                                                           \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
-                                                                           \
-      i8 iMicros = iArg1 * iArg2;                                          \
-                                                                           \
-      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
-                                                                           \
-      if (eErrorCode != EC_NONE) {                                         \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
-        *paW++ = wIvlResult.m_iAsI8;                                       \
-      }                                                                    \
-    }                                                                      \
+static inline void _MUL_INTIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T ivlArg2;
+  union Ivl_T wIvlResult;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL ||
+      iArg1 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  else {
+    wIvlResult.m_iAsI8 = 0;
+    wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;
 
-#define _MUL_INTIVY(eErrorCode)                                            \
-  {                                                                        \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    iArg1 = *(--paW);                                                      \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL ||                                 \
-        iArg1 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                  \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
-                                                                           \
-      if (iArg1 < 0 || ivlArg2.m_xIvl.m_bIsNeg)                            \
-         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
-                                                                           \
-      if (iArg1 < 0)                                                       \
-        iArg1 = (-1) * iArg1;                                              \
-                                                                           \
-      i8 iMonths = iArg1 * iArg2;                                          \
-                                                                           \
-      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
-                                                                           \
-      if (eErrorCode != EC_NONE) {                                         \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                  \
-        *paW++ = wIvlResult.m_iAsI8;                                       \
-      }                                                                    \
-    }                                                                      \
+    if (iArg1 < 0 || ivlArg2.m_xIvl.m_bIsNeg)
+       wIvlResult.m_xIvl.m_bIsNeg = 1;
+
+    if (iArg1 < 0)
+      iArg1 = (-1) * iArg1;
+
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;
+
+    i8 iMicros = iArg1 * iArg2;
+
+    aDynamicT->m_iErrorCode = _OUT_OF_RANGE_IVD;
+
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;
+      *(*ppaW)++ = wIvlResult.m_iAsI8;
+    }
   }
+}
 
-#define _MUL_IVDINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    ivlArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
-                                                                           \
-      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
-                                                                           \
-      if (iArg2 < 0 || ivlArg1.m_xIvl.m_bIsNeg)                            \
-         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
-                                                                           \
-      if (iArg2 < 0)                                                       \
-        iArg2 = (-1) * iArg2;                                              \
-                                                                           \
-      i8 iMicros = iArg1 * iArg2;                                          \
-                                                                           \
-      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
-                                                                           \
-      if (eErrorCode != EC_NONE) {                                         \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
-        *paW++ = wIvlResult.m_iAsI8;                                       \
-      }                                                                    \
-    }                                                                      \
+static inline void _MUL_INTIVY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T ivlArg2;
+  union Ivl_T wIvlResult;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL ||
+      iArg1 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  else {
+    wIvlResult.m_iAsI8 = 0;
+    wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;
 
-#define _MUL_IVYINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    ivlArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      wIvlResult.m_iAsI8 = 0;                                              \
-      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
-                                                                           \
-      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
-                                                                           \
-      if (iArg2 < 0 || ivlArg1.m_xIvl.m_bIsNeg)                            \
-         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
-                                                                           \
-      if (iArg2 < 0)                                                       \
-        iArg2 = (-1) * iArg2;                                              \
-                                                                           \
-      i8 iMonths = iArg1 * iArg2;                                          \
-                                                                           \
-      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
-                                                                           \
-      if(eErrorCode != EC_NONE)  {                                         \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = (u8)iMonths;              \
-        *paW++ = wIvlResult.m_iAsI8;                                       \
-     }                                                                     \
-   }                                                                       \
+    if (iArg1 < 0 || ivlArg2.m_xIvl.m_bIsNeg)
+       wIvlResult.m_xIvl.m_bIsNeg = 1;
+
+    if (iArg1 < 0)
+      iArg1 = (-1) * iArg1;
+
+    i8 iMonths = iArg1 * iArg2;
+
+    aDynamicT->m_iErrorCode = _OUT_OF_RANGE_IVY;
+
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;
+      *(*ppaW)++ = wIvlResult.m_iAsI8;
+    }
   }
+}
 
-#define _NEG_IVD(eErrorCode)                                               \
-  {                                                                        \
-    ivlArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        ivlArg1.m_xIvl.m_bIsNeg = 0;                                       \
-      else                                                                 \
-        ivlArg1.m_xIvl.m_bIsNeg = 1;                                       \
-                                                                           \
-      *paW++ = ivlArg1.m_iAsI8;                                            \
-   }                                                                       \
+static inline void _MUL_IVDINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T ivlArg1;
+  union Ivl_T wIvlResult;
+
+  iArg2 = *(--(*ppaW));
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    wIvlResult.m_iAsI8 = 0;
+    wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;
+
+    iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;
+
+    if (iArg2 < 0 || ivlArg1.m_xIvl.m_bIsNeg)
+       wIvlResult.m_xIvl.m_bIsNeg = 1;
+
+    if (iArg2 < 0)
+      iArg2 = (-1) * iArg2;
+
+    i8 iMicros = iArg1 * iArg2;
+
+    aDynamicT->m_iErrorCode = _OUT_OF_RANGE_IVD;
+
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;
+      *(*ppaW)++ = wIvlResult.m_iAsI8;
+    }
+  }
+}
+
+static inline void _MUL_IVYINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T ivlArg1;
+  union Ivl_T wIvlResult;
+
+  iArg2 = *(--(*ppaW));
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    wIvlResult.m_iAsI8 = 0;
+    wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;
+
+    iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;
+
+    if (iArg2 < 0 || ivlArg1.m_xIvl.m_bIsNeg) {
+       wIvlResult.m_xIvl.m_bIsNeg = 1;
+       }
+
+    if (iArg2 < 0) {
+      iArg2 = (-1) * iArg2;
+    }
+
+    i8 iMonths = iArg1 * iArg2;
+
+    aDynamicT->m_iErrorCode = _OUT_OF_RANGE_IVY;
+
+    if(aDynamicT->m_iErrorCode != EC_NONE)  {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = (u8)iMonths;
+      *(*ppaW)++ = wIvlResult.m_iAsI8;
+    }
+  }
+}
+
+static inline void _NEG_IVD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg1;
+
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if (ivlArg1.m_xIvl.m_bIsNeg) {
+      ivlArg1.m_xIvl.m_bIsNeg = 0;
+    } else {
+      ivlArg1.m_xIvl.m_bIsNeg = 1;
+    }
+
+    *(*ppaW)++ = ivlArg1.m_iAsI8;
  }
+}
 
-#define _NEG_IVY(eErrorCode)                                               \
-  {                                                                        \
-    ivlArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        ivlArg1.m_xIvl.m_bIsNeg = 0;                                       \
-      else                                                                 \
-        ivlArg1.m_xIvl.m_bIsNeg = 1;                                       \
-                                                                           \
-      *paW++ = ivlArg1.m_iAsI8;                                            \
-   }                                                                       \
+static inline void _NEG_IVY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg1;
+
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if (ivlArg1.m_xIvl.m_bIsNeg) {
+      ivlArg1.m_xIvl.m_bIsNeg = 0;
+    } else {
+      ivlArg1.m_xIvl.m_bIsNeg = 1;
+    }
+
+    *(*ppaW)++ = ivlArg1.m_iAsI8;
  }
+}
 
-#define _SUB_IVDIVD(eErrorCode)                                            \
-  {                                                                        \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    ivlArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
-                                                                           \
-      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        iArg1 = (-1) * iArg1;                                              \
-                                                                           \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * iArg2;                                              \
-                                                                           \
-      i8 iMicros = iArg1 - iArg2;                                          \
-                                                                           \
-      eErrorCode = _OUT_OF_RANGE_IVD;                                      \
-                                                                           \
-      if (eErrorCode != EC_NONE) {                                         \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        wIvlResult.m_iAsI8 = 0;                                            \
-                                                                           \
-        if (iMicros < 0) {                                                 \
-          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
-          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = -1*iMicros;             \
-        }                                                                  \
-        else {                                                             \
-          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
-          wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                \
-       }                                                                   \
-       wIvlResult.m_xIvl.m_eType =                                         \
-        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType]; \
-       *paW++ = wIvlResult.m_iAsI8;                                         \
-     }                                                                      \
-    }                                                                       \
+static inline void _SUB_IVDIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg1;
+  union Ivl_T ivlArg2;
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T wIvlResult;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  else {
+    iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;
 
+    if (ivlArg1.m_xIvl.m_bIsNeg)
+      iArg1 = (-1) * iArg1;
 
+    if (ivlArg2.m_xIvl.m_bIsNeg)
+      iArg2 = (-1) * iArg2;
 
-#define _SUB_IVYIVY(eErrorCode)                                            \
-  {                                                                        \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    ivlArg1.m_iAsI8 = *(--paW);                                            \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
-                                                                           \
-      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        iArg1 = (-1) * iArg1;                \
-                                                                           \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * iArg2;                \
-                                                                           \
-      i8 iMonths = iArg1 - iArg2;                                          \
-                                                                           \
-      eErrorCode = _OUT_OF_RANGE_IVY;                                      \
-                                                                           \
-      if (eErrorCode != EC_NONE) {                                         \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        wIvlResult.m_iAsI8 = 0;                                            \
-                                                                           \
-        if (iMonths < 0) {                                                 \
-          wIvlResult.m_xIvl.m_bIsNeg = 1;                                  \
-          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iMonths;             \
-        }                                                                  \
-        else {                                                             \
-          wIvlResult.m_xIvl.m_bIsNeg = 0;                                  \
-          wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                \
-       }                                                                   \
-       wIvlResult.m_xIvl.m_eType =                                         \
-        eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType]; \
-       *paW++ = wIvlResult.m_iAsI8;                                         \
-     }                                                                      \
-    }                                                                       \
+    i8 iMicros = iArg1 - iArg2;
+
+    aDynamicT->m_iErrorCode = _OUT_OF_RANGE_IVD;
+
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      wIvlResult.m_iAsI8 = 0;
+
+      if (iMicros < 0) {
+        wIvlResult.m_xIvl.m_bIsNeg = 1;
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = -1*iMicros;
+      }
+      else {
+        wIvlResult.m_xIvl.m_bIsNeg = 0;
+        wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;
+     }
+     wIvlResult.m_xIvl.m_eType =
+      eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];
+     *(*ppaW)++ = wIvlResult.m_iAsI8;
+   }
   }
+}
+
+
+static inline void _SUB_IVYIVY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg1;
+  union Ivl_T ivlArg2;
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T wIvlResult;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;
+
+    if (ivlArg1.m_xIvl.m_bIsNeg)
+      iArg1 = (-1) * iArg1;
+
+    if (ivlArg2.m_xIvl.m_bIsNeg)
+      iArg2 = (-1) * iArg2;
+
+    i8 iMonths = iArg1 - iArg2;
+
+    aDynamicT->m_iErrorCode = _OUT_OF_RANGE_IVY;
+
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      wIvlResult.m_iAsI8 = 0;
+
+      if (iMonths < 0) {
+        wIvlResult.m_xIvl.m_bIsNeg = 1;
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = -1*iMonths;
+      }
+      else {
+        wIvlResult.m_xIvl.m_bIsNeg = 0;
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;
+     }
+     wIvlResult.m_xIvl.m_eType =
+      eMacro_AddSubResultIVL[ivlArg1.m_xIvl.m_eType][ivlArg2.m_xIvl.m_eType];
+     *(*ppaW)++ = wIvlResult.m_iAsI8;
+   }
+  }
+}
 
 // ignore NULLS
 //
-#define _SUM_INTINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else if (iArg1 == C_DATUM_NULL) {                                      \
-      *paW++ = iArg2;                                                      \
-    }                                                                      \
-    else if (iArg2 == C_DATUM_NULL) {                                      \
-      *paW++ = iArg1;                                                      \
-    }                                                                      \
-    else {                                                                 \
-      eErrorCode = _OF_I8ADD;                                              \
-      if(eErrorCode != EC_NONE)  {                                         \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        *paW++ = iArg1 + iArg2;                                            \
-      }                                                                    \
-    }                                                                      \
-  }
+static inline void _SUM_INTINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
 
-#define _DIV_INTINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE ||                                           \
-        iArg1 == C_DATUM_NULL ||                                           \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if (iArg2 == 0) {                                                    \
-         *paW++ = C_DATUM_NULL;                                            \
-         eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
-      }                                                                    \
-      else {                                                               \
-        eErrorCode = _OF_I8DIV;                                            \
-        if(eErrorCode != EC_NONE) {                                        \
-          *paW++ = C_DATUM_NULL;                                           \
-        }                                                                  \
-        else {                                                             \
-          *paW++ = iArg1 / iArg2;                                          \
-        }                                                                  \
-      }                                                                    \
-    }                                                                      \
+  iArg2 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  else if (iArg1 == C_DATUM_NULL) {
+    *(*ppaW)++ = iArg2;
+  }
+  else if (iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = iArg1;
+  }
+  else {
+    aDynamicT->m_iErrorCode = _OF_I8ADD;
+    if(aDynamicT->m_iErrorCode != EC_NONE)  {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      *(*ppaW)++ = iArg1 + iArg2;
+    }
+  }
+}
+
+static inline void _DIV_INTINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+
+  iArg2 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    if (iArg2 == 0) {
+       *(*ppaW)++ = C_DATUM_NULL;
+      aDynamicT->m_iErrorCode = EC_DIVIDE_BY_ZERO;
+    }
+    else {
+      aDynamicT->m_iErrorCode = _OF_I8DIV;
+      if(aDynamicT->m_iErrorCode != EC_NONE) {
+        *(*ppaW)++ = C_DATUM_NULL;
+      }
+      else {
+        *(*ppaW)++ = iArg1 / iArg2;
+      }
+    }
+  }
+}
 
 //TODO: OVERFLOW/UNDERFLOW
-#define _MOD_INTINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE ||                                           \
-        iArg1 == C_DATUM_NULL ||                                           \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if (iArg2 == 0) {                                                    \
-         *paW++ = C_DATUM_NULL;                                            \
-         eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
-      }                                                                    \
-      else {                                                               \
-        *paW++ = iArg1 % iArg2;                                            \
-      }                                                                    \
-    }                                                                      \
+static inline void _MOD_INTINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+
+  iArg2 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
-
-#define _MOD_UNKANY(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
+  else {
+    if (iArg2 == 0) {
+       *(*ppaW)++ = C_DATUM_NULL;
+      aDynamicT->m_iErrorCode = EC_DIVIDE_BY_ZERO;
+    }
+    else {
+      *(*ppaW)++ = iArg1 % iArg2;
+    }
   }
+}
 
-#define _MOD_ANYUNK(eErrorCode)                                            \
-  {                                                                        \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
-    *paW++ = C_DATUM_NULL;                                                 \
+static inline void _MOD_UNKANY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
+
+static inline void _MOD_ANYUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
+
+static inline void _MUL_INTINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+
+  iArg2 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
-
-
-#define _MUL_INTINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE ||                                           \
-        iArg1 == C_DATUM_NULL ||                                           \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      eErrorCode = _OF_I8MUL;                                              \
-      if(eErrorCode != EC_NONE) {                                          \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        *paW++ = iArg1 * iArg2;                                            \
-      }                                                                    \
-    }                                                                      \
+  else {
+    aDynamicT->m_iErrorCode = _OF_I8MUL;
+    if(aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else {
+      *(*ppaW)++ = iArg1 * iArg2;
+    }
   }
+}
 
-#define _NEG_INT(eErrorCode)                                               \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE ||                                           \
-        iArg1 == C_DATUM_NULL ||                                           \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      iArg1 = 0;                                                           \
-      eErrorCode = _OF_I8SUB;                                              \
-      if(eErrorCode != EC_NONE)                                            \
-      {                                                                    \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else                                                                 \
-      {                                                                    \
-        *paW++ = -iArg2;                                                   \
-      }                                                                    \
-    }                                                                      \
+static inline void _NEG_INT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+
+  iArg2 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
-
-
-#define _SUB_INTINT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE ||                                           \
-        iArg1 == C_DATUM_NULL ||                                           \
-        iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      eErrorCode = _OF_I8SUB;                                              \
-      if(eErrorCode != EC_NONE)                                            \
-      {                                                                    \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else                                                                 \
-      {                                                                    \
-        *paW++ = iArg1 - iArg2;                                            \
-      }                                                                    \
-    }                                                                      \
+  else {
+    iArg1 = 0;
+    aDynamicT->m_iErrorCode = _OF_I8SUB;
+    if(aDynamicT->m_iErrorCode != EC_NONE)
+    {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else
+    {
+      *(*ppaW)++ = -iArg2;
+    }
   }
+}
+
+
+static inline void _SUB_INTINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+
+  iArg2 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      iArg2 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+    aDynamicT->m_iErrorCode = _OF_I8SUB;
+    if(aDynamicT->m_iErrorCode != EC_NONE)
+    {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+    else
+    {
+      *(*ppaW)++ = iArg1 - iArg2;
+    }
+  }
+}
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1800,72 +1908,85 @@ static inline void _ADD_IVDTME(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 }
 
-#define _SUB_TMEIVD(eErrorCode)                                            \
-  {                                                                        \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    xTme1.m_iAsI8 = *(--paW);                                              \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-      iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
-              (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
-              (xTme1.m_uSecond*_C_1M) +                                    \
-              xTme1.m_uMicro;                                              \
-                                                                           \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
-                                                                           \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * iArg2;                                              \
-      else                                                                 \
-        iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                 \
-                                                                           \
-     if (iArg2 > iArg1)                                                    \
-      iArg1 += _C_SECS_PER_DAY *  _C_1M;                                   \
-                                                                           \
-     i8 iMicros = iArg1 - iArg2;                                           \
-    _MICROS_TO_TIME;                                                       \
-  }                                                                        \
+static inline void _SUB_TMEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg2;
+  union Tme_T xTme1;
+  i8 iArg1;
+  i8 iArg2;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  xTme1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTme1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+
+    iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +
+            (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +
+            (xTme1.m_uSecond*_C_1M) +
+            xTme1.m_uMicro;
+
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;
+
+    if (ivlArg2.m_xIvl.m_bIsNeg) {
+      iArg2 = (-1) * iArg2;
+    } else {
+      iArg2 %= _C_SECS_PER_DAY * _C_1M;
+    }
+
+    if (iArg2 > iArg1) {
+      iArg1 += _C_SECS_PER_DAY * _C_1M;
+    }
+
+    i8 iMicros = iArg1 - iArg2;
+    vMicrosToTime(iMicros, ppaW);
+  }
 }
 
-#define _SUB_TMETME(eErrorCode)                                            \
-  {                                                                        \
-    xTme2.m_iAsI8 = *(--paW);                                              \
-    xTme1.m_iAsI8 = *(--paW);                                              \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
-        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-      iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
-              (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
-              (xTme1.m_uSecond*_C_1M) +                                    \
-              xTme1.m_uMicro;                                              \
-                                                                           \
-      iArg2 = ((xTme2.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +                  \
-              (xTme2.m_uMinute*_C_SECS_PER_MIN*_C_1M) +                    \
-              (xTme2.m_uSecond*_C_1M) +                                    \
-              xTme2.m_uMicro;                                              \
-                                                                           \
-     if (iArg1 < iArg2) {                                                  \
-       ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros = iArg2 - iArg1;                \
-       ivlArg1.m_xIvl.m_bIsNeg = 1;                                        \
-     }                                                                     \
-     else {                                                                \
-       ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 - iArg2;                \
-       ivlArg1.m_xIvl.m_bIsNeg = 0;                                        \
-     }                                                                     \
-     ivlArg1.m_xIvl.m_eType =  IVL_HS;                                     \
-                                                                           \
-    *paW++ = ivlArg1.m_iAsI8;                                              \
-  }                                                                        \
+static inline void _SUB_TMETME(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tme_T xTme1;
+  union Tme_T xTme2;
+  i8 iArg1;
+  i8 iArg2;
+  union Ivl_T ivlArg1;
+
+  xTme2.m_iAsI8 = *(--(*ppaW));
+  xTme1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTme1.m_iAsI8 == C_DATUM_NULL ||
+      xTme2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+
+    iArg1 = ((xTme1.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +
+            (xTme1.m_uMinute*_C_SECS_PER_MIN*_C_1M) +
+            (xTme1.m_uSecond*_C_1M) +
+            xTme1.m_uMicro;
+
+    iArg2 = ((xTme2.m_uHour%24)*_C_SECS_PER_HR*_C_1M) +
+            (xTme2.m_uMinute*_C_SECS_PER_MIN*_C_1M) +
+            (xTme2.m_uSecond*_C_1M) +
+            xTme2.m_uMicro;
+
+    if (iArg1 < iArg2) {
+      ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros = iArg2 - iArg1;
+      ivlArg1.m_xIvl.m_bIsNeg = 1;
+    }
+    else {
+      ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 - iArg2;
+      ivlArg1.m_xIvl.m_bIsNeg = 0;
+    }
+    ivlArg1.m_xIvl.m_eType =  IVL_HS;
+
+    *(*ppaW)++ = ivlArg1.m_iAsI8;
+  }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1906,7 +2027,7 @@ static inline void _ADD_TSPIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     if (ivlArg2.m_xIvl.m_bIsNeg)
       iArg2 = (-1) * iArg2;
 
-    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,nullptr} ;
+    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
 
     xDateTime.tm_year = xTsp1.m_uYearDelta;
     xDateTime.tm_mon  = xTsp1.m_uMonth - 1;
@@ -1963,7 +2084,7 @@ static inline void _ADD_IVDTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
     if (ivlArg1.m_xIvl.m_bIsNeg)
       iArg1 = (-1) * iArg1;
 
-    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,nullptr} ;
+    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
 
     xDateTime.tm_year = xTsp2.m_uYearDelta;
     xDateTime.tm_mon  = xTsp2.m_uMonth - 1;
@@ -2102,160 +2223,172 @@ static inline void _ADD_IVYTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 }
 
-#define _SUB_TSPIVD(eErrorCode)                                            \
-  {                                                                        \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    xTsp1.m_iAsI8 = *(--paW);                                              \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
-      if ( ! ivlArg2.m_xIvl.m_bIsNeg )                                     \
-        iArg2 = (-1) * iArg2;                                              \
-                                                                           \
-      struct tm xDateTime = {0} ;                                          \
-                                                                           \
-      xDateTime.tm_year = xTsp1.m_uYearDelta;                              \
-      xDateTime.tm_mon  = xTsp1.m_uMonth - 1;                              \
-      xDateTime.tm_mday = xTsp1.m_uDay;                                    \
-      xDateTime.tm_hour = xTsp1.m_uHour;                                   \
-      xDateTime.tm_min  = xTsp1.m_uMinute;                                 \
-      xDateTime.tm_isdst  = 0;                                             \
-                                                                           \
-      i8 iSecs = iArg2/_C_1M;                                              \
-      i8 iMicroSecs = iArg2%_C_1M + xTsp1.m_uMicro;                        \
-      _ADJUST_SECS_MICROS_                                                 \
-                                                                           \
-      xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
-      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
-                                                                           \
-      if (xDateTime.tm_year > C_YEAR_RANGE) {                              \
-        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
-      }                                                                    \
-			                                                                     \
-      xTsp2.m_iAsI8 = 0;                                                   \
-                                                                           \
-      xTsp2.m_uYearDelta = xDateTime.tm_year;                              \
-      xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                           \
-      xTsp2.m_uDay       = xDateTime.tm_mday;                              \
-      xTsp2.m_uHour      = xDateTime.tm_hour;                              \
-      xTsp2.m_uMinute    = xDateTime.tm_min;                               \
-      xTsp2.m_uSecond    = xDateTime.tm_sec;                               \
-      xTsp2.m_uMicro     = iMicroSecs;                                     \
-      xTsp2.m_uLocal     = _C_TSP_LOCAL;                                   \
-                                                                           \
-      *paW++ = xTsp2.m_iAsI8;                                              \
-  }                                                                        \
+static inline void _SUB_TSPIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg2;
+  union Tsp_T xTsp1;
+  union Tsp_T xTsp2;
+  i8 iArg2;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;
+    if ( ! ivlArg2.m_xIvl.m_bIsNeg )
+      iArg2 = (-1) * iArg2;
+
+    struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
+
+    xDateTime.tm_year = xTsp1.m_uYearDelta;
+    xDateTime.tm_mon  = xTsp1.m_uMonth - 1;
+    xDateTime.tm_mday = xTsp1.m_uDay;
+    xDateTime.tm_hour = xTsp1.m_uHour;
+    xDateTime.tm_min  = xTsp1.m_uMinute;
+    xDateTime.tm_isdst  = 0;
+
+    i8 iSecs = iArg2/_C_1M;
+    i8 iMicroSecs = iArg2%_C_1M + (i8) xTsp1.m_uMicro;
+    _ADJUST_SECS_MICROS_
+
+    xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
+
+    if (xDateTime.tm_year > (i8) C_YEAR_RANGE) {
+      aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
+    }
+
+    xTsp2.m_iAsI8 = 0;
+
+    xTsp2.m_uYearDelta = xDateTime.tm_year;
+    xTsp2.m_uMonth     = xDateTime.tm_mon + 1;
+    xTsp2.m_uDay       = xDateTime.tm_mday;
+    xTsp2.m_uHour      = xDateTime.tm_hour;
+    xTsp2.m_uMinute    = xDateTime.tm_min;
+    xTsp2.m_uSecond    = xDateTime.tm_sec;
+    xTsp2.m_uMicro     = iMicroSecs;
+    xTsp2.m_uLocal     = _C_TSP_LOCAL;
+
+    *(*ppaW)++ = xTsp2.m_iAsI8;
+  }
 }
 
-#define _SUB_TSPIVY(eErrorCode)                                            \
- {                                                                         \
-    ivlArg2.m_iAsI8 = *(--paW);                                            \
-    xTsp1.m_iAsI8 = *(--paW);                                              \
-                                                                           \
-    if (eErrorCode != EC_NONE ||                                           \
-        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
-                                                                           \
-      i8 iYear_arg2 = iArg2/12;                                            \
-      i8 iMonth_arg2 = iArg2%12;                                           \
-                                                                           \
-      if (ivlArg2.m_xIvl.m_bIsNeg) {                                       \
-        iYear_arg2 = (-1) * iYear_arg2;                                    \
-        iMonth_arg2 = (-1) * iMonth_arg2;                                  \
-      }                                                                    \
-                                                                           \
-      i8 iYearDelta;                                                       \
-      i8 iMonth;                                                           \
-      i8 iDay;                                                             \
-      iYearDelta = xTsp1.m_uYearDelta - iYear_arg2;                        \
-      iMonth     = xTsp1.m_uMonth - iMonth_arg2;                           \
-      iDay       = xTsp1.m_uDay;                                           \
-                                                                           \
-      if (iYearDelta > C_YEAR_RANGE) {                                     \
-        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
-      }                                                                    \
-      else {                                                               \
-        _CONVERT_TO_VALID_DATE                                             \
-                                                                           \
-      xTsp2.m_iAsI8 = 0;                                                   \
-                                                                           \
-      xTsp2.m_uYearDelta = iYearDelta;                                     \
-      xTsp2.m_uMonth     = iMonth;                                         \
-      xTsp2.m_uDay       = iDay;                                           \
-      xTsp2.m_uHour      = xTsp1.m_uHour;                                  \
-      xTsp2.m_uMinute    = xTsp1.m_uMinute;                                \
-      xTsp2.m_uSecond    = xTsp1.m_uSecond;                                \
-      xTsp2.m_uMicro     = xTsp1.m_uMicro;                                 \
-                                                                           \
-      *paW++ = xTsp2.m_iAsI8;                                              \
-    }                                                                      \
-  }                                                                        \
+static inline void _SUB_TSPIVY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg2;
+  union Tsp_T xTsp1;
+  union Tsp_T xTsp2;
+  i8 iArg2;
+
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;
+
+    i8 iYear_arg2 = iArg2/12;
+    i8 iMonth_arg2 = iArg2%12;
+
+    if (ivlArg2.m_xIvl.m_bIsNeg) {
+      iYear_arg2 = (-1) * iYear_arg2;
+      iMonth_arg2 = (-1) * iMonth_arg2;
+    }
+
+    i8 iYearDelta;
+    i8 iMonth;
+    i8 iDay;
+    iYearDelta = xTsp1.m_uYearDelta - iYear_arg2;
+    iMonth     = xTsp1.m_uMonth - iMonth_arg2;
+    iDay       = xTsp1.m_uDay;
+
+    if (iYearDelta > (i8) C_YEAR_RANGE) {
+      aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
+    }
+    else {
+      _CONVERT_TO_VALID_DATE
+
+      xTsp2.m_iAsI8 = 0;
+
+      xTsp2.m_uYearDelta = iYearDelta;
+      xTsp2.m_uMonth     = iMonth;
+      xTsp2.m_uDay       = iDay;
+      xTsp2.m_uHour      = xTsp1.m_uHour;
+      xTsp2.m_uMinute    = xTsp1.m_uMinute;
+      xTsp2.m_uSecond    = xTsp1.m_uSecond;
+      xTsp2.m_uMicro     = xTsp1.m_uMicro;
+
+      *(*ppaW)++ = xTsp2.m_iAsI8;
+    }
+  }
 }
 
 
-#define _SUB_TSPTSP(eErrorCode)                                            \
-  {                                                                        \
-    xTsp2.m_iAsI8 = *(--paW);                                              \
-    xTsp1.m_iAsI8 = *(--paW);                                              \
-                                                                           \
-		if (eErrorCode != EC_NONE ||                                           \
-        xTsp2.m_iAsI8 == C_DATUM_NULL ||                                   \
-        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-     struct tm xDateTime1 = {0} ;                                          \
-                                                                           \
-     struct tm xDateTime2 = {0} ;                                          \
-                                                                           \
-     xDateTime1.tm_year = xTsp1.m_uYearDelta;                              \
-     xDateTime1.tm_mon  = xTsp1.m_uMonth - 1 ;                             \
-     xDateTime1.tm_mday = xTsp1.m_uDay;                                    \
-     xDateTime1.tm_hour = xTsp1.m_uHour;                                   \
-     xDateTime1.tm_min  = xTsp1.m_uMinute;                                 \
-     xDateTime1.tm_sec  = xTsp1.m_uSecond;                                 \
-     xDateTime1.tm_isdst = 0;                                              \
-                                                                           \
-     time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);                \
-                                                                           \
-     xDateTime2.tm_year = xTsp2.m_uYearDelta;                              \
-     xDateTime2.tm_mon  = xTsp2.m_uMonth - 1;                              \
-     xDateTime2.tm_mday = xTsp2.m_uDay;                                    \
-     xDateTime2.tm_hour = xTsp2.m_uHour;                                   \
-     xDateTime2.tm_min  = xTsp2.m_uMinute;                                 \
-     xDateTime2.tm_sec  = xTsp2.m_uSecond;                                 \
-     xDateTime2.tm_isdst = 0;                                              \
-                                                                           \
-    time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);                 \
-                                                                           \
-    i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;     \
-                                                                           \
-    wIvlResult.m_xIvl.m_eType = IVL_DS;                                    \
-                                                                           \
-    if (iSeconds < 0) {                                                    \
-      wIvlResult.m_xIvl.m_bIsNeg = 1;                                      \
-      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  (-1)*iSeconds*_C_1M +      \
-      (xTsp2.m_uMicro - xTsp1.m_uMicro);                                   \
-      }                                                                    \
-    else {                                                                 \
-			wIvlResult.m_xIvl.m_bIsNeg = 0;                                      \
-      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M +           \
-      (xTsp1.m_uMicro - xTsp2.m_uMicro);                                   \
-      }                                                                    \
-    *paW++ = wIvlResult.m_iAsI8;                                           \
-  }                                                                        \
+static inline void _SUB_TSPTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T wIvlResult;
+  union Tsp_T xTsp1;
+  union Tsp_T xTsp2;
+
+  xTsp2.m_iAsI8 = *(--(*ppaW));
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp2.m_iAsI8 == C_DATUM_NULL ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+
+  } else {
+    struct tm xDateTime1 = {0,0,0,0,0,0,0,0,0,0,NULL} ;
+
+    struct tm xDateTime2 = {0,0,0,0,0,0,0,0,0,0,NULL} ;
+
+    xDateTime1.tm_year = xTsp1.m_uYearDelta;
+    xDateTime1.tm_mon  = xTsp1.m_uMonth - 1 ;
+    xDateTime1.tm_mday = xTsp1.m_uDay;
+    xDateTime1.tm_hour = xTsp1.m_uHour;
+    xDateTime1.tm_min  = xTsp1.m_uMinute;
+    xDateTime1.tm_sec  = xTsp1.m_uSecond;
+    xDateTime1.tm_isdst = 0;
+
+    time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);
+
+    xDateTime2.tm_year = xTsp2.m_uYearDelta;
+    xDateTime2.tm_mon  = xTsp2.m_uMonth - 1;
+    xDateTime2.tm_mday = xTsp2.m_uDay;
+    xDateTime2.tm_hour = xTsp2.m_uHour;
+    xDateTime2.tm_min  = xTsp2.m_uMinute;
+    xDateTime2.tm_sec  = xTsp2.m_uSecond;
+    xDateTime2.tm_isdst = 0;
+
+    time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);
+
+    i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;
+
+    wIvlResult.m_xIvl.m_eType = IVL_DS;
+
+    if (iSeconds < 0) {
+      wIvlResult.m_xIvl.m_bIsNeg = 1;
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  (-1)*iSeconds*_C_1M +
+      (xTsp2.m_uMicro - xTsp1.m_uMicro);
+    } else {
+			wIvlResult.m_xIvl.m_bIsNeg = 0;
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M +
+      (xTsp1.m_uMicro - xTsp2.m_uMicro);
+    }
+    *(*ppaW)++ = wIvlResult.m_iAsI8;
+  }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2269,36 +2402,39 @@ static inline void _ADD_ANYUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
   *(*ppaW)++ = C_DATUM_NULL;
 }
 
-#define _DIV_ANYUNK(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _DIV_ANYUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
-#define _MUL_ANYUNK(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _MUL_ANYUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
-#define _SUB_ANYUNK(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _SUB_ANYUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
-#define _SUM_ANYUNK(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    *paW++ = iArg1;                                                        \
+static inline void _SUM_ANYUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+
+  iArg2 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  *(*ppaW)++ = iArg1;
+}
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2311,36 +2447,40 @@ static inline void _ADD_UNKANY(i8** ppaW, struct Dynamic_T* aDynamicT)
   *(*ppaW)++ = C_DATUM_NULL;
 }
 
-#define _DIV_UNKANY(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _DIV_UNKANY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
-#define _MUL_UNKANY(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _MUL_UNKANY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
-#define _SUB_UNKANY(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _SUB_UNKANY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
-#define _SUM_UNKANY(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    *paW++ = iArg2;                                                        \
+
+static inline void _SUM_UNKANY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1;
+  i8 iArg2;
+
+  iArg2 = *(--(*ppaW));
+  iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  *(*ppaW)++ = iArg2;
+}
 
 /*============================================================================*/
 /* end                                                                        */

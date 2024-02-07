@@ -19,26 +19,66 @@
     *paW++ = bcdRound.m_iAsI8;                                       \
   }
 
-static inline void _ROUND_BCD_CHECK_ROUNDUP(i8** ppaW, i1* piRoundedUp)
-  {
-    union Bcd_T bcdRound;
+static inline void vRoundBcd(i8** ppaW)
+{
+  union Bcd_T bcdRound;
 
-    bcdRound.m_iAsI8 = *(--(*ppaW));
-    if (bcdRound.m_iMantissa % 10 >= 5) {
-      bcdRound.m_iMantissa = (bcdRound.m_iMantissa / 10) + 1;
-      *piRoundedUp = 1;
-    }
-    else {
-      bcdRound.m_iMantissa = bcdRound.m_iMantissa / 10;
-      *piRoundedUp = 0;
-    }
-    bcdRound.m_uScale--;
-    *(*ppaW)++ = bcdRound.m_iAsI8;
+  bcdRound.m_iAsI8 = *(--(*ppaW));
+  if (bcdRound.m_iMantissa % 10 >= 5) {
+    bcdRound.m_iMantissa = (bcdRound.m_iMantissa / 10) + 1;
+  } else {
+    bcdRound.m_iMantissa = bcdRound.m_iMantissa / 10;
   }
 
+  bcdRound.m_uScale--;
+  *(*ppaW)++ = bcdRound.m_iAsI8;
+}
+
+static inline void vRoundBcdCheckRoundUp(i8** ppaW, i1* piRoundedUp)
+{
+  union Bcd_T bcdRound;
+
+  bcdRound.m_iAsI8 = *(--(*ppaW));
+  if (bcdRound.m_iMantissa % 10 >= 5) {
+    bcdRound.m_iMantissa = (bcdRound.m_iMantissa / 10) + 1;
+    *piRoundedUp = 1;
+  } else {
+    bcdRound.m_iMantissa = bcdRound.m_iMantissa / 10;
+    *piRoundedUp = 0;
+  }
+
+  bcdRound.m_uScale--;
+  *(*ppaW)++ = bcdRound.m_iAsI8;
+}
+
 // rescale BCD to max scale of the two bcd's
-// CHECK FOR OVERFLOW !!!
-#define _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                           \
+// TODO: CHECK FOR OVERFLOW !!!
+static inline void vRescaleBcdMaxOfTwo(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Bcd_T bcdReScale1;
+  union Bcd_T bcdReScale2;
+  i8 iScaleDiff;
+
+  bcdReScale2.m_iAsI8 = *(--(*ppaW));
+  bcdReScale1.m_iAsI8 = *(--(*ppaW));
+  iScaleDiff = (i8) bcdReScale1.m_uScale - (i8) bcdReScale2.m_uScale;
+
+  if (iScaleDiff > 0) {
+    bcdReScale2.m_uScale = bcdReScale1.m_uScale;
+    bcdReScale2.m_iMantissa = bcdReScale2.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];
+  }
+  else {
+    bcdReScale1.m_uScale = bcdReScale2.m_uScale;
+    bcdReScale1.m_iMantissa = bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[-iScaleDiff];
+  }
+
+  *(*ppaW)++ = bcdReScale1.m_iAsI8;
+  *(*ppaW)++ = bcdReScale2.m_iAsI8;
+}
+
+// rescale BCD to max scale of the two bcd's
+// TODO: CHECK FOR OVERFLOW !!!
+  #define _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                           \
   {                                                                   \
     bcdReScale2.m_iAsI8 = *(--paW);                                   \
     bcdReScale1.m_iAsI8 = *(--paW);                                   \
@@ -107,7 +147,7 @@ static inline void _RESCALE_BCD_TO_SCALE(i8** ppaW, struct Dynamic_T* aDynamicT,
 
       /* Now round the number */
       *(*ppaW)++ = bcdReScale1.m_iAsI8;
-      _ROUND_BCD_CHECK_ROUNDUP(ppaW, piRoundedUp);
+      vRoundBcdCheckRoundUp(ppaW, piRoundedUp);
       bcdReScale1.m_iAsI8 = *(--(*ppaW));
     }
 

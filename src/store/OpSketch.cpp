@@ -1587,7 +1587,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       }
 
       sOperation = aFM[eMacro_Sum[eExprType][eExprType]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT);"_Stz);
       pExprStack->vPushStr(sOperation);
       break;
 
