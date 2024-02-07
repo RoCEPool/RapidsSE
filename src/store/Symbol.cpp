@@ -1725,73 +1725,6 @@ bool Symbol::bIs_Exp_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol INTERVAL_DT ?                                               */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Interval_DT(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_INTERVAL_DT != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Interval_DT(xaFacet[0].m_sChrSeq))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol INTERVAL_YM ?                                               */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Interval_YM(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_INTERVAL_YM != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Interval_YM(xaFacet[0].m_sChrSeq))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Itm_Col(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_ITM_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (! bIs_Itm_Col(xaFacet[0].m_sChrSeq))
-    return false;
-
-  if (xaFacet[0].m_sChrSeq.nLength() < 4)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol an interval function?                                       */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Ivl_Fn(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_IVL_FN != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Ivl_Fn(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a list count?  (i.e. #n)                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_List_Cnt(void)
@@ -3267,7 +3200,7 @@ void Symbol::vFacet_Interval_DT(Stz* szInterval_DT)
 
   vFacetSprint(SF_INTERVAL_DT,"%s"_Stz,szInterval_DT);
 
-  RASSERT(bIs_Interval_DT());
+  RASSERT(bHasFacet(SF_INTERVAL_DT));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3281,7 +3214,7 @@ void Symbol::vFacet_Interval_YM(Stz* szInterval_YM)
 
   vFacetSprint(SF_INTERVAL_YM,"%s"_Stz,szInterval_YM);
 
-  RASSERT(bIs_Interval_YM());
+  RASSERT(bHasFacet(SF_INTERVAL_YM));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3297,7 +3230,7 @@ void Symbol::vFacet_Itm_Col(i8 i_Child)
 
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, xaFacet[0].m_sChrSeq.szStz());
 
-  RASSERT(bIs_Itm_Col());
+  RASSERT(bHasFacet(SF_ITM_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3313,7 +3246,7 @@ void Symbol::vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol)
                i_Child,
                pSymbol->szFacet(SF_NMD_COL));
 
-  RASSERT(bIs_Itm_Col());
+  RASSERT(bHasFacet(SF_ITM_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3327,7 +3260,7 @@ void Symbol::vFacet_Ivl_Fn(Stz* szIvlFn)
 
   vFacetSprint(SF_IVL_FN,"%s"_Stz,szIvlFn);
 
-  RASSERT(bIs_Ivl_Fn());
+  RASSERT(bHasFacet(SF_IVL_FN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3440,7 +3373,7 @@ void Symbol::vFacet_Nmd_Col(Stz* szColNm)
   vFacetSprint(SF_NMD_COL, "%s"_Stz, szColNm);
 
   RASSERT(bIs_Nmd_Col());
-  RASSERT(!bIs_Itm_Col());
+  RASSERT(!bHasFacet(SF_ITM_COL));
 }
 
 /*----------------------------------------------------------------------------*/

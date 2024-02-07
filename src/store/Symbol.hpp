@@ -184,10 +184,10 @@ namespace STORE
 //    bool bIs_Idx_Col(void);         // $In
 //    bool bIs_Idx_Nm(void);          // Sn
 //    bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
-    bool bIs_Interval_DT(void);     // INTERVAL_DT
-    bool bIs_Interval_YM(void);     // INTERVAL_YM
-    bool bIs_Itm_Col(void);         // C_n
-    bool bIs_Ivl_Fn(void);          // extract_year etc
+//    bool bIs_Interval_DT(void);     // INTERVAL_DT
+//    bool bIs_Interval_YM(void);     // INTERVAL_YM
+//    bool bIs_Itm_Col(void);         // C_n
+//    bool bIs_Ivl_Fn(void);          // extract_year etc
     bool bIs_List_Cnt(void);        // #n
     bool bIs_Lit(void);             // FALSE, TRUE, ...
     bool bIs_Key_Col(void);         // $Kn
