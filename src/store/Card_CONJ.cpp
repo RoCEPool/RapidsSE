@@ -321,7 +321,7 @@ bool Card_CONJ::bIsSqyOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Sqy_Op())
+  if (pSymbol()->bHasFacet(SF_SQY_OP))
     return true;
 
   return false;

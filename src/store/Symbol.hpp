@@ -199,11 +199,11 @@ namespace STORE
 //    bool bIs_Null(void);            // NULL
 //    bool bIs_Parenthesis(void);     // ( or )
 //    bool bIs_Rln_Op(void);          // <, <=, ... >
-    bool bIs_Sqy_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
-    bool bIs_Sqy_No(void);          // __sq%02lld
-    bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
-    bool bIs_Sqy_Prm(void);         // %n
-    bool bIs_Sqy_Rsl(void);         // __n
+//    bool bIs_Sqy_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
+//    bool bIs_Sqy_No(void);          // __sq%02lld
+//    bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
+//    bool bIs_Sqy_Prm(void);         // %n
+//    bool bIs_Sqy_Rsl(void);         // __n
     bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
     bool bIs_Stg_Nm(void);          // Sn
     bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3

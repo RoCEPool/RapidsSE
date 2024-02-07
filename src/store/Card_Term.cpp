@@ -466,7 +466,7 @@ bool Card_Term::bIsSqyPrm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIs_Sqy_Prm();
+  bool b = pSymbol()->bHasFacet(SF_SQY_PRM);
 
   return b;
 }

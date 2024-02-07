@@ -1770,85 +1770,6 @@ bool Symbol::bIs_None(void)
 
   return false;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/* is this a subquery name?                                                   */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_SQY_NM != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Sqy_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-no?                                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_No(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_SQY_NO != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Sqy_No(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Prm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (bIs_Sqy_Prm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-operator?                                  */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Op(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_SQY_OP != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Sqy_Op(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-column?  (i.e. __n)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Rsl(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_SQY_RSL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Sqy_Rsl(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
 /*----------------------------------------------------------------------------*/
 /* is this symbol a bound?                                                    */
 /*----------------------------------------------------------------------------*/
@@ -2383,9 +2304,9 @@ Stz* Symbol::szWhatIs(void)
   if (bHasFacet(SF_MTH_OP))       return "NumbOp"_Stz;
   if (bHasFacet(SF_PARENTHESIS))  return "Parenthesis"_Stz;
   if (bHasFacet(SF_RLN_OP))       return "RelnOp"_Stz;
-  if (bIs_Sqy_Op())       return "SubQueryOp"_Stz;
-  if (bIs_Sqy_Prm())      return "ParameterOrdinal"_Stz;
-  if (bIs_Sqy_Rsl())      return "SubQueryColumn"_Stz;
+  if (bHasFacet(SF_SQY_OP))       return "SubQueryOp"_Stz;
+  if (bHasFacet(SF_SQY_PRM))      return "ParameterOrdinal"_Stz;
+  if (bHasFacet(SF_SQY_RSL))      return "SubQueryColumn"_Stz;
 
   return "??WhatIs"_Stz;
 }
@@ -3314,7 +3235,7 @@ void Symbol::vFacet_Sqy_Nm(Stz* szPpeNm)
 
   vFacetSprint(SF_SQY_NM, "%s"_Stz, szPpeNm);
 
-  RASSERT(bIs_Sqy_Nm());
+  RASSERT(bHasFacet(SF_SQY_NM));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3328,7 +3249,7 @@ void Symbol::vFacet_Sqy_No(i8 iSqyNo)
 
   vFacetSprint(SF_SQY_NO, "$Q%lld"_Stz, iSqyNo);
 
-  RASSERT(bIs_Sqy_No());
+  RASSERT(bHasFacet(SF_SQY_NO));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3342,7 +3263,7 @@ void Symbol::vFacet_Sqy_No(Stz* szSqyNo)
 
   vFacetSprint(SF_SQY_NO, "%s"_Stz, szSqyNo);
 
-  RASSERT(bIs_Sqy_No());
+  RASSERT(bHasFacet(SF_SQY_NO));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3356,7 +3277,7 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
 
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
 
-  RASSERT(bIs_Sqy_Op());
+  RASSERT(bHasFacet(SF_SQY_OP));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3370,7 +3291,7 @@ void Symbol::vFacet_Sqy_Prm(i8 iOrdinal)
 
   vFacetSprint(SF_SQY_PRM, "%%%lld"_Stz, iOrdinal);
 
-  RASSERT(bIs_Sqy_Prm());
+  RASSERT(bHasFacet(SF_SQY_PRM));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3384,7 +3305,7 @@ void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
 
   vFacetSprint(SF_SQY_PRM, "%s"_Stz, szSqyPrm);
 
-  RASSERT(bIs_Sqy_Prm());
+  RASSERT(bHasFacet(SF_SQY_PRM));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3398,7 +3319,7 @@ void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
 
   vFacetSprint(SF_SQY_RSL, "$R%lld"_Stz, iOrdinal);
 
-  RASSERT(bIs_Sqy_Rsl());
+  RASSERT(bHasFacet(SF_SQY_RSL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3412,7 +3333,7 @@ void Symbol::vFacet_Sqy_Rsl(Stz* szSqyRsl)
 
   vFacetSprint(SF_SQY_RSL, "%s"_Stz, szSqyRsl);
 
-  RASSERT(bIs_Sqy_Rsl());
+  RASSERT(bHasFacet(SF_SQY_RSL));
 }
 
 /*----------------------------------------------------------------------------*/
