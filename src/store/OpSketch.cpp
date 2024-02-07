@@ -1729,6 +1729,7 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
     }
   }
 
+  ASSERT(pColumn);
   sColumn = pColumn->szColNm();
   StrLib::vToUpper(sColumn.azChar(), sColumn.nAreaBytes());
   sStructColumn.vSprint("p%s->%s.m_iAsI8"_Stz,

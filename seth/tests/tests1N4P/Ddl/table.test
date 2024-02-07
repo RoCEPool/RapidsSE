@@ -264,7 +264,7 @@ success
 lscol ${testName2}_T1;
 rows:
   ('key','INTEGER',19,0,false,true)
-  ('name','VARCHAR',32,0,false,false)
+  ('name','VARCHAR',32,null,false,false)
 
 // () drop table t1
 drop table ${testName2}_T1 ;
@@ -328,7 +328,7 @@ success
 // lsPtncol
 lsPtncol ${testName2}_T1;
 rows:
-  ('name','VARCHAR',32,0,false,true)
+  ('name','VARCHAR',32,null,false,true)
 
 // () drop table t1
 drop table ${testName2}_T1 ;
@@ -348,7 +348,7 @@ success
 // lsPtncol
 lsPtncol ${testName2}_T1;
 rows:
-  ('name','VARCHAR',32,0,false,true)
+  ('name','VARCHAR',32,null,false,true)
   ('key','INTEGER',19,0,false,true)
 
 // () drop table t1

@@ -39,10 +39,10 @@ rows:
 // Describe the columns in the table
 lscol ${testName2}_nation;
 unordered rows:
-  ('N_NATIONKEY', 'INTEGER', 19,  0, false, true)
-  ('N_NAME',      'VARCHAR', 25,  0, false, false)
-  ('N_REGIONKEY', 'INTEGER', 19,  0, false, false)
-  ('N_COMMENT',   'VARCHAR', 152, 0, true,  false)
+  ('N_NATIONKEY', 'INTEGER', 19,     0, false, true)
+  ('N_NAME',      'VARCHAR', 25,  null, false, false)
+  ('N_REGIONKEY', 'INTEGER', 19,     0, false, false)
+  ('N_COMMENT',   'VARCHAR', 152, null, true,  false)
 
 
 // Create an index on the table

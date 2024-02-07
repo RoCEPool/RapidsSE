@@ -208,7 +208,7 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 //          printf("bcdTemp2 = %lld\n", bcdTemp2.m_iMantissa);
 
 
-      if (aDynamicT->m_iErrorCode == EC_NONE &
+      if (aDynamicT->m_iErrorCode == EC_NONE &&
           bcdUpperBound.m_iMantissa - bcdTemp1.m_iMantissa > bcdTemp2.m_iMantissa) {
         // No overflow will occur.
         // The actual integral digits is one less

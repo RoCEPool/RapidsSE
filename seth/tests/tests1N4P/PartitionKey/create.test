@@ -100,7 +100,7 @@ success
 -- check existence of partition key
 lsPtncol ${testName2}_createT1;
 rows:
-  ('name','VARCHAR',32,0,false,true)
+  ('name','VARCHAR',32,null,false,true)
 
 -- drop the table
 drop table ${testName2}_createT1;
@@ -120,7 +120,7 @@ success
 lsPtncol ${testName2}_createT1;
 rows:
  ('key','INTEGER',19,0,false,true)
- ('name','VARCHAR',32,0,false,true)
+ ('name','VARCHAR',32,null,false,true)
 
 -- drop the table
 drop table ${testName2}_createT1;
@@ -136,7 +136,7 @@ success
 lsPtncol ${testName2}_createT1;
 rows:
   ('key','INTEGER',19,0,false,true)
-  ('name','VARCHAR',32,0,false,true)
+  ('name','VARCHAR',32,null,false,true)
 
 -- drop the table
 drop table ${testName2}_createT1;

@@ -197,8 +197,8 @@ i8 CountExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  // COUNT() always returns an integer, so there is no scale
-  return -1;
+  // COUNT() always returns an integer, so the scale is always 0
+  return 0;
 }
 
 /*============================================================================*/

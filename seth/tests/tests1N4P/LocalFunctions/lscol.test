@@ -22,14 +22,14 @@ success
 // list columns of the table
 lscol ${testName2}_lstTbl;
 rows:
-  ('bol_col1','BOOLEAN',0,0,false,true)
-  ('vch_col2','VARCHAR',32,0,false,false)
-  ('int_col3','INTEGER',19,0,false,false)
-  ('int_col4','INTEGER',19,0,false,false)
-  ('dec_col5','DECIMAL',10,2,false,false)
-  ('flt_col6','FLOAT',19,0,false,false)
-  ('tsp_col7','TIMESTAMP',0,0,false,false)
-  ('bol_col8','BOOLEAN',0,0,true,false)
+  ('bol_col1',  'BOOLEAN', null, null, false, true)
+  ('vch_col2',  'VARCHAR',   32, null, false, false)
+  ('int_col3',  'INTEGER',   19,    0, false, false)
+  ('int_col4',  'INTEGER',   19,    0, false, false)
+  ('dec_col5',  'DECIMAL',   10,    2, false, false)
+  ('flt_col6',    'FLOAT',   19, null, false, false)
+  ('tsp_col7','TIMESTAMP', null, null, false, false)
+  ('bol_col8',  'BOOLEAN', null, null,  true, false)
 
 //// change folder
 //cf ..;
@@ -46,14 +46,14 @@ rows:
 // list columns of the table
 lscol ${testName2}_lstTbl;
 rows:
-  ('bol_col1','BOOLEAN',0,0,false,true)
-  ('vch_col2','VARCHAR',32,0,false,false)
-  ('int_col3','INTEGER',19,0,false,false)
-  ('int_col4','INTEGER',19,0,false,false)
-  ('dec_col5','DECIMAL',10,2,false,false)
-  ('flt_col6','FLOAT',19,0,false,false)
-  ('tsp_col7','TIMESTAMP',0,0,false,false)
-  ('bol_col8','BOOLEAN',0,0,true,false)
+  ('bol_col1',   'BOOLEAN', null, null, false,  true)
+  ('vch_col2',   'VARCHAR',   32, null, false, false)
+  ('int_col3',   'INTEGER',   19,    0, false, false)
+  ('int_col4',   'INTEGER',   19,    0, false, false)
+  ('dec_col5',   'DECIMAL',   10,    2, false, false)
+  ('flt_col6',     'FLOAT',   19, null, false, false)
+  ('tsp_col7', 'TIMESTAMP', null, null, false, false)
+  ('bol_col8',   'BOOLEAN', null, null,  true, false)
 
 // drop the table
 drop table ${testName2}_lstTbl;
