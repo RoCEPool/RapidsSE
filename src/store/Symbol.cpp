@@ -1565,7 +1565,8 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_SQY_OP:      vFacet_Sqy_Op(szChrSeq);      break;
     case SF_STG_CAST:    vFacet_Stg_Cast(szChrSeq);    break;
     case SF_STR_FN:      vFacet_Str_Fn(szChrSeq);      break;
-    case SF_STR_LIT:     vFacet_String(szChrSeq);      break;
+    case SF_STR_LIT:
+      vFacet_Str_Lit(szChrSeq);      break;
     case SF_TBL_COL:     vFacet_Tbl_Col(szChrSeq);     break;
     case SF_TBL_NM:      vFacet_Tbl_Nm(szChrSeq);      break;
     case SF_TBL_SYN:     vFacet_Tbl_Syn(szChrSeq);     break;
@@ -1766,68 +1767,6 @@ bool Symbol::bIs_None(void)
     return false;
 
   if (bIs_None(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-/*----------------------------------------------------------------------------*/
-/* is this symbol a bound?                                                    */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Stg_Cast(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_STG_CAST != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Stg_Cast(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-column?  (i.e. __n)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Stg_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_STG_NO != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Stg_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a string function?                                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Str_Fn(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_STR_FN != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Str_Fn(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-column?  (i.e. __n)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_String(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_STR_LIT != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_String(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -3347,7 +3286,7 @@ void Symbol::vFacet_Stg_Cast(Stz* szStgCast)
 
   vFacetSprint(SF_STG_CAST,"%s"_Stz,szStgCast);
 
-  RASSERT(bIs_Stg_Cast());
+  RASSERT(bHasFacet(SF_STG_CAST));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3361,7 +3300,7 @@ void Symbol::vFacet_Stg_Nm(i8 iStgNo)
 
   vFacetSprint(SF_STG_NO,"S%02lld"_Stz, iStgNo);
 
-  RASSERT(bIs_Stg_Nm());
+  RASSERT(bHasFacet(SF_STG_NO));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3397,13 +3336,13 @@ void Symbol::vFacet_Str_Fn(Stz* szBolFn)
 
   vFacetSprint(SF_STR_FN,"%s"_Stz,szBolFn);
 
-  RASSERT(bIs_Str_Fn());
+  RASSERT(bHasFacet(SF_STR_FN));
 }
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given string                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_String(Stz* szString)
+void Symbol::vFacet_Str_Lit(Stz* szString)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3411,7 +3350,7 @@ void Symbol::vFacet_String(Stz* szString)
 
   vFacetSprint(SF_STR_LIT,"%s"_Stz,szString);
 
-  RASSERT(bIs_String());
+  RASSERT(bHasFacet(SF_STR_LIT));
 }
 
 /*----------------------------------------------------------------------------*/

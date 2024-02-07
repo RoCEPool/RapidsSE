@@ -204,10 +204,10 @@ namespace STORE
 //    bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
 //    bool bIs_Sqy_Prm(void);         // %n
 //    bool bIs_Sqy_Rsl(void);         // __n
-    bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
-    bool bIs_Stg_Nm(void);          // Sn
-    bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
-    bool bIs_String(void);          // 'abc''
+//    bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
+//    bool bIs_Stg_Nm(void);          // Sn
+//    bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
+//    bool bIs_String(void);          // 'abc''
     bool bIs_Tbl_Col(void);         // $t.c
     bool bIs_Tbl_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
@@ -320,7 +320,7 @@ namespace STORE
     void vFacet_Stg_Nm(i8 iStgNo);
     void vFacet_Exp_Col(i8 iExpCol);
     void vFacet_Str_Fn(Stz* szStrFn);
-    void vFacet_String(Stz* szString);
+    void vFacet_Str_Lit(Stz* szString);
     void vFacet_Tbl_Col(Stz* szTblCol);
     void vFacet_Tbl_Col(char cTblSyn, i8 iTblCol);
     void vFacet_Tbl_Nm(Stz* szTblNm);
