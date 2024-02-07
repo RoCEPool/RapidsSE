@@ -1725,24 +1725,6 @@ bool Symbol::bIs_Exp_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a list count?  (i.e. #n)                              */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_List_Cnt(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bHasFacets());
-
-  if (SF_LIST_CNT != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_List_Cnt(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a literal?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Lit(void)
@@ -1753,38 +1735,6 @@ bool Symbol::bIs_Lit(void)
   if (bHasFacet(SF_DCM_LIT)) return true;
   if (bHasFacet(SF_FLT_LIT)) return true;
   if (bHasFacet(SF_INT_LIT)) return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a key symbol? (i.e. $Kn)                              */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Key_Col(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_KEY_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Key_Col(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a math operator ?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Mth_Op(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_MTH_OP != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Mth_Op(xaFacet[0].m_sChrSeq))
-    return true;
 
   return false;
 }
@@ -2508,8 +2458,8 @@ Stz* Symbol::szWhatIs(void)
   if (bIs_Tbl_Col())      return "ColumnOrdinal"_Stz;
   if (bHasFacet(SF_COMMA))        return "Comma"_Stz;
   if (bHasFacet(SF_IDX_COL))      return "IndexColumn"_Stz;
-  if (bIs_Key_Col())      return "KeyOrdinal"_Stz;
-  if (bIs_Mth_Op())       return "NumbOp"_Stz;
+  if (bHasFacet(SF_KEY_COL))      return "KeyOrdinal"_Stz;
+  if (bHasFacet(SF_MTH_OP))       return "NumbOp"_Stz;
   if (bIs_Parenthesis())  return "Parenthesis"_Stz;
   if (bIs_Rln_Op())       return "RelnOp"_Stz;
   if (bIs_Sqy_Op())       return "SubQueryOp"_Stz;
@@ -3274,7 +3224,7 @@ void Symbol::vFacet_List_Cnt(i8 nListCnt)
 
   vFacetSprint(SF_LIST_CNT, "#%lld"_Stz, nListCnt);
 
-  RASSERT(bIs_List_Cnt());
+  RASSERT(bHasFacet(SF_LIST_CNT));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3288,7 +3238,7 @@ void Symbol::vFacet_List_Cnt(Stz* szListCnt)
 
   vFacetSprint(SF_LIST_CNT, "%s"_Stz, szListCnt);
 
-  RASSERT(bIs_List_Cnt());
+  RASSERT(bHasFacet(SF_LIST_CNT));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3302,7 +3252,7 @@ void Symbol::vFacet_Key_Col(i8 iKeyCol)
 
   vFacetSprint(SF_KEY_COL, "$K%lld"_Stz, iKeyCol);
 
-  RASSERT(bIs_Key_Col());
+  RASSERT(bHasFacet(SF_KEY_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3316,7 +3266,7 @@ void Symbol::vFacet_Key_Col(Stz* szKeyCol)
 
   vFacetSprint(SF_KEY_COL,"%s"_Stz,szKeyCol);
 
-  RASSERT(bIs_Key_Col());
+  RASSERT(bHasFacet(SF_KEY_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3330,7 +3280,7 @@ void Symbol::vFacet_Mth_Op(Stz* szMthOp)
 
   vFacetSprint(SF_MTH_OP,"%s"_Stz,szMthOp);
 
-  RASSERT(bIs_Mth_Op());
+  RASSERT(bHasFacet(SF_MTH_OP));
 }
 
 /*----------------------------------------------------------------------------*/

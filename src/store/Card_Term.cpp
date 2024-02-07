@@ -454,7 +454,7 @@ bool Card_Term::bIsKeyCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIs_Key_Col();
+  bool b = pSymbol()->bHasFacet(SF_KEY_COL);
 
   return b;
 }

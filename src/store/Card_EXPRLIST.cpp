@@ -51,7 +51,7 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
     Kid xCI2(p_rpnCalc);
     while ((xCI2.bEach(CK_TERM))) {
 
-      if (xCI2.p_term()->pSymbol()->bIs_Key_Col()) {
+      if (xCI2.p_term()->pSymbol()->bHasFacet(SF_KEY_COL)) {
         xCI2.p_term()->vBumpKeyCol();
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;

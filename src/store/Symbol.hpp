@@ -188,10 +188,10 @@ namespace STORE
 //    bool bIs_Interval_YM(void);     // INTERVAL_YM
 //    bool bIs_Itm_Col(void);         // C_n
 //    bool bIs_Ivl_Fn(void);          // extract_year etc
-    bool bIs_List_Cnt(void);        // #n
+//    bool bIs_List_Cnt(void);        // #n
     bool bIs_Lit(void);             // FALSE, TRUE, ...
-    bool bIs_Key_Col(void);         // $Kn
-    bool bIs_Mth_Op(void);          // +, -, *, /
+//    bool bIs_Key_Col(void);         // $Kn
+//    bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_Negate(void);          // NEGATE
     bool bIs_Nmd_Col(void);         // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_None(void);            //

@@ -499,7 +499,7 @@ bool Card_Expr::bIsExpressionOfKey(void) {
 
   Symbol *pSymbol_0 = pGet_Symbol(0);
 
-  if (pSymbol_0->bIs_Key_Col())
+  if (pSymbol_0->bHasFacet(SF_KEY_COL))
     return true;
 
   return false;
