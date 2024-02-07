@@ -1789,22 +1789,6 @@ bool Symbol::bIs_Tbl_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a table name?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Tbl_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_TBL_NM != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Tbl_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol a table synonym?  (i.e. c)                                */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Syn(void)
@@ -3331,7 +3315,7 @@ void Symbol::vFacet_Tbl_Nm(Stz* szTblNm)
 
   vFacetSprint(SF_TBL_NM,"%s"_Stz,szTblNm);
 
-  RASSERT(bIs_Tbl_Nm());
+  RASSERT(bHasFacet(SF_TBL_NM));
 }
 
 /*----------------------------------------------------------------------------*/
