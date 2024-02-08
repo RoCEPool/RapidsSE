@@ -77,9 +77,7 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
 
     Kid xCI2(p_rpnCalc);
     while (xCI2.bEach(CK_TERM)) {
-//      Stz *szTerm = xCI2.G.p_term->szFacet(SF_NONE);
-
-      if (xCI2.p_term()->pSymbol()->bIs_Exp_Col()) {
+      if (xCI2.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
         xCI2.p_term()->vBump_expCol();
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
