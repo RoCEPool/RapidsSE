@@ -41,7 +41,7 @@ CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn)
   m_tLglPtn    = tLglPtn;
   m_iSynthKey  = 0;
 
-  m_pPdsOfBufferIds = new Pds_t<PdsItem_BufferId>(nullptr);
+  m_pPdsOfBufferIds = new Pds_t<PdsBufferIdItem>(nullptr);
   //m_pIndexTreeVec  = new IndexTreeVec;
 
   _checkInitialised_(CN_CRWTABLEPTN);
@@ -122,14 +122,14 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pAppend((void*)&(m_iSynthKey));
   RASSERT(pSLBlock != nullptr);
 
-  PdsItem_BufferId oBufferIdStruct;
+  PdsBufferIdItem oBufferIdStruct;
   oBufferIdStruct.iKey = m_iSynthKey;
   oBufferIdStruct.oBufferId = pCrwBuffer->oGetBufferId();
 
   m_iSynthKey++;
 
   // Update the contents of SkipListBlock Item with the key and bufferId
-  *(PdsItem_BufferId*)(pSLBlock->aItem()) = oBufferIdStruct;
+  *(PdsBufferIdItem*)(pSLBlock->aItem()) = oBufferIdStruct;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we are done with the current buffer, allow it to be paged out by dropping
@@ -195,7 +195,7 @@ BufferId CrwTablePtn::oExtractBufferId(void *pItemAddr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pItemAddr;
+  PdsBufferIdItem oBufferIdStruct = *(PdsBufferIdItem*) pItemAddr;
 
   return oBufferIdStruct.oBufferId;
 
@@ -208,7 +208,7 @@ CrwBuffer* CrwTablePtn::pGetBuffer(SkipListBlock* pSLBlock)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  PdsItem_BufferId* pBufferIdStruct = (PdsItem_BufferId*) pSLBlock->aItem();
+  PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pSLBlock->aItem();
   CrwBuffer* pCrwBuffer = _pCrwBuffer(BufferId::aAddressFromId(pBufferIdStruct->oBufferId));
 
   RASSERT(pCrwBuffer != nullptr);
@@ -276,7 +276,7 @@ BufferId CrwTablePtn::oRootCrwBufferId(void)
   // Extract the buffer Id, set to 0 if it doesn't exist
   oRootBufferId.m_iAsI8 = 0;
   if(pSLBlock != nullptr) {
-    PdsItem_BufferId* pPdsItem = (PdsItem_BufferId*)pSLBlock->aItem();
+    PdsBufferIdItem* pPdsItem = (PdsBufferIdItem*)pSLBlock->aItem();
     oRootBufferId = pPdsItem->oBufferId;
   }
 
@@ -316,7 +316,7 @@ void CrwTablePtn::vTruncate(void)
   while(pCurrBlock) {
     SkipListBlock* pNextBlock = m_pPdsOfBufferIds->pNextSLBlock(pCurrBlock, 0);
 
-    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
+    PdsBufferIdItem oBufferIdStruct = *(PdsBufferIdItem*) pCurrBlock->aItem();
 
     CrwBuffer* pCrwBuffer = _pCrwBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
     m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
