@@ -81,7 +81,7 @@ void Card_RpnCalc::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
 
-    if (xKid.p_term()->pSymbol()->bIs_Exp_Col()) {
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
       xKid.p_term()->vBump_expCol(nBumpBy);
       xKid.p_term()->vMark1(MARK_CHANGED);
     }
