@@ -419,19 +419,6 @@ bool Card_Term::bIsColSym(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a column-value ordinal? $n.c                                  */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsTblCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bIs_Tbl_Col())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)

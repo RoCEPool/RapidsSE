@@ -111,7 +111,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
 
     Card_Term* p_term_0 = p_rlnConj_tst->pGetTerm(0);
     Card_Term* p_term_1 = p_rlnConj_tst->pGetTerm(1);
-    if ( ! (p_term_0->bIsTblCol() && p_term_1->bIsTblCol()))
+    if ( ! (p_term_0->pSymbol()->bIs_Tbl_Col() && p_term_1->pSymbol()->bIs_Tbl_Col()))
       return C_CONTINUE_RECURSION;
 
     if (!p_indexList->bHasEquivalentBound(p_rlnConj_tst))

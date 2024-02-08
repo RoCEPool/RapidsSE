@@ -198,7 +198,7 @@ Card_Term* Card_CONJ::pGetFirstTerm_tblCol(void)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->bIsTblCol())
+    if (xKid.p_term()->pSymbol()->bIs_Tbl_Col())
       return xKid.p_term();
 
   return nullptr;
@@ -270,8 +270,8 @@ bool Card_CONJ::bIsCorrConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->pSymbol()->bHasFacet(SF_SQY_PRM) && (p_term_1->pSymbol()->bIs_Exp_Col() || p_term_1->bIsTblCol())) ||
-      (p_term_1->pSymbol()->bHasFacet(SF_SQY_PRM) && (p_term_0->pSymbol()->bIs_Exp_Col() || p_term_0->bIsTblCol())))
+  if ((p_term_0->pSymbol()->bHasFacet(SF_SQY_PRM) && (p_term_1->pSymbol()->bIs_Exp_Col() || p_term_1->pSymbol()->bIs_Tbl_Col())) ||
+      (p_term_1->pSymbol()->bHasFacet(SF_SQY_PRM) && (p_term_0->pSymbol()->bIs_Exp_Col() || p_term_0->pSymbol()->bIs_Tbl_Col())))
     return true;
 
   return false;
@@ -294,8 +294,8 @@ bool Card_CONJ::bIsJoinConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->pSymbol()->bIs_Exp_Col() || p_term_0->bIsTblCol()) &&
-      (p_term_1->pSymbol()->bIs_Exp_Col() || p_term_1->bIsTblCol()))
+  if ((p_term_0->pSymbol()->bIs_Exp_Col() || p_term_0->pSymbol()->bIs_Tbl_Col()) &&
+      (p_term_1->pSymbol()->bIs_Exp_Col() || p_term_1->pSymbol()->bIs_Tbl_Col()))
     return true;
 
   return false;

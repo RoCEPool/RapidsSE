@@ -36,7 +36,6 @@ namespace STORE
     i8   iGetOdn(void);
     char cGetTblSyn(void);
     bool bIsColSym(void);   // $n or $c.n
-    bool bIsTblCol(void);   // $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     void vShortForm(String* pString, Stz* szSep);
