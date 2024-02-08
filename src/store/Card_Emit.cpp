@@ -482,7 +482,7 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
   _precondition_( _MAGIC_, _FOOTER_);
 
   if (p_term->pSymbol()->bIs_Exp_Col()) {
-    Card_Expr *p_expr_prior = this->pGet_expr(p_term->pSymbol());
+    Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
     return p_expr_prior;
   }
   else
