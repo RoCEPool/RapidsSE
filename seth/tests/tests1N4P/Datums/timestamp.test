@@ -34,12 +34,12 @@ rows:
 // check columns of index
 lsidxcol ${testName2}_tspTbl tsp_idx1;
 rows:
-('tsp_col1', 'TIMESTAMP', 0, 0, false, true)
+('tsp_col1', 'TIMESTAMP', null, null, false, true)
 
 // check columns of index
 lsidxcol ${testName2}_tspTbl tsp_idx2;
 rows:
-('tsp_col7', 'TIMESTAMP', 0, 0, true, false)
+('tsp_col7', 'TIMESTAMP', null, null, true, false)
 
 Load ${testName2}_tspTbl "../DATA/Datums/timestamp.csv" ;
 warning contains: '27 rows were invalid'

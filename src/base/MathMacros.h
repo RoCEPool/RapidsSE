@@ -516,6 +516,8 @@ static inline void _ADD_DTEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     xDateTime.tm_min  = 0;
     xDateTime.tm_sec  = iArg2/_C_1M;
 
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
 		time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
 
     i8 iMicroSeconds = iArg2%_C_1M;
@@ -617,6 +619,8 @@ static inline void _ADD_IVDDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
     xDateTime.tm_min  = 0;
     xDateTime.tm_sec  = iArg1/_C_1M;
 
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
 
     i8 iMicroSeconds = iArg1%_C_1M;
@@ -712,6 +716,8 @@ static inline void _SUB_DTEDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
     xDateTime1.tm_min  = 0;
     xDateTime1.tm_sec  = 0;
 
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);
 
     struct tm xDateTime2 = {0,0,0,0,0,0,0,0,0,0,NULL} ;
@@ -723,6 +729,8 @@ static inline void _SUB_DTEDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
     xDateTime2.tm_min  = 0;
     xDateTime2.tm_sec  = 0;
 
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);
 
     i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;
@@ -780,6 +788,8 @@ static inline void _SUB_DTEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
       iMicroSeconds = _C_1M + iMicroSeconds;
     }
 
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
     xTsp2.m_iAsI8 = 0;
     xTsp2.m_uYearDelta = xDateTime.tm_year;
@@ -1759,8 +1769,8 @@ static inline void _NEG_INT(i8** ppaW, struct Dynamic_T* aDynamicT)
   i8 iArg2;
 
   iArg2 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
-      iArg1 == C_DATUM_NULL ||
       iArg2 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
   }
@@ -2042,6 +2052,8 @@ static inline void _ADD_TSPIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     _ADJUST_SECS_MICROS_
 
     xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
 
     if (xDateTime.tm_year > (i8) C_YEAR_RANGE) {
@@ -2099,7 +2111,9 @@ static inline void _ADD_IVDTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
     _ADJUST_SECS_MICROS_
 
     xDateTime.tm_sec  = xTsp2.m_uSecond + iSecs;
-//    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
 
     xTsp1.m_iAsI8 = 0;
 
@@ -2258,6 +2272,8 @@ static inline void _SUB_TSPIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     _ADJUST_SECS_MICROS_
 
     xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
 
     if (xDateTime.tm_year > (i8) C_YEAR_RANGE) {
@@ -2362,6 +2378,8 @@ static inline void _SUB_TSPTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
     xDateTime1.tm_sec  = xTsp1.m_uSecond;
     xDateTime1.tm_isdst = 0;
 
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);
 
     xDateTime2.tm_year = xTsp2.m_uYearDelta;
@@ -2372,6 +2390,8 @@ static inline void _SUB_TSPTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
     xDateTime2.tm_sec  = xTsp2.m_uSecond;
     xDateTime2.tm_isdst = 0;
 
+    // This next call seems to have a side effect of normalising
+    // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);
 
     i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;

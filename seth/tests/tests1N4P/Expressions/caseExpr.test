@@ -599,7 +599,7 @@ rows:
   ('everywhere')
   ('everywhere')
 
-CREATE TABLE ${testName2}_caseExpr(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
+CREATE TABLE ${testName2}_caseExpr(a varchar,b varchar,c decimal(17,2),d decimal(17,2),e timestamp,f boolean,g integer);
 success
 
 load ${testName2}_caseExpr "../DATA/Expressions/caseExpr.csv";

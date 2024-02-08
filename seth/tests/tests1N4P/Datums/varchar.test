@@ -38,17 +38,17 @@ rows:
 // check columns of index
 lsidxcol ${testName2}_VchTbl vch_idx1;
 rows:
-  ('vch_col2', 'VARCHAR', 10, 0, false, false)
+  ('vch_col2', 'VARCHAR', 10, null, false, false)
 
 // check columns of index
 lsidxcol ${testName2}_VchTbl vch_idx2;
 rows:
-  ('vch_col3', 'VARCHAR', 32, 0, false, false)
+  ('vch_col3', 'VARCHAR', 32, null, false, false)
 
 // check columns of index
 lsidxcol ${testName2}_VchTbl vch_idx3;
 rows:
-  ('vch_col5', 'VARCHAR', 0, 0, true, false)
+  ('vch_col5', 'VARCHAR', null, null, true, false)
 
 Load ${testName2}_VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
 warning contains: '2 rows were invalid'

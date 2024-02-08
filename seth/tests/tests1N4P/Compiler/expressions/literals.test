@@ -40,7 +40,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 1. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 1.00 ; Ordinal Expr = 1.00) ; type: DECIMAL
+      » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -56,7 +56,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 0. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 0.00 ; Ordinal Expr = 0.00) ; type: DECIMAL
+      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -88,7 +88,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -1. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = -1.00 ; Ordinal Expr = -1.00) ; type: DECIMAL
+      » column: (Expr = -1. ; Ordinal Expr = -1.) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -104,7 +104,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -0. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 0.00 ; Ordinal Expr = 0.00) ; type: DECIMAL
+      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -174,23 +174,23 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.${testName2}_nation)')
 
 
--- Decimal with scale > 127 (this one contains scale 131))
+-- Decimal with scale > 17 (this one contains scale 131))
 EXPLAIN with_types SELECT 0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234 FROM ${testName2}_nation;
-failure contains: 'Value is out of range: Max/min decimal scale supported is [-128, 127]'
+failure contains: 'Value exceeds maximum decimal precision digits'
 
 
--- Decimal with scale = 127
-EXPLAIN with_types SELECT 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234 FROM ${testName2}_nation;
+-- Decimal with scale = 17
+EXPLAIN with_types SELECT 0.00000000000001234 FROM ${testName2}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234 FROM ${testName2}_nation"
+   » queryText: "SELECT 0.00000000000001234 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234 ; Ordinal Expr = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234) ; type: DECIMAL
+      » column: (Expr = 0.00000000000001234 ; Ordinal Expr = 0.00000000000001234) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -219,9 +219,9 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.${testName2}_nation)')
 
 
--- Decimal with mantissa > 36,028,797,018,963,967  ((2^47)-1)
-EXPLAIN with_types SELECT 36028797018963968. FROM ${testName2}_nation;
-failure contains: 'Value is out of range: Max/min decimal precision supported is [-360,287,970,189,639.67, 360,287,970,189,639.67]'
+-- Decimal with mantissa > 100000000000000000
+EXPLAIN with_types SELECT 100000000000000000. FROM ${testName2}_nation;
+failure contains: 'Value exceeds maximum decimal precision digits'
 
 
 -- Decimal with mantissa == -36,028,797,018,963,967   (-2^47)
@@ -241,23 +241,23 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.${testName2}_nation)')
 
 
--- Decimal with mantissa < -36,028,797,018,963,967   (-2^47)
-EXPLAIN with_types SELECT -36028797018963968. FROM ${testName2}_nation;
-failure contains: 'Value is out of range: Max/min decimal precision supported is [-360,287,970,189,639.67, 360,287,970,189,639.67]'
+-- Decimal with mantissa < -100000000000000000
+EXPLAIN with_types SELECT -100000000000000000. FROM ${testName2}_nation;
+failure contains: 'Value exceeds maximum decimal precision digits'
 
 
 -- Decimal cast to a float is above max float value (1e37)
 -- TODO: Currently we cannot test for this because the maximum decimal literal
---       that we can input is limited to a mantissa of (2^47)-1
+--       that we can input is limited to a mantissa of 99999999999999999
 EXPLAIN with_types SELECT  10000000000000000000000000000000000000. + 1e0 FROM ${testName2}_nation;
-failure contains: 'Value is out of range: Max/min decimal precision supported is [-360,287,970,189,639.67, 360,287,970,189,639.67]'
+failure contains: 'Value exceeds maximum decimal precision digits'
 
 
 -- Decimal cast to a float is less than min float value (1e37)
 -- TODO: Currently we cannot test for this because the minimum decimal literal
---       that we can input is limited to a mantissa of -2^47
+--       that we can input is limited to a mantissa of -99999999999999999
 EXPLAIN with_types SELECT -10000000000000000000000000000000000000. - 1e0 FROM ${testName2}_nation;
-failure contains: 'Value is out of range: Max/min decimal precision supported is [-360,287,970,189,639.67, 360,287,970,189,639.67]'
+failure contains: 'Value exceeds maximum decimal precision digits'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1037,19 +1037,19 @@ explain select  '9223372036854775807' - 1 from ${testName2}_nation;
 failure contains: 'Integer literal 9223372036854775807 is outside the valid integer range'
 
 // VARCHAR to DECIMAL
-explain select '-36028797018963968' + 1.0 from ${testName2}_nation;
-failure contains: 'Value is out of range: -36028797018963968: Max/min decimal precision supported is'
+explain select '-100000000000000000' + 1.0 from ${testName2}_nation;
+failure contains: 'Value is out of range: -100000000000000000: Max/min decimal precision supported is'
 
-explain select  '36028797018963968' - 1.0 from ${testName2}_nation;
-failure contains: 'Value is out of range: 36028797018963968: Max/min decimal precision supported is'
+explain select  '100000000000000000' - 1.0 from ${testName2}_nation;
+failure contains: 'Value is out of range: 100000000000000000: Max/min decimal precision supported is'
 
 //TODO: FIX WITH HELP FROM CRAIG
 /*
-explain select '-36028797018963967.123' + 1.0 from ${testName2}_nation;
-failure contains: 'Value is out of range: -140737488355328.123: Max/min decimal precision supported is'
+explain select '-99999999999999999.123' + 1.0 from ${testName2}_nation;
+failure contains: 'Value is out of range: -99999999999999999.123: Max/min decimal precision supported is'
 
-explain select  '36028797018963967.123' - 1.0 from ${testName2}_nation;
-failure contains: 'Value is out of range: 140737488355327.123: Max/min decimal precision supported is'
+explain select  '99999999999999999.123' - 1.0 from ${testName2}_nation;
+failure contains: 'Value is out of range: 99999999999999999.123: Max/min decimal precision supported is'
 */
 
 // VARCHAR to FLOAT
@@ -1199,7 +1199,7 @@ rows: (*,'explainPlan','
    » queryText: "select cast(123 as decimal) from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 123.00 ; Ordinal Expr = 123.00)
+      » column: (Expr = 123. ; Ordinal Expr = 123.)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')

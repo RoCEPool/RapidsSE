@@ -3312,11 +3312,34 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
 
   i8 iSign = (szStr->azChar()[0] == '-' || szStr->azChar()[0] == '+') ? 1 : 0;
 
-  i8 iPointPos = StrLib::iFind(szStr->azChar(), '.');
+//  i8 iPointPos = StrLib::iFind(szStr->azChar(), '.');
+  i8 iPointPos = -1;
+  i8 iLeadingZeroPoint = 1;
+
+  for (i8 i=iSign; i<nLen; i++) {
+    char c = szStr->azChar()[i];
+    if (c == '.') {
+      iPointPos = i;
+      break;
+    }
+
+    if (iLeadingZeroPoint == 1 && c != '0') {
+      iLeadingZeroPoint = 0;
+    }
+  }
+
   ASSERT(iPointPos >= 0);  // decimal literals must always contain one decimal point
 
   i8 iScale = nLen - iPointPos - 1;
-  i8 iPrecision = nLen - iSign - 1;
+  i8 iPrecision = iLeadingZeroPoint ? iScale : nLen - iSign - 1;
+
+  if (iPrecision > C_MAX_BCD_PRECISION) {
+    SyntaxException::vThrow(nullptr, iLine, iColumn,
+                            EC_VALUE_OUT_OF_RANGE,
+                            ": Value exceeds maximum decimal precision digits of %lld : %s"_Stz,
+                            C_MAX_BCD_PRECISION,
+                            szStr);
+  }
 
   i8 iMantissa = 0;
   char* pcCrs = szStr->azChar();
