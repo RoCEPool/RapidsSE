@@ -33,7 +33,6 @@ namespace STORE
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
-    i8   iGetOdn(void);
     char cGetTblSyn(void);
     bool bIsColSym(void);   // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);

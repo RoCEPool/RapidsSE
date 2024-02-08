@@ -355,19 +355,6 @@ eTE Card_Term::eEvalTerm(void)
   else return TE_OTHER;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal number                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Card_Term::iGetOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 i_Ord = StrLib::iGleanInt(this->szFacet(SF_NONE)->azChar());
-
-  return i_Ord;
-}
-
 /*----------------------------------------------------------------------------*/
 /* get table synonym c (i.e. $c.n)                                            */
 /*----------------------------------------------------------------------------*/

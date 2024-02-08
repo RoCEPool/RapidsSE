@@ -55,8 +55,6 @@ namespace STORE
     bool bForwards(void);
     void vForwards(bool bForwards);
 
-    i8   iGetOdn(void);
-
     bool bLess(void);
 
     bool bMore(void);

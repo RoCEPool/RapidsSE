@@ -342,7 +342,7 @@ bool Card_Bound::bUsesSqyRsl(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    if (xKid.p_term()->pSymbol()->bIs_Exp_Col() && 1 == xKid.p_term()->iGetOdn())
+    if (xKid.p_term()->pSymbol()->bIs_Exp_Col() && 1 == xKid.p_term()->pSymbol()->iTo_ordinal())
       return true;
   }
 
