@@ -1881,23 +1881,79 @@ char Symbol::cTblSyn(void)
 
   RASSERT(bHasFacets());
 
-  char acFirst  = xaFacet[0].m_sChrSeq.azChar()[0];
-  char acSecond = xaFacet[0].m_sChrSeq.azChar()[1];
-  char acThird  = xaFacet[0].m_sChrSeq.azChar()[2];
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ('$' == acFirst
-      && '$' == acSecond
-      && StrLib::bIsAlpha(acThird))
-    return acThird;
-  else
-  if ('$' == acFirst
-      && 'T' == acSecond
-      && StrLib::bIsAlpha(acThird))
-    return acThird;
+  if (Stz* szChrSeq = szFacet(SF_TBL_COL)) {
+    char acFirst  = szChrSeq->azChar()[0];
+    char acSecond = szChrSeq->azChar()[1];
+    char acThird  = szChrSeq->azChar()[2];
 
-  else
-    return acFirst;
+    if ('$' == acFirst
+        && '$' == acSecond
+        && StrLib::bIsAlpha(acThird))
+      return acThird;
+    else
+      return acFirst;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (Stz* szChrSeq = szFacet(SF_TBL_SYN)) {
+    char acFirst  = szChrSeq->azChar()[0];
+    char acSecond = szChrSeq->azChar()[1];
+    char acThird  = szChrSeq->azChar()[2];
+
+    if ('$' == acFirst
+        && 'T' == acSecond
+        && StrLib::bIsAlpha(acThird))
+      return acThird;
+    else
+      return acFirst;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (Stz* szChrSeq = szFacet(SF_TBL_SYN_rep)) {
+    char acFirst  = szChrSeq->azChar()[0];
+    char acSecond = szChrSeq->azChar()[1];
+    char acThird  = szChrSeq->azChar()[2];
+
+    if ('$' == acFirst
+        && 'T' == acSecond
+        && StrLib::bIsAlpha(acThird))
+      return acThird;
+    else
+      return acFirst;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  NEVER_REACH
 }
+/*----------------------------------------------------------------------------*/
+//char Symbol::cTblSyn(void)
+//{
+//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+//
+//  RASSERT(bHasFacets());
+//
+//  char acFirst  = xaFacet[0].m_sChrSeq.azChar()[0];
+//  char acSecond = xaFacet[0].m_sChrSeq.azChar()[1];
+//  char acThird  = xaFacet[0].m_sChrSeq.azChar()[2];
+//
+//  if ('$' == acFirst
+//      && '$' == acSecond
+//      && StrLib::bIsAlpha(acThird))
+//    return acThird;
+//  else
+//  if ('$' == acFirst
+//      && 'T' == acSecond
+//      && StrLib::bIsAlpha(acThird))
+//    return acThird;
+//
+//  else
+//    return acFirst;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get integer                                                                */
