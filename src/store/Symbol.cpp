@@ -1709,23 +1709,6 @@ void Symbol::vInc_Tbl_Syn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a expr-column?  (i.e. $n)                             */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Exp_Col(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_EXP_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Exp_Col(xaFacet[0].m_sChrSeq)) {
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a literal?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Lit(void)
@@ -2085,7 +2068,7 @@ Stz* Symbol::szWhatIs(void)
   if (bHasFacet(SF_AGG_FN))       return "AggOp"_Stz;
   if (bHasFacet(SF_BOL_FN))       return "BoolFn"_Stz;
   if (bHasFacet(SF_BOUND))        return "Bound"_Stz;
-  if (bIs_Exp_Col())      return "StreamOrdinal"_Stz;
+  if (bHasFacet(SF_EXP_COL))      return "StreamOrdinal"_Stz;
   if (bIs_Tbl_Col())      return "ColumnOrdinal"_Stz;
   if (bHasFacet(SF_COMMA))        return "Comma"_Stz;
   if (bHasFacet(SF_IDX_COL))      return "IndexColumn"_Stz;
@@ -2655,7 +2638,7 @@ void Symbol::vFacet_Exp_Col(Stz* szExpCol)
 
   vFacetSprint(SF_EXP_COL, "%s"_Stz, szExpCol);
 
-  RASSERT(bIs_Exp_Col());
+  RASSERT(bHasFacet(SF_EXP_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3168,7 +3151,7 @@ void Symbol::vFacet_Exp_Col(i8 iExpCol)
 
   vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
 
-  RASSERT(bIs_Exp_Col());
+  RASSERT(bHasFacet(SF_EXP_COL));
 }
 
 /*----------------------------------------------------------------------------*/
