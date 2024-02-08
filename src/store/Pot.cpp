@@ -195,8 +195,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
     // If the LglPtn value matches, we found a buffer part of this LglPtn chain
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
-      RASSERT(BufferId::bIsBufferId(pItem->oBufferId));
-      return _pDataBuffer(BufferId::aAddressFromId(pItem->oBufferId));
+      return pItem->pDataBuffer;
     }
   }
 
@@ -233,22 +232,20 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
     if(pNextBlock != nullptr) {
       // Next block exists, check if the key is the same as this LglPtn
       PotPdsItem* pNextItem = (PotPdsItem*) pNextBlock->aItem();
-      RASSERT(pNextItem != nullptr);
+      ASSERT(pNextItem != nullptr);
 
       if(pNextItem->iLglPtn == i_Ptn) {
         // Next block exists for this LglPtn chain
         // Which means our current buffer is a completed buffer
 
-        // Extract the buffer id
-        BufferId oBufferId = pItem->oBufferId;
-        RASSERT(BufferId::bIsBufferId(oBufferId));
+        DataBuffer* pDataBuffer = pItem->pDataBuffer;
 
         // Remove this block from the pds
         bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
-        RASSERT(bResult);
+        UNUSED(bResult);
+        ASSERT(bResult);
 
-        // Get the address from the hashmap
-        return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+        return pDataBuffer;
       }
     }
     // Next block does not exist or does not match the LglPtn, hence our current buffer is incomplete
@@ -282,11 +279,11 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     // if the LglPtn matches.
     if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
-      BufferId oBufferId = pItem->oBufferId;
-      RASSERT(BufferId::bIsBufferId(oBufferId));
+      DataBuffer* pDataBuffer = pItem->pDataBuffer;
       bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
-      RASSERT(bResult);
-      return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+      UNUSED(bResult);
+      ASSERT(bResult);
+      return pDataBuffer;
     }
   }
 
@@ -376,9 +373,8 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   PotPdsItem oItem;
   oItem.iLglPtn = i_Ptn;
   oItem.iSynthKey = m_iSynthKey;
-  oItem.oBufferId = pAddBuffer->oGetBufferId();
+  oItem.pDataBuffer = pAddBuffer;
   m_iSynthKey++;
-  RASSERT(BufferId::bIsBufferId(oItem.oBufferId));
 
   SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
   RASSERT(pResultBlock != nullptr);
