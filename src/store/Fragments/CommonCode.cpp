@@ -941,8 +941,8 @@ void vPLSkipVchKey(Dynamic_T* aDynamicT) {
 		else {
 
 #ifdef WITH_CLANG
-		//nSrcSize = iExtern_StrLibWordFlipSize(szSrcStz);
-    nSrcSize = iWordFlipSize(szSrcStz);
+		nSrcSize = iExtern_StrLibWordFlipSize(szSrcStz);
+    //nSrcSize = iWordFlipSize(szSrcStz);
 #endif
 
 		iKeySize += nSrcSize;
@@ -1061,7 +1061,9 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
 
-    nSrcSize = iWordFlipBack(szDstStz, nMaxStrAreaLen, szSrcStz);
+    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, nMaxStrAreaLen, szSrcStz);
+
+   // nSrcSize = iWordFlipBack(szDstStz, nMaxStrAreaLen, szSrcStz);
    //for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
       //printf("%c ", szDstStz[i_Byte]);
     //printf("\n");
