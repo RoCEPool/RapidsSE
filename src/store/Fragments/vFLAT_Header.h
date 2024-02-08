@@ -21,6 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
+/*
 i8 iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc)
 {
 
@@ -93,15 +94,18 @@ i8 iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc)
 
   return iReqDstSize;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string and get the size                 */
 /*----------------------------------------------------------------------------*/
-i8 iWordFlipSize(char* psSrc) {
+/*
+ i8 iWordFlipSize(char* psSrc) {
 
   char cDst[1024];
   return iWordFlipBack(&cDst[0], 1024, psSrc);
 }
+ */
 
 typedef char i1;
 typedef unsigned short u2;
