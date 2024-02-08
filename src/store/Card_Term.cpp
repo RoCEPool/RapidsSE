@@ -380,20 +380,6 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a value ordinal? $n or $c.n                                   */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsColSym(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bHasFacet(SF_EXP_COL))
-    return true;
-  if (pSymbol()->bHasFacet(SF_TBL_COL))
-    return true;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)

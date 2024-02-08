@@ -130,7 +130,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     if (! p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
     Card_Term* p_term = _pCard_Term(p_conj);
-    if (! p_term->bIsColSym())
+    if (! p_term->pSymbol()->bHasFacet(SF_EXP_COL) && !p_term->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
     Stz* szColNm = nullptr;

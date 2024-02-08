@@ -174,8 +174,6 @@ namespace STORE
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
-    void vPushFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
-
     void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
 
     char   cTblSyn(void);
@@ -285,7 +283,6 @@ namespace STORE
     void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);
     void vFacetPush(eSF eFacet);
-    void vFacetPush(eSF eFacet, Stz* szFacet);
     void vFacetReset(void);
     void vFacetRotate(eSF eFacet);
     void vFacetRotateSet(eSF eFacet, Stz* szFacet);

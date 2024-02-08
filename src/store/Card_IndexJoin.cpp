@@ -167,7 +167,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   auto bLambda = [pCI] (Card_Term* p_term) {
 
-    if (!p_term->bIsColSym())
+    if (!p_term->pSymbol()->bHasFacet(SF_EXP_COL) && ! p_term->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
     if (pCI->Early.m_pNeeded_later->pFind_expr_Matches_ignoring(p_term->pSymbol(), SF_EXP_COL)) {

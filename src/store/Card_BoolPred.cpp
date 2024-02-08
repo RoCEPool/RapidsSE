@@ -583,7 +583,7 @@ bool Card_BoolPred::bIsLiterals(void)
   {
     Card_Term* p_term = _pCard_Term(p_card);
 
-    if (p_term->bIsColSym()) {
+    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) || p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
       bLiterals = true;
       return C_TERMINATE_RECURSION;
     }

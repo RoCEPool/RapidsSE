@@ -33,7 +33,6 @@ namespace STORE
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
-    bool bIsColSym(void);   // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     void vShortForm(String* pString, Stz* szSep);

@@ -172,7 +172,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         p_needed->vAppendChild(p_expr_cloned);
       }
       else
-      if (xCI_rpnCalc.p_term()->bIsColSym()) {
+      if (xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
         if (xCI_projection.p_expr()->bIsScalarCol()) {
           xCI_projection.p_expr()->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
@@ -206,7 +206,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         Kid xCI_rpnCalc(xCI_key.pSub1());
         while (xCI_rpnCalc.bEach(CK_TERM)) {
           // only interested in columns
-          if (!xCI_rpnCalc.p_term()->bIsColSym())
+          if (!xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) && !xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
             continue;
           // which we haven't already added
           if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol()))
