@@ -405,19 +405,6 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a column-name ?                                               */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsNmdCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bHasFacet(SF_NMD_COL))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this term a value ordinal? $n or $c.n                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsColSym(void)
@@ -429,30 +416,6 @@ bool Card_Term::bIsColSym(void)
   if (pSymbol()->bHasFacet(SF_TBL_COL))
     return true;
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a key ordinal? $Kn                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsKeyCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = pSymbol()->bHasFacet(SF_KEY_COL);
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a parameter ordinal? %n                                       */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsSqyPrm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = pSymbol()->bHasFacet(SF_SQY_PRM);
-
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/

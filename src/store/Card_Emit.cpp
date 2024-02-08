@@ -151,7 +151,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
     while (xCI_rpnCalc.bEach(CK_TERM)) {
       // only interested in columns
 
-      if (xCI_rpnCalc.p_term()->bIsKeyCol()) {
+      if (xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_KEY_COL)) {
         RASSERT(pCI->G.p_streamKey);
 
         Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(xCI_rpnCalc.p_term()->pSymbol());

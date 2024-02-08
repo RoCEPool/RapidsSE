@@ -633,7 +633,7 @@ bool Card_BoolPred::bIsScalarKey(void) {
     return false;
 
   Card_Term *p_term_0 = _pCard_Term(p_card_0);
-  if (!p_term_0->bIsKeyCol())
+  if (!p_term_0->pSymbol()->bHasFacet(SF_KEY_COL))
     return false;
 
   return true;

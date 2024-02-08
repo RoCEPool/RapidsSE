@@ -198,7 +198,7 @@ Symbol* Card_RpnCalc::pFirstKeyCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsKeyCol())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -212,7 +212,7 @@ Symbol* Card_RpnCalc::pFirstNmdCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsNmdCol())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_NMD_COL))
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -378,7 +378,7 @@ bool Card_RpnCalc::bIsScalarKey(void)
     return false;
 
   Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->bIsKeyCol())
+  if (! p_term_0->pSymbol()->bHasFacet(SF_KEY_COL))
     return false;
 
   return true;
