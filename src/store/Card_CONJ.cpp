@@ -198,7 +198,7 @@ Card_Term* Card_CONJ::pGetFirstTerm_tblCol(void)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bIs_Tbl_Col())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       return xKid.p_term();
 
   return nullptr;
