@@ -18,6 +18,91 @@
   return 0;                                                                                    \
 }
 
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string into dst                         */
+/*----------------------------------------------------------------------------*/
+i8 iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc)
+{
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //vTrace("WORDFLIPBACK\n"_Stz);
+  //MemLib::vDumpWords(aSrc, 16);
+
+  struct _WordAsBytes {
+    union {
+      b1 m_yaByte[C_BYTES_PER_WORD];
+      i8 m_iI8;
+      u8 m_uU8;
+    };
+  };
+
+  i8 iSrcSize =  strlen(psSrc) + 1;
+
+  i8 iRoundUp = 0;
+  i8 iRemainder = iSrcSize % C_BYTES_PER_WORD;
+  if (iRemainder)
+    iRoundUp = C_BYTES_PER_WORD - iRemainder;
+
+  i8 iReqDstSize = iSrcSize + iRoundUp;
+  //ASSERT(0 == iReqDstSize % C_BYTES_PER_WORD);
+
+  //bool bRet = bCheckBufferSpace(__func__, iReqDstSize, iDstBufSize, pbResult);
+  //if (!bRet) {
+  //  return iReqDstSize;
+  //}
+
+  memset(psDst,0,iReqDstSize);
+  //MemLib::vZero(psDst, iReqDstSize, CN_KEY);
+
+  //memcpy(psDst,psSrc,(size_t)iReqDstSize);
+  //MemLib::vCopy(psDst, psSrc, iReqDstSize, CN_KEY);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  w8* aWrd = (w8*)psDst;
+  w8* aWrdSrc = (w8*)psSrc;
+  for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--) {
+
+    //MemLib::vWordFlip(aWrd++, aWrdSrc++);
+
+    struct _WordAsBytes* aAsBytes = (struct _WordAsBytes*)aWrd++;
+    struct _WordAsBytes* aAsBytesSrc = (struct _WordAsBytes*)aWrdSrc++;
+
+    byte yByte;
+
+    yByte = aAsBytesSrc->m_yaByte[0];
+    aAsBytes->m_yaByte[0] = aAsBytesSrc->m_yaByte[7];
+    aAsBytes->m_yaByte[7] = yByte;
+
+    yByte = aAsBytesSrc->m_yaByte[1];
+    aAsBytes->m_yaByte[1] = aAsBytesSrc->m_yaByte[6];
+    aAsBytes->m_yaByte[6] = yByte;
+
+    yByte = aAsBytesSrc->m_yaByte[2];
+    aAsBytes->m_yaByte[2] = aAsBytesSrc->m_yaByte[5];
+    aAsBytes->m_yaByte[5] = yByte;
+
+    yByte = aAsBytesSrc->m_yaByte[3];
+    aAsBytes->m_yaByte[3] = aAsBytesSrc->m_yaByte[4];
+    aAsBytes->m_yaByte[4] = yByte;
+  }
+
+
+
+  //vTrace("\nAFTER BACK : %s\n"_Stz, aDst);
+  //MemLib::vDumpWords(aSrc, iDstSize);
+
+  return iReqDstSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string and get the size                 */
+/*----------------------------------------------------------------------------*/
+i8 iWordFlipSize(char* psSrc) {
+
+  char cDst[1024];
+  return iWordFlipBack(&cDst[0], 1024, psSrc);
+}
+
 typedef char i1;
 typedef unsigned short u2;
 typedef long long i8;
