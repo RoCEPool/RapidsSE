@@ -616,7 +616,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred
   //p_rlnConj_corr->vDump();
 
   Card_Term* p_term_tblCol = p_rlnConj_corr->pGetFirstTerm_tblCol();
-  char cTblSyn = p_term_tblCol->cGetTblSyn();
+  char cTblSyn = p_term_tblCol->pSymbol()->cTblSyn();
 
   Card_OP* p_OP = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
 
