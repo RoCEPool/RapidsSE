@@ -61,12 +61,10 @@ void LglBufSet::vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer)
 
   oItem.iLglPtn = tLglPtn.iAsI8();
   oItem.iSynthKey = m_iSynthKey;
-  oItem.oBufferId = pDataBuffer->oGetBufferId();
-
-  RASSERT(BufferId::bIsBufferId(oItem.oBufferId));
+  oItem.pDataBuffer = pDataBuffer;
 
   SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
-  RASSERT(pResultBlock != nullptr);
+  ASSERT(pResultBlock != nullptr);
 
   m_iSynthKey++;
 
@@ -94,8 +92,7 @@ DataBuffer* LglBufSet::pBuffer(LglPtn tLglPtn)
     // If the LglPtn value matches, we found a buffer part of this LglPtn chain
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     if(pItem != nullptr && pItem->iLglPtn == tLglPtn.iAsI8()) {
-      RASSERT(BufferId::bIsBufferId(pItem->oBufferId));
-      return _pDataBuffer(BufferId::aAddressFromId(pItem->oBufferId));
+      return pItem->pDataBuffer;
     }
   }
 
@@ -148,16 +145,14 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
         // Next block exists for this LglPtn chain
         // Which means our current buffer is a completed buffer
 
-        // Extract the buffer id
-        BufferId oBufferId = pItem->oBufferId;
-        RASSERT(BufferId::bIsBufferId(oBufferId));
+        DataBuffer* pDataBuffer = pItem->pDataBuffer;
 
         // Remove this block from the pds
         bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
-        RASSERT(bResult);
+        UNUSED(bResult);
+        ASSERT(bResult);
 
-        // Get the address from the hashmap
-        return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+        return pDataBuffer;
       }
     }
     // Next block does not exist or does not match the LglPtn, hence our current buffer is incomplete
@@ -184,14 +179,16 @@ DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
     // Get the current head block of this LglPtn and extract the values
     LglBufSetItem* pItem = (LglBufSetItem*) pHead->aItem();
 
-    // Delete it from the Pds and return the DataBuffer associated with it's bufferId
+    // Delete it from the Pds and return the DataBuffer associated with it
     // If the LglPtn matches.
     if(pItem != nullptr && pItem->iLglPtn == tLglPtn.iAsI8()) {
-      BufferId oBufferId = pItem->oBufferId;
-      RASSERT(BufferId::bIsBufferId(oBufferId));
+      DataBuffer* pDataBuffer = pItem->pDataBuffer;
+
       bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
-      RASSERT(bResult);
-      return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+      UNUSED(bResult);
+      ASSERT(bResult);
+
+      return pDataBuffer;
     }
   }
   return nullptr;

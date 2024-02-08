@@ -8,7 +8,7 @@ namespace STORE
   typedef struct {
     i8 iLglPtn;
     i8 iSynthKey;
-    BufferId oBufferId;
+    DataBuffer* pDataBuffer;
   } LglBufSetItem;
 
   class LglBufSet : public Object
