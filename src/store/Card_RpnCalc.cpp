@@ -499,7 +499,7 @@ void Card_RpnCalc::vX_expCol_To_tblCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Exp_Col())
+    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
       continue;
 
     pCI->G.p_term = xKid.p_term();

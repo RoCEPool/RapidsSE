@@ -560,7 +560,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pSymbol_this = this->pSymbol();
-  RASSERT(pSymbol_this->bIs_Exp_Col());
+  RASSERT(pSymbol_this->bHasFacet(SF_EXP_COL));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
