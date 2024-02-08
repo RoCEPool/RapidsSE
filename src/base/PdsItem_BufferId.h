@@ -8,7 +8,7 @@ namespace BASE
 {
   typedef struct {
     i8 iKey;
-    BufferId oBufferId;
+    DataBuffer* pDataBuffer;
   } PdsItem_BufferId;
 }
 
