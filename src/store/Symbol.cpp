@@ -1944,13 +1944,18 @@ i8 Symbol::iTo_integer(void)
 /*----------------------------------------------------------------------------*/
 /* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
 /*----------------------------------------------------------------------------*/
-i8 Symbol::iTo_ordinal(void)
+i8 Symbol::iTo_ordinal(eSF eFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(bHasFacets());
 
-  i8 i_Col = StrLib::iGleanInt(xaFacet[0].m_sChrSeq.azChar());
+  i8 i_Col;
+
+  if (SF_NONE == eFacet)
+    i_Col = StrLib::iGleanInt(xaFacet[0].m_sChrSeq.azChar());
+  else
+    i_Col = StrLib::iGleanInt(szFacet(eFacet)->azChar());
 
   return i_Col;
 }

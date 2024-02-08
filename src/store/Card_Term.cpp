@@ -151,7 +151,7 @@ void Card_Term::vBump_expCol(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmCol = pSymbol()->iTo_ordinal();
+  i8 iStmCol = pSymbol()->iTo_ordinal(SF_EXP_COL);
 
  SYM(SF_EXP_COL, iStmCol + nBy);
 
