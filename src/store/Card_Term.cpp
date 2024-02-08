@@ -419,7 +419,9 @@ void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! pSymbol()->bIs_Exp_Col())
+  if (! pSymbol()->bHasFacet(SF_EXP_COL))
+     return;
+  if (pSymbol()->bHasFacet(SF_KEY_COL))
     return;
 
   Symbol* pSym = pSymbol();
