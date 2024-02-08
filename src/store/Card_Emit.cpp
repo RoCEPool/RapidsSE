@@ -481,12 +481,7 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (p_term->pSymbol()->bIs_Exp_Col()) {
-    Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
-    return p_expr_prior;
-  }
-  else
-  if (p_term->pSymbol()->bIs_Tbl_Col()) {
+  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) || p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
     Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
     return p_expr_prior;
   }
