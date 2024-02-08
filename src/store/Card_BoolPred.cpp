@@ -613,7 +613,7 @@ bool Card_BoolPred::bIsScalarCol(void) {
     return false;
 
   Card_Term *p_term_0 = _pCard_Term(p_card_0);
-  if (!p_term_0->pSymbol()->bIs_Tbl_Col())
+  if (! p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))
     return false;
 
   return true;
@@ -882,7 +882,7 @@ void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 
     Card_Term* p_term = _pCard_Term(p_conj);
     Symbol* pSymbol = p_term->pSymbol();
-    if (!pSymbol->bIs_Tbl_Col())
+    if (!pSymbol->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
     p_term->vX_tblCol_To_expCol(pCI);
