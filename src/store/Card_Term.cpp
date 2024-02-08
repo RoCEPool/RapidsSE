@@ -274,7 +274,7 @@ void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Expr *p_expr_matched = nullptr;
-  if (pSymbol_term->bHasFacet(SF_KEY_COL)) {
+  if (pSymbol_term->bHasFacet(SF_KEY_COL) && ! pSymbol_term->bHasFacet(SF_EXP_COL)) {
     p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
   }
   else {
