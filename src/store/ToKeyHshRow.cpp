@@ -48,8 +48,7 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
   m_nErrors = 0;
   m_i_Rec   = -1;
   m_bFirst  = true;
-  m_pCurrPdsRowBuffer = nullptr;
-  m_pBufferIdQueue = new PdsBufferIdQueue();
+  m_pBufferAddrQueue = new PdsBufferQueue();
 
   //--
   
@@ -93,8 +92,7 @@ ToKeyHshRow::~ToKeyHshRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  delete m_pBufferIdQueue;
-  m_pCurrPdsRowBuffer = nullptr; // Assert this was deleted when the pds was deleted?
+  delete m_pBufferAddrQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +107,7 @@ void ToKeyHshRow::vRepairList(Object* pObject)
   _static_
 
   ToKeyHshRow* pToRow = _pToKeyHshRow(pObject);
-  PdsBufferIdQueue::vRepair(pToRow->m_pBufferIdQueue);
+  PdsBufferQueue::vRepair(pToRow->m_pBufferAddrQueue);
 
   // delete the pToRow
   delete pToRow;
@@ -127,11 +125,9 @@ Pds* ToKeyHshRow::pDangling(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   // Note: pDanglingBuffer() deletes the entry in the pds, hence we call it here
-  Pds* m_pDanglingPdsRowBuffer = _pPds(m_pBufferIdQueue->pDanglingBuffer());
-  ASSERT(m_pCurrPdsRowBuffer == m_pDanglingPdsRowBuffer);
-  ASSERT(m_pBufferIdQueue->bIsEmpty());
+  Pds* m_pDanglingPdsRowBuffer = _pPds(m_pBufferAddrQueue->pDanglingBuffer());
+  ASSERT(m_pBufferAddrQueue->bIsEmpty());
 
-  m_pCurrPdsRowBuffer = nullptr;
   return m_pDanglingPdsRowBuffer;
 }
 
@@ -142,7 +138,7 @@ Pds* ToKeyHshRow::pCompleted(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  return _pPds(m_pBufferIdQueue->pCompletedBuffer());
+  return _pPds(m_pBufferAddrQueue->pCompletedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,11 +149,11 @@ Pds* ToKeyHshRow::pPdsRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   //Remove-------
-//  Pds* pPdsRowBuffer = _pPds(m_pBufferIdQueue->pDataBuffer());
+//  Pds* pPdsRowBuffer = _pPds(m_pBufferAddrQueue->pDataBuffer());
 //  RASSERT(m_pCurrPdsRowBuffer == pPdsRowBuffer);
   //-------
 
-  return m_pCurrPdsRowBuffer;
+  return _pPds(m_pBufferAddrQueue->pDataBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,9 +200,8 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
   //  create a new buffer
   Pds* pNewPdsRowBuffer = new Pds(m_pStreamDef,true);
 
-  m_pBufferIdQueue->vAddBuffer(pNewPdsRowBuffer);
+  m_pBufferAddrQueue->vAddBuffer(pNewPdsRowBuffer);
 
-  m_pCurrPdsRowBuffer = pNewPdsRowBuffer;
   return;
 }
 

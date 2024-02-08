@@ -3777,7 +3777,7 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
                 // Test Case - PDS Data buffers
 /*----------------------------------------------------------------------------*/
 
-//  PdsBufferIdQueue* pBufferIdQueue = new PdsBufferIdQueue();
+//  PdsBufferQueue* pBufferIdQueue = new PdsBufferQueue();
 //
 //  RowBuffer* pNewRowBuffer1 = new RowBuffer;
 //  pBufferIdQueue->vAddBuffer(pNewRowBuffer1);

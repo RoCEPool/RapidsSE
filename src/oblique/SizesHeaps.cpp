@@ -588,7 +588,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
   { CN_PDS,                      sizeof(Pds),                HT_T_LARGE   , FILL },
-  { CN_PDSBUFFERIDQUEUE,         sizeof(PdsBufferIdQueue),   HT_T_TINY    , FILL },
+  { CN_PDSBUFFERQUEUE,           sizeof(PdsBufferQueue),     HT_T_TINY    , FILL },
   { CN_PDSCURSOR,                sizeof(PdsCursor),          HT_T_TINY    , FILL },
   { CN_PDSCONVERGENTHEAP_t,      0,                          HT_INVALID   , FILL },
   { CN_PERMGEN,                  sizeof(PermGen),            HT_T_LARGE   ,FILL },

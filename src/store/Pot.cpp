@@ -61,7 +61,7 @@ Pot::Pot(void)
   m_pRowPix = nullptr;
 
   m_iSynthKey = 0;
-  m_pPdsOfBuffers = new Pds_t<PotPdsItem>(STORE::iPotPdsItemKeyCompare);
+  m_pPdsOfBufferAddrs = new Pds_t<PotPdsItem>(STORE::iPotPdsItemKeyCompare);
   
   _checkInitialised_(CN_LGLBUFSET);
   
@@ -76,7 +76,7 @@ Pot::~Pot(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   delete m_pRowPix;
-  delete m_pPdsOfBuffers;
+  delete m_pPdsOfBufferAddrs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
   oSearchKey.iSynthKey = C_INT_MAX;
 
   // Find the last block that is less than LglPtn,Max key
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindLessThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // If the block is not null, extract the keys and values
@@ -215,7 +215,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
   oSearchKey.iSynthKey = C_INT_MIN;
 
   // Get the first block that is greater than LglPtn,Min
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindGreaterThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // If the block is not null, extract the keys and values
@@ -228,7 +228,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
 
     // Now figure out whether this is a completed buffer or not by checking the next buffer
     // in the chain
-    SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
+    SkipListBlock* pNextBlock = m_pPdsOfBufferAddrs->pNextSLBlock(pHead, 0);
     if(pNextBlock != nullptr) {
       // Next block exists, check if the key is the same as this LglPtn
       PotPdsItem* pNextItem = (PotPdsItem*) pNextBlock->aItem();
@@ -241,7 +241,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
         DataBuffer* pDataBuffer = pItem->pDataBuffer;
 
         // Remove this block from the pds
-        bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+        bool bResult = m_pPdsOfBufferAddrs->bDelete((void*)pItem);
         UNUSED(bResult);
         ASSERT(bResult);
 
@@ -270,7 +270,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
   // LglBufSet as there can be more than one dangling buffer in the queue
 
   // Find last buffer less than the Key,MAX (i.e front of queue)
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindLessThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // Get the current head block of this LglPtn and extract the values
@@ -280,7 +280,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
     // if the LglPtn matches.
     if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
       DataBuffer* pDataBuffer = pItem->pDataBuffer;
-      bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+      bool bResult = m_pPdsOfBufferAddrs->bDelete((void*)pItem);
       UNUSED(bResult);
       ASSERT(bResult);
       return pDataBuffer;
@@ -350,7 +350,7 @@ i8 Pot::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  return m_pPdsOfBuffers->iNumEntries(0);
+  return m_pPdsOfBufferAddrs->iNumEntries(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -376,7 +376,7 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   oItem.pDataBuffer = pAddBuffer;
   m_iSynthKey++;
 
-  SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
+  SkipListBlock* pResultBlock = m_pPdsOfBufferAddrs->pInsert((void*) &oItem);
   RASSERT(pResultBlock != nullptr);
 
   *(PotPdsItem*)(pResultBlock->aItem()) = oItem;

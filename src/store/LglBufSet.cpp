@@ -25,7 +25,7 @@ LglBufSet::LglBufSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   m_iSynthKey = 0;
-  m_pPdsOfBuffers = new Pds_t<LglBufSetItem>(STORE::iLglBufSetKeyCompare);
+  m_pPdsOfBufferAddrs = new Pds_t<LglBufSetItem>(STORE::iLglBufSetKeyCompare);
 
   _checkInitialised_(CN_LGLBUFSET);
 
@@ -41,7 +41,7 @@ LglBufSet::~LglBufSet(void) noexcept(false)
 
   // Assert we don't have any dangling buffers
 //  RASSERT(m_pPdsOfBuffers->iNumEntries(0) == 0);
-  delete m_pPdsOfBuffers;
+  delete m_pPdsOfBufferAddrs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@ void LglBufSet::vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer)
   oItem.iSynthKey = m_iSynthKey;
   oItem.pDataBuffer = pDataBuffer;
 
-  SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
+  SkipListBlock* pResultBlock = m_pPdsOfBufferAddrs->pInsert((void*) &oItem);
   ASSERT(pResultBlock != nullptr);
 
   m_iSynthKey++;
@@ -83,7 +83,7 @@ DataBuffer* LglBufSet::pBuffer(LglPtn tLglPtn)
   oSearchKey.iSynthKey = C_INT_MAX;
 
   // Find the last block that is less than LglPtn,Max key
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindLessThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // If the block is not null, extract the keys and values
@@ -122,7 +122,7 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
   oSearchKey.iSynthKey = C_INT_MIN;
 
   // Get the first block that is greater than LglPtn,Min
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindGreaterThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // If the block is not null, extract the keys and values
@@ -135,7 +135,7 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
 
     // Now figure out whether this is a completed buffer or not by checking the next buffer
     // in the chain
-    SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
+    SkipListBlock* pNextBlock = m_pPdsOfBufferAddrs->pNextSLBlock(pHead, 0);
     if(pNextBlock != nullptr) {
       // Next block exists, check if the key is the same as this LglPtn
       LglBufSetItem* pNextItem = (LglBufSetItem*) pNextBlock->aItem();
@@ -148,7 +148,7 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
         DataBuffer* pDataBuffer = pItem->pDataBuffer;
 
         // Remove this block from the pds
-        bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+        bool bResult = m_pPdsOfBufferAddrs->bDelete((void*)pItem);
         UNUSED(bResult);
         ASSERT(bResult);
 
@@ -173,7 +173,7 @@ DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
   oSearchKey.iSynthKey = C_INT_MIN;
 
   // Get the first block that is greater than LglPtn,Min
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindGreaterThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // Get the current head block of this LglPtn and extract the values
@@ -184,7 +184,7 @@ DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
     if(pItem != nullptr && pItem->iLglPtn == tLglPtn.iAsI8()) {
       DataBuffer* pDataBuffer = pItem->pDataBuffer;
 
-      bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+      bool bResult = m_pPdsOfBufferAddrs->bDelete((void*)pItem);
       UNUSED(bResult);
       ASSERT(bResult);
 
