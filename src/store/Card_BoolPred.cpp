@@ -311,7 +311,7 @@ void Card_BoolPred::vCorrect_expCol(Card_Emit* p_arriving)
 
   auto bfCorrect = [p_arriving](Card* p_card)
   {
-    if (p_card->pSymbol()->bIs_Exp_Col())
+    if (p_card->pSymbol()->bHasFacet(SF_EXP_COL))
       _pCard_Term(p_card)->vCorrect_expCol(p_arriving);
 
     return C_CONTINUE_RECURSION;
