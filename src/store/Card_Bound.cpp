@@ -298,7 +298,7 @@ Card_Term* Card_Bound::pGet_idxCol(void)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bIs_Idx_Col())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
       return xKid.p_term();
 
   return nullptr;
@@ -313,7 +313,7 @@ Card_Term* Card_Bound::pGet_IfNot_idxCol(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (!xKid.p_term()->pSymbol()->bIs_Idx_Col())
+    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
       return xKid.p_term();
 
   return nullptr;
@@ -328,7 +328,7 @@ Card_Term* Card_Bound::pGet_tblCol(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsTblCol())
+    if (xKid.p_term()->pSymbol()->bIs_Tbl_Col())
       return xKid.p_term();
 
   return nullptr;
@@ -342,7 +342,8 @@ bool Card_Bound::bUsesSqyRsl(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    if (xKid.p_term()->bIs_expCol() && 1 == xKid.p_term()->iGetOdn())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) &&
+        1 == xKid.p_term()->pSymbol()->iTo_ordinal(SF_EXP_COL))
       return true;
   }
 
@@ -369,14 +370,14 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Idx_Col()) {
+  if (pSymbol()->bHasFacet(SF_IDX_COL)) {
     Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
     vValidationPassed();
     return;
   }
 
-  RASSERT(pSymbol()->bIs_Rln_Op() || pSymbol()->bIs_None());
+  RASSERT(pSymbol()->bHasFacet(SF_RLN_OP) || ! pSymbol()->nFacets());
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

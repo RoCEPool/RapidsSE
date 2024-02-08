@@ -81,7 +81,7 @@ void Card_RpnCalc::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
 
-    if (xKid.p_term()->pSymbol()->bIs_Exp_Col()) {
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
       xKid.p_term()->vBump_expCol(nBumpBy);
       xKid.p_term()->vMark1(MARK_CHANGED);
     }
@@ -184,7 +184,7 @@ Symbol* Card_RpnCalc::pFirstColSym(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsColSym())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -198,7 +198,7 @@ Symbol* Card_RpnCalc::pFirstKeyCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsKeyCol())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -212,7 +212,7 @@ Symbol* Card_RpnCalc::pFirstNmdCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsNmdCol())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_NMD_COL))
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -227,7 +227,7 @@ Symbol* Card_RpnCalc::pFirstStmCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIs_expCol())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -241,7 +241,7 @@ Symbol* Card_RpnCalc::pFirstTblCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsTblCol())
+    if (xKid.p_term()->pSymbol()->bIs_Tbl_Col())
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -343,7 +343,7 @@ bool Card_RpnCalc::bIsLiterals(void)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (xKid.p_term()->bIsColSym())
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       return false;
   }
 
@@ -361,7 +361,7 @@ bool Card_RpnCalc::bIsScalarCol(void)
     return false;
 
   Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->bIsColSym())
+  if (! p_term_0->pSymbol()->bHasFacet(SF_EXP_COL) &&  !p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))
     return false;
 
   return true;
@@ -378,7 +378,7 @@ bool Card_RpnCalc::bIsScalarKey(void)
     return false;
 
   Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->bIsKeyCol())
+  if (! p_term_0->pSymbol()->bHasFacet(SF_KEY_COL))
     return false;
 
   return true;
@@ -499,7 +499,7 @@ void Card_RpnCalc::vX_expCol_To_tblCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Exp_Col())
+    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
       continue;
 
     pCI->G.p_term = xKid.p_term();

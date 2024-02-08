@@ -212,7 +212,7 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
     if (bSkipFoldExpr && p_term->pSymbol()->bHasFacet("$1"_Stz))
       return C_CONTINUE_RECURSION;
 
-    if (p_term->pSymbol()->bIs_Exp_Col()) {
+    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
       p_term->vBump_expCol(nBumpBy);
       p_term->vMark1(MARK_CHANGED);
     }
@@ -583,7 +583,7 @@ bool Card_BoolPred::bIsLiterals(void)
   {
     Card_Term* p_term = _pCard_Term(p_card);
 
-    if (p_term->bIsColSym()) {
+    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) || p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
       bLiterals = true;
       return C_TERMINATE_RECURSION;
     }
@@ -613,7 +613,7 @@ bool Card_BoolPred::bIsScalarCol(void) {
     return false;
 
   Card_Term *p_term_0 = _pCard_Term(p_card_0);
-  if (!p_term_0->bIsTblCol())
+  if (!p_term_0->pSymbol()->bIs_Tbl_Col())
     return false;
 
   return true;
@@ -633,7 +633,7 @@ bool Card_BoolPred::bIsScalarKey(void) {
     return false;
 
   Card_Term *p_term_0 = _pCard_Term(p_card_0);
-  if (!p_term_0->bIsKeyCol())
+  if (!p_term_0->pSymbol()->bHasFacet(SF_KEY_COL))
     return false;
 
   return true;

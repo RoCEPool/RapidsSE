@@ -54,53 +54,37 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
   {
     UNUSED(pCI);
 
-    if (! pCard->bIsCard(CK_TERM))
+    if (!pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
     if (pCI->pAncestorFind(CK_o_KEYEXISTS) || pCI->pAncestorFind(CK_o_KEYNOTEXISTS))
       return C_CONTINUE_RECURSION;
-//    if (pCI->pAncestorFind(CK_s_CONSTRAINT))ø
-//      return C_CONTINUE_RECURSION;
 
-    Card_Term* p_term = _pCard_Term(pCard);
+    Card_Term *p_term = _pCard_Term(pCard);
+    Symbol *pSymbol_term = p_term->pSymbol();
 
-    if (p_term->pSymbol()->szFacet(SF_NONE)->bSame("O_COMMENT"_Stz))
-      vDebugPoint();
+    if ((pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->pAncestorFind(CK_o_INDEXJOIN))) &&
+        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT)))) {
 
-    if (! pCard->pSymbol()->bIs_Nmd_Col())
-      return C_CONTINUE_RECURSION;
-
-    if ((pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_o_INDEXJOIN))) &&
-        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT))) ) {
-      //pCI->G.p_indexJoin->vDump(__func__);
+      if (!pSymbol_term->bHasFacet(SF_NMD_COL))
+        return C_CONTINUE_RECURSION;
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
-      Symbol* pSymbol_term = p_term->pSymbol();
-      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term))) {
-         Symbol oSymbol_itmCol;
-        s256 sItmCol;
-        sItmCol.vSprint("C%lld_%s"_Stz,
-                        pCI->G.p_expr->iItemise(),
-                        pCI->G.p_expr->szFacet(SF_NMD_COL));
-
-        if (! p_term->pSymbol()->bHasFacet(SF_ITM_COL))
-          p_term->pSymbol()->vPushFacet(SF_ITM_COL,sItmCol.szStz());
-
-        return C_CONTINUE_RECURSION;
-      }
-      NEVER_REACH;
-    }
-    else
-		// getting build error on AWS. ALka changed this : 22/10/23
-    //if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
-		if (_pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
-      Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
-      i8 iItemise = p_expr->iItemise();
-      p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
+      pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term);
+      i8 iItemise = pCI->G.p_expr->iItemise();
+      pSymbol_term->vFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
 
-    NEVER_REACH;
+    if (pSymbol_term->bHasFacet(SF_EXP_COL) || ! pSymbol_term->bHasFacet(SF_NMD_COL))
+      return C_CONTINUE_RECURSION;
+
+    if (! (pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))))
+      return C_CONTINUE_RECURSION;
+
+    i8 iItemise = pCI->G.p_expr->iItemise();
+    pSymbol_term->vFacet(SF_ITM_COL, iItemise);
+    return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -124,7 +108,7 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
 
     //pCI->vAncestorDump(pCard);
 
-    if (!pCard->pSymbol()->bIs_Nmd_Col())
+    if (!pCard->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
     return C_CONTINUE_RECURSION;
@@ -167,7 +151,7 @@ void Card_Term::vBump_expCol(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmCol = pSymbol()->iTo_ordinal();
+  i8 iStmCol = pSymbol()->iTo_ordinal(SF_EXP_COL);
 
  SYM(SF_EXP_COL, iStmCol + nBy);
 
@@ -196,7 +180,7 @@ void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
     return;
   }
 
-  if (pSymbol_term->bIs_Col_Type()) {
+  if (pSymbol_term->bHasFacet(SF_COL_TYPE)) {
     Stz* szFacet_colType = pSymbol_term->szFacet(SF_COL_TYPE);
 
     if (szFacet_colType->bSame("BOOLEAN"_Stz))
@@ -240,7 +224,7 @@ void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
     return;
   }
 
-  if (pSymbol_term->bIs_Agg_Fn()) {
+  if (pSymbol_term->bHasFacet(SF_AGG_FN)) {
     Stz* szFacet_aggFn = pSymbol_term->szFacet(SF_AGG_FN);
 
     if (szFacet_aggFn->bSame("COUNT"_Stz)) {
@@ -290,7 +274,7 @@ void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Expr *p_expr_matched = nullptr;
-  if (pSymbol_term->bHasFacet(SF_KEY_COL)) {
+  if (pSymbol_term->bHasFacet(SF_KEY_COL) && ! pSymbol_term->bHasFacet(SF_EXP_COL)) {
     p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
   }
   else {
@@ -365,35 +349,10 @@ eTE Card_Term::eEvalTerm(void)
     else if (pSymbol()->bHasFacet("notIn"_Stz)) return TE_NOTIN;
   }
 
-       if (pSymbol()->bIs_Rln_Op())     return TE_RELNOP;
-  else if (pSymbol()->bIs_Bol_Fn())     return TE_BOOLFN;
+       if (pSymbol()->bHasFacet(SF_RLN_OP))     return TE_RELNOP;
+  else if (pSymbol()->bHasFacet(SF_BOL_FN))     return TE_BOOLFN;
 
   else return TE_OTHER;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal number                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Card_Term::iGetOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 i_Ord = StrLib::iGleanInt(this->szFacet(SF_NONE)->azChar());
-
-  return i_Ord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table synonym c (i.e. $c.n)                                            */
-/*----------------------------------------------------------------------------*/
-char Card_Term::cGetTblSyn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  char cSyn = pSymbol()->cTblSyn();
-
-  return cSyn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -418,82 +377,6 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
   p_term_clone->pSymbol()->vCastFacets(pDiffSymbol);
 
   return p_term_clone;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a column-name ?                                               */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsNmdCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bHasFacet(SF_NMD_COL))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a value ordinal? $n or $c.n                                   */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsColSym(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bHasFacet(SF_EXP_COL))
-    return true;
-  if (pSymbol()->bHasFacet(SF_TBL_COL))
-    return true;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a key ordinal? $Kn                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsKeyCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = pSymbol()->bIs_Key_Col();
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a parameter ordinal? %n                                       */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsSqyPrm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = pSymbol()->bIs_Sqy_Prm();
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a stream-value ordinal? $n                                    */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIs_expCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = pSymbol()->bIs_Exp_Col();
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a column-value ordinal? $n.c                                  */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsTblCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bIs_Tbl_Col())
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -536,7 +419,7 @@ void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (!bIs_expCol())
+  if (! pSymbol()->bIs_Exp_Col())
     return;
 
   Symbol* pSym = pSymbol();
@@ -576,7 +459,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pSymbol_this = this->pSymbol();
-  RASSERT(pSymbol_this->bIs_Exp_Col());
+  RASSERT(pSymbol_this->bHasFacet(SF_EXP_COL));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -756,7 +639,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
-    if (m_xSymbol.bIs_SF_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
+    if (m_xSymbol.bIs_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
       if (! m_xSymbol.bHasType()) {
          vMark("?"_Stz,"t"_Stz);
          pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);

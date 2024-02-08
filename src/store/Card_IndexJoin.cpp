@@ -141,7 +141,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->G.p_term->pSymbol())) {
 
-    if (pCI->G.p_term->bIs_expCol()) {
+    if (pCI->G.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
       Card_Expr* p_expr_expCol = Card_Expr::pCast_expr_term_expCol(pCI->G.p_term);
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_expCol);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
@@ -167,7 +167,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   auto bLambda = [pCI] (Card_Term* p_term) {
 
-    if (!p_term->bIsColSym())
+    if (!p_term->pSymbol()->bHasFacet(SF_EXP_COL) && ! p_term->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
     if (pCI->Early.m_pNeeded_later->pFind_expr_Matches_ignoring(p_term->pSymbol(), SF_EXP_COL)) {

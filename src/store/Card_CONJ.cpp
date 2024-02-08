@@ -198,7 +198,7 @@ Card_Term* Card_CONJ::pGetFirstTerm_tblCol(void)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->bIsTblCol())
+    if (xKid.p_term()->pSymbol()->bIs_Tbl_Col())
       return xKid.p_term();
 
   return nullptr;
@@ -247,7 +247,7 @@ bool Card_CONJ::bIsBoolFn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Bol_Fn())
+  if (pSymbol()->bHasFacet(SF_BOL_FN))
     return true;
 
   return false;
@@ -270,8 +270,8 @@ bool Card_CONJ::bIsCorrConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsSqyPrm() && (p_term_1->bIs_expCol() || p_term_1->bIsTblCol())) ||
-      (p_term_1->bIsSqyPrm() && (p_term_0->bIs_expCol() || p_term_0->bIsTblCol())))
+  if ((p_term_0->pSymbol()->bHasFacet(SF_SQY_PRM) && (p_term_1->pSymbol()->bHasFacet(SF_EXP_COL) || p_term_1->pSymbol()->bHasFacet(SF_TBL_COL))) ||
+      (p_term_1->pSymbol()->bHasFacet(SF_SQY_PRM) && (p_term_0->pSymbol()->bHasFacet(SF_EXP_COL) || p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))))
     return true;
 
   return false;
@@ -294,8 +294,8 @@ bool Card_CONJ::bIsJoinConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIs_expCol() || p_term_0->bIsTblCol()) &&
-      (p_term_1->bIs_expCol() || p_term_1->bIsTblCol()))
+  if ((p_term_0->pSymbol()->bIs_Exp_Col() || p_term_0->pSymbol()->bIs_Tbl_Col()) &&
+      (p_term_1->pSymbol()->bIs_Exp_Col() || p_term_1->pSymbol()->bIs_Tbl_Col()))
     return true;
 
   return false;
@@ -308,7 +308,7 @@ bool Card_CONJ::bIsRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Rln_Op())
+  if (pSymbol()->bHasFacet(SF_RLN_OP))
     return true;
 
   return false;
@@ -321,7 +321,7 @@ bool Card_CONJ::bIsSqyOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Sqy_Op())
+  if (pSymbol()->bHasFacet(SF_SQY_OP))
     return true;
 
   return false;

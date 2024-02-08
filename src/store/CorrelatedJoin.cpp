@@ -468,7 +468,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
       while (xKid.bEach()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (xKid.pChild()->pSymbol()->bIs_Sqy_Prm()) {
+        if (xKid.pChild()->pSymbol()->bHasFacet(SF_SQY_PRM)) {
 
           Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
           xKid.pChild()->pSymbol()->vCastFacets(&x_Symbol_expCol1);  // TODO: hack!!
@@ -616,7 +616,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred
   //p_rlnConj_corr->vDump();
 
   Card_Term* p_term_tblCol = p_rlnConj_corr->pGetFirstTerm_tblCol();
-  char cTblSyn = p_term_tblCol->cGetTblSyn();
+  char cTblSyn = p_term_tblCol->pSymbol()->cTblSyn();
 
   Card_OP* p_OP = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
 

@@ -1293,7 +1293,7 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
 
   // is there a bound term sequence at the top of rpnTerms?
   Card* p_rpnItem = p_rpnExpr->pHead();
-  if (! p_rpnItem || !p_rpnItem->pSymbol()->bIs_Bound())
+  if (! p_rpnItem || !p_rpnItem->pSymbol()->bHasFacet(SF_BOUND))
     return nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1304,7 +1304,7 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
   // the first term in sequence will be a LBOUND or UBOUND
   //   which is not transfered but should match last reln op in sequence
   p_rpnItem = p_rpnExpr->pPopChild();
-  RASSERT(p_rpnItem->pSymbol()->bIs_Bound());
+  RASSERT(p_rpnItem->pSymbol()->bHasFacet(SF_BOUND));
 
   // transfer terms for this bound sequence
   Card* p_term_xfr;
@@ -1312,7 +1312,7 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
     UNUSED(i_Loop);
 
     Card_Term* p_term_top = _pCard_Term(p_rpnExpr->pHead());
-    if (! p_term_top || p_term_top->pSymbol()->bIs_Bound())
+    if (! p_term_top || p_term_top->pSymbol()->bHasFacet(SF_BOUND))
       break;
     p_term_xfr = p_rpnExpr->pPopChild();
     p_bound->vAppendChild(p_term_xfr);
@@ -1594,7 +1594,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
     }
 
     // SEPARATOR
-    if (p_term_head->pSymbol()->bIs_Comma()) {
+    if (p_term_head->pSymbol()->bHasFacet(SF_COMMA)) {
       delete p_rpnExpr->pPopChild();
       continue;
     }
@@ -1651,7 +1651,7 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
     }
 
     // SEPARATOR
-    if (p_term_head->pSymbol()->bIs_Comma()) {
+    if (p_term_head->pSymbol()->bHasFacet(SF_COMMA)) {
       delete p_rpnExpr->pPopChild();
       continue;
     }
@@ -1695,13 +1695,13 @@ Card_RpnCalc* Dissector::pPop_rpnCalc(Card_RpnExpr* p_rpnExpr)
         || p_term_popped->pSymbol()->bHasFacet("ASC"_Stz)
         || p_term_popped->pSymbol()->bHasFacet("DESC"_Stz)
         || p_term_popped->pSymbol()->bHasFacet("GROUPBY"_Stz)
-        || p_term_popped->pSymbol()->bIs_Comma()
+        || p_term_popped->pSymbol()->bHasFacet(SF_COMMA)
         ) {
       p_rpnExpr->vPushChild(p_term_popped);
       break;
     }
 
-    if (p_term_popped->pSymbol()->bIs_Agg_Fn())
+    if (p_term_popped->pSymbol()->bHasFacet(SF_AGG_FN))
       p_rpnCalc->pSymbol()->Y_vSet(P_AggOp);
 
     p_rpnCalc->vAppendChild(p_term_popped);

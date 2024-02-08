@@ -71,11 +71,11 @@ Card_Term* Card_RlnConj::pGetCorrCol(void)
   Card* p_child_0 = this->pGetChild(0);
   Card* p_child_1 = this->pGetChild(1);
 
-  if (p_child_0->pSymbol()->bIs_Sqy_Prm())
+  if (p_child_0->pSymbol()->bHasFacet(SF_SQY_PRM))
     return _pCard_Term(p_child_1);
 
   else
-  if (p_child_1->pSymbol()->bIs_Sqy_Prm())
+  if (p_child_1->pSymbol()->bHasFacet(SF_SQY_PRM))
     return _pCard_Term(p_child_0);
 
   else

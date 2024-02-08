@@ -151,7 +151,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
     while (xCI_rpnCalc.bEach(CK_TERM)) {
       // only interested in columns
 
-      if (xCI_rpnCalc.p_term()->bIsKeyCol()) {
+      if (xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_KEY_COL)) {
         RASSERT(pCI->G.p_streamKey);
 
         Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(xCI_rpnCalc.p_term()->pSymbol());
@@ -172,7 +172,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         p_needed->vAppendChild(p_expr_cloned);
       }
       else
-      if (xCI_rpnCalc.p_term()->bIsColSym()) {
+      if (xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
         if (xCI_projection.p_expr()->bIsScalarCol()) {
           xCI_projection.p_expr()->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
@@ -206,7 +206,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         Kid xCI_rpnCalc(xCI_key.pSub1());
         while (xCI_rpnCalc.bEach(CK_TERM)) {
           // only interested in columns
-          if (!xCI_rpnCalc.p_term()->bIsColSym())
+          if (!xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) && !xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
             continue;
           // which we haven't already added
           if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol()))
@@ -481,12 +481,7 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (p_term->pSymbol()->bIs_Exp_Col()) {
-    Card_Expr *p_expr_prior = this->pGet_expr(p_term->pSymbol());
-    return p_expr_prior;
-  }
-  else
-  if (p_term->pSymbol()->bIs_Tbl_Col()) {
+  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) || p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
     Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
     return p_expr_prior;
   }
