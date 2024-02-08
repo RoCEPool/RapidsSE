@@ -122,18 +122,15 @@ void ToKeyHshRow::vRepairList(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* return last remaining dangling PdsrowBuffer (if any)                       */
 /*----------------------------------------------------------------------------*/
-Pds* ToKeyHshRow::pDanglingPdsRowBuffer(void)
+Pds* ToKeyHshRow::pDangling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  // Note: remove -----------------
-  // return the member and set it to null, no need to iterate pds
-  // currently just sanity checking
-//  Pds* m_pDanglingPdsRowBuffer = _pPds(m_pBufferIdQueue->pDanglingBuffer());
-//  RASSERT(m_pCurrPdsRowBuffer == m_pDanglingPdsRowBuffer);
-//  RASSERT(m_pBufferIdQueue->bIsEmpty());
-  // -------------
-  Pds* m_pDanglingPdsRowBuffer = m_pCurrPdsRowBuffer;
+  // Note: pDanglingBuffer() deletes the entry in the pds, hence we call it here
+  Pds* m_pDanglingPdsRowBuffer = _pPds(m_pBufferIdQueue->pDanglingBuffer());
+  ASSERT(m_pCurrPdsRowBuffer == m_pDanglingPdsRowBuffer);
+  ASSERT(m_pBufferIdQueue->bIsEmpty());
+
   m_pCurrPdsRowBuffer = nullptr;
   return m_pDanglingPdsRowBuffer;
 }
@@ -141,7 +138,7 @@ Pds* ToKeyHshRow::pDanglingPdsRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return a full PdsrowBuffer (if any)                                        */
 /*----------------------------------------------------------------------------*/
-Pds* ToKeyHshRow::pFullPdsRowBuffer(void)
+Pds* ToKeyHshRow::pCompleted(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
@@ -968,7 +965,7 @@ L_AdvanceNextRecord:
     vNewPdsRowBuffer();
     Row* aNewRow = pPdsRowBuffer()->pAllotRow();
     nMaxFreeBytes = pPdsRowBuffer()->nFreeBytes();
-    RASSERT(aNewRow);
+    ASSERT(aNewRow);
     UNUSED(aNewRow);
   }
 

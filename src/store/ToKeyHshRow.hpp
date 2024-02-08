@@ -61,8 +61,8 @@ namespace STORE
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
     bool bConvertCsv(CsvBuffer* pCsvBuffer);
 
-    Pds* pDanglingPdsRowBuffer(void);
-    Pds* pFullPdsRowBuffer(void);
+    Pds* pDangling(void);
+    Pds* pCompleted(void);
     Pds* pPdsRowBuffer(void);
 
     i8 iRowsProcessed(void);
