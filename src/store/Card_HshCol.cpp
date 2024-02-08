@@ -52,7 +52,7 @@ void Card_HshCol::vX_tblCol_To_expCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
+    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       continue;
 
     xKid.p_term()->vX_tblCol_To_expCol(pCI);
