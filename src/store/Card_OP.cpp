@@ -904,8 +904,8 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
 
     Card_Term* p_term = _pCard_Term(pSubCard);
 
-    if (p_term->pSymbol()->bIs_Exp_Col() ||
-        p_term->pSymbol()->bIs_Tbl_Col()) {
+    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+        p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
       if (!p_term->pSymbol()->bHasType()) {
         p_term->vDump(__func__);
@@ -998,8 +998,8 @@ void Card_OP::vRpn_indexScan(String* psRpnExpr, Card_IndexScan* p_indexScan)
 
         Card_Term* p_term = _pCard_Term(pSubCard);
 
-        if (p_term->pSymbol()->bIs_Exp_Col() ||
-            p_term->pSymbol()->bIs_Tbl_Col()) {
+        if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+            p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
           if (!p_term->pSymbol()->bHasType()) {
             p_term->vDump(__func__);
@@ -1066,8 +1066,8 @@ void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIs_Exp_Col() ||
-          p_term->pSymbol()->bIs_Tbl_Col()) {
+      if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+          p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
         if (!p_term->pSymbol()->bHasType()) {
           p_term->vDump(__func__);
@@ -1157,8 +1157,8 @@ void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotEx
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIs_Exp_Col() ||
-          p_term->pSymbol()->bIs_Tbl_Col()) {
+      if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+          p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
         if (!p_term->pSymbol()->bHasType()) {
           p_term->vDump(__func__);
@@ -1498,8 +1498,8 @@ void Card_OP::vRpn_term(String* psRpnExpr, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (p_term->pSymbol()->bIs_Exp_Col() ||
-      p_term->pSymbol()->bIs_Tbl_Col()) {
+  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+      p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
     if (!p_term->pSymbol()->bHasType()) {
       p_term->vDump(__func__);
