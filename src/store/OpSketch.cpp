@@ -569,7 +569,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       if (m_eSketchKind == SK_ORDAGG) {
 				m_pOrdAggStack->vPushStz("_ASSIGN(bKeyMatch)"_Stz);
         if (iGbyCols == 2 || (iGbyCols > 2 && iGbyCols % 2))
-          m_pOrdAggStack->vPushStz("_AND_BOLBOL(aDynamicT->m_iErrorCode)"_Stz);
+          m_pOrdAggStack->vPushStz("_AND_BOLBOL(&paW, aDynamicT)"_Stz);
       }
 
       i_Col = 0;
@@ -1463,7 +1463,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
         pExprStack->vPushStr(sOperation);
       }
 
-      sOperation.vSprint("_INC_INT(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vSprint("_INC_INT(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStr(sOperation);
       break;
 
@@ -1481,7 +1481,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
         pExprStack->vPushStr(sOperation);
       }
 
-      sOperation.vSprint("_INC_IFNOTNULL(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vSprint("_INC_IFNOTNULL(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStr(sOperation);
       break;
 
@@ -1498,14 +1498,14 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
           sOperation.vSprint("_PSH_COL(aDynamicT->m_aiPayload[%lld])"_Stz, i_ColPL);
           pExprStack->vPushStr(sOperation);
           sOperation = "_LTA_VCHVCH"_Stz;
-          sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+          sOperation.vConcat("(&paW, aDynamicT)"_Stz);
           pExprStack->vPushStr(sOperation);
         }
         else {
           sOperation.vSprint("_PSH_COL(aDynamicT->m_aiPayload[%lld])"_Stz, i_ColPL);
           pExprStack->vPushStr(sOperation);
           sOperation = aFM[eMacro_Lta[eExprType][eExprType]];
-          sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+          sOperation.vConcat("(&paW, aDynamicT)"_Stz);
           pExprStack->vPushStr(sOperation);
         }
       }
@@ -1522,7 +1522,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
         pExprStack->vPushStr(sOperation);
 
         sOperation = aFM[eMacro_Lta[eExprType][eExprType]];
-        sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+        sOperation.vConcat("(&paW, aDynamicT)"_Stz);
         pExprStack->vPushStr(sOperation);
       }
 
@@ -1541,14 +1541,14 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
           sOperation.vSprint("_PSH_COL(aDynamicT->m_aiPayload[%lld])"_Stz, i_ColPL);
           pExprStack->vPushStr(sOperation);
           sOperation = "_GTA_VCHVCH"_Stz;
-          sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+          sOperation.vConcat("(&paW, aDynamicT)"_Stz);
           pExprStack->vPushStr(sOperation);
         }
         else {
           sOperation.vSprint("_PSH_COL(aDynamicT->m_aiPayload[%lld])"_Stz, i_ColPL);
           pExprStack->vPushStr(sOperation);
           sOperation = aFM[eMacro_Gta[eExprType][eExprType]];
-          sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+          sOperation.vConcat("(&paW, aDynamicT)"_Stz);
           pExprStack->vPushStr(sOperation);
         }
       }
@@ -1566,7 +1566,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
         pExprStack->vPushStr(sOperation);
 
         sOperation = aFM[eMacro_Gta[eExprType][eExprType]];
-        sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+        sOperation.vConcat("(&paW, aDynamicT)"_Stz);
         pExprStack->vPushStr(sOperation);
       }
 
@@ -1749,7 +1749,7 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   if ( ! bConstraint && pColumn->bIsNullable() ) {
     sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
     m_pNullStack->vPushStz(sOperation);
-    sOperation.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
+    sOperation.vSprint("_ISNULL(&paW, aDynamicT)"_Stz);
     m_pNullStack->vPushStz(sOperation);
     m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
   }
@@ -2139,7 +2139,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         m_pOrdAggStack->vPushStz(sPush);
         eDatum = Column::eDatum(pColumn->eColumnType());
         sPush = aFM[eMacro_Eq[eDatum][eDatum]];
-        sPush.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+        sPush.vConcat("(&paW, aDynamicT)"_Stz);
         m_pOrdAggStack->vPushStz(sPush);
 				//sPush.vSprint("_ASSIGN(bKeyMatch)\n"_Stz);
 				//m_pOrdAggStack->vPushStz(sPush);

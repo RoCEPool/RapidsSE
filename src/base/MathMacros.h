@@ -1068,31 +1068,31 @@ static inline void _MUL_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // inc arg1
-#define _INC_INT(eErrorCode)                                               \
-  {                                                                        \
-    iArg1 = *(--paW);                                                      \
-    if (eErrorCode != EC_NONE ||                                           \
-        iArg1 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      *paW++ =  ++iArg1;                                                   \
-    }                                                                      \
+static inline void _INC_INT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  else {
+    *(*ppaW)++ =  ++iArg1;
+  }
+}
 
 // inc arg1 if arg2 is not null
-#define _INC_IFNOTNULL(eErrorCode)                                         \
-  {                                                                        \
-    iArg1 = *(--paW);                                                      \
-    iArg2 = *(--paW);                                                      \
-    if (eErrorCode == EC_NONE &&                                           \
-        iArg2 != C_DATUM_NULL) {                                           \
-      *paW++ = ++iArg1;                                                    \
-    }                                                                      \
-    else {                                                                 \
-      *paW++ =  iArg1;                                                     \
-    }                                                                      \
+static inline void _INC_IFNOTNULL(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1 = *(--(*ppaW));
+  i8 iArg2 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode == EC_NONE &&
+      iArg2 != C_DATUM_NULL) {
+    *(*ppaW)++ = ++iArg1;
   }
+  else {
+    *(*ppaW)++ =  iArg1;
+  }
+}
 
 static inline void _ADD_INTINT(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
