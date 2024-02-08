@@ -129,10 +129,11 @@ Pds* ToKeyHshRow::pDanglingPdsRowBuffer(void)
   // Note: remove -----------------
   // return the member and set it to null, no need to iterate pds
   // currently just sanity checking
-  Pds* m_pDanglingPdsRowBuffer = _pPds(m_pBufferIdQueue->pDanglingBuffer());
-  RASSERT(m_pCurrPdsRowBuffer == m_pDanglingPdsRowBuffer);
-  RASSERT(m_pBufferIdQueue->bIsEmpty());
+//  Pds* m_pDanglingPdsRowBuffer = _pPds(m_pBufferIdQueue->pDanglingBuffer());
+//  RASSERT(m_pCurrPdsRowBuffer == m_pDanglingPdsRowBuffer);
+//  RASSERT(m_pBufferIdQueue->bIsEmpty());
   // -------------
+  Pds* m_pDanglingPdsRowBuffer = m_pCurrPdsRowBuffer;
   m_pCurrPdsRowBuffer = nullptr;
   return m_pDanglingPdsRowBuffer;
 }
@@ -155,8 +156,8 @@ Pds* ToKeyHshRow::pPdsRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   //Remove-------
-  Pds* pPdsRowBuffer = _pPds(m_pBufferIdQueue->pDataBuffer());
-  RASSERT(m_pCurrPdsRowBuffer == pPdsRowBuffer);
+//  Pds* pPdsRowBuffer = _pPds(m_pBufferIdQueue->pDataBuffer());
+//  RASSERT(m_pCurrPdsRowBuffer == pPdsRowBuffer);
   //-------
 
   return m_pCurrPdsRowBuffer;
