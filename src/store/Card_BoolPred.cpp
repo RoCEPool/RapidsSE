@@ -842,7 +842,7 @@ void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
 
     pCI->G.p_term = _pCard_Term(p_conj);
     Symbol* pSymbol = pCI->G.p_term->pSymbol();
-    if (!pSymbol->bIs_Exp_Col()) {
+    if (!pSymbol->bHasFacet(SF_EXP_COL)) {
       pCI->G.p_term = nullptr;
       return C_CONTINUE_RECURSION;
     }
