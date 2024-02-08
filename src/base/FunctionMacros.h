@@ -162,293 +162,322 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
-#define _BET_BCDBCD(eErrorCode)                                            \
-  {                                                                        \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
-    bcdArg3.m_iAsI8 = *(--paW);                                            \
-    if (eErrorCode != EC_NONE ||                                           \
-        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        bcdArg2.m_iAsI8 ==  C_DATUM_NULL ||                                \
-        bcdArg3.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-                                                                           \
-        if (bcdArg1.m_uScale != bcdArg2.m_uScale) {                        \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-          *paW++ = bcdArg2.m_iAsI8;                                        \
-          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
-          bcdArg2.m_iAsI8 = *(--paW);                                      \
-          bcdArg1.m_iAsI8 = *(--paW);                                      \
-        }                                                                  \
-        \
-        if (bcdArg1.m_uScale != bcdArg3.m_uScale) {                        \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-          *paW++ = bcdArg3.m_iAsI8;                                        \
-          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
-          bcdArg3.m_iAsI8 = *(--paW);                                      \
-          bcdArg1.m_iAsI8 = *(--paW);                                      \
-        }                                                                  \
-                                                                           \
-        if (bcdArg2.m_uScale != bcdArg3.m_uScale) {                        \
-          *paW++ = bcdArg2.m_iAsI8;                                        \
-          *paW++ = bcdArg3.m_iAsI8;                                        \
-          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
-          bcdArg3.m_iAsI8 = *(--paW);                                      \
-          bcdArg2.m_iAsI8 = *(--paW);                                      \
-          }                                                                \
-                                                                           \
-        if (bcdArg1.m_iMantissa > bcdArg2.m_iMantissa) {                   \
-          *(paW++) = 0;                                                    \
-        }                                                                  \
-      else {                                                               \
-        if (bcdArg1.m_iMantissa < bcdArg3.m_iMantissa)    {                \
-          *(paW++) = 0;                                                    \
-        }                                                                  \
-        else {                                                             \
-          *(paW++) = 1;                                                    \
-        }                                                                  \
-      }                                                                    \
-   }                                                                       \
+static inline void _BET_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Bcd_T bcdArg1;
+  union Bcd_T bcdArg2;
+  union Bcd_T bcdArg3;
+
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+  bcdArg2.m_iAsI8 = *(--(*ppaW));
+  bcdArg3.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      bcdArg1.m_iAsI8 == C_DATUM_NULL ||
+      bcdArg2.m_iAsI8 ==  C_DATUM_NULL ||
+      bcdArg3.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+  else {
+
+      if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
+        *(*ppaW)++ = bcdArg1.m_iAsI8;
+        *(*ppaW)++ = bcdArg2.m_iAsI8;
+        vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
+        bcdArg2.m_iAsI8 = *(--(*ppaW));
+        bcdArg1.m_iAsI8 = *(--(*ppaW));
+      }
+
+      if (bcdArg1.m_uScale != bcdArg3.m_uScale) {
+        *(*ppaW)++ = bcdArg1.m_iAsI8;
+        *(*ppaW)++ = bcdArg3.m_iAsI8;
+        vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
+        bcdArg3.m_iAsI8 = *(--(*ppaW));
+        bcdArg1.m_iAsI8 = *(--(*ppaW));
+      }
+
+      if (bcdArg2.m_uScale != bcdArg3.m_uScale) {
+        *(*ppaW)++ = bcdArg2.m_iAsI8;
+        *(*ppaW)++ = bcdArg3.m_iAsI8;
+        vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
+        bcdArg3.m_iAsI8 = *(--(*ppaW));
+        bcdArg2.m_iAsI8 = *(--(*ppaW));
+        }
+
+      if (bcdArg1.m_iMantissa > bcdArg2.m_iMantissa) {
+        *((*ppaW)++) = 0;
+      }
+    else {
+      if (bcdArg1.m_iMantissa < bcdArg3.m_iMantissa)    {
+        *((*ppaW)++) = 0;
+      }
+      else {
+        *((*ppaW)++) = 1;
+      }
+    }
+ }
 }
 
-#define _BET_FLTFLT(eErrorCode)                                             \
-  {                                                                         \
-    fltArg1.m_iAsI8 = *(--paW);                                             \
-    fltArg2.m_iAsI8 = *(--paW);                                             \
-    fltArg3.m_iAsI8 = *(--paW);                                             \
-                                                                            \
-    if (eErrorCode != EC_NONE ||                                            \
-        fltArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
-        fltArg2.m_iAsI8 ==  C_DATUM_NULL ||                                 \
-        fltArg3.m_iAsI8 == C_DATUM_NULL) {                                  \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      if (fltArg1.m_dFlt > fltArg2.m_dFlt) {                                \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (fltArg1.m_dFlt < fltArg3.m_dFlt)                                \
-          *(paW++) = 0;                                                     \
-        else                                                                \
-          *(paW++) = 1;                                                     \
-      }                                                                     \
-    }                                                                       \
+static inline void _BET_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Flt_T fltArg1;
+  union Flt_T fltArg2;
+  union Flt_T fltArg3;
+
+  fltArg1.m_iAsI8 = *(--(*ppaW));
+  fltArg2.m_iAsI8 = *(--(*ppaW));
+  fltArg3.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      fltArg1.m_iAsI8 == C_DATUM_NULL ||
+      fltArg2.m_iAsI8 ==  C_DATUM_NULL ||
+      fltArg3.m_iAsI8 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
-
-#define _BET_INTINT(eErrorCode)                                             \
-  {                                                                         \
-    iArg1 = *(--paW);                                                       \
-    iArg2 = *(--paW);                                                       \
-    iArg3 = *(--paW);                                                       \
-    if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL ||                                            \
-        iArg2 ==  C_DATUM_NULL ||                                           \
-        iArg3 == C_DATUM_NULL) {                                            \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      if (iArg1 > iArg2) {                                                  \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (iArg1 < iArg3)                                                  \
-          *(paW++) = 0;                                                     \
-        else                                                                \
-          *(paW++) = 1;                                                     \
-      }                                                                     \
-    }                                                                       \
+  else {
+    if (fltArg1.m_dFlt > fltArg2.m_dFlt) {
+      *((*ppaW)++) = 0;
+    }
+    else {
+      if (fltArg1.m_dFlt < fltArg3.m_dFlt)
+        *((*ppaW)++) = 0;
+      else
+        *((*ppaW)++) = 1;
+    }
   }
+}
 
-#define _BET_IVDIVD(eErrorCode)                                             \
-  {                                                                         \
-    ivlArg1.m_iAsI8 = *(--paW);                                             \
-    ivlArg2.m_iAsI8 = *(--paW);                                             \
-    ivlArg3.m_iAsI8 = *(--paW);                                             \
-                                                                            \
-    if (eErrorCode != EC_NONE ||                                            \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                  \
-      *paW++ = C_DATUM_NULL;                                                \
-    }                                                                       \
-    else {                                                                  \
-      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
-      iArg3 = ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
-                                                                            \
-      if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
-        iArg1 = (-1) * iArg1;                                               \
-                                                                            \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
-        iArg2 = (-1) * iArg2;                                               \
-                                                                            \
-      if (ivlArg3.m_xIvl.m_bIsNeg)                                          \
-        iArg3 = (-1) * iArg3;                                               \
-                                                                            \
-      if (iArg1 > iArg2) {                                                  \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (iArg1 < iArg3)                                                  \
-          *(paW++) = 0;                                                     \
-        else                                                                \
-          *(paW++) = 1;                                                     \
-      }                                                                     \
-    }                                                                       \
+static inline void _BET_INTINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1 = *(--(*ppaW));
+  i8 iArg2 = *(--(*ppaW));
+  i8 iArg3 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      iArg2 ==  C_DATUM_NULL ||
+      iArg3 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
-
-#define _BET_IVYIVY(eErrorCode)                                             \
-  {                                                                         \
-    ivlArg1.m_iAsI8 = *(--paW);                                             \
-    ivlArg2.m_iAsI8 = *(--paW);                                             \
-    ivlArg3.m_iAsI8 = *(--paW);                                             \
-                                                                            \
-    if (eErrorCode != EC_NONE ||                                            \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
-        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                  \
-      *paW++ = C_DATUM_NULL;                                                \
-    }                                                                       \
-    else {                                                                  \
-      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
-      iArg3 = ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
-                                                                            \
-      if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
-        iArg1 = (-1) * iArg1;                                               \
-                                                                            \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
-        iArg2 = (-1) * iArg2;                 \
-                                                                            \
-     if (ivlArg3.m_xIvl.m_bIsNeg)                                           \
-       iArg3 = (-1) * iArg3;                  \
-                                                                            \
-      if (iArg1 > iArg2) {                                                  \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (iArg1 < iArg3)                                                  \
-          *(paW++) = 0;                                                     \
-        else                                                                \
-          *(paW++) = 1;                                                     \
-      }                                                                     \
-    }                                                                       \
+  else {
+    if (iArg1 > iArg2) {
+      *((*ppaW)++) = 0;
+    }
+    else {
+      if (iArg1 < iArg3)
+        *((*ppaW)++) = 0;
+      else
+        *((*ppaW)++) = 1;
+    }
   }
+}
 
-#define _BET_DTEDTE(eErrorCode)                                             \
-  {                                                                         \
-    xDte1.m_iAsI8 = *(--paW);                                               \
-    xDte2.m_iAsI8 = *(--paW);                                               \
-    xDte3.m_iAsI8 = *(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        xDte1.m_iAsI8 == C_DATUM_NULL ||                                    \
-        xDte2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
-        xDte3.m_iAsI8 == C_DATUM_NULL) {                                    \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      if (xDte1.m_iAsI8 > xDte2.m_iAsI8) {                                  \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (xDte1.m_iAsI8 < xDte3.m_iAsI8)                                  \
-          *(paW++) = 0;                                                     \
-        else                                                                \
-          *(paW++) = 1;                                                     \
-      }                                                                     \
-    }                                                                       \
+static inline void _BET_IVDIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg1;
+  union Ivl_T ivlArg2;
+  union Ivl_T ivlArg3;
+
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  ivlArg3.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  else {
+    i8 iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;
+    i8 iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;
+    i8 iArg3 = ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;
 
+    if (ivlArg1.m_xIvl.m_bIsNeg)
+      iArg1 = (-1) * iArg1;
 
-#define _BET_TMETME(eErrorCode)                                             \
-  {                                                                         \
-    xTme1.m_iAsI8 = *(--paW);                                               \
-    xTme2.m_iAsI8 = *(--paW);                                               \
-    xTme3.m_iAsI8 = *(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        xTme1.m_iAsI8 == C_DATUM_NULL ||                                    \
-        xTme2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
-        xTme3.m_iAsI8 == C_DATUM_NULL) {                                    \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      if (xTme1.m_iAsI8 > xTme2.m_iAsI8) {                                  \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (xTme1.m_iAsI8 < xTme3.m_iAsI8)                                  \
-          *(paW++) = 0;                                                     \
-        else                                                                \
-          *(paW++) = 1;                                                     \
-      }                                                                     \
-    }                                                                       \
+    if (ivlArg2.m_xIvl.m_bIsNeg)
+      iArg2 = (-1) * iArg2;
+
+    if (ivlArg3.m_xIvl.m_bIsNeg)
+      iArg3 = (-1) * iArg3;
+
+    if (iArg1 > iArg2) {
+      *((*ppaW)++) = 0;
+    }
+    else {
+      if (iArg1 < iArg3)
+        *((*ppaW)++) = 0;
+      else
+        *((*ppaW)++) = 1;
+    }
   }
+}
 
+static inline void _BET_IVYIVY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Ivl_T ivlArg1;
+  union Ivl_T ivlArg2;
+  union Ivl_T ivlArg3;
 
-#define _BET_TSPTSP(eErrorCode)                                             \
-  {                                                                         \
-    xTsp1.m_iAsI8 = *(--paW);                                               \
-    xTsp2.m_iAsI8 = *(--paW);                                               \
-    xTsp3.m_iAsI8 = *(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                    \
-        xTsp2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
-        xTsp3.m_iAsI8 == C_DATUM_NULL) {                                    \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      if (xTsp1.m_iAsI8 > xTsp2.m_iAsI8) {                                  \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (xTsp1.m_iAsI8 < xTsp3.m_iAsI8)                                  \
-          *(paW++) = 0;                                                     \
-        else                                                                \
-          *(paW++) = 1;                                                     \
-      }                                                                     \
-    }                                                                       \
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+  ivlArg2.m_iAsI8 = *(--(*ppaW));
+  ivlArg3.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
+  else {
+    i8 iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;
+    i8 iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;
+    i8 iArg3 = ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;
 
-#define _BET_VCHVCH(eErrorCode)                                             \
-  {                                                                         \
-    iArg1 = *(--paW);                                                       \
-    iArg2 = *(--paW);                                                       \
-    iArg3 = *(--paW);                                                       \
-    if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL ||                                            \
-        iArg2 ==  C_DATUM_NULL ||                                           \
-        iArg3 == C_DATUM_NULL) {                                            \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      if (strcmp((char*)iArg1, (char*)iArg2) > 0) {                         \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (strcmp((char*)iArg1, (char*)iArg3) < 0)                         \
-          *(paW++) = 0;                                                     \
-        else                                                                \
-          *(paW++) = 1;                                                     \
-      }                                                                     \
-    }                                                                       \
-  }
+    if (ivlArg1.m_xIvl.m_bIsNeg)
+      iArg1 = (-1) * iArg1;
 
-#define _BET_UNKANY(eErrorCode)                                            \
-  {                                                                        \
-    iArg3 = *(--paW);                                                      \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+    if (ivlArg2.m_xIvl.m_bIsNeg)
+      iArg2 = (-1) * iArg2;
 
-#define _BET_ANYUNK(eErrorCode)                                            \
-  {                                                                        \
-    iArg3 = *(--paW);                                                      \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    *paW++ = C_DATUM_NULL;                                                 \
+   if (ivlArg3.m_xIvl.m_bIsNeg)
+     iArg3 = (-1) * iArg3;
+
+    if (iArg1 > iArg2) {
+      *((*ppaW)++) = 0;
+    }
+    else {
+      if (iArg1 < iArg3)
+        *((*ppaW)++) = 0;
+      else
+        *((*ppaW)++) = 1;
+    }
   }
+}
+
+static inline void _BET_DTEDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Dte_T xDte1;
+  union Dte_T xDte2;
+  union Dte_T xDte3;
+
+  xDte1.m_iAsI8 = *(--(*ppaW));
+  xDte2.m_iAsI8 = *(--(*ppaW));
+  xDte3.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xDte1.m_iAsI8 == C_DATUM_NULL ||
+      xDte2.m_iAsI8 ==  C_DATUM_NULL ||
+      xDte3.m_iAsI8 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    if (xDte1.m_iAsI8 > xDte2.m_iAsI8) {
+      *((*ppaW)++) = 0;
+    }
+    else {
+      if (xDte1.m_iAsI8 < xDte3.m_iAsI8)
+        *((*ppaW)++) = 0;
+      else
+        *((*ppaW)++) = 1;
+    }
+  }
+}
+
+
+static inline void _BET_TMETME(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tme_T xTme1;
+  union Tme_T xTme2;
+  union Tme_T xTme3;
+
+  xTme1.m_iAsI8 = *(--(*ppaW));
+  xTme2.m_iAsI8 = *(--(*ppaW));
+  xTme3.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTme1.m_iAsI8 == C_DATUM_NULL ||
+      xTme2.m_iAsI8 ==  C_DATUM_NULL ||
+      xTme3.m_iAsI8 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    if (xTme1.m_iAsI8 > xTme2.m_iAsI8) {
+      *((*ppaW)++) = 0;
+    }
+    else {
+      if (xTme1.m_iAsI8 < xTme3.m_iAsI8)
+        *((*ppaW)++) = 0;
+      else
+        *((*ppaW)++) = 1;
+    }
+  }
+}
+
+
+static inline void _BET_TSPTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tsp_T xTsp1;
+  union Tsp_T xTsp2;
+  union Tsp_T xTsp3;
+
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+  xTsp2.m_iAsI8 = *(--(*ppaW));
+  xTsp3.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL ||
+      xTsp2.m_iAsI8 ==  C_DATUM_NULL ||
+      xTsp3.m_iAsI8 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    if (xTsp1.m_iAsI8 > xTsp2.m_iAsI8) {
+      *((*ppaW)++) = 0;
+    }
+    else {
+      if (xTsp1.m_iAsI8 < xTsp3.m_iAsI8)
+        *((*ppaW)++) = 0;
+      else
+        *((*ppaW)++) = 1;
+    }
+  }
+}
+
+static inline void _BET_VCHVCH(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1 = *(--(*ppaW));
+  i8 iArg2 = *(--(*ppaW));
+  i8 iArg3 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      iArg2 ==  C_DATUM_NULL ||
+      iArg3 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    if (strcmp((char*)iArg1, (char*)iArg2) > 0) {
+      *((*ppaW)++) = 0;
+    }
+    else {
+      if (strcmp((char*)iArg1, (char*)iArg3) < 0)
+        *((*ppaW)++) = 0;
+      else
+        *((*ppaW)++) = 1;
+    }
+  }
+}
+
+static inline void _BET_UNKANY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
+
+static inline void _BET_ANYUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  --(*ppaW);
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INEXPR
@@ -456,163 +485,170 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INEXPR
 
-#define _INX_BCDBCD(eErrorCode)                                             \
-  {                                                                         \
-    bFilterResult = 0;                                                      \
-    iArg1 = *(--paW);                                                       \
-    if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL) {                                            \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      iInCount = *(--paW);                                                  \
-      while(iInCount--) {                                                   \
-        *(paW++) = iArg1;                                                   \
-        _EQ_BCDBCD(eErrorCode)                                              \
-        bFilterResult = *(--paW);                                           \
-        if (bFilterResult) {                                                \
-          break;                                                            \
-          }      \
-      }                                                                      \
-      while(iInCount-- > 0) {                                               \
-        iArg2 = *(--paW);                                                   \
-      }                                                                     \
-      *(paW++) = bFilterResult;                                             \
-    }                                                                       \
+static inline void _INX_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 bFilterResult = 0;
+  i8 iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
-
-#define _INX_FLTFLT(eErrorCode)                                             \
-  {                                                                         \
-    bFilterResult = 0;                                                      \
-    iArg1 = *(--paW);                                                       \
-    if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL) {                                            \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      iInCount = *(--paW);                                                  \
-      while(iInCount--) {                                                   \
-        *(paW++) = iArg1;                                                   \
-        _EQ_FLTFLT(eErrorCode)                                              \
-        bFilterResult = *(--paW);                                           \
-        if (bFilterResult) {                                                \
-          break;                                                            \
-          }      \
-      }                                                                     \
-      while(iInCount-- > 0) {                                               \
-        iArg2 = *(--paW);                                                   \
-      }                                                                     \
-      *(paW++) = bFilterResult;                                             \
-    }                                                                       \
+  else {
+    i8 iInCount = *(--(*ppaW));
+    while(iInCount--) {
+      *((*ppaW)++) = iArg1;
+      _EQ_BCDBCD(ppaW, aDynamicT);
+      bFilterResult = *(--(*ppaW));
+      if (bFilterResult) {
+        break;
+        }
+    }
+    while(iInCount-- > 0) {
+      --(*ppaW);
+    }
+    *((*ppaW)++) = bFilterResult;
   }
+}
 
-#define _INX_INTINT(eErrorCode)                                             \
-  {                                                                         \
-    bFilterResult = 0;                                                      \
-    iArg1 = *(--paW);                                                       \
-    if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL) {                                            \
-      while(iInCount-- > 0) {                                               \
-        iArg2 = *(--paW);                                                   \
-      }                                                                     \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      iInCount = *(--paW);                                                  \
-      while(iInCount--) {                                                   \
-        iArg2 = *(--paW);                                                   \
-        if (iArg1 == iArg2) {                                               \
-           bFilterResult = 1;                                               \
-           break;                                                           \
-        }                                                                   \
-      }                                                                     \
-      while(iInCount-- > 0) {                                               \
-        iArg2 = *(--paW);                                                   \
-      }                                                                     \
-      *(paW++) = bFilterResult;                                             \
-    }                                                                       \
+static inline void _INX_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 bFilterResult = 0;
+  i8 iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
-
-#define _INX_IVDIVD(eErrorCode)                                             \
-  {                                                                         \
-    bFilterResult = 0;                                                      \
-    ivlArg1.m_iAsI8 = *(--paW);                                             \
-    if (eErrorCode != EC_NONE ||                                            \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                    \
-      *(paW++) = 0;                                                         \
-    }                                                                       \
-    else {                                                                  \
-      iInCount = *(--paW);                                                  \
-      while(iInCount--) {                                                   \
-        ivlArg2.m_iAsI8 = *(--paW);                                         \
-        if ( (ivlArg1.m_xIvl.m_bIsNeg == ivlArg2.m_xIvl.m_bIsNeg) &&        \
-             (ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros == ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros) ) \
-        {                                                                   \
-           bFilterResult = 1;                                               \
-           break;                                                           \
-        }                                                                   \
-      }                                                                     \
-      while(iInCount-- > 0) {                                               \
-        ivlArg2.m_iAsI8 = *(--paW);                                         \
-      }                                                                     \
-      *(paW++) = bFilterResult;                                             \
-    }                                                                       \
+  else {
+    i8 iInCount = *(--(*ppaW));
+    while(iInCount--) {
+      *((*ppaW)++) = iArg1;
+      _EQ_FLTFLT(ppaW, aDynamicT);
+      bFilterResult = *(--(*ppaW));
+      if (bFilterResult) {
+        break;
+        }
+    }
+    while(iInCount-- > 0) {
+      --(*ppaW);
+    }
+    *((*ppaW)++) = bFilterResult;
   }
+}
 
+static inline void _INX_INTINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 bFilterResult = 0;
 
-#define _INX_IVYIVY(eErrorCode)                                             \
-  {                                                                         \
-    bFilterResult = 0;                                                      \
-    ivlArg1.m_iAsI8 = *(--paW);                                             \
-    if (eErrorCode != EC_NONE ||                                            \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                  \
-      *(paW++) = 0;                                                         \
-    }                                                                       \
-    else {                                                                  \
-      iInCount = *(--paW);                                                  \
-      while(iInCount--) {                                                   \
-        ivlArg2.m_iAsI8 = *(--paW);                                         \
-        if ( (ivlArg1.m_xIvl.m_bIsNeg == ivlArg2.m_xIvl.m_bIsNeg) &&        \
-             (ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths == ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths) ) \
-        {                                                                   \
-           bFilterResult = 1;                                               \
-           break;                                                           \
-        }                                                                   \
-      }                                                                     \
-      while(iInCount-- > 0) {                                               \
-        ivlArg2.m_iAsI8 = *(--paW);                                         \
-      }                                                                     \
-      *(paW++) = bFilterResult;                                             \
-    }                                                                       \
+  i8 iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL) {
+//    while(iInCount-- > 0) {
+//      --(*ppaW);
+//    }
+    *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    i8 iInCount = *(--(*ppaW));
+    while(iInCount--) {
+      i8 iArg2 = *(--(*ppaW));
+      if (iArg1 == iArg2) {
+         bFilterResult = 1;
+         break;
+      }
+    }
+    while(iInCount-- > 0) {
+      --(*ppaW);
+    }
+    *((*ppaW)++) = bFilterResult;
+  }
+}
+
+static inline void _INX_IVDIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 bFilterResult = 0;
+  union Ivl_T ivlArg1;
+  union Ivl_T ivlArg2;
+
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL) {
+    *((*ppaW)++) = 0;
+  }
+  else {
+    i8 iInCount = *(--(*ppaW));
+    while(iInCount--) {
+      ivlArg2.m_iAsI8 = *(--(*ppaW));
+      if ( (ivlArg1.m_xIvl.m_bIsNeg == ivlArg2.m_xIvl.m_bIsNeg) &&
+           (ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros == ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros) )
+      {
+         bFilterResult = 1;
+         break;
+      }
+    }
+    while(iInCount-- > 0) {
+      ivlArg2.m_iAsI8 = *(--(*ppaW));
+    }
+    *((*ppaW)++) = bFilterResult;
+  }
+}
+
+
+static inline void _INX_IVYIVY(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 bFilterResult = 0;
+  union Ivl_T ivlArg1;
+  union Ivl_T ivlArg2;
+
+  ivlArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      ivlArg1.m_iAsI8 == C_DATUM_NULL) {
+    *((*ppaW)++) = 0;
+  }
+  else {
+    i8 iInCount = *(--(*ppaW));
+    while(iInCount--) {
+      ivlArg2.m_iAsI8 = *(--(*ppaW));
+      if ( (ivlArg1.m_xIvl.m_bIsNeg == ivlArg2.m_xIvl.m_bIsNeg) &&
+           (ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths == ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths) )
+      {
+         bFilterResult = 1;
+         break;
+      }
+    }
+    while(iInCount-- > 0) {
+      ivlArg2.m_iAsI8 = *(--(*ppaW));
+    }
+    *((*ppaW)++) = bFilterResult;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INEXPR
 
-#define _INX_VCHVCH(eErrorCode)                                             \
-  {                                                                         \
-    bFilterResult = 0;                                                      \
-    iArg1 = *(--paW);                                                       \
-    if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL) {                                            \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      iInCount = *(--paW);                                                  \
-      while(iInCount--) {                                                   \
-        *(paW++) = iArg1;                                                   \
-        _EQ_VCHVCH(eErrorCode)                                              \
-        bFilterResult = *(--paW);                                           \
-        if (bFilterResult) {                                                \
-          break;                                                            \
-          }      \
-      }                                                                     \
-      while(iInCount-- > 0) {                                               \
-        iArg2 = *(--paW);                                                   \
-      }                                                                     \
-      *(paW++) = bFilterResult;                                             \
-    }                                                                       \
+static inline void _INX_VCHVCH(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 bFilterResult = 0;
+  i8 iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    i8 iInCount = *(--(*ppaW));
+    while(iInCount--) {
+      *((*ppaW)++) = iArg1;
+      _EQ_VCHVCH(ppaW, aDynamicT);
+      bFilterResult = *(--(*ppaW));
+      if (bFilterResult) {
+        break;
+        }
+    }
+    while(iInCount-- > 0) {
+      --(*ppaW);
+    }
+    *((*ppaW)++) = bFilterResult;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DUPS
@@ -670,248 +706,274 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT DAY
 
-#define _DAY_DTE(eErrorCode)                                                  \
-  {                                                                           \
-    xDte1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xDte1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xDte1.m_uDay;                                                \
-    }                                                                         \
-  }
+static inline void _DAY_DTE(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Dte_T xDte1;
 
-#define _DAY_TSP(eErrorCode)                                                  \
-  {                                                                           \
-    xTsp1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xTsp1.m_uDay;                                                \
-    }                                                                         \
+  xDte1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xDte1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    *((*ppaW)++) = xDte1.m_uDay;
+  }
+}
+
+static inline void _DAY_TSP(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tsp_T xTsp1;
+
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    *((*ppaW)++) = xTsp1.m_uDay;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT HOUR
 
-#define _HOUR_TME(eErrorCode)                                                 \
-  {                                                                           \
-    xTme1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTme1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xTme1.m_uHour;                                               \
-    }                                                                         \
-  }
+static inline void _HOUR_TME(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tme_T xTme1;
 
-#define _HOUR_TSP(eErrorCode)                                                 \
-  {                                                                           \
-    xTsp1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xTsp1.m_uHour;                                               \
-    }                                                                         \
+  xTme1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTme1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    *((*ppaW)++) = xTme1.m_uHour;
+  }
+}
+
+static inline void _HOUR_TSP(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tsp_T xTsp1;
+
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    *((*ppaW)++) = xTsp1.m_uHour;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT MINUTE
 
-#define _MINUTE_TME(eErrorCode)                                                 \
-  {                                                                           \
-    xTme1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTme1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xTme1.m_uMinute;                                             \
-    }                                                                         \
-  }
+static inline void _MINUTE_TME(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tme_T xTme1;
 
-#define _MINUTE_TSP(eErrorCode)                                               \
-  {                                                                           \
-    xTsp1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xTsp1.m_uMinute;                                             \
-    }                                                                         \
+  xTme1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTme1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    *((*ppaW)++) = xTme1.m_uMinute;
+  }
+}
+
+static inline void _MINUTE_TSP(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tsp_T xTsp1;
+
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    *((*ppaW)++) = xTsp1.m_uMinute;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT SECOND
 
-#define _SECOND_TME(eErrorCode)                                               \
-  {                                                                           \
-    xTme1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTme1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xTme1.m_uSecond;                                             \
-    }                                                                         \
-  }
+static inline void _SECOND_TME(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tme_T xTme1;
 
-#define _SECOND_TSP(eErrorCode)                                               \
-  {                                                                           \
-    xTsp1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xTsp1.m_uSecond;                                             \
-    }                                                                         \
+  xTme1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTme1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    *((*ppaW)++) = xTme1.m_uSecond;
+  }
+}
+
+static inline void _SECOND_TSP(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tsp_T xTsp1;
+
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    *((*ppaW)++) = xTsp1.m_uSecond;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT MONTH
 
-#define _MONTH_DTE(eErrorCode)                                                \
-  {                                                                           \
-    xDte1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xDte1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xDte1.m_uMonth;                                              \
-    }                                                                         \
-  }
+static inline void _MONTH_DTE(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Dte_T xDte1;
 
-#define _MONTH_TSP(eErrorCode)                                                \
-  {                                                                           \
-    xTsp1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = xTsp1.m_uMonth;                                              \
-    }                                                                         \
+  xDte1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xDte1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    *((*ppaW)++) = xDte1.m_uMonth;
+  }
+}
+
+static inline void _MONTH_TSP(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tsp_T xTsp1;
+
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    *((*ppaW)++) = xTsp1.m_uMonth;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT YEAR
 
-#define _YEAR_DTE(eErrorCode)                                                 \
-  {                                                                           \
-    xDte1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xDte1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = C_YEAR_BASE + xDte1.m_uYearDelta;                            \
-    }                                                                         \
-  }
+static inline void _YEAR_DTE(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Dte_T xDte1;
 
-#define _YEAR_TSP(eErrorCode)                                                 \
-  {                                                                           \
-    xTsp1.m_iAsI8 = *(--paW);                                                 \
-    if (eErrorCode != EC_NONE ||                                              \
-        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
-        *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                         \
-    else {                                                                    \
-      *(paW++) = C_YEAR_BASE + xTsp1.m_uYearDelta;                            \
-    }                                                                         \
+  xDte1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xDte1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    *((*ppaW)++) = C_YEAR_BASE + xDte1.m_uYearDelta;
+  }
+}
+
+static inline void _YEAR_TSP(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Tsp_T xTsp1;
+
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {
+      *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    *((*ppaW)++) = C_YEAR_BASE + xTsp1.m_uYearDelta;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // NULL TESTS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // do we need separate macros for all datatypes??? Not sure
 
-#define _ISNOTNULL(eErrorCode)                                               \
-  {                                                                          \
-  iArg1 = *(--paW);                                                          \
-   if (eErrorCode != EC_NONE)                                                \
-    (*paW++) = C_DATUM_NULL;                                                 \
-  else                                                                       \
-    (*paW++) = (iArg1 != C_DATUM_NULL ? 1 : 0);                              \
+static inline void _ISNOTNULL(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1 = *(--(*ppaW));
+   if (aDynamicT->m_iErrorCode != EC_NONE)
+    (*(*ppaW)++) = C_DATUM_NULL;
+  else
+    (*(*ppaW)++) = (iArg1 != C_DATUM_NULL ? 1 : 0);
 }
 
-#define _ISNULL(eErrorCode)                                                  \
-  iArg1 = *(--paW);                                                          \
-  if (eErrorCode != EC_NONE)                                                 \
-    (*paW++) = C_DATUM_NULL;                                                 \
-  else    {                                                                  \
-   (*paW++) = (iArg1 == C_DATUM_NULL ? 1 : 0);                               \
+static inline void _ISNULL(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE)
+    (*(*ppaW)++) = C_DATUM_NULL;
+  else {
+    (*(*ppaW)++) = (iArg1 == C_DATUM_NULL ? 1 : 0);
+  }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // STRING FUNCTIONS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _LIKE2(eErrorCode)                                                  \
-  {                                                                         \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      *(paW++) = StrLib_iLike2(szArg2, szArg1);                             \
-    }                                                                       \
-  }
+//static inline void _LIKE2(i8** ppaW, struct Dynamic_T* aDynamicT)
+//{
+//  char* szArg1 = (char*)*(--(*ppaW));
+//  char* szArg2 = (char*)*(--(*ppaW));
+//  if (aDynamicT->m_iErrorCode != EC_NONE ||
+//      szArg1  == (char*)C_DATUM_NULL ||
+//      szArg2  == (char*)C_DATUM_NULL) {
+//    *((*ppaW)++) = C_DATUM_NULL;
+//  }
+//  else {
+//    *((*ppaW)++) = StrLib_iLike2(szArg2, szArg1);
+//  }
+//}
+//
+//static inline void _LIKE3(i8** ppaW, struct Dynamic_T* aDynamicT)
+//{
+//  char* szArg1 = (char*)*(--(*ppaW));
+//  char* szArg2 = (char*)*(--(*ppaW));
+//  char* szArg3 = (char*)*(--(*ppaW));
+//  if (aDynamicT->m_iErrorCode != EC_NONE ||
+//      szArg1  == (char*)C_DATUM_NULL ||
+//      szArg2  == (char*)C_DATUM_NULL) {
+//    *((*ppaW)++) = C_DATUM_NULL;
+//  }
+//  else {
+//    *((*ppaW)++) = StrLib_iLike3(szArg3, szArg2, *szArg1);
+//  }
+//}
 
-#define _LIKE3(eErrorCode)                                                  \
-  {                                                                         \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    szArg3 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      *(paW++) = StrLib_iLike3(szArg3, szArg2, *szArg1);                    \
-    }                                                                       \
+static inline void _LIKE2_V2(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  char* szArg1 = (char*)*(--(*ppaW));
+  char* szArg2 = (char*)*(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      szArg1  == (char*)C_DATUM_NULL ||
+      szArg2  == (char*)C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    *((*ppaW)++) = iExtern_StrLibLike2(szArg2, szArg1);
+  }
+}
 
-#define _LIKE2_V2(eErrorCode)                                               \
-  {                                                                         \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      *(paW++) = iExtern_StrLibLike2(szArg2, szArg1);                       \
-    }                                                                       \
+static inline void _LIKE3_V2(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  char* szArg1 = (char*)*(--(*ppaW));
+  char* szArg2 = (char*)*(--(*ppaW));
+  char* szArg3 = (char*)*(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      szArg1  == (char*)C_DATUM_NULL ||
+      szArg2  == (char*)C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
-
-#define _LIKE3_V2(eErrorCode)                                               \
-  {                                                                         \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    szArg3 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      *(paW++) = iExtern_StrLibLike3(szArg3, szArg2, *szArg1);              \
-    }                                                                       \
+  else {
+    *((*ppaW)++) = iExtern_StrLibLike3(szArg3, szArg2, *szArg1);
   }
+}
 
 #define _MATCH_STRSTR(str,substr,len,bMatch)                                \
   {                                                                         \
@@ -957,33 +1019,33 @@
 // iArg1  : length of the regular expression
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _MATCH_LEADING(eErrorCode)                                          \
-  {                                                                         \
-    iArg1  = (i8)*(--paW) - 1;                                              \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      i8 bMatch = 1;                                                        \
-      char* r = szArg1;                                                     \
-      char* s = szArg2;                                                     \
-                                                                            \
-      while (iArg1--)                                                       \
-      {                                                                     \
-        if (*r++ != *s++) {                                                 \
-          bMatch = 0;                                                       \
-          break;                                                            \
-        }                                                                   \
-      }                                                                     \
-      if (bMatch)                                                           \
-        *(paW++) = 1;                                                       \
-      else                                                                  \
-        *(paW++) = 0;                                                       \
-   }                                                                        \
+static inline void _MATCH_LEADING(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1  = (i8)*(--(*ppaW)) - 1;
+  char* szArg1 = (char*)*(--(*ppaW));
+  char* szArg2 = (char*)*(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      szArg1  == (char*)C_DATUM_NULL ||
+      szArg2  == (char*)C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    i8 bMatch = 1;
+    char* r = szArg1;
+    char* s = szArg2;
+
+    while (iArg1--)
+    {
+      if (*r++ != *s++) {
+        bMatch = 0;
+        break;
+      }
+    }
+    if (bMatch)
+      *((*ppaW)++) = 1;
+    else
+      *((*ppaW)++) = 0;
+  }
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _MATCH_MIDDLE
@@ -995,25 +1057,25 @@
 // iArg1  : length of the regular expression between the two %'s
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _MATCH_MIDDLE(eErrorCode)                                           \
-  {                                                                         \
-    iArg1  = (i8)*(--paW);                                                  \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      i8 bMatch = 0;                                                        \
-      i8 iLen = iArg1;                                                      \
-      char* sub = szArg1 + 1;                                               \
-      char* str = szArg2;                                                   \
-      _MATCH_STRSTR(str, sub, iLen, bMatch)                                 \
-      *(paW++) = bMatch;                                                    \
-    }                                                                       \
+static inline void _MATCH_MIDDLE(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1  = (i8)*(--(*ppaW));
+  char* szArg1 = (char*)*(--(*ppaW));
+  char* szArg2 = (char*)*(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      szArg1  == (char*)C_DATUM_NULL ||
+      szArg2  == (char*)C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    i8 bMatch = 0;
+    i8 iLen = iArg1;
+    char* sub = szArg1 + 1;
+    char* str = szArg2;
+    _MATCH_STRSTR(str, sub, iLen, bMatch)
+    *((*ppaW)++) = bMatch;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _MATCH_MIDDLE1
@@ -1026,32 +1088,32 @@
 // iArg2  : length of the regular expression between last two %'s
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _MATCH_MIDDLE1(eErrorCode)                                          \
-  {                                                                         \
-    iArg1  = (i8)*(--paW);                                                  \
-    iArg2  = (i8)*(--paW);                                                  \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      i8 bMatch = 0;                                                        \
-      i8 iLen = iArg2;                                                      \
-      char* sub = szArg1 + 1;                                               \
-      char* str = szArg2;                                                   \
-      _MATCH_STRSTR(str, sub, iLen, bMatch)                                 \
-      if (bMatch) {                                                         \
-        bMatch = 0;                                                         \
-        sub = szArg1 + iLen + 2;                                            \
-        iLen = iArg1;                                                       \
-        _MATCH_STRSTR(str, sub, iLen, bMatch)                               \
-      }                                                                     \
-      *(paW++) = bMatch;                                                    \
-    }                                                                       \
+static inline void _MATCH_MIDDLE1(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1  = (i8)*(--(*ppaW));
+  i8 iArg2  = (i8)*(--(*ppaW));
+  char* szArg1 = (char*)*(--(*ppaW));
+  char* szArg2 = (char*)*(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      szArg1  == (char*)C_DATUM_NULL ||
+      szArg2  == (char*)C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    i8 bMatch = 0;
+    i8 iLen = iArg2;
+    char* sub = szArg1 + 1;
+    char* str = szArg2;
+    _MATCH_STRSTR(str, sub, iLen, bMatch)
+    if (bMatch) {
+      bMatch = 0;
+      sub = szArg1 + iLen + 2;
+      iLen = iArg1;
+      _MATCH_STRSTR(str, sub, iLen, bMatch)
+    }
+    *((*ppaW)++) = bMatch;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _MATCH_TRAILING
@@ -1063,137 +1125,138 @@
 // iArg1  : length of the regular expression
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _MATCH_TRAILING(eErrorCode)                                         \
-  {                                                                         \
-    iArg1  = (i8)*(--paW);                                                  \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      i8 bMatch = 1;                                                        \
-      char* r = szArg1 + iArg1 - 1;                                         \
-      char* s = szArg2;                                                     \
-                                                                            \
-      while (*s)                                                            \
-        s++;                                                                \
-      s--;                                                                  \
-                                                                            \
-      while (*r != '%')                                                     \
-      {                                                                     \
-        if (*r-- != *s--) {                                                 \
-          bMatch = 0;                                                       \
-          break;                                                            \
-        }                                                                   \
-      }                                                                     \
-      if (bMatch)                                                           \
-        *(paW++) = 1;                                                       \
-      else                                                                  \
-        *(paW++) = 0;                                                       \
-    }                                                                       \
+static inline void _MATCH_TRAILING(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1  = (i8)*(--(*ppaW));
+  char* szArg1 = (char*)*(--(*ppaW));
+  char* szArg2 = (char*)*(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      szArg1  == (char*)C_DATUM_NULL ||
+      szArg2  == (char*)C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
   }
+  else {
+    i8 bMatch = 1;
+    char* r = szArg1 + iArg1 - 1;
+    char* s = szArg2;
 
-#define _STR_SUBSTRING2(szDstArea, eErrorCode)                              \
-  {                                                                         \
-    i8 iStart = *(--paW);                                                   \
-    szArg1 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        iStart  == C_DATUM_NULL ||                                          \
-        szArg1  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      char* szDstStz;                                                       \
-      if (iStart == 0) {                                                    \
-        iStart = 1;                                                         \
-      }                                                                     \
-      nSrcSize = strlen(szArg1);                                            \
-      nDstSize = 0;                                                         \
-      szDstStz = szDstArea;                                                 \
-      if (nSrcSize >= iStart) {                                             \
-        szSrcStz = (char*)(szArg1 + iStart - 1);                            \
-        while (*szSrcStz) {                                                 \
-          *szDstStz++ = *szSrcStz++;                                        \
-          nDstSize++;                                                       \
-        }                                                                   \
-      }                                                                     \
-      *szDstStz = '\0';                                                     \
-      *(paW++) = (i8)szDstArea;                                             \
-      szDstArea += nDstSize + 1;                                            \
-    }                                                                       \
-  }
+    while (*s)
+      s++;
+    s--;
 
-#define _STR_SUBSTRING3(szDstArea, eErrorCode)                              \
-  {                                                                         \
-    i8 iLength = *(--paW);                                                  \
-    i8 iStart = *(--paW);                                                   \
-    szArg1 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        iLength == C_DATUM_NULL ||                                          \
-        iStart  == C_DATUM_NULL ||                                          \
-        szArg1  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      char* szDstStz;                                                       \
-      if (iStart == 0) {                                                    \
-        iStart = 1;                                                         \
-        iLength--;                                                          \
-      }                                                                     \
-      szSrcStz = (char*)(szArg1 + iStart - 1);                              \
-      nSrcSize = strlen(szArg1);                                            \
-      nDstSize = 0;                                                         \
-      szDstStz = szDstArea;                                                 \
-      if (nSrcSize >= iStart) {                                             \
-         while (*szSrcStz && iLength-- && nSrcSize > nDstSize) {            \
-           *szDstStz++ = *szSrcStz++;                                       \
-           nDstSize++;                                                      \
-        }                                                                   \
-      }                                                                     \
-      *szDstStz = '\0';                                                     \
-      *(paW++) = (i8)szDstArea;                                             \
-      szDstArea += (i8)(nDstSize) + 1;                                      \
-    }                                                                       \
+    while (*r != '%')
+    {
+      if (*r-- != *s--) {
+        bMatch = 0;
+        break;
+      }
+    }
+    if (bMatch)
+      *((*ppaW)++) = 1;
+    else
+      *((*ppaW)++) = 0;
   }
+}
+
+static inline void _STR_SUBSTRING2(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea)
+{
+  i8 iStart = *(--(*ppaW));
+  char* szArg1 = (char*)*(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iStart  == C_DATUM_NULL ||
+      szArg1  == (char*)C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    char* szDstStz;
+    if (iStart == 0) {
+      iStart = 1;
+    }
+    i8 nSrcSize = strlen(szArg1);
+    i8 nDstSize = 0;
+    szDstStz = *ppszDstArea;
+    if (nSrcSize >= iStart) {
+      char* szSrcStz = (char*)(szArg1 + iStart - 1);
+      while (*szSrcStz) {
+        *szDstStz++ = *szSrcStz++;
+        nDstSize++;
+      }
+    }
+    *szDstStz = '\0';
+    *((*ppaW)++) = (i8)*ppszDstArea;
+    (*ppszDstArea) += nDstSize + 1;
+  }
+}
+
+static inline void _STR_SUBSTRING3(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea)
+{
+  i8 iLength = *(--(*ppaW));
+  i8 iStart = *(--(*ppaW));
+  char* szArg1 = (char*)*(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iLength == C_DATUM_NULL ||
+      iStart  == C_DATUM_NULL ||
+      szArg1  == (char*)C_DATUM_NULL) {
+    *((*ppaW)++) = C_DATUM_NULL;
+  }
+  else {
+    char* szDstStz;
+    if (iStart == 0) {
+      iStart = 1;
+      iLength--;
+    }
+    char* szSrcStz = (char*)(szArg1 + iStart - 1);
+    i8 nSrcSize = strlen(szArg1);
+    i8 nDstSize = 0;
+    szDstStz = *ppszDstArea;
+    if (nSrcSize >= iStart) {
+       while (*szSrcStz && iLength-- && nSrcSize > nDstSize) {
+         *szDstStz++ = *szSrcStz++;
+         nDstSize++;
+      }
+    }
+    *szDstStz = '\0';
+    *((*ppaW)++) = (i8)*ppszDstArea;
+    (*ppszDstArea) += (i8)(nDstSize) + 1;
+  }
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  NOT SUPPORTED
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _OPR_NOTNOT(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    eErrorCode = EC_NOT_IMPLEMENTED;                                       \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _OPR_NOTNOT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
-#define _OPR_NOT(eErrorCode)                                               \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    eErrorCode = EC_NOT_IMPLEMENTED;                                       \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _OPR_NOT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  INVALID TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _OPR_INVINV(eErrorCode)                                            \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    iArg1 = *(--paW);                                                      \
-    eErrorCode = EC_INVALID_TYPES;                                         \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _OPR_INVINV(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  --(*ppaW);
+  aDynamicT->m_iErrorCode = EC_INVALID_TYPES;
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
-#define _OPR_INV(eErrorCode)                                               \
-  {                                                                        \
-    iArg2 = *(--paW);                                                      \
-    eErrorCode = EC_INVALID_TYPES;                                         \
-    *paW++ = C_DATUM_NULL;                                                 \
-  }
+static inline void _OPR_INV(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  --(*ppaW);
+  aDynamicT->m_iErrorCode = EC_INVALID_TYPES;
+  *(*ppaW)++ = C_DATUM_NULL;
+}
 
 /*============================================================================*/
 /* end                                                                        */

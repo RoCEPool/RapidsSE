@@ -1917,7 +1917,7 @@ void OpSketch::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
       RASSERT(0);
   }
 
-  sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+  sOperation.vConcat("(&paW, aDynamicT)"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push new infix string on the ExprStack
@@ -2021,7 +2021,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   if ( ! bConstaint && pColumn->bIsNullable() ) {
     sPush.vSprint("_PSH_COL(p%s->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], sColumn.azChar());
     m_pNullStack->vPushStz(sPush);
-    sPush.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
+    sPush.vSprint("_ISNULL(&paW, aDynamicT)"_Stz);
     m_pNullStack->vPushStz(sPush);
     m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
   }
@@ -2070,7 +2070,7 @@ void OpSketch::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
   else
     RASSERT(0);
 
-  sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+  sOperation.vConcat("(&paW, aDynamicT)"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push new expr string on the ExprStack
@@ -2331,7 +2331,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       eExpr2 = (eDM)pTypeStack->iPop();
       eExpr3 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_Bet[eExpr1][eExpr2]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2347,7 +2347,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_Inx[eExpr1][eExpr2]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2357,7 +2357,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_LK2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_LIKE2_V2(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_LIKE2_V2(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2368,7 +2368,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       eExpr3 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_LIKE3_V2(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_LIKE3_V2(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2379,7 +2379,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       eExpr3 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_MATCH_LEADING(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_MATCH_LEADING(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2391,7 +2391,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       eExpr3 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_MATCH_MIDDLE(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_MATCH_MIDDLE(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2401,7 +2401,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_MM1:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_MATCH_MIDDLE1(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_MATCH_MIDDLE1(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2422,7 +2422,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       eExpr3 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_MATCH_TRAILING(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_MATCH_TRAILING(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2432,7 +2432,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_SS2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_STR_SUBSTRING2(szStrArea, aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_STR_SUBSTRING2(&paW, aDynamicT, &szStrArea)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_VCH);
       break;
@@ -2443,7 +2443,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       eExpr3 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_STR_SUBSTRING3(szStrArea, aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_STR_SUBSTRING3(&paW, aDynamicT, &szStrArea)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_VCH);
       break;
@@ -2453,7 +2453,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_XDY:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractDay[eExpr1]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_INT);
       break;
@@ -2463,7 +2463,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_XHR:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractHour[eExpr1]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_INT);
       break;
@@ -2473,7 +2473,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_XMN:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractMinute[eExpr1]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_INT);
       break;
@@ -2483,7 +2483,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_XMT:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractMonth[eExpr1]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_INT);
       break;
@@ -2493,7 +2493,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_XSC:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractSecond[eExpr1]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_INT);
       break;
@@ -2503,7 +2503,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_XYR:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractYear[eExpr1]];
-      sOperation.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("(&paW, aDynamicT)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_INT);
       break;
