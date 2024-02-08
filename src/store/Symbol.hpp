@@ -162,7 +162,7 @@ namespace STORE
     void vInit_Tbl_Syn(char cTblSyn);
 
     bool bIs_Exp_Col(void);         // $n
-    bool bIs_Nmd_Col(void);         // bIsName() but not bIs_Agg_Fn() etc
+//    bool bIs_Nmd_Col(void);         // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Tbl_Col(void);         // $t.c
 
     bool bIs_Col(void);          // SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL

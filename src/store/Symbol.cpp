@@ -1741,22 +1741,6 @@ bool Symbol::bIs_Lit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a column name?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Nmd_Col(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_NMD_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Nmd_Col(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Col(void)
@@ -2957,7 +2941,7 @@ void Symbol::vFacet_Nmd_Col(i8 iColNo)
 
   vFacetSprint(SF_NMD_COL, "COL%lld"_Stz, iColNo);
 
-  RASSERT(bIs_Nmd_Col());
+  RASSERT(bHasFacet(SF_NMD_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2971,7 +2955,7 @@ void Symbol::vFacet_Nmd_Col(Stz* szColNm)
 
   vFacetSprint(SF_NMD_COL, "%s"_Stz, szColNm);
 
-  RASSERT(bIs_Nmd_Col());
+  RASSERT(bHasFacet(SF_NMD_COL));
   RASSERT(!bHasFacet(SF_ITM_COL));
 }
 
