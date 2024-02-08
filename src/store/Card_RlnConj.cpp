@@ -242,10 +242,10 @@ bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
-  if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
+  if (pTerm_0->pSymbol()->bHasFacet(SF_TBL_COL)) {
     // + term_0 is $c.n
 
-    if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
+    if (pTerm_1->pSymbol()->bHasFacet(SF_TBL_COL)) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -266,7 +266,7 @@ bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
+  if (pTerm_1->pSymbol()->bHasFacet(SF_TBL_COL)) {
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
