@@ -1660,12 +1660,9 @@ bool Symbol::bHasFacets(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (* xaFacet[0].m_sChrSeq.azChar()) {
-    RASSERT(m_nFacets);
+  if (m_nFacets)
     return true;
-  }
 
-  RASSERT(! m_nFacets);
   return false;
 }
 
