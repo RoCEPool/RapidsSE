@@ -270,8 +270,8 @@ bool Card_CONJ::bIsCorrConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsSqyPrm() && (p_term_1->bIs_expCol() || p_term_1->bIsTblCol())) ||
-      (p_term_1->bIsSqyPrm() && (p_term_0->bIs_expCol() || p_term_0->bIsTblCol())))
+  if ((p_term_0->bIsSqyPrm() && (p_term_1->pSymbol()->bIs_Exp_Col() || p_term_1->bIsTblCol())) ||
+      (p_term_1->bIsSqyPrm() && (p_term_0->pSymbol()->bIs_Exp_Col() || p_term_0->bIsTblCol())))
     return true;
 
   return false;
@@ -294,8 +294,8 @@ bool Card_CONJ::bIsJoinConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIs_expCol() || p_term_0->bIsTblCol()) &&
-      (p_term_1->bIs_expCol() || p_term_1->bIsTblCol()))
+  if ((p_term_0->pSymbol()->bIs_Exp_Col() || p_term_0->bIsTblCol()) &&
+      (p_term_1->pSymbol()->bIs_Exp_Col() || p_term_1->bIsTblCol()))
     return true;
 
   return false;

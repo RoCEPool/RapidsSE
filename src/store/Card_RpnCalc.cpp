@@ -227,7 +227,7 @@ Symbol* Card_RpnCalc::pFirstStmCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIs_expCol())
+    if (xKid.p_term()->pSymbol()->bIs_Exp_Col())
       return xKid.p_term()->pSymbol();
 
   return nullptr;

@@ -141,7 +141,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->G.p_term->pSymbol())) {
 
-    if (pCI->G.p_term->bIs_expCol()) {
+    if (pCI->G.p_term->pSymbol()->bIs_Exp_Col()) {
       Card_Expr* p_expr_expCol = Card_Expr::pCast_expr_term_expCol(pCI->G.p_term);
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_expCol);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();

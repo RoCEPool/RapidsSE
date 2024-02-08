@@ -456,18 +456,6 @@ bool Card_Term::bIsSqyPrm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a stream-value ordinal? $n                                    */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIs_expCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = pSymbol()->bIs_Exp_Col();
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this term a column-value ordinal? $n.c                                  */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsTblCol(void)
@@ -520,7 +508,7 @@ void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (!bIs_expCol())
+  if (! pSymbol()->bIs_Exp_Col())
     return;
 
   Symbol* pSym = pSymbol();
