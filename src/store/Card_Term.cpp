@@ -524,6 +524,10 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (pSymbol_this->bHasFacet(SF_EXP_COL)) {
+    return;
+  }
+
   if (! pSymbol_this->bIs_Tbl_Col())
     return;
 
