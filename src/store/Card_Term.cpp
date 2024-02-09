@@ -524,18 +524,24 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pSymbol_this->bHasFacet(SF_EXP_COL)) {
+  if (pSymbol_this->bHasFacet(SF_EXP_COL))
+    return;
+
+  if (! pSymbol_this->bHasFacet(SF_TBL_COL))
+    return;
+
+  if ((CK_o_GBYAGG != pCI->G.e_MainCard) ||
+          (CK_o_GBYAGG == pCI->G.e_MainCard && (1 == pSymbol_this->nFacets() || pSymbol_this->bHasFacet(SF_NMD_COL)))) {
+
+  }
+  else {
     return;
   }
 
-  if (! pSymbol_this->bIs_Tbl_Col())
-    return;
 
   Symbol xTblCol_sym;
   xTblCol_sym.vFacet(SF_TBL_COL,pSymbol_this->szFacet(SF_TBL_COL));
 
-
-  //i8 nCols_a = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is scalar expression of this symbol in INJECTED ?
@@ -614,7 +620,6 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
       return;
     }
   }
-
 
   // not converted
 }

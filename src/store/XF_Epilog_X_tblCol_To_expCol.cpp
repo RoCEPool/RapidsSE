@@ -76,7 +76,7 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 //        }
 //      }
 //    }
-    vTo_stmCol();
+    vTo_expCol();
 
 //    m_pCI->vPrintBoard(__func__,__LINE__);
     vDebugPoint();
@@ -93,7 +93,7 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 /*----------------------------------------------------------------------------*/
 /* tblCol to stmCol                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_tblCol_To_expCol::vTo_stmCol(void)
+void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 

@@ -26,7 +26,7 @@ namespace STORE
 
   private:
 
-    void vTo_stmCol(void);
+    void vTo_expCol(void);
 
     Footer* aFooter(void);
   };
