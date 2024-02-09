@@ -130,7 +130,7 @@ namespace STORE
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vDump(void);
+    void vDump(Stz* szTitle=""_Stz);
 
     eRO  eEvalRlnOp(void);
     eQO  eEvalSqyOp(void);

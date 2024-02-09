@@ -1261,14 +1261,15 @@ void Symbol::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vDump(void)
+void Symbol::vDump(Stz* szTitle)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   s4K sProperties;
   Y_vTo_String(sProperties);
 
-  vTrace("Symbol : %s %p\n"_Stz
+  vTrace("Symbol %s: %s %p\n"_Stz
+         ,szTitle
          ,szWhatIs()
          ,this
          );
