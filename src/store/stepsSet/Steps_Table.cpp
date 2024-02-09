@@ -70,6 +70,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
   vAddStep("Table[].tablePtnGet"_Stz,      &Step::vTableTablePtnGet);
   vAddStep("Table[].tablePtnZero"_Stz,     &Step::vTableTablePtnZero);
+  vAddStep("Table[].toLglPtn"_Stz,          &Step::vTableToLglPtn);
   vAddStep("Table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("Table[].visualize"_Stz,        &Step::vTableVisualize);
 }
@@ -424,6 +425,23 @@ void Step::vTableTablePtnZero(void)
   
   m_pDataStack->vPushPtr(pTablePtn);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].toLglPtn -- get the lglptn from table ptn number                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTableToLglPtn(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+
+  LglPtn tLglPtn = pTable->tTablePtnToLglPtn(i_TablePtn);
+
+  m_pDataStack->vPushInt(tLglPtn.iAsI8());
+
   EXIT();
 }
 
