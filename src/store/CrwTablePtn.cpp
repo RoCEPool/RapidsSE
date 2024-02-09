@@ -42,6 +42,7 @@ CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn)
   m_iSynthKey  = 0;
 
   m_pPdsOfBufferIds = new Pds_t<PdsBufferIdItem>(nullptr);
+  m_oRootPdsBufferId = m_pPdsOfBufferIds->oGetBufferId();
   //m_pIndexTreeVec  = new IndexTreeVec;
 
   _checkInitialised_(CN_CRWTABLEPTN);
@@ -281,18 +282,7 @@ BufferId CrwTablePtn::oRootCrwBufferId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  // Get the root block from the PDS
-  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pFirstBlock();
-  BufferId oRootBufferId;
-
-  // Extract the buffer Id, set to 0 if it doesn't exist
-  oRootBufferId.m_iAsI8 = 0;
-  if(pSLBlock != nullptr) {
-    PdsBufferIdItem* pPdsItem = (PdsBufferIdItem*)pSLBlock->aItem();
-    oRootBufferId = pPdsItem->oBufferId;
-  }
-
-  return oRootBufferId;
+  return m_oRootPdsBufferId;
 }
 
 /*----------------------------------------------------------------------------*/

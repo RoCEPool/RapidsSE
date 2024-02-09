@@ -18,6 +18,7 @@ namespace STORE
     i8     m_iSynthKey;     // Synthetic key for the Pds
 
     Pds_t<PdsBufferIdItem>* m_pPdsOfBufferIds;
+    BufferId m_oRootPdsBufferId;
 
     // Note that the IndexTreeVec gets moved upto TablePtn
     //IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
