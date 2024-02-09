@@ -55,7 +55,7 @@ Stz* SP_Bcd::sz(i8 iBcd, i8 iScale)
   bool bNegative = false;
 
   // Handle numbers with large scales.
-  i8 nDigits = IntLib::iLog10(iBcd) + 1;
+  i8 nDigits = IntLib::iPrecision(iBcd);
 
   if (iScale > nDigits) {
     StrLib::vSprint(m_caResult,

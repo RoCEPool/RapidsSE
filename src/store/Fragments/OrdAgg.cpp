@@ -20,6 +20,7 @@ i8 iOrdAggBegin(Dynamic_T* aDynamicT) {
   RowInfo __ROW_INFO_TO__;
 
   char* szStrArea;
+  i8 nAreaRemaining;
 	bool bKeyMatch;
 
   i8 __EXPRSTACK__;
@@ -44,6 +45,7 @@ i8 iOrdAggBegin(Dynamic_T* aDynamicT) {
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
   //__ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
   szStrArea = __ROW_INFO_TO__.m_acStrArea;
+  nAreaRemaining = __ROW_INFO_TO__.m_nStringAreaSize;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Process row ?

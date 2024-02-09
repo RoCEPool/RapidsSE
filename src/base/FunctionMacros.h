@@ -77,7 +77,7 @@
 
 // strncpy(szDstArea, szArg1, nSrcSize);
 
-#define _ALLOC_VCH(szDstArea)                   \
+#define _ALLOC_VCH(szDstArea, nAreaRemaining)   \
 {                                               \
   szArg1 = (char*)*(--paW);                     \
   if ((i8)szArg1 == C_DATUM_NULL) {             \
@@ -96,6 +96,7 @@
                                                 \
     *paW++ = (i8)szDstArea;                     \
     szDstArea += nSrcSize + 1;                  \
+    nAreaRemaining -= nSrcSize + 1;             \
   }                                             \
 }
 
@@ -1158,7 +1159,7 @@ static inline void _MATCH_TRAILING(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 }
 
-static inline void _STR_SUBSTRING2(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea)
+static inline void _STR_SUBSTRING2(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
 {
   i8 iStart = *(--(*ppaW));
   char* szArg1 = (char*)*(--(*ppaW));
@@ -1185,10 +1186,11 @@ static inline void _STR_SUBSTRING2(i8** ppaW, struct Dynamic_T* aDynamicT, char*
     *szDstStz = '\0';
     *((*ppaW)++) = (i8)*ppszDstArea;
     (*ppszDstArea) += nDstSize + 1;
+    (*piAreaRemaining) -= (i8)(nDstSize) + 1;
   }
 }
 
-static inline void _STR_SUBSTRING3(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea)
+static inline void _STR_SUBSTRING3(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
 {
   i8 iLength = *(--(*ppaW));
   i8 iStart = *(--(*ppaW));
@@ -1219,6 +1221,7 @@ static inline void _STR_SUBSTRING3(i8** ppaW, struct Dynamic_T* aDynamicT, char*
     *szDstStz = '\0';
     *((*ppaW)++) = (i8)*ppszDstArea;
     (*ppszDstArea) += (i8)(nDstSize) + 1;
+    (*piAreaRemaining) -= (i8)(nDstSize) + 1;
   }
 }
 

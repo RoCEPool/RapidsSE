@@ -27,6 +27,7 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
   RowInfo __ROW_INFO_FROM__;
 
   char* szStrArea;
+  i8 nAreaRemaining;
 
   __L_LABEL_LOOP__:
 
@@ -36,6 +37,7 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
   szStrArea = __ROW_INFO_FROM__.m_acStrArea;
+  nAreaRemaining = __ROW_INFO_FROM__.m_nStringAreaSize;
 
   // marker-end
 

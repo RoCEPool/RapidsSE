@@ -29,6 +29,7 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
   RowInfo __ROW_INFO_TO__;
 
   char* szStrArea;
+  i8 nAreaRemaining;
 
   __L_LABEL_LOOP__:
 
@@ -50,6 +51,7 @@ __L_LABEL__:
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
   __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
   szStrArea = __ROW_INFO_TO__.m_acStrArea;
+  nAreaRemaining = __ROW_INFO_TO__.m_nStringAreaSize;
 
   // marker-end
 
@@ -66,6 +68,7 @@ i8 iProjectEnd(Dynamic_T* aDynamicT) {
   struct __STRUCT_TO__*   p__STRUCT_TO__;
 
   char* szStrArea;
+  i8 nAreaRemaining;
 
   // marker-start
 
@@ -75,6 +78,7 @@ i8 iProjectEnd(Dynamic_T* aDynamicT) {
 
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoPT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoPT.m_acStrArea;
+  nAreaRemaining = aDynamicT->m_xRowInfoPT.m_nStringAreaSize;
 
   // marker-end
 

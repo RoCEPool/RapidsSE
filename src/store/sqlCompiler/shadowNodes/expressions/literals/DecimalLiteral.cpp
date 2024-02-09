@@ -152,7 +152,7 @@ i8 DecimalLiteral::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
   }
 
   // The precision is the number of digits in the mantissa.
-  i8 iPrecision = IntLib::iLog10(IntLib::iAbs(xBcd.T.m_iMantissa)) + 1;
+  i8 iPrecision = IntLib::iPrecision(IntLib::iAbs(xBcd.T.m_iMantissa));
   return iPrecision;
 }
 

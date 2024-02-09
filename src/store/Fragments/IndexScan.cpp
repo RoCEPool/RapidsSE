@@ -31,6 +31,7 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 	RowInfo __ROW_INFO_TO__;
 
 	char* szStrArea;
+  i8 nAreaRemaining;
 
   __L_LABEL_LOOP__:
 
@@ -42,6 +43,7 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
 	__ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
 	szStrArea = __ROW_INFO_TO__.m_acStrArea;
+  nAreaRemaining = __ROW_INFO_TO__.m_nStringAreaSize;
 
   paW = &aDynamicT->m_aW[0];
 

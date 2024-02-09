@@ -15,6 +15,7 @@
 
   m8 *amCellAddress __attribute__ ((unused));
 
+  i8 nAreaRemaining __attribute__ ((unused));
   i8 bFilterResult  __attribute__ ((unused));
   i8 bKeyMatch      __attribute__ ((unused));
   i8 bNullResult    __attribute__ ((unused));

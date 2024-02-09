@@ -301,6 +301,7 @@ static const i8 _C_SECS_PER_MIN = 60;
 static const i8 _C_SECS_PER_HR  = 3600;
 static const i8 _C_SECS_PER_DAY = 3600*24;
 static const i8 _C_HOURS_PER_DAY = 24;
+static const i8 _C_MONTHS_PER_YEAR = 12;
 
 static const i8 _C_TSP_LOCAL = 1;
 static const i8 _C_TSP_UTC   = 0;

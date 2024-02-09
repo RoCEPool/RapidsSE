@@ -23,6 +23,8 @@
 void vFilterBegin(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
+  i8 nAreaRemaining;
+
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
 	RowInfo __ROW_INFO_FROM__;
 
@@ -33,6 +35,7 @@ __L_LABEL__:
 
 	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
+  nAreaRemaining = __ROW_INFO_FROM__.m_nStringAreaSize;
 
   if ( ! aDynamicT->m_bProcessRow ) {
     aDynamicT->m_bProcessRow = true;

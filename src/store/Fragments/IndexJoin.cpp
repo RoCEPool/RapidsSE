@@ -394,6 +394,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
   void* aHeadLineSav;
   bool bFilterResult;
 	char* szStrArea;
+  i8 nAreaRemaining;
 
   IndexInfo __INDEX_INFO__;
   RowInfo __ROW_INFO_TO__;
@@ -416,6 +417,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // join constraint
 	szStrArea = __ROW_INFO_TO__.m_acStrArea;
+  nAreaRemaining = __ROW_INFO_TO__.m_nStringAreaSize;
 
   __CONSTRAINTSTACK__;
 

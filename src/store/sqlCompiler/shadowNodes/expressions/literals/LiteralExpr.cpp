@@ -670,7 +670,7 @@ QueryNode* LiteralExpr::pDecimalToFloat(QueryNode* pExpr, PlanNode* pRootNode)
 
   // Check to see if the decimal is bigger than what we can fit into a float.
   // This covers both positive and negative values.
-  iMagnitude = IntLib::iLog10(IntLib::iAbs(xBcd.T.m_iMantissa)) - xBcd.T.m_uScale;
+  iMagnitude = IntLib::iPrecision(xBcd.T.m_iMantissa) - xBcd.T.m_uScale;
   iMaxMagnitude = (i8) FltLib::dLog10(C_D8_MAX);
 
   if (iMagnitude > iMaxMagnitude) {
@@ -697,8 +697,8 @@ QueryNode* LiteralExpr::pDecimalToInteger(QueryNode* pExpr, PlanNode* pRootNode)
 
   // Check to see if the decimal is bigger than what we can fit into an integer.
   // This covers both positive and negative values.
-  iMagnitude = IntLib::iLog10(IntLib::iAbs(xBcd.T.m_iMantissa)) - xBcd.T.m_uScale;
-  iMaxMagnitude = (i8) IntLib::iLog10(C_I8_MAX);
+  iMagnitude = IntLib::iPrecision(xBcd.T.m_iMantissa) - xBcd.T.m_uScale;
+  iMaxMagnitude = IntLib::iPrecision(C_I8_MAX);
 
   if (iMagnitude > iMaxMagnitude) {
     SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, "decimal value exceeds integer value limits"_Stz);

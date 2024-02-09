@@ -84,6 +84,7 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
   RowInfo __ROW_INFO_TO__;
 
   char* szStrArea;
+  i8 nAreaRemaining;
 
   __L_LABEL_OUTER_LOOP__:
 
@@ -101,6 +102,7 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
   __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
   szStrArea = __ROW_INFO_TO__.m_acStrArea;
+  nAreaRemaining = __ROW_INFO_TO__.m_nStringAreaSize;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Process row ?
@@ -332,6 +334,7 @@ void vCloseBraces(Dynamic_T* aDynamicT) {
 i8 iSortBegin(Dynamic_T* aDynamicT) {
 
 	char* szStrArea;
+  i8 nAreaRemaining;
 	struct __STRUCT_FROM__* p__STRUCT_FROM__;
 	RowInfo __ROW_INFO_FROM__;
 
@@ -340,6 +343,7 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
 
 	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
+  nAreaRemaining = __ROW_INFO_FROM__.m_nStringAreaSize;
 
   // marker-end
 
@@ -467,6 +471,7 @@ void vPotTubRowPix(Dynamic_T* aDynamicT) {
 i8 iPotTubContinue(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
+  i8 nAreaRemaining;
   ColumnInfo xColumnInfo;
 
   i8 __COLUMNS_OUT__;
@@ -509,6 +514,7 @@ i8 iPotTubContinue(Dynamic_T* aDynamicT) {
 i8 iPotTubContinue_pds(Dynamic_T* aDynamicT) {
 
 	char* szStrArea;
+  i8 nAreaRemaining;
 	ColumnInfo xColumnInfo;
 
 	i8 __COLUMNS_OUT__;
@@ -554,6 +560,7 @@ i8 iEosPotTubBegin(Dynamic_T* aDynamicT) {
   };
 
   char* szStrArea;
+  i8 nAreaRemaining;
 
   __L_LABEL_LOOP__:
 
@@ -564,6 +571,8 @@ i8 iEosPotTubBegin(Dynamic_T* aDynamicT) {
 
   p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoAT.m_acStrArea;
+  nAreaRemaining = aDynamicT->m_xRowInfoAT.m_nStringAreaSize;
+
   if ( aDynamicT->m_xRowInfoAT.m_bInitialize ) {
     // marker-end
   }

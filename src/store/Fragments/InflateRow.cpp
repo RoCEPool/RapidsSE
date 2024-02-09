@@ -125,12 +125,14 @@ void vInflatePdsRowCol(Dynamic_T* aDynamicT) {
 void vInflateRowReturn(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
+  i8 nAreaRemaining;
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   // marker-start
 
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
+  nAreaRemaining = aDynamicT->m_xRowInfoIT.m_nStringAreaSize;
 
   // marker-end
 
