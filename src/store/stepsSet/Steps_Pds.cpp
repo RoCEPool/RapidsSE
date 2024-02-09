@@ -534,10 +534,7 @@ void Step::vPdsAddRowCount(void)
   ENTRY();
 
   // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  LglPtn tLglPtn = m_pOp->tLglPtn();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
+  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
   pPdsRowBuffer->vBufferType(BT_COUNT);
@@ -550,7 +547,7 @@ void Step::vPdsAddRowCount(void)
   i8 nRows = 0;
   i8 jSumRowBytes = 0;
 
-  pTable->vAnalyze(i_TablePtn, nBuffers, nRows, jSumRowBytes);
+  pTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
 
   Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
                                     nRows,
