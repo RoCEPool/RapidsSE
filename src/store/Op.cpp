@@ -1606,6 +1606,8 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
 //          return nullptr;
 //        }
         // Operand is present in memory, so proceed as normal
+      } else {
+        ASSERT( ! DataBuffer::bIsDataBuffer(pPeekOperand->eGetClassNo()));
       }
 
       // Assign pOperand the peeked operand. It may or may not have been converted from a BufferId

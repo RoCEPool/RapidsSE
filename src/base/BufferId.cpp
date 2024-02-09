@@ -44,7 +44,7 @@ void* BufferId::aAddressFromId(BufferId oBufferId)
   if(oBufferId.m_iAsI8 == 0)
     return nullptr;
 
-  RASSERT(oBufferId.m_bIdFlag == 1);
+  ASSERT(oBufferId.m_bIdFlag == 1);
 
   return AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress);
 #endif

@@ -3767,19 +3767,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
       // permament crw buffers not to be deleted
       if (pCrwBuffer->bIsPermanent()) {
-        // ensure the output queue flag is set to false
-
-        // if the output queue flag is false, then this crwbuffer
-        // is not part of m_pOutputQueue in Output.cpp
-        // someone is trying to delete it, but since it is permanent
-        // we only need to drop the hashmapentry lock
-        if(! pCrwBuffer->bOutputQueued())
-          AM::pHashMap()->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
-
-        // if the output queue flag is true, then this crwbuffer
-        // should not have any locks on it
-
-        pCrwBuffer->vOutputQueued(false);
+        AM::pHashMap()->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
         ASSERT( ! AM::pHashMap()->bIsLocked(pCrwBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
@@ -3792,19 +3780,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
 
       if (pCsvBuffer->bIsPermanent()) {
-        // ensure the output queue flag is set to false
-
-        // if the output queue flag is false, then this csvbuffer
-        // is not part of m_pOutputQueue in Output.cpp
-        // someone is trying to delete it, but since it is permanent
-        // we only need to drop the hashmapentry lock
-        if(! pCsvBuffer->bOutputQueued())
-          AM::pHashMap()->vDropKeyLock(pCsvBuffer->oGetBufferId().m_pvAsAddress);
-
-        // if the output queue flag is true, then this csvbuffer
-        // should not have any locks on it
-
-        pCsvBuffer->vOutputQueued(false);
+        AM::pHashMap()->vDropKeyLock(pCsvBuffer->oGetBufferId().m_pvAsAddress);
         ASSERT( ! AM::pHashMap()->bIsLocked(pCsvBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
@@ -3849,19 +3825,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       Pds *pPdsRowBuffer = _pPds(pOperand);
       // permanent row buffers not to be deleted
       if (pPdsRowBuffer->bIsPermanent()) {
-        // ensure the output queue flag is set to false
-
-        // if the output queue flag is false, then this rowbuffer
-        // is not part of m_pOutputQueue in Output.cpp
-        // someone is trying to delete it, but since it is permanent
-        // we only need to drop the hashmapentry lock
-        if (!pPdsRowBuffer->bOutputQueued())
-          AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
-
-        // if the output queue flag is true, then this rowbuffer
-        // should not have any locks on it
-
-        pPdsRowBuffer->vOutputQueued(false);
+        AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
         ASSERT(!AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }

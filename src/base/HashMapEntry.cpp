@@ -48,12 +48,14 @@ HashMapEntry::HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
 
+  m_ixAtomicLock.vCheckInit();
+  vGrabLock();
   m_eBufferIdType = eBufferIdType;
   m_pKeyObject = pKey;
   m_pValObject = pValue;
   m_pNext = nullptr;
 
-  m_ixInUse.vCheckInit();
+
 
   _checkInitialised_(CN_HASHMAPENTRY);
 
@@ -66,15 +68,40 @@ HashMapEntry::HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType)
 HashMapEntry::~HashMapEntry(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
+  vDropLock();
+  ASSERT((*m_ixAtomicLock) == 0);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-bool HashMapEntry::bInUse(void)
+
+/*----------------------------------------------------------------------------*/
+/* Decrement atomic lock                                                      */
+/*----------------------------------------------------------------------------*/
+void HashMapEntry::vDropLock(void)
 {
-  return false;
+  ASSERT((*m_ixAtomicLock) > 0);
+  m_ixAtomicLock.iDec();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Increment atomic lock                                                      */
+/*----------------------------------------------------------------------------*/
+void HashMapEntry::vGrabLock(void)
+{
+  ASSERT((*m_ixAtomicLock) >= 0);
+  m_ixAtomicLock.iInc();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Decriment atomic lock                                                      */
+/*----------------------------------------------------------------------------*/
+bool HashMapEntry::bLocked(void)
+{
+  ASSERT((*m_ixAtomicLock) >= 0);
+  return (*m_ixAtomicLock) > 0;
 }
 
 /*----------------------------------------------------------------------------*/

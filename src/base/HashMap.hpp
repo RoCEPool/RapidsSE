@@ -44,6 +44,7 @@ namespace BASE
 
     void    vAnalysis(void);
     void    vDeleteKey(void* pKey);
+    void    vDump(void);
     void    vDropKeyLock(void* pKey);
     bool    bExists(void* pKey);
     HashMapEntry* pGetEntryAtIndex(u8 uIndex);
@@ -55,7 +56,7 @@ namespace BASE
     bool    bIsLocked(void* pKey);
     void    vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
 //    void    vReHash(void);
-    Object* pValueAt(void* pKey);
+    Object* pValueAt(void* pKey, bool bLockThis = true);
 
 #ifdef WITH_HASHMAP_DEBUG
     void    vAppendHistory(void* pKey,

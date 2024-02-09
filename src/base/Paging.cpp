@@ -57,17 +57,12 @@ void Paging::vRandomAlgo(i8 nTotal)
         continue;
 
       // Check if this entry is in use (locked)
-      if(pEntry->bInUse())
+      if(pEntry->bLocked())
         continue;
 //      pEntry->m_okLock.vGrabWrite();
 
       // Check if this entry is queued for output
       DataBuffer* pDataBuffer = _pDataBuffer(pEntry->m_pValObject);
-//      if(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
-//         pDataBuffer->bOutputQueued()) {
-//        pEntry->m_okLock.vDropWrite();
-//        continue;
-//      }
 
       // remove this entry from the hashmap by setting the current index
       // to point to the next entry

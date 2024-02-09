@@ -13,7 +13,7 @@ namespace BASE
 
   public:
     eBI           m_eBufferIdType;
-    Atomic        m_ixInUse;
+    Atomic        m_ixAtomicLock;
     void*         m_pKeyObject;
     Object*       m_pValObject;
 
@@ -29,7 +29,9 @@ namespace BASE
     HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType = BI_NONE);
     ~HashMapEntry(void) noexcept(false);
 
-    bool bInUse(void);
+    void vDropLock(void);
+    void vGrabLock(void);
+    bool bLocked(void);
 
   private:
 
