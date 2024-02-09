@@ -21,7 +21,6 @@
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-/*
 i8 iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc)
 {
 
@@ -61,7 +60,8 @@ i8 iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   w8* aWrd = (w8*)psDst;
   w8* aWrdSrc = (w8*)psSrc;
-  for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--) {
+	i8 nWords;
+  for (nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--) {
 
     //MemLib::vWordFlip(aWrd++, aWrdSrc++);
 
@@ -87,25 +87,20 @@ i8 iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc)
     aAsBytes->m_yaByte[4] = yByte;
   }
 
-
-
   //vTrace("\nAFTER BACK : %s\n"_Stz, aDst);
   //MemLib::vDumpWords(aSrc, iDstSize);
 
   return iReqDstSize;
 }
-*/
 
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string and get the size                 */
 /*----------------------------------------------------------------------------*/
-/*
- i8 iWordFlipSize(char* psSrc) {
+i8 iWordFlipSize(char* psSrc) {
 
   char cDst[1024];
   return iWordFlipBack(&cDst[0], 1024, psSrc);
 }
- */
 
 typedef char i1;
 typedef unsigned short u2;
