@@ -27,9 +27,11 @@ namespace STORE
     static void vRepair(Object* pObject);
 
     static void* aAllotRowPds(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode);
+		static Row*  pAllotRow(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode);
     static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
     static void  vSetRowPix(Tub* pTub, RowPix* pRowPix);
     static void  vToCsv(Tub* pTub, Pds* pPds);
+		static void  vTubCreate(Dynamic_T* pDynamicT, i8 nCols, ColumnInfo* pColumnInfo);
 
   public:
   
