@@ -1295,7 +1295,7 @@ eRO Symbol::eEvalRlnOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eRO eRelnOp = eEvalRelnOp(xaFacet[0].m_sChrSeq);
+  eRO eRelnOp = eEvalRelnOp(szFacet(0));
 
   return eRelnOp;
 }
@@ -1307,7 +1307,7 @@ eQO Symbol::eEvalSqyOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eQO eSubQryOp = eEvalSubQryOp(xaFacet[0].m_sChrSeq);
+  eQO eSubQryOp = eEvalSubQryOp(szFacet(0));
 
   return eSubQryOp;
 }
@@ -1373,7 +1373,7 @@ Stz* Symbol::szFacet(eSF eFacet)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (SF_NONE == eFacet)
-    return xaFacet[0].m_sChrSeq.szStz();
+    return szFacet(0);
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (eFacet == xaFacet[i_Facet].m_eFacet)
@@ -1835,18 +1835,16 @@ bool Symbol::bNeedsBrace(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (!bHasFacets())
+  if (! bHasFacets())
     return false;
 
-  if (xaFacet[0].m_sChrSeq.bSame("between"_Stz))        return true;
-  else if (xaFacet[0].m_sChrSeq.bSame("case"_Stz))           return true;
-  else if (xaFacet[0].m_sChrSeq.bSame("in"_Stz))             return true;
-  else if (xaFacet[0].m_sChrSeq.bSame("matchLeading"_Stz))   return true;
-  else if (xaFacet[0].m_sChrSeq.bSame("matchMiddle"_Stz))    return true;
-  else if (xaFacet[0].m_sChrSeq.bSame("matchMiddle1"_Stz))   return true;
-  else if (xaFacet[0].m_sChrSeq.bSame("matchTrailing"_Stz))  return true;
-//  else if (xaFacet[0].m_sChrSeq.bSame("SUBSTRING2"_Stz))     return true;
-//  else if (xaFacet[0].m_sChrSeq.bSame("SUBSTRING3"_Stz))     return true;
+       if (szFacet(0)->bSame("between"_Stz))        return true;
+  else if (szFacet(0)->bSame("case"_Stz))           return true;
+  else if (szFacet(0)->bSame("in"_Stz))             return true;
+  else if (szFacet(0)->bSame("matchLeading"_Stz))   return true;
+  else if (szFacet(0)->bSame("matchMiddle"_Stz))    return true;
+  else if (szFacet(0)->bSame("matchMiddle1"_Stz))   return true;
+  else if (szFacet(0)->bSame("matchTrailing"_Stz))  return true;
 
   return false;
 }
@@ -1937,30 +1935,6 @@ char Symbol::cTblSyn(void)
 
   NEVER_REACH
 }
-/*----------------------------------------------------------------------------*/
-//char Symbol::cTblSyn(void)
-//{
-//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-//
-//  RASSERT(bHasFacets());
-//
-//  char acFirst  = xaFacet[0].m_sChrSeq.azChar()[0];
-//  char acSecond = xaFacet[0].m_sChrSeq.azChar()[1];
-//  char acThird  = xaFacet[0].m_sChrSeq.azChar()[2];
-//
-//  if ('$' == acFirst
-//      && '$' == acSecond
-//      && StrLib::bIsAlpha(acThird))
-//    return acThird;
-//  else
-//  if ('$' == acFirst
-//      && 'T' == acSecond
-//      && StrLib::bIsAlpha(acThird))
-//    return acThird;
-//
-//  else
-//    return acFirst;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get integer                                                                */
@@ -1971,7 +1945,7 @@ i8 Symbol::iTo_integer(void)
 
   RASSERT(bHasFacets());
 
-  i8 i = xaFacet[0].m_sChrSeq.iToI8();
+  i8 i = szFacet(0)->iToI8();
 
   return i;
 }
@@ -1985,14 +1959,14 @@ i8 Symbol::iTo_ordinal(eSF eFacet)
 
   RASSERT(bHasFacets());
 
-  i8 i_Col;
+  i8 i_Ordinal;
 
   if (SF_NONE == eFacet)
-    i_Col = StrLib::iGleanInt(xaFacet[0].m_sChrSeq.azChar());
+    i_Ordinal = StrLib::iGleanInt(szFacet(0)->azChar());
   else
-    i_Col = StrLib::iGleanInt(szFacet(eFacet)->azChar());
+    i_Ordinal = StrLib::iGleanInt(szFacet(eFacet)->azChar());
 
-  return i_Col;
+  return i_Ordinal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2663,17 +2637,6 @@ void Symbol::vFacet_Exp_Col(Stz* szExpCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-//  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
-//          SF_NMD_COL == xaFacet[0].m_eFacet ||
-//          SF_EXP_COL == xaFacet[0].m_eFacet ||
-//          SF_TBL_COL == xaFacet[0].m_eFacet ||
-//
-//          SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
-//          SF_PARENTHESIS == xaFacet[0].m_eFacet ||
-//          SF_SQY_PRM == xaFacet[0].m_eFacet ||
-//          SF_LIST_CNT == xaFacet[0].m_eFacet
-//  );
-
   vFacetSprint(SF_EXP_COL, "%s"_Stz, szExpCol);
 
   RASSERT(bHasFacet(SF_EXP_COL));
@@ -2965,8 +2928,6 @@ void Symbol::vFacet_Nmd_Col(i8 iColNo)
 void Symbol::vFacet_Nmd_Col(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  //RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_EXP_COL == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_NMD_COL, "%s"_Stz, szColNm);
 
@@ -3484,7 +3445,7 @@ void Symbol::vFacetRotate(eSF eFacet)
   Facet xFacet_tmp;
 
   xFacet_tmp.m_eFacet  = xaFacet[0].m_eFacet;
-  xFacet_tmp.m_sChrSeq = xaFacet[0].m_sChrSeq;
+  xFacet_tmp.m_sChrSeq = szFacet(0);
 
   xaFacet[0].m_eFacet  = xaFacet[i_Facet].m_eFacet;
   xaFacet[0].m_sChrSeq = xaFacet[i_Facet].m_sChrSeq;
