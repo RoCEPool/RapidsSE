@@ -657,7 +657,7 @@ void ChildCards::vTransferChildren(Card* pFrom, eSF eFacet_stopAfter)
   while (Card *pPoppedChild = pFrom->pPopChild()) {
     vAppendChild(pPoppedChild);
 
-    if (pPoppedChild->pSymbol()->bFacetIs(eFacet_stopAfter))
+    if (pPoppedChild->pSymbol()->bHasFacet(eFacet_stopAfter))
       break;
   }
 }
