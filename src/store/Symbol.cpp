@@ -1706,37 +1706,6 @@ void Symbol::vInc_Tbl_Syn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a literal?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Lit(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (bHasFacet(SF_BOL_LIT)) return true;
-  if (bHasFacet(SF_DCM_LIT)) return true;
-  if (bHasFacet(SF_FLT_LIT)) return true;
-  if (bHasFacet(SF_INT_LIT)) return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $c.n)                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Tbl_Col(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_TBL_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Tbl_Col(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is the symbol a SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col(void)
@@ -1747,6 +1716,21 @@ bool Symbol::bIs_Col(void)
   if (bHasFacet(SF_KEY_COL))  return true;
   if (bHasFacet(SF_ITM_COL))  return true;
   if (bHasFacet(SF_TBL_COL))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a literal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bHasFacet(SF_BOL_LIT)) return true;
+  if (bHasFacet(SF_DCM_LIT)) return true;
+  if (bHasFacet(SF_FLT_LIT)) return true;
+  if (bHasFacet(SF_INT_LIT)) return true;
 
   return false;
 }
