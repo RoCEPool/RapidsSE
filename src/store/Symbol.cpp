@@ -1268,9 +1268,8 @@ void Symbol::vDump(Stz* szTitle)
   s4K sProperties;
   Y_vTo_String(sProperties);
 
-  vTrace("Symbol %s: %s %p\n"_Stz
+  vTrace("Symbol %s: %p\n"_Stz
          ,szTitle
-         ,szWhatIs()
          ,this
          );
 
@@ -2136,31 +2135,6 @@ void Symbol::vValidate(void)
     vDump();
     NEVER_REACH
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* what is this symbol?                                                       */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szWhatIs(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (bHasFacet(SF_AGG_FN))       return "AggOp"_Stz;
-  if (bHasFacet(SF_BOL_FN))       return "BoolFn"_Stz;
-  if (bHasFacet(SF_BOUND))        return "Bound"_Stz;
-  if (bHasFacet(SF_EXP_COL))      return "StreamOrdinal"_Stz;
-  if (bIs_Tbl_Col())      return "ColumnOrdinal"_Stz;
-  if (bHasFacet(SF_COMMA))        return "Comma"_Stz;
-  if (bHasFacet(SF_IDX_COL))      return "IndexColumn"_Stz;
-  if (bHasFacet(SF_KEY_COL))      return "KeyOrdinal"_Stz;
-  if (bHasFacet(SF_MTH_OP))       return "NumbOp"_Stz;
-  if (bHasFacet(SF_PARENTHESIS))  return "Parenthesis"_Stz;
-  if (bHasFacet(SF_RLN_OP))       return "RelnOp"_Stz;
-  if (bHasFacet(SF_SQY_OP))       return "SubQueryOp"_Stz;
-  if (bHasFacet(SF_SQY_PRM))      return "ParameterOrdinal"_Stz;
-  if (bHasFacet(SF_SQY_RSL))      return "SubQueryColumn"_Stz;
-
-  return "??WhatIs"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/

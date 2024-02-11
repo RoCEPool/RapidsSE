@@ -188,8 +188,6 @@ namespace STORE
     bool bValidate(void);
     void vValidate(void);
 
-    Stz* szWhatIs(void);
-
     void Y_vAll(Symbol* pSymbol_arg);
     void Y_vCut(Stz* szPpyNm);
     i8   Y_iGet(i8 i_Ppy);
