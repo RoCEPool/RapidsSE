@@ -3273,7 +3273,7 @@ void Symbol::vFacet_Tbl_Col(char cTblSyn, i8 iTblCol)
 
   vFacetSprint(SF_TBL_COL, "$$%c.%lld"_Stz, cTblSyn, iTblCol);
 
-  RASSERT(bIs_Tbl_Col());
+  RASSERT(bHasFacet(SF_TBL_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3290,7 +3290,7 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
 
   vFacetSprint(SF_TBL_COL, "%s"_Stz, szTblCol);
 
-  RASSERT(bIs_Tbl_Col());
+  RASSERT(bHasFacet(SF_TBL_COL));
 }
 
 /*----------------------------------------------------------------------------*/
