@@ -170,10 +170,12 @@ namespace STORE
     bool bMatches(eSF eFacet, Symbol* pSymbol_arg);
     bool bMatches(Symbol* pSymbol_arg);
     bool bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
+    bool bMultiFaceted(void);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
     void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
+    bool bSingleFaceted(void);
 
     char   cTblSyn(void);
     i8     iTo_integer(void);

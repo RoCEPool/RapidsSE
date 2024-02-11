@@ -659,14 +659,14 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
     // arriving related
     Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
-    Symbol*  pExprSym_a = p_expr_a->pSymbol();
+    Symbol*  pSym_expr_a = p_expr_a->pSymbol();
 
     i8 i_CellIn;
     i8 i_CellOut;
     Card_Expr* p_expr_e;
 
-    Symbol* pInSym_a;
-    Symbol* pOutSym_e;
+    Symbol* pSym_In_a;
+    Symbol* pSym_Out_e;
 
 //    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
 //      p_expr_a->vDump(__func__,"--EXPR ARRIVING at SubCard--"_Stz);
@@ -681,17 +681,18 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     if (p_expr_a->bIsScalarCol()) {
       // + scalar
 
-      bool bTermSym_a_Is_tblCol = false;
-      Symbol*  pTermSym_a = p_expr_a->pGet_term0()->pSymbol();
-      if (pTermSym_a && pTermSym_a->bIs_Tbl_Col())
-        bTermSym_a_Is_tblCol = true;
+      bool bSym_term_a_Is_tblCol_only = false;
+      Symbol*  pSym_term_a = p_expr_a->pGet_term0()->pSymbol();
+      if (pSym_term_a->bSingleFaceted() && pSym_term_a->bHasFacet(SF_TBL_COL)) {
+        bSym_term_a_Is_tblCol_only = true;
+      }
 
-      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Matches(pTermSym_a))) {
-        pInSym_a = pTermSym_a;
+      if (bSym_term_a_Is_tblCol_only && (p_expr_e = p_emit->pFind_expr_Matches(pSym_term_a))) {
+        pSym_In_a = pSym_term_a;
       }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Matches_ignoring(pExprSym_a, SF_EXP_COL))) {
-        pInSym_a = pExprSym_a;
+      if ((p_expr_e = p_emit->pFind_expr_Matches_ignoring(pSym_expr_a, SF_EXP_COL))) {
+        pSym_In_a = pSym_expr_a;
       }
       else {
 
@@ -703,13 +704,13 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       i_CellIn  = p_expr_a->pSymbol()->iTo_ordinal() - 1;
       i_CellOut = p_expr_e->pSymbol()->iTo_ordinal() - 1;
 
-      pOutSym_e = p_expr_e->pGet_term0()->pSymbol();
+      pSym_Out_e = p_expr_e->pGet_term0()->pSymbol();
 
       pColPpg->vAdd(i_CellIn,
                     i_CellOut,
                     p_expr_e->szFacet(SF_NONE),
-                    pInSym_a->szFacet(SF_NONE),
-                    pOutSym_e->szFacet(SF_NONE));
+                    pSym_In_a->szFacet(SF_NONE),
+                    pSym_Out_e->szFacet(SF_NONE));
 
       return C_CONTINUE_RECURSION;
     }
@@ -717,8 +718,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     else {
       // - computed
 
-      //if ((p_expr_e = p_emit->pGet_expr(pExprSym_a))) {
-      if ((p_expr_e = p_emit->pContains(pExprSym_a))) {
+      //if ((p_expr_e = p_emit->pGet_expr(pSym_expr_a))) {
+      if ((p_expr_e = p_emit->pContains(pSym_expr_a))) {
 
 //      p_emit->vDump(__func__);
 //      p_expr_a->vDump(__func__);
@@ -727,10 +728,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
 //          p_expr_e->vDump(__func__,"--EXPR EMITTED at SubCard--"_Stz);
 
-        pColPpg->vAdd(pExprSym_a->iTo_ordinal() - 1,
+        pColPpg->vAdd(pSym_expr_a->iTo_ordinal() - 1,
                       p_expr_e->pSymbol()->iTo_ordinal() - 1,
                       p_expr_e->szFacet(SF_NONE),
-                      pExprSym_a->szFacet(SF_NONE),
+                      pSym_expr_a->szFacet(SF_NONE),
                       p_expr_e->pSymbol()->szFacet(SF_NONE));
         return C_CONTINUE_RECURSION;
       }

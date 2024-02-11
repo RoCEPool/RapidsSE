@@ -1833,6 +1833,19 @@ bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this symbol have multiple facets ?                                    */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bMultiFaceted(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (nFacets() > 1)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bNeedsBrace(void)
@@ -1868,6 +1881,19 @@ void Symbol::vSetFacet(eSF eFacet, Stz* szFacet)
     vFacetSet(m_nFacets++,eFacet,szFacet);
   else
     vFacetSet(i_Facet,eFacet,szFacet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol only have one facet ?                                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bSingleFaceted(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (nFacets() == 1)
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
