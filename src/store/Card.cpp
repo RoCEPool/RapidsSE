@@ -2305,12 +2305,15 @@ void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
     else
     if (nSubs == 1) {
       Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintSnippet(true,"%s"_Stz, pSub_0->szFacet(SF_NONE));
+      pRibbon->vSprintSnippet(true,"%s"_Stz,
+                              pSub_0->pSymbol()->szFacet((i8)0));
     }
     else {
       Card *pSub_0 = pChild->pGetChild(0);
       Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintSnippet(true, "%s == %s"_Stz, pSub_0->szFacet(SF_NONE), pSub_1->szFacet(SF_NONE));
+      pRibbon->vSprintSnippet(true, "%s == %s"_Stz,
+                              pSub_0->pSymbol()->szFacet((i8)0),
+                              pSub_1->pSymbol()->szFacet((i8)0));
     }
 
   }
@@ -2406,7 +2409,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprint("%s%s %s *%lld:%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
-                          szFacet(SF_NONE),
+                          m_xSymbol.szFacet((i8)0),
                           m_nPrintCount,
                           m_iFirstPrint);
     else
