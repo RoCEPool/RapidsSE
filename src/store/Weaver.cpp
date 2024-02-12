@@ -493,7 +493,7 @@ void Weaver::vArg_hash(String* psOpArgs, Card_Hash* pCard_Hash)
 
   psOpArgs->vCatSprint("\"type %s %s\""_Stz,
                        aCT[p_term->eCTVal()],
-                       p_term->szFacet(SF_NONE));
+                       p_term->szFacet(SF_EXP_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -730,14 +730,6 @@ void Weaver::vArg_send(String* psOpArgs, Card_Send* pCard_send)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
 //  pCard_Send->vDump(__func__ );
-
-//  if (XK_BROADCAST == (eXK)pCard_send->pSymbol()->Y_iGet(P_SendKind))
-//    psOpArgs->vCatSprint("%s broadcast"_Stz, pCard_send->szFacet(SF_NONE));
-//  else
-//  if (XK_HASHCAST == (eXK)pCard_send->pSymbol()->Y_iGet(P_SendKind))
-//    psOpArgs->vCatSprint("%s hashcast"_Stz, pCard_send->szFacet(SF_NONE));
-//  else
-//    psOpArgs->vCatSprint("%s"_Stz, pCard_send->szFacet(SF_NONE));
 
   if (XK_BROADCAST == (eXK)pCard_send->pSymbol()->Y_iGet(P_SendKind))
     psOpArgs->vCatSprint("broadcast"_Stz);
