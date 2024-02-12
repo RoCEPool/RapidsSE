@@ -1118,18 +1118,7 @@ void Symbol::vAppendFacet(Facet* aFacet_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vAppendFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append facet                                                               */
-/*----------------------------------------------------------------------------*/
-void Symbol::vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(! bHasFacet(eFacet_arg));
-  vFacetAppend(eFacet_arg, szChrSeq_arg);
+  vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
 }
 
 /*----------------------------------------------------------------------------*/
