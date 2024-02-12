@@ -97,7 +97,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
-  p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,szAs);
+  p_expr->pSymbol()->vSetFacet(SF_NMD_COL,szAs);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
@@ -257,7 +257,7 @@ void Card_Expr::vAppend_nmdCol_synthetic(i8 iExpCol)
   s256 sColNm_synthetic;
   sColNm_synthetic.vSprint("COL%lld"_Stz,iExpCol);
 
-  pSymbol()->vAppendFacet(SF_NMD_COL,sColNm_synthetic);
+  pSymbol()->vSetFacet(SF_NMD_COL,sColNm_synthetic);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -288,7 +288,7 @@ void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
   if (! bIsCompound()) {
     Card_Term* p_term0 = pGet_term0();
     if (p_term0->pSymbol()->bHasFacet(SF_NMD_COL)) {
-      pSymbol_expr->vAppendFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
+      pSymbol_expr->vSetFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
       return;
     }
   }
