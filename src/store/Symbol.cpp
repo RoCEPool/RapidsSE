@@ -1185,6 +1185,7 @@ void Symbol::vConcatFacets(Symbol* pSymbol_arg)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetConcat(pSymbol_arg);
+  //vSetFacets(pSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/

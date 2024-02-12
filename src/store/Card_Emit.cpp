@@ -96,7 +96,7 @@ void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
     if (! p_expr_scalar)
       continue;
 
-    pSymbol_expr_scalar->vConcatFacets(p_expr_scalar->pSymbol());
+    pSymbol_expr_scalar->vSetFacets(p_expr_scalar->pSymbol());
   }
 }
 
