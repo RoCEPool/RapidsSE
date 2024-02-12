@@ -708,9 +708,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
       pColPpg->vAdd(i_CellIn,
                     i_CellOut,
-                    p_expr_e->szFacet(SF_NONE),
-                    pSym_In_a->szFacet(SF_NONE),
-                    pSym_Out_e->szFacet(SF_NONE));
+                    p_expr_e->szFacet(SF_EXP_COL),
+                    pSym_In_a->szFacet(SF_EXP_COL),
+                    pSym_Out_e->szFacet(SF_EXP_COL));
 
       return C_CONTINUE_RECURSION;
     }
