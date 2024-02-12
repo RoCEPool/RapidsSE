@@ -9,25 +9,26 @@ create table ${testName2}_decTest (
 success
 
 load ${testName2}_decTest "../DATA/Load/decTest.csv" ;
-warning contains: '9 rows were invalid'
+warning contains: '6 rows were invalid'
 
-select -360287970189639.68 from ${testName2}_decTest where dec1 = 0.1;
+select -1000000000000000.00 from ${testName2}_decTest where dec1 = 0.1;
 failure contains: 'EC_SYNTAX_ERROR'
 
-select -360287970189639.67 from ${testName2}_decTest where dec1 = 0.1;
+select -999999999999999.99 from ${testName2}_decTest where dec1 = 0.1;
 rows:
-  (-360287970189639.67)
+  (-999999999999999.99)
 
-select 360287970189639.67 from ${testName2}_decTest where dec1 = 0.1;
+select 999999999999999.99 from ${testName2}_decTest where dec1 = 0.1;
 rows:
-  (360287970189639.67)
+  (999999999999999.99)
 
-select 360287970189639.68 from ${testName2}_decTest where dec1 = 0.1;
+select 1000000000000000.00 from ${testName2}_decTest where dec1 = 0.1;
 failure contains: 'EC_SYNTAX_ERROR'
 
 select dec1 from ${testName2}_decTest;
 rows:
  (-0.67)
+ (0.00)
  (0.00)
  (0.01)
  (0.79)
@@ -35,12 +36,17 @@ rows:
  (0.10)
  (0.22)
  (0.64)
+ (0.23)
+ (0.23)
 
 select dec2 from ${testName2}_decTest;
 rows:
- (4.05)
  (-360287970189639.67)
  (360287970189639.67)
+ (-360287970189639.69)
+ (360287970189639.68)
+ (-360287970189639.68)
+ (4.05)
  (4.05)
  (4.05)
  (4.05)

@@ -507,14 +507,15 @@ static inline void _ADD_DTEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     if (ivlArg2.m_xIvl.m_bIsNeg)
       iArg2 = (-1) * iArg2;
 
+    i8 iSecs = iArg2 / _C_1M;
     struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
 
     xDateTime.tm_year = xDte1.m_uYearDelta;
     xDateTime.tm_mon  = xDte1.m_uMonth - 1;
-    xDateTime.tm_mday = xDte1.m_uDay;
+    xDateTime.tm_mday = xDte1.m_uDay + (iSecs / C_SECS_PER_DAY);
     xDateTime.tm_hour = 0;
     xDateTime.tm_min  = 0;
-    xDateTime.tm_sec  = iArg2/_C_1M;
+    xDateTime.tm_sec  = iSecs % C_SECS_PER_DAY;
 
     // This next call seems to have a side effect of normalising
     // all member values in the struct tm.
@@ -526,6 +527,13 @@ static inline void _ADD_DTEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
       xDateTime.tm_sec--;
       iMicroSeconds = _C_1M + iMicroSeconds;
 		}
+
+    if (xDateTime.tm_year > (i8) C_YEAR_RANGE ||
+        xDateTime.tm_year < (i8) -C_YEAR_RANGE ||
+        iSecondsSincePosixEpoch == -1) {
+      aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
+    }
+
     xTsp2.m_iAsI8 = 0;
 
     xTsp2.m_uYearDelta = xDateTime.tm_year;
@@ -610,14 +618,15 @@ static inline void _ADD_IVDDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
     if (ivlArg1.m_xIvl.m_bIsNeg)
       iArg1 = (-1) * iArg1;
 
+    i8 iSecs = iArg1 / _C_1M;
     struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
 
     xDateTime.tm_year = xDte2.m_uYearDelta;
     xDateTime.tm_mon  = xDte2.m_uMonth - 1;
-    xDateTime.tm_mday = xDte2.m_uDay;
+    xDateTime.tm_mday = xDte2.m_uDay + (iSecs / C_SECS_PER_DAY);
     xDateTime.tm_hour = 0;
     xDateTime.tm_min  = 0;
-    xDateTime.tm_sec  = iArg1/_C_1M;
+    xDateTime.tm_sec  = iSecs % C_SECS_PER_DAY;
 
     // This next call seems to have a side effect of normalising
     // all member values in the struct tm.
@@ -628,6 +637,12 @@ static inline void _ADD_IVDDTE(i8** ppaW, struct Dynamic_T* aDynamicT)
 		if (iMicroSeconds < 0) {
       xDateTime.tm_sec--;
       iMicroSeconds = _C_1M + iMicroSeconds;
+    }
+
+    if (xDateTime.tm_year > (i8) C_YEAR_RANGE ||
+        xDateTime.tm_year < (i8) -C_YEAR_RANGE ||
+        iSecondsSincePosixEpoch == -1) {
+      aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
     }
 
     xTsp2.m_iAsI8 = 0;
@@ -772,14 +787,15 @@ static inline void _SUB_DTEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     if ( ! ivlArg2.m_xIvl.m_bIsNeg)
       iArg2 = (-1) * iArg2;
 
+    i8 iSecs = iArg2 / _C_1M;
     struct tm xDateTime = {0,0,0,0,0,0,0,0,0,0,NULL} ;
 
     xDateTime.tm_year = xDte1.m_uYearDelta;
     xDateTime.tm_mon  = xDte1.m_uMonth - 1;
-    xDateTime.tm_mday = xDte1.m_uDay;
+    xDateTime.tm_mday = xDte1.m_uDay + (iSecs / C_SECS_PER_DAY);
     xDateTime.tm_hour = 0;
     xDateTime.tm_min  = 0;
-    xDateTime.tm_sec  = iArg2/_C_1M;
+    xDateTime.tm_sec  = iSecs % C_SECS_PER_DAY;
 
     i8 iMicroSeconds = iArg2%_C_1M;
 
@@ -791,6 +807,13 @@ static inline void _SUB_DTEIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     // This next call seems to have a side effect of normalising
     // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
+
+    if (xDateTime.tm_year > (i8) C_YEAR_RANGE ||
+        xDateTime.tm_year < (i8) -C_YEAR_RANGE ||
+        iSecondsSincePosixEpoch == -1) {
+      aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
+    }
+
     xTsp2.m_iAsI8 = 0;
     xTsp2.m_uYearDelta = xDateTime.tm_year;
     xTsp2.m_uMonth     = xDateTime.tm_mon + 1;
@@ -2051,12 +2074,15 @@ static inline void _ADD_TSPIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
     _ADJUST_SECS_MICROS_
 
-    xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;
+    xDateTime.tm_mday  = xTsp1.m_uDay + iSecs / C_SECS_PER_DAY;
+    xDateTime.tm_sec  = xTsp1.m_uSecond + (iSecs % C_SECS_PER_DAY);
     // This next call seems to have a side effect of normalising
     // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
 
-    if (xDateTime.tm_year > (i8) C_YEAR_RANGE) {
+    if (xDateTime.tm_year > (i8) C_YEAR_RANGE ||
+        xDateTime.tm_year < (i8) -C_YEAR_RANGE ||
+        iSecondsSincePosixEpoch == -1) {
       aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
     }
 
@@ -2110,10 +2136,17 @@ static inline void _ADD_IVDTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
 
     _ADJUST_SECS_MICROS_
 
-    xDateTime.tm_sec  = xTsp2.m_uSecond + iSecs;
+    xDateTime.tm_mday = xTsp2.m_uDay + iSecs / C_SECS_PER_DAY;
+    xDateTime.tm_sec  = xTsp2.m_uSecond + (iSecs % C_SECS_PER_DAY);
     // This next call seems to have a side effect of normalising
     // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
+
+    if (xDateTime.tm_year > (i8) C_YEAR_RANGE ||
+        xDateTime.tm_year < (i8) -C_YEAR_RANGE ||
+        iSecondsSincePosixEpoch == -1) {
+      aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
+    }
 
     xTsp1.m_iAsI8 = 0;
 
@@ -2271,12 +2304,15 @@ static inline void _SUB_TSPIVD(i8** ppaW, struct Dynamic_T* aDynamicT)
     i8 iMicroSecs = iArg2%_C_1M + (i8) xTsp1.m_uMicro;
     _ADJUST_SECS_MICROS_
 
-    xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;
+    xDateTime.tm_mday = xTsp1.m_uDay + iSecs / C_SECS_PER_DAY;
+    xDateTime.tm_sec  = xTsp1.m_uSecond + (iSecs % C_SECS_PER_DAY);
     // This next call seems to have a side effect of normalising
     // all member values in the struct tm.
     time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
 
-    if (xDateTime.tm_year > (i8) C_YEAR_RANGE) {
+    if (xDateTime.tm_year > (i8) C_YEAR_RANGE ||
+        xDateTime.tm_year < (i8) -C_YEAR_RANGE ||
+        iSecondsSincePosixEpoch == -1) {
       aDynamicT->m_iErrorCode = EC_DATE_OUT_OF_RANGE;
     }
 

@@ -1,5 +1,5 @@
 
-create table ${testName2}_interval8(a date,b timestamp,c decimal,d integer,e float,h varchar,i char(10),j boolean,k timestamp);
+create table ${testName2}_interval8(a date,b timestamp,c decimal (17,2),d integer,e float,h varchar,i char(10),j boolean,k timestamp);
 success
 load ${testName2}_interval8 "../DATA/QA/interval/interval8.csv";
 success

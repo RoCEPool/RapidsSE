@@ -57,6 +57,7 @@ static const i8 TMP_TBLCOL_SCALE  = 2;
 
 static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
+static const i8 C_SECS_PER_DAY = 86400;
 
 #define C_BITS_PER_WORD 64
 #define C_MAX_LVL_LEVELS 6
