@@ -165,7 +165,7 @@ Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
 
   Card_Expr* p_expr_new = (new Card_Expr) -> SYM(SF_EXP_COL, iExpCol);
   p_expr_new->vCast(xCast);
-  p_expr_new->pSymbol()->vAppendFacet(SF_NMD_COL, szNmdCol);
+  p_expr_new->pSymbol()->vSetFacet(SF_NMD_COL, szNmdCol);
 
   Card_RpnCalc *p_rpnCalc_new = (new Card_RpnCalc);
   p_rpnCalc_new->vCast(xCast);
