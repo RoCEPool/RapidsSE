@@ -36,12 +36,12 @@ rows:
 // check columns of index
 lsidxcol ${testName2}_bolTbl bol_idx1;
 rows:
-  ('bol_col1', 'BOOLEAN', 0, 0, false, true)
+  ('bol_col1', 'BOOLEAN', null, null, false, true)
 
 // check columns of index
 lsidxcol ${testName2}_bolTbl bol_idx2;
 rows:
-  ('bol_col8', 'BOOLEAN', 0, 0, true, false)
+  ('bol_col8', 'BOOLEAN', null, null, true, false)
 
 load ${testName2}_bolTbl "../DATA/Datums/boolean.csv" ;
 warning contains: '18 rows were invalid'
