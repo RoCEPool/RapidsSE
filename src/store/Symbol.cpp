@@ -1112,16 +1112,6 @@ TypeId Symbol::xTo_TypeId(Stz* szTypeName)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append facet                                                               */
-/*----------------------------------------------------------------------------*/
-void Symbol::vAppendFacet(Facet* aFacet_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
-}
-
-/*----------------------------------------------------------------------------*/
 /* append facets                                                              */
 /*----------------------------------------------------------------------------*/
 void Symbol::vAppendFacets(Symbol* pSymbol_arg)
@@ -1135,7 +1125,7 @@ void Symbol::vAppendFacets(Symbol* pSymbol_arg)
     if (bHasFacet(aFacet_arg->m_eFacet))
       continue;
 
-    vFacetAppend(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
+    vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
   }
 }
 
@@ -1823,6 +1813,16 @@ bool Symbol::bNeedsBrace(void)
   else if (szFacet(0)->bSame("matchTrailing"_Stz))  return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set facet                                                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSetFacet(Facet* aFacet_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
 }
 
 /*----------------------------------------------------------------------------*/

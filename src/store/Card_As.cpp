@@ -73,7 +73,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
     Symbol oSymbol_itemise;
     oSymbol_itemise.vFacet(SF_ITM_COL,iItemise,p_expr->pSymbol());
 
-    p_expr->pSymbol()->vAppendFacet(oSymbol_itemise.aFacet(SF_ITM_COL));
+    p_expr->pSymbol()->vSetFacet(oSymbol_itemise.aFacet(SF_ITM_COL));
 
     return C_CONTINUE_RECURSION;
   };

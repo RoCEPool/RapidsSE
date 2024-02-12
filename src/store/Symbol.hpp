@@ -116,7 +116,6 @@ namespace STORE
 
     // - - - - - -
 
-    void vAppendFacet(Facet* aFacet_arg);
     void vAppendFacets(Symbol* pSymbol_arg);
 
     Cast xCast(void);
@@ -170,6 +169,7 @@ namespace STORE
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
+    void vSetFacet(Facet* aFacet_arg);
     void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     bool bSingleFaceted(void);
 

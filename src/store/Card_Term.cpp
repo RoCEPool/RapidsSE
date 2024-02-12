@@ -475,7 +475,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 
       if (pCI->G.p_expr && pCI->G.p_expr->bIsScalarCol() && pCI->G.p_rpnCalc) {
 //        if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_TBL_COL))
-//          pCI->G.p_expr->pSymbol()->vAppendFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
+//          pCI->G.p_expr->pSymbol()->vSetFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
         pCI->G.p_expr->pSymbol()->vSetFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
 
         if (pSymbol_term0->bHasFacet(SF_NMD_COL))
@@ -515,7 +515,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
 
 //    if (pSymbol_this->bHasFacet(SF_EXP_COL) && ! pSymbol_expr->bHasFacet(SF_EXP_COL))
-//      pSymbol_expr->vAppendFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+//      pSymbol_expr->vSetFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
     if (pSymbol_this->bHasFacet(SF_KEY_COL) && ! pSymbol_expr->bHasFacet(SF_KEY_COL))
       pSymbol_expr->vSetFacet(SF_KEY_COL,pSymbol_this->szFacet(SF_KEY_COL));
     if (pSymbol_this->bHasFacet(SF_TBL_COL) && ! pSymbol_expr->bHasFacet(SF_TBL_COL))

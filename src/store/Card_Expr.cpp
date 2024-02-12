@@ -459,7 +459,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
     p_expr_inducted->vAppend_nmdCol_synthetic(iExp);
 
 //  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
-//    pSymbol_expr_inducted->vAppendFacet(SF_KEY_COL,
+//    pSymbol_expr_inducted->vSetFacet(SF_KEY_COL,
 //                                        pSymbol_expr_arriving->szFacet(SF_KEY_COL));
 
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
