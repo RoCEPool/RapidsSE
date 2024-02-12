@@ -1178,17 +1178,6 @@ void Symbol::vConcatFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set cast & facets from arg                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vConcatFacets(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  //vFacetConcat(pSymbol_arg);
-  vSetFacets(pSymbol_arg);
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete facet                                                               */
 /*----------------------------------------------------------------------------*/
 void Symbol::vDeleteFacet(eSF eFacet)
