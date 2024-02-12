@@ -1175,6 +1175,7 @@ void Symbol::vConcatFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetRotateSet(eFacet_arg,szChrSeq_arg);
+  //vSetFacet(eFacet_arg,szChrSeq_arg);
 }
 
 /*----------------------------------------------------------------------------*/
