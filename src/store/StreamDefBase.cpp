@@ -611,7 +611,7 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     axColPixDst->m_uKind     = (u8)CX_USERCOL;
     axColPixDst->m_uTypeId   = (u8)pColumn->xColumnTypeId().iIdVal();
     axColPixDst->m_uDatum    = (u8)pColumn->eDatum();
-    axColPixDst->m_uLength   = (u8)pColumn->iColumnLength();
+    axColPixDst->m_uLength   = (u8)(pColumn->iColumnLength() < 0 ? C_MAX_COLPIX_LENGTH: pColumn->iColumnLength());
     axColPixDst->m_uScale    = (u8)pColumn->iColumnScale();
     axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
     axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
