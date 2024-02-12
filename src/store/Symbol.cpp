@@ -1122,8 +1122,8 @@ void Symbol::vAppendFacets(Symbol* pSymbol_arg)
   for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
     Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
 
-    if (bHasFacet(aFacet_arg->m_eFacet))
-      continue;
+//    if (bHasFacet(aFacet_arg->m_eFacet))
+//      continue;
 
     vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
   }
