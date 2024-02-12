@@ -121,7 +121,6 @@ namespace STORE
     void vCastReset(void);
     void vCastFacets(Symbol* pSymbol_arg);
     void vCastFacetsPpy(Symbol* pSymbol_arg);
-    void vConcatFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
