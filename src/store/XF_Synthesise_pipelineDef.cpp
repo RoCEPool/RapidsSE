@@ -730,9 +730,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
         pColPpg->vAdd(pSym_expr_a->iTo_ordinal() - 1,
                       p_expr_e->pSymbol()->iTo_ordinal() - 1,
-                      p_expr_e->szFacet(SF_NONE),
-                      pSym_expr_a->szFacet(SF_NONE),
-                      p_expr_e->pSymbol()->szFacet(SF_NONE));
+                      p_expr_e->szFacet(SF_EXP_COL),
+                      pSym_expr_a->szFacet(SF_EXP_COL),
+                      p_expr_e->szFacet(SF_EXP_COL));
         return C_CONTINUE_RECURSION;
       }
 
