@@ -141,7 +141,7 @@ namespace STORE
     void vFacet(eSF eFacet, char cChr);
     void vFacet(eSF eFacet, char cChr, i8 iInt);
     void vFacet(eSF eFacet, i8 iInt);
-    void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
+    void vSetFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);

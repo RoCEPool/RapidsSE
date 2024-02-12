@@ -1449,7 +1449,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
+void Symbol::vSetFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
