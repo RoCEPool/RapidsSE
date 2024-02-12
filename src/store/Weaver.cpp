@@ -412,8 +412,8 @@ void Weaver::vArg_cast(String* psOpArgs, Card_Cast* pCard_Next)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  if (pCard_Next->szFacet(SF_NONE))
-    psOpArgs->vCatSprint("%s"_Stz, pCard_Next->szFacet(SF_NONE));
+  if (pCard_Next->pSymbol()->bHasFacet(SF_STG_CAST))
+    psOpArgs->vCatSprint("%s"_Stz, pCard_Next->szFacet(SF_STG_CAST));
 }
 
 /*----------------------------------------------------------------------------*/

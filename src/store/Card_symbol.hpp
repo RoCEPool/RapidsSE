@@ -151,7 +151,7 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, i8 iInt, Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vFacet(eSymbol, iInt, pSymbol);
+  m_xSymbol.vSetFacet(eSymbol, iInt, pSymbol);
 
   return (CARD*)this;
 }
