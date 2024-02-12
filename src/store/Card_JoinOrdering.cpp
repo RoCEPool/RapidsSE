@@ -138,8 +138,8 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
 
     if (bNumbers)
       pString->vCatSprint("NetCost %5s UniCost %5s : %8s"_Stz,
-                          p_costNetwork->szFacet(SF_NONE),
-                          p_costUnicast->szFacet(SF_NONE),
+                          p_costNetwork->szFacet(SF_INT_LIT),
+                          p_costUnicast->szFacet(SF_INT_LIT),
                           sHeadTable.szStz());
     else
       pString->vSprint("%s"_Stz,sHeadTable.szStz());
