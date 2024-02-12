@@ -472,7 +472,7 @@ void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
   Card_TableNm* p_tableNm = pSub_tableNm();
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
   if (pTable->bIsReplicated())
-    m_xSymbol.vFacet(SF_TBL_SYN_rep);
+    m_xSymbol.vSetFacet(SF_TBL_SYN_rep);
 
   pSymbol_tableSyn->vInc_Tbl_Syn();
 }

@@ -1366,7 +1366,7 @@ i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* get facet                                                                 */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet)
+void Symbol::vSetFacet(eSF eFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
