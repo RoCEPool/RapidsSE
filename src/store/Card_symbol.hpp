@@ -21,7 +21,6 @@ namespace STORE
     CARD* SYM(Symbol* pSymbol);
     CARD* SYMPPY(Symbol* pSymbol);
 
-    CARD* SYM(eSF eSymbol, char cChr);
     CARD* SYM(eSF eSymbol, char cChr, i8 iInt);
     CARD* SYM(eSF eSymbol, i8 iInt);
     CARD* SYM(eSF eSymbol, Stz* szStz);
@@ -87,19 +86,6 @@ CARD* Card_symbol<CARD>::SYMPPY(Symbol* pSymbol)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   m_xSymbol.vCastFacetsPpy(pSymbol);
-
-  return (CARD*)this;
-}
-
-/*----------------------------------------------------------------------------*/
-/*  SYM                                                                       */
-/*----------------------------------------------------------------------------*/
-template <class CARD>
-CARD* Card_symbol<CARD>::SYM(eSF eSymbol, char cChr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  m_xSymbol.vFacet(eSymbol, cChr);
 
   return (CARD*)this;
 }
