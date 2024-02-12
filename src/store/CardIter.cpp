@@ -801,8 +801,10 @@ bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubVa
   _precondition_( _MAGIC_, _FOOTER_);
 
   while (G_bEachMainWithSub(eOfMainKind, eAndSubKind)) {
-    if (G.p_SubOfMain->szFacet(SF_NONE)->bSame(szSubValue))
+    if (G.p_SubOfMain->pSymbol()->szFacet((i8)0)->bSame(szSubValue)) {
+      RASSERT(G.p_SubOfMain->pSymbol()->bSingleFaceted());
       return true;
+    }
   }
 
   return false;
