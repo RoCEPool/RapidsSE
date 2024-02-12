@@ -112,7 +112,7 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, char cChr, i8 iInt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vFacet(eSymbol, cChr, iInt);
+  m_xSymbol.vSetFacet(eSymbol, cChr, iInt);
 
   return (CARD*)this;
 }
