@@ -2429,7 +2429,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprintCat("%s%s %s"_Stz,
                              sName.szStz(),
                              sHiddenChildren.szStz(),
-                             szFacet(SF_NONE));
+                             m_xSymbol.szFacet((i8)0));
     else
       sNameSymbol.vSprintCat("%s%s"_Stz,
                              sName.szStz(),
@@ -2518,9 +2518,9 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     pRibbon->vSprintSnippet(true, "%s%s%18s"_Stz,
                             this->szMark1(),
                             this->szMark2(),
-                            szFacet(SF_NONE));
+                            m_xSymbol.szFacet((i8)0));
   else
-    pRibbon->vSprintSnippet(true, "  %s"_Stz, szFacet(SF_NONE));
+    pRibbon->vSprintSnippet(true, "  %s"_Stz, m_xSymbol.szFacet((i8)0));
 
   if (m_xSymbol.nFacets()) {
     for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
