@@ -559,7 +559,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     i8    i_CrwCol_expr_i = StrLib::iGleanInt(p_expr_i->szFacet(SF_ITM_COL)->azChar());
 
     Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol();
-    Stz*       szTblCol_i = pSym_tblCol_i->szFacet(SF_NONE);
+    Stz*       szTblCol_i = pSym_tblCol_i->szFacet(SF_TBL_COL);
     //pSym_tblCol_i->vDump();
 
     // test if the injected column is actually emitted?
