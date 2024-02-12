@@ -16,7 +16,6 @@ namespace STORE
     Card_RpnExpr(void);
    ~Card_RpnExpr(void) noexcept(false);
 
-    bool bIsInList(void);
   };
 
   Card_RpnExpr* _pCard_RpnExpr(void* aAddr);

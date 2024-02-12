@@ -137,11 +137,6 @@ namespace STORE
     i8   i_Facet(eSF eFacet, char cTblSyn);
     Stz* szFacet(eSF eFacet);
     Stz* szFacet(i8 i_Facet);
-    void vSetFacet(eSF eFacet);
-    void vSetFacet(eSF eFacet, char cChr);
-    void vSetFacet(eSF eFacet, char cChr, i8 iInt);
-    void vSetFacet(eSF eFacet, i8 iInt);
-    void vSetFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);
@@ -166,6 +161,11 @@ namespace STORE
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
+    void vSetFacet(eSF eFacet);
+    void vSetFacet(eSF eFacet, char cChr);
+    void vSetFacet(eSF eFacet, char cChr, i8 iInt);
+    void vSetFacet(eSF eFacet, i8 iInt);
+    void vSetFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vSetFacet(Facet* aFacet_arg);
     void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vSetFacets(Symbol* pSymbol_arg);
