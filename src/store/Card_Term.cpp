@@ -72,7 +72,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
       pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term);
       i8 iItemise = pCI->G.p_expr->iItemise();
-      pSymbol_term->vFacet(SF_ITM_COL, iItemise);
+      pSymbol_term->vSetFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
 
@@ -83,7 +83,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     i8 iItemise = pCI->G.p_expr->iItemise();
-    pSymbol_term->vFacet(SF_ITM_COL, iItemise);
+    pSymbol_term->vSetFacet(SF_ITM_COL, iItemise);
     return C_CONTINUE_RECURSION;
   };
 

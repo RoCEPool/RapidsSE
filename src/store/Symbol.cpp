@@ -48,7 +48,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vFacet(eFacet, iInt);
+  vSetFacet(eFacet, iInt);
 
   RASSERT(bHasFacets());
 
@@ -1384,7 +1384,7 @@ void Symbol::vSetFacet(eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, char cChr)
+void Symbol::vSetFacet(eSF eFacet, char cChr)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1421,7 +1421,7 @@ void Symbol::vSetFacet(eSF eFacet, char cChr, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, i8 iInt)
+void Symbol::vSetFacet(eSF eFacet, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
