@@ -150,7 +150,6 @@ namespace STORE
     void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);
-    bool bFacetIs(eSF eFacet_arg);
 
     bool bHasFacet(eSF eFacet);
     bool bHasFacet(Stz* szChrSeq);
