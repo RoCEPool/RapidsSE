@@ -584,7 +584,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
     if (pSymbol_this->bHasFacet(SF_NMD_COL)) {
       Symbol xAsNm_sym;
-      xAsNm_sym.vConcatFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
+      xAsNm_sym.vSetFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
 
       if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xAsNm_sym)) {
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
