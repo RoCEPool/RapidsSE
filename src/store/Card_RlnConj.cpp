@@ -307,7 +307,6 @@ bool Card_RlnConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
   Kid xKid(p_bounds);
   while (xKid.bEach(CK_BOUND)) {
 
-//    Stz* sz_bnd_idxCol = xKid.G.p_bound->pGetChild(0)->szFacet(SF_NONE);
     Stz* sz_bnd_expCol = xKid.p_bound()->pGetChild(1)->szFacet(SF_NONE);
     Stz* sz_bnd_rlnOpr    = xKid.p_bound()->szFacet(SF_NONE);
 

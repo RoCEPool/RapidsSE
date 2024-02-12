@@ -2190,27 +2190,7 @@ void Card::vCoord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-//  s4K sPretty;
-//
-//  sPretty = aCK[m_eCard];
-
-//  if (m_xSymbol.m_pProperties) {
-//    s4K sProperties;
-//    m_xSymbol.m_pProperties->vToString(sProperties, true);
-//    sPretty.vConcat(": "_Stz);
-//    sPretty.vConcat(sProperties);
-//  }
-
-//  strcat(md_Coord, " ");
-//  strcat(md_Coord, aCK[m_eCard]->azChar());
-
   StrLib::vConcat(md_Coord,sizeof(md_Coord), "]");
-//  StrLib::vConcat(md_Coord, sizeof(md_Coord), szFacet(SF_NONE) ? szFacet(SF_NONE)->azChar() : "");
-//
-//  StrLib::vConcat(md_Coord,sizeof(md_Coord), " ");
-//  StrLib::vConcat(md_Coord,sizeof(md_Coord), aSF[pSymbol()->eFacet()]->azChar());
-
-  //  vTrace("%s\n"_Stz,md_Coord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2233,8 +2213,6 @@ void Card::vCoord(Card* pParentCard)
     StrLib::vSprint(md_Coord, sizeof(md_Coord), nullptr,
                     "SQ%lld"_Stz, m_i_Child);
   }
-
-//  vTrace("%s\n"_Stz,md_Coord);
 }
 
 /*----------------------------------------------------------------------------*/
