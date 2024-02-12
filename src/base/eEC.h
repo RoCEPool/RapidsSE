@@ -250,6 +250,7 @@ enum eEC // error codes
   EC_SEMANTIC_ERROR,                // SQL Compiler Subsystem
   EC_SEND_FAILURE,
   EC_STATEMENT_TOO_LONG,            // SQL Compiler Subsystem
+  EC_STRING_TRUNCATION,
   EC_SUBQUERY_SELF_REFERENCE,       // SQL Compiler Subsystem
   EC_SUBQUERY_PROJ_TOO_MANY_COLS,   // SQL Compiler Subsystem
   EC_SYNTAX_ERROR,                  // SQL Compiler Subsystem

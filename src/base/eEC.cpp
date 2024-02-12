@@ -249,6 +249,7 @@ Stz* aEC[EC_ENUMS] =
   /* EC_SEMANTIC_ERROR                */ (Stz*)"semantic error",              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ (Stz*)"send failure",
   /* EC_STATEMENT_TOO_LONG            */ (Stz*)"statement is too long",       // SQL Compiler Subsystem
+  /* EC_STRING_TRUNCATION             */ (Stz*)"internal string truncation",
   /* EC_SUBQUERY_SELF_REFERENCE       */ (Stz*)"EC_SUBQUERY_SELF_REFERENCE",  // SQL Compiler Subsystem
   /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ (Stz*)"EC_SUBQUERY_PROJ_TOO_MANY_COLS", // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ (Stz*)"syntax error",                // SQL Compiler Subsystem
@@ -548,6 +549,7 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_SEMANTIC_ERROR                */ (Stz*)"EC_SEMANTIC_ERROR",                 // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ (Stz*)"EC_SEND_FAILURE",
   /* EC_STATEMENT_TOO_LONG            */ (Stz*)"EC_STATEMENT_TOO_LONG",             // SQL Compiler Subsystem
+  /* EC_STRING_TRUNCATION             */ (Stz*)"EC_STRING_TRUNCATION",
   /* EC_SUBQUERY_SELF_REFERENCE       */ (Stz*)"EC_SUBQUERY_SELF_REFERENCE",        // SQL Compiler Subsystem
   /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ (Stz*)"EC_SUBQUERY_PROJ_TOO_MANY_COLS",    // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ (Stz*)"EC_SYNTAX_ERROR",                   // SQL Compiler Subsystem
@@ -854,6 +856,7 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_SEMANTIC_ERROR                */ (Stz*)"semantic error",              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ (Stz*)"send failure",
   /* EC_STATEMENT_TOO_LONG            */ (Stz*)"Statement is too long",       // SQL Compiler Subsystem
+  /* EC_STRING_TRUNCATION             */ (Stz*)"Internal string truncation occurred",
   /* EC_SUBQUERY_SELF_REFERENCE       */ (Stz*)"Non-recursive subquery cannot refer to itself",  // SQL Compiler Subsystem
   /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ (Stz*)"Subquery cannot project more than one column",   // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ (Stz*)"syntax error",                // SQL Compiler Subsystem. Custom error string from ANTLR.

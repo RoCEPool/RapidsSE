@@ -89,14 +89,14 @@
     const char *s = szArg1;                     \
                                                 \
 	 i8 iBytesToCopy = nSrcSize;                  \
-   while (iBytesToCopy--)                       \
+   while (iBytesToCopy-- && --nAreaRemaining)   \
      *d++ = *s++;                               \
                                                 \
     *d = '\0';                                  \
+    --nAreaRemaining;                           \
                                                 \
     *paW++ = (i8)szDstArea;                     \
     szDstArea += nSrcSize + 1;                  \
-    nAreaRemaining -= nSrcSize + 1;             \
   }                                             \
 }
 
@@ -1178,15 +1178,15 @@ static inline void _STR_SUBSTRING2(i8** ppaW, struct Dynamic_T* aDynamicT, char*
     szDstStz = *ppszDstArea;
     if (nSrcSize >= iStart) {
       char* szSrcStz = (char*)(szArg1 + iStart - 1);
-      while (*szSrcStz) {
+      while (*szSrcStz && --(*piAreaRemaining)) {
         *szDstStz++ = *szSrcStz++;
         nDstSize++;
       }
     }
     *szDstStz = '\0';
+    --(*piAreaRemaining);
     *((*ppaW)++) = (i8)*ppszDstArea;
     (*ppszDstArea) += nDstSize + 1;
-    (*piAreaRemaining) -= (i8)(nDstSize) + 1;
   }
 }
 
@@ -1213,15 +1213,15 @@ static inline void _STR_SUBSTRING3(i8** ppaW, struct Dynamic_T* aDynamicT, char*
     i8 nDstSize = 0;
     szDstStz = *ppszDstArea;
     if (nSrcSize >= iStart) {
-       while (*szSrcStz && iLength-- && nSrcSize > nDstSize) {
+       while (*szSrcStz && iLength-- && nSrcSize > nDstSize && --(*piAreaRemaining)) {
          *szDstStz++ = *szSrcStz++;
          nDstSize++;
       }
     }
     *szDstStz = '\0';
+    --(*piAreaRemaining);
     *((*ppaW)++) = (i8)*ppszDstArea;
     (*ppszDstArea) += (i8)(nDstSize) + 1;
-    (*piAreaRemaining) -= (i8)(nDstSize) + 1;
   }
 }
 

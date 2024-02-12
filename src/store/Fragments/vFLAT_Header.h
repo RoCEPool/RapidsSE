@@ -53,7 +53,6 @@ static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;
 static const u8 C_YEAR_BASE  = 1900;
 static const u8 C_YEAR_RANGE = 255;
 static const u8 C_YEAR_MAX   = 2155;
-static const i8 TMP_TBLCOL_SCALE  = 2;
 
 static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};

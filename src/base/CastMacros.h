@@ -651,17 +651,23 @@ static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    if (iArg1)
-      strcpy((*ppszDstArea),"true");
-    else
-      strcpy((*ppszDstArea),"false");
-    *(*ppaW)++ = (i8)(*ppszDstArea);
-    i8 iLen = (i8) strnlen(*ppszDstArea, *piAreaRemaining) + 1;
-    (*ppszDstArea) += iLen;
-    (*piAreaRemaining) -= iLen;
+
+  if (*piAreaRemaining < 6) { // "false" + null terminator
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
+
+  if (iArg1)
+    strcpy((*ppszDstArea),"true");
+  else
+    strcpy((*ppszDstArea),"false");
+  *(*ppaW)++ = (i8)(*ppszDstArea);
+  i8 iLen = (i8) strnlen(*ppszDstArea, *piAreaRemaining) + 1;
+  (*ppszDstArea) += iLen;
+  (*piAreaRemaining) -= iLen;
 }
 
 
@@ -669,54 +675,57 @@ static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 static inline void _BCD_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
 {
   union Bcd_T bcdArg1;
+  i8 iInitialArea = *piAreaRemaining;
 
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     bcdArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    i8 max_col_decimal = TMP_TBLCOL_SCALE;
-    i8 bNegative = 0;
 
-    if (bcdArg1.m_iMantissa < 0) {
-      bcdArg1.m_iMantissa = -bcdArg1.m_iMantissa;
-      bNegative = 1;
-    }
+  i8 bNegative = 0;
 
-    char *p = (*ppszDstArea), *q = (*ppszDstArea);
-    if(bcdArg1.m_uScale == 0) {
-      while(max_col_decimal) {
-        *p++ = '0';
-        max_col_decimal--;
-      }
-    }
-    else {
-      while (bcdArg1.m_uScale) {
-        *p++ = (bcdArg1.m_iMantissa % 10) + '0';
-        bcdArg1.m_iMantissa /= 10ll;
-        bcdArg1.m_uScale--;
-      }
-    }
-    *p++ = '.';
-    while (bcdArg1.m_iMantissa) {
-      *p++ = (bcdArg1.m_iMantissa % 10) + '0';
-      bcdArg1.m_iMantissa /= 10ll;
-    }
-    if (bNegative)
-      *p++ = '-';
-
-    *p = '\0';
-    while (--p > q) {
-      char c = *p;
-      *p = *q;
-      *q++ = c;
-    }
-    *(*ppaW)++ = (i8)(*ppszDstArea);
-    i8 iLen = (i8) strnlen(*ppszDstArea, *piAreaRemaining) + 1;
-    (*ppszDstArea) += iLen;
-    (*piAreaRemaining) -= iLen;
+  if (bcdArg1.m_iMantissa < 0) {
+    bcdArg1.m_iMantissa = -bcdArg1.m_iMantissa;
+    bNegative = 1;
   }
+
+  char *p = (*ppszDstArea), *q = (*ppszDstArea);
+
+  while (bcdArg1.m_uScale && --(*piAreaRemaining)) {
+    *p++ = (bcdArg1.m_iMantissa % 10) + '0';
+    bcdArg1.m_iMantissa /= 10ll;
+    bcdArg1.m_uScale--;
+  }
+
+  *p++ = '.';
+  --(*piAreaRemaining);
+
+  while (bcdArg1.m_iMantissa && --(*piAreaRemaining)) {
+    *p++ = (bcdArg1.m_iMantissa % 10) + '0';
+    bcdArg1.m_iMantissa /= 10ll;
+  }
+
+  if (bNegative && --(*piAreaRemaining))
+    *p++ = '-';
+
+  if (*piAreaRemaining <= 0) {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  *p = '\0';
+
+  while (--p > q) {
+    char c = *p;
+    *p = *q;
+    *q++ = c;
+  }
+  *(*ppaW)++ = (i8)(*ppszDstArea);
+  i8 iLen = (i8) strnlen(*ppszDstArea, iInitialArea) + 1;
+  (*ppszDstArea) += iLen;
 }
 
 static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
@@ -727,50 +736,60 @@ static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     xTme1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    char *p = (*ppszDstArea);
 
-    u8 tmp = xTme1.m_uHour;
-    tmp /= 10llu;
-    *p++ = (tmp % 10) + '0';
+  i8 nSize = 9 + (xTme1.m_uMicro != 0 ? 6 : 0);
+  if (*piAreaRemaining < nSize) {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
 
-    tmp = xTme1.m_uHour;
-    *p++ = (tmp % 10) + '0';
+  char *p = (*ppszDstArea);
 
-    *p++ = ':';
+  u8 tmp = xTme1.m_uHour;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
 
-    tmp = xTme1.m_uMinute;
-    tmp /= 10llu;
-    *p++ = (tmp % 10) + '0';
+  tmp = xTme1.m_uHour;
+  *p++ = (tmp % 10) + '0';
 
-    tmp = xTme1.m_uMinute;
-    *p++ = (tmp % 10) + '0';
+  *p++ = ':';
 
-    *p++ = ':';
+  tmp = xTme1.m_uMinute;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
 
-    tmp = xTme1.m_uSecond;
-    tmp /= 10llu;
-    *p++ = (tmp % 10) + '0';
+  tmp = xTme1.m_uMinute;
+  *p++ = (tmp % 10) + '0';
 
-    tmp = xTme1.m_uSecond;
-    *p++ = (tmp % 10) + '0';
+  *p++ = ':';
 
-    if(xTme1.m_uMicro != 0) {
-      *p++ = ':';
+  tmp = xTme1.m_uSecond;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
 
-      tmp = xTme1.m_uMicro;
-      tmp /= 10llu;
-      *p++ = (tmp % 10) + '0';
+  tmp = xTme1.m_uSecond;
+  *p++ = (tmp % 10) + '0';
 
-      tmp = xTme1.m_uMicro;
-      *p++ = (tmp % 10) + '0';
+  if(xTme1.m_uMicro != 0) {
+    *p++ = '.';
+
+    i8 iFactor = 100000;
+    tmp = xTme1.m_uMicro;
+
+    while (iFactor) {
+      *p++ = (tmp / iFactor % 10) + '0';
+
+      tmp /= 10;
+      iFactor /= 10;
     }
-    *(*ppaW)++ = (i8)(*ppszDstArea);
-    i8 iLen = (i8) strnlen(*ppszDstArea,  *piAreaRemaining) + 1;
-    (*ppszDstArea) += iLen;
-    (*piAreaRemaining) -= iLen;
   }
+  *(*ppaW)++ = (i8)(*ppszDstArea);
+  i8 iLen = (i8) strnlen(*ppszDstArea,  *piAreaRemaining) + 1;
+  (*ppszDstArea) += iLen;
+  (*piAreaRemaining) -= iLen;
 }
 
 static inline void _DTE_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
