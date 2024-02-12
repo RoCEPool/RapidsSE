@@ -116,8 +116,6 @@ namespace STORE
 
     // - - - - - -
 
-    void vAppendFacets(Symbol* pSymbol_arg);
-
     Cast xCast(void);
     void vCast(Cast xCast);
     void vCastReset(void);
@@ -171,6 +169,7 @@ namespace STORE
 
     void vSetFacet(Facet* aFacet_arg);
     void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
+    void vSetFacets(Symbol* pSymbol_arg);
     bool bSingleFaceted(void);
 
     char   cTblSyn(void);

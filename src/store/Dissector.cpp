@@ -1470,7 +1470,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   if (Card_As* p_as = pPop_as(p_rpnExpr)) {
     oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
-    p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
+    p_expr->pSymbol()->vSetFacets(&oSymbol_nmdCol);
     delete p_as;
     p_as = nullptr;
   }
@@ -1494,7 +1494,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   if (Card_As* p_as = pPop_as(p_rpnExpr)) {
     oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
-    p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
+    p_expr->pSymbol()->vSetFacets(&oSymbol_nmdCol);
     delete p_as;
     p_as = nullptr;
   }

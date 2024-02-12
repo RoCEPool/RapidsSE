@@ -159,7 +159,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
 
         if (p_expr_key->bIsScalarCol()) {
-          p_expr_key->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
+          p_expr_key->pSymbol()->vSetFacets(xCI_rpnCalc.p_term()->pSymbol());
         }
 
         if (p_needed->pFind_expr_Matches(pSymbol_tblCol)) {
@@ -175,7 +175,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
         if (xCI_projection.p_expr()->bIsScalarCol()) {
-          xCI_projection.p_expr()->pSymbol()->vAppendFacets(xCI_rpnCalc.p_term()->pSymbol());
+          xCI_projection.p_expr()->pSymbol()->vSetFacets(xCI_rpnCalc.p_term()->pSymbol());
         }
 
       }

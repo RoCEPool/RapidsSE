@@ -175,7 +175,7 @@ Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
   p_term_new->vCast(xCast);
   p_rpnCalc_new->vAppendChild(p_term_new);
 
-  p_expr_new->pSymbol()->vAppendFacets(p_term_new->pSymbol());
+  p_expr_new->pSymbol()->vSetFacets(p_term_new->pSymbol());
 
   return p_expr_new;
 }
