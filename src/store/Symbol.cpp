@@ -1987,7 +1987,6 @@ bool Symbol::bValidate(void)
   for (i8 i_Facet = 0; i_Facet < nFacets(); i_Facet++) {
     eSF eFacet = xaFacet[i_Facet].m_eFacet;
     switch (eFacet) {
-      case SF_NONE:        b = bIs_None(szFacet(i_Facet));       break;
       case SF_AGG_FN:      b = bIs_Agg_Fn(szFacet(i_Facet));     break;
       case SF_AS:          b = bIs_As(szFacet(i_Facet));         break;
       case SF_BOL_FN:      b = bIs_Bol_Fn(szFacet(i_Facet));     break;
@@ -2020,7 +2019,7 @@ bool Symbol::bValidate(void)
       case SF_NOTE:        b = bIs_Note(szFacet(i_Facet));       break;
       case SF_NULL:        b = bIs_Null(szFacet(i_Facet));       break;
       case SF_PARENTHESIS: b = bIs_Parenthesis(szFacet(i_Facet));break;
-       case SF_RLN_OP:      b = bIs_Rln_Op(szFacet(i_Facet));     break;
+      case SF_RLN_OP:      b = bIs_Rln_Op(szFacet(i_Facet));     break;
       case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet(i_Facet));     break;
       case SF_SQY_NO:      b = bIs_Sqy_No(szFacet(i_Facet));     break;
       case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet(i_Facet));     break;
