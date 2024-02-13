@@ -368,13 +368,137 @@ bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
 {
   UNUSED(eFacet);
 
-  if (Card* pHeadCard = pHead()) {
-     if (pHeadCard->szFacet(SF_NONE)->bSame(szFacet))
+  Card* pHeadCard = pHead();
+  if (! pHeadCard)
+    return false;
+
+  Symbol* pSym_head = pHeadCard->pSymbol();
+
+  if (SF_NONE == eFacet) {
+    if (pSym_head->szFacet(SF_NONE)->bSame(szFacet)) {
+      if (pSym_head->nFacets() > 1) {
+        pHeadCard->vDump(__func__);
+        vDebugPoint();
+      }
       return true;
+    }
+
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pSym_head->szFacet(SF_NONE)->bSame(szFacet)) {
+    if (pSym_head->nFacets() > 1) {
+      pHeadCard->vDump(__func__);
+      vDebugPoint();
+    }
+    if (! pSym_head->bHasFacet(eFacet)) {
+      pHeadCard->vDump(__func__);
+      vDebugPoint();
+    }
+    return true;
+  }
+
+  if (pSym_head->bHasFacet(eFacet)) {
+    pHeadCard->vDump(__func__);
+    vDebugPoint();
   }
 
   return false;
 }
+/*----------------------------------------------------------------------------*/
+//bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
+//{
+//  UNUSED(eFacet);
+//
+//  Card* pHeadCard = pHead();
+//  if (!pHeadCard)
+//    return false;
+//  //Symbol* pSym_head = pHeadCard->pSymbol();
+//
+//  if (Card* pHeadCard = pHead()) {
+//    if (pHeadCard->pSymbol()->bHasFacet(eFacet))
+//      if (pHeadCard->szFacet(eFacet)->bSame(szFacet))
+//        return true;
+//  }
+//
+//  return false;
+
+//  if (eFacet == SF_NONE) {
+//    if (pSym_head->bHasFacet(eFacet))
+//      if (pSym_head->szFacet(eFacet)->bSame(szFacet))
+//        return true;
+//
+//    return false;
+//  }
+//  else {
+//    if (pSym_head->bHasFacet(eFacet))
+//      if (pSym_head->szFacet(eFacet)->bSame(szFacet))
+//        return true;
+//
+//    return false;
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+//  if (pSym_head->bHasFacet(eFacet) &&
+//      pSym_head->szFacet(eFacet)->bSame(szFacet)) {
+//    if (!pHeadCard->szFacet(SF_NONE)->bSame(szFacet)) {
+//      pHeadCard->vDump(__func__);
+//      vDebugPoint();
+//    }
+//    return true;
+//  }
+//
+//  if (pHeadCard->szFacet(SF_NONE)->bSame(szFacet)) {
+//    pHeadCard->vDump(__func__);
+//    vDebugPoint();
+//  }
+//
+//  return false;
+//}
+/*----------------------------------------------------------------------------*/
+//bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
+//{
+//  UNUSED(eFacet);
+//
+//  Card* pHeadCard = pHead();
+//
+//  if (!pHeadCard)
+//    return false;
+//
+//  if (pHeadCard->szFacet(SF_NONE)->bSame(szFacet)) {
+//    if (! pHeadCard->szFacet(eFacet)->bSame(szFacet)) {
+//      pHeadCard->vDump(__func__);
+//      vDebugPoint();
+//    }
+//    return true;
+//  }
+//
+//  if (pHeadCard->szFacet(eFacet) &&
+//      pHeadCard->szFacet(eFacet)->bSame(szFacet)) {
+//    pHeadCard->vDump(__func__);
+//    vDebugPoint();
+//  }
+//
+//  return false;
+//}
+/*----------------------------------------------------------------------------*/
+//bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
+//{
+//  UNUSED(eFacet);
+//
+//  if (Card* pHeadCard = pHead()) {
+//    if (pHeadCard->pSymbol()->bHasFacet(eFacet))
+//      if (pHeadCard->szFacet(eFacet)->bSame(szFacet))
+//        return true;
+//  }
+//
+//  return false;
+//}
+
 
 /*----------------------------------------------------------------------------*/
 /* insert child card after given card                                         */
