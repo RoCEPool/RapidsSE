@@ -308,8 +308,6 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolPred>
 
   RASSERT(pCI->G_bEachMain(CK_o_CALL));
-  //vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
- // pCI->vPrintBoard(__func__,__LINE__);
 
   Board* pBoard = pCI->m_pBench->pFindBoard(pCI->G.p_call->pSymbol());
 

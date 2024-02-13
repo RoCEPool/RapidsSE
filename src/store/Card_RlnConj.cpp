@@ -249,8 +249,8 @@ bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
-      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)) ||
-          p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_TBL_COL)) ||
+          p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_TBL_COL)) )
         return true;
 
       return false;
