@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* _jira327                                                                   */
+/*============================================================================*/
+
+create table TABLE3 (
+   pcol3   integer not null,
+   scol3   integer not null,
+   tcol3   integer not null,
+   unicol3 integer not null,
+   cola2   integer,
+   cola1   integer,
+   ucol    integer,
+   cola3   integer,
+   colb3   varchar(25) ,
+   colc3   timestamp NOT NULL
+);
+load TABLE3 "../DATA/JIRA/SE_348.csv";
+create index tb3_tcol on table3(tcol3);
+create index tb3_scol on table3(scol3);
+create index tb3_colb on table3(colb3);
+
+select pcol3, colb3, scol3, extract(month from colc3) from table3 where tcol3 not in ( select scol3 from table3 where extract(month from colc3)=3) and colb3
+in ( select colb3 from table3 where colb3 like 'BL%');
