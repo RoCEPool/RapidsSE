@@ -1464,6 +1464,23 @@ bool Symbol::bHasFacet(eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /* does symbol have given facet?                                              */
 /*----------------------------------------------------------------------------*/
+bool Symbol::bHasFacet(eSF eFacet, Stz* szChrSeq)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 i_Facet = this->i_Facet(eFacet);
+  if (C_UNKNOWN == i_Facet)
+    return false;
+
+  if (szFacet(i_Facet)->bSame(szChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have given facet?                                              */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bHasFacet(Stz* szChrSeq)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
