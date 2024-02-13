@@ -330,7 +330,7 @@ void Card_Stage::vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextV
 
   Card_Cast* p_next = new Card_Cast;
   if (*szNextValue->azChar()) {
-    eSF eSymbol = Symbol::eEvalSymbol(szNextValue);
+    eSF eSymbol = Symbol::eEval_facet(szNextValue);
     RASSERT(SF_STG_CAST == eSymbol);
     p_next->SYM(SF_STG_CAST, szNextValue);
   }

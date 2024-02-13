@@ -126,7 +126,7 @@ eRO Symbol::eEvalRelnOp(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* evaluate symbol form of given arg                                          */
 /*----------------------------------------------------------------------------*/
-eSF Symbol::eEvalSymbol(Stz* szArg)
+eSF Symbol::eEval_facet(Stz* szArg)
 {
   _static_
 
@@ -173,6 +173,8 @@ eSF Symbol::eEvalSymbol(Stz* szArg)
   if (bIs_Type(szArg))         return SF_TYPE;
   if (bIs_When(szArg))         return SF_WHEN;
   if (bIs_List_Cnt(szArg))     return SF_LIST_CNT;
+
+  if (bPossibleNm(szArg))      return SF_NMD_COL;
 
   return SF_NONE;
 }
@@ -711,21 +713,6 @@ bool Symbol::bIs_Nmd_Col(Stz* szChrSeq)
   if (bIs_Then(szChrSeq))        return false;
   if (bIs_Type(szChrSeq))        return false;
   if (bIs_When(szChrSeq))        return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a math operator ?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_None(Stz* szArg)
-{
-  _static_
-
-  char acFirst  = szArg->azChar()[0];
-
-  if (acFirst)
-    return false;
 
   return true;
 }

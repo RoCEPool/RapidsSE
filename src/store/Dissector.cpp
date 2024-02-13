@@ -1800,18 +1800,14 @@ Card_RpnExpr* Dissector::pTo_rpnExpr(Stz* szRpnExpr)
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
     Token* pToken = pTokenVec->pGet(i_Tkn);
 
-    s256 sDissectedVal;
-    if (pToken->eToken() == TN_STRING) {
-      sDissectedVal.vSprint("'%s'"_Stz, pToken->szChars());
-    }
-    else {
-      sDissectedVal = pToken->szChars();
-    }
+    s256 sFacet;
+    if (pToken->eToken() == TN_STRING)
+      sFacet.vSprint("'%s'"_Stz, pToken->szChars());
+    else
+      sFacet = pToken->szChars();
 
-    eSF eSymbol = Symbol::eEvalSymbol(sDissectedVal);
-    if (SF_NONE == eSymbol)
-      eSymbol = SF_NMD_COL;
-    Card* p_rpnItem = (new Card_Term) ->SYM(eSymbol, sDissectedVal);
+    eSF eFacet = Symbol::eEval_facet(sFacet);
+    Card* p_rpnItem = (new Card_Term) ->SYM(eFacet, sFacet);
 
     p_rpnExpr->vAppendChild(p_rpnItem);
   }

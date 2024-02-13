@@ -50,7 +50,7 @@ namespace STORE
 
     static eRO  eEvalRelnOp(Stz* szSymbol);
     static eQO  eEvalSubQryOp(Stz* szArg);
-    static eSF  eEvalSymbol(Stz* szArg);
+    static eSF  eEval_facet(Stz* szArg);
 
     static bool bIs_Agg_Fn(Stz* szChrSeq);          // avg, count, ... sum
     static bool bIs_As(Stz* szChrSeq);              // AS
@@ -85,7 +85,6 @@ namespace STORE
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
     static bool bIs_Negate(Stz* szChrSeq);          // NULL
     static bool bIs_Nmd_Col(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_None(Stz* szChrSeq);            // <none>
     static bool bIs_Note(Stz* szChrSeq);            // ...any...
     static bool bIs_Null(Stz* szChrSeq);            // NULL
     static bool bIs_Parenthesis(Stz* szChrSeq);     // ( or )
