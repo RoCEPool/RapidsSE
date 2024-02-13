@@ -107,6 +107,8 @@ namespace STORE
     static bool bIs_When(Stz* szChrSeq);            // WHEN
     static bool bIs_Xk_Cast(Stz* szChrSeq);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
+    static bool bIs_Rw_Aggregates(Stz* szChrSeq);   // AGGREGATES
+
     static bool bPossibleNm(Stz* szChrSeq);
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
@@ -270,6 +272,7 @@ namespace STORE
     void vFacet_Type(Stz* szType);
     void vFacet_When(Stz* szWhen);
     void vFacet_Xk_Cast(Stz* szXkCast);
+    void vFacet_Rw_Aggregates(Stz* szAggregates);
 
     void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);

@@ -174,6 +174,8 @@ eSF Symbol::eEval_facet(Stz* szArg)
   if (bIs_When(szArg))         return SF_WHEN;
   if (bIs_List_Cnt(szArg))     return SF_LIST_CNT;
 
+  if (bIs_Rw_Aggregates(szArg)) return SF_RW_AGGREGATES;
+
   if (bPossibleNm(szArg))      return SF_NMD_COL;
 
   return SF_NONE;
@@ -1048,6 +1050,18 @@ bool Symbol::bIs_Xk_Cast(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given arg the rw AGGREGATES ?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Rw_Aggregates(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("AGGREGATES"_Stz))   return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* strip disambiguation                                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bPossibleNm(Stz* szChrSeq)
@@ -1401,8 +1415,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_SQY_OP:      vFacet_Sqy_Op(szChrSeq);      break;
     case SF_STG_CAST:    vFacet_Stg_Cast(szChrSeq);    break;
     case SF_STR_FN:      vFacet_Str_Fn(szChrSeq);      break;
-    case SF_STR_LIT:
-      vFacet_Str_Lit(szChrSeq);      break;
+    case SF_STR_LIT:     vFacet_Str_Lit(szChrSeq);      break;
     case SF_TBL_COL:     vFacet_Tbl_Col(szChrSeq);     break;
     case SF_TBL_NM:      vFacet_Tbl_Nm(szChrSeq);      break;
     case SF_TBL_SYN:     vFacet_Tbl_Syn(szChrSeq);     break;
@@ -1410,6 +1423,8 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_TYPE:        vFacet_Type(szChrSeq);        break;
     case SF_WHEN:        vFacet_When(szChrSeq);        break;
     case SF_XK_CAST:     vFacet_Xk_Cast(szChrSeq);     break;
+
+    case SF_RW_AGGREGATES:  vFacet_Rw_Aggregates(szChrSeq);  break;
 
     default: NEVER_REACH;
   }
@@ -2043,6 +2058,8 @@ bool Symbol::bValidate(void)
       case SF_TYPE:        b = bIs_Type(szFacet);        break;
       case SF_WHEN:        b = bIs_When(szFacet);        break;
       case SF_XK_CAST:     b = bIs_Xk_Cast(szFacet);     break;
+
+      case SF_RW_AGGREGATES: b = bIs_Rw_Aggregates(szFacet);  break;
 
       default:
         NEVER_REACH
@@ -3296,6 +3313,20 @@ void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
   vFacetSprint(SF_XK_CAST,"%s"_Stz,szXkCast);
 
   RASSERT(bHasFacet(SF_XK_CAST));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set facet of this symbol to AGGREGATES                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Rw_Aggregates(Stz* szAggregates)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! bHasFacets());
+
+  vFacetSprint(SF_RW_AGGREGATES,"%s"_Stz,szAggregates);
+
+  RASSERT(bHasFacet(SF_RW_AGGREGATES));
 }
 
 /*----------------------------------------------------------------------------*/

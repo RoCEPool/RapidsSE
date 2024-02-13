@@ -1648,7 +1648,7 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
 
   i8 iCardNo = 0;
 
-  if (p_rpnExpr->bHeadSame(SF_NONE,"AGGREGATES"_Stz))
+  if (p_rpnExpr->bHeadSame(SF_RW_AGGREGATES,"AGGREGATES"_Stz))
     p_rpnExpr->vDiscardHead();
 
   i8 i_Expr = 1;
