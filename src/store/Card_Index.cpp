@@ -216,6 +216,8 @@ bool Card_Index::bTblCol_IsKeyIn_index(Stz* szTblCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(Symbol::bIs_Tbl_Col(szTblCol));
+
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 
   Kid xKid(p_idxColList);
