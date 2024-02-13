@@ -885,7 +885,7 @@ static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     *p++ = (iArg1 % 10) + '0';
     iArg1 /= 10ll;
     ++nSize;
-  } while (iArg1 && *piAreaRemaining < nSize);
+  } while (iArg1 && *piAreaRemaining >= nSize);
 
   if (bNegative) {
     *p++ = '-';
