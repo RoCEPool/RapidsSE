@@ -2822,7 +2822,7 @@ void Symbol::vFacet_Key_Col(i8 iKeyCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_KEY_COL == eFacet(0));
+  RASSERT(0 == nFacets() || SF_KEY_COL == eFacet(0));
 
   vFacetSprint(SF_KEY_COL, "$K%lld"_Stz, iKeyCol);
 
@@ -2947,7 +2947,7 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_SQY_OP == eFacet(0));
+  RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vFacetSprint(SF_RLN_OP,"%s"_Stz,szRlnOp);
 
@@ -3003,7 +3003,7 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_SQY_OP == eFacet(0));
+  RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
 
@@ -3073,7 +3073,7 @@ void Symbol::vFacet_Stg_Cast(Stz* szStgCast)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_STG_CAST == eFacet(0));
+  RASSERT(0 == nFacets() || SF_STG_CAST == eFacet(0));
 
   vFacetSprint(SF_STG_CAST,"%s"_Stz,szStgCast);
 
@@ -3165,7 +3165,7 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) ||
+  RASSERT(0 == nFacets() ||
           SF_NMD_COL == eFacet(0) ||
           SF_EXP_COL == eFacet(0) ||
           SF_TBL_COL == eFacet(0));
@@ -3224,7 +3224,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_TBL_SYN == eFacet(0));
+  RASSERT(0 == nFacets() || SF_TBL_SYN == eFacet(0));
 
   char cTableSyn_actual = cTblSyn();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
