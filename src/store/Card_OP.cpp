@@ -729,8 +729,7 @@ void Card_OP::vRpn_crossJoin(String* psRpnExpr, Card_CrossJoin* p_crossJoin)
         RASSERT(p_term->pSymbol()->bHasType());
       }
     }
-
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_IDX_COL));
   }
 }
 

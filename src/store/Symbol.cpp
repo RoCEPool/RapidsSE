@@ -1283,7 +1283,6 @@ eSF Symbol::eFacet(i8 i_Facet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  //RASSERT(i_Facet < m_nFacets);
   if (! m_nFacets)
     return SF_NONE;
 
