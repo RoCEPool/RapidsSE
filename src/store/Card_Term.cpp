@@ -443,8 +443,7 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pString->vCatSprint("%s%s"_Stz, szSep,
-                      szFacet(SF_NONE));
+  pString->vCatSprint("%s%s"_Stz, szSep, m_xSymbol.szFacet((i8)0));
 }
 
 /*----------------------------------------------------------------------------*/
