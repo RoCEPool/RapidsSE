@@ -1358,7 +1358,18 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   // column type (e.g. BOOLEAN)
 
   Card_Term* p_term_type = _pCard_Term(p_rpnExpr->pPopChild());
-  TypeId xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_COL_TYPE));
+  TypeId xTypeId;
+  if (p_term_type->pSymbol()->bHasFacet(SF_COL_TYPE))
+    xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_COL_TYPE));
+  else
+  if (p_term_type->pSymbol()->bHasFacet(SF_NULL))
+    xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_NULL));
+  else
+  if (p_term_type->pSymbol()->bHasFacet(SF_NMD_COL))
+    xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_NMD_COL));
+  else
+    NEVER_REACH
+
   delete p_term_type;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
