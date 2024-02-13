@@ -1421,9 +1421,9 @@ Card_Direction* Dissector::pPop_direction(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  // AS
+  // ASC | DESC
   Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
-  Stz* szDirn = p_term->szFacet(SF_NONE);
+  Stz* szDirn = p_term->szFacet(SF_DIRECTION);
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
   Card_Direction* p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, szDirn);
