@@ -1348,7 +1348,7 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
 
   if (p_rpnExpr->bHeadSame("TYPE"_Stz)) {
     Card_Term *p_term = _pCard_Term(p_rpnExpr->pPopChild());
-    Stz *szTerm = p_term->szFacet(SF_NONE);
+    Stz *szTerm = p_term->szFacet(SF_TYPE);
     RASSERT(szTerm->bSame("TYPE"_Stz));
     delete p_term;
     p_term = nullptr;
@@ -1358,7 +1358,7 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   // column type (e.g. BOOLEAN)
 
   Card_Term* p_term_type = _pCard_Term(p_rpnExpr->pPopChild());
-  TypeId xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_NONE));
+  TypeId xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_COL_TYPE));
   delete p_term_type;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1421,9 +1421,9 @@ Card_Direction* Dissector::pPop_direction(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  // AS
+  // ASC | DESC
   Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
-  Stz* szDirn = p_term->szFacet(SF_NONE);
+  Stz* szDirn = p_term->szFacet(SF_DIRECTION);
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
   Card_Direction* p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, szDirn);

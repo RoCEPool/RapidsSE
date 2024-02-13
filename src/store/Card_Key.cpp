@@ -259,7 +259,7 @@ IndexDef* Card_Key::pToIndexDef(void)
     if (! p_term)
       continue;
 
-    Stz* szColNm  = p_term->szFacet(SF_NONE);
+    Stz* szColNm  = p_term->szFacet(SF_EXP_COL);
     TypeId xTypeId = p_term->xTypeId();
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())

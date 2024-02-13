@@ -1243,11 +1243,11 @@ void Symbol::vDump(Stz* szTitle)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Symbol::eEvalRlnOp(void)
+eRO Symbol::eEval_rlnOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eRO eRelnOp = eEvalRelnOp(szFacet(0));
+  eRO eRelnOp = eEvalRelnOp(szFacet(SF_RLN_OP));
 
   return eRelnOp;
 }
@@ -1255,11 +1255,11 @@ eRO Symbol::eEvalRlnOp(void)
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
-eQO Symbol::eEvalSqyOp(void)
+eQO Symbol::eEval_sqyOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eQO eSubQryOp = eEvalSubQryOp(szFacet(0));
+  eQO eSubQryOp = eEvalSubQryOp(szFacet(SF_SQY_OP));
 
   return eSubQryOp;
 }
@@ -1987,7 +1987,6 @@ bool Symbol::bValidate(void)
   for (i8 i_Facet = 0; i_Facet < nFacets(); i_Facet++) {
     eSF eFacet = xaFacet[i_Facet].m_eFacet;
     switch (eFacet) {
-      case SF_NONE:        b = bIs_None(szFacet(i_Facet));       break;
       case SF_AGG_FN:      b = bIs_Agg_Fn(szFacet(i_Facet));     break;
       case SF_AS:          b = bIs_As(szFacet(i_Facet));         break;
       case SF_BOL_FN:      b = bIs_Bol_Fn(szFacet(i_Facet));     break;
@@ -2020,7 +2019,7 @@ bool Symbol::bValidate(void)
       case SF_NOTE:        b = bIs_Note(szFacet(i_Facet));       break;
       case SF_NULL:        b = bIs_Null(szFacet(i_Facet));       break;
       case SF_PARENTHESIS: b = bIs_Parenthesis(szFacet(i_Facet));break;
-       case SF_RLN_OP:      b = bIs_Rln_Op(szFacet(i_Facet));     break;
+      case SF_RLN_OP:      b = bIs_Rln_Op(szFacet(i_Facet));     break;
       case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet(i_Facet));     break;
       case SF_SQY_NO:      b = bIs_Sqy_No(szFacet(i_Facet));     break;
       case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet(i_Facet));     break;
@@ -2823,7 +2822,7 @@ void Symbol::vFacet_Key_Col(i8 iKeyCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_KEY_COL == eFacet(0));
+  RASSERT(0 == nFacets() || SF_KEY_COL == eFacet(0));
 
   vFacetSprint(SF_KEY_COL, "$K%lld"_Stz, iKeyCol);
 
@@ -2948,7 +2947,7 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_SQY_OP == eFacet(0));
+  RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vFacetSprint(SF_RLN_OP,"%s"_Stz,szRlnOp);
 
@@ -3004,7 +3003,7 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_SQY_OP == eFacet(0));
+  RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
 
@@ -3074,7 +3073,7 @@ void Symbol::vFacet_Stg_Cast(Stz* szStgCast)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_STG_CAST == eFacet(0));
+  RASSERT(0 == nFacets() || SF_STG_CAST == eFacet(0));
 
   vFacetSprint(SF_STG_CAST,"%s"_Stz,szStgCast);
 
@@ -3104,8 +3103,7 @@ void Symbol::vFacet_Exp_Col(i8 iExpCol)
 
   if (m_nFacets) {
     eSF eFacet = this->eFacet(0);
-    RASSERT(SF_NONE    == eFacet ||
-            SF_SQY_RSL == eFacet ||
+    RASSERT(SF_SQY_RSL == eFacet ||
             SF_EXP_COL == eFacet ||
             SF_NMD_COL == eFacet ||
             SF_TBL_COL == eFacet ||
@@ -3166,7 +3164,7 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) ||
+  RASSERT(0 == nFacets() ||
           SF_NMD_COL == eFacet(0) ||
           SF_EXP_COL == eFacet(0) ||
           SF_TBL_COL == eFacet(0));
@@ -3225,7 +3223,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == eFacet(0) || SF_TBL_SYN == eFacet(0));
+  RASSERT(0 == nFacets() || SF_TBL_SYN == eFacet(0));
 
   char cTableSyn_actual = cTblSyn();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
@@ -3295,16 +3293,6 @@ void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
 /*----------------------------------------------------------------------------*/
 /* concat facets                                                              */
 /*----------------------------------------------------------------------------*/
-void Symbol:: vFacetAppend(eSF eFacet, Stz* szFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vFacetSet(m_nFacets++,eFacet,szFacet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* concat facets                                                              */
-/*----------------------------------------------------------------------------*/
 void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -3317,22 +3305,6 @@ void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
       vDebugPoint();
 
     vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy facets                                                                */
-/*----------------------------------------------------------------------------*/
-void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vFacetReset();
-
-  m_nFacets = pSymbol_arg->m_nFacets;
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    xaFacet[i_Facet].m_eFacet  = pSymbol_arg->xaFacet[i_Facet].m_eFacet;
-    xaFacet[i_Facet].m_sChrSeq = pSymbol_arg->xaFacet[i_Facet].m_sChrSeq;
   }
 }
 

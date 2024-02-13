@@ -244,26 +244,24 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 
 
     if (p_conj->bIsRelnOp()) {
-      Stz* szValue_conj = p_conj->szFacet(SF_RLN_OP);
-
-      eRO eRelnOp = RelOp::eDecode(szValue_conj);
-      RASSERT(RO_NONE != eRelnOp);
+      eRO eRlnOp = p_conj->pSymbol()->eEval_rlnOp();
+      RASSERT(RO_NONE != eRlnOp);
 
       pSubQuery->vCaller(m_pCI->G.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);
       pSubQuery->vCallOp(QO_RELN_OP);
-      pSubQuery->vRelnOp(eRelnOp);
+      pSubQuery->vRelnOp(eRlnOp);
       return C_CONTINUE_RECURSION;
     }
 
     RASSERT(p_conj->bIsSqyOp());
 
-    eQO eSubQryOp = p_conj->pSymbol()->eEvalSqyOp();
-    RASSERT(QO_NONE != eSubQryOp);
+    eQO eSqyOp = p_conj->pSymbol()->eEval_sqyOp();
+    RASSERT(QO_NONE != eSqyOp);
 
     pSubQuery->vCaller(m_pCI->G.i_Board);
     pSubQuery->vClause(QC_WHERE_CLAUSE);
-    pSubQuery->vCallOp(eSubQryOp);
+    pSubQuery->vCallOp(eSqyOp);
     return C_CONTINUE_RECURSION;
   };
 

@@ -127,8 +127,8 @@ namespace STORE
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vDump(Stz* szTitle=""_Stz);
 
-    eRO  eEvalRlnOp(void);
-    eQO  eEvalSqyOp(void);
+    eRO  eEval_rlnOp(void);
+    eQO  eEval_sqyOp(void);
 
     Facet* aFacet(eSF eFacet);
     Facet* aFacet(i8 i_Facet);
@@ -271,9 +271,7 @@ namespace STORE
     void vFacet_When(Stz* szWhen);
     void vFacet_Xk_Cast(Stz* szXkCast);
 
-    void vFacetAppend(eSF eFacet, Stz* szFacet);
     void vFacetConcat(Symbol* pSymbol_arg);
-    void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);
     void vFacetPush(eSF eFacet);
     void vFacetReset(void);

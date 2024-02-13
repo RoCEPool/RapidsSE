@@ -309,7 +309,7 @@ ePB Card_Term::eEvalBound(void)
     case RO_GREATER_THAN:  return PB_LBOUND;
 
     default:
-      vTrace("%s(%lld): unexpected eEvalRlnOp %lld %s\n"_Stz
+      vTrace("%s(%lld): unexpected eEval_rlnOp %lld %s\n"_Stz
           ,__func__
           ,(i8)__LINE__
           ,(i8)eRelOp
@@ -326,7 +326,7 @@ eRO Card_Term::eEvalRelOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  eRO eRelOp = pSymbol()->eEvalRlnOp();
+  eRO eRelOp = pSymbol()->eEval_rlnOp();
 
   return eRelOp;
 }
@@ -390,26 +390,20 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  s256 sTerm = szFacet(SF_NONE);
   s32 sType_short = szCT_char[eCTVal()];
 
-  //pRibbon->vSprintSnippet(true,"%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
+  if (! m_xSymbol.nFacets())
+    return;
 
-  if (m_xSymbol.nFacets()) {
-    for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
-      Facet* aFacet = m_xSymbol.aFacet(i_Facet);
+  for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
+    Facet* aFacet = m_xSymbol.aFacet(i_Facet);
 
-      if (aFacet->m_sChrSeq.bSame("$1"_Stz))
-        vDebugPoint();
-      pRibbon->vSprintSnippet(true,"%s~%lld%s%lld"_Stz,
-                              aFacet->m_sChrSeq.azChar(),
-                              i_Facet,
-                              sType_short.szStz(),
-                              m_xSymbol.xCast().m_nTypeLength);
-    }
+    pRibbon->vSprintSnippet(true,"%s~%lld%s%lld"_Stz,
+                            aFacet->m_sChrSeq.azChar(),
+                            i_Facet,
+                            sType_short.szStz(),
+                            m_xSymbol.xCast().m_nTypeLength);
   }
-
-  //vPrintCard_bySettings(pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -832,12 +832,11 @@ void Card_OP::vRpn_hash(String* psRpnExpr, Card_Hash* p_hash)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  Card_HshCol* p_hshCol = p_hash->pSub_hshCol();
   Card_Term* p_term = p_hash->pSub_term();
 
   psRpnExpr->vCatSprint("type %s %s"_Stz,
                         aCT[p_term->eCTVal()],
-                        p_term->szFacet(SF_NONE));
+                        p_term->szFacet(SF_EXP_COL));
 }
 
 /*----------------------------------------------------------------------------*/
