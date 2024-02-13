@@ -664,9 +664,9 @@ static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   }
 
   if (iArg1)
-    strncpy((*ppszDstArea), "true", *piAreaRemaining);
+    strncpy((*ppszDstArea), "true", nSize);
   else
-    strncpy((*ppszDstArea), "false", *piAreaRemaining);
+    strncpy((*ppszDstArea), "false", nSize);
 
   *(*ppaW)++ = (i8)(*ppszDstArea);
   (*ppszDstArea) += nSize;
