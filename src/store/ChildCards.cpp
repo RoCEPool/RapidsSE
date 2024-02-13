@@ -388,7 +388,10 @@ bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pSym_head->szFacet(SF_NONE)->bSame(szFacet)) {
+//  if (pSym_head->szFacet(SF_NONE)->bSame(szFacet)) {
+//    RASSERT(pSym_head->bHasFacet(eFacet,szFacet));
+  if (pSym_head->bHasFacet(eFacet,szFacet)) {
+    RASSERT(pSym_head->szFacet(SF_NONE)->bSame(szFacet));
     if (pSym_head->nFacets() > 1) {
       pHeadCard->vDump(__func__);
       vDebugPoint();
@@ -397,8 +400,15 @@ bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
       pHeadCard->vDump(__func__);
       vDebugPoint();
     }
+    if (! pSym_head->bHasFacet(eFacet,szFacet)) {
+      pHeadCard->vDump(__func__);
+      vDebugPoint();
+    }
+
     return true;
   }
+
+  RASSERT(! pSym_head->bHasFacet(eFacet,szFacet));
 
   if (pSym_head->bHasFacet(eFacet)) {
     pHeadCard->vDump(__func__);
