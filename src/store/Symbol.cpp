@@ -1972,62 +1972,65 @@ bool Symbol::bValidate(void)
 
   bool b = false;
   for (i8 i_Facet = 0; i_Facet < nFacets(); i_Facet++) {
-    eSF eFacet = xaFacet[i_Facet].m_eFacet;
+    eSF  eFacet  = this->eFacet(i_Facet);
+    Stz* szFacet = this->szFacet(eFacet);
+
     switch (eFacet) {
-      case SF_AGG_FN:      b = bIs_Agg_Fn(szFacet(i_Facet));     break;
-      case SF_AS:          b = bIs_As(szFacet(i_Facet));         break;
-      case SF_BOL_FN:      b = bIs_Bol_Fn(szFacet(i_Facet));     break;
-      case SF_BOL_LIT:     b = bIs_Bol_Lit(szFacet(i_Facet));    break;
-      case SF_BOL_OP:      b = bIs_Bol_Op(szFacet(i_Facet));     break;
-      case SF_BOUND:       b = bIs_Bound(szFacet(i_Facet));      break;
-      case SF_BRACE:       b = bIs_Brace(szFacet(i_Facet));      break;
-      case SF_CAST:        b = bIs_Cast(szFacet(i_Facet));       break;
-      case SF_CASTTYPE:    b = bIs_CastType(szFacet(i_Facet));   break;
-      case SF_COL_TYPE:    b = bIs_Col_Type(szFacet(i_Facet));   break;
-      case SF_COMMA:       b = bIs_Comma(szFacet(i_Facet));      break;
-      case SF_CROSS:       b = bIs_Cross(szFacet(i_Facet));      break;
-      case SF_DCM_LIT:     b = bIs_Dcm_Lit(szFacet(i_Facet));    break;
-      case SF_DIRECTION:   b = bIs_Direction(szFacet(i_Facet));  break;
-      case SF_EXP_COL:     b = bIs_Exp_Col(szFacet(i_Facet));    break;
-      case SF_FLD_NM:      b = bIs_Fld_Nm(szFacet(i_Facet));     break;
-      case SF_FLT_LIT:     b = bIs_Flt_Lit(szFacet(i_Facet));    break;
-      case SF_GROUPBY:     b = bIs_GroupBy(szFacet(i_Facet));    break;
-      case SF_IDX_COL:     b = bIs_Idx_Col(szFacet(i_Facet));    break;
-      case SF_IDX_NM:      b = bIs_Idx_Nm(szFacet(i_Facet));     break;
-      case SF_INT_LIT:     b = bIs_Int_Lit(szFacet(i_Facet));    break;
-      case SF_INTERVAL_DT: b = bIs_Interval_DT(szFacet(i_Facet));break;
-      case SF_INTERVAL_YM: b = bIs_Interval_YM(szFacet(i_Facet));break;
-      case SF_IVL_FN:      b = bIs_Ivl_Fn(szFacet(i_Facet));     break;
-      case SF_ITM_COL:     b = bIs_Itm_Col(szFacet(i_Facet));    break;
-      case SF_KEY_COL:     b = bIs_Key_Col(szFacet(i_Facet));    break;
-      case SF_LIST_CNT:    b = bIs_List_Cnt(szFacet(i_Facet));   break;
-      case SF_MTH_OP:      b = bIs_Mth_Op(szFacet(i_Facet));     break;
-      case SF_NMD_COL:     b = bIs_Nmd_Col(szFacet(i_Facet));    break;
-      case SF_NOTE:        b = bIs_Note(szFacet(i_Facet));       break;
-      case SF_NULL:        b = bIs_Null(szFacet(i_Facet));       break;
-      case SF_PARENTHESIS: b = bIs_Parenthesis(szFacet(i_Facet));break;
-      case SF_RLN_OP:      b = bIs_Rln_Op(szFacet(i_Facet));     break;
-      case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet(i_Facet));     break;
-      case SF_SQY_NO:      b = bIs_Sqy_No(szFacet(i_Facet));     break;
-      case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet(i_Facet));     break;
-      case SF_SQY_PRM:     b = bIs_Sqy_Prm(szFacet(i_Facet));    break;
-      case SF_SQY_RSL:     b = bIs_Sqy_Rsl(szFacet(i_Facet));    break;
-      case SF_STG_NO:      b = bIs_Stg_Nm(szFacet(i_Facet));     break;
-      case SF_STG_CAST:    b = bIs_Stg_Cast(szFacet(i_Facet));   break;
-      case SF_STR_FN:      b = bIs_Str_Fn(szFacet(i_Facet));     break;
-      case SF_STR_LIT:     b = bIs_String(szFacet(i_Facet));     break;
-      case SF_TBL_COL:     b = bIs_Tbl_Col(szFacet(i_Facet));    break;
-      case SF_TBL_NM:      b = bIs_Tbl_Nm(szFacet(i_Facet));     break;
-      case SF_TBL_SYN:     b = bIs_Tbl_Syn(szFacet(i_Facet));    break;
-      case SF_TBL_SYN_rep: b = bIs_Tbl_Syn_rep(szFacet(i_Facet));break;
-      case SF_TYPE:        b = bIs_Type(szFacet(i_Facet));       break;
-      case SF_WHEN:        b = bIs_When(szFacet(i_Facet));       break;
-      case SF_XK_CAST:     b = bIs_Xk_Cast(szFacet(i_Facet));    break;
+      case SF_AGG_FN:      b = bIs_Agg_Fn(szFacet);      break;
+      case SF_AS:          b = bIs_As(szFacet);          break;
+      case SF_BOL_FN:      b = bIs_Bol_Fn(szFacet);      break;
+      case SF_BOL_LIT:     b = bIs_Bol_Lit(szFacet);     break;
+      case SF_BOL_OP:      b = bIs_Bol_Op(szFacet);      break;
+      case SF_BOUND:       b = bIs_Bound(szFacet);       break;
+      case SF_BRACE:       b = bIs_Brace(szFacet);       break;
+      case SF_CAST:        b = bIs_Cast(szFacet);        break;
+      case SF_CASTTYPE:    b = bIs_CastType(szFacet);    break;
+      case SF_COL_TYPE:    b = bIs_Col_Type(szFacet);    break;
+      case SF_COMMA:       b = bIs_Comma(szFacet);       break;
+      case SF_CROSS:       b = bIs_Cross(szFacet);       break;
+      case SF_DCM_LIT:     b = bIs_Dcm_Lit(szFacet);     break;
+      case SF_DIRECTION:   b = bIs_Direction(szFacet);   break;
+      case SF_EXP_COL:     b = bIs_Exp_Col(szFacet);     break;
+      case SF_FLD_NM:      b = bIs_Fld_Nm(szFacet);      break;
+      case SF_FLT_LIT:     b = bIs_Flt_Lit(szFacet);     break;
+      case SF_GROUPBY:     b = bIs_GroupBy(szFacet);     break;
+      case SF_IDX_COL:     b = bIs_Idx_Col(szFacet);     break;
+      case SF_IDX_NM:      b = bIs_Idx_Nm(szFacet);      break;
+      case SF_INT_LIT:     b = bIs_Int_Lit(szFacet);     break;
+      case SF_INTERVAL_DT: b = bIs_Interval_DT(szFacet); break;
+      case SF_INTERVAL_YM: b = bIs_Interval_YM(szFacet); break;
+      case SF_IVL_FN:      b = bIs_Ivl_Fn(szFacet);      break;
+      case SF_ITM_COL:     b = bIs_Itm_Col(szFacet);     break;
+      case SF_KEY_COL:     b = bIs_Key_Col(szFacet);     break;
+      case SF_LIST_CNT:    b = bIs_List_Cnt(szFacet);    break;
+      case SF_MTH_OP:      b = bIs_Mth_Op(szFacet);      break;
+      case SF_NMD_COL:     b = bIs_Nmd_Col(szFacet);     break;
+      case SF_NOTE:        b = bIs_Note(szFacet);        break;
+      case SF_NULL:        b = bIs_Null(szFacet);        break;
+      case SF_PARENTHESIS: b = bIs_Parenthesis(szFacet); break;
+      case SF_RLN_OP:      b = bIs_Rln_Op(szFacet);      break;
+      case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet);      break;
+      case SF_SQY_NO:      b = bIs_Sqy_No(szFacet);      break;
+      case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet);      break;
+      case SF_SQY_PRM:     b = bIs_Sqy_Prm(szFacet);     break;
+      case SF_SQY_RSL:     b = bIs_Sqy_Rsl(szFacet);     break;
+      case SF_STG_NO:      b = bIs_Stg_Nm(szFacet);      break;
+      case SF_STG_CAST:    b = bIs_Stg_Cast(szFacet);    break;
+      case SF_STR_FN:      b = bIs_Str_Fn(szFacet);      break;
+      case SF_STR_LIT:     b = bIs_String(szFacet);      break;
+      case SF_TBL_COL:     b = bIs_Tbl_Col(szFacet);     break;
+      case SF_TBL_NM:      b = bIs_Tbl_Nm(szFacet);      break;
+      case SF_TBL_SYN:     b = bIs_Tbl_Syn(szFacet);     break;
+      case SF_TBL_SYN_rep: b = bIs_Tbl_Syn_rep(szFacet); break;
+      case SF_TYPE:        b = bIs_Type(szFacet);        break;
+      case SF_WHEN:        b = bIs_When(szFacet);        break;
+      case SF_XK_CAST:     b = bIs_Xk_Cast(szFacet);     break;
 
       default:
         NEVER_REACH
     }
   }
+
   return b;
 }
 
