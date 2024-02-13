@@ -79,6 +79,8 @@ enum eSF // symbol facet
 
   /* */ SF_XK_CAST,     // XK_                 : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
+  /* */ SF_RW_AGGREGATES, // Aggregates        : AGGREGATES
+
   /* */ SF_ENUMS
 };
 

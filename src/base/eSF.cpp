@@ -81,6 +81,8 @@ Stz* aSF[SF_ENUMS]
 
   /* */ "SF_XK_CAST"_Stz,
 
+  /* */ "SF_RW_AGGREGATES"_Stz,
+
 //  /* */ "SF_ENUMS"_Stz
 };
 
