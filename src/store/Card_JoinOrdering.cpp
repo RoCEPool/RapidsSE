@@ -200,14 +200,14 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
     }
   }
 
-  Kid xCI_joinOrder(this);
-  while (xCI_joinOrder.bEach(CK_JOINORDER)) {
-
-    Stz* szTableSyn = xCI_joinOrder.p_joinOrder()->szFacet(SF_NONE);
+  Kid xJoinOrdering(this);
+  while (xJoinOrdering.bEach(CK_JOINORDER)) {
+    Card_JoinOrder* p_joinOrder = xJoinOrdering.p_joinOrder();
+    Stz* szTblSyn = p_joinOrder->szFacet(SF_TBL_SYN);
 
     i8 i_Table = C_UNKNOWN;
     Card_From* p_from =
-        _pCard_From(pDeck->pFindChildWithSub(CK_o_FROM, CK_s_TABLE, szTableSyn, i_Table));
+        _pCard_From(pDeck->pFindChildWithSub(CK_o_FROM, CK_s_TABLE, szTblSyn, i_Table));
 
     pDeck->vRemoveChild(p_from);
 
@@ -233,7 +233,6 @@ void Card_JoinOrdering::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
-
 
 /*===========================================================================*/
 /* end                                                                        */

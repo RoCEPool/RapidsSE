@@ -504,7 +504,7 @@ void Card_CONJ::vShortForm(String* pString)
   }
   else
   if (bIsCard(CK_RLNCONJ)) {
-    pString->vCatSprint(" %s"_Stz, szFacet(SF_NONE));
+    pString->vCatSprint(" %s"_Stz, szFacet(SF_RLN_OP));
   }
   else
   if (bIsCard(CK_NOTCONJ)) {

@@ -364,10 +364,12 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reChild)
 /*----------------------------------------------------------------------------*/
 /* is the head card same as given arg                                         */
 /*----------------------------------------------------------------------------*/
-bool ChildCards::bHeadSame(Stz* szArg)
+bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
 {
+  UNUSED(eFacet);
+
   if (Card* pHeadCard = pHead()) {
-    if (pHeadCard->szFacet(SF_NONE)->bSame(szArg))
+     if (pHeadCard->szFacet(SF_NONE)->bSame(szFacet))
       return true;
   }
 
