@@ -374,16 +374,6 @@ bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
 
   Symbol* pSym_head = pHeadCard->pSymbol();
 
-  if (SF_NONE == eFacet) {
-    if (pSym_head->szFacet(eFacet)->bSame(szFacet)) {
-      return true;
-    }
-
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   if (pSym_head->bHasFacet(eFacet,szFacet))
     return true;
 
