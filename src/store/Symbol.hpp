@@ -271,9 +271,7 @@ namespace STORE
     void vFacet_When(Stz* szWhen);
     void vFacet_Xk_Cast(Stz* szXkCast);
 
-    void vFacetAppend(eSF eFacet, Stz* szFacet);
     void vFacetConcat(Symbol* pSymbol_arg);
-    void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);
     void vFacetPush(eSF eFacet);
     void vFacetReset(void);

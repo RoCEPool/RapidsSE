@@ -3295,16 +3295,6 @@ void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
 /*----------------------------------------------------------------------------*/
 /* concat facets                                                              */
 /*----------------------------------------------------------------------------*/
-void Symbol:: vFacetAppend(eSF eFacet, Stz* szFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vFacetSet(m_nFacets++,eFacet,szFacet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* concat facets                                                              */
-/*----------------------------------------------------------------------------*/
 void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -3317,22 +3307,6 @@ void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
       vDebugPoint();
 
     vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy facets                                                                */
-/*----------------------------------------------------------------------------*/
-void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vFacetReset();
-
-  m_nFacets = pSymbol_arg->m_nFacets;
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    xaFacet[i_Facet].m_eFacet  = pSymbol_arg->xaFacet[i_Facet].m_eFacet;
-    xaFacet[i_Facet].m_sChrSeq = pSymbol_arg->xaFacet[i_Facet].m_sChrSeq;
   }
 }
 
