@@ -355,6 +355,7 @@ bool Card_RlnConj::bUsesTable(char cTblSyn)
 void Card_RlnConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   RASSERT( m_xSymbol.bHasFacet(SF_BOL_FN) ||
            m_xSymbol.bHasFacet(SF_RLN_OP) ||

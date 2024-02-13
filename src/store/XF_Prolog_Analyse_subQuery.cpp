@@ -242,9 +242,9 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 
     p_conj->pSymbol()->Y_vSet(P_SqyCall);
 
-    Stz* szValue_conj = p_conj->szFacet(SF_NONE);
 
     if (p_conj->bIsRelnOp()) {
+      Stz* szValue_conj = p_conj->szFacet(SF_RLN_OP);
 
       eRO eRelnOp = RelOp::eDecode(szValue_conj);
       RASSERT(RO_NONE != eRelnOp);
