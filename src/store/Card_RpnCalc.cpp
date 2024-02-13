@@ -433,11 +433,9 @@ bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)
 
   for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
     Card_Term* p_term_this = this->pGetTerm(i_Child);
-    Stz* szThis = p_term_this->szFacet(SF_NONE);
     Card_Term* p_term_arg = p_rpnCalc_arg->pGetTerm(i_Child);
-    Stz* szArg = p_term_arg->szFacet(SF_NONE);
 
-    if (szThis->bSame(szArg))
+    if (p_term_this->bSymbolMatches(p_term_arg))
       continue;
 
     return false;
