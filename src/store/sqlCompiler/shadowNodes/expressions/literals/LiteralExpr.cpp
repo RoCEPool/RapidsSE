@@ -573,7 +573,7 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
 
     case CT_TIME:     // ******************************************************* From CT_TIME to...
       switch (eTargetType) {
-        case CT_TIMESTAMP:        return pDateToTimestamp(pExpr, pRootNode);
+        //case CT_TIMESTAMP:        return pTimeToTimestamp(pExpr, pRootNode);
         case CT_CHAR:   // fall through
         case CT_VARCHAR:          return pLiteralToVarchar(pExpr, pRootNode);
         default:                  return nullptr;

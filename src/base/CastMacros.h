@@ -238,16 +238,17 @@ static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     fltArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    int iSize = snprintf((*ppszStrArea), *piAreaRemaining, "%.9e", fltArg1.m_dFlt);
-    if (iSize < *piAreaRemaining) {
-      *(*ppaW)++ = (i8) (*ppszStrArea);
-      (*ppszStrArea) += (iSize + 1);
-      (*piAreaRemaining) -= (iSize + 1);
-    } else {
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
+
+  int iSize = snprintf((*ppszStrArea), *piAreaRemaining, "%.9e", fltArg1.m_dFlt);
+  if (iSize < *piAreaRemaining) {
+    *(*ppaW)++ = (i8) (*ppszStrArea);
+    (*ppszStrArea) += (iSize + 1);
+    (*piAreaRemaining) -= (iSize + 1);
+  } else {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
   }
 }
 
@@ -654,20 +655,22 @@ static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     return;
   }
 
-  if (*piAreaRemaining < 6) { // "false" + null terminator
+  const i8 nSize = iArg1 ? 5 : 6;
+
+  if (*piAreaRemaining < nSize) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
 
   if (iArg1)
-    strcpy((*ppszDstArea),"true");
+    strncpy((*ppszDstArea), "true", *piAreaRemaining);
   else
-    strcpy((*ppszDstArea),"false");
+    strncpy((*ppszDstArea), "false", *piAreaRemaining);
+
   *(*ppaW)++ = (i8)(*ppszDstArea);
-  i8 iLen = (i8) strnlen(*ppszDstArea, *piAreaRemaining) + 1;
-  (*ppszDstArea) += iLen;
-  (*piAreaRemaining) -= iLen;
+  (*ppszDstArea) += nSize;
+  (*piAreaRemaining) -= nSize;
 }
 
 
@@ -739,7 +742,7 @@ static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     return;
   }
 
-  i8 nSize = 9 + (xTme1.m_uMicro != 0 ? 6 : 0);
+  const i8 nSize = 9 + (xTme1.m_uMicro != 0 ? 7 : 0);
   if (*piAreaRemaining < nSize) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
@@ -776,14 +779,16 @@ static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   if(xTme1.m_uMicro != 0) {
     *p++ = '.';
 
-    i8 iFactor = 100000;
+    u8 uFactor = 100000;
+    u8 uDigit;
     tmp = xTme1.m_uMicro;
 
-    while (iFactor) {
-      *p++ = (tmp / iFactor % 10) + '0';
+    while (uFactor) {
+      uDigit = tmp / uFactor;
+      *p++ = uDigit + '0';
 
-      tmp /= 10;
-      iFactor /= 10;
+      tmp -= (uDigit * uFactor);
+      uFactor /= 10;
     }
   }
   *(*ppaW)++ = (i8)(*ppszDstArea);
@@ -800,49 +805,55 @@ static inline void _DTE_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     xDte1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    u8 tmpYear = C_YEAR_BASE + xDte1.m_uYearDelta;
-    char *p = (*ppszDstArea);
 
-    u8 tmp = tmpYear;
-    tmp /= 1000llu;
-    *p++ = tmp + '0';
-
-    tmp = tmpYear;
-    tmp /= 100llu;
-    *p++ = (tmp % 10) + '0';
-
-    tmp = tmpYear;
-    tmp /= 10llu;
-    *p++ = (tmp % 10) + '0';
-
-    tmp = tmpYear;
-    *p++ = (tmp % 10) + '0';
-
-    *p++ = '-';
-
-    tmp = xDte1.m_uMonth;
-    tmp /= 10llu;
-    *p++ = (tmp % 10) + '0';
-
-    tmp = xDte1.m_uMonth;
-    *p++ = (tmp % 10) + '0';
-
-    *p++ = '-';
-
-    tmp = xDte1.m_uDay;
-    tmp /= 10llu;
-    *p++ = (tmp % 10) + '0';
-
-    tmp = xDte1.m_uDay;
-    *p++ = (tmp % 10) + '0';
-
-    *(*ppaW)++ = (i8)(*ppszDstArea);
-    i8 iLen = (i8) strnlen(*ppszDstArea, *piAreaRemaining) + 1;
-    (*ppszDstArea) += iLen;
-    (*piAreaRemaining) -= iLen;
+  const i8 nSize = 11;
+  if (*piAreaRemaining < nSize) {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
+
+  u8 tmpYear = C_YEAR_BASE + xDte1.m_uYearDelta;
+  char *p = (*ppszDstArea);
+
+  u8 tmp = tmpYear;
+  tmp /= 1000llu;
+  *p++ = tmp + '0';
+
+  tmp = tmpYear;
+  tmp /= 100llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = tmpYear;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = tmpYear;
+  *p++ = (tmp % 10) + '0';
+
+  *p++ = '-';
+
+  tmp = xDte1.m_uMonth;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = xDte1.m_uMonth;
+  *p++ = (tmp % 10) + '0';
+
+  *p++ = '-';
+
+  tmp = xDte1.m_uDay;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = xDte1.m_uDay;
+  *p++ = (tmp % 10) + '0';
+
+  *(*ppaW)++ = (i8)(*ppszDstArea);
+  (*ppszDstArea) += nSize;
+  (*piAreaRemaining) -= nSize;
 }
 
 
@@ -852,136 +863,158 @@ static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    i8 bNegative = 0;
 
-    if (iArg1 < 0) {
-      iArg1 = -iArg1;
-      bNegative = 1;
-    }
+  i8 nSize = 2; // null terminator + 1st digit
+  i8 bNegative = 0;
 
-    char *p = (*ppszDstArea), *q = (*ppszDstArea);
-    do {
-      *p++ = (iArg1 % 10) + '0';
-      iArg1 /= 10ll;
-    } while (iArg1);
-
-    if (bNegative)
-      *p++ = '-';
-
-    *p = '\0';
-    while (--p > q) {
-      char c = *p;
-      *p = *q;
-      *q++ = c;
-    }
-    *(*ppaW)++ = (i8)(*ppszDstArea);
-    i8 iLen = (i8) strnlen(*ppszDstArea, *piAreaRemaining) + 1;
-    (*ppszDstArea) += iLen;
-    (*piAreaRemaining) -= iLen;
+  if (iArg1 < 0) {
+    iArg1 = -iArg1;
+    bNegative = 1;
   }
+
+  if (*piAreaRemaining < nSize) {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  char *p = (*ppszDstArea), *q = (*ppszDstArea);
+  do {
+    *p++ = (iArg1 % 10) + '0';
+    iArg1 /= 10ll;
+    ++nSize;
+  } while (iArg1 && *piAreaRemaining < nSize);
+
+  if (bNegative) {
+    *p++ = '-';
+    ++nSize;
+  }
+
+  *p = '\0';
+  while (--p > q) {
+    char c = *p;
+    *p = *q;
+    *q++ = c;
+  }
+  *(*ppaW)++ = (i8)(*ppszDstArea);
+  (*ppszDstArea) += nSize;
+  (*piAreaRemaining) -= nSize;
 }
 
 static inline void _IVL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
 {
   aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
+  *(*ppaW)++ = C_DATUM_NULL;
 }
 
 static inline void _IVY_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
 {
   aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
+  *(*ppaW)++ = C_DATUM_NULL;
 }
 
 static inline void _TSP_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
 {
   union Tsp_T xTsp1;
 
-    xTsp1.m_iAsI8 = *(--(*ppaW));
-    if (aDynamicT->m_iErrorCode != EC_NONE ||
-      xTsp1.m_iAsI8 == C_DATUM_NULL) {
-      *(*ppaW)++ = C_DATUM_NULL;
+  xTsp1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+    xTsp1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  const i8 nSize = 20 + (xTsp1.m_uMicro != 0 ? 7 : 0);
+  if (*piAreaRemaining < nSize) {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  u8 tmpYear = C_YEAR_BASE + xTsp1.m_uYearDelta;
+  char *p = (*ppszDstArea);
+
+  u8 tmp = tmpYear;
+  tmp /= 1000llu;
+  *p++ = tmp + '0';
+
+  tmp = tmpYear;
+  tmp /= 100llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = tmpYear;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = tmpYear;
+  *p++ = (tmp % 10) + '0';
+
+  *p++ = '-';
+
+  tmp = xTsp1.m_uMonth;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = xTsp1.m_uMonth;
+  *p++ = (tmp % 10) + '0';
+
+  *p++ = '-';
+
+  tmp = xTsp1.m_uDay;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = xTsp1.m_uDay;
+  *p++ = (tmp % 10) + '0';
+
+  *p++ = ' ';
+
+  tmp = xTsp1.m_uHour;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = xTsp1.m_uHour;
+  *p++ = (tmp % 10) + '0';
+
+  *p++ = ':';
+
+  tmp = xTsp1.m_uMinute;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = xTsp1.m_uMinute;
+  *p++ = (tmp % 10) + '0';
+
+  *p++ = ':';
+
+  tmp = xTsp1.m_uSecond;
+  tmp /= 10llu;
+  *p++ = (tmp % 10) + '0';
+
+  tmp = xTsp1.m_uSecond;
+  *p++ = (tmp % 10) + '0';
+
+  if(xTsp1.m_uMicro != 0) {
+    *p++ = '.';
+
+    u8 uFactor = 100000;
+    u8 uDigit;
+    tmp = xTsp1.m_uMicro;
+
+    while (uFactor) {
+      uDigit = tmp / uFactor;
+      *p++ = uDigit + '0';
+
+      tmp -= (uDigit * uFactor);
+      uFactor /= 10;
     }
-    else {
-      u8 tmpYear = C_YEAR_BASE + xTsp1.m_uYearDelta;
-      char *p = (*ppszDstArea);
+  }
 
-      u8 tmp = tmpYear;
-      tmp /= 1000llu;
-      *p++ = tmp + '0';
-
-      tmp = tmpYear;
-      tmp /= 100llu;
-      *p++ = (tmp % 10) + '0';
-
-      tmp = tmpYear;
-      tmp /= 10llu;
-      *p++ = (tmp % 10) + '0';
-
-      tmp = tmpYear;
-      *p++ = (tmp % 10) + '0';
-
-      *p++ = '-';
-
-      tmp = xTsp1.m_uMonth;
-      tmp /= 10llu;
-      *p++ = (tmp % 10) + '0';
-
-      tmp = xTsp1.m_uMonth;
-      *p++ = (tmp % 10) + '0';
-
-      *p++ = '-';
-
-      tmp = xTsp1.m_uDay;
-      tmp /= 10llu;
-      *p++ = (tmp % 10) + '0';
-
-      tmp = xTsp1.m_uDay;
-      *p++ = (tmp % 10) + '0';
-
-      *p++ = ' ';
-
-      tmp = xTsp1.m_uHour;
-      tmp /= 10llu;
-      *p++ = (tmp % 10) + '0';
-
-      tmp = xTsp1.m_uHour;
-      *p++ = (tmp % 10) + '0';
-
-      *p++ = ':';
-
-      tmp = xTsp1.m_uMinute;
-      tmp /= 10llu;
-      *p++ = (tmp % 10) + '0';
-
-      tmp = xTsp1.m_uMinute;
-      *p++ = (tmp % 10) + '0';
-
-      *p++ = ':';
-
-      tmp = xTsp1.m_uSecond;
-      tmp /= 10llu;
-      *p++ = (tmp % 10) + '0';
-
-      tmp = xTsp1.m_uSecond;
-      *p++ = (tmp % 10) + '0';
-
-      if(xTsp1.m_uMicro != 0) {
-        *p++ = ':';
-
-        tmp = xTsp1.m_uMicro;
-        tmp /= 10llu;
-        *p++ = (tmp % 10) + '0';
-
-        tmp = xTsp1.m_uMicro;
-        *p++ = (tmp % 10) + '0';
-      }
-
-      *(*ppaW)++ = (i8)(*ppszDstArea);
-      i8 iLen = (i8) strnlen(*ppszDstArea, *piAreaRemaining) + 1;
-      (*ppszDstArea) += iLen;
-      (*piAreaRemaining) -= iLen;
-    }
+  *(*ppaW)++ = (i8)(*ppszDstArea);
+  (*ppszDstArea) += nSize;
+  (*piAreaRemaining) -= nSize;
 }
 
 // nothing to do

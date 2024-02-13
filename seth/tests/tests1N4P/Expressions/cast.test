@@ -1,0 +1,660 @@
+/*----------------------------------------------------------------------------*/
+/* Cast tests                                                                 */
+/* Need to do these on column values to test the synthesised code,            */
+/* otherwise a cast of a literal is handled in the compiler.                  */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+trackmemory force;
+success
+
+create table ${testName2}_test (
+   id           INTEGER NOT NULL,
+	 intCol       INTEGER,
+	 decCol       DECIMAL(17,2),
+	 fltCol       FLOAT,
+	 vchCol       VARCHAR(25),
+	 dteCol       DATE,
+	 tmeCol       TIME,
+	 tspCol       TIMESTAMP,
+	 bolCol       BOOLEAN
+);
+success
+
+load ${testName2}_test "../DATA/Expressions/cast.csv" ;
+warning contains: '1 rows were invalid'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cast integer
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// cast int to int
+SELECT CAST(intCol AS INTEGER) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows: (null)
+      (0)
+      (1)
+      (-1)
+      (-9223372036854775806)
+      (9223372036854775806)
+      
+// cast int to dec
+SELECT CAST(intCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (0.00)
+      (1.00)
+      (-1.00)
+
+// cast int to dec (out of bounds)
+SELECT CAST(intCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(intCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+
+// cast int to flt
+SELECT CAST(intCol AS FLOAT) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows: (null)
+      (0e0)
+      (1e0)
+      (-1e0)
+      (-9223372036854775806)
+      (9223372036854775806)
+
+
+// cast int to vch
+SELECT CAST(intCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows: (null)
+      ("0")
+      ("1")
+      ("-1")
+      ("-9223372036854775806")
+      ("9223372036854775806")
+      
+
+// cast int to interval year
+SELECT CAST(intCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (INTERVAL '0'  YEAR)
+      (INTERVAL '1'  YEAR)
+      (INTERVAL '-1' YEAR)
+      
+// cast int to interval year (out of bounds)
+SELECT CAST(intCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(intCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+
+// cast int to interval month
+SELECT CAST(intCol AS INTERVAL MONTH) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (INTERVAL '0'  MONTH)
+      (INTERVAL '1'  MONTH)
+      (INTERVAL '-1' MONTH)
+      
+// cast int to interval month (out of bounds)
+SELECT CAST(intCol AS INTERVAL MONTH) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(intCol AS INTERVAL MONTH) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+
+// cast int to interval day
+SELECT CAST(intCol AS INTERVAL DAY) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (INTERVAL '0'  DAY)
+      (INTERVAL '1'  DAY)
+      (INTERVAL '-1' DAY)
+      
+// cast int to interval day (out of bounds)
+SELECT CAST(intCol AS INTERVAL DAY) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(intCol AS INTERVAL DAY) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+
+// cast int to interval hour
+SELECT CAST(intCol AS INTERVAL HOUR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (INTERVAL '0'  HOUR)
+      (INTERVAL '1'  HOUR)
+      (INTERVAL '-1' HOUR)
+      
+// cast int to interval hour (out of bounds)
+SELECT CAST(intCol AS INTERVAL HOUR) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(intCol AS INTERVAL HOUR) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+
+// cast int to interval minute
+SELECT CAST(intCol AS INTERVAL MINUTE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (INTERVAL '0'  MINUTE)
+      (INTERVAL '1'  MINUTE)
+      (INTERVAL '-1' MINUTE)
+      
+// cast int to interval minute (out of bounds)
+SELECT CAST(intCol AS INTERVAL MINUTE) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(intCol AS INTERVAL MINUTE) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+
+// cast int to interval second
+SELECT CAST(intCol AS INTERVAL SECOND) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (INTERVAL '0'  SECOND)
+      (INTERVAL '1'  SECOND)
+      (INTERVAL '-1' SECOND)
+      
+// cast int to interval second (out of bounds)
+SELECT CAST(intCol AS INTERVAL SECOND) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(intCol AS INTERVAL SECOND) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cast decimal
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// cast decimal to int
+SELECT CAST(decCol AS INTEGER) FROM ${testName2}_test WHERE id <= 6;
+rows: (null)
+      (0)
+      (1)
+      (-1)
+      (-999999999999999)
+      (999999999999999)
+
+// cast decimal to dec(17,2)
+SELECT CAST(decCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id <= 6;
+rows: (null)
+      (0.00)
+      (1.10)
+      (-1.10)
+      (-999999999999999.99)
+      (999999999999999.99)
+
+// cast decimal to dec
+SELECT CAST(decCol AS DECIMAL) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (0.)
+      (1.)
+      (-1.)
+
+// cast decimal to dec (overflow)
+SELECT CAST(decCol AS DECIMAL) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(decCol AS DECIMAL) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+// cast decimal to dec(17,4)
+SELECT CAST(decCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (0.0000)
+      (1.1000)
+      (-1.1000)
+
+
+// cast decimal to flt
+SELECT CAST(decCol AS FLOAT) FROM ${testName2}_test WHERE id <= 6;
+rows: (null)
+      (0.00e0)
+      (1.10e0)
+      (-1.10e0)
+      (-999999999999999.99e0)
+      (999999999999999.99e0)
+
+
+// cast decimal to vch
+SELECT CAST(decCol AS VARCHAR) FROM ${testName2}_test WHERE id <= 6;
+rows: ("null")
+      ("0.00")
+      ("1.10")
+      ("-1.10")
+      ("-999999999999999.99")
+      ("999999999999999.99")
+
+// cast decimal to interval year
+// TODO: Ray
+//SELECT CAST(decCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast decimal to interval month
+// TODO: Ray
+//SELECT CAST(decCol AS INTERVAL MONTH) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast decimal to interval day
+// TODO: Ray
+//SELECT CAST(decCol AS INTERVAL DAY) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast decimal to interval hour
+// TODO: Ray
+//SELECT CAST(decCol AS INTERVAL HOUR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast decimal to interval minute
+// TODO: Ray
+//SELECT CAST(decCol AS INTERVAL MINUTE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast decimal to interval second
+// TODO: Ray
+//SELECT CAST(decCol AS INTERVAL SECOND) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cast float
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// cast float to int
+SELECT CAST(fltCol AS INTEGER) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows: (null)
+      (0)
+      (1)
+      (-1)
+
+// cast float to int (out of bounds)
+SELECT CAST(fltCol AS INTEGER) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(fltCol AS INTEGER) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+// cast float to dec(17,2)
+SELECT CAST(fltCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows:
+  (null)
+  (0.00)
+  (1.10)
+  (-1.10)
+
+// cast float to dec (out of bounds)
+SELECT CAST(fltCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id = 5;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(fltCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id = 6;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+// cast float to dec(17,4)
+SELECT CAST(fltCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+rows:
+  (null)
+  (0.0000)
+  (-1.1000)
+  (1.1000)
+
+// cast float to flt
+SELECT CAST(fltCol AS FLOAT) FROM ${testName2}_test WHERE id <= 6;
+rows:
+  (null)
+  (0e1)
+  (11e-1)
+  (-11e-1)
+  (-1.797693134862315708145274237317043567981e+308)
+  (1.797693134862315708145274237317043567981e+308)
+
+// cast float to vch
+SELECT CAST(fltCol AS VARCHAR) FROM ${testName2}_test WHERE id <= 6;
+rows:
+  (null)
+  ("0e1")
+  ("11e-1")
+  ("-11e-1")
+  ("-1.797693134862315708145274237317043567981e+308")
+  ("1.797693134862315708145274237317043567981e+308")
+
+// cast float to interval year
+// TODO: Ray
+//SELECT CAST(fltCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast float to interval month
+// TODO: Ray
+//SELECT CAST(fltCol AS INTERVAL MONTH) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast float to interval day
+// TODO: Ray
+//SELECT CAST(fltCol AS INTERVAL DAY) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast float to interval hour
+// TODO: Ray
+//SELECT CAST(fltCol AS INTERVAL HOUR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast float to interval minute
+// TODO: Ray
+//SELECT CAST(fltCol AS INTERVAL MINUTE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast float to interval second
+// TODO: Ray
+//SELECT CAST(fltCol AS INTERVAL SECOND) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cast varchar
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// cast varchar to int
+SELECT CAST(vchCol AS INTEGER) FROM ${testName2}_test WHERE id IN (9, 10, 17, 18);
+rows:
+  (1)
+  (-1)
+  (9223372036854775806)
+  (-9223372036854775806)
+
+// cast varchar to dec(17,2)
+SELECT CAST(vchCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id BETWEEN 6 AND 12;
+rows:
+  (123.45)
+  (-123.46)
+  (123.45)
+  (1.00)
+  (-1.00)
+  (-999999999999999.99)
+  (999999999999999.99)
+
+// cast varchar to dec
+SELECT CAST(vchCol AS DECIMAL) FROM ${testName2}_test WHERE id BETWEEN 6 AND 12;
+rows:
+  (123.)
+  (-123.)
+  (123.)
+  (1.)
+  (-1.)
+  (1000000000000000.)
+  (-1000000000000000.)
+
+
+// cast varchar to dec(17,4)
+SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id BETWEEN 6 AND 10;
+rows:
+  (123.4500)
+  (-123.4560)
+  (123.4520)
+  (1.0000)
+  (-1.0000)
+
+
+// cast varchar to dec(17,4) (out of bounds)
+SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 11;
+failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+
+SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 12;
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
+
+
+// cast varchar to flt
+SELECT CAST(vchCol AS FLOAT) FROM ${testName2}_test WHERE id BETWEEN 9 AND 18;
+rows:
+  (1e0)
+  (-1e0)
+  (-999999999999999.99e0)
+  (999999999999999.99e0)
+  (11e-1)
+  (-11e-1)
+  (-1.797693134862315708145274237317043567981e+308)
+  (1.797693134862315708145274237317043567981e+308)
+  (9223372036854775806e0)
+  (-9223372036854775806e0)
+
+
+// cast varchar to vch
+SELECT CAST(vchCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 5;
+rows:
+  (null)
+  ("")
+  ("true")
+  ("false")
+  ("abcdefghijklmnopqrstuvwxy")
+
+
+// cast varchar to dte
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 19 AND 21;
+rows:
+  (DATE '1900-01-01')
+  (DATE '1970-04-05')
+  (DATE '2155-12-31')
+
+// cast varchar to dte (out of bounds)
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 22;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 23;
+failure
+
+
+// cast varchar to tme
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 24 AND 26;
+rows:
+  (TIME '00:00:00')
+  (TIME '23:59:59')
+  (TIME '01:02:03')
+
+// cast varchar to tme (out of bounds)
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 27;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 28;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 29;
+failure
+
+
+
+// cast varchar to tsp
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 30 AND 32;
+rows:
+  (TIMESTAMP '2000-01-01 00:00:00.000000')
+  (TIMESTAMP '1900-01-01 00:00:00.123456')
+  (TIMESTAMP '2155-01-01 23:59:59.999999')
+
+
+// cast varchar to tsp (out of bounds)
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 33;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 34;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 35;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 36;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 37;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 38;
+failure
+
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 39;
+failure
+
+
+// cast varchar to interval year
+// TODO: Ray
+//SELECT CAST(vchCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id = 9;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast varchar to interval month
+// TODO: Ray
+//SELECT CAST(vchCol AS INTERVAL MONTH) FROM ${testName2}_test WHERE id = 9;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast varchar to interval day
+// TODO: Ray
+//SELECT CAST(vchCol AS INTERVAL DAY) FROM ${testName2}_test WHERE id = 9;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast varchar to interval hour
+// TODO: Ray
+//SELECT CAST(vchCol AS INTERVAL HOUR) FROM ${testName2}_test WHERE id = 9;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast varchar to interval minute
+// TODO: Ray
+//SELECT CAST(vchCol AS INTERVAL MINUTE) FROM ${testName2}_test WHERE id = 9;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+// cast varchar to interval second
+// TODO: Ray
+//SELECT CAST(vchCol AS INTERVAL SECOND) FROM ${testName2}_test WHERE id = 9;
+//failure contains: 'EC_NOT_IMPLEMENTED'
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cast date
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// cast date to vch
+SELECT CAST(dteCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
+  (null)
+  ('2000-01-01')
+  ('1900-01-01')
+  ('2155-12-31')
+  ('1900-01-01')
+  ('1970-01-01')
+
+// cast date to date
+SELECT CAST(dteCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+  (null)
+  (DATE '2000-01-01')
+  (DATE '1900-01-01')
+  (DATE '2155-12-31')
+  (DATE '1900-01-01')
+  (DATE '1970-01-01')
+
+// cast date to tsp
+SELECT CAST(dteCol AS TIMESTAMP) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+  (null)
+  (TIMESTAMP '2000-01-01 00:00:00.000000')
+  (TIMESTAMP '1900-01-01 00:00:00.000000')
+  (TIMESTAMP '2155-12-31 00:00:00.000000')
+  (TIMESTAMP '1900-01-01 00:00:00.000000')
+  (TIMESTAMP '1970-01-01 00:00:00.000000')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cast time
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// cast time to vch
+SELECT CAST(tmeCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
+  (null)
+  ('00:00:00')
+  ('00:00:00')
+  ('23:59:59')
+  ('01:02:03')
+  ('11:22:33')
+
+// cast time to time
+SELECT CAST(tmeCol AS TIME) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+  (null)
+  (TIME '00:00:00')
+  (TIME '00:00:00')
+  (TIME '23:59:59')
+  (TIME '01:02:03')
+  (TIME '11:22:33')
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cast timestamp
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// cast timestamp to vch
+SELECT CAST(tspCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
+  (null)
+  ('2000-01-01 00:00:00.000000')
+  ('1900-01-01 00:00:00.123456')
+  ('2155-01-01 23:59:59.999999')
+  ('1900-01-01 01:02:03.456789')
+  ('1970-06-30 11:22:33.000001')
+
+// cast timestamp to date
+SELECT CAST(tspCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
+  (null)
+  (DATE '2000-01-01')
+  (DATE '1900-01-01')
+  (DATE '2155-01-01')
+  (DATE '1900-01-01')
+  (DATE '1970-06-30')
+
+// cast timestamp to tme
+SELECT CAST(tspCol AS TIME) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
+  (null)
+  (TIME '00:00:00')
+  (TIME '00:00:00')
+  (TIME '23:59:59')
+  (TIME '01:02:03')
+  (TIME '11:22:33')
+
+// cast timestamp to tsp
+SELECT CAST(tspCol AS TIMESTAMP) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
+  (null)
+  (TIMESTAMP '2000-01-01 00:00:00.000000')
+  (TIMESTAMP '1900-01-01 00:00:00.123456')
+  (TIMESTAMP '2155-01-01 23:59:59.999999')
+  (TIMESTAMP '1900-01-01 01:02:03.456789')
+  (TIMESTAMP '1970-06-30 11:22:33.000001')
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Cast boolean
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// None supported
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+DROP TABLE ${testName2}_test;
+success
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE ${testName2}_test;
+  mute
+}
