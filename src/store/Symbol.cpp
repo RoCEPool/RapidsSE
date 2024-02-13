@@ -1468,6 +1468,8 @@ bool Symbol::bHasFacet(eSF eFacet, Stz* szChrSeq)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE != eFacet);
+
   i8 i_Facet = this->i_Facet(eFacet);
   if (C_UNKNOWN == i_Facet)
     return false;
