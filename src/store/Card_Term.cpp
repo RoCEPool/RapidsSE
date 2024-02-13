@@ -309,7 +309,7 @@ ePB Card_Term::eEvalBound(void)
     case RO_GREATER_THAN:  return PB_LBOUND;
 
     default:
-      vTrace("%s(%lld): unexpected eEvalRlnOp %lld %s\n"_Stz
+      vTrace("%s(%lld): unexpected eEval_rlnOp %lld %s\n"_Stz
           ,__func__
           ,(i8)__LINE__
           ,(i8)eRelOp
@@ -326,7 +326,7 @@ eRO Card_Term::eEvalRelOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  eRO eRelOp = pSymbol()->eEvalRlnOp();
+  eRO eRelOp = pSymbol()->eEval_rlnOp();
 
   return eRelOp;
 }

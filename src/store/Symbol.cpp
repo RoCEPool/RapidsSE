@@ -1243,11 +1243,11 @@ void Symbol::vDump(Stz* szTitle)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Symbol::eEvalRlnOp(void)
+eRO Symbol::eEval_rlnOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eRO eRelnOp = eEvalRelnOp(szFacet(0));
+  eRO eRelnOp = eEvalRelnOp(szFacet(SF_RLN_OP));
 
   return eRelnOp;
 }
@@ -1255,11 +1255,11 @@ eRO Symbol::eEvalRlnOp(void)
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
-eQO Symbol::eEvalSqyOp(void)
+eQO Symbol::eEval_sqyOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eQO eSubQryOp = eEvalSubQryOp(szFacet(0));
+  eQO eSubQryOp = eEvalSubQryOp(szFacet(SF_SQY_OP));
 
   return eSubQryOp;
 }

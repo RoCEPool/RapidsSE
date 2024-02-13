@@ -127,8 +127,8 @@ namespace STORE
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vDump(Stz* szTitle=""_Stz);
 
-    eRO  eEvalRlnOp(void);
-    eQO  eEvalSqyOp(void);
+    eRO  eEval_rlnOp(void);
+    eQO  eEval_sqyOp(void);
 
     Facet* aFacet(eSF eFacet);
     Facet* aFacet(i8 i_Facet);
