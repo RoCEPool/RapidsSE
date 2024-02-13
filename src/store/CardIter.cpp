@@ -1212,10 +1212,22 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before)
   if (! p_term_arg->pSymbol()->bIs_Col())
     return nullptr;
 
-  if (p_term_arg->pSymbol()->bMultiFaceted()) {
-    //p_term_arg->pSymbol()->vDump();
+//  if (pSym_term_arg->bMultiFaceted()) {
+//    pSym_term_arg->vDump();
+//    vDebugPoint();
+//  }
+//  else {
+//    pSym_term_arg->vDump();
+//    vDebugPoint();
+//  }
+
+  if (! (0 == pSym_term_arg->i_Facet(SF_EXP_COL) ||
+         0 == pSym_term_arg->i_Facet(SF_TBL_COL) ||
+         0 == pSym_term_arg->i_Facet(SF_KEY_COL))) {
+    pSym_term_arg->vDump();
     vDebugPoint();
   }
+
   if (C_UNKNOWN == i_Before)
     i_Before = this->i_Child();
 
@@ -1247,7 +1259,16 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before)
 
           ) {
         p_expr_col = p_expr_prj;
+//        pSym_rpcCalc_term0->vDump();
+//        pSym_term_arg->vDump();
+        RASSERT(pSym_rpcCalc_term0->bMatches(pSym_term_arg));
         break;
+      }
+      else {
+//        pSym_rpcCalc_term0->vDump();
+//        pSym_term_arg->vDump();
+        //RASSERT(!pSym_rpcCalc_term0->bMatches(pSym_term_arg));
+        vDebugPoint();
       }
 
     }
