@@ -1258,7 +1258,7 @@ Card_As* Dissector::pPop_as(Card_RpnExpr* p_rpnExpr)
 
   // <name>
   p_term = _pCard_Term(p_rpnExpr->pPopChild());
-  Stz* szAsNm = p_term->szFacet(SF_NONE);
+  Stz* szAsNm = p_term->szFacet(SF_NMD_COL);
 
   Card_As* p_as = (new Card_As) ->SYM(SF_NMD_COL,szAsNm);
   delete p_term;
