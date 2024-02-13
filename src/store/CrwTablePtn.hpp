@@ -41,14 +41,9 @@ namespace STORE
     void vDump(void);
     BufferId oExtractBufferId(void* pItemAddr);
     CrwBuffer* pGetBuffer(SkipListBlock* pSLBlock);
-    void* pPds(void);
-
-
-
 
     bool bPopulateIndexTree(IndexTree* pIndexTree);
 
-    CrwBuffer* pRootCrwBuffer(void);
     BufferId oRootCrwBufferId(void);
     Table* pTable(void);
     void vTruncate(void);

@@ -150,6 +150,7 @@ i8 CrwTablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
+  // Can we get away with this without locking?
   return m_pPdsOfBufferIds->iNumEntries(0);
 }
 
@@ -226,16 +227,6 @@ CrwBuffer* CrwTablePtn::pGetBuffer(SkipListBlock* pSLBlock)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the address of the pds                                                 */
-/*----------------------------------------------------------------------------*/
-void* CrwTablePtn::pPds(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-
-  return (void*)m_pPdsOfBufferIds;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
 bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
@@ -257,22 +248,6 @@ bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
   }
 
   return true;
-}
-/*----------------------------------------------------------------------------*/
-/* get the root row buffer                                                    */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-
-  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pFirstBlock();
-  if(!pSLBlock) {
-    return nullptr;
-  }
-
-  CrwBuffer* pCrwBuffer = pGetBuffer(pSLBlock);
-
-  return pCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

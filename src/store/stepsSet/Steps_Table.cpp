@@ -52,7 +52,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
-  vAddStep("Table[].dumpbkt"_Stz,          &Step::vTableDumpBkt);
   vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
@@ -226,34 +225,12 @@ void Step::vTableDump(void)
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+    pTablePtn->bGrabRead();
     vTrace("Partition %lld\n"_Stz, i_TablePtn);
     pTablePtn->vDump();
+    pTablePtn->vDropRead();
   }
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Table[].dumpbkt                                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vTableDumpBkt(void)
-{
-  ENTRY();
-
-  s4K sDumpBuffer = "\n\n\n==== DumpBucket Table: ====================================\n"_Stz;
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-
-  i8 nPtns = AM::PTNMAP::nPtnsPerNode();
-
-  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_KEYBUCKETS);
-
-  s4K sPtnBuf;
-  pTable->vDumpTablePtn(sPtnBuf);
-  sDumpBuffer.vConcat(sPtnBuf);
-
-  sDumpBuffer.vConcat("======================================================\n\n"_Stz);
-  m_pDataStack->vPushStr(sDumpBuffer);
-
   EXIT();
 }
 
@@ -410,7 +387,7 @@ void Step::vTableTablePtnGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Table[].tablePtnZer0 -- fetch table partition[0]                           */
+/* Table[].tablePtnZero -- fetch table partition[0]                           */
 /*----------------------------------------------------------------------------*/
 void Step::vTableTablePtnZero(void)
 {
@@ -418,10 +395,7 @@ void Step::vTableTablePtnZero(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
-  LglPtn tLglPtn;
-
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
   
   m_pDataStack->vPushPtr(pTablePtn);
   
@@ -801,8 +775,10 @@ void Step::vTableVisualize(void)
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+    pTablePtn->bGrabRead();
     vTrace("Table Partition %lld\n"_Stz, i_TablePtn);
     pTablePtn->vVisualizeTable();
+    pTablePtn->vDropRead();
   }
   
   EXIT();

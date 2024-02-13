@@ -13,8 +13,12 @@
   //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
+  TablePtn[].grabWrite_msecLoop
+
   // truncate the buffers of the tablePtn
   Index[] TablePtn[].truncateIndex
+
+  TablePtn[].dropWrite
 
   Marker[].newDestroyMarker
   Marker[].pipeOut
