@@ -3103,8 +3103,7 @@ void Symbol::vFacet_Exp_Col(i8 iExpCol)
 
   if (m_nFacets) {
     eSF eFacet = this->eFacet(0);
-    RASSERT(SF_NONE    == eFacet ||
-            SF_SQY_RSL == eFacet ||
+    RASSERT(SF_SQY_RSL == eFacet ||
             SF_EXP_COL == eFacet ||
             SF_NMD_COL == eFacet ||
             SF_TBL_COL == eFacet ||
