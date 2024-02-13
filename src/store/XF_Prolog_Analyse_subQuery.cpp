@@ -178,7 +178,10 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
     if (! p_conj->bIsCard(CK_RLNCONJ))
       return C_CONTINUE_RECURSION;
 
-    Stz* szValue_term = p_conj->szFacet(SF_NONE);
+    if (! p_conj->pSymbol()->bHasFacet(SF_RLN_OP))
+      return C_CONTINUE_RECURSION;
+
+    Stz* szValue_term = p_conj->szFacet(SF_RLN_OP);
     eRO eRelnOp = RelOp::eDecode(szValue_term);
     if (RO_NONE == eRelnOp)
       return C_CONTINUE_RECURSION;
