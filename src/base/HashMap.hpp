@@ -46,6 +46,7 @@ namespace BASE
     void    vDeleteKey(void* pKey);
     void    vDump(void);
     void    vDropKeyLock(void* pKey);
+    HashMapEntry* pEntryAt(void* pKey, bool bLockThis = true);
     bool    bExists(void* pKey);
     HashMapEntry* pGetEntryAtIndex(u8 uIndex);
 

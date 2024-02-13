@@ -259,6 +259,40 @@ void HashMap::vDropKeyLock(void* pKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get the HashMapEntry at the given key                                      */
+/*----------------------------------------------------------------------------*/
+HashMapEntry* HashMap::pEntryAt(void* pKey, bool bLockThis)
+{
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  return (Object*) pKey;
+#else
+  u8 uIndex = uHashFunction(pKey);
+
+  m_pHashMapSlot[uIndex].m_okSlotLock.vGrabRead();
+
+  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
+  ASSERT(pIter != nullptr);
+
+  while ( pIter != nullptr ) {
+
+    if ( pIter->m_pKeyObject == pKey ) {
+      if(bLockThis)
+        pIter->vGrabLock();
+
+      m_pHashMapSlot[uIndex].m_okSlotLock.vDropRead();
+      return pIter;
+    }
+
+    pIter = pIter->m_pNext;
+  }
+
+  m_pHashMapSlot[uIndex].m_okSlotLock.vDropRead();
+  return nullptr;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* Does the given key exist in the hashmap                                    */
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(void* pKey)

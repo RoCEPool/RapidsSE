@@ -81,14 +81,17 @@ void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
   HashMap* pHashMap = AM::pHashMap();
 
   while(pCursor) {
-    CrwBuffer* pCrwBuffer = pGetBuffer(pCursor);
+    PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+    HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
+
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
     nBuffers++;
 
     //pCrwBuffer->vShow();
     nRows += (pCrwBuffer->nRows());
     jSumRowBytes += pCrwBuffer->nAllotedBytes();
 
-    pHashMap->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
+    pEntry->vDropLock();
 
     pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
   }
@@ -188,11 +191,14 @@ void CrwTablePtn::vDump(void)
   HashMap* pHashMap = AM::pHashMap();
 
   while(pCursor) {
-    CrwBuffer* pCrwBuffer = pGetBuffer(pCursor);
+    PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+    HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
+
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
 
     pCrwBuffer->vShow();
 
-    pHashMap->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
+    pEntry->vDropLock();
 
     pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
   }
@@ -238,11 +244,14 @@ bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
   HashMap* pHashMap = AM::pHashMap();
 
   while(pCursor) {
-    CrwBuffer* pCrwBuffer = pGetBuffer(pCursor);
+    PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+    HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
+
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
 
     pIndexTree->vInsertEntries(pCrwBuffer);
 
-    pHashMap->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
+    pEntry->vDropLock();
 
     pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
   }
@@ -343,20 +352,23 @@ void CrwTablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
+  SkipListBlock* pCursor = m_pPdsOfBufferIds->pFirstBlock();
 
-  if(!pCurrBlock) return;
+  if(!pCursor) return;
 
   HashMap* pHashMap = AM::pHashMap();
 
-  while(pCurrBlock) {
-    CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
+  while(pCursor) {
+    PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+    HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
+
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
 
     vTrace("%lld"_Stz, pCrwBuffer->iDecile());
 
-    pHashMap->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
+    pEntry->vDropLock();
 
-    pCurrBlock = m_pPdsOfBufferIds->pNextSLBlock(pCurrBlock, 0);
+    pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
   }
 
   vTrace("\n"_Stz);
