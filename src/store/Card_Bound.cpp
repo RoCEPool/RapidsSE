@@ -55,7 +55,7 @@ Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
   Card_Term* pTerm_0 = _pCard_Term(p_rlnConj->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_rlnConj->pGetChild(1));
 
-  Card_Bound* p_bound = Card_Bound::pBound_New(p_rlnConj->szFacet(SF_NONE));
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_rlnConj->szFacet(SF_RLN_OP));
 
   Symbol xSymbol_idxCol(SF_IDX_COL,1);
 
