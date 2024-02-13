@@ -1203,11 +1203,19 @@ void CardIter::vEndTransform(i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
+Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  Symbol* pSym_term_arg = p_term_arg->pSymbol();
 
+  if (! p_term_arg->pSymbol()->bIs_Col())
+    return nullptr;
+
+  if (p_term_arg->pSymbol()->bMultiFaceted()) {
+    //p_term_arg->pSymbol()->vDump();
+    vDebugPoint();
+  }
   if (C_UNKNOWN == i_Before)
     i_Before = this->i_Child();
 
@@ -1215,30 +1223,37 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card *pMain = this->G.pDeck->pGetChild(i_Main);
+    Card_Emit* p_emit = pMain->pSub_emit();
 
-    //pMain->vDump();
+    if (!p_emit)
+      continue;
 
-    if (Card_Emit* p_emit = pMain->pSub_emit()) {
-      i8 nChildren_prj = p_emit->nChildCards();
-      for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
-        Card *pChild_prj = p_emit->pGetChild(i_Child);
-        if (pChild_prj->bIsCard(CK_EXPR)) {
-          Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-          if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
-            //p_rpnCalc->vDump();
-            if (1 == p_rpnCalc->nChildCards() &&
-                p_rpnCalc->pGetTerm(0)->szFacet(SF_NONE)->bSame(p_term->szFacet(SF_NONE))) {
-              p_expr_col = p_expr_prj;
-              break;
-            }
-          }
-        }
+    i8 nChildren_emit = p_emit->nChildCards();
+    for (i8 i_Child = 0; i_Child < nChildren_emit; i_Child++) {
+      Card *pChild_prj = p_emit->pGetChild(i_Child);
+      if (!pChild_prj->bIsCard(CK_EXPR))
+        continue;
+      Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
+      Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc();
+      if (! p_rpnCalc)
+        continue;
+      if (1 != p_rpnCalc->nChildCards())
+        continue;
+
+      Symbol* pSym_rpcCalc_term0 = p_rpnCalc->pGetTerm(0)->pSymbol();
+      RASSERT(pSym_rpcCalc_term0->bIs_Col());
+      if (pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE))
+          //p_rpnCalc->pGetTerm(0)->pSymbol()->bMatches(p_term_arg->pSymbol())
+
+          ) {
+        p_expr_col = p_expr_prj;
+        break;
       }
 
     }
+
     if (p_expr_col)
       break;
-
   }
 
   return p_expr_col;

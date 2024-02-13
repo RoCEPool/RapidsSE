@@ -304,15 +304,15 @@ bool Card_RlnConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(p_bounds);
-  while (xKid.bEach(CK_BOUND)) {
+  Kid xBounds(p_bounds);
+  while (xBounds.bEach(CK_BOUND)) {
 
-    Stz* sz_bnd_expCol = xKid.p_bound()->pGetChild(1)->szFacet(SF_NONE);
-    Stz* sz_bnd_rlnOpr    = xKid.p_bound()->szFacet(SF_NONE);
+    Stz* sz_bnd_expCol = xBounds.p_bound()->pGetChild(1)->szFacet(SF_NONE);
+    Stz* sz_bnd_rlnOpr = xBounds.p_bound()->szFacet(SF_NONE);
 
-    Stz* sz_cmp_rlnOpr    = this->szFacet(SF_NONE);
-    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szFacet(SF_NONE);
-    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szFacet(SF_NONE);
+    Stz* sz_cmp_rlnOpr = this->szFacet(SF_NONE);
+    Stz* sz_cmp_arg_0  = this->pGetChild(0)->szFacet(SF_NONE);
+    Stz* sz_cmp_arg_1  = this->pGetChild(1)->szFacet(SF_NONE);
 
     if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
       continue;
