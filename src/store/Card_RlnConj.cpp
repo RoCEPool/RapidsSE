@@ -259,7 +259,7 @@ bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)
       // + only term_0 is $c.n
 
       // ? is term_0:$c.n an index column
-      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)))
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_TBL_COL)))
         return true;
 
       return false;
@@ -270,7 +270,7 @@ bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
-    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
+    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_TBL_COL)) )
       return true;
 
     return false;
