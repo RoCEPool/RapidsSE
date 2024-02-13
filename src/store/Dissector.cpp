@@ -1247,7 +1247,7 @@ Card_As* Dissector::pPop_as(Card_RpnExpr* p_rpnExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
   // test for: AS
-  if (! p_rpnExpr->bHeadSame("AS"_Stz))
+  if (! p_rpnExpr->bHeadSame(SF_AS,"AS"_Stz))
     return nullptr;
 
   // AS
@@ -1346,7 +1346,7 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // TYPE
 
-  if (p_rpnExpr->bHeadSame("TYPE"_Stz)) {
+  if (p_rpnExpr->bHeadSame(SF_TYPE,"TYPE"_Stz)) {
     Card_Term *p_term = _pCard_Term(p_rpnExpr->pPopChild());
     Stz *szTerm = p_term->szFacet(SF_TYPE);
     RASSERT(szTerm->bSame("TYPE"_Stz));
@@ -1373,21 +1373,21 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [ ( <length> [ , <scale> ] ) ]
 
-  if (p_rpnExpr->bHeadSame("("_Stz)) {
+  if (p_rpnExpr->bHeadSame(SF_PARENTHESIS,"("_Stz)) {
     p_rpnExpr->vDiscardHead();
 
     Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
     xCast.m_nTypeLength = p_term->szFacet(SF_INT_LIT)->iToI8();
     delete p_term;
 
-    if (! p_rpnExpr->bHeadSame(")"_Stz)) {
+    if (! p_rpnExpr->bHeadSame(SF_PARENTHESIS,")"_Stz)) {
 
       p_term = _pCard_Term(p_rpnExpr->pPopChild());
       xCast.m_nTypeScale = p_term->szFacet(SF_INT_LIT)->iToI8();
       delete p_term;
     }
 
-    RASSERT(p_rpnExpr->bHeadSame(")"_Stz));
+    RASSERT(p_rpnExpr->bHeadSame(SF_PARENTHESIS,")"_Stz));
     p_rpnExpr->vDiscardHead();
   }
 
@@ -1532,7 +1532,7 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
   if (! p_rpnExpr->pHead())
     return nullptr;
 
-  if (p_rpnExpr->bHeadSame(","_Stz)) {
+  if (p_rpnExpr->bHeadSame(SF_COMMA,","_Stz)) {
     Card*p_term_head = p_rpnExpr->pPopChild();
     delete p_term_head;
   }
@@ -1637,7 +1637,7 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
 
   i8 iCardNo = 0;
 
-  if (p_rpnExpr->bHeadSame("AGGREGATES"_Stz))
+  if (p_rpnExpr->bHeadSame(SF_NONE,"AGGREGATES"_Stz))
     p_rpnExpr->vDiscardHead();
 
   i8 i_Expr = 1;
