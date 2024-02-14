@@ -3613,10 +3613,8 @@ void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
   StrLib::vSprint(sChrSeq.azChar(), sChrSeq.nAreaBytes(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
+  vSetFacet(eFacet, sChrSeq);
   vRotateFacet(eFacet);
-  RASSERT(m_nFacets);
-
-  vFacetSet(0, eFacet, sChrSeq);
 }
 
 /*============================================================================*/
