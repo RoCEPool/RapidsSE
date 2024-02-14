@@ -1353,6 +1353,9 @@ Stz* Symbol::szFacet_bound(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_BOUND  == xaFacet[0].m_eFacet ||
+          SF_RLN_OP == xaFacet[0].m_eFacet);
+
   return xaFacet[0].m_sChrSeq;
 }
 
@@ -1363,7 +1366,11 @@ Stz* Symbol::szFacet_rlnConj(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return xaFacet[0].m_sChrSeq;
+  RASSERT(SF_BOL_FN == xaFacet[0].m_eFacet ||
+          SF_RLN_OP == xaFacet[0].m_eFacet  ||
+          SF_SQY_OP == xaFacet[0].m_eFacet  );
+
+    return xaFacet[0].m_sChrSeq;
 }
 
 /*----------------------------------------------------------------------------*/
