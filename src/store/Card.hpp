@@ -343,6 +343,7 @@ namespace STORE
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
     Stz*  szFacet(eSF eFacet_xchk);
+    Stz*  szFacet_single(void);
     Card* pFindCardRecursive(eCK eOfCard);
     Card* pFindParentRecursive(Card* pSubCard);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);

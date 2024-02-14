@@ -306,9 +306,10 @@ bool Card_RlnConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
 
   Kid xBounds(p_bounds);
   while (xBounds.bEach(CK_BOUND)) {
-
-    Stz* sz_bnd_expCol = xBounds.p_bound()->pGetChild(1)->szFacet(SF_NONE);
-    Stz* sz_bnd_rlnOpr = xBounds.p_bound()->szFacet(SF_NONE);
+    Card_Bound* p_bound = xBounds.p_bound();
+    Card* p_child1_bound = p_bound->pGetChild(1);
+    Stz* sz_bnd_expCol = p_child1_bound->szFacet(SF_NONE);
+    Stz* sz_bnd_rlnOpr = p_bound->szFacet(SF_NONE);
 
     Stz* sz_cmp_rlnOpr = this->szFacet(SF_NONE);
     Stz* sz_cmp_arg_0  = this->pGetChild(0)->szFacet(SF_NONE);
@@ -324,7 +325,6 @@ bool Card_RlnConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
       return true;
     if (sz_cmp_arg_1->bSame(sz_bnd_expCol))
       return true;
-
   }
 
   return false;

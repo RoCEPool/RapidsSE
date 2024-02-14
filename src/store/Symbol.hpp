@@ -138,6 +138,7 @@ namespace STORE
     i8   i_Facet(eSF eFacet, char cTblSyn);
     Stz* szFacet(eSF eFacet);
     Stz* szFacet(i8 i_Facet);
+    Stz* szFacet_single(void);
     void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);

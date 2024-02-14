@@ -1347,6 +1347,19 @@ Stz* Symbol::szFacet(i8 i_Facet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get one and only facet                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szFacet_single(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(1 == nFacets());
+
+  return xaFacet[0].m_sChrSeq;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* scan for symbol facet                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)

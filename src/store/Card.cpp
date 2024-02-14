@@ -810,6 +810,16 @@ Stz* Card::szFacet(eSF eFacet_xchk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get one and only facet                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szFacet_single(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return m_xSymbol.szFacet_single();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find parent of given sub-card                                              */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindParentRecursive(Card* pSubCard)
