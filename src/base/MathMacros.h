@@ -187,19 +187,19 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
         bcdUpperBound.m_uScale = 0;
         bcdUpperBound.m_iMantissa = aDynamicT->m_iaPow10[iIntegralPrecResult - 1];
         *(*ppaW)++ = bcdUpperBound.m_iAsI8;
-        _RESCALE_BCD_TO_SCALE(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
+        vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
         bcdUpperBound.m_iAsI8 = *(--(*ppaW));
       }
 
       if (aDynamicT->m_iErrorCode == EC_NONE) {
         *(*ppaW)++ = bcdArg1.m_iAsI8;
-        _RESCALE_BCD_TO_SCALE(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
+        vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
         bcdTemp1.m_iAsI8 = *(--(*ppaW));
       }
 
       if (aDynamicT->m_iErrorCode == EC_NONE) {
         *(*ppaW)++ = bcdArg2.m_iAsI8;
-        _RESCALE_BCD_TO_SCALE(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
+        vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
         bcdTemp2.m_iAsI8 = *(--(*ppaW));
       }
 
@@ -250,13 +250,13 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
     // Now we can scale and round the arguments to the desired scale
     if (aDynamicT->m_iErrorCode == EC_NONE) {
       *(*ppaW)++ = bcdArg1.m_iAsI8;
-      _RESCALE_BCD_TO_SCALE(ppaW, aDynamicT, iScaleResult, &iRoundedUp1);
+      vRescaleBcdToScale(ppaW, aDynamicT, iScaleResult, &iRoundedUp1);
       bcdArg1.m_iAsI8 = *(--(*ppaW));
     }
 
     if (aDynamicT->m_iErrorCode == EC_NONE) {
       *(*ppaW)++ = bcdArg2.m_iAsI8;
-      _RESCALE_BCD_TO_SCALE(ppaW, aDynamicT, iScaleResult, &iRoundedUp2);
+      vRescaleBcdToScale(ppaW, aDynamicT, iScaleResult, &iRoundedUp2);
       bcdArg2.m_iAsI8 = *(--(*ppaW));
     }
 

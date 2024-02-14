@@ -17,7 +17,7 @@ namespace Parser
     CastExpr();
 
   public:
-    static QueryNode* pCreate(QueryNode* pTargetExpr, TypeId xTypeId);
+    static QueryNode* pCreate(QueryNode* pTargetExpr, TypeId xTypeId, i8 iPrecision = -1, i8 iScale = -1);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     // Represent the expression as types instead of names (e.g. INTEGER + INTEGER)

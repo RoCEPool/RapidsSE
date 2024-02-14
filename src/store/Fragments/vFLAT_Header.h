@@ -141,9 +141,9 @@ i8 iPrecision_signed(i8 iArg)
 
 #include "../src/store/Ent_int.h"
 #include "../src/base/eEC.h"
+#include "../src/base/RelationalMacros.h"
 #include "../src/base/CastMacros.h"
 #include "../src/base/LogicalMacros.h"
-#include "../src/base/RelationalMacros.h"
 #include "../src/base/MathMacros.h"
 #include "../src/base/FunctionMacros.h"
 

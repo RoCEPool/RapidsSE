@@ -2833,8 +2833,18 @@ antlrcpp::Any SqlPlanner::visitCastOp(sqlParser::CastOpContext* pCtx)
   ASSERT(Expr::bIsOfType(pTargetExpr));
 
   TypeId xTypeId = xExtractDataType(pCtx->dataType());
+  i8 iPrecision = -1;
+  i8 iScale = -1;
 
-  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId);
+  if (pCtx->dataType()->sqlDataType()->precision()) {
+    iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->precision()->integerLiteral());
+  }
+
+  if (pCtx->dataType()->sqlDataType()->scale()) {
+    iScale = iCleanInt(pCtx->dataType()->sqlDataType()->scale()->integerLiteral());
+  }
+
+  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId, iPrecision, iScale);
   m_pExprStack->vPush(pCastExpr);
 
   return nullptr;
@@ -2852,8 +2862,18 @@ antlrcpp::Any SqlPlanner::visitInlineCast(sqlParser::InlineCastContext* pCtx)
   ASSERT(Expr::bIsOfType(pTargetExpr));
 
   TypeId xTypeId = xExtractDataType(pCtx->dataType());
+  i8 iPrecision = -1;
+  i8 iScale = -1;
 
-  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId);
+  if (pCtx->dataType()->sqlDataType()->precision()) {
+    iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->precision()->integerLiteral());
+  }
+
+  if (pCtx->dataType()->sqlDataType()->scale()) {
+    iScale = iCleanInt(pCtx->dataType()->sqlDataType()->scale()->integerLiteral());
+  }
+
+  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId, iPrecision, iScale);
   m_pExprStack->vPush(pCastExpr);
 
   return nullptr;

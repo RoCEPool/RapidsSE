@@ -910,7 +910,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
     if (pTkn->bSame("cast"_Stz)) {
       ePreExp = PE_CST;
-      vPushCast(pExprStack, pExprType, eCastType, xResultExprType);
+      vPushCast(pExprStack, pExprType, eCastType, xResultExprType, i_Col);
       continue;
     }
 
@@ -1662,7 +1662,7 @@ void OpSketch::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push cast expression                                                       */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastType, TypeId xResultExprType) {
+void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastType, TypeId xResultExprType, i8 i_OutputCol) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1672,6 +1672,11 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get column type
   eDM eColType1 = (eDM) pExprType->iPop();
+
+  // get the output column precision and scale
+  Column* pCol = m_pStreamDefOut->pGetColumn(i_OutputCol);
+  i8 iPrecision = pCol->iColumnLength();
+  i8 iScale = pCol->iColumnScale();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the cast operator if different types
@@ -1688,10 +1693,18 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
 			eResult = eMacro_CastResult[eColType1][eCastType];
 		}
 
-    if (eResult == DM_VCH) {
-      sOperation.vConcat("(&paW, aDynamicT, &szStrArea, &nAreaRemaining);"_Stz);
-    } else {
-      sOperation.vConcat("(&paW, aDynamicT);"_Stz);
+    switch (eResult) {
+      case DM_VCH:
+        sOperation.vConcat("(&paW, aDynamicT, &szStrArea, &nAreaRemaining);"_Stz);
+        break;
+
+      case DM_BCD:
+        sOperation.vCatSprint("(&paW, aDynamicT, %lld, %lld);"_Stz, iPrecision, iScale);
+        break;
+
+      default:
+        sOperation.vConcat("(&paW, aDynamicT);"_Stz);
+        break;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

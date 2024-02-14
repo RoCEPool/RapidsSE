@@ -7,36 +7,31 @@
 // BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-static inline void vRoundBcd(i8** ppaW)
+static inline void vRoundBcdCheckRoundUp(i8** ppaW, i1* piWasRoundedUp)
 {
   union Bcd_T bcdRound;
 
   bcdRound.m_iAsI8 = *(--(*ppaW));
   if (bcdRound.m_iMantissa % 10 >= 5) {
     bcdRound.m_iMantissa = (bcdRound.m_iMantissa / 10) + 1;
+    if (piWasRoundedUp) {
+      *piWasRoundedUp = 1;
+    }
+
   } else {
     bcdRound.m_iMantissa = bcdRound.m_iMantissa / 10;
+    if (piWasRoundedUp) {
+      *piWasRoundedUp = 0;
+    }
   }
 
   bcdRound.m_uScale--;
   *(*ppaW)++ = bcdRound.m_iAsI8;
 }
 
-static inline void vRoundBcdCheckRoundUp(i8** ppaW, i1* piRoundedUp)
+static inline void vRoundBcd(i8** ppaW)
 {
-  union Bcd_T bcdRound;
-
-  bcdRound.m_iAsI8 = *(--(*ppaW));
-  if (bcdRound.m_iMantissa % 10 >= 5) {
-    bcdRound.m_iMantissa = (bcdRound.m_iMantissa / 10) + 1;
-    *piRoundedUp = 1;
-  } else {
-    bcdRound.m_iMantissa = bcdRound.m_iMantissa / 10;
-    *piRoundedUp = 0;
-  }
-
-  bcdRound.m_uScale--;
-  *(*ppaW)++ = bcdRound.m_iAsI8;
+  vRoundBcdCheckRoundUp(ppaW, NULL); // can't use nullptr when compiled as a C program
 }
 
 // rescale BCD to max scale of the two bcd's
@@ -66,40 +61,65 @@ static inline void vRescaleBcdMaxOfTwo(i8** ppaW, struct Dynamic_T* aDynamicT)
 
 
 // Rescale a BCD on the stack to a given scale
-static inline void _RESCALE_BCD_TO_SCALE(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iScale, i1* piRoundedUp)
-  {
-    union Bcd_T bcdReScale1;
+static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iScale, i1* piWasRoundedUp)
+{
+  union Bcd_T bcdReScale1;
 
-    bcdReScale1.m_iAsI8 = *(--(*ppaW));
-    i8 iScaleDiff = iScale - (i8) bcdReScale1.m_uScale;
+  bcdReScale1.m_iAsI8 = *(--(*ppaW));
+  i8 iScaleDiff = iScale - (i8) bcdReScale1.m_uScale;
 
-    if (iScaleDiff > 0) {
-      // Need to check for overflow
-      if (C_I8_MAX / aDynamicT->m_iaPow10[iScaleDiff] < bcdReScale1.m_iMantissa) {
-        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-      } else {
-        bcdReScale1.m_uScale = (u8) (iScale);
-        bcdReScale1.m_iMantissa =
-          bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];
-      }
-    } else if (iScaleDiff < 0) {
-      // No over/underflow check required for division.
-      // Adjust BCD, then round the last digit as needed.
+  if (iScaleDiff > 0) {
+    // Need to check for overflow
+    if (C_I8_MAX / aDynamicT->m_iaPow10[iScaleDiff] < bcdReScale1.m_iMantissa) {
+      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    } else {
+      bcdReScale1.m_uScale = (u8) (iScale);
+      bcdReScale1.m_iMantissa =
+        bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];
+    }
+  } else if (iScaleDiff < 0) {
+    // No over/underflow check required for division.
+    // Adjust BCD, then round the last digit as needed.
 
-      if (iScaleDiff < -1) {
-        bcdReScale1.m_uScale = (u8) (iScale) + 1;
-        bcdReScale1.m_iMantissa =
-          bcdReScale1.m_iMantissa / aDynamicT->m_iaPow10[(-iScaleDiff)-1];
-      }
-
-      /* Now round the number */
-      *(*ppaW)++ = bcdReScale1.m_iAsI8;
-      vRoundBcdCheckRoundUp(ppaW, piRoundedUp);
-      bcdReScale1.m_iAsI8 = *(--(*ppaW));
+    if (iScaleDiff < -1) {
+      bcdReScale1.m_uScale = (u8) (iScale) + 1;
+      bcdReScale1.m_iMantissa =
+        bcdReScale1.m_iMantissa / aDynamicT->m_iaPow10[(-iScaleDiff)-1];
     }
 
+    /* Now round the number */
     *(*ppaW)++ = bcdReScale1.m_iAsI8;
+    vRoundBcdCheckRoundUp(ppaW, piWasRoundedUp);
+    bcdReScale1.m_iAsI8 = *(--(*ppaW));
   }
+
+  *(*ppaW)++ = bcdReScale1.m_iAsI8;
+}
+
+static inline void vRescaleBcdToPrecisionScale(i8** ppaW, struct Dynamic_T* aDynamicT,
+                                               i8 iPrecision, i8 iScale, i1* piWasRoundedUp)
+{
+  // Value should be on expression stack.
+  // First rescale the value and check for any overflows
+  vRescaleBcdToScale(ppaW, aDynamicT, iScale, piWasRoundedUp);
+
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    return;
+  }
+
+  // Now check that the value doesn't exceed the stated precision
+  union Bcd_T bcdVal;
+  bcdVal.m_iAsI8 = *(--(*ppaW));
+
+  i8 iBcdPrec = iPrecision_signed(bcdVal.m_iMantissa);
+  if (iBcdPrec > iPrecision) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    return;
+  }
+
+  *(*ppaW)++ = bcdVal.m_iAsI8;
+}
+
 
 static inline void _EQ_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 {

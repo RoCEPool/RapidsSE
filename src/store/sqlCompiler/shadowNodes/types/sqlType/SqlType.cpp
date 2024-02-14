@@ -72,7 +72,7 @@ static Stz* C_SCALE_PROP      = "scale"_Stz;      // for decimals
 /*----------------------------------------------------------------------------*/
 /* Create a type from enum with default properties                            */
 /*----------------------------------------------------------------------------*/
-QueryNode* SqlType::pCreate(TypeId xTypeId)
+QueryNode* SqlType::pCreate(TypeId xTypeId, i8 iPrecision, i8 iScale)
 {
   _static_
   ASSERT(xTypeId.bIsValid());
@@ -87,7 +87,7 @@ QueryNode* SqlType::pCreate(TypeId xTypeId)
       break;
 
     case CT_CHAR:
-      pNode = _pQueryNode(SqlChar::pCreate());
+      pNode = _pQueryNode(SqlChar::pCreate(iPrecision));
       break;
 
     case CT_DATE:
@@ -95,7 +95,7 @@ QueryNode* SqlType::pCreate(TypeId xTypeId)
       break;
 
     case CT_DECIMAL:
-      pNode = _pQueryNode(SqlDecimal::pCreate());
+      pNode = _pQueryNode(SqlDecimal::pCreate(iPrecision, iScale));
       break;
 
     case CT_FLOAT:
@@ -123,7 +123,7 @@ QueryNode* SqlType::pCreate(TypeId xTypeId)
       break;
 
     case CT_VARCHAR:
-      pNode = _pQueryNode(SqlVarchar::pCreate());
+      pNode = _pQueryNode(SqlVarchar::pCreate(iPrecision));
       break;
 
     case CT_UNKNOWN:

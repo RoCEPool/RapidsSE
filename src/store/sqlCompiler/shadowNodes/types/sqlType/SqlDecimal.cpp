@@ -32,10 +32,10 @@ static Stz* C_SCALE_DEFN          = "/__root__/definitions/object/valueObject/in
 /*----------------------------------------------------------------------------*/
 /* Creates an instance of this type with default precision and scale          */
 /*----------------------------------------------------------------------------*/
-PlanNode* SqlDecimal::pCreate()
-{
-  return pCreate(-1, -1);
-}
+//PlanNode* SqlDecimal::pCreate()
+//{
+//  return pCreate(-1, -1);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* Creates an instance of this type                                           */
@@ -54,7 +54,7 @@ PlanNode* SqlDecimal::pCreate(i8 iPrecision, i8 iScale)
   SqlType::vCreateCommon(pNode, TypeId::xIdOf(CT_DECIMAL));
 
   if (iPrecision != -1) {
-    ASSERT(iPrecision > 0);
+    ASSERT(iPrecision >= 0);
 
     Value xValue(iPrecision);
     QueryNode* pPrecisionNode = new QueryNode(C_PRECISION_PROP_NAME, C_PRECISION_DEFN, static_cast<Value&&>(xValue));
@@ -62,7 +62,7 @@ PlanNode* SqlDecimal::pCreate(i8 iPrecision, i8 iScale)
   }
 
   if (iScale != -1) {
-    ASSERT(iScale > 0);
+    ASSERT(iScale >= 0);
 
     Value xValue(iScale);
     QueryNode* pScaleNode = new QueryNode(C_SCALE_PROP_NAME, C_SCALE_DEFN, static_cast<Value&&>(xValue));

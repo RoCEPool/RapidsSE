@@ -1460,10 +1460,6 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   Cast xCast = this->xPop_cast(p_rpnExpr);
 
-  if (xCast.m_xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
-    xCast.m_nTypeLength = 19;
-    xCast.m_nTypeScale = 2;
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [ AS <as> ]
@@ -1608,14 +1604,14 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
 //      p_expr->vAppendChild(p_direction);
 //    }
 
-    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
-      Cast xCast;
-      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
-      xCast.m_nTypeLength = 19;
-      xCast.m_nTypeScale = 2;
-      p_expr->vCast(xCast);
-      p_expr->pSub_rpnCalc()->vCast(xCast);
-    }
+//    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+//      Cast xCast;
+//      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+//      xCast.m_nTypeLength = 19;
+//      xCast.m_nTypeScale = 2;
+//      p_expr->vCast(xCast);
+//      p_expr->pSub_rpnCalc()->vCast(xCast);
+//    }
 
     p_key->vAppendChild(p_expr);
 
@@ -1661,14 +1657,14 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
     p_expr->v_Child(++iCardNo);
     //vAsEnsure(p_expr);
 
-    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
-      Cast xCast;
-      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
-      xCast.m_nTypeLength = 19;
-      xCast.m_nTypeScale = 2;
-      p_expr->vCast(xCast);
-      p_expr->pSub_rpnCalc()->vCast(xCast);
-    }
+//    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+//      Cast xCast;
+//      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+//      xCast.m_nTypeLength = 19;
+//      xCast.m_nTypeScale = 2;
+//      p_expr->vCast(xCast);
+//      p_expr->pSub_rpnCalc()->vCast(xCast);
+//    }
 
 
     p_emit->vAppendChild(p_expr);

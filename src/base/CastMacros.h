@@ -15,9 +15,8 @@ static inline void _ANY_TOUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TO BCD
-// TODO: Craig : Need to cast to a specific precision and scale
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-static inline void _INT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+static inline void _INT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecision, i8 iScale)
 {
   union Bcd_T bcdArg1;
   union Bcd_T bcdArg2;
@@ -26,34 +25,38 @@ static inline void _INT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    if(iArg1 > C_BCD_MAX) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else if(iArg1 < (i8) C_BCD_MIN) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else {
-      i8 max_col_decimal = 0;
-      bcdArg1.m_iMantissa = iArg1;
-      bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[max_col_decimal];
-      aDynamicT->m_iErrorCode = EC_NONE;  // TODO: Craig : check for overflow
-      if(aDynamicT->m_iErrorCode != EC_NONE) {
-        *(*ppaW)++ = C_DATUM_NULL;
-      }
-      else {
-        bcdArg1.m_iMantissa *= bcdArg2.m_iMantissa;
-        bcdArg1.m_uScale = max_col_decimal;
-        *(*ppaW)++ = bcdArg1.m_iAsI8;
-      }
-    }
+
+  // Check if the integer is too big for a decimal
+  if(iArg1 > C_BCD_MAX) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+
+  } else if(iArg1 < (i8) C_BCD_MIN) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // Convert it to a BCD with scale 0, then rescale it.
+  bcdArg1.m_iMantissa = iArg1;
+  bcdArg1.m_uScale = 0;
+  aDynamicT->m_iErrorCode = EC_NONE;
+
+  // Rescaling may also produce an overflow, as might any precision limitations
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  vRescaleBcdToPrecisionScale(ppaW, aDynamicT, iPrecision, iScale, NULL);
+
+  // The final value would have been pushed onto the stack during the rescaling
+  // unless an error was encountered
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
   }
 }
 
-static inline void _VCH_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+static inline void _VCH_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecision, i8 iScale)
 {
   aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED; 
 }
@@ -70,12 +73,12 @@ static inline void _BCD_TOFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     bcdArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa);
-    fltArg1.m_dFlt = fltArg1.m_dFlt / aDynamicT->m_iaPow10[bcdArg1.m_uScale];
-    *(*ppaW)++ = fltArg1.m_iAsI8 ;
-  }
+
+  fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa);
+  fltArg1.m_dFlt = fltArg1.m_dFlt / aDynamicT->m_iaPow10[bcdArg1.m_uScale];
+  *(*ppaW)++ = fltArg1.m_iAsI8 ;
 }
 
 // INT to Float
@@ -88,20 +91,20 @@ static inline void _INT_TOFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
   fltArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    if(fltArg1.m_dFlt > (d8)C_FLT_MAX) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else if(fltArg1.m_dFlt < (d8) C_FLT_MIN) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else {
-      fltArg2.m_dFlt = fltArg1.m_iAsI8;
-      *(*ppaW)++ = fltArg2.m_iAsI8;
-    }
+
+  if(fltArg1.m_dFlt > (d8)C_FLT_MAX) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+
+  } else if(fltArg1.m_dFlt < (d8) C_FLT_MIN) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+
+  } else {
+    fltArg2.m_dFlt = fltArg1.m_iAsI8;
+    *(*ppaW)++ = fltArg2.m_iAsI8;
   }
 }
 
@@ -115,24 +118,24 @@ static inline void _FLT_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    if(fltArg1.m_dFlt > (i8)C_I8_MAX) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else if(fltArg1.m_dFlt < (i8) C_I8_MIN) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else {
-      *(*ppaW)++ = (i8)( fltArg1.m_dFlt >= 0.0 ?
-        (fltArg1.m_dFlt + 0.5) : (fltArg1.m_dFlt - 0.5) );
-    }
+
+  if(fltArg1.m_dFlt > (i8)C_I8_MAX) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+
+  } else if(fltArg1.m_dFlt < (i8) C_I8_MIN) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+
+  } else {
+    *(*ppaW)++ = (i8)( fltArg1.m_dFlt >= 0.0 ?
+      (fltArg1.m_dFlt + 0.5) : (fltArg1.m_dFlt - 0.5) );
   }
 }
 
-static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
+static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecision, i8 iScale)
 {
   union Flt_T fltArg1;
   union Bcd_T bcdArg1;
@@ -143,41 +146,42 @@ static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     fltArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    if (fltArg1.m_dFlt > (d8)C_BCD_MAX) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else if (fltArg1.m_dFlt < (d8) C_BCD_MIN) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else {
-      i8 cnt = 0;
-      d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);
-      if (fltArg1.m_dFlt < 0 ) dt = dt * -1;
-      while (dt >= 0.0000001 && cnt < 14) {
-        dt = dt * 10.0;
-        dt = dt - (int)(dt+0.0000001);
-        cnt++;
-      }
 
-      bcdArg1.m_iMantissa = fltArg1.m_iAsI8;
-      bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[cnt];
-
-      i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);
-      while (iMantissa > C_BCD_MAX) {
-        iMantissa = iMantissa / 10;
-        cnt--;
-      }
-
-      bcdArg1.m_iMantissa = iMantissa;
-      bcdArg1.m_uScale = cnt;
-
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-    }
+  if (fltArg1.m_dFlt > (d8)C_BCD_MAX) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
+  else if (fltArg1.m_dFlt < (d8) C_BCD_MIN) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  i8 cnt = 0;
+  d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);
+  if (fltArg1.m_dFlt < 0 ) dt = dt * -1;
+  while (dt >= 0.0000001 && cnt < 14) {
+    dt = dt * 10.0;
+    dt = dt - (int)(dt+0.0000001);
+    cnt++;
+  }
+
+  bcdArg1.m_iMantissa = fltArg1.m_iAsI8;
+  bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[cnt];
+
+  i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);
+  while (iMantissa > C_BCD_MAX) {
+    iMantissa = iMantissa / 10;
+    cnt--;
+  }
+
+  bcdArg1.m_iMantissa = iMantissa;
+  bcdArg1.m_uScale = cnt;
+
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
 }
 
 static inline void vFltToBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -192,41 +196,42 @@ static inline void vFltToBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     fltArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    if (fltArg1.m_dFlt > (d8)C_BCD_MAX) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else if (fltArg1.m_dFlt < (d8) C_BCD_MIN) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else {
-      i8 cnt = 0;
-      d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);
-      if (fltArg1.m_dFlt < 0 ) dt = dt * -1;
-      while (dt >= 0.0000001 && cnt < iScale) {
-        dt = dt * 10.0;
-        dt = dt - (int)(dt+0.0000001);
-        cnt++;
-      }
 
-      bcdArg1.m_iMantissa = fltArg1.m_iAsI8;
-      bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[iScale];
+  if (fltArg1.m_dFlt > (d8)C_BCD_MAX) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
 
-      i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);
-      while (iMantissa > C_BCD_MAX) {
-        iMantissa = iMantissa / 10;
-        cnt--;
-      }
-
-      bcdArg1.m_iMantissa = iMantissa;
-      bcdArg1.m_uScale = iScale;
-
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-    }
+  } else if (fltArg1.m_dFlt < (d8) C_BCD_MIN) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
+
+  i8 cnt = 0;
+  d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);
+  if (fltArg1.m_dFlt < 0 ) dt = dt * -1;
+  while (dt >= 0.0000001 && cnt < iScale) {
+    dt = dt * 10.0;
+    dt = dt - (int)(dt+0.0000001);
+    cnt++;
+  }
+
+  bcdArg1.m_iMantissa = fltArg1.m_iAsI8;
+  bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[iScale];
+
+  i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);
+  while (iMantissa > C_BCD_MAX) {
+    iMantissa = iMantissa / 10;
+    cnt--;
+  }
+
+  bcdArg1.m_iMantissa = iMantissa;
+  bcdArg1.m_uScale = iScale;
+
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
 }
 
 
@@ -317,28 +322,32 @@ static inline void _VCH_TOFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
 
-    i8 len=0, n=0,i=0;
-    d8 f=1.0,val=0.0;
-    while(pS[len])len++;
-    if(!len) {
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else {
-      while(i<len && pS[i]!='.')
-        n=10*n +(pS[i++]-'0');
-      i++;
-      while(i<len)
-      {
-        f*=0.1;
-        val+=f*(pS[i++]-'0');
-      }
-      fltArg1.m_dFlt = (val+n);
-      *(*ppaW)++ = fltArg1.m_iAsI8;
-   }
- }
+
+  i8 len=0, n=0,i=0;
+  d8 f=1.0,val=0.0;
+
+  while(pS[len]) len++;
+
+  if(!len) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  while(i<len && pS[i]!='.')
+    n=10*n +(pS[i++]-'0');
+
+  i++;
+  while(i<len)
+  {
+    f*=0.1;
+    val+=f*(pS[i++]-'0');
+  }
+
+  fltArg1.m_dFlt = (val+n);
+  *(*ppaW)++ = fltArg1.m_iAsI8;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -352,10 +361,11 @@ static inline void _BCD_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     bcdArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    *(*ppaW)++ = bcdArg1.m_iMantissa / aDynamicT->m_iaPow10[bcdArg1.m_uScale];
-  }
+
+  i8 iVal = bcdArg1.m_iMantissa / aDynamicT->m_iaPow10[bcdArg1.m_uScale];
+  *(*ppaW)++ = iVal;
 }
 
 static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -378,16 +388,16 @@ static inline void _TSP_TODTE(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     xTsp1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    xDte1.m_iAsI8 = 0;
 
-    xDte1.m_uDay = xTsp1.m_uDay;
-    xDte1.m_uMonth = xTsp1.m_uMonth;
-    xDte1.m_uYearDelta = xTsp1.m_uYearDelta;
+  xDte1.m_iAsI8 = 0;
 
-    *(*ppaW)++ = xDte1.m_iAsI8;
-  }
+  xDte1.m_uDay = xTsp1.m_uDay;
+  xDte1.m_uMonth = xTsp1.m_uMonth;
+  xDte1.m_uYearDelta = xTsp1.m_uYearDelta;
+
+  *(*ppaW)++ = xDte1.m_iAsI8;
 }
 
 static inline void _VCH_TODTE(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -406,20 +416,20 @@ static inline void _INT_TODAY(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    union Ivl_T wIvlResult;
 
-    wIvlResult.m_iAsI8 = 0;
-    wIvlResult.m_xIvl.m_eType = IVL_DAY;
+  union Ivl_T wIvlResult;
 
-    if (iArg1 < 0) {
-      wIvlResult.m_xIvl.m_bIsNeg = 1;
-		}
-		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_DAY * _C_1M;
+  wIvlResult.m_iAsI8 = 0;
+  wIvlResult.m_xIvl.m_eType = IVL_DAY;
 
-		*(*ppaW)++ = wIvlResult.m_iAsI8;
+  if (iArg1 < 0) {
+    wIvlResult.m_xIvl.m_bIsNeg = 1;
   }
+  wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_DAY * _C_1M;
+
+  *(*ppaW)++ = wIvlResult.m_iAsI8;
 }
 
 // INT to HOUR
@@ -429,20 +439,20 @@ static inline void _INT_TOHOUR(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    union Ivl_T wIvlResult;
 
-    wIvlResult.m_iAsI8 = 0;
-    wIvlResult.m_xIvl.m_eType = IVL_HOUR;
+  union Ivl_T wIvlResult;
 
-    if (iArg1 < 0) {
-      wIvlResult.m_xIvl.m_bIsNeg = 1;
-		}
-		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_HR * _C_1M;
+  wIvlResult.m_iAsI8 = 0;
+  wIvlResult.m_xIvl.m_eType = IVL_HOUR;
 
-		*(*ppaW)++ = wIvlResult.m_iAsI8;
+  if (iArg1 < 0) {
+    wIvlResult.m_xIvl.m_bIsNeg = 1;
   }
+  wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_HR * _C_1M;
+
+  *(*ppaW)++ = wIvlResult.m_iAsI8;
 }
 
 // INT to MINUTE
@@ -452,20 +462,20 @@ static inline void _INT_TOMINUTE(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    union Ivl_T wIvlResult;
 
-    wIvlResult.m_iAsI8 = 0;
-    wIvlResult.m_xIvl.m_eType = IVL_MINUTE;
+  union Ivl_T wIvlResult;
 
-    if (iArg1 < 0) {
-      wIvlResult.m_xIvl.m_bIsNeg = 1;
-		}
-		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_MIN * _C_1M;
+  wIvlResult.m_iAsI8 = 0;
+  wIvlResult.m_xIvl.m_eType = IVL_MINUTE;
 
-		*(*ppaW)++ = wIvlResult.m_iAsI8;
+  if (iArg1 < 0) {
+    wIvlResult.m_xIvl.m_bIsNeg = 1;
   }
+  wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_SECS_PER_MIN * _C_1M;
+
+  *(*ppaW)++ = wIvlResult.m_iAsI8;
 }
 
 // INT to MONTH
@@ -475,20 +485,20 @@ static inline void _INT_TOMONTH(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    union Ivl_T wIvlResult;
 
-    wIvlResult.m_iAsI8 = 0;
-    wIvlResult.m_xIvl.m_eType = IVL_MONTH;
+  union Ivl_T wIvlResult;
 
-    if (iArg1 < 0) {
-      wIvlResult.m_xIvl.m_bIsNeg = 1;
-		}
-		wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg1;
+  wIvlResult.m_iAsI8 = 0;
+  wIvlResult.m_xIvl.m_eType = IVL_MONTH;
 
-		*(*ppaW)++ = wIvlResult.m_iAsI8;
+  if (iArg1 < 0) {
+    wIvlResult.m_xIvl.m_bIsNeg = 1;
   }
+  wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iArg1;
+
+  *(*ppaW)++ = wIvlResult.m_iAsI8;
 }
 
 // INT to SECOND
@@ -498,20 +508,20 @@ static inline void _INT_TOSECOND(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    union Ivl_T wIvlResult;
 
-    wIvlResult.m_iAsI8 = 0;
-    wIvlResult.m_xIvl.m_eType = IVL_SECOND;
+  union Ivl_T wIvlResult;
 
-    if (iArg1 < 0) {
-      wIvlResult.m_xIvl.m_bIsNeg = 1;
-		}
-		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_1M;
+  wIvlResult.m_iAsI8 = 0;
+  wIvlResult.m_xIvl.m_eType = IVL_SECOND;
 
-		*(*ppaW)++ = wIvlResult.m_iAsI8;
+  if (iArg1 < 0) {
+    wIvlResult.m_xIvl.m_bIsNeg = 1;
   }
+  wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_1M;
+
+  *(*ppaW)++ = wIvlResult.m_iAsI8;
 }
 
 // INT to YEAR
@@ -521,20 +531,20 @@ static inline void _INT_TOYEAR(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    union Ivl_T wIvlResult;
 
-    wIvlResult.m_iAsI8 = 0;
-    wIvlResult.m_xIvl.m_eType = IVL_DAY;
+  union Ivl_T wIvlResult;
 
-    if (iArg1 < 0) {
-      wIvlResult.m_xIvl.m_bIsNeg = 1;
-		}
-		wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_MONTHS_PER_YEAR;
+  wIvlResult.m_iAsI8 = 0;
+  wIvlResult.m_xIvl.m_eType = IVL_DAY;
 
-		*(*ppaW)++ = wIvlResult.m_iAsI8;
+  if (iArg1 < 0) {
+    wIvlResult.m_xIvl.m_bIsNeg = 1;
   }
+  wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iArg1 * _C_MONTHS_PER_YEAR;
+
+  *(*ppaW)++ = wIvlResult.m_iAsI8;
 }
 
 static inline void _VCH_TOIVL(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -562,17 +572,17 @@ static inline void _TSP_TOTME(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     xTsp1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    xTme1.m_iAsI8 = 0;
 
-    xTme1.m_uMicro = xTsp1.m_uMicro;
-    xTme1.m_uSecond = xTsp1.m_uSecond;
-    xTme1.m_uMinute = xTsp1.m_uMinute;
-    xTme1.m_uHour = xTsp1.m_uHour;
+  xTme1.m_iAsI8 = 0;
 
-    *(*ppaW)++ = xTme1.m_iAsI8;
-  }
+  xTme1.m_uMicro = xTsp1.m_uMicro;
+  xTme1.m_uSecond = xTsp1.m_uSecond;
+  xTme1.m_uMinute = xTsp1.m_uMinute;
+  xTme1.m_uHour = xTsp1.m_uHour;
+
+  *(*ppaW)++ = xTme1.m_iAsI8;
 }
 
 static inline void _VCH_TOTME(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -592,20 +602,20 @@ static inline void _DTE_TOTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     xDte1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    xTsp1.m_iAsI8 = 0;
 
-    xTsp1.m_uDay = xDte1.m_uDay;
-    xTsp1.m_uMonth = xDte1.m_uMonth;
-    xTsp1.m_uYearDelta = xDte1.m_uYearDelta;
-    xTsp1.m_uHour      = 0;
-    xTsp1.m_uMinute    = 0;
-    xTsp1.m_uSecond    = 0;
-    xTsp1.m_uMicro     = 0;
-    xTsp1.m_uLocal     = _C_TSP_LOCAL;
-    *(*ppaW)++ = xTsp1.m_iAsI8;
-  }
+  xTsp1.m_iAsI8 = 0;
+
+  xTsp1.m_uDay = xDte1.m_uDay;
+  xTsp1.m_uMonth = xDte1.m_uMonth;
+  xTsp1.m_uYearDelta = xDte1.m_uYearDelta;
+  xTsp1.m_uHour      = 0;
+  xTsp1.m_uMinute    = 0;
+  xTsp1.m_uSecond    = 0;
+  xTsp1.m_uMicro     = 0;
+  xTsp1.m_uLocal     = _C_TSP_LOCAL;
+  *(*ppaW)++ = xTsp1.m_iAsI8;
 }
 
 static inline void _TME_TOTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -617,25 +627,25 @@ static inline void _TME_TOTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     xTme1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    time_t iSecondsSincePosixEpoch = time(0);
-    struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
 
-    xTsp1.m_iAsI8 = 0;
+  time_t iSecondsSincePosixEpoch = time(0);
+  struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
 
-    xTsp1.m_uYearDelta = aLocalDateTime->tm_year;
-    xTsp1.m_uMonth = aLocalDateTime->tm_mon + 1;
-    xTsp1.m_uDay = aLocalDateTime->tm_mday;
+  xTsp1.m_iAsI8 = 0;
 
-    xTsp1.m_uMicro = xTme1.m_uMicro;
-    xTsp1.m_uSecond = xTme1.m_uSecond;
-    xTsp1.m_uMinute = xTme1.m_uMinute;
-    xTsp1.m_uHour = xTme1.m_uHour;
-    xTsp1.m_uLocal = _C_TSP_LOCAL;
+  xTsp1.m_uYearDelta = aLocalDateTime->tm_year;
+  xTsp1.m_uMonth = aLocalDateTime->tm_mon + 1;
+  xTsp1.m_uDay = aLocalDateTime->tm_mday;
 
-    *(*ppaW)++ = xTsp1.m_iAsI8;
-  }
+  xTsp1.m_uMicro = xTme1.m_uMicro;
+  xTsp1.m_uSecond = xTme1.m_uSecond;
+  xTsp1.m_uMinute = xTme1.m_uMinute;
+  xTsp1.m_uHour = xTme1.m_uHour;
+  xTsp1.m_uLocal = _C_TSP_LOCAL;
+
+  *(*ppaW)++ = xTsp1.m_iAsI8;
 }
 
 static inline void _VCH_TOTSP(i8** ppaW, struct Dynamic_T* aDynamicT)

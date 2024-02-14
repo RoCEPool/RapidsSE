@@ -181,7 +181,7 @@ static TypeMap2D* S_pTypeMap = (new TypeMap2D())
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, TypeId xTypeId)
+QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, TypeId xTypeId, i8 iPrecision, i8 iScale)
 {
   _static_
   ASSERT(pTargetExpr);
@@ -195,7 +195,7 @@ QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, TypeId xTypeId)
   QueryNode* pCastExpr = new QueryNode(sName, C_DEFN);
   pCastExpr->vAppendChild(pTargetExpr);
 
-  QueryNode* pTargetType = SqlType::pCreate(xTypeId);
+  QueryNode* pTargetType = SqlType::pCreate(xTypeId, iPrecision, iScale);
   pTargetType->vSetName(C_TARGETTYPE_PROP);
   pCastExpr->vAppendProperty(pTargetType);
 

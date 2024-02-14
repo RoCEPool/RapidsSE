@@ -19,7 +19,7 @@ namespace Parser
 
 
   public:
-    static QueryNode* pCreate(TypeId xTypeId);
+    static QueryNode* pCreate(TypeId xTypeId, i8 iPrecision = -1, i8 iScale = -1);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
