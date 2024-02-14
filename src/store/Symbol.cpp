@@ -1062,6 +1062,87 @@ bool Symbol::bIs_Rw_Aggregates(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test facet for bound                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_bound(Facet* aFacet)
+{
+  _static_
+
+  if (SF_BOUND   == aFacet->m_eFacet ||
+      SF_IDX_COL == aFacet->m_eFacet ||
+      SF_RLN_OP  == aFacet->m_eFacet)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test facet for rlnConj                                                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_rlnConj(Facet* aFacet)
+{
+  _static_
+
+  if (SF_BOL_FN == aFacet->m_eFacet ||
+      SF_RLN_OP == aFacet->m_eFacet ||
+      SF_SQY_OP == aFacet->m_eFacet)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test facet for term                                                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_term(Facet* aFacet)
+{
+  _static_
+
+  if (
+      SF_COL_TYPE    == aFacet->m_eFacet
+      ||
+      SF_EXP_COL     == aFacet->m_eFacet ||
+      SF_KEY_COL     == aFacet->m_eFacet ||
+      SF_IDX_COL     == aFacet->m_eFacet ||
+      SF_ITM_COL     == aFacet->m_eFacet ||
+      SF_NMD_COL     == aFacet->m_eFacet
+      ||
+      SF_AGG_FN      == aFacet->m_eFacet ||
+      SF_BOL_FN      == aFacet->m_eFacet ||
+      SF_IVL_FN      == aFacet->m_eFacet ||
+      SF_STR_FN      == aFacet->m_eFacet
+      ||
+      SF_BOL_LIT     == aFacet->m_eFacet ||
+      SF_DCM_LIT     == aFacet->m_eFacet ||
+      SF_FLT_LIT     == aFacet->m_eFacet ||
+      SF_INT_LIT     == aFacet->m_eFacet ||
+      SF_STR_LIT     == aFacet->m_eFacet
+      ||
+      SF_BOL_OP      == aFacet->m_eFacet ||
+      SF_MTH_OP      == aFacet->m_eFacet ||
+      SF_RLN_OP      == aFacet->m_eFacet
+      ||
+      SF_CAST        == aFacet->m_eFacet ||
+      SF_CASTTYPE    == aFacet->m_eFacet ||
+      SF_TYPE        == aFacet->m_eFacet
+      ||
+      SF_CASE        == aFacet->m_eFacet ||
+      SF_ELSE        == aFacet->m_eFacet ||
+      SF_ENDIF       == aFacet->m_eFacet ||
+      SF_THEN        == aFacet->m_eFacet ||
+      SF_WHEN        == aFacet->m_eFacet
+      ||
+      SF_BRACE       == aFacet->m_eFacet ||
+      SF_LIST_CNT    == aFacet->m_eFacet ||
+      SF_NEGATE      == aFacet->m_eFacet ||
+      SF_NULL        == aFacet->m_eFacet ||
+      SF_PARENTHESIS == aFacet->m_eFacet)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* strip disambiguation                                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bPossibleNm(Stz* szChrSeq)

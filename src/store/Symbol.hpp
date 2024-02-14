@@ -109,6 +109,10 @@ namespace STORE
 
     static bool bIs_Rw_Aggregates(Stz* szChrSeq);   // AGGREGATES
 
+    static bool bIs_bound(Facet* aFacet);  //
+    static bool bIs_rlnConj(Facet* aFacet);  //
+    static bool bIs_term(Facet* aFacet);  //
+
     static bool bPossibleNm(Stz* szChrSeq);
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
