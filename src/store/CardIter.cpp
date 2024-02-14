@@ -1203,10 +1203,9 @@ void CardIter::vEndTransform(i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before, eSF eFacet)
+Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before)
 {
   _precondition_( _MAGIC_, _FOOTER_);
-  UNUSED(eFacet);
 
   Symbol* pSym_term_arg = p_term_arg->pSymbol();
 

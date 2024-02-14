@@ -181,7 +181,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
     case XK_HASHCAST:
       p_cast_prev->SYM(SF_STG_CAST,"hashcast"_Stz);
 
-      pCI->G.p_expr = pCI->pExpr_For_col(p_term_tblCol_hash, pCI->G.i_MainCard, SF_TBL_COL);
+      pCI->G.p_expr = pCI->pExpr_For_col(p_term_tblCol_hash, pCI->G.i_MainCard);
       p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr,p_emitted_prev);
 
       if (p_combined_prev) {
