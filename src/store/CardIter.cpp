@@ -1274,12 +1274,14 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before, eSF eFace
 
 //      if (p_term_arg->pSymbol()->bHasFacet(SF_KEY_COL)) {
 //        if (pSym_rpcCalc_term0->bMatches(pSym_term_arg)) {
+//          RASSERT(pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE)));
 //          p_expr_col = p_expr_prj;
 //          break;
 //        }
 //      }
 //      if (p_term_arg->pSymbol()->bHasFacet(SF_EXP_COL)) {
 //        if (pSym_rpcCalc_term0->bMatches(pSym_term_arg)) {
+//          RASSERT(pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE)));
 //          p_expr_col = p_expr_prj;
 //          break;
 //        }
@@ -1287,12 +1289,19 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before, eSF eFace
 //
 //      if (p_term_arg->pSymbol()->bHasFacet(SF_TBL_COL)) {
 //        if (pSym_rpcCalc_term0->bMatches(pSym_term_arg)) {
+//          RASSERT(pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE)));
 //          p_expr_col = p_expr_prj;
 //          break;
 //        }
 //      }
+//
 
-
+      if (SF_TBL_COL == eFacet) {
+        if (pSym_rpcCalc_term0->bMatches(SF_TBL_COL,pSym_term_arg)) {
+          p_expr_col = p_expr_prj;
+          break;
+        }
+      }
 
       if (
           pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE))
