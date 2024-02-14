@@ -288,7 +288,6 @@ namespace STORE
     void vFacetCut(i8 i_Facet_cut);
     void vFacetPush(eSF eFacet);
     void vFacetReset(void);
-    void vFacetRotateSet(eSF eFacet, Stz* szFacet);
     void vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);
 

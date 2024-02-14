@@ -1122,6 +1122,9 @@ bool Symbol::bIs_term(Facet* aFacet)
       SF_MTH_OP      == aFacet->m_eFacet ||
       SF_RLN_OP      == aFacet->m_eFacet
       ||
+      SF_INTERVAL_DT == aFacet->m_eFacet ||
+      SF_INTERVAL_YM == aFacet->m_eFacet
+      ||
       SF_CAST        == aFacet->m_eFacet ||
       SF_CASTTYPE    == aFacet->m_eFacet ||
       SF_TYPE        == aFacet->m_eFacet
@@ -3507,7 +3510,10 @@ void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
     if (aFacet_arg->m_sChrSeq.bSame("%1"_Stz))
       vDebugPoint();
 
-    vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
+    //vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
+    vRotateFacet(aFacet_arg->m_eFacet);
+    vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
+
   }
 }
 
@@ -3561,30 +3567,6 @@ void Symbol::vFacetReset(void)
     xaFacet[i_Facet].m_eFacet  = SF_NONE;
     xaFacet[i_Facet].m_sChrSeq = ""_Stz;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* rotate facet to top                                                        */
-/*----------------------------------------------------------------------------*/
-//void Symbol::vFacetRotateSet(eSF eFacet, Stz* szFacet)
-//{
-//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-//
-//  i8 i_Facet = this->i_Facet(eFacet);
-//  if (C_UNKNOWN == i_Facet) {
-//    vFacetAppend(eFacet,szFacet);
-//  }
-//  else {
-//    vFacetSet(i_Facet, eFacet, szFacet);
-//  }
-//}
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacetRotateSet(eSF eFacet, Stz* szFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vRotateFacet(eFacet);
-  vFacetSet(0, eFacet, szFacet);
 }
 
 /*----------------------------------------------------------------------------*/
