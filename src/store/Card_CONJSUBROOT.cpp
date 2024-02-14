@@ -87,16 +87,7 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr, Card_CONJSUBROOT* p_conj)
     case CK_RLNCONJ:
       while (xKid.bEach())
         vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
-      if (p_conj->pSymbol()->bHasFacet(SF_BOL_FN))
-        psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet(SF_BOL_FN));
-      else
-      if (p_conj->pSymbol()->bHasFacet(SF_RLN_OP))
-        psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet(SF_RLN_OP));
-      else
-      if (p_conj->pSymbol()->bHasFacet(SF_SQY_OP)) // todo: wrong?
-        psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet(SF_SQY_OP));
-      else
-        NEVER_REACH
+      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet_rlnConj());
       break;
 
     case CK_TERM:
