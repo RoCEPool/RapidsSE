@@ -1258,7 +1258,7 @@ void Symbol::vConcatFacet(eSF eFacet, Stz* szFacet)
 
   //vFacetRotateSet(eFacet, szFacet);
 
-  vFacetSet(eFacet, szFacet);
+  vSetFacet(eFacet, szFacet);
   vRotateFacet(eFacet);
 }
 
@@ -3590,31 +3590,13 @@ void Symbol::vFacetRotateSet(eSF eFacet, Stz* szFacet)
 /*----------------------------------------------------------------------------*/
 /* set facet                                                                  */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacetSet(eSF eFacet, Stz* szFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  i8 i_Facet = this->i_Facet(eFacet);
-  if (C_UNKNOWN == i_Facet) {
-    i_Facet = m_nFacets;
-    m_nFacets++;
-    vFacetSet(i_Facet, eFacet, szFacet);
-  }
-  else {
-    vFacetSet(i_Facet, eFacet, szFacet);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* set facet                                                                  */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacetSet(i8 i_Facet, eSF eFacet, Stz* szChrSeq)
+void Symbol::vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(i_Facet < m_nFacets);
   xaFacet[i_Facet].m_eFacet  = eFacet;
-  xaFacet[i_Facet].m_sChrSeq = szChrSeq;
+  xaFacet[i_Facet].m_sChrSeq = szFacet;
 }
 
 /*----------------------------------------------------------------------------*/
