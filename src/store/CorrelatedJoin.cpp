@@ -282,7 +282,9 @@ void CorrelatedJoin::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->Sqy.m_pExpr_corr = pCI->pExpr_For_col(pCI->Sqy.m_pTerm_corrCol,pCI->G.i_MainCard+1);
+  pCI->Sqy.m_pExpr_corr = pCI->pExpr_For_col(pCI->Sqy.m_pTerm_corrCol,
+                                             pCI->G.i_MainCard+1,
+                                             SF_TBL_COL);
 
   pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
   pCI->Sqy.m_pExpr_corr->pSymbol()->Y_vSet(P_CrlKeyExpr);

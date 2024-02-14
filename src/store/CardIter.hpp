@@ -147,7 +147,7 @@ namespace STORE
     void vEndPhase(void);
     void vEndTransform(i8 iLineNo=C_UNKNOWN);
 
-    Card_Expr* pExpr_For_col(Card_Term* p_term_arg, i8 i_Before);
+    Card_Expr* pExpr_For_col(Card_Term* p_term_arg, i8 i_Before, eSF eFacet=SF_NONE);
     Card_Expr* pExpr_For_colNm(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
 
     void vFocusOnMain(void);

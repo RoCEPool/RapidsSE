@@ -185,7 +185,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         continue;
       }
 
-      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),pCI->i_Child()+1))
+      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term(),
+                                                     pCI->i_Child()+1))
         p_needed->vAppendChild(p_expr_col->pClone());
 
       else {
