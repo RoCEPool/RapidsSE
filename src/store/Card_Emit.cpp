@@ -194,35 +194,6 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
     }
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) get factored columns of key as start of needed projection
-
-  if (pCI->G.p_OP->bIsCard(CK_o_GBYAGG) || pCI->G.p_OP->bIsCard(CK_o_ORDAGG)) {
-    if ((pCI->G.p_key = pSub_key())) {
-      // + projection of gbyAgg/ordAgg has a key
-
-      Kid xCI_key(pCI->G.p_key);
-      while (xCI_key.bEach(CK_EXPR,CK_RPNCALC)) {
-        Kid xCI_rpnCalc(xCI_key.pSub1());
-        while (xCI_rpnCalc.bEach(CK_TERM)) {
-          // only interested in columns
-          if (!xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) && !xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-            continue;
-          // which we haven't already added
-          if (p_needed->pFind_expr_Matches(xCI_rpnCalc.p_term()->pSymbol()))
-            continue;
-
-          if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term())) {
-            Card_Expr *p_expr_cloned = p_expr_col->pClone();
-            p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
-            p_expr_cloned->vDump(__func__,"CLONED"_Stz);
-            p_needed->vAppendChild(p_expr_cloned);
-          }
-        }
-      }
-    }
-  }
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

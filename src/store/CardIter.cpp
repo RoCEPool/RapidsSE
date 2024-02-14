@@ -1212,6 +1212,19 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before)
   if (! p_term_arg->pSymbol()->bIs_Col())
     return nullptr;
 
+  if (Symbol::bIs_Tbl_Col(p_term_arg->pSymbol()->szFacet(0))) {
+    vDebugPoint();
+  }
+  else if (Symbol::bIs_Exp_Col(p_term_arg->pSymbol()->szFacet(0))) {
+    vDebugPoint();
+  }
+  else if (Symbol::bIs_Key_Col(p_term_arg->pSymbol()->szFacet(0))) {
+    vDebugPoint();
+  }
+  else {
+    vDebugPoint();
+  }
+
 //  if (pSym_term_arg->bMultiFaceted()) {
 //    pSym_term_arg->vDump();
 //    vDebugPoint();
@@ -1220,16 +1233,6 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before)
 //    pSym_term_arg->vDump();
 //    vDebugPoint();
 //  }
-
-  if (! (0 == pSym_term_arg->i_Facet(SF_EXP_COL) ||
-         0 == pSym_term_arg->i_Facet(SF_TBL_COL) ||
-         0 == pSym_term_arg->i_Facet(SF_KEY_COL))) {
-    pSym_term_arg->vDump();
-    vDebugPoint();
-  }
-
-  if (C_UNKNOWN == i_Before)
-    i_Before = this->i_Child();
 
   Card_Expr* p_expr_col = nullptr;
 
@@ -1261,13 +1264,14 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before)
         p_expr_col = p_expr_prj;
 //        pSym_rpcCalc_term0->vDump();
 //        pSym_term_arg->vDump();
-        RASSERT(pSym_rpcCalc_term0->bMatches(pSym_term_arg));
+//        RASSERT(pSym_rpcCalc_term0->bMatches(SF_EXP_COL,pSym_term_arg) ||
+//                pSym_rpcCalc_term0->bMatches(SF_TBL_COL,pSym_term_arg) );
         break;
       }
       else {
 //        pSym_rpcCalc_term0->vDump();
 //        pSym_term_arg->vDump();
-        //RASSERT(!pSym_rpcCalc_term0->bMatches(pSym_term_arg));
+        //RASSERT(!pSym_rpcCalc_term0->bMatches(SF_TBL_COL,pSym_term_arg));
         vDebugPoint();
       }
 
