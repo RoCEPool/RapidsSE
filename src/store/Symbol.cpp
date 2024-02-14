@@ -3588,14 +3588,14 @@ void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  s256 sChrSeq;
+  s256 sFacet;
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(sChrSeq.azChar(), sChrSeq.nAreaBytes(), xArgs, (char*)szFormat);
+  sFacet.vSprintVA(szFormat, xArgs);
   va_end(xArgs);
 
-  vSetFacet(eFacet, sChrSeq);
+  vSetFacet(eFacet, sFacet);
   vRotateFacet(eFacet);
 }
 
