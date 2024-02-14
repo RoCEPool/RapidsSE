@@ -1347,6 +1347,26 @@ Stz* Symbol::szFacet(i8 i_Facet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get facet for bound                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szFacet_bound(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return xaFacet[0].m_sChrSeq;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get facet for rlnConj                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szFacet_rlnConj(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return xaFacet[0].m_sChrSeq;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get one and only facet                                                     */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szFacet_single(void)
@@ -1358,6 +1378,15 @@ Stz* Symbol::szFacet_single(void)
   return xaFacet[0].m_sChrSeq;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get facet for term                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szFacet_term(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return xaFacet[0].m_sChrSeq;
+}
 
 /*----------------------------------------------------------------------------*/
 /* scan for symbol facet                                                      */
