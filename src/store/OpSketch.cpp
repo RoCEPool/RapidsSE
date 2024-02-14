@@ -1678,33 +1678,49 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
   i8 iPrecision = pCol->iColumnLength();
   i8 iScale = pCol->iColumnScale();
 
+  eFM eOperation = FM_NONE;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the cast operator if different types
 
   if (eColType1 != eCastType) {
 		if (eCastType == DM_IVD || eCastType == DM_IVY) {
 			//xResultExprType.eIVVal()
-			sOperation = aFM[eMacro_CastIntIvl[IVL_DAY]];
+      eOperation = eMacro_CastIntIvl[IVL_DAY];
+			sOperation = aFM[eOperation];
 			eResult = eCastType;
 		}
 		else {
 			//RASSERT(eCastType == Column::eDatum(xResultExprType.eCTVal()));
-			sOperation = aFM[eMacro_Cast[eColType1][eCastType]];
+			eOperation = eMacro_Cast[eColType1][eCastType];
+			sOperation = aFM[eOperation];
 			eResult = eMacro_CastResult[eColType1][eCastType];
 		}
 
-    switch (eResult) {
-      case DM_VCH:
-        sOperation.vConcat("(&paW, aDynamicT, &szStrArea, &nAreaRemaining);"_Stz);
-        break;
-
-      case DM_BCD:
-        sOperation.vCatSprint("(&paW, aDynamicT, %lld, %lld);"_Stz, iPrecision, iScale);
+    switch (eOperation) {
+      case FM_OPR_INVINV:
+      case FM_OPR_NOT:
+      case FM_UNK_TOANY:
+      case FM_ANY_TOUNK:
+        // These functions have basic calling parameters
+        sOperation.vConcat("(&paW, aDynamicT);"_Stz);
         break;
 
       default:
-        sOperation.vConcat("(&paW, aDynamicT);"_Stz);
-        break;
+        // Some types have specific calling parameters
+        switch (eResult) {
+          case DM_VCH:
+            sOperation.vConcat("(&paW, aDynamicT, &szStrArea, &nAreaRemaining);"_Stz);
+            break;
+
+          case DM_BCD:
+            sOperation.vCatSprint("(&paW, aDynamicT, %lld, %lld);"_Stz, iPrecision, iScale);
+            break;
+
+          default:
+            sOperation.vConcat("(&paW, aDynamicT);"_Stz);
+            break;
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
