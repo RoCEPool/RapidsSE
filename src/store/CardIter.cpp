@@ -1213,41 +1213,6 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before, eSF eFace
   if (! p_term_arg->pSymbol()->bIs_Col())
     return nullptr;
 
-  if (SF_TBL_COL == eFacet) {
-    RASSERT(p_term_arg->pSymbol()->bHasFacet(SF_TBL_COL));
-  }
-  else
-  if (SF_EXP_COL == eFacet) {
-    RASSERT(p_term_arg->pSymbol()->bHasFacet(SF_EXP_COL));
-  }
-  else
-  if (SF_KEY_COL == eFacet) {
-    RASSERT(p_term_arg->pSymbol()->bHasFacet(SF_KEY_COL));
-  }
-
-  if (Symbol::bIs_Tbl_Col(p_term_arg->pSymbol()->szFacet(0))) {
-    vDebugPoint();
-  }
-  else if (Symbol::bIs_Exp_Col(p_term_arg->pSymbol()->szFacet(0))) {
-    vDebugPoint();
-  }
-  else if (Symbol::bIs_Key_Col(p_term_arg->pSymbol()->szFacet(0))) {
-    vDebugPoint();
-  }
-  else {
-    vDebugPoint();
-  }
-
-
-//  if (pSym_term_arg->bMultiFaceted()) {
-//    pSym_term_arg->vDump();
-//    vDebugPoint();
-//  }
-//  else {
-//    pSym_term_arg->vDump();
-//    vDebugPoint();
-//  }
-
   Card_Expr* p_expr_col = nullptr;
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
@@ -1269,36 +1234,12 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before, eSF eFace
       if (1 != p_rpnCalc->nChildCards())
         continue;
 
-      Symbol* pSym_rpcCalc_term0 = p_rpnCalc->pGetTerm(0)->pSymbol();
-      RASSERT(pSym_rpcCalc_term0->bIs_Col());
+      Symbol* pSym_rpnCalc_term0 = p_rpnCalc->pGetTerm(0)->pSymbol();
+      RASSERT(pSym_rpnCalc_term0->bIs_Col());
 
-      if (SF_TBL_COL == eFacet) {
-        if (pSym_rpcCalc_term0->bMatches(SF_TBL_COL,pSym_term_arg)) {
-          p_expr_col = p_expr_prj;
-          break;
-        }
-      }
-
-      if (p_term_arg->pSymbol()->bHasFacet(SF_KEY_COL)) {
-        if (pSym_rpcCalc_term0->bMatches(pSym_term_arg)) {
-          RASSERT(pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE)));
-          p_expr_col = p_expr_prj;
-          break;
-        }
-      }
-      if (p_term_arg->pSymbol()->bHasFacet(SF_EXP_COL)) {
-        if (pSym_rpcCalc_term0->bMatches(pSym_term_arg)) {
-          RASSERT(pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE)));
-          p_expr_col = p_expr_prj;
-          break;
-        }
-      }
-      if (p_term_arg->pSymbol()->bHasFacet(SF_TBL_COL)) {
-        if (pSym_rpcCalc_term0->bMatches(pSym_term_arg)) {
-          //RASSERT(pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE)));
-          p_expr_col = p_expr_prj;
-          break;
-        }
+      if (pSym_rpnCalc_term0->bMatches(pSym_term_arg)) {
+        p_expr_col = p_expr_prj;
+        break;
       }
     }
 
