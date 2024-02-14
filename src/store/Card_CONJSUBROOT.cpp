@@ -93,6 +93,9 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr, Card_CONJSUBROOT* p_conj)
       if (p_conj->pSymbol()->bHasFacet(SF_RLN_OP))
         psRpnExpr->vCatSprint(" %s"_Stz, p_conj->szFacet(SF_RLN_OP));
       else
+      if (p_conj->pSymbol()->bHasFacet(SF_SQY_OP)) // todo: wrong?
+        psRpnExpr->vCatSprint(" %s"_Stz, p_conj->szFacet(SF_SQY_OP));
+      else
         NEVER_REACH
       break;
 
