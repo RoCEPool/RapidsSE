@@ -1987,11 +1987,14 @@ void Symbol::vSetFacet(eSF eFacet, Stz* szFacet)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   i8 i_Facet = this->i_Facet(eFacet);
-
-  if (C_UNKNOWN == i_Facet)
-    vFacetSet(m_nFacets++,eFacet,szFacet);
-  else
-    vFacetSet(i_Facet,eFacet,szFacet);
+  if (C_UNKNOWN == i_Facet) {
+    i_Facet = m_nFacets;
+    m_nFacets++;
+    vFacetSet(i_Facet, eFacet, szFacet);
+  }
+  else {
+    vFacetSet(i_Facet, eFacet, szFacet);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
