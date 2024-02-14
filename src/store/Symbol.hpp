@@ -290,6 +290,7 @@ namespace STORE
     void vFacetReset(void);
     void vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);
+    void vFacetSprint(String* pString, Stz* szFormat, ...);
 
   protected:
     Footer* aFooter(void);

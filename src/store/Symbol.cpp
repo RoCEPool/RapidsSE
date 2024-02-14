@@ -3599,6 +3599,19 @@ void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
   vRotateFacet(eFacet);
 }
 
+/*----------------------------------------------------------------------------*/
+/* sprint facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetSprint(String* pString, Stz* szFormat, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  pString->vSprint(szFormat, xArgs);
+  va_end(xArgs);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
