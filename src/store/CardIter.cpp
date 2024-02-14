@@ -1293,22 +1293,12 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before, eSF eFace
           break;
         }
       }
-//      if (p_term_arg->pSymbol()->bHasFacet(SF_TBL_COL)) {
-//        if (pSym_rpcCalc_term0->bMatches(pSym_term_arg)) {
-//          RASSERT(pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE)));
-//          p_expr_col = p_expr_prj;
-//          break;
-//        }
-//      }
-
-
-
-      if (
-          pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE))
-          //p_rpnCalc->pGetTerm(0)->pSymbol()->bMatches(p_term_arg->pSymbol())
-          ) {
-        p_expr_col = p_expr_prj;
-        break;
+      if (p_term_arg->pSymbol()->bHasFacet(SF_TBL_COL)) {
+        if (pSym_rpcCalc_term0->bMatches(pSym_term_arg)) {
+          //RASSERT(pSym_rpcCalc_term0->szFacet(SF_NONE)->bSame(pSym_term_arg->szFacet(SF_NONE)));
+          p_expr_col = p_expr_prj;
+          break;
+        }
       }
     }
 
