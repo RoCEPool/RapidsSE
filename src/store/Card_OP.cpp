@@ -912,10 +912,10 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
       }
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet(SF_NONE));
   }
 
-  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1006,12 +1006,12 @@ void Card_OP::vRpn_indexScan(String* psRpnExpr, Card_IndexScan* p_indexScan)
           }
         }
 
-        psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+        psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet(SF_NONE));
       }
 
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet(SF_NONE));
   }
 }
 
@@ -1074,10 +1074,10 @@ void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
         }
       }
 
-      psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+      psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet(SF_NONE));
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet(SF_NONE));
 
   }
 }
@@ -1165,10 +1165,10 @@ void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotEx
         }
       }
 
-      psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+      psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet(SF_NONE));
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet(SF_NONE));
   }
 
 }
@@ -1358,7 +1358,7 @@ void Card_OP::vRpn_sort(String* psRpnExpr, Card_Sort* p_sort)
 
     Card* p_direction = pCard_Expr->pSub_direction();
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_direction->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_direction->pSymbol()->szFacet(SF_DIRECTION));
 
   }
 
@@ -1511,7 +1511,7 @@ void Card_OP::vRpn_term(String* psRpnExpr, Card_Term* p_term)
 //  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
 //    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_EXP_COL));
 //  else
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
