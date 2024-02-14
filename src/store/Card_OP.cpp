@@ -1505,13 +1505,7 @@ void Card_OP::vRpn_term(String* psRpnExpr, Card_Term* p_term)
     }
   }
 
-//  if (p_term->pSymbol()->bHasFacet(SF_ITM_COL))
-//    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_ITM_COL));
-//  else
-//  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
-//    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_EXP_COL));
-//  else
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_term());
+  psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_term());
 }
 
 /*----------------------------------------------------------------------------*/

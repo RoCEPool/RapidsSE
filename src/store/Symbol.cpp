@@ -1353,7 +1353,8 @@ Stz* Symbol::szFacet_bound(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_BOUND  == xaFacet[0].m_eFacet ||
+  RASSERT(SF_BOUND  == xaFacet[0].m_eFacet   ||
+          SF_IDX_COL  == xaFacet[0].m_eFacet ||
           SF_RLN_OP == xaFacet[0].m_eFacet);
 
   return xaFacet[0].m_sChrSeq;
@@ -1370,7 +1371,7 @@ Stz* Symbol::szFacet_rlnConj(void)
           SF_RLN_OP == xaFacet[0].m_eFacet  ||
           SF_SQY_OP == xaFacet[0].m_eFacet  );
 
-    return xaFacet[0].m_sChrSeq;
+  return xaFacet[0].m_sChrSeq;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1391,6 +1392,47 @@ Stz* Symbol::szFacet_single(void)
 Stz* Symbol::szFacet_term(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(
+          SF_COL_TYPE == xaFacet[0].m_eFacet
+      ||
+          SF_EXP_COL == xaFacet[0].m_eFacet ||
+          SF_KEY_COL == xaFacet[0].m_eFacet ||
+          SF_IDX_COL == xaFacet[0].m_eFacet ||
+          SF_ITM_COL == xaFacet[0].m_eFacet ||
+          SF_NMD_COL == xaFacet[0].m_eFacet
+      ||
+          SF_AGG_FN  == xaFacet[0].m_eFacet ||
+          SF_BOL_FN  == xaFacet[0].m_eFacet ||
+          SF_IVL_FN  == xaFacet[0].m_eFacet ||
+          SF_STR_FN  == xaFacet[0].m_eFacet
+      ||
+          SF_BOL_LIT == xaFacet[0].m_eFacet ||
+          SF_DCM_LIT == xaFacet[0].m_eFacet ||
+          SF_FLT_LIT == xaFacet[0].m_eFacet ||
+          SF_INT_LIT == xaFacet[0].m_eFacet ||
+          SF_STR_LIT == xaFacet[0].m_eFacet
+      ||
+          SF_BOL_OP      == xaFacet[0].m_eFacet ||
+          SF_MTH_OP      == xaFacet[0].m_eFacet ||
+          SF_RLN_OP      == xaFacet[0].m_eFacet
+      ||
+          SF_CAST        == xaFacet[0].m_eFacet ||
+          SF_CASTTYPE    == xaFacet[0].m_eFacet ||
+          SF_TYPE        == xaFacet[0].m_eFacet
+      ||
+          SF_CASE        == xaFacet[0].m_eFacet ||
+          SF_ELSE        == xaFacet[0].m_eFacet ||
+          SF_ENDIF       == xaFacet[0].m_eFacet ||
+          SF_THEN        == xaFacet[0].m_eFacet ||
+          SF_WHEN        == xaFacet[0].m_eFacet
+      ||
+          SF_BRACE       == xaFacet[0].m_eFacet ||
+          SF_LIST_CNT    == xaFacet[0].m_eFacet ||
+          SF_NEGATE      == xaFacet[0].m_eFacet ||
+          SF_NULL        == xaFacet[0].m_eFacet ||
+          SF_PARENTHESIS == xaFacet[0].m_eFacet
+  );
 
   return xaFacet[0].m_sChrSeq;
 }

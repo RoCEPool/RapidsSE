@@ -47,46 +47,46 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr, Card_CONJSUBROOT* p_conj)
 
   UNUSED(psRpnExpr);
 
-  Kid xKid(p_conj);
+  Kid xConj(p_conj);
 
   eCK eConj = p_conj->eCard();
   switch (eConj) {
 
     case CK_ANDCONJ:
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
       psRpnExpr->vCatSprint(" and"_Stz);
 
-      while (xKid.bEach()) {
-        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      while (xConj.bEach()) {
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
         psRpnExpr->vCatSprint(" and"_Stz);
       }
       break;
 
     case CK_NOTCONJ:
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
       psRpnExpr->vCatSprint(" not"_Stz);
       break;
 
     case CK_ORCONJ:
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
       psRpnExpr->vCatSprint(" or"_Stz);
 
-      while (xKid.bEach()) {
-        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      while (xConj.bEach()) {
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
         psRpnExpr->vCatSprint(" or"_Stz);
       }
       break;
 
     case CK_RLNCONJ:
-      while (xKid.bEach())
-        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      while (xConj.bEach())
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
       psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet_rlnConj());
       break;
 
