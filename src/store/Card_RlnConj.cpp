@@ -311,13 +311,10 @@ bool Card_RlnConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
 
     Card* p_child1_bound = p_bound->pGetChild(1);
     Symbol* pSym_child1_bound = p_child1_bound->pSymbol();
-    Stz* sz_bnd_expCol = p_child1_bound->szFacet(SF_NONE);
 
     Symbol* pSym_rlnConj = pSymbol();
     Symbol* pSym_rlnConj_child0 = this->pGetChild(0)->pSymbol();
     Symbol* pSym_rlnConj_child1 = this->pGetChild(1)->pSymbol();
-    Stz* sz_cmp_arg_0  = pSym_rlnConj_child0->szFacet(SF_NONE);
-    Stz* sz_cmp_arg_1  = pSym_rlnConj_child1->szFacet(SF_NONE);
 
     if (! pSym_bound->bMatches(pSym_rlnConj))
       continue;
@@ -325,14 +322,11 @@ bool Card_RlnConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
     // todo: need bounds to be bndTyp , etc
     // anyways...
 
-    if (sz_cmp_arg_0->bSame(sz_bnd_expCol)) {
-      RASSERT(pSym_rlnConj_child0->bMatches(pSym_child1_bound));
+    if (pSym_rlnConj_child0->bMatches(pSym_child1_bound))
       return true;
-    }
-    if (sz_cmp_arg_1->bSame(sz_bnd_expCol)) {
-      RASSERT(pSym_rlnConj_child1->bMatches(pSym_child1_bound));
+
+    if (pSym_rlnConj_child1->bMatches(pSym_child1_bound))
       return true;
-    }
   }
 
   return false;
