@@ -187,14 +187,29 @@ namespace STORE
   
   
     EntBuffer* pFindLeafBuffer(Key* aForKey);
+    EntBuffer* pFindLeafBufferAsc(Key* aForKey);
+    EntBuffer* pFindLeafBufferAscDsc(Key* aForKey);
+
     EntBuffer* pFindLeafBuffer_gen(Key* aForKey);
+    EntBuffer* pFindLeafBuffer_ascGen(Key* aForKey);
+    EntBuffer* pFindLeafBuffer_ascDscGen(Key* aForKey);
+
     EntBuffer* pFindLeafBuffer_int(Key* aForKey);
+    EntBuffer* pFindLeafBuffer_ascInt(Key* aForKey);
+    EntBuffer* pFindLeafBuffer_ascDscInt(Key* aForKey);
 
     Ent*       aFindEntryBefore(Key* aGivenKey);
+
     Ent*       aFindEntryBefore_gen(Key* aGivenKey);
+    Ent*       aFindEntryBefore_ascGen(Key* aGivenKey);
+    Ent*       aFindEntryBefore_ascDscGen(Key* aGivenKey);
+
     Ent*       aFindEntryBefore_int(Key* aGivenKey);
 
     Ent*       pFindEntryPrevTo_gen(Ent* aGivenEnt, Key* aWithKey);
+    Ent*       pFindEntryPrevTo_ascGen(Ent* aGivenEnt, Key* aWithKey);
+    Ent*       pFindEntryPrevTo_ascDscGen(Ent* aGivenEnt, Key* aWithKey);
+
     Ent*       pFindEntryPrevTo_int(Ent* aGivenEnt, Key* aWithKey);
 
     void       vPosVecPriorToBuffer(EntBuffer* pToRefdBuffer,
