@@ -7,10 +7,6 @@ LOG 'TPC-H Q3...';
 trackMemory force;
 success
 
-/optimiser_trace
-/transliterated
-/weaved
-/pipeline_Def
 /pipelineName = "OptQ3"
 select l_orderkey,
   sum(l_extendedprice*(1-l_discount)) as revenue,

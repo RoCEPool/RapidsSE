@@ -68,27 +68,19 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* affix each idxCol with it's $c.n of this table stream                      */
 /*----------------------------------------------------------------------------*/
-void Card_IdxColList::vAffix_tblCol(Card_Emit* p_emit)
+void Card_IdxColList::vAffix_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_IDXCOL)) {
-    Stz* szColNm = xKid.p_idxCol()->szFacet(SF_NMD_COL);
+  Kid xIdxColList(this);
+  while (xIdxColList.bEach(CK_IDXCOL)) {
+    Card_IdxCol* p_idxCol = xIdxColList.p_idxCol();
+    Symbol* pSym_idxCol   = p_idxCol->pSymbol();
 
-    Kid xCI_p(p_emit);
-    xCI_p.vEnded();
-    xCI_p.vBegin_reverse();
-    while (xCI_p.bEach_reverse(CK_EXPR)) {
-      if (xCI_p.p_expr()->pSymbol()->bMatches(SF_NMD_COL,szColNm)) {
+    Card_Expr* p_expr_inj = pCI->G.p_injectable->pFind_expr_Matches(pSym_idxCol);
+    pSym_idxCol->vApplyFacet(SF_TBL_COL, p_expr_inj->szFacet(SF_TBL_COL));
+    p_idxCol->vMark1(MARK_CHANGED);
 
-        Stz* szPrjCol = xCI_p.p_expr()->pGet_term(0)->szFacet(SF_TBL_COL);
-
-        xKid.p_idxCol()->SYM(SF_TBL_COL, szPrjCol);
-        xKid.p_idxCol()->pSymbol()->vRotateFacet(SF_TBL_COL);
-        xKid.p_idxCol()->vMark1(MARK_CHANGED);
-      }
-    }
   }
 }
 

@@ -90,12 +90,12 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   _static_
 
-  while (pCI->G_bEachMainWith3Sub(CK_o_FROM, CK_s_TABLE, CK_t_EMIT, CK_t_INDEXLIST)) {
+  while (pCI->G_bEachMainWith3Sub(CK_o_FROM, CK_s_TABLE, CK_s_INJECTABLE, CK_t_INDEXLIST)) {
 
     Kid xKid(pCI->G.p_indexList);
     while (xKid.bEach(CK_INDEX)) {
       pCI->G.p_idxColList = xKid.p_index()->pSub_idxColList();
-      pCI->G.p_idxColList->vAffix_tblCol(pCI->G.p_emit);
+      pCI->G.p_idxColList->vAffix_tblCol(pCI);
     }
   }
 }

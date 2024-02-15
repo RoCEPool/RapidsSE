@@ -101,6 +101,8 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  p_indexList->vDump(__func__);
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   auto bfConcat = [this, p_indexList](Card *pCard_cmpPred) {
@@ -115,8 +117,10 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
             p_term_1->pSymbol()->bHasFacet(SF_TBL_COL)))
       return C_CONTINUE_RECURSION;
 
-    if (!p_indexList->bHasEquivalentBound(p_rlnConj_tst))
+    if (!p_indexList->bHasEquivalentBound(p_rlnConj_tst)) {
+      //p_rlnConj_tst->vDump(__func__,"NO EquivalentBound"_Stz);
       return C_CONTINUE_RECURSION;
+    }
 
     Card_RlnConj* p_rlnConj_new = p_rlnConj_tst->pClone();
     this->vAppendChild(p_rlnConj_new);
