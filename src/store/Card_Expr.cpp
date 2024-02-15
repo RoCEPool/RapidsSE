@@ -454,7 +454,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
   RASSERT(pSymbol_expr_arriving->bHasFacet(SF_EXP_COL));
 
   if (pSymbol_expr_arriving->bHasFacet(SF_NMD_COL))
-    pSymbol_expr_inducted->vSetFacet(SF_NMD_COL,
+    pSymbol_expr_inducted->vApplyFacet(SF_NMD_COL,
                                          pSymbol_expr_arriving->szFacet(SF_NMD_COL));
   else
     p_expr_inducted->vAppend_nmdCol_synthetic(iExp);
