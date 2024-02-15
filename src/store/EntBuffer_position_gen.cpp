@@ -83,6 +83,146 @@ EntBuffer* EntBuffer::pFindLeafBuffer_gen(Key* aForKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* position at a leaf buffer starting from this buffer                        */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  RASSERT(KE_GENERAL == m_eEntKind);
+
+  /*
+
+     return the leaf buffer which has the key closest before given key
+
+     9?
+
+     [1,9]
+     [1,3,6]              [9,12]
+     [0,1,2][3,4,5][6,7,9][9,10,11][12,13,14]
+                      ^
+
+   */
+
+
+  EntBuffer* pEntBuffer = this;
+
+  i8 iBufferHeight;
+  Ent* aEnt;
+
+  while (true) {
+
+#ifdef EB_TRACE_INSERT
+    vTrace("?? pFindLeafBuffer_gen"_Stz);
+        pEntBuffer->vTraceWhere();
+        vTrace("\n"_Stz);
+        m_nTabs++;
+#endif
+
+    iBufferHeight = pEntBuffer->iBufferHeight();
+    if (iBufferHeight == 0)
+      break;
+
+    // get the entry
+    //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
+    //ASSERT(aEnt1);
+
+    aEnt = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+    ASSERT(aEnt);
+    Ent* aEntPrev = aEnt;
+
+    aEnt = pEntBuffer->pFindEntryPrevTo_ascGen(aEnt,aForKey);
+    if (! aEnt) {
+      aForKey->vShow(pIndexDef());
+      vTrace("\n"_Stz);
+
+      aEntPrev->aKey()->vShow(pIndexDef());
+      vTrace("\n"_Stz);
+
+      pEntBuffer->vDump();
+    }
+    ASSERT(aEnt);
+
+    // get the index buffer of the entry
+    pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
+    ASSERT(pEntBuffer);
+    ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
+  }
+
+  return pEntBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at a leaf buffer starting from this buffer                        */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pFindLeafBuffer_ascDscGen(Key* aForKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  RASSERT(KE_GENERAL == m_eEntKind);
+
+  /*
+
+     return the leaf buffer which has the key closest before given key
+
+     9?
+
+     [1,9]
+     [1,3,6]              [9,12]
+     [0,1,2][3,4,5][6,7,9][9,10,11][12,13,14]
+                      ^
+
+   */
+
+
+  EntBuffer* pEntBuffer = this;
+
+  i8 iBufferHeight;
+  Ent* aEnt;
+
+  while (true) {
+
+#ifdef EB_TRACE_INSERT
+    vTrace("?? pFindLeafBuffer_gen"_Stz);
+        pEntBuffer->vTraceWhere();
+        vTrace("\n"_Stz);
+        m_nTabs++;
+#endif
+
+    iBufferHeight = pEntBuffer->iBufferHeight();
+    if (iBufferHeight == 0)
+      break;
+
+    // get the entry
+    //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
+    //ASSERT(aEnt1);
+
+    aEnt = pEntBuffer->aFindEntryBefore_ascDscGen(aForKey);
+    ASSERT(aEnt);
+    Ent* aEntPrev = aEnt;
+
+    aEnt = pEntBuffer->pFindEntryPrevTo_ascDscGen(aEnt,aForKey);
+    if (! aEnt) {
+      aForKey->vShow(pIndexDef());
+      vTrace("\n"_Stz);
+
+      aEntPrev->aKey()->vShow(pIndexDef());
+      vTrace("\n"_Stz);
+
+      pEntBuffer->vDump();
+    }
+    ASSERT(aEnt);
+
+    // get the index buffer of the entry
+    pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
+    ASSERT(pEntBuffer);
+    ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
+  }
+
+  return pEntBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::aFindEntryBefore_gen(Key* aGivenKey)
@@ -123,6 +263,84 @@ Ent* EntBuffer::aFindEntryBefore_gen(Key* aGivenKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* scan thru skip list and return entry prior to key                          */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aFindEntryBefore_ascGen(Key* aGivenKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  RASSERT(KE_GENERAL == m_eEntKind);
+
+  i8 nLvlLevels = AM::nLvlLevels();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (nItems() == 0)
+    return aSkipRoots();
+
+  Ent* aScanEntry_sl = aSkipRoots();
+
+  bool bNextKeyIsGE;
+
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+
+    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    while (aNextEntry_sl) {
+
+      bNextKeyIsGE = Key::bGreaterEqualAsc(aNextEntry_sl->aKey(),aGivenKey);
+      if (bNextKeyIsGE)
+        break;
+
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
+    }
+
+  }
+
+  return aScanEntry_sl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and return entry prior to key                          */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aFindEntryBefore_ascDscGen(Key* aGivenKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  RASSERT(KE_GENERAL == m_eEntKind);
+
+  IndexDef* pIndexDef = this->pIndexDef();
+
+  i8 nLvlLevels = AM::nLvlLevels();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (nItems() == 0)
+    return aSkipRoots();
+
+  Ent* aScanEntry_sl = aSkipRoots();
+
+  bool bNextKeyIsGE;
+
+  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+
+    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    while (aNextEntry_sl) {
+
+      bNextKeyIsGE = Key::bGreaterEqual(pIndexDef,aNextEntry_sl->aKey(),aGivenKey);
+      if (bNextKeyIsGE)
+        break;
+
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
+    }
+
+  }
+
+  return aScanEntry_sl;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find the prev key entry                                                    */
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::pFindEntryPrevTo_gen(Ent* aGivenEnt, Key* aWithKey)
@@ -154,6 +372,74 @@ Ent* EntBuffer::pFindEntryPrevTo_gen(Ent* aGivenEnt, Key* aWithKey)
       return aEntPrev;
   }
   
+  return aEntPrev;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the prev key entry                                                    */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::pFindEntryPrevTo_ascGen(Ent* aGivenEnt, Key* aWithKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  if (aGivenEnt == aSkipRoots())
+    aGivenEnt = aNextEntry(aGivenEnt,0);
+
+  Ent* aEntPrev = aGivenEnt;
+
+  while (aGivenEnt) {
+    eKC eCompare = Key::eCompareAsc(aGivenEnt->aKey(),aWithKey);
+
+    // have we reached the key?
+    if (eCompare == KC_SAME)
+      break;
+
+    // have we moved beyond ?
+    if (eCompare == KC_AFTER)
+      return aEntPrev;
+
+    aEntPrev = aGivenEnt;
+    aGivenEnt = aNextEntry(aGivenEnt,0);
+
+    if ( ! aGivenEnt )
+      return aEntPrev;
+  }
+
+  return aEntPrev;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the prev key entry                                                    */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::pFindEntryPrevTo_ascDscGen(Ent* aGivenEnt, Key* aWithKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  IndexDef* pIndexDef = this->pIndexDef();
+
+  if (aGivenEnt == aSkipRoots())
+    aGivenEnt = aNextEntry(aGivenEnt,0);
+
+  Ent* aEntPrev = aGivenEnt;
+
+  while (aGivenEnt) {
+    eKC eCompare = Key::eCompareAscDsc(pIndexDef,aGivenEnt->aKey(),aWithKey);
+
+    // have we reached the key?
+    if (eCompare == KC_SAME)
+      break;
+
+    // have we moved beyond ?
+    if (eCompare == KC_AFTER)
+      return aEntPrev;
+
+    aEntPrev = aGivenEnt;
+    aGivenEnt = aNextEntry(aGivenEnt,0);
+
+    if ( ! aGivenEnt )
+      return aEntPrev;
+  }
+
   return aEntPrev;
 }
 

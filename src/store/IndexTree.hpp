@@ -114,6 +114,7 @@ namespace STORE
     EntBuffer* pNewRootBuffer(void);
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
     Ent*       aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer);
+    Ent*       aPositionPriorEntryAsc(Key* aFindKey, EntBuffer** ppEntBuffer);
     EntBuffer* pRootBuffer(void);
     void       vRootBuffer(EntBuffer* pRootBuffer);
     bool       bTreeDebug(void);
