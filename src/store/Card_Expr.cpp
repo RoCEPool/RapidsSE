@@ -289,7 +289,7 @@ void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
   if (! bIsCompound()) {
     Card_Term* p_term0 = pGet_term0();
     if (p_term0->pSymbol()->bHasFacet(SF_NMD_COL)) {
-      pSymbol_expr->vSetFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
+      pSymbol_expr->vApplyFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
       return;
     }
   }
