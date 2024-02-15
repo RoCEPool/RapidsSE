@@ -77,6 +77,90 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* find an entry in the indexTree                                             */
 /*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntryAsc(IndexTree* pIndexTree, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  eKC eCmp;
+
+  //pIndexTree->vDump(false);
+
+  Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  Key* aEntKey = aEnt->aKey();
+
+  if (KE_GENERAL == aEnt->eKind()) {
+    eCmp = Key::eCompareAsc(aEntKey,aKey);
+  }
+  else {
+    i8 iEntVal = *(i8 *) aEntKey;
+    i8 iWrkVal = *(i8 *) aKey;
+
+    if (iEntVal < iWrkVal)
+      eCmp = KC_BEFORE;
+    else if (iEntVal == iWrkVal)
+      eCmp = KC_SAME;
+    else
+      eCmp = KC_AFTER;
+  }
+
+  if (eCmp == KC_SAME)
+    return aEnt;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find an entry in the indexTree                                             */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntryAscDsc(IndexTree* pIndexTree, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  eKC eCmp;
+
+  //pIndexTree->vDump(false);
+
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+
+  Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  Key* aEntKey = aEnt->aKey();
+
+  if (KE_GENERAL == aEnt->eKind()) {
+    eCmp = Key::eCompare(pIndexDef, aEntKey,aKey);
+  }
+  else {
+    i8 iEntVal = *(i8 *) aEntKey;
+    i8 iWrkVal = *(i8 *) aKey;
+
+    if (iEntVal < iWrkVal)
+      eCmp = KC_BEFORE;
+    else if (iEntVal == iWrkVal)
+      eCmp = KC_SAME;
+    else
+      eCmp = KC_AFTER;
+  }
+
+  if (eCmp == KC_SAME)
+    return aEnt;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find an entry in the indexTree                                             */
+/*----------------------------------------------------------------------------*/
 Ent* IndexTree::aFindEntry_hint(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_recent)
 {
   UNUSED(aEnt_recent);

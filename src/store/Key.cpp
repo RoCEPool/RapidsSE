@@ -62,7 +62,6 @@ Key::~Key(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
 /* compare left key with right key                                            */
 /*----------------------------------------------------------------------------*/
@@ -73,6 +72,38 @@ eKC Key::eCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
     return eMixCompare(pIndexDef, aKey_l, aKey_r);
   }
 
+  i8 nKeyBytes_l = aKey_l->nElmSeqSize();
+  i8 nKeyBytes_r = aKey_r->nElmSeqSize();
+
+  Dtm* ayKeyBytes_l = aKey_l->aElmSeq_dtm();
+  Dtm* ayKeyBytes_r = aKey_r->aElmSeq_dtm();
+
+  i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+  i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+
+  if (iCmp < 0)
+    return KC_BEFORE;
+
+  if (iCmp == 0) {
+    if (nKeyBytes_l < nKeyBytes_r)
+      return KC_BEFORE;
+
+    if (nKeyBytes_l == nKeyBytes_r)
+      return KC_SAME;
+
+    if (nKeyBytes_l > nKeyBytes_r)
+      return KC_AFTER;
+  }
+
+  return KC_AFTER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compare left key with right key                                            */
+/*----------------------------------------------------------------------------*/
+eKC Key::eCompareAsc(Key* aKey_l, Key* aKey_r)
+{
   i8 nKeyBytes_l = aKey_l->nElmSeqSize();
   i8 nKeyBytes_r = aKey_r->nElmSeqSize();
   
@@ -101,6 +132,102 @@ eKC Key::eCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compare left key with right key                                            */
+/*----------------------------------------------------------------------------*/
+eKC Key::eCompareAscDsc(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
+{
+
+  i8 nKeyBytes_l = 0;
+  i8 nKeyBytes_r = 0;
+
+  Dtm* ayCursor_l = aKey_l->aElmSeq_dtm();
+  Dtm* ayCursor_r = aKey_r->aElmSeq_dtm();
+
+  //aKey_l->vShow(pIndexDef);
+  //vTrace("\n"_Stz);
+  //aKey_r->vShow(pIndexDef);
+  //vTrace("\n"_Stz);
+
+  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
+
+    Column *pCol = pIndexDef->pGetColumn(i_Col);
+
+    byte *ayKeyBytes_l = EntWrk::ayEachElm(pCol, nKeyBytes_l, (byte **) &ayCursor_l);
+    byte *ayKeyBytes_r = EntWrk::ayEachElm(pCol, nKeyBytes_r, (byte **) &ayCursor_r);
+
+    if (pCol->eDatum() == DM_VCH) {
+      nKeyBytes_l = Key::iGetStrSize(ayKeyBytes_l);
+      nKeyBytes_r = Key::iGetStrSize(ayKeyBytes_r);
+    }
+
+    i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+    i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l, ayKeyBytes_r, nCmpBytes);
+
+    if (pCol->bIsAscending()) {
+
+      if (iCmp < 0) {
+        return KC_BEFORE;
+      }
+
+      if (iCmp == 0) {
+        if (nKeyBytes_l < nKeyBytes_r) {
+          return KC_BEFORE;
+        }
+
+        if (nKeyBytes_l == nKeyBytes_r) {
+          //vTrace("SAME\n"_Stz);
+          continue;
+        }
+
+        if (nKeyBytes_l > nKeyBytes_r)
+          return KC_AFTER;
+      }
+
+      if (iCmp > 0) {
+        //vTrace("AFTER"_Stz);
+        return KC_AFTER;
+      }
+
+    } else {
+
+      if (iCmp < 0) {
+        //vTrace("AFTER\n"_Stz);
+        return KC_AFTER;
+      }
+
+      if (iCmp == 0) {
+        if (nKeyBytes_l < nKeyBytes_r) {
+          //vTrace("AFTER\n"_Stz);
+          return KC_AFTER;
+        }
+
+        if (nKeyBytes_l == nKeyBytes_r) {
+          //vTrace("SAME\n"_Stz);
+          continue;
+        }
+
+
+        if (nKeyBytes_l > nKeyBytes_r) {
+          //vTrace("BEFORE\n"_Stz);
+          return KC_BEFORE;
+        }
+
+      }
+
+      if (iCmp > 0) {
+        //vTrace("BEFORE"_Stz);
+        return KC_BEFORE;
+      }
+    }
+
+  }
+
+  //vTrace("BEFORE\n"_Stz);
+  return KC_SAME;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is left key is equal to right key ?                                        */
 /*----------------------------------------------------------------------------*/
 bool Key::bEqualTo(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
@@ -111,11 +238,53 @@ bool Key::bEqualTo(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is left key is equal to right key ?                                        */
+/*----------------------------------------------------------------------------*/
+bool Key::bEqualToAsc(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAsc(aKey_l,aKey_r);
+
+  return eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key is equal to right key ?                                        */
+/*----------------------------------------------------------------------------*/
+bool Key::bEqualToAscDsc(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAscDsc(pIndexDef,aKey_l,aKey_r);
+
+  return eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is left key greater than right key ?                                       */
 /*----------------------------------------------------------------------------*/
 bool Key::bGreaterThan(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
   eKC eCmp = Key::eCompare(pIndexDef,aKey_l,aKey_r);
+
+  return eCmp == KC_AFTER ? true : false;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key greater than right key ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Key::bGreaterThanAsc(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAsc(aKey_l,aKey_r);
+
+  return eCmp == KC_AFTER ? true : false;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key greater than right key ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Key::bGreaterThanAscDsc(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAscDsc(pIndexDef,aKey_l,aKey_r);
 
   return eCmp == KC_AFTER ? true : false;
 
@@ -132,12 +301,52 @@ bool Key::bGreaterEqual(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is left key greater than equal to right key ?                              */
+/*----------------------------------------------------------------------------*/
+bool Key::bGreaterEqualAsc(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAsc(aKey_l,aKey_r);
+
+  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key greater than equal to right key ?                              */
+/*----------------------------------------------------------------------------*/
+bool Key::bGreaterEqualAscDsc(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAscDsc(pIndexDef, aKey_l,aKey_r);
+
+  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is left key less than eqiual to right key ?                                */
 /*----------------------------------------------------------------------------*/
 bool Key::bLessEqual(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
   eKC eCmp = Key::eCompare(pIndexDef,aKey_l,aKey_r);
   
+  return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key less than eqiual to right key ?                                */
+/*----------------------------------------------------------------------------*/
+bool Key::bLessEqualAsc(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAsc(aKey_l,aKey_r);
+
+  return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key less than eqiual to right key ?                                */
+/*----------------------------------------------------------------------------*/
+bool Key::bLessEqualAscDsc(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAscDsc(pIndexDef,aKey_l,aKey_r);
+
   return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
 }
 
@@ -152,12 +361,52 @@ bool Key::bLessThan(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is left key less than right key ?                                          */
+/*----------------------------------------------------------------------------*/
+bool Key::bLessThanAsc(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAsc(aKey_l,aKey_r);
+
+  return eCmp == KC_BEFORE ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key less than right key ?                                          */
+/*----------------------------------------------------------------------------*/
+bool Key::bLessThanAscDsc(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAscDsc(pIndexDef,aKey_l,aKey_r);
+
+  return eCmp == KC_BEFORE ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is left key not equal to right key ?                                       */
 /*----------------------------------------------------------------------------*/
 bool Key::bNotEqual(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
 {
   eKC eCmp = Key::eCompare(pIndexDef,aKey_l,aKey_r);
   
+  return eCmp != KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key not equal to right key ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Key::bNotEqualAsc( Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAsc(aKey_l,aKey_r);
+
+  return eCmp != KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key not equal to right key ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Key::bNotEqualAscDsc(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompareAscDsc(pIndexDef,aKey_l,aKey_r);
+
   return eCmp != KC_SAME ? true : false;
 }
 
