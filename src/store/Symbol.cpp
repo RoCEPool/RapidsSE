@@ -1850,11 +1850,6 @@ void Symbol::vRotateFacet(eSF eFacet)
   i8 i_Facet = this->i_Facet(eFacet);
   if (0 == i_Facet)
     return;
-  if (C_UNKNOWN == i_Facet) {
-    vFacetPush(eFacet);
-    RASSERT(m_nFacets);
-    return;
-  }
 
   RASSERT(m_nFacets);
 
@@ -3202,6 +3197,7 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
   RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
+  vRotateFacet(SF_SQY_OP);
 
   RASSERT(bHasFacet(SF_SQY_OP));
 }
@@ -3244,6 +3240,7 @@ void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
   //RASSERT(! bHasFacets());
 
   vFacetSprint(SF_SQY_RSL, "$R%lld"_Stz, iOrdinal);
+  vRotateFacet(SF_SQY_RSL);
 
   RASSERT(bHasFacet(SF_SQY_RSL));
 }
@@ -3308,6 +3305,7 @@ void Symbol::vFacet_Exp_Col(i8 iExpCol)
   }
 
   vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
+  vRotateFacet(SF_EXP_COL);
 
   RASSERT(bHasFacet(SF_EXP_COL));
 }
@@ -3516,10 +3514,8 @@ void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
     if (aFacet_arg->m_sChrSeq.bSame("%1"_Stz))
       vDebugPoint();
 
-    //vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
-    vRotateFacet(aFacet_arg->m_eFacet);
     vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
-
+    vRotateFacet(aFacet_arg->m_eFacet);
   }
 }
 
@@ -3538,27 +3534,6 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
   }
 
   m_nFacets--;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push facet                                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacetPush(eSF eFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  UNUSED(eFacet);
-
-  m_nFacets++;
-
-  for (i8 i_Facet = nFacets() - 1; i_Facet >= 1; i_Facet--) {
-    xaFacet[i_Facet].m_eFacet  = xaFacet[i_Facet - 1].m_eFacet;
-    xaFacet[i_Facet].m_sChrSeq = xaFacet[i_Facet - 1].m_sChrSeq;
-  }
-
-  vFacetSet(0,eFacet,""_Stz);
-
-  RASSERT(m_nFacets);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3602,7 +3577,6 @@ void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
   va_end(xArgs);
 
   vSetFacet(eFacet, sFacet);
-  vRotateFacet(eFacet);
 }
 
 /*----------------------------------------------------------------------------*/
