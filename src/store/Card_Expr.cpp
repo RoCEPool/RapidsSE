@@ -163,10 +163,10 @@ Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
 
   Stz* szNmdCol = pColumn->szColNm();
 
-  Card_Expr* p_expr_new = (new Card_Expr) -> SYM(SF_EXP_COL, iExpCol);
+  Card_Expr* p_expr_new = new Card_Expr;
   p_expr_new->vCast(xCast);
   p_expr_new->pSymbol()->vApplyFacet(SF_NMD_COL, szNmdCol);
-  p_expr_new->pSymbol()->vRotateFacet(SF_EXP_COL);
+  p_expr_new->pSymbol()->vApplyFacet(SF_EXP_COL, iExpCol);
 
   Card_RpnCalc *p_rpnCalc_new = (new Card_RpnCalc);
   p_rpnCalc_new->vCast(xCast);
