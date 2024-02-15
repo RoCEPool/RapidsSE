@@ -121,6 +121,8 @@ namespace STORE
 
     // - - - - - -
 
+    void vApplyFacet(eSF eFacet, Stz* szChrSeq);
+
     Cast xCast(void);
     void vCast(Cast xCast);
     void vCastReset(void);
@@ -146,7 +148,6 @@ namespace STORE
     Stz* szFacet_rlnConj(void);
     Stz* szFacet_single(void);
     Stz* szFacet_term(void);
-    void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);
 

@@ -69,7 +69,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vFacet(eFacet, szChrSeq);
+  vApplyFacet(eFacet, szChrSeq);
 
   RASSERT(bHasFacets());
 
@@ -1197,6 +1197,75 @@ TypeId Symbol::xTo_TypeId(Stz* szTypeName)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set facet                                                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyFacet(eSF eFacet, Stz* szChrSeq)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_AGG_FN:      vFacet_Agg_Fn(szChrSeq);      break;
+    case SF_AS:          vFacet_As(szChrSeq);          break;
+    case SF_BOL_FN:      vFacet_Bol_Fn(szChrSeq);      break;
+    case SF_BOL_LIT:     vFacet_Bol_Lit(szChrSeq);     break;
+    case SF_BOL_OP:      vFacet_Bol_Op(szChrSeq);      break;
+    case SF_BOUND:       vFacet_Bound(szChrSeq);       break;
+    case SF_BRACE:       vFacet_Brace(szChrSeq);       break;
+    case SF_CASE:        vFacet_Case(szChrSeq);        break;
+    case SF_CAST:        vFacet_Cast(szChrSeq);        break;
+    case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
+    case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
+    case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
+    case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
+    case SF_DCM_LIT:     vFacet_Dcm_Lit(szChrSeq);     break;
+    case SF_DIRECTION:   vFacet_Direction(szChrSeq);   break;
+    case SF_ELSE:        vFacet_Else(szChrSeq);        break;
+    case SF_ENDIF:       vFacet_EndIf(szChrSeq);       break;
+    case SF_EXP_COL:     vFacet_Exp_Col(szChrSeq);     break;
+    case SF_FLD_NM:      vFacet_Fld_Nm(szChrSeq);      break;
+    case SF_FLT_LIT:     vFacet_Flt_Lit(szChrSeq);     break;
+    case SF_GROUPBY:     vFacet_GroupBy(szChrSeq);     break;
+    case SF_IDX_COL:     vFacet_Idx_Col(szChrSeq);     break;
+    case SF_IDX_NM:      vFacet_Idx_Nm(szChrSeq);      break;
+    case SF_INT_LIT:     vFacet_Int_Lit(szChrSeq);     break;
+    case SF_IVL_FN:      vFacet_Ivl_Fn(szChrSeq);      break;
+    case SF_INTERVAL_DT: vFacet_Interval_DT(szChrSeq); break;
+    case SF_INTERVAL_YM: vFacet_Interval_YM(szChrSeq); break;
+    case SF_KEY_COL:     vFacet_Key_Col(szChrSeq);     break;
+    case SF_LIST_CNT:    vFacet_List_Cnt(szChrSeq);    break;
+    case SF_MTH_OP:      vFacet_Mth_Op(szChrSeq);      break;
+    case SF_NEGATE:      vFacet_Negate(szChrSeq);      break;
+    case SF_NMD_COL:     vFacet_Nmd_Col(szChrSeq);     break;
+    case SF_NOTE:        vFacet_Note(szChrSeq);        break;
+    case SF_NULL:        vFacet_Null(szChrSeq);        break;
+    case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
+    case SF_SQY_NM:      vFacet_Sqy_Nm(szChrSeq);      break;
+    case SF_SQY_NO:      vFacet_Sqy_No(szChrSeq);      break;
+    case SF_SQY_PRM:     vFacet_Sqy_Prm(szChrSeq);     break;
+    case SF_SQY_RSL:     vFacet_Sqy_Rsl(szChrSeq);     break;
+    case SF_RLN_OP:      vFacet_Rln_Op(szChrSeq);      break;
+    case SF_SQY_OP:      vFacet_Sqy_Op(szChrSeq);      break;
+    case SF_STG_CAST:    vFacet_Stg_Cast(szChrSeq);    break;
+    case SF_STR_FN:      vFacet_Str_Fn(szChrSeq);      break;
+    case SF_STR_LIT:     vFacet_Str_Lit(szChrSeq);     break;
+    case SF_TBL_COL:     vFacet_Tbl_Col(szChrSeq);     break;
+    case SF_TBL_NM:      vFacet_Tbl_Nm(szChrSeq);      break;
+    case SF_TBL_SYN:     vFacet_Tbl_Syn(szChrSeq);     break;
+    case SF_THEN:        vFacet_Then(szChrSeq);        break;
+    case SF_TYPE:        vFacet_Type(szChrSeq);        break;
+    case SF_WHEN:        vFacet_When(szChrSeq);        break;
+    case SF_XK_CAST:     vFacet_Xk_Cast(szChrSeq);     break;
+
+    case SF_RW_AGGREGATES:  vFacet_Rw_Aggregates(szChrSeq);  break;
+
+    default: NEVER_REACH;
+  }
+
+  RASSERT(bHasFacets());
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cast                                                                   */
 /*----------------------------------------------------------------------------*/
 Cast Symbol::xCast(void)
@@ -1495,76 +1564,6 @@ i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
       return i_Facet;
   }
   return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set facet                                                                  */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eFacet) {
-
-    case SF_AGG_FN:      vFacet_Agg_Fn(szChrSeq);      break;
-    case SF_AS:          vFacet_As(szChrSeq);          break;
-    case SF_BOL_FN:      vFacet_Bol_Fn(szChrSeq);      break;
-    case SF_BOL_LIT:     vFacet_Bol_Lit(szChrSeq);     break;
-    case SF_BOL_OP:      vFacet_Bol_Op(szChrSeq);      break;
-    case SF_BOUND:       vFacet_Bound(szChrSeq);       break;
-    case SF_BRACE:       vFacet_Brace(szChrSeq);       break;
-    case SF_CASE:        vFacet_Case(szChrSeq);        break;
-    case SF_CAST:        vFacet_Cast(szChrSeq);        break;
-    case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
-    case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
-    case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
-    case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
-    case SF_DCM_LIT:     vFacet_Dcm_Lit(szChrSeq);     break;
-    case SF_DIRECTION:   vFacet_Direction(szChrSeq);   break;
-    case SF_ELSE:        vFacet_Else(szChrSeq);        break;
-    case SF_ENDIF:       vFacet_EndIf(szChrSeq);       break;
-    case SF_EXP_COL:     vFacet_Exp_Col(szChrSeq);     break;
-    case SF_FLD_NM:      vFacet_Fld_Nm(szChrSeq);      break;
-    case SF_FLT_LIT:     vFacet_Flt_Lit(szChrSeq);     break;
-    case SF_GROUPBY:     vFacet_GroupBy(szChrSeq);     break;
-    case SF_IDX_COL:     vFacet_Idx_Col(szChrSeq);     break;
-    case SF_IDX_NM:      vFacet_Idx_Nm(szChrSeq);      break;
-    case SF_INT_LIT:     vFacet_Int_Lit(szChrSeq);     break;
-    case SF_IVL_FN:      vFacet_Ivl_Fn(szChrSeq);      break;
-    case SF_INTERVAL_DT: vFacet_Interval_DT(szChrSeq); break;
-    case SF_INTERVAL_YM: vFacet_Interval_YM(szChrSeq); break;
-    case SF_KEY_COL:     vFacet_Key_Col(szChrSeq);     break;
-    case SF_LIST_CNT:    vFacet_List_Cnt(szChrSeq);    break;
-    case SF_MTH_OP:      vFacet_Mth_Op(szChrSeq);      break;
-    case SF_NEGATE:      vFacet_Negate(szChrSeq);      break;
-    case SF_NMD_COL:     vFacet_Nmd_Col(szChrSeq);     break;
-    case SF_NOTE:        vFacet_Note(szChrSeq);        break;
-    case SF_NULL:        vFacet_Null(szChrSeq);        break;
-    case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
-    case SF_SQY_NM:      vFacet_Sqy_Nm(szChrSeq);      break;
-    case SF_SQY_NO:      vFacet_Sqy_No(szChrSeq);      break;
-    case SF_SQY_PRM:     vFacet_Sqy_Prm(szChrSeq);     break;
-    case SF_SQY_RSL:     vFacet_Sqy_Rsl(szChrSeq);     break;
-    case SF_RLN_OP:      vFacet_Rln_Op(szChrSeq);      break;
-    case SF_SQY_OP:      vFacet_Sqy_Op(szChrSeq);      break;
-    case SF_STG_CAST:    vFacet_Stg_Cast(szChrSeq);    break;
-    case SF_STR_FN:      vFacet_Str_Fn(szChrSeq);      break;
-    case SF_STR_LIT:     vFacet_Str_Lit(szChrSeq);      break;
-    case SF_TBL_COL:     vFacet_Tbl_Col(szChrSeq);     break;
-    case SF_TBL_NM:      vFacet_Tbl_Nm(szChrSeq);      break;
-    case SF_TBL_SYN:     vFacet_Tbl_Syn(szChrSeq);     break;
-    case SF_THEN:        vFacet_Then(szChrSeq);        break;
-    case SF_TYPE:        vFacet_Type(szChrSeq);        break;
-    case SF_WHEN:        vFacet_When(szChrSeq);        break;
-    case SF_XK_CAST:     vFacet_Xk_Cast(szChrSeq);     break;
-
-    case SF_RW_AGGREGATES:  vFacet_Rw_Aggregates(szChrSeq);  break;
-
-    default: NEVER_REACH;
-  }
-
-  RASSERT(bHasFacets());
-
 }
 
 /*----------------------------------------------------------------------------*/
