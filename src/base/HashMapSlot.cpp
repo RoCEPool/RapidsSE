@@ -9,6 +9,28 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compare two nodes                                                          */
+/*----------------------------------------------------------------------------*/
+i8 BASE::iBufferIdKeyCompare(void* aItem_l, void* aItem_r)
+{
+  _static_
+
+  HashMapEntry* pKey_l = (HashMapEntry*) aItem_l;
+  HashMapEntry* pKey_r = (HashMapEntry*) aItem_r;
+
+  // do the node keys match?
+  if (pKey_l->m_pKeyObject == pKey_r->m_pKeyObject)
+    return 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pKey_l->m_pKeyObject >= pKey_r->m_pKeyObject)
+    return 1;
+  else
+    return -1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 HashMapSlot* BASE::_pHashMapSlot(void* aAddr)
@@ -50,7 +72,7 @@ HashMapSlot::HashMapSlot(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
 
   m_pEntry = nullptr;
-  m_pPdsOfEntries = new Pds_t<HashMapEntry>(nullptr, false);
+  m_pPdsOfEntries = new Pds_t<HashMapEntry>(iBufferIdKeyCompare, false);
 
   _checkInitialised_(CN_HASHMAPSLOT);
 

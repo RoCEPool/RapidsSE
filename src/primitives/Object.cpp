@@ -138,9 +138,18 @@ Object* Object::pMemoryCopy(void)
     pDataBuffer->vSetBufferId(
         AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
 #endif
-    AM::pHashMap()->vInsertKeyValue(
-        (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-        (Object *) pCopy);
+    if(eClass == BASE::CN_CRWBUFFER) {
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pCopy,
+          BI_CRW);
+    } else {
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pCopy,
+          BI_ROW);
+    }
+
   }
 
   return pCopy;

@@ -337,6 +337,18 @@ u8 HashMap::uHashFunction(void* pKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* hashmap init (add pds used in the hashmap into itself                      */
+/*----------------------------------------------------------------------------*/
+void HashMap::vInit(void)
+{
+  // Do we really need to add the Pds buffers used in the hashmap to the hashmap itself?
+  for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
+    Pds* pPds = m_pHashMapSlot[u_slot]->m_pPdsOfEntries;
+    AM::pHashMap()->vInsertKeyValue((void *) pPds->oGetBufferId().m_pvAsAddress, (Object *) pPds, BI_HASHMAPSLOT);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* given an entry pointer and index, insert into hashmap                      */
 /*----------------------------------------------------------------------------*/
 //void HashMap::vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
@@ -363,7 +375,7 @@ u8 HashMap::uHashFunction(void* pKey)
 /* Update value if key already exists
  * Grabs a lock on the entry as soon as it is created                         */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
+void HashMap::vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType)
 {
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
@@ -403,7 +415,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
     pIter = pIter->m_pNext;
   }
 
-  HashMapEntry* pEntry = new HashMapEntry(pKey, pValue);
+  HashMapEntry* pEntry = new HashMapEntry(pKey, pValue, eBufferIdType);
   pEntry->m_pNext = pDummyEntry->m_pNext;
   pDummyEntry->m_pNext = pEntry;
   //m_uNoOfEntries++;

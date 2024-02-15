@@ -635,9 +635,17 @@ Object* Socket::pObjectRecv(eCN eClass)
       pDataBuffer->vSetBufferId(
           AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
 #endif
-      AM::pHashMap()->vInsertKeyValue(
-          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-          (Object *) pReceivedObject);
+      if(eClass == BASE::CN_CRWBUFFER) {
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject,
+            BI_CRW);
+      } else {
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject,
+            BI_ROW);
+      }
     }
 
   m_pTotup->vAdd(eClass, nSize);

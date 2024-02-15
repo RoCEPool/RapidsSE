@@ -51,9 +51,10 @@ namespace BASE
     HashMapEntry* pGetEntryAtIndex(u8 uIndex);
 
     u8 uHashFunction(void* pKey);
+    void vInit(void);
 
     void    vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
-    void    vInsertKeyValue(void* pKey, Object* pValue);
+    void    vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType);
     bool    bIsLocked(void* pKey);
     void    vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
 //    void    vReHash(void);

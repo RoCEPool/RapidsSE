@@ -29,6 +29,8 @@ namespace BASE
     Footer* aFooter(void);
   };
 
+  static i8 iBufferIdKeyCompare(void* aItem_l, void* aItem_r);
+
   HashMapSlot* _pHashMapSlot(void* aAddr);
 }
 

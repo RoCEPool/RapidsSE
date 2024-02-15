@@ -46,7 +46,10 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 #else
   m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 #endif
-  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+  if(eClassNo == CN_CRWBUFFER)
+    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_CRW);
+  else
+    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_ROW);
 
   m_tLglPtn     = C_UNKNOWN;
   
@@ -81,8 +84,12 @@ DataBuffer::DataBuffer(bool bAddToHashMap, eCN eClassNo, bool bIsPermanent)
 #else
   m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 #endif
-  if(bAddToHashMap)
-    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+  if(bAddToHashMap) {
+    if(eClassNo == CN_CRWBUFFER)
+      AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_CRW);
+    else
+      AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_ROW);
+  }
 
   m_tLglPtn     = C_UNKNOWN;
 
