@@ -493,7 +493,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
           //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->pGet_term(0)->szFacet(SF_TBL_COL);
           xKid.pChild()->pSymbol()->vApplyFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
-          xKid.pChild()->pSymbol()->vRotateFacet(SF_TBL_COL);  // TODO: hack!!
+          //xKid.pChild()->pSymbol()->vRotateFacet(SF_TBL_COL);  // TODO: hack!!
 
           DELETE_CARD(p_term);
         }
