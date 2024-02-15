@@ -113,6 +113,7 @@ enum eFM : u2 // function macros
   // cast operators
 
   /*  */ FM_ANY_TOUNK,          // any to unk
+  /*  */ FM_BCD_TOBCD,          // bcd to bcd
   /*  */ FM_BCD_TOFLT,          // bcd to flt
   /*  */ FM_BCD_TOINT,          // bcd to int
   /*  */ FM_BCD_TOUNK,          // bcd to unk
@@ -166,6 +167,7 @@ enum eFM : u2 // function macros
   /*  */ FM_VCH_TOIVY,          // vch to ivy
   /*  */ FM_VCH_TOTME,          // vch to tme
   /*  */ FM_VCH_TOTSP,          // vch to tsp
+  /*  */ FM_VCH_TOVCH,          // vch to vch
   /*  */ FM_VCH_TOUNK,          // vch to unk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

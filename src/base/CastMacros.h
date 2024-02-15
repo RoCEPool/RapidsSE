@@ -16,6 +16,29 @@ static inline void _ANY_TOUNK(i8** ppaW, struct Dynamic_T* aDynamicT)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TO BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+static inline void _BCD_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecision, i8 iScale)
+{
+  union Bcd_T bcdArg1;
+
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      bcdArg1.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // Rescaling may also produce an overflow, as might any precision limitations
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  vRescaleBcdToPrecisionScale(ppaW, aDynamicT, iPrecision, iScale, NULL);
+
+  // The final value would have been pushed onto the stack during the rescaling
+  // unless an error was encountered
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
+}
+
+
 static inline void _INT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecision, i8 iScale)
 {
   union Bcd_T bcdArg1;
@@ -714,10 +737,13 @@ static inline void _BCD_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 
   *p++ = '.';
   --(*piAreaRemaining);
+  i1 iFirst = 1; // Always print the first digit after the decimal point,
+                 // especially if it is a zero.
 
-  while (bcdArg1.m_iMantissa && --(*piAreaRemaining)) {
+  while ((bcdArg1.m_iMantissa || iFirst) && --(*piAreaRemaining)) {
     *p++ = (bcdArg1.m_iMantissa % 10) + '0';
     bcdArg1.m_iMantissa /= 10ll;
+    iFirst = 0;
   }
 
   if (bNegative && --(*piAreaRemaining))
@@ -1025,6 +1051,25 @@ static inline void _TSP_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   *(*ppaW)++ = (i8)(*ppszDstArea);
   (*ppszDstArea) += nSize;
   (*piAreaRemaining) -= nSize;
+}
+
+static inline void _VCH_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+{
+  i8 iArg1 = *(--(*ppaW));
+  char *pS = (char*)iArg1;
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // TODO: handle precision
+  *(*ppaW)++ = iArg1;
+
+//  *(*ppaW)++ = (i8)(*ppszDstArea);
+//  (*ppszDstArea) += nSize;
+//  (*piAreaRemaining) -= nSize;
 }
 
 // nothing to do

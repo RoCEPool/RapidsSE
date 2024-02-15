@@ -118,6 +118,7 @@ Stz* aFM[FM_ENUMS]
   // cast operators
 
   /*  */ "_ANY_TOUNK"_Stz,
+  /*  */ "_BCD_TOBCD"_Stz,
   /*  */ "_BCD_TOFLT"_Stz,
   /*  */ "_BCD_TOINT"_Stz,
   /*  */ "_BCD_TOUNK"_Stz,
@@ -172,6 +173,7 @@ Stz* aFM[FM_ENUMS]
   /*  */ "_VCH_TOIVY"_Stz,
   /*  */ "_VCH_TOTME"_Stz,
   /*  */ "_VCH_TOTSP"_Stz,
+  /*  */ "_VCH_TOVCH"_Stz,
   /*  */ "_VCH_TOUNK"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

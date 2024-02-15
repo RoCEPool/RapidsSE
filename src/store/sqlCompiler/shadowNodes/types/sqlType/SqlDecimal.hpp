@@ -19,7 +19,6 @@ namespace Parser
 
   public:
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
-//    static PlanNode* pCreate();
     static PlanNode* pCreate(i8 iPrecision, i8 iScale);
 
     // Returns true if a given node is a given type ** or is derived from that type **

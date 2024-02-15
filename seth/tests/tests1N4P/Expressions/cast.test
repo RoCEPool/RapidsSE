@@ -68,7 +68,7 @@ rows: (null)
 
 
 // cast int to vch
-SELECT CAST(intCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+/weaved SELECT CAST(intCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
 rows: (null)
       ("0")
       ("1")
@@ -216,12 +216,14 @@ rows: (null)
       (1.)
       (-1.)
 
-// cast decimal to dec (overflow)
+// cast decimal to dec
 SELECT CAST(decCol AS DECIMAL) FROM ${testName2}_test WHERE id = 5;
-failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+rows:
+  (-1000000000000000.)  // rounded
 
 SELECT CAST(decCol AS DECIMAL) FROM ${testName2}_test WHERE id = 6;
-failure contains: 'EC_ARITHMETIC_OVERFLOW'
+rows:
+  (1000000000000000.)  // rounded
 
 // cast decimal to dec(17,4)
 SELECT CAST(decCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
@@ -237,13 +239,13 @@ rows: (null)
       (0.00e0)
       (1.10e0)
       (-1.10e0)
-      (-999999999999999.99e0)
-      (999999999999999.99e0)
+      (-1000000000000000e0)
+      (1000000000000000e0)
 
 
 // cast decimal to vch
 SELECT CAST(decCol AS VARCHAR) FROM ${testName2}_test WHERE id <= 6;
-rows: ("null")
+rows: (null)
       ("0.00")
       ("1.10")
       ("-1.10")

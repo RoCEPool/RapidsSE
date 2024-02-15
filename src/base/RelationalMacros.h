@@ -12,6 +12,13 @@ static inline void vRoundBcdCheckRoundUp(i8** ppaW, i1* piWasRoundedUp)
   union Bcd_T bcdRound;
 
   bcdRound.m_iAsI8 = *(--(*ppaW));
+
+  i8 iNegAdj = 1;
+  if (bcdRound.m_iMantissa < 0) {
+    iNegAdj = -1;
+    bcdRound.m_iMantissa *= -1;
+  }
+
   if (bcdRound.m_iMantissa % 10 >= 5) {
     bcdRound.m_iMantissa = (bcdRound.m_iMantissa / 10) + 1;
     if (piWasRoundedUp) {
@@ -24,6 +31,8 @@ static inline void vRoundBcdCheckRoundUp(i8** ppaW, i1* piWasRoundedUp)
       *piWasRoundedUp = 0;
     }
   }
+
+  bcdRound.m_iMantissa *= iNegAdj;
 
   bcdRound.m_uScale--;
   *(*ppaW)++ = bcdRound.m_iAsI8;

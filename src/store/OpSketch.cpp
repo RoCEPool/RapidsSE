@@ -1682,8 +1682,11 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the cast operator if different types
+  // or if a length/precision/scale is involved. This means that
+  // if we are casting to a decimal or string then we should go ahead
+  // with the cast because the precision/scale may alter the result.
 
-  if (eColType1 != eCastType) {
+  if (eColType1 != eCastType || eCastType == DM_BCD || eCastType == DM_VCH) {
 		if (eCastType == DM_IVD || eCastType == DM_IVY) {
 			//xResultExprType.eIVVal()
       eOperation = eMacro_CastIntIvl[IVL_DAY];

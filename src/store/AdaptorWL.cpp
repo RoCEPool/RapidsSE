@@ -717,8 +717,14 @@ void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
     xColumn.__set_columnName(pColumn->szColNm()->azChar());
     xColumn.__set_columnType(eWLType);
 
-    if (pColumn->iColumnLength() > 0)   xColumn.__set_precision(pColumn->iColumnLength());
-    if (pColumn->iColumnScale() > 0)    xColumn.__set_scale(pColumn->iColumnScale());
+    if (pColumn->iColumnLength() > 0) {
+      xColumn.__set_precision(pColumn->iColumnLength());
+
+      if (pColumn->iColumnScale() >= 0) {
+        xColumn.__set_scale(pColumn->iColumnScale());
+      }
+    }
+
 
     xColumn.__set_isNullable(pColumn->bIsNullable());
 
