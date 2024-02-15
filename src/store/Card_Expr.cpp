@@ -464,7 +464,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
 //                                        pSymbol_expr_arriving->szFacet(SF_KEY_COL));
 
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
-    pSymbol_expr_inducted->vSetFacet(SF_TBL_COL,
+    pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,
                                         pGet_Symbol(0)->szFacet(SF_TBL_COL));
   }
 
