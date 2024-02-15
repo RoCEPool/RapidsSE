@@ -48,7 +48,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vSetFacet(eFacet, iInt);
+  vApplyFacet(eFacet, iInt);
 
   RASSERT(bHasFacets());
 
@@ -1197,7 +1197,34 @@ TypeId Symbol::xTo_TypeId(Stz* szTypeName)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set facet                                                                  */
+/* apply facet                                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
+    case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
+    case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
+    case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
+    case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
+    case SF_NMD_COL:    vFacet_Nmd_Col(iInt);    break;
+    case SF_SQY_PRM:    vFacet_Sqy_Prm(iInt);    break;
+    case SF_SQY_RSL:    vFacet_Sqy_Rsl(iInt);    break;
+    case SF_SQY_NO:     vFacet_Sqy_No(iInt);     break;
+    case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
+    case SF_LIST_CNT:   vFacet_List_Cnt(iInt);   break;
+
+    default: NEVER_REACH;
+  }
+
+  RASSERT(bHasFacets());
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply facet                                                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vApplyFacet(eSF eFacet, Stz* szChrSeq)
 {
@@ -1911,34 +1938,6 @@ void Symbol::vSetFacet(eSF eFacet, char cChr, i8 iInt)
 
     case SF_TBL_COL:
       vFacet_Tbl_Col(cChr, iInt);    break;
-
-    default: NEVER_REACH;
-  }
-
-  RASSERT(bHasFacets());
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* set facet                                                                  */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetFacet(eSF eFacet, i8 iInt)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eFacet) {
-
-    case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
-    case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
-    case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
-    case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
-    case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
-    case SF_NMD_COL:    vFacet_Nmd_Col(iInt);    break;
-    case SF_SQY_PRM:    vFacet_Sqy_Prm(iInt);    break;
-    case SF_SQY_RSL:    vFacet_Sqy_Rsl(iInt);    break;
-    case SF_SQY_NO:     vFacet_Sqy_No(iInt);     break;
-    case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
-    case SF_LIST_CNT:   vFacet_List_Cnt(iInt);   break;
 
     default: NEVER_REACH;
   }

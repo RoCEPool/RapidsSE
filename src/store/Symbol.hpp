@@ -121,6 +121,7 @@ namespace STORE
 
     // - - - - - -
 
+    void vApplyFacet(eSF eFacet, i8 iInt);
     void vApplyFacet(eSF eFacet, Stz* szChrSeq);
 
     Cast xCast(void);
@@ -177,7 +178,6 @@ namespace STORE
     void vSetFacet(eSF eFacet);
     void vSetFacet(eSF eFacet, char cChr);
     void vSetFacet(eSF eFacet, char cChr, i8 iInt);
-    void vSetFacet(eSF eFacet, i8 iInt);
     void vSetFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vSetFacet(Facet* aFacet_arg);
     void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);

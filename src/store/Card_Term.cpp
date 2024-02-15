@@ -72,7 +72,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
       pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term);
       i8 iItemise = pCI->G.p_expr->iItemise();
-      pSymbol_term->vSetFacet(SF_ITM_COL, iItemise);
+      pSymbol_term->vApplyFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
 
@@ -83,7 +83,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     i8 iItemise = pCI->G.p_expr->iItemise();
-    pSymbol_term->vSetFacet(SF_ITM_COL, iItemise);
+    pSymbol_term->vApplyFacet(SF_ITM_COL, iItemise);
     return C_CONTINUE_RECURSION;
   };
 
@@ -468,7 +468,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 
       if (pCI->G.p_expr && pCI->G.p_expr->bIsScalarCol() && pCI->G.p_rpnCalc) {
 //        if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_TBL_COL))
-//          pCI->G.p_expr->pSymbol()->vSetFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
+//          pCI->G.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
         pCI->G.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
 
         if (pSymbol_term0->bHasFacet(SF_NMD_COL))
@@ -508,7 +508,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
 
 //    if (pSymbol_this->bHasFacet(SF_EXP_COL) && ! pSymbol_expr->bHasFacet(SF_EXP_COL))
-//      pSymbol_expr->vSetFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
+//      pSymbol_expr->vApplyFacet(SF_EXP_COL,pSymbol_this->szFacet(SF_EXP_COL));
     if (pSymbol_this->bHasFacet(SF_KEY_COL) && ! pSymbol_expr->bHasFacet(SF_KEY_COL))
       pSymbol_expr->vApplyFacet(SF_KEY_COL,pSymbol_this->szFacet(SF_KEY_COL));
     if (pSymbol_this->bHasFacet(SF_TBL_COL) && ! pSymbol_expr->bHasFacet(SF_TBL_COL))
