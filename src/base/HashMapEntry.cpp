@@ -25,19 +25,18 @@ HashMapEntry* BASE::_pHashMapEntry(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* HashMapEntry::operator new(size_t)
 {
-  void* pObject = Heaps::pAllocate(CN_HASHMAPENTRY);
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+         "fatal: Row class cannot be new'd\n"_Stz);
 
-  return pObject;
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void HashMapEntry::operator delete(void* pHashMapEntryAddress)
+void* HashMapEntry::operator new(size_t, void* aAddress)
 {
-  HashMapEntry* pHashMapEntry = reinterpret_cast<HashMapEntry*>(pHashMapEntryAddress);
-
-  Heaps::vFree(pHashMapEntry);
+  return aAddress;
 }
 
 /*----------------------------------------------------------------------------*/

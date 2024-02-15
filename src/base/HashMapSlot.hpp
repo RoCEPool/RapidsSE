@@ -7,7 +7,7 @@ namespace BASE
 {
   class HashMapSlot : public Object
   {
-  friend HashMap;
+  friend class HashMap;
 
   public:
     HashMapEntry* m_pEntry;
@@ -24,12 +24,14 @@ namespace BASE
     HashMapSlot(void);
     ~HashMapSlot(void) noexcept(false);
 
+//    void vInsert()
+
   private:
 
     Footer* aFooter(void);
   };
 
-  static i8 iBufferIdKeyCompare(void* aItem_l, void* aItem_r);
+  static i8 iHashMapEntryKeyCompare(void* aItem_l, void* aItem_r);
 
   HashMapSlot* _pHashMapSlot(void* aAddr);
 }

@@ -8,13 +8,13 @@ namespace BASE
 {
   class HashMapEntry : public Object
   {
-    friend HashMap;
-    friend HashMapSlot;
+    friend class HashMap;
+    friend class HashMapSlot;
 
   public:
+    void*         m_pKeyObject;
     eBI           m_eBufferIdType;
     Atomic        m_ixAtomicLock;
-    void*         m_pKeyObject;
     Object*       m_pValObject;
 
     HashMapEntry* m_pNext;
@@ -24,7 +24,9 @@ namespace BASE
 
   public:
     void* operator new(size_t);
-    void  operator delete(void* pHashMapEntryAddr);
+    void* operator new(size_t, void* aAddress);
+    void  operator delete(void*);
+
 
     HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType = BI_NONE);
     ~HashMapEntry(void) noexcept(false);
