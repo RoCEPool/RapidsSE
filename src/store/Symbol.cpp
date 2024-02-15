@@ -3229,7 +3229,7 @@ void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_SQY_PRM, "%s"_Stz, szSqyPrm);
+  vSetFacet(SF_SQY_PRM, szSqyPrm);
 
   RASSERT(bHasFacet(SF_SQY_PRM));
 }
@@ -3257,7 +3257,8 @@ void Symbol::vFacet_Sqy_Rsl(Stz* szSqyRsl)
 
   //RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_SQY_RSL, "%s"_Stz, szSqyRsl);
+  vSetFacet(SF_SQY_RSL, szSqyRsl);
+  vRotateFacet(SF_SQY_RSL);
 
   RASSERT(bHasFacet(SF_SQY_RSL));
 }
@@ -3271,7 +3272,7 @@ void Symbol::vFacet_Stg_Cast(Stz* szStgCast)
 
   RASSERT(0 == nFacets() || SF_STG_CAST == eFacet(0));
 
-  vFacetSprint(SF_STG_CAST,"%s"_Stz,szStgCast);
+  vSetFacet(SF_STG_CAST,szStgCast);
 
   RASSERT(bHasFacet(SF_STG_CAST));
 }
@@ -3320,7 +3321,7 @@ void Symbol::vFacet_Str_Fn(Stz* szBolFn)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_STR_FN,"%s"_Stz,szBolFn);
+  vSetFacet(SF_STR_FN,szBolFn);
 
   RASSERT(bHasFacet(SF_STR_FN));
 }
@@ -3334,7 +3335,7 @@ void Symbol::vFacet_Str_Lit(Stz* szString)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_STR_LIT,"%s"_Stz,szString);
+  vSetFacet(SF_STR_LIT,szString);
 
   RASSERT(bHasFacet(SF_STR_LIT));
 }
@@ -3365,7 +3366,8 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
           SF_EXP_COL == eFacet(0) ||
           SF_TBL_COL == eFacet(0));
 
-  vFacetSprint(SF_TBL_COL, "%s"_Stz, szTblCol);
+  vSetFacet(SF_TBL_COL, szTblCol);
+  vRotateFacet(SF_TBL_COL);
 
   RASSERT(bHasFacet(SF_TBL_COL));
 }
@@ -3379,7 +3381,7 @@ void Symbol::vFacet_Tbl_Nm(Stz* szTblNm)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_TBL_NM,"%s"_Stz,szTblNm);
+  vSetFacet(SF_TBL_NM,szTblNm);
 
   RASSERT(bHasFacet(SF_TBL_NM));
 }
@@ -3407,7 +3409,7 @@ void Symbol::vFacet_Tbl_Syn(Stz* szTblSyn)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_TBL_SYN,"%s"_Stz,szTblSyn);
+  vSetFacet(SF_TBL_SYN,szTblSyn);
 
   RASSERT(bHasFacet(SF_TBL_SYN));
 }
@@ -3439,7 +3441,7 @@ void Symbol::vFacet_Then(Stz* szThen)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_THEN,"%s"_Stz,szThen);
+  vSetFacet(SF_THEN,szThen);
 
   RASSERT(bHasFacet(SF_THEN));
 }
@@ -3453,7 +3455,7 @@ void Symbol::vFacet_Type(Stz* szType)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_TYPE,"%s"_Stz,szType);
+  vSetFacet(SF_TYPE,szType);
 
   RASSERT(bHasFacet(SF_TYPE));
 }
@@ -3467,7 +3469,7 @@ void Symbol::vFacet_When(Stz* szWhen)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_WHEN,"%s"_Stz,szWhen);
+  vSetFacet(SF_WHEN,szWhen);
 
   RASSERT(bHasFacet(SF_WHEN));
 }
@@ -3481,7 +3483,7 @@ void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_XK_CAST,"%s"_Stz,szXkCast);
+  vSetFacet(SF_XK_CAST,szXkCast);
 
   RASSERT(bHasFacet(SF_XK_CAST));
 }
@@ -3495,7 +3497,7 @@ void Symbol::vFacet_Rw_Aggregates(Stz* szAggregates)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_RW_AGGREGATES,"%s"_Stz,szAggregates);
+  vSetFacet(SF_RW_AGGREGATES,szAggregates);
 
   RASSERT(bHasFacet(SF_RW_AGGREGATES));
 }
