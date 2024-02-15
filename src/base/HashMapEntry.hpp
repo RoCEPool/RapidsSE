@@ -17,8 +17,6 @@ namespace BASE
     Atomic        m_ixAtomicLock;
     Object*       m_pValObject;
 
-    HashMapEntry* m_pNext;
-
     // must be last
     Footer m_xFooter;
 

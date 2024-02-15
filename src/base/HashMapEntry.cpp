@@ -52,9 +52,6 @@ HashMapEntry::HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType)
   m_eBufferIdType = eBufferIdType;
   m_pKeyObject = pKey;
   m_pValObject = pValue;
-  m_pNext = nullptr;
-
-
 
   _checkInitialised_(CN_HASHMAPENTRY);
 
