@@ -466,11 +466,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
     pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,
                                         pGet_Symbol(0)->szFacet(SF_TBL_COL));
-    pSymbol_expr_inducted->vRotateFacet(SF_TBL_COL);
   }
-
-
-
 
   Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
 
