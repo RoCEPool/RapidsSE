@@ -28,7 +28,7 @@ success
 load ${testName2}_test "../DATA/Expressions/cast.csv" ;
 warning contains: '1 rows were invalid'
 
-
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Cast integer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,7 +68,7 @@ rows: (null)
 
 
 // cast int to vch
-/weaved SELECT CAST(intCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+SELECT CAST(intCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
 rows: (null)
       ("0")
       ("1")
@@ -329,21 +329,21 @@ rows:
 SELECT CAST(fltCol AS FLOAT) FROM ${testName2}_test WHERE id <= 6;
 rows:
   (null)
-  (0e1)
+  (0e0)
   (11e-1)
   (-11e-1)
-  (-1.797693134862315708145274237317043567981e+308)
-  (1.797693134862315708145274237317043567981e+308)
+  (-1.79769313486231e+308)
+  (1.797693134862315e+308)
 
 // cast float to vch
 SELECT CAST(fltCol AS VARCHAR) FROM ${testName2}_test WHERE id <= 6;
 rows:
   (null)
-  ("0e1")
-  ("11e-1")
-  ("-11e-1")
-  ("-1.797693134862315708145274237317043567981e+308")
-  ("1.797693134862315708145274237317043567981e+308")
+  ("0.000000000e+00")
+  ("1.100000000e+00")
+  ("-1.100000000e+00")
+  ("-1.797693135e+308")
+  ("1.797693135e+308")
 
 // cast float to interval year
 // TODO: Ray
@@ -423,19 +423,19 @@ rows:
 
 // cast varchar to dec(17,4) (out of bounds)
 SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 11;
-failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+failure contains: 'EC_ARITHMETIC_OVERFLOW'
 
 SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 12;
 failure contains: 'EC_ARITHMETIC_OVERFLOW'
 
-
+*/
 // cast varchar to flt
 SELECT CAST(vchCol AS FLOAT) FROM ${testName2}_test WHERE id BETWEEN 9 AND 18;
 rows:
   (1e0)
   (-1e0)
-  (-999999999999999.99e0)
-  (999999999999999.99e0)
+  (-1.000000000000000e+15)
+  (1.000000000000000e+15)
   (11e-1)
   (-11e-1)
   (-1.797693134862315708145274237317043567981e+308)

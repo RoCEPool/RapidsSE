@@ -2,6 +2,10 @@
 /* CastMacros.h -- Cast Macros                                                */
 /*============================================================================*/
 #pragma once
+#include <ctype.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <math.h>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CAST
@@ -79,9 +83,165 @@ static inline void _INT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
   }
 }
 
-static inline void _VCH_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecision, i8 iScale)
+// Declaration, used in _VCH_TOBCD below.
+static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT);
+
+static inline void _VCH_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iResultPrecision, i8 iResultScale)
 {
-  aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED; 
+  i8 iArg1 = *(--(*ppaW));
+  char* psArg = (char*) iArg1;
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      *psArg == 0) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  union Bcd_T bcdResult;
+
+  // Where is the decimal point, if any?
+  i8 iPointPos = -1;
+  char* pS = psArg;
+  for (i8 i=0; pS[i]; i++) {
+    if (pS[i] == '.') {
+      iPointPos = i;
+      break;
+    }
+  }
+
+  if (iPointPos == -1) {
+    // We've got a decimal with no scale. Looks like an integer,
+    // so let's reuse that functionality.
+    *(*ppaW)++ = iArg1;
+    _VCH_TOINT(ppaW, aDynamicT);
+
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      return;
+    }
+
+    i8 iMantissa = *(--(*ppaW));
+
+    // Check that the integer value doesn't exceed BCD limits
+    if (iMantissa > C_BCD_MAX || iMantissa < C_BCD_MIN) {
+      aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+      *(*ppaW)++ = C_DATUM_NULL;
+      return;
+    }
+
+    bcdResult.m_iMantissa = iMantissa;
+    bcdResult.m_uScale = 0;
+    *(*ppaW)++ = bcdResult.m_iAsI8;
+
+    // Rescale to the desired precision/scale
+    vRescaleBcdToPrecisionScale(ppaW, aDynamicT, iResultPrecision, iResultScale, NULL);
+
+    // result is on the stack unless there is an error
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      *(*ppaW)++ = C_DATUM_NULL;
+    }
+
+    return;
+  }
+
+  // There is a decimal place that we have to handle
+
+  i8 iStrPrecision = 0;
+  i8 iStrScale = 0;
+  bool bNegative = false;
+  u8 uUnsignedResult = 0;
+
+  pS = psArg;
+
+  // skip any leading whitespace
+  if (*pS && isspace(*pS)) {
+    ++pS;
+  }
+
+  // test for negative or positive sign
+  if (*pS && '-' == *pS) {
+    bNegative = true;
+    ++pS;
+
+  } else if (*pS && '+' == *pS) {
+    ++pS;
+  }
+
+  if (!*pS || !(isdigit(*pS) || '.' == *pS)) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // ignore any leading 0's
+  while (isdigit(*pS) && *pS == '0') {
+    ++pS;
+  }
+
+  // collect leading digits (till '.')
+  while (*pS && isdigit(*pS)) {
+    uUnsignedResult = uUnsignedResult * 10 + (*pS - '0');
+    ++pS;
+    ++iStrPrecision;
+  }
+
+  if (!*pS || !(isdigit(*pS) || '.' == *pS)) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // Have we exceeded maximum precision digits?
+  if (iStrPrecision > iResultPrecision) {
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  if ('.' == *pS) {
+
+    pS++; // skip '.'
+
+    while (*pS && isdigit(*pS)) {
+      uUnsignedResult = uUnsignedResult * 10 + (*pS - '0');
+      ++pS;
+      ++iStrScale;
+      ++iStrPrecision;
+
+      // Have we exceeded maximum precision digits?
+      if (iStrPrecision > iResultPrecision) {
+        aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+        *(*ppaW)++ = C_DATUM_NULL;
+        return;
+      }
+    }
+
+  } else {
+    // its not a '.', must be an error
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+
+  // have we exceeded the max ?
+  if (uUnsignedResult > (u8)C_BCD_MAX) {
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  bcdResult.m_iMantissa = (i8) uUnsignedResult * (bNegative ? -1 : 1);
+  bcdResult.m_uScale = iStrScale;
+
+  // Now rescale the value to the desired precision and scale
+  *(*ppaW)++ = bcdResult.m_iAsI8;
+  vRescaleBcdToPrecisionScale(ppaW, aDynamicT, iResultPrecision, iResultScale, NULL);
+
+  // result is on the stack unless there is an error
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+  }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -339,37 +499,41 @@ static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 // varchar TO FLT
 static inline void _VCH_TOFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
-  union Flt_T fltArg1;
   i8 iArg1 = *(--(*ppaW));
   char *pS = (char*)iArg1;
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
     iArg1 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
 
+  union Flt_T fltArg1;
+  char* pEndPtr;
 
-  i8 len=0, n=0,i=0;
-  d8 f=1.0,val=0.0;
+  fltArg1.m_dFlt = strtod(pS, &pEndPtr);
 
-  while(pS[len]) len++;
+  if (fltArg1.m_dFlt == 0 && pEndPtr == pS) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
 
-  if(!len) {
+  } else if ( (fltArg1.m_dFlt == HUGE_VAL || fltArg1.m_dFlt == -HUGE_VAL) && errno == ERANGE) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+
+  } else if (fltArg1.m_dFlt == 0 && errno) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+
+  } else if (fltArg1.m_dFlt > C_FLT_MAX || fltArg1.m_dFlt < C_FLT_MIN) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
 
-  while(i<len && pS[i]!='.')
-    n=10*n +(pS[i++]-'0');
-
-  i++;
-  while(i<len)
-  {
-    f*=0.1;
-    val+=f*(pS[i++]-'0');
-  }
-
-  fltArg1.m_dFlt = (val+n);
   *(*ppaW)++ = fltArg1.m_iAsI8;
 }
 
@@ -391,11 +555,95 @@ static inline void _BCD_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
   *(*ppaW)++ = iVal;
 }
 
-static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+
+static inline bool bIsHex(const char c)
 {
-  aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
+  if (c >= 'a' && c <= 'f') return true;
+  if (c >= 'A' && c <= 'F') return true;
+  if (c >= '0' && c <= '9') return true;
+
+  return false;
 }
 
+static inline i8 iHexToInw(const char c)
+{
+  if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+  if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+  if (c >= '0' && c <= '9') return c - '0';
+
+  return -1;
+}
+
+static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  i8 iArg1 = *(--(*ppaW));
+  char* psArg = (char*) iArg1;
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      *psArg == 0) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  i8 iIntVal = 0;
+  bool bNegative = false;
+
+  if ('-' == *psArg) {
+    bNegative = true;
+    psArg++;
+  }
+
+  if (!*psArg || (!isdigit(*psArg) && *psArg != 'x' && *psArg != 'X')) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // skip leading 0's
+  while ('0' == *psArg)
+    psArg++;
+
+  if ('x' == *psArg || 'X' == *psArg) {
+    const i8 iLimit = C_I8_MAX / 16;
+    const i8 iModulus = bNegative ? -(C_I8_MIN % 16) : C_I8_MAX % 16;
+
+    psArg++;
+    while (bIsHex(*psArg)) {
+      i8 j = iHexToInw(*psArg++);
+
+      if (iIntVal > iLimit || (iIntVal == iLimit && j > iModulus) ) {
+        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+        *(*ppaW)++ = C_DATUM_NULL;
+        return;
+      }
+
+      iIntVal = iIntVal * 16 + j;
+    }
+
+  } else {
+    const i8 iLimit = C_I8_MAX / 10;
+    const i8 iModulus = bNegative ? -(C_I8_MIN % 10) : C_I8_MAX % 10;
+
+    while (isdigit(*psArg)) {
+      i8 j = (*psArg++ - '0');
+
+      if (iIntVal > iLimit || (iIntVal == iLimit && j > iModulus) ) {
+        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+        *(*ppaW)++ = C_DATUM_NULL;
+        return;
+      }
+
+      iIntVal = iIntVal * 10 + j;
+    }
+  }
+
+  if (bNegative)
+    iIntVal *= -1;
+
+  *(*ppaW)++ = iIntVal;
+  aDynamicT->m_iErrorCode = EC_NONE;
+}
 
 
 

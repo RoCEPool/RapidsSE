@@ -79,13 +79,21 @@ static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8
 
   if (iScaleDiff > 0) {
     // Need to check for overflow
-    if (C_I8_MAX / aDynamicT->m_iaPow10[iScaleDiff] < bcdReScale1.m_iMantissa) {
+    if (bcdReScale1.m_iMantissa < 0 &&
+        C_BCD_MAX / aDynamicT->m_iaPow10[iScaleDiff] > bcdReScale1.m_iMantissa) {
       aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-    } else {
-      bcdReScale1.m_uScale = (u8) (iScale);
-      bcdReScale1.m_iMantissa =
-        bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];
+      return;
     }
+
+    if (C_BCD_MAX / aDynamicT->m_iaPow10[iScaleDiff] < bcdReScale1.m_iMantissa) {
+      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+      return;
+    }
+
+    bcdReScale1.m_uScale = (u8) (iScale);
+    bcdReScale1.m_iMantissa =
+      bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];
+
   } else if (iScaleDiff < 0) {
     // No over/underflow check required for division.
     // Adjust BCD, then round the last digit as needed.

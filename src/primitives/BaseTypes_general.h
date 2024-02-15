@@ -31,10 +31,10 @@
   typedef unsigned long long w8;   // 8 byte word
 
   typedef unsigned char      byte; // a byte
-  typedef unsigned char      y1;   // 1 byte
-  typedef unsigned short     y2;   // 2 byte
-  typedef unsigned int       y4;   // 4 byte
-  typedef unsigned long long y8;   // 8 byte
+//typedef unsigned char      y1;   // 1 byte // y1 causes a naming conflict with a function in <math.h>
+//typedef unsigned short     y2;   // 2 byte
+//typedef unsigned int       y4;   // 4 byte
+//typedef unsigned long long y8;   // 8 byte
   
   #define C_BITS_PER_BYTE 8
   #define C_BYTES_PER_WORD 8
