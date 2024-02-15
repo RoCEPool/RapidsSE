@@ -24,6 +24,8 @@ extern void* aExtern_IndexDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((
 extern void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) __attribute__((weak_import));
 extern void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey) __attribute__((weak_import));
+extern void* aExtern_IndexTreeFindEntryAsc(void* aIndexTree, void* aKey) __attribute__((weak_import));
+extern void* aExtern_IndexTreeFindEntryAscDsc(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent) __attribute__((weak_import));
 extern void* aExtern_IndexTreeInsertEnt(void* aIndexDef, void* aEnt, i8* piErrorCode) __attribute__((weak_import));
 extern void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode)

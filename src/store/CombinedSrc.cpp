@@ -266,7 +266,10 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
         // find the key
-        vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz, pOperatorFile);
+        if (pOpSketch->m_pIndexDef->bHasDescending())
+          vAppendCodeFragment(pOpSketch, "vGbyAggFindKeyAscDsc"_Stz, pOperatorFile);
+        else
+          vAppendCodeFragment(pOpSketch, "vGbyAggFindKeyAsc"_Stz, pOperatorFile);
 
         // create the payload
         if (pOpSketch->m_nPayloadBytes)
