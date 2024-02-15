@@ -1349,19 +1349,6 @@ void Symbol::vCastFacetsPpy(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append facet                                                               */
-/*----------------------------------------------------------------------------*/
-void Symbol::vConcatFacet(eSF eFacet, Stz* szFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  //vFacetRotateSet(eFacet, szFacet);
-
-  vSetFacet(eFacet, szFacet);
-  vRotateFacet(eFacet);
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete facet                                                               */
 /*----------------------------------------------------------------------------*/
 void Symbol::vDeleteFacet(eSF eFacet)
