@@ -3360,7 +3360,7 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
           SF_TBL_COL == eFacet(0));
 
   vSetFacet(SF_TBL_COL, szTblCol);
-  vRotateFacet(SF_TBL_COL);
+  //vRotateFacet(SF_TBL_COL);
 
   RASSERT(bHasFacet(SF_TBL_COL));
 }

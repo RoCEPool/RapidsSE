@@ -138,6 +138,9 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (SF_TBL_COL == eSymbol)
+    vDebugPoint();
+
   m_xSymbol.vApplyFacet(eSymbol, szStz);
 
   return (CARD*)this;

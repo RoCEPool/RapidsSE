@@ -85,6 +85,7 @@ void Card_IdxColList::vAffix_tblCol(Card_Emit* p_emit)
         Stz* szPrjCol = xCI_p.p_expr()->pGet_term(0)->szFacet(SF_TBL_COL);
 
         xKid.p_idxCol()->SYM(SF_TBL_COL, szPrjCol);
+        xKid.p_idxCol()->pSymbol()->vRotateFacet(SF_TBL_COL);
         xKid.p_idxCol()->vMark1(MARK_CHANGED);
       }
     }
