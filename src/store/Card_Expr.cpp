@@ -97,7 +97,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
-  p_expr->pSymbol()->vSetFacet(SF_NMD_COL,szAs);
+  p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,szAs);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
