@@ -120,7 +120,6 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     Card_IdxCol* p_idxCol = new Card_IdxCol;
     p_idxCol->SYM(SF_NMD_COL, pColumn->szColNm());
-    p_idxCol->pSymbol()->vRotateFacet(SF_NMD_COL);
 
     p_idxColList->vAppendChild(p_idxCol);
 
