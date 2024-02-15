@@ -3354,11 +3354,6 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(0 == nFacets() ||
-          SF_NMD_COL == eFacet(0) ||
-          SF_EXP_COL == eFacet(0) ||
-          SF_TBL_COL == eFacet(0));
-
   vSetFacet(SF_TBL_COL, szTblCol);
   //vRotateFacet(SF_TBL_COL);
 
