@@ -55,7 +55,7 @@ namespace BASE
 
     Pds(RowPix* pRowPix, eBT eBufferType = BT_DATA);                          // When Pds is used to store rows
     Pds(StreamDef* pStreamDef, bool bAddKeyHash = false, eBT eBufferType = BT_DATA);  // When Pds is used to store rows
-    Pds(i8 nBytes, CompareFunc fpCompare);                                    // When Pds is used to track BufferIds
+    Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap=true);                   // When Pds is used to track BufferIds
     ~Pds(void) noexcept(false);
 
     static void* aGetCellArray(Pds* pPdsRowBuffer, i8 iRow);

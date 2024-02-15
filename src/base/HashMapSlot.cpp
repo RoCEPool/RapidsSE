@@ -50,6 +50,7 @@ HashMapSlot::HashMapSlot(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
 
   m_pEntry = nullptr;
+  m_pPdsOfEntries = new Pds_t<HashMapEntry>(nullptr, false);
 
   _checkInitialised_(CN_HASHMAPSLOT);
 

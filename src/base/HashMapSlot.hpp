@@ -12,6 +12,7 @@ namespace BASE
   public:
     HashMapEntry* m_pEntry;
     Lock m_okSlotLock;
+    Pds* m_pPdsOfEntries;
 
     // must be last
     Footer m_xFooter;

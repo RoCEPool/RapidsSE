@@ -31,6 +31,7 @@ namespace BASE
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);
+    DataBuffer(bool bAddToHashMap, eCN eClass, bool bIsPermanent);
 
     ~DataBuffer(void)
 

@@ -63,6 +63,42 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+DataBuffer::DataBuffer(bool bAddToHashMap, eCN eClassNo, bool bIsPermanent)
+    : Operand(eClassNo)
+    , m_okLock(this)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+
+  //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
+
+  m_iBufferNo  = iBufferNo();
+
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  m_oBufferId.m_pvAsAddress = this;
+#else
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
+#endif
+  if(bAddToHashMap)
+    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+
+  m_tLglPtn     = C_UNKNOWN;
+
+  m_iBufferHeight = 0;
+  m_oWhenNewed.vNow();
+  m_bIsPermanent = bIsPermanent;
+
+  m_pTable_dbuff = nullptr;
+  m_pStreamDef_dbuff = nullptr;
+
+  m_tTxnNo = C_UNKNOWN;
+
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 DataBuffer::~DataBuffer(void) noexcept(false)

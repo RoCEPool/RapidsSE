@@ -17,7 +17,7 @@ namespace BASE
     u8            m_uNoOfEntries;
     u8            m_uNoOfSlots;
 
-    HashMapSlot  m_pHashMapSlot[C_INIT_HASHMAP_SIZE];
+    HashMapSlot*  m_pHashMapSlot[C_INIT_HASHMAP_SIZE];
 
 #ifdef WITH_HASHMAP_DEBUG
     u8 m_uCollison;

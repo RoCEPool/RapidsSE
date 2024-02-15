@@ -19,6 +19,7 @@ namespace BASE
 
   public:
     Pds_t(CompareFunc fpCompare);
+    Pds_t(CompareFunc fpCompare, bool bAddToHashMap);
     ~Pds_t(void) noexcept(false);
 
 
@@ -42,6 +43,15 @@ using namespace BASE;
 template <class ITEM>
 Pds_t<ITEM>::Pds_t(CompareFunc fpCompare)
     : Pds(sizeof(ITEM), fpCompare)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+Pds_t<ITEM>::Pds_t(CompareFunc fpCompare, bool bAddToHashMap)
+    : Pds(sizeof(ITEM), fpCompare, bAddToHashMap)
 {
 }
 

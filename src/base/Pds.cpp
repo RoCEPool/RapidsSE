@@ -192,8 +192,8 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(i8 nBytes, CompareFunc fpCompare)
-    : DataBuffer(CN_PDS, false)
+Pds::Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap)
+    : DataBuffer(bAddToHashMap, CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
