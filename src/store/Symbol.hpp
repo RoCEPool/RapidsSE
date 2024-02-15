@@ -121,6 +121,8 @@ namespace STORE
 
     // - - - - - -
 
+    void vApplyFacet(eSF eFacet, Stz* szChrSeq);
+
     Cast xCast(void);
     void vCast(Cast xCast);
     void vCastReset(void);
@@ -146,7 +148,6 @@ namespace STORE
     Stz* szFacet_rlnConj(void);
     Stz* szFacet_single(void);
     Stz* szFacet_term(void);
-    void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);
 
@@ -286,10 +287,10 @@ namespace STORE
 
     void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);
-    void vFacetPush(eSF eFacet);
     void vFacetReset(void);
     void vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);
+    void vFacetSprint(String* pString, Stz* szFormat, ...);
 
   protected:
     Footer* aFooter(void);

@@ -351,7 +351,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       Symbol xSymbol_KeyCol(SF_KEY_COL,1);
 
       pCI->G_vNewMember(CK_EXPR);
-      pCI->G.p_expr->pSymbol()->vSetFacet(SF_NMD_COL, C_SQCRLKEY);
+      pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, C_SQCRLKEY);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
@@ -402,7 +402,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 
   // push <project>/_SQCRLKEY_
   pCI->G_vPushNewChild(pCI->G.p_emit, CK_EXPR);
-  pCI->G.p_expr->pSymbol()->vSetFacet(SF_NMD_COL, szAs);
+  pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, szAs);
   //pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_NMD_COL, szAs));
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
@@ -492,7 +492,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
           Card_Expr* p_expr_otr = pCI->pExpr_For_colNm(p_term);
           //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->pGet_term(0)->szFacet(SF_TBL_COL);
-          xKid.pChild()->pSymbol()->vFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
+          xKid.pChild()->pSymbol()->vApplyFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
 
           DELETE_CARD(p_term);
         }
@@ -582,7 +582,7 @@ void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
       p_conj->vRemoveChild(p_prev_conj);
       DELETE_CARD(p_prev_conj);
 
-      p_child_conj->pSymbol()->vFacet(SF_EXP_COL, "$2"_Stz);
+      p_child_conj->pSymbol()->vApplyFacet(SF_EXP_COL, "$2"_Stz);
       Card_Expr* p_expr_found = pCI->Flux.m_pArriving->pGet_expr(1);
       p_child_conj->vCast(p_expr_found->xCast());
 

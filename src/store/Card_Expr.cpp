@@ -97,7 +97,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
-  p_expr->pSymbol()->vSetFacet(SF_NMD_COL,szAs);
+  p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,szAs);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
@@ -165,7 +165,8 @@ Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
 
   Card_Expr* p_expr_new = (new Card_Expr) -> SYM(SF_EXP_COL, iExpCol);
   p_expr_new->vCast(xCast);
-  p_expr_new->pSymbol()->vSetFacet(SF_NMD_COL, szNmdCol);
+  p_expr_new->pSymbol()->vApplyFacet(SF_NMD_COL, szNmdCol);
+  p_expr_new->pSymbol()->vRotateFacet(SF_EXP_COL);
 
   Card_RpnCalc *p_rpnCalc_new = (new Card_RpnCalc);
   p_rpnCalc_new->vCast(xCast);
@@ -288,7 +289,7 @@ void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
   if (! bIsCompound()) {
     Card_Term* p_term0 = pGet_term0();
     if (p_term0->pSymbol()->bHasFacet(SF_NMD_COL)) {
-      pSymbol_expr->vSetFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
+      pSymbol_expr->vApplyFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
       return;
     }
   }
@@ -453,7 +454,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
   RASSERT(pSymbol_expr_arriving->bHasFacet(SF_EXP_COL));
 
   if (pSymbol_expr_arriving->bHasFacet(SF_NMD_COL))
-    pSymbol_expr_inducted->vSetFacet(SF_NMD_COL,
+    pSymbol_expr_inducted->vApplyFacet(SF_NMD_COL,
                                          pSymbol_expr_arriving->szFacet(SF_NMD_COL));
   else
     p_expr_inducted->vAppend_nmdCol_synthetic(iExp);
@@ -463,7 +464,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
 //                                        pSymbol_expr_arriving->szFacet(SF_KEY_COL));
 
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
-    pSymbol_expr_inducted->vSetFacet(SF_TBL_COL,
+    pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,
                                         pGet_Symbol(0)->szFacet(SF_TBL_COL));
   }
 

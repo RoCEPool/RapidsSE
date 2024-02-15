@@ -533,7 +533,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
 
   Symbol xTblCol_sym;
-  xTblCol_sym.vFacet(SF_TBL_COL,pSymbol_this->szFacet(SF_TBL_COL));
+  xTblCol_sym.vApplyFacet(SF_TBL_COL, pSymbol_this->szFacet(SF_TBL_COL));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
