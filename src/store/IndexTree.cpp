@@ -123,7 +123,12 @@ extern "C" void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) {
 extern "C" void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey) {
   return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
 }
-
+extern "C" void* aExtern_IndexTreeFindEntryAsc(void* aIndexTree, void* aKey) {
+  return (void*)IndexTree::aFindEntryAsc((IndexTree*) aIndexTree, (Key*) aKey);
+}
+extern "C" void* aExtern_IndexTreeFindEntryAscDsc(void* aIndexTree, void* aKey) {
+  return (void*)IndexTree::aFindEntryAscDsc((IndexTree*) aIndexTree, (Key*) aKey);
+}
 extern "C" void* aExtern_IndexTreeFindEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent) {
   return (void*)IndexTree::aFindEntry_hint((IndexTree*) aIndexTree, (Key*) aKey, (Ent*) aEnt_recent);
 }
