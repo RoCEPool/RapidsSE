@@ -3022,8 +3022,6 @@ void Symbol::vFacet_Key_Col(Stz* szKeyCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
-
   vSetFacet(SF_KEY_COL,szKeyCol);
 
   RASSERT(bHasFacet(SF_KEY_COL));
