@@ -339,7 +339,7 @@ void SubQuery::vSqyNm(Stz* szSqyNm)
 
   RASSERT(Symbol::bIs_Sqy_Nm(szSqyNm));
 
-  m_xSymbol.vSetFacet(SF_SQY_NM,szSqyNm);
+  m_xSymbol.vApplyFacet(SF_SQY_NM,szSqyNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,7 +361,7 @@ void SubQuery::vSqyNo(Stz* szSqyNo)
 
   RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
 
-  m_xSymbol.vSetFacet(SF_SQY_NO,szSqyNo);
+  m_xSymbol.vApplyFacet(SF_SQY_NO,szSqyNo);
 }
 
 /*----------------------------------------------------------------------------*/

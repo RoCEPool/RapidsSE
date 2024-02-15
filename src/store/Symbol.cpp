@@ -3177,8 +3177,6 @@ void Symbol::vFacet_Sqy_No(Stz* szSqyNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
-
   vSetFacet(SF_SQY_NO, szSqyNo);
 
   RASSERT(bHasFacet(SF_SQY_NO));
