@@ -2003,7 +2003,11 @@ L_Varchar:
     goto L_Varchar_setNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible null portion
+  // possible null portion, might be preceeded by whitespace
+
+  while (cCurChr && bIS_WHITE_SPACE()) {
+    vACCEPT_CHAR(); // next char
+  }
 
   if ('n' == cCurChr || 'N' == cCurChr) {
     vACCEPT_CHAR(); // skip 'n'

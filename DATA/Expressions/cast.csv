@@ -1,4 +1,4 @@
-#id,               intCol,        decCol(17,2),                                          fltCol,                                         vchCol(25),     dteCol,   tmeCol,                     tspCol, bolCol
+#id,               intCol,        decCol(17,2),                                          fltCol,                                         vchCol(50),     dteCol,   tmeCol,                     tspCol, bolCol
   1,                 null,                null,                                            null,                                              null,       null,     null,                       null,   null
   2,                    0,                  0.,                                             0e1,                                                "", 2000-01-01, 00:00:00, 2000-01-01 00:00:00.000000,  false
   3,                    1,                 1.1,                                           11e-1,                                            "true", 1900-01-01, 00:00:00, 1900-01-01 00:00:00.123456,   true

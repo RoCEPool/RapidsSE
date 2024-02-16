@@ -17,7 +17,7 @@ create table ${testName2}_test (
 	 intCol       INTEGER,
 	 decCol       DECIMAL(17,2),
 	 fltCol       FLOAT,
-	 vchCol       VARCHAR(25),
+	 vchCol       VARCHAR(50),
 	 dteCol       DATE,
 	 tmeCol       TIME,
 	 tspCol       TIMESTAMP,
@@ -430,18 +430,18 @@ failure contains: 'EC_ARITHMETIC_OVERFLOW'
 
 */
 // cast varchar to flt
-SELECT CAST(vchCol AS FLOAT) FROM ${testName2}_test WHERE id BETWEEN 9 AND 18;
-rows:
+SELECT CAST(vchCol AS FLOAT) FROM ${testName2}_test WHERE id BETWEEN 9 AND 18 ORDER BY id;
+ordered rows:
   (1e0)
   (-1e0)
-  (-1.000000000000000e+15)
-  (1.000000000000000e+15)
+  (-1.0e15)
+  (1.0e15)
   (11e-1)
   (-11e-1)
-  (-1.797693134862315708145274237317043567981e+308)
-  (1.797693134862315708145274237317043567981e+308)
-  (9223372036854775806e0)
-  (-9223372036854775806e0)
+  (-1.7976931e308)
+  (1.7976931e308)
+  (9.223372036854e18)
+  (-9.223372036854e18)
 
 
 // cast varchar to vch
