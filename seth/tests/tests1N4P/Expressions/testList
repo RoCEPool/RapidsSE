@@ -3,3 +3,4 @@ caseExpr.test
 likeExpr.test
 substringExpr.test
 inExpr.test
+cast.test

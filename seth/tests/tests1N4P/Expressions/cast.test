@@ -28,7 +28,7 @@ success
 load ${testName2}_test "../DATA/Expressions/cast.csv" ;
 warning contains: '1 rows were invalid'
 
-/*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Cast integer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -428,7 +428,7 @@ failure contains: 'EC_ARITHMETIC_OVERFLOW'
 SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 12;
 failure contains: 'EC_ARITHMETIC_OVERFLOW'
 
-*/
+
 // cast varchar to flt
 SELECT CAST(vchCol AS FLOAT) FROM ${testName2}_test WHERE id BETWEEN 9 AND 18 ORDER BY id;
 ordered rows:
@@ -455,11 +455,14 @@ rows:
 
 
 // cast varchar to dte
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 19 AND 21;
+SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE (id BETWEEN 19 AND 21) OR (id BETWEEN 30 AND 32);
 rows:
   (DATE '1900-01-01')
   (DATE '1970-04-05')
   (DATE '2155-12-31')
+  (DATE '2000-01-01')
+  (DATE '1900-01-01')
+  (DATE '2155-01-01')
 
 // cast varchar to dte (out of bounds)
 SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 22;
@@ -470,26 +473,26 @@ failure
 
 
 // cast varchar to tme
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 24 AND 26;
+SELECT CAST(vchCol AS TIME) FROM ${testName2}_test WHERE id BETWEEN 24 AND 26;
 rows:
   (TIME '00:00:00')
   (TIME '23:59:59')
   (TIME '01:02:03')
 
 // cast varchar to tme (out of bounds)
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 27;
+SELECT CAST(vchCol AS TIME) FROM ${testName2}_test WHERE id = 27;
 failure
 
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 28;
+SELECT CAST(vchCol AS TIME) FROM ${testName2}_test WHERE id = 28;
 failure
 
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 29;
+SELECT CAST(vchCol AS TIME) FROM ${testName2}_test WHERE id = 29;
 failure
 
 
 
 // cast varchar to tsp
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 30 AND 32;
+SELECT CAST(vchCol AS TIMESTAMP) FROM ${testName2}_test WHERE id BETWEEN 30 AND 32;
 rows:
   (TIMESTAMP '2000-01-01 00:00:00.000000')
   (TIMESTAMP '1900-01-01 00:00:00.123456')
@@ -497,25 +500,25 @@ rows:
 
 
 // cast varchar to tsp (out of bounds)
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 33;
+SELECT CAST(vchCol AS TIMESTAMP) FROM ${testName2}_test WHERE id = 33;
 failure
 
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 34;
+SELECT CAST(vchCol AS TIMESTAMP) FROM ${testName2}_test WHERE id = 34;
 failure
 
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 35;
+SELECT CAST(vchCol AS TIMESTAMP) FROM ${testName2}_test WHERE id = 35;
 failure
 
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 36;
+SELECT CAST(vchCol AS TIMESTAMP) FROM ${testName2}_test WHERE id = 36;
 failure
 
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 37;
+SELECT CAST(vchCol AS TIMESTAMP) FROM ${testName2}_test WHERE id = 37;
 failure
 
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 38;
+SELECT CAST(vchCol AS TIMESTAMP) FROM ${testName2}_test WHERE id = 38;
 failure
 
-SELECT CAST(vchCol AS DATE) FROM ${testName2}_test WHERE id = 39;
+SELECT CAST(vchCol AS TIMESTAMP) FROM ${testName2}_test WHERE id = 39;
 failure
 
 
@@ -567,6 +570,7 @@ rows:
 
 // cast date to date
 SELECT CAST(dteCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
   (null)
   (DATE '2000-01-01')
   (DATE '1900-01-01')
@@ -576,6 +580,7 @@ SELECT CAST(dteCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
 
 // cast date to tsp
 SELECT CAST(dteCol AS TIMESTAMP) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
   (null)
   (TIMESTAMP '2000-01-01 00:00:00.000000')
   (TIMESTAMP '1900-01-01 00:00:00.000000')
@@ -599,13 +604,13 @@ rows:
 
 // cast time to time
 SELECT CAST(tmeCol AS TIME) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
+rows:
   (null)
   (TIME '00:00:00')
   (TIME '00:00:00')
   (TIME '23:59:59')
   (TIME '01:02:03')
   (TIME '11:22:33')
-
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -615,7 +620,7 @@ SELECT CAST(tmeCol AS TIME) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
 SELECT CAST(tspCol AS VARCHAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
 rows:
   (null)
-  ('2000-01-01 00:00:00.000000')
+  ('2000-01-01 00:00:00')
   ('1900-01-01 00:00:00.123456')
   ('2155-01-01 23:59:59.999999')
   ('1900-01-01 01:02:03.456789')

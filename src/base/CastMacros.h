@@ -7,6 +7,39 @@
 #include <errno.h>
 #include <math.h>
 
+// Some function declarations
+static inline void _VCH_TOTSP(i8** ppaW, struct Dynamic_T* aDynamicT);
+static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT);
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Helper functions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+static inline bool bIsHex(const char c)
+{
+  if (c >= 'a' && c <= 'f') return true;
+  if (c >= 'A' && c <= 'F') return true;
+  if (c >= '0' && c <= '9') return true;
+
+  return false;
+}
+
+static inline i8 iHexToInw(const char c)
+{
+  if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+  if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+  if (c >= '0' && c <= '9') return c - '0';
+
+  return -1;
+}
+
+static inline i8 iDigitToI8(const char cDigit)
+{
+  i8 i = cDigit - '0';
+
+  return i;
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CAST
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -83,8 +116,6 @@ static inline void _INT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
   }
 }
 
-// Declaration, used in _VCH_TOBCD below.
-static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT);
 
 static inline void _VCH_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iResultPrecision, i8 iResultScale)
 {
@@ -182,7 +213,7 @@ static inline void _VCH_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iResult
 
   // collect leading digits (till '.')
   while (*pS && isdigit(*pS)) {
-    uUnsignedResult = uUnsignedResult * 10 + (*pS - '0');
+    uUnsignedResult = uUnsignedResult * 10 + iDigitToI8(*pS);
     ++pS;
     ++iStrPrecision;
   }
@@ -205,7 +236,7 @@ static inline void _VCH_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iResult
     pS++; // skip '.'
 
     while (*pS && isdigit(*pS)) {
-      uUnsignedResult = uUnsignedResult * 10 + (*pS - '0');
+      uUnsignedResult = uUnsignedResult * 10 + iDigitToI8(*pS);
       ++pS;
       ++iStrScale;
       ++iStrPrecision;
@@ -557,25 +588,6 @@ static inline void _BCD_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
   *(*ppaW)++ = iVal;
 }
 
-
-static inline bool bIsHex(const char c)
-{
-  if (c >= 'a' && c <= 'f') return true;
-  if (c >= 'A' && c <= 'F') return true;
-  if (c >= '0' && c <= '9') return true;
-
-  return false;
-}
-
-static inline i8 iHexToInw(const char c)
-{
-  if (c >= 'a' && c <= 'f') return c - 'a' + 10;
-  if (c >= 'A' && c <= 'F') return c - 'A' + 10;
-  if (c >= '0' && c <= '9') return c - '0';
-
-  return -1;
-}
-
 static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
   i8 iArg1 = *(--(*ppaW));
@@ -628,7 +640,7 @@ static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
     const i8 iModulus = bNegative ? -(C_I8_MIN % 10) : C_I8_MAX % 10;
 
     while (isdigit(*psArg)) {
-      i8 j = (*psArg++ - '0');
+      i8 j = iDigitToI8(*psArg++);
 
       if (iIntVal > iLimit || (iIntVal == iLimit && j > iModulus) ) {
         aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
@@ -675,7 +687,83 @@ static inline void _TSP_TODTE(i8** ppaW, struct Dynamic_T* aDynamicT)
 
 static inline void _VCH_TODTE(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
-  aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
+  i8 iArg1 = *(--(*ppaW));
+  char* psArg = (char*) iArg1;
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      *psArg == 0) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  union Dte_T dteResult;
+
+  i8 nLen = strlen(psArg);
+  if (nLen < 10) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  if (!isdigit(psArg[0]) ||
+      !isdigit(psArg[1]) ||
+      !isdigit(psArg[2]) ||
+      !isdigit(psArg[3]) ||
+      psArg[4] != '-'       ||
+      !isdigit(psArg[5]) ||
+      !isdigit(psArg[6]) ||
+      psArg[7] != '-'       ||
+      !isdigit(psArg[8]) ||
+      !isdigit(psArg[9]) ) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  i8 iYear  = 0;
+  i8 iMonth = 0;
+  i8 iDay   = 0;
+
+  iYear *= 10; iYear += iDigitToI8(psArg[0]);
+  iYear *= 10; iYear += iDigitToI8(psArg[1]);
+  iYear *= 10; iYear += iDigitToI8(psArg[2]);
+  iYear *= 10; iYear += iDigitToI8(psArg[3]);
+
+  iMonth *= 10; iMonth += iDigitToI8(psArg[5]);
+  iMonth *= 10; iMonth += iDigitToI8(psArg[6]);
+
+  iDay *= 10; iDay += iDigitToI8(psArg[8]);
+  iDay *= 10; iDay += iDigitToI8(psArg[9]);
+
+  if (iYear < (i8) C_YEAR_BASE ||
+      iYear > (i8) C_YEAR_MAX  ||
+      iMonth < 1  ||
+      iMonth > 12 ||
+      iDay < 1    ||
+      iDay > 31) {
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  b1 bIsLeapYear = ( (iYear % 4 == 0) && (iYear % 100 != 0) ) || (iYear % 400 == 0);
+
+  // Check days in month
+  if ( (!bIsLeapYear && iDay > iDaysPerMonth[iMonth]) ||
+       (bIsLeapYear &&  iDay > iDaysPerMonthLeap[iMonth]) ) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // We've got a valid date
+  dteResult.m_uYearDelta = iYear - C_YEAR_BASE;
+  dteResult.m_uMonth = iMonth;
+  dteResult.m_uDay = iDay;
+  dteResult.m_uSpare = 0;
+
+  *(*ppaW)++ = dteResult.m_iAsI8;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -850,7 +938,7 @@ static inline void _TSP_TOTME(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   xTme1.m_iAsI8 = 0;
 
-  xTme1.m_uMicro = xTsp1.m_uMicro;
+  xTme1.m_uMicro = 0; //xTsp1.m_uMicro;
   xTme1.m_uSecond = xTsp1.m_uSecond;
   xTme1.m_uMinute = xTsp1.m_uMinute;
   xTme1.m_uHour = xTsp1.m_uHour;
@@ -858,9 +946,98 @@ static inline void _TSP_TOTME(i8** ppaW, struct Dynamic_T* aDynamicT)
   *(*ppaW)++ = xTme1.m_iAsI8;
 }
 
+
 static inline void _VCH_TOTME(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
-  aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
+  i8 iArg1 = *(--(*ppaW));
+  char* psArg = (char*) iArg1;
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      *psArg == 0) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  union Tme_T tmeResult;
+  i8 iHour = 0;
+  i8 iMin  = 0;
+  i8 iSec  = 0;
+
+  // The string may contain a time or even a timestamp
+
+  i8 nLen = strlen(psArg);
+
+  if (nLen < 8) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // First try to extract it as a time
+  if (isdigit(psArg[0]) ||
+      isdigit(psArg[1]) ||
+      psArg[2] == ':' ||
+      isdigit(psArg[3]) ||
+      isdigit(psArg[4]) ||
+      psArg[5] == ':' ||
+      isdigit(psArg[6]) ||
+      isdigit(psArg[7]) ) {
+
+    iHour *= 10; iHour += iDigitToI8(psArg[0]);
+    iHour *= 10; iHour += iDigitToI8(psArg[1]);
+
+    iMin *= 10; iMin += iDigitToI8(psArg[3]);
+    iMin *= 10; iMin += iDigitToI8(psArg[4]);
+
+    iSec *= 10; iSec += iDigitToI8(psArg[6]);
+    iSec *= 10; iSec += iDigitToI8(psArg[7]);
+
+    if (iHour > 23 || iHour < 0) {
+      aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+      *(*ppaW)++ = C_DATUM_NULL;
+      return;
+    }
+
+    if (iMin > 59 || iMin < 0) {
+      aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+      *(*ppaW)++ = C_DATUM_NULL;
+      return;
+    }
+
+    if (iSec > 59 || iSec < 0) {
+      aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+      *(*ppaW)++ = C_DATUM_NULL;
+      return;
+    }
+
+    tmeResult.m_uHour = iHour;
+    tmeResult.m_uMinute = iMin;
+    tmeResult.m_uSecond = iSec;
+    tmeResult.m_uMicro = 0;
+    tmeResult.m_uSpare = 0;
+    // fall out
+
+  } else {
+    // Parse it as a timestamp first. This may generate an error or a valid timestamp
+    aDynamicT->m_iErrorCode = EC_NONE;
+    _VCH_TOTSP(ppaW, aDynamicT);
+
+    if (aDynamicT->m_iErrorCode != EC_NONE) {
+      // We've already got an error and a null value on the stack
+      return;
+    }
+
+    // We've got a valid timestamp. Extract the time portion.
+    union Tsp_T tspVal;
+    tspVal.m_iAsI8 = *(--(*ppaW));
+
+    tmeResult.m_uHour = tspVal.m_uHour;
+    tmeResult.m_uMinute = tspVal.m_uMinute;
+    tmeResult.m_uSecond = tspVal.m_uSecond;
+  }
+
+  *(*ppaW)++ = tmeResult.m_iAsI8;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -923,7 +1100,138 @@ static inline void _TME_TOTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
 
 static inline void _VCH_TOTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
-  aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
+  i8 iArg1 = *(--(*ppaW));
+  char* psArg = (char*) iArg1;
+
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      iArg1 == C_DATUM_NULL ||
+      *psArg == 0) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  union Tsp_T tspResult;
+  i8 iYear  = 0;
+  i8 iMonth = 0;
+  i8 iDay   = 0;
+  i8 iHour = 0;
+  i8 iMin  = 0;
+  i8 iSec  = 0;
+  i8 iMicro = 0;
+
+  i8 iLen = strlen(psArg);
+
+  if (iLen < 19              ||
+      !isdigit(psArg[0])  ||
+      !isdigit(psArg[1])  ||
+      !isdigit(psArg[2])  ||
+      !isdigit(psArg[3])  ||
+      psArg[4] != '-'        ||
+      !isdigit(psArg[5])  ||
+      !isdigit(psArg[6])  ||
+      psArg[7] != '-'        ||
+      !isdigit(psArg[8])  ||
+      !isdigit(psArg[9])  ||
+      psArg[10] != ' '       ||
+      !isdigit(psArg[11]) ||
+      !isdigit(psArg[12]) ||
+      psArg[13] != ':'       ||
+      !isdigit(psArg[14]) ||
+      !isdigit(psArg[15]) ||
+      psArg[16] != ':'       ||
+      !isdigit(psArg[17]) ||
+      !isdigit(psArg[18]) ) {
+
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  iYear *= 10; iYear += iDigitToI8(psArg[0]);
+  iYear *= 10; iYear += iDigitToI8(psArg[1]);
+  iYear *= 10; iYear += iDigitToI8(psArg[2]);
+  iYear *= 10; iYear += iDigitToI8(psArg[3]);
+
+  iMonth *= 10; iMonth += iDigitToI8(psArg[5]);
+  iMonth *= 10; iMonth += iDigitToI8(psArg[6]);
+
+  iDay *= 10; iDay += iDigitToI8(psArg[8]);
+  iDay *= 10; iDay += iDigitToI8(psArg[9]);
+
+  iHour *= 10; iHour += iDigitToI8(psArg[11]);
+  iHour *= 10; iHour += iDigitToI8(psArg[12]);
+
+  iMin *= 10; iMin += iDigitToI8(psArg[14]);
+  iMin *= 10; iMin += iDigitToI8(psArg[15]);
+
+  iSec *= 10; iSec += iDigitToI8(psArg[17]);
+  iSec *= 10; iSec += iDigitToI8(psArg[18]);
+
+  // Check for microseconds
+  if (iLen > 19 && psArg[19] == '.') {
+
+    i8 iIdx;
+    for (iIdx = 20; iIdx < 26, psArg[iIdx]; iIdx++) {
+
+      if (!isdigit(psArg[iIdx])) {
+        aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+        *(*ppaW)++ = C_DATUM_NULL;
+        return;
+      }
+
+      iMicro *= 10;
+      iMicro += iDigitToI8(psArg[iIdx]);
+    }
+
+    // May not have specified all fractional digits
+    while (iIdx < 26) {
+      iMicro *= 10;
+    }
+  }
+
+  // Now validate the results
+
+  if (iYear  < (i8) C_YEAR_BASE ||
+      iYear  > (i8) C_YEAR_MAX  ||
+      iMonth < 1  ||
+      iMonth > 12 ||
+      iDay   < 1  ||
+      iDay   > 31) {
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  b1 bIsLeapYear = ( (iYear % 4 == 0) && (iYear % 100 != 0) ) || (iYear % 400 == 0);
+
+  // Check days in month
+  if ( (!bIsLeapYear && iDay > iDaysPerMonth[iMonth]) ||
+       (bIsLeapYear &&  iDay > iDaysPerMonthLeap[iMonth]) ) {
+    aDynamicT->m_iErrorCode = EC_INVALID_VALUE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  if ( iHour > 23     ||  iHour < 0 ||
+        iMin > 59     ||   iMin < 0   ||
+        iSec > 59     ||   iSec < 0   ||
+      iMicro > 999999 || iMicro < 0) {
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // We've got a valid timestamp
+  tspResult.m_uYearDelta = iYear - C_YEAR_BASE;
+  tspResult.m_uMonth     = iMonth;
+  tspResult.m_uDay       = iDay;
+  tspResult.m_uHour      = iHour;
+  tspResult.m_uMinute    = iMin;
+  tspResult.m_uSecond    = iSec;
+  tspResult.m_uMicro     = iMicro;
+  tspResult.m_uSpare     = 0;
+
+  *(*ppaW)++ = tspResult.m_iAsI8;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1028,7 +1336,7 @@ static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     return;
   }
 
-  const i8 nSize = 9 + (xTme1.m_uMicro != 0 ? 7 : 0);
+  const i8 nSize = 9; //+ (xTme1.m_uMicro != 0 ? 7 : 0);
   if (*piAreaRemaining < nSize) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
@@ -1062,25 +1370,25 @@ static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   tmp = xTme1.m_uSecond;
   *p++ = (tmp % 10) + '0';
 
-  if(xTme1.m_uMicro != 0) {
-    *p++ = '.';
+//  if(xTme1.m_uMicro != 0) {
+//    *p++ = '.';
+//
+//    u8 uFactor = 100000;
+//    u8 uDigit;
+//    tmp = xTme1.m_uMicro;
+//
+//    while (uFactor) {
+//      uDigit = tmp / uFactor;
+//      *p++ = uDigit + '0';
+//
+//      tmp -= (uDigit * uFactor);
+//      uFactor /= 10;
+//    }
+//  }
 
-    u8 uFactor = 100000;
-    u8 uDigit;
-    tmp = xTme1.m_uMicro;
-
-    while (uFactor) {
-      uDigit = tmp / uFactor;
-      *p++ = uDigit + '0';
-
-      tmp -= (uDigit * uFactor);
-      uFactor /= 10;
-    }
-  }
   *(*ppaW)++ = (i8)(*ppszDstArea);
-  i8 iLen = (i8) strnlen(*ppszDstArea,  *piAreaRemaining) + 1;
-  (*ppszDstArea) += iLen;
-  (*piAreaRemaining) -= iLen;
+  (*ppszDstArea) += nSize;
+  (*piAreaRemaining) -= nSize;
 }
 
 static inline void _DTE_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)

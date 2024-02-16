@@ -80,7 +80,7 @@ static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8
   if (iScaleDiff > 0) {
     // Need to check for overflow
     if (bcdReScale1.m_iMantissa < 0 &&
-        C_BCD_MAX / aDynamicT->m_iaPow10[iScaleDiff] > bcdReScale1.m_iMantissa) {
+        C_BCD_MIN / aDynamicT->m_iaPow10[iScaleDiff] > bcdReScale1.m_iMantissa) {
       aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
       return;
     }
