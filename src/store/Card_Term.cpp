@@ -560,7 +560,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
       if (pCI->G.p_key && pCI->G.p_expr) {
         if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
-          pCI->G.p_expr->pSymbol()->vSetFacet(SF_EXP_COL,szStmCol_expr_a);
+          pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
       }
 
       return;
@@ -570,7 +570,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
       pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
       if (pCI->G.p_key && pCI->G.p_expr) {
-        pCI->G.p_expr->pSymbol()->vSetFacet(SF_EXP_COL,szStmCol_expr_a);
+        pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
       }
       return;
     }
@@ -585,7 +585,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
         this->vMark1(MARK_CHANGED);
         if (pCI->G.p_key && pCI->G.p_expr) {
           if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
-            pCI->G.p_expr->pSymbol()->vSetFacet(SF_EXP_COL,szStmCol_expr_a);
+            pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
         }
         return;
       }
@@ -607,7 +607,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
         pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
         if (pCI->G.p_key && pCI->G.p_expr) {
-          pCI->G.p_expr->pSymbol()->vSetFacet(SF_EXP_COL,szStmCol_expr_a);
+          pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
         }
       }
       return;
