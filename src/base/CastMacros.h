@@ -1246,7 +1246,7 @@ static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     return;
   }
 
-  const i8 nSize = iArg1 ? 5 : 6;
+  const i8 nSize = iArg1 ? 5 : 6; // including null char
 
   if (*piAreaRemaining < nSize) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
@@ -1255,9 +1255,9 @@ static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   }
 
   if (iArg1)
-    strncpy((*ppszDstArea), "true", nSize);
+    strcpy((*ppszDstArea), "true");
   else
-    strncpy((*ppszDstArea), "false", nSize);
+    strcpy((*ppszDstArea), "false");
 
   *(*ppaW)++ = (i8)(*ppszDstArea);
   (*ppszDstArea) += nSize;
@@ -1386,6 +1386,8 @@ static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 //    }
 //  }
 
+  *p = '\0';
+
   *(*ppaW)++ = (i8)(*ppszDstArea);
   (*ppszDstArea) += nSize;
   (*piAreaRemaining) -= nSize;
@@ -1444,6 +1446,8 @@ static inline void _DTE_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 
   tmp = xDte1.m_uDay;
   *p++ = (tmp % 10) + '0';
+
+  *p = '\0';
 
   *(*ppaW)++ = (i8)(*ppszDstArea);
   (*ppszDstArea) += nSize;
@@ -1605,6 +1609,8 @@ static inline void _TSP_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
       uFactor /= 10;
     }
   }
+
+  *p++ = 0;
 
   *(*ppaW)++ = (i8)(*ppszDstArea);
   (*ppszDstArea) += nSize;
