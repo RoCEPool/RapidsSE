@@ -1,4 +1,9 @@
 #!/bin/bash
+## Notes:
+##   To run Seth against a different host or port other than "localhost":"9123"
+##   then simply define/export the HOST or PORT variables before running
+##   this script. For example:
+##     HOST="centos7" ./sethTest.sh path/to/file.test
 
 # Get the relative path to this file.
 DIR=$(dirname "$0")
@@ -9,9 +14,17 @@ CLASSPATH="${DIR}/bin:${DIR}/bin/*:${ROOT_DIR}/shell/*"
 #SETH_ARGS=("--clean" "--logtests")   # log all test executions to a file
 SETH_ARGS=("--clean" "--logsteps")   # log executions of all steps within each test to a file.
 
+readonly DEFAULT_HOST="localhost"
+readonly DEFAULT_PORT="9123"
+
 # Connection details for RapidsSE wireline protocol
-HOST="localhost"
-PORT="9123"
+if [ -z "${HOST+x}" ]; then
+  HOST="${DEFAULT_HOST}"
+fi
+
+if [ -z "${PORT+x}" ]; then
+  PORT="${DEFAULT_PORT}"
+fi
 
 # The SE JDBC URL that tells the JDBC driver how to connect to SE.
 URL="jdbc:se://${HOST}:${PORT}?continueBatchOnError=true"
