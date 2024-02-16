@@ -255,10 +255,10 @@ void Card_Expr::vAppend_nmdCol_synthetic(i8 iExpCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-//  s256 sColNm_synthetic;
-//  sColNm_synthetic.vSprint("COL%lld"_Stz,iExpCol);
+  s256 sColNm_synthetic;
+  sColNm_synthetic.vSprint("COL%lld"_Stz,iExpCol);
 
-  pSymbol()->vApplyFacet(SF_NMD_COL,iExpCol);
+  pSymbol()->vSetFacet(SF_NMD_COL,sColNm_synthetic);
 }
 
 /*----------------------------------------------------------------------------*/
