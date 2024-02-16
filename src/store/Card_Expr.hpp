@@ -29,7 +29,6 @@ namespace STORE
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
-    void vAppend_nmdCol_synthetic(i8 iExpCol);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsure_nmdCol(i8 iExpCol);
     void vEnsure_Cast(CardIter* pCI);
