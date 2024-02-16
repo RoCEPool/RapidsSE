@@ -103,7 +103,9 @@ static inline void _VCH_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iResult
   // Where is the decimal point, if any?
   i8 iPointPos = -1;
   char* pS = psArg;
-  for (i8 i=0; pS[i]; i++) {
+  i8 i;
+
+  for (i=0; pS[i]; i++) {
     if (pS[i] == '.') {
       iPointPos = i;
       break;
