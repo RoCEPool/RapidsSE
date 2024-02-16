@@ -294,7 +294,7 @@ void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
     }
   }
 
-  vAppend_nmdCol_synthetic(iExpCol);
+  m_xSymbol.vApplyFacet(SF_NMD_COL,iExpCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -457,7 +457,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
     pSymbol_expr_inducted->vApplyFacet(SF_NMD_COL,
                                          pSymbol_expr_arriving->szFacet(SF_NMD_COL));
   else
-    p_expr_inducted->vAppend_nmdCol_synthetic(iExp);
+    p_expr_inducted->pSymbol()->vApplyFacet(SF_NMD_COL,iExp);
 
 //  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
 //    pSymbol_expr_inducted->vApplyFacet(SF_KEY_COL,
