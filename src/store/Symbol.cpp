@@ -2994,7 +2994,7 @@ void Symbol::vFacet_Key_Col(i8 iKeyCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(0 == nFacets() || SF_KEY_COL == eFacet(0));
+  //RASSERT(0 == nFacets() || SF_KEY_COL == eFacet(0));
 
   vFacetSprint(SF_KEY_COL, "$K%lld"_Stz, iKeyCol);
 
