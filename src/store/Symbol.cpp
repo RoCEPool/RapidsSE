@@ -3048,7 +3048,7 @@ void Symbol::vFacet_Nmd_Col(i8 iColNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  //RASSERT(! bHasFacets());
+  RASSERT(! bHasFacets());
 
   vFacetSprint(SF_NMD_COL, "COL%lld"_Stz, iColNo);
 
