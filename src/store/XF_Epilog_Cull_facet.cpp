@@ -45,7 +45,7 @@ void XF_Epilog_Cull_facet::vCull(CardIter* pCI)
 
   XF_Epilog_Cull_facet* pCull_facet = new XF_Epilog_Cull_facet(pCI);
 
-  pCull_facet->vCull();
+  pCull_facet->vCullLoop();
 
   delete pCull_facet;
 }
@@ -56,16 +56,33 @@ void XF_Epilog_Cull_facet::vCull(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* cull facet                                                                 */
+/* cull loop                                                                  */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Cull_facet::vCull(void)
+void XF_Epilog_Cull_facet::vCullLoop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_CULL_FACET, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_EPILOG_CULL_FACET, "cull facet"_Stz);
 
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain_NONE()) {
+
+    vCull_facet();
+
+//    m_pCI->vPrintBoard(__func__,__LINE__);
+    vDebugPoint();
+  }
 
   m_pCI->vEndTransform(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cull facet                                                                 */
+/*----------------------------------------------------------------------------*/
+void XF_Epilog_Cull_facet::vCull_facet(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_CULL_FACET, _FOOTER_);
+
 }
 
 /*============================================================================*/

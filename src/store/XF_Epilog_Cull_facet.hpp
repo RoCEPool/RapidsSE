@@ -22,7 +22,9 @@ namespace STORE
 
     static void vCull(CardIter* pCI);
 
-    void vCull(void);
+    void vCullLoop(void);
+
+    void vCull_facet(void);
 
   private:
     Footer* aFooter(void);

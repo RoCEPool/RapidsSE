@@ -11,6 +11,7 @@
 #include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_Add_inflate.hpp"
 #include "XF_Epilog_Append_synthesis.hpp"
+#include "XF_Epilog_Cull_facet.hpp"
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
@@ -267,7 +268,8 @@ void XF::vTransform(void)
   XF_Epilog_Hash_Columns::vHash(m_pCI);                //
                                                        ////
   XF_Epilog_Itemise_Columns::vItemise(m_pCI);          //
-                                                       //
+  XF_Epilog_Cull_facet::vCull(m_pCI);                  //
+  //
   XF_Epilog_Add_inflate::vBifurcate(m_pCI);            //
                                                        //
   m_pCI->vEndPhase();                                  //
@@ -381,6 +383,7 @@ void XF::vTransform_passThru(void)
                                                        //
                                                        //
   XF_Epilog_Itemise_Columns::vItemise(m_pCI);          //
+  XF_Epilog_Cull_facet::vCull(m_pCI);                  //
   XF_Epilog_Add_inflate::vBifurcate(m_pCI);            //
                                                        //
   vCrosscheck_Optimisations();
