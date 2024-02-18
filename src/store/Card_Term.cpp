@@ -54,6 +54,9 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
   {
     UNUSED(pCI);
 
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+      vDebugPoint();
+
     if (!pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
@@ -76,7 +79,9 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
     }
 
-    if (pSymbol_term->bHasFacet(SF_EXP_COL) || ! pSymbol_term->bHasFacet(SF_NMD_COL))
+    if (pSymbol_term->bHasFacet(SF_EXP_COL))
+      return C_CONTINUE_RECURSION;
+    if (! pSymbol_term->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
     if (! (pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))))

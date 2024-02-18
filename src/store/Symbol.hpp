@@ -246,6 +246,7 @@ namespace STORE
     void vFacet_Interval_YM(Stz* szInterval_YM);
     void vFacet_Itm_Col(i8 i_Child);
     void vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol);
+    void vFacet_Itm_Col(Stz* szIntLit);
     void vFacet_Ivl_Fn(Stz* szIvlFn);
     void vFacet_List_Cnt(Stz* szListCnt);
     void vFacet_List_Cnt(i8 nListCnt);

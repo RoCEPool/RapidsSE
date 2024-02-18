@@ -1256,6 +1256,7 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szChrSeq)
     case SF_IDX_COL:     vFacet_Idx_Col(szChrSeq);     break;
     case SF_IDX_NM:      vFacet_Idx_Nm(szChrSeq);      break;
     case SF_INT_LIT:     vFacet_Int_Lit(szChrSeq);     break;
+    case SF_ITM_COL:     vFacet_Itm_Col(szChrSeq);     break;
     case SF_IVL_FN:      vFacet_Ivl_Fn(szChrSeq);      break;
     case SF_INTERVAL_DT: vFacet_Interval_DT(szChrSeq); break;
     case SF_INTERVAL_YM: vFacet_Interval_YM(szChrSeq); break;
@@ -2941,6 +2942,20 @@ void Symbol::vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol)
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz,
                i_Child,
                pSymbol->szFacet(SF_NMD_COL));
+
+  RASSERT(bHasFacet(SF_ITM_COL));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given item col                                          */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Itm_Col(Stz* szItmCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! bHasFacets());
+
+  vSetFacet(SF_ITM_COL,szItmCol);
 
   RASSERT(bHasFacet(SF_ITM_COL));
 }
