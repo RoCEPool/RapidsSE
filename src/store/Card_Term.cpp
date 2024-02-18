@@ -548,19 +548,17 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   }
 
 
-  Symbol xTblCol_sym;
-  xTblCol_sym.vApplyFacet(SF_TBL_COL, pSymbol_this->szFacet(SF_TBL_COL));
+  Symbol xSym_tblCol;
+  xSym_tblCol.vApplyFacet(SF_TBL_COL, pSymbol_this->szFacet(SF_TBL_COL));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is scalar expression of this symbol in INJECTED ?
 
-  if (pCI->X.m_pExprList_i) {
-		// ALKA changed 22/10/23 (compilation error on linux)
-   	if (pCI->X.m_pExprList_i->pFind_expr_Matches_ignoring(&xTblCol_sym, SF_EXP_COL)) {
-      this->vMark1(MARK_FOUND);
-      return;
-    }
+  if (pCI->X.m_pExprList_i &&
+      pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol)) {
+    this->vMark1(MARK_FOUND);
+    return;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -568,7 +566,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   if (pCI->X.m_pExprList_a) {
     //pCI->X.m_pExprList_a->vDump(__func__);
-    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_tblCol)) {
 
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
       pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
@@ -581,7 +579,8 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
       return;
     }
-    if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xTblCol_sym)) {
+
+    if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xSym_tblCol)) {
       Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
       pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
@@ -614,11 +613,11 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
     //pCI->X.m_pExprList_k->vDump(__func__);
     //pSymbol_this->vDump();
-    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Matches(&xTblCol_sym)) {
+    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Matches(&xSym_tblCol)) {
       Symbol *pSymbol_k = p_expr_scalar_k->pFirst_keyCol();
       if (! pSymbol_k)
         return;
-      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches_ignoring(&xTblCol_sym, SF_EXP_COL)) {
+      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches_ignoring(&xSym_tblCol, SF_EXP_COL)) {
         Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
         pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
