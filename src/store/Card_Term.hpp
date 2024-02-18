@@ -37,6 +37,7 @@ namespace STORE
 
     void vShortForm(String* pString, Stz* szSep);
 
+    void vX_Cull_facet(CardIter* pCI);
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);
 

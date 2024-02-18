@@ -452,6 +452,17 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cull facet                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vX_Cull_facet(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pCI);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)

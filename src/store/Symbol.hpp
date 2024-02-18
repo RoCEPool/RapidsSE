@@ -129,7 +129,7 @@ namespace STORE
     void vCastReset(void);
     void vCastFacets(Symbol* pSymbol_arg);
     void vCastFacetsPpy(Symbol* pSymbol_arg);
-
+    void vCullFacet(eSF eExcept);
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vDump(Stz* szTitle=""_Stz);
