@@ -20,9 +20,9 @@ namespace STORE
     XF_Epilog_Cull_facet(CardIter* pCI);
    ~XF_Epilog_Cull_facet(void) noexcept(false);
 
-    static void vFuse(CardIter* pCI);
+    static void vCull(CardIter* pCI);
 
-    void vFuse_project(void);
+    void vCull(void);
 
   private:
     Footer* aFooter(void);

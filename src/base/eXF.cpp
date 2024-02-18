@@ -11,7 +11,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,
   /* */ "XF_EPILOG_ADD_INFLATE"_Stz,
   /* */ "XF_EPILOG_APPEND_SYNTHESIS"_Stz,
-  /* */ "XF_EPILOG_CRAFT_STREAMDEF"_Stz,
+  /* */ "XF_EPILOG_CULL_FACET"_Stz,
   /* */ "XF_EPILOG_DETERMINE_COLUMNS"_Stz,
   /* */ "XF_EPILOG_FUSE_PROJECT"_Stz,
   /* */ "XF_EPILOG_HASH_COLUMNS"_Stz,
@@ -93,7 +93,7 @@ Stz* aXF_desc[XF_ENUMS]
 
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_HASH_CAST
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_APPEND_SYNTHESIS
-  /* */ "<to be supplied>"_Stz, // XF_EPILOG_CRAFT_STREAMDEF
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_CULL_FACET
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_DETERMINE_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_FUSE_PROJECT
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_HASH_COLUMNS
