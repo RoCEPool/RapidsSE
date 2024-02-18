@@ -20,6 +20,7 @@ load ${testName2}_nation "../TPCH/SF_0001/nation.tbl";
 success
 
 //------------------------------------------------------------------------------
+/pipelineName = "OrderBy1"
 SELECT n_regionkey , n_name FROM ${testName2}_nation  where n_regionkey < 2 order by n_name, n_regionKey;
 rows:
  (0 ,'ALGERIA')
@@ -33,6 +34,7 @@ rows:
  (1 ,'PERU')
  (1 ,'UNITED STATES')
 
+/pipelineName = "OrderBy2"
 SELECT n_name, n_regionkey FROM ${testName2}_nation  where n_regionkey < 2 order by n_name, n_regionKey;
 rows:
  ('ALGERIA',0)
@@ -47,6 +49,7 @@ rows:
  ('UNITED STATES',1)
 
 //------------------------------------------------------------------------------
+/pipelineName = "OrderBy3"
 SELECT  n_name, n_regionkey FROM ${testName2}_nation order by n_name, n_regionKey limit 5;
 rows:
  ('ALGERIA',0)
@@ -56,6 +59,7 @@ rows:
  ('CHINA',2)
 
 //------------------------------------------------------------------------------
+/pipelineName = "OrderBy4"
 SELECT n_regionkey , COUNT(n_nationkey) FROM ${testName2}_nation GROUP BY n_regionkey order by n_regionkey;
 rows:
  (0,5)
@@ -90,6 +94,7 @@ load datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
 //------------------------------------------------------------------------------
+/pipelineName = "OrderBy5"
 select dec_col6 + 1.44 from datums order by dec_col6;
 rows:
   (null)
@@ -107,6 +112,7 @@ rows:
   (4002.48)
 
 //------------------------------------------------------------------------------
+/pipelineName = "OrderBy6"
 select flt_col9, flt_col9 / 2 from datums order by flt_col9;
 rows:
   (5.111111e+00,2.55555e+00)
