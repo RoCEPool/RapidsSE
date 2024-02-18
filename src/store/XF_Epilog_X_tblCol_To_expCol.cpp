@@ -109,52 +109,31 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
-//
-//    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
-//      if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
-//        m_pCI->vSnapFluxArriving();
-//        return;
-//      }
-//    }
-//  }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   m_pCI->X.m_pExprList_i = m_pCI->G.p_OP->pSub_injectable();
   m_pCI->X.m_pExprList_k = m_pCI->G.p_OP->pSub_key();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
     m_pCI->G.p_indexList->vX_tblCol_To_expCol(m_pCI);
-  }
 
-  if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-    if (m_pCI->Flux.m_pArriving)
-      m_pCI->G.p_key->vX_tblCol_To_expCol(m_pCI);
-  }
+  if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key()))
+    m_pCI->G.p_key->vX_tblCol_To_expCol(m_pCI);
 
-  if (CK_o_FILTER == m_pCI->G.p_OP->eCard()) {
+  if (CK_o_FILTER == m_pCI->G.p_OP->eCard())
     m_pCI->G.p_filter->vX_tblCol_To_expCol(m_pCI);
-  }
   else
-  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
     m_pCI->G.p_filter->vX_tblCol_To_expCol(m_pCI);
-  }
 
-  if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
+  if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList()))
+    m_pCI->G.p_hshColList->vX_tblCol_To_expCol(m_pCI);
+
+  if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit()))
     m_pCI->G.p_emit->vX_tblCol_To_expCol(m_pCI);
-  }
-
-  if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
-    if (m_pCI->Flux.m_pArriving)
-      m_pCI->G.p_hshColList->vX_tblCol_To_expCol(m_pCI);
-  }
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-  // those aspects which need the emit of the operator
+  // aspects of operators which need the emit of the operator
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   m_pCI->vSnapFluxArriving();
@@ -163,14 +142,11 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
-    if (m_pCI->Flux.m_pArriving)
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
       m_pCI->G.p_constraint->vX_tblCol_To_expCol(m_pCI);
-  }
 
-  if ((m_pCI->G.p_streamKey = m_pCI->G.p_MainCard->pSub_streamKey())) {
+  if ((m_pCI->G.p_streamKey = m_pCI->G.p_MainCard->pSub_streamKey()))
     m_pCI->G.p_streamKey->vX_tblCol_To_expCol(m_pCI);
-  }
 }
 
 /*============================================================================*/
