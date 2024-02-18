@@ -155,10 +155,10 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
-    if (m_pCI->Flux.m_pArriving)
-      m_pCI->G.p_constraint->vX_tblCol_To_expCol(m_pCI);
-  }
+//  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+//    if (m_pCI->Flux.m_pArriving)
+//      m_pCI->G.p_constraint->vX_tblCol_To_expCol(m_pCI);
+//  }
 
   m_pCI->vSnapFluxArriving();
   if (m_pCI->G.p_OP->pSub_emit())
