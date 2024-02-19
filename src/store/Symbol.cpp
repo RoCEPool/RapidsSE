@@ -438,8 +438,8 @@ bool Symbol::bIs_Exp_Col(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
 
   if ('$' == acFirst &&
       StrLib::bIsDigit(acSecond))
@@ -490,10 +490,10 @@ bool Symbol::bIs_Idx_Col(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-  char acFourth = szArg->azChar()[3];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
 
   if ('$' == acFirst
       && ('I' == acSecond || 'i' == acSecond)
@@ -619,8 +619,8 @@ bool Symbol::bIs_List_Cnt(Stz* szChrSeq)
 {
   _static_
 
-  char acFirst  = szChrSeq->azChar()[0];
-  char acSecond = szChrSeq->azChar()[1];
+  char acFirst  = szChrSeq->cChar(0);
+  char acSecond = szChrSeq->cChar(1);
 
   if ('#' == acFirst &&
       StrLib::bIsDigit(acSecond))
@@ -636,10 +636,10 @@ bool Symbol::bIs_Key_Col(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-  char acFourth = szArg->azChar()[3];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
 
   if ('$' == acFirst
       && ('K' == acSecond || 'k' == acSecond)
@@ -792,9 +792,9 @@ bool Symbol::bIs_Sqy_No(Stz *szArg)
   if (! szArg)
     return false;
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
 
   if ('$' == acFirst
       && 'Q' == acSecond
@@ -826,9 +826,9 @@ bool Symbol::bIs_Sqy_Prm(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
 
   if ('%' == acFirst
       && StrLib::bIsDigit(acSecond)
@@ -846,10 +846,10 @@ bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-  char acFourth = szArg->azChar()[3];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
 
   if (   '$' == acFirst
       && 'R' == acSecond
@@ -880,8 +880,8 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
 
   if ('S' == acFirst
       && StrLib::bIsDigit(acSecond))
@@ -910,7 +910,7 @@ bool Symbol::bIs_String(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
+  char acFirst  = szArg->cChar(0);
 
   if ('\'' == acFirst)
     return true;
@@ -925,11 +925,11 @@ bool Symbol::bIs_Tbl_Col(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-  char acFourth = szArg->azChar()[3];
-  char acFifth  = szArg->azChar()[4];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
+  char acFifth  = szArg->cChar(4);
 
   if ('$' == acFirst
       && '$' == acSecond
@@ -961,10 +961,10 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-  char acFourth = szArg->azChar()[3];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
 
   if ('$' == acFirst &&
       'T' == acSecond &&
@@ -982,10 +982,10 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-  char acFourth = szArg->azChar()[3];
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
 
   if ('$' == acFirst &&
       'T' == acSecond &&
@@ -2037,9 +2037,9 @@ char Symbol::cTblSyn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (Stz* szChrSeq = szFacet(SF_TBL_COL)) {
-    char acFirst  = szChrSeq->azChar()[0];
-    char acSecond = szChrSeq->azChar()[1];
-    char acThird  = szChrSeq->azChar()[2];
+    char acFirst  = szChrSeq->cChar(0);
+    char acSecond = szChrSeq->cChar(1);
+    char acThird  = szChrSeq->cChar(2);
 
     if ('$' == acFirst
         && '$' == acSecond
@@ -2052,9 +2052,9 @@ char Symbol::cTblSyn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (Stz* szChrSeq = szFacet(SF_TBL_SYN)) {
-    char acFirst  = szChrSeq->azChar()[0];
-    char acSecond = szChrSeq->azChar()[1];
-    char acThird  = szChrSeq->azChar()[2];
+    char acFirst  = szChrSeq->cChar(0);
+    char acSecond = szChrSeq->cChar(1);
+    char acThird  = szChrSeq->cChar(2);
 
     if ('$' == acFirst
         && 'T' == acSecond
@@ -2067,9 +2067,9 @@ char Symbol::cTblSyn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (Stz* szChrSeq = szFacet(SF_TBL_SYN_rep)) {
-    char acFirst  = szChrSeq->azChar()[0];
-    char acSecond = szChrSeq->azChar()[1];
-    char acThird  = szChrSeq->azChar()[2];
+    char acFirst  = szChrSeq->cChar(0);
+    char acSecond = szChrSeq->cChar(1);
+    char acThird  = szChrSeq->cChar(2);
 
     if ('$' == acFirst
         && 'T' == acSecond
