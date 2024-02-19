@@ -1602,6 +1602,12 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       i8 iScale      = Expr::iScale(pSymbolicExpr, pBackend->m_pPlanRoot);
 
 #ifdef TYPE_DETAILED
+      sPipeline->vCatSprint(
+          " casttype %s ( %lld %lld ) "
+          ""_Stz,
+          aCT[eType],
+          iPrecision,
+          iScale);
 
 //			i8 iLength = pBackend->iGetLength(eType);
 //			i8 iScale = pBackend->iGetScale(eType);
