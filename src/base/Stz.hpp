@@ -32,6 +32,7 @@ namespace BASE
     static Stz* szHeight(i8 iHeight);
 
     b1    bBeginsWith(Stz* szArg);
+    char  cChar(i8 i_Char);
     char* azChar(void);
     i8    iCompare(Stz* szArg);
     bool  bContains(Stz* szArg);
