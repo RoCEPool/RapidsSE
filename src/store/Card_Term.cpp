@@ -544,7 +544,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   }
   else {
-    return;
+    return; // todo: figure this out
   }
 
 
@@ -574,21 +574,6 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
     this->vMark1(MARK_CHANGED);
 
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (! pSymbol_this->bHasFacet(SF_NMD_COL))
-    return;
-
-  Symbol xSym_nmdCol;
-  xSym_nmdCol.vApplyFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
-
-  if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_nmdCol)) {
-    Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
-    pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
-    this->vMark1(MARK_CHANGED);
     return;
   }
 
