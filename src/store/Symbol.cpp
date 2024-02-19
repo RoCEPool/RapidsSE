@@ -2092,13 +2092,13 @@ char Symbol::cTblSyn(void)
 /*----------------------------------------------------------------------------*/
 /* get integer                                                                */
 /*----------------------------------------------------------------------------*/
-i8 Symbol::iTo_integer(void)
+i8 Symbol::iTo_integer(eSF eFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(bHasFacets());
 
-  i8 i = szFacet(0)->iToI8();
+  i8 i = szFacet(eFacet)->iToI8();
 
   return i;
 }

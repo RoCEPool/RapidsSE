@@ -187,7 +187,7 @@ namespace STORE
     bool bSingleFaceted(void);
 
     char   cTblSyn(void);
-    i8     iTo_integer(void);
+    i8     iTo_integer(eSF eFacet);
     i8     iTo_ordinal(eSF eFacet);
     TypeId xTypeId(void);
     i8     nTypeLength(void);
