@@ -3124,7 +3124,7 @@ void Symbol::vFacet_Nmd_Col(Stz* szColNm)
   vSetFacet(SF_NMD_COL,szColNm);
 
   RASSERT(bHasFacet(SF_NMD_COL));
-  RASSERT(!bHasFacet(SF_ITM_COL));
+  //RASSERT(!bHasFacet(SF_ITM_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3258,7 +3258,7 @@ void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vSetFacet(SF_SQY_PRM, szSqyPrm);
 

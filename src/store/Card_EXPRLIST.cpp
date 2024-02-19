@@ -138,7 +138,9 @@ Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_expCol)
 
   RASSERT(pSymbol_expCol->bHasFacet(SF_EXP_COL));
 
-  if (Card_Expr* p_expr_expCol = pGet_expr(pSymbol_expCol)) {
+  i8 i_Child  = pSymbol_expCol->iTo_ordinal(SF_EXP_COL) - 1;
+
+  if (Card_Expr* p_expr_expCol = pGet_expr(i_Child)) {
     if (p_expr_expCol->bIsScalarCol()) {
       Card_Term *p_term0 = p_expr_expCol->pGet_term(0);
       return p_term0;
