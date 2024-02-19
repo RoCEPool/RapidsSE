@@ -533,11 +533,16 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (! pCI->X.m_pExprList_a)
+    return;
+
   if (pSymbol_this->bHasFacet(SF_EXP_COL))
     return;
 
   if (! pSymbol_this->bHasFacet(SF_TBL_COL))
     return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((CK_o_GBYAGG != pCI->G.e_MainCard) ||
           (CK_o_GBYAGG == pCI->G.e_MainCard && (1 == pSymbol_this->nFacets() || pSymbol_this->bHasFacet(SF_NMD_COL)))) {
@@ -547,31 +552,16 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     return; // todo: figure this out
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // can scalar expression of this symbol be found in ARRIVED ?
 
   Symbol xSym_tblCol;
   xSym_tblCol.vApplyFacet(SF_TBL_COL, pSymbol_this->szFacet(SF_TBL_COL));
 
+  if (Card_Expr *p_expr_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_tblCol)) {
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is scalar expression of this symbol in INJECTED ?
-
-  if (pCI->X.m_pExprList_i &&
-      pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol)) {
-    this->vMark1(MARK_FOUND);
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // can scalar expression of this symbol be found in ARRIVED ?
-
-  if (! pCI->X.m_pExprList_a)
-    return;
-
-  //pCI->X.m_pExprList_a->vDump(__func__);
-  if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_tblCol)) {
-
-    Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
-    pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
+    Stz* szExpCol_expr_a = p_expr_a->szFacet(SF_EXP_COL);
+    pSymbol_this->vApplyFacet(SF_EXP_COL, szExpCol_expr_a);
     this->vMark1(MARK_CHANGED);
 
     return;
