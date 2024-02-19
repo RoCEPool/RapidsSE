@@ -40,6 +40,79 @@ static inline i8 iDigitToI8(const char cDigit)
   return i;
 }
 
+// *************************
+// A note on string copying:
+// *************************
+//
+// As we all know, strcpy() is unsafe because it blindly assumes that the
+// source string will fit in the destination buffer. The early solution to this
+// is strncpy() which needs to be told the size of the destination buffer.
+// strncpy() will then not exceed this buffer, but it has two side effects:
+//  (1) It won't null terminate the string if the the source string is larger
+//      than the buffer. This is up to the caller.
+//  (2) If the source string is smaller than the buffer then IT WILL FILL THE
+//      REMAINING BUFFER WITH NULLS. This is a performance issue.
+//
+// BSD-based systems like MacOS have alternatives like strlcpy() which will
+// always null terminate the string just the once, but this function is not
+// available on Linux.
+//
+// The C11 standard adds strncpy_s() which only adds 1 null character if the
+// size of the source is smaller than the buffer. But it still won't null
+// terminate the string if the source string is larger than the buffer size.
+// Supporting the C11 standard also requires at least GCC 4.7, which is not
+// standard on CentOS 7.
+//
+// Another alternative is to use snprintf(), which always inserts a null
+// character, but this seems like the sledgehammer approach.
+//
+// Other solutions include strncat() as well as using strlen() and memcpy().
+// Each have their own pros and cons.
+//
+// That leaves us with writing our own safe strcpy routine that won't exceed
+// the destination buffer size, while also ensuring the copied string is
+// terminated and terminated just the once. It also returns the number of
+// bytes copied (excluding the null character) so that the caller can determine
+// if a string truncation occurred.
+//
+// psDst - Destination buffer
+// iDstSize - the size (in bytes) of the destination buffer. This must also include
+//            room for a null character too.
+// psSrc - the source buffer to read from.
+// pbWasTruncated - an optional boolean that is set to true if the string was
+//                  truncated and couldn't fit in the buffer. Otherwise just
+//                  pass NULL here (or nullptr in C++).
+static inline i8 iSafeStrcpy(char* psDst, i8 iDstSize, char* psSrc, b1* pbWasTruncated)
+{
+  i8 i = 0;
+
+  if (pbWasTruncated) {
+    *pbWasTruncated = false;
+  }
+
+  if (iDstSize > 0) {
+    for (i = 0; i < iDstSize - 1; i++) {
+      if (*psSrc == '\0') {
+        if (pbWasTruncated) {
+          *pbWasTruncated = true;
+        }
+        break;
+      }
+
+      *(psDst++) = *(psSrc++);
+    }
+
+    *psDst = '\0';
+
+  } else {
+    if (pbWasTruncated) {
+      *pbWasTruncated = true;
+    }
+  }
+
+  return i;
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CAST
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -472,7 +545,7 @@ static inline void vFltToBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT)
 }
 
 
-static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszStrArea, i8* piAreaRemaining)
+static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszStrArea, i8* piAreaRemaining, i8 iLength)
 {
   union Flt_T fltArg1;
 
@@ -483,14 +556,20 @@ static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     return;
   }
 
-  int iSize = snprintf((*ppszStrArea), *piAreaRemaining, "%.9e", fltArg1.m_dFlt);
-  if (iSize < *piAreaRemaining) {
+  i8 iMaxSize = *piAreaRemaining;
+
+  if (iLength > 0) {
+    iMaxSize = *piAreaRemaining < iLength + 1 ? *piAreaRemaining : iLength + 1;
+  }
+
+  int iSize = snprintf((*ppszStrArea), iMaxSize, "%.9e", fltArg1.m_dFlt);
+  if (iSize > iMaxSize) {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+  } else {
     *(*ppaW)++ = (i8) (*ppszStrArea);
     (*ppszStrArea) += (iSize + 1);
     (*piAreaRemaining) -= (iSize + 1);
-  } else {
-    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
-    *(*ppaW)++ = C_DATUM_NULL;
   }
 }
 
@@ -500,7 +579,7 @@ static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 // how many decimal places , 10?
 //WARNING do we need to length of string?
 
-static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszStrArea)
+static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszStrArea, i8 iLength)
 {
   union Flt_T fltArg1;
 
@@ -1258,7 +1337,7 @@ static inline void _VCH_TOTSP(i8** ppaW, struct Dynamic_T* aDynamicT)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO VCH
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)
 {
   i8 iArg1 = *(--(*ppaW));
   if (aDynamicT->m_iErrorCode != EC_NONE ||
@@ -1269,7 +1348,7 @@ static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 
   const i8 nSize = iArg1 ? 5 : 6; // including null char
 
-  if (*piAreaRemaining < nSize) {
+  if (*piAreaRemaining < nSize || (iLength > 0 && iLength + 1 < nSize)) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
@@ -1287,7 +1366,7 @@ static inline void _BOL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 
 
 
-static inline void _BCD_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _BCD_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)
 {
   union Bcd_T bcdArg1;
   i8 iInitialArea = *piAreaRemaining;
@@ -1307,34 +1386,43 @@ static inline void _BCD_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   }
 
   char *p = (*ppszDstArea), *q = (*ppszDstArea);
+  i8 iSizeLeft = *piAreaRemaining;
 
-  while (bcdArg1.m_uScale && --(*piAreaRemaining)) {
+  while (bcdArg1.m_uScale && iSizeLeft > 1) {
     *p++ = (bcdArg1.m_iMantissa % 10) + '0';
     bcdArg1.m_iMantissa /= 10ll;
     bcdArg1.m_uScale--;
+    --iSizeLeft;
   }
 
-  *p++ = '.';
-  --(*piAreaRemaining);
+  if (iSizeLeft > 1) {
+    *p++ = '.';
+    --iSizeLeft;
+  }
+
   i1 iFirst = 1; // Always print the first digit after the decimal point,
                  // especially if it is a zero.
 
-  while ((bcdArg1.m_iMantissa || iFirst) && --(*piAreaRemaining)) {
+  while ((bcdArg1.m_iMantissa || iFirst) && iSizeLeft > 1) {
     *p++ = (bcdArg1.m_iMantissa % 10) + '0';
     bcdArg1.m_iMantissa /= 10ll;
     iFirst = 0;
+    --iSizeLeft;
   }
 
-  if (bNegative && --(*piAreaRemaining))
+  if (bNegative && iSizeLeft > 1) {
     *p++ = '-';
+    --iSizeLeft;
+  }
 
-  if (*piAreaRemaining <= 0) {
+  if (iSizeLeft == 0) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
 
   *p = '\0';
+  --iSizeLeft;
 
   while (--p > q) {
     char c = *p;
@@ -1344,9 +1432,10 @@ static inline void _BCD_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   *(*ppaW)++ = (i8)(*ppszDstArea);
   i8 iLen = (i8) strnlen(*ppszDstArea, iInitialArea) + 1;
   (*ppszDstArea) += iLen;
+  (*piAreaRemaining) -= iLen;
 }
 
-static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)
 {
   union Tme_T xTme1;
 
@@ -1358,7 +1447,7 @@ static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   }
 
   const i8 nSize = 9; //+ (xTme1.m_uMicro != 0 ? 7 : 0);
-  if (*piAreaRemaining < nSize) {
+  if (*piAreaRemaining < nSize || (iLength > 0 && iLength + 1 < nSize)) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
@@ -1414,7 +1503,7 @@ static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   (*piAreaRemaining) -= nSize;
 }
 
-static inline void _DTE_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _DTE_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)
 {
   union Dte_T xDte1;
 
@@ -1426,7 +1515,7 @@ static inline void _DTE_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   }
 
   const i8 nSize = 11;
-  if (*piAreaRemaining < nSize) {
+  if (*piAreaRemaining < nSize || (iLength > 0 && iLength + 1 < nSize)) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
@@ -1476,7 +1565,7 @@ static inline void _DTE_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 }
 
 
-static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)
 {
   i8 iArg1 = *(--(*ppaW));
   if (aDynamicT->m_iErrorCode != EC_NONE ||
@@ -1493,7 +1582,7 @@ static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     bNegative = 1;
   }
 
-  if (*piAreaRemaining < nSize) {
+  if (*piAreaRemaining < nSize || (iLength > 0 && iLength + 1 < nSize)) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
@@ -1522,19 +1611,19 @@ static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   (*piAreaRemaining) -= nSize;
 }
 
-static inline void _IVL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _IVL_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)
 {
   aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
   *(*ppaW)++ = C_DATUM_NULL;
 }
 
-static inline void _IVY_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _IVY_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)
 {
   aDynamicT->m_iErrorCode = EC_NOT_IMPLEMENTED;
   *(*ppaW)++ = C_DATUM_NULL;
 }
 
-static inline void _TSP_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _TSP_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)
 {
   union Tsp_T xTsp1;
 
@@ -1546,7 +1635,7 @@ static inline void _TSP_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   }
 
   const i8 nSize = 20 + (xTsp1.m_uMicro != 0 ? 7 : 0);
-  if (*piAreaRemaining < nSize) {
+  if (*piAreaRemaining < nSize || (iLength > 0 && iLength + 1 < nSize)) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
@@ -1638,7 +1727,8 @@ static inline void _TSP_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   (*piAreaRemaining) -= nSize;
 }
 
-static inline void _VCH_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining)
+static inline void _VCH_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea,
+                              i8* piAreaRemaining, i8 iLength)
 {
   i8 iArg1 = *(--(*ppaW));
   char *pS = (char*)iArg1;
@@ -1649,12 +1739,27 @@ static inline void _VCH_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     return;
   }
 
-  // TODO: handle precision
-  *(*ppaW)++ = iArg1;
+  if (iLength <= 0) {
+    *(*ppaW)++ = iArg1;
+    return;
+  }
 
-//  *(*ppaW)++ = (i8)(*ppszDstArea);
-//  (*ppszDstArea) += nSize;
-//  (*piAreaRemaining) -= nSize;
+  // Only copy iLength number of characters, or whatever will fit in the buffer,
+  // whichever is smallest.
+  i8 iMaxBytes = (iLength + 1) < *piAreaRemaining ? (iLength + 1) : *piAreaRemaining;
+  b1 bWasTruncated = false;
+  i8 iBytesCopied = 1 + iSafeStrcpy(*ppszDstArea, iMaxBytes, pS, &bWasTruncated);
+
+  if (bWasTruncated) {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // All good
+  *(*ppaW)++ = (i8)(*ppszDstArea);
+  (*ppszDstArea) += iBytesCopied;
+  (*piAreaRemaining) -= iBytesCopied;
 }
 
 // nothing to do
@@ -1663,6 +1768,8 @@ static inline void _UNK_TOANY(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
 
 }
+
+
 
 /*============================================================================*/
 /* end                                                                        */

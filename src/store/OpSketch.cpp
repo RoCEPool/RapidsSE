@@ -1713,7 +1713,7 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
         // Some types have specific calling parameters
         switch (eResult) {
           case DM_VCH:
-            sOperation.vConcat("(&paW, aDynamicT, &szStrArea, &nAreaRemaining);"_Stz);
+            sOperation.vCatSprint("(&paW, aDynamicT, &szStrArea, &nAreaRemaining, %lld);"_Stz, iPrecision);
             break;
 
           case DM_BCD:
