@@ -276,7 +276,7 @@ Stz* aEC[EC_ENUMS] =
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ (Stz*)"validation failure",
-  /* EV_VALUE_OUT_OF_RANGE            */ (Stz*)"EV_VALUE_OUT_OF_RANGE",         // SQL Compiler Subsystem
+  /* EC_VALUE_OUT_OF_RANGE            */ (Stz*)"EC_VALUE_OUT_OF_RANGE",         // SQL Compiler Subsystem
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */
@@ -576,7 +576,7 @@ Stz* aEC2[EC_ENUMS] = // error code
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ (Stz*)"EC_VALIDATION_FAILURE",
-  /* EV_VALUE_OUT_OF_RANGE            */ (Stz*)"EV_VALUE_OUT_OF_RANGE",             // SQL Compiler Subsystem
+  /* EC_VALUE_OUT_OF_RANGE            */ (Stz*)"EC_VALUE_OUT_OF_RANGE",             // SQL Compiler Subsystem
   /* EC_VERSION_MISMATCH              */ (Stz*)"EC_VERSION_MISMATCH",
 
   /* _W_ */
@@ -883,7 +883,7 @@ Stz* aErrorMsg[EC_ENUMS] =
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ (Stz*)"validation failure",
-  /* EV_VALUE_OUT_OF_RANGE            */ (Stz*)"Value is out of range",
+  /* EC_VALUE_OUT_OF_RANGE            */ (Stz*)"Value is out of range",
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */

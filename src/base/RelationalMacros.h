@@ -113,6 +113,8 @@ static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8
   *(*ppaW)++ = bcdReScale1.m_iAsI8;
 }
 
+// Rescale a decimal to a given precision and scale.
+// Note: The scale may be reduced to fit the integral part of the value, if necessary.
 static inline void vRescaleBcdToPrecisionScale(i8** ppaW, struct Dynamic_T* aDynamicT,
                                                i8 iPrecision, i8 iScale, i1* piWasRoundedUp)
 {
@@ -129,12 +131,24 @@ static inline void vRescaleBcdToPrecisionScale(i8** ppaW, struct Dynamic_T* aDyn
   bcdVal.m_iAsI8 = *(--(*ppaW));
 
   i8 iBcdPrec = iPrecision_signed(bcdVal.m_iMantissa);
-  if (iBcdPrec > iPrecision) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+
+  if (iBcdPrec <= iPrecision) {
+    // all good
+    *(*ppaW)++ = bcdVal.m_iAsI8;
     return;
   }
 
-  *(*ppaW)++ = bcdVal.m_iAsI8;
+  // We may have a problem. Can we reduce the scale to fit the integral part?
+  i8 iNewScale = iBcdPrec - iPrecision;
+  if (iNewScale <= iScale) {
+    *(*ppaW)++ = bcdVal.m_iAsI8;
+    vRescaleBcdToPrecisionScale(ppaW, aDynamicT, iPrecision, iNewScale, piWasRoundedUp);
+    return;
+  }
+
+  // Houston, we have a problem
+  aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+  return;
 }
 
 

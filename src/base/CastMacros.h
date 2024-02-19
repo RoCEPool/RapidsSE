@@ -354,9 +354,8 @@ static inline void _FLT_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
 static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecision, i8 iScale)
 {
   union Flt_T fltArg1;
-  union Bcd_T bcdArg1;
-  union Bcd_T bcdArg2;
-  
+  union Bcd_T bcdVal;
+
   fltArg1.m_iAsI8 = *(--(*ppaW));
 
   if (aDynamicT->m_iErrorCode != EC_NONE ||
@@ -365,39 +364,61 @@ static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
     return;
   }
 
-  if (fltArg1.m_dFlt > (d8)C_BCD_MAX) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-    *(*ppaW)++ = C_DATUM_NULL;
-    return;
-  }
-  else if (fltArg1.m_dFlt < (d8) C_BCD_MIN) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+  // Is the float too big to be represented as an integer?
+  if (fltArg1.m_dFlt > (d8) C_I8_MAX || fltArg1.m_dFlt < (d8) C_I8_MIN) {
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
 
-  i8 cnt = 0;
-  d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);
-  if (fltArg1.m_dFlt < 0 ) dt = dt * -1;
-  while (dt >= 0.0000001 && cnt < 14) {
-    dt = dt * 10.0;
-    dt = dt - (int)(dt+0.0000001);
-    cnt++;
+  // Get the integral part and work out if it fits in the desired precision.
+  // Any left over digits can then be used towards scale.
+  i8 iIntegralVal = (i8) fltArg1.m_dFlt;
+  i8 iIntegralDigits = iPrecision_signed(iIntegralVal);
+  i8 iMantissa = iIntegralVal;
+  b1 bIsNeg = false;
+
+  if (iIntegralDigits > iPrecision) {
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
 
-  bcdArg1.m_iMantissa = fltArg1.m_iAsI8;
-  bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[cnt];
-
-  i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);
-  while (iMantissa > C_BCD_MAX) {
-    iMantissa = iMantissa / 10;
-    cnt--;
+  if (fltArg1.m_dFlt < 0) {
+    fltArg1.m_dFlt *= -1;
+    bIsNeg = true;
   }
 
-  bcdArg1.m_iMantissa = iMantissa;
-  bcdArg1.m_uScale = cnt;
+  i8 iScaleDigits = (iPrecision - iIntegralDigits) < iScale ? iPrecision - iIntegralDigits : iScale;
 
-  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  // Multiply by number of scale digits + 1 for rounding of the last value
+  i8 iFracVal = (fltArg1.m_dFlt - (d8) iIntegralVal) * aDynamicT->m_iaPow10[iScaleDigits + 1];
+
+  b1 bRoundUp = iFracVal % 10 >= 5;
+
+
+  i8 i;
+  i8 iDigitVal;
+  for (i=iScaleDigits; i>0; i--) {
+    iDigitVal = iFracVal / aDynamicT->m_iaPow10[i];
+    iMantissa *= 10;
+    iMantissa += iDigitVal;
+    iFracVal -= iDigitVal * aDynamicT->m_iaPow10[i];
+  }
+
+  if (bRoundUp) {
+    ++iMantissa;
+  }
+
+  if (bIsNeg) {
+    iMantissa *= -1;
+  }
+
+  bcdVal.m_iMantissa = iMantissa;
+  bcdVal.m_uScale = iScaleDigits;
+  bcdVal.m_iSpare = 0;
+
+  *(*ppaW)++ = bcdVal.m_iAsI8;
 }
 
 static inline void vFltToBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT)

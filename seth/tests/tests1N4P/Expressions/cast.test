@@ -312,10 +312,10 @@ rows:
 
 // cast float to dec (out of bounds)
 SELECT CAST(fltCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id = 5;
-failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 SELECT CAST(fltCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id = 6;
-failure contains: 'EC_ARITHMETIC_OVERFLOW'
+failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 // cast float to dec(17,4)
 SELECT CAST(fltCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
