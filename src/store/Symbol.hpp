@@ -143,7 +143,7 @@ namespace STORE
 
     Facet* aFacet(eSF eFacet);
     Facet* aFacet(i8 i_Facet);
-    eSF  eFacet(i8 i_Facet=0);
+    eSF  eFacet(i8 i_Facet);
     i8   i_Facet(eSF eFacet);
     i8   i_Facet(eSF eFacet, char cTblSyn);
     Stz* szFacet(eSF eFacet);

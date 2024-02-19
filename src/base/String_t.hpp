@@ -44,6 +44,7 @@ namespace BASE
     byte* ayByte(void);
     void vCat(Stz* szArg, ...);
     void vCatSprint(Stz* szFormat, ...);
+    char cChar(i8 i_Char);
     char* azChar(void);
     void vClip(i8 i_Char);
     void vConcat(Stz* szArg);
@@ -412,6 +413,17 @@ void String_t<AREA>::vCatSprint(Stz* szFormat, ...)
   va_end(vaArgs);
 
   _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given char                                                             */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+char String_t<AREA>::cChar(i8 i_Char)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_caCharArea[i_Char];
 }
 
 /*----------------------------------------------------------------------------*/

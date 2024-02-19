@@ -472,8 +472,6 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
       vMark1(MARK_CHANGED);
 
       if (pCI->G.p_expr && pCI->G.p_expr->bIsScalarCol() && pCI->G.p_rpnCalc) {
-//        if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_TBL_COL))
-//          pCI->G.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
         pCI->G.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
 
         if (pSymbol_term0->bHasFacet(SF_NMD_COL))
@@ -481,16 +479,6 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 
       }
 
-    }
-    else {
-      eSF eSymbol = pSymbol_this->eFacet();
-      switch (eSymbol) {
-        case SF_EXP_COL:
-          break;
-
-        default:
-          vDebugPoint();
-      }
     }
   }
 }
