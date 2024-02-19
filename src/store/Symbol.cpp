@@ -3540,11 +3540,9 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
 
   RASSERT(i_Facet_cut < m_nFacets);
 
-  if (i_Facet_cut + 1 != m_nFacets) {
-    for (i8 i_Facet = i_Facet_cut + 1; i_Facet < m_nFacets; i_Facet++) {
-      xaFacet[i_Facet - 1].m_eFacet = xaFacet[i_Facet].m_eFacet;
-      xaFacet[i_Facet - 1].m_sChrSeq = xaFacet[i_Facet].m_sChrSeq;
-    }
+  for (i8 i_Facet = i_Facet_cut; i_Facet + 1 < m_nFacets; i_Facet++) {
+    xaFacet[i_Facet].m_eFacet  = xaFacet[i_Facet + 1].m_eFacet;
+    xaFacet[i_Facet].m_sChrSeq = xaFacet[i_Facet + 1].m_sChrSeq;
   }
 
   m_nFacets--;
