@@ -10,7 +10,6 @@ namespace BASE
   friend class HashMap;
 
   public:
-    HashMapEntry* m_pEntry;
     Lock m_okSlotLock;
     Pds* m_pPdsOfEntries;
 

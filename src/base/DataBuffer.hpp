@@ -14,6 +14,7 @@ namespace BASE
     i8           m_iBufferNo;     // this DataBuffer's buffer number
 
     BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
+    bool        m_bHashMap;
 
     LglPtn m_tLglPtn;
 
@@ -26,7 +27,7 @@ namespace BASE
 
     tXN m_tTxnNo; // transaction number
 
-    PadWord m__PadToCacheLine[18];
+    PadWord m__PadToCacheLine[17];
 
 
   public:
@@ -70,6 +71,10 @@ namespace BASE
     void vGrabRead(void);
 
     void vGrabWrite(void);
+
+    void vHashMap(bool bInHashMap);
+
+    bool bHashMap(void);
 
     void vLglPtn(LglPtn tLglPtn);
 

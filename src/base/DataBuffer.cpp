@@ -51,6 +51,8 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   else
     AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_ROW);
 
+  m_bHashMap = true;
+
   m_tLglPtn     = C_UNKNOWN;
   
   m_iBufferHeight = 0;
@@ -91,6 +93,8 @@ DataBuffer::DataBuffer(bool bAddToHashMap, eCN eClassNo, bool bIsPermanent)
       AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_ROW);
   }
 
+  m_bHashMap = bAddToHashMap;
+
   m_tLglPtn     = C_UNKNOWN;
 
   m_iBufferHeight = 0;
@@ -115,7 +119,7 @@ DataBuffer::~DataBuffer(void) noexcept(false)
 // TODO: Hack for performance test
   AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
 #else
-  if(m_oBufferId.m_iAsI8 != 0)
+  if(m_oBufferId.m_iAsI8 != 0 && m_bHashMap)
     AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
 #endif
 
@@ -335,6 +339,26 @@ void DataBuffer::vGrabWrite(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_okLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vHashMap(bool bInHashMap)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bHashMap = bInHashMap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+bool DataBuffer::bHashMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bHashMap;
 }
 
 /*----------------------------------------------------------------------------*/

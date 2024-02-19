@@ -48,7 +48,6 @@ namespace BASE
     void    vDropKeyLock(void* pKey);
     HashMapEntry* pEntryAt(void* pKey, bool bLockThis = true);
     bool    bExists(void* pKey);
-    HashMapEntry* pGetEntryAtIndex(u8 uIndex);
 
     u8 uHashFunction(void* pKey);
     void vInit(void);
@@ -56,7 +55,6 @@ namespace BASE
     void    vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
     void    vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType);
     bool    bIsLocked(void* pKey);
-    void    vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
 //    void    vReHash(void);
     Object* pValueAt(void* pKey, bool bLockThis = true);
 

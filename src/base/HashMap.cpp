@@ -173,28 +173,20 @@ void HashMap::vDump(void)
   return;
 #else
 
-//  for(u8 u_index = 0; u_index < m_uNoOfSlots; u_index++) {
-//    HashMapEntry* pIter = m_pHashMapSlot[u_index]->m_pEntry;
-//    if(pIter)
-//      vTrace("\n"_Stz);
-//    while( pIter != nullptr) {
-//      vTrace("[%p %p %lld]\t"_Stz, pIter->m_pKeyObject, pIter->m_pValObject, *(pIter->m_ixAtomicLock));
-//      if(pIter->m_pValObject) {
-//        DataBuffer* pDataBuffer = _pDataBuffer(pIter->m_pValObject);
-//        eCN eClass = pDataBuffer->eGetClassNo();
-//        if(eClass == CN_PDS) {
-//          Pds* pPds = _pPds(pDataBuffer);
-//          vTrace("%p\n"_Stz, pPds);
-//        } else if(eClass == CN_CRWBUFFER) {
-//          CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
-//          vTrace("%p\n"_Stz, pCrwBuffer);
-//        }
-//      }
-//
-//      pIter = pIter->m_pNext;
-//    }
-//  }
-//  vTrace("\n"_Stz);
+  for(u8 u_index = 0; u_index < m_uNoOfSlots; u_index++) {
+    PdsCursor* pCursor = new PdsCursor(m_pHashMapSlot[u_index]->m_pPdsOfEntries);
+
+    if(pCursor)
+      vTrace("\n"_Stz);
+
+    while( ! pCursor->bIsCurrNull()) {
+      HashMapEntry* pEntry = _pHashMapEntry(pCursor->m_pCurrentBlock->aItem());
+      vTrace("[%p %p %lld, %lld]\t"_Stz, pEntry->m_pKeyObject, pEntry->m_pValObject, *(pEntry->m_ixAtomicLock), pEntry->m_eBufferIdType);
+
+      pCursor->vNext();
+    }
+  }
+  vTrace("\n"_Stz);
 #endif
 }
 
@@ -269,16 +261,6 @@ bool HashMap::bExists(void* pKey)
 /*----------------------------------------------------------------------------*/
 /* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
-HashMapEntry* HashMap::pGetEntryAtIndex(u8 uIndex)
-{
-  if(uIndex >= m_uNoOfSlots)
-    return nullptr;
-  return m_pHashMapSlot[uIndex]->m_pEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* hash key                                                                   */
-/*----------------------------------------------------------------------------*/
 u8 HashMap::uHashFunction(void* pKey)
 {
   return ( (u8) pKey % m_uNoOfSlots );
@@ -293,6 +275,7 @@ void HashMap::vInit(void)
   for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
     Pds* pPds = m_pHashMapSlot[u_slot]->m_pPdsOfEntries;
     AM::pHashMap()->vInsertKeyValue((void *) pPds->oGetBufferId().m_pvAsAddress, (Object *) pPds, BI_HASHMAPSLOT);
+    pPds->vHashMap(true);
   }
 }
 
@@ -417,14 +400,6 @@ bool HashMap::bIsLocked(void* pKey)
 //  delete paOldHashMapSlots;
 //
 //  m_okLock.vDropWrite();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* Get value stored at key if it exists                                       */
-/*----------------------------------------------------------------------------*/
-//void HashMap::vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
-//{
-//  m_pHashMapSlot->m_pEntry[uIndex] = pEntry;
 //}
 
 /*----------------------------------------------------------------------------*/

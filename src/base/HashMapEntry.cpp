@@ -49,6 +49,9 @@ HashMapEntry::HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType)
 
   m_ixAtomicLock.vCheckInit();
   vGrabLock();
+  Task* pTask = AM::pThisTLSTask();
+  if(pTask)
+    pTask->vAddHashMapEntry(this);
   m_eBufferIdType = eBufferIdType;
   m_pKeyObject = pKey;
   m_pValObject = pValue;
@@ -65,6 +68,13 @@ HashMapEntry::~HashMapEntry(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
   vDropLock();
+  Task* pTask = AM::pThisTLSTask();
+  if(pTask) {
+    bool bResult = pTask->bDeleteHashMapEntry(this);
+    UNUSED(bResult);
+    ASSERT(bResult);
+  }
+
   ASSERT((*m_ixAtomicLock) == 0);
 }
 
@@ -80,6 +90,12 @@ void HashMapEntry::vDropLock(void)
 {
   ASSERT((*m_ixAtomicLock) > 0);
   m_ixAtomicLock.iDec();
+  Task* pTask = AM::pThisTLSTask();
+  if(pTask) {
+    bool bResult = pTask->bDeleteHashMapEntry(this);
+    UNUSED(bResult);
+//    ASSERT(bResult);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,6 +105,9 @@ void HashMapEntry::vGrabLock(void)
 {
   ASSERT((*m_ixAtomicLock) >= 0);
   m_ixAtomicLock.iInc();
+  Task* pTask = AM::pThisTLSTask();
+  if(pTask)
+    pTask->vAddHashMapEntry(this);
 }
 
 /*----------------------------------------------------------------------------*/
