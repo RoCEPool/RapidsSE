@@ -2838,6 +2838,27 @@ antlrcpp::Any SqlPlanner::visitCastOp(sqlParser::CastOpContext* pCtx)
 
   if (pCtx->dataType()->sqlDataType()->precision()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->precision()->integerLiteral());
+
+  } else if (pCtx->dataType()->sqlDataType()->size()) {
+    iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->size()->integerLiteral());
+
+  } else if (pCtx->dataType()->sqlDataType()->varyingLenChar() &&
+             pCtx->dataType()->sqlDataType()->varyingLenChar()->size()) {
+    iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->varyingLenChar()->size()->integerLiteral());
+
+  } else if (pCtx->dataType()->sqlDataType()->fixedLenChar() &&
+             pCtx->dataType()->sqlDataType()->fixedLenChar()->size()) {
+    iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->fixedLenChar()->size()->integerLiteral());
+
+  } else if (pCtx->dataType()->sqlDataType()->intervalType() &&
+             pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType() &&
+             pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType()->precision()) {
+    iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType()->precision()->integerLiteral());
+
+  } else if (pCtx->dataType()->sqlDataType()->intervalType() &&
+             pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType() &&
+             pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType()->precision()) {
+    iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType()->precision()->integerLiteral());
   }
 
   if (pCtx->dataType()->sqlDataType()->scale()) {

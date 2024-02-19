@@ -1574,7 +1574,7 @@ static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     return;
   }
 
-  i8 nSize = 2; // null terminator + 1st digit
+  i8 nSize = 0;
   i8 bNegative = 0;
 
   if (iArg1 < 0) {
@@ -1582,7 +1582,12 @@ static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     bNegative = 1;
   }
 
-  if (*piAreaRemaining < nSize || (iLength > 0 && iLength + 1 < nSize)) {
+  i8 iSizeRemaining = *piAreaRemaining;
+  if (iLength > 0 && iLength + 1 < *piAreaRemaining) {
+    iSizeRemaining = iLength + 1;
+  }
+
+  if (iSizeRemaining < 1) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
@@ -1593,14 +1598,25 @@ static inline void _INT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
     *p++ = (iArg1 % 10) + '0';
     iArg1 /= 10ll;
     ++nSize;
-  } while (iArg1 && *piAreaRemaining >= nSize);
+    --iSizeRemaining;
+  } while (iArg1 && iSizeRemaining >= 1);
 
-  if (bNegative) {
+  if (bNegative && iSizeRemaining >= 1) {
     *p++ = '-';
     ++nSize;
+    --iSizeRemaining;
+  }
+
+  if (iSizeRemaining == 0) {
+    aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
 
   *p = '\0';
+  ++nSize;
+  --iSizeRemaining;
+
   while (--p > q) {
     char c = *p;
     *p = *q;

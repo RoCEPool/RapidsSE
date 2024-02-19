@@ -75,7 +75,10 @@ rows: (null)
       ("-1")
       ("-9223372036854775806")
       ("9223372036854775806")
-      
+
+// cast int to vch without enough room
+SELECT CAST(intCol AS VARCHAR(4)) FROM ${testName2}_test WHERE id BETWEEN 5 AND 6;
+failure contains: 'EC_STRING_TRUNCATION'
 
 // cast int to interval year
 // TODO: Ray
