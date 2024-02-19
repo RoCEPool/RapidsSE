@@ -2948,7 +2948,7 @@ void Symbol::vFacet_Itm_Col(i8 i_Child)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, szFacet(SF_NMD_COL));
-  vRotateFacet(SF_ITM_COL);
+  //vRotateFacet(SF_ITM_COL);
 
   RASSERT(bHasFacet(SF_ITM_COL));
 }
@@ -3540,7 +3540,9 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
 
   RASSERT(i_Facet_cut < m_nFacets);
 
-  for (i8 i_Facet = i_Facet_cut; i_Facet + 1 < m_nFacets; i_Facet++) {
+  for (i8 i_Facet = i_Facet_cut;
+       i_Facet >= 0 && i_Facet + 1 < m_nFacets;
+       i_Facet++) {
     xaFacet[i_Facet].m_eFacet  = xaFacet[i_Facet + 1].m_eFacet;
     xaFacet[i_Facet].m_sChrSeq = xaFacet[i_Facet + 1].m_sChrSeq;
   }
