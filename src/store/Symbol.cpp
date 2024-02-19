@@ -2812,7 +2812,7 @@ void Symbol::vFacet_Exp_Col(Stz* szExpCol)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSetFacet(SF_EXP_COL,szExpCol);
-  vRotateFacet(SF_EXP_COL);
+  //vRotateFacet(SF_EXP_COL);
 
   RASSERT(bHasFacet(SF_EXP_COL));
 }
