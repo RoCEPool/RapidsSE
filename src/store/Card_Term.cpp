@@ -540,10 +540,14 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   if (pSymbol_this->bHasFacet(SF_EXP_COL))
     return;
-  if (pSymbol_this->bHasFacet(SF_KEY_COL))
+  if (pSymbol_this->bHasFacet(SF_KEY_COL)) {
     if (CK_o_GBYAGG == pCI->G.e_MainCard)
       return;
-
+    if (CK_o_INDEXJOIN == pCI->G.e_MainCard)
+      return;
+    if (CK_o_SORT == pCI->G.e_MainCard)
+      return;
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // can scalar expression of this symbol be found in ARRIVED ?
 
@@ -559,7 +563,11 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     return;
   }
 
-  // not converted
+//  // not converted
+//  if (!pCI->X.m_pExprList_i)
+//    pCI->vPrintBoard(__func__,__LINE__,true);
+//  RASSERT(pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol));
+
   vDebugPoint();
 }
 
