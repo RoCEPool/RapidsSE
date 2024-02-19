@@ -563,7 +563,7 @@ static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   }
 
   int iSize = snprintf((*ppszStrArea), iMaxSize, "%.9e", fltArg1.m_dFlt);
-  if (iSize > iMaxSize) {
+  if (iSize >= iMaxSize) {
     aDynamicT->m_iErrorCode = EC_STRING_TRUNCATION;
     *(*ppaW)++ = C_DATUM_NULL;
   } else {
@@ -1386,33 +1386,41 @@ static inline void _BCD_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
   }
 
   char *p = (*ppszDstArea), *q = (*ppszDstArea);
+  i8 nSize = 0;
   i8 iSizeLeft = *piAreaRemaining;
+  if (iLength > 0 && iLength + 1 < *piAreaRemaining) {
+    iSizeLeft = iLength + 1;
+  }
 
-  while (bcdArg1.m_uScale && iSizeLeft > 1) {
+  while (bcdArg1.m_uScale && iSizeLeft > 0) {
     *p++ = (bcdArg1.m_iMantissa % 10) + '0';
     bcdArg1.m_iMantissa /= 10ll;
     bcdArg1.m_uScale--;
     --iSizeLeft;
+    ++nSize;
   }
 
-  if (iSizeLeft > 1) {
+  if (iSizeLeft > 0) {
     *p++ = '.';
     --iSizeLeft;
+    ++nSize;
   }
 
   i1 iFirst = 1; // Always print the first digit after the decimal point,
                  // especially if it is a zero.
 
-  while ((bcdArg1.m_iMantissa || iFirst) && iSizeLeft > 1) {
+  while ((bcdArg1.m_iMantissa || iFirst) && iSizeLeft > 0) {
     *p++ = (bcdArg1.m_iMantissa % 10) + '0';
     bcdArg1.m_iMantissa /= 10ll;
     iFirst = 0;
     --iSizeLeft;
+    ++nSize;
   }
 
-  if (bNegative && iSizeLeft > 1) {
+  if (bNegative && iSizeLeft > 0) {
     *p++ = '-';
     --iSizeLeft;
+    ++nSize;
   }
 
   if (iSizeLeft == 0) {
@@ -1423,16 +1431,17 @@ static inline void _BCD_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** pps
 
   *p = '\0';
   --iSizeLeft;
+  ++nSize;
 
   while (--p > q) {
     char c = *p;
     *p = *q;
     *q++ = c;
   }
+
   *(*ppaW)++ = (i8)(*ppszDstArea);
-  i8 iLen = (i8) strnlen(*ppszDstArea, iInitialArea) + 1;
-  (*ppszDstArea) += iLen;
-  (*piAreaRemaining) -= iLen;
+  (*ppszDstArea) += nSize;
+  (*piAreaRemaining) -= nSize;
 }
 
 static inline void _TME_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszDstArea, i8* piAreaRemaining, i8 iLength)

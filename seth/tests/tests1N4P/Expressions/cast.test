@@ -80,6 +80,10 @@ rows: (null)
 SELECT CAST(intCol AS VARCHAR(4)) FROM ${testName2}_test WHERE id BETWEEN 5 AND 6;
 failure contains: 'EC_STRING_TRUNCATION'
 
+// cast int to vch with just enough room
+SELECT CAST(intCol AS VARCHAR(20)) FROM ${testName2}_test WHERE id = 5;
+rows: ("-9223372036854775806")
+
 // cast int to interval year
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
@@ -255,6 +259,14 @@ rows: (null)
       ("-999999999999999.99")
       ("999999999999999.99")
 
+// cast decimal to vch without enough room
+SELECT CAST(decCol AS VARCHAR(4)) FROM ${testName2}_test WHERE id BETWEEN 5 AND 6;
+failure contains: 'EC_STRING_TRUNCATION'
+
+// cast decimal to vch with just enough room
+SELECT CAST(decCol AS VARCHAR(19)) FROM ${testName2}_test WHERE id = 5;
+rows: ("-999999999999999.99")
+
 // cast decimal to interval year
 // TODO: Ray
 //SELECT CAST(decCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
@@ -347,6 +359,14 @@ rows:
   ("-1.100000000e+00")
   ("-1.797693135e+308")
   ("1.797693135e+308")
+
+// cast float to vch without enough room
+SELECT CAST(fltCol AS VARCHAR(4)) FROM ${testName2}_test WHERE id BETWEEN 5 AND 6;
+failure contains: 'EC_STRING_TRUNCATION'
+
+// cast float to vch with just enough room
+SELECT CAST(fltCol AS VARCHAR(17)) FROM ${testName2}_test WHERE id = 5;
+rows: ("-1.797693135e+308")
 
 // cast float to interval year
 // TODO: Ray
@@ -455,6 +475,10 @@ rows:
   ("true")
   ("false")
   ("abcdefghijklmnopqrstuvwxy")
+
+// cast float to vch with just enough room
+SELECT CAST(vchCol AS VARCHAR(5)) FROM ${testName2}_test WHERE id = 5;
+rows: ("abcde")
 
 
 // cast varchar to dte
@@ -571,6 +595,14 @@ rows:
   ('1900-01-01')
   ('1970-01-01')
 
+// cast date to vch without enough room
+SELECT CAST(dteCol AS VARCHAR(9)) FROM ${testName2}_test WHERE id = 2;
+failure contains: 'EC_STRING_TRUNCATION'
+
+// cast date to vch with just enough room
+SELECT CAST(dteCol AS VARCHAR(10)) FROM ${testName2}_test WHERE id = 2;
+rows: ("2000-01-01")
+
 // cast date to date
 SELECT CAST(dteCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
 rows:
@@ -605,6 +637,14 @@ rows:
   ('01:02:03')
   ('11:22:33')
 
+// cast time to vch without enough room
+SELECT CAST(tmeCol AS VARCHAR(7)) FROM ${testName2}_test WHERE id = 2;
+failure contains: 'EC_STRING_TRUNCATION'
+
+// cast time to vch with just enough room
+SELECT CAST(tmeCol AS VARCHAR(8)) FROM ${testName2}_test WHERE id = 2;
+rows: ("00:00:00")
+
 // cast time to time
 SELECT CAST(tmeCol AS TIME) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
 rows:
@@ -628,6 +668,14 @@ rows:
   ('2155-01-01 23:59:59.999999')
   ('1900-01-01 01:02:03.456789')
   ('1970-06-30 11:22:33.000001')
+
+// cast timestamp to vch without enough room
+SELECT CAST(tspCol AS VARCHAR(25)) FROM ${testName2}_test WHERE id = 3;
+failure contains: 'EC_STRING_TRUNCATION'
+
+// cast timestamp to vch with just enough room
+SELECT CAST(tspCol AS VARCHAR(26)) FROM ${testName2}_test WHERE id = 3;
+rows: ("1900-01-01 00:00:00.123456")
 
 // cast timestamp to date
 SELECT CAST(tspCol AS DATE) FROM ${testName2}_test WHERE id BETWEEN 1 AND 6;
