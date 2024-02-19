@@ -2799,7 +2799,7 @@ void Symbol::vFacet_Exp_Col(i8 iExpCol)
   }
 
   vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
-  vRotateFacet(SF_EXP_COL);
+  //vRotateFacet(SF_EXP_COL);
 
   RASSERT(bHasFacet(SF_EXP_COL));
 }
