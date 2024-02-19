@@ -22,8 +22,6 @@ namespace STORE
 
     static void vCull(CardIter* pCI);
 
-    void vCullLoop(void);
-
     void vCull_facet(void);
 
   private:

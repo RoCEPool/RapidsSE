@@ -1356,10 +1356,12 @@ void Symbol::vCullFacet(eSF eFacet_except)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  i8 i_Facet = 0;
+  if (! bIs_Col())
+    return;
+
+ i8 i_Facet = 0;
   while (i_Facet < nFacets()) {
     eSF eFacet_this = eFacet(i_Facet);
-
     if (eFacet_except == eFacet_this) {
       i_Facet++;
       continue;

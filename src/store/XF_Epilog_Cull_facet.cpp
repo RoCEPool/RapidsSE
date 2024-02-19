@@ -45,7 +45,7 @@ void XF_Epilog_Cull_facet::vCull(CardIter* pCI)
 
   XF_Epilog_Cull_facet* pCull_facet = new XF_Epilog_Cull_facet(pCI);
 
-  pCull_facet->vCullLoop();
+  pCull_facet->vCull_facet();
 
   delete pCull_facet;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Cull_facet::vCull(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* cull loop                                                                  */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Cull_facet::vCullLoop(void)
+void XF_Epilog_Cull_facet::vCull_facet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_CULL_FACET, _FOOTER_);
 
@@ -71,8 +71,33 @@ void XF_Epilog_Cull_facet::vCullLoop(void)
   auto bLambdaFn = [pCI](Card* pCard)
   {
     UNUSED(pCI);
-    UNUSED(pCard);
-    //Card_Term* p_term = _pCard_Term(pCard);
+
+    Card_Term* p_term = _pCard_Term(pCard);
+    Symbol* pSym_term = p_term->pSymbol();
+
+    if (pCI->pAncestorFind(CK_o_KEYEXISTS)) {
+      //pCI->vAncestorDump();
+      if (pSym_term->bIs_Col()) {
+        if (pSym_term->bHasFacet(SF_IDX_COL)) {
+          pSym_term->vCullFacet(SF_IDX_COL);
+        }
+        else
+        if (pSym_term->bHasFacet(SF_EXP_COL)) {
+            pSym_term->vCullFacet(SF_EXP_COL);
+        }
+        else {
+          //pSym_term->vDump();
+        }
+        vDebugPoint();
+      }
+      return true;
+    };
+
+    if (pCI->pAncestorFind(CK_o_KEYNOTEXISTS)) {
+
+      return true;
+    };
+
     //p_term->pSymbol()->vCullFacet(SF_TBL_COL);
 
     return true;
@@ -83,15 +108,6 @@ void XF_Epilog_Cull_facet::vCullLoop(void)
   pCI->bApplyRecursive(pCI->G.pDeck,CK_TERM,bLambdaFn);
 
   m_pCI->vEndTransform(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* cull facet                                                                 */
-/*----------------------------------------------------------------------------*/
-void XF_Epilog_Cull_facet::vCull_facet(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_CULL_FACET, _FOOTER_);
-
 }
 
 /*============================================================================*/
