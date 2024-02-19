@@ -85,7 +85,7 @@ void PdsBufferIdQueue::vAddBuffer(DataBuffer* pNewBuffer)
   oItem.iKey = m_iSynthKey;
   oItem.oBufferId = pNewBuffer->oGetBufferId();
 
-  SkipListBlock* pBlock = m_pPdsOfBufferIds->pInsert((void*) &oItem);
+  SkipListBlock* pBlock = m_pPdsOfBufferIds->pAppend((void*) &oItem);
   RASSERT(pBlock != nullptr);
   *(PdsItem_BufferId*)(pBlock->aItem()) = oItem;
 

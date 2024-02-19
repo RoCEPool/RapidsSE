@@ -46,22 +46,17 @@ namespace STORE
 
     void vAddBoard(Board* pBoard);
     i8   nBoards(void);
-    CardCtl* pCardCtl(void);
     void vDump(const char* azFunc);
     void vEndPhase(CardIter* pCI);
 
-    Board* pFindBoard_By_sqyNm(Stz* szSqyNm);
-    Board* pFindBoard_By_sqyNo(Stz* szSqyNo);
-    SubQuery* pFindSubQuery_By_sqyNo(Stz* szSqyNo);
     Board* pFindBoard_By_sqyNm_v2(Stz* szSqyNm);
     Board* pFindBoard_By_sqyNo_v2(Stz* szSqyNo);
-    SubQuery* pFindSubQuery_By_sqyNm_v2(Stz* szSqyNm);
-    SubQuery* pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo);
+    Board* pFindBoard(Symbol* pSymbol_arg);
+    SubQuery* pFindSubQuery(Symbol* pSymbol_arg);
 
     Board* pGetBoard(i8 i_Board);
 
-    bool bKnown_sqyNm(Stz* szSqyNm);
-    bool bKnown_sqyNo(Stz* szSqyNo);
+    bool bKnown_sqy(Symbol* pSymbol_arg);
 
     Optimiser* pOptimiser(void);
 

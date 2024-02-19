@@ -46,7 +46,6 @@ namespace STORE
       i8         m_i_SubQuery;
       SubQuery*  m_pSubQuery;
 
-      s32        m_sSqyNm;
       s32        m_sSqyArg;
       Card_Term* m_pTerm_corrCol;
       Card_Term* m_pTerm_sqyCall;
@@ -160,7 +159,6 @@ namespace STORE
 
     void G_vInsertAfter(Card* pCard, Card* pAfter);
     void G_vInsertBefore(Card* pCard, Card* pBefore);
-    bool G_bIsBoardNm(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
 
 
@@ -184,7 +182,8 @@ namespace STORE
     void vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
     void G_vPushBoard(Board* pBoard);
-     bool G_bPushBoard(Stz* szSqyNm);
+    bool G_bPushBoard(Symbol* pSymbol);
+    bool G_bPushBoard(Stz* szSqyNo);
     void G_vPushNewChild(Card* pParent, eCK eChild);
     void G_vPushIter(void);
 

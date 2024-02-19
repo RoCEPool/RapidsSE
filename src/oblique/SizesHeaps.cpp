@@ -728,7 +728,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STZLIST,                  sizeof(StzList),            HT_T_TINY    ,FILL },
   { CN_STZVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_SUBCALL,                  sizeof(SubCall),            HT_T_TINY    ,FILL },
-  { CN_SUBQUERY,                 sizeof(SubQuery),           HT_T_TINY    ,FILL },
+  { CN_SUBQUERY,                 sizeof(SubQuery),           HT_T_SMALL   ,FILL },
   { CN_SUBRETURN,                sizeof(SubReturn),          HT_T_TINY    ,FILL },
   { CN_SYMBOL,                   sizeof(Symbol),             HT_T_SMALL   ,FILL },
   { CN_SYSCALL,                  sizeof(SysCall),            HT_INVALID   ,FILL },

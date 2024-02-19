@@ -19,10 +19,10 @@ namespace STORE
     bool bContains_sqyNo(void);
     bool bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn);
     void vEnsure_Cast(CardIter* pCI);
-    Stz* szGetBoardNmInTerm(CardIter* pCI);
+    Stz* szGetTerm_sqyNo(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblCol(void);
     Card_Term* pGetTerm(i8 i_Term);
-    Card_Term* pGetTerm_boardNm(CardIter* pCI);
+    Card_Term* pGetTerm_sqyNo(CardIter* pCI);
     bool bIsBoolFn(void);
     bool bIsCorrConj(void);
     bool bIsJoinConj(void);

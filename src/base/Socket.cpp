@@ -628,9 +628,13 @@ Object* Socket::pObjectRecv(eCN eClass)
       DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
       i8 iPoolBufferNo = pDataBuffer->iBufferNo();
       pDataBuffer->vSetBufferNo(iPoolBufferNo);
+#ifdef WITHOUT_BUFFERIDHASHMAP
+      // TODO: Hack for performance test
+      pDataBuffer->vSetBufferId((void*) pDataBuffer);
+#else
       pDataBuffer->vSetBufferId(
           AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
-
+#endif
       AM::pHashMap()->vInsertKeyValue(
           (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
           (Object *) pReceivedObject);

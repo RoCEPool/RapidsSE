@@ -223,8 +223,8 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* sz
  // pCI->vPrintBoard(__func__,__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNm.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -311,8 +311,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
   //vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
  // pCI->vPrintBoard(__func__,__LINE__);
 
-  //RASSERT(Symbol::bIs_Sqy_No(pCI->G.p_call->szFacet(SF_NONE)));
-  Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNm(pCI->G.p_call->szFacet(SF_NONE));
+  Board* pBoard = pCI->m_pBench->pFindBoard(pCI->G.p_call->pSymbol());
 
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy, pBoard->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
@@ -321,8 +320,8 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // get copy of sq and push before mq
 
   // x) push to sq
-  if (! pCI->G_bPushBoard(pCI->G.p_call->szFacet(SF_NONE))) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
+  if (! pCI->G_bPushBoard(pCI->G.p_call->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -378,8 +377,8 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
  // pCI->vPrintBoard(__func__,__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNm.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -480,8 +479,8 @@ i8 XF_Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   // pCI->vPrintBoard(__func__,__LINE__);
 
   // 2) push to sq
-  if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_sSqyNm.szStz());
+  if (! pCI->G_bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 

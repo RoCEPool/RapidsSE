@@ -179,12 +179,12 @@ void Card_CONJ::vEnsure_Cast(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* attempt to get board name from one of the terms of this predicate          */
 /*----------------------------------------------------------------------------*/
-Stz* Card_CONJ::szGetBoardNmInTerm(CardIter* pCI)
+Stz* Card_CONJ::szGetTerm_sqyNo(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card_Term* p_term = pGetTerm_boardNm(pCI))
-    return p_term->szFacet(SF_NONE);
+  if (Card_Term* p_term = pGetTerm_sqyNo(pCI))
+    return p_term->szFacet(SF_SQY_NO);
 
   return nullptr;
 }
@@ -223,16 +223,18 @@ Card_Term* Card_CONJ::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /* attempt to get term which is a board name from this predicate              */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CONJ::pGetTerm_boardNm(CardIter* pCI)
+Card_Term* Card_CONJ::pGetTerm_sqyNo(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
+    Card_Term* p_term = xKid.p_term();
+    if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
+      continue;
 
-    Stz* szValue_term = xKid.p_term()->szFacet(SF_NONE);
-    if (pCI->G_bIsBoardNm(szValue_term))
-      return xKid.p_term();
+    return p_term;
   }
 
   return nullptr;
@@ -339,7 +341,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term1 = _pCard_Term(pGetChild(1));
-    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term1->szFacet(SF_NONE))); //temp
+    RASSERT(pCI->m_pBench->bKnown_sqy(p_term1->pSymbol())); //temp
 
     Symbol x_Symbol_expCol1;
     if (p_term) {
@@ -365,7 +367,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term_popped->szFacet(SF_NONE))); //temp
+    RASSERT(pCI->m_pBench->bKnown_sqy(p_term_popped->pSymbol())); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
@@ -396,7 +398,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bKnown_sqyNm(p_term_popped->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bKnown_sqy(p_term_popped->pSymbol())); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));

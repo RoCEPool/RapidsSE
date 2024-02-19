@@ -10,9 +10,6 @@ success
 //NOTE:  count distinct -> count
   //count(distinct ps_suppkey) as supplier_cnt
 
-/weaved
-/optimiser_trace
-/pipeline_def
 /pipelineName = "OptQ16"
 select
   p_brand,

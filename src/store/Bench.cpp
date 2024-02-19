@@ -83,16 +83,6 @@ i8 Bench::nBoards(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card registers                                                         */
-/*----------------------------------------------------------------------------*/
-CardCtl* Bench::pCardCtl(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  return m_pOptimiser->pCardCtl();
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump this bench                                                            */
 /*----------------------------------------------------------------------------*/
 void Bench::vDump(const char* azFunc)
@@ -132,59 +122,6 @@ void Bench::vEndPhase(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  i8 nBoards = this->nBoards();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
-
-    if (pBoard->pSubQuery()->szSqyNm()->bSame(szSqyNm))
-      return pBoard;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get board of given name                                                    */
-/*----------------------------------------------------------------------------*/
-Board* Bench::pFindBoard_By_sqyNo(Stz* szSqyNo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  i8 nBoards = this->nBoards();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
-
-    if (pBoard->pSubQuery()->szSqyNo()->bSame(szSqyNo))
-      return pBoard;
-  }
-
-  return nullptr;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get subquery of given name                                                 */
-/*----------------------------------------------------------------------------*/
-SubQuery* Bench::pFindSubQuery_By_sqyNo(Stz* szSqyNo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  Board* pBoard = pFindBoard_By_sqyNm(szSqyNo);
-  if (! pBoard)
-    return nullptr;
-
-  SubQuery* pSubQuery = pBoard->pSubQuery();
-
-  return pSubQuery;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get board of given name                                                    */
-/*----------------------------------------------------------------------------*/
 Board* Bench::pFindBoard_By_sqyNm_v2(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
@@ -218,30 +155,32 @@ Board* Bench::pFindBoard_By_sqyNo_v2(Stz* szSqyNo)
   return nullptr;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* get subquery of given name                                                 */
+/* find board matching given symbol                                           */
 /*----------------------------------------------------------------------------*/
-SubQuery* Bench::pFindSubQuery_By_sqyNo_v2(Stz* szSqyNo)
+Board* Bench::pFindBoard(Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pFindBoard_By_sqyNo_v2(szSqyNo)) {
-    SubQuery *pSubQuery = pBoard->pSubQuery();
-    return pSubQuery;
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->pSubQuery()->pSymbol()->bMatches(pSymbol_arg))
+      return pBoard;
   }
 
   return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get subquery of given name                                                 */
+/* find subquery given symbol                                                 */
 /*----------------------------------------------------------------------------*/
-SubQuery* Bench::pFindSubQuery_By_sqyNm_v2(Stz* szSqyNm)
+SubQuery* Bench::pFindSubQuery(Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pFindBoard_By_sqyNm_v2(szSqyNm)) {
+  if (Board* pBoard = pFindBoard(pSymbol_arg)) {
     SubQuery *pSubQuery = pBoard->pSubQuery();
     return pSubQuery;
   }
@@ -267,26 +206,11 @@ Board* Bench::pGetBoard(i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
-bool Bench::bKnown_sqyNm(Stz* szSqyNm)
+bool Bench::bKnown_sqy(Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pFindBoard_By_sqyNm(szSqyNm)) {
-    UNUSED(pBoard);
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given name a known subquery?                                            */
-/*----------------------------------------------------------------------------*/
-bool Bench::bKnown_sqyNo(Stz* szSqyNo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (Board* pBoard = pFindBoard_By_sqyNo(szSqyNo)) {
+  if (Board* pBoard = pFindBoard(pSymbol_arg)) {
     UNUSED(pBoard);
     return true;
   }

@@ -27,6 +27,8 @@ namespace BASE
     u2 m_uInUseRootOffset;
     i8 m_iNumEntries[C_MAX_LVL_LEVELS];
 
+    u2 m_auTailOffsets[C_MAX_LVL_LEVELS]; // Offset of last element at each level of the SkipList
+
     eBT     m_eBufferType;
 
     RowPix m_oRowPix;
@@ -64,6 +66,7 @@ namespace BASE
     Row*            pAllotRow(void);
     Row*            pAllotRow(i8 iVargsBegin, ...);
 //    Row*            pAllotRowFull(char** aaStzSet);
+    SkipListBlock*  pAppend(void* pKey);
     eBT             eBufferType(void);
     void            vBufferType(eBT eBufferType);
     Row*            pCopyRow(Row* pRow, bool bSrcHasPtnHash = false, bool bCopyPtnHash = false);

@@ -131,16 +131,12 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   //p_expr_found->vDump();
   Card_Term* p_term_found = p_expr_found->pGet_term(0);
 
-  eSF eSymbol = Symbol::eEvalSymbol(pCI->Sqy.m_sSqyArg);
-  RASSERT(SF_TBL_COL == eSymbol);
-
 
   Card_Term* p_term_sqarg = (new Card_Term) ->SYM(SF_TBL_COL, pCI->Sqy.m_sSqyArg);
   p_term_sqarg->vCast(p_term_found);
   //p_term_sqarg->vDump();
 
 
-  //Card_Term::bReplaceValueOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
   Symbol xSymbol_prmCol(SF_SQY_PRM, 1);
   p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmCol, p_term_sqarg->pSymbol());
 

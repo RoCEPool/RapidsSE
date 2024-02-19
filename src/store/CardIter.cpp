@@ -30,7 +30,7 @@ CardIter::CardIter(Bench* pBench)
   _precondition_(_MAGIC_,_FOOTER_);
 
   m_pBench   = pBench;
-  m_pCardCtl = m_pBench->pCardCtl();
+  m_pCardCtl = nullptr;//m_pBench->pCardCtl();
   m_xSymbol_tableSyn.vInit_Tbl_Syn('a');
 
   m_i_RecursionDepth = 0;
@@ -1493,19 +1493,6 @@ void CardIter::G_vInsertBefore(Card* pCard, Card* pBefore)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bIsBoardNm(Stz* szBoardNm)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (m_pBench->pFindBoard_By_sqyNm(szBoardNm))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool CardIter::G_bIsNextMain(eCK eMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -2082,11 +2069,27 @@ void CardIter::G_vPushBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* find and push board onto iter stack                                        */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bPushBoard(Stz* szSqyNm)
+bool CardIter::G_bPushBoard(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Board* pBoard = m_pBench->pFindBoard_By_sqyNm(szSqyNm);
+  Board*  pBoard = m_pBench->pFindBoard(pSymbol);
+  if (! pBoard)
+    return false;
+
+  G_vPushBoard(pBoard);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find and push board onto iter stack                                        */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bPushBoard(Stz* szSqyNo)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Board*  pBoard = m_pBench->pFindBoard_By_sqyNo_v2(szSqyNo);
   if (! pBoard)
      return false;
 

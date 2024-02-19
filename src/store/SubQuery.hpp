@@ -10,6 +10,8 @@
 #include "eQO.h"
 #include "eRO.h"
 
+#include "Symbol.hpp"
+
 namespace STORE
 {
   class Board;
@@ -21,11 +23,7 @@ namespace STORE
   {
   protected:
 
-    s32  m_sSqyNo;       // subquery no
-    s32  m_sSqyNm;       // subquery name
-
-    s32  m_sSqyNo_v2;    // subquery no
-    s32  m_sSqyNm_v2;    // subquery name
+    Symbol m_xSymbol;    // SF_SQY_NM and SF_SQY_NO
 
     Board* m_pBoard;     // which board
 
@@ -83,11 +81,6 @@ namespace STORE
     eRO  eRelnOp(void);
     void vRelnOp(eRO eRelnOp);
 
-    Stz* szSqyNm(void);
-    void vSqyNm(Stz* szSqyNm);
-    Stz* szSqyNo(void);
-    void vSqyNo(Stz* szSqyNo);
-
     Stz* szSqyNm_v2(void);
     void vSqyNm_v2(Stz* szSqyNm);
     Stz* szSqyNo_v2(void);
@@ -95,6 +88,8 @@ namespace STORE
 
     i8   nSubQueries(void);
     void vSubQueries(i8 nSubQueries);
+
+    Symbol* pSymbol(void);
 
     bool bViaFrom(void);
     bool bViaHaving(void);

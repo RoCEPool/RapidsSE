@@ -39,48 +39,6 @@ XF_Prolog_X_sqyNm_To_sqyNo::~XF_Prolog_X_sqyNm_To_sqyNo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(CardIter* pCI)
-{
-  _static_
-
-  XF_Prolog_X_sqyNm_To_sqyNo* pXF_Shorten_QueryNames = new XF_Prolog_X_sqyNm_To_sqyNo(pCI);
-
-  pXF_Shorten_QueryNames->vX_Board_sqyNm_To_sqyNo();
-
-  delete pXF_Shorten_QueryNames;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board_v2(CardIter* pCI)
-{
-  _static_
-
-  XF_Prolog_X_sqyNm_To_sqyNo* pXF_Shorten_QueryNames = new XF_Prolog_X_sqyNm_To_sqyNo(pCI);
-
-  pXF_Shorten_QueryNames->vX_Board_sqyNm_To_sqyNo_v2();
-
-  delete pXF_Shorten_QueryNames;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck(CardIter* pCI)
-{
-  _static_
-
-  XF_Prolog_X_sqyNm_To_sqyNo* pXF_Shorten_QueryNames = new XF_Prolog_X_sqyNm_To_sqyNo(pCI);
-
-  pXF_Shorten_QueryNames->vX_Deck_sqyNm_To_sqyNo();
-
-  delete pXF_Shorten_QueryNames;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(CardIter* pCI)
 {
   _static_
@@ -106,146 +64,19 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "pipe to sqyNo"_Stz);
 
-#ifdef Z_SQY_Qn
-
-  Symbol xSymbol_sqyNm(SF_SQY_NO, m_pCI->G.pBoard->i_Board());
-  m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
-
-#else
-
-  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    m_pCI->m_pBench->vDump(__func__);
-
-  s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNm();
-
-  if (Symbol::bIs_Sqy_No(sSqyNo)) {
-    i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
-    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
-    m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
-  }
-  else {
-    vDebugPoint();
-  }
-
-#endif
-
-  m_pCI->vEndTransform(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* shorten query names                                                        */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo_v2(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SQYNM_TO_SQYNO, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "pipe to sqyNo"_Stz);
-
-
-  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    m_pCI->m_pBench->vDump(__func__);
-
-
-  m_pCI->vEndTransform(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* shorten query names                                                        */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SQYNM_TO_SQYNO, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "shorten query names"_Stz);
-
-#ifdef Z_SQY_Qn
-
-  CardIter* pCI = m_pCI;
-  auto bfTo_sqyNm = [pCI](Card* p_card) {
-    if (! (p_card->bIsCard(CK_o_CALL) ||
-          (p_card->bIsCard(CK_TERM) && Symbol::bIs_Sqy_Nm(p_card->szFacet(SF_NONE)))))
-       return C_CONTINUE_RECURSION;
-
-
-    eSF eFacet = p_card->pSymbol()->eFacet(0);
-    RASSERT(SF_SQY_NM == eFacet || SF_SQY_NO == eFacet);
-
-
-    pCI->vPrintBoard(__func__,__LINE__,true);
-    p_card->vDump(__func__);
-    vDebugPoint();
-    Symbol* pSymbol_card = p_card->pSymbol();
-    if (SF_SQY_NM == eFacet) {
-      Stz* szSubPipeNm =pSymbol_card->szFacet(SF_SQY_NM);
-      Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSubPipeNm);
-
-      Symbol xSymbol_sqyNm(SF_SQY_NO, pBoard_subPipeNm->i_Board());
-      pSymbol_card->vCastFacets(&xSymbol_sqyNm);
-    }
-    else {
-      Stz* szSqyNm = pSymbol_card->szFacet(SF_SQY_NO);
-      Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_subPipeNm(szSqyNo);
-
-      Symbol xSymbol_sqyNm(SF_SQY_NO, pBoard_sqyNm->i_Board());
-      pSymbol_card->vCastFacets(&xSymbol_sqyNm);
-    }
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNm);
-  UNUSED(b);
-
-#else
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  CardIter* pCI = m_pCI;
-  auto bfTo_sqyNm = [pCI](Card* p_card) {
-    if (! Symbol::bIs_Sqy_No(p_card->szFacet(SF_NONE)))
-      return C_CONTINUE_RECURSION;
-
-
-    eSF eFacet = p_card->pSymbol()->eFacet(0);
-    RASSERT(SF_SQY_NM == eFacet || SF_SQY_NO == eFacet);
-
-    i8 iSqyNo = StrLib::iGleanInt(p_card->szFacet(SF_NONE)->azChar());
-
-    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
-    p_card->pSymbol()->vCastFacets(&xSymbol_sqyNm);
-
-    RASSERT(pCI->m_pBench->pFindBoard_By_sqyNo_v2(p_card->szFacet(SF_SQY_NO)));
-
-
-//    pCI->vPrintBoard(__func__,__LINE__,true);
-//    p_card->vDump(__func__);
+//  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+//    m_pCI->m_pBench->vDump(__func__);
+//
+//  s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNo_v2();
+//
+//  if (Symbol::bIs_Sqy_No(sSqyNo)) {
+//    i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
+//    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
+//    m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
+//  }
+//  else {
 //    vDebugPoint();
-    if (SF_SQY_NM == eFacet) {
-
-      Stz* szSubPipeNm = p_card->pSymbol()->szFacet(SF_SQY_NM);
-      Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_sqyNm(szSubPipeNm);
-
-      Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_sqyNo(szSubPipeNm);
-      RASSERT(pBoard_sqyNm == pBoard_subPipeNm);
-    }
-    else {
-      Stz* szSqyNm = p_card->pSymbol()->szFacet(SF_SQY_NO);
-      Board* pBoard_subPipeNm = pCI->m_pBench->pFindBoard_By_sqyNm(szSqyNm);
-
-      Board* pBoard_sqyNm = pCI->m_pBench->pFindBoard_By_sqyNo(szSqyNm);
-      RASSERT(pBoard_sqyNm == pBoard_subPipeNm);
-    }
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNm);
-  UNUSED(b);
-
-#endif
+//  }
 
   m_pCI->vEndTransform(__LINE__);
 }
@@ -264,9 +95,21 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo_v2(void)
   CardIter* pCI = m_pCI;
   auto bfTo_sqyNm = [pCI](Card* p_card) {
     UNUSED(pCI);
-    if (! Symbol::bIs_Sqy_No(p_card->szFacet(SF_NONE)))
+    Symbol* pSymbol_card = p_card->pSymbol();
+    if (! pSymbol_card->nFacets())
       return C_CONTINUE_RECURSION;
 
+    Stz* szFacet_symbol = pSymbol_card->szFacet(0);
+    Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNm_v2(szFacet_symbol);
+    if (! pBoard)
+      return C_CONTINUE_RECURSION;
+
+    SubQuery* pSubQuery = pBoard->pSubQuery();
+
+    Symbol xSymbol_sqyNo(SF_SQY_NO,pSubQuery->szSqyNo_v2());
+
+    pSymbol_card->vDeleteFacet(SF_SQY_NM);
+    pSymbol_card->vCastFacets(&xSymbol_sqyNo);
 
     return C_CONTINUE_RECURSION;
   };
