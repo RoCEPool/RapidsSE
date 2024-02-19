@@ -572,29 +572,16 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
       pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
 
-//      if (pCI->G.p_key && pCI->G.p_expr) {
-//        if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
-//          pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
-//      }
-
       return;
     }
 
-    if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xSym_tblCol)) {
-      Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
-      pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
-      this->vMark1(MARK_CHANGED);
-      if (pCI->G.p_key && pCI->G.p_expr) {
-        pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
-      }
-      return;
-    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (pSymbol_this->bHasFacet(SF_NMD_COL)) {
-      Symbol xAsNm_sym;
-      xAsNm_sym.vApplyFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
+      Symbol xSym_nmdCol;
+      xSym_nmdCol.vApplyFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
 
-      if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xAsNm_sym)) {
+      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_nmdCol)) {
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
         pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
@@ -604,28 +591,6 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
         }
         return;
       }
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // can scalar expression of this symbol be found in KEY ?
-
-  if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
-    //pCI->X.m_pExprList_k->vDump(__func__);
-    //pSymbol_this->vDump();
-    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Matches(&xSym_tblCol)) {
-      Symbol *pSymbol_k = p_expr_scalar_k->pFirst_keyCol();
-      if (! pSymbol_k)
-        return;
-      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches_ignoring(&xSym_tblCol, SF_EXP_COL)) {
-        Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
-        pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
-        this->vMark1(MARK_CHANGED);
-        if (pCI->G.p_key && pCI->G.p_expr) {
-          pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
-        }
-      }
-      return;
     }
   }
 
