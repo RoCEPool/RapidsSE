@@ -2970,7 +2970,6 @@ void Symbol::vFacet_Itm_Col(i8 i_Child)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, szFacet(SF_NMD_COL));
-  //vRotateFacet(SF_ITM_COL);
 
   RASSERT(bHasFacet(SF_ITM_COL));
 }
@@ -3123,7 +3122,6 @@ void Symbol::vFacet_Nmd_Col(Stz* szColNm)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSetFacet(SF_NMD_COL,szColNm);
-  //vRotateFacet(SF_NMD_COL);
 
   RASSERT(bHasFacet(SF_NMD_COL));
   RASSERT(!bHasFacet(SF_ITM_COL));
@@ -3181,7 +3179,6 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
   RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vSetFacet(SF_RLN_OP,szRlnOp);
-  //vRotateFacet(SF_RLN_OP);
 
   RASSERT(bHasFacet(SF_RLN_OP));
 }
@@ -3236,7 +3233,6 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
   RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
-  //vRotateFacet(SF_SQY_OP);
 
   RASSERT(bHasFacet(SF_SQY_OP));
 }
@@ -3279,7 +3275,6 @@ void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
   //RASSERT(! bHasFacets());
 
   vFacetSprint(SF_SQY_RSL, "$R%lld"_Stz, iOrdinal);
-  //vRotateFacet(SF_SQY_RSL);
 
   RASSERT(bHasFacet(SF_SQY_RSL));
 }
@@ -3294,7 +3289,6 @@ void Symbol::vFacet_Sqy_Rsl(Stz* szSqyRsl)
   //RASSERT(! bHasFacets());
 
   vSetFacet(SF_SQY_RSL, szSqyRsl);
-  //vRotateFacet(SF_SQY_RSL);
 
   RASSERT(bHasFacet(SF_SQY_RSL));
 }
@@ -3377,7 +3371,6 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSetFacet(SF_TBL_COL, szTblCol);
-  //vRotateFacet(SF_TBL_COL);
 
   RASSERT(bHasFacet(SF_TBL_COL));
 }
