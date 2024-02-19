@@ -3541,7 +3541,7 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
   RASSERT(i_Facet_cut < m_nFacets);
 
   for (i8 i_Facet = i_Facet_cut;
-       i_Facet >= 0 && i_Facet + 1 < m_nFacets;
+       i_Facet >= 0 && i_Facet + 1 < m_nFacets && i_Facet + 1 < C_FACETS;
        i_Facet++) {
     xaFacet[i_Facet].m_eFacet  = xaFacet[i_Facet + 1].m_eFacet;
     xaFacet[i_Facet].m_sChrSeq = xaFacet[i_Facet + 1].m_sChrSeq;
