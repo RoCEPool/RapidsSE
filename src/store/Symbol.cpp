@@ -3101,7 +3101,7 @@ void Symbol::vFacet_Nmd_Col(Stz* szColNm)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSetFacet(SF_NMD_COL,szColNm);
-  vRotateFacet(SF_NMD_COL);
+  //vRotateFacet(SF_NMD_COL);
 
   RASSERT(bHasFacet(SF_NMD_COL));
   RASSERT(!bHasFacet(SF_ITM_COL));
