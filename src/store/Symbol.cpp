@@ -1280,6 +1280,7 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szChrSeq)
     case SF_TBL_COL:     vFacet_Tbl_Col(szChrSeq);     break;
     case SF_TBL_NM:      vFacet_Tbl_Nm(szChrSeq);      break;
     case SF_TBL_SYN:     vFacet_Tbl_Syn(szChrSeq);     break;
+    case SF_TBL_SYN_rep: vFacet_Tbl_Syn_rep(szChrSeq); break;
     case SF_THEN:        vFacet_Then(szChrSeq);        break;
     case SF_TYPE:        vFacet_Type(szChrSeq);        break;
     case SF_WHEN:        vFacet_When(szChrSeq);        break;
@@ -1875,31 +1876,6 @@ bool Symbol::bNeedsBrace(void)
   else if (szFacet(0)->bSame("matchTrailing"_Stz))  return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* rotate facet to top                                                        */
-/*----------------------------------------------------------------------------*/
-void Symbol::vRotateFacet(eSF eFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  i8 i_Facet = this->i_Facet(eFacet);
-  if (0 == i_Facet)
-    return;
-
-  RASSERT(m_nFacets);
-
-  Facet xFacet_tmp;
-
-  xFacet_tmp.m_eFacet  = this->eFacet(0);
-  xFacet_tmp.m_sChrSeq = szFacet(0);
-
-  xaFacet[0].m_eFacet  = xaFacet[i_Facet].m_eFacet;
-  xaFacet[0].m_sChrSeq = xaFacet[i_Facet].m_sChrSeq;
-
-  xaFacet[i_Facet].m_eFacet  = xFacet_tmp.m_eFacet;
-  xaFacet[i_Facet].m_sChrSeq = xFacet_tmp.m_sChrSeq;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2799,7 +2775,6 @@ void Symbol::vFacet_Exp_Col(i8 iExpCol)
   }
 
   vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
-  //vRotateFacet(SF_EXP_COL);
 
   RASSERT(bHasFacet(SF_EXP_COL));
 }
@@ -2812,7 +2787,6 @@ void Symbol::vFacet_Exp_Col(Stz* szExpCol)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSetFacet(SF_EXP_COL,szExpCol);
-  //vRotateFacet(SF_EXP_COL);
 
   RASSERT(bHasFacet(SF_EXP_COL));
 }
@@ -2992,7 +2966,7 @@ void Symbol::vFacet_Itm_Col(Stz* szItmCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vSetFacet(SF_ITM_COL,szItmCol);
 
@@ -3034,7 +3008,7 @@ void Symbol::vFacet_List_Cnt(Stz* szListCnt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vSetFacet(SF_LIST_CNT,szListCnt);
 
@@ -3225,7 +3199,7 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
+//  RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
 
@@ -3431,6 +3405,18 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given table-synonym                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Tbl_Syn_rep(Stz* szTblSyn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSetFacet(SF_TBL_SYN_rep,szTblSyn);
+
+  RASSERT(bHasFacet(SF_TBL_SYN_rep));
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to THEN                                                    */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Then(Stz* szThen)
@@ -3514,8 +3500,7 @@ void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
     if (aFacet_arg->m_sChrSeq.bSame("%1"_Stz))
       vDebugPoint();
 
-    vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
-    vRotateFacet(aFacet_arg->m_eFacet);
+    vApplyFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
   }
 }
 
