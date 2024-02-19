@@ -125,6 +125,7 @@ namespace STORE
 
     void vApplyFacet(eSF eFacet, i8 iInt);
     void vApplyFacet(eSF eFacet, Stz* szChrSeq);
+    void vApplyFacets(Symbol* pSymbol_arg);
 
     Cast xCast(void);
     void vCast(Cast xCast);
@@ -287,7 +288,6 @@ namespace STORE
     void vFacet_Xk_Cast(Stz* szXkCast);
     void vFacet_Rw_Aggregates(Stz* szAggregates);
 
-    void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);
     void vFacetReset(void);
     void vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet);

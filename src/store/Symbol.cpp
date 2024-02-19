@@ -1295,6 +1295,25 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szChrSeq)
 }
 
 /*----------------------------------------------------------------------------*/
+/* apply facets                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 nFacets_arg = pSymbol_arg->m_nFacets;
+  //for (i8 i_Facet_arg = nFacets_arg - 1; i_Facet_arg >= 0; i_Facet_arg--) {
+  for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
+    Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
+
+    if (aFacet_arg->m_sChrSeq.bSame("%1"_Stz))
+      vDebugPoint();
+
+    vApplyFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cast                                                                   */
 /*----------------------------------------------------------------------------*/
 Cast Symbol::xCast(void)
@@ -1336,7 +1355,7 @@ void Symbol::vCastFacets(Symbol* pSymbol_arg)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_xCast = pSymbol_arg->m_xCast;
-  vFacetConcat(pSymbol_arg);
+  vApplyFacets(pSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3484,24 +3503,6 @@ void Symbol::vFacet_Rw_Aggregates(Stz* szAggregates)
   vSetFacet(SF_RW_AGGREGATES,szAggregates);
 
   RASSERT(bHasFacet(SF_RW_AGGREGATES));
-}
-
-/*----------------------------------------------------------------------------*/
-/* concat facets                                                              */
-/*----------------------------------------------------------------------------*/
-void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  i8 nFacets_arg = pSymbol_arg->m_nFacets;
-  for (i8 i_Facet_arg = nFacets_arg - 1; i_Facet_arg >= 0; i_Facet_arg--) {
-    Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
-
-    if (aFacet_arg->m_sChrSeq.bSame("%1"_Stz))
-      vDebugPoint();
-
-    vApplyFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
