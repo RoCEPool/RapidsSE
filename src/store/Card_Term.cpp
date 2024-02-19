@@ -563,9 +563,22 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     return;
   }
 
-//  // not converted
+//  if (pCI->X.m_pExprList_i) {
+//    if (Card_Expr *p_expr_i = pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol)) {
+//
+//      Stz *szExpCol_expr_a = p_expr_i->szFacet(SF_EXP_COL);
+//      pSymbol_this->vApplyFacet(SF_EXP_COL, szExpCol_expr_a);
+//      this->vMark1(MARK_CHANGED);
+//
+//      return;
+//    }
+//  }
+
+
+  // not converted
 //  if (!pCI->X.m_pExprList_i)
 //    pCI->vPrintBoard(__func__,__LINE__,true);
+//    pSymbol_this->vDump();
 //  RASSERT(pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol));
 
   vDebugPoint();

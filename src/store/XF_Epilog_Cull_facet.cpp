@@ -75,28 +75,50 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
     Card_Term* p_term = _pCard_Term(pCard);
     Symbol* pSym_term = p_term->pSymbol();
 
-    if (pCI->pAncestorFind(CK_o_KEYEXISTS)) {
-      //pCI->vAncestorDump();
-      if (pSym_term->bIs_Col()) {
-        if (pSym_term->bHasFacet(SF_IDX_COL)) {
-          pSym_term->vCullFacet(SF_IDX_COL);
-        }
-        else
-        if (pSym_term->bHasFacet(SF_EXP_COL)) {
+    if (pCI->pAncestorFind(CK_s_INJECTABLE)) {
+      return true;
+    }
+
+    if (pCI->pAncestorFind(CK_o_KEYEXISTS) || pCI->pAncestorFind(CK_o_KEYNOTEXISTS)) {
+      if (pCI->pAncestorFind(CK_s_CONSTRAINT)) {
+        if (pSym_term->bIs_Col()) {
+          if (pSym_term->bHasFacet(SF_EXP_COL)) {
             pSym_term->vCullFacet(SF_EXP_COL);
+          }
+          else
+          if (pSym_term->bHasFacet(SF_NMD_COL)) {
+            pSym_term->vDump();
+            pSym_term->vCullFacet(SF_NMD_COL);
+            vDebugPoint();
+          }
+          else {
+            pSym_term->vDump();
+            vDebugPoint();
+          }
         }
-        else {
-          //pSym_term->vDump();
+        RASSERT(1 == pSym_term->nFacets());
+        return true;
+      }
+      else {
+        if (pSym_term->bIs_Col()) {
+          if (pSym_term->bHasFacet(SF_IDX_COL)) {
+            pSym_term->vCullFacet(SF_IDX_COL);
+          }
+          else if (pSym_term->bHasFacet(SF_EXP_COL)) {
+            pSym_term->vCullFacet(SF_EXP_COL);
+          }
+          else {
+            pCI->vAncestorDump();
+            pSym_term->vDump();
+            vDebugPoint();
+          }
+          vDebugPoint();
         }
-        vDebugPoint();
       }
       return true;
     };
 
-    if (pCI->pAncestorFind(CK_o_KEYNOTEXISTS)) {
 
-      return true;
-    };
 
     //p_term->pSymbol()->vCullFacet(SF_TBL_COL);
 
