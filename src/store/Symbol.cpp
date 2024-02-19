@@ -1581,6 +1581,7 @@ Stz* Symbol::szFacet_term(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(1 == nFacets());
   RASSERT(bIs_term(&xaFacet[0]));
 
   return xaFacet[0].m_sChrSeq;
