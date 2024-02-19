@@ -37,8 +37,7 @@ namespace STORE
     Card_Expr* pFind_expr_Matches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
 
     Card_Expr* pGet_expr(i8 i_Expr);
-    Card_Expr* pGet_expr(Symbol* pSymbol_ordinal);
-    
+
     void vRenumberAll_expr(void);
 
     bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);

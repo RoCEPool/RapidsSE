@@ -245,20 +245,6 @@ Card_Expr* Card_EXPRLIST::pGet_expr(i8 i_Expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get expr relating to term                                                  */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pGet_expr(Symbol* pSymbol_ordinal)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 i_Child  = pSymbol_ordinal->iTo_ordinal() - 1;
-
-  Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Child));
-
-  return p_expr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */
 /*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vRenumberAll_expr(void)

@@ -154,7 +154,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_KEY_COL)) {
         RASSERT(pCI->G.p_streamKey);
 
-        Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(xCI_rpnCalc.p_term()->pSymbol());
+        i8 i_Child  = xCI_rpnCalc.p_term()->pSymbol()->iTo_ordinal(SF_KEY_COL) - 1;
+        Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(i_Child);
         Symbol* pSymbol_tblCol = p_expr_key->pFirst_tblCol();
 
 
