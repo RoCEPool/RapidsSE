@@ -25,6 +25,8 @@ namespace STORE
     b8     m_bTypeNullable;
   };
 
+  class CardIter;
+
   class Symbol : public Object
   {
   private:
@@ -129,7 +131,8 @@ namespace STORE
     void vCastReset(void);
     void vCastFacets(Symbol* pSymbol_arg);
     void vCastFacetsPpy(Symbol* pSymbol_arg);
-    void vCullFacet(eSF eExcept);
+    void vCullFacet(eSF eFacet_except);
+
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vDump(Stz* szTitle=""_Stz);

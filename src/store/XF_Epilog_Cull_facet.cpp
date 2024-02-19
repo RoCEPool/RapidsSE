@@ -70,9 +70,10 @@ void XF_Epilog_Cull_facet::vCullLoop(void)
 
   auto bLambdaFn = [pCI](Card* pCard)
   {
-    Card_Term* p_term = _pCard_Term(pCard);
-
-    p_term->vX_Cull_facet(pCI);
+    UNUSED(pCI);
+    UNUSED(pCard);
+    //Card_Term* p_term = _pCard_Term(pCard);
+    //p_term->pSymbol()->vCullFacet(SF_TBL_COL);
 
     return true;
   };

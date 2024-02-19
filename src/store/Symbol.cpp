@@ -1352,20 +1352,20 @@ void Symbol::vCastFacetsPpy(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* cull facet except for given arg                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vCullFacet(eSF eExcept)
+void Symbol::vCullFacet(eSF eFacet_except)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   i8 i_Facet = 0;
   while (i_Facet < nFacets()) {
-    if (eExcept == eFacet(i_Facet)) {
+    eSF eFacet_this = eFacet(i_Facet);
 
+    if (eFacet_except == eFacet_this) {
       i_Facet++;
+      continue;
     }
-    else {
 
-      i_Facet++;
-    }
+    vDeleteFacet(eFacet_this);
   }
 }
 
