@@ -64,14 +64,22 @@ void XF_Epilog_Cull_facet::vCullLoop(void)
 
   m_pCI->vTransform(__func__, XF_EPILOG_CULL_FACET, "cull facet"_Stz);
 
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    vCull_facet();
+  CardIter* pCI = m_pCI;
 
-//    m_pCI->vPrintBoard(__func__,__LINE__);
-    vDebugPoint();
-  }
+  auto bLambdaFn = [pCI](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+
+    p_term->vX_Cull_facet(pCI);
+
+    return true;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->bApplyRecursive(pCI->G.pDeck,CK_TERM,bLambdaFn);
 
   m_pCI->vEndTransform(__LINE__);
 }
