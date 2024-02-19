@@ -2112,12 +2112,7 @@ i8 Symbol::iTo_ordinal(eSF eFacet)
 
   RASSERT(bHasFacets());
 
-  i8 i_Ordinal;
-
-  if (SF_NONE == eFacet)
-    i_Ordinal = StrLib::iGleanInt(szFacet(0)->azChar());
-  else
-    i_Ordinal = StrLib::iGleanInt(szFacet(eFacet)->azChar());
+  i8 i_Ordinal = StrLib::iGleanInt(szFacet(eFacet)->azChar());
 
   return i_Ordinal;
 }

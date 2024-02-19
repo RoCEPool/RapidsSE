@@ -579,7 +579,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
       //p_expr_e->vDump(__func__);
 
       // get details of emitted column
-      i8 i_StructCell_e = p_expr_e->pSymbol()->iTo_ordinal() - 1;
+      i8 i_StructCell_e = p_expr_e->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
 
       // add descriptor
       pColInj->vAdd(i_CrwCol_expr_i,
@@ -701,8 +701,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         return C_CONTINUE_RECURSION;
       }
 
-      i_CellIn  = p_expr_a->pSymbol()->iTo_ordinal() - 1;
-      i_CellOut = p_expr_e->pSymbol()->iTo_ordinal() - 1;
+      i_CellIn  = p_expr_a->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
+      i_CellOut = p_expr_e->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
 
       pSym_Out_e = p_expr_e->pGet_term0()->pSymbol();
 
@@ -728,8 +728,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
 //          p_expr_e->vDump(__func__,"--EXPR EMITTED at SubCard--"_Stz);
 
-        pColPpg->vAdd(pSym_expr_a->iTo_ordinal() - 1,
-                      p_expr_e->pSymbol()->iTo_ordinal() - 1,
+        pColPpg->vAdd(pSym_expr_a->iTo_ordinal(SF_EXP_COL) - 1,
+                      p_expr_e->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1,
                       p_expr_e->szFacet(SF_EXP_COL),
                       pSym_expr_a->szFacet(SF_EXP_COL),
                       p_expr_e->szFacet(SF_EXP_COL));
@@ -763,8 +763,8 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
     if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Matches(xKey.p_expr()->pSymbol()))) {
       //m_pCI->G.p_expr->vDump(__func__, "EMIT EXPR"_Stz);
 
-      i8 i_EmittedCol = m_pCI->G.p_expr->pSymbol()->iTo_ordinal() - 1;
-      i8 i_Cell = xKey.p_expr()->pSymbol()->iTo_ordinal() - 1;
+      i8 i_EmittedCol = m_pCI->G.p_expr->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
+      i8 i_Cell = xKey.p_expr()->pSymbol()->iTo_ordinal(SF_KEY_COL) - 1;
       m_pOpDef->m_pKeyMap->vAdd(i_EmittedCol,i_Cell);
     }
     else

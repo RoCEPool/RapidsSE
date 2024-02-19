@@ -188,7 +188,7 @@ namespace STORE
 
     char   cTblSyn(void);
     i8     iTo_integer(void);
-    i8     iTo_ordinal(eSF eFacet=SF_NONE);
+    i8     iTo_ordinal(eSF eFacet);
     TypeId xTypeId(void);
     i8     nTypeLength(void);
     bool   bTypeNullable(void);
