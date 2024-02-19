@@ -113,15 +113,29 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
             vDebugPoint();
           }
           vDebugPoint();
+          RASSERT(1 == pSym_term->nFacets());
         }
       }
+      RASSERT(1 == pSym_term->nFacets());
       return true;
     };
 
 
+    if (pSym_term->bHasFacet(SF_ITM_COL))
+      pSym_term->vCullFacet(SF_ITM_COL);
+    else
+    if (pSym_term->bHasFacet(SF_KEY_COL))
+      pSym_term->vCullFacet(SF_KEY_COL);
+    else
+    if (pSym_term->bHasFacet(SF_EXP_COL))
+      pSym_term->vCullFacet(SF_EXP_COL);
 
-    //p_term->pSymbol()->vCullFacet(SF_TBL_COL);
+    if (pSym_term->nFacets() > 1) {
+      pSym_term->vDump();
+      vDebugPoint();
+    }
 
+    RASSERT(1 == pSym_term->nFacets());
     return true;
   };
 
