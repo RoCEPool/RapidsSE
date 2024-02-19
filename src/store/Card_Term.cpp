@@ -564,34 +564,36 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // can scalar expression of this symbol be found in ARRIVED ?
 
-  if (pCI->X.m_pExprList_a) {
-    //pCI->X.m_pExprList_a->vDump(__func__);
-    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_tblCol)) {
+  if (! pCI->X.m_pExprList_a)
+    return;
 
-      Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
-      pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
-      this->vMark1(MARK_CHANGED);
+  //pCI->X.m_pExprList_a->vDump(__func__);
+  if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_tblCol)) {
 
-      return;
+    Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
+    pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
+    this->vMark1(MARK_CHANGED);
+
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (! pSymbol_this->bHasFacet(SF_NMD_COL))
+    return;
+
+  Symbol xSym_nmdCol;
+  xSym_nmdCol.vApplyFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
+
+  if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_nmdCol)) {
+    Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
+    pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
+    this->vMark1(MARK_CHANGED);
+    if (pCI->G.p_key && pCI->G.p_expr) {
+      if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
+        pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
     }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    if (pSymbol_this->bHasFacet(SF_NMD_COL)) {
-      Symbol xSym_nmdCol;
-      xSym_nmdCol.vApplyFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
-
-      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_nmdCol)) {
-        Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
-        pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
-        this->vMark1(MARK_CHANGED);
-        if (pCI->G.p_key && pCI->G.p_expr) {
-          if (! pCI->G.p_expr->pSymbol()->bHasFacet(SF_EXP_COL))
-            pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,szStmCol_expr_a);
-        }
-        return;
-      }
-    }
+    return;
   }
 
   // not converted
