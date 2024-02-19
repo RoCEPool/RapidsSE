@@ -2788,6 +2788,28 @@ void Symbol::vFacet_EndIf(Stz* szEndIf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given column number                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Exp_Col(i8 iExpCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (m_nFacets) {
+    eSF eFacet = this->eFacet(0);
+    RASSERT(SF_SQY_RSL == eFacet ||
+            SF_EXP_COL == eFacet ||
+            SF_NMD_COL == eFacet ||
+            SF_TBL_COL == eFacet ||
+            SF_KEY_COL == eFacet);
+  }
+
+  vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
+  vRotateFacet(SF_EXP_COL);
+
+  RASSERT(bHasFacet(SF_EXP_COL));
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given expr column number                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Exp_Col(Stz* szExpCol)
@@ -3159,7 +3181,7 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
   RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vSetFacet(SF_RLN_OP,szRlnOp);
-  vRotateFacet(SF_RLN_OP);
+  //vRotateFacet(SF_RLN_OP);
 
   RASSERT(bHasFacet(SF_RLN_OP));
 }
@@ -3214,7 +3236,7 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
   RASSERT(0 == nFacets() || SF_SQY_OP == eFacet(0));
 
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
-  vRotateFacet(SF_SQY_OP);
+  //vRotateFacet(SF_SQY_OP);
 
   RASSERT(bHasFacet(SF_SQY_OP));
 }
@@ -3257,7 +3279,7 @@ void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
   //RASSERT(! bHasFacets());
 
   vFacetSprint(SF_SQY_RSL, "$R%lld"_Stz, iOrdinal);
-  vRotateFacet(SF_SQY_RSL);
+  //vRotateFacet(SF_SQY_RSL);
 
   RASSERT(bHasFacet(SF_SQY_RSL));
 }
@@ -3272,7 +3294,7 @@ void Symbol::vFacet_Sqy_Rsl(Stz* szSqyRsl)
   //RASSERT(! bHasFacets());
 
   vSetFacet(SF_SQY_RSL, szSqyRsl);
-  vRotateFacet(SF_SQY_RSL);
+  //vRotateFacet(SF_SQY_RSL);
 
   RASSERT(bHasFacet(SF_SQY_RSL));
 }
@@ -3303,28 +3325,6 @@ void Symbol::vFacet_Stg_Nm(i8 iStgNo)
   vFacetSprint(SF_STG_NO,"S%02lld"_Stz, iStgNo);
 
   RASSERT(bHasFacet(SF_STG_NO));
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given column number                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Exp_Col(i8 iExpCol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (m_nFacets) {
-    eSF eFacet = this->eFacet(0);
-    RASSERT(SF_SQY_RSL == eFacet ||
-            SF_EXP_COL == eFacet ||
-            SF_NMD_COL == eFacet ||
-            SF_TBL_COL == eFacet ||
-            SF_KEY_COL == eFacet);
-  }
-
-  vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
-  vRotateFacet(SF_EXP_COL);
-
-  RASSERT(bHasFacet(SF_EXP_COL));
 }
 
 /*----------------------------------------------------------------------------*/
