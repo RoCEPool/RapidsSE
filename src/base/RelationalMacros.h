@@ -43,33 +43,7 @@ static inline void vRoundBcd(i8** ppaW)
   vRoundBcdCheckRoundUp(ppaW, NULL); // can't use nullptr when compiled as a C program
 }
 
-// rescale BCD to max scale of the two bcd's
-// TODO: CHECK FOR OVERFLOW !!!
-static inline void vRescaleBcdMaxOfTwo(i8** ppaW, struct Dynamic_T* aDynamicT)
-{
-  union Bcd_T bcdReScale1;
-  union Bcd_T bcdReScale2;
-  i8 iScaleDiff;
-
-  bcdReScale2.m_iAsI8 = *(--(*ppaW));
-  bcdReScale1.m_iAsI8 = *(--(*ppaW));
-  iScaleDiff = (i8) bcdReScale1.m_uScale - (i8) bcdReScale2.m_uScale;
-
-  if (iScaleDiff > 0) {
-    bcdReScale2.m_uScale = bcdReScale1.m_uScale;
-    bcdReScale2.m_iMantissa = bcdReScale2.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];
-  }
-  else {
-    bcdReScale1.m_uScale = bcdReScale2.m_uScale;
-    bcdReScale1.m_iMantissa = bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[-iScaleDiff];
-  }
-
-  *(*ppaW)++ = bcdReScale1.m_iAsI8;
-  *(*ppaW)++ = bcdReScale2.m_iAsI8;
-}
-
-
-// Rescale a BCD on the stack to a given scale
+// Rescale a BCD on the stack to a given scale. Checks for overflows
 static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iScale, i1* piWasRoundedUp)
 {
   union Bcd_T bcdReScale1;
@@ -149,6 +123,126 @@ static inline void vRescaleBcdToPrecisionScale(i8** ppaW, struct Dynamic_T* aDyn
   return;
 }
 
+// Accept two decimals and rescale the one with the smaller scale to the same
+// scale as the other. Put both decimals back on stack. May give an out of bounds error.
+// TODO: This should be removed as it will likely overflow one of the values
+static inline void vRescaleBcdMaxOfTwo(i8** ppaW, struct Dynamic_T* aDynamicT) {
+  union Bcd_T bcdArg1;
+  union Bcd_T bcdArg2;
+  i8 iScaleDiff;
+
+  bcdArg2.m_iAsI8 = *(--(*ppaW));
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (bcdArg1.m_uScale == bcdArg2.m_uScale) {
+    // Nothing to do
+    *(*ppaW)++ = bcdArg1.m_iAsI8;
+    *(*ppaW)++ = bcdArg2.m_iAsI8;
+    return;
+
+  } else if (bcdArg1.m_uScale > bcdArg2.m_uScale) {
+    // Rescale bcdArg2 to a larger scale
+    *(*ppaW)++ = bcdArg2.m_iAsI8;
+    vRescaleBcdToScale(ppaW, aDynamicT, (i8) bcdArg1.m_uScale, NULL);
+    bcdArg2.m_iAsI8 = *(--(*ppaW));
+
+  } else {
+    *(*ppaW)++ = bcdArg1.m_iAsI8;
+    vRescaleBcdToScale(ppaW, aDynamicT, (i8) bcdArg2.m_uScale, NULL);
+    bcdArg1.m_iAsI8 = *(--(*ppaW));
+  }
+
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+}
+
+
+// Note on comparing decimals:
+// ---------------------------
+// It is not possible to just rescale both decimals to a common scale
+// and then compare their mantissas, as either decimal operand may overflow
+// during the rescaling. We need to compare them without running the risk
+// of them overflowing.
+//
+// The solution here is to do a two part comparison, where we know that each
+// part won't overflow.
+//
+// First we extract out the integral (whole integer) portion of each number
+// and compare them as integers. This works because SE's BCD implementation
+// doesn't accept negative scale and the BCD mantissa is smaller than a
+// 64 bit integer.
+//
+// Secondly, if both integral portions are equal then we extract out the
+// fractional part and raise each to the maximum scale before they are also
+// compared as integers.
+//
+// We then return -1, 0 or 1 depending on whether arg1 is smaller, both
+// arguments are equal, or arg2 is smaller.
+//
+// Note: BCD arguments cannot be NULL.
+static inline i8 iCompareBcds(i8** ppaW, struct Dynamic_T* aDynamicT)
+{
+  union Bcd_T bcdArg1;
+  union Bcd_T bcdArg2;
+  union Bcd_T bcdTmp1;
+  union Bcd_T bcdTmp2;
+
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+  bcdArg2.m_iAsI8 = *(--(*ppaW));
+
+  i8 iIntegral1;
+  i8 iIntegral2;
+  i8 iFractional1;
+  i8 iFractional2;
+  i1 bRoundedUp = false;
+
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, 0, &bRoundedUp);
+  bcdTmp1.m_iAsI8 = *(--(*ppaW));
+  iIntegral1 = bcdTmp1.m_iMantissa - (bRoundedUp ? 1 : 0);
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, 0, &bRoundedUp);
+  bcdTmp2.m_iAsI8 = *(--(*ppaW));
+  iIntegral2 = bcdTmp2.m_iMantissa - (bRoundedUp ? 1 : 0);
+
+  if (iIntegral1 != iIntegral2) {
+    return (iIntegral1 < iIntegral2 ? -1 : 1);
+  }
+
+  // Integral parts are equal, so extract the fractional parts and compare.
+  bcdTmp1.m_iAsI8 = bcdArg1.m_iAsI8;
+  bcdTmp2.m_iAsI8 = bcdArg2.m_iAsI8;
+
+  // Convert the integral parts into the same scale as their corresponding
+  // decimals so we can then subtract them from their mantissas to leave
+  // the fractional components.
+  iIntegral1 *= aDynamicT->m_iaPow10[bcdTmp1.m_uScale];
+  iIntegral2 *= aDynamicT->m_iaPow10[bcdTmp2.m_uScale];
+
+  iFractional1 = bcdTmp1.m_iMantissa - iIntegral1;
+  iFractional2 = bcdTmp2.m_iMantissa - iIntegral2;
+
+  // Put these fractional values back into the BCDs as mantissas. Then
+  // we can rescale them to the maximum scale before we compare them.
+  bcdTmp1.m_iMantissa = iFractional1;
+  bcdTmp2.m_iMantissa = iFractional2;
+
+  *(*ppaW)++ = bcdTmp1.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, C_MAX_BCD_SCALE, NULL);
+  bcdTmp1.m_iAsI8 = *(--(*ppaW));
+
+  *(*ppaW)++ = bcdTmp2.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, C_MAX_BCD_SCALE, NULL);
+  bcdTmp2.m_iAsI8 = *(--(*ppaW));
+
+  if (bcdTmp1.m_iMantissa == bcdTmp2.m_iMantissa) {
+    return 0;
+  }
+
+  return (bcdTmp2.m_iMantissa < bcdTmp1.m_iMantissa ? -1 : 1);
+}
+
 
 static inline void _EQ_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
@@ -157,27 +251,20 @@ static inline void _EQ_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||
       bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
-
-  } else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
-
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = 0;
-    } else {
-      *(*ppaW)++ = bcdArg2.m_iMantissa == bcdArg1.m_iMantissa;
-    }
+    return;
   }
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  i8 iCmp = iCompareBcds(ppaW, aDynamicT);
+  *(*ppaW)++ = (iCmp == 0);
 }
+
 
 static inline void _GE_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
@@ -186,26 +273,18 @@ static inline void _GE_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||
       bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
-
-  } else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
-
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = 0;
-    } else {
-      *(*ppaW)++ = bcdArg2.m_iMantissa >= bcdArg1.m_iMantissa;
-    }
+    return;
   }
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  i8 iCmp = iCompareBcds(ppaW, aDynamicT);
+  *(*ppaW)++ = (iCmp >= 0);
 }
 
 static inline void _GT_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -215,26 +294,18 @@ static inline void _GT_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||
       bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
-
-  } else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
-
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = 0;
-    } else {
-      *(*ppaW)++ = bcdArg2.m_iMantissa > bcdArg1.m_iMantissa;
-    }
+    return;
   }
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  i8 iCmp = iCompareBcds(ppaW, aDynamicT);
+  *(*ppaW)++ = (iCmp >= 0);
 }
 
 static inline void _GTA_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -244,30 +315,24 @@ static inline void _GTA_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
   else if (bcdArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = 1;
+    return;
   }
   else if (bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = 0;
+    return;
   }
-  else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
 
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = 0;
-    } else {
-      *(*ppaW)++ = bcdArg2.m_iMantissa > bcdArg1.m_iMantissa;
-    }
-  }
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  i8 iCmp = iCompareBcds(ppaW, aDynamicT);
+  *(*ppaW)++ = (iCmp > 0);
 }
 
 static inline void _LE_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -277,26 +342,18 @@ static inline void _LE_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||
       bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
-
-  } else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
-
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = 0;
-    } else {
-      *(*ppaW)++ = bcdArg2.m_iMantissa <= bcdArg1.m_iMantissa;
-    }
+    return;
   }
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  i8 iCmp = iCompareBcds(ppaW, aDynamicT);
+  *(*ppaW)++ = (iCmp <= 0);
 }
 
 static inline void _LT_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -306,26 +363,18 @@ static inline void _LT_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||
       bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
-
-  } else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
-
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = 0;
-    } else {
-      *(*ppaW)++ = bcdArg2.m_iMantissa < bcdArg1.m_iMantissa;
-    }
+    return;
   }
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  i8 iCmp = iCompareBcds(ppaW, aDynamicT);
+  *(*ppaW)++ = (iCmp < 0);
 }
 
 static inline void _LTA_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -335,30 +384,24 @@ static inline void _LTA_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
   else if (bcdArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = 1;
+    return;
   }
   else if (bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = 0;
+    return;
   }
-  else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
 
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = 0;
-    } else {
-      *(*ppaW)++ = bcdArg2.m_iMantissa < bcdArg1.m_iMantissa;
-    }
-  }
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  i8 iCmp = iCompareBcds(ppaW, aDynamicT);
+  *(*ppaW)++ = (iCmp < 0);
 }
 
 static inline void _NE_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -368,25 +411,18 @@ static inline void _NE_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||
       bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
-  } else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
-
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = 0;
-    } else {
-      *(*ppaW)++ = bcdArg2.m_iMantissa != bcdArg1.m_iMantissa;
-    }
+    return;
   }
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  i8 iCmp = iCompareBcds(ppaW, aDynamicT);
+  *(*ppaW)++ = (iCmp != 0);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
