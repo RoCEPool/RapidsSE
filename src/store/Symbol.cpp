@@ -1786,7 +1786,7 @@ bool Symbol::bIs_Lit(void)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
+bool Symbol::bMatches(eSF eFacet_arg, Stz* szFacet_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1794,7 +1794,7 @@ bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
   if (!aFacet_this)
     return false;
 
-  if (aFacet_this->m_sChrSeq.bSame(szChrSeq_arg))
+  if (aFacet_this->m_sChrSeq.bSame(szFacet_arg))
     return true;
 
   return false;
@@ -1974,11 +1974,11 @@ void Symbol::vSetFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* set facet                                                                  */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetFacet(Facet* aFacet_arg)
+void Symbol::vSetFacet(Facet* aFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
+  vSetFacet(aFacet->m_eFacet, aFacet->m_sChrSeq);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3326,13 +3326,13 @@ void Symbol::vFacet_Str_Fn(Stz* szBolFn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given string                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Str_Lit(Stz* szString)
+void Symbol::vFacet_Str_Lit(Stz* szStrLit)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(! bHasFacets());
 
-  vSetFacet(SF_STR_LIT,szString);
+  vSetFacet(SF_STR_LIT, szStrLit);
 
   RASSERT(bHasFacet(SF_STR_LIT));
 }
@@ -3565,19 +3565,6 @@ void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
   va_end(xArgs);
 
   vSetFacet(eFacet, sFacet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint facet                                                               */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacetSprint(String* pString, Stz* szFormat, ...)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  pString->vSprint(szFormat, xArgs);
-  va_end(xArgs);
 }
 
 /*============================================================================*/
