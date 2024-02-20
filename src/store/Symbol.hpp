@@ -15,7 +15,7 @@ namespace STORE
 {
   struct Facet {
     eSF  m_eFacet;
-    s256 m_sChrSeq;
+    s256 m_sFacet;
   };
 
   struct Cast {
@@ -32,11 +32,9 @@ namespace STORE
   private:
     static const i8 C_FACETS = 6;
 
-    i8 m_nFacets;
+    i8    m_nFacets;
     Facet xaFacet[C_FACETS];
-
-    Cast m_xCast;
-
+    Cast  m_xCast;
     TagSet* m_pProperties;
 
   protected:
@@ -99,7 +97,7 @@ namespace STORE
     static bool bIs_Stg_Cast(Stz* szArg);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szArg);          // Sn
     static bool bIs_Str_Fn(Stz* szArg);          // SUBSTRING2 ... SUBSTRING3
-    static bool bIs_String(Stz* szArg);          // 'abc'
+    static bool bIs_Str_Lit(Stz* szArg);          // 'abc'
     static bool bIs_Tbl_Col(Stz* szArg);         // $c.n
     static bool bIs_Tbl_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szArg);         // $c

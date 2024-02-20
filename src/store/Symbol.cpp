@@ -58,7 +58,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
+Symbol::Symbol(eSF eFacet, Stz* szArg)
     : Object(CN_SYMBOL)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -69,7 +69,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vApplyFacet(eFacet, szChrSeq);
+  vApplyFacet(eFacet, szArg);
 
   RASSERT(bHasFacets());
 
@@ -167,7 +167,7 @@ eSF Symbol::eEval_facet(Stz* szArg)
   if (bIs_Stg_Cast(szArg))     return SF_STG_CAST;
   if (bIs_Exp_Col(szArg))      return SF_EXP_COL;
   if (bIs_Str_Fn(szArg))       return SF_STR_FN;
-  if (bIs_String(szArg))       return SF_STR_LIT;
+  if (bIs_Str_Lit(szArg))       return SF_STR_LIT;
   if (bIs_Tbl_Col(szArg))      return SF_TBL_COL;
   if (bIs_Then(szArg))         return SF_THEN;
   if (bIs_Type(szArg))         return SF_TYPE;
@@ -194,7 +194,7 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol an aggregate function?                                      */
+/* is given arg an aggregate function?                                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Agg_Fn(Stz* szArg)
 {
@@ -212,7 +212,7 @@ bool Symbol::bIs_Agg_Fn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol AS?                                                         */
+/* is given arg AS?                                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_As(Stz* szArg)
 {
@@ -224,7 +224,7 @@ bool Symbol::bIs_As(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a boolean function?                                         */
+/* is given arg a boolean function?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bol_Fn(Stz* szArg)
 {
@@ -244,7 +244,7 @@ bool Symbol::bIs_Bol_Fn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a boolean literal?                                          */
+/* is given arg a boolean literal?                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bol_Lit(Stz* szArg)
 {
@@ -257,7 +257,7 @@ bool Symbol::bIs_Bol_Lit(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a boolean operator?                                         */
+/* is given arg a boolean operator?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bol_Op(Stz* szArg)
 {
@@ -271,7 +271,7 @@ bool Symbol::bIs_Bol_Op(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a bound?                                                    */
+/* is given arg a bound?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bound(Stz* szArg)
 {
@@ -285,7 +285,7 @@ bool Symbol::bIs_Bound(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
+/* is given arg a brace?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Brace(Stz* szArg)
 {
@@ -298,7 +298,7 @@ bool Symbol::bIs_Brace(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol CASE?                                                       */
+/* is given arg CASE?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Case(Stz* szArg)
 {
@@ -310,7 +310,7 @@ bool Symbol::bIs_Case(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol CAST?                                                       */
+/* is given arg CAST?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Cast(Stz* szArg)
 {
@@ -322,7 +322,7 @@ bool Symbol::bIs_Cast(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol CASTTYPE?                                                   */
+/* is given arg CASTTYPE?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_CastType(Stz* szArg)
 {
@@ -334,7 +334,7 @@ bool Symbol::bIs_CastType(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a sort direction?                                           */
+/* is given arg a column type?                                                */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Type(Stz* szArg)
 {
@@ -355,7 +355,7 @@ bool Symbol::bIs_Col_Type(Stz* szArg)
 
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
+/* is given arg a comma?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Comma(Stz* szArg)
 {
@@ -368,7 +368,7 @@ bool Symbol::bIs_Comma(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
+/* is given arg a CROSS / LEFTOUTER?                                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Cross(Stz* szArg)
 {
@@ -393,7 +393,7 @@ bool Symbol::bIs_Dcm_Lit(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a sort direction?                                           */
+/* is given arg a sort direction?                                             */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Direction(Stz* szArg)
 {
@@ -406,7 +406,7 @@ bool Symbol::bIs_Direction(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol ELSE?                                                       */
+/* is given arg ELSE?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Else(Stz* szArg)
 {
@@ -419,7 +419,7 @@ bool Symbol::bIs_Else(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol ENDIF                                                       */
+/* is given arg ENDIF                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_EndIf(Stz* szArg)
 {
@@ -432,7 +432,7 @@ bool Symbol::bIs_EndIf(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a expr-column?  (i.e. $n)                             */
+/* is given arg a expr-column?  (i.e. $n)                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Exp_Col(Stz* szArg)
 {
@@ -449,7 +449,7 @@ bool Symbol::bIs_Exp_Col(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a sort direction?                                           */
+/* is given arg a possible fold name?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Fld_Nm(Stz* szArg)
 {
@@ -460,7 +460,7 @@ bool Symbol::bIs_Fld_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a float literal?                                                   */
+/* is given arg a float literal?                                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Flt_Lit(Stz* szArg)
 {
@@ -472,7 +472,7 @@ bool Symbol::bIs_Flt_Lit(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol GROUPBY ?                                                   */
+/* is given arg GROUPBY ?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_GroupBy(Stz* szArg)
 {
@@ -484,7 +484,7 @@ bool Symbol::bIs_GroupBy(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for an index-column?  (i.e. $In)                          */
+/* is given arg an index-column?  (i.e. $In)                                  */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Idx_Col(Stz* szArg)
 {
@@ -505,7 +505,7 @@ bool Symbol::bIs_Idx_Col(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a index name?                                                      */
+/* is given arg a possible index name?                                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Idx_Nm(Stz* szArg)
 {
@@ -518,7 +518,7 @@ bool Symbol::bIs_Idx_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this an integer literal?                                                */
+/* is given arg an integer literal?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Int_Lit(Stz* szArg)
 {
@@ -530,7 +530,7 @@ bool Symbol::bIs_Int_Lit(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol INTERVAL_DT ?                                               */
+/* is given arg INTERVAL_DT ?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Interval_DT(Stz* szArg)
 {
@@ -542,7 +542,7 @@ bool Symbol::bIs_Interval_DT(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol INTERVAL_YM ?                                               */
+/* is given arg INTERVAL_YM ?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Interval_YM(Stz* szArg)
 {
@@ -554,7 +554,7 @@ bool Symbol::bIs_Interval_YM(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a column name?                                                     */
+/* is given arg a possible column name?                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Itm_Col(Stz* szArg)
 {
@@ -594,7 +594,7 @@ bool Symbol::bIs_Itm_Col(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol an interval function?                                       */
+/* is given arg an interval function?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Ivl_Fn(Stz* szArg)
 {
@@ -613,14 +613,14 @@ bool Symbol::bIs_Ivl_Fn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a list count  (i.e. #n)                               */
+/* is given arg a list count (i.e. #n)                                        */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_List_Cnt(Stz* szChrSeq)
+bool Symbol::bIs_List_Cnt(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szChrSeq->cChar(0);
-  char acSecond = szChrSeq->cChar(1);
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
 
   if ('#' == acFirst &&
       StrLib::bIsDigit(acSecond))
@@ -630,7 +630,7 @@ bool Symbol::bIs_List_Cnt(Stz* szChrSeq)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a key symbol? (i.e. $Kn)                              */
+/* is given arg a key column? (i.e. $Kn)                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Key_Col(Stz* szArg)
 {
@@ -651,7 +651,7 @@ bool Symbol::bIs_Key_Col(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a math operator ?                                           */
+/* is given arg a math operator ?                                             */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Mth_Op(Stz* szArg)
 {
@@ -667,7 +667,7 @@ bool Symbol::bIs_Mth_Op(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol NEGATE ?                                                    */
+/* is given arg NEGATE ?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Negate(Stz* szArg)
 {
@@ -680,47 +680,47 @@ bool Symbol::bIs_Negate(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a column name?                                                     */
+/* is given arg a possible named column?                                      */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Nmd_Col(Stz* szChrSeq)
+bool Symbol::bIs_Nmd_Col(Stz* szArg)
 {
   _static_
 
-  if (! bPossibleNm(szChrSeq))
+  if (! bPossibleNm(szArg))
     return false;
 
-  if (bIs_As(szChrSeq))          return false;
-  if (bIs_Bol_Fn(szChrSeq))      return false;
-  if (bIs_Bol_Lit(szChrSeq))     return false;
-  if (bIs_Bol_Op(szChrSeq))      return false;
-  if (bIs_Bound(szChrSeq))       return false;
-  if (bIs_Case(szChrSeq))        return false;
-  if (bIs_Cast(szChrSeq))        return false;
-  if (bIs_CastType(szChrSeq))    return false;
-  if (bIs_Col_Type(szChrSeq))    return false;
-  if (bIs_Cross(szChrSeq))       return false;
-  if (bIs_Direction(szChrSeq))   return false;
-  if (bIs_Else(szChrSeq))        return false;
-  if (bIs_EndIf(szChrSeq))       return false;
-  if (bIs_GroupBy(szChrSeq))     return false;
-  if (bIs_Interval_DT(szChrSeq)) return false;
-  if (bIs_Interval_YM(szChrSeq)) return false;
-  if (bIs_Ivl_Fn(szChrSeq))      return false;
-  if (bIs_Negate(szChrSeq))      return false;
-  if (bIs_Null(szChrSeq))        return false;
-  if (bIs_Sqy_No(szChrSeq))      return false;
-  if (bIs_Sqy_Op(szChrSeq))      return false;
-  if (bIs_Stg_Cast(szChrSeq))    return false;
-  if (bIs_Str_Fn(szChrSeq))      return false;
-  if (bIs_Then(szChrSeq))        return false;
-  if (bIs_Type(szChrSeq))        return false;
-  if (bIs_When(szChrSeq))        return false;
+  if (bIs_As(szArg))          return false;
+  if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Lit(szArg))     return false;
+  if (bIs_Bol_Op(szArg))      return false;
+  if (bIs_Bound(szArg))       return false;
+  if (bIs_Case(szArg))        return false;
+  if (bIs_Cast(szArg))        return false;
+  if (bIs_CastType(szArg))    return false;
+  if (bIs_Col_Type(szArg))    return false;
+  if (bIs_Cross(szArg))       return false;
+  if (bIs_Direction(szArg))   return false;
+  if (bIs_Else(szArg))        return false;
+  if (bIs_EndIf(szArg))       return false;
+  if (bIs_GroupBy(szArg))     return false;
+  if (bIs_Interval_DT(szArg)) return false;
+  if (bIs_Interval_YM(szArg)) return false;
+  if (bIs_Ivl_Fn(szArg))      return false;
+  if (bIs_Negate(szArg))      return false;
+  if (bIs_Null(szArg))        return false;
+  if (bIs_Sqy_No(szArg))      return false;
+  if (bIs_Sqy_Op(szArg))      return false;
+  if (bIs_Stg_Cast(szArg))    return false;
+  if (bIs_Str_Fn(szArg))      return false;
+  if (bIs_Then(szArg))        return false;
+  if (bIs_Type(szArg))        return false;
+  if (bIs_When(szArg))        return false;
 
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a note ?                                                    */
+/* is given arg a note ?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Note(Stz* szArg)
 {
@@ -731,7 +731,7 @@ bool Symbol::bIs_Note(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol NULL ?                                                      */
+/* is given arg NULL ?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Null(Stz* szArg)
 {
@@ -744,7 +744,7 @@ bool Symbol::bIs_Null(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a parenthesis?                                              */
+/* is given arg a parenthesis?                                                */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Parenthesis(Stz* szArg)
 {
@@ -757,7 +757,7 @@ bool Symbol::bIs_Parenthesis(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a relational-operator?                                      */
+/* is given arg a relational-operator?                                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Rln_Op(Stz* szArg)
 {
@@ -770,7 +770,7 @@ bool Symbol::bIs_Rln_Op(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a subquery name?                                            */
+/* is given arg a possible subquery name?                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Nm(Stz* szArg)
 {
@@ -783,7 +783,7 @@ bool Symbol::bIs_Sqy_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is arg a $Qn like name?                                                    */
+/* is given arg a $Qn name?                                                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_No(Stz *szArg)
 {
@@ -805,7 +805,7 @@ bool Symbol::bIs_Sqy_No(Stz *szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-operator?                                  */
+/* is given arg a subQuery-operator?                                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Op(Stz* szArg)
 {
@@ -820,7 +820,7 @@ bool Symbol::bIs_Sqy_Op(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
+/* is given arg a subquery correlation-parameter?  (i.e. %n)                  */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Prm(Stz* szArg)
 {
@@ -840,7 +840,7 @@ bool Symbol::bIs_Sqy_Prm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-column?  (i.e. $Rn)                        */
+/* is given arg a subQuery result column?  (i.e. $Rn)                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
 {
@@ -861,7 +861,7 @@ bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a sort direction?                                           */
+/* is given arg a stage cast                                                  */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Stg_Cast(Stz* szArg)
 {
@@ -874,7 +874,7 @@ bool Symbol::bIs_Stg_Cast(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a stage name?                                                     */
+/* is given arg a stage name?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Stg_Nm(BASE::Stz *szArg)
 {
@@ -891,7 +891,7 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a string function?                                          */
+/* is given arg a string function?                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Str_Fn(Stz* szArg)
 {
@@ -904,9 +904,9 @@ bool Symbol::bIs_Str_Fn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $c.n)                            */
+/* is given arg a string literal                                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_String(Stz* szArg)
+bool Symbol::bIs_Str_Lit(Stz* szArg)
 {
   _static_
 
@@ -919,7 +919,7 @@ bool Symbol::bIs_String(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $$c.n)                           */
+/* is given arg a table-column (i.e. $$c.n)                                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Col(Stz* szArg)
 {
@@ -942,7 +942,7 @@ bool Symbol::bIs_Tbl_Col(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a column name?                                                     */
+/* is given arg a possible table name?                                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Nm(Stz* szArg)
 {
@@ -955,7 +955,7 @@ bool Symbol::bIs_Tbl_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol a table synonym?  (i.e. c)                                */
+/* is given arg a table synonym?                                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 {
@@ -976,7 +976,7 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol a table synonym?  (i.e. C)                               */
+/* is given arg a replicated table synonym?                                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
 {
@@ -997,7 +997,7 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol THEN?                                                       */
+/* is given arg THEN?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Then(Stz* szArg)
 {
@@ -1010,7 +1010,7 @@ bool Symbol::bIs_Then(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol TYPE?                                                       */
+/* is given arg TYPE?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Type(Stz* szArg)
 {
@@ -1023,7 +1023,7 @@ bool Symbol::bIs_Type(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
+/* is given arg WHEN?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_When(Stz* szArg)
 {
@@ -1036,7 +1036,7 @@ bool Symbol::bIs_When(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
+/* is given arg a XK cast?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Xk_Cast(Stz* szArg)
 {
@@ -1148,20 +1148,20 @@ bool Symbol::bIs_term(Facet* aFacet)
 /*----------------------------------------------------------------------------*/
 /* strip disambiguation                                                       */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bPossibleNm(Stz* szChrSeq)
+bool Symbol::bPossibleNm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szChrSeq->azChar()))
+  if (! StrLib::bIsSqlName(szArg->azChar()))
     return false;
 
-  if (ST_NONE != SketchTkn::eEvalSketch(szChrSeq))
+  if (ST_NONE != SketchTkn::eEvalSketch(szArg))
     return false;
 
-  if (bIs_Exp_Col(szChrSeq))  return false;
-  if (bIs_Tbl_Col(szChrSeq))  return false;
-  if (bIs_Sqy_Prm(szChrSeq))  return false;
-  if (bIs_Sqy_Rsl(szChrSeq))  return false;
+  if (bIs_Exp_Col(szArg))  return false;
+  if (bIs_Tbl_Col(szArg))  return false;
+  if (bIs_Sqy_Prm(szArg))  return false;
+  if (bIs_Sqy_Rsl(szArg))  return false;
 
   return true;
 }
@@ -1176,7 +1176,7 @@ bool Symbol::bSame(Facet* aFacet_a, Facet* aFacet_b)
   if (aFacet_a->m_eFacet != aFacet_b->m_eFacet)
     return false;
 
-  if (! aFacet_a->m_sChrSeq.bSame(aFacet_b->m_sChrSeq))
+  if (! aFacet_a->m_sFacet.bSame(aFacet_b->m_sFacet))
     return false;
 
   return true;
@@ -1226,67 +1226,67 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* apply facet                                                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vApplyFacet(eSF eFacet, Stz* szChrSeq)
+void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   switch (eFacet) {
 
-    case SF_AGG_FN:      vFacet_Agg_Fn(szChrSeq);      break;
-    case SF_AS:          vFacet_As(szChrSeq);          break;
-    case SF_BOL_FN:      vFacet_Bol_Fn(szChrSeq);      break;
-    case SF_BOL_LIT:     vFacet_Bol_Lit(szChrSeq);     break;
-    case SF_BOL_OP:      vFacet_Bol_Op(szChrSeq);      break;
-    case SF_BOUND:       vFacet_Bound(szChrSeq);       break;
-    case SF_BRACE:       vFacet_Brace(szChrSeq);       break;
-    case SF_CASE:        vFacet_Case(szChrSeq);        break;
-    case SF_CAST:        vFacet_Cast(szChrSeq);        break;
-    case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
-    case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
-    case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
-    case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
-    case SF_DCM_LIT:     vFacet_Dcm_Lit(szChrSeq);     break;
-    case SF_DIRECTION:   vFacet_Direction(szChrSeq);   break;
-    case SF_ELSE:        vFacet_Else(szChrSeq);        break;
-    case SF_ENDIF:       vFacet_EndIf(szChrSeq);       break;
-    case SF_EXP_COL:     vFacet_Exp_Col(szChrSeq);     break;
-    case SF_FLD_NM:      vFacet_Fld_Nm(szChrSeq);      break;
-    case SF_FLT_LIT:     vFacet_Flt_Lit(szChrSeq);     break;
-    case SF_GROUPBY:     vFacet_GroupBy(szChrSeq);     break;
-    case SF_IDX_COL:     vFacet_Idx_Col(szChrSeq);     break;
-    case SF_IDX_NM:      vFacet_Idx_Nm(szChrSeq);      break;
-    case SF_INT_LIT:     vFacet_Int_Lit(szChrSeq);     break;
-    case SF_ITM_COL:     vFacet_Itm_Col(szChrSeq);     break;
-    case SF_IVL_FN:      vFacet_Ivl_Fn(szChrSeq);      break;
-    case SF_INTERVAL_DT: vFacet_Interval_DT(szChrSeq); break;
-    case SF_INTERVAL_YM: vFacet_Interval_YM(szChrSeq); break;
-    case SF_KEY_COL:     vFacet_Key_Col(szChrSeq);     break;
-    case SF_LIST_CNT:    vFacet_List_Cnt(szChrSeq);    break;
-    case SF_MTH_OP:      vFacet_Mth_Op(szChrSeq);      break;
-    case SF_NEGATE:      vFacet_Negate(szChrSeq);      break;
-    case SF_NMD_COL:     vFacet_Nmd_Col(szChrSeq);     break;
-    case SF_NOTE:        vFacet_Note(szChrSeq);        break;
-    case SF_NULL:        vFacet_Null(szChrSeq);        break;
-    case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
-    case SF_SQY_NM:      vFacet_Sqy_Nm(szChrSeq);      break;
-    case SF_SQY_NO:      vFacet_Sqy_No(szChrSeq);      break;
-    case SF_SQY_PRM:     vFacet_Sqy_Prm(szChrSeq);     break;
-    case SF_SQY_RSL:     vFacet_Sqy_Rsl(szChrSeq);     break;
-    case SF_RLN_OP:      vFacet_Rln_Op(szChrSeq);      break;
-    case SF_SQY_OP:      vFacet_Sqy_Op(szChrSeq);      break;
-    case SF_STG_CAST:    vFacet_Stg_Cast(szChrSeq);    break;
-    case SF_STR_FN:      vFacet_Str_Fn(szChrSeq);      break;
-    case SF_STR_LIT:     vFacet_Str_Lit(szChrSeq);     break;
-    case SF_TBL_COL:     vFacet_Tbl_Col(szChrSeq);     break;
-    case SF_TBL_NM:      vFacet_Tbl_Nm(szChrSeq);      break;
-    case SF_TBL_SYN:     vFacet_Tbl_Syn(szChrSeq);     break;
-    case SF_TBL_SYN_rep: vFacet_Tbl_Syn_rep(szChrSeq); break;
-    case SF_THEN:        vFacet_Then(szChrSeq);        break;
-    case SF_TYPE:        vFacet_Type(szChrSeq);        break;
-    case SF_WHEN:        vFacet_When(szChrSeq);        break;
-    case SF_XK_CAST:     vFacet_Xk_Cast(szChrSeq);     break;
+    case SF_AGG_FN:      vFacet_Agg_Fn(szArg);      break;
+    case SF_AS:          vFacet_As(szArg);          break;
+    case SF_BOL_FN:      vFacet_Bol_Fn(szArg);      break;
+    case SF_BOL_LIT:     vFacet_Bol_Lit(szArg);     break;
+    case SF_BOL_OP:      vFacet_Bol_Op(szArg);      break;
+    case SF_BOUND:       vFacet_Bound(szArg);       break;
+    case SF_BRACE:       vFacet_Brace(szArg);       break;
+    case SF_CASE:        vFacet_Case(szArg);        break;
+    case SF_CAST:        vFacet_Cast(szArg);        break;
+    case SF_CASTTYPE:    vFacet_CastType(szArg);    break;
+    case SF_COL_TYPE:    vFacet_Col_Type(szArg);    break;
+    case SF_COMMA:       vFacet_Comma(szArg);       break;
+    case SF_CROSS:       vFacet_Cross(szArg);       break;
+    case SF_DCM_LIT:     vFacet_Dcm_Lit(szArg);     break;
+    case SF_DIRECTION:   vFacet_Direction(szArg);   break;
+    case SF_ELSE:        vFacet_Else(szArg);        break;
+    case SF_ENDIF:       vFacet_EndIf(szArg);       break;
+    case SF_EXP_COL:     vFacet_Exp_Col(szArg);     break;
+    case SF_FLD_NM:      vFacet_Fld_Nm(szArg);      break;
+    case SF_FLT_LIT:     vFacet_Flt_Lit(szArg);     break;
+    case SF_GROUPBY:     vFacet_GroupBy(szArg);     break;
+    case SF_IDX_COL:     vFacet_Idx_Col(szArg);     break;
+    case SF_IDX_NM:      vFacet_Idx_Nm(szArg);      break;
+    case SF_INT_LIT:     vFacet_Int_Lit(szArg);     break;
+    case SF_ITM_COL:     vFacet_Itm_Col(szArg);     break;
+    case SF_IVL_FN:      vFacet_Ivl_Fn(szArg);      break;
+    case SF_INTERVAL_DT: vFacet_Interval_DT(szArg); break;
+    case SF_INTERVAL_YM: vFacet_Interval_YM(szArg); break;
+    case SF_KEY_COL:     vFacet_Key_Col(szArg);     break;
+    case SF_LIST_CNT:    vFacet_List_Cnt(szArg);    break;
+    case SF_MTH_OP:      vFacet_Mth_Op(szArg);      break;
+    case SF_NEGATE:      vFacet_Negate(szArg);      break;
+    case SF_NMD_COL:     vFacet_Nmd_Col(szArg);     break;
+    case SF_NOTE:        vFacet_Note(szArg);        break;
+    case SF_NULL:        vFacet_Null(szArg);        break;
+    case SF_PARENTHESIS: vFacet_Parenthesis(szArg); break;
+    case SF_SQY_NM:      vFacet_Sqy_Nm(szArg);      break;
+    case SF_SQY_NO:      vFacet_Sqy_No(szArg);      break;
+    case SF_SQY_PRM:     vFacet_Sqy_Prm(szArg);     break;
+    case SF_SQY_RSL:     vFacet_Sqy_Rsl(szArg);     break;
+    case SF_RLN_OP:      vFacet_Rln_Op(szArg);      break;
+    case SF_SQY_OP:      vFacet_Sqy_Op(szArg);      break;
+    case SF_STG_CAST:    vFacet_Stg_Cast(szArg);    break;
+    case SF_STR_FN:      vFacet_Str_Fn(szArg);      break;
+    case SF_STR_LIT:     vFacet_Str_Lit(szArg);     break;
+    case SF_TBL_COL:     vFacet_Tbl_Col(szArg);     break;
+    case SF_TBL_NM:      vFacet_Tbl_Nm(szArg);      break;
+    case SF_TBL_SYN:     vFacet_Tbl_Syn(szArg);     break;
+    case SF_TBL_SYN_rep: vFacet_Tbl_Syn_rep(szArg); break;
+    case SF_THEN:        vFacet_Then(szArg);        break;
+    case SF_TYPE:        vFacet_Type(szArg);        break;
+    case SF_WHEN:        vFacet_When(szArg);        break;
+    case SF_XK_CAST:     vFacet_Xk_Cast(szArg);     break;
 
-    case SF_RW_AGGREGATES:  vFacet_Rw_Aggregates(szChrSeq);  break;
+    case SF_RW_AGGREGATES:  vFacet_Rw_Aggregates(szArg);  break;
 
     default: NEVER_REACH;
   }
@@ -1306,10 +1306,10 @@ void Symbol::vApplyFacets(Symbol* pSymbol_arg)
   for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
     Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
 
-    if (aFacet_arg->m_sChrSeq.bSame("%1"_Stz))
+    if (aFacet_arg->m_sFacet.bSame("%1"_Stz))
       vDebugPoint();
 
-    vApplyFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
+    vApplyFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sFacet);
   }
 }
 
@@ -1541,7 +1541,7 @@ Stz* Symbol::szFacet(eSF eFacet)
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (eFacet == xaFacet[i_Facet].m_eFacet)
-      return xaFacet[i_Facet].m_sChrSeq;
+      return xaFacet[i_Facet].m_sFacet;
   }
 
   return nullptr;
@@ -1555,7 +1555,7 @@ Stz* Symbol::szFacet(i8 i_Facet)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(i_Facet < nFacets());
-  return xaFacet[i_Facet].m_sChrSeq;
+  return xaFacet[i_Facet].m_sFacet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1567,7 +1567,7 @@ Stz* Symbol::szFacet_bound(void)
 
   RASSERT(bIs_bound(&xaFacet[0]));
 
-  return xaFacet[0].m_sChrSeq;
+  return xaFacet[0].m_sFacet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1579,7 +1579,7 @@ Stz* Symbol::szFacet_rlnConj(void)
 
   RASSERT(bIs_rlnConj(&xaFacet[0]));
 
-  return xaFacet[0].m_sChrSeq;
+  return xaFacet[0].m_sFacet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1591,7 +1591,7 @@ Stz* Symbol::szFacet_single(void)
 
   RASSERT(1 == nFacets());
 
-  return xaFacet[0].m_sChrSeq;
+  return xaFacet[0].m_sFacet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1604,7 +1604,7 @@ Stz* Symbol::szFacet_term(void)
   RASSERT(1 == nFacets());
   RASSERT(bIs_term(&xaFacet[0]));
 
-  return xaFacet[0].m_sChrSeq;
+  return xaFacet[0].m_sFacet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1616,9 +1616,9 @@ i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (eFacet  == xaFacet[i_Facet].m_eFacet &&
-        '$'     == xaFacet[i_Facet].m_sChrSeq.cChar(0) &&
-        '$'     == xaFacet[i_Facet].m_sChrSeq.cChar(1) &&
-        cTblSyn == xaFacet[i_Facet].m_sChrSeq.cChar(2))
+        '$'     == xaFacet[i_Facet].m_sFacet.cChar(0) &&
+        '$'     == xaFacet[i_Facet].m_sFacet.cChar(1) &&
+        cTblSyn == xaFacet[i_Facet].m_sFacet.cChar(2))
       return i_Facet;
   }
   return C_UNKNOWN;
@@ -1648,7 +1648,7 @@ void Symbol::vFacets_To_String(String* pString)
       pString->vConcat(" "_Stz);
     pString->vCatSprint("%s %s~%lld"_Stz,
                         aSF[xaFacet[i_Facet].m_eFacet],
-                        xaFacet[i_Facet].m_sChrSeq.szStz(),
+                        xaFacet[i_Facet].m_sFacet.szStz(),
                         i_Facet);
   }
 
@@ -1670,7 +1670,7 @@ bool Symbol::bHasFacet(eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /* does symbol have given facet?                                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bHasFacet(eSF eFacet, Stz* szChrSeq)
+bool Symbol::bHasFacet(eSF eFacet, Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1680,7 +1680,7 @@ bool Symbol::bHasFacet(eSF eFacet, Stz* szChrSeq)
   if (C_UNKNOWN == i_Facet)
     return false;
 
-  if (szFacet(i_Facet)->bSame(szChrSeq))
+  if (szFacet(i_Facet)->bSame(szArg))
     return true;
 
   return false;
@@ -1689,12 +1689,12 @@ bool Symbol::bHasFacet(eSF eFacet, Stz* szChrSeq)
 /*----------------------------------------------------------------------------*/
 /* does symbol have given facet?                                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bHasFacet(Stz* szChrSeq)
+bool Symbol::bHasFacet(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    if (szFacet(i_Facet)->bSame(szChrSeq))
+    if (szFacet(i_Facet)->bSame(szArg))
       return true;
   }
 
@@ -1794,7 +1794,7 @@ bool Symbol::bMatches(eSF eFacet_arg, Stz* szFacet_arg)
   if (!aFacet_this)
     return false;
 
-  if (aFacet_this->m_sChrSeq.bSame(szFacet_arg))
+  if (aFacet_this->m_sFacet.bSame(szFacet_arg))
     return true;
 
   return false;
@@ -1815,10 +1815,10 @@ bool Symbol::bMatches(eSF eFacet, Symbol* pSymbol_arg)
   if (! aFacet_arg)
     return false;
 
-  Stz* szChrSeq_this = aFacet_this->m_sChrSeq;
-  Stz* szChrSeq_arg  = aFacet_arg->m_sChrSeq;
+  Stz* szArg_this = aFacet_this->m_sFacet;
+  Stz* szArg_arg  = aFacet_arg->m_sFacet;
 
-  if (szChrSeq_arg->bSame(szChrSeq_this))
+  if (szArg_arg->bSame(szArg_this))
     return true;
 
   return false;
@@ -1978,7 +1978,7 @@ void Symbol::vSetFacet(Facet* aFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vSetFacet(aFacet->m_eFacet, aFacet->m_sChrSeq);
+  vSetFacet(aFacet->m_eFacet, aFacet->m_sFacet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2008,7 +2008,7 @@ void Symbol::vSetFacets(Symbol* pSymbol_arg)
   for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
     Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
 
-    vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
+    vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sFacet);
   }
 }
 
@@ -2036,10 +2036,10 @@ char Symbol::cTblSyn(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Stz* szChrSeq = szFacet(SF_TBL_COL)) {
-    char acFirst  = szChrSeq->cChar(0);
-    char acSecond = szChrSeq->cChar(1);
-    char acThird  = szChrSeq->cChar(2);
+  if (Stz* szArg = szFacet(SF_TBL_COL)) {
+    char acFirst  = szArg->cChar(0);
+    char acSecond = szArg->cChar(1);
+    char acThird  = szArg->cChar(2);
 
     if ('$' == acFirst
         && '$' == acSecond
@@ -2051,10 +2051,10 @@ char Symbol::cTblSyn(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Stz* szChrSeq = szFacet(SF_TBL_SYN)) {
-    char acFirst  = szChrSeq->cChar(0);
-    char acSecond = szChrSeq->cChar(1);
-    char acThird  = szChrSeq->cChar(2);
+  if (Stz* szArg = szFacet(SF_TBL_SYN)) {
+    char acFirst  = szArg->cChar(0);
+    char acSecond = szArg->cChar(1);
+    char acThird  = szArg->cChar(2);
 
     if ('$' == acFirst
         && 'T' == acSecond
@@ -2066,10 +2066,10 @@ char Symbol::cTblSyn(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Stz* szChrSeq = szFacet(SF_TBL_SYN_rep)) {
-    char acFirst  = szChrSeq->cChar(0);
-    char acSecond = szChrSeq->cChar(1);
-    char acThird  = szChrSeq->cChar(2);
+  if (Stz* szArg = szFacet(SF_TBL_SYN_rep)) {
+    char acFirst  = szArg->cChar(0);
+    char acSecond = szArg->cChar(1);
+    char acThird  = szArg->cChar(2);
 
     if ('$' == acFirst
         && 'T' == acSecond
@@ -2209,7 +2209,7 @@ bool Symbol::bValidate(void)
       case SF_STG_NO:      b = bIs_Stg_Nm(szFacet);      break;
       case SF_STG_CAST:    b = bIs_Stg_Cast(szFacet);    break;
       case SF_STR_FN:      b = bIs_Str_Fn(szFacet);      break;
-      case SF_STR_LIT:     b = bIs_String(szFacet);      break;
+      case SF_STR_LIT:     b = bIs_Str_Lit(szFacet);      break;
       case SF_TBL_COL:     b = bIs_Tbl_Col(szFacet);     break;
       case SF_TBL_NM:      b = bIs_Tbl_Nm(szFacet);      break;
       case SF_TBL_SYN:     b = bIs_Tbl_Syn(szFacet);     break;
@@ -3517,8 +3517,8 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
   for (i8 i_Facet = i_Facet_cut;
        i_Facet >= 0 && i_Facet + 1 < m_nFacets && i_Facet + 1 < C_FACETS;
        i_Facet++) {
-    xaFacet[i_Facet].m_eFacet  = xaFacet[i_Facet + 1].m_eFacet;
-    xaFacet[i_Facet].m_sChrSeq = xaFacet[i_Facet + 1].m_sChrSeq;
+    xaFacet[i_Facet].m_eFacet = xaFacet[i_Facet + 1].m_eFacet;
+    xaFacet[i_Facet].m_sFacet = xaFacet[i_Facet + 1].m_sFacet;
   }
 
   m_nFacets--;
@@ -3533,8 +3533,8 @@ void Symbol::vFacetReset(void)
 
   m_nFacets = 0;
   for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
-    xaFacet[i_Facet].m_eFacet  = SF_NONE;
-    xaFacet[i_Facet].m_sChrSeq = ""_Stz;
+    xaFacet[i_Facet].m_eFacet = SF_NONE;
+    xaFacet[i_Facet].m_sFacet = ""_Stz;
   }
 }
 
@@ -3546,8 +3546,8 @@ void Symbol::vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(i_Facet < m_nFacets);
-  xaFacet[i_Facet].m_eFacet  = eFacet;
-  xaFacet[i_Facet].m_sChrSeq = szFacet;
+  xaFacet[i_Facet].m_eFacet = eFacet;
+  xaFacet[i_Facet].m_sFacet = szFacet;
 }
 
 /*----------------------------------------------------------------------------*/

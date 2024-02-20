@@ -654,7 +654,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
       continue;
     Facet* aFacet = pSymbol->aFacet(i_Facet_secondary);
     pRibbon->vSprintSnippet(true, "%s~%lld"_Stz,
-                            aFacet->m_sChrSeq.szStz(),
+                            aFacet->m_sFacet.szStz(),
                             i_Facet_secondary);
   }
 }
