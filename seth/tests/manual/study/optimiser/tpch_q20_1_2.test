@@ -22,7 +22,7 @@ select ps_suppkey
                           and l_shipdate <  date '1995-01-01' )
 ;
    
-rows: 1
+rows: 784
 
 MemoryLeaks;
 rows: 0
