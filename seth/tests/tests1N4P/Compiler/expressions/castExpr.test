@@ -57,7 +57,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col1  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS CHAR) ; Ordinal Expr = CAST($1 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS CHAR(10)) ; Ordinal Expr = CAST($1 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -116,7 +116,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS CHAR) ; Ordinal Expr = CAST($2 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS CHAR(10)) ; Ordinal Expr = CAST($2 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -304,7 +304,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS CHAR) ; Ordinal Expr = CAST($3 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS CHAR(10)) ; Ordinal Expr = CAST($3 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -492,7 +492,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS CHAR) ; Ordinal Expr = CAST($4 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS CHAR(10)) ; Ordinal Expr = CAST($4 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -680,7 +680,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS CHAR) ; Ordinal Expr = CAST($5 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS CHAR(10)) ; Ordinal Expr = CAST($5 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -815,7 +815,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS CHAR) ; Ordinal Expr = CAST($6 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS CHAR(10)) ; Ordinal Expr = CAST($6 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -948,7 +948,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col7  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS CHAR) ; Ordinal Expr = CAST($7 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS CHAR(10)) ; Ordinal Expr = CAST($7 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -1035,7 +1035,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col8  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS CHAR) ; Ordinal Expr = CAST($8 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS CHAR(10)) ; Ordinal Expr = CAST($8 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -1122,7 +1122,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col9  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS CHAR) ; Ordinal Expr = CAST($9 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS CHAR(10)) ; Ordinal Expr = CAST($9 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -1604,7 +1604,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(NULL  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(NULL AS CHAR) ; Ordinal Expr = CAST(NULL AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(NULL AS CHAR(10)) ; Ordinal Expr = CAST(NULL AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -1957,7 +1957,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col1         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS CHAR) ; Ordinal Expr = CAST($1 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS CHAR(10)) ; Ordinal Expr = CAST($1 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -2016,7 +2016,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col2         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS CHAR) ; Ordinal Expr = CAST($2 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS CHAR(10)) ; Ordinal Expr = CAST($2 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -2218,7 +2218,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col3         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS CHAR) ; Ordinal Expr = CAST($3 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS CHAR(10)) ; Ordinal Expr = CAST($3 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -2419,7 +2419,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col4         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS CHAR) ; Ordinal Expr = CAST($4 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS CHAR(10)) ; Ordinal Expr = CAST($4 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -2619,7 +2619,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col5         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS CHAR) ; Ordinal Expr = CAST($5 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS CHAR(10)) ; Ordinal Expr = CAST($5 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -2785,7 +2785,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col6         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS CHAR) ; Ordinal Expr = CAST($6 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS CHAR(10)) ; Ordinal Expr = CAST($6 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -2949,7 +2949,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col7         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS CHAR) ; Ordinal Expr = CAST($7 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS CHAR(10)) ; Ordinal Expr = CAST($7 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -3067,7 +3067,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col8         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS CHAR) ; Ordinal Expr = CAST($8 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS CHAR(10)) ; Ordinal Expr = CAST($8 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -3185,7 +3185,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col9         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS CHAR) ; Ordinal Expr = CAST($9 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS CHAR(10)) ; Ordinal Expr = CAST($9 AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
@@ -3591,7 +3591,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) NULL         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(NULL AS CHAR) ; Ordinal Expr = CAST(NULL AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(NULL AS CHAR(10)) ; Ordinal Expr = CAST(NULL AS CHAR(10))) ; type: CHAR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
