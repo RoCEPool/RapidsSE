@@ -51,10 +51,10 @@ rows: (null)
 
 // cast int to dec (out of bounds)
 SELECT CAST(intCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id = 5;
-failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 SELECT CAST(intCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id = 6;
-failure contains: 'EC_ARITHMETIC_OVERFLOW'
+failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 
 // cast int to flt
@@ -95,11 +95,11 @@ rows: ("-9223372036854775806")
 // cast int to interval year (out of bounds)
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id = 5;
-//failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL YEAR) FROM ${testName2}_test WHERE id = 6;
-//failure contains: 'EC_ARITHMETIC_OVERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 
 // cast int to interval month
@@ -113,11 +113,11 @@ rows: ("-9223372036854775806")
 // cast int to interval month (out of bounds)
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL MONTH) FROM ${testName2}_test WHERE id = 5;
-//failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL MONTH) FROM ${testName2}_test WHERE id = 6;
-//failure contains: 'EC_ARITHMETIC_OVERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 
 // cast int to interval day
@@ -131,11 +131,11 @@ rows: ("-9223372036854775806")
 // cast int to interval day (out of bounds)
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL DAY) FROM ${testName2}_test WHERE id = 5;
-//failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL DAY) FROM ${testName2}_test WHERE id = 6;
-//failure contains: 'EC_ARITHMETIC_OVERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 
 // cast int to interval hour
@@ -149,11 +149,11 @@ rows: ("-9223372036854775806")
 // cast int to interval hour (out of bounds)
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL HOUR) FROM ${testName2}_test WHERE id = 5;
-//failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL HOUR) FROM ${testName2}_test WHERE id = 6;
-//failure contains: 'EC_ARITHMETIC_OVERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 
 // cast int to interval minute
@@ -167,11 +167,11 @@ rows: ("-9223372036854775806")
 // cast int to interval minute (out of bounds)
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL MINUTE) FROM ${testName2}_test WHERE id = 5;
-//failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL MINUTE) FROM ${testName2}_test WHERE id = 6;
-//failure contains: 'EC_ARITHMETIC_OVERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 
 // cast int to interval second
@@ -185,11 +185,11 @@ rows: ("-9223372036854775806")
 // cast int to interval second (out of bounds)
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL SECOND) FROM ${testName2}_test WHERE id = 5;
-//failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 // TODO: Ray
 //SELECT CAST(intCol AS INTERVAL SECOND) FROM ${testName2}_test WHERE id = 6;
-//failure contains: 'EC_ARITHMETIC_OVERFLOW'
+//failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 
 
@@ -312,10 +312,10 @@ rows: (null)
 
 // cast float to int (out of bounds)
 SELECT CAST(fltCol AS INTEGER) FROM ${testName2}_test WHERE id = 5;
-failure contains: 'EC_ARITHMETIC_UNDERFLOW'
+failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 SELECT CAST(fltCol AS INTEGER) FROM ${testName2}_test WHERE id = 6;
-failure contains: 'EC_ARITHMETIC_OVERFLOW'
+failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 // cast float to dec(17,2)
 SELECT CAST(fltCol AS DECIMAL(17,2)) FROM ${testName2}_test WHERE id BETWEEN 1 AND 4;
@@ -446,10 +446,10 @@ rows:
 
 // cast varchar to dec(17,4) (out of bounds)
 SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 11;
-failure contains: 'EC_ARITHMETIC_OVERFLOW'
+failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 12;
-failure contains: 'EC_ARITHMETIC_OVERFLOW'
+failure contains: 'EC_VALUE_OUT_OF_RANGE'
 
 
 // cast varchar to flt

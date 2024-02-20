@@ -163,12 +163,12 @@ static inline void _INT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
 
   // Check if the integer is too big for a decimal
   if(iArg1 > C_BCD_MAX) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
 
   } else if(iArg1 < (i8) C_BCD_MIN) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
@@ -384,11 +384,11 @@ static inline void _INT_TOFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 
   if(fltArg1.m_dFlt > (d8)C_FLT_MAX) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
 
   } else if(fltArg1.m_dFlt < (d8) C_FLT_MIN) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
 
   } else {
@@ -411,11 +411,11 @@ static inline void _FLT_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 
   if(fltArg1.m_dFlt > (i8)C_I8_MAX) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
 
   } else if(fltArg1.m_dFlt < (i8) C_I8_MIN) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
 
   } else {
@@ -494,6 +494,7 @@ static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
   *(*ppaW)++ = bcdVal.m_iAsI8;
 }
 
+// TODO: to be removed
 static inline void vFltToBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
   union Flt_T fltArg1;
@@ -652,17 +653,17 @@ static inline void _VCH_TOFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
     return;
 
   } else if ( (fltArg1.m_dFlt == HUGE_VAL || fltArg1.m_dFlt == -HUGE_VAL) && errno == ERANGE) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
 
   } else if (fltArg1.m_dFlt == 0 && errno) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
 
   } else if (fltArg1.m_dFlt > C_FLT_MAX || fltArg1.m_dFlt < C_FLT_MIN) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
@@ -727,7 +728,7 @@ static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
       i8 j = iHexToInw(*psArg++);
 
       if (iIntVal > iLimit || (iIntVal == iLimit && j > iModulus) ) {
-        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+        aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
         *(*ppaW)++ = C_DATUM_NULL;
         return;
       }
@@ -743,7 +744,7 @@ static inline void _VCH_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
       i8 j = iDigitToI8(*psArg++);
 
       if (iIntVal > iLimit || (iIntVal == iLimit && j > iModulus) ) {
-        aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+        aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
         *(*ppaW)++ = C_DATUM_NULL;
         return;
       }
