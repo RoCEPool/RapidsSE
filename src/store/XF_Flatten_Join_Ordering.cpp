@@ -126,10 +126,6 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 
   XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
-
-  m_pCI->vValidateBench();
-
-  XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
   m_pCI->vValidateBench();
 
   XF_Flatten_Pullup_rlnConj::vXF_Pullup_rlnConj(m_pCI);
