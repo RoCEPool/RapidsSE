@@ -138,6 +138,21 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
+
+EXPLAIN with_types SELECT CAST(col2  AS DECIMAL(4,2))      FROM ${testName2}_castTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(col2  AS DECIMAL(4,2))      FROM ${testName2}_castTest"
+
+-> -> projectOp
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS DECIMAL(4,2)) ; Ordinal Expr = CAST($2 AS DECIMAL(4,2))) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col2  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -326,7 +341,22 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
-         
+
+EXPLAIN with_types SELECT CAST(col3  AS DECIMAL(4,2))      FROM ${testName2}_castTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(col3  AS DECIMAL(4,2))      FROM ${testName2}_castTest"
+
+-> -> projectOp
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS DECIMAL(4,2)) ; Ordinal Expr = CAST($3 AS DECIMAL(4,2))) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.${testName2}_castTest)')
+
 EXPLAIN with_types SELECT CAST(col3  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
 ∆ mainSubquery
@@ -514,7 +544,22 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
-         
+
+EXPLAIN with_types SELECT CAST(col4  AS DECIMAL(4,2))      FROM ${testName2}_castTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(col4  AS DECIMAL(4,2))      FROM ${testName2}_castTest"
+
+-> -> projectOp
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS DECIMAL(4,2)) ; Ordinal Expr = CAST($4 AS DECIMAL(4,2))) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.${testName2}_castTest)')
+
 EXPLAIN with_types SELECT CAST(col4  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
 ∆ mainSubquery
@@ -715,6 +760,21 @@ rows: (*,'explainPlan','
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
 
+EXPLAIN with_types SELECT CAST(col5  AS DECIMAL(4,2))      FROM ${testName2}_castTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(col5  AS DECIMAL(4,2))      FROM ${testName2}_castTest"
+
+-> -> projectOp
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS DECIMAL(4,2)) ; Ordinal Expr = CAST($5 AS DECIMAL(4,2))) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.${testName2}_castTest)')
+
 EXPLAIN with_types SELECT CAST(col5  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
 ∆ mainSubquery
@@ -849,7 +909,22 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
-         
+
+EXPLAIN with_types SELECT CAST(col6  AS DECIMAL(4,2))      FROM ${testName2}_castTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(col6  AS DECIMAL(4,2))      FROM ${testName2}_castTest"
+
+-> -> projectOp
+      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS DECIMAL(4,2)) ; Ordinal Expr = CAST($6 AS DECIMAL(4,2))) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.${testName2}_castTest)')
+
 EXPLAIN with_types SELECT CAST(col6  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
 ∆ mainSubquery
@@ -1232,6 +1307,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_castTest)')
+
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
