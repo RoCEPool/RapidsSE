@@ -15,7 +15,7 @@ namespace STORE
 {
   struct Facet {
     eSF  m_eFacet;
-    s256 m_sChrSeq;
+    s256 m_sFacet;
   };
 
   struct Cast {
@@ -32,11 +32,9 @@ namespace STORE
   private:
     static const i8 C_FACETS = 6;
 
-    i8 m_nFacets;
+    i8    m_nFacets;
     Facet xaFacet[C_FACETS];
-
-    Cast m_xCast;
-
+    Cast  m_xCast;
     TagSet* m_pProperties;
 
   protected:
@@ -46,76 +44,76 @@ namespace STORE
   public:
     Symbol(void);
     Symbol(eSF eFacet, i8 iInt);
-    Symbol(eSF eFacet, Stz* szChrSeq);
+    Symbol(eSF eFacet, Stz* szArg);
 
     ~Symbol(void);
 
-    static eRO  eEvalRelnOp(Stz* szSymbol);
+    static eRO  eEvalRelnOp(Stz* szArg);
     static eQO  eEvalSubQryOp(Stz* szArg);
     static eSF  eEval_facet(Stz* szArg);
 
-    static bool bIs_Agg_Fn(Stz* szChrSeq);          // avg, count, ... sum
-    static bool bIs_As(Stz* szChrSeq);              // AS
-    static bool bIs_Bol_Fn(Stz* szChrSeq);          // between, case ... matchTrailing
-    static bool bIs_Bol_Lit(Stz* szChrSeq);         // FALSE, TRUE
-    static bool bIs_Bol_Op(Stz* szChrSeq);          // and, not, or
-    static bool bIs_Bound(Stz* szChrSeq);           // BOUND, LBOUND, UBOUND
-    static bool bIs_Brace(Stz* szChrSeq);           // {
-    static bool bIs_Case(Stz* szChrSeq);            // CASE
-    static bool bIs_Cast(Stz* szChrSeq);            // CAST
-    static bool bIs_CastType(Stz* szChrSeq);        // CASTTYPE
-    static bool bIs_Col_Type(Stz* szChrSeq);        // BOOLEAN, ... VARCHAR
-    static bool bIs_Comma(Stz* szChrSeq);           // ,
-    static bool bIs_Cross(Stz* szChrSeq);           // CROSS
-    static bool bIs_Dcm_Lit(Stz* szChrSeq);         // StrLib::bIsDecimal()
-    static bool bIs_Direction(Stz* szChrSeq);       // asc, desc
-    static bool bIs_Else(Stz* szChrSeq);            // ELSE
-    static bool bIs_EndIf(Stz* szChrSeq);           // ENDIF
-    static bool bIs_Exp_Col(Stz* szArg);            // $n
-    static bool bIs_Fld_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Flt_Lit(Stz* szChrSeq);         // StrLib::bIsFloat()
-    static bool bIs_GroupBy(Stz* szChrSeq);         // GROUPBY
-    static bool bIs_Idx_Col(Stz* szChrSeq);         // $In
-    static bool bIs_Idx_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Int_Lit(Stz* szChrSeq);         // StrLib::bIsInteger()
-    static bool bIs_Interval_DT(Stz* szChrSeq);     // INTERVAL_DT
-    static bool bIs_Interval_YM(Stz* szChrSeq);     // INTERVAL_YM
-    static bool bIs_Itm_Col(Stz* szChrSeq);         // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Ivl_Fn(Stz* szChrSeq);          // extract_year etc
-    static bool bIs_List_Cnt(Stz* szChrSeq);         // #n
-    static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
-    static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
-    static bool bIs_Negate(Stz* szChrSeq);          // NULL
-    static bool bIs_Nmd_Col(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Note(Stz* szChrSeq);            // ...any...
-    static bool bIs_Null(Stz* szChrSeq);            // NULL
-    static bool bIs_Parenthesis(Stz* szChrSeq);     // ( or )
-    static bool bIs_Rln_Op(Stz* szChrSeq);          // <, <=, ... >
-    static bool bIs_Sqy_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Sqy_No(Stz* szArg);             // $Qn (or __subqueryN)
-    static bool bIs_Sqy_Op(Stz* szChrSeq);          // exists, in, notExists, notIn
-    static bool bIs_Sqy_Prm(Stz* szChrSeq);         // %n
-    static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
-    static bool bIs_Stg_Cast(Stz* szChrSeq);        // BROADCAST, HASHCAST
-    static bool bIs_Stg_Nm(Stz* szArg);             // Sn
-    static bool bIs_Str_Fn(Stz* szChrSeq);          // SUBSTRING2 ... SUBSTRING3
-    static bool bIs_String(Stz* szChrSeq);          // 'abc'
-    static bool bIs_Tbl_Col(Stz* szArg);            // $c.n
-    static bool bIs_Tbl_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Tbl_Syn(Stz* szChrSeq);         // $c
-    static bool bIs_Tbl_Syn_rep(Stz* szChrSeq);     // $C
-    static bool bIs_Then(Stz* szChrSeq);            // THEN
-    static bool bIs_Type(Stz* szChrSeq);            // TYPE
-    static bool bIs_When(Stz* szChrSeq);            // WHEN
-    static bool bIs_Xk_Cast(Stz* szChrSeq);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
+    static bool bIs_Agg_Fn(Stz* szArg);          // avg, count, ... sum
+    static bool bIs_As(Stz* szArg);              // AS
+    static bool bIs_Bol_Fn(Stz* szArg);          // between, case ... matchTrailing
+    static bool bIs_Bol_Lit(Stz* szArg);         // FALSE, TRUE
+    static bool bIs_Bol_Op(Stz* szArg);          // and, not, or
+    static bool bIs_Bound(Stz* szArg);           // BOUND, LBOUND, UBOUND
+    static bool bIs_Brace(Stz* szArg);           // {
+    static bool bIs_Case(Stz* szArg);            // CASE
+    static bool bIs_Cast(Stz* szArg);            // CAST
+    static bool bIs_CastType(Stz* szArg);        // CASTTYPE
+    static bool bIs_Col_Type(Stz* szArg);        // BOOLEAN, ... VARCHAR
+    static bool bIs_Comma(Stz* szArg);           // ,
+    static bool bIs_Cross(Stz* szArg);           // CROSS
+    static bool bIs_Dcm_Lit(Stz* szArg);         // StrLib::bIsDecimal()
+    static bool bIs_Direction(Stz* szArg);       // asc, desc
+    static bool bIs_Else(Stz* szArg);            // ELSE
+    static bool bIs_EndIf(Stz* szArg);           // ENDIF
+    static bool bIs_Exp_Col(Stz* szArg);         // $n
+    static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Flt_Lit(Stz* szArg);         // StrLib::bIsFloat()
+    static bool bIs_GroupBy(Stz* szArg);         // GROUPBY
+    static bool bIs_Idx_Col(Stz* szArg);         // $In
+    static bool bIs_Idx_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Int_Lit(Stz* szArg);         // StrLib::bIsInteger()
+    static bool bIs_Interval_DT(Stz* szArg);     // INTERVAL_DT
+    static bool bIs_Interval_YM(Stz* szArg);     // INTERVAL_YM
+    static bool bIs_Itm_Col(Stz* szArg);         // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Ivl_Fn(Stz* szArg);          // extract_year etc
+    static bool bIs_List_Cnt(Stz* szArg);        // #n
+    static bool bIs_Key_Col(Stz* szArg);         // $Kn
+    static bool bIs_Mth_Op(Stz* szArg);          // +, -, *, /
+    static bool bIs_Negate(Stz* szArg);          // NULL
+    static bool bIs_Nmd_Col(Stz* szArg);         // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Note(Stz* szArg);            // ...any...
+    static bool bIs_Null(Stz* szArg);            // NULL
+    static bool bIs_Parenthesis(Stz* szArg);     // ( or )
+    static bool bIs_Rln_Op(Stz* szArg);          // <, <=, ... >
+    static bool bIs_Sqy_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Sqy_No(Stz* szArg);          // $Qn (or __subqueryN)
+    static bool bIs_Sqy_Op(Stz* szArg);          // exists, in, notExists, notIn
+    static bool bIs_Sqy_Prm(Stz* szArg);         // %n
+    static bool bIs_Sqy_Rsl(Stz* szArg);         // __n
+    static bool bIs_Stg_Cast(Stz* szArg);        // BROADCAST, HASHCAST
+    static bool bIs_Stg_Nm(Stz* szArg);          // Sn
+    static bool bIs_Str_Fn(Stz* szArg);          // SUBSTRING2 ... SUBSTRING3
+    static bool bIs_Str_Lit(Stz* szArg);          // 'abc'
+    static bool bIs_Tbl_Col(Stz* szArg);         // $c.n
+    static bool bIs_Tbl_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Tbl_Syn(Stz* szArg);         // $c
+    static bool bIs_Tbl_Syn_rep(Stz* szArg);     // $C
+    static bool bIs_Then(Stz* szArg);            // THEN
+    static bool bIs_Type(Stz* szArg);            // TYPE
+    static bool bIs_When(Stz* szArg);            // WHEN
+    static bool bIs_Xk_Cast(Stz* szArg);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
-    static bool bIs_Rw_Aggregates(Stz* szChrSeq);   // AGGREGATES
+    static bool bIs_Rw_Aggregates(Stz* szArg);   // AGGREGATES
 
-    static bool bIs_bound(Facet* aFacet);  //
+    static bool bIs_bound(Facet* aFacet);    //
     static bool bIs_rlnConj(Facet* aFacet);  //
-    static bool bIs_term(Facet* aFacet);  //
+    static bool bIs_term(Facet* aFacet);     //
 
-    static bool bPossibleNm(Stz* szChrSeq);
+    static bool bPossibleNm(Stz* szArg);
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
 
@@ -124,7 +122,7 @@ namespace STORE
     // - - - - - -
 
     void vApplyFacet(eSF eFacet, i8 iInt);
-    void vApplyFacet(eSF eFacet, Stz* szChrSeq);
+    void vApplyFacet(eSF eFacet, Stz* szArg);
     void vApplyFacets(Symbol* pSymbol_arg);
 
     Cast xCast(void);
@@ -156,8 +154,8 @@ namespace STORE
     void vFacets_To_String(String* pString);
 
     bool bHasFacet(eSF eFacet);
-    bool bHasFacet(eSF eFacet, Stz* szChrSeq);
-    bool bHasFacet(Stz* szChrSeq);
+    bool bHasFacet(eSF eFacet, Stz* szArg);
+    bool bHasFacet(Stz* szArg);
     bool bHasFacets(void);
     bool bHasProperties(void);
     bool bHasType(void);
@@ -168,7 +166,7 @@ namespace STORE
     bool bIs_Col(void);  // SF_EXP_COL,SF_KEY_COL,SF_ITM_COL,SF_NMD_COL,SF_TBL_COL
     bool bIs_Lit(void);  // FALSE, TRUE, ...
 
-    bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
+    bool bMatches(eSF eFacet_arg, Stz* szFacet_arg);
     bool bMatches(eSF eFacet, Symbol* pSymbol_arg);
     bool bMatches(Symbol* pSymbol_arg);
     bool bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
@@ -180,8 +178,8 @@ namespace STORE
     void vSetFacet(eSF eFacet, char cChr);
     void vSetFacet(eSF eFacet, char cChr, i8 iInt);
     void vSetFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
-    void vSetFacet(Facet* aFacet_arg);
-    void vSetFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
+    void vSetFacet(Facet* aFacet);
+    void vSetFacet(eSF eFacet, Stz* szFacet);
     void vSetFacets(Symbol* pSymbol_arg);
     bool bSingleFaceted(void);
 
@@ -274,7 +272,7 @@ namespace STORE
     void vFacet_Stg_Nm(i8 iStgNo);
     void vFacet_Exp_Col(i8 iExpCol);
     void vFacet_Str_Fn(Stz* szStrFn);
-    void vFacet_Str_Lit(Stz* szString);
+    void vFacet_Str_Lit(Stz* szStrLit);
     void vFacet_Tbl_Col(Stz* szTblCol);
     void vFacet_Tbl_Col(char cTblSyn, i8 iTblCol);
     void vFacet_Tbl_Nm(Stz* szTblNm);
@@ -292,7 +290,6 @@ namespace STORE
     void vFacetReset(void);
     void vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);
-    void vFacetSprint(String* pString, Stz* szFormat, ...);
 
   protected:
     Footer* aFooter(void);

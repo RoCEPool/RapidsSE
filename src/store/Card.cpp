@@ -169,7 +169,7 @@ Card::~Card(void) noexcept(false)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 //  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sChrSeq.szStz(),md_Coord);
+//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sFacet.szStz(),md_Coord);
 //
 //  if (this == pPriorCard)
 //    vDebugPoint();
@@ -2513,7 +2513,7 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
   if (m_xSymbol.nFacets()) {
     for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
       Facet* aFacet = m_xSymbol.aFacet(i_Facet);
-      pRibbon->vSprintSnippet(true,"%18s~%lld"_Stz, aFacet->m_sChrSeq.azChar(),i_Facet);
+      pRibbon->vSprintSnippet(true, "%18s~%lld"_Stz, aFacet->m_sFacet.azChar(), i_Facet);
     }
   }
 }

@@ -19,7 +19,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
+INCLUDE 'tpch_q20_1_1.test';
 
 INCLUDE 'select_star.test';
 INCLUDE 'select_sort.test';
@@ -65,6 +65,8 @@ INCLUDE 'tpch_q18.test';
 
 INCLUDE 'tpch_q19.test';
 //INCLUDE 'tpch_q20.test';
+INCLUDE 'tpch_q20_1_1.test';
+
 //INCLUDE 'tpch_q21.test';
 //INCLUDE 'tpch_q22.test';
 

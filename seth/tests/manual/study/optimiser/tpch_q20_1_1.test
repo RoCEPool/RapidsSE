@@ -1,0 +1,27 @@
+--------------------------------------------------------------------------------
+-- tpch query20_1_1 
+--------------------------------------------------------------------------------
+
+LOG 'TPC-H Q20_1_1...';
+
+trackMemory force;
+success
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
+/pipelineName = "OptQ20_1_1"
+select p_partkey
+  from part
+ where p_name like 'forest%';
+ 
+rows: 5
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+}
+
+
