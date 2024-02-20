@@ -1584,12 +1584,12 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 			TypeId xTypeId = Expr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot);
 
 #ifdef TYPE_DETAILED
-			sPipeline->vCatSprint(
-							" casttype %s ( %lld %lld ) CAST "
-							""_Stz,
-							aCT[eType],
-							pBackend->iGetLength(eType),
-							pBackend->iGetScale(eType));
+//			sPipeline->vCatSprint(
+//							" casttype %s ( %lld %lld ) CAST "
+//							""_Stz,
+//							aCT[eType],
+//							pBackend->iGetLength(eType),
+//							pBackend->iGetScale(eType));
 
 			i8 iLength = pBackend->iGetLength(eType);
 			i8 iScale = pBackend->iGetScale(eType);
