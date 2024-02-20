@@ -300,12 +300,17 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
+  static bool bAddToHashMap = true;
+
   PsxThd::vTlsSet(giTLS_TaskKey,this);
   ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
 
-//  AM::pHashMap()->vInsertKeyValue(m_pPdsOfHme->oGetBufferId().m_pvAsAddress,
-//                                  m_pPdsOfHme,
-//                                  BI_TASKLOCK);
+  if( bAddToHashMap) {
+    AM::pHashMap()->vInsertKeyValue(m_pPdsOfHme->oGetBufferId().m_pvAsAddress,
+                                    m_pPdsOfHme,
+                                    BI_TASKLOCK);
+    bAddToHashMap = false;
+  }
   
   vVerifyTaskComposition();
     
@@ -641,7 +646,7 @@ void Task::vAddHashMapEntry(HashMapEntry *pEntry)
 bool Task::bDeleteHashMapEntry(HashMapEntry *pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+
   return m_pPdsOfHme->bDelete(pEntry);
 }
 

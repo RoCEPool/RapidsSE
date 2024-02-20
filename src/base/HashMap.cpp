@@ -185,6 +185,7 @@ void HashMap::vDump(void)
 
       pCursor->vNext();
     }
+    delete pCursor;
   }
   vTrace("\n"_Stz);
 #endif
@@ -322,7 +323,9 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType)
 
   m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabWrite();
 
-  void* aAddr = m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pInsert(pKey)->aItem();
+  SkipListBlock* pBlock = m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pInsert(pKey);
+  ASSERT(pBlock);
+  void* aAddr = pBlock->aItem();
   new(aAddr) HashMapEntry(pKey, pValue, eBufferIdType);
 
   //m_uNoOfEntries++;

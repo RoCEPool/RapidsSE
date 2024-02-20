@@ -913,6 +913,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
       // Currently we do not allow duplicates
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
       if (iCompareRes == 0) {
+        ASSERT(0);
         // Got duplicate key, error
         vMoveToFreeList(pNewSLBlock);
         vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
