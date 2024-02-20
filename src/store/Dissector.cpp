@@ -172,7 +172,7 @@ void Dissector::vStage(i8 i_StageSpec)
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(), pParamsSpec->pGet(0)->iParamNmBufSize(), ' ');
       p_param->SYM(SF_NMD_COL, pParamsSpec->pGet(0)->szParamNm());
-      p_param->pSymbol()->Y_vSet(P_ParamOdn, "%1"_Stz);
+      p_param->pSymbol()->Y_vSet(P_PrmOdn, "%1"_Stz);
       p_paramList->vAppendChild(p_param);
     }
   }
