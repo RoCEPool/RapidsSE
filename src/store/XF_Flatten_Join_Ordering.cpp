@@ -120,8 +120,11 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
     return;
   }
 
-  if (Card_Table::nTables_reverse_foldBreak(m_pCI) >= 2)
-    vReorderTables();
+  if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
+    return;
+
+  // reorder the tables
+  vReorderTables();
 
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 
