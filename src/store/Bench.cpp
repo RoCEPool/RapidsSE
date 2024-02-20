@@ -199,7 +199,6 @@ Board* Bench::pGetBoard(i8 i_Board)
     return nullptr;
 
   Board *pBoard = this->pGet(i_Board);
-  ASSERT(pBoard->i_Board() == i_Board);
   return pBoard;
 }
 

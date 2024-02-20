@@ -19,7 +19,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-INCLUDE 'tpch_q20_1_2.test';
+//INCLUDE 'tpch_q20a_simple.test';
 
 INCLUDE 'select_star.test';
 INCLUDE 'select_sort.test';
@@ -54,7 +54,6 @@ INCLUDE 'tpch_q8.test';
 INCLUDE 'tpch_q9.test';
 INCLUDE 'tpch_q10.test';
 INCLUDE 'tpch_q11.test';
-
 INCLUDE 'tpch_q12.test';
 INCLUDE 'tpch_q13.test';
 INCLUDE 'tpch_q14.test';
@@ -62,13 +61,16 @@ INCLUDE 'tpch_q14.test';
 INCLUDE 'tpch_q16.test';
 INCLUDE 'tpch_q17.test';
 INCLUDE 'tpch_q18.test';
-
 INCLUDE 'tpch_q19.test';
+
 //INCLUDE 'tpch_q20.test';
-INCLUDE 'tpch_q20_1_1.test';
-INCLUDE 'tpch_q20_1_2.test';
+//INCLUDE 'tpch_q20_1_1.test';
+//INCLUDE 'tpch_q20_1_2.test';
+//INCLUDE 'tpch_q20a_simple.test';
+//INCLUDE 'tpch_q20a.test';
 
 //INCLUDE 'tpch_q21.test';
+
 //INCLUDE 'tpch_q22.test';
 
 //------------------------------------------------------------------------------

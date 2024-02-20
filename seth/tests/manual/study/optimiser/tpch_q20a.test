@@ -2,7 +2,7 @@
 -- tpch query20a (SF_0001)
 --------------------------------------------------------------------------------
 
-LOG 'TPC-H Q20...';
+LOG 'TPC-H Q20a...';
 
 trackMemory force;
 success
@@ -28,6 +28,7 @@ select s_name, s_address
                                                  and l_shipdate <  date '1995-01-01' 
                                             )
                     )
+  and s_nationkey = n_nationkey
 ;
 
 rows:

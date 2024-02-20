@@ -45,7 +45,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_FLATTEN_SMOOTH"_Stz,
   /* */ "XF_FLATTEN_X_EXPCOL_TO_TBLCOL"_Stz,
   /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz,
-  /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,
+  /* */ "XF_OPTIMISE_CULL_BOUND"_Stz,
   /* */ "XF_OPTIMISE_CULL_USED_BOUND"_Stz,
   /* */ "XF_OPTIMISE_CUT_SORT"_Stz,
   /* */ "XF_OPTIMISE_DERIVE_STREAMKEY"_Stz,
@@ -126,7 +126,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOTH
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_X_EXPCOL_TO_TBLCOL
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
-  /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_NONUSED_BOUND
+  /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_BOUND
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_USED_BOUND
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CUT_SORT
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_DERIVE_STREAMKEY
