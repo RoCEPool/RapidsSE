@@ -1616,9 +1616,9 @@ i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (eFacet  == xaFacet[i_Facet].m_eFacet &&
-        '$'     == xaFacet[i_Facet].m_sChrSeq.azChar()[0] &&
-        '$'     == xaFacet[i_Facet].m_sChrSeq.azChar()[1] &&
-        cTblSyn == xaFacet[i_Facet].m_sChrSeq.azChar()[2])
+        '$'     == xaFacet[i_Facet].m_sChrSeq.cChar(0) &&
+        '$'     == xaFacet[i_Facet].m_sChrSeq.cChar(1) &&
+        cTblSyn == xaFacet[i_Facet].m_sChrSeq.cChar(2))
       return i_Facet;
   }
   return C_UNKNOWN;
