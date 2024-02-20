@@ -155,7 +155,7 @@ void Dissector::vStage(i8 i_StageSpec)
     
 
   Card_Stage* p_stage = new Card_Stage;
-  p_stage->SYM(SF_STG_NO,i_StageSpec);
+  p_stage->SYM(SF_STG_NM,i_StageSpec);
 
   Card_Topology* p_stageTopo = new Card_Topology(eStageTopo);
   p_stage->vAppendChild(p_stageTopo);

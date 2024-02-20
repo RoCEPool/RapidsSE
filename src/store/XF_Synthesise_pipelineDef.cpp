@@ -174,7 +174,7 @@ void XF_Synthesise_pipelineDef::vCraftStageDef(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
-                             m_pCI->G.p_stage->szFacet(SF_STG_NO),
+                             m_pCI->G.p_stage->szFacet(SF_STG_NM),
                              m_pCI->G.p_stage);
   m_pPipelineDef->vAppend(m_pStageDef);
 }

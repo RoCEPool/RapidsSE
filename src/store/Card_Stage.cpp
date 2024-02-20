@@ -53,7 +53,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   i8 nStages = 0;
 
   Card_Stage* p_stage = new Card_Stage;
-  p_stage->SYM(SF_STG_NO,++nStages);
+  p_stage->SYM(SF_STG_NM,++nStages);
   Card_Topology* p_topology = new Card_Topology(YG_ALL_PARTITIONS);
   p_stage->vAppendChild(p_topology);
   pCI->G.pDeck->vPushChild(p_stage);
@@ -352,7 +352,7 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
   _static_
 
   Card_Stage *p_stage = new Card_Stage;
-  p_stage->SYM(SF_STG_NO,++nStages);
+  p_stage->SYM(SF_STG_NM,++nStages);
   eYG eStageTopo = Card::e_aggLevel_To_stageTopo(e_level_running);
   Card_Topology *p_topology = new Card_Topology(eStageTopo);
   p_stage->vAppendChild(p_topology);
@@ -375,7 +375,7 @@ void Card_Stage::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_notHave(CK_s_LEVEL, CK_NONE);
 
-  RASSERT(m_xSymbol.bSingleFaceted() && m_xSymbol.bHasFacet(SF_STG_NO));
+  RASSERT(m_xSymbol.bSingleFaceted() && m_xSymbol.bHasFacet(SF_STG_NM));
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

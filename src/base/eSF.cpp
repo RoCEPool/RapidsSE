@@ -66,7 +66,7 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_SQY_PRM"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
   /* */ "SF_STG_CAST"_Stz,
-  /* */ "SF_STG_NO"_Stz,
+  /* */ "SF_STG_NM"_Stz,
   /* */ "SF_STR_FN"_Stz,
   /* */ "SF_STR_LIT"_Stz,
 
