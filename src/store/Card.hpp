@@ -315,8 +315,6 @@ namespace STORE
     Card* pAppendNewCard(eCK eCard);
     void vApplyCast_p(Card* pCard_arg);
     void vApplyCast_x(Cast xCast_arg);
-    bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
-    bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     eCK  eCard(void);
     Card* pCard(eCK eCard);
@@ -375,6 +373,9 @@ namespace STORE
 
     i8   iItemise(void);
     void vItemise(i8 iItemise);
+
+    bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+    bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     void vMark(Stz* szMark1, Stz* szMark2);
 

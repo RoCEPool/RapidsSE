@@ -185,7 +185,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
 
     bFound = false;
-    bool b = m_pCI->G.p_boolPred->bApplyRecursive_term(bLambdaFn);
+    bool b = m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
     UNUSED(b);
     vDebugPoint();
   } while (bFound);
@@ -233,7 +233,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
 
     bFound = false;
-    bool b = m_pCI->G.p_boolPred->bApplyRecursive_term(bLambdaFn);
+    bool b = m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
     UNUSED(b);
     vDebugPoint();
   } while (bFound);

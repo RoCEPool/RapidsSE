@@ -83,7 +83,7 @@ namespace STORE
    ~CardIter(void) noexcept(false);
 
     Card* pAdvanceChild(void);
-    bool bApplyRecursive(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+    bool bLambdaWalk(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);

@@ -319,7 +319,7 @@ void Card_BoolPred::vUpdate_expCol(Card_Emit* p_arriving)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = bApplyRecursive(CK_TERM, bfCorrect);
+  bool bIgnore = bLambdaWalk(CK_TERM, bfCorrect);
   UNUSED(bIgnore);
 }
 
@@ -404,7 +404,7 @@ void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = bApplyRecursive(CK_TERM,fvDeleteFacetIf);
+  bool bIgnore = bLambdaWalk(CK_TERM,fvDeleteFacetIf);
   UNUSED(bIgnore);
 }
 
@@ -527,7 +527,7 @@ bool Card_BoolPred::bHas_term(Symbol* pWithSymbol)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
+  bool bIgnore = bLambdaWalk(CK_TERM,bLambdaFn);
   UNUSED(bIgnore);
 
   return bHas;
@@ -551,7 +551,7 @@ bool Card_BoolPred::bIsBraced(void)
     return C_CONTINUE_RECURSION;
   };
 
-  bApplyRecursive(CK_NONE,bTestBraced);
+  bLambdaWalk(CK_NONE,bTestBraced);
 
   return bBraced;
 }
@@ -593,7 +593,7 @@ bool Card_BoolPred::bIsLiterals(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = bApplyRecursive(CK_TERM,fbTestLiterals);
+  bool bIgnore = bLambdaWalk(CK_TERM,fbTestLiterals);
   UNUSED(bIgnore);
 
   return bLiterals;

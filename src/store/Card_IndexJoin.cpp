@@ -190,7 +190,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     return;
 
   if ((pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred()))
-    pCI->G.p_boolPred->bApplyRecursive_term(bLambda);
+    pCI->G.p_boolPred->bLambdaWalk_term(bLambda);
 
 }
 /*----------------------------------------------------------------------------*/

@@ -438,49 +438,6 @@ void Card::vApplyCast_x(Cast xCast_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* visit all sub-cards of given eToSubs and apply lambda function             */
-/*----------------------------------------------------------------------------*/
-bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (CK_NONE == eToSubs || eToSubs == m_eCard) {
-    bool bContinue = bfLambdaFn(this);
-    if (! bContinue)
-      return C_TERMINATE_RECURSION;
-  }
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    bool bContinue = xKid.pChild()->bApplyRecursive(eToSubs, bfLambdaFn);
-    if (! bContinue)
-      return C_TERMINATE_RECURSION;
-  }
-
-  return C_CONTINUE_RECURSION;
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all term sub-cards and apply lambda function                         */
-/*----------------------------------------------------------------------------*/
-bool Card::bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (bIsCard(CK_TERM)) {
-    bool bContinue = bfLambdaFn(_pCard_Term(this));
-    if (! bContinue)
-      return false;
-  }
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (!xKid.pChild()->bApplyRecursive_term(bfLambdaFn))
-      return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card kind                                                              */
 /*----------------------------------------------------------------------------*/
 eCK Card::eCard(void)
@@ -1253,6 +1210,49 @@ void Card::vItemise(i8 iItemise)
 }
 
 /*----------------------------------------------------------------------------*/
+/* visit all sub-cards of given eToSubs and apply lambda function             */
+/*----------------------------------------------------------------------------*/
+bool Card::bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (CK_NONE == eToSubs || eToSubs == m_eCard) {
+    bool bContinue = bfLambdaFn(this);
+    if (! bContinue)
+      return C_TERMINATE_RECURSION;
+  }
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    bool bContinue = xKid.pChild()->bLambdaWalk(eToSubs, bfLambdaFn);
+    if (! bContinue)
+      return C_TERMINATE_RECURSION;
+  }
+
+  return C_CONTINUE_RECURSION;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visit all term sub-cards and apply lambda function                         */
+/*----------------------------------------------------------------------------*/
+bool Card::bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (bIsCard(CK_TERM)) {
+    bool bContinue = bfLambdaFn(_pCard_Term(this));
+    if (! bContinue)
+      return false;
+  }
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (!xKid.pChild()->bLambdaWalk_term(bfLambdaFn))
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set mark 1                                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vMark(Stz* szMark1, Stz* szMark2)
@@ -1857,7 +1857,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bApplyRecursive(eSub, bfUpdateSymbol);
+  bLambdaWalk(eSub, bfUpdateSymbol);
 
   return bReplaced;
 }

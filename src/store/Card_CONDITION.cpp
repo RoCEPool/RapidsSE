@@ -65,7 +65,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSub_boolPred()->bApplyRecursive_term(bLambda);
+  pSub_boolPred()->bLambdaWalk_term(bLambda);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -121,7 +121,7 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bApplyRecursive(pCI->G.pDeck,CK_TERM,bLambdaFn);
+  pCI->bLambdaWalk(pCI->G.pDeck,CK_TERM,bLambdaFn);
 
   m_pCI->vEndTransform(__LINE__);
 }

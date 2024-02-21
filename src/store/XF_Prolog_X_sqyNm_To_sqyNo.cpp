@@ -90,7 +90,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNo);
+  bool b = m_pCI->G.pDeck->bLambdaWalk(CK_NONE, bfTo_sqyNo);
   UNUSED(b);
 
   m_pCI->vEndTransform(__LINE__);

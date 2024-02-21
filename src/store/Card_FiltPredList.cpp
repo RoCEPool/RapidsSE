@@ -75,7 +75,7 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
     Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
 
     nFilters = 0;
-    p_boolPred->bApplyRecursive(CK_RLNCONJ, bLambda);
+    p_boolPred->bLambdaWalk(CK_RLNCONJ, bLambda);
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;

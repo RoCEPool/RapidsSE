@@ -101,7 +101,7 @@ Card* CardIter::pAdvanceChild(void)
 /*----------------------------------------------------------------------------*/
 /* visit all sub-cards of given eToSubs and apply lambda function             */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bApplyRecursive(Card* pCard, eCK eToSubs,
+bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
                                std::function<bool(Card* pCard)> bfLambdaFn)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -116,7 +116,7 @@ bool CardIter::bApplyRecursive(Card* pCard, eCK eToSubs,
   Kid xKid(pCard);
   while (xKid.bEach()) {
     xKid.pChild()->vItemise(xKid.i_Child());
-    bool bContinue = bApplyRecursive(xKid.pChild(),eToSubs, bfLambdaFn);
+    bool bContinue = bLambdaWalk(xKid.pChild(),eToSubs, bfLambdaFn);
     if (! bContinue) {
       vAncestorPop();
       return C_TERMINATE_RECURSION;

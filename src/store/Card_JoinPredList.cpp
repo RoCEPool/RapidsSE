@@ -131,7 +131,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
-  p_boolPred->bApplyRecursive(CK_RLNCONJ, bfConcat);
+  p_boolPred->bLambdaWalk(CK_RLNCONJ, bfConcat);
 }
 
 /*----------------------------------------------------------------------------*/

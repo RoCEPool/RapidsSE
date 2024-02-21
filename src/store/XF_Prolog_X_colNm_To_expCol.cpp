@@ -124,7 +124,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bApplyRecursive(pCI->G.p_OP, CK_TERM, fb_colNm_To_expCol);
+  pCI->bLambdaWalk(pCI->G.p_OP, CK_TERM, fb_colNm_To_expCol);
 }
 
 /*============================================================================*/

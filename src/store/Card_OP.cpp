@@ -100,7 +100,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_OP->bApplyRecursive(CK_TERM, bfLambdaFn);
+  pCI->G.p_OP->bLambdaWalk(CK_TERM, bfLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/

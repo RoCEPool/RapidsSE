@@ -599,7 +599,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_injected->bApplyRecursive(CK_EXPR, bfAddDescriptors);
+  p_injected->bLambdaWalk(CK_EXPR, bfAddDescriptors);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -742,7 +742,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_arriving->bApplyRecursive(CK_EXPR, bfAddPropagatedArriving);
+  p_arriving->bLambdaWalk(CK_EXPR, bfAddPropagatedArriving);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -80,7 +80,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bApplyRecursive(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
+  pCI->bLambdaWalk(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
 }
 
 /*----------------------------------------------------------------------------*/

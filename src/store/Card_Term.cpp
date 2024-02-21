@@ -94,7 +94,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bApplyRecursive(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
+  pCI->bLambdaWalk(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
 
 }
 /*----------------------------------------------------------------------------*/
@@ -121,7 +121,7 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bApplyRecursive(pCI->G.pDeck,CK_NONE,bfItemStrip_colNm);
+  pCI->bLambdaWalk(pCI->G.pDeck,CK_NONE,bfItemStrip_colNm);
 }
 
 
