@@ -795,6 +795,32 @@ Card_SubSet* Card::pDupSubCardsRecursive(i8 i_From, i8 i_Till)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if card is one of given kind list                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bEither(i8 /*eCK*/ iKind_first, ...)
+{
+
+  va_list xArgs;
+
+  bool bFound = false;
+
+  va_start(xArgs, iKind_first);
+
+  eCK eKind_mustHave = (eCK) iKind_first;
+  while (CK_NONE != eKind_mustHave) {
+    if (eCard() == eKind_mustHave) {
+      bFound = true;
+      break;
+    }
+    eKind_mustHave = (eCK)va_arg(xArgs, i8);
+  }
+
+  va_end(xArgs);
+
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get facet symbol                                                           */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szFacet(eSF eFacet_xchk)

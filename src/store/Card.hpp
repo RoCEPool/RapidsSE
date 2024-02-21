@@ -342,6 +342,8 @@ namespace STORE
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
+    bool  bEither(i8 /*eCK*/ iKind_first, ...);
+
     Stz*  szFacet(eSF eFacet_xchk);
     Stz*  szFacet_single(void);
     Card* pFindCardRecursive(eCK eOfCard);
