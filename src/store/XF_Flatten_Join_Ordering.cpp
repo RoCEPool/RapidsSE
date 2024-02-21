@@ -115,10 +115,10 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering Proper
 
-  if (AM::JOB::bHasTag(C_JO_DISABLE)) {
-    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
-    return;
-  }
+//  if (AM::JOB::bHasTag(C_JO_DISABLE)) {
+//    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
+//    return;
+//  }
 
 #if 1
   // original

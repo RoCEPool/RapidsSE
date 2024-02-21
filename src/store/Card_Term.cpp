@@ -418,13 +418,19 @@ void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! pSymbol()->bHasFacet(SF_EXP_COL))
-     return;
-  if (pSymbol()->bHasFacet(SF_KEY_COL))
+  Symbol* pSym = pSymbol();
+
+  if (pSym->bHasFacet(SF_KEY_COL))
     return;
 
-  Symbol* pSym = pSymbol();
+  if (! pSym->bHasFacet(SF_EXP_COL))
+     return;
+
+#if 1
   if (Card_Expr* p_expr = p_arriving->pFindExprOfSymbol(pSym)) {
+#else
+  if (Card_Expr* p_expr = p_arriving->pFind_expr_Matches(pSym)) {
+#endif
     pSym->vCastFacets(p_expr->pSymbol());
     vMark1(MARK_CHANGED);
   }
