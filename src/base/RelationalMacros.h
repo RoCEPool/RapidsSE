@@ -207,7 +207,7 @@ static inline i8 iCompareBcds(i8** ppaW, struct Dynamic_T* aDynamicT)
   iIntegral2 = bcdTmp2.m_iMantissa - (bRoundedUp ? 1 : 0);
 
   if (iIntegral1 != iIntegral2) {
-    return (iIntegral1 < iIntegral2 ? -1 : 1);
+    return (iIntegral2 < iIntegral1 ? -1 : 1);
   }
 
   // Integral parts are equal, so extract the fractional parts and compare.
@@ -305,7 +305,7 @@ static inline void _GT_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   *(*ppaW)++ = bcdArg2.m_iAsI8;
   *(*ppaW)++ = bcdArg1.m_iAsI8;
   i8 iCmp = iCompareBcds(ppaW, aDynamicT);
-  *(*ppaW)++ = (iCmp >= 0);
+  *(*ppaW)++ = (iCmp > 0);
 }
 
 static inline void _GTA_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
