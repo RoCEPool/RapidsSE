@@ -17,9 +17,12 @@ extern void* aExtern_FindTable(void* aTableName) __attribute__((weak_import));
 extern void* aExtern_FindIndex(void* aTable, void* aIndexName) __attribute__((weak_import));
 
 extern void* aExtern_GetIndexDef(void* aIndex) __attribute__((weak_import));
+
 extern void* aExtern_GetIndexTree(void* aTable, void* aIndex) __attribute__((weak_import));
 
 extern void* aExtern_IndexDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
+
+extern void vExtern_IndexNew(void* aDynamicT, i8 nNumCols, void* pColumnInfo, bool bPayload) __attribute__((weak_import));
 
 extern void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) __attribute__((weak_import));
 extern void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) __attribute__((weak_import));
