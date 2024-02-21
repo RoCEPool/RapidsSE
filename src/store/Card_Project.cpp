@@ -134,7 +134,7 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
     if (! p_expr_clone->pSymbol()->bHasFacet(SF_NMD_COL)) {
       Symbol oSymbol_nmdCol;
       oSymbol_nmdCol.vApplyFacet(SF_NMD_COL, p_emit_early->nChildCards());
-      p_expr_clone->pSymbol()->vSetFacet(oSymbol_nmdCol.aFacet(SF_NMD_COL));
+      p_expr_clone->pSymbol()->vApplyFacet(oSymbol_nmdCol.aFacet(SF_NMD_COL));
     }
     p_emit_early->vAppendChild(p_expr_clone);
   }

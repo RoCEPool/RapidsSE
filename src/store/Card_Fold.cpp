@@ -84,7 +84,7 @@ void Card_Fold::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
 
   Card_Expr* p_expr_new = new Card_Expr;
 
-  p_expr_new->pSymbol()->vSetFacet(p_expr_fold->pSymbol()->aFacet(SF_NMD_COL));
+  p_expr_new->pSymbol()->vApplyFacet(p_expr_fold->pSymbol()->aFacet(SF_NMD_COL));
   p_expr_new->pSymbol()->Y_vSet(P_Injected);
 
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
