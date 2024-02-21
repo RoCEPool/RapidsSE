@@ -106,7 +106,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
 
 
   pCI->G.p_OP = pCI->G.p_keyExists;
-  pCI->G.p_keyExists->vRecreate_emit(pCI,true);
+  pCI->G.p_keyExists->vRecreate_emit(pCI);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

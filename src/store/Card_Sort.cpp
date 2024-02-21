@@ -94,7 +94,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     if (! p_expr_key)
       continue;
     Symbol* pSym_expr_key = p_expr_key->pSymbol();
-    p_expr_emit_sort->pGet_term(0)->pSymbol()->vSetFacets(pSym_expr_key);
+    p_expr_emit_sort->pGet_term(0)->pSymbol()->vApplyFacets(pSym_expr_key);
    }
 
 

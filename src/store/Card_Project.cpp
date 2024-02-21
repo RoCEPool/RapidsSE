@@ -236,7 +236,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->pSymbol()->vSetFacets(pCI->Sqy.m_pExpr_fold->pSymbol());
+  pCI->G.p_expr->pSymbol()->vApplyFacets(pCI->Sqy.m_pExpr_fold->pSymbol());
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppendChild(pCI->G.p_rpnCalc);
@@ -316,7 +316,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   RASSERT(pCI->Early.m_pOP_leaf);
   RASSERT(! pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
-   pCI->G.p_OP->vRecreate_emit(pCI,true);
+   pCI->G.p_OP->vRecreate_emit(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

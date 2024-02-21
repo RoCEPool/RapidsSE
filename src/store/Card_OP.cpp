@@ -504,7 +504,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* create/recreate emit                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
+void Card_OP::vRecreate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -656,18 +656,10 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
   }
   pCI->G.p_OP->vDump(__func__);
 
-  UNUSED(bRecreate);
-  if (//! bRecreate &&
-      pCI->G.p_emit && pCI->G.p_key)
+  if (pCI->G.p_emit && pCI->G.p_key)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
-//  if (bRecreate &&
-//       (   CK_o_AGGREG    == eCard_OP
-//        || CK_o_CROSSJOIN == eCard_OP
-//        || CK_o_GBYAGG    == eCard_OP
-//        || CK_o_ORDAGG    == eCard_OP
-//        || CK_o_PROJECT   == eCard_OP))
-//    vCorrect_expCol(pCI->Flux.m_pArriving);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
 

@@ -1998,21 +1998,6 @@ void Symbol::vSetFacet(eSF eFacet, Stz* szFacet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set facets                                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetFacets(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  i8 nFacets_arg = pSymbol_arg->m_nFacets;
-  for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
-    Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
-
-    vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sFacet);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* does this symbol only have one facet ?                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSingleFaceted(void)

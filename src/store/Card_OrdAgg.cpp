@@ -77,7 +77,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  pCI->G.p_ordAgg->vRecreate_emit(pCI,true);
+  pCI->G.p_ordAgg->vRecreate_emit(pCI);
 
  // pCI->vPrintBoard(__func__,__LINE__);
 }

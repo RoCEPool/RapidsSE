@@ -180,7 +180,6 @@ namespace STORE
     void vSetFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vSetFacet(Facet* aFacet);
     void vSetFacet(eSF eFacet, Stz* szFacet);
-    void vSetFacets(Symbol* pSymbol_arg);
     bool bSingleFaceted(void);
 
     char   cTblSyn(void);
