@@ -269,19 +269,21 @@ void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* pSymbol_expr = pSymbol();
-  if (pSymbol_expr->bHasFacet(SF_NMD_COL))
+  Symbol* pSym_expr = pSymbol();
+  if (pSym_expr->bHasFacet(SF_NMD_COL))
     return;
 
   if (! bIsCompound()) {
     Card_Term* p_term0 = pGet_term0();
-    if (p_term0->pSymbol()->bHasFacet(SF_NMD_COL)) {
-      pSymbol_expr->vApplyFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
+    Symbol* pSym_term0 = p_term0->pSymbol();
+    if (pSym_term0->bHasFacet(SF_NMD_COL)) {
+      pSym_expr->vApplyFacet(SF_NMD_COL, pSym_term0);
       return;
     }
   }
 
-  pSymbol()->vApplyFacet(SF_NMD_COL,iExpCol);
+  // synthetic column name
+  pSym_expr->vApplyFacet(SF_NMD_COL,iExpCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,13 +412,15 @@ Card_Term* Card_Expr::pGet_term(i8 i_Term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get term 0                                                                 */
+/* get term 0 (of a scalar expr)                                              */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_Expr::pGet_term0(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term* p_term0 = pSub_rpnCalc()->pGetTerm(0);
+  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
+  RASSERT(1 == p_rpnCalc->nChildCards());
+  Card_Term* p_term0 = p_rpnCalc->pGetTerm(0);
 
   return p_term0;
 }

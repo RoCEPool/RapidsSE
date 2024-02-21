@@ -1292,6 +1292,7 @@ void Symbol::vApplyFacet(eSF eFacet, char cChr, i8 iInt)
   RASSERT(bHasFacets());
 
 }
+
 /*----------------------------------------------------------------------------*/
 /* set facet                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -1308,7 +1309,17 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
   }
 
   RASSERT(bHasFacets());
+}
 
+/*----------------------------------------------------------------------------*/
+/* apply specific facet of given symbol                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyFacet(eSF eFacet, Symbol* pSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Stz* szFacet = pSymbol->szFacet(eFacet);
+  vApplyFacet(eFacet,szFacet);
 }
 
 /*----------------------------------------------------------------------------*/

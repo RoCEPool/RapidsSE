@@ -545,12 +545,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       }
 
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
-      if (pCI->G.p_OP->i_Child() == 14 && pCI->G.p_emit->nFunctionCount() == 1) {
-//        if (pCI->Flux.m_pArriving)
-//          pCI->Flux.m_pArriving->vDump(__func__);
-//        pCI->G.p_OP->vDump(__func__);
-        vDebugPoint();
-      }
       pCI->G.p_emit->vEnsure_nmdCol();
       if (pCI->Flux.m_pArriving)
         pCI->G.p_emit->vApplyCast(pCI);
