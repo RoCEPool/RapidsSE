@@ -271,7 +271,7 @@ void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
     if (! p_expr_matching)
       return;
 
-    pSymbol_term->vCast(p_expr_matching->pSymbol()->xCast());
+    pSymbol_term->vApplyCast(p_expr_matching->pSymbol()->xCast());
     rxCast_last = pSymbol_term->xCast();
     return;
   }
@@ -291,7 +291,7 @@ void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
   if (! p_expr_matched)
     return;
 
-  pSymbol_term->vCast(p_expr_matched->pSymbol()->xCast());
+  pSymbol_term->vApplyCast(p_expr_matched->pSymbol()->xCast());
 
   if (pSymbol_term->bHasType())
     rxCast_last = pSymbol_term->xCast();
@@ -379,7 +379,7 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->pSymbol()->vCastFacets(pDiffSymbol);
+  p_term_clone->pSymbol()->vApplyCastFacets(pDiffSymbol);
 
   return p_term_clone;
 }
@@ -432,7 +432,7 @@ void Card_Term::vCorrect_expCol(Card_Emit* p_emit_ref)
     // I thnk it should be this form
   if (Card_Expr* p_expr_ref = p_emit_ref->pFind_expr_Matches(pSym_term)) {
 #endif
-    pSym_term->vCastFacets(p_expr_ref->pSymbol());
+    pSym_term->vApplyCastFacets(p_expr_ref->pSymbol());
     vMark1(MARK_CHANGED);
   }
 }
@@ -475,7 +475,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 
     if (pSymbol_term0->bHasFacet(SF_TBL_COL)) {
       pSymbol_this->vDeleteFacet(SF_EXP_COL);
-      pSymbol_this->vCastFacets(pSymbol_term0);
+      pSymbol_this->vApplyCastFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
 
       if (pCI->G.p_expr && pCI->G.p_expr->bIsScalarCol() && pCI->G.p_rpnCalc) {

@@ -83,7 +83,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
     Symbol xSymbol_sqyNo(SF_SQY_NO, pSubQuery->szSqyNo());
 
     pSymbol_card->vDeleteFacet(SF_NMD_COL);
-    pSymbol_card->vCastFacets(&xSymbol_sqyNo);
+    pSymbol_card->vApplyCastFacets(&xSymbol_sqyNo);
 
     return C_CONTINUE_RECURSION;
   };

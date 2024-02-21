@@ -121,6 +121,9 @@ namespace STORE
 
     // - - - - - -
 
+    void vApplyCast(Cast xCast);
+    void vApplyCastFacets(Symbol* pSymbol_arg);
+    void vApplyCastFacetsPpy(Symbol* pSymbol_arg);
     void vApplyFacet(Facet* aFacet);
     void vApplyFacet(eSF eFacet);
     void vApplyFacet(eSF eFacet, char cChr);
@@ -131,10 +134,6 @@ namespace STORE
     void vApplyFacets(Symbol* pSymbol_arg);
 
     Cast xCast(void);
-    void vCast(Cast xCast);
-    void vCastReset(void);
-    void vCastFacets(Symbol* pSymbol_arg);
-    void vCastFacetsPpy(Symbol* pSymbol_arg);
     void vCullFacet(eSF eFacet_except);
 
     void vDeleteFacet(eSF eFacet);
@@ -213,6 +212,8 @@ namespace STORE
     void Y_vTo_String(String* pString);
 
   private:
+
+    void vCastReset(void);
 
     void vFacet_Agg_Fn(Stz* szAggFn);
     void vFacet_As(Stz* szAs);

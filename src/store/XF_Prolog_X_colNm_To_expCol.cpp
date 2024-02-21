@@ -111,7 +111,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
     if (Card_Expr* p_expr_arriving =
         pCI->Flux.m_pArriving->pFind_expr_Matches(p_term_colNm->pSymbol())) {
       p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
-      p_term_colNm->pSymbol()->vCastFacetsPpy(p_expr_arriving->pSymbol());
+      p_term_colNm->pSymbol()->vApplyCastFacetsPpy(p_expr_arriving->pSymbol());
     }
 
     if (Card_Expr* p_expr_ancestor = (Card_Expr*)pCI->pAncestorFind(CK_EXPR)) {

@@ -127,13 +127,13 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   Card_Expr* p_expr_simple = new Card_Expr;
 
-  p_expr_simple->pSymbol()->vCastFacets(p_expr->pSymbol());
+  p_expr_simple->pSymbol()->vApplyCastFacets(p_expr->pSymbol());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->vCast(p_expr->xCast());
 
   //Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
-  //p_term->vCast(p_expr->xCast());
+  //p_term->vApplyCast(p_expr->xCast());
   //p_term->vDump();
 
   Card_Term* p_term = (new Card_Term) -> SYM(SF_EXP_COL,i_Col);
@@ -315,7 +315,7 @@ void Card_Expr::vEnsure_Cast(CardIter* pCI)
 //  }
 
 //  if (! pSymbol_expr->xCast().m_xTypeId.bIsValid())
-//    vCast(pCI->G.p_rpnCalc->xCast());
+//    vApplyCast(pCI->G.p_rpnCalc->xCast());
 //  else
   if (pSymbol_expr->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId &&
       (pSymbol_expr->xCast().m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
@@ -326,7 +326,7 @@ void Card_Expr::vEnsure_Cast(CardIter* pCI)
   //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
 
 //  if (pCI->G.p_rpnCalc->xCast().m_xTypeId.bIsValid())
-//    vCast(pCI->G.p_rpnCalc->xCast());
+//    vApplyCast(pCI->G.p_rpnCalc->xCast());
 
   RASSERT(xTypeId_save == xCast().m_xTypeId);
 

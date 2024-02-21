@@ -497,7 +497,7 @@ void Card::vCast(Card* pCard_arg)
 
   //pCard_arg->vDump(__func__);
 
-  m_xSymbol.vCast(pCard_arg->xCast());
+  m_xSymbol.vApplyCast(pCard_arg->xCast());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -509,7 +509,7 @@ void Card::vCast(Cast xCast)
 
   //pCard_arg->vDump(__func__);
 
-  m_xSymbol.vCast(xCast);
+  m_xSymbol.vApplyCast(xCast);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -741,7 +741,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
-  pCard_dup->pSymbol()->vCastFacets(pSymbol());
+  pCard_dup->pSymbol()->vApplyCastFacets(pSymbol());
 
   return pCard_dup;
 }
@@ -754,7 +754,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
-  pCard_dup->pSymbol()->vCastFacetsPpy(pSymbol());
+  pCard_dup->pSymbol()->vApplyCastFacetsPpy(pSymbol());
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
     Card* pSubCard = xKid.pChild();
@@ -1848,7 +1848,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
     if (!pCard->bSymbolMatches(pSymbol))
       return C_CONTINUE_RECURSION;
 
-    pCard->m_xSymbol.vCastFacetsPpy(pWith);
+    pCard->m_xSymbol.vApplyCastFacetsPpy(pWith);
 
     bReplaced = true;
 

@@ -193,7 +193,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol)
 
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pChild->pSymbol()->vCastFacetsPpy(pSymbol);
+  pChild->pSymbol()->vApplyCastFacetsPpy(pSymbol);
 
   pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
@@ -208,7 +208,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
 
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pChild->pSymbol()->vCastFacets(&xSymbol);
+  pChild->pSymbol()->vApplyCastFacets(&xSymbol);
 
   pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
@@ -1793,7 +1793,7 @@ void CardIter::G_vNewMember(eCK eMember, Symbol xSymbol)
 
   G_vNewMember(eMember);
 
-  G.p_NEW->pSymbol()->vCastFacets(&xSymbol);
+  G.p_NEW->pSymbol()->vApplyCastFacets(&xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1197,6 +1197,38 @@ TypeId Symbol::xTo_TypeId(Stz* szTypeName)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set cast                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyCast(Cast xCast)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_xCast = xCast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cast & facets from arg                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyCastFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vApplyCast(pSymbol_arg->m_xCast);
+  vApplyFacets(pSymbol_arg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cast, facets and properties from arg                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyCastFacetsPpy(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vApplyCastFacets(pSymbol_arg);
+  Y_vAll(pSymbol_arg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* apply facet                                                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vApplyFacet(Facet* aFacet)
@@ -1404,52 +1436,6 @@ Cast Symbol::xCast(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_xCast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cast                                                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol::vCast(Cast xCast)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_xCast = xCast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset cast                                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vCastReset(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_xCast.m_xTypeId = TypeId();
-
-  m_xCast.m_nTypeLength   = C_UNKNOWN;
-  m_xCast.m_nTypeScale    = C_UNKNOWN;
-  m_xCast.m_bTypeNullable = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cast & facets from arg                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vCastFacets(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_xCast = pSymbol_arg->m_xCast;
-  vApplyFacets(pSymbol_arg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cast, facets and properties from arg                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol::vCastFacetsPpy(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vCastFacets(pSymbol_arg);
-  Y_vAll(pSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2506,6 +2492,20 @@ void Symbol::Y_vTo_String(String* pString)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* reset cast                                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCastReset(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_xCast.m_xTypeId = TypeId();
+
+  m_xCast.m_nTypeLength   = C_UNKNOWN;
+  m_xCast.m_nTypeScale    = C_UNKNOWN;
+  m_xCast.m_bTypeNullable = true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given aggregate fn                                      */

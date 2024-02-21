@@ -472,7 +472,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
         if (xKid.pChild()->pSymbol()->bHasFacet(SF_SQY_PRM)) {
 
           Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-          xKid.pChild()->pSymbol()->vCastFacets(&x_Symbol_expCol1);  // TODO: hack!!
+          xKid.pChild()->pSymbol()->vApplyCastFacets(&x_Symbol_expCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
               pCI->Flux.m_pArriving->pGet_expr((i8) 0);
