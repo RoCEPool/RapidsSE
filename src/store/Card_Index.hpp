@@ -31,7 +31,7 @@ namespace STORE
 
     Index*    pGetIndex(Card_TableNm* p_tableNm);
 
-    void vEnsure_Cast(CardIter *pCI);
+    void vApplyCast(CardIter *pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

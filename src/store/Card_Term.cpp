@@ -172,7 +172,7 @@ void Card_Term::vBump_expCol(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vEnsure_Cast(CardIter* pCI, Cast& rxCast_last)
+void Card_Term::vApplyCast(CardIter* pCI, Cast& rxCast_last)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

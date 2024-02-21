@@ -28,7 +28,7 @@ namespace STORE
 
     bool bHas_cmpPred_In_bounds(Card_RlnConj* p_rlnConj);
 
-    void vTypes_For_expCol(CardIter* pCI);
+    void vApplyCast(CardIter* pCI);
 
     bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqyRsl(void);

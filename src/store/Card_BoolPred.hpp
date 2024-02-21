@@ -26,7 +26,7 @@ namespace STORE
     i8   nCullMarked_rlnConj(Stz* szWithMark);
     bool bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn);
-    void vEnsure_Cast(CardIter* pCI);
+    void vApplyCast(CardIter* pCI);
     void vExtend_andConj(Card_RlnConj *p_rlnConj);
     Card_RlnConj * pFind_rlnConj(Stz* szWithPpy);
     Card_RlnConj* pFind_rlnConj_With_sqyCall(void);

@@ -169,7 +169,7 @@ void Card_CONJ::vEnsure_Cast(CardIter *pCI)
       _pCard_RlnConj(this)->vEnsure_Cast(pCI); break;
 
     case CK_TERM:
-      _pCard_Term(this)->vEnsure_Cast(pCI, xCast_last);  break;
+      _pCard_Term(this)->vApplyCast(pCI, xCast_last);  break;
 
     default:
       NEVER_REACH
