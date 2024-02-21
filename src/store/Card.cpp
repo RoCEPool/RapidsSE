@@ -1149,13 +1149,26 @@ bool Card::bIsOne(i8 /*eCK*/ iCard, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
+/* is child card the given kind?                                              */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsPeek(eCK eCard_1)
+bool Card::bIsPeek(eCK eChild0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eCard_1 == this->ePeekChild(0))
+  if (eChild0 == this->ePeekChild(0))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are child cards the given kinds?                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsPeek(eCK eCard0, eCK eCard1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard0 == this->ePeekChild(0) && eCard1 == this->ePeekChild(1))
     return true;
   else
     return false;
@@ -1164,24 +1177,11 @@ bool Card::bIsPeek(eCK eCard_1)
 /*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsPeek(eCK eCard_1, eCK eCard_2)
+bool Card::bIsPeek(i8 i_Child, eCK eChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eCard_1 == this->ePeekChild(0) && eCard_2 == this->ePeekChild(1))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsPeek(i8 i_Child, eCK eCard_1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (eCard_1 == this->ePeekChild(i_Child))
+  if (eChild == this->ePeekChild(i_Child))
     return true;
   else
     return false;
