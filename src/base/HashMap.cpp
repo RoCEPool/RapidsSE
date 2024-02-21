@@ -173,6 +173,8 @@ void HashMap::vDump(void)
   return;
 #else
 
+  i8 iaBI[BI_ENUMS] = {0};
+
   for(u8 u_index = 0; u_index < m_uNoOfSlots; u_index++) {
     PdsCursor* pCursor = new PdsCursor(m_pHashMapSlot[u_index]->m_pPdsOfEntries);
 
@@ -181,6 +183,7 @@ void HashMap::vDump(void)
 
     while( ! pCursor->bIsCurrNull()) {
       HashMapEntry* pEntry = _pHashMapEntry(pCursor->m_pCurrentBlock->aItem());
+      iaBI[pEntry->m_eBufferIdType]++;
       vTrace("[%p %p %lld, %lld]\t"_Stz, pEntry->m_pKeyObject, pEntry->m_pValObject, *(pEntry->m_ixAtomicLock), pEntry->m_eBufferIdType);
 
       pCursor->vNext();
@@ -188,6 +191,12 @@ void HashMap::vDump(void)
     delete pCursor;
   }
   vTrace("\n"_Stz);
+
+  vTrace("Crw: %lld, HashMapSlot: %lld, Row: %lld, TaskLock: %lld\n"_Stz,
+         iaBI[1],
+         iaBI[2],
+         iaBI[3],
+         iaBI[4]);
 #endif
 }
 

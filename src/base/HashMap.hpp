@@ -2,7 +2,7 @@
 /* HashMap.hpp -- HashMap                                                     */
 /*============================================================================*/
 #pragma once
-#define C_INIT_HASHMAP_SIZE 100
+#define C_INIT_HASHMAP_SIZE 64
 #ifdef WITH_HASHMAP_DEBUG
 #define C_HISTORY_DUR 100
 #endif
