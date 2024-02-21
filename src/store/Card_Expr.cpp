@@ -273,7 +273,7 @@ void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
   if (pSym_expr->bHasFacet(SF_NMD_COL))
     return;
 
-  if (bIsScalarCol()) {
+  if (! bIsCompound()) {
     Card_Term* p_term0 = pGet_term0();
     Symbol* pSym_term0 = p_term0->pSymbol();
     if (pSym_term0->bHasFacet(SF_NMD_COL)) {
