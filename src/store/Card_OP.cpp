@@ -106,7 +106,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
+void Card_OP::vUpdate_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -114,10 +114,10 @@ void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
     return;
 
   if (Card_Filter* p_filter = pSub_filter())
-    p_filter->vCorrect_expCol(p_arriving);
+    p_filter->vUpdate_expCol(p_arriving);
 
   if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vCorrect_expCol(p_arriving);
+    p_emit->vUpdate_expCol(p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -651,7 +651,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
                                  CK_NONE));
     if (pCI->Flux.m_pArriving) {
       pCI->Flux.m_pArriving->vDump(__func__);
-      pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
+      pCI->G.p_filter->vUpdate_expCol(pCI->Flux.m_pArriving);
     }
   }
   pCI->G.p_OP->vDump(__func__);
@@ -666,7 +666,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
   if (CK_o_KEYEXISTS    == eCard_OP ||
       CK_o_KEYNOTEXISTS == eCard_OP ||
       CK_o_WHERE        == eCard_OP)
-    vCorrect_expCol(pCI->Flux.m_pArriving);
+    vUpdate_expCol(pCI->Flux.m_pArriving);
 
   if (CK_o_SORT== eCard_OP) {
     pCI->G.p_key->vApplyCast(pCI);

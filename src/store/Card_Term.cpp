@@ -414,15 +414,11 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vCorrect_expCol(Card_Emit* p_emit_ref)
+void Card_Term::vUpdate_expCol(Card_Emit* p_emit_ref)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Symbol* pSym_term = pSymbol();
-
-  if (pSym_term->bHasFacet(SF_KEY_COL))
-    return;
-
   if (! pSym_term->bHasFacet(SF_EXP_COL))
      return;
 
