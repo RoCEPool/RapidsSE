@@ -28,7 +28,7 @@ namespace STORE
 
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
-    void vEnsure_nmdCol(void);
+    void vEnsure_expr_Has_nmdCol(void);
 
     i8 nExpr(void);
 

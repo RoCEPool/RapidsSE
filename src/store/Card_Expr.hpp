@@ -30,7 +30,7 @@ namespace STORE
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsure_nmdCol(i8 iExpCol);
+    void vEnsure_expr_Has_nmdCol(i8 iExpCol);
     void vApplyCast(CardIter* pCI);
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
@@ -41,8 +41,8 @@ namespace STORE
     Card_Term* pGet_term0(void);
     bool bHasTerm(Symbol* pSymbol);
 
-    bool bIsDescending(void);
     Card_Expr *pInduct(i8 iExp);
+    bool bIsDescending(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);

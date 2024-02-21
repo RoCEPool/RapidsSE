@@ -265,7 +265,7 @@ void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure expression has a SF_NMD_COL                                         */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
+void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -273,7 +273,7 @@ void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
   if (pSym_expr->bHasFacet(SF_NMD_COL))
     return;
 
-  if (! bIsCompound()) {
+  if (bIsScalarCol()) {
     Card_Term* p_term0 = pGet_term0();
     Symbol* pSym_term0 = p_term0->pSymbol();
     if (pSym_term0->bHasFacet(SF_NMD_COL)) {
