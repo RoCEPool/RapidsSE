@@ -74,29 +74,22 @@ Card_Emit* Card_Emit::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* concat facets from given key                                               */
+/* apply facets from given key                                                */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
+void Card_Emit::vApplyFacets(Card_Key* p_key)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //p_key->vDump();
-
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
-
-    //xEmit.p_expr()->vDump(__func__ );
-
     if (! xEmit.p_expr()->bIsScalarCol())
       continue;
 
-    Symbol* pSymbol_expr_scalar = xEmit.p_expr()->pGet_Symbol(0);
-
-    Card_Expr* p_expr_scalar = p_key->pDecode_scalar_expr_Via_symbol(pSymbol_expr_scalar);
-
-    if (! p_expr_scalar)
+    Symbol* pSym_expr_emit = xEmit.p_expr()->pGet_Symbol(0);
+    Card_Expr* p_expr_key = p_key->pDecode_scalar_expr_Via_symbol(pSym_expr_emit);
+    if (! p_expr_key)
       continue;
 
-    pSymbol_expr_scalar->vApplyFacets(p_expr_scalar->pSymbol());
+    pSym_expr_emit->vApplyFacets(p_expr_key->pSymbol());
   }
 }
 

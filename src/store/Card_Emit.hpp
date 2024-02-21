@@ -19,7 +19,7 @@ namespace STORE
 
     static Card_Emit* pResolvePriorProjection(CardIter* pCI);
 
-    void vConcatFacets_From_key(Card_Key* p_key);
+    void vApplyFacets(Card_Key* p_key);
 
     Card_Emit* pClone(void);
     void vCorrect_expCol(Card_Emit* p_arriving);

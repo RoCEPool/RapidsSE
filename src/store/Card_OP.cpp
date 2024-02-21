@@ -657,7 +657,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
   pCI->G.p_OP->vDump(__func__);
 
   if (pCI->G.p_emit && pCI->G.p_key)
-    pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
+    pCI->G.p_emit->vApplyFacets(pCI->G.p_key);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
