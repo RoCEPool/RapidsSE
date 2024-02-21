@@ -520,9 +520,9 @@ void Card_EXPRLIST::vUpdate_cast(Card_EXPRLIST *p_exprList_ref)
     Card_Expr* p_expr_ref = p_exprList_ref->pFind_expr_Matches(pSymbol);
 
     if (p_expr_ref) {
-      p_expr_this->vCast(p_expr_ref->xCast());
-      p_expr_this->pSub_rpnCalc()->vCast(p_expr_ref->xCast());
-      p_expr_this->pSub_rpnCalc()->pGetTerm(0)->vCast(p_expr_ref->xCast());
+      p_expr_this->vApplyCast_x(p_expr_ref->xCast());
+      p_expr_this->pSub_rpnCalc()->vApplyCast_x(p_expr_ref->xCast());
+      p_expr_this->pSub_rpnCalc()->pGetTerm(0)->vApplyCast_x(p_expr_ref->xCast());
     }
   }
 }

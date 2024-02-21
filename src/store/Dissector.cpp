@@ -1418,7 +1418,7 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
 
-  p_rpnCalc->vCast(xCast);
+  p_rpnCalc->vApplyCast_x(xCast);
 
   p_constraint->vAppendChild(p_rpnCalc);
 
@@ -1492,12 +1492,12 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
   p_expr->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->vCast(xCast);
-  p_expr->vCast(xCast);
+  p_rpnCalc->vApplyCast_x(xCast);
+  p_expr->vApplyCast_x(xCast);
 
   if (bIsKeyExpr && p_expr->pSub_rpnCalc()->nChildCards() == 1) {
     Card_Term* p_term_0 = p_expr->pGet_term0();
-    p_term_0->vCast(xCast);
+    p_term_0->vApplyCast_x(xCast);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1555,7 +1555,7 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
   Cast xCast = xPop_cast(p_rpnExpr);
 
   Card_Term* p_term_hsh = _pCard_Term(p_rpnExpr->pPopChild());
-  p_term_hsh->vCast(xCast);
+  p_term_hsh->vApplyCast_x(xCast);
   p_hshCol->vAppendChild(p_term_hsh);
 
   return p_hshCol;
@@ -1624,14 +1624,14 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
       xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
       xCast.m_nTypeLength = 19;
       xCast.m_nTypeScale = 2;
-      p_expr->vCast(xCast);
-      p_expr->pSub_rpnCalc()->vCast(xCast);
+      p_expr->vApplyCast_x(xCast);
+      p_expr->pSub_rpnCalc()->vApplyCast_x(xCast);
     }
 
     p_key->vAppendChild(p_expr);
 
     if (1 == p_key->nChildCards())
-      p_key->vCast(p_expr->xCast());
+      p_key->vApplyCast_x(p_expr->xCast());
   }
 
   return p_key;
@@ -1677,8 +1677,8 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
       xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
       xCast.m_nTypeLength = 19;
       xCast.m_nTypeScale = 2;
-      p_expr->vCast(xCast);
-      p_expr->pSub_rpnCalc()->vCast(xCast);
+      p_expr->vApplyCast_x(xCast);
+      p_expr->pSub_rpnCalc()->vApplyCast_x(xCast);
     }
 
 

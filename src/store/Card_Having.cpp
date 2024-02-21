@@ -127,7 +127,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     RASSERT(CT_NONE != p_expr_found->eCTVal());
 
-    pCI->G.p_term->vCast(p_expr_found->xCast());
+    pCI->G.p_term->vApplyCast_x(p_expr_found->xCast());
 
     DELETE_CARD(p_term_1);
 

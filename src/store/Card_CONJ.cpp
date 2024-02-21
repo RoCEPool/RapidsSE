@@ -356,7 +356,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    p_term1->vCast(p_expr_found->xCast());
+    p_term1->vApplyCast_x(p_expr_found->xCast());
 
    // pCI->vPrintBoard(__func__,__LINE__);
     return;
@@ -386,7 +386,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    p_term_head->vCast(p_expr_found->xCast());
+    p_term_head->vApplyCast_x(p_expr_found->xCast());
 
    // pCI->vPrintBoard(__func__,__LINE__);
 

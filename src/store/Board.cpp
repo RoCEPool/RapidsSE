@@ -96,9 +96,9 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmo
   Card_Expr* p_expr_found =
       pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-  pCI->G.p_term->vCast(p_expr_found->xCast());
+  pCI->G.p_term->vApplyCast_x(p_expr_found->xCast());
 
-  pCI->G.p_rpnCalc->vCast(p_expr_found->xCast());
+  pCI->G.p_rpnCalc->vApplyCast_x(p_expr_found->xCast());
 
   s32 sResultN;
   sResultN.vSprint("__RESULT%lld"_Stz,pSubQuery_leftmost->pBoard()->i_Board());
@@ -108,7 +108,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmo
   pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, sResultN);
   pCI->G.p_expr->pSymbol()->vApplyFacet(SF_SQY_RSL, sRn);
   pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8) 1);
-  pCI->G.p_expr->vCast(p_expr_found->xCast());
+  pCI->G.p_expr->vApplyCast_x(p_expr_found->xCast());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -78,9 +78,9 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   p_expr_gby->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->vCast(pExpr_corr->xCast());
-  p_term->vCast(pExpr_corr->xCast());
-  p_expr_gby->vCast(pExpr_corr->xCast());
+  p_rpnCalc->vApplyCast_x(pExpr_corr->xCast());
+  p_term->vApplyCast_x(pExpr_corr->xCast());
+  p_expr_gby->vApplyCast_x(pExpr_corr->xCast());
 
   return p_expr_gby;
 }
@@ -104,9 +104,9 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   p_expr->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->vCast(p_expr_gby->xCast());
-  p_term->vCast(p_expr_gby->xCast());
-  p_expr->vCast(p_expr_gby->xCast());
+  p_rpnCalc->vApplyCast_x(p_expr_gby->xCast());
+  p_term->vApplyCast_x(p_expr_gby->xCast());
+  p_expr->vApplyCast_x(p_expr_gby->xCast());
 
   return p_expr;
 }
@@ -130,7 +130,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   p_expr_simple->pSymbol()->vApplyCastFacets(p_expr->pSymbol());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->vCast(p_expr->xCast());
+  p_rpnCalc->vApplyCast_x(p_expr->xCast());
 
   //Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
   //p_term->vApplyCast(p_expr->xCast());
@@ -142,7 +142,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
 
   p_expr_simple->vAppendChild(p_rpnCalc);
-  p_expr_simple->vCast(p_rpnCalc);
+  p_expr_simple->vApplyCast_p(p_rpnCalc);
 
   return p_expr_simple;
 }
@@ -164,16 +164,16 @@ Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
   Stz* szNmdCol = pColumn->szColNm();
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vCast(xCast);
+  p_expr_new->vApplyCast_x(xCast);
   p_expr_new->pSymbol()->vApplyFacet(SF_NMD_COL, szNmdCol);
   p_expr_new->pSymbol()->vApplyFacet(SF_EXP_COL, iExpCol);
 
   Card_RpnCalc *p_rpnCalc_new = (new Card_RpnCalc);
-  p_rpnCalc_new->vCast(xCast);
+  p_rpnCalc_new->vApplyCast_x(xCast);
   p_expr_new->vAppendChild(p_rpnCalc_new);
 
   Card_Term *p_term_new = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iTblCol);
-  p_term_new->vCast(xCast);
+  p_term_new->vApplyCast_x(xCast);
   p_rpnCalc_new->vAppendChild(p_term_new);
 
   p_expr_new->pSymbol()->vApplyFacets(p_term_new->pSymbol());
@@ -189,10 +189,10 @@ Card_Expr* Card_Expr::pCast_expr_term_expCol(Card_Term* p_term)
   _static_
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vCast(p_term->xCast());
+  p_expr_new->vApplyCast_x(p_term->xCast());
 
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
-  p_rpnCalc_new->vCast(p_term->xCast());
+  p_rpnCalc_new->vApplyCast_x(p_term->xCast());
   p_expr_new->vAppendChild(p_rpnCalc_new);
 
   Card_Term *p_term_new = p_term->pClone();
@@ -323,7 +323,7 @@ void Card_Expr::vApplyCast(CardIter* pCI)
       (pSymbol_expr->xCast().m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
        pSymbol_expr->xCast().m_nTypeScale    != pCI->G.p_rpnCalc->xCast().m_nTypeScale  ||
        pSymbol_expr->xCast().m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable))
-    vCast(pCI->G.p_rpnCalc->xCast());
+    vApplyCast_x(pCI->G.p_rpnCalc->xCast());
 
   //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
 
@@ -438,7 +438,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
   Symbol* pSymbol_expr_inducted = p_expr_inducted->pSymbol();
 
   //vDump(__func__);
-  p_expr_inducted->vCast(this);
+  p_expr_inducted->vApplyCast_p(this);
 
   Symbol* pSymbol_expr_arriving = pSymbol();
 

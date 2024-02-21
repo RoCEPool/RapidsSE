@@ -313,6 +313,8 @@ namespace STORE
     void vAddedCorrectly(bool bAppended=true);
     bool bAllChildren(eCK eCard);
     Card* pAppendNewCard(eCK eCard);
+    void vApplyCast_p(Card* pCard_arg);
+    void vApplyCast_x(Cast xCast_arg);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
@@ -320,8 +322,6 @@ namespace STORE
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
-    void vCast(Card* pCard_arg);
-    void vCast(Cast xCast);
     void vCheckCorrectness(void);
     Cast xCast(void);
     i8   i_Child(void);

@@ -320,20 +320,20 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->Sqy.m_pExpr_corr);
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
       if (1 == pCI->G.p_key->nChildCards())
-        pCI->G.p_key->vCast(pCI->G.p_expr->xCast());
+        pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
     }
     else {
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->G.p_expr->vCast(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_expr->vApplyCast_x(pCI->Sqy.m_pExpr_corr->xCast());
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-      pCI->G.p_term->vCast(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_term->vApplyCast_x(pCI->Sqy.m_pExpr_corr->xCast());
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
       if (1 == pCI->G.p_key->nChildCards())
-        pCI->G.p_key->vCast(pCI->G.p_expr->xCast());
+        pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
 
-      pCI->G.p_rpnCalc->vCast(pCI->Sqy.m_pExpr_corr->xCast());
-      pCI->G.p_term->vCast(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_rpnCalc->vApplyCast_x(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_term->vApplyCast_x(pCI->Sqy.m_pExpr_corr->xCast());
 
     }
     // TODO: hack...
@@ -355,9 +355,9 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
-      pCI->G.p_rpnCalc->vCast(pCI->G.p_key->xCast());
-      pCI->G.p_term->vCast(pCI->G.p_key->xCast());
-      pCI->G.p_expr->vCast(pCI->G.p_key->xCast());
+      pCI->G.p_rpnCalc->vApplyCast_x(pCI->G.p_key->xCast());
+      pCI->G.p_term->vApplyCast_x(pCI->G.p_key->xCast());
+      pCI->G.p_expr->vApplyCast_x(pCI->G.p_key->xCast());
     }
 
     pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
@@ -409,9 +409,9 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
 
 
-  pCI->G.p_rpnCalc->vCast(pCI->G.p_key->xCast());
-  pCI->G.p_term->vCast(pCI->G.p_key->xCast());
-  pCI->G.p_expr->vCast(pCI->G.p_key->xCast());
+  pCI->G.p_rpnCalc->vApplyCast_x(pCI->G.p_key->xCast());
+  pCI->G.p_term->vApplyCast_x(pCI->G.p_key->xCast());
+  pCI->G.p_expr->vApplyCast_x(pCI->G.p_key->xCast());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added
@@ -477,7 +477,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
           Card_Expr* p_expr_found =
               pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-          xKid.pChild()->vCast(p_expr_found->xCast());
+          xKid.pChild()->vApplyCast_x(p_expr_found->xCast());
 
         }
         else
@@ -583,7 +583,7 @@ void CorrelatedJoin::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_
 
       p_child_conj->pSymbol()->vApplyFacet(SF_EXP_COL, "$2"_Stz);
       Card_Expr* p_expr_found = pCI->Flux.m_pArriving->pGet_expr(1);
-      p_child_conj->vCast(p_expr_found->xCast());
+      p_child_conj->vApplyCast_x(p_expr_found->xCast());
 
       p_conj->pSymbol()->Y_vSet(P_CrlRslTest);
     }

@@ -133,7 +133,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
 
   Card_Term* p_term_sqyArg = pCI->Sqy.m_pTerm_sqyArg->pClone();
-  p_term_sqyArg->vCast(p_term_found);
+  p_term_sqyArg->vApplyCast_p(p_term_found);
   //p_term_sqyArg->vDump();
 
 

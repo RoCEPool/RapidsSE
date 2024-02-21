@@ -414,6 +414,30 @@ Card* Card::pAppendNewCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vApplyCast_p(Card* pCard_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  //pCard_arg->vDump(__func__);
+
+  m_xSymbol.vApplyCast(pCard_arg->xCast());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vApplyCast_x(Cast xCast_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  //pCard_arg->vDump(__func__);
+
+  m_xSymbol.vApplyCast(xCast_arg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* visit all sub-cards of given eToSubs and apply lambda function             */
 /*----------------------------------------------------------------------------*/
 bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
@@ -486,30 +510,6 @@ void Card::vCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_eCard = eCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set type of symbol                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::vCast(Card* pCard_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  //pCard_arg->vDump(__func__);
-
-  m_xSymbol.vApplyCast(pCard_arg->xCast());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set type of symbol                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::vCast(Cast xCast)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  //pCard_arg->vDump(__func__);
-
-  m_xSymbol.vApplyCast(xCast);
 }
 
 /*----------------------------------------------------------------------------*/

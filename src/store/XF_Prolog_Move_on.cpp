@@ -108,7 +108,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
     m_pCI->G.p_rpnCalc->vTransfer(p_rpnCalc_on,SF_RLN_OP);
-    m_pCI->G.p_rpnCalc->vCast(p_rpnCalc_on->xCast());
+    m_pCI->G.p_rpnCalc->vApplyCast_x(p_rpnCalc_on->xCast());
 
     if (p_rpnCalc_on->nChildCards()) {
       delete p_rpnCalc_on->pPopChild_tail();

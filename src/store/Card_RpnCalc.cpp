@@ -45,7 +45,7 @@ Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
   Card_Term* p_term = (new Card_Term) ->SYMPPY(pSymbol);
   vAppendChild(p_term);
 
-  vCast(p_term);
+  vApplyCast_p(p_term);
 
   _checkInitialised_(CN_CARD);
 
@@ -170,7 +170,7 @@ void Card_RpnCalc::vApplyCast(CardIter* pCI)
     if (xCast_last.m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
         xCast_last.m_nTypeScale    != pCI->G.p_rpnCalc->xCast().m_nTypeScale  ||
         xCast_last.m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable)
-      vCast(pCI->G.p_rpnCalc->xCast());
+      vApplyCast_x(pCI->G.p_rpnCalc->xCast());
   }
 
   RASSERT(xTypeId_save == xCast().m_xTypeId);
@@ -288,10 +288,10 @@ Card_RpnCalc* Card_RpnCalc::pInduct(Card_Expr* p_expr_arriving)
 
   Card_RpnCalc* p_rpnCalc_inducted = new Card_RpnCalc;
 
-  p_rpnCalc_inducted->vCast(this);
+  p_rpnCalc_inducted->vApplyCast_p(this);
 
   Card_Term* p_term_inducted = new Card_Term;
-  p_term_inducted->vCast(this);
+  p_term_inducted->vApplyCast_p(this);
   p_rpnCalc_inducted->vAppendChild(p_term_inducted);
 
   if (bIsScalarCol() && pFirstColSym()->bHasFacet(SF_TBL_COL)) {
