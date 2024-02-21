@@ -504,7 +504,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* create/recreate emit                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
+void Card_OP::vRecreate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -588,8 +588,11 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_o_HASH:
     case CK_o_HAVING:
+      vDebugPoint();
+      [[clang::fallthrough]];
+
+    case CK_o_HASH:
     case CK_o_KEYEXISTS:
     case CK_o_KEYNOTEXISTS:
     case CK_o_LIMIT:
@@ -604,6 +607,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       pCI->G.p_OP->vEnsure_stream(pCI);
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
       pCI->G.p_emit->vIncFunctionCount();
+
+      pCI->G.p_OP->vDump(__func__);
+
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -630,22 +636,30 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
       pCI->G.p_rpnCalc->vEnsure_Cast(pCI);
   }
 
+  pCI->G.p_OP->vDump(__func__);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
-    if (pCI->Flux.m_pArriving)
+  if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter())) {
+    RASSERT(pCI->G.p_OP->bEither(CK_o_CROSSJOIN,
+                                 CK_o_FROM,
+                                 CK_o_HAVING,
+                                 CK_o_INDEXJOIN,
+                                 CK_o_KEYEXISTS,
+                                 CK_o_KEYNOTEXISTS,
+                                 CK_o_WHERE,
+                                 CK_NONE));
+    if (pCI->Flux.m_pArriving) {
+      pCI->Flux.m_pArriving->vDump(__func__);
       pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
+    }
+  }
+  pCI->G.p_OP->vDump(__func__);
 
-  if (! bRecreate && pCI->G.p_emit && pCI->G.p_key)
+  if (pCI->G.p_emit && pCI->G.p_key)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
-  if (bRecreate &&
-       (   CK_o_AGGREG    == eCard_OP
-        || CK_o_CROSSJOIN == eCard_OP
-        || CK_o_GBYAGG    == eCard_OP
-        || CK_o_ORDAGG    == eCard_OP
-        || CK_o_PROJECT   == eCard_OP))
-    vCorrect_expCol(pCI->Flux.m_pArriving);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->Flux.m_pArriving = pCI->G.p_emit;
 

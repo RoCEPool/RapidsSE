@@ -156,7 +156,7 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_streamKey->vEnsure_Cast(m_pCI);
 
       if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred())) {
-        //m_pCI->G.p_boolPred->vDump(__func__);
+        m_pCI->G.p_boolPred->vDump(__func__);
         m_pCI->G.p_boolPred->vEnsure_Cast(m_pCI);
       }
 

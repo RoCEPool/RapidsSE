@@ -52,7 +52,7 @@ Stz* P_Key          = "bKey"_Stz;
 Stz* P_Level        = "eLevel"_Stz;
 Stz* P_NonCrlSqy    = "bNonCrlSqy"_Stz;
 Stz* P_Payload      = "bPayload"_Stz;
-Stz* P_ParamOdn     = "szParamOdn"_Stz;
+Stz* P_PrmOdn       = "szPrmOdn"_Stz;
 Stz* P_Permutation  = "i_Permutation"_Stz;
 Stz* P_Pointer      = "pPointer"_Stz;
 Stz* P_ProjBump     = "nProjBump"_Stz;
@@ -792,6 +792,32 @@ Card_SubSet* Card::pDupSubCardsRecursive(i8 i_From, i8 i_Till)
   }
 
   return pCard_SubSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if card is one of given kind list                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bEither(i8 /*eCK*/ iKind_first, ...)
+{
+
+  va_list xArgs;
+
+  bool bFound = false;
+
+  va_start(xArgs, iKind_first);
+
+  eCK eKind_mustHave = (eCK) iKind_first;
+  while (CK_NONE != eKind_mustHave) {
+    if (eCard() == eKind_mustHave) {
+      bFound = true;
+      break;
+    }
+    eKind_mustHave = (eCK)va_arg(xArgs, i8);
+  }
+
+  va_end(xArgs);
+
+  return bFound;
 }
 
 /*----------------------------------------------------------------------------*/

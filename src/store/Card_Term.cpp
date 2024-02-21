@@ -414,18 +414,25 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
+void Card_Term::vCorrect_expCol(Card_Emit* p_emit_ref)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! pSymbol()->bHasFacet(SF_EXP_COL))
-     return;
-  if (pSymbol()->bHasFacet(SF_KEY_COL))
+  Symbol* pSym_term = pSymbol();
+
+  if (pSym_term->bHasFacet(SF_KEY_COL))
     return;
 
-  Symbol* pSym = pSymbol();
-  if (Card_Expr* p_expr = p_arriving->pFindExprOfSymbol(pSym)) {
-    pSym->vCastFacets(p_expr->pSymbol());
+  if (! pSym_term->bHasFacet(SF_EXP_COL))
+     return;
+
+#if 1
+  if (Card_Expr* p_expr_ref = p_emit_ref->pFindExprOfSymbol(pSym_term)) {
+#else
+    // I thnk it should be this form
+  if (Card_Expr* p_expr_ref = p_emit_ref->pFind_expr_Matches(pSym_term)) {
+#endif
+    pSym_term->vCastFacets(p_expr_ref->pSymbol());
     vMark1(MARK_CHANGED);
   }
 }

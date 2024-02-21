@@ -115,22 +115,25 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering Proper
 
-  if (AM::JOB::bHasTag(C_JO_DISABLE)) {
-    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
-    return;
-  }
+//  if (AM::JOB::bHasTag(C_JO_DISABLE)) {
+//    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
+//    return;
+//  }
 
+#if 1
+  // original
   if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
 
   // reorder the tables
   vReorderTables();
+#else
+  // attempted correction
+  if (Card_Table::nTables_reverse_foldBreak(m_pCI) >= 2)
+    vReorderTables();
+#endif
 
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
-
-  XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
-
-  m_pCI->vValidateBench();
 
   XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
   m_pCI->vValidateBench();

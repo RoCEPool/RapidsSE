@@ -363,11 +363,6 @@ SubQuery* Board::pSubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-
-  RASSERT(! m_pDeck->pFindChild(CK_SUBQUERY) ||
-          ! m_pDeck->pFindChild(CK_SUBQUERY)->pSymbol()->Y_pGet(P_Pointer) ||
-            m_pDeck->pFindChild(CK_SUBQUERY)->pSymbol()->Y_pGet(P_Pointer) == m_pSubQuery);
-
   return m_pSubQuery;
 }
 

@@ -96,7 +96,7 @@ void Card_Emit::vConcatFacets_From_key(Card_Key* p_key)
     if (! p_expr_scalar)
       continue;
 
-    pSymbol_expr_scalar->vSetFacets(p_expr_scalar->pSymbol());
+    pSymbol_expr_scalar->vApplyFacets(p_expr_scalar->pSymbol());
   }
 }
 
@@ -160,7 +160,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
 
         if (p_expr_key->bIsScalarCol()) {
-          p_expr_key->pSymbol()->vSetFacets(xCI_rpnCalc.p_term()->pSymbol());
+          p_expr_key->pSymbol()->vApplyFacets(xCI_rpnCalc.p_term()->pSymbol());
         }
 
         if (p_needed->pFind_expr_Matches(pSymbol_tblCol)) {
@@ -176,7 +176,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
         if (xCI_projection.p_expr()->bIsScalarCol()) {
-          xCI_projection.p_expr()->pSymbol()->vSetFacets(xCI_rpnCalc.p_term()->pSymbol());
+          xCI_projection.p_expr()->pSymbol()->vApplyFacets(xCI_rpnCalc.p_term()->pSymbol());
         }
 
       }

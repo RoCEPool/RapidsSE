@@ -155,7 +155,7 @@ void Dissector::vStage(i8 i_StageSpec)
     
 
   Card_Stage* p_stage = new Card_Stage;
-  p_stage->SYM(SF_STG_NO,i_StageSpec);
+  p_stage->SYM(SF_STG_NM,i_StageSpec);
 
   Card_Topology* p_stageTopo = new Card_Topology(eStageTopo);
   p_stage->vAppendChild(p_stageTopo);
@@ -172,7 +172,7 @@ void Dissector::vStage(i8 i_StageSpec)
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(), pParamsSpec->pGet(0)->iParamNmBufSize(), ' ');
       p_param->SYM(SF_NMD_COL, pParamsSpec->pGet(0)->szParamNm());
-      p_param->pSymbol()->Y_vSet(P_ParamOdn, "%1"_Stz);
+      p_param->pSymbol()->Y_vSet(P_PrmOdn, "%1"_Stz);
       p_paramList->vAppendChild(p_param);
     }
   }
@@ -1481,7 +1481,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   if (Card_As* p_as = pPop_as(p_rpnExpr)) {
     oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
-    p_expr->pSymbol()->vSetFacets(&oSymbol_nmdCol);
+    p_expr->pSymbol()->vApplyFacets(&oSymbol_nmdCol);
     delete p_as;
     p_as = nullptr;
   }
@@ -1505,7 +1505,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   if (Card_As* p_as = pPop_as(p_rpnExpr)) {
     oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
-    p_expr->pSymbol()->vSetFacets(&oSymbol_nmdCol);
+    p_expr->pSymbol()->vApplyFacets(&oSymbol_nmdCol);
     delete p_as;
     p_as = nullptr;
   }

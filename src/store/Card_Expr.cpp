@@ -176,7 +176,7 @@ Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
   p_term_new->vCast(xCast);
   p_rpnCalc_new->vAppendChild(p_term_new);
 
-  p_expr_new->pSymbol()->vSetFacets(p_term_new->pSymbol());
+  p_expr_new->pSymbol()->vApplyFacets(p_term_new->pSymbol());
 
   return p_expr_new;
 }
@@ -787,8 +787,9 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     }
   }
 
-  (void)Card::eValidate_parentEither(pCI, CK_t_EMIT, CK_c_FOLD, CK_s_INJECTABLE,
-                                     CK_s_KEY, CK_s_NEEDED, CK_STREAMKEY, CK_NONE);
+  (void)Card::eValidate_parentEither(pCI, CK_t_EMIT, CK_c_FLAT, CK_c_FOLD,
+                                          CK_s_INJECTABLE, CK_s_KEY,
+                                          CK_s_NEEDED, CK_STREAMKEY, CK_NONE);
 
   if (pCI->pAncestorFind(CK_s_KEY)) {
     //vDump(__func__);

@@ -1214,7 +1214,7 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
     case SF_SQY_PRM:    vFacet_Sqy_Prm(iInt);    break;
     case SF_SQY_RSL:    vFacet_Sqy_Rsl(iInt);    break;
     case SF_SQY_NO:     vFacet_Sqy_No(iInt);     break;
-    case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
+    case SF_STG_NM:     vFacet_Stg_Nm(iInt);     break;
     case SF_LIST_CNT:   vFacet_List_Cnt(iInt);   break;
 
     default: NEVER_REACH;
@@ -1998,21 +1998,6 @@ void Symbol::vSetFacet(eSF eFacet, Stz* szFacet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set facets                                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetFacets(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  i8 nFacets_arg = pSymbol_arg->m_nFacets;
-  for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
-    Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
-
-    vSetFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sFacet);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* does this symbol only have one facet ?                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSingleFaceted(void)
@@ -2206,7 +2191,7 @@ bool Symbol::bValidate(void)
       case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet);      break;
       case SF_SQY_PRM:     b = bIs_Sqy_Prm(szFacet);     break;
       case SF_SQY_RSL:     b = bIs_Sqy_Rsl(szFacet);     break;
-      case SF_STG_NO:      b = bIs_Stg_Nm(szFacet);      break;
+      case SF_STG_NM:      b = bIs_Stg_Nm(szFacet);      break;
       case SF_STG_CAST:    b = bIs_Stg_Cast(szFacet);    break;
       case SF_STR_FN:      b = bIs_Str_Fn(szFacet);      break;
       case SF_STR_LIT:     b = bIs_Str_Lit(szFacet);      break;
@@ -3304,9 +3289,9 @@ void Symbol::vFacet_Stg_Nm(i8 iStgNo)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_STG_NO,"S%02lld"_Stz, iStgNo);
+  vFacetSprint(SF_STG_NM,"S%02lld"_Stz, iStgNo);
 
-  RASSERT(bHasFacet(SF_STG_NO));
+  RASSERT(bHasFacet(SF_STG_NM));
 }
 
 /*----------------------------------------------------------------------------*/

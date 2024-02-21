@@ -246,7 +246,7 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
 
   vPreStage();
   vTabStage();
-  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_STG_NO), aYG_weave[eStageTopo]);
+  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_STG_NM), aYG_weave[eStageTopo]);
   vEolStage();
 
   m_i_Stage++;
