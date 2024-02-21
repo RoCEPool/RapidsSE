@@ -656,7 +656,9 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
   }
   pCI->G.p_OP->vDump(__func__);
 
-  if (! bRecreate && pCI->G.p_emit && pCI->G.p_key)
+  UNUSED(bRecreate);
+  if (//! bRecreate &&
+      pCI->G.p_emit && pCI->G.p_key)
     pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
 
 //  if (bRecreate &&
