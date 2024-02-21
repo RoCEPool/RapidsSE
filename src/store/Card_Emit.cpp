@@ -74,6 +74,23 @@ Card_Emit* Card_Emit::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Emit::vApplyCast(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_key = pCI->G.p_OP->pSub_key();
+
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
+    pCI->G.p_expr = xEmit.p_expr();
+    pCI->G.p_expr->vApplyCast(pCI);
+  }
+
+  pCI->G.p_expr = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* apply facets from given key                                                */
 /*----------------------------------------------------------------------------*/
 void Card_Emit::vApplyFacets(Card_Key* p_key)
@@ -101,23 +118,6 @@ Card_Emit* Card_Emit::pClone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return _pCard_Emit(pDupCardRecursive());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Emit::vUpdate_expCol(Card_Emit* p_arriving)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-
-    if (Card_BoolPred* p_boolPred = xKid.p_expr()->pSub_boolPred())
-      p_boolPred->vUpdate_expCol(p_arriving);
-    else
-    if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
-      p_rpnCalc->vUpdate_expCol(p_arriving);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,24 +238,6 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
     }
 
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Emit::vApplyCast(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_key = pCI->G.p_OP->pSub_key();
-
-  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
-    pCI->G.p_expr = xEmit.p_expr();
-    pCI->G.p_expr->vApplyCast(pCI);
-  }
-
-  pCI->G.p_expr = nullptr;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,6 +447,23 @@ void Card_Emit::vShortForm(String* pString)
   Card_EXPRLIST::vShortForm(pString);
   //pString->vConcat("}"_Stz);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Emit::vUpdate_expCol(Card_Emit* p_arriving)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+
+    if (Card_BoolPred* p_boolPred = xKid.p_expr()->pSub_boolPred())
+      p_boolPred->vUpdate_expCol(p_arriving);
+    else
+    if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
+      p_rpnCalc->vUpdate_expCol(p_arriving);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

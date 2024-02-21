@@ -19,14 +19,12 @@ namespace STORE
 
     static Card_Emit* pResolvePriorProjection(CardIter* pCI);
 
+    void vApplyCast(CardIter* pCI);
     void vApplyFacets(Card_Key* p_key);
-
     Card_Emit* pClone(void);
-    void vUpdate_expCol(Card_Emit* p_arriving);
-    Card_Needed* pCraftRoot_needed(CardIter* pCI);
+     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
-    void vApplyCast(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     Card_Emit* pInduct(CardIter* pCI);
     void vInject_expr_nmdCol_table(CardIter* pCI);
@@ -35,8 +33,8 @@ namespace STORE
     void vMapColumns(CardIter* pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     Card_Expr* pResolve_expr(Card_Term* p_term);
-
     void vShortForm(String* pString);
+    void vUpdate_expCol(Card_Emit* p_arriving);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
