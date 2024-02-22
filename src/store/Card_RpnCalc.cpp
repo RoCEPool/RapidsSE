@@ -138,7 +138,7 @@ void Card_RpnCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vApplyCast(CardIter* pCI)
+void Card_RpnCalc::vApplyCast(CardIter* pCI, Card_Emit* p_refElist)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -160,7 +160,7 @@ void Card_RpnCalc::vApplyCast(CardIter* pCI)
   // rpnCalc is a set of terms
   for (Kid xRpnCalc(this); xRpnCalc.bEach(CK_TERM); /**/) {
     pCI->G.p_term = xRpnCalc.p_term();
-    pCI->G.p_term->vApplyCast(pCI, /*?*/nullptr, xCast_last);
+    pCI->G.p_term->vApplyCast(pCI, /*??*/p_refElist, xCast_last);
   }
   pCI->G.p_term = nullptr;
 

@@ -166,7 +166,7 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_indexList->vApplyCast(m_pCI);
 
       if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-        m_pCI->G.p_constraint->vApplyCast(m_pCI);
+        m_pCI->G.p_constraint->vApplyCast(m_pCI,/*??*/nullptr);
     }
     else {
 

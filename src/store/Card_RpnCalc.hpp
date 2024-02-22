@@ -17,12 +17,12 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
+    void vApplyCast(CardIter* pCI, Card_Emit* p_refElist);
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_RpnCalc* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vUpdate_expCol(Card_Emit* p_arriving);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vApplyCast(CardIter* pCI);
     Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstNmdCol(void);

@@ -95,15 +95,15 @@ i8 Card_Constraint::nCullMarked_rlnConj(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vApplyCast(CardIter *pCI)
+void Card_Constraint::vApplyCast(CardIter *pCI, Card_Emit* p_refElist)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vApplyCast(pCI,/*??*/nullptr);
+    pCI->G.p_boolPred->vApplyCast(pCI,/*??*/p_refElist);
   else
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vApplyCast(pCI);
+    pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/p_refElist);
 }
 
 /*----------------------------------------------------------------------------*/

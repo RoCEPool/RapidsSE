@@ -306,7 +306,7 @@ void Card_Expr::vApplyCast(CardIter* pCI)
 
   TypeId xTypeId_save = xCast().m_xTypeId;
 
-  pCI->G.p_rpnCalc->vApplyCast(pCI);
+  pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/nullptr);
 
 
 

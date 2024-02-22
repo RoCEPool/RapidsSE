@@ -17,15 +17,12 @@ namespace STORE
    ~Card_Constraint(void) noexcept(false);
 
     void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
+    void vApplyCast(CardIter *pCI, Card_Emit* p_refElist);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
-    i8 nCullMarked_rlnConj(Stz* szWithMark);
-
-    void vApplyCast(CardIter *pCI);
-
+    i8   nCullMarked_rlnConj(Stz* szWithMark);
     void vResolve_colNm_From_colSym(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
-
   };
 
   Card_Constraint* _pCard_Constraint(void* aAddr);

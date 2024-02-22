@@ -627,7 +627,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       pCI->G.p_boolPred->vApplyCast(pCI,/*??*/nullptr);
     else
     if ((pCI->G.p_rpnCalc = pCI->G.p_OP->pSub_rpnCalc()))
-      pCI->G.p_rpnCalc->vApplyCast(pCI);
+      pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/nullptr);
   }
 
   pCI->G.p_OP->vDump(__func__);

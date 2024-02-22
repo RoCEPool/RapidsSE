@@ -215,7 +215,7 @@ void Card_Bound::vApplyCast(CardIter *pCI)
   RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vApplyCast(pCI, /*?*/nullptr, xCast_last);
+    xKid.p_term()->vApplyCast(pCI, /*??*/nullptr, xCast_last);
   }
 
 }
