@@ -429,7 +429,7 @@ void Card_BoolPred::vApplyCast(CardIter* pCI)
   RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
   for (Kid xBoolPred(this); xBoolPred.bEach(CK_TERM); /**/) {
-    xBoolPred.p_term()->vApplyCast(pCI, xCast_last);
+    xBoolPred.p_term()->vApplyCast(pCI, /*?*/nullptr, xCast_last);
   }
 }
 
