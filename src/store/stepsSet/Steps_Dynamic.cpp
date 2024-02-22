@@ -72,7 +72,7 @@ void Step::vDynamicExecute(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the trace flag
-  i8 iTrace = m_pDataStack->iPopInt(__func__);
+  bool bTrace = m_pDataStack->iPopBol(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the function pointer
@@ -89,7 +89,7 @@ void Step::vDynamicExecute(void)
   aDynamicT->m_pTub = * m_pLogicUnit->m_xpTub;
   aDynamicT->m_iErrorCode = (i8)EC_NONE;
   aDynamicT->m_eStrInflateRule = SI_STRAREA_ADR;
-  aDynamicT->m_bTrace     = iTrace;
+  aDynamicT->m_bTrace     = bTrace;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DataBuffer ?
