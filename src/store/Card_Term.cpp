@@ -355,7 +355,7 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vUpdate_expCol(Card_Emit* p_emit_ref)
+void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -364,10 +364,10 @@ void Card_Term::vUpdate_expCol(Card_Emit* p_emit_ref)
     return;
 
 #if 1
-  if (Card_Expr* p_expr_ref = p_emit_ref->pFindExprOfSymbol(pSym_term)) {
+  if (Card_Expr* p_expr_ref = p_Dic_expCol->pFindExprOfSymbol(pSym_term)) {
 #else
     // I thnk it should be this form
-  if (Card_Expr* p_expr_ref = p_emit_ref->pFind_expr_Matches(pSym_term)) {
+  if (Card_Expr* p_expr_ref = p_Dic_expCol->pFind_expr_Matches(pSym_term)) {
 #endif
     pSym_term->vApplyCastFacets(p_expr_ref->pSymbol());
     vMark1(MARK_CHANGED);

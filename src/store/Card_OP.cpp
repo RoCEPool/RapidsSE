@@ -645,7 +645,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
                                  CK_NONE));
     if (pCI->Flux.m_pArriving) {
       pCI->Flux.m_pArriving->vDump(__func__);
-      pCI->G.p_filter->vUpdate_expCol(pCI->Flux.m_pArriving);
+      RASSERT(pCI->Dic.m_p_expCol == pCI->Flux.m_pArriving)
+      pCI->G.p_filter->vUpdate_expCol(pCI->Dic.m_p_expCol);
     }
   }
   pCI->G.p_OP->vDump(__func__);

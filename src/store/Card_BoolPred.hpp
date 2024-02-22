@@ -23,7 +23,7 @@ namespace STORE
     void vBump_expCol(i8 p_conj, bool bSkipFoldExpr=false);
     bool bContains(Symbol* pGivenSymbol);
     void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
-    void vUpdate_expCol(Card_Emit* p_arriving);
+    void vUpdate_expCol(Card_Emit* p_Dic_expCol);
     i8   nCullMarked_rlnConj(Stz* szWithMark);
     bool bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn);
