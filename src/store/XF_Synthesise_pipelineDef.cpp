@@ -191,7 +191,7 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
   if (m_pCI->G.p_OP->bIsCard(CK_o_ORDAGG))
     vDebugPoint();
 
-  if (m_pCI->G.p_OP->bIsOne(CK_o_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
+  if (m_pCI->G.p_OP->bEither(CK_o_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
     return;
 
   if (m_pCI->G.p_OP->bIsCard(CK_o_SCAN)) {
@@ -501,7 +501,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 
   Card* p_OP_curr = m_pCI->G.p_OP;
 
-  if (! p_OP_curr->bIsOne(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_INFLATE,
+  if (! p_OP_curr->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_INFLATE,
                           CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_o_SCAN, CK_NONE))
     return;
 
@@ -615,7 +615,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
       vDebugPoint();
   }
 
-  if (! m_pCI->G.p_OP->bIsOne(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
+  if (! m_pCI->G.p_OP->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
     return;
 
   if (! m_pCI->Flux.m_pArriving)
@@ -752,7 +752,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (! m_pCI->G.p_OP->bIsOne(CK_o_ORDAGG, CK_NONE))
+  if (! m_pCI->G.p_OP->bEither(CK_o_ORDAGG, CK_NONE))
     return;
 
   m_pOpDef->m_pKeyMap = new KeyMap;

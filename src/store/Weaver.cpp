@@ -960,7 +960,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
         break;
 
       bool bCommented = true;
-      if (xKid.pChild()->bIsOne(CK_o_SCAN, CK_s_TABLE, CK_NONE))
+      if (xKid.pChild()->bEither(CK_o_SCAN, CK_s_TABLE, CK_NONE))
         bCommented = false;
 
       vOp(xKid.pChild(),bCommented);

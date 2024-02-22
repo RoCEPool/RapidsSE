@@ -124,9 +124,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
-  m_eConjForm = FC_NONE;
-  m_eConjRot = RC_NONE;
-
   m_pLastPrintParent = nullptr;
 
   md__SeqNo = Card::m__iSeqGen++;
@@ -369,7 +366,7 @@ bool Card::bIsOp(eCK eCard)
 }
 
 
-/*----------------------------------------------------------------------------*/
+/*------------------------------------ ----------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -523,76 +520,6 @@ Stz* Card::szCardNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return aCK_short[m_eCard];
-}
-
-/*----------------------------------------------------------------------------*/
-/* get conjunction                                                            */
-/*----------------------------------------------------------------------------*/
-eFC Card::eConjForm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_eConjForm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set conjunction                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vConjForm(eFC eConjForm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  m_eConjForm = eConjForm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear all m_eConjForm                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vConjFormClearRecursive(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vConjForm(FC_NONE);
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pChild = xKid.pChild();
-    pChild->vConjFormClearRecursive();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rotationConj                                                           */
-/*----------------------------------------------------------------------------*/
-eRC Card::eConjRot(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_eConjRot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set conjunction                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vConjRot(eRC eConjRot)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  m_eConjRot = eConjRot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear all m_eConjRot                                                       */
-/*----------------------------------------------------------------------------*/
-void Card::vConjRotClearRecursive(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vConjRot(RC_NONE);
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pChild = xKid.pChild();
-    pChild->vConjRotClearRecursive();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -756,6 +683,10 @@ Card_SubSet* Card::pDupSubCardsRecursive(i8 i_From, i8 i_Till)
 /*----------------------------------------------------------------------------*/
 bool Card::bEither(i8 /*eCK*/ iKind_first, ...)
 {
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
 
   va_list xArgs;
 
@@ -793,29 +724,18 @@ Stz* Card::szFacet(eSF eFacet_xchk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get one and only facet                                                     */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szFacet_single(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  return m_xSymbol.szFacet_single();
-}
-
-/*----------------------------------------------------------------------------*/
 /* find parent of given sub-card                                              */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindParentRecursive(Card* pSubCard)
+Card* Card::pFindParentRecursive(Card* pChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
     Card* pTestCard = xKid.pChild();
-
-    if (pSubCard == pTestCard)
+    if (pChild == pTestCard)
       return this;
 
-    Card* pParent = pTestCard->pFindParentRecursive(pSubCard);
+    Card* pParent = pTestCard->pFindParentRecursive(pChild);
     if (pParent)
       return pParent;
   }
@@ -1068,19 +988,6 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card a conjunction?                                                */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsConj(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsOne(CK_ANDCONJ, CK_RLNCONJ, CK_NOTCONJ, CK_ORCONJ, CK_NONE))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this card a construction card                                           */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsConstruction(void)
@@ -1120,42 +1027,26 @@ bool Card::bIsOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
+/* is child card the given kind?                                              */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsOne(i8 /*eCK*/ iCard, ...)
+bool Card::bIsPeek(eCK eChild0)
 {
-  // The first parameter before the varargs (...) must not undergo default
-  // argument promotion. This will occur if the enum type is smaller than
-  // a 64 bit integer. If that is the case then the result is undefined
-  // in va_start(). So let's make the first parameter an integer to avoid this.
-
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  va_list xArgs;
-
-  va_start(xArgs, iCard);
-  eCK eCard_mayBe = (eCK) iCard;
-  while (CK_NONE != eCard_mayBe) {
-
-    if (this->bIsCard(eCard_mayBe))
-      return true;
-
-    eCard_mayBe = (eCK) va_arg(xArgs, i8);
-  }
-
-  va_end(xArgs);
-
-  return false;
+  if (eChild0 == this->ePeekChild(0))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
+/* are child cards the given kinds?                                           */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsPeek(eCK eCard_1)
+bool Card::bIsPeek(eCK eChild0, eCK eChild1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eCard_1 == this->ePeekChild(0))
+  if (eChild0 == this->ePeekChild(0) && eChild1 == this->ePeekChild(1))
     return true;
   else
     return false;
@@ -1164,24 +1055,11 @@ bool Card::bIsPeek(eCK eCard_1)
 /*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsPeek(eCK eCard_1, eCK eCard_2)
+bool Card::bIsPeek(i8 i_Child, eCK eChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eCard_1 == this->ePeekChild(0) && eCard_2 == this->ePeekChild(1))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsPeek(i8 i_Child, eCK eCard_1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (eCard_1 == this->ePeekChild(i_Child))
+  if (eChild == this->ePeekChild(i_Child))
     return true;
   else
     return false;
@@ -2287,11 +2165,7 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_NOTCONJ:
     case CK_ORCONJ:
     case CK_RLNCONJ:
-
-      if (RC_NONE != m_eConjRot)
-        ((Card_CONJ*)this)->vPrint(pRibbon, iDepth);
-      else
-        vPrintCard_bySettings(pRibbon, iDepth);
+       vPrintCard_bySettings(pRibbon, iDepth);
       break;
 
     default:

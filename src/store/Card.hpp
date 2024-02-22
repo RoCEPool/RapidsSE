@@ -6,11 +6,9 @@
 #include "BASE.h"
 
 #include "eAL.h"
-#include "eFC.h"
 #include "eGC.h"
 #include "ePB.h"
 #include "eQO.h"
-#include "eRC.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eXK.h"
@@ -269,9 +267,6 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
-    eFC     m_eConjForm;  // form of conjunction
-    eRC     m_eConjRot;   // rotation of conjunction
-
     i8 md__SeqNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
@@ -324,12 +319,6 @@ namespace STORE
     Cast xCast(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
-    eFC  eConjForm(void);
-    void vConjForm(eFC eConjForm);
-    void vConjFormClearRecursive(void);
-    eRC  eConjRot(void);
-    void vConjRot(eRC eConjRot);
-    void vConjRotClearRecursive(void);
     Stz* szCoord(void);
     eCT  eCTVal(void);
 
@@ -343,9 +332,8 @@ namespace STORE
     bool  bEither(i8 /*eCK*/ iKind_first, ...);
 
     Stz*  szFacet(eSF eFacet_xchk);
-    Stz*  szFacet_single(void);
     Card* pFindCardRecursive(eCK eOfCard);
-    Card* pFindParentRecursive(Card* pSubCard);
+    Card* pFindParentRecursive(Card* pChild);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
     Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
     Card* pFindMark1Recursive(Stz* szMark1, eCK eOfCard=CK_NONE);
@@ -362,14 +350,12 @@ namespace STORE
 
     void vIncFunctionCount(void);
     bool bIsCard(eCK eCard);
-    bool bIsConj(void);
     bool bIsConstruction(void);
     bool bIsMain(void);
-    bool bIsOne(i8 /*eCK*/ iCard, ...);
     bool bIsOp(void);
-    bool bIsPeek(eCK eCard);
-    bool bIsPeek(eCK eCard_1,eCK eCard_2);
-    bool bIsPeek(i8 i_Child, eCK eCard_1);
+    bool bIsPeek(eCK eChild0);
+    bool bIsPeek(eCK eChild0, eCK eChild1);
+    bool bIsPeek(i8 i_Child, eCK eChild);
 
     i8   iItemise(void);
     void vItemise(i8 iItemise);

@@ -700,7 +700,7 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
   if (bIsBraced())
     psRpnExpr->vConcat(" }"_Stz);
 
-  if (pPeekChild()->bIsConj())
+  if (pPeekChild()->bEither(CK_ANDCONJ, CK_RLNCONJ, CK_NOTCONJ, CK_ORCONJ, CK_NONE))
     Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr,pRoot_conj());
   else
     Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr);
