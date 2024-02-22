@@ -421,13 +421,11 @@ void Card_CONJ::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s"_Stz,
+  pRibbon->vSprintSnippet(false, "%c%c%s%lld]"_Stz,
                           cMark1(),
                           cMark2(),
                           Stz::szDots(iDepth - 1),
-                          m_i_Child,
-
-                          aRC[m_eConjRot]);
+                          m_i_Child);
 
 }
 

@@ -1571,7 +1571,7 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
     return nullptr;
 
   Card_Key* p_key = nullptr;
-  if (bIsOne(CK_o_GBYAGG, CK_o_SORT, CK_o_TOP, CK_NONE)) {
+  if (bEither(CK_o_GBYAGG, CK_o_SORT, CK_o_TOP, CK_NONE)) {
     *ppColMap = new ColMap;
     p_key = pSub_key();
     RASSERT(p_key);
