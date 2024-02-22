@@ -340,7 +340,20 @@ i8 MultiplicationExpr::iCalcDecimalPrecision(Parser::QueryNode *pChild1,
   ASSERT(iPrecision1 > 0);
   ASSERT(iPrecision2 > 0);
 
-  i8 iVal = iPrecision1 + iPrecision2 + 1;
+  // NOTE: SQL Server defines the precision of arg1 * arg2 as:
+  //          p1 + p2 + 1
+  //       However it is not clear to me why there is a +1 on the end.
+  //       Take the simple example of 9 * 9. We are multiplying two
+  //       values with a precision of 1 and the result has a precision
+  //       of 2. It cannot ever have a precision of 3.
+  //       Even the values 0.9 * 0.9 has a result of 0.81 which still
+  //       has a precision of 2, not 3.
+  //       Therefore, I decree that in RapidsSE the precision of the
+  //       result of two decimals being added will be defined as
+  //          p1 + p2
+  //       Thank you for coming to my TED talk.
+
+  i8 iVal = iPrecision1 + iPrecision2;
 
   if (iVal > C_MAX_BCD_PRECISION) {
     iVal = C_MAX_BCD_PRECISION;

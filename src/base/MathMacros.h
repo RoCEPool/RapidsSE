@@ -353,40 +353,89 @@ static inline void _DIV_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
 static inline void _MUL_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
-  union Bcd_T bcdArg1;
   union Bcd_T bcdArg2;
-  i8 iScale;
+  union Bcd_T bcdArg1;
 
   bcdArg2.m_iAsI8 = *(--(*ppaW));
   bcdArg1.m_iAsI8 = *(--(*ppaW));
+
+  // Check for nulls
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||
       bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    aDynamicT->m_iErrorCode = _OF_BCDMUL;
 
-    if (aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else {
-      i8 iScaleNew = bcdArg1.m_uScale > bcdArg2.m_uScale ? bcdArg1.m_uScale : bcdArg2.m_uScale;
-      i8 iResult = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;
-      iScale = bcdArg1.m_uScale + bcdArg2.m_uScale;
-      if (iScale != iScaleNew) {
-        bcdArg1.m_iMantissa = iResult / aDynamicT->m_iaPow10[iScale - iScaleNew - 1];
-        bcdArg1.m_uScale = iScaleNew + 1;
-        *(*ppaW)++ = bcdArg1.m_iAsI8;
-        vRoundBcd(ppaW);
-      }
-      else {
-        bcdArg1.m_iMantissa = iResult;
-        bcdArg1.m_uScale = iScaleNew;
-       *(*ppaW)++ = bcdArg1.m_iAsI8;
-       }
-    }
+  const i8 iPrecMax = C_MAX_BCD_PRECISION;
+
+  // Extract the precision and scale of each operand
+  i8 iPrecArg1  = iPrecision_signed(bcdArg1.m_iMantissa);
+  i8 iPrecArg2  = iPrecision_signed(bcdArg2.m_iMantissa);
+  i8 iScaleArg1 = (i8) bcdArg1.m_uScale;
+  i8 iScaleArg2 = (i8) bcdArg2.m_uScale;
+
+  // Calc theoretical precision & scale of the operation
+  i8 iPrecOp  = iPrecArg1 + iPrecArg2;
+  i8 iScaleOp = iScaleArg1 + iScaleArg2;
+
+  // NOTE: SQL Server defines the precision of arg1 * arg2 as:
+  //          p1 + p2 + 1
+  //       However it is not clear to me why there is a +1 on the end.
+  //       Take the simple example of 9 * 9. We are multiplying two
+  //       values with a precision of 1 and the result has a precision
+  //       of 2. It cannot ever have a precision of 3.
+  //       Even the values 0.9 * 0.9 has a result of 0.81 which still
+  //       has a precision of 2, not 3.
+  //       Therefore, I decree that in RapidsSE the precision of the
+  //       result of two decimals being added will be defined as
+  //          p1 + p2
+  //       Thank you for coming to my TED talk.
+
+
+
+  // This is an early definitive check to see if the result won't fit.
+  // The actual precision of the result may be 1 less than that allowed for.
+  // We will check that more definitively soon.
+  //
+  // This allows us to do the multiplication without worrying about
+  // overflows. We can do this safely because the number of bits in
+  // each mantissa is less than the number of bits in a 64 bit integer.
+  if (iPrecOp > iPrecMax + 1) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
+
+  // Do the multiplication and work out how many digits there are.
+  i8 iMantissaResult = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;
+  i8 iResultDigits = iPrecision_signed(iMantissaResult);
+
+  if (iResultDigits > iPrecMax) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // NOTE 2: If the precision does not fit we are not going to try and
+  //         remove scale to make the integral part fit because if we
+  //         do this with the mantissas then the result can be wildly
+  //         wrong. To do this properly we would need to calculate the
+  //         precise result in a wider integer class (e.g. 128 bits) and
+  //         then remove enough fractional digits until the result would
+  //         fit into the current Bcd_T type.
+  //
+  // if iPrepOp - iScaleOp > iPrecMax then no amount of rounding will
+  // make the value fit (because the integral value is just too large).
+  // However if the above test is false then we should be able to remove
+  // some or all fractional digits to make the integral part fit.
+
+  union Bcd_T bcdResult;
+  bcdResult.m_iMantissa = iMantissaResult;
+  bcdResult.m_uScale = bcdArg1.m_uScale + bcdArg2.m_uScale;
+  bcdResult.m_iSpare = 0;
+
+  *(*ppaW)++ = bcdResult.m_iAsI8;
 }
 
 static inline void _NEG_BCD(i8** ppaW, struct Dynamic_T* aDynamicT)
