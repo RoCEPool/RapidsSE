@@ -237,11 +237,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Fun1_[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Fun1_[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("Fun2[]"_Stz)) {
     pCurrentWord->vEncodeCall("Fun2[].set"_Stz);
     EXIT();

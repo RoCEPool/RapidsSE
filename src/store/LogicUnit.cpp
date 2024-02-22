@@ -222,7 +222,6 @@ LogicUnit::LogicUnit(void)
 
   m_afFun0 = nullptr;
   m_afFun1 = nullptr;
-  m_afFun1_ = nullptr;
   m_afFun2 = nullptr;
   m_afFun3 = nullptr;
   m_afFun4 = nullptr;

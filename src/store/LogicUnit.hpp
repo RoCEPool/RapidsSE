@@ -203,7 +203,6 @@ namespace STORE
 
     bool (*m_afFun0)(void*);
     bool (*m_afFun1)(void*);
-    bool (*m_afFun1_)(void*);
     bool (*m_afFun2)(void*);
     bool (*m_afFun3)(void*);
     bool (*m_afFun4)(void*);

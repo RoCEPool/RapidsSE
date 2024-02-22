@@ -39,11 +39,6 @@ void Step::vAddSteps_Fun(void)
   vAddStep("Fun1[].set"_Stz,  &Step::vFun1Set);
   vAddStep("Fun1[].setup"_Stz,  &Step::vFun1Setup);
 
-  vAddStep("Fun1_[]"_Stz,      &Step::vFun1_Get);
-  vAddStep("Fun1_[].get"_Stz,  &Step::vFun1_Get);
-  vAddStep("Fun1_[].set"_Stz,  &Step::vFun1_Set);
-  vAddStep("Fun1_[].setup"_Stz,  &Step::vFun1_Setup);
-
   vAddStep("Fun2[]"_Stz,      &Step::vFun2Get);
   vAddStep("Fun2[].get"_Stz,  &Step::vFun2Get);
   vAddStep("Fun2[].isNotNull"_Stz,  &Step::vFun2IsNotNull);
@@ -210,85 +205,6 @@ void Step::vFun1Setup(void)
   #endif
 
   #endif
-
-  if ( m_pLogicUnit->m_afFun0 )
-    m_pDataStack->vPushInt(true);
-  else
-    m_pDataStack->vPushInt(false);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Fun1_[].get -- get Fun1                                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vFun1_Get(void)
-{
-  ENTRY();
-
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun1_);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Fun1_[].set -- set Fun1_                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vFun1_Set(void)
-{
-  ENTRY();
-
-  i8 iFun = m_pDataStack->iPopInt(__func__);
-
-  m_pLogicUnit->m_afFun1_ = (bool (*)(void*)) iFun;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Fun1_[].setup -- setup Fun1_                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vFun1_Setup(void)
-{
-  ENTRY();
-
-#ifdef WITH_COMBINEDOP_SE
-  Stream* pStream = m_pOp->pStream();
-  i8 iStage = pStream->pStage()->i_Stage();
-
-    #ifdef WITH_FLAT_STAGE1
-      if (iStage == 1)
-        m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage1[1];
-    #endif
-
-    #ifdef WITH_FLAT_STAGE2
-  if (iStage == 1)
-        m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage1[1];
-  if (iStage == 2)
-        m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage2[1];
-    #endif
-
-    #ifdef WITH_FLAT_STAGE3
-  if (iStage == 1)
-        m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage1[1];
-  if (iStage == 2)
-        m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage2[1];
-  if (iStage == 3)
-        m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage3[1];
-    #endif
-
-  #ifdef WITH_FLAT_STAGE4
-  if (iStage == 1)
-    m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage1[1];
-  if (iStage == 2)
-    m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage2[1];
-  if (iStage == 3)
-    m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage3[1];
-  if (iStage == 3)
-     m_pLogicUnit->m_afFun1_ =  (bool (*)(void*))stage4[1];
-  #endif
-
-#endif
 
   if ( m_pLogicUnit->m_afFun0 )
     m_pDataStack->vPushInt(true);
