@@ -411,7 +411,7 @@ void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_refElist)
+void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -429,7 +429,7 @@ void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_refElist)
   RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
   for (Kid xBoolPred(this); xBoolPred.bEach(CK_TERM); /**/) {
-    xBoolPred.p_term()->vApplyCast(pCI, /*??*/p_refElist, xCast_last);
+    xBoolPred.p_term()->vApplyCast(pCI, /*??*/p_Elist_ref, xCast_last);
   }
 }
 

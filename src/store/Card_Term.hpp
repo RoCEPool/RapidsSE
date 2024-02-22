@@ -22,7 +22,7 @@ namespace STORE
 
     static void vItemise_colNm(CardIter* pCI);
 
-    void vApplyCast(CardIter* pCI, Card_Emit* p_refList, Cast& rxCast_last);
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_last);
     void vBump_ordCol(eSF eFacet, i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);

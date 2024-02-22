@@ -105,11 +105,11 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_refList, Cast& rxCast_last)
+void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_last)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(! p_refList);
+  RASSERT(! p_Elist_ref);
 
   Symbol* pSymbol_term = pSymbol();
 

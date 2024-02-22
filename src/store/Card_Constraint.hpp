@@ -17,7 +17,7 @@ namespace STORE
    ~Card_Constraint(void) noexcept(false);
 
     void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
-    void vApplyCast(CardIter *pCI, Card_Emit* p_refElist);
+    void vApplyCast(CardIter *pCI, Card_Emit* p_Elist_ref);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     i8   nCullMarked_rlnConj(Stz* szWithMark);
     void vResolve_colNm_From_colSym(CardIter* pCI);

@@ -17,7 +17,7 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
-    void vApplyCast(CardIter* pCI, Card_Emit* p_refElist);
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref);
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_RpnCalc* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
