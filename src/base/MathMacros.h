@@ -117,8 +117,17 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   bcdArg2.m_iAsI8 = *(--(*ppaW));
   bcdArg1.m_iAsI8 = *(--(*ppaW));
 
+  // Check for nulls
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      bcdArg1.m_iAsI8 == C_DATUM_NULL ||
+      bcdArg2.m_iAsI8 == C_DATUM_NULL) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
   const i8 iPrecMax = C_MAX_BCD_PRECISION;
 
+  // Extract the precision and scale of each operand
   i8 iPrecArg1  = iPrecision(bcdArg1.m_iMantissa);
   i8 iPrecArg2  = iPrecision(bcdArg2.m_iMantissa);
   i8 iScaleArg1 = (i8) bcdArg1.m_uScale;
@@ -146,137 +155,153 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 //    printf("iPrecOp = %lld\n", iPrecOp);
 //    printf("iScaleOp = %lld\n", iScaleOp);
 
-
   // How many digits in the result?
   // We add +1 because an overflow to the next digit could occur
   i8 iIntegralPrecResult = _MAX_I8(iIntegralPrec1, iIntegralPrec2) + 1;
 
 //    printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult);
 
-  if (aDynamicT->m_iErrorCode != EC_NONE ||
-    bcdArg1.m_iAsI8 == C_DATUM_NULL ||
-    bcdArg2.m_iAsI8 == C_DATUM_NULL) {
+  // This is an early definitive check to see if the result won't fit.
+  // We've already added 1 to the integral precision for a potential
+  // overflow to the next digit, and here we are checking if this value is
+  // also greater than 1 more of the maximum supported precision. If so
+  // then the value will never fit, regardless of whether the potential
+  // overflow occurs or not.
+  if (iIntegralPrecResult > iPrecMax + 1) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
     *(*ppaW)++ = C_DATUM_NULL;
-
-  } else {
-
-    if (iIntegralPrecResult > iPrecMax + 1) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-
-    } else {
-      // Need to work out the actual number of integral digits
-      // in the result. We will use this to further check for
-      // precision overflow, as well as determine the biggest
-      // scale we can support for this result before rounding.
-
-      // To check for this potential integral overflow we first
-      // rescale all args to the smaller of the two scales. Then
-      // we subtract arg1 from the smallest value with
-      // iIntegralResult digits and compare this to arg2.
-      // All values need to be in the same scale.
-
-      i8 iSmallerScale = _MIN_I8(iScaleArg1, iScaleArg2);
-
-      union Bcd_T bcdUpperBound;
-      union Bcd_T bcdTemp1;
-      union Bcd_T bcdTemp2;
-      i1 iRoundedUp = 0;
-
-      if (aDynamicT->m_iErrorCode == EC_NONE) {
-        bcdUpperBound.m_iSpare = 0;
-        bcdUpperBound.m_uScale = 0;
-        bcdUpperBound.m_iMantissa = aDynamicT->m_iaPow10[iIntegralPrecResult - 1];
-        *(*ppaW)++ = bcdUpperBound.m_iAsI8;
-        vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
-        bcdUpperBound.m_iAsI8 = *(--(*ppaW));
-      }
-
-      if (aDynamicT->m_iErrorCode == EC_NONE) {
-        *(*ppaW)++ = bcdArg1.m_iAsI8;
-        vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
-        bcdTemp1.m_iAsI8 = *(--(*ppaW));
-      }
-
-      if (aDynamicT->m_iErrorCode == EC_NONE) {
-        *(*ppaW)++ = bcdArg2.m_iAsI8;
-        vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
-        bcdTemp2.m_iAsI8 = *(--(*ppaW));
-      }
-
-//          printf("bcdUpperBound = %lld\n", bcdUpperBound.m_iMantissa)
-//          printf("bcdTemp1 = %lld\n", bcdTemp1.m_iMantissa);
-//          printf("bcdTemp2 = %lld\n", bcdTemp2.m_iMantissa);
-
-
-      if (aDynamicT->m_iErrorCode == EC_NONE &&
-          bcdUpperBound.m_iMantissa - bcdTemp1.m_iMantissa > bcdTemp2.m_iMantissa) {
-        // No overflow will occur.
-        // The actual integral digits is one less
-        --iIntegralPrecResult;
-      }
-    }
-
-//        printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult);
-
-
-    // We can now do a hard check for precision overflow
-    if (aDynamicT->m_iErrorCode == EC_NONE && iIntegralPrecResult > iPrecMax) {
-      aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-    }
-
-    // And we can now calculate the scale of the result,
-    // and any rounding/truncation that may be required.
-    // The scale is the smaller of the theoretical operation
-    // scale, and the max precision minus the num digits in the
-    // integral part (accounting for possible overflow).
-
-    i8 iScaleResult = _MIN_I8(iScaleOp, iPrecMax - iIntegralPrecResult);
-    if (iScaleResult > C_MAX_BCD_SCALE) {
-      iScaleResult = C_MAX_BCD_SCALE;
-    }
-
-//        printf("iScaleResult = %lld\n", iScaleResult);
-
-    // When we calculate the result we will convert and round
-    // the arguments to have a scale of iScaleResult before
-    // they are added. When they are rounded to this scale it
-    // is possible that both values are rounded up, which will
-    // give a final result that is off by 1. So we need to adjust
-    // for that.
-
-    i1 iRoundedUp1 = 0;
-    i1 iRoundedUp2 = 0;
-
-    // Now we can scale and round the arguments to the desired scale
-    if (aDynamicT->m_iErrorCode == EC_NONE) {
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      vRescaleBcdToScale(ppaW, aDynamicT, iScaleResult, &iRoundedUp1);
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-    }
-
-    if (aDynamicT->m_iErrorCode == EC_NONE) {
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      vRescaleBcdToScale(ppaW, aDynamicT, iScaleResult, &iRoundedUp2);
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-    }
-
-    if (aDynamicT->m_iErrorCode == EC_NONE) {
-
-//          printf("bcdArg1 = %lld\n", bcdArg1.m_iMantissa);
-//          printf("bcdArg2 = %lld\n", bcdArg2.m_iMantissa);
-//          printf("\n\n");
-
-      // We've already checked that this won't overflow
-      bcdArg1.m_iMantissa =   bcdArg1.m_iMantissa
-                            + bcdArg2.m_iMantissa
-                            - (iRoundedUp1 & iRoundedUp2);
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-
-    } else {
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-
+    return;
   }
+
+  // Now we need to work out the *actual* number of integral digits
+  // in the result. We will use this to do a definite check for
+  // precision overflow, as well as determine the biggest
+  // scale we can support for this result before any scale rounding.
+
+  // We need to determine if the operation will cause an overflow
+  // to another digit of precision. e.g. The result of 9.8 + 0.2
+  // will overflow from 2 to 3 digits of precision whereas the
+  // result of 9.8 + 0.1 will remain with 2 digits of precision.
+
+  // To check for this potential integral overflow we first
+  // rescale all args to the smaller of the two scales. Then
+  // we subtract arg1 from the smallest value with
+  // iIntegralResult digits and compare this to arg2.
+  // All values need to be in the same scale.
+
+  i8 iSmallerScale = _MIN_I8(iScaleArg1, iScaleArg2);
+
+  union Bcd_T bcdUpperBound;
+  union Bcd_T bcdTemp1;
+  union Bcd_T bcdTemp2;
+  i1 iRoundedUp = 0;
+
+  bcdUpperBound.m_iSpare = 0;
+  bcdUpperBound.m_uScale = 0;
+  bcdUpperBound.m_iMantissa = aDynamicT->m_iaPow10[iIntegralPrecResult - 1];
+  *(*ppaW)++ = bcdUpperBound.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
+  bcdUpperBound.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
+  bcdTemp1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
+  bcdTemp2.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+//  printf("bcdUpperBound = %lld\n", bcdUpperBound.m_iMantissa);
+//  printf("bcdTemp1 = %lld\n", bcdTemp1.m_iMantissa);
+//  printf("bcdTemp2 = %lld\n", bcdTemp2.m_iMantissa);
+
+
+  if (bcdUpperBound.m_iMantissa - bcdTemp1.m_iMantissa > bcdTemp2.m_iMantissa) {
+    // No overflow will occur.
+    // The actual integral digits is one less
+    --iIntegralPrecResult;
+  }
+
+//  printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult);
+
+
+  // We now know exactly how many integral digits we need in the result,
+  // so we can now do a hard check for precision overflow
+  if (iIntegralPrecResult > iPrecMax) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // And we can now calculate the scale of the result,
+  // and any rounding/truncation that may be required.
+  // The scale is the smaller of the theoretical operation
+  // scale, and the max precision minus the num digits in the
+  // integral part (accounting for possible overflow).
+  //
+  // (basically we will reduce the scale to fit all of the digits
+  // in the integral result if necessary).
+
+  i8 iScaleResult = _MIN_I8(iScaleOp, iPrecMax - iIntegralPrecResult);
+  if (iScaleResult > C_MAX_BCD_SCALE) {
+    iScaleResult = C_MAX_BCD_SCALE;
+  }
+
+//  printf("iScaleResult = %lld\n", iScaleResult);
+
+  // When we calculate the result we will convert and round
+  // the arguments to have a scale of iScaleResult before
+  // they are added. When they are rounded to this scale it
+  // is possible that both values are rounded up, which will
+  // give a final result that is off by 1. So we need to adjust
+  // for that.
+
+  i1 iRoundedUp1 = 0;
+  i1 iRoundedUp2 = 0;
+
+  // Now we can scale and round the arguments to the desired scale
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, iScaleResult, &iRoundedUp1);
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  vRescaleBcdToScale(ppaW, aDynamicT, iScaleResult, &iRoundedUp2);
+  bcdArg2.m_iAsI8 = *(--(*ppaW));
+
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+  
+//  printf("bcdArg1 = %lld\n", bcdArg1.m_iMantissa);
+//  printf("bcdArg2 = %lld\n", bcdArg2.m_iMantissa);
+//  printf("\n\n");
+
+  // We've already checked that this won't overflow
+  bcdArg1.m_iMantissa =   bcdArg1.m_iMantissa
+                        + bcdArg2.m_iMantissa
+                        - (iRoundedUp1 & iRoundedUp2);
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
 }
 
 static inline void _DIV_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)

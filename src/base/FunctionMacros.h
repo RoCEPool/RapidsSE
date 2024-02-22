@@ -472,22 +472,24 @@ static inline void _INX_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       iArg1 == C_DATUM_NULL) {
     *((*ppaW)++) = C_DATUM_NULL;
+    return;
   }
-  else {
-    i8 iInCount = *(--(*ppaW));
-    while(iInCount--) {
-      *((*ppaW)++) = iArg1;
-      _EQ_BCDBCD(ppaW, aDynamicT);
-      bFilterResult = *(--(*ppaW));
-      if (bFilterResult) {
-        break;
-        }
+
+  i8 iInCount = *(--(*ppaW));
+  while(iInCount--) {
+    *((*ppaW)++) = iArg1;
+    _EQ_BCDBCD(ppaW, aDynamicT);
+    bFilterResult = *(--(*ppaW));
+    if (bFilterResult) {
+      break;
     }
-    while(iInCount-- > 0) {
-      --(*ppaW);
-    }
-    *((*ppaW)++) = bFilterResult;
   }
+
+  while(iInCount-- > 0) {
+    --(*ppaW);
+  }
+
+  *((*ppaW)++) = bFilterResult;
 }
 
 static inline void _INX_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
