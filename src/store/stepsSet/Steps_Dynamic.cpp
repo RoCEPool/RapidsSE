@@ -122,7 +122,7 @@ void Step::vDynamicExecute(void)
     if (aDynamicT->m_iHasOrdAggRow) {
       aDynamicT->m_iOrdAggDone = 1;
       if (aDynamicT->m_iIndexScan)
-        iResult = m_pLogicUnit->m_afFun2(aDynamicT);
+        iResult = m_pLogicUnit->m_afIndexHandler(aDynamicT);
       else
         iResult = m_pLogicUnit->m_afPdsHandler(aDynamicT);
     }

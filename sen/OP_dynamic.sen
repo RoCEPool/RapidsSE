@@ -131,7 +131,7 @@
   Dynamic[].IsIndexScan@ if
 
     // execute the indexScan handler function
-    nullptr Fun2[] 0 Dynamic[].execute assert
+    nullptr IndexHandler[] 0 Dynamic[].execute assert
 
     // execute the EOS handler function
     nullptr Fun3[] 1 Dynamic[].execute assert
@@ -290,7 +290,7 @@
 
   LibInfo[].findFunctions
 
-  Fun2[].isNotNull if
+  IndexHandler[].isNotNull if
     true dynamic[].IsIndexScan!
   then
 

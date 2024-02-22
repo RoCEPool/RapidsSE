@@ -220,9 +220,9 @@ LogicUnit::LogicUnit(void)
   m_bRcvdChildExit = false;
   m_bRcvdEnd = false;
 
-  m_afCrwHandler = nullptr;
-  m_afPdsHandler = nullptr;
-  m_afFun2 = nullptr;
+  m_afCrwHandler   = nullptr;
+  m_afPdsHandler   = nullptr;
+  m_afIndexHandler = nullptr;
   m_afFun3 = nullptr;
   m_afFun4 = nullptr;
 

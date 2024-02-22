@@ -37,10 +37,10 @@ void Step::vAddSteps_Fun(void)
   vAddStep("PdsHandler[].get"_Stz,  &Step::vPdsHandlerGet);
   vAddStep("PdsHandler[].set"_Stz,  &Step::vPdsHandlerSet);
 
-  vAddStep("Fun2[]"_Stz,      &Step::vFun2Get);
-  vAddStep("Fun2[].get"_Stz,  &Step::vFun2Get);
-  vAddStep("Fun2[].isNotNull"_Stz,  &Step::vFun2IsNotNull);
-  vAddStep("Fun2[].set"_Stz,  &Step::vFun2Set);
+  vAddStep("IndexHandler[]"_Stz,      &Step::vIndexHandlerGet);
+  vAddStep("IndexHandler[].get"_Stz,  &Step::vIndexHandlerGet);
+  vAddStep("IndexHandler[].isNotNull"_Stz,  &Step::vIndexHandlerIsNotNull);
+  vAddStep("IndexHandler[].set"_Stz,  &Step::vIndexHandlerSet);
 
   vAddStep("Fun3[]"_Stz,      &Step::vFun3Get);
   vAddStep("Fun3[].get"_Stz,  &Step::vFun3Get);
@@ -104,39 +104,39 @@ void Step::vPdsHandlerSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun2[].get -- get Fun2                                                     */
+/* IndexHandler[].get -- get IndexHandler                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vFun2Get(void)
+void Step::vIndexHandlerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun2);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afIndexHandler);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun2[].isNotNull -- fun2 is not null                                       */
+/* IndexHandler[].isNotNull -- IndexHandler is not null                       */
 /*----------------------------------------------------------------------------*/
-void Step::vFun2IsNotNull(void)
+void Step::vIndexHandlerIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_afFun2 ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_afIndexHandler ? 1 : 0);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun2[].set -- set Fun2                                                     */
+/* IndexHandler[].set -- set IndexHandler                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vFun2Set(void)
+void Step::vIndexHandlerSet(void)
 {
   ENTRY();
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_pLogicUnit->m_afFun2 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afIndexHandler = (bool (*)(void*)) iFun;
 
   EXIT();
 }
