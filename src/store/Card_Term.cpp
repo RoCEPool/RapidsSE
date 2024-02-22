@@ -130,46 +130,6 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vBumpKeyCol(i8 nBy)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 iKeyCol = pSymbol()->iTo_ordinal(SF_KEY_COL);
-
-  this->SYM(SF_KEY_COL,iKeyCol + nBy);
-
-  if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
-    i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
-    this->pSymbol()->Y_vSet(P_BumpedBy, nBumpedBy + nBy);
-  }
-  else {
-    this->pSymbol()->Y_vSet(P_BumpedBy, (i8)nBy);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vBump_expCol(i8 nBy)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 iStmCol = pSymbol()->iTo_ordinal(SF_EXP_COL);
-
- SYM(SF_EXP_COL, iStmCol + nBy);
-
-  if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
-    i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
-    this->pSymbol()->Y_vSet(P_BumpedBy, nBumpedBy + nBy);
-  }
-  else {
-    this->pSymbol()->Y_vSet(P_BumpedBy, (i8)nBy);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_refList, Cast& rxCast_last)
@@ -226,7 +186,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_refList, Cast& rxCast_las
     if (szFacet_colType->bSame("VARCHAR"_Stz))
       rxCast_last.m_xTypeId = TypeId::xIdOf(CT_VARCHAR);
     else
-     NEVER_REACH
+      NEVER_REACH
 
     return;
   }
@@ -300,29 +260,42 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_refList, Cast& rxCast_las
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate bound                                                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-ePB Card_Term::eEvalBound(void)
+void Card_Term::vBumpKeyCol(i8 nBy)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eRO eRelOp = this->eEvalRelOp();
+  i8 iKeyCol = pSymbol()->iTo_ordinal(SF_KEY_COL);
 
-  switch (eRelOp) {
-    case RO_LESS_THAN:     return PB_UBOUND;
-    case RO_LESS_EQUAL:    return PB_UBOUND;
-    case RO_EQUAL_TO:      return PB_EBOUND;
-    case RO_GREATER_EQUAL: return PB_LBOUND;
-    case RO_GREATER_THAN:  return PB_LBOUND;
+  this->SYM(SF_KEY_COL,iKeyCol + nBy);
 
-    default:
-      vTrace("%s(%lld): unexpected eEval_rlnOp %lld %s\n"_Stz
-          ,__func__
-          ,(i8)__LINE__
-          ,(i8)eRelOp
-          ,aRO[eRelOp]);
-      RASSERT(0);
-      break;
+  if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
+    i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
+    this->pSymbol()->Y_vSet(P_BumpedBy, nBumpedBy + nBy);
+  }
+  else {
+    this->pSymbol()->Y_vSet(P_BumpedBy, (i8)nBy);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vBump_expCol(i8 nBy)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 iStmCol = pSymbol()->iTo_ordinal(SF_EXP_COL);
+
+ SYM(SF_EXP_COL, iStmCol + nBy);
+
+  if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
+    i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
+    this->pSymbol()->Y_vSet(P_BumpedBy, nBumpedBy + nBy);
+  }
+  else {
+    this->pSymbol()->Y_vSet(P_BumpedBy, (i8)nBy);
   }
 }
 
@@ -414,28 +387,6 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* correct stmCol                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vUpdate_expCol(Card_Emit* p_emit_ref)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Symbol* pSym_term = pSymbol();
-  if (! pSym_term->bHasFacet(SF_EXP_COL))
-     return;
-
-#if 1
-  if (Card_Expr* p_expr_ref = p_emit_ref->pFindExprOfSymbol(pSym_term)) {
-#else
-    // I thnk it should be this form
-  if (Card_Expr* p_expr_ref = p_emit_ref->pFind_expr_Matches(pSym_term)) {
-#endif
-    pSym_term->vApplyCastFacets(p_expr_ref->pSymbol());
-    vMark1(MARK_CHANGED);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete facet if                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
@@ -454,6 +405,28 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pString->vCatSprint("%s%s"_Stz, szSep, m_xSymbol.szFacet((i8)0));
+}
+
+/*----------------------------------------------------------------------------*/
+/* correct stmCol                                                             */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vUpdate_expCol(Card_Emit* p_emit_ref)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Symbol* pSym_term = pSymbol();
+  if (! pSym_term->bHasFacet(SF_EXP_COL))
+    return;
+
+#if 1
+  if (Card_Expr* p_expr_ref = p_emit_ref->pFindExprOfSymbol(pSym_term)) {
+#else
+    // I thnk it should be this form
+  if (Card_Expr* p_expr_ref = p_emit_ref->pFind_expr_Matches(pSym_term)) {
+#endif
+    pSym_term->vApplyCastFacets(p_expr_ref->pSymbol());
+    vMark1(MARK_CHANGED);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

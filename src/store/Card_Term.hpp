@@ -23,19 +23,17 @@ namespace STORE
     static void vItemise_colNm(CardIter* pCI);
     static void vItemStrip_colNm(CardIter* pCI);
 
+    void vApplyCast(CardIter* pCI, Card_Emit* p_refList, Cast& rxCast_last);
     void vBumpKeyCol(i8 nBy=1);
     void vBump_expCol(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
-    void vApplyCast(CardIter* pCI, Card_Emit* p_refList, Cast& rxCast_last);
-    void vUpdate_expCol(Card_Emit* p_emit_ref);
-    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    ePB  eEvalBound(void);
+     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-
     void vShortForm(String* pString, Stz* szSep);
+    void vUpdate_expCol(Card_Emit* p_emit_ref);
 
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);

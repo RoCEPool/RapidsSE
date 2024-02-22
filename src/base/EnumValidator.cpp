@@ -80,7 +80,6 @@
 #include "eOR.h"
 #include "eOT.h"
 #include "ePA.h"
-#include "ePB.h"
 #include "ePD.h"
 #include "ePE.h"
 #include "ePF.h"
@@ -252,7 +251,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aOT[OT_ENUMS - 1],          "aOT[]"_Stz,     "eOT"_Stz },
       {       aPA[PA_PRM_ENUMS - 1],          "aPA[]"_Stz,     "ePA"_Stz },
       { aPA_short[PA_PRM_ENUMS - 1],    "aPA_short[]"_Stz,     "ePA"_Stz },
-      {           aPB[PB_ENUMS - 1],          "aPB[]"_Stz,     "ePB"_Stz },
       {           aPD[PD_ENUMS - 1],          "aPD[]"_Stz,     "ePD"_Stz },
       {           aPE[PE_ENUMS - 1],          "aPE[]"_Stz,     "ePE"_Stz },
       {          aPF[PF_ENUMT_ - 1],          "aPF[]"_Stz,     "ePF"_Stz },
