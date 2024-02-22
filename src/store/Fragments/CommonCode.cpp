@@ -410,22 +410,22 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
     bool bPayload = true;
-    i8 iKeyKind;
+    //i8 iKeyKind;
 
     // create the indexDef
-    aDynamicT->m_xIndexInfoPL.m_aIndexDef = aExtern_IndexDefNew(__INDEX_COLUMNS__, (void*)&xColumnInfo);
+    //aDynamicT->m_xIndexInfoPL.m_aIndexDef = aExtern_IndexDefNew(__INDEX_COLUMNS__, (void*)&xColumnInfo);
 
     // create the indexTree
-    aDynamicT->m_xIndexInfoPL.m_aIndexTree = aExtern_IndexTreeNew(aDynamicT->m_xIndexInfoPL.m_aIndexDef, &iKeyKind);
+    //aDynamicT->m_xIndexInfoPL.m_aIndexTree = aExtern_IndexTreeNew(aDynamicT->m_xIndexInfoPL.m_aIndexDef, &iKeyKind);
 
     // do we have a payload ?
     if (__COLUMNS_OUT__ == __INDEX_COLUMNS__)
       bPayload = false;
 
     // set the entry kind
-    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload, iKeyKind);
+    //vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload, iKeyKind);
 
-		//vExtern_IndexNew(aDynamicT, 2, (void*)&xColumnInfo, bPayload);
+		vExtern_IndexNew(aDynamicT, __INDEX_COLUMNS__, (void*)&xColumnInfo, bPayload);
 
 #endif
 
