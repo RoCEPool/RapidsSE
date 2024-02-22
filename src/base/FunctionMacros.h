@@ -169,53 +169,32 @@ static inline void _BET_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   union Bcd_T bcdArg2;
   union Bcd_T bcdArg3;
 
-  bcdArg1.m_iAsI8 = *(--(*ppaW));
-  bcdArg2.m_iAsI8 = *(--(*ppaW));
-  bcdArg3.m_iAsI8 = *(--(*ppaW));
+  bcdArg1.m_iAsI8 = *(--(*ppaW)); // The operand
+  bcdArg2.m_iAsI8 = *(--(*ppaW)); // The upper limit
+  bcdArg3.m_iAsI8 = *(--(*ppaW)); // The lower limit
+  i8 iCmp;
+
   if (aDynamicT->m_iErrorCode != EC_NONE ||
       bcdArg1.m_iAsI8 == C_DATUM_NULL ||
       bcdArg2.m_iAsI8 ==  C_DATUM_NULL ||
       bcdArg3.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
 
-      if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-        *(*ppaW)++ = bcdArg1.m_iAsI8;
-        *(*ppaW)++ = bcdArg2.m_iAsI8;
-        vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-        bcdArg2.m_iAsI8 = *(--(*ppaW));
-        bcdArg1.m_iAsI8 = *(--(*ppaW));
-      }
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+  iCmp = iCompareBcds(ppaW, aDynamicT);
+  if (iCmp == 1) {
+    // bcdArg1 is larger than the upper bound (bcdArg2)
+    *((*ppaW)++) = 0;
+    return;
+  }
 
-      if (bcdArg1.m_uScale != bcdArg3.m_uScale) {
-        *(*ppaW)++ = bcdArg1.m_iAsI8;
-        *(*ppaW)++ = bcdArg3.m_iAsI8;
-        vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-        bcdArg3.m_iAsI8 = *(--(*ppaW));
-        bcdArg1.m_iAsI8 = *(--(*ppaW));
-      }
-
-      if (bcdArg2.m_uScale != bcdArg3.m_uScale) {
-        *(*ppaW)++ = bcdArg2.m_iAsI8;
-        *(*ppaW)++ = bcdArg3.m_iAsI8;
-        vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-        bcdArg3.m_iAsI8 = *(--(*ppaW));
-        bcdArg2.m_iAsI8 = *(--(*ppaW));
-        }
-
-      if (bcdArg1.m_iMantissa > bcdArg2.m_iMantissa) {
-        *((*ppaW)++) = 0;
-      }
-    else {
-      if (bcdArg1.m_iMantissa < bcdArg3.m_iMantissa)    {
-        *((*ppaW)++) = 0;
-      }
-      else {
-        *((*ppaW)++) = 1;
-      }
-    }
- }
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  *(*ppaW)++ = bcdArg3.m_iAsI8;
+  iCmp = iCompareBcds(ppaW, aDynamicT);
+  *((*ppaW)++) = iCmp >= 0;  // bcdArg1 is >= lower bound (bcdArg3)
 }
 
 static inline void _BET_FLTFLT(i8** ppaW, struct Dynamic_T* aDynamicT)

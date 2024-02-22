@@ -176,8 +176,9 @@ static inline void vRescaleBcdMaxOfTwo(i8** ppaW, struct Dynamic_T* aDynamicT) {
 // fractional part and raise each to the maximum scale before they are also
 // compared as integers.
 //
-// We then return -1, 0 or 1 depending on whether arg1 is smaller, both
-// arguments are equal, or arg2 is smaller.
+// We then return -1, 0 or 1 depending on whether arg1 (the last argument
+// pushed onto the stack) is smaller, both arguments are equal, or arg2
+// (the first argument pushed onto the stack) is smaller.
 //
 // Note: BCD arguments cannot be NULL.
 static inline i8 iCompareBcds(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -187,8 +188,8 @@ static inline i8 iCompareBcds(i8** ppaW, struct Dynamic_T* aDynamicT)
   union Bcd_T bcdTmp1;
   union Bcd_T bcdTmp2;
 
-  bcdArg1.m_iAsI8 = *(--(*ppaW));
   bcdArg2.m_iAsI8 = *(--(*ppaW));
+  bcdArg1.m_iAsI8 = *(--(*ppaW));
 
   i8 iIntegral1;
   i8 iIntegral2;
@@ -207,7 +208,7 @@ static inline i8 iCompareBcds(i8** ppaW, struct Dynamic_T* aDynamicT)
   iIntegral2 = bcdTmp2.m_iMantissa - (bRoundedUp ? 1 : 0);
 
   if (iIntegral1 != iIntegral2) {
-    return (iIntegral2 < iIntegral1 ? -1 : 1);
+    return (iIntegral1 < iIntegral2 ? -1 : 1);
   }
 
   // Integral parts are equal, so extract the fractional parts and compare.
@@ -240,7 +241,7 @@ static inline i8 iCompareBcds(i8** ppaW, struct Dynamic_T* aDynamicT)
     return 0;
   }
 
-  return (bcdTmp2.m_iMantissa < bcdTmp1.m_iMantissa ? -1 : 1);
+  return (bcdTmp1.m_iMantissa < bcdTmp2.m_iMantissa ? -1 : 1);
 }
 
 
