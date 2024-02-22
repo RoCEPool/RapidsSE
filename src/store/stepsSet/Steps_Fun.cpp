@@ -33,9 +33,9 @@ void Step::vAddSteps_Fun(void)
   vAddStep("CrwHandler[].get"_Stz,  &Step::vCrwHandlerGet);
   vAddStep("CrwHandler[].set"_Stz,  &Step::vCrwHandlerSet);
 
-  vAddStep("Fun1[]"_Stz,      &Step::vFun1Get);
-  vAddStep("Fun1[].get"_Stz,  &Step::vFun1Get);
-  vAddStep("Fun1[].set"_Stz,  &Step::vFun1Set);
+  vAddStep("PdsHandler[]"_Stz,      &Step::vPdsHandlerGet);
+  vAddStep("PdsHandler[].get"_Stz,  &Step::vPdsHandlerGet);
+  vAddStep("PdsHandler[].set"_Stz,  &Step::vPdsHandlerSet);
 
   vAddStep("Fun2[]"_Stz,      &Step::vFun2Get);
   vAddStep("Fun2[].get"_Stz,  &Step::vFun2Get);
@@ -52,7 +52,7 @@ void Step::vAddSteps_Fun(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* CrwHandler[].get -- get CrwHandler                                          */
+/* CrwHandler[].get -- get CrwHandler                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwHandlerGet(void)
 {
@@ -64,7 +64,7 @@ void Step::vCrwHandlerGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* CrwHandler[].set -- set CrwHandler                                                     */
+/* CrwHandler[].set -- set CrwHandler                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwHandlerSet(void)
 {
@@ -78,27 +78,27 @@ void Step::vCrwHandlerSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun1[].get -- get Fun1                                                     */
+/* PdsHandler[].get -- get PdsHandler                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFun1Get(void)
+void Step::vPdsHandlerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun1);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afPdsHandler);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun1[].set -- set Fun1                                                     */
+/* PdsHandler[].set -- set PdsHandler                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFun1Set(void)
+void Step::vPdsHandlerSet(void)
 {
   ENTRY();
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_pLogicUnit->m_afFun1 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afPdsHandler = (bool (*)(void*)) iFun;
 
   EXIT();
 }

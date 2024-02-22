@@ -215,7 +215,7 @@
     exit
   then
 
-  Pds[] Fun1[] 0 dynamic[].execute not if
+  Pds[] PdsHandler[] 0 dynamic[].execute not if
     to errorCode
 
     // cleanup

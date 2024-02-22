@@ -124,7 +124,7 @@ void Step::vDynamicExecute(void)
       if (aDynamicT->m_iIndexScan)
         iResult = m_pLogicUnit->m_afFun2(aDynamicT);
       else
-        iResult = m_pLogicUnit->m_afFun1(aDynamicT);
+        iResult = m_pLogicUnit->m_afPdsHandler(aDynamicT);
     }
   }
   *******************************************************/

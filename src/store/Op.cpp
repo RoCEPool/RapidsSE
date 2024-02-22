@@ -1865,7 +1865,7 @@ void Op::vSpawnTask(void)
       pTask->m_pLogicUnit->m_afFun0 = afFun0;
     bool (*afFun1)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
     if (afFun1)
-      pTask->m_pLogicUnit->m_afFun1 = afFun1;
+      pTask->m_pLogicUnit->m_afPdsHandler = afFun1;
     bool (*afFun2)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
     if (afFun2)
       pTask->m_pLogicUnit->m_afFun2 = afFun2;

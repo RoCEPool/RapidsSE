@@ -619,9 +619,9 @@ void vDdlLockAssertNone(void);
   // reg fun
   void vCrwHandlerGet(void);
   void vCrwHandlerSet(void);
-  void vFun1Call(void);
-  void vFun1Get(void);
-  void vFun1Set(void);
+  void vPdsHandlerCall(void);
+  void vPdsHandlerGet(void);
+  void vPdsHandlerSet(void);
   void vFun2Get(void);
   void vFun2IsNotNull(void);
   void vFun2Set(void);

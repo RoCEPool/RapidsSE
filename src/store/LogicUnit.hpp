@@ -202,7 +202,7 @@ namespace STORE
     bool m_bRcvdEnd;
 
     bool (*m_afCrwHandler)(void*);
-    bool (*m_afFun1)(void*);
+    bool (*m_afPdsHandler)(void*);
     bool (*m_afFun2)(void*);
     bool (*m_afFun3)(void*);
     bool (*m_afFun4)(void*);

@@ -221,7 +221,7 @@ LogicUnit::LogicUnit(void)
   m_bRcvdEnd = false;
 
   m_afCrwHandler = nullptr;
-  m_afFun1 = nullptr;
+  m_afPdsHandler = nullptr;
   m_afFun2 = nullptr;
   m_afFun3 = nullptr;
   m_afFun4 = nullptr;
