@@ -448,12 +448,14 @@ void CardIter::G_vClearRegisters(void)
   Sqy.m_pTerm_corrCol  = nullptr;
 
   Flux.m_pArriving  = nullptr;
+  Dic.m_p_expCol    = nullptr;
+  Dic.m_p_keyCol    = nullptr;
 
-  Next.m_pProject      = nullptr;
+  Next.m_pProject   = nullptr;
   Next.m_pEmitted   = nullptr;
 
-  Early.m_pOP_root     = nullptr;
-  Early.m_pOP_leaf     = nullptr;
+  Early.m_pOP_root  = nullptr;
+  Early.m_pOP_leaf  = nullptr;
   Early.m_pNeeded_later = nullptr;
 
   StreamOrder.m_pStreamKey  = nullptr;
@@ -2056,8 +2058,10 @@ void CardIter::vSnapFluxArriving(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (Card_Emit* p_emit = G.p_OP->pSub_emit())
+  if (Card_Emit* p_emit = G.p_OP->pSub_emit()) {
     Flux.m_pArriving = p_emit;
+    Dic.m_p_expCol = p_emit;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

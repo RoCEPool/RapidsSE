@@ -68,13 +68,6 @@ void XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(void)
     if (! m_pCI->Flux.m_pArriving)
       continue;
 
-//    if (m_pCI->G.p_OP->bIsCard(CK_o_GBYAGG) &&
-//        m_pCI->G.p_OP->pSub_level()->pSymbol()->Y_iGet(P_Level) != AL_PARTITION)
-//      continue;
-
-//    if (m_pCI->G.p_OP->bIsCard(CK_o_KEYEXISTS))
-//      vDebugPoint();
-    //m_pCI->Flux.m_pArriving->vDump(__func__);
     vX_colNm_To_expCol();
   }
 
@@ -108,10 +101,10 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
     if (!p_term_colNm->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    if (Card_Expr* p_expr_arriving =
-        pCI->Flux.m_pArriving->pFind_expr_Matches(p_term_colNm->pSymbol())) {
+    if (Card_Expr* p_expr_defn =
+        pCI->Dic.m_p_expCol->pFind_expr_Matches(p_term_colNm->pSymbol())) {
       p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
-      p_term_colNm->pSymbol()->vApplyCastFacetsPpy(p_expr_arriving->pSymbol());
+      p_term_colNm->pSymbol()->vApplyCastFacetsPpy(p_expr_defn->pSymbol());
     }
 
     if (Card_Expr* p_expr_ancestor = (Card_Expr*)pCI->pAncestorFind(CK_EXPR)) {

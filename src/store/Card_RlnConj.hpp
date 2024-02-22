@@ -19,7 +19,7 @@ namespace STORE
    ~Card_RlnConj(void) noexcept(false);
 
     Card_RlnConj* pClone(void);
-     void vEnsure_Cast(CardIter* pCI, Card_Emit* p_Elist_ref);
+     void vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref);
 
     Card_Term* pGetCorrCol(void);
     char cGetTable_a(void);

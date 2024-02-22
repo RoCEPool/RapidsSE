@@ -108,18 +108,24 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_last)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(p_Elist_ref);
 
-  Symbol* pSymbol_term = pSymbol();
+/*??*/
+//  RASSERT(! pCI->Flux.m_pArriving ||
+//          (pCI->Flux.m_pArriving == p_Elist_ref &&
+//              pCI->Dic.m_p_expCol == p_Elist_ref));
+
+  Symbol* pSym_term = pSymbol();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pSymbol_term->bIs_Lit()) {
-    rxCast_last.m_xTypeId = pSymbol_term->xCast().m_xTypeId;
+  if (pSym_term->bIs_Lit()) {
+    rxCast_last.m_xTypeId = pSym_term->xCast().m_xTypeId;
     return;
   }
 
-  if (pSymbol_term->bHasFacet(SF_COL_TYPE)) {
-    Stz* szFacet_colType = pSymbol_term->szFacet(SF_COL_TYPE);
+  if (pSym_term->bHasFacet(SF_COL_TYPE)) {
+    Stz* szFacet_colType = pSym_term->szFacet(SF_COL_TYPE);
 
     if (szFacet_colType->bSame("BOOLEAN"_Stz))
       rxCast_last.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
@@ -162,8 +168,8 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_l
     return;
   }
 
-  if (pSymbol_term->bHasFacet(SF_AGG_FN)) {
-    Stz* szFacet_aggFn = pSymbol_term->szFacet(SF_AGG_FN);
+  if (pSym_term->bHasFacet(SF_AGG_FN)) {
+    Stz* szFacet_aggFn = pSym_term->szFacet(SF_AGG_FN);
 
     if (szFacet_aggFn->bSame("COUNT"_Stz)) {
       rxCast_last.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
@@ -198,37 +204,36 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_l
     if (! pCI->Flux.m_pArriving)
       return;
 
-    Card_Expr* p_expr_matching = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+    Card_Expr* p_expr_matching = pCI->Dic.m_p_expCol->pFind_expr_Matches(pSym_term);
     if (! p_expr_matching)
-      p_expr_matching = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
+      p_expr_matching = pCI->G.p_key->pFind_expr_Matches(pSym_term);
     if (! p_expr_matching)
       return;
 
-    pSymbol_term->vApplyCast(p_expr_matching->pSymbol()->xCast());
-    rxCast_last = pSymbol_term->xCast();
+    pSym_term->vApplyCast(p_expr_matching->pSymbol()->xCast());
+    rxCast_last = pSym_term->xCast();
     return;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Expr *p_expr_matched = nullptr;
-  if (pSymbol_term->bHasFacet(SF_KEY_COL) && ! pSymbol_term->bHasFacet(SF_EXP_COL)) {
-    p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
+  if (pSym_term->bHasFacet(SF_KEY_COL) && ! pSym_term->bHasFacet(SF_EXP_COL)) {
+    p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSym_term);
   }
   else {
-    RASSERT(! pCI->Flux.m_pArriving || pCI->Flux.m_pArriving == p_Elist_ref);
     if (pCI->Flux.m_pArriving)
-      p_expr_matched = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
+      p_expr_matched = pCI->Dic.m_p_expCol->pFind_expr_Matches(pSym_term);
     if (! p_expr_matched && pCI->G.p_injectable)
-      p_expr_matched = pCI->G.p_injectable->pFind_expr_Matches(pSymbol_term);
+      p_expr_matched = pCI->G.p_injectable->pFind_expr_Matches(pSym_term);
   }
   if (! p_expr_matched)
     return;
 
-  pSymbol_term->vApplyCast(p_expr_matched->pSymbol()->xCast());
+  pSym_term->vApplyCast(p_expr_matched->pSymbol()->xCast());
 
-  if (pSymbol_term->bHasType())
-    rxCast_last = pSymbol_term->xCast();
+  if (pSym_term->bHasType())
+    rxCast_last = pSym_term->xCast();
 }
 
 /*----------------------------------------------------------------------------*/

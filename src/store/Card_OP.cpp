@@ -655,7 +655,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
+  pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pCI->G.p_emit;
+  pCI->Dic.m_p_expCol   = pCI->G.p_emit;
 
   if (CK_o_KEYEXISTS    == eCard_OP ||
       CK_o_KEYNOTEXISTS == eCard_OP ||

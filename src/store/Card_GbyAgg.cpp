@@ -93,7 +93,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   if (pCI->pPrevChild()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Flux.m_pArriving = pSub_emit();
+    pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pSub_emit();
 
    // pCI->vPrintBoard(__func__,__LINE__);
     return;
