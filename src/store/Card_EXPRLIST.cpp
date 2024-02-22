@@ -52,7 +52,7 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
     while ((xCI2.bEach(CK_TERM))) {
 
       if (xCI2.p_term()->pSymbol()->bHasFacet(SF_KEY_COL)) {
-        xCI2.p_term()->vBumpKeyCol();
+        xCI2.p_term()->vBump_ordCol(SF_KEY_COL);
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
       }
@@ -78,7 +78,7 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
     Kid xCI2(p_rpnCalc);
     while (xCI2.bEach(CK_TERM)) {
       if (xCI2.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-        xCI2.p_term()->vBump_expCol();
+        xCI2.p_term()->vBump_ordCol(SF_EXP_COL);
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
       }

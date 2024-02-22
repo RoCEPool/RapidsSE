@@ -213,7 +213,7 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
       return C_CONTINUE_RECURSION;
 
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
-      p_term->vBump_expCol(nBumpBy);
+      p_term->vBump_ordCol(SF_EXP_COL,nBumpBy);
       p_term->vMark1(MARK_CHANGED);
     }
 

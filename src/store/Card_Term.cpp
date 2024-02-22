@@ -97,33 +97,6 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
   pCI->bLambdaWalk(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
 
 }
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vItemStrip_colNm(CardIter* pCI)
-{
-  _static_
-
-  auto bfItemStrip_colNm = [pCI](Card* pCard)
-  {
-    UNUSED(pCI);
-
-    if (! pCard->bIsCard(CK_TERM))
-      return C_CONTINUE_RECURSION;
-
-    //pCI->vAncestorDump(pCard);
-
-    if (!pCard->pSymbol()->bHasFacet(SF_NMD_COL))
-      return C_CONTINUE_RECURSION;
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->bLambdaWalk(pCI->G.pDeck,CK_NONE,bfItemStrip_colNm);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -262,13 +235,13 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_refList, Cast& rxCast_las
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vBumpKeyCol(i8 nBy)
+void Card_Term::vBump_ordCol(eSF eFacet, i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyCol = pSymbol()->iTo_ordinal(SF_KEY_COL);
+  i8 iKeyCol = pSymbol()->iTo_ordinal(eFacet);
 
-  this->SYM(SF_KEY_COL,iKeyCol + nBy);
+  this->SYM(eFacet,iKeyCol + nBy);
 
   if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
@@ -277,38 +250,6 @@ void Card_Term::vBumpKeyCol(i8 nBy)
   else {
     this->pSymbol()->Y_vSet(P_BumpedBy, (i8)nBy);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vBump_expCol(i8 nBy)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 iStmCol = pSymbol()->iTo_ordinal(SF_EXP_COL);
-
- SYM(SF_EXP_COL, iStmCol + nBy);
-
-  if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
-    i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
-    this->pSymbol()->Y_vSet(P_BumpedBy, nBumpedBy + nBy);
-  }
-  else {
-    this->pSymbol()->Y_vSet(P_BumpedBy, (i8)nBy);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Card_Term::eEvalRelOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eRO eRelOp = pSymbol()->eEval_rlnOp();
-
-  return eRelOp;
 }
 
 /*----------------------------------------------------------------------------*/

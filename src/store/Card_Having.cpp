@@ -100,7 +100,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   {
 
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
-      p_term->vBump_expCol();
+      p_term->vBump_ordCol(SF_EXP_COL);
 
     return true;
   };
