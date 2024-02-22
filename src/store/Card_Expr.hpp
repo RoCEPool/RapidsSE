@@ -26,12 +26,12 @@ namespace STORE
                                          char cTblSyn, i8 iTblCol);
     static Card_Expr* pCast_expr_term_expCol(Card_Term* p_term);
 
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref);
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsure_expr_Has_nmdCol(i8 iExpCol);
-    void vApplyCast(CardIter* pCI);
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
     Symbol* pFirst_nmdCol(void);

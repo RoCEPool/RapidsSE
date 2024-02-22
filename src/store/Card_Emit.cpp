@@ -76,7 +76,7 @@ Card_Emit* Card_Emit::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vApplyCast(CardIter *pCI)
+void Card_Emit::vApplyCast(CardIter *pCI, Card_Emit* p_Elist_ref)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -84,7 +84,7 @@ void Card_Emit::vApplyCast(CardIter *pCI)
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
     pCI->G.p_expr = xEmit.p_expr();
-    pCI->G.p_expr->vApplyCast(pCI);
+    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Elist_ref);
   }
 
   pCI->G.p_expr = nullptr;

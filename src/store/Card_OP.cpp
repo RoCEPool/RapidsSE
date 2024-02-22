@@ -533,7 +533,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       pCI->G.p_emit->vEnsure_expr_Has_nmdCol();
       if (pCI->Flux.m_pArriving) {
         pCI->G.p_key = pCI->G.p_OP->pSub_key();
-        pCI->G.p_emit->vApplyCast(pCI);
+        pCI->G.p_emit->vApplyCast(pCI,/*??*/nullptr);
         pCI->G.p_key = nullptr;
       }
       pCI->G.p_emit->vIncFunctionCount();
@@ -547,7 +547,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
       pCI->G.p_emit->vEnsure_expr_Has_nmdCol();
       if (pCI->Flux.m_pArriving)
-        pCI->G.p_emit->vApplyCast(pCI);
+        pCI->G.p_emit->vApplyCast(pCI,/*??*/nullptr);
       pCI->G.p_emit->vIncFunctionCount();
       break;
 
@@ -663,7 +663,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
     vUpdate_expCol(pCI->Flux.m_pArriving);
 
   if (CK_o_SORT== eCard_OP) {
-    pCI->G.p_key->vApplyCast(pCI);
+    pCI->G.p_key->vApplyCast(pCI,/*??*/nullptr);
   }
 }
 

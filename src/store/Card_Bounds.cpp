@@ -104,12 +104,12 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vApplyCast(CardIter *pCI)
+void Card_Bounds::vApplyCast(CardIter *pCI, Card_Emit* p_Elist_ref)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
-    xKid.p_bound()->vApplyCast(pCI);
+    xKid.p_bound()->vApplyCast(pCI, /*??*/p_Elist_ref);
 }
 
 /*----------------------------------------------------------------------------*/

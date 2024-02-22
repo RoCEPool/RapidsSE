@@ -289,7 +289,7 @@ void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vApplyCast(CardIter* pCI)
+void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -306,7 +306,7 @@ void Card_Expr::vApplyCast(CardIter* pCI)
 
   TypeId xTypeId_save = xCast().m_xTypeId;
 
-  pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/nullptr);
+  pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/p_Elist_ref);
 
 
 

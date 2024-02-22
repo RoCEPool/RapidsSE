@@ -208,12 +208,12 @@ bool Card_IndexList::bUsesSqyRsl(void)
 /*----------------------------------------------------------------------------*/
 /* ensure types for all stream-columns                                        */
 /*----------------------------------------------------------------------------*/
-void Card_IndexList::vApplyCast(CardIter *pCI)
+void Card_IndexList::vApplyCast(CardIter *pCI, Card_Emit* p_Elist_ref)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/)
-    xKid.p_index()->vApplyCast(pCI);
+    xKid.p_index()->vApplyCast(pCI,/*??*/p_Elist_ref);
 }
 
 /*----------------------------------------------------------------------------*/
