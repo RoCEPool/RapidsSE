@@ -627,8 +627,8 @@ void vDdlLockAssertNone(void);
   void vIndexHandlerSet(void);
   void vEosHandlerGet(void);
   void vEosHandlerSet(void);
-  void vFun4Get(void);
-  void vFun4Set(void);
+  void vStreamDefHandlerGet(void);
+  void vStreamDefHandlerSet(void);
 
   // grid
   void vGridDumpInfo(void);

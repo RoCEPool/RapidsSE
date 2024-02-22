@@ -732,7 +732,7 @@
     "iPdsRowHandler_" [op].stageNm@ str.cat LibInfo[].find to PdsHandler[]
     "iIndexHandler_"  [op].stageNm@ str.cat LibInfo[].find to IndexHandler[]
     "iEosHandler_"    [op].stageNm@ str.cat LibInfo[].find to EosHandler[]
-    "iStreamDef_"     [op].stageNm@ str.cat LibInfo[].find to Fun4[]
+    "iStreamDef_"     [op].stageNm@ str.cat LibInfo[].find to StreamDefHandler[]
 ;
 
 /*----------------------------------------------------------------------------*/

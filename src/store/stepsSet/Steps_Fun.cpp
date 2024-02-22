@@ -46,9 +46,9 @@ void Step::vAddSteps_Fun(void)
   vAddStep("EosHandler[].get"_Stz,  &Step::vEosHandlerGet);
   vAddStep("EosHandler[].set"_Stz,  &Step::vEosHandlerSet);
 
-  vAddStep("Fun4[]"_Stz,      &Step::vFun4Get);
-  vAddStep("Fun4[].get"_Stz,  &Step::vFun4Get);
-  vAddStep("Fun4[].set"_Stz,  &Step::vFun4Set);
+  vAddStep("StreamDefHandler[]"_Stz,      &Step::vStreamDefHandlerGet);
+  vAddStep("StreamDefHandler[].get"_Stz,  &Step::vStreamDefHandlerGet);
+  vAddStep("StreamDefHandler[].set"_Stz,  &Step::vStreamDefHandlerSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,27 +169,27 @@ void Step::vEosHandlerSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun4[].get -- get Fun4                                                     */
+/* StreamDefHandler[].get -- get StreamDefHandler                             */
 /*----------------------------------------------------------------------------*/
-void Step::vFun4Get(void)
+void Step::vStreamDefHandlerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun4);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afStreamDefHandler);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun4[].set -- set Fun4                                                     */
+/* StreamDefHandler[].set -- set StreamDefHandler                              */
 /*----------------------------------------------------------------------------*/
-void Step::vFun4Set(void)
+void Step::vStreamDefHandlerSet(void)
 {
   ENTRY();
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_pLogicUnit->m_afFun4 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afStreamDefHandler = (bool (*)(void*)) iFun;
 
   EXIT();
 }
