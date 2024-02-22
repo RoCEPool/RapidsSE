@@ -26,7 +26,7 @@ namespace STORE
                                          char cTblSyn, i8 iTblCol);
     static Card_Expr* pCast_expr_term_expCol(Card_Term* p_term);
 
-    void vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref);
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);

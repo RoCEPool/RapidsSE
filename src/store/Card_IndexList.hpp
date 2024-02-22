@@ -18,7 +18,7 @@ namespace STORE
 
     static Card_IndexList* pDerive(Table* pTable);
 
-    void vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref);
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
 
     void vChoose_index_For_crossJoin(void);
     void vChoose_index_For_indexJoin(void);

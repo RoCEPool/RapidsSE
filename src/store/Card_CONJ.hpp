@@ -18,7 +18,7 @@ namespace STORE
     bool bConjRecursive(std::function<bool(Card_CONJ* p_pred, bool bUpwards)> bfApply);
     bool bContains_sqyNo(void);
     bool bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn);
-    void vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref);
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     Stz* szGetTerm_sqyNo(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblCol(void);
     Card_Term* pGetTerm(i8 i_Term);

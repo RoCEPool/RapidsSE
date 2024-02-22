@@ -19,7 +19,7 @@ namespace STORE
 
     static Card_Emit* pResolvePriorProjection(CardIter* pCI);
 
-    void vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref);
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vApplyFacets(Card_Key* p_key);
     Card_Emit* pClone(void);
      Card_Needed* pCraftRoot_needed(CardIter* pCI);

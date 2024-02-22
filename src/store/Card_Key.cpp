@@ -153,13 +153,13 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 /*----------------------------------------------------------------------------*/
 /* ensure cast info                                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Elist_ref)
+void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     pCI->G.p_expr = xKey.p_expr();
-    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Elist_ref);
+    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
   }
 
   pCI->G.p_expr = nullptr;

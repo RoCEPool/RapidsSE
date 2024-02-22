@@ -256,12 +256,12 @@ Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vApplyCast(CardIter *pCI, Card_Emit* p_Elist_ref)
+void Card_Index::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_bounds = pSub_bounds()))
-    pCI->G.p_bounds->vApplyCast(pCI,/**/p_Elist_ref);
+    pCI->G.p_bounds->vApplyCast(pCI,/**/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/

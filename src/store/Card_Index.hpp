@@ -21,7 +21,7 @@ namespace STORE
     static Card_Index* pDerive(Index* pIndex);
 
     void vAdd_streamKey_exprs(CardIter* pCI);
-    void vApplyCast(CardIter *pCI, Card_Emit* p_Elist_ref);
+    void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
     void vDeleteBounds(void);
     bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     Index* pGetIndex(Card_TableNm* p_tableNm);
