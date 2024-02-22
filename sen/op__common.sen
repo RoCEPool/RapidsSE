@@ -728,7 +728,7 @@
 
     //[op].stageNm@ "finding functions for stage %v" str.format .
 
-    "iCrwHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun0[]
+    "iCrwHandler_" [op].stageNm@ str.cat LibInfo[].find to CrwHandler[]
     "iPdsRowHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun1[]
     "iIndexHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun2[]
     "iEosHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun3[]

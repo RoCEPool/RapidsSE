@@ -617,8 +617,8 @@ void vDdlLockAssertNone(void);
   void vFlushDerefMetrics(void);
 
   // reg fun
-  void vFun0Get(void);
-  void vFun0Set(void);
+  void vCrwHandlerGet(void);
+  void vCrwHandlerSet(void);
   void vFun1Call(void);
   void vFun1Get(void);
   void vFun1Set(void);

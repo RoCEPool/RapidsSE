@@ -29,9 +29,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Fun(void)
 {
-  vAddStep("Fun0[]"_Stz,      &Step::vFun0Get);
-  vAddStep("Fun0[].get"_Stz,  &Step::vFun0Get);
-  vAddStep("Fun0[].set"_Stz,  &Step::vFun0Set);
+  vAddStep("CrwHandler[]"_Stz,      &Step::vCrwHandlerGet);
+  vAddStep("CrwHandler[].get"_Stz,  &Step::vCrwHandlerGet);
+  vAddStep("CrwHandler[].set"_Stz,  &Step::vCrwHandlerSet);
 
   vAddStep("Fun1[]"_Stz,      &Step::vFun1Get);
   vAddStep("Fun1[].get"_Stz,  &Step::vFun1Get);
@@ -52,27 +52,27 @@ void Step::vAddSteps_Fun(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun0[].get -- get Fun0                                                     */
+/* CrwHandler[].get -- get CrwHandler                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vFun0Get(void)
+void Step::vCrwHandlerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun0);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afCrwHandler);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun0[].set -- set Fun0                                                     */
+/* CrwHandler[].set -- set CrwHandler                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vFun0Set(void)
+void Step::vCrwHandlerSet(void)
 {
   ENTRY();
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_pLogicUnit->m_afFun0 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afCrwHandler = (bool (*)(void*)) iFun;
 
   EXIT();
 }

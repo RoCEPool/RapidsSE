@@ -1860,7 +1860,7 @@ void Op::vSpawnTask(void)
  //---------------------------------------------------------
 
   if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
-    bool (*afFun0)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
+    bool (*afFun0)(void*) = pJob->pTask()->m_pLogicUnit->m_afCrwHandler;
     if (afFun0)
       pTask->m_pLogicUnit->m_afFun0 = afFun0;
     bool (*afFun1)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
