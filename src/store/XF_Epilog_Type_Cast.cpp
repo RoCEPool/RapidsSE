@@ -127,7 +127,7 @@ void XF_Epilog_Type_Cast::vCast(void)
           CK_o_INDEXSCAN == m_pCI->G.e_MainCard) {
 
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
-        m_pCI->Dic.m_p_expCol = m_pCI->G.p_emit;
+        m_pCI->Dic.m_p_expr = m_pCI->G.p_emit;
 
         m_pCI->G.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
         m_pCI->G.p_emit->vRenumberAll_expr();
@@ -146,12 +146,12 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
         m_pCI->G.p_emit->vRenumberAll_expr();
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
-        m_pCI->Dic.m_p_expCol = m_pCI->G.p_emit;
+        m_pCI->Dic.m_p_expr = m_pCI->G.p_emit;
         m_pCI->G.p_key = nullptr;
       }
       else {
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
-        m_pCI->Dic.m_p_expCol = m_pCI->G.p_emit;
+        m_pCI->Dic.m_p_expr = m_pCI->G.p_emit;
       }
 
       if ((m_pCI->G.p_streamKey = m_pCI->G.p_OP->pSub_streamKey()))

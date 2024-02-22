@@ -192,7 +192,7 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 
     if (Card_Emit* p_emit = pCI->G.p_MainCard->pSub_emit()) {
       //pCI->vPrintBoard(__func__,__LINE__);
-      pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = p_emit;
+      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
     }
   }
 

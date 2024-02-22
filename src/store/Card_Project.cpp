@@ -218,7 +218,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   //vInsertChildBefore(pCI->G.p_emit,pCI->G.p_needed);
 
-  pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pCI->G.p_emit;
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_emit;
 
  // pCI->vPrintBoard(__func__,__LINE__);
 
@@ -330,7 +330,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
-  pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 
 }
 

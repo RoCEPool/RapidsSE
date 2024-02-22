@@ -173,7 +173,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
     pCI->G_bEachMain_reverse_NONE();
   pCI->vForwards(true);
 
-  pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
   RASSERT(pCI->G_bEachMain(CK_c_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED));

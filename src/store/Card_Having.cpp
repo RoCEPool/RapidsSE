@@ -81,7 +81,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/

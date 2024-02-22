@@ -113,7 +113,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_l
 /*??*/
 //  RASSERT(! pCI->Flux.m_pArriving ||
 //          (pCI->Flux.m_pArriving == p_Elist_ref &&
-//              pCI->Dic.m_p_expCol == p_Elist_ref));
+//              pCI->Dic.m_p_expr == p_Elist_ref));
 
   Symbol* pSym_term = pSymbol();
 
@@ -204,7 +204,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_l
     if (! pCI->Flux.m_pArriving)
       return;
 
-    Card_Expr* p_expr_matching = pCI->Dic.m_p_expCol->pFind_expr_Matches(pSym_term);
+    Card_Expr* p_expr_matching = pCI->Dic.m_p_expr->pFind_expr_Matches(pSym_term);
     if (! p_expr_matching)
       p_expr_matching = pCI->G.p_key->pFind_expr_Matches(pSym_term);
     if (! p_expr_matching)
@@ -223,7 +223,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_l
   }
   else {
     if (pCI->Flux.m_pArriving)
-      p_expr_matched = pCI->Dic.m_p_expCol->pFind_expr_Matches(pSym_term);
+      p_expr_matched = pCI->Dic.m_p_expr->pFind_expr_Matches(pSym_term);
     if (! p_expr_matched && pCI->G.p_injectable)
       p_expr_matched = pCI->G.p_injectable->pFind_expr_Matches(pSym_term);
   }
@@ -355,7 +355,7 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expCol)
+void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -364,12 +364,12 @@ void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expCol)
     return;
 
 #if 1
-  if (Card_Expr* p_expr_ref = p_Dic_expCol->pFindExprOfSymbol(pSym_term)) {
+  if (Card_Expr* p_expr_dic = p_Dic_expr->pFindExprOfSymbol(pSym_term)) {
 #else
     // I thnk it should be this form
-  if (Card_Expr* p_expr_ref = p_Dic_expCol->pFind_expr_Matches(pSym_term)) {
+  if (Card_Expr* p_expr_dic = p_Dic_expr->pFind_expr_Matches(pSym_term)) {
 #endif
-    pSym_term->vApplyCastFacets(p_expr_ref->pSymbol());
+    pSym_term->vApplyCastFacets(p_expr_dic->pSymbol());
     vMark1(MARK_CHANGED);
   }
 }

@@ -38,8 +38,8 @@ namespace STORE
     } Flux;
 
     struct {
-      Card_Emit * m_p_expCol;
-      Card_Emit * m_p_keyCol;
+      Card_Emit * m_p_expr;
+      Card_Emit * m_p_key;
     } Dic;
 
     struct {

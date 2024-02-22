@@ -66,7 +66,7 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 
    pCI->Early.m_pOP_leaf = this;
 
-   pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pSub_emit();
+   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 
   // pCI->vPrintBoard(__func__,__LINE__);
 

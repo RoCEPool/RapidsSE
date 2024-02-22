@@ -107,7 +107,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
       pCI->vPrintBoard(__func__,__LINE__);
 
     }
-    pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pCI->G.p_gbyAgg->pSub_emit();
+    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_gbyAgg->pSub_emit();
   }
 
   // [project (avg)]

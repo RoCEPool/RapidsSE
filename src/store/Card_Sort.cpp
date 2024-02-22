@@ -101,7 +101,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_stream->vAppendChild(p_emit_sort);
 
-  pCI->Dic.m_p_expCol = pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/

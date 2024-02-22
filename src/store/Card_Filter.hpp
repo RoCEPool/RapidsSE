@@ -22,7 +22,7 @@ namespace STORE
     static Card_Filter* pNew(Card_Constraint* p_constraint);
 
 
-    void vUpdate_expCol(Card_Emit* p_Dic_expCol);
+    void vUpdate_expCol(Card_Emit* p_Dic_expr);
     i8 nCullMarked_rlnConj(Stz* szWithMark);
     void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_update(CardIter* pCI);

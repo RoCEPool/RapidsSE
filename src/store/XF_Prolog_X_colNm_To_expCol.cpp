@@ -102,7 +102,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn =
-        pCI->Dic.m_p_expCol->pFind_expr_Matches(p_term_colNm->pSymbol())) {
+        pCI->Dic.m_p_expr->pFind_expr_Matches(p_term_colNm->pSymbol())) {
       p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
       p_term_colNm->pSymbol()->vApplyCastFacetsPpy(p_expr_defn->pSymbol());
     }
