@@ -156,7 +156,7 @@ void XF_Epilog_Type_Cast::vCast(void)
 
       if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred())) {
         m_pCI->G.p_boolPred->vDump(__func__);
-        m_pCI->G.p_boolPred->vApplyCast(m_pCI);
+        m_pCI->G.p_boolPred->vApplyCast(m_pCI,/*??*/nullptr);
       }
 
 //      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))

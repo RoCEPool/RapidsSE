@@ -576,7 +576,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
       if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()) &&
           (pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred()))
-        pCI->G.p_boolPred->vApplyCast(pCI);
+        pCI->G.p_boolPred->vApplyCast(pCI,/*??*/nullptr);
 
       pCI->G.p_emit->vIncFunctionCount();
       break;
@@ -624,7 +624,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
   if (   CK_o_HAVING == eCard_OP
       || CK_o_WHERE  == eCard_OP) {
     if ((pCI->G.p_boolPred = pCI->G.p_OP->pSub_boolPred()))
-      pCI->G.p_boolPred->vApplyCast(pCI);
+      pCI->G.p_boolPred->vApplyCast(pCI,/*??*/nullptr);
     else
     if ((pCI->G.p_rpnCalc = pCI->G.p_OP->pSub_rpnCalc()))
       pCI->G.p_rpnCalc->vApplyCast(pCI);
