@@ -247,6 +247,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+	else if (szTerm->bSame("StartHandler[]"_Stz)) {
+		pCurrentWord->vEncodeCall("StartHandler[].set"_Stz);
+		EXIT();
+		return;
+	}
   else if (szTerm->bSame("StreamDefHandler[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamDefHandler[].set"_Stz);
     EXIT();

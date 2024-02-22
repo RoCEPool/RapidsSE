@@ -728,6 +728,7 @@
 
     //[op].stageNm@ "finding functions for stage %v" str.format .
 
+    "iStartHandler"                         LibInfo[].find to StartHandler[]
     "iCrwHandler_"    [op].stageNm@ str.cat LibInfo[].find to CrwHandler[]
     "iPdsRowHandler_" [op].stageNm@ str.cat LibInfo[].find to PdsHandler[]
     "iIndexHandler_"  [op].stageNm@ str.cat LibInfo[].find to IndexHandler[]

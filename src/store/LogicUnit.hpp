@@ -205,6 +205,7 @@ namespace STORE
     bool (*m_afPdsHandler)(void*);
     bool (*m_afIndexHandler)(void*);
     bool (*m_afEosHandler)(void*);
+		bool (*m_afStartHandler)(void*);
     bool (*m_afStreamDefHandler)(void*);
 
     s4K  m_sStringA;    // string

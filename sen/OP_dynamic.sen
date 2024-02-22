@@ -290,6 +290,8 @@
 
   LibInfo[].findFunctions
 
+  0 StartHandler[] false dynamic[].execute assert
+
   IndexHandler[].isNotNull if
     true dynamic[].IsIndexScan!
   then

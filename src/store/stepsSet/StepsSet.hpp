@@ -627,6 +627,8 @@ void vDdlLockAssertNone(void);
   void vIndexHandlerSet(void);
   void vEosHandlerGet(void);
   void vEosHandlerSet(void);
+  void vStartHandlerGet(void);
+  void vStartHandlerSet(void);
   void vStreamDefHandlerGet(void);
   void vStreamDefHandlerSet(void);
 

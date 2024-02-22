@@ -102,6 +102,15 @@ i8 iWordFlipSize(char* psSrc) {
   return iWordFlipBack(&cDst[0], 1024, psSrc);
 }
 
+/*----------------------------------------------------------------------------*/
+/* flattened function -- STARTMARKER HANDLER                                  */
+/*----------------------------------------------------------------------------*/
+i8 iStartHandler(char* psSrc) {
+
+	//printf("iStartHandler\n");
+	return 1;
+}
+
 typedef char i1;
 typedef unsigned short u2;
 typedef long long i8;
