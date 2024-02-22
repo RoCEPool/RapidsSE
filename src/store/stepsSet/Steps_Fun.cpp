@@ -30,56 +30,34 @@
 void Step::vAddSteps_Fun(void)
 {
   vAddStep("Fun0[]"_Stz,      &Step::vFun0Get);
-  vAddStep("Fun0[].call"_Stz, &Step::vFun0Call);
   vAddStep("Fun0[].get"_Stz,  &Step::vFun0Get);
   vAddStep("Fun0[].set"_Stz,  &Step::vFun0Set);
   vAddStep("Fun0[].setup"_Stz,&Step::vFun0Setup);
 
   vAddStep("Fun1[]"_Stz,      &Step::vFun1Get);
-  vAddStep("Fun1[].call"_Stz, &Step::vFun1Call);
   vAddStep("Fun1[].get"_Stz,  &Step::vFun1Get);
   vAddStep("Fun1[].set"_Stz,  &Step::vFun1Set);
   vAddStep("Fun1[].setup"_Stz,  &Step::vFun1Setup);
 
   vAddStep("Fun1_[]"_Stz,      &Step::vFun1_Get);
-  vAddStep("Fun1_[].call"_Stz, &Step::vFun1_Call);
   vAddStep("Fun1_[].get"_Stz,  &Step::vFun1_Get);
   vAddStep("Fun1_[].set"_Stz,  &Step::vFun1_Set);
   vAddStep("Fun1_[].setup"_Stz,  &Step::vFun1_Setup);
 
   vAddStep("Fun2[]"_Stz,      &Step::vFun2Get);
-  vAddStep("Fun2[].call"_Stz, &Step::vFun2Call);
   vAddStep("Fun2[].get"_Stz,  &Step::vFun2Get);
   vAddStep("Fun2[].isNotNull"_Stz,  &Step::vFun2IsNotNull);
   vAddStep("Fun2[].set"_Stz,  &Step::vFun2Set);
   vAddStep("Fun2[].setup"_Stz,&Step::vFun2Setup);
 
   vAddStep("Fun3[]"_Stz,      &Step::vFun3Get);
-  vAddStep("Fun3[].call"_Stz, &Step::vFun3Call);
   vAddStep("Fun3[].get"_Stz,  &Step::vFun3Get);
   vAddStep("Fun3[].set"_Stz,  &Step::vFun3Set);
   vAddStep("Fun3[].setup"_Stz,&Step::vFun3Setup);
 
   vAddStep("Fun4[]"_Stz,      &Step::vFun4Get);
-  vAddStep("Fun4[].call"_Stz, &Step::vFun4Call);
   vAddStep("Fun4[].get"_Stz,  &Step::vFun4Get);
   vAddStep("Fun4[].set"_Stz,  &Step::vFun4Set);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Fun0[].call -- call Fun0                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vFun0Call(void)
-{
-  ENTRY();
-
-  bool (*afFun)(void*) = m_pLogicUnit->m_afFun0;
-
-  bool b = (*afFun)(nullptr);
-  if (! b)
-    vTrace("Fun0 returned false\n"_Stz);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,24 +136,6 @@ void Step::vFun0Setup(void)
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
-
-  EXIT();
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/* Fun1[].call -- call Fun1                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vFun1Call(void)
-{
-  ENTRY();
-
-  bool (*afFun)(void*) = m_pLogicUnit->m_afFun1;
-
-  bool b = (*afFun)(nullptr);
-  if (! b)
-    vTrace("Fun1 returned false\n"_Stz);
 
   EXIT();
 }
@@ -260,22 +220,6 @@ void Step::vFun1Setup(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun1_[].call -- call Fun1_                                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vFun1_Call(void)
-{
-  ENTRY();
-
-  bool (*afFun)(void*) = m_pLogicUnit->m_afFun1_;
-
-  bool b = (*afFun)(nullptr);
-  if (! b)
-    vTrace("Fun1_ returned false\n"_Stz);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Fun1_[].get -- get Fun1                                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vFun1_Get(void)
@@ -350,24 +294,6 @@ void Step::vFun1_Setup(void)
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
-
-  EXIT();
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/* Fun2[].call -- call Fun2                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vFun2Call(void)
-{
-  ENTRY();
-
-  bool (*afFun)(void*) = m_pLogicUnit->m_afFun2;
-
-  bool b = (*afFun)(nullptr);
-  if (! b)
-    vTrace("Fun2 returned false\n"_Stz);
 
   EXIT();
 }
@@ -464,25 +390,6 @@ void Step::vFun2Setup(void)
 }
 
 
-
-
-
-/*----------------------------------------------------------------------------*/
-/* Fun3[].call -- call Fun3                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vFun3Call(void)
-{
-  ENTRY();
-
-  bool (*afFun)(void*) = m_pLogicUnit->m_afFun3;
-
-  bool b = (*afFun)(nullptr);
-  if (! b)
-    vTrace("Fun3 returned false\n"_Stz);
-
-  EXIT();
-}
-
 /*----------------------------------------------------------------------------*/
 /* Fun3[].get -- get Fun3                                                     */
 /*----------------------------------------------------------------------------*/
@@ -560,24 +467,6 @@ void Step::vFun3Setup(void)
   EXIT();
 }
 
-
-
-
-/*----------------------------------------------------------------------------*/
-/* Fun4[].call -- call Fun4                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vFun4Call(void)
-{
-  ENTRY();
-
-  bool (*afFun)(void*) = m_pLogicUnit->m_afFun4;
-
-  bool b = (*afFun)(nullptr);
-  if (! b)
-    vTrace("Fun3 returned false\n"_Stz);
-
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* Fun4[].get -- get Fun4                                                     */
