@@ -1323,6 +1323,7 @@ void Pds::vValidate(void)
 
     SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
     i8 iCount = 0;
+    UNUSED(iCount);
 
     while(pNext != nullptr) {
       iCount++;
@@ -1338,6 +1339,7 @@ void Pds::vValidate(void)
 
   SkipListBlock* pNext = pNextSLBlock(pCursor, 0);
   i8 iCount = 0;
+  UNUSED(iCount);
 
   while(pNext != nullptr) {
     iCount++;
