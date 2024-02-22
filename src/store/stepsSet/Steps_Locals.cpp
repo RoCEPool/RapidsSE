@@ -242,8 +242,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Fun3[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Fun3[].set"_Stz);
+  else if (szTerm->bSame("EosHandler[]"_Stz)) {
+    pCurrentWord->vEncodeCall("EosHandler[].set"_Stz);
     EXIT();
     return;
   }

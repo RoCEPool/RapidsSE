@@ -37,14 +37,14 @@ void Step::vAddSteps_Fun(void)
   vAddStep("PdsHandler[].get"_Stz,  &Step::vPdsHandlerGet);
   vAddStep("PdsHandler[].set"_Stz,  &Step::vPdsHandlerSet);
 
-  vAddStep("IndexHandler[]"_Stz,      &Step::vIndexHandlerGet);
-  vAddStep("IndexHandler[].get"_Stz,  &Step::vIndexHandlerGet);
-  vAddStep("IndexHandler[].isNotNull"_Stz,  &Step::vIndexHandlerIsNotNull);
-  vAddStep("IndexHandler[].set"_Stz,  &Step::vIndexHandlerSet);
+  vAddStep("IndexHandler[]"_Stz,           &Step::vIndexHandlerGet);
+  vAddStep("IndexHandler[].get"_Stz,       &Step::vIndexHandlerGet);
+  vAddStep("IndexHandler[].isNotNull"_Stz, &Step::vIndexHandlerIsNotNull);
+  vAddStep("IndexHandler[].set"_Stz,       &Step::vIndexHandlerSet);
 
-  vAddStep("Fun3[]"_Stz,      &Step::vFun3Get);
-  vAddStep("Fun3[].get"_Stz,  &Step::vFun3Get);
-  vAddStep("Fun3[].set"_Stz,  &Step::vFun3Set);
+  vAddStep("EosHandler[]"_Stz,      &Step::vEosHandlerGet);
+  vAddStep("EosHandler[].get"_Stz,  &Step::vEosHandlerGet);
+  vAddStep("EosHandler[].set"_Stz,  &Step::vEosHandlerSet);
 
   vAddStep("Fun4[]"_Stz,      &Step::vFun4Get);
   vAddStep("Fun4[].get"_Stz,  &Step::vFun4Get);
@@ -143,27 +143,27 @@ void Step::vIndexHandlerSet(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Fun3[].get -- get Fun3                                                     */
+/* EosHandler[].get -- get EosHandler                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFun3Get(void)
+void Step::vEosHandlerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun3);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afEosHandler);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun3[].set -- set Fun3                                                     */
+/* EosHandler[].set -- set EosHandler                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFun3Set(void)
+void Step::vEosHandlerSet(void)
 {
   ENTRY();
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_pLogicUnit->m_afFun3 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afEosHandler = (bool (*)(void*)) iFun;
 
   EXIT();
 }

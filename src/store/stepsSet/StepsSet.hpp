@@ -625,8 +625,8 @@ void vDdlLockAssertNone(void);
   void vIndexHandlerGet(void);
   void vIndexHandlerIsNotNull(void);
   void vIndexHandlerSet(void);
-  void vFun3Get(void);
-  void vFun3Set(void);
+  void vEosHandlerGet(void);
+  void vEosHandlerSet(void);
   void vFun4Get(void);
   void vFun4Set(void);
 

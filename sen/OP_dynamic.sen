@@ -134,7 +134,7 @@
     nullptr IndexHandler[] 0 Dynamic[].execute assert
 
     // execute the EOS handler function
-    nullptr Fun3[] 1 Dynamic[].execute assert
+    nullptr EosHandler[] 1 Dynamic[].execute assert
 
     // pipeout all Tub[]/Pot[]
     Dynamic[].hashRows@ if
@@ -159,7 +159,7 @@
 
  0 locals| errorCode |
 
-  nullptr Fun3[] 0 dynamic[].execute not if
+  nullptr EosHandler[] 0 dynamic[].execute not if
     to errorCode
     Pipein[].delete
     Tub[].deleteAllBuffers

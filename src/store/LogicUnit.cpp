@@ -223,7 +223,7 @@ LogicUnit::LogicUnit(void)
   m_afCrwHandler   = nullptr;
   m_afPdsHandler   = nullptr;
   m_afIndexHandler = nullptr;
-  m_afFun3 = nullptr;
+  m_afEosHandler   = nullptr;
   m_afFun4 = nullptr;
 
   m_sStringA  = ""_Stz;

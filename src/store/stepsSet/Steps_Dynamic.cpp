@@ -117,7 +117,7 @@ void Step::vDynamicExecute(void)
   }
 
   /***************************************************
-  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
+  if ( afFun ==  m_pLogicUnit->EosHandler ) {
     // invoke with null databuffer (ordAgg)
     if (aDynamicT->m_iHasOrdAggRow) {
       aDynamicT->m_iOrdAggDone = 1;
@@ -134,7 +134,7 @@ void Step::vDynamicExecute(void)
   iResult = afFun(aDynamicT);
 
   // EOS marker handler done ?
-  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
+  if ( afFun ==  m_pLogicUnit->m_afEosHandler ) {
     IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoPL.m_aIndexTree);
     delete pIndexTree;
     aDynamicT->m_xIndexInfoPL.m_aIndexTree = nullptr;

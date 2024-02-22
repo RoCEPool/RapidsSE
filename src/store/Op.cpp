@@ -1854,28 +1854,6 @@ void Op::vSpawnTask(void)
   if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
     pTask->m_pLogicUnit->m_xpLibInfo = pJob->pTask()->m_pLogicUnit->m_xpLibInfo;
   }
-/*
- //---------------------------------------------------------
- // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
- //---------------------------------------------------------
-
-  if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
-    bool (*afFun0)(void*) = pJob->pTask()->m_pLogicUnit->m_afCrwHandler;
-    if (afFun0)
-      pTask->m_pLogicUnit->m_afFun0 = afFun0;
-    bool (*afFun1)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
-    if (afFun1)
-      pTask->m_pLogicUnit->m_afPdsHandler = afFun1;
-    bool (*afFun2)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
-    if (afFun2)
-      pTask->m_pLogicUnit->m_afIndexHandler = afFun2;
-    bool (*afFun3)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun3;
-    if (afFun3)
-      pTask->m_pLogicUnit->m_afFun3 = afFun3;
-  }
-
-*/
-
 
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
     pTask->vDedicatedThread(true);
