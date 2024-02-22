@@ -257,6 +257,27 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
     m_xDynamicT.m_iaPow10[iIndex] = 10*m_xDynamicT.m_iaPow10[iIndex-1];
   }
 
+	//
+	// extern function pointers
+	//
+	m_xDynamicT.m_fp_vExtern_EntBufferNextEntry = nullptr;
+	m_xDynamicT.m_fp_vExtern_EntPayloadCreate = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_IndexNew = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreeBegin = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAsc = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreeInsertEnt = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_PdsRowBufferCellArray = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_RowPixNew = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_StreamDefNew = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_TubAllotRowPds = nullptr;
+	m_xDynamicT.m_fp_vExtern_TubRowPix = nullptr;
+	m_xDynamicT.m_fp_vExtern_TubRowStrSize = nullptr;
+
   _checkInitialised_(CN_DYNAMIC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
