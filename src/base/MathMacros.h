@@ -420,8 +420,7 @@ static inline void _SUB_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
     return;
   }
 
-  const i8 iPrecMax = 5;
-//  const i8 iPrecMax = C_MAX_BCD_PRECISION;
+  const i8 iPrecMax = C_MAX_BCD_PRECISION;
 
   // Extract the precision and scale of each operand
   i8 iPrecArg1  = iPrecision_signed(bcdArg1.m_iMantissa);
