@@ -145,7 +145,7 @@ bool Card_CONJ::bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJ::vEnsure_Cast(CardIter *pCI)
+void Card_CONJ::vEnsure_Cast(CardIter *pCI, Card_Emit* p_Elist_ref)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -160,16 +160,16 @@ void Card_CONJ::vEnsure_Cast(CardIter *pCI)
   switch (eCard) {
 
     case CK_ANDCONJ:
-      _pCard_AndConj(this)->vEnsure_Cast(pCI); break;
+      _pCard_AndConj(this)->vEnsure_Cast(pCI, /*??*/p_Elist_ref); break;
     case CK_NOTCONJ:
-      _pCard_NotConj(this)->vEnsure_Cast(pCI); break;
+      _pCard_NotConj(this)->vEnsure_Cast(pCI, /*??*/p_Elist_ref); break;
     case CK_ORCONJ:
-      _pCard_OrConj(this)->vEnsure_Cast(pCI);  break;
+      _pCard_OrConj(this)->vEnsure_Cast(pCI, /*??*/p_Elist_ref);  break;
     case CK_RLNCONJ:
-      _pCard_RlnConj(this)->vEnsure_Cast(pCI); break;
+      _pCard_RlnConj(this)->vEnsure_Cast(pCI, /*??*/p_Elist_ref); break;
 
     case CK_TERM:
-      _pCard_Term(this)->vApplyCast(pCI, /*??*/nullptr, xCast_last);  break;
+      _pCard_Term(this)->vApplyCast(pCI, /*??*/p_Elist_ref, xCast_last);  break;
 
     default:
       NEVER_REACH

@@ -109,8 +109,6 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_l
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(! p_Elist_ref);
-
   Symbol* pSymbol_term = pSymbol();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -218,6 +216,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref, Cast& rxCast_l
     p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSymbol_term);
   }
   else {
+    RASSERT(! pCI->Flux.m_pArriving || pCI->Flux.m_pArriving == p_Elist_ref);
     if (pCI->Flux.m_pArriving)
       p_expr_matched = pCI->Flux.m_pArriving->pFind_expr_Matches(pSymbol_term);
     if (! p_expr_matched && pCI->G.p_injectable)

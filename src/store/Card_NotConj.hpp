@@ -16,7 +16,7 @@ namespace STORE
     Card_NotConj(void);
    ~Card_NotConj(void) noexcept(false);
 
-    void vEnsure_Cast(CardIter* pCI);
+    void vEnsure_Cast(CardIter* pCI, Card_Emit* p_Elist_ref);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

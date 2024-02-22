@@ -418,7 +418,7 @@ void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_Elist_ref)
   Card_CONJ* p_conj = pRoot_conj();
 
   if (CK_TERM != p_conj->eCard()) {
-    p_conj->vEnsure_Cast(pCI);
+    p_conj->vEnsure_Cast(pCI,/*?*/p_Elist_ref);
     return;
   }
 
