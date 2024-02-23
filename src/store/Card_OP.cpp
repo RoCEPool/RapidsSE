@@ -513,8 +513,6 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
   pCI->G.p_needed     = pCI->G.p_OP->pSub_needed();
   pCI->G.p_stream     = pCI->G.p_OP->pSub_stream();
 
-  Card_Emit* p_arriving = nullptr;
-
   eCK eCard_OP = pCI->G.p_OP->eCard();
   switch (eCard_OP) {
 
