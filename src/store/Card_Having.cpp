@@ -123,7 +123,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
     pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 
     Card_Expr* p_expr_found =
-        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+        pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
     RASSERT(CT_NONE != p_expr_found->eCTVal());
 
