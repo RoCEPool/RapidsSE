@@ -608,7 +608,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
       pCI->G.p_emit->vIncFunctionCount();
 
-      pCI->G.p_OP->vDump(__func__);
+      //pCI->G.p_OP->vDump(__func__);
 
       break;
 
@@ -616,7 +616,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
     case CK_o_CAST:
     case CK_o_FILTER:
     case CK_o_INFLATE:
-      pCI->G.p_OP->vDump(__func__);
+      //pCI->G.p_OP->vDump(__func__);
       NEVER_REACH
       break;
 
@@ -638,7 +638,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
   }
 
-  pCI->G.p_OP->vDump(__func__);
+  //pCI->G.p_OP->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -656,7 +656,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
       pCI->G.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr);
     }
   }
-  pCI->G.p_OP->vDump(__func__);
+  //pCI->G.p_OP->vDump(__func__);
 
   if (pCI->G.p_emit && pCI->G.p_key)
     pCI->G.p_emit->vApplyFacets(pCI->G.p_key);

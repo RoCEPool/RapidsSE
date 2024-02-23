@@ -158,7 +158,7 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_streamKey->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
 
       if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred())) {
-        m_pCI->G.p_boolPred->vDump(__func__);
+        //m_pCI->G.p_boolPred->vDump(__func__);
         m_pCI->G.p_boolPred->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
       }
 

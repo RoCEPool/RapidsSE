@@ -101,7 +101,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  p_indexList->vDump(__func__);
+  //p_indexList->vDump(__func__);
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
