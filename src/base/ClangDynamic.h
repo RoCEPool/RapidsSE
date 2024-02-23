@@ -116,23 +116,23 @@ struct Dynamic_T
 	//
 	// extern function pointers
 	//
-	void (*m_fp_vExtern_EntBufferNextEntry)(i8);
+	void* (*m_fp_aExtern_EntBufferNextEntry)(void**,void*);
 	void (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
 
-	void (*m_fp_vExtern_IndexNew)(void*,i8,void*,bool);
-	void (*m_fp_vExtern_IndexTreeBegin)(void*,void**);
-	void (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
-	void (*m_fp_vExtern_IndexTreeInsertEnt)(i8);
+	void* (*m_fp_aExtern_IndexNew)(i8,void*,void*,bool);
+	void* (*m_fp_aExtern_IndexTreeBegin)(void*,void**);
+	void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
+	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
 
-	void (*m_fp_vExtern_PdsRowBufferCellArray)(void*,i8);
+	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);
 
-	void (*m_fp_vExtern_RowPixNew)(i8);
+	void* (*m_fp_aExtern_RowPixNew)(i8,void*);
 
-	void (*m_fp_vExtern_StreamDefNew)(i8,void*);
+	void* (*m_fp_aExtern_StreamDefNew)(i8,void*);
 
-	void (*m_fp_vExtern_TubAllotRowPds)(void*,char**,i8*,i8*);
-	void (*m_fp_vExtern_TubRowPix)(i8);
-	void (*m_fp_vExtern_TubRowStrSize)(void*,i8);
+	void* (*m_fp_aExtern_TubAllotRowPds)(void*,char**,i8*,i8*);
+	void  (*m_fp_vExtern_TubRowPix)(void*,void*);
+	void  (*m_fp_vExtern_TubRowStrSize)(void*,i8);
 };
 
 /*============================================================================*/

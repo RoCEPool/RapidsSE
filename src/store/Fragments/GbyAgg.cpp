@@ -74,7 +74,7 @@ void vGbyAggFindKeyAsc(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find key in payload index
 #ifdef WITH_CLANG
-  aEntFound = aExtern_IndexTreeFindEntryAsc(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
+  aEntFound = aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
 #endif
   if (!aEntFound) {
     // marker-end

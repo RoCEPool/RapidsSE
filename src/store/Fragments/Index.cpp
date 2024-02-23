@@ -149,7 +149,7 @@ void vIndexPositionBegin(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at beginning of the index
-  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aExtern_IndexTreeBegin(
+  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aDynamicT->m_fp_aExtern_IndexTreeBegin(
         __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
 #endif
 
@@ -286,7 +286,7 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
   //printf("moving to next index scan\n");
 
 #ifdef WITH_CLANG
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
       &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
 #endif
 

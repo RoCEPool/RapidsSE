@@ -105,9 +105,30 @@ i8 iWordFlipSize(char* psSrc) {
 /*----------------------------------------------------------------------------*/
 /* flattened function -- STARTMARKER HANDLER                                  */
 /*----------------------------------------------------------------------------*/
-i8 iStartHandler(char* psSrc) {
+i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 
-	//printf("iStartHandler\n");
+	// Initialize the function pointers to the extern "C" functions here
+
+#ifdef WITH_CLANG
+	aDynamicT->m_fp_aExtern_EntBufferNextEntry = &aExtern_EntBufferNextEntry;
+	aDynamicT->m_fp_vExtern_EntPayloadCreate = &vExtern_EntPayloadCreate;
+
+	aDynamicT->m_fp_aExtern_IndexNew = &aExtern_IndexNew;
+	aDynamicT->m_fp_aExtern_IndexTreeBegin = &aExtern_IndexTreeBegin;
+	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc = &aExtern_IndexTreeFindEntryAsc;
+	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt = &aExtern_IndexTreeInsertEnt;
+
+	aDynamicT->m_fp_aExtern_PdsRowBufferCellArray = &aExtern_PdsRowBufferCellArray;
+
+	aDynamicT->m_fp_aExtern_RowPixNew = &aExtern_RowPixNew;
+
+	aDynamicT->m_fp_aExtern_StreamDefNew = &aExtern_StreamDefNew;
+
+	aDynamicT->m_fp_aExtern_TubAllotRowPds = &aExtern_TubAllotRowPds;
+	aDynamicT->m_fp_vExtern_TubRowPix = &vExtern_TubRowPix;
+	aDynamicT->m_fp_vExtern_TubRowStrSize = &vExtern_TubRowStrSize;
+#endif
+
 	return 1;
 }
 

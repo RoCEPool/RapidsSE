@@ -208,7 +208,7 @@ void vCreatePayLoad(Dynamic_T* aDynamicT) {
     // create the payload
 
 #ifdef WITH_CLANG
-  vExtern_EntPayloadCreate(aDynamicT->m_xIndexInfoPL.m_aEntInt, __PAYLOADBYTES__);
+	aDynamicT->m_fp_vExtern_EntPayloadCreate(aDynamicT->m_xIndexInfoPL.m_aEntInt, __PAYLOADBYTES__);
 #endif
     // marker-end
 }
@@ -425,7 +425,7 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
     // set the entry kind
     //vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload, iKeyKind);
 
-		vExtern_IndexNew(aDynamicT, __INDEX_COLUMNS__, (void*)&xColumnInfo, bPayload);
+		aDynamicT->m_xIndexInfoPL.m_aIndexTree = aDynamicT->m_fp_aExtern_IndexNew(__INDEX_COLUMNS__, (void*)&xColumnInfo, aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload);
 
 #endif
 
@@ -452,7 +452,7 @@ void vPotTubRowPix(Dynamic_T* aDynamicT) {
     // marker-start
 
 #ifdef WITH_CLANG
-    void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
+    void* aRowPix = aDynamicT->m_fp_aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
     __EXTERN_ROWPIX__(__TUB_POT__, aRowPix);
 #endif
     __ROW_INFO_TO__.m_bInitialize = false;
@@ -723,7 +723,7 @@ void vEosPLPotTubEnd(Dynamic_T* aDynamicT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry
 #ifdef WITH_CLANG
-    aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+    aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
         &aDynamicT->m_xIndexInfoPL.m_aEntBuffer, aDynamicT->m_xIndexInfoPL.m_aEntInt);
 #endif
   }
@@ -764,7 +764,7 @@ void vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
   // payload traversal
 #ifdef WITH_CLANG
   aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)
-      aExtern_IndexTreeBegin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
+      aDynamicT->m_fp_aExtern_IndexTreeBegin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 #endif
 
 	if (!aDynamicT->m_iRowsProcessed)
@@ -806,7 +806,7 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - -
   // payload traversal
 #ifdef WITH_CLANG
-  aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aExtern_IndexTreeBegin(
+  aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_IndexTreeBegin(
       aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 #endif
 
@@ -1514,7 +1514,7 @@ void vStreamDefEnd(Dynamic_T* aDynamicT) {
 
   // marker-start
 #ifdef WITH_CLANG
-  aDynamicT->m_aStreamDefOut = aExtern_StreamDefNew(__COLUMNS_OUT__, (void*)&xColumnInfo);
+  aDynamicT->m_aStreamDefOut = aDynamicT->m_fp_aExtern_StreamDefNew(__COLUMNS_OUT__, (void*)&xColumnInfo);
 #endif
 
   // marker-end

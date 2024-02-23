@@ -260,21 +260,21 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	//
 	// extern function pointers
 	//
-	m_xDynamicT.m_fp_vExtern_EntBufferNextEntry = nullptr;
+	m_xDynamicT.m_fp_aExtern_EntBufferNextEntry = nullptr;
 	m_xDynamicT.m_fp_vExtern_EntPayloadCreate = nullptr;
 
-	m_xDynamicT.m_fp_vExtern_IndexNew = nullptr;
-	m_xDynamicT.m_fp_vExtern_IndexTreeBegin = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexNew = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeBegin = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAsc = nullptr;
-	m_xDynamicT.m_fp_vExtern_IndexTreeInsertEnt = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEnt = nullptr;
 
-	m_xDynamicT.m_fp_vExtern_PdsRowBufferCellArray = nullptr;
+	m_xDynamicT.m_fp_aExtern_PdsRowBufferCellArray = nullptr;
 
-	m_xDynamicT.m_fp_vExtern_RowPixNew = nullptr;
+	m_xDynamicT.m_fp_aExtern_RowPixNew = nullptr;
 
-	m_xDynamicT.m_fp_vExtern_StreamDefNew = nullptr;
+	m_xDynamicT.m_fp_aExtern_StreamDefNew = nullptr;
 
-	m_xDynamicT.m_fp_vExtern_TubAllotRowPds = nullptr;
+	m_xDynamicT.m_fp_aExtern_TubAllotRowPds = nullptr;
 	m_xDynamicT.m_fp_vExtern_TubRowPix = nullptr;
 	m_xDynamicT.m_fp_vExtern_TubRowStrSize = nullptr;
 
