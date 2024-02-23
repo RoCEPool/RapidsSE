@@ -78,6 +78,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCI->G_bIsNextMain(CK_o_WHERE) && pCI->G_bEachMain(CK_o_WHERE)) {
     if (pCarryForward->Where_preAgg.m_bSeen) {
       //pCI->Flux.m_pArriving->vDump(__func__,"Smooth where"_Stz);
+      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
       pCI->G.p_where->vSmooth(pCI, pCarryForward);
       pCI->vPrintBoard(__func__,__LINE__);
     }

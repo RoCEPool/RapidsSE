@@ -353,10 +353,10 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
       p_term1->SYM(SF_EXP_COL, (i8)1);
     }
 
-    Card_Expr* p_expr_found =
-        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+    Card_Expr* p_expr_dic =
+        pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
-    p_term1->vApplyCast_x(p_expr_found->xCast());
+    p_term1->vApplyCast_x(p_expr_dic->xCast());
 
    // pCI->vPrintBoard(__func__,__LINE__);
     return;
@@ -383,10 +383,10 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
       p_term_head->pSymbol()->vApplyCastFacets(&x_Symbol_expCol1);
     }
 
-    Card_Expr* p_expr_found =
-        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+    Card_Expr* p_expr_dic =
+        pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
-    p_term_head->vApplyCast_x(p_expr_found->xCast());
+    p_term_head->vApplyCast_x(p_expr_dic->xCast());
 
    // pCI->vPrintBoard(__func__,__LINE__);
 
