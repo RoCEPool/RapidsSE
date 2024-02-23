@@ -268,7 +268,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* sz
   while (pCI->G_bEachMain_NONE()) {
 
     if (pCI->G.p_MainCard->pSub_emit())
-      pCI->Flux.m_pArriving =
+      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
           pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
     if (pCI->G_bIsNextMain(CK_c_FOLD))
@@ -408,7 +408,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   while (pCI->G_bEachMain_NONE()) {
 
     if (pCI->G.p_MainCard->pSub_emit())
-      pCI->Flux.m_pArriving =
+      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
           pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
     if (pCI->G_bIsNextMain(CK_c_FOLD))
