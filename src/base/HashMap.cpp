@@ -192,11 +192,12 @@ void HashMap::vDump(void)
   }
   vTrace("\n"_Stz);
 
-  vTrace("Crw: %lld, HashMapSlot: %lld, Row: %lld, TaskLock: %lld\n"_Stz,
+  vTrace("Crw: %lld, Csv: %lld, HashMapSlot: %lld, Row: %lld, TaskLock: %lld\n"_Stz,
          iaBI[1],
          iaBI[2],
          iaBI[3],
-         iaBI[4]);
+         iaBI[4],
+         iaBI[5]);
 #endif
 }
 

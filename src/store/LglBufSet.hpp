@@ -36,7 +36,6 @@ namespace STORE
 
     Footer* aFooter(void);
   };
-  static i8 iLglBufSetKeyCompare(void* aItem_l, void* aItem_r);
   LglBufSet* _pLglBufSet(void* aAddr);
 }
 

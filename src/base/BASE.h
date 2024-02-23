@@ -403,6 +403,7 @@ extern d8 C_D8_MID;
 
 
 //------------------------------------------------------------------------------
+#include "PdsUtils.hpp"
 #include "PdsConvergentHeap_t.hpp"
 #include "Pds.hpp"
 #include "Pds_t.hpp"

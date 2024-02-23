@@ -52,8 +52,6 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  static i8 iPotPdsItemKeyCompare(void* aItem_l, void* aItem_r);
-
   Pot* _pPot(void* aAddr);
 }
 

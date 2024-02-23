@@ -61,7 +61,7 @@ Pot::Pot(void)
   m_pRowPix = nullptr;
 
   m_iSynthKey = 0;
-  m_pPdsOfBufferAddrs = new Pds_t<PotPdsItem>(STORE::iPotPdsItemKeyCompare);
+  m_pPdsOfBufferAddrs = new Pds_t<PotPdsItem>(PdsUtils::iPotPdsItemKeyCompare);
   
   _checkInitialised_(CN_LGLBUFSET);
   
@@ -380,35 +380,6 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   RASSERT(pResultBlock != nullptr);
 
   *(PotPdsItem*)(pResultBlock->aItem()) = oItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compare two nodes                                                          */
-/*----------------------------------------------------------------------------*/
-i8 STORE::iPotPdsItemKeyCompare(void* aItem_l, void* aItem_r)
-{
-  _static_
-
-  PotPdsItem* pKey_l = (PotPdsItem*) aItem_l;
-  PotPdsItem* pKey_r = (PotPdsItem*) aItem_r;
-
-  // do the node names match?
-  if (pKey_l->iLglPtn == pKey_r->iLglPtn) {
-    if (pKey_l->iSynthKey == pKey_r->iSynthKey) {
-      return 0;
-    }
-    else {
-      if (pKey_l->iSynthKey >= pKey_r->iSynthKey)
-        return 1;
-      else
-        return -1;
-    }
-  } else {
-    if (pKey_l->iLglPtn >= pKey_r->iLglPtn)
-      return 1;
-    else
-      return -1;
-  }
 }
 
 /*============================================================================*/

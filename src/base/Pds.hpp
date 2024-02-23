@@ -110,8 +110,6 @@ namespace BASE
     bool            bSetNextSLBlock(SkipListBlock* pStartBlk, SkipListBlock* pEndBlock, i8 iLevel);
     bool            bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);
 
-    static i8     iIntCompare(void* aItem_l, void* aItem_r);
-
     // Row helper
     void      vAdvanceCursor(void);
     void      vDepositColVal(d8 dColVal);
