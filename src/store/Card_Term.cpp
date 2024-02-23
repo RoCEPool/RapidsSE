@@ -110,11 +110,6 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(p_Dic_expr);
 
-/*??*/
-//  RASSERT(! pCI->Flux.m_pArriving ||
-//          (pCI->Flux.m_pArriving == p_Dic_expr &&
-//              pCI->Dic.m_p_expr == p_Dic_expr));
-
   Symbol* pSym_term = pSymbol();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -201,7 +196,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.p_key && pCI->G.p_expr && pCI->G.p_rpnCalc) {
-    if (! pCI->Flux.m_pArriving)
+    if (! pCI->Dic.m_p_expr)
       return;
 
     Card_Expr* p_expr_matching = pCI->Dic.m_p_expr->pFind_expr_Matches(pSym_term);
@@ -222,10 +217,12 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
     p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSym_term);
   }
   else {
-    if (pCI->Flux.m_pArriving)
+    if (pCI->Dic.m_p_expr)
       p_expr_matched = pCI->Dic.m_p_expr->pFind_expr_Matches(pSym_term);
-    if (! p_expr_matched && pCI->G.p_injectable)
+    if (! p_expr_matched && pCI->G.p_injectable) {
+      vDebugPoint();
       p_expr_matched = pCI->G.p_injectable->pFind_expr_Matches(pSym_term);
+    }
   }
   if (! p_expr_matched)
     return;

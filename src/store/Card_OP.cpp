@@ -513,6 +513,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
   pCI->G.p_needed     = pCI->G.p_OP->pSub_needed();
   pCI->G.p_stream     = pCI->G.p_OP->pSub_stream();
 
+  Card_Emit* p_arriving = nullptr;
+
   eCK eCard_OP = pCI->G.p_OP->eCard();
   switch (eCard_OP) {
 
@@ -663,19 +665,20 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
- pCI->Flux.m_pArriving = pCI->G.p_emit;
+ //pCI->Flux.m_pArriving = pCI->G.p_emit;
 
   if (CK_o_KEYEXISTS    == eCard_OP ||
       CK_o_KEYNOTEXISTS == eCard_OP ||
       CK_o_WHERE        == eCard_OP) {
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+    pCI->Dic.m_p_expr = pCI->G.p_emit;
     vUpdate_expCol(pCI->Dic.m_p_expr);
   }
 
   if (CK_o_SORT== eCard_OP) {
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+    pCI->Dic.m_p_expr = pCI->G.p_emit;
     pCI->G.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
   }
+  pCI->Flux.m_pArriving = pCI->G.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
