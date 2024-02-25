@@ -33,36 +33,36 @@ CardIter::CardIter(Bench* pBench)
   m_pCardCtl = nullptr;//m_pBench->pCardCtl();
   m_xSymbol_tableSyn.vInit_Tbl_Syn('a');
 
-//  m_i_RecursionDepth = 0;
-//
-//  G.xKid.vParent(nullptr);
-//
-//  G.m_bDontDescend = false;
-//
-//  Sqy.m_pCard_sqyCopy = nullptr;
-//
-//  Sqy.m_pExpr_fold = nullptr;
-//  Sqy.m_pExpr_corr = nullptr;
-//
-//  Sqy.m_pCorrelation = nullptr;
-//  Sqy.m_i_SubQuery   = C_UNKNOWN;
-//  Sqy.m_pSubQuery    = nullptr;
-//  Sqy.m_pTerm_sqyArg  = nullptr;
-//  Sqy.m_pTerm_sqyCall = nullptr;
-//  Sqy.m_pConj_sqyCall = nullptr;
-//
-//  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
-//
-//  G.pBoard    = nullptr;
-//  G.pDeck     = nullptr;
-//
-//  m_nAncestors = 0;
-//  MemLib::vZero(m_apAncestry,sizeof(m_apAncestry),CN_CARDITER);
-//
-//  vNullMembers();
-//  G_vClearRegisters();
+  m_i_RecursionDepth = 0;
 
-  vRestart();
+  G.xKid.vParent(nullptr);
+
+  G.m_bDontDescend = false;
+
+  Sqy.m_pCard_sqyCopy = nullptr;
+
+  Sqy.m_pExpr_fold = nullptr;
+  Sqy.m_pExpr_corr = nullptr;
+
+  Sqy.m_pCorrelation = nullptr;
+  Sqy.m_i_SubQuery   = C_UNKNOWN;
+  Sqy.m_pSubQuery    = nullptr;
+  Sqy.m_pTerm_sqyArg  = nullptr;
+  Sqy.m_pTerm_sqyCall = nullptr;
+  Sqy.m_pConj_sqyCall = nullptr;
+
+  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
+
+  G.pBoard    = nullptr;
+  G.pDeck     = nullptr;
+
+  m_nAncestors = 0;
+  MemLib::vZero(m_apAncestry,sizeof(m_apAncestry),CN_CARDITER);
+
+  vNullMembers();
+  G_vClearRegisters();
+
+  //vRestart();
 
   _checkInitialised_(CN_CARDITER);
 
