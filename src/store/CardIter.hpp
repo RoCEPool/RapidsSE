@@ -205,6 +205,7 @@ namespace STORE
      Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Expr* pResolvePrior_expr_prior(Card_Term* p_term);
     Card_Emit* pResolvePrior_projection(void);
+    void vRestart(void);
     void vRestore(void);
     Card* pRewindChild(void);
     bool G_bRewindMain(void);
