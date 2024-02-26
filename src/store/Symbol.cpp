@@ -1838,6 +1838,7 @@ bool Symbol::bIs_Col(void)
   if (bHasFacet(SF_EXP_COL))  return true;
   if (bHasFacet(SF_KEY_COL))  return true;
   if (bHasFacet(SF_ITM_COL))  return true;
+  if (bHasFacet(SF_NMD_COL))  return true;
   if (bHasFacet(SF_TBL_COL))  return true;
 
   return false;

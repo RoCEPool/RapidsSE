@@ -521,6 +521,27 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_RPNCALC,
                                      CK_NONE);
 
+  Symbol* pSym_term = pSymbol();
+  if (pSym_term->bIs_Col()) {
+    if (pSym_term->bHasFacet(SF_EXP_COL)) {
+      vDebugPoint();
+    }
+    if (pSym_term->bHasFacet(SF_ITM_COL)) {
+      vDebugPoint();
+    }
+    if (pSym_term->bHasFacet(SF_KEY_COL)) {
+      //RASSERT(!pSym_term->bHasFacet(SF_EXP_COL));
+      vDebugPoint();
+    }
+    if (pSym_term->bHasFacet(SF_NMD_COL)) {
+      vDebugPoint();
+    }
+    if (pSym_term->bHasFacet(SF_TBL_COL)) {
+      vDebugPoint();
+    }
+  }
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {

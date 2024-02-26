@@ -89,7 +89,7 @@ void Card_OrdAgg::vCraft_needed_root(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->Early.m_pNeeded_later  = pCI->G.p_emit->pCraftRoot_needed(pCI);
+  pCI->Early.m_pNeeded_later = pCI->G.p_emit->pCraft_needed_root(pCI);
   DELETE_CARD(pCI->Early.m_pNeeded_later);
 }
 

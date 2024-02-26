@@ -22,7 +22,8 @@ namespace STORE
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vApplyFacets(Card_Key* p_key);
     Card_Emit* pClone(void);
-     Card_Needed* pCraftRoot_needed(CardIter* pCI);
+    Card_Needed* pCraftRoot_needed(CardIter* pCI);
+    Card_Needed* pCraft_needed_root(CardIter* pCI);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
