@@ -50,7 +50,11 @@ void XF_Optimise_Early_projection::vOptimise(CardIter* pCI)
 
   XF_Optimise_Early_projection* pXF_Early_projection = new XF_Optimise_Early_projection(pCI);
 
-  bool b1 = pXF_Early_projection->bOptimise();
+  bool b1;
+
+  b1 = pXF_Early_projection->bOptimise_loop();
+
+  b1 = pXF_Early_projection->bOptimise();
 
   pXF_Early_projection->vOptimised(b1);
 
@@ -113,6 +117,33 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   return bOptRun;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool XF_Optimise_Early_projection::bOptimise_loop(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  bool bOptRun = false;
+
+  m_pCI->vTransform(__func__, XF_OPTIMISE_EARLY_PROJECTION, "Early projections"_Stz);
+
+  RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
+
+  m_pCI->vForwards(false);
+  m_pCI->vBeginEachReverse();
+
+  while (m_pCI->G_bEachMain_reverse_NONE()) {
+  }
+
+  m_pCI->vEndTransform(__LINE__);
+
+  m_pCI->Early.m_pNeeded_later = nullptr;
+
+  return bOptRun;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

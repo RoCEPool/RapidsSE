@@ -24,6 +24,8 @@ namespace STORE
 
     bool bOptimise(void);
 
+    bool bOptimise_loop(void);
+
   private:
     Footer* aFooter(void);
 
