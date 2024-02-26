@@ -159,9 +159,33 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         if (p_expr_key->bIsScalarCol())
           p_expr_key->pSymbol()->vApplyFacets(pSym_term);
 
+        pSym_term->vDump();
+        p_expr_key->vDump(__func__);
+
+//        RASSERT(p_expr_key->pSymbol()->bHasFacet(SF_NMD_COL) ||
+//                p_expr_key->pSymbol()->bHasFacet(SF_TBL_COL));
+
+
         Symbol *pSym_tblCol = p_expr_key->pFirst_tblCol();
         if (p_needed->pFind_expr_Matches(pSym_tblCol))
           continue;
+
+        if (p_expr_key->pSymbol()->bHasFacet(SF_EXP_COL)) {
+          if (p_expr_key->pSymbol()->bHasFacet(SF_TBL_COL)) {
+            NEVER_REACH
+          }
+          else {
+            vDebugPoint();
+          }
+        }
+        else
+        if (p_expr_key->pSymbol()->bHasFacet(SF_TBL_COL)) {
+          vDebugPoint();
+        }
+        else {
+          NEVER_REACH
+        }
+
 
         Card_Expr *p_expr_cloned = p_expr_key->pClone();
         p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
@@ -188,23 +212,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 //      p_expr_col->vDump(__func__);
 
       RASSERT(p_expr_col->pSymbol()->bHasFacet(SF_NMD_COL));
-      if (pSym_term->bHasFacet(SF_EXP_COL)) {
-        if (pSym_term->bHasFacet(SF_TBL_COL)) {
-          vDebugPoint();
-        }
-        else {
-          vDebugPoint();
-        }
-      }
-      else
-      if (pSym_term->bHasFacet(SF_TBL_COL)) {
-        vDebugPoint();
-      }
-      else {
-        NEVER_REACH
-      }
 
-       p_needed->vAppendChild(p_expr_col->pClone());
+      p_needed->vAppendChild(p_expr_col->pClone());
     }
   }
 
