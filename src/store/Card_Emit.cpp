@@ -220,7 +220,7 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
   Card_Needed *p_needed = new Card_Needed;
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
-   for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
+    for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
       Card_Term *p_term = xRpnCalc.p_term();
       Symbol *pSym_term = p_term->pSymbol();
 
@@ -228,20 +228,45 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
         continue;
 
       if (pSym_term->bHasFacet(SF_KEY_COL)) {
-        //RASSERT(!pSym_term->bHasFacet(SF_EXP_COL));
-        vDebugPoint();
+        RASSERT(!pSym_term->bHasFacet(SF_NMD_COL));
+        RASSERT(!pSym_term->bHasFacet(SF_ITM_COL));
+        if (pSym_term->bHasFacet(SF_EXP_COL)) {
+          RASSERT(pCI->G.p_key->pFind_expr_Matches(SF_KEY_COL,pSym_term) ==
+                    pCI->G.p_key->pFind_expr_Matches_ignoring(pSym_term,SF_EXP_COL));
+          vDebugPoint();
+        }
+        else
+        if (pSym_term->bHasFacet(SF_TBL_COL)) {
+          RASSERT(pCI->G.p_key->pFind_expr_Matches(SF_KEY_COL,pSym_term) ==
+                  pCI->G.p_key->pFind_expr_Matches_ignoring(pSym_term,SF_TBL_COL));
+          vDebugPoint();
+        }
+        else {
+          RASSERT(pSym_term->bSingleFaceted(SF_KEY_COL));
+          RASSERT(pCI->G.p_key->pFind_expr_Matches(pSym_term));
+        }
       }
       else
       if (pSym_term->bHasFacet(SF_EXP_COL)) {
-        vDebugPoint();
-      }
-      else
-      if (pSym_term->bHasFacet(SF_NMD_COL)) {
-        vDebugPoint();
+        if (pSym_term->bHasFacet(SF_TBL_COL)) {
+          RASSERT(pSym_term->bMultiFaceted(2));
+          vDebugPoint();
+        }
+        else {
+          RASSERT(pSym_term->bSingleFaceted(SF_EXP_COL));
+          vDebugPoint();
+        }
       }
       else
       if (pSym_term->bHasFacet(SF_TBL_COL)) {
-       vDebugPoint();
+        if (pSym_term->bHasFacet(SF_NMD_COL)) {
+          RASSERT(pSym_term->bMultiFaceted(2));
+          vDebugPoint();
+        }
+        else {
+          RASSERT(pSym_term->bSingleFaceted(SF_TBL_COL));
+          vDebugPoint();
+        }
       }
       else {
         NEVER_REACH
@@ -252,6 +277,7 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
       // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
     }
   }
+
   return p_needed;
 }
 

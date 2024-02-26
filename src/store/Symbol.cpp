@@ -1925,10 +1925,12 @@ bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE != eFacet_ignore);
+
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
 
-    if (SF_NONE != eFacet_ignore && eFacet_this == eFacet_ignore)
+    if (eFacet_this == eFacet_ignore)
       continue;
 
     if (bMatches(eFacet_this, pSymbol_arg)) {
@@ -1942,9 +1944,13 @@ bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have multiple facets ?                                    */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bMultiFaceted(void)
+bool Symbol::bMultiFaceted(i8 nFacets_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 nFacets_this = nFacets();
+  if (C_UNKNOWN != nFacets_arg && nFacets_arg != nFacets_this)
+    return false;
 
   if (nFacets() > 1)
     return true;
@@ -1976,14 +1982,20 @@ bool Symbol::bNeedsBrace(void)
 /*----------------------------------------------------------------------------*/
 /* does this symbol only have one facet ?                                     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSingleFaceted(void)
+bool Symbol::bSingleFaceted(eSF eFacet_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (nFacets() == 1)
-    return true;
+  i8 nFacets_this = nFacets();
 
-  return false;
+  if (nFacets_this != 1)
+    return false;
+
+  if (SF_NONE != eFacet_arg)
+    if (eFacet_arg != aFacet(0)->m_eFacet)
+      return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
