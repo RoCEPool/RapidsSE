@@ -489,7 +489,7 @@ void CorrelatedJoin::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p
           p_card->vCard(CK_TERM);
           Card_Term* p_term = _pCard_Term(p_card);
 
-          Card_Expr* p_expr_otr = pCI->pExpr_For_colNm(p_term);
+          Card_Expr* p_expr_otr = pCI->pExpr_For_colNm(p_term,pCI->i_Child());
           Stz* szProjectedCol = p_expr_otr->pGet_term(0)->szFacet(SF_TBL_COL);
           xKid.pChild()->pSymbol()->vApplyFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
 
