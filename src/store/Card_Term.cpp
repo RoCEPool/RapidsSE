@@ -530,7 +530,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       vDebugPoint();
     }
     if (pSym_term->bHasFacet(SF_KEY_COL)) {
-      //RASSERT(!pSym_term->bHasFacet(SF_EXP_COL));
       vDebugPoint();
     }
     if (pSym_term->bHasFacet(SF_NMD_COL)) {
