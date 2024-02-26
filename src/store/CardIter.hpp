@@ -106,16 +106,15 @@ namespace STORE
     void  vAncestorPush(Card* pCard);
     i8    nAncestors(void);
 
+    // todo: merge these two [A294]
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
     void vBeginEach(void);
     void vBeginEachReverse(void);
     Board* pBoard(void);
-    void vBoard(Board* pBoard);
     void vBoardIteration(void);
     void vBurst(Card* pCard);
-    void vBurstOP(void);
 
     void vChangeCard(Card* pCard);
     i8   i_Child(void);
