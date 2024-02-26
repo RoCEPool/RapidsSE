@@ -399,7 +399,7 @@ bool Symbol::bIs_Direction(Stz* szArg)
 {
   _static_
 
-  if (szArg->bSame("ASC"_Stz))   return true;
+       if (szArg->bSame("ASC"_Stz))   return true;
   else if (szArg->bSame("DESC"_Stz))  return true;
 
   return false;
@@ -441,8 +441,8 @@ bool Symbol::bIs_Exp_Col(Stz* szArg)
   char acFirst  = szArg->cChar(0);
   char acSecond = szArg->cChar(1);
 
-  if ('$' == acFirst &&
-      StrLib::bIsDigit(acSecond))
+  if (   '$' == acFirst
+      && StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
@@ -495,7 +495,7 @@ bool Symbol::bIs_Idx_Col(Stz* szArg)
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
 
-  if ('$' == acFirst
+  if (   '$' == acFirst
       && ('I' == acSecond || 'i' == acSecond)
       && StrLib::bIsDigit(acThird)
       && ! acFourth)
@@ -622,8 +622,8 @@ bool Symbol::bIs_List_Cnt(Stz* szArg)
   char acFirst  = szArg->cChar(0);
   char acSecond = szArg->cChar(1);
 
-  if ('#' == acFirst &&
-      StrLib::bIsDigit(acSecond))
+  if (   '#' == acFirst
+      && StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
@@ -641,7 +641,7 @@ bool Symbol::bIs_Key_Col(Stz* szArg)
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
 
-  if ('$' == acFirst
+  if (   '$' == acFirst
       && ('K' == acSecond || 'k' == acSecond)
       && StrLib::bIsDigit(acThird)
       && ! acFourth)
@@ -717,6 +717,27 @@ bool Symbol::bIs_Nmd_Col(Stz* szArg)
   if (bIs_When(szArg))        return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given arg a synthetic column name?                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Nmd_Col_synthetic(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
+
+  if (   'C' == acFirst
+      && 'O' == acSecond
+      && 'L' == acThird
+      && StrLib::bIsDigit(acFourth))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -796,7 +817,7 @@ bool Symbol::bIs_Sqy_No(Stz *szArg)
   char acSecond = szArg->cChar(1);
   char acThird  = szArg->cChar(2);
 
-  if ('$' == acFirst
+  if (   '$' == acFirst
       && 'Q' == acSecond
       && StrLib::bIsDigit(acThird))
     return true;
@@ -830,7 +851,7 @@ bool Symbol::bIs_Sqy_Prm(Stz* szArg)
   char acSecond = szArg->cChar(1);
   char acThird  = szArg->cChar(2);
 
-  if ('%' == acFirst
+  if (   '%' == acFirst
       && StrLib::bIsDigit(acSecond)
       && ! acThird)
     return true;
@@ -883,7 +904,7 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szArg)
   char acFirst  = szArg->cChar(0);
   char acSecond = szArg->cChar(1);
 
-  if ('S' == acFirst
+  if (   'S' == acFirst
       && StrLib::bIsDigit(acSecond))
     return true;
 
@@ -931,7 +952,7 @@ bool Symbol::bIs_Tbl_Col(Stz* szArg)
   char acFourth = szArg->cChar(3);
   char acFifth  = szArg->cChar(4);
 
-  if ('$' == acFirst
+  if (   '$' == acFirst
       && '$' == acSecond
       && StrLib::bIsAlpha(acThird)
       && '.' == acFourth
@@ -966,10 +987,10 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
 
-  if ('$' == acFirst &&
-      'T' == acSecond &&
-      StrLib::bIsAlpha(acThird) &&
-      '\0' == acFourth)
+  if (   '$' == acFirst
+      && 'T' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '\0' == acFourth)
     return true;
 
   return false;
@@ -987,10 +1008,10 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
 
-  if ('$' == acFirst &&
-      'T' == acSecond &&
-      StrLib::bIsUpperCase(acThird) &&
-      '\0' == acFourth)
+  if (   '$' == acFirst
+      && 'T' == acSecond
+      && StrLib::bIsUpperCase(acThird)
+      && '\0' == acFourth)
     return true;
 
   return false;

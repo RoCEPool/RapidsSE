@@ -85,6 +85,7 @@ namespace STORE
     static bool bIs_Mth_Op(Stz* szArg);          // +, -, *, /
     static bool bIs_Negate(Stz* szArg);          // NULL
     static bool bIs_Nmd_Col(Stz* szArg);         // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Nmd_Col_synthetic(Stz* szArg);  // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Note(Stz* szArg);            // ...any...
     static bool bIs_Null(Stz* szArg);            // NULL
     static bool bIs_Parenthesis(Stz* szArg);     // ( or )
