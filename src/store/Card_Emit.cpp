@@ -130,7 +130,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // this projection will be in an aggreg, gbyAgg or ordAgg
   RASSERT(pCI->G.p_OP->bIsEarlyRoot());
 
-  pCI->G.p_streamKey = pSub_streamKey();
+  pCI->G.p_key = pCI->G.p_OP->pSub_key();
 
   Card_Needed* p_needed = new Card_Needed;
 
@@ -147,10 +147,13 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       // only interested in columns
 
       if (pSym_term->bHasFacet(SF_KEY_COL)) {
-        RASSERT(pCI->G.p_streamKey);
+        RASSERT(pCI->G.p_key);
+        //pCI->G.p_key->vDump(__func__);
 
         i8 i_Child  = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
-        Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(i_Child);
+        Card_Expr* p_expr_key = pCI->G.p_key->pGet_expr(i_Child);
+        //p_expr_key->vDump(__func__);
+
         Symbol* pSym_tblCol = p_expr_key->pFirst_tblCol();
 
 
