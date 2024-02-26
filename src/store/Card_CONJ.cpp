@@ -145,7 +145,7 @@ bool Card_CONJ::bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJ::vEnsure_Cast(CardIter *pCI)
+void Card_CONJ::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -160,16 +160,16 @@ void Card_CONJ::vEnsure_Cast(CardIter *pCI)
   switch (eCard) {
 
     case CK_ANDCONJ:
-      _pCard_AndConj(this)->vEnsure_Cast(pCI); break;
+      _pCard_AndConj(this)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
     case CK_NOTCONJ:
-      _pCard_NotConj(this)->vEnsure_Cast(pCI); break;
+      _pCard_NotConj(this)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
     case CK_ORCONJ:
-      _pCard_OrConj(this)->vEnsure_Cast(pCI);  break;
+      _pCard_OrConj(this)->vApplyCast(pCI, /*??*/p_Dic_expr);  break;
     case CK_RLNCONJ:
-      _pCard_RlnConj(this)->vEnsure_Cast(pCI); break;
+      _pCard_RlnConj(this)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
 
     case CK_TERM:
-      _pCard_Term(this)->vApplyCast(pCI, xCast_last);  break;
+      _pCard_Term(this)->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);  break;
 
     default:
       NEVER_REACH
@@ -353,10 +353,10 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
       p_term1->SYM(SF_EXP_COL, (i8)1);
     }
 
-    Card_Expr* p_expr_found =
-        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+    Card_Expr* p_expr_dic =
+        pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
-    p_term1->vApplyCast_x(p_expr_found->xCast());
+    p_term1->vApplyCast_x(p_expr_dic->xCast());
 
    // pCI->vPrintBoard(__func__,__LINE__);
     return;
@@ -383,10 +383,10 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
       p_term_head->pSymbol()->vApplyCastFacets(&x_Symbol_expCol1);
     }
 
-    Card_Expr* p_expr_found =
-        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+    Card_Expr* p_expr_dic =
+        pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
-    p_term_head->vApplyCast_x(p_expr_found->xCast());
+    p_term_head->vApplyCast_x(p_expr_dic->xCast());
 
    // pCI->vPrintBoard(__func__,__LINE__);
 

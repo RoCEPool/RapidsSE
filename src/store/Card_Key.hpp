@@ -19,8 +19,8 @@ namespace STORE
    ~Card_Key(void) noexcept(false);
 
     void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);
+    void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
     bool bIsEqual(Card_Key* p_key_arg);
-    void vApplyCast(CardIter *pCI);
     Card_Expr* pDecode_scalar_expr_Via_symbol(Symbol* pSymbol);
 
     void vMapColumns(CardIter *pCI);

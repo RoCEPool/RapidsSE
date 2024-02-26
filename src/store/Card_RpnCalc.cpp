@@ -82,7 +82,7 @@ void Card_RpnCalc::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
   while (xKid.bEach(CK_TERM)) {
 
     if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-      xKid.p_term()->vBump_expCol(nBumpBy);
+      xKid.p_term()->vBump_ordCol(SF_EXP_COL,nBumpBy);
       xKid.p_term()->vMark1(MARK_CHANGED);
     }
   }
@@ -138,7 +138,7 @@ void Card_RpnCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vApplyCast(CardIter* pCI)
+void Card_RpnCalc::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -160,7 +160,7 @@ void Card_RpnCalc::vApplyCast(CardIter* pCI)
   // rpnCalc is a set of terms
   for (Kid xRpnCalc(this); xRpnCalc.bEach(CK_TERM); /**/) {
     pCI->G.p_term = xRpnCalc.p_term();
-    pCI->G.p_term->vApplyCast(pCI, xCast_last);
+    pCI->G.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
   pCI->G.p_term = nullptr;
 

@@ -18,6 +18,8 @@ namespace STORE
 
     static Card_IndexList* pDerive(Table* pTable);
 
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
+
     void vChoose_index_For_crossJoin(void);
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
@@ -27,8 +29,6 @@ namespace STORE
     Card_Index* pFindChosenIndex(void);
 
     bool bHas_cmpPred_In_bounds(Card_RlnConj* p_rlnConj);
-
-    void vApplyCast(CardIter* pCI);
 
     bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqyRsl(void);

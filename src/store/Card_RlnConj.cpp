@@ -85,7 +85,7 @@ Card_Term* Card_RlnConj::pGetCorrCol(void)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_RlnConj::vEnsure_Cast(CardIter *pCI)
+void Card_RlnConj::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -103,17 +103,17 @@ void Card_RlnConj::vEnsure_Cast(CardIter *pCI)
     switch (eCard) {
 
       case CK_ANDCONJ:
-        _pCard_AndConj(pCard)->vEnsure_Cast(pCI); break;
+        _pCard_AndConj(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
       case CK_NOTCONJ:
-        _pCard_NotConj(pCard)->vEnsure_Cast(pCI); break;
+        _pCard_NotConj(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
       case CK_ORCONJ:
-        _pCard_OrConj(pCard)->vEnsure_Cast(pCI);  break;
+        _pCard_OrConj(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr);  break;
       case CK_RLNCONJ:
-        _pCard_RlnConj(pCard)->vEnsure_Cast(pCI); break;
+        _pCard_RlnConj(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
 
 
       case CK_TERM:
-        _pCard_Term(pCard)->vApplyCast(pCI, xCast_last);  break;
+        _pCard_Term(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);  break;
 
       default:
         NEVER_REACH

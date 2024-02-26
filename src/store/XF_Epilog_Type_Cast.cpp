@@ -114,7 +114,7 @@ void XF_Epilog_Type_Cast::vCast(void)
     } // switch
 
     if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-      m_pCI->G.p_key->vApplyCast(m_pCI);
+      m_pCI->G.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
       m_pCI->G.p_key->vRenumberAll_expr();
       m_pCI->G.p_key = nullptr;
     }
@@ -127,13 +127,14 @@ void XF_Epilog_Type_Cast::vCast(void)
           CK_o_INDEXSCAN == m_pCI->G.e_MainCard) {
 
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+        m_pCI->Dic.m_p_expr = m_pCI->G.p_emit;
 
-        m_pCI->G.p_emit->vApplyCast(m_pCI);
+        m_pCI->G.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
         m_pCI->G.p_emit->vRenumberAll_expr();
       }
       else if (m_pCI->Flux.m_pArriving) {
         if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-          m_pCI->G.p_key->vApplyCast(m_pCI);
+          m_pCI->G.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
         }
 
         if (m_pCI->m_pBench->eXform() == XF_EPILOG_TYPE_CAST &&
@@ -142,31 +143,33 @@ void XF_Epilog_Type_Cast::vCast(void)
           vDebugPoint();
         }
 
-        m_pCI->G.p_emit->vApplyCast(m_pCI);
+        m_pCI->G.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
         m_pCI->G.p_emit->vRenumberAll_expr();
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+        m_pCI->Dic.m_p_expr = m_pCI->G.p_emit;
         m_pCI->G.p_key = nullptr;
       }
       else {
         m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
+        m_pCI->Dic.m_p_expr = m_pCI->G.p_emit;
       }
 
       if ((m_pCI->G.p_streamKey = m_pCI->G.p_OP->pSub_streamKey()))
-        m_pCI->G.p_streamKey->vApplyCast(m_pCI);
+        m_pCI->G.p_streamKey->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
 
       if ((m_pCI->G.p_boolPred = m_pCI->G.p_OP->pSub_boolPred())) {
-        m_pCI->G.p_boolPred->vDump(__func__);
-        m_pCI->G.p_boolPred->vApplyCast(m_pCI);
+        //m_pCI->G.p_boolPred->vDump(__func__);
+        m_pCI->G.p_boolPred->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
       }
 
 //      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_OP->pSub_rpnCalc()))
 //        m_pCI->G.p_rpnCalc->vApplyCast(m_pCI);
 
       if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
-        m_pCI->G.p_indexList->vApplyCast(m_pCI);
+        m_pCI->G.p_indexList->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
 
       if ((m_pCI->G.p_constraint = m_pCI->G.p_OP->pSub_constraint()))
-        m_pCI->G.p_constraint->vApplyCast(m_pCI);
+        m_pCI->G.p_constraint->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
     }
     else {
 

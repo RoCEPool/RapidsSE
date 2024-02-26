@@ -81,7 +81,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   {
 
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
-      p_term->vBump_expCol();
+      p_term->vBump_ordCol(SF_EXP_COL);
 
     return true;
   };
@@ -123,7 +123,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
     pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 
     Card_Expr* p_expr_found =
-        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+        pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
     RASSERT(CT_NONE != p_expr_found->eCTVal());
 

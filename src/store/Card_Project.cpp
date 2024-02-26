@@ -125,6 +125,7 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
+    //RASSERT(pCI->Dic.m_p_expr == pCI->Flux.m_pArriving);
     Card_Expr* p_expr_arriving = pCI->Flux.m_pArriving->pContains(p_expr_needed);
     if (! p_expr_arriving)
       continue;
@@ -218,7 +219,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   //vInsertChildBefore(pCI->G.p_emit,pCI->G.p_needed);
 
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_emit;
 
  // pCI->vPrintBoard(__func__,__LINE__);
 
@@ -330,7 +331,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
-  pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 
 }
 

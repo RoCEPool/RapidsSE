@@ -213,7 +213,7 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
       return C_CONTINUE_RECURSION;
 
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
-      p_term->vBump_expCol(nBumpBy);
+      p_term->vBump_ordCol(SF_EXP_COL,nBumpBy);
       p_term->vMark1(MARK_CHANGED);
     }
 
@@ -303,16 +303,16 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vUpdate_expCol(Card_Emit* p_arriving)
+void Card_BoolPred::vUpdate_expCol(Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfCorrect = [p_arriving](Card* p_card)
+  auto bfCorrect = [p_Dic_expr](Card* p_card)
   {
     if (p_card->pSymbol()->bHasFacet(SF_EXP_COL))
-      _pCard_Term(p_card)->vUpdate_expCol(p_arriving);
+      _pCard_Term(p_card)->vUpdate_expCol(p_Dic_expr);
 
     return C_CONTINUE_RECURSION;
   };
@@ -411,14 +411,14 @@ void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vApplyCast(CardIter* pCI)
+void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CONJ* p_conj = pRoot_conj();
 
   if (CK_TERM != p_conj->eCard()) {
-    p_conj->vEnsure_Cast(pCI);
+    p_conj->vApplyCast(pCI,/*?*/p_Dic_expr);
     return;
   }
 
@@ -429,7 +429,7 @@ void Card_BoolPred::vApplyCast(CardIter* pCI)
   RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
   for (Kid xBoolPred(this); xBoolPred.bEach(CK_TERM); /**/) {
-    xBoolPred.p_term()->vApplyCast(pCI, xCast_last);
+    xBoolPred.p_term()->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
 }
 
