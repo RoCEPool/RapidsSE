@@ -130,7 +130,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // this projection will be in an aggreg, gbyAgg or ordAgg
   RASSERT(pCI->G.p_OP->bIsEarlyRoot());
 
-  this->vDump(__func__);
+  //this->vDump(__func__);
 
   pCI->G.p_key = pCI->G.p_OP->pSub_key();
 
@@ -139,11 +139,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) append the referenced col's in rpnCalc of this projection into needed projection
 
-  Kid xEmit(this);
-  while (xEmit.bEach(CK_EXPR, CK_RPNCALC)) {
-
-    Kid xRpnCalc(xEmit.pSub1());
-    while (xRpnCalc.bEach(CK_TERM)) {
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
+    for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
       Card_Term *p_term = xRpnCalc.p_term();
       Symbol *pSym_term = p_term->pSymbol();
 
@@ -151,61 +148,48 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
       if (! pSym_term->bIs_Col())
         continue;
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
       if (pSym_term->bHasFacet(SF_KEY_COL)) {
         RASSERT(pCI->G.p_key);
-        pCI->G.p_key->vDump(__func__);
 
         i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
         Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(i_Key);
-        p_expr_key->vDump(__func__);
+
+        if (p_expr_key->bIsScalarCol())
+          p_expr_key->pSymbol()->vApplyFacets(pSym_term);
 
         Symbol *pSym_tblCol = p_expr_key->pFirst_tblCol();
-
-
-        if (p_expr_key->bIsScalarCol()) {
-          p_expr_key->pSymbol()->vApplyFacets(pSym_term);
-        }
-
-        if (p_needed->pFind_expr_Matches(pSym_tblCol)) {
+        if (p_needed->pFind_expr_Matches(pSym_tblCol))
           continue;
-        }
 
         Card_Expr *p_expr_cloned = p_expr_key->pClone();
         p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
-
         p_needed->vAppendChild(p_expr_cloned);
-      } else if (pSym_term->bHasFacet(SF_EXP_COL) ||
-                 pSym_term->bHasFacet(SF_TBL_COL)) {
-
-        if (xEmit.p_expr()->bIsScalarCol()) {
-          xEmit.p_expr()->pSymbol()->vApplyFacets(pSym_term);
-        }
-
-      }
-
-      // which we haven't already added
-      if (p_needed->pFind_expr_Matches(pSym_term)) {
         continue;
       }
 
-      xRpnCalc.p_term()->vDump(__func__);
-      if (Card_Expr *p_expr_col = pCI->pBackSearch_expr_For_col(pSym_term,
-                                                                pCI->i_Child() + 1)) {
-        p_expr_col->vDump(__func__);
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-        p_needed->vAppendChild(p_expr_col->pClone());
-      }
-      else {
-        vDebugPoint();
-      }
+      RASSERT(pSym_term->bHasFacet(SF_EXP_COL) ||
+              pSym_term->bHasFacet(SF_TBL_COL));
+
+      if (xEmit.p_expr()->bIsScalarCol())
+        xEmit.p_expr()->pSymbol()->vApplyFacets(pSym_term);
+
+      // which we haven't already added
+      if (p_needed->pFind_expr_Matches(pSym_term))
+        continue;
+
+       Card_Expr *p_expr_col = pCI->pBackSearch_expr_For_col(pSym_term,
+                                                            pCI->i_Child() + 1);
+      p_needed->vAppendChild(p_expr_col->pClone());
     }
   }
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   p_needed->vRenumberAll_expr();
-  //p_needed->vDump(__func__);
 
   return p_needed;
 }
