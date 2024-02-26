@@ -195,8 +195,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-      if (xEmit.p_expr()->bIsScalarCol())
-        xEmit.p_expr()->pSymbol()->vApplyFacets(pSym_term);
+//      if (xEmit.p_expr()->bIsScalarCol())
+//        xEmit.p_expr()->pSymbol()->vApplyFacets(pSym_term);
 
       // which we haven't already added
       if (p_needed->pFind_expr_Matches(pSym_term))
