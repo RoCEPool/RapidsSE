@@ -153,7 +153,7 @@ namespace STORE
     void vEndTransform(i8 iLineNo=C_UNKNOWN);
 
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
-    Card_Expr* pExpr_For_colNm(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
+    Card_Expr* pExpr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
     void vFocusOnMain(void);
     bool bForwards(void);

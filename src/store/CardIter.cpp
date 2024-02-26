@@ -1253,7 +1253,7 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
+Card_Expr* CardIter::pExpr_For_colNm(Symbol* pSym_term, i8 i_Before)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1271,7 +1271,7 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
         Card *pChild_prj = p_emit->pGetChild(i_Child);
         if (pChild_prj->bIsCard(CK_EXPR)) {
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-          if (p_expr_prj->pSymbol()->bMatches(p_term->pSymbol())) {
+          if (p_expr_prj->pSymbol()->bMatches(pSym_term)) {
             p_expr_col = p_expr_prj;
             break;
           }
