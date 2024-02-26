@@ -144,54 +144,59 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
     Kid xRpnCalc(xEmit.pSub1());
     while (xRpnCalc.bEach(CK_TERM)) {
-      Card_Term* p_term = xRpnCalc.p_term();
-      Symbol* pSym_term = p_term->pSymbol();
+      Card_Term *p_term = xRpnCalc.p_term();
+      Symbol *pSym_term = p_term->pSymbol();
+
       // only interested in columns
+      if (! pSym_term->bIs_Col())
+        continue;
 
       if (pSym_term->bHasFacet(SF_KEY_COL)) {
         RASSERT(pCI->G.p_key);
         pCI->G.p_key->vDump(__func__);
 
-        i8 i_Child  = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
-        Card_Expr* p_expr_key = pCI->G.p_key->pGet_expr(i_Child);
+        i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
+        Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(i_Key);
         p_expr_key->vDump(__func__);
 
-        Symbol* pSym_tblCol = p_expr_key->pFirst_tblCol();
+        Symbol *pSym_tblCol = p_expr_key->pFirst_tblCol();
 
 
         if (p_expr_key->bIsScalarCol()) {
-          p_expr_key->pSymbol()->vApplyFacets(xRpnCalc.p_term()->pSymbol());
+          p_expr_key->pSymbol()->vApplyFacets(pSym_term);
         }
 
         if (p_needed->pFind_expr_Matches(pSym_tblCol)) {
           continue;
         }
 
-        Card_Expr* p_expr_cloned = p_expr_key->pClone();
+        Card_Expr *p_expr_cloned = p_expr_key->pClone();
         p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
 
         p_needed->vAppendChild(p_expr_cloned);
-      }
-      else
-      if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL)) {
+      } else if (pSym_term->bHasFacet(SF_EXP_COL) ||
+                 pSym_term->bHasFacet(SF_TBL_COL)) {
 
         if (xEmit.p_expr()->bIsScalarCol()) {
-          xEmit.p_expr()->pSymbol()->vApplyFacets(xRpnCalc.p_term()->pSymbol());
+          xEmit.p_expr()->pSymbol()->vApplyFacets(pSym_term);
         }
 
       }
 
       // which we haven't already added
-      if (p_needed->pFind_expr_Matches(xRpnCalc.p_term()->pSymbol())) {
+      if (p_needed->pFind_expr_Matches(pSym_term)) {
         continue;
       }
 
-      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xRpnCalc.p_term(),
-                                                     pCI->i_Child()+1))
+      xRpnCalc.p_term()->vDump(__func__);
+      if (Card_Expr *p_expr_col = pCI->pBackSearch_expr_For_col(pSym_term,
+                                                                pCI->i_Child() + 1)) {
+        p_expr_col->vDump(__func__);
+
         p_needed->vAppendChild(p_expr_col->pClone());
-
+      }
       else {
-
+        vDebugPoint();
       }
     }
   }
@@ -212,10 +217,7 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  // this projection will be in an aggreg, gbyAgg or ordAgg
   RASSERT(pCI->G.p_OP->bIsEarlyRoot());
-
-  pCI->G.p_key = pCI->G.p_OP->pSub_key();
 
   Card_Needed *p_needed = new Card_Needed;
 
@@ -244,7 +246,10 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
         else {
           RASSERT(pSym_term->bSingleFaceted(SF_KEY_COL));
           RASSERT(pCI->G.p_key->pFind_expr_Matches(pSym_term));
+          vDebugPoint();
         }
+        RASSERT(pCI->G.p_key->pFind_expr_Matches(SF_KEY_COL,pSym_term));
+        vDebugPoint();
       }
       else
       if (pSym_term->bHasFacet(SF_EXP_COL)) {

@@ -1207,14 +1207,11 @@ void CardIter::vEndTransform(i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term_arg, i8 i_Before)
+Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Symbol* pSym_term_arg = p_term_arg->pSymbol();
-
-  if (! p_term_arg->pSymbol()->bIs_Col())
-    return nullptr;
+  RASSERT(pSym_term_arg->bIs_Col());
 
   Card_Expr* p_expr_col = nullptr;
 

@@ -190,6 +190,7 @@ bool XF_Optimise_Early_projection::bEarly_needed_OP(void)
   if (m_pCI->G.p_OP->bIsEarlyRoot()) {
 
     m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
+    m_pCI->G.p_key  = m_pCI->G.p_OP->pSub_key();
 
     switch (m_pCI->G.e_MainCard) {
       case CK_o_AGGREG:
