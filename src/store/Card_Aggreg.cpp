@@ -103,6 +103,15 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* craft needed                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Aggreg::vCraft_needed_root(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vSmooth(CardIter* pCI)

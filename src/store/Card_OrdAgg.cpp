@@ -83,6 +83,15 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* craft needed                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_OrdAgg::vCraft_needed_root(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

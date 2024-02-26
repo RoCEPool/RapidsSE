@@ -125,6 +125,15 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* craft needed                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_GbyAgg::vCraft_needed_root(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)

@@ -234,6 +234,15 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* craft needed                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_IndexJoin::vCraft_needed_root(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* table morphs to indexJoin                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
