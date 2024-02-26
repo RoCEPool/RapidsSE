@@ -343,6 +343,86 @@ i8 CardIter::nAncestors(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(pSym_term_arg->bIs_Col());
+
+  Card_Expr* p_expr_col = nullptr;
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card *pMain = this->G.pDeck->pGetChild(i_Main);
+    Card_Emit* p_emit = pMain->pSub_emit();
+
+    if (!p_emit)
+      continue;
+
+    i8 nChildren_emit = p_emit->nChildCards();
+    for (i8 i_Child = 0; i_Child < nChildren_emit; i_Child++) {
+      Card *pChild_prj = p_emit->pGetChild(i_Child);
+      if (!pChild_prj->bIsCard(CK_EXPR))
+        continue;
+      Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
+      Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc();
+      if (! p_rpnCalc)
+        continue;
+      if (1 != p_rpnCalc->nChildCards())
+        continue;
+
+      Symbol* pSym_rpnCalc_term0 = p_rpnCalc->pGetTerm(0)->pSymbol();
+      RASSERT(pSym_rpnCalc_term0->bIs_Col());
+
+      if (pSym_rpnCalc_term0->bMatches(pSym_term_arg)) {
+        p_expr_col = p_expr_prj;
+        break;
+      }
+    }
+
+    if (p_expr_col)
+      break;
+  }
+
+  return p_expr_col;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* CardIter::pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (C_UNKNOWN == i_Before)
+    i_Before = this->i_Child();
+
+  Card_Expr* p_expr_col = nullptr;
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card *pMain = this->G.pDeck->pGetChild(i_Main);
+
+    if (Card_Emit* p_emit = pMain->pSub_emit()) {
+      i8 nChildren_prj = p_emit->nChildCards();
+      for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
+        Card *pChild_prj = p_emit->pGetChild(i_Child);
+        if (pChild_prj->bIsCard(CK_EXPR)) {
+          Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
+          if (p_expr_prj->pSymbol()->bMatches(pSym_term)) {
+            p_expr_col = p_expr_prj;
+            break;
+          }
+        }
+      }
+
+    }
+  }
+
+  return p_expr_col;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get board                                                                  */
 /*----------------------------------------------------------------------------*/
 Board* CardIter::pBoard(void)
@@ -1202,86 +1282,6 @@ void CardIter::vEndTransform(i8 iLineNo)
   vValidateBench();
 
   G.xKid.vEnded();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(pSym_term_arg->bIs_Col());
-
-  Card_Expr* p_expr_col = nullptr;
-
-  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = this->G.pDeck->pGetChild(i_Main);
-    Card_Emit* p_emit = pMain->pSub_emit();
-
-    if (!p_emit)
-      continue;
-
-    i8 nChildren_emit = p_emit->nChildCards();
-    for (i8 i_Child = 0; i_Child < nChildren_emit; i_Child++) {
-      Card *pChild_prj = p_emit->pGetChild(i_Child);
-      if (!pChild_prj->bIsCard(CK_EXPR))
-        continue;
-      Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-      Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc();
-      if (! p_rpnCalc)
-        continue;
-      if (1 != p_rpnCalc->nChildCards())
-        continue;
-
-      Symbol* pSym_rpnCalc_term0 = p_rpnCalc->pGetTerm(0)->pSymbol();
-      RASSERT(pSym_rpnCalc_term0->bIs_Col());
-
-      if (pSym_rpnCalc_term0->bMatches(pSym_term_arg)) {
-        p_expr_col = p_expr_prj;
-        break;
-      }
-    }
-
-    if (p_expr_col)
-      break;
-  }
-
-  return p_expr_col;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pExpr_For_colNm(Symbol* pSym_term, i8 i_Before)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (C_UNKNOWN == i_Before)
-    i_Before = this->i_Child();
-
-  Card_Expr* p_expr_col = nullptr;
-
-  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = this->G.pDeck->pGetChild(i_Main);
-
-    if (Card_Emit* p_emit = pMain->pSub_emit()) {
-      i8 nChildren_prj = p_emit->nChildCards();
-      for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
-        Card *pChild_prj = p_emit->pGetChild(i_Child);
-        if (pChild_prj->bIsCard(CK_EXPR)) {
-          Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-          if (p_expr_prj->pSymbol()->bMatches(pSym_term)) {
-            p_expr_col = p_expr_prj;
-            break;
-          }
-        }
-      }
-
-    }
-  }
-
-  return p_expr_col;
 }
 
 /*----------------------------------------------------------------------------*/

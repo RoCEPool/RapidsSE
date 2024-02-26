@@ -106,6 +106,9 @@ namespace STORE
     void  vAncestorPush(Card* pCard);
     i8    nAncestors(void);
 
+    Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
+    Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
+
     void vBeginEach(void);
     void vBeginEachReverse(void);
     Board* pBoard(void);
@@ -151,9 +154,6 @@ namespace STORE
     void vEnd(void);
     void vEndPhase(void);
     void vEndTransform(i8 iLineNo=C_UNKNOWN);
-
-    Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
-    Card_Expr* pExpr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
     void vFocusOnMain(void);
     bool bForwards(void);
