@@ -110,10 +110,10 @@ namespace STORE
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
+    void vBeginBoardIteration(void);
     void vBeginEach(void);
     void vBeginEachReverse(void);
     Board* pBoard(void);
-    void vBoardIteration(void);
     void vBurst(Card* pCard);
 
     void vChangeCard(Card* pCard);

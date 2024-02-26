@@ -65,8 +65,8 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_SUBQUERY, "subQuery analysis"_Stz);
-  
-  m_pCI->vBoardIteration();
+
+  m_pCI->vBeginBoardIteration();
   while (m_pCI->bEachBoard()) {
 
     SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
@@ -120,7 +120,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
 
   }
 
-  m_pCI->vBoardIteration();
+  m_pCI->vBeginBoardIteration();
   while (m_pCI->bEachBoard()) {
     SubQuery* pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
