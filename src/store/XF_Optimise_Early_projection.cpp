@@ -189,26 +189,28 @@ bool XF_Optimise_Early_projection::bEarly_needed_OP(void)
 
   if (m_pCI->G.p_OP->bIsEarlyRoot()) {
 
+    m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
+
     switch (m_pCI->G.e_MainCard) {
       case CK_o_AGGREG:
-        m_pCI->G.p_aggreg->vCraft_needed_root(m_pCI);
+        //m_pCI->G.p_aggreg->vCraft_needed_root(m_pCI);
         break;
 
       case CK_o_GBYAGG:
-        m_pCI->G.p_gbyAgg->vCraft_needed_root(m_pCI);
+        //m_pCI->G.p_gbyAgg->vCraft_needed_root(m_pCI);
         break;
 
       case CK_o_ORDAGG:
-        m_pCI->G.p_ordAgg->vCraft_needed_root(m_pCI);
+        //m_pCI->G.p_ordAgg->vCraft_needed_root(m_pCI);
         break;
 
         // -- -- -- -- -- -- --
       case CK_o_PROJECT:
-        m_pCI->G.p_project->vCraft_needed_root(m_pCI);
+        //m_pCI->G.p_project->vCraft_needed_root(m_pCI);
         break;
 
       case CK_o_INDEXJOIN:
-        m_pCI->G.p_indexJoin->vCraft_needed_root(m_pCI);
+        //m_pCI->G.p_indexJoin->vCraft_needed_root(m_pCI);
         break;
 
       default:

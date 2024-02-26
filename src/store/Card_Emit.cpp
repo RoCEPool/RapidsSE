@@ -142,21 +142,23 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
     Kid xCI_rpnCalc(xCI_projection.pSub1());
     while (xCI_rpnCalc.bEach(CK_TERM)) {
+      Card_Term* p_term = xCI_rpnCalc.p_term();
+      Symbol* pSym_term = p_term->pSymbol();
       // only interested in columns
 
-      if (xCI_rpnCalc.p_term()->pSymbol()->bHasFacet(SF_KEY_COL)) {
+      if (pSym_term->bHasFacet(SF_KEY_COL)) {
         RASSERT(pCI->G.p_streamKey);
 
-        i8 i_Child  = xCI_rpnCalc.p_term()->pSymbol()->iTo_ordinal(SF_KEY_COL) - 1;
+        i8 i_Child  = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
         Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(i_Child);
-        Symbol* pSymbol_tblCol = p_expr_key->pFirst_tblCol();
+        Symbol* pSym_tblCol = p_expr_key->pFirst_tblCol();
 
 
         if (p_expr_key->bIsScalarCol()) {
           p_expr_key->pSymbol()->vApplyFacets(xCI_rpnCalc.p_term()->pSymbol());
         }
 
-        if (p_needed->pFind_expr_Matches(pSymbol_tblCol)) {
+        if (p_needed->pFind_expr_Matches(pSym_tblCol)) {
           continue;
         }
 
