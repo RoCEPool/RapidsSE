@@ -289,9 +289,15 @@ IndexDef* Card_Key::pToIndexDef(void)
 void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
+
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_o_GBYAGG,
+                                     CK_o_INDEXJOIN,
+                                     CK_o_SORT,
+                                     CK_NONE);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
