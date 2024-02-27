@@ -221,6 +221,17 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
           TypeId xColType = Expr::xTypeId(pGroupByExpr, pRootNode);
           sBuf.vCatSprint(" ; type: %s"_Stz, xColType.szTypeName());
         }
+
+        i8 iPrecision = Expr::iPrecision(pGroupByExpr, pRootNode);
+        i8 iScale     = Expr::iScale(pGroupByExpr, pRootNode);
+
+        if (iPrecision >= 0) {
+          if (iScale >= 0) {
+            sBuf.vCatSprint("(%lld,%lld)"_Stz, iPrecision, iScale);
+          } else {
+            sBuf.vCatSprint("(%lld)"_Stz, iPrecision);
+          }
+        }
       }
 
       delete pIter;

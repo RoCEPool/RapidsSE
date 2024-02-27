@@ -181,6 +181,17 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
           TypeId xColType = Expr::xTypeId(pProjectedExpr, pRootNode);
 
           sBuf.vCatSprint(" ; type: %s"_Stz, xColType.szTypeName());
+
+          i8 iPrecision = Expr::iPrecision(pProjectedExpr, pRootNode);
+          i8 iScale     = Expr::iScale(pProjectedExpr, pRootNode);
+
+          if (iPrecision >= 0) {
+            if (iScale >= 0) {
+              sBuf.vCatSprint("(%lld,%lld)"_Stz, iPrecision, iScale);
+            } else {
+              sBuf.vCatSprint("(%lld)"_Stz, iPrecision);
+            }
+          }
         }
       }
 
