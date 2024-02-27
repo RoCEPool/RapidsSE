@@ -122,6 +122,41 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       NEVER_REACH
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+    RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_o_FILTER) == 1);
+  }
+
+  //
+
+  if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
+    RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_s_INJECTABLE) == 1);
+  }
+
+  if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
+    RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_s_KEY) == 1);
+  }
+
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_s_CONSTRAINT) == 1);
+  }
+
+  if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
+    RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_s_HSHCOLLIST) == 1);
+  }
+
+  //
+
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
+    RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_t_INDEXLIST) == 1);
+  }
+
+  if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
+    RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_t_EMIT) == 1);
+  }
+
+  vDebugPoint();
 }
 
 /*============================================================================*/
