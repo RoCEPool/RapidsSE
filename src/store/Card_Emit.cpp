@@ -583,6 +583,10 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   RASSERT(CK_s_STREAM == pParent->eCard());
 
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_s_STREAM,
+                                     CK_NONE);
+
   if (! pSub_expr())
     pCI->vPrintBoard(__func__,__LINE__,true);
 

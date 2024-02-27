@@ -237,8 +237,14 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
   if (iDepth > 1)
-    (void)Card::eValidate_parentEither(pCI, CK_o_CROSSJOIN, CK_o_FROM, CK_o_HAVING,
-                                       CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_SCAN, CK_o_WHERE,
+    (void)Card::eValidate_parentEither(pCI,
+                                       CK_o_CROSSJOIN,
+                                       CK_o_FROM,
+                                       CK_o_HAVING,
+                                       CK_o_INDEXJOIN,
+                                       CK_o_INDEXSCAN,
+                                       CK_o_SCAN,
+                                       CK_o_WHERE,
                                        CK_NONE);
 
   if (CK_DECK == pParent->eCard()) {
