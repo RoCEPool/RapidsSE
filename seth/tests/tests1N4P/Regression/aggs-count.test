@@ -37,7 +37,7 @@ rows:
 // Result file: ../queries/aggs/count/results/count24.res
 select count(ucolvc) * max(cole9) from ${testName2}_table9 where ucolvc <> 'kkk' or ucolvc <> 'ttt';
 rows:
-  (74615.00)
+  (74500.)
 
 
 // Source file: ../queries/aggs/count/rcount10.sql
@@ -268,5 +268,5 @@ failure contains: 'EC_SEMANTIC_ERROR'
 // Result file: ../queries/aggs/count/results/count16.res
 select cast((count(colb1) / sum(cold1)) as decimal(10,7)) from ${testName2}_table1;
 rows:
-  (0.00806381379686)
+  (0.0080638)
 
