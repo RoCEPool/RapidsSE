@@ -24,6 +24,9 @@ namespace STORE
 
     void vVerify(void);
 
+    void vVerify_dic_loop(void);
+    void vVerify_dic_OP(void);
+
   private:
     Footer* aFooter(void);
   };

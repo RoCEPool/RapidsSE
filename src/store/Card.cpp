@@ -1814,11 +1814,11 @@ void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
     va_start(xArgs, iCard_first);
     eCK eCard_mayHave = (eCK) iCard_first;
     while (CK_NONE != eCard_mayHave) {
-      eCard_mayHave = (eCK)va_arg(xArgs, i8);
       if (eCard_test == eCard_mayHave) {
         bMayHave = true;
         break;
       }
+      eCard_mayHave = (eCK)va_arg(xArgs, i8);
     }
     va_end(xArgs);
 

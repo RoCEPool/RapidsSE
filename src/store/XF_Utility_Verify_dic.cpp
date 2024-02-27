@@ -47,7 +47,7 @@ void XF_Utility_Verify_dic::vVerify(CardIter* pCI)
   XF_Utility_Verify_dic* pXF_Validate = new XF_Utility_Verify_dic(pCI);
 
   try {
-    pXF_Validate->vVerify();
+    pXF_Validate->vVerify_dic_loop();
   }
   catch (Error xError) {
     delete pXF_Validate;
@@ -64,14 +64,64 @@ void XF_Utility_Verify_dic::vVerify(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Utility_Verify_dic::vVerify(void)
+void XF_Utility_Verify_dic::vVerify_dic_loop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_UTILITY_VERIFY_DIC, "verify dic"_Stz);
 
+  m_pCI->vClearRestart();
+
+  while (m_pCI->G_bEachMain_NONE()) {
+
+    vVerify_dic_OP();
+
+    if (m_pCI->G.p_MainCard->pSub_emit())
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emit();
+  }
 
   m_pCI->vEndTransform(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Utility_Verify_dic::vVerify_dic_OP(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+
+  RASSERT(m_pCI->G.p_MainCard->bIsOp());
+  switch (m_pCI->G.e_MainCard) {
+
+    case CK_o_AGGREG:
+    case CK_o_CALL:
+    case CK_o_CAST:
+    case CK_c_COMBINED:
+    case CK_o_CORRELATION:
+    case CK_o_CROSSJOIN:
+    case CK_o_FILTER:
+    case CK_o_FROM:
+    case CK_o_GBYAGG:
+    case CK_o_HASH:
+    case CK_o_HAVING:
+    case CK_o_INDEXSCAN:
+    case CK_o_INDEXJOIN:
+    case CK_o_INFLATE:
+    case CK_o_KEYEXISTS:
+    case CK_o_KEYNOTEXISTS:
+    case CK_o_LIMIT:
+    case CK_o_ORDAGG:
+    case CK_o_PROJECT:
+    case CK_o_SCAN:
+    case CK_o_SORT:
+    case CK_o_TOP:
+    case CK_o_WHERE:
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
 }
 
 /*============================================================================*/

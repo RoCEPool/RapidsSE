@@ -509,7 +509,16 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pParent);
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_o_CROSSJOIN,
+                                     CK_o_FROM,
+                                     CK_o_INDEXJOIN,
+                                     CK_o_INDEXSCAN,
+                                     CK_o_INFLATE,
+                                     CK_o_KEYEXISTS,
+                                     CK_o_KEYNOTEXISTS,
+                                     CK_o_SCAN,
+                                     CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

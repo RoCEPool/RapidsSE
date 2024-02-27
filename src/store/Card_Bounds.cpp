@@ -54,6 +54,7 @@ void Card_Bounds::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+
   Kid xKid(this);
   while (xKid.bEach(CK_BOUND)) {
     pCI->G.p_bound = xKid.p_bound();
@@ -165,6 +166,11 @@ void Card_Bounds::vShortForm(String* pString_b)
 void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mayHave(CK_BOUND,CK_NONE);
+  //vValidate_mustHave(CK_BOUND,CK_NONE);
+
+  (void)Card::eValidate_parentEither(pCI, CK_INDEX, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);
