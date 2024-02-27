@@ -538,6 +538,8 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
         pCI->G.p_key = nullptr;
       }
       pCI->G.p_emit->vIncFunctionCount();
+      if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+        vDebugPoint();
       break;
 
     case CK_o_PROJECT:
@@ -647,8 +649,10 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
                                  CK_o_FROM,
                                  CK_o_HAVING,
                                  CK_o_INDEXJOIN,
+                                 CK_o_INDEXSCAN,
                                  CK_o_KEYEXISTS,
                                  CK_o_KEYNOTEXISTS,
+                                 CK_o_SCAN,
                                  CK_o_WHERE,
                                  CK_NONE));
     if (pCI->Flux.m_pArriving) {
@@ -658,8 +662,33 @@ void Card_OP::vRecreate_emit(CardIter* pCI)
   }
   //pCI->G.p_OP->vDump(__func__);
 
-  if (pCI->G.p_emit && pCI->G.p_key)
+  if (pCI->G.p_emit && pCI->G.p_OP->pSub_key()) {
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+      vDebugPoint();
+    pCI->G.p_key = pCI->G.p_OP->pSub_key();
     pCI->G.p_emit->vApplyFacets(pCI->G.p_key);
+
+    for (Kid xEmit(pCI->G.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
+      for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
+
+        Card_Term *p_term = xRpnCalc.p_term();
+        Symbol *pSym_term = p_term->pSymbol();
+        if (! pSym_term->bHasFacet(SF_KEY_COL))
+          continue;
+
+        i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
+        Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(i_Key);
+
+        if (p_expr_key->bIsScalarCol()) {
+          p_expr_key->pSymbol()->vDump();
+          p_expr_key->pSymbol()->vApplyFacets(pSym_term);
+          p_expr_key->pSymbol()->vDump();
+          vDebugPoint();
+        }
+      }
+    }
+
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

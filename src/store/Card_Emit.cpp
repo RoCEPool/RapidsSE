@@ -156,11 +156,15 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
         Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(i_Key);
 
-        if (p_expr_key->bIsScalarCol())
-          p_expr_key->pSymbol()->vApplyFacets(pSym_term);
+//        if (p_expr_key->bIsScalarCol()) {
+//          p_expr_key->pSymbol()->vDump();
+//          p_expr_key->pSymbol()->vApplyFacets(pSym_term);
+//          p_expr_key->pSymbol()->vDump();
+//          vDebugPoint();
+//        }
 
-        pSym_term->vDump();
-        p_expr_key->vDump(__func__);
+//        pSym_term->vDump();
+//        p_expr_key->vDump(__func__);
 
 //        RASSERT(p_expr_key->pSymbol()->bHasFacet(SF_NMD_COL) ||
 //                p_expr_key->pSymbol()->bHasFacet(SF_TBL_COL));
@@ -183,6 +187,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
           vDebugPoint();
         }
         else {
+          pCI->G.p_OP->vDump(__func__);
+          p_expr_key->pSymbol()->vDump();
           NEVER_REACH
         }
 

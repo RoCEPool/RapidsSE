@@ -225,6 +225,7 @@ void XF::vTransform(void)
   XF_Optimise_Cut_sort::vOptimise(m_pCI);              //
   //XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);    //
   XF_Optimise_Cull_bound::vOptimise(m_pCI);            //
+  XF_Prolog_Analyse_emit::vAnalyse(m_pCI);            //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
                                                        //
   XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);     //
