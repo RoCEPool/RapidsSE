@@ -83,6 +83,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PROLOG_X_RPNCALC_TO_BOOLPRED"_Stz,
   /* */ "XF_PROLOG_X_SCAN_TO_FROM"_Stz,
   /* */ "XF_SYNTHESISE_CODE"_Stz,
+  /* */ "XF_VERIFY_DIC"_Stz,
 
 //  /* */ "XF_ENUMS"_Stz
 };
@@ -163,6 +164,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_RPNCALC_TO_BOOLPRED
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_SCAN_TO_FROM
   /* */ "<to be supplied>"_Stz, // XF_SYNTHESISE_CODE
+  /* */ "<to be supplied>"_Stz, // XF_VERIFY_DIC
 
 // /* */        // XF_ENUMS"_Stz
 };

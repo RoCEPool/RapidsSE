@@ -518,6 +518,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_PROLOG_X_SCAN_TO_FROM,
   /* */ CN_XF_SYNTHESISE_CODE,
   /* */ CN_XF_SYNTHESISE_PIPELINEDEF,
+  /* */ CN_XF_UTILITY_VERIFY_DIC,
 
   /* */ CN__Y__,
 

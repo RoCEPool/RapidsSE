@@ -538,6 +538,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
 		/* */ "XF_PROLOG_X_SCAN_TO_FROM"_Stz,     // CN_XF_PROLOG_X_SCAN_TO_FROM
 		/* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE
 		/* */ "XF_SYNTHESISE_PIPELINEDEF"_Stz,    // CN_XF_SYNTHESISE_PIPELINEDEF
+    /* */ "XF_UTILITY_VERIFY_DIC"_Stz,        // CN_XF_UTILITY_VERIFY_DIC,
 
     /* */ "_Y__"_Stz,                 // CN__Y__
 

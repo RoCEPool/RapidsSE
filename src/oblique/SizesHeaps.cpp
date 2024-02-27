@@ -317,6 +317,7 @@
 #include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
+#include "XF_Utility_Verify_dic.hpp"
 
 #include "XC.hpp"
 
@@ -868,6 +869,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),              HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_PIPELINEDEF,       sizeof(XF_Synthesise_pipelineDef),       HT_T_TINY    , FILL },
+  {CN_XF_UTILITY_VERIFY_DIC,           sizeof(XF_Utility_Verify_dic),           HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),                                 HT_INVALID   , FILL },
 
