@@ -93,6 +93,27 @@ void Card_Stream::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_o_AGGREG,
+                                     CK_o_CROSSJOIN,
+                                     CK_c_FOLD,
+                                     CK_o_FILTER,
+                                     CK_o_FROM,
+                                     CK_o_HAVING,
+                                     CK_o_INDEXJOIN,
+                                     CK_o_INDEXSCAN,
+                                     CK_o_INFLATE,
+                                     CK_o_KEYEXISTS,
+                                     CK_o_KEYNOTEXISTS,
+                                     CK_o_LIMIT,
+                                     CK_o_GBYAGG,
+                                     CK_o_HASH,
+                                     CK_o_PROJECT,
+                                     CK_o_SCAN,
+                                     CK_o_SORT,
+                                     CK_o_WHERE,
+                                     CK_NONE);
+
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
     vValidate_mustHave(CK_t_EMIT, CK_NONE);
 
