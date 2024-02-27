@@ -54,9 +54,9 @@ static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8
   if (iScaleDiff > 0) {
     // Need to check for overflow
     if ( (bcdReScale1.m_iMantissa < 0 &&
-         C_BCD_MIN / aDynamicT->m_iaPow10[iScaleDiff] > bcdReScale1.m_iMantissa)
+         C_BCD_MIN / (i8) aDynamicT->m_iaPow10[iScaleDiff] > bcdReScale1.m_iMantissa)
          ||
-         (C_BCD_MAX / aDynamicT->m_iaPow10[iScaleDiff] < bcdReScale1.m_iMantissa)
+         (C_BCD_MAX / (i8) aDynamicT->m_iaPow10[iScaleDiff] < bcdReScale1.m_iMantissa)
        ) {
       aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
       return;
@@ -64,7 +64,7 @@ static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8
 
     bcdReScale1.m_uScale = (u8) (iScale);
     bcdReScale1.m_iMantissa =
-      bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];
+      bcdReScale1.m_iMantissa * (i8) aDynamicT->m_iaPow10[iScaleDiff];
 
   } else if (iScaleDiff < 0) {
     // No over/underflow check required for division.
@@ -73,7 +73,7 @@ static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8
     if (iScaleDiff < -1) {
       bcdReScale1.m_uScale = (u8) (iScale) + 1;
       bcdReScale1.m_iMantissa =
-        bcdReScale1.m_iMantissa / aDynamicT->m_iaPow10[(-iScaleDiff)-1];
+        bcdReScale1.m_iMantissa / (i8) aDynamicT->m_iaPow10[(-iScaleDiff)-1];
     }
 
     /* Now round the number */
@@ -218,8 +218,8 @@ static inline i8 iCompareBcds(i8** ppaW, struct Dynamic_T* aDynamicT)
   // Convert the integral parts into the same scale as their corresponding
   // decimals so we can then subtract them from their mantissas to leave
   // the fractional components.
-  iIntegral1 *= aDynamicT->m_iaPow10[bcdTmp1.m_uScale];
-  iIntegral2 *= aDynamicT->m_iaPow10[bcdTmp2.m_uScale];
+  iIntegral1 *= (i8) aDynamicT->m_iaPow10[bcdTmp1.m_uScale];
+  iIntegral2 *= (i8) aDynamicT->m_iaPow10[bcdTmp2.m_uScale];
 
   iFractional1 = bcdTmp1.m_iMantissa - iIntegral1;
   iFractional2 = bcdTmp2.m_iMantissa - iIntegral2;

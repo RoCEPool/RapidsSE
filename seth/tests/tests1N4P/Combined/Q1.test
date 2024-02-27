@@ -72,13 +72,13 @@ begin
       aggregates
       type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
       type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
-      type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  ,
-      type DECIMAL ( 19  2 ) as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
-      type DECIMAL ( 19  2 ) as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum  ,
-      type DECIMAL ( 19  2 ) as SUM_CHARGE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  1.0  L_TAX +  *  sum  ,
+      type DECIMAL ( 17  2 ) as SUM_QTY )  L_QUANTITY sum  ,
+      type DECIMAL ( 17  2 ) as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum  ,
+      type DECIMAL ( 17  2 ) as SUM_CHARGE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  1.0  L_TAX +  *  sum  ,
       type INTEGER ( 19 ) as CNT_EXTENDEDPRICE ) L_EXTENDEDPRICE count  ,
       type INTEGER ( 19 ) as CNT_QTY )  L_QUANTITY count  ,
-      type DECIMAL ( 19  2 ) as SUM_DISCOUNT ) L_DISCOUNT sum  ,
+      type DECIMAL ( 17  2 ) as SUM_DISCOUNT ) L_DISCOUNT sum  ,
       type INTEGER ( 19 ) as CNT_DISCOUNT ) L_DISCOUNT count  ,
       type INTEGER ( 19 ) as COUNT_ORDER ) countall"
 
@@ -94,13 +94,13 @@ begin
         aggregates
         type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
         type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
-        type DECIMAL ( 19  2 ) as SUM_QTY           ) SUM_QTY sum  ,
-        type DECIMAL ( 19  2 ) as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
-        type DECIMAL ( 19  2 ) as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
-        type DECIMAL ( 19  2 ) as SUM_CHARGE        ) SUM_CHARGE  sum  ,
+        type DECIMAL ( 17  2 ) as SUM_QTY           ) SUM_QTY sum  ,
+        type DECIMAL ( 17  2 ) as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
+        type DECIMAL ( 17  2 ) as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
+        type DECIMAL ( 17  2 ) as SUM_CHARGE        ) SUM_CHARGE  sum  ,
         type INTEGER ( 19 ) as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
         type INTEGER ( 19 ) as CNT_QTY           ) CNT_QTY sum  ,
-        type DECIMAL ( 19  2 ) as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
+        type DECIMAL ( 17  2 ) as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
         type INTEGER ( 19 ) as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
         type INTEGER ( 19 ) as COUNT_ORDER       ) COUNT_ORDER sum"
 
@@ -114,13 +114,13 @@ begin
       aggregates
       type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
       type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
-      type DECIMAL ( 19  2 ) as SUM_QTY           ) SUM_QTY sum  ,
-      type DECIMAL ( 19  2 ) as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
-      type DECIMAL ( 19  2 ) as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
-      type DECIMAL ( 19  2 ) as SUM_CHARGE        ) SUM_CHARGE  sum  ,
+      type DECIMAL ( 17  2 ) as SUM_QTY           ) SUM_QTY sum  ,
+      type DECIMAL ( 17  2 ) as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
+      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
+      type DECIMAL ( 17  2 ) as SUM_CHARGE        ) SUM_CHARGE  sum  ,
       type INTEGER ( 19 ) as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
       type INTEGER ( 19 ) as CNT_QTY           ) CNT_QTY sum  ,
-      type DECIMAL ( 19  2 ) as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
+      type DECIMAL ( 17  2 ) as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
       type INTEGER ( 19 ) as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
       type INTEGER ( 19 ) as COUNT_ORDER       ) COUNT_ORDER sum"
 
@@ -131,13 +131,13 @@ begin
      project "
       type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS ,
-      type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY ,
-      type DECIMAL ( 19  2 ) as SUM_BASE_PRICE SUM_BASE_PRICE ,
-      type DECIMAL ( 19  2 ) as SUM_DISC_PRICE SUM_DISC_PRICE ,
-      type DECIMAL ( 19  2 ) as SUM_CHARGE SUM_CHARGE ,
-      type DECIMAL ( 19  2 ) as AVG_QTY SUM_QTY CNT_QTY casttype DECIMAL ( 19  2 ) CAST  /  ,
-      type DECIMAL ( 19  2 ) as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE casttype DECIMAL ( 19  2 ) CAST  /  ,
-      type DECIMAL ( 19  2 ) as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT casttype DECIMAL ( 19  2 ) CAST  / ,
+      type DECIMAL ( 17  2 ) as SUM_QTY SUM_QTY ,
+      type DECIMAL ( 17  2 ) as SUM_BASE_PRICE SUM_BASE_PRICE ,
+      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL ( 17  2 ) as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL ( 17  2 ) as AVG_QTY SUM_QTY CNT_QTY casttype DECIMAL ( 17  0 ) CAST  /  ,
+      type DECIMAL ( 17  2 ) as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE casttype DECIMAL ( 17  0 ) CAST  /  ,
+      type DECIMAL ( 17  2 ) as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT casttype DECIMAL ( 17  0 ) CAST  / ,
       type INTEGER ( 19 ) as COUNT_ORDER COUNT_ORDER "
     | combined 0
     | next

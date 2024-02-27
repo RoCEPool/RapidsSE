@@ -46,24 +46,24 @@ begin
     | filter "type BOOLEAN L_DISCOUNT 1.01 0.01 - >=
                               L_DISCOUNT 1.01 0.01 + <=
                               L_QUANTITY 24.0 < and and"
-    | aggreg " type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
+    | aggreg " type DECIMAL ( 17  2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
     | combined 0
     | next
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   stage G_SUM_P on all partitions :
-    aggreg " type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum "
+    aggreg " type DECIMAL ( 17  2 ) as REVENUE ) REVENUE sum "
     | combined 0
     | next
 
   stage G_SUM_N on all nodes :
-    aggreg " type DECIMAL ( 19  2 ) as REVENUE )  REVENUE sum  "
+    aggreg " type DECIMAL ( 17  2 ) as REVENUE )  REVENUE sum  "
     | combined 0
     | next
 
    stage G_SUM_O on origin :
-     aggreg " type DECIMAL ( 19  2 ) as REVENUE )  REVENUE sum  "
+     aggreg " type DECIMAL ( 17  2 ) as REVENUE )  REVENUE sum  "
      | combined 0
      | next
 

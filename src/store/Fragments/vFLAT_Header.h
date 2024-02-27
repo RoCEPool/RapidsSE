@@ -44,6 +44,8 @@ static const i8 C_MAX_BCD_PRECISION = 17;
 static const i8 C_MIN_BCD_SCALE = 0;
 static const i8 C_MAX_BCD_SCALE = 17; //C_MAX_BCD_PRECISION
 static const i8 C_BCD_DEFAULT_SCALE = 0;
+static const i8 C_MAX_I8_PRECISION = 19;
+static const i8 C_MAX_I16_PRECISION = 38;
 
 static const i8 C_CRW_HEADBYTES = 32;
 static const i8 C_CRW_FIRSTHEAD = 640;
@@ -68,7 +70,7 @@ static const i8 C_SECS_PER_DAY = 86400;
 
 
 /*----------------------------------------------------------------------------*/
-/* Get precision of an unsigned integer                                       */
+/* Get precision of an unsigned 64 bit integer                                */
 /*----------------------------------------------------------------------------*/
 i8 iPrecision(u8 uArg) {
 
@@ -122,7 +124,7 @@ i8 iPrecision(u8 uArg) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get precision of a signed integer                                          */
+/* Get precision of a signed 64 bit integer                                   */
 /*----------------------------------------------------------------------------*/
 i8 iPrecision_signed(i8 iArg)
 {
@@ -134,6 +136,68 @@ i8 iPrecision_signed(i8 iArg)
   return iPrec;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Get precision of an unsigned 128 bit integer                               */
+/*----------------------------------------------------------------------------*/
+i8 iPrecision128(u16 uArg, struct Dynamic_T* pDynamic) {
+
+  // Refer to IntLib::iPrecision() for details and comments on this.
+
+  if (uArg == 0) {
+    return 1;
+  }
+
+
+  // The lookup table of (guessed) precision given the number of base 2 digits
+  // (as the index in to the array).
+  static const i8 iaGuess[129] = {
+      0 ,0 ,0 ,0 , 1 ,1 ,1 , 2 ,2 ,2 ,
+      3 ,3 ,3 ,3 , 4 ,4 ,4 , 5 ,5 ,5 ,
+      6 ,6 ,6 ,6 , 7 ,7 ,7 , 8 ,8 ,8 ,
+      9 ,9 ,9 ,9 , 10,10,10, 11,11,11,
+      12,12,12,12, 13,13,13, 14,14,14,
+      15,15,15,15, 16,16,16, 17,17,17,
+      18,18,18,18, 19,19,19, 20,20,20,
+      21,21,21,21, 22,22,22, 23,23,23,
+      24,24,24,24, 25,25,25, 26,26,26,
+      27,27,27,27, 28,28,28, 29,29,29,
+      30,30,30,30, 31,31,31, 32,32,32,
+      33,33,33,33, 34,34,34, 35,35,35,
+      36,36,36,36, 37,37,37, 38,38,
+  };
+
+  u8 uHi = uArg >> 64;
+  u8 uLo = (u8) uArg;
+  // Note: result is undefined if 0 is fed to __builtin_clzll()
+  u8 uLeadingZeros = uHi == 0 ? 64 : __builtin_clzll(uHi);
+
+  i8 iBase2Digits;
+  if (uLeadingZeros == 64) {
+    iBase2Digits = 128 - uLeadingZeros - __builtin_clzll(uLo); // uLo cannot be zero due to the zero check above
+
+  } else {
+    iBase2Digits = 128 - uLeadingZeros;
+  }
+
+  i8 iDigits = iaGuess[iBase2Digits];
+  i8 iPrec = iDigits + (uArg >= (u16) pDynamic->m_iaPow10[iDigits]);
+
+  return iPrec;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Get precision of a signed 128 bit integer                                  */
+/*----------------------------------------------------------------------------*/
+i8 iPrecision128_signed(i16 iArg, struct Dynamic_T* pDynamic)
+{
+  if (iArg < 0) {
+    iArg = -iArg;
+  }
+
+  i8 iPrec = iPrecision128((u16) iArg, pDynamic);
+  return iPrec;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

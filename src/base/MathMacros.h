@@ -198,7 +198,7 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdUpperBound.m_iSpare = 0;
   bcdUpperBound.m_uScale = 0;
-  bcdUpperBound.m_iMantissa = aDynamicT->m_iaPow10[iIntegralPrecResult - 1];
+  bcdUpperBound.m_iMantissa = (i8) aDynamicT->m_iaPow10[iIntegralPrecResult - 1];
   *(*ppaW)++ = bcdUpperBound.m_iAsI8;
   vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
   bcdUpperBound.m_iAsI8 = *(--(*ppaW));
@@ -305,50 +305,130 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
 static inline void _DIV_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
-  union Bcd_T bcdArg1;
   union Bcd_T bcdArg2;
-  union Flt_T fltArg1;
+  union Bcd_T bcdArg1;
+  union Bcd_T bcdResult;
 
   bcdArg2.m_iAsI8 = *(--(*ppaW));
   bcdArg1.m_iAsI8 = *(--(*ppaW));
 
-  if (aDynamicT->m_iErrorCode!= EC_NONE ||
-    bcdArg1.m_iAsI8 == C_DATUM_NULL ||
-    bcdArg2.m_iAsI8 == C_DATUM_NULL) {
+  // Check for nulls
+  if (aDynamicT->m_iErrorCode != EC_NONE ||
+      bcdArg1.m_iAsI8 == C_DATUM_NULL ||
+      bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
-  else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-    }
 
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = C_DATUM_NULL;
-    }
-    else {
-      aDynamicT->m_iErrorCode = _OF_BCDDIV;
-      if(aDynamicT->m_iErrorCode != EC_NONE) {
-        *(*ppaW)++ = C_DATUM_NULL;
-      }
-      else {
-        fltArg1.m_dFlt = ((d8)bcdArg1.m_iMantissa) / ((d8)bcdArg2.m_iMantissa);
-        *(*ppaW)++ = bcdArg1.m_uScale + 1;
-        *(*ppaW)++ = fltArg1.m_iAsI8;
-
-        vFltToBcdToScale(ppaW, aDynamicT);
-        vRoundBcd(ppaW);
-
-        if(aDynamicT->m_iErrorCode != EC_NONE) {
-          --(*ppaW);
-          *(*ppaW)++ = C_DATUM_NULL;
-        }
-      }
-    }
+  // Check for a divide by zero
+  if (bcdArg2.m_iMantissa == 0) {
+    aDynamicT->m_iErrorCode = EC_DIVIDE_BY_ZERO;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
   }
+
+  const i8 iPrecMax = C_MAX_BCD_PRECISION;
+
+  // Extract the precision and scale of each operand
+  i8 iPrecArg1  = iPrecision_signed(bcdArg1.m_iMantissa);
+  i8 iPrecArg2  = iPrecision_signed(bcdArg2.m_iMantissa);
+  i8 iScaleArg1 = (i8) bcdArg1.m_uScale;
+  i8 iScaleArg2 = (i8) bcdArg2.m_uScale;
+
+  // Num integral digits in each operand
+//i8 iIntegralPrec1 = iPrecArg1 - iScaleArg1;
+//i8 iIntegralPrec2 = iPrecArg2 - iScaleArg2;
+
+  // Calc theoretical precision & scale of the operation
+  i8 iScaleOp = _MAX_I8(6, (iScaleArg1 + iPrecArg2 + 1));
+//i8 iPrecOp  = iIntegralPrec1 + iScaleArg2 + iScaleOp;
+//i8 iIntegralPrecOp = iPrecOp - iScaleOp;
+
+
+  // Because decimals are represented as a mantissa and scale, we can make use
+  // of some special properties to simplify the division. Fundamentally, we can
+  // divide the mantissa of arg1 by the mantissa of arg2 and the result only
+  // differs from the real result by the difference in the scale of arg1 and arg2.
+  //
+  // However, if we divide the mantissas using integer division then we run the risk
+  // of losing precision.
+  //
+  // e.g. Consider arg1 = 10 and arg2 = 0.123456. If we integer divide the mantissas
+  // (1 / 123456) then the result will always be zero, even though there is significant
+  // scale difference between the two values.
+  //
+  // The trick here is to recognise that we can get more precision by multiplying arg1
+  // by as many orders of magnitude as is possible *before* the integer division
+  // and then compensating the resulting value afterwards. Let's call this the
+  // multiplication factor and the scale adjustment.
+  //
+  // multFactor = maxPrecision - p1
+  // scaleAdj   = multFactor - (s2 - s1)
+  //
+  // The division operation therefore becomes this equation:
+  //   result = int( (mantissa1 * 10^multFactor) / mantissa2 ) * 10^(-scaleAdj)
+  //
+  // This will give us a result as accurate as possible. The accuracy is limited by:
+  //  (1) The precision of arg1;
+  //        The more digits in arg1 the less opportunity there is to expand it before
+  //        the division.
+  //  (2) The width of the integer type used in the division.
+  //        A division of 64 bit integers only allows for a maximum integer precision of 19.
+  //        A division of 128 bit integers allows for a maximum integer precision of 38.
+  //
+  // Because of this we will promote arg1 and arg2 to 128 bit integers before doing
+  // the integer division.
+  //
+  // After we get the result, we will need to adjust it to the required scale of the operation.
+
+  i16 iMan1 = bcdArg1.m_iMantissa;
+  i16 iMan2 = bcdArg2.m_iMantissa;
+  i16 iManResult;
+
+  i8 iMultFactor = C_MAX_I16_PRECISION - iPrecArg1;
+  i8 iScaleAdj   = iMultFactor - (iScaleArg2 - iScaleArg1);
+
+  iManResult = (iMan1 * aDynamicT->m_iaPow10[iMultFactor]) / iMan2;
+
+  // This mantissa result is still in a 128 bit quantity. If we multiply
+  // it by iScaleAdj then we will get the integral result. So next step
+  // is to work out how much scale is required and then check if the value
+  // can fit in a 64 (well, a 58 bit) quantity.
+
+  // Firstly get the number of digits in iManResult and then work out
+  // the number of digits in the integral part of the result.
+  i8 iManResultPrec = iPrecision128_signed(iManResult, aDynamicT);
+  i8 iManResultIntegralPrec = iManResultPrec - iScaleAdj;
+
+  // Bounds check
+  if (iManResultIntegralPrec > iPrecMax) {
+    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
+  // Calculate the amount of scale we can support
+  i8 iMaxResultScale = _MIN_I8(iScaleOp, iPrecMax - iManResultIntegralPrec);
+
+  // Now we can calculate the 58 bit mantissa and create the bcd.
+  // The last digit needs to be rounded appropriately, so reduce the mantissa
+  // to a precision of 1 more than we need then we can round the last value.
+  i8 iDesiredPrecision = iManResultIntegralPrec + iMaxResultScale + 1;
+  i8 iPrecisionDiff = iManResultPrec - iDesiredPrecision;
+  iManResult = iManResult / aDynamicT->m_iaPow10[iPrecisionDiff];
+
+  // Round the last digit
+  if (iManResult % 10 >= 5) {
+    iManResult += 10;
+  }
+
+  // Remove the last digit
+  iManResult = iManResult / 10;
+
+  bcdResult.m_iMantissa = (i8) iManResult;
+  bcdResult.m_uScale = iMaxResultScale;
+  bcdResult.m_iSpare = 0;
+  *(*ppaW)++ = bcdResult.m_iAsI8;
 }
 
 static inline void _MUL_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
@@ -542,7 +622,7 @@ static inline void _SUB_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
   bcdUpperBound.m_iSpare = 0;
   bcdUpperBound.m_uScale = 0;
-  bcdUpperBound.m_iMantissa = aDynamicT->m_iaPow10[iIntegralPrecResult - 1];
+  bcdUpperBound.m_iMantissa = (i8) aDynamicT->m_iaPow10[iIntegralPrecResult - 1];
   *(*ppaW)++ = bcdUpperBound.m_iAsI8;
   vRescaleBcdToScale(ppaW, aDynamicT, iSmallerScale, &iRoundedUp);
   bcdUpperBound.m_iAsI8 = *(--(*ppaW));

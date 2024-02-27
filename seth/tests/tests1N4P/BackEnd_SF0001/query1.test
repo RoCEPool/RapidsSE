@@ -94,13 +94,13 @@ begin
       aggregates
       type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
       type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
-      type DECIMAL ( 19  2 ) as SUM_QTY ) L_QUANTITY sum  ,
-      type DECIMAL ( 19  2 ) as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
-      type DECIMAL ( 19  2 ) as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-      type DECIMAL ( 19  2 ) as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
+      type DECIMAL ( 17  2 ) as SUM_QTY ) L_QUANTITY sum  ,
+      type DECIMAL ( 17  2 ) as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+      type DECIMAL ( 17  2 ) as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
       type INTEGER ( 19 ) ) L_EXTENDEDPRICE count  ,
       type INTEGER ( 19 ) ) L_QUANTITY count  ,
-      type DECIMAL ( 19  2 ) ) L_DISCOUNT sum  ,
+      type DECIMAL ( 17  2 ) ) L_DISCOUNT sum  ,
       type INTEGER ( 19 ) ) L_DISCOUNT count  ,
       type INTEGER ( 19 ) ) countAll  "
     | combined 0
@@ -111,13 +111,13 @@ begin
       aggregates
       type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
       type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
-      type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum ,
-      type DECIMAL ( 19  2 ) as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
-      type DECIMAL ( 19  2 ) as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
-      type DECIMAL ( 19  2 ) as SUM_CHARGE ) SUM_CHARGE sum ,
+      type DECIMAL ( 17  2 ) as SUM_QTY ) SUM_QTY sum ,
+      type DECIMAL ( 17  2 ) as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
+      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
+      type DECIMAL ( 17  2 ) as SUM_CHARGE ) SUM_CHARGE sum ,
       type INTEGER ( 19 ) ) $7 sum ,
       type INTEGER ( 19 ) ) $8 sum ,
-      type DECIMAL ( 19  2 ) ) $9 sum ,
+      type DECIMAL ( 17  2 ) ) $9 sum ,
       type INTEGER ( 19 ) ) $10 sum ,
       type INTEGER ( 19 ) ) $11 sum "
     | combined 0
@@ -128,13 +128,13 @@ begin
       aggregates
       type VARCHAR ( 0 ) as L_RETURNFLAG $K1 ,
       type VARCHAR ( 0 ) as L_LINESTATUS $K2 ,
-      type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum ,
-      type DECIMAL ( 19  2 ) as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
-      type DECIMAL ( 19  2 ) as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
-      type DECIMAL ( 19  2 ) as SUM_CHARGE ) SUM_CHARGE sum ,
+      type DECIMAL ( 17  2 ) as SUM_QTY ) SUM_QTY sum ,
+      type DECIMAL ( 17  2 ) as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
+      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
+      type DECIMAL ( 17  2 ) as SUM_CHARGE ) SUM_CHARGE sum ,
       type INTEGER ( 19 ) ) $7 sum ,
       type INTEGER ( 19 ) ) $8 sum ,
-      type DECIMAL ( 19  2 ) ) $9 sum ,
+      type DECIMAL ( 17  2 ) ) $9 sum ,
       type INTEGER ( 19 ) ) $10 sum ,
       type INTEGER ( 19 ) as COUNT_ORDER ) $11 sum"
     | combined 0
@@ -144,13 +144,13 @@ begin
     project "
       type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS ,
-      type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY ,
-      type DECIMAL ( 19  2 ) as SUM_BASE_PRICE SUM_BASE_PRICE ,
-      type DECIMAL ( 19  2 ) as SUM_DISC_PRICE SUM_DISC_PRICE ,
-      type DECIMAL ( 19  2 ) as SUM_CHARGE SUM_CHARGE ,
-      type DECIMAL ( 19  2 ) as AVG_QTY SUM_QTY $8 casttype DECIMAL ( 19  2 ) CAST  / ,
-      type DECIMAL ( 19  2 ) as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL ( 19  2 ) CAST  / ,
-      type DECIMAL ( 19  2 ) as AVG_DISC $9 $10 casttype DECIMAL ( 19  2 ) CAST  / ,
+      type DECIMAL ( 17  2 ) as SUM_QTY SUM_QTY ,
+      type DECIMAL ( 17  2 ) as SUM_BASE_PRICE SUM_BASE_PRICE ,
+      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL ( 17  2 ) as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL ( 17  2 ) as AVG_QTY SUM_QTY $8 casttype DECIMAL ( 17  0 ) CAST  / ,
+      type DECIMAL ( 17  2 ) as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL ( 17  0 ) CAST  / ,
+      type DECIMAL ( 17  2 ) as AVG_DISC $9 $10 casttype DECIMAL ( 17  0 ) CAST  / ,
       type INTEGER ( 19 ) as COUNT_ORDER COUNT_ORDER "
     | combined 0
     | next

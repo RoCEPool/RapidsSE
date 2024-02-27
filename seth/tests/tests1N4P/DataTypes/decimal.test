@@ -247,15 +247,15 @@ contains rows:
 //------------------------------------------------------------------------------
 select 820.12 / 12.346 from ${testName2}_datums;
 contains rows:
-  (66.428)
+  (66.42799287)
 
 select 820.1278 / 12.3 from ${testName2}_datums;
 contains rows:
-  (66.6771)
+  (66.67705691)
 
 select 820.12 / 12.35 from ${testName2}_datums;
 contains rows:
-  (66.41)
+  (66.4064777)
 
 //------------------------------------------------------------------------------
 select 820.12 * 12.346 from ${testName2}_datums;

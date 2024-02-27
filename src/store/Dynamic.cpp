@@ -27,20 +27,20 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
 
+  m_wDummy = 0;
+
   for (i8 i_Stack = 0; i_Stack < 256; i_Stack++)
     m_xDynamicT.m_aW[i_Stack] = 0;
 
   m_xDynamicT.m_bTrace      = false;
   m_xDynamicT.m_iErrorCode  = (i8)EC_NONE;
-  m_xDynamicT.m_bProcessRow = true;
   m_xDynamicT.m_iRowsProcessed = 0;
+  m_xDynamicT.m_iLimitRows     = 0;
 
+  m_xDynamicT.m_bProcessRow = true;
 	m_xDynamicT.m_bHasAggRow = false;
 	m_xDynamicT.m_bHasRowToAgg = false;
   m_xDynamicT.m_bIndexScan = false;
-
-  // limit
-  m_xDynamicT.m_iLimitRows       = 0;
 
 	// rowbuffer T
 	m_xDynamicT.m_aPdsRowBuffer = nullptr;
@@ -255,7 +255,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_iaPow10[0] = 1;
   const i8 nElements = sizeof(m_xDynamicT.m_iaPow10) / sizeof(m_xDynamicT.m_iaPow10[0]);
   for (i8 iIndex = 1; iIndex < nElements; iIndex++) {
-    m_xDynamicT.m_iaPow10[iIndex] = 10*m_xDynamicT.m_iaPow10[iIndex-1];
+    m_xDynamicT.m_iaPow10[iIndex] = (i16)10 * m_xDynamicT.m_iaPow10[iIndex-1];
   }
 
   _checkInitialised_(CN_DYNAMIC);

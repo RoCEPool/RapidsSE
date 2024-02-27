@@ -366,7 +366,7 @@ static inline void _BCD_TOFLT(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 
   fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa);
-  fltArg1.m_dFlt = fltArg1.m_dFlt / aDynamicT->m_iaPow10[bcdArg1.m_uScale];
+  fltArg1.m_dFlt = fltArg1.m_dFlt / (d8) aDynamicT->m_iaPow10[bcdArg1.m_uScale];
   *(*ppaW)++ = fltArg1.m_iAsI8 ;
 }
 
@@ -465,7 +465,7 @@ static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
   i8 iScaleDigits = (iPrecision - iIntegralDigits) < iScale ? iPrecision - iIntegralDigits : iScale;
 
   // Multiply by number of scale digits + 1 for rounding of the last value
-  i8 iFracVal = (fltArg1.m_dFlt - (d8) iIntegralVal) * aDynamicT->m_iaPow10[iScaleDigits + 1];
+  i8 iFracVal = (fltArg1.m_dFlt - (d8) iIntegralVal) * (d8) aDynamicT->m_iaPow10[iScaleDigits + 1];
 
   b1 bRoundUp = iFracVal % 10 >= 5;
 
@@ -473,10 +473,10 @@ static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
   i8 i;
   i8 iDigitVal;
   for (i=iScaleDigits; i>0; i--) {
-    iDigitVal = iFracVal / aDynamicT->m_iaPow10[i];
+    iDigitVal = iFracVal / (i8) aDynamicT->m_iaPow10[i];
     iMantissa *= 10;
     iMantissa += iDigitVal;
-    iFracVal -= iDigitVal * aDynamicT->m_iaPow10[i];
+    iFracVal -= iDigitVal * (i8) aDynamicT->m_iaPow10[i];
   }
 
   if (bRoundUp) {
@@ -531,7 +531,7 @@ static inline void vFltToBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT)
   }
 
   bcdArg1.m_iMantissa = fltArg1.m_iAsI8;
-  bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[iScale];
+  bcdArg2.m_iMantissa = (i8) aDynamicT->m_iaPow10[iScale];
 
   i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);
   while (iMantissa > C_BCD_MAX) {
@@ -685,7 +685,7 @@ static inline void _BCD_TOINT(i8** ppaW, struct Dynamic_T* aDynamicT)
     return;
   }
 
-  i8 iVal = bcdArg1.m_iMantissa / aDynamicT->m_iaPow10[bcdArg1.m_uScale];
+  i8 iVal = bcdArg1.m_iMantissa / (i8) aDynamicT->m_iaPow10[bcdArg1.m_uScale];
   *(*ppaW)++ = iVal;
 }
 

@@ -12,6 +12,7 @@ namespace STORE
   class Dynamic : public Object
   {
   private:
+    w8        m_wDummy;  // important: so that m_xDynamicT can be 128bit aligned
     Dynamic_T m_xDynamicT;
   
     // must be last
