@@ -1663,6 +1663,25 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Card::nSubCards(eCK eSub_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nFound = 0;
+  if (eSub_arg == eCard())
+    nFound++;
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChild = pGetChild(i_Child);
+    nFound += pChild->nSubCards(eSub_arg);
+  }
+
+  return nFound;
+}
+/*----------------------------------------------------------------------------*/
 /* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
 Symbol* Card::pSymbol(void)
