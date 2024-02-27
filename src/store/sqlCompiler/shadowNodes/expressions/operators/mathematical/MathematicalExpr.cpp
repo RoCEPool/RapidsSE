@@ -139,15 +139,15 @@ i8 MathematicalExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
 
   // Manual expression polymorphism here
 
-  if      (      AdditionExpr::bIsOfType(pExprNode))  { return       AdditionExpr::iPrecision(pExprNode, pRootNode); }
-  else if (   SubtractionExpr::bIsOfType(pExprNode))  { return    SubtractionExpr::iPrecision(pExprNode, pRootNode); }
-  else if (MultiplicationExpr::bIsOfType(pExprNode))  { return MultiplicationExpr::iPrecision(pExprNode, pRootNode); }
-  else if (      DivisionExpr::bIsOfType(pExprNode))  { return       DivisionExpr::iPrecision(pExprNode, pRootNode); }
-  else if (       ModulusExpr::bIsOfType(pExprNode))  { return        ModulusExpr::iPrecision(pExprNode, pRootNode); }
-  else if (      NegationExpr::bIsOfType(pExprNode))  { return       NegationExpr::iPrecision(pExprNode, pRootNode); }
-  else if (       ExtractExpr::bIsOfType(pExprNode))  { return        ExtractExpr::iPrecision(pExprNode, pRootNode); }
-//else if (       PowerExpr::bIsOfType(pExprNode))           { return          PowerExpr::iPrecision(pExprNode, pRootNode); }
-//else if (         LogExpr::bIsOfType(pExprNode))           { return            LogExpr::iPrecision(pExprNode, pRootNode); }
+  if      (      AdditionExpr::bIsOfType(pExprNode))  { return       AdditionExpr::iScale(pExprNode, pRootNode); }
+  else if (   SubtractionExpr::bIsOfType(pExprNode))  { return    SubtractionExpr::iScale(pExprNode, pRootNode); }
+  else if (MultiplicationExpr::bIsOfType(pExprNode))  { return MultiplicationExpr::iScale(pExprNode, pRootNode); }
+  else if (      DivisionExpr::bIsOfType(pExprNode))  { return       DivisionExpr::iScale(pExprNode, pRootNode); }
+  else if (       ModulusExpr::bIsOfType(pExprNode))  { return        ModulusExpr::iScale(pExprNode, pRootNode); }
+  else if (      NegationExpr::bIsOfType(pExprNode))  { return       NegationExpr::iScale(pExprNode, pRootNode); }
+  else if (       ExtractExpr::bIsOfType(pExprNode))  { return        ExtractExpr::iScale(pExprNode, pRootNode); }
+//else if (       PowerExpr::bIsOfType(pExprNode))           { return          PowerExpr::iScale(pExprNode, pRootNode); }
+//else if (         LogExpr::bIsOfType(pExprNode))           { return            LogExpr::iScale(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 
