@@ -234,9 +234,10 @@ void Card_IndexList::vX_tblCol_To_expCol(CardIter* pCI)
 void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
 
   (void)Card::eValidate_parentEither(pCI, CK_s_TABLE, CK_NONE);
+
+  vValidate_mustHave(CK_INDEX,CK_NONE);
 
   i8 nChosenIndexes = 0;
   for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/) {

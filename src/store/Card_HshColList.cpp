@@ -66,7 +66,12 @@ void Card_HshColList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pParent);
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_o_HASH,
+                                     CK_NONE);
+
+  RASSERT(! pSymbol()->nFacets());
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
