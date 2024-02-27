@@ -108,12 +108,12 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vUpdate_expCol(Card_Emit* p_Dic_expr)
+void Card_Filter::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vUpdate_expCol(p_Dic_expr);
+    p_boolPred->vUpdate_expCol(p_Dic_expr,bAlt);
 }
 
 /*----------------------------------------------------------------------------*/

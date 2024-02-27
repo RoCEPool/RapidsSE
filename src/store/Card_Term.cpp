@@ -352,7 +352,7 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr)
+void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -360,12 +360,16 @@ void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr)
   if (! pSym_term->bHasFacet(SF_EXP_COL))
     return;
 
-#if 1
-  if (Card_Expr* p_expr_dic = p_Dic_expr->pFindExprOfSymbol(pSym_term)) {
-#else
-    // I thnk it should be this form
-  if (Card_Expr* p_expr_dic = p_Dic_expr->pFind_expr_Matches(pSym_term)) {
-#endif
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    vDebugPoint();
+
+  Card_Expr* p_expr_dic;
+  if (bAlt)
+    p_expr_dic = p_Dic_expr->pFind_expr_Matches(pSym_term);
+  else
+    p_expr_dic = p_Dic_expr->pFindExprOfSymbol(pSym_term);
+
+  if (p_expr_dic) {
     pSym_term->vApplyCastFacets(p_expr_dic->pSymbol());
     vMark1(MARK_CHANGED);
   }

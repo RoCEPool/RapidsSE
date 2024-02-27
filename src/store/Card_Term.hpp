@@ -30,7 +30,7 @@ namespace STORE
     eTE  eEvalTerm(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vShortForm(String* pString, Stz* szSep);
-    void vUpdate_expCol(Card_Emit* p_Dic_expr);
+    void vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt=false);
 
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);

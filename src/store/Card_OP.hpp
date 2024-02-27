@@ -21,7 +21,7 @@ namespace STORE
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
-    void vUpdate_expCol(Card_Emit* p_arriving);
+    void vUpdate_expCol(Card_Emit* p_arriving, bool bAlt=false);
 
     void vCullIfEmpty_filter(Card_Filter* p_filter);
 

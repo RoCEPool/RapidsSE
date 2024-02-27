@@ -303,16 +303,16 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vUpdate_expCol(Card_Emit* p_Dic_expr)
+void Card_BoolPred::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfCorrect = [p_Dic_expr](Card* p_card)
+  auto bfCorrect = [bAlt,p_Dic_expr](Card* p_card)
   {
     if (p_card->pSymbol()->bHasFacet(SF_EXP_COL))
-      _pCard_Term(p_card)->vUpdate_expCol(p_Dic_expr);
+      _pCard_Term(p_card)->vUpdate_expCol(p_Dic_expr,bAlt);
 
     return C_CONTINUE_RECURSION;
   };
