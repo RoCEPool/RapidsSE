@@ -548,8 +548,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       // indexList/bounds
       if (!(m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds()))
         continue;
-      for (Kid xBound(m_pCI->G.p_bounds); xBound.bEach(CK_BOUND); /**/) {
-        m_pCI->G.p_bound = xBound.p_bound();
+      for (Kid xBounds(m_pCI->G.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
+        m_pCI->G.p_bound = xBounds.p_bound();
         m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
@@ -745,6 +745,66 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 indexList
+
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
+    for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
+      m_pCI->G.p_index = xIndexList.p_index();
+      //m_pCI->G.p_index->vDump(__func__);
+
+      // indexList/colList
+      // todo: should idxCols be cast? 302]
+//      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
+//      for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
+//        m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
+//
+//        if (m_pCI->G.p_idxCol->pSymbol()->bValidCast())
+//          continue;
+//
+//        m_pCI->G.p_index->vDump(__func__);
+//        m_pCI->G.p_idxCol->vDump(__func__);
+//        NEVER_REACH
+//      }
+
+      // indexList/bounds
+      if (!(m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds()))
+        continue;
+      for (Kid xBounds(m_pCI->G.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
+        m_pCI->G.p_bound = xBounds.p_bound();
+        m_pCI->G.p_bound->vDump(__func__);
+        vDebugPoint();
+        for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
+          m_pCI->G.p_term = xBound.p_term();
+
+          if (m_pCI->G.p_term->pSymbol()->bIs_Col()) {
+            if (m_pCI->G.p_term->pSymbol()->bValidCast())
+              continue;
+            else
+              vDebugPoint();
+          }
+          else
+          if (m_pCI->G.p_term->pSymbol()->bIs_Lit()) {
+            // todo: bound literals to be cast [303]
+//            if (m_pCI->G.p_term->pSymbol()->bValidCast())
+//              continue;
+//            else
+//             vDebugPoint();
+            continue;
+          }
+          else {
+            continue;
+          }
+
+          m_pCI->G.p_index->vDump(__func__);
+          m_pCI->G.p_term->vDump(__func__);
+          NEVER_REACH
+
+        }
+      }
+
+    }
+
+    vDebugPoint();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 hshColList
