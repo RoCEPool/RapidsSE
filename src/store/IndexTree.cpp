@@ -116,6 +116,23 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Externs -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamic, i8 nPayloadBytes, bool *pbInsertedEntry) {
+
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+	IndexTree* pIndexTree = (IndexTree*)pDynamicT->m_xIndexInfoPL.m_aIndexTree;
+	Key* aKey = (Key*)pDynamicT->m_xIndexInfoPL.m_aEntKey;
+
+	Ent* pEntInt = (Ent*)pDynamicT->m_xIndexInfoPL.m_aEntInt;
+
+	Ent* pEntInserted =  pIndexTree->aFindInsertEntryAscGen(aKey, pEntInt, nPayloadBytes, pbInsertedEntry, &pDynamicT->m_iErrorCode);
+
+	//pDynamicT->m_aiPayload = pEntInserted->aiPayload();
+
+	return pEntInserted;
+
+}
+
+
 extern "C" void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) {
   return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
 }

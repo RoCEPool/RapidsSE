@@ -121,7 +121,9 @@ struct Dynamic_T
 
 	void* (*m_fp_aExtern_IndexNew)(i8,void*,void*,bool);
 	void* (*m_fp_aExtern_IndexTreeBegin)(void*,void**);
-	void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
+	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
+
+		void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
 	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
 
 	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);

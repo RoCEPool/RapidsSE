@@ -81,7 +81,7 @@ void vGbyAggFindKeyAsc(Dynamic_T* aDynamicT) {
   }
 }
 
-  /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /*-- vGbyAggFindKeyAscDsc ------------------------------------------------------*/
 /*------------------------------------------------------------------------------*/
 // function-vGbyAggFindKeyAscDsc
@@ -98,6 +98,73 @@ void vGbyAggFindKeyAsc(Dynamic_T* aDynamicT) {
     if (!aEntFound) {
       // marker-end
     }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggFindInsertGenAsc -------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggFindInsertGenAsc
+i8 iGbyAggFindInsertGenAsc(Dynamic_T* aDynamicT) {
+
+	void *aEntFound;
+
+	// marker-start
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// find key in payload index
+#ifdef WITH_CLANG
+  bool bInsertedEntry = false;
+	aEntFound = aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc(aDynamicT, 72, &bInsertedEntry);
+#endif
+	if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+		return 0;
+	}
+	// marker-end
+
+	return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggGenAscBegin --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggGenAscBegin
+i8 iGbyAggGenAscBegin(Dynamic_T* aDynamicT) {
+
+	void *aEntFound;
+	bool bInsertedEntry;
+
+	// marker-start
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// aggregate the payload
+	aDynamicT->m_aiPayload = (i8 *) ((char *) aEntFound
+																	 + sizeof(struct Ent_int)
+																	 + ((struct Ent_int *) aEntFound)->m_iIntElm0
+																	 + 8);
+
+	if (bInsertedEntry) {
+
+		aDynamicT->m_iRowsProcessed++;
+
+		// marker-end
+
+	}
+
+	return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggGenAscEnd --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggGenAscEnd
+i8 iGbyAggGenAscEnd(Dynamic_T* aDynamicT) {
+
+	{
+		// marker-start
+
+	}
+		// marker-end
+
+		return 0;
 }
 
 /*----------------------------------------------------------------------------*/

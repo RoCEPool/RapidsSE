@@ -4,7 +4,8 @@
 
 //print "Q1";
 
-file __TPCH_SCHEMA_LOAD_SF1;
+file _lineitem;
+load lineitem "../TPCH/SF_0001/lineitem.tbl";
 
 /keepCodeFile
 /optimise_passthru

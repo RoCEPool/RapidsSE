@@ -4,7 +4,13 @@
 
 //print "Q1";
 
-//file __TPCH_SCHEMA_LOAD_SF10;
+//file _lineitem;
+//load lineitem "../TPCH/SF10/lineitem.tbl";
+
+//file _lineitem;
+//hasCodeFile
+//useCodeFile = "findExp"
+//load lineitem "../TPCH/SF10/lineitem.tbl";
 
 /keepCodeFile
 /optimise_passthru

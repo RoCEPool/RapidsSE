@@ -260,34 +260,44 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         vAppendCodeIndexCols(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
 
-        // populate the payload key
-        vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
-        vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+				// populate the payload key
+				vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
+				vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
+				vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
-        // find the key
-        if (pOpSketch->m_pIndexDef->bHasDescending())
-          vAppendCodeFragment(pOpSketch, "vGbyAggFindKeyAscDsc"_Stz, pOperatorFile);
-        else
-          vAppendCodeFragment(pOpSketch, "vGbyAggFindKeyAsc"_Stz, pOperatorFile);
+				if ( ! pOpSketch->m_pIndexDef->bHasDescending() &&
+				       pOpSketch->m_pIndexDef->eKeyKind() == KE_GENERAL) {
+					vAppendCodeFragment(pOpSketch, "iGbyAggFindInsertGenAsc"_Stz, pOperatorFile);
+					vAppendCodeFragment(pOpSketch, "iGbyAggGenAscBegin"_Stz, pOperatorFile);
+					vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+					vAppendCodeFragment(pOpSketch, "iGbyAggGenAscEnd"_Stz, pOperatorFile);
+				}
+				else {
 
-        // create the payload
-        if (pOpSketch->m_nPayloadBytes)
-          vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
+					// find the key
+					if (pOpSketch->m_pIndexDef->bHasDescending())
+						vAppendCodeFragment(pOpSketch, "vGbyAggFindKeyAscDsc"_Stz, pOperatorFile);
+					else
+						vAppendCodeFragment(pOpSketch, "vGbyAggFindKeyAsc"_Stz, pOperatorFile);
 
-        // insert key
-        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
-          vAppendCodeFragment(pOpSketch, "vIndexInsertContinue"_Stz);
-          vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-          vAppendCodeFragment(pOpSketch, "iGbyAggIntKeyEnd"_Stz, pOperatorFile);
-        }
-        else {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
-          vAppendCodeFragment(pOpSketch, "vIndexInsertContinue"_Stz);
-          vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-          vAppendCodeFragment(pOpSketch, "iGbyAggGenKeyEnd"_Stz, pOperatorFile);
-        }
+					// create the payload
+					if (pOpSketch->m_nPayloadBytes)
+						vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
+
+					// insert key
+					if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
+						vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
+						vAppendCodeFragment(pOpSketch, "vIndexInsertContinue"_Stz);
+						vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+						vAppendCodeFragment(pOpSketch, "iGbyAggIntKeyEnd"_Stz, pOperatorFile);
+					}
+					else {
+						vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
+						vAppendCodeFragment(pOpSketch, "vIndexInsertContinue"_Stz);
+						vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+						vAppendCodeFragment(pOpSketch, "iGbyAggGenKeyEnd"_Stz, pOperatorFile);
+					}
+				}
 
         // populate the payload
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);

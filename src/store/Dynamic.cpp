@@ -266,6 +266,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_aExtern_IndexNew = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeBegin = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAsc = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeFindInsertGenAsc = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEnt = nullptr;
 
 	m_xDynamicT.m_fp_aExtern_PdsRowBufferCellArray = nullptr;

@@ -24,6 +24,8 @@ extern void* aExtern_IndexDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((
 
 extern void* aExtern_IndexNew(i8 nNumCols, void* pColumnInfo, void* aEntWrk, bool bPayload) __attribute__((weak_import));
 
+extern void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamicT, i8 nPayloadBytes, bool* pbInsertedEntry) __attribute__((weak_import));
+
 extern void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) __attribute__((weak_import));
 extern void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey) __attribute__((weak_import));

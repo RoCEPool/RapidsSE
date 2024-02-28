@@ -85,7 +85,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_gen(Key* aForKey)
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
+EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
@@ -107,8 +107,8 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
 
   EntBuffer* pEntBuffer = this;
 
-  i8 iBufferHeight;
-  Ent* aEnt;
+  //i8 iBufferHeight;
+  //Ent* aEnt;
 
   while (true) {
 
@@ -119,32 +119,65 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
         m_nTabs++;
 #endif
 
-    iBufferHeight = pEntBuffer->iBufferHeight();
-    if (iBufferHeight == 0)
-      break;
+		//*ppEntPrior = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+
+		i8 nLvlLevels = AM::nLvlLevels();
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		if (nItems() == 0)
+			*ppEntPrior = aSkipRoots();
+    else {
+			Ent *aScanEntry_sl = aSkipRoots();
+
+			//bool bNextKeyIsGE;
+
+			for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+
+				Ent *aNextEntry_sl = aNextEntry(aScanEntry_sl, i_ScanLevel);
+				while (aNextEntry_sl) {
+
+					//bNextKeyIsGE = Key::bGreaterEqualAsc(aNextEntry_sl->aKey(), aForKey);
+					eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
+
+					if (eCmp == KC_AFTER || eCmp == KC_SAME)
+						break;
+
+					aScanEntry_sl = aNextEntry_sl;
+					aNextEntry_sl = aNextEntry(aNextEntry_sl, i_ScanLevel);
+				}
+
+			}
+
+			*ppEntPrior = aScanEntry_sl;
+		}
+
+    if (pEntBuffer->iBufferHeight() == 0) {
+			break;
+		}
 
     // get the entry
     //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aEnt1);
 
-    aEnt = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
-    ASSERT(aEnt);
-    Ent* aEntPrev = aEnt;
+		ASSERT(*ppEntPrior);
+    //Ent* aEntPrev = aEnt;
+		//*ppEntPrior = aEntPrev;
 
-    aEnt = pEntBuffer->pFindEntryPrevTo_ascGen(aEnt,aForKey);
-    if (! aEnt) {
-      aForKey->vShow(pIndexDef());
-      vTrace("\n"_Stz);
-
-      aEntPrev->aKey()->vShow(pIndexDef());
-      vTrace("\n"_Stz);
-
-      pEntBuffer->vDump();
-    }
-    ASSERT(aEnt);
+//    aEnt = pEntBuffer->pFindEntryPrevTo_ascGen(aEnt,aForKey);
+//    if (! aEnt) {
+//      aForKey->vShow(pIndexDef());
+//      vTrace("\n"_Stz);
+//
+//      aEntPrev->aKey()->vShow(pIndexDef());
+//      vTrace("\n"_Stz);
+//
+//      pEntBuffer->vDump();
+//    }
+//    ASSERT(aEnt);
 
     // get the index buffer of the entry
-    pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
+    pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
     ASSERT(pEntBuffer);
     ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
   }
