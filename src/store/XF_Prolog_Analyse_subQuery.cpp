@@ -244,7 +244,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 
 
     if (p_conj->bIsRelnOp()) {
-      eRO eRlnOp = p_conj->pSymbol()->eEval_rlnOp();
+      eRO eRlnOp = p_conj->pSymbol()->eRlnOp();
       RASSERT(RO_NONE != eRlnOp);
 
       pSubQuery->vCaller(m_pCI->G.i_Board);
@@ -256,7 +256,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 
     RASSERT(p_conj->bIsSqyOp());
 
-    eQO eSqyOp = p_conj->pSymbol()->eEval_sqyOp();
+    eQO eSqyOp = p_conj->pSymbol()->eSqyOp();
     RASSERT(QO_NONE != eSqyOp);
 
     pSubQuery->vCaller(m_pCI->G.i_Board);

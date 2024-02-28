@@ -631,7 +631,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
         m_pCI->G.p_term = xRpnCalc.p_term();
 
-        if (m_pCI->G.p_term->pSymbol()->bCasted())
+        if (m_pCI->G.p_term->pSymbol()->bValidCast())
           continue;
 
         m_pCI->G.p_injectable->vDump(__func__);

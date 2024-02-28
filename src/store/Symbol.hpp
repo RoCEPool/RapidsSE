@@ -136,15 +136,12 @@ namespace STORE
     void vApplyFacets(Symbol* pSymbol_arg);
 
     Cast xCast(void);
-    bool bCasted(void);
+    eCT  eColType(void);
     void vCullFacet(eSF eFacet_except);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vDump(Stz* szTitle=""_Stz);
-
-    eRO  eEval_rlnOp(void);
-    eQO  eEval_sqyOp(void);
 
     Facet* aFacet(eSF eFacet);
     Facet* aFacet(i8 i_Facet);
@@ -165,9 +162,7 @@ namespace STORE
     bool bHasFacet(Stz* szArg);
     bool bHasFacets(void);
     bool bHasFacets(i8 /*eSF*/ iFacet_first, ...);
-
     bool bHasProperties(void);
-    bool bHasType(void);
 
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
@@ -183,7 +178,10 @@ namespace STORE
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
+    eRO  eRlnOp(void);
+
     bool bSingleFaceted(eSF eFacet_arg=SF_NONE);
+    eQO  eSqyOp(void);
 
     char   cTblSyn(void);
     i8     iTo_integer(eSF eFacet);
@@ -195,6 +193,10 @@ namespace STORE
 
     bool bValidate(void);
     void vValidate(void);
+
+    bool bValidCast(void);
+    bool bValidLenScale(void);
+    bool bValidType(void);
 
     void Y_vAll(Symbol* pSymbol_arg);
     void Y_vCut(Stz* szPpyNm);

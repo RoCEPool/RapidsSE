@@ -794,10 +794,10 @@ void Card_OP::vRpn_crossJoin(String* psRpnExpr, Card_CrossJoin* p_crossJoin)
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
         p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-      if (!p_term->pSymbol()->bHasType()) {
+      if (!p_term->pSymbol()->bValidType()) {
         p_term->vDump(__func__);
         pChildCard->vDump(__func__);
-        RASSERT(p_term->pSymbol()->bHasType());
+        RASSERT(p_term->pSymbol()->bValidType());
       }
     }
     psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_IDX_COL));
@@ -976,10 +976,10 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
         p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-      if (!p_term->pSymbol()->bHasType()) {
+      if (!p_term->pSymbol()->bValidType()) {
         p_term->vDump(__func__);
         pSubCard->vDump(__func__);
-        RASSERT(p_term->pSymbol()->bHasType());
+        RASSERT(p_term->pSymbol()->bValidType());
       }
     }
 
@@ -1070,10 +1070,10 @@ void Card_OP::vRpn_indexScan(String* psRpnExpr, Card_IndexScan* p_indexScan)
         if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
             p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-          if (!p_term->pSymbol()->bHasType()) {
+          if (!p_term->pSymbol()->bValidType()) {
             p_term->vDump(__func__);
             pSubCard->vDump(__func__);
-            RASSERT(p_term->pSymbol()->bHasType());
+            RASSERT(p_term->pSymbol()->bValidType());
           }
         }
 
@@ -1138,10 +1138,10 @@ void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
       if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
           p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-        if (!p_term->pSymbol()->bHasType()) {
+        if (!p_term->pSymbol()->bValidType()) {
           p_term->vDump(__func__);
           pSubCard->vDump(__func__);
-          RASSERT(p_term->pSymbol()->bHasType());
+          RASSERT(p_term->pSymbol()->bValidType());
         }
       }
 
@@ -1229,10 +1229,10 @@ void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotEx
       if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
           p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-        if (!p_term->pSymbol()->bHasType()) {
+        if (!p_term->pSymbol()->bValidType()) {
           p_term->vDump(__func__);
           pSubCard->vDump(__func__);
-          RASSERT(p_term->pSymbol()->bHasType());
+          RASSERT(p_term->pSymbol()->bValidType());
         }
       }
 
@@ -1533,9 +1533,9 @@ void Card_OP::vRpn_rpnCalc(String* psRpnExpr, Card_RpnCalc* p_rpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!p_rpnCalc->pSymbol()->bHasType()) {
+  if (!p_rpnCalc->pSymbol()->bValidType()) {
     p_rpnCalc->vDump(__func__);
-    RASSERT(p_rpnCalc->pSymbol()->bHasType());
+    RASSERT(p_rpnCalc->pSymbol()->bValidType());
   }
 
   i8 nSubCards = p_rpnCalc->nItems();
@@ -1570,9 +1570,9 @@ void Card_OP::vRpn_term(String* psRpnExpr, Card_Term* p_term)
   if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
       p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-    if (!p_term->pSymbol()->bHasType()) {
+    if (!p_term->pSymbol()->bValidType()) {
       p_term->vDump(__func__);
-      RASSERT(p_term->pSymbol()->bHasType());
+      RASSERT(p_term->pSymbol()->bValidType());
     }
   }
 

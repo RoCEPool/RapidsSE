@@ -1466,13 +1466,15 @@ Cast Symbol::xCast(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does symbol have a valid cast?                                             */
+/* get eCT                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bCasted(void)
+eCT Symbol::eColType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return true;
+  eCT eColType = m_xCast.m_xTypeId.eCTVal();
+
+  return eColType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1557,30 +1559,6 @@ void Symbol::vDump(Stz* szTitle)
          ,Stz::szTab(1)
          ,sProperties.szStz()
          );
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Symbol::eEval_rlnOp(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  eRO eRelnOp = eEvalRelnOp(szFacet(SF_RLN_OP));
-
-  return eRelnOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate sub-query op                                                      */
-/*----------------------------------------------------------------------------*/
-eQO Symbol::eEval_sqyOp(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  eQO eSubQryOp = eEvalSubQryOp(szFacet(SF_SQY_OP));
-
-  return eSubQryOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1870,16 +1848,6 @@ bool Symbol::bHasProperties(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does symbol have a type?                                                   */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bHasType(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  return m_xCast.m_xTypeId.bIsValid();
-}
-
-/*----------------------------------------------------------------------------*/
 /* increment table synonym                                                    */
 /*----------------------------------------------------------------------------*/
 void Symbol::vInc_Tbl_Syn(void)
@@ -2047,6 +2015,18 @@ bool Symbol::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Symbol::eRlnOp(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  eRO eRelnOp = eEvalRelnOp(szFacet(SF_RLN_OP));
+
+  return eRelnOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this symbol only have one facet ?                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSingleFaceted(eSF eFacet_arg)
@@ -2063,6 +2043,18 @@ bool Symbol::bSingleFaceted(eSF eFacet_arg)
       return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate sub-query op                                                      */
+/*----------------------------------------------------------------------------*/
+eQO Symbol::eSqyOp(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  eQO eSubQryOp = eEvalSubQryOp(szFacet(SF_SQY_OP));
+
+  return eSubQryOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2281,6 +2273,59 @@ void Symbol::vValidate(void)
     NEVER_REACH
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have a valid cast?                                             */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bValidCast(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! bValidType())
+    return false;
+
+  if (! bValidLenScale())
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have a valid length & scale ?                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bValidLenScale(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  bool bValid;
+
+  eCT eColType = this->eColType();
+  switch (eColType) {
+
+    case CT_DECIMAL:
+      if (nTypeLength())
+        bValid = true;
+      else
+        bValid = false;
+      break;
+
+    default:
+      bValid = true;
+  }
+
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have a valid type?                                             */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bValidType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_xTypeId.bIsValid();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */

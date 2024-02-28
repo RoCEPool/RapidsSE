@@ -1795,7 +1795,7 @@ void Card::vValidate_hasChildren(void)
 /*----------------------------------------------------------------------------*/
 void Card::vValidate_hasType(void)
 {
-  if (! pSymbol()->bHasType()) {
+  if (!pSymbol()->bValidType()) {
     vDump(__func__);
     NEVER_REACH
   }

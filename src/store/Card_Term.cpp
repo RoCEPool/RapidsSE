@@ -229,7 +229,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
 
   pSym_term->vApplyCast(p_expr_matched->pSymbol()->xCast());
 
-  if (pSym_term->bHasType())
+  if (pSym_term->bValidType())
     rxCast_last = pSym_term->xCast();
 }
 
@@ -549,7 +549,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
     if (m_xSymbol.bIs_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
-      if (! m_xSymbol.bHasType()) {
+      if (!m_xSymbol.bValidType()) {
          vMark("?"_Stz,"t"_Stz);
          pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);
          pCI->vPrintBoard(__func__,__LINE__,true);
