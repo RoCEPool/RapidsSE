@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Utility_Verify_dic.cpp -- Add Level                                              */
+/* XF_Utility_Verify_dic.cpp -- Verify dic                                    */
 /*============================================================================*/
 
 #include "XF_Utility_Verify_dic.hpp"
@@ -588,7 +588,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
     for (Kid xEmit(m_pCI->G.p_emit); xEmit.bEach(CK_EXPR); /**/) {
       m_pCI->G.p_expr = xEmit.p_expr();
-      m_pCI->G.p_expr->vDump(__func__);
       m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
       for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
         m_pCI->G.p_term = xRpnCalc.p_term();
@@ -610,6 +609,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
             continue;
         }
 
+        m_pCI->G.p_expr->vDump(__func__);
         m_pCI->G.p_term->vDump(__func__);
         NEVER_REACH
       }
@@ -809,8 +809,46 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 hshColList
 
+  if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
+    NEVER_REACH // todo: why? [297]
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 emit
+
+  if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
+    for (Kid xEmit(m_pCI->G.p_emit); xEmit.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xEmit.p_expr();
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+        if (! m_pCI->G.p_term->pSymbol()->bIs_Col())
+          continue;
+
+        if (m_pCI->G.p_term->pSymbol()->bIs_Col()) {
+          if (m_pCI->G.p_term->pSymbol()->bValidCast())
+            continue;
+          else
+            vDebugPoint();
+        }
+        else
+        if (m_pCI->G.p_term->pSymbol()->bIs_Lit()) {
+          if (m_pCI->G.p_term->pSymbol()->bValidCast())
+            continue;
+          else
+           vDebugPoint();
+        }
+        else {
+          continue;
+        }
+
+        m_pCI->G.p_expr->vDump(__func__);
+        m_pCI->G.p_term->vDump(__func__);
+        NEVER_REACH
+      }
+    }
+    vDebugPoint();
+  }
 
   //===========================================================================
   // complete
