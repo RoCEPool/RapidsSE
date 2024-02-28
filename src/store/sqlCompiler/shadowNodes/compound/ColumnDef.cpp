@@ -59,8 +59,8 @@ static Stz* C_SCALE_DEFN       = "/__root__/definitions/object/valueObject/integ
 /* Ordinal is 0 based. Use -1 for precision and scale if not set or n/a.      */
 /*----------------------------------------------------------------------------*/
 QueryNode* ColumnDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
-                              Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNull,
-                              i8 iOrdinal, i8 iPrecision, i8 iScale)
+                              Stz* szColumnName, QueryNode* pTypeNode, TypeId xTypeId,
+                              b1 bNotNull, i8 iOrdinal, i8 iPrecision, i8 iScale)
 {
   _static_
 
@@ -75,7 +75,7 @@ QueryNode* ColumnDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTabl
     iPrecision = -1;
   }
 
-  if (iScale == C_DATUM_NULL) {
+  if (iScale == C_DATUM_NULL || xTypeId.eCTVal() != CT_DECIMAL) {
     iScale = -1;
   }
 

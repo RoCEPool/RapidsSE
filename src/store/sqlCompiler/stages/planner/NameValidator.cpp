@@ -940,6 +940,7 @@ QueryNode* NameValidator::pCreateBaseTableColumnDefs(Stz* szCatalogName, Stz* sz
                                                pColMeta->szTableName(),
                                                pColMeta->szColumnName(),
                                                pTypeNode,
+                                               xTypeId,
                                                !pColMeta->bIsNullable(),
                                                pColMeta->iColumnNumber(),
                                                pColMeta->iColumnLength(),
@@ -2463,7 +2464,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
     // Create the column definition. For a main subquery there is no qualifying
     // catalog/schema/table name. Only a column name.
     QueryNode* pColumnDef = ColumnDef::pCreate(nullptr, nullptr, nullptr,
-                                               szColName, pTypeNode, bNotNull,
+                                               szColName, pTypeNode, xTypeId, bNotNull,
                                                iOrdinal, iPrecision, iScale);
     CteDef::vAddColumnDef(pCteDef, pColumnDef);
   }

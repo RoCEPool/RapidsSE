@@ -966,7 +966,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT   CASE     WHEN col1 = 1 THEN ''1''     WHEN col1 = 2 THEN       CASE         WHEN col10 = true THEN col1         ELSE ''0''       END     ELSE ''3''   END FROM ${testName2}_coercionTest"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_coercionTest.col1 = 1) THEN 1 WHEN (rapidsse.public.${testName2}_coercionTest.col1 = 2) THEN (CASE WHEN (rapidsse.public.${testName2}_coercionTest.col10 = true) THEN rapidsse.public.${testName2}_coercionTest.col1 ELSE 0 END) ELSE 3 END ; Ordinal Expr = CASE WHEN ($1 = 1) THEN 1 WHEN ($1 = 2) THEN (CASE WHEN ($8 = true) THEN $1 ELSE 0 END) ELSE 3 END) ; type: INTEGER
+      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_coercionTest.col1 = 1) THEN 1 WHEN (rapidsse.public.${testName2}_coercionTest.col1 = 2) THEN (CASE WHEN (rapidsse.public.${testName2}_coercionTest.col10 = true) THEN rapidsse.public.${testName2}_coercionTest.col1 ELSE 0 END) ELSE 3 END ; Ordinal Expr = CASE WHEN ($1 = 1) THEN 1 WHEN ($1 = 2) THEN (CASE WHEN ($8 = true) THEN $1 ELSE 0 END) ELSE 3 END) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_coercionTest)' )
