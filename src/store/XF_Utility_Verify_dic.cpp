@@ -243,6 +243,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // constraint
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
@@ -470,6 +471,34 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         }
       }
       else {
+        NEVER_REACH
+      }
+
+      return C_CONTINUE_RECURSION;
+    };
+
+    (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // constraint
+
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    //m_pCI->G.p_constraint->vDump(__func__);
+    RASSERT(m_pCI->G.p_injectable);
+    m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred(C_NOT_NULL);
+
+    CardIter* pCI = m_pCI;
+    auto bLambdaFn = [pCI](Card_Term* p_term)
+    {
+      if (! p_term->pSymbol()->bIs_Col())
+        return C_CONTINUE_RECURSION;
+
+      if (pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
+        vDebugPoint();
+      } else {
         NEVER_REACH
       }
 
