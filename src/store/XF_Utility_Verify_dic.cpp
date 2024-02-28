@@ -182,7 +182,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
     for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
       m_pCI->G.p_expr = xKey.p_expr();
-      m_pCI->G.p_expr->vDump(__func__);
+      //m_pCI->G.p_expr->vDump(__func__);
       RASSERT(m_pCI->G.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
                                                      SF_NMD_COL,
                                                      SF_TBL_COL,
@@ -219,7 +219,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
       m_pCI->G.p_index = xIndexList.p_index();
-      m_pCI->G.p_index->vDump(__func__);
+      //m_pCI->G.p_index->vDump(__func__);
       m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
       for (Kid xIdxColList(m_pCI->G.p_idxColList); xIndexList.bEach(CK_IDXCOL); /**/) {
         m_pCI->G.p_idxCol = xIndexList.p_idxCol();
@@ -235,7 +235,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
-    m_pCI->G.p_constraint->vDump(__func__);
+    //m_pCI->G.p_constraint->vDump(__func__);
     m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred(C_NOT_NULL);
 
     auto bLambdaFn = [](Card_Term* p_term)
@@ -243,7 +243,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (! p_term->pSymbol()->bIs_Col())
         return C_CONTINUE_RECURSION;
 
-      p_term->vDump(__func__);
+      //p_term->vDump(__func__);
       RASSERT(
           p_term->pSymbol()->bHasFacets(SF_EXP_COL,
                                         SF_NMD_COL,
@@ -286,7 +286,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
     m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred(C_NOT_NULL);
-    m_pCI->G.p_boolPred->vDump(__func__);
+    //m_pCI->G.p_boolPred->vDump(__func__);
 
     //CardIter* pCI = m_pCI;
     auto bLambdaFn = [](Card_Term* p_term)
@@ -294,7 +294,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
        if (! p_term->pSymbol()->bIs_Col())
          return C_CONTINUE_RECURSION;
 
-      p_term->vDump(__func__);
+      //p_term->vDump(__func__);
       RASSERT(
                p_term->pSymbol()->bHasFacets(SF_EXP_COL,
                                              SF_NMD_COL,
@@ -316,6 +316,47 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
     };
 
     (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
+    for (Kid xEmit(m_pCI->G.p_emit); xEmit.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xEmit.p_expr();
+      //m_pCI->G.p_expr->vDump(__func__);
+
+      RASSERT(
+              m_pCI->G.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
+                                                     SF_NMD_COL,
+                                                     SF_NONE)
+              ||
+              m_pCI->G.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
+                                                     SF_NMD_COL,
+                                                     SF_TBL_COL,
+                                                     SF_NONE)
+                                                     );
+
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+        if (! m_pCI->G.p_term->pSymbol()->bIs_Col())
+          continue;
+
+        RASSERT(
+                m_pCI->G.p_term->pSymbol()->bHasFacets(SF_EXP_COL,
+                                                       SF_NONE)
+                ||
+                m_pCI->G.p_term->pSymbol()->bHasFacets(SF_KEY_COL,
+                                                       SF_NONE)
+                ||
+                m_pCI->G.p_term->pSymbol()->bHasFacets(SF_TBL_COL,
+                                                       SF_NONE)
+        );
+
+      }
+    }
 
     vDebugPoint();
   }
