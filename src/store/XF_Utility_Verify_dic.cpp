@@ -157,6 +157,35 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   vDebugPoint();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
+    for (Kid xInject(m_pCI->G.p_injectable); xInject.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xInject.p_expr();
+      //m_pCI->G.p_expr->vDump(__func__);
+      RASSERT(m_pCI->G.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
+                                                     SF_NMD_COL,
+                                                     SF_TBL_COL,
+                                                     SF_NONE));
+      RASSERT(m_pCI->G.p_expr->bIsScalarCol());
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc();
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+        RASSERT(m_pCI->G.p_term->pSymbol()->bSingleFaceted(SF_TBL_COL));
+      }
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
+    for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr->vDump(__func__);
+      vDebugPoint();
+    }
+  }
+
 }
 
 /*============================================================================*/

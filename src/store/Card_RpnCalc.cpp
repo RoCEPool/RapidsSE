@@ -534,6 +534,8 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
                                      CK_NONE);
 
+  vValidate_mustHave(CK_TERM, CK_NONE);
+
   Card::vValidate_hasType();
   Card::vValidate_hasChildren();
 

@@ -801,6 +801,9 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_STREAMKEY,
                                      CK_NONE);
 
+  vValidate_mustHave(CK_RPNCALC, CK_NONE);
+
+
   if (pCI->pAncestorFind(CK_s_KEY)) {
     //vDump(__func__);
     if (! m_xSymbol.bHasFacet(SF_KEY_COL) || ! m_xSymbol.bValidate()) {

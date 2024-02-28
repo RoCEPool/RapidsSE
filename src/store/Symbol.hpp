@@ -163,6 +163,8 @@ namespace STORE
     bool bHasFacet(eSF eFacet, Stz* szArg);
     bool bHasFacet(Stz* szArg);
     bool bHasFacets(void);
+    bool bHasFacets(i8 /*eSF*/ iFacet_first, ...);
+
     bool bHasProperties(void);
     bool bHasType(void);
 

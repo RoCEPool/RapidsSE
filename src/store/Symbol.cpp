@@ -1811,6 +1811,42 @@ bool Symbol::bHasFacets(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does symbol a symbolic value?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bHasFacets(i8 /*eSF*/ iFacet_first, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  bool bHasAll = true;
+
+  va_list xArgs;
+  va_start(xArgs, iFacet_first);
+
+  eSF eFacet_mustHave = (eSF) iFacet_first;
+  while (SF_NONE != eFacet_mustHave) {
+
+    bool bMustHave = false;
+    for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+      if (eFacet_mustHave == xaFacet[i_Facet].m_eFacet) {
+        bMustHave = true;
+        break;
+      }
+    }
+
+    if (! bMustHave) {
+      bHasAll = false;
+      break;
+    }
+
+    eFacet_mustHave = (eSF)va_arg(xArgs, i8);
+  }
+
+  va_end(xArgs);
+
+  return bHasAll;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does symbol have properties?                                               */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bHasProperties(void)
