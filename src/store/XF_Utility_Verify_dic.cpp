@@ -169,7 +169,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
                                                      SF_TBL_COL,
                                                      SF_NONE));
       RASSERT(m_pCI->G.p_expr->bIsScalarCol());
-      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc();
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
       for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
         m_pCI->G.p_term = xRpnCalc.p_term();
         RASSERT(m_pCI->G.p_term->pSymbol()->bSingleFaceted(SF_TBL_COL));
@@ -181,11 +181,69 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
     for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xKey.p_expr();
       m_pCI->G.p_expr->vDump(__func__);
-      vDebugPoint();
+      RASSERT(m_pCI->G.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
+                                                     SF_NMD_COL,
+                                                     SF_TBL_COL,
+                                                     SF_NONE)
+              ||
+              m_pCI->G.p_expr->pSymbol()->bHasFacets(SF_KEY_COL,
+                                                     SF_EXP_COL,
+                                                     SF_TBL_COL,
+                                                     SF_NONE)
+              ||
+              m_pCI->G.p_expr->pSymbol()->bHasFacets(SF_KEY_COL,
+                                                     SF_TBL_COL,
+                                                     SF_NONE)
+              ||
+              m_pCI->G.p_expr->pSymbol()->bHasFacets(SF_KEY_COL,
+                                                     SF_NONE));
+
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+        RASSERT(m_pCI->G.p_term->pSymbol()->bSingleFaceted(SF_TBL_COL)
+                ||
+                m_pCI->G.p_term->pSymbol()->bSingleFaceted(SF_EXP_COL)
+                ||
+                m_pCI->G.p_term->pSymbol()->bHasFacets(SF_TBL_COL,
+                                                       SF_NMD_COL,
+                                                       SF_NONE) );
+      }
     }
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
+    for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
+      m_pCI->G.p_index = xIndexList.p_index();
+      m_pCI->G.p_index->vDump(__func__);
+      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
+      for (Kid xIdxColList(m_pCI->G.p_idxColList); xIndexList.bEach(CK_IDXCOL); /**/) {
+        m_pCI->G.p_idxCol = xIndexList.p_idxCol();
+        RASSERT(m_pCI->G.p_idxCol->pSymbol()->bHasFacets(SF_NMD_COL,
+                                                         SF_TBL_COL,
+                                                         SF_NONE));
+      }
+    }
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
+    NEVER_REACH // todo: why? [297]
+    m_pCI->G.p_hshColList->vDump(__func__);
+    for (Kid xHshColList(m_pCI->G.p_hshColList); xHshColList.bEach(CK_t_HSHCOL); /**/) {
+      m_pCI->G.p_hshCol = xHshColList.p_hshCol();
+
+    }
+
+    vDebugPoint();
+  }
 }
 
 /*============================================================================*/

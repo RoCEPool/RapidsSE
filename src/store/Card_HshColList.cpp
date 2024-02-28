@@ -72,6 +72,8 @@ void Card_HshColList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   RASSERT(! pSymbol()->nFacets());
 
+  vValidate_mustHave(CK_t_HSHCOL,CK_NONE);
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
