@@ -119,7 +119,7 @@ struct Dynamic_T
 	void* (*m_fp_aExtern_EntBufferNextEntry)(void**,void*);
 	void (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
 
-	void* (*m_fp_aExtern_IndexNew)(i8,void*,void*,bool);
+	void* (*m_fp_vExtern_IndexNew)(void*,i8,void*,bool);
 	void* (*m_fp_aExtern_IndexTreeBegin)(void*,void**);
 	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
 

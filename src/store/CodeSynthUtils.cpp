@@ -647,7 +647,7 @@ void CodeSynthUtils::vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch) {
       RASSERT(pOpSketch->m_eSketchKind == SK_TOP);
 
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_INSERTENT__()",
-        "aDynamicT->m_fp_aExtern_IndexTreeInsertEntTop(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, "
+        "aExtern_IndexTreeInsertEntTop(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, "
            "&aDynamicT->m_xIndexInfoPL.m_aEntBottom, __TOP_COUNT__, &aDynamicT->m_iErrorCode)");
       RASSERT(bResult);
 

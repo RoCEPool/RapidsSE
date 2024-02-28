@@ -425,7 +425,7 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
     // set the entry kind
     //vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload, iKeyKind);
 
-		aDynamicT->m_xIndexInfoPL.m_aIndexTree = aDynamicT->m_fp_aExtern_IndexNew(__INDEX_COLUMNS__, (void*)&xColumnInfo, aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload);
+		aDynamicT->m_fp_vExtern_IndexNew(aDynamicT, __INDEX_COLUMNS__, (void*)&xColumnInfo, bPayload);
 
 #endif
 
