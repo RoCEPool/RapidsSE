@@ -528,6 +528,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
     for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
       m_pCI->G.p_index = xIndexList.p_index();
       //m_pCI->G.p_index->vDump(__func__);
+
+      // indexList/colList
       m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
       for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
         m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
@@ -539,6 +541,32 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         m_pCI->G.p_idxCol->vDump(__func__);
         NEVER_REACH
       }
+
+      // indexList/bounds
+      if (!(m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds()))
+        continue;
+      for (Kid xBound(m_pCI->G.p_bounds); xBound.bEach(CK_BOUND); /**/) {
+        m_pCI->G.p_bound = xBound.p_bound();
+        m_pCI->G.p_bound->vDump(__func__);
+        vDebugPoint();
+        for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
+          m_pCI->G.p_term = xBound.p_term();
+          if (! m_pCI->G.p_term->pSymbol()->bIs_Col())
+            continue;
+          if (m_pCI->Flux.m_pArriving) {
+            if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+              continue;
+          }
+
+          // todo: seems the bound is invalid [298]
+//          m_pCI->vPrintBoard(__func__,__LINE__,true);
+//          m_pCI->G.p_bound->vDump(__func__);
+//          m_pCI->G.p_term->vDump(__func__);
+//          NEVER_REACH
+
+        }
+      }
+
     }
 
     vDebugPoint();
