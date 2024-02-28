@@ -405,9 +405,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
         m_pCI->G.p_term = xRpnCalc.p_term();
 
-        RASSERT(m_pCI->G.p_term->pSymbol()->bSingleFaceted(SF_TBL_COL));
+        if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+          continue;
 
-        RASSERT(m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()));
+        m_pCI->G.p_injectable->vDump(__func__);
+        m_pCI->G.p_term->vDump(__func__);
+        NEVER_REACH
       }
     }
   }
@@ -423,31 +426,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
         m_pCI->G.p_term = xRpnCalc.p_term();
 
-//        if (m_pCI->G.p_injectable) {
-//          if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
-//            vDebugPoint();
-//          }
-//          else
-//          if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
-//            vDebugPoint();
-//          }
-//          else {
-//            NEVER_REACH
-//          }
-//        }
-//        else
-        if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
-          vDebugPoint();
-        }
-        else {
-          NEVER_REACH
-        }
+        if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+          continue;
 
-        if (m_pCI->G.p_injectable) {
-          if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
-            NEVER_REACH
-          }
-        }
+        m_pCI->Flux.m_pArriving->vDump(__func__);
+        m_pCI->G.p_term->vDump(__func__);
+        NEVER_REACH
       }
     }
   }
