@@ -234,6 +234,43 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    m_pCI->G.p_constraint->vDump(__func__);
+    m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred(C_NOT_NULL);
+
+    auto bLambdaFn = [](Card_Term* p_term)
+    {
+      if (! p_term->pSymbol()->bIs_Col())
+        return C_CONTINUE_RECURSION;
+
+      p_term->vDump(__func__);
+      RASSERT(
+          p_term->pSymbol()->bHasFacets(SF_EXP_COL,
+                                        SF_NMD_COL,
+                                        SF_NONE)
+          ||
+          p_term->pSymbol()->bHasFacets(SF_EXP_COL,
+                                        SF_NMD_COL,
+                                        SF_SQY_NO,
+                                        SF_NONE)
+          ||
+          p_term->pSymbol()->bHasFacets(SF_NMD_COL,
+                                        SF_TBL_COL,
+                                        SF_NONE)
+          ||
+          p_term->pSymbol()->bHasFacets(SF_TBL_COL,
+                                        SF_NONE));
+
+      return C_CONTINUE_RECURSION;
+    };
+
+    (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
     NEVER_REACH // todo: why? [297]
     m_pCI->G.p_hshColList->vDump(__func__);
@@ -244,6 +281,45 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
     vDebugPoint();
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+    m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred(C_NOT_NULL);
+    m_pCI->G.p_boolPred->vDump(__func__);
+
+    //CardIter* pCI = m_pCI;
+    auto bLambdaFn = [](Card_Term* p_term)
+    {
+       if (! p_term->pSymbol()->bIs_Col())
+         return C_CONTINUE_RECURSION;
+
+      p_term->vDump(__func__);
+      RASSERT(
+               p_term->pSymbol()->bHasFacets(SF_EXP_COL,
+                                             SF_NMD_COL,
+                                             SF_NONE)
+               ||
+               p_term->pSymbol()->bHasFacets(SF_EXP_COL,
+                                             SF_NMD_COL,
+                                             SF_SQY_NO,
+                                             SF_NONE)
+               ||
+               p_term->pSymbol()->bHasFacets(SF_NMD_COL,
+                                             SF_TBL_COL,
+                                             SF_NONE)
+               ||
+               p_term->pSymbol()->bHasFacets(SF_TBL_COL,
+                                             SF_NONE));
+
+      return C_CONTINUE_RECURSION;
+    };
+
+    (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+  }
+
 }
 
 /*============================================================================*/
