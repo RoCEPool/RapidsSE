@@ -853,6 +853,8 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       else
         bFirstExpr = true;
 
+      sAliasName.vReset();
+
       // get the next projectedColumn from the iterator
       QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
       ASSERT(pProjectedColumn);
