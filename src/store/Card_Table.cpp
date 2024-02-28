@@ -520,6 +520,12 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_o_SCAN,
                                      CK_NONE);
 
+  RASSERT(pSymbol()->bHasFacet(SF_TBL_SYN)
+          ||
+          pSymbol()->bHasFacet(SF_TBL_SYN_rep));
+
+  vValidate_mustHave(CK_t_TABLENM,CK_NONE);
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

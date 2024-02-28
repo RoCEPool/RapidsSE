@@ -90,6 +90,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 
+  //===========================================================================
+  // phase 1 : aspects
+  //===========================================================================
+
   RASSERT(m_pCI->G.p_MainCard->bIsOp());
   switch (m_pCI->G.e_MainCard) {
 
@@ -158,7 +162,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   vDebugPoint();
 
+  //===========================================================================
+  // phase 2 : facets
+  //===========================================================================
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // injectable
 
   if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
     for (Kid xInject(m_pCI->G.p_injectable); xInject.bEach(CK_EXPR); /**/) {
@@ -178,6 +187,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // key
 
   if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
     for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
@@ -283,6 +293,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // filter
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
     m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred(C_NOT_NULL);
@@ -359,6 +370,67 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
     }
 
     vDebugPoint();
+  }
+
+  //===========================================================================
+  // phase 3 : dictionaries
+  //===========================================================================
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // injectable
+
+  if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
+    for (Kid xInject(m_pCI->G.p_injectable); xInject.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xInject.p_expr();
+       m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+
+        RASSERT(m_pCI->G.p_term->pSymbol()->bSingleFaceted(SF_TBL_COL));
+
+        RASSERT(m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()));
+      }
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // key
+
+  if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
+    for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xKey.p_expr();
+      //m_pCI->G.p_expr->vDump(__func__);
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+
+//        if (m_pCI->G.p_injectable) {
+//          if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+//            vDebugPoint();
+//          }
+//          else
+//          if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+//            vDebugPoint();
+//          }
+//          else {
+//            NEVER_REACH
+//          }
+//        }
+//        else
+        if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+          vDebugPoint();
+        }
+        else {
+          NEVER_REACH
+        }
+
+        if (m_pCI->G.p_injectable) {
+          if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+            NEVER_REACH
+          }
+        }
+      }
+    }
   }
 
 }
