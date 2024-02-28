@@ -2457,8 +2457,8 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
 
     QueryNode* pTypeNode = SqlType::pCreate(xTypeId);
     b1 bNotNull = false;
-    i8 iPrecision = -1;
-    i8 iScale = -1;
+    i8 iPrecision = Expr::iPrecision(pColExpr, pRootNode);
+    i8 iScale = Expr::iScale(pColExpr, pRootNode);
 
     // Create the column definition. For a main subquery there is no qualifying
     // catalog/schema/table name. Only a column name.

@@ -70,7 +70,7 @@ rows:
 // Result file: ../queries/aggs/max/results/max18.res
 select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from ${testName2}_table9) as TbX;
 rows:
-  (2.484500000e+02, 149.23, 15)
+  (2.484500000e+02, 149, 15)
 
 // Source file: ../queries/aggs/max/rmax20.sql
 // Result file: ../queries/aggs/max/results/max20.res
@@ -98,7 +98,7 @@ ordered rows:
 // Result file: ../queries/aggs/max/results/max6.res
 select max(cole9) from ${testName2}_table9;
 rows:
-  (149.23)
+  (149)
 
 
 // Source file: ../queries/aggs/max/rmax5.sql
@@ -205,7 +205,7 @@ ordered rows:
 select max(cold9) + max(cole9) from ${testName2}_table9;
 rows:
   //(3.976800e+02)
-  (3.9767999e+02)
+  (3.974500e+02)
   //(397.67999999999995)
 
 
