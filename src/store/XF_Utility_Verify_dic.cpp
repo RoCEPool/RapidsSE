@@ -225,14 +225,15 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // indexList
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
       m_pCI->G.p_index = xIndexList.p_index();
       //m_pCI->G.p_index->vDump(__func__);
       m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
-      for (Kid xIdxColList(m_pCI->G.p_idxColList); xIndexList.bEach(CK_IDXCOL); /**/) {
-        m_pCI->G.p_idxCol = xIndexList.p_idxCol();
+      for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
+        m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
         RASSERT(m_pCI->G.p_idxCol->pSymbol()->bHasFacets(SF_NMD_COL,
                                                          SF_TBL_COL,
                                                          SF_NONE));
@@ -506,6 +507,27 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
     };
 
     (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // indexList
+
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
+    for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
+      m_pCI->G.p_index = xIndexList.p_index();
+      //m_pCI->G.p_index->vDump(__func__);
+      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
+      for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
+        m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
+        if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol())) {
+          vDebugPoint();
+        } else {
+          NEVER_REACH
+        }
+      }
+    }
 
     vDebugPoint();
   }
