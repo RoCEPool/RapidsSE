@@ -136,6 +136,7 @@ namespace STORE
     void vApplyFacets(Symbol* pSymbol_arg);
 
     Cast xCast(void);
+    bool bCasted(void);
     void vCullFacet(eSF eFacet_except);
 
     void vDeleteFacet(eSF eFacet);

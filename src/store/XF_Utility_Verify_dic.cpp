@@ -615,6 +615,30 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   //===========================================================================
+  // phase 4 : cast
+  //===========================================================================
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 4 injectable
+
+  if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
+    for (Kid xInject(m_pCI->G.p_injectable); xInject.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xInject.p_expr();
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+
+        if (m_pCI->G.p_term->pSymbol()->bCasted())
+          continue;
+
+        m_pCI->G.p_injectable->vDump(__func__);
+        m_pCI->G.p_term->vDump(__func__);
+        NEVER_REACH
+      }
+    }
+  }
+
+  //===========================================================================
   // complete
   //===========================================================================
 
