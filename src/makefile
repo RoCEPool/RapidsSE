@@ -197,7 +197,7 @@ targetConfigFile = $(shell echo -n "$$(dirname $1)/.$$(basename $1).lastBuildCon
 ###############################################################################
 
 # The default target (because it is first)
-all : post-build
+all : debug
 
 post-build : main-build
 
@@ -212,10 +212,10 @@ target : $(TARGET_EXE)
 debug : export CPPFLAGS = $(CPPFLAGS_DEBUG)
 debug : export CFLAGS = $(CFLAGS_DEBUG)
 debug : export LDFLAGS = $(LDFLAGS_DEBUG)
-debug : all
+debug : post-build
 
 # Explicit release builds (the default)
-release : all
+release : debug
 
 
 # CentOS 7 builds
