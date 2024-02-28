@@ -265,6 +265,9 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         vDebugPoint();
         for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->G.p_term = xBound.p_term();
+          if (! m_pCI->G.p_term->pSymbol()->bIs_Col())
+            continue;
+
           RASSERT(m_pCI->G.p_term->pSymbol()->bHasFacet(SF_IDX_COL)
                   ||
                   m_pCI->G.p_term->pSymbol()->bHasFacet(SF_TBL_COL)
@@ -495,7 +498,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 constraint
+  // 3 constraint
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
@@ -522,7 +525,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 indexList
+  // 3 indexList
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
@@ -637,6 +640,24 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       }
     }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 4 key
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 4 filter
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 4 constraint
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 4 indexList
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 4 hshColList
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 4 emit
 
   //===========================================================================
   // complete
