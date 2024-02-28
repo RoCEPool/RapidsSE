@@ -486,13 +486,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (! p_term->pSymbol()->bIs_Col())
         return C_CONTINUE_RECURSION;
 
-      if (pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
-        vDebugPoint();
-      } else {
-        NEVER_REACH
-      }
+      if (pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol()))
+        return C_CONTINUE_RECURSION;
 
-      return C_CONTINUE_RECURSION;
+      pCI->G.p_boolPred->vDump(__func__);
+      pCI->G.p_term->vDump(__func__);
+      NEVER_REACH
     };
 
     (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
@@ -510,11 +509,13 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
       for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
         m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
-        if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol())) {
-          vDebugPoint();
-        } else {
-          NEVER_REACH
-        }
+
+        if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol()))
+          continue;
+
+        m_pCI->G.p_index->vDump(__func__);
+        m_pCI->G.p_idxCol->vDump(__func__);
+        NEVER_REACH
       }
     }
 
@@ -542,24 +543,18 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           continue;
 
         if (m_pCI->Flux.m_pArriving) {
-          if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
-            vDebugPoint();
+          if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
             continue;
-          }
         }
 
         if (m_pCI->G.p_injectable) {
-          if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
-            vDebugPoint();
+          if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
             continue;
-          }
         }
 
         if (m_pCI->G.p_key) {
-          if (m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
-            vDebugPoint();
+          if (m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
             continue;
-          }
         }
 
         m_pCI->G.p_term->vDump(__func__);
