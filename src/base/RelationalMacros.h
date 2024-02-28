@@ -43,7 +43,8 @@ static inline void vRoundBcd(i8** ppaW)
   vRoundBcdCheckRoundUp(ppaW, NULL); // can't use nullptr when compiled as a C program
 }
 
-// Rescale a BCD on the stack to a given scale. Checks for overflows
+// Rescale a BCD on the stack to a given scale. Checks for overflows at the
+// specified scale. Does *not* truncate scale to fit integral component.
 static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iScale, i1* piWasRoundedUp)
 {
   union Bcd_T bcdReScale1;
@@ -85,6 +86,49 @@ static inline void vRescaleBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT, i8
   *(*ppaW)++ = bcdReScale1.m_iAsI8;
 }
 
+
+// Rescale a BCD on the stack to a given scale. If the value will overflow at
+// the specified scale then the scale is reduced until the integral component
+// fits, otherwise an out of range error occurs.
+static inline void vRescaleBcdToScaleAndFit(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iScale, i1* piWasRoundedUp)
+{
+  union Bcd_T bcdReScale1;
+
+  bcdReScale1.m_iAsI8 = *(--(*ppaW));
+  i8 iScaleDiff = iScale - (i8) bcdReScale1.m_uScale;
+
+  if (iScaleDiff > 0) {
+    // Check if the desired scale is too large, and if so work out the largest scale supported
+    i8 iPrecision = iPrecision_signed(bcdReScale1.m_iMantissa);
+    i8 iIntegralPrecision = iPrecision - (i8) bcdReScale1.m_uScale;
+    i8 iMaxScale = C_MAX_BCD_PRECISION - iIntegralPrecision;
+    i8 iNewScale = iScale < iMaxScale ? iScale : iMaxScale;
+    iScaleDiff = iNewScale - (i8) bcdReScale1.m_uScale;
+
+    bcdReScale1.m_uScale = (u8) (iNewScale);
+    bcdReScale1.m_iMantissa =
+        bcdReScale1.m_iMantissa * (i8) aDynamicT->m_iaPow10[iScaleDiff];
+
+  } else if (iScaleDiff < 0) {
+    // No over/underflow check required for division.
+    // Adjust BCD, then round the last digit as needed.
+
+    if (iScaleDiff < -1) {
+      bcdReScale1.m_uScale = (u8) (iScale) + 1;
+      bcdReScale1.m_iMantissa =
+          bcdReScale1.m_iMantissa / (i8) aDynamicT->m_iaPow10[(-iScaleDiff)-1];
+    }
+
+    /* Now round the number */
+    *(*ppaW)++ = bcdReScale1.m_iAsI8;
+    vRoundBcdCheckRoundUp(ppaW, piWasRoundedUp);
+    bcdReScale1.m_iAsI8 = *(--(*ppaW));
+  }
+
+  *(*ppaW)++ = bcdReScale1.m_iAsI8;
+}
+
+
 // Rescale a decimal to a given precision and scale.
 // Note: The scale may be reduced to fit the integral part of the value, if necessary.
 static inline void vRescaleBcdToPrecisionScale(i8** ppaW, struct Dynamic_T* aDynamicT,
@@ -92,7 +136,7 @@ static inline void vRescaleBcdToPrecisionScale(i8** ppaW, struct Dynamic_T* aDyn
 {
   // Value should be on expression stack.
   // First rescale the value and check for any overflows
-  vRescaleBcdToScale(ppaW, aDynamicT, iScale, piWasRoundedUp);
+  vRescaleBcdToScaleAndFit(ppaW, aDynamicT, iScale, piWasRoundedUp);
 
   if (aDynamicT->m_iErrorCode != EC_NONE) {
     return;

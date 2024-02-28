@@ -47,7 +47,9 @@ namespace Parser
                                        QueryNode* pParentExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
-    static QueryNode* pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    static QueryNode* pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr,
+                                PlanNode* pRootNode,
+                                i8 iPrecision = -1, i8 iScale = -1);
   };
 
 }

@@ -467,7 +467,8 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
 /*----------------------------------------------------------------------------*/
 /* Returns a new expression object which represents pExpr coerced to xTypeId  */
 /*----------------------------------------------------------------------------*/
-QueryNode* CastExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+QueryNode* CastExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode,
+                               i8 iPrecision, i8 iScale)
 {
   ASSERT(xTargetTypeId.bIsValid());
   ASSERT(pExpr);
@@ -477,7 +478,7 @@ QueryNode* CastExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode*
   UNUSED(pRootNode);
 
   QueryNode* pExprCopy = pExpr->pDeepCopy(true);
-  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, xTargetTypeId);
+  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, xTargetTypeId, iPrecision, iScale);
   return pCastExpr;
 }
 

@@ -986,7 +986,8 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
       eCT eAvgType = xAvgTypeId.eCTVal();
 
       // Now check if it is the same type as the numerator and denominator
-      if (Expr::xTypeId(pNumerator, pRootNode) != xAvgTypeId) {
+      TypeId xNumeratorId = Expr::xTypeId(pNumerator, pRootNode);
+      if (xNumeratorId != xAvgTypeId) {
         // Numerator needs to be cast
         QueryNode* pCastExpr = CastExpr::pCoerceTo(xAvgTypeId, pNumerator, pRootNode);
 
@@ -998,10 +999,26 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
       // If the denominator is not of the same type as the output
       // then it needs to be cast. An exception here is an average
       // of an interval. The denominator is always an integer.
-      if (Expr::xTypeId(pDenominator, pRootNode) != xAvgTypeId &&
+      TypeId xDenominatorId = Expr::xTypeId(pDenominator, pRootNode);
+      if (xDenominatorId != xAvgTypeId &&
           eAvgType != CT_INTERVAL_DT &&
           eAvgType != CT_INTERVAL_YM ) {
-        QueryNode* pCastExpr = CastExpr::pCoerceTo(xAvgTypeId, pDenominator, pRootNode);
+        i8 iPrecision = -1;
+        i8 iScale = -1;
+        if (xDenominatorId == TypeId::xIdOf(CT_INTEGER) &&
+            xAvgTypeId     == TypeId::xIdOf(CT_DECIMAL)) {
+          // Changing the precision here will ultimately affect the number of fractional
+          // digits displayed for the average because this is in part determined by the
+          // precision of the denominator. However making this smaller runs the risk that
+          // the value for the COUNT() is larger than the desired precision and the casting
+          // of the COUNT() integer to a decimal with a smaller precision will generate an error.
+          // Leaving the precision at C_MAX_BCD_PRECISION eliminates this error, however
+          // the AVG() of an integer will produce a result with maximum precision and scale.
+          // This can always be cast by the user to a specific smaller decimal, e.g. (17,2).
+          iPrecision = C_MAX_BCD_PRECISION;
+          iScale = 0;
+        }
+        QueryNode* pCastExpr = CastExpr::pCoerceTo(xAvgTypeId, pDenominator, pRootNode, iPrecision, iScale);
 
         // Denominator was copied above, so clean up
         delete pDenominator;
