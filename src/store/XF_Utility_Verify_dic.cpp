@@ -644,8 +644,64 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 key
 
+  if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
+    for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xKey.p_expr();
+      //m_pCI->G.p_expr->vDump(__func__);
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+
+        if (m_pCI->G.p_term->pSymbol()->bValidCast())
+          continue;
+
+        m_pCI->Flux.m_pArriving->vDump(__func__);
+        m_pCI->G.p_term->vDump(__func__);
+        NEVER_REACH
+      }
+    }
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 filter
+
+  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+
+    m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred(C_NOT_NULL);
+    //m_pCI->G.p_boolPred->vDump(__func __);
+
+    CardIter* pCI = m_pCI;
+    auto bLambdaFn = [pCI](Card_Term* p_term)
+    {
+//      if (! p_term->pSymbol()->bIs_Col())
+//        return C_CONTINUE_RECURSION;
+
+      if (p_term->pSymbol()->bIs_Col()) {
+        if (pCI->G.p_term->pSymbol()->bValidCast())
+          return C_CONTINUE_RECURSION;
+        else
+          vDebugPoint();
+      }
+      else
+      if (p_term->pSymbol()->bIs_Lit()) {
+        if (pCI->G.p_term->pSymbol()->bValidCast())
+          return C_CONTINUE_RECURSION;
+        else
+          vDebugPoint();
+      }
+      else {
+        return C_CONTINUE_RECURSION;
+      }
+
+      pCI->G.p_boolPred->vDump(__func__);
+      p_term->vDump(__func__);
+      NEVER_REACH
+    };
+
+    (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 constraint
