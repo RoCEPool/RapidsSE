@@ -673,21 +673,20 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
     {
-//      if (! p_term->pSymbol()->bIs_Col())
-//        return C_CONTINUE_RECURSION;
-
       if (p_term->pSymbol()->bIs_Col()) {
-        if (pCI->G.p_term->pSymbol()->bValidCast())
+        if (p_term->pSymbol()->bValidCast())
           return C_CONTINUE_RECURSION;
         else
           vDebugPoint();
       }
       else
       if (p_term->pSymbol()->bIs_Lit()) {
-        if (pCI->G.p_term->pSymbol()->bValidCast())
-          return C_CONTINUE_RECURSION;
-        else
-          vDebugPoint();
+        // todo: filter literals to be cast [300]
+//        if (p_term->pSymbol()->bValidCast())
+//          return C_CONTINUE_RECURSION;
+//        else
+//          vDebugPoint();
+        return C_CONTINUE_RECURSION;
       }
       else {
         return C_CONTINUE_RECURSION;
@@ -705,6 +704,44 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 constraint
+
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    //m_pCI->G.p_constraint->vDump(__func__);
+    RASSERT(m_pCI->G.p_injectable);
+    m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred(C_NOT_NULL);
+
+    CardIter* pCI = m_pCI;
+    auto bLambdaFn = [pCI](Card_Term* p_term)
+    {
+      if (p_term->pSymbol()->bIs_Col()) {
+        if (p_term->pSymbol()->bValidCast())
+          return C_CONTINUE_RECURSION;
+        else
+          vDebugPoint();
+      }
+      else
+      if (p_term->pSymbol()->bIs_Lit()) {
+        // todo: constraint literals to be cast [301]
+//        if (p_term->pSymbol()->bValidCast())
+//          return C_CONTINUE_RECURSION;
+//        else
+//          vDebugPoint();
+        return C_CONTINUE_RECURSION;
+      }
+      else {
+        return C_CONTINUE_RECURSION;
+      }
+
+      pCI->G.p_boolPred->vDump(__func__);
+      p_term->vDump(__func__);
+      NEVER_REACH
+    };
+
+    (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4 indexList
