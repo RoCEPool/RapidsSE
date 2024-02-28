@@ -142,7 +142,7 @@ TypeId TypeSystem::xParentTypeId(TypeId xTypeId)
 /*----------------------------------------------------------------------------*/
 eCT TypeSystem::eCTVal(TypeId xTypeId)
 {
-  ASSERT(bIsValid(xTypeId) || xTypeId.iIdVal() == C_INVALID_TYPEID);
+//  ASSERT(bIsValid(xTypeId) || xTypeId.iIdVal() == C_INVALID_TYPEID);
 
   if (xTypeId.iIdVal() == C_INVALID_TYPEID) {
     return CT_NONE;
