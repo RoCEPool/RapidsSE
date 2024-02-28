@@ -1168,6 +1168,8 @@ void CardIter::vEndTransform(i8 iLineNo)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  return;
+
   if (G.pBoard) {
 
     G.pDeck->vCheckCorrectness();
