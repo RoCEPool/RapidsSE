@@ -180,6 +180,7 @@ namespace STORE
 
     eRO  eRlnOp(void);
 
+    bool bSameCast(Symbol* pSymbol_arg);
     bool bSingleFaceted(eSF eFacet_arg=SF_NONE);
     eQO  eSqyOp(void);
 

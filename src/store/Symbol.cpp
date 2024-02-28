@@ -2027,6 +2027,25 @@ eRO Symbol::eRlnOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this symbol have same cast as arg ?                                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bSameCast(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (xTypeId() != pSymbol_arg->xTypeId())
+    return false;
+
+  if (nTypeLength() != pSymbol_arg->nTypeLength())
+    return false;
+
+  if (nTypeScale() != pSymbol_arg->nTypeScale())
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this symbol only have one facet ?                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSingleFaceted(eSF eFacet_arg)
