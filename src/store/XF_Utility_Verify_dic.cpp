@@ -127,49 +127,49 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 filter
+  // aspects 1 filter
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
     RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_o_FILTER) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 injectable
+  // aspects 1 injectable
 
   if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
     RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_s_INJECTABLE) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 key
+  // aspects 1 key
 
   if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
     RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_s_KEY) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 constraint
+  // aspects 1 constraint
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_s_CONSTRAINT) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 hshColList
+  // aspects 1 hshColList
 
   if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
     RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_s_HSHCOLLIST) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 indexList
+  // aspects 1 indexList
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
     RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_t_INDEXLIST) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 emit
+  // aspects 1 emit
 
   if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
     RASSERT(m_pCI->G.p_MainCard->nSubCards(CK_t_EMIT) == 1);
@@ -182,7 +182,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   //===========================================================================
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 injectable
+  // facets 2 injectable
 
   if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
     for (Kid xInject(m_pCI->G.p_injectable); xInject.bEach(CK_EXPR); /**/) {
@@ -202,7 +202,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 key
+  // facets 2 key
 
   if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
     for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
@@ -240,7 +240,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 indexList
+  // facets 2 indexList
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
@@ -284,7 +284,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 constraint
+  // facets 2 constraint
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
@@ -322,7 +322,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
    }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 hshColList
+  // facets 2 hshColList
 
   if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
     NEVER_REACH // todo: why? [297]
@@ -336,7 +336,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 filter
+  // facets 2 filter
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
     m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred(C_NOT_NULL);
@@ -375,7 +375,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 emit
+  // facets 2 emit
 
   if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
     for (Kid xEmit(m_pCI->G.p_emit); xEmit.bEach(CK_EXPR); /**/) {
@@ -421,7 +421,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   //===========================================================================
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3 injectable
+  // dictionaries 3 injectable
 
   if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
     for (Kid xInject(m_pCI->G.p_injectable); xInject.bEach(CK_EXPR); /**/) {
@@ -441,7 +441,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3 key
+  //dictionaries 3 key
 
   if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
     for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
@@ -462,7 +462,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3 filter
+  // dictionaries 3 filter
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
 
@@ -498,7 +498,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3 constraint
+  // dictionaries 3 constraint
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
@@ -525,7 +525,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3 indexList
+  // dictionaries 3 indexList
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
@@ -576,7 +576,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3 hshColList
+  // dictionaries 3 hshColList
 
   if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
     NEVER_REACH // todo: why? [297]
@@ -622,7 +622,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   //===========================================================================
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4 injectable
+  // cast 4 injectable
 
   if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
     for (Kid xInject(m_pCI->G.p_injectable); xInject.bEach(CK_EXPR); /**/) {
@@ -642,7 +642,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4 key
+  // cast 4 key
 
   if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
     for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
@@ -663,7 +663,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4 filter
+  // cast 4 filter
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
 
@@ -703,7 +703,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4 constraint
+  // cast 4 constraint
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
@@ -744,7 +744,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4 indexList
+  // cast 4 indexList
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
@@ -807,14 +807,14 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4 hshColList
+  // cast 4 hshColList
 
   if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
     NEVER_REACH // todo: why? [297]
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4 emit
+  // cast 4 emit
 
   if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
     for (Kid xEmit(m_pCI->G.p_emit); xEmit.bEach(CK_EXPR); /**/) {
@@ -840,6 +840,207 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         }
         else {
           continue;
+        }
+
+        m_pCI->G.p_expr->vDump(__func__);
+        m_pCI->G.p_term->vDump(__func__);
+        NEVER_REACH
+      }
+    }
+    vDebugPoint();
+  }
+
+  //===========================================================================
+  // phase 5 : cross-cast
+  //===========================================================================
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-cast 5 injectable
+
+  if ((m_pCI->G.p_injectable = m_pCI->G.p_MainCard->pSub_injectable())) {
+    for (Kid xInject(m_pCI->G.p_injectable); xInject.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xInject.p_expr();
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+
+        if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+          continue;
+
+        m_pCI->G.p_injectable->vDump(__func__);
+        m_pCI->G.p_term->vDump(__func__);
+        NEVER_REACH
+      }
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-cast 5 key
+
+  if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
+    for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xKey.p_expr();
+      //m_pCI->G.p_expr->vDump(__func__);
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+
+        if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+          continue;
+
+        m_pCI->Flux.m_pArriving->vDump(__func__);
+        m_pCI->G.p_term->vDump(__func__);
+        NEVER_REACH
+      }
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-cast 5 filter
+
+  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+
+    m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred(C_NOT_NULL);
+    //m_pCI->G.p_boolPred->vDump(__func__);
+
+    CardIter* pCI = m_pCI;
+    auto bLambdaFn = [pCI](Card_Term* p_term)
+    {
+      if (! p_term->pSymbol()->bIs_Col())
+        return C_CONTINUE_RECURSION;
+
+      if (pCI->Flux.m_pArriving) {
+        if (pCI->Flux.m_pArriving->pFind_expr_Matches(p_term->pSymbol())) {
+          return C_CONTINUE_RECURSION;
+        }
+      }
+
+      if (pCI->G.p_injectable) {
+        if (pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
+          return C_CONTINUE_RECURSION;
+        }
+      }
+
+      pCI->G.p_boolPred->vDump(__func__);
+      p_term->vDump(__func__);
+      NEVER_REACH
+    };
+
+    (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-cast 5 constraint
+
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    //m_pCI->G.p_constraint->vDump(__func__);
+    RASSERT(m_pCI->G.p_injectable);
+    m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred(C_NOT_NULL);
+
+    CardIter* pCI = m_pCI;
+    auto bLambdaFn = [pCI](Card_Term* p_term)
+    {
+      if (! p_term->pSymbol()->bIs_Col())
+        return C_CONTINUE_RECURSION;
+
+      if (pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol()))
+        return C_CONTINUE_RECURSION;
+
+      pCI->G.p_boolPred->vDump(__func__);
+      pCI->G.p_term->vDump(__func__);
+      NEVER_REACH
+    };
+
+    (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-cast 5 indexList
+
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList())) {
+    for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
+      m_pCI->G.p_index = xIndexList.p_index();
+      //m_pCI->G.p_index->vDump(__func__);
+
+      // indexList/colList
+      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
+      for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
+        m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
+
+        if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol()))
+          continue;
+
+        m_pCI->G.p_index->vDump(__func__);
+        m_pCI->G.p_idxCol->vDump(__func__);
+        NEVER_REACH
+      }
+
+      // indexList/bounds
+      if (!(m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds()))
+        continue;
+      for (Kid xBounds(m_pCI->G.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
+        m_pCI->G.p_bound = xBounds.p_bound();
+        m_pCI->G.p_bound->vDump(__func__);
+        vDebugPoint();
+        for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
+          m_pCI->G.p_term = xBound.p_term();
+          if (! m_pCI->G.p_term->pSymbol()->bIs_Col())
+            continue;
+          if (m_pCI->Flux.m_pArriving) {
+            if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+              continue;
+          }
+
+          // todo: seems the bound is invalid [298]
+//          m_pCI->vPrintBoard(__func__,__LINE__,true);
+//          m_pCI->G.p_bound->vDump(__func__);
+//          m_pCI->G.p_term->vDump(__func__);
+//          NEVER_REACH
+
+        }
+      }
+
+    }
+
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-cast 5 hshColList
+
+  if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
+    NEVER_REACH // todo: why? [297]
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-cast 5 emit
+
+  if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
+    for (Kid xEmit(m_pCI->G.p_emit); xEmit.bEach(CK_EXPR); /**/) {
+      m_pCI->G.p_expr = xEmit.p_expr();
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+      for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
+        m_pCI->G.p_term = xRpnCalc.p_term();
+        if (! m_pCI->G.p_term->pSymbol()->bIs_Col())
+          continue;
+
+        if (m_pCI->Flux.m_pArriving) {
+          if (m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+            continue;
+        }
+
+        if (m_pCI->G.p_injectable) {
+          if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+            continue;
+        }
+
+        if (m_pCI->G.p_key) {
+          if (m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+            continue;
         }
 
         m_pCI->G.p_expr->vDump(__func__);
