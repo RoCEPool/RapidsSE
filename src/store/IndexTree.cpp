@@ -118,12 +118,19 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 extern "C" void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamic, i8 nPayloadBytes, bool *pbInsertedEntry) {
 
+	// get Dynamic
 	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+
+	// get the IndexTree
 	IndexTree* pIndexTree = (IndexTree*)pDynamicT->m_xIndexInfoPL.m_aIndexTree;
+
+	// get the key
 	Key* aKey = (Key*)pDynamicT->m_xIndexInfoPL.m_aEntKey;
 
+	// get the ent
 	Ent* pEntInt = (Ent*)pDynamicT->m_xIndexInfoPL.m_aEntInt;
 
+	// find and insert entry
 	Ent* pEntInserted =  pIndexTree->aFindInsertEntryAscGen(aKey, pEntInt, nPayloadBytes, pbInsertedEntry, &pDynamicT->m_iErrorCode);
 
 	//pDynamicT->m_aiPayload = pEntInserted->aiPayload();
