@@ -121,7 +121,7 @@ rows:
 // Result file: ../queries/aggs/min/results/min6.res
 select min(cole9) from ${testName2}_table9;
 rows:
-  (-148.19)
+  (-148.)
 
 
 // Source file: ../queries/aggs/min/rmin16.sql
@@ -151,7 +151,7 @@ rows:
 /*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from ${testName2}_table9) as TbX where x < 0 or Y > 0;
 rows:
-  (-2.490800000e+02,-148.19,-15)
+  (-2.490800000e+02,-148.,-15)
 */
 
 // Source file: ../queries/aggs/min/rmin13.sql
@@ -209,7 +209,7 @@ rows: 0
 // Result file: ../queries/aggs/min/results/min12.res
 select min(cold9) + min(cole9) from ${testName2}_table9;
 rows:
-  (-397.27)
+  (-397.0800e0)
 
 
 // Source file: ../queries/aggs/min/rmin18.sql
@@ -218,7 +218,7 @@ rows:
 /*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from ${testName2}_table9) as TbX;
 rows:
-  (-2.490800000e+02,-148.19,-15)
+  (-2.490800000e+02,-148.,-15)
 */
 
 // Source file: ../queries/aggs/min/rmin25.sql
@@ -227,19 +227,19 @@ rows:
 /*
 select x*-1, y*-1, z*-1, color from (select min(cold9) as x, min(cole9) as y, min(colf9) as z, colb9 as color from ${testName2}_table9 group by colb9) as TbX where x*-1 between 100 and 225 order by color desc;
 ordered rows:
-  (2.051900000e+02,53.48,10,'violet')
-  (1.869200000e+02,-13.77,13,'teal')
-  (2.006100000e+02,108.14,15,'tan')
-  (1.991300000e+02,139.67,15,'red')
-  (1.863100000e+02,141.52,15,'peach')
-  (1.927500000e+02,145.19,15,'maroon')
-  (1.298200000e+02,117.47,15,'indigo')
-  (2.161200000e+02,146.90,15,'blue')
-  (1.955300000e+02,140.72,11,'TEAL')
-  (2.184000000e+02,140.14,14,'RED')
-  (1.293400000e+02,143.59,11,'PURPLE')
-  (2.221400000e+02,145.47,13,'BLUE')
-  (2.090300000e+02,141.43,7,'BLACK')
+  (2.051900000e+02,  53.,10,'violet')
+  (1.869200000e+02, -13.,13,'teal')
+  (2.006100000e+02, 108.,15,'tan')
+  (1.991300000e+02, 139.,15,'red')
+  (1.863100000e+02, 141.,15,'peach')
+  (1.927500000e+02, 145.,15,'maroon')
+  (1.298200000e+02, 117.,15,'indigo')
+  (2.161200000e+02, 146.,15,'blue')
+  (1.955300000e+02, 140.,11,'TEAL')
+  (2.184000000e+02, 140.,14,'RED')
+  (1.293400000e+02, 143.,11,'PURPLE')
+  (2.221400000e+02, 145.,13,'BLUE')
+  (2.090300000e+02, 141.,7,'BLACK')
 */
 
 // Source file: ../queries/aggs/min/rnmin1.sql

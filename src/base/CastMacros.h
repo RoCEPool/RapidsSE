@@ -444,12 +444,18 @@ static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
     return;
   }
 
+
+  b1 bIsNeg = false;
+  if (fltArg1.m_dFlt < 0) {
+    fltArg1.m_dFlt *= -1;
+    bIsNeg = true;
+  }
+
   // Get the integral part and work out if it fits in the desired precision.
   // Any left over digits can then be used towards scale.
   i8 iIntegralVal = (i8) fltArg1.m_dFlt;
   i8 iIntegralDigits = iPrecision_signed(iIntegralVal);
   i8 iMantissa = iIntegralVal;
-  b1 bIsNeg = false;
 
   if (iIntegralDigits > iPrecision) {
     aDynamicT->m_iErrorCode = EC_VALUE_OUT_OF_RANGE;
@@ -457,10 +463,6 @@ static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
     return;
   }
 
-  if (fltArg1.m_dFlt < 0) {
-    fltArg1.m_dFlt *= -1;
-    bIsNeg = true;
-  }
 
   i8 iScaleDigits = (iPrecision - iIntegralDigits) < iScale ? iPrecision - iIntegralDigits : iScale;
 

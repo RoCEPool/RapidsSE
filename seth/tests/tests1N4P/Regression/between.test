@@ -68,20 +68,20 @@ ordered rows:
 // Result file: ../queries/between/results/between21.res
 select colb9, cole9 from ${testName2}_table9 where cole9 between 10 and 15 order by colb9, pcol9;
 ordered rows:
-  ('TEAL',    12.60)
-  ('YELLOW',  14.08)
-  ('black',   10.35)
-  ('blue',    10.19)
-  ('brown',   11.75)
-  ('green',   12.75)
-  ('grey',    11.56)
-  ('indigo',  10.01)
-  ('orange',  10.12)
-  ('pink',    14.20)
-  ('tan',     10.83)
-  ('teal',    13.77)
-  ('yellow',  11.17)
-  ('yellow',  12.28)
+  ('TEAL',    13.)
+  ('YELLOW',  14.)
+  ('black',   10.)
+  ('blue',    10.)
+  ('brown',   12.)
+  ('green',   13.)
+  ('grey',    12.)
+  ('indigo',  10.)
+  ('orange',  10.)
+  ('pink',    14.)
+  ('tan',     11.)
+  ('teal',    14.)
+  ('yellow',  11.)
+  ('yellow',  12.)
 
 /*
 // incorrect from QA folder
@@ -230,33 +230,33 @@ ordered rows:
 // Result file: ../queries/between/results/between12.res
 select cold1, ucolvc, cole1 * 0.5, cole1 * 0.3 from ${testName2}_table1 where cold1 not between cole1 * 0.1 and cole1 * 5.85 order by ucolvc, cold1;
 ordered rows:
-  (193.58, 'bbb', 4.20,  2.52)
-  (130.62, 'eee', 3.18,  1.91)
-  (248.71, 'iii', 4.81,  2.88)
-  (73.44,  'lll', 2.67,  1.60)
-  (167.42, 'mmm', 14.01, 8.41)
-  (108.27, 'nnn', 6.33,  3.80)
-  (239.51, 'nnn', 4.44,  2.66)
-  (241.24, 'nnn', 15.35, 9.21)
-  (94.93,  'qqq', 3.77,  2.26)
-  (187.35, 'qqq', 9.74,  5.84)
-  (203.2,  'yyy', 13.82, 8.29)
+  (193.58e0, 'bbb', 4.200,  2.520)
+  (130.62e0, 'eee', 3.180,  1.908)
+  (248.71e0, 'iii', 4.805,  2.883)
+  (73.44e0,  'lll', 2.670,  1.602)
+  (167.42e0, 'mmm', 14.010, 8.406)
+  (108.27e0, 'nnn', 6.330,  3.798)
+  (239.51e0, 'nnn', 4.435,  2.661)
+  (241.24e0, 'nnn', 15.345, 9.207)
+  (94.93e0,  'qqq', 3.765,  2.259)
+  (187.35e0, 'qqq', 9.735,  5.841)
+  (203.2e0,  'yyy', 13.815, 8.289)
 
 
 // Source file: ../queries/between/rbetween11.sql
 // Result file: ../queries/between/results/between11.res
 select ucolvc, cold9 from ${testName2}_table9 where cold9 not between -245.0 and 245.0 order by ucolvc;
 ordered rows:
-  ('ccc', -245.14)
-  ('ddd', 247.75)
-  ('fff', -246.31)
-  ('iii', -248.09)
-  ('jjj', 247.57)
-  ('lll', 248.45)
-  ('mmm', 245.26)
-  ('qqq', 246.98)
-  ('sss', -245.23)
-  ('vvv', -249.08)
+  ('ccc', -245.14e0)
+  ('ddd',  247.75e0)
+  ('fff', -246.31e0)
+  ('iii', -248.09e0)
+  ('jjj',  247.57e0)
+  ('lll',  248.45e0)
+  ('mmm',  245.26e0)
+  ('qqq',  246.98e0)
+  ('sss', -245.23e0)
+  ('vvv', -249.08e0)
 
 // Source file: ../queries/between/rbetween4.sql
 // Result file: ../queries/between/results/between4.res
@@ -270,10 +270,10 @@ ordered rows:
 // Result file: ../queries/between/results/between5.res
 select colb9, cole9 from ${testName2}_table9 where cole9 between 0.35 and 4.5 order by colb9;
 ordered rows:
-  ('RED',    3.98)
-  ('aqua',   3.99)
-  ('black',  2.54)
-  ('maroon', 3.60)
+  ('RED',    4.)
+  ('aqua',   4.)
+  ('black',  3.)
+  ('maroon', 4.)
 
 
 // Source file: ../queries/between/rbetween18.sql
