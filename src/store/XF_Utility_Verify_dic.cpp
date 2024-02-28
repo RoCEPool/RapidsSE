@@ -246,12 +246,34 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
     for (Kid xIndexList(m_pCI->G.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
       m_pCI->G.p_index = xIndexList.p_index();
       //m_pCI->G.p_index->vDump(__func__);
+
+      // indexList/idxColList
       m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
       for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
         m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
         RASSERT(m_pCI->G.p_idxCol->pSymbol()->bHasFacets(SF_NMD_COL,
                                                          SF_TBL_COL,
                                                          SF_NONE));
+      }
+
+      // indexList/bounds
+      if (!(m_pCI->G.p_bounds = m_pCI->G.p_index->pSub_bounds()))
+        continue;
+      for (Kid xBound(m_pCI->G.p_bounds); xBound.bEach(CK_BOUND); /**/) {
+        m_pCI->G.p_bound = xBound.p_bound();
+        m_pCI->G.p_bound->vDump(__func__);
+        vDebugPoint();
+        for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
+          m_pCI->G.p_term = xBound.p_term();
+          RASSERT(m_pCI->G.p_term->pSymbol()->bHasFacet(SF_IDX_COL)
+                  ||
+                  m_pCI->G.p_term->pSymbol()->bHasFacet(SF_TBL_COL)
+                  ||
+                  m_pCI->G.p_term->pSymbol()->bHasFacet(SF_EXP_COL)
+                  ||
+                  m_pCI->G.p_term->pSymbol()->bIs_Lit()
+                  );
+        }
       }
     }
 
