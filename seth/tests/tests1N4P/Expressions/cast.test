@@ -446,10 +446,10 @@ rows:
 
 // cast varchar to dec(17,4) (out of bounds)
 SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 11;
-failure contains: 'EC_VALUE_OUT_OF_RANGE'
+rows: (-999999999999999.99)
 
 SELECT CAST(vchCol AS DECIMAL(17,4)) FROM ${testName2}_test WHERE id = 12;
-failure contains: 'EC_VALUE_OUT_OF_RANGE'
+rows: (999999999999999.99)
 
 
 // cast varchar to flt

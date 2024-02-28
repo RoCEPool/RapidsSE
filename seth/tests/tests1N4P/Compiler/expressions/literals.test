@@ -40,7 +40,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 1. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
+      » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL(1,0)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -56,7 +56,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 0. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL
+      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL(1,0)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -72,7 +72,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 12.34 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 12.34 ; Ordinal Expr = 12.34) ; type: DECIMAL
+      » column: (Expr = 12.34 ; Ordinal Expr = 12.34) ; type: DECIMAL(4,2)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -88,7 +88,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -1. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = -1. ; Ordinal Expr = -1.) ; type: DECIMAL
+      » column: (Expr = -1. ; Ordinal Expr = -1.) ; type: DECIMAL(1,0)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -104,7 +104,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -0. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL
+      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL(1,0)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -120,7 +120,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -12.34 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = -12.34 ; Ordinal Expr = -12.34) ; type: DECIMAL
+      » column: (Expr = -12.34 ; Ordinal Expr = -12.34) ; type: DECIMAL(4,2)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -136,7 +136,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 0.00123 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 0.00123 ; Ordinal Expr = 0.00123) ; type: DECIMAL
+      » column: (Expr = 0.00123 ; Ordinal Expr = 0.00123) ; type: DECIMAL(5,5)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -152,7 +152,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -.00123 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = -0.00123 ; Ordinal Expr = -0.00123) ; type: DECIMAL
+      » column: (Expr = -0.00123 ; Ordinal Expr = -0.00123) ; type: DECIMAL(5,5)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -168,7 +168,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 12300 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 12300 ; Ordinal Expr = 12300) ; type: INTEGER
+      » column: (Expr = 12300 ; Ordinal Expr = 12300) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -190,7 +190,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 0.00000000000001234 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 0.00000000000001234 ; Ordinal Expr = 0.00000000000001234) ; type: DECIMAL
+      » column: (Expr = 0.00000000000001234 ; Ordinal Expr = 0.00000000000001234) ; type: DECIMAL(17,17)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -213,7 +213,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 36028797018963967. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 36028797018963967. ; Ordinal Expr = 36028797018963967.) ; type: DECIMAL
+      » column: (Expr = 36028797018963967. ; Ordinal Expr = 36028797018963967.) ; type: DECIMAL(17,0)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -235,7 +235,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -36028797018963967. FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = -36028797018963967. ; Ordinal Expr = -36028797018963967.) ; type: DECIMAL
+      » column: (Expr = -36028797018963967. ; Ordinal Expr = -36028797018963967.) ; type: DECIMAL(17,0)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')

@@ -151,9 +151,11 @@ i8 DecimalLiteral::iPrecision(QueryNode* pExprNode, PlanNode* pRootNode)
     return -1;
   }
 
-  // The precision is the number of digits in the mantissa.
+  // The precision is the number of digits in the mantissa, unless it is less
+  // than the scale, in which case the precision is equal to the scale because
+  // the preceding zeros are significant.
   i8 iPrecision = IntLib::iPrecision(IntLib::iAbs(xBcd.T.m_iMantissa));
-  return iPrecision;
+  return iPrecision > (i8) xBcd.T.m_uScale ? iPrecision : (i8) xBcd.T.m_uScale;
 }
 
 /*----------------------------------------------------------------------------*/

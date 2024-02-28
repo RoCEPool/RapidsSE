@@ -179,7 +179,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN ''here''         WHEN ''INDIA'' THEN ''there''         ELSE NULL        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END) ; type: VARCHAR
+      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END) ; type: VARCHAR(5)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -203,7 +203,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN NULL         WHEN ''INDIA'' THEN ''there''         ELSE ''everywhere''        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) ; type: VARCHAR
+      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) ; type: VARCHAR(10)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -227,7 +227,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN NULL         WHEN ''INDIA'' THEN NULL         ELSE ''everywhere''        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN NULL ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE ''everywhere'' END) ; type: VARCHAR
+      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN NULL ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE ''everywhere'' END) ; type: VARCHAR(10)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -275,7 +275,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN 1         WHEN ''INDIA'' THEN 1.0e0         ELSE NULL       END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN ($2 = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END) ; type: FLOAT
+      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN ($2 = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END) ; type: FLOAT(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_nation)')
@@ -299,7 +299,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE col2         WHEN ''AUSTRALIA'' THEN col1         WHEN ''INDIA''     THEN col9         ELSE NULL       END FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN (CAST(rapidsse.public.${testName2}_extractTest.col1 AS DECIMAL)) WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''INDIA'') THEN rapidsse.public.${testName2}_extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN (CAST($1 AS DECIMAL)) WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: DECIMAL
+      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN (CAST(rapidsse.public.${testName2}_extractTest.col1 AS DECIMAL)) WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''INDIA'') THEN rapidsse.public.${testName2}_extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN (CAST($1 AS DECIMAL)) WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: DECIMAL(17,0)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -323,7 +323,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE col2         WHEN ''AUSTRALIA'' THEN col8         WHEN ''INDIA''     THEN col9         ELSE NULL       END FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN rapidsse.public.${testName2}_extractTest.col8 WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''INDIA'') THEN (CAST(rapidsse.public.${testName2}_extractTest.col9 AS FLOAT)) ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN $6 WHEN ($2 = ''INDIA'') THEN (CAST($7 AS FLOAT)) ELSE NULL END) ; type: FLOAT
+      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN rapidsse.public.${testName2}_extractTest.col8 WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''INDIA'') THEN (CAST(rapidsse.public.${testName2}_extractTest.col9 AS FLOAT)) ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN $6 WHEN ($2 = ''INDIA'') THEN (CAST($7 AS FLOAT)) ELSE NULL END) ; type: FLOAT(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')

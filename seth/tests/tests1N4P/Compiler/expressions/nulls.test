@@ -190,14 +190,14 @@ rows: (*,'partitionPlan','
 
 -> -> projectOp
       » location: origin
-      » column: (Expr = SUM(SUM(COUNT(1 + NULL))) ; Ordinal Expr = SUM($1)) ; type: INTEGER
+      » column: (Expr = SUM(SUM(COUNT(1 + NULL))) ; Ordinal Expr = SUM($1)) ; type: INTEGER(19)
 
 -> -> -> projectOp
          » location: all nodes
-         » column: (Expr = SUM(COUNT(1 + NULL)) ; Ordinal Expr = SUM($1)) ; type: INTEGER
+         » column: (Expr = SUM(COUNT(1 + NULL)) ; Ordinal Expr = SUM($1)) ; type: INTEGER(19)
 
 -> -> -> -> projectOp
-            » column: (Expr = COUNT(1 + NULL) ; Ordinal Expr = COUNT(1 + NULL)) ; type: INTEGER
+            » column: (Expr = COUNT(1 + NULL) ; Ordinal Expr = COUNT(1 + NULL)) ; type: INTEGER(19)
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
@@ -270,11 +270,11 @@ rows: (*,'partitionPlan','
 -> -> -> projectOp
          » location: all nodes
          » column: (Expr = SUM(SUM(1 + NULL)) ; Ordinal Expr = SUM($1)) ; type: NULL
-         » column: (Expr = SUM(COUNT(1 + NULL)) ; Ordinal Expr = SUM($2)) ; type: INTEGER
+         » column: (Expr = SUM(COUNT(1 + NULL)) ; Ordinal Expr = SUM($2)) ; type: INTEGER(19)
 
 -> -> -> -> projectOp
             » column: (Expr = SUM(1 + NULL) ; Ordinal Expr = SUM(1 + NULL)) ; type: NULL
-            » column: (Expr = COUNT(1 + NULL) ; Ordinal Expr = COUNT(1 + NULL)) ; type: INTEGER
+            » column: (Expr = COUNT(1 + NULL) ; Ordinal Expr = COUNT(1 + NULL)) ; type: INTEGER(19)
 
 -> -> -> -> -> tableScanOp
                » location: all partitions

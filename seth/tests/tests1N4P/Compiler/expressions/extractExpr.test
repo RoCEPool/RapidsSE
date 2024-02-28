@@ -212,7 +212,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (YEAR FROM COL3 + (2 * INTERVAL ''3'' DAY)) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (YEAR FROM (rapidsse.public.${testName2}_extractTest.COL3 + (2 * INTERVAL ''3'' DAY))) ; Ordinal Expr = EXTRACT (YEAR FROM ($3 + (2 * INTERVAL ''3'' DAY)))) ; type: INTEGER
+      » column: (Expr = EXTRACT (YEAR FROM (rapidsse.public.${testName2}_extractTest.COL3 + (2 * INTERVAL ''3'' DAY))) ; Ordinal Expr = EXTRACT (YEAR FROM ($3 + (2 * INTERVAL ''3'' DAY)))) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -301,7 +301,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER
+      » column: (Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -374,7 +374,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER
+      » column: (Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -447,7 +447,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER
+      » column: (Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -520,7 +520,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER
+      » column: (Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -593,7 +593,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND)) ; type: INTEGER
+      » column: (Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -670,7 +670,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.5'' DAY TO SECOND) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND)) ; type: DECIMAL
+      » column: (Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND)) ; type: DECIMAL(17,6)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -715,7 +715,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (YEAR FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -731,7 +731,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MONTH FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -747,7 +747,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (DAY FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (DAY FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (DAY FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -763,7 +763,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (HOUR FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -779,7 +779,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MINUTE FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5)) ; type: INTEGER(19)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
@@ -795,7 +795,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (SECOND FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5)) ; type: DECIMAL
+      » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5)) ; type: DECIMAL(17,6)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')
