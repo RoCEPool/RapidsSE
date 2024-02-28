@@ -442,7 +442,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
 
     m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred(C_NOT_NULL);
-    m_pCI->G.p_boolPred->vDump(__func__);
+    //m_pCI->G.p_boolPred->vDump(__func__);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -452,31 +452,19 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
       if (pCI->Flux.m_pArriving) {
         if (pCI->Flux.m_pArriving->pFind_expr_Matches(p_term->pSymbol())) {
-          vDebugPoint();
+          return C_CONTINUE_RECURSION;
         }
-        else
-        if (pCI->G.p_injectable) {
-          if (pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
-            vDebugPoint();
-          } else {
-            p_term->vDump(__func__);
-            NEVER_REACH
-          }
-        }
-      }
-      else
-      if (pCI->G.p_injectable) {
-        if (pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
-          vDebugPoint();
-        } else {
-          NEVER_REACH
-        }
-      }
-      else {
-        NEVER_REACH
       }
 
-      return C_CONTINUE_RECURSION;
+     if (pCI->G.p_injectable) {
+       if (pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
+         return C_CONTINUE_RECURSION;
+       }
+     }
+
+      pCI->G.p_boolPred->vDump(__func__);
+      p_term->vDump(__func__);
+      NEVER_REACH
     };
 
     (void) m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
