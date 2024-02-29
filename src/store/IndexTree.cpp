@@ -135,8 +135,12 @@ extern "C" void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamic, i8 nPayloadBy
 
 	//pDynamicT->m_aiPayload = pEntInserted->aiPayload();
 
-	return pEntInserted;
+	pDynamicT->m_aiPayload = (i8 *) ((char *) pEntInserted
+																	 + sizeof(struct Ent_int)
+																	 + ((struct Ent_int *) pEntInserted)->m_iIntElm0
+																	 + 8);
 
+	return pEntInserted;
 }
 
 

@@ -134,17 +134,12 @@ i8 iGbyAggGenAscBegin(Dynamic_T* aDynamicT) {
 
 	// marker-start
 
-	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	// aggregate the payload
-	aDynamicT->m_aiPayload = (i8 *) ((char *) aEntFound
-																	 + sizeof(struct Ent_int)
-																	 + ((struct Ent_int *) aEntFound)->m_iIntElm0
-																	 + 8);
-
 	if (bInsertedEntry) {
 
 		aDynamicT->m_iRowsProcessed++;
 
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// initialize the payload
 		// marker-end
 
 	}
@@ -160,8 +155,10 @@ i8 iGbyAggGenAscEnd(Dynamic_T* aDynamicT) {
 
 	{
 		// marker-start
-
 	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// aggregate the payload
 		// marker-end
 
 		return 0;
