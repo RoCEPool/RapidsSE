@@ -107,7 +107,7 @@ begin
     | next
 
   stage stageQ17_2_d on origin :
-    project " type DECIMAL ( 17  2 ) as avg_yearly $1 7.0 / "
+    project " type DECIMAL ( 17  4 ) as avg_yearly $1 7.0 / "
     | combined 0
     | stageLast
 
@@ -117,7 +117,7 @@ begin
     | stageStart
 end ;
 
-rows: (2495.31)
+rows: (2495.3100)
 
 //------------------------------------------------------------------------------
 // drop the tables
