@@ -20,9 +20,10 @@ __aFooterFunction(EntWrk)
 /*----------------------------------------------------------------------------*/
 /* append str key element                                                     */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_EntWrkAppendElementStz(void* pEntWrk, char* sValue)
+extern "C" void vExtern_EntWrkAppendElementStz(void* aEntWrk, char* sValue)
 {
-  EntWrk::vAppendElementEntStz((EntWrk*) pEntWrk, (Stz*)sValue);
+  EntWrk* pEntWrk = (EntWrk*) aEntWrk;
+	pEntWrk->vAppendElementEntStz(sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,15 +67,6 @@ extern "C" void vExtern_EntWrkReset(void* pEntWrk)
 }
 
 
-
-
-/*----------------------------------------------------------------------------*/
-/* append str key element                                                     */
-/*----------------------------------------------------------------------------*/
-void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue)
-{
-  EntWrk::vAppendElementEntStz((EntWrk*) pEntWrk, (Stz*)sValue);
-}
 
 /*----------------------------------------------------------------------------*/
 /* append int key element                                                     */
@@ -179,24 +171,59 @@ void EntWrk::vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElementEntStz(EntWrk* pEntWrk, Stz* sValue)
+void EntWrk::vAppendElementEntStz(char* sValue)
 {
-  _static_
-
-  // Alka: entwrk reset
-  /*
-  static i8 nTimes = 0;
-
-  if (161 == nTimes)
-    vDebugPoint();
-
-  vTrace("vAppendElementEntStz: call# %03lld %s\n"_Stz,nTimes++,sValue->azChar());
-  */
+	i8 nElmSize;
 
   if ((i8)sValue == C_DATUM_NULL)
-    pEntWrk->vAppendNull();
-  else
-    pEntWrk->vAppendStz(sValue);
+    vAppendNull();
+  else {
+
+		i8 iBufRemaining;
+		char* aDst = (char*)ayElmNext_dtm(&iBufRemaining);
+
+		//i8 nElmSize = StrLib::iWordFlip(aDst, iBufRemaining, sValue);
+
+		i8 iSrcLen  = (i8)strlen(sValue);
+
+		i8 iRoundUp = 0;
+		i8 iRemainder = iSrcLen % C_BYTES_PER_WORD;
+		if (iRemainder)
+			iRoundUp = C_BYTES_PER_WORD - iRemainder;
+
+		i8 iReqDstSize = iSrcLen + iRoundUp;
+		ASSERT(0 == iReqDstSize % C_BYTES_PER_WORD);
+
+		//bool bRet = StrLib::bCheckBufferSpace(__func__, iReqDstSize, iBufRemaining, pbResult);
+		if (iBufRemaining < iReqDstSize) {
+			nElmSize = iReqDstSize;
+		}
+		else {
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			i8 iSrcSize = StrLib::nSize(sValue);
+			MemLib::vZero(aDst, iReqDstSize, CN_KEY);
+			MemLib::vCopy(aDst, sValue, iSrcSize, CN_KEY);
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			w8* aWrd = (w8*)aDst;
+			for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--)
+				MemLib::vWordFlip(aWrd++);
+
+			if (iSrcLen == iReqDstSize) {
+				iReqDstSize += C_BYTES_PER_WORD;
+				//bRet = StrLib::bCheckBufferSpace(__func__, iReqDstSize, iBufRemaining, pbResult);
+				if (iBufRemaining < iReqDstSize) {
+					MemLib::vZero(aWrd, 8, CN_KEY);
+				}
+			}
+
+			nElmSize = iReqDstSize;
+		}
+
+		//vIncElmSeqSize(nElmSize);
+		m_xEnt.aKey()->vIncElmSeqSize(nElmSize);
+	}
 }
 
 /*----------------------------------------------------------------------------*/

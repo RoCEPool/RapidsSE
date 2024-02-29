@@ -260,6 +260,8 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	//
 	// extern function pointers
 	//
+	m_xDynamicT.m_fp_vExtern_EntWrkAppendElementStz = nullptr;
+
 	m_xDynamicT.m_fp_aExtern_EntBufferNextEntry = nullptr;
 	m_xDynamicT.m_fp_vExtern_EntPayloadCreate = nullptr;
 

@@ -121,7 +121,7 @@
 
 #define _ASSIGN_TO_ENTSTZ(iArgTo) \
   szArg1 = (char*)*(--paW);                                                 \
-  vExtern_EntWrkAppendElementStz(iArgTo,szArg1);
+  aDynamicT->m_fp_vExtern_EntWrkAppendElementStz(iArgTo,szArg1);
 
 
 #define _COPYSTR_IFTRUE(szAreaTo, iArgTo)                                   \

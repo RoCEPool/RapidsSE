@@ -116,6 +116,7 @@ struct Dynamic_T
 	//
 	// extern function pointers
 	//
+	void  (*m_fp_vExtern_EntWrkAppendElementStz)(i8,void*);
 	void* (*m_fp_aExtern_EntBufferNextEntry)(void**,void*);
 	void (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
 
