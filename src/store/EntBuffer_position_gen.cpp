@@ -161,8 +161,8 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 					i8 nKeyBytes_l = aKey_l->nElmSeqSize();
 					i8 nKeyBytes_r = aForKey->nElmSeqSize();
 
-					const i8 * iWord1 = (const i8*)aKey_l->aElmSeq_dtm();
-					const i8 * iWord2 = (const i8*)aForKey->aElmSeq_dtm();
+					const i8 * iWord1 = (const i8*)aAdd<Dtm*>(aKey_l,sizeof(nKeyBytes_l));//aKey_l->aElmSeq_dtm();
+					const i8 * iWord2 = (const i8*)aAdd<Dtm*>(aForKey,sizeof(nKeyBytes_r));//aForKey->aElmSeq_dtm();
 
 					i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
 
