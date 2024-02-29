@@ -261,7 +261,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         continue;
       for (Kid xBound(m_pCI->G.p_bounds); xBound.bEach(CK_BOUND); /**/) {
         m_pCI->G.p_bound = xBound.p_bound();
-        m_pCI->G.p_bound->vDump(__func__);
+        //m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->G.p_term = xBound.p_term();
@@ -550,7 +550,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         continue;
       for (Kid xBounds(m_pCI->G.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
         m_pCI->G.p_bound = xBounds.p_bound();
-        m_pCI->G.p_bound->vDump(__func__);
+        //m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->G.p_term = xBound.p_term();
@@ -770,7 +770,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         continue;
       for (Kid xBounds(m_pCI->G.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
         m_pCI->G.p_bound = xBounds.p_bound();
-        m_pCI->G.p_bound->vDump(__func__);
+        // m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->G.p_term = xBound.p_term();
@@ -994,7 +994,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         continue;
       for (Kid xBounds(m_pCI->G.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
         m_pCI->G.p_bound = xBounds.p_bound();
-        m_pCI->G.p_bound->vDump(__func__);
+        //m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->G.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->G.p_term = xBound.p_term();
@@ -1046,7 +1046,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
               continue;
             }
             else {
-              m_pCI->Flux.m_pArriving->vDump(__func__);
+              //m_pCI->Flux.m_pArriving->vDump(__func__);
               vDebugPoint();
             }
           }
@@ -1059,7 +1059,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
               continue;
             }
             else {
-              m_pCI->G.p_injectable->vDump(__func__);
+              //m_pCI->G.p_injectable->vDump(__func__);
               vDebugPoint();
             }
           }
@@ -1072,9 +1072,9 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
             }
             else {
               // todo: query 18 $K2 type is wrong [
-              m_pCI->G.p_expr->vDump(__func__);
-              m_pCI->G.p_key->vDump(__func__);
-              m_pCI->G.p_term->vDump(__func__);
+//              m_pCI->G.p_expr->vDump(__func__);
+//              m_pCI->G.p_key->vDump(__func__);
+//              m_pCI->G.p_term->vDump(__func__);
               vDebugPoint();
               continue;
             }
