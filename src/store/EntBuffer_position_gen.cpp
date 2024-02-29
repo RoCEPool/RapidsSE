@@ -138,10 +138,58 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 				while (aNextEntry_sl) {
 
 					//bNextKeyIsGE = Key::bGreaterEqualAsc(aNextEntry_sl->aKey(), aForKey);
-					eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
+					//eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
 
-					if (eCmp == KC_AFTER || eCmp == KC_SAME)
+					Key* aKey_l = aNextEntry_sl->aKey();
+					i8 nKeyBytes_l = aKey_l->nElmSeqSize();
+					i8 nKeyBytes_r = aForKey->nElmSeqSize();
+
+					const i8 * iWord1 = (const i8*)aKey_l->aElmSeq_dtm();
+					const i8 * iWord2 = (const i8*)aForKey->aElmSeq_dtm();
+
+					i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+					//i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+
+					i8 iCmp;
+					//const i8 *iWord1 = (const i8*)ayKeyBytes_l;
+					//const i8 *iWord2 = (const i8*)ayKeyBytes_r;
+
+					while (nCmpBytes > 0) {
+						if (*iWord1++ != *iWord2++) {
+							iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
+							break;
+						}
+						nCmpBytes -=8;
+					}
+
+					if (nCmpBytes == 0)
+						iCmp = 0;
+
+
+//					if (iCmp < 0)
+//						return KC_BEFORE;
+//
+//					if (iCmp == 0) {
+//						if (nKeyBytes_l < nKeyBytes_r)
+//							return KC_BEFORE;
+//
+//						if (nKeyBytes_l == nKeyBytes_r)
+//							return KC_SAME;
+//
+//						if (nKeyBytes_l > nKeyBytes_r)
+//							return KC_AFTER;
+//					}
+//
+//					return KC_AFTER;
+
+
+					//if (eCmp == KC_AFTER || eCmp == KC_SAME)
+					//	break;
+
+					if ( (iCmp == 0 && nKeyBytes_l >= nKeyBytes_r) || iCmp > 0)
 						break;
+
 
 					aScanEntry_sl = aNextEntry_sl;
 					aNextEntry_sl = aNextEntry(aNextEntry_sl, i_ScanLevel);
