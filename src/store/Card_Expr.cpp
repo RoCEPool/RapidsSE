@@ -297,7 +297,7 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   Symbol* pSymbol_expr = pSymbol();
   if (! xCast().m_xTypeId.bIsValid()) {
-    pCI->vPrintBoard(__func__,__LINE__,true);
+    pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
     vDump(__func__ );
     NEVER_REACH
   }
@@ -785,7 +785,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (m_xSymbol.nTypeLength() == 0) {
       vMark("?"_Stz,"l"_Stz);
       pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
-      pCI->vPrintBoard(__func__,__LINE__,true);
+      pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
       vDump(__func__);
       vValidationFailed("Decimal length is 0 : %p"_Stz, this);
     }

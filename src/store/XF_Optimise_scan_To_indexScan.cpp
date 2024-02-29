@@ -68,7 +68,7 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_SCAN_TO_INDEXSCAN, "morph scan to indexScan"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_SCAN_TO_INDEXSCAN, "morph scan to indexScan"_Stz);
 
   m_pCI->vClearRestart();
   if (m_pCI->G_bEachMainWith2Sub(CK_o_SCAN, CK_t_INDEXLIST, CK_BOUNDS)) {

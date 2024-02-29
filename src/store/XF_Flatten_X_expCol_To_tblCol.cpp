@@ -62,7 +62,7 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_X_EXPCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_FLATTEN_X_EXPCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
 
   m_pCI->vClearRestart();
 

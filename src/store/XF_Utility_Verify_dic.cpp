@@ -68,7 +68,7 @@ void XF_Utility_Verify_dic::vVerify_dic_loop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_UTILITY_VERIFY_DIC, "verify dic"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_UTILITY_VERIFY_DIC, "verify dic"_Stz);
 
   m_pCI->vClearRestart();
 
@@ -562,7 +562,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           }
 
           // todo: seems the bound is invalid [298]
-//          m_pCI->vPrintBoard(__func__,__LINE__,true);
+//          m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
 //          m_pCI->G.p_bound->vDump(__func__);
 //          m_pCI->G.p_term->vDump(__func__);
 //          NEVER_REACH
@@ -1008,7 +1008,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           }
 
           // todo: seems the bound is invalid [298]
-//          m_pCI->vPrintBoard(__func__,__LINE__,true);
+//          m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
 //          m_pCI->G.p_bound->vDump(__func__);
 //          m_pCI->G.p_term->vDump(__func__);
 //          NEVER_REACH

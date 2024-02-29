@@ -495,7 +495,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   // not converted
 //  if (!pCI->X.m_pExprList_i)
-//    pCI->vPrintBoard(__func__,__LINE__,true);
+//    pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
 //    pSymbol_this->vDump();
 //  RASSERT(pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol));
 
@@ -552,7 +552,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       if (!m_xSymbol.bValidType()) {
          vMark("?"_Stz,"t"_Stz);
          pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);
-         pCI->vPrintBoard(__func__,__LINE__,true);
+         pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
          vDump(__func__);
          vValidationFailed("Type Missing : %p"_Stz,this);
       }
@@ -560,7 +560,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
         if (m_xSymbol.nTypeLength() == 0) {
           vMark("?"_Stz,"l"_Stz);
           pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
-          pCI->vPrintBoard(__func__,__LINE__,true);
+          pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
           vDump(__func__);
           vValidationFailed("Decimal length is 0 : %p"_Stz, this);
         }
@@ -586,7 +586,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
            ) {
         Card_EXPRLIST* p_EXPRLIST = (Card_EXPRLIST*)p_ANCESTOR;
         if (! p_EXPRLIST->bTestFind_expr_Matching(pCI->G.p_expr,this->pSymbol(),SF_EXP_COL)) {
-          pCI->vPrintBoard(__func__,__LINE__,true);
+          pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
           p_EXPRLIST->vDump(__func__ );
           pCI->G.p_expr->vDump(__func__ );
           NEVER_REACH

@@ -67,7 +67,7 @@ bool XF_Optimise_sortDesc_limit_to_top::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP, "sort+desc limit to top"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP, "sort+desc limit to top"_Stz);
 
   m_pCI->vClearRestart();
 

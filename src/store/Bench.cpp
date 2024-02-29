@@ -289,12 +289,14 @@ void Bench::vPipelineNm(Stz* szPipelineNm)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
+void Bench::vTransform(const char* azXfile, const char* azXfunc, eXF eXform, Stz* szXdesc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   vXform_Inc();
-  vXfunc((Stz *) azFunc);
+
+  vXfile((Stz *) azXfile);
+  vXfunc((Stz *) azXfunc);
   vXform(eXform);
   vXdesc(szXdesc);
 }
@@ -317,6 +319,26 @@ void Bench::vXdesc(Stz* szXdesc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_sXdesc = szXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation function                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Bench::szXfile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_sXfile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transformation function                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vXfile(Stz* szXfile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_sXfile = szXfile;
 }
 
 /*----------------------------------------------------------------------------*/

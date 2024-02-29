@@ -67,7 +67,7 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_GBYAGG_TO_ORDAGG, "Promote gbyAgg to ordAgg"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_GBYAGG_TO_ORDAGG, "Promote gbyAgg to ordAgg"_Stz);
 
   m_pCI->vClearRestart();
 

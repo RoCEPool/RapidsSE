@@ -1270,7 +1270,9 @@ void CardIter::vEndTransform(i8 iLineNo)
       xDeck.pChild()->vEnsureLast(CK_s_NEEDED);
     }
 
-    vPrintBoard(__func__,iLineNo);
+    vPrintBoard(m_pBench->szXfile()->azChar(),
+                m_pBench->szXfunc()->azChar(),
+                iLineNo);
 
 //    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
 //      ShortForm *pShortForm = new ShortForm(this);
@@ -2011,7 +2013,7 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce)
+void CardIter::vPrintBoard(const char* azFile, const char* azFunc, i8 iLineNo, bool bForce)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -2045,7 +2047,11 @@ void CardIter::vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce)
 
 
   s256 sWhere;
-    sWhere.vCatSprint("%s :: %s:%lld"_Stz, aXF[m_pBench->eXform()], azFunc, iLineNo);
+    sWhere.vCatSprint("EndTransform %s :: %s() %s:%lld"_Stz,
+                      aXF[m_pBench->eXform()],
+                      azFunc,
+                      azFile,
+                      iLineNo);
 
   vTrace("%s\n"_Stz, sWhere.azChar());
 }
@@ -2511,16 +2517,17 @@ void CardIter::G_vSetBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
+void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vTransform(azFunc, eXform, szXdesc);
+  m_pBench->vTransform(azXfile, azXfunc, eXform, szXdesc);
 
   //this->vBeginEach();
 }
 
 /*----------------------------------------------------------------------------*/
+
 /* set up which board to use                                                  */
 /*----------------------------------------------------------------------------*/
 void CardIter::vUsingBoard(i8 i_Board)

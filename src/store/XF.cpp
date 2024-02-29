@@ -318,14 +318,14 @@ void XF::vTransform_passThru(void)
     //XF_Prolog_X_colNm_By_stmCol::vXF_colNm_By_stmCol(m_pCI);
     XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(m_pCI);
 
-    m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
+    m_pCI->vTransform(__FILE_NAME__,__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWith2Sub(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vApplyFacets(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
-    m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_TOP, "adjust top"_Stz);
+    m_pCI->vTransform(__FILE_NAME__,__func__, XF_PASSTHRU_ADJUST_TOP, "adjust top"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWith2Sub(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vApplyFacets(m_pCI->G.p_key);
@@ -334,28 +334,28 @@ void XF::vTransform_passThru(void)
 
 
 
-    m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_INDEXJOIN, "tweak index join"_Stz);
+    m_pCI->vTransform(__FILE_NAME__,__func__, XF_PASSTHRU_TWEAK_INDEXJOIN, "tweak index join"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain(CK_o_INDEXJOIN)) {
       m_pCI->G.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexJoin->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
-    m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_INDEXSCAN, "tweak index scan"_Stz);
+    m_pCI->vTransform(__FILE_NAME__,__func__, XF_PASSTHRU_TWEAK_INDEXSCAN, "tweak index scan"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain(CK_o_INDEXSCAN)) {
       m_pCI->G.p_indexScan->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
-    m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_KEYEXISTS, "tweak key exists"_Stz);
+    m_pCI->vTransform(__FILE_NAME__,__func__, XF_PASSTHRU_TWEAK_KEYEXISTS, "tweak key exists"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain(CK_o_KEYEXISTS)) {
       m_pCI->G.p_keyExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
-    m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_KEYNOTEXISTS, "tweak key not exists"_Stz);
+    m_pCI->vTransform(__FILE_NAME__,__func__, XF_PASSTHRU_TWEAK_KEYNOTEXISTS, "tweak key not exists"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain(CK_o_KEYNOTEXISTS)) {
       m_pCI->G.p_keyNotExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
@@ -428,7 +428,7 @@ void XF::vCrosscheck_Optimisations(void)
     if (m_pCI->pBoard()->pState()->bHasName(szOptimisation))
       continue;
 
-   // m_pCI->vPrintBoard(__func__,__LINE__);
+   // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
     vTrace("Missing optimisation : %lld %lls\n"_Stz,i_OT,szOptimisation);
     NEVER_REACH
   }

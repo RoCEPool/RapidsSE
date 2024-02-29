@@ -65,7 +65,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_FACTOR_BOOLPRED, "refactor boolPred"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_FACTOR_BOOLPRED, "refactor boolPred"_Stz);
 
   m_pCI->vClearRestart();
 
@@ -228,7 +228,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
       break;
   }
 
-  //m_pCI->vPrintBoard(__func__,__LINE__);
+  //m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
 
   if (!bFoundFactor)
     return;
@@ -265,7 +265,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
     }
   }
 
-  //m_pCI->vPrintBoard(__func__,__LINE__);
+  //m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
 
 
 
@@ -277,7 +277,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
 
   p_boolPred->vAppendChild(p_andConj_new);
 
-  //m_pCI->vPrintBoard(__func__,__LINE__);
+  //m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
 
   vDebugPoint();
 }

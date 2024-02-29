@@ -99,7 +99,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_aggreg->vRecreate_emit(pCI);
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

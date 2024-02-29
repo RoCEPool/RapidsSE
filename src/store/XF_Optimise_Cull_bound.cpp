@@ -68,7 +68,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_CULL_BOUND, "cull non-used bounds"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_CULL_BOUND, "cull non-used bounds"_Stz);
 
   m_pCI->vClearRestart();
 
@@ -100,7 +100,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_CULL_USED_BOUND, "cull nused bounds"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_CULL_USED_BOUND, "cull nused bounds"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark any cmpPred that are a bound in bounds

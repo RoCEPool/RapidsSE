@@ -67,7 +67,7 @@ bool XF_Optimise_sort_limit_All_Levels::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, "optimise one time calcs"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, "optimise one time calcs"_Stz);
 
   m_pCI->vClearRestart();
 

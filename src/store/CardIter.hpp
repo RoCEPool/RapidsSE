@@ -183,7 +183,7 @@ namespace STORE
     void G_vPopBoard(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
-    void vPrintBoard(const char* azFunc, i8 iLineNo, bool bForce=false);
+    void vPrintBoard(const char* azFile, const char* azFunc, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
     void G_vPushBoard(Board* pBoard);
     bool G_bPushBoard(Symbol* pSymbol);
@@ -215,7 +215,7 @@ namespace STORE
     void vSet(i8 i_Child);
     void G_vSetBoard(Board* pBoard);
 
-    void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
+    void vTransform(const char* azXfile, const char* azFunc, eXF eXform, Stz* szXdesc);
 
     void vUsingBoard(i8 i_Board);
     void vUsingBoard(Board* pBoard);

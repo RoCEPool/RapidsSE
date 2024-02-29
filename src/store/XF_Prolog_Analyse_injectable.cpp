@@ -76,7 +76,7 @@ void XF_Prolog_Analyse_injectable::vAnalyse_injectable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INJECTABLE, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_INJECTABLE, "injection analysis"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_PROLOG_ANALYSE_INJECTABLE, "injection analysis"_Stz);
 
   m_pCI->vBeginEach();
 
@@ -94,7 +94,7 @@ void XF_Prolog_Analyse_injectable::vAnalyse_injectable_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INJECTABLE, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_INJECTABLE, "vAnalyse_emitted_passThru"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_PROLOG_ANALYSE_INJECTABLE, "vAnalyse_emitted_passThru"_Stz);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMainWithSub(CK_o_SCAN, CK_s_TABLE)) {

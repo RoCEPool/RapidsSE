@@ -65,7 +65,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
 
   // H A NC ro (refer: Q11)
   // - the nc subquery produces a single nc result, such as avg(col)
@@ -80,7 +80,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
                                   from lineitem);
   */
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_74_H_A_NC_RO, "((vFlatten_74_H_A_NC_ro))"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_FLATTEN_74_H_A_NC_RO, "((vFlatten_74_H_A_NC_ro))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
@@ -95,7 +95,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
 
   XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
-  m_pCI->vPrintBoard(__func__,__LINE__);
+  m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
 
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);

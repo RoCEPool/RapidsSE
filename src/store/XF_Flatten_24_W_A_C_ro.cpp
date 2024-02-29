@@ -66,7 +66,7 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
 
   // W A C ro
 
@@ -81,7 +81,7 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
     ;
  */
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_24_W_A_C_RO, "((vFlatten_24_W_A_C_ro))"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_FLATTEN_24_W_A_C_RO, "((vFlatten_24_W_A_C_ro))"_Stz);
 
   XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE, P_CrlSqy);

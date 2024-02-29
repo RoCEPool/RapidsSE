@@ -62,7 +62,7 @@ void XF_Epilog_Add_hash_cast::vAdd_hash_cast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_HASH_CAST, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_ADD_HASH_CAST, "add stage casts"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_EPILOG_ADD_HASH_CAST, "add stage casts"_Stz);
 
   m_pCI->G.pDeck->vAddStageCasts(m_pCI);
 

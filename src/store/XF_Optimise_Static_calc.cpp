@@ -67,7 +67,7 @@ bool XF_Optimise_Static_calc::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_STATIC_CALC, "optimise one time calcs"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_STATIC_CALC, "optimise one time calcs"_Stz);
 
   m_pCI->vClearRestart();
 

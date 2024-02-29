@@ -21,6 +21,7 @@ namespace STORE
 
     i8   m_iXform;
     s32  m_sXhand;
+    s256 m_sXfile;
     s256 m_sXfunc;
     s256 m_sXdesc;
     i8   m_iPrint;
@@ -66,10 +67,12 @@ namespace STORE
     Stz* szPipelineNm(void);
     void vPipelineNm(Stz* szPipelineNm);
 
-    void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
+    void vTransform(const char* azXfile, const char* azXfunc, eXF eXform, Stz* szXdesc);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szXdesc);
+    Stz* szXfile(void);
+    void vXfile(Stz* szXfile);
     eXF  eXform(void);
     void vXform(eXF eXform);
     i8   iXform(void);

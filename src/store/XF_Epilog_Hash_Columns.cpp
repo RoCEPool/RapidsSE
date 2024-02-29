@@ -62,7 +62,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_HASH_COLUMNS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_HASH_COLUMNS, "column hashing"_Stz);
+  m_pCI->vTransform(__FILE_NAME__,__func__, XF_EPILOG_HASH_COLUMNS, "column hashing"_Stz);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE()) {
@@ -148,7 +148,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_HASH_COLUMNS, _FOOTER_);
 //
-//  m_pCI->vTransform(__func__, XF_EPILOG_HASH_COLUMNS, "column hashing"_Stz);
+//  m_pCI->vTransform(__FILE_NAME__,__func__, XF_EPILOG_HASH_COLUMNS, "column hashing"_Stz);
 //
 //  m_pCI->vBeginEach();
 //  while (m_pCI->G_bEachMain_NONE()) {
