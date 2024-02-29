@@ -83,26 +83,15 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   i8 iScaleArg2 = (i8) bcdArg2.m_uScale;
 
   // Num integral digits in each operand
-  i8 iIntegralPrec1 = iPrecArg1 - iScaleArg1;
-  i8 iIntegralPrec2 = iPrecArg2 - iScaleArg2;
+  i8 iIntegralPrec1 = (iPrecArg1 - iScaleArg1 < 0)? 0 : iPrecArg1 - iScaleArg1;
+  i8 iIntegralPrec2 = (iPrecArg2 - iScaleArg2 < 0)? 0 : iPrecArg2 - iScaleArg2;
 
   // Calc theoretical precision & scale of the operation
-  i8 iPrecOp  =   _MAX_I8(iScaleArg1, iScaleArg2)
-                + _MAX_I8(iIntegralPrec1, iIntegralPrec2)
-                + 1;
+//i8 iPrecOp  =   _MAX_I8(iScaleArg1, iScaleArg2)
+//              + _MAX_I8(iIntegralPrec1, iIntegralPrec2)
+//              + 1;
   i8 iScaleOp = _MAX_I8(iScaleArg1, iScaleArg2);
 
-//  printf("\n");
-//  printf("bcdArg1 mantissa = %lld\n", bcdArg1.m_iMantissa);
-//  printf("bcdArg2 mantissa = %lld\n", bcdArg2.m_iMantissa);
-//  printf("iPrecArg1 = %lld\n", iPrecArg1);
-//  printf("iPrecArg2 = %lld\n", iPrecArg2);
-//  printf("iScaleArg1 = %lld\n", iScaleArg1);
-//  printf("iScaleArg2 = %lld\n", iScaleArg2);
-//  printf("iIntegralPrec1 = %lld\n", iIntegralPrec1);
-//  printf("iIntegralPrec2 = %lld\n", iIntegralPrec2);
-//  printf("iPrecOp = %lld\n", iPrecOp);
-//  printf("iScaleOp = %lld\n", iScaleOp);
 
   // How many digits in the result?
   // We add +1 because an overflow to the next digit could occur
@@ -175,18 +164,11 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
     return;
   }
 
-//  printf("bcdUpperBound = %lld\n", bcdUpperBound.m_iMantissa);
-//  printf("bcdTemp1 = %lld\n", bcdTemp1.m_iMantissa);
-//  printf("bcdTemp2 = %lld\n", bcdTemp2.m_iMantissa);
-
   if (bcdUpperBound.m_iMantissa > abs(bcdTemp1.m_iMantissa + bcdTemp2.m_iMantissa)) {
     // No overflow will occur.
     // The actual integral digits is one less
     --iIntegralPrecResult;
   }
-
-//  printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult);
-
 
   // We now know exactly how many integral digits we need in the result,
   // so we can now do a hard check for precision overflow
@@ -209,8 +191,6 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (iScaleResult > C_MAX_BCD_SCALE) {
     iScaleResult = C_MAX_BCD_SCALE;
   }
-
-//  printf("iScaleResult = %lld\n", iScaleResult);
 
   // When we calculate the result we will convert and round
   // the arguments to have a scale of iScaleResult before
@@ -240,10 +220,6 @@ static inline void _ADD_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
-
-//  printf("bcdArg1 = %lld\n", bcdArg1.m_iMantissa);
-//  printf("bcdArg2 = %lld\n", bcdArg2.m_iMantissa);
-//  printf("\n\n");
 
   // We've already checked that this won't overflow
   bcdArg1.m_iMantissa =   bcdArg1.m_iMantissa
@@ -507,32 +483,19 @@ static inline void _SUB_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   i8 iScaleArg2 = (i8) bcdArg2.m_uScale;
 
   // Num integral digits in each operand
-  i8 iIntegralPrec1 = iPrecArg1 - iScaleArg1;
-  i8 iIntegralPrec2 = iPrecArg2 - iScaleArg2;
+  i8 iIntegralPrec1 = (iPrecArg1 - iScaleArg1 < 0)? 0 : iPrecArg1 - iScaleArg1;
+  i8 iIntegralPrec2 = (iPrecArg2 - iScaleArg2 < 0)? 0 : iPrecArg2 - iScaleArg2;
 
   // Calc theoretical precision & scale of the operation
-  i8 iPrecOp  =   _MAX_I8(iScaleArg1, iScaleArg2)
-                + _MAX_I8(iIntegralPrec1, iIntegralPrec2)
-                + 1;
+//i8 iPrecOp  =   _MAX_I8(iScaleArg1, iScaleArg2)
+//              + _MAX_I8(iIntegralPrec1, iIntegralPrec2)
+//              + 1;
   i8 iScaleOp = _MAX_I8(iScaleArg1, iScaleArg2);
-
-//  printf("\n");
-//  printf("bcdArg1 mantissa = %lld\n", bcdArg1.m_iMantissa);
-//  printf("bcdArg2 mantissa = %lld\n", bcdArg2.m_iMantissa);
-//  printf("iPrecArg1 = %lld\n", iPrecArg1);
-//  printf("iPrecArg2 = %lld\n", iPrecArg2);
-//  printf("iScaleArg1 = %lld\n", iScaleArg1);
-//  printf("iScaleArg2 = %lld\n", iScaleArg2);
-//  printf("iIntegralPrec1 = %lld\n", iIntegralPrec1);
-//  printf("iIntegralPrec2 = %lld\n", iIntegralPrec2);
-//  printf("iPrecOp = %lld\n", iPrecOp);
-//  printf("iScaleOp = %lld\n", iScaleOp);
 
   // How many digits in the result?
   // We add +1 because an overflow to the next digit could occur
   i8 iIntegralPrecResult = _MAX_I8(iIntegralPrec1, iIntegralPrec2) + 1;
 
-//  printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult);
 
   // This is an early definitive check to see if the result won't fit.
   // We've already added 1 to the integral precision for a potential
@@ -599,18 +562,12 @@ static inline void _SUB_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
     return;
   }
 
-//  printf("bcdUpperBound = %lld\n", bcdUpperBound.m_iMantissa);
-//  printf("bcdTemp1 = %lld\n", bcdTemp1.m_iMantissa);
-//  printf("bcdTemp2 = %lld\n", bcdTemp2.m_iMantissa);
-
   // if (upperbound > abs(bcd1 - bcd2))
   if (bcdUpperBound.m_iMantissa > abs(bcdTemp1.m_iMantissa - bcdTemp2.m_iMantissa)) {
     // No overflow will occur.
     // The actual integral digits is one less
     --iIntegralPrecResult;
   }
-
-//  printf("iIntegralPrecResult = %lld\n", iIntegralPrecResult);
 
 
   // We now know exactly how many integral digits we need in the result,
@@ -634,8 +591,6 @@ static inline void _SUB_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
   if (iScaleResult > C_MAX_BCD_SCALE) {
     iScaleResult = C_MAX_BCD_SCALE;
   }
-
-//  printf("iScaleResult = %lld\n", iScaleResult);
 
   // When we calculate the result we will convert and round
   // the arguments to have a scale of iScaleResult before
@@ -665,10 +620,6 @@ static inline void _SUB_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
     *(*ppaW)++ = C_DATUM_NULL;
     return;
   }
-
-//  printf("bcdArg1 = %lld\n", bcdArg1.m_iMantissa);
-//  printf("bcdArg2 = %lld\n", bcdArg2.m_iMantissa);
-//  printf("\n\n");
 
   // We've already checked that this won't overflow
   bcdArg1.m_iMantissa =   bcdArg1.m_iMantissa

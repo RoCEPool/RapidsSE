@@ -100,7 +100,7 @@ static inline void vRescaleBcdToScaleAndFit(i8** ppaW, struct Dynamic_T* aDynami
   if (iScaleDiff > 0) {
     // Check if the desired scale is too large, and if so work out the largest scale supported
     i8 iPrecision = iPrecision_signed(bcdReScale1.m_iMantissa);
-    i8 iIntegralPrecision = iPrecision - (i8) bcdReScale1.m_uScale;
+    i8 iIntegralPrecision = (iPrecision - (i8) bcdReScale1.m_uScale < 0)? 0 : iPrecision - (i8) bcdReScale1.m_uScale;
     i8 iMaxScale = C_MAX_BCD_PRECISION - iIntegralPrecision;
     i8 iNewScale = iScale < iMaxScale ? iScale : iMaxScale;
     iScaleDiff = iNewScale - (i8) bcdReScale1.m_uScale;
