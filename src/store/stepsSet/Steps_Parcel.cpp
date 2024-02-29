@@ -184,7 +184,6 @@ void Step::vParcelPipeOut(void)
     vTrace("vParcelPipeOut got BufferId\n"_Stz);
   }
 
-  vTrace("Debug1\n"_Stz);
   if (!pOperand) {
     delete pParcel;
     EXIT();
@@ -234,14 +233,12 @@ void Step::vParcelPipeOut(void)
 
   // get the op to forward to depending on the cross topology
   Op *pDstOp = nullptr;
-  vTrace("Debug2\n"_Stz);
 
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pParcel->bOriginalParcel()) {
-    vTrace("Debug3\n"_Stz);
     //vTrace("bOriginalParcel\n"_Stz);
     pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(), 0);
 
@@ -270,9 +267,7 @@ void Step::vParcelPipeOut(void)
   i8 iCurNodeId = MY::pNode()->iNodeId();
 //  i8 nCopies = AM::PTNMAP::nPtnsPerNode();
 
-  vTrace("Debug4\n"_Stz);
   eCN eClass = pOperand->eGetClassNo();
-  vTrace("Debug5\n"_Stz);
   //i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
 //  RowBuffer* pRowBuffer_shared = nullptr;
@@ -310,7 +305,7 @@ void Step::vParcelPipeOut(void)
 //        pRowBuffer_shared->vDeciderCopies(nCopies);
 
 
-      vTrace("Debug6\n"_Stz);
+
       for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
         Stream *pDstStream = pDstStage->pGet(i_Stream);
 
@@ -346,7 +341,9 @@ void Step::vParcelPipeOut(void)
 
         //Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
         //MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+        vTrace("Debug6\n"_Stz);
         Operand *pDuplicateOperand = pOperand->pDuplicateOperand();
+        vTrace("Debug7\n"_Stz);
 
         if (gxaSizeHeap[eClass].m_fpPostRecvFn)
           gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
@@ -354,6 +351,7 @@ void Step::vParcelPipeOut(void)
 //        vTrace("i_Stream %lld pDstOp %p pDuplicateOperand %p pCurTask %p\n"_Stz
 //               ,i_Stream,pDstOp,pDuplicateOperand,pCurTask);
         AM::OP::vPipeToOp(pDstOp, pDuplicateOperand, pCurTask);
+        vTrace("Debug8\n"_Stz);
         nQueued++;
       }
 
@@ -368,8 +366,9 @@ void Step::vParcelPipeOut(void)
       **************************************************************************/
       // delete the original operand (to be optimised)
       //if (CN_ROWBUFFER != eOperandClass)
+      vTrace("Debug9\n"_Stz);
       AM::vDeleteOperand(pOperand, pOuterJobOfTask());
-      vTrace("Debug7\n"_Stz);
+      vTrace("Debug10\n"_Stz);
 
       delete pParcel;
 
