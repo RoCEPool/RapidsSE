@@ -174,155 +174,163 @@ void Step::vParcelLabel(void)
 void Step::vParcelPipeOut(void)
 {
   ENTRY();
-  try {
 
-    //vTrace("vParcelPipeOut\n"_Stz);
+  //vTrace("vParcelPipeOut\n"_Stz);
 
-    Parcel *pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel *pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-    Operand *pOperand = pParcel->pGetOperand();
+  Operand *pOperand = pParcel->pGetOperand();
+  if(BufferId::bIsBufferId(pOperand)) {
+    vTrace("vParcelPipeOut got BufferId\n"_Stz);
+  }
 
-    if (!pOperand) {
-      delete pParcel;
-      EXIT();
-      return;
-    }
+  vTrace("Debug1\n"_Stz);
+  if (!pOperand) {
+    delete pParcel;
+    EXIT();
+    return;
+  }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // pipeing out to a demon
-    if (C_UNKNOWN == pParcel->iPipelineJobId()) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipeing out to a demon
+  if (C_UNKNOWN == pParcel->iPipelineJobId()) {
 
-      NEVER_REACH;
+    NEVER_REACH;
 
-      Stz *szDemonNm = pParcel->szDemonNm();
+    Stz *szDemonNm = pParcel->szDemonNm();
 
-      vTrace("vParcelPipeOut to demon %s\n"_Stz, szDemonNm);
+    vTrace("vParcelPipeOut to demon %s\n"_Stz, szDemonNm);
 
-      Word *pWord = AM::WORD::pFind(szDemonNm);
-      Job *pJob = _pJob(pWord->pObject());
+    Word *pWord = AM::WORD::pFind(szDemonNm);
+    Job *pJob = _pJob(pWord->pObject());
 
 
-      // !!!!!!!!!!!!!!
-      // move to AM
+    // !!!!!!!!!!!!!!
+    // move to AM
 
-      Pipeline *pPipeline = pJob->pPipeline();
-      Op *pOp0 = pPipeline->pOp0();
-
-      pOp0->vAppendLeft(pOperand, this);
-      // !!!!!!!!!!!!!!
-
-      delete pParcel;
-      EXIT();
-      return;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // find the pipeline
-    JobId tPipelineJob;
-    tPipelineJob = pParcel->iPipelineJobId();
-    Job *pJob = AM::pJob_FindParticipating(tPipelineJob, false);
     Pipeline *pPipeline = pJob->pPipeline();
+    Op *pOp0 = pPipeline->pOp0();
 
-    // get the next stage the send is supposed to send to
-    Vertex *pVertex = pPipeline->pVertexRoot();
-    Stage *pDstStage = pVertex->pDeck()->pGet(pParcel->iDstStage());
-    i8 nStreamPtns = pDstStage->nItems();
+    pOp0->vAppendLeft(pOperand, this);
+    // !!!!!!!!!!!!!!
 
-    // get the op to forward to depending on the cross topology
-    Op *pDstOp = nullptr;
+    delete pParcel;
+    EXIT();
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // find the pipeline
+  JobId tPipelineJob;
+  tPipelineJob = pParcel->iPipelineJobId();
+  Job *pJob = AM::pJob_FindParticipating(tPipelineJob, false);
+  Pipeline *pPipeline = pJob->pPipeline();
+
+  // get the next stage the send is supposed to send to
+  Vertex *pVertex = pPipeline->pVertexRoot();
+  Stage *pDstStage = pVertex->pDeck()->pGet(pParcel->iDstStage());
+  i8 nStreamPtns = pDstStage->nItems();
+
+  // get the op to forward to depending on the cross topology
+  Op *pDstOp = nullptr;
+  vTrace("Debug2\n"_Stz);
 
 
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    if (pParcel->bOriginalParcel()) {
-      //vTrace("bOriginalParcel\n"_Stz);
-      pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(), 0);
+  if (pParcel->bOriginalParcel()) {
+    vTrace("Debug3\n"_Stz);
+    //vTrace("bOriginalParcel\n"_Stz);
+    pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(), 0);
 
-      // CAUTION NOTE: Cannot access LU of OP after piping out operand
-      // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
-      LogicUnit *pLogicUnit = pDstOp->pOpLogicUnit();
-      if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
-        pLogicUnit->m_xpStats->m_nParcelRecvs++;
-        pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
-      }
-
-      pDstOp->vAppendLeft(pParcel, this);
-      // do not touch pDstOp or pParcel
-      EXIT();
-      return;
+    // CAUTION NOTE: Cannot access LU of OP after piping out operand
+    // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
+    LogicUnit *pLogicUnit = pDstOp->pOpLogicUnit();
+    if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
+      pLogicUnit->m_xpStats->m_nParcelRecvs++;
+      pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    pDstOp->vAppendLeft(pParcel, this);
+    // do not touch pDstOp or pParcel
+    EXIT();
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-    Task *pCurTask = MY::pTask();
+  Task *pCurTask = MY::pTask();
 
-    eRV eRecvInstructions = pParcel->eRecvInstructions();
-    //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+  eRV eRecvInstructions = pParcel->eRecvInstructions();
+  //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
-    i8 iCurNodeId = MY::pNode()->iNodeId();
+  i8 iCurNodeId = MY::pNode()->iNodeId();
 //  i8 nCopies = AM::PTNMAP::nPtnsPerNode();
 
-    eCN eClass = pOperand->eGetClassNo();
-    //i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+  vTrace("Debug4\n"_Stz);
+  eCN eClass = pOperand->eGetClassNo();
+  vTrace("Debug5\n"_Stz);
+  //i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
 //  RowBuffer* pRowBuffer_shared = nullptr;
 
-    /**************************************************************************
-     * ALKA 26Oct 2022: COMMENTED the following lines whereby we share the same
-     * rowBuffer across partitions !!!
-     * With the codeSynthesizer modifying the rowBuffer (changes offsets to pinters)
-     * sharing of rowBuffers does not work.
-     * Hence we now duplicate the rowBuffer for each partition.
-     * If we want to share it we will need to modify the codeSynthesier
-     * (maybe version 2)
-     **************************************************************************/
+  /**************************************************************************
+   * ALKA 26Oct 2022: COMMENTED the following lines whereby we share the same
+   * rowBuffer across partitions !!!
+   * With the codeSynthesizer modifying the rowBuffer (changes offsets to pinters)
+   * sharing of rowBuffers does not work.
+   * Hence we now duplicate the rowBuffer for each partition.
+   * If we want to share it we will need to modify the codeSynthesier
+   * (maybe version 2)
+   **************************************************************************/
 
-    //if (CN_ROWBUFFER == eOperandClass)
-    //  pRowBuffer_shared = _pRowBuffer(pOperand);
+  //if (CN_ROWBUFFER == eOperandClass)
+  //  pRowBuffer_shared = _pRowBuffer(pOperand);
 
-    i8 nQueued = 0;
+  i8 nQueued = 0;
 
-    switch (eRecvInstructions) {
+  switch (eRecvInstructions) {
 
-      case RV_ALL_PTNS: {
-        eYG eStageTopology = pDstStage->pStageSpec()->eStageTopology();
+    case RV_ALL_PTNS: {
+      eYG eStageTopology = pDstStage->pStageSpec()->eStageTopology();
 
 //      vTrace("RV_ALL_PTNS %s %s nStreamPtns %lld\n"_Stz
 //             ,aYG[eStageTopology]
 //             ,aCN[eClass]
 //             ,nStreamPtns);
 
-        // put a copy of operand onto all ptns
+      // put a copy of operand onto all ptns
 
-        //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+      //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
 //      if (pRowBuffer_shared)
 //        pRowBuffer_shared->vDeciderCopies(nCopies);
 
 
-        for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
-          Stream *pDstStream = pDstStage->pGet(i_Stream);
+      vTrace("Debug6\n"_Stz);
+      for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+        Stream *pDstStream = pDstStage->pGet(i_Stream);
 
-          if (YG_ALL_PARTITIONS == eStageTopology) {
-            LglPtn tDstLglPtn = pDstStream->tLglPtn();
-            i8 iDstNodeId = AM::pLglPtnMap()->iNodeId(tDstLglPtn);
-            if (iDstNodeId != iCurNodeId)
-              continue;
-          } else {
-            RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == eStageTopology);
-          }
+        if (YG_ALL_PARTITIONS == eStageTopology) {
+          LglPtn tDstLglPtn = pDstStream->tLglPtn();
+          i8 iDstNodeId = AM::pLglPtnMap()->iNodeId(tDstLglPtn);
+          if (iDstNodeId != iCurNodeId)
+            continue;
+        } else {
+          RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == eStageTopology);
+        }
 
-          Op *pDstOp = pDstStream->pGet(0);
+        Op *pDstOp = pDstStream->pGet(0);
 //        vTrace("pDstOp %p pDstStream->tLglPtn() %lld\n"_Stz
 //               ,pDstOp
 //               ,pDstStream->tLglPtn().iAsI8());
 
-          // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-          // put shared rowBuffer operand onto ptn
+        // put shared rowBuffer operand onto ptn
 
 //        if (pRowBuffer_shared) {
 ////          vTrace("i_Stream %lld pRowBuffer_shared %p\n"_Stz
@@ -332,84 +340,82 @@ void Step::vParcelPipeOut(void)
 //          continue;
 //        }
 
-          // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-          // put a copy of the operand onto ptn
+        // put a copy of the operand onto ptn
 
-          //Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
-          //MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
-          Operand *pDuplicateOperand = pOperand->pDuplicateOperand();
+        //Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
+        //MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+        Operand *pDuplicateOperand = pOperand->pDuplicateOperand();
 
-          if (gxaSizeHeap[eClass].m_fpPostRecvFn)
-            gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
+        if (gxaSizeHeap[eClass].m_fpPostRecvFn)
+          gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
 
 //        vTrace("i_Stream %lld pDstOp %p pDuplicateOperand %p pCurTask %p\n"_Stz
 //               ,i_Stream,pDstOp,pDuplicateOperand,pCurTask);
-          AM::OP::vPipeToOp(pDstOp, pDuplicateOperand, pCurTask);
-          nQueued++;
-        }
-
-        /**************************************************************************
-        * ALKA : COMMENTED the following check as now we don't share
-        * rowBuffers across partitions !!!
-        * With the codeSynthesizer modifying the rowBuffer (changes offsets to pinters)
-        * sharing of rowBuffers does not work.
-        * Hence we now duplicate the rowBuffer for each partition.
-        * If we want to share it we will need to modify the codeSynthesier
-        * (maybe version 2)
-        **************************************************************************/
-        // delete the original operand (to be optimised)
-        //if (CN_ROWBUFFER != eOperandClass)
-        AM::vDeleteOperand(pOperand, pOuterJobOfTask());
-
-        delete pParcel;
-
-        if (nQueued != AM::PTNMAP::nPtnsPerNode()) {
-
-          vTrace("🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪\n"
-                 "nQueued %lld OperandClass %s \n"
-                 "DstStage %lld nStreamPtns %lld \n"
-                 ""_Stz, nQueued, aCN[eClass], pDstStage->i_Stage(), nStreamPtns
-          );
-
-          for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
-            Stream *pDstStream = pDstStage->pGet(i_Stream);
-
-            LglPtn tDstLglPtn = pDstStream->tLglPtn();
-            vTrace("i_Stream %lld tDstLglPtn %lld\n"_Stz, i_Stream, tDstLglPtn.iAsI8());
-          }
-
-        }
-
-        RASSERT(nQueued == AM::PTNMAP::nPtnsPerNode());
-
-        break;
+        AM::OP::vPipeToOp(pDstOp, pDuplicateOperand, pCurTask);
+        nQueued++;
       }
 
-        //  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~
+      /**************************************************************************
+      * ALKA : COMMENTED the following check as now we don't share
+      * rowBuffers across partitions !!!
+      * With the codeSynthesizer modifying the rowBuffer (changes offsets to pinters)
+      * sharing of rowBuffers does not work.
+      * Hence we now duplicate the rowBuffer for each partition.
+      * If we want to share it we will need to modify the codeSynthesier
+      * (maybe version 2)
+      **************************************************************************/
+      // delete the original operand (to be optimised)
+      //if (CN_ROWBUFFER != eOperandClass)
+      AM::vDeleteOperand(pOperand, pOuterJobOfTask());
+      vTrace("Debug7\n"_Stz);
 
-      case RV_ONE_PTN:
+      delete pParcel;
+
+      if (nQueued != AM::PTNMAP::nPtnsPerNode()) {
+
+        vTrace("🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪\n"
+               "nQueued %lld OperandClass %s \n"
+               "DstStage %lld nStreamPtns %lld \n"
+               ""_Stz, nQueued, aCN[eClass], pDstStage->i_Stage(), nStreamPtns
+        );
+
+        for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+          Stream *pDstStream = pDstStage->pGet(i_Stream);
+
+          LglPtn tDstLglPtn = pDstStream->tLglPtn();
+          vTrace("i_Stream %lld tDstLglPtn %lld\n"_Stz, i_Stream, tDstLglPtn.iAsI8());
+        }
+
+      }
+
+      RASSERT(nQueued == AM::PTNMAP::nPtnsPerNode());
+
+      break;
+    }
+
+      //  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~
+
+    case RV_ONE_PTN:
 //        vTrace("RV_ONE_PTN  tDstLglPtn %lld\n"_Stz
 //               ,pParcel->tDstLglPtn().iAsI8());
-        if (pOperand) {
-          pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(), 0);
-          if (!pDstOp) {
-            vTrace("huh? RV_ONE_PTN tDstLglPtn %lld\n"_Stz, pParcel->tDstLglPtn().iAsI8());
-          }
-          pDstOp->vAppendLeft(pOperand, this);
-          nQueued++;
-          // do not touch pDstOp or pParcel
-          delete pParcel;
+      if (pOperand) {
+        pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(), 0);
+        if (!pDstOp) {
+          vTrace("huh? RV_ONE_PTN tDstLglPtn %lld\n"_Stz, pParcel->tDstLglPtn().iAsI8());
         }
-        break;
+        pDstOp->vAppendLeft(pOperand, this);
+        nQueued++;
+        // do not touch pDstOp or pParcel
+        delete pParcel;
+      }
+      break;
 
-      default:
-        //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
-        NEVER_REACH;
-        break;
-    }
-  } catch (InternalError xInternalError) {
-    vInternalErrorHandler();
+    default:
+      //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+      NEVER_REACH;
+      break;
   }
     
   EXIT();

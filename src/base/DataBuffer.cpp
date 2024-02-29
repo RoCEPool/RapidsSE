@@ -48,6 +48,8 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 #endif
   if(eClassNo == CN_CRWBUFFER)
     AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_CRW);
+  else if(eClassNo == CN_CSVBUFFER)
+    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_CSV);
   else
     AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_ROW);
 
