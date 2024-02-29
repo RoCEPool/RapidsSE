@@ -106,6 +106,8 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 
   EntBuffer* pEntBuffer = this;
+	Ent *aNextEntry_sl;
+	tET tNextEntry;
 
   //i8 iBufferHeight;
   //Ent* aEnt;
@@ -134,12 +136,27 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 			for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
 
-				Ent *aNextEntry_sl = aNextEntry(aScanEntry_sl, i_ScanLevel);
+				//Ent *aNextEntry_sl = aNextEntry_flat(aScanEntry_sl, i_ScanLevel);
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+				tNextEntry = aScanEntry_sl->m_taNextEntry[i_ScanLevel];
+
+				if (C_ENT_END_TICKET == tNextEntry)
+					aNextEntry_sl = nullptr;
+        else {
+					i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+
+					aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
+				}
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+
+
+
+
 				while (aNextEntry_sl) {
 
 					//bNextKeyIsGE = Key::bGreaterEqualAsc(aNextEntry_sl->aKey(), aForKey);
 					//eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
-
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
 					Key* aKey_l = aNextEntry_sl->aKey();
 					i8 nKeyBytes_l = aKey_l->nElmSeqSize();
 					i8 nKeyBytes_r = aForKey->nElmSeqSize();
@@ -166,7 +183,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 					if (nCmpBytes == 0)
 						iCmp = 0;
 
-
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
 //					if (iCmp < 0)
 //						return KC_BEFORE;
 //
@@ -192,7 +209,22 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 
 					aScanEntry_sl = aNextEntry_sl;
-					aNextEntry_sl = aNextEntry(aNextEntry_sl, i_ScanLevel);
+
+
+					//aNextEntry_sl = aNextEntry_flat(aNextEntry_sl, i_ScanLevel);
+
+					tNextEntry = aNextEntry_sl->m_taNextEntry[i_ScanLevel];
+
+					if (C_ENT_END_TICKET == tNextEntry)
+						aNextEntry_sl = nullptr;
+					else {
+						i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+
+						aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
+					}
+
+
+
 				}
 
 			}

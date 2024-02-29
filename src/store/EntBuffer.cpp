@@ -402,7 +402,19 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
 
   EntBuffer* pEntBuffer = *ppEntBuffer;
 
-  aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  //aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	tET tNextEntry = aEnt->m_taNextEntry[0];
+
+	if (C_ENT_END_TICKET == tNextEntry)
+		aEnt = nullptr;
+	else {
+
+	  i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA;
+
+	  aEnt = (Ent*) ((char*)pEntBuffer + 624 + iNextEntryOffset);
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (aEnt)
     return aEnt;
