@@ -75,7 +75,6 @@ namespace STORE
     i8    iItem(void);
     void  vItem(i8 iItem);
 
-    Key*  aKey(void);
     eKE   eKind(void);
     void  vKind(eKE eKind);
 
@@ -105,6 +104,15 @@ namespace STORE
 
     bool  bValidEnt(void);
     bool  bIsMagicValid(void);
+
+		/*----------------------------------------------------------------------------*/
+    /* get address of key                                                         */
+    /*----------------------------------------------------------------------------*/
+		inline Key* aKey(void)
+		{
+			return &m_xKey;
+		}
+
  };
   
   /*--------------------------------------------------------------------------*/

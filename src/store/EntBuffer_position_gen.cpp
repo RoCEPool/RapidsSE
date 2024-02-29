@@ -89,7 +89,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  RASSERT(KE_GENERAL == m_eEntKind);
+  //RASSERT(KE_GENERAL == m_eEntKind);
 
   /*
 
@@ -112,6 +112,8 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
   //i8 iBufferHeight;
   //Ent* aEnt;
 
+	i8 nLvlLevels = AM::nLvlLevels();
+
   while (true) {
 
 #ifdef EB_TRACE_INSERT
@@ -122,8 +124,6 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 #endif
 
 		//*ppEntPrior = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
-
-		i8 nLvlLevels = AM::nLvlLevels();
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -204,7 +204,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 					//if (eCmp == KC_AFTER || eCmp == KC_SAME)
 					//	break;
 
-					if ( (iCmp == 0 && nKeyBytes_l >= nKeyBytes_r) || iCmp > 0)
+					if ( iCmp > 0 || (iCmp == 0 && nKeyBytes_l >= nKeyBytes_r))
 						break;
 
 
@@ -232,7 +232,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 			*ppEntPrior = aScanEntry_sl;
 		}
 
-    if (pEntBuffer->iBufferHeight() == 0) {
+    if (pEntBuffer->m_iBufferHeight == 0) {
 			break;
 		}
 
