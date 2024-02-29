@@ -864,8 +864,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
         m_pCI->G.p_term = xRpnCalc.p_term();
 
-        if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
-          continue;
+        if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+          if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_term->pSymbol()))
+            continue;
+        }
 
         m_pCI->G.p_injectable->vDump(__func__);
         m_pCI->G.p_term->vDump(__func__);
@@ -885,8 +887,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (Kid xRpnCalc(m_pCI->G.p_rpnCalc); xRpnCalc.bEach(CK_TERM); /**/) {
         m_pCI->G.p_term = xRpnCalc.p_term();
 
-        if (Card_Expr* p_expr_f = m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
-          continue;
+        if (Card_Expr* p_expr_f = m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+          if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_term->pSymbol()))
+            continue;
+        }
 
         m_pCI->Flux.m_pArriving->vDump(__func__);
         m_pCI->G.p_term->vDump(__func__);
@@ -911,13 +915,15 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
       if (pCI->Flux.m_pArriving) {
         if (Card_Expr* p_expr_f = pCI->Flux.m_pArriving->pFind_expr_Matches(p_term->pSymbol())) {
-          return C_CONTINUE_RECURSION;
+          if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
+            return C_CONTINUE_RECURSION;
         }
       }
 
       if (pCI->G.p_injectable) {
         if (Card_Expr* p_expr_f = pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
-          return C_CONTINUE_RECURSION;
+          if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
+            return C_CONTINUE_RECURSION;
         }
       }
 
@@ -946,7 +952,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         return C_CONTINUE_RECURSION;
 
       if (Card_Expr* p_expr_f = pCI->G.p_injectable->pFind_expr_Matches(p_term->pSymbol()))
-        return C_CONTINUE_RECURSION;
+        if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
+          return C_CONTINUE_RECURSION;
 
       pCI->G.p_boolPred->vDump(__func__);
       pCI->G.p_term->vDump(__func__);
@@ -973,6 +980,9 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
         if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol()))
           continue;
+//          todo: idxCol should be cast [304]
+//          if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_idxCol->pSymbol()))
+//            continue;
 
         m_pCI->G.p_index->vDump(__func__);
         m_pCI->G.p_idxCol->vDump(__func__);
@@ -990,8 +1000,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           m_pCI->G.p_term = xBound.p_term();
           if (! m_pCI->G.p_term->pSymbol()->bIs_Col())
             continue;
+
           if (m_pCI->Flux.m_pArriving) {
             if (Card_Expr* p_expr_f = m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
+              if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_term->pSymbol()))
               continue;
           }
 
@@ -1029,18 +1041,44 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           continue;
 
         if (m_pCI->Flux.m_pArriving) {
-          if (Card_Expr* p_expr_f = m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
-            continue;
+          if (Card_Expr* p_expr_f = m_pCI->Flux.m_pArriving->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+            if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_term->pSymbol())) {
+              continue;
+            }
+            else {
+              m_pCI->Flux.m_pArriving->vDump(__func__);
+              vDebugPoint();
+            }
+          }
+
         }
 
         if (m_pCI->G.p_injectable) {
-          if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
-            continue;
+          if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+            if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_term->pSymbol())) {
+              continue;
+            }
+            else {
+              m_pCI->G.p_injectable->vDump(__func__);
+              vDebugPoint();
+            }
+          }
         }
 
         if (m_pCI->G.p_key) {
-          if (Card_Expr* p_expr_f = m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
-            continue;
+          if (Card_Expr* p_expr_f = m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+            if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_term->pSymbol())) {
+              continue;
+            }
+            else {
+              // todo: query 18 $K2 type is wrong [
+              m_pCI->G.p_expr->vDump(__func__);
+              m_pCI->G.p_key->vDump(__func__);
+              m_pCI->G.p_term->vDump(__func__);
+              vDebugPoint();
+              continue;
+            }
+          }
         }
 
         m_pCI->G.p_expr->vDump(__func__);
