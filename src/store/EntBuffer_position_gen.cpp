@@ -166,7 +166,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 					//i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
 
-					i8 iCmp;
+					i8 iCmp = 0;
 					//const i8 *iWord1 = (const i8*)ayKeyBytes_l;
 					//const i8 *iWord2 = (const i8*)ayKeyBytes_r;
 
@@ -178,8 +178,8 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 						nCmpBytes -=8;
 					}
 
-					if (nCmpBytes == 0)
-						iCmp = 0;
+					//if (nCmpBytes == 0)
+					//	iCmp = 0;
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
 //					if (iCmp < 0)
