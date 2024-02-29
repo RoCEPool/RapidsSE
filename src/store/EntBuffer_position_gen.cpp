@@ -112,8 +112,6 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
   //i8 iBufferHeight;
   //Ent* aEnt;
 
-	i8 nLvlLevels = AM::nLvlLevels();
-
   while (true) {
 
 #ifdef EB_TRACE_INSERT
@@ -134,7 +132,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 			//bool bNextKeyIsGE;
 
-			for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+			for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
 
 				//Ent *aNextEntry_sl = aNextEntry_flat(aScanEntry_sl, i_ScanLevel);
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -

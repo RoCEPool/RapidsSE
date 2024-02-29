@@ -85,6 +85,7 @@ namespace STORE
     SkipRoots  m_xSkipRoots; // skip roots
     Ent*       m_aLazyChain; // first lazy entry
 
+		i8  m_nLevels;              // no of levels
     i8  m_nInsert;              // insert into this buffer
     i8  m_nSplit;               // splits of this buffer
     i8  m_nMove;                // moves into of this buffer
