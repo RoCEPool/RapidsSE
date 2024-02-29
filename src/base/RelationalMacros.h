@@ -167,39 +167,6 @@ static inline void vRescaleBcdToPrecisionScale(i8** ppaW, struct Dynamic_T* aDyn
   return;
 }
 
-// Accept two decimals and rescale the one with the smaller scale to the same
-// scale as the other. Put both decimals back on stack. May give an out of bounds error.
-// TODO: This should be removed as it will likely overflow one of the values
-static inline void vRescaleBcdMaxOfTwo(i8** ppaW, struct Dynamic_T* aDynamicT) {
-  union Bcd_T bcdArg1;
-  union Bcd_T bcdArg2;
-  i8 iScaleDiff;
-
-  bcdArg2.m_iAsI8 = *(--(*ppaW));
-  bcdArg1.m_iAsI8 = *(--(*ppaW));
-
-  if (bcdArg1.m_uScale == bcdArg2.m_uScale) {
-    // Nothing to do
-    *(*ppaW)++ = bcdArg1.m_iAsI8;
-    *(*ppaW)++ = bcdArg2.m_iAsI8;
-    return;
-
-  } else if (bcdArg1.m_uScale > bcdArg2.m_uScale) {
-    // Rescale bcdArg2 to a larger scale
-    *(*ppaW)++ = bcdArg2.m_iAsI8;
-    vRescaleBcdToScale(ppaW, aDynamicT, (i8) bcdArg1.m_uScale, NULL);
-    bcdArg2.m_iAsI8 = *(--(*ppaW));
-
-  } else {
-    *(*ppaW)++ = bcdArg1.m_iAsI8;
-    vRescaleBcdToScale(ppaW, aDynamicT, (i8) bcdArg2.m_uScale, NULL);
-    bcdArg1.m_iAsI8 = *(--(*ppaW));
-  }
-
-  *(*ppaW)++ = bcdArg1.m_iAsI8;
-  *(*ppaW)++ = bcdArg2.m_iAsI8;
-}
-
 
 // Note on comparing decimals:
 // ---------------------------

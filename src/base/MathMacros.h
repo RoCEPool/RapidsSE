@@ -14,57 +14,6 @@
 #define _MIN_I8(iArg1, iArg2)    ( (iArg1) < (iArg2) ? (iArg1) : (iArg2) )
 #define _MAX_I8(iArg1, iArg2)    ( (iArg1) > (iArg2) ? (iArg1) : (iArg2) )
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Overflow detection bcd
-// Assumption is that the scales of the arguments are compatible
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-#define _OF_BCDADD                                                         \
-(                                                                          \
-  (bcdArg1.m_iMantissa > 0 &&                                              \
-  bcdArg2.m_iMantissa > C_BCD_MAX - bcdArg1.m_iMantissa) ?                 \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
-  (bcdArg1.m_iMantissa < 0 &&                                              \
-  bcdArg2.m_iMantissa < C_BCD_MIN - bcdArg1.m_iMantissa) ?                 \
-  EC_ARITHMETIC_UNDERFLOW :                                                \
-  (bcdArg1.m_iMantissa == 0 && bcdArg2.m_iMantissa > C_BCD_MAX) ?          \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
-  (bcdArg1.m_iMantissa == 0 && bcdArg2.m_iMantissa < C_BCD_MIN) ?          \
-  EC_ARITHMETIC_UNDERFLOW :                                                \
-  EC_NONE                                                                  \
-)
-
-#define _OF_BCDSUB                                                         \
-(                                                                          \
-  (bcdArg1.m_iMantissa < 0 &&                                              \
-  bcdArg2.m_iMantissa > C_BCD_MAX + bcdArg1.m_iMantissa) ?                 \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
-  (bcdArg1.m_iMantissa > 0 &&                                              \
-  bcdArg2.m_iMantissa < C_BCD_MIN + bcdArg1.m_iMantissa) ?                 \
-  EC_ARITHMETIC_UNDERFLOW :                                                \
-  (bcdArg1.m_iMantissa == 0 && bcdArg2.m_iMantissa > C_BCD_MAX) ?          \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
-  (bcdArg1.m_iMantissa == 0 && bcdArg2.m_iMantissa < C_BCD_MIN) ?          \
-  EC_ARITHMETIC_UNDERFLOW :                                                \
-  EC_NONE                                                                  \
-)
-
-// TODO: Craig
-#define _OF_BCDMUL                                                         \
-(                                                                          \
-  EC_NONE                                                                  \
-)
-
-// TODO: Craig
-#define _OF_BCDDIV                                                         \
-(                                                                          \
-  (bcdArg2.m_iMantissa == 0) ?                                             \
-  EC_DIVIDE_BY_ZERO :                                                      \
-  (bcdArg1.m_iMantissa == C_BCD_MIN &&                                     \
-  bcdArg2.m_iMantissa == -1) ?                                             \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
-  EC_NONE                                                                  \
-)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Overflow detection i8
@@ -730,41 +679,31 @@ static inline void _SUB_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 
 static inline void _SUM_BCDBCD(i8** ppaW, struct Dynamic_T* aDynamicT)
 {
+  if (aDynamicT->m_iErrorCode != EC_NONE) {
+    *(*ppaW)++ = C_DATUM_NULL;
+    return;
+  }
+
   union Bcd_T bcdArg1;
   union Bcd_T bcdArg2;
 
   bcdArg2.m_iAsI8 = *(--(*ppaW));
   bcdArg1.m_iAsI8 = *(--(*ppaW));
-  if (aDynamicT->m_iErrorCode != EC_NONE) {
-    *(*ppaW)++ = C_DATUM_NULL;
 
-  } else if (bcdArg1.m_iAsI8 == C_DATUM_NULL) {
+
+  if (bcdArg1.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = bcdArg2.m_iAsI8;
+    return;
 
   } else if (bcdArg2.m_iAsI8 == C_DATUM_NULL) {
     *(*ppaW)++ = bcdArg1.m_iAsI8;
-
-  } else {
-    if (bcdArg1.m_uScale != bcdArg2.m_uScale) {
-      *(*ppaW)++ = bcdArg1.m_iAsI8;
-      *(*ppaW)++ = bcdArg2.m_iAsI8;
-      vRescaleBcdMaxOfTwo(ppaW, aDynamicT);
-      bcdArg2.m_iAsI8 = *(--(*ppaW));
-      bcdArg1.m_iAsI8 = *(--(*ppaW));
-   }
-
-    if(aDynamicT->m_iErrorCode != EC_NONE) {
-      *(*ppaW)++ = C_DATUM_NULL;
-    } else {
-       aDynamicT->m_iErrorCode = _OF_BCDADD;
-      if(aDynamicT->m_iErrorCode != EC_NONE) {
-        *(*ppaW)++ = C_DATUM_NULL;
-      } else {
-        bcdArg1.m_iMantissa = bcdArg1.m_iMantissa + bcdArg2.m_iMantissa;
-        *(*ppaW)++ = bcdArg1.m_iAsI8;
-      }
-    }
+    return;
   }
+
+  *(*ppaW)++ = bcdArg1.m_iAsI8;
+  *(*ppaW)++ = bcdArg2.m_iAsI8;
+
+  _ADD_BCDBCD(ppaW, aDynamicT);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

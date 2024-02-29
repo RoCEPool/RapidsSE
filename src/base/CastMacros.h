@@ -496,57 +496,6 @@ static inline void _FLT_TOBCD(i8** ppaW, struct Dynamic_T* aDynamicT, i8 iPrecis
   *(*ppaW)++ = bcdVal.m_iAsI8;
 }
 
-// TODO: to be removed
-static inline void vFltToBcdToScale(i8** ppaW, struct Dynamic_T* aDynamicT)
-{
-  union Flt_T fltArg1;
-  i8 iScale;
-  union Bcd_T bcdArg1;
-  union Bcd_T bcdArg2;
-
-  fltArg1.m_iAsI8 = *(--(*ppaW));
-  iScale = *(--(*ppaW));
-  if (aDynamicT->m_iErrorCode != EC_NONE ||
-    fltArg1.m_iAsI8 == C_DATUM_NULL) {
-    *(*ppaW)++ = C_DATUM_NULL;
-    return;
-  }
-
-  if (fltArg1.m_dFlt > (d8)C_BCD_MAX) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_OVERFLOW;
-    *(*ppaW)++ = C_DATUM_NULL;
-    return;
-
-  } else if (fltArg1.m_dFlt < (d8) C_BCD_MIN) {
-    aDynamicT->m_iErrorCode = EC_ARITHMETIC_UNDERFLOW;
-    *(*ppaW)++ = C_DATUM_NULL;
-    return;
-  }
-
-  i8 cnt = 0;
-  d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);
-  if (fltArg1.m_dFlt < 0 ) dt = dt * -1;
-  while (dt >= 0.0000001 && cnt < iScale) {
-    dt = dt * 10.0;
-    dt = dt - (int)(dt+0.0000001);
-    cnt++;
-  }
-
-  bcdArg1.m_iMantissa = fltArg1.m_iAsI8;
-  bcdArg2.m_iMantissa = (i8) aDynamicT->m_iaPow10[iScale];
-
-  i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);
-  while (iMantissa > C_BCD_MAX) {
-    iMantissa = iMantissa / 10;
-    cnt--;
-  }
-
-  bcdArg1.m_iMantissa = iMantissa;
-  bcdArg1.m_uScale = iScale;
-
-  *(*ppaW)++ = bcdArg1.m_iAsI8;
-}
-
 
 static inline void _FLT_TOVCH(i8** ppaW, struct Dynamic_T* aDynamicT, char** ppszStrArea, i8* piAreaRemaining, i8 iLength)
 {
