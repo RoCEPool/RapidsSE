@@ -306,6 +306,7 @@ void Step::vParcelPipeOut(void)
 
 
 
+      vTrace("Class: %s\n"_Stz, aCN[eClass]);
       for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
         Stream *pDstStream = pDstStage->pGet(i_Stream);
 
@@ -343,6 +344,10 @@ void Step::vParcelPipeOut(void)
         //MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
         vTrace("Debug6\n"_Stz);
         Operand *pDuplicateOperand = pOperand->pDuplicateOperand();
+        if(!pDuplicateOperand) {
+          vTrace("Failed to duplicate operand\n"_Stz);
+          continue;
+        }
         vTrace("Debug7\n"_Stz);
 
         if (gxaSizeHeap[eClass].m_fpPostRecvFn)
@@ -367,7 +372,8 @@ void Step::vParcelPipeOut(void)
       // delete the original operand (to be optimised)
       //if (CN_ROWBUFFER != eOperandClass)
       vTrace("Debug9\n"_Stz);
-      AM::vDeleteOperand(pOperand, pOuterJobOfTask());
+      if( ! DataBuffer::bIsDataBuffer(eClass))
+        AM::vDeleteOperand(pOperand, pOuterJobOfTask());
       vTrace("Debug10\n"_Stz);
 
       delete pParcel;
