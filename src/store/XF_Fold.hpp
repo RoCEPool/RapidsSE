@@ -57,7 +57,7 @@ namespace STORE
 
     void vDerive_Correleted_fold_projection(CardIter* pCI);
 
-    void vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* szCrlPpy);
+    void vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ);
 
     CarryForward* pFold_from(Stz* szFoldNm, CardIter* pCI);
 

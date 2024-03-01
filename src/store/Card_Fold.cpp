@@ -42,7 +42,7 @@ Card_Fold::~Card_Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, Stz *szCrlPpy, i8 i_SqyNo)
+Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, i8 i_SqyNo)
 {
   _static_
 
@@ -50,8 +50,6 @@ Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, Stz *szCrlPpy, i8 i_SqyNo)
 
   p_fold->pSymbol()->vApplyFacet(SF_FLD_NM, szFoldNm);
   p_fold->pSymbol()->vApplyFacet(SF_SQY_NO, i_SqyNo);
-
-  p_fold->pSymbol()->Y_vSet(szCrlPpy);
 
   Card_Level* p_level = new Card_Level(AL_NONE);
   p_fold->vAppendChild(p_level);
@@ -139,11 +137,6 @@ void Card_Fold::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 //    vDebugPoint();
 //  }
 //#endif
-  if (! pSymbol()->Y_bHas(P_CrlSqy) && ! pSymbol()->Y_bHas(P_NonCrlSqy)) {
-    pCI->vPrintBoard(__func__,__FILE__,__LINE__);
-    vDump(__func__);
-    NEVER_REACH;
-  }
 
   Card::vValidate(pCI,iDepth,pParent);
   Card_CONSTRUCTION::vValidate(pCI,iDepth,pParent);

@@ -206,7 +206,7 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a sub-query (before outer-query)                                   */
 /*----------------------------------------------------------------------------*/
-void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* szCrlPpy)
+void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
@@ -251,7 +251,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ, Stz* sz
   pCI->vPopBoard();
 
   // 5) add <fold> (before MQ)
-  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, szCrlPpy, m_pSubQuery->pBoard()->i_Board());
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, m_pSubQuery->pBoard()->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   v_fold(pCI->G.p_fold);
@@ -311,7 +311,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   Board* pBoard = pCI->m_pBench->pFindBoard(pCI->G.p_call->pSymbol());
 
-  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_CrlSqy, pBoard->i_Board());
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, pBoard->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -390,7 +390,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vPopBoard();
 
   // 5) add <fold> (before MQ)
-  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, P_NonCrlSqy, m_pSubQuery->pBoard()->i_Board());
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, m_pSubQuery->pBoard()->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   v_fold(pCI->G.p_fold);
