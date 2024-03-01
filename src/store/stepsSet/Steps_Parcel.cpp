@@ -180,9 +180,6 @@ void Step::vParcelPipeOut(void)
   Parcel *pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
   Operand *pOperand = pParcel->pGetOperand();
-  if(BufferId::bIsBufferId(pOperand)) {
-    vTrace("vParcelPipeOut got BufferId\n"_Stz);
-  }
 
   if (!pOperand) {
     delete pParcel;
@@ -306,7 +303,6 @@ void Step::vParcelPipeOut(void)
 
 
 
-      vTrace("Class: %s\n"_Stz, aCN[eClass]);
       for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
         Stream *pDstStream = pDstStage->pGet(i_Stream);
 
@@ -356,7 +352,6 @@ void Step::vParcelPipeOut(void)
 //        vTrace("i_Stream %lld pDstOp %p pDuplicateOperand %p pCurTask %p\n"_Stz
 //               ,i_Stream,pDstOp,pDuplicateOperand,pCurTask);
         AM::OP::vPipeToOp(pDstOp, pDuplicateOperand, pCurTask);
-        vTrace("Debug8\n"_Stz);
         nQueued++;
       }
 
@@ -371,10 +366,7 @@ void Step::vParcelPipeOut(void)
       **************************************************************************/
       // delete the original operand (to be optimised)
       //if (CN_ROWBUFFER != eOperandClass)
-      vTrace("Debug9\n"_Stz);
-      if( ! DataBuffer::bIsDataBuffer(eClass))
-        AM::vDeleteOperand(pOperand, pOuterJobOfTask());
-      vTrace("Debug10\n"_Stz);
+      AM::vDeleteOperand(pOperand, pOuterJobOfTask());
 
       delete pParcel;
 

@@ -119,6 +119,7 @@ Object* Object::pMemoryCopy(void)
   // copied object.
 
   Object* pCopy = (Operand*)Heaps::pAllocate(eClass);
+  ASSERT(pCopy);
   bool bPersistent = pCopy->bGetPersistent();
   MemLib::vCopy(pCopy,this,nSize,eClass);
   pCopy->vSetPersistent(bPersistent);
