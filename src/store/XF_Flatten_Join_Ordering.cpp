@@ -158,7 +158,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_JOIN_ORDERING, _FOOTER_);
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_FLATTEN_JOIN_ORDERING, "join ordering"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_FLATTEN_JOIN_ORDERING, "join ordering"_Stz);
 
   File* pFile = nullptr;
 
@@ -348,9 +348,9 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
- // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
   p_joinOrdering->vReorder(m_pCI->G.pDeck);
- // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
 
   DELETE_CARD(p_joinOrdering);
@@ -359,13 +359,13 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
-  m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+  m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   //m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 
- // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   m_pCI->vEndTransform(__LINE__);
 }

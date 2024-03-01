@@ -62,7 +62,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_EPILOG_FUSE_PROJECT, "fuse project"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_EPILOG_FUSE_PROJECT, "fuse project"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
@@ -100,7 +100,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_EPILOG_FUSE_PROJECT, "fuse project"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_EPILOG_FUSE_PROJECT, "fuse project"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_o_SCAN)) {

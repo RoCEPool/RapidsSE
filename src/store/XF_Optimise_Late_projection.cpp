@@ -67,7 +67,7 @@ bool XF_Optimise_Late_projection::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_OPTIMISE_LATE_PROJECTION, "late projection"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_LATE_PROJECTION, "late projection"_Stz);
 
   m_pCI->vClearRestart();
 

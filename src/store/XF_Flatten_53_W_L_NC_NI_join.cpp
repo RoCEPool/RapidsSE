@@ -65,7 +65,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, _FOOTER_);
 
- // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   // W L NC NI
   // (refer: Q16)
@@ -80,7 +80,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
       ;
  */
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_FLATTEN_53_W_L_NC_NI_JOIN, "((XF_FLATTEN_53_W_L_NC_NI_JOIN))"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_FLATTEN_53_W_L_NC_NI_JOIN, "((XF_FLATTEN_53_W_L_NC_NI_JOIN))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
@@ -90,7 +90,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
 
   pFold->vFold_basic(m_pCI, "W_L_NC_NI_join"_Stz, CK_o_WHERE,P_NonCrlSqy);
 
- // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smooshing
@@ -98,7 +98,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   XF_Flatten_Smoosh* pSmoosh = new XF_Flatten_Smoosh();
 
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
- // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
@@ -113,7 +113,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
- // m_pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

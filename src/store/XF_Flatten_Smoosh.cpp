@@ -82,7 +82,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 //  pCI->G.pDeck->vDeleteChild(pCI->G.p_where);
   pCI->G.pDeck->vDeleteChild(pCI->G.p_project);
 
- // pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -142,7 +142,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   delete p_term_sqyArg;
 
- // pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   pCI->vClearRestart();
   if (pCI->G_bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED)) {

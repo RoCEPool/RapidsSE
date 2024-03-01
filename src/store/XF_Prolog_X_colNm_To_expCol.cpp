@@ -62,7 +62,7 @@ void XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_COLNM_TO_EXPCOL, _FOOTER_);
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_PROLOG_X_COLNM_TO_EXPCOL, "transform column-name to stream-column"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_X_COLNM_TO_EXPCOL, "transform column-name to stream-column"_Stz);
 
   for (m_pCI->vClearRestart(); m_pCI->G_bEachMain_NONE(); m_pCI->vSnapFluxArriving()) {
     if (! m_pCI->Flux.m_pArriving)

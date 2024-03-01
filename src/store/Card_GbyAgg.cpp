@@ -95,7 +95,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+   // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
     return;
   }
 
@@ -121,7 +121,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_gbyAgg->vRecreate_emit(pCI);
 
- // pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,7 +191,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
- // pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+ // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
   pCI->G.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 

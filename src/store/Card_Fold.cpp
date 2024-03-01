@@ -134,13 +134,13 @@ void Card_Fold::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 //#ifdef WITH_DEBUG_VERSION
 //  if ((pCI->G.p_expr = pSub_expr())) {
-//    pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__,true);
+//    pCI->vPrintBoard(__FILE__,__func__,__LINE__,true);
 //    vDump(__func__);
 //    vDebugPoint();
 //  }
 //#endif
   if (! pSymbol()->Y_bHas(P_CrlSqy) && ! pSymbol()->Y_bHas(P_NonCrlSqy)) {
-    pCI->vPrintBoard(__FILE_NAME__,__func__,__LINE__);
+    pCI->vPrintBoard(__FILE__,__func__,__LINE__);
     vDump(__func__);
     NEVER_REACH;
   }

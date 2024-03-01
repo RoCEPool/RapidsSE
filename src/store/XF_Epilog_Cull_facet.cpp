@@ -62,7 +62,7 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_CULL_FACET, _FOOTER_);
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_EPILOG_CULL_FACET, "cull facet"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_EPILOG_CULL_FACET, "cull facet"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

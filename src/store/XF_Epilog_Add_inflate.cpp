@@ -62,7 +62,7 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_INFLATE, _FOOTER_);
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_EPILOG_ADD_INFLATE, "add inflate"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_EPILOG_ADD_INFLATE, "add inflate"_Stz);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE()) {

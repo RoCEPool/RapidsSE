@@ -62,7 +62,7 @@ void XF_Epilog_Type_Cast::vCast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_TYPE_CAST, _FOOTER_);
 
-  m_pCI->vTransform(__FILE_NAME__,__func__, XF_EPILOG_TYPE_CAST, "type cast"_Stz);
+  m_pCI->vTransform(__FILE__,__func__, XF_EPILOG_TYPE_CAST, "type cast"_Stz);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE()) {
@@ -138,7 +138,7 @@ void XF_Epilog_Type_Cast::vCast(void)
 
         if (m_pCI->m_pBench->eXform() == XF_EPILOG_TYPE_CAST &&
             CK_o_GBYAGG == m_pCI->G.e_MainCard) {
-          m_pCI->vPrintBoard(__FILE_NAME__,__func__ ,__LINE__);
+          m_pCI->vPrintBoard(__FILE__,__func__ ,__LINE__);
           vDebugPoint();
         }
 
