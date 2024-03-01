@@ -112,12 +112,10 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
 
   pObject = pHeap->pAllocObject(eAllocClass);
 
-  if(pObject) {
-    if (pJob && pJob->bPersistent()) {
-      pObject->vSetPersistent(true);
-    } else {
-      pObject->vSetPersistent(false);
-    }
+  if (pJob && pJob->bPersistent()) {
+    pObject->vSetPersistent(true);
+  } else {
+    pObject->vSetPersistent(false);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
