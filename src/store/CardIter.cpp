@@ -2117,7 +2117,7 @@ void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
 /*----------------------------------------------------------------------------*/
 /* clear the M members                                                        */
 /*----------------------------------------------------------------------------*/
-void CardIter::vResetMembers(bool bNull_OP)
+void CardIter::vResetMembers(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -2254,8 +2254,7 @@ void CardIter::vResetMembers(bool bNull_OP)
   G.p_NEW              = nullptr;
   G.p_CONJ             = nullptr;
 
-  if (bNull_OP)
-    G.p_OP = nullptr;
+  G.p_OP = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
