@@ -67,7 +67,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // At Mark Where Pred Wrt Table
 
- // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   m_pCI->vBeginEachReverse();
 
@@ -75,7 +75,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
     m_pCI->G.p_boolPred->vMark_rlnConj_Wrt_table(m_pCI, MARK_AT);
   }
 
- // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Move At Marked Where Pred To Table Filter
@@ -87,7 +87,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
     m_pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(m_pCI,MARK_AT);
   }
 
- // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   m_pCI->vClearRestart();
   m_pCI->vBeginEachReverse();
@@ -96,7 +96,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
     (void)m_pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
- // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -109,7 +109,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
     m_pCI->G.p_from->vCullIfEmpty_filter(m_pCI->G.p_filter);
   }
 
- // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
  m_pCI->G.pDeck->vMarksClearRecursive();
 

@@ -1837,7 +1837,7 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vPrintBoard(const char* azFile, const char* azFunc, i8 iLineNo, bool bForce)
+void CardIter::vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 

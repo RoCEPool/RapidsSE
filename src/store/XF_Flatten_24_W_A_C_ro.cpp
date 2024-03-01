@@ -66,7 +66,7 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
- // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   // W A C ro
 

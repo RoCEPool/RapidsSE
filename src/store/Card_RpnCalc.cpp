@@ -150,7 +150,7 @@ void Card_RpnCalc::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   TypeId xTypeId_save = xCast().m_xTypeId;
   if (! xTypeId_save.bIsValid()) {
-    pCI->vPrintBoard(__FILE__,__func__,__LINE__,true);
+    pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
     vDump(__func__);
     NEVER_REACH
   }
@@ -540,7 +540,7 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   Card::vValidate_hasChildren();
 
   if (xCast().m_xTypeId != pCI->pAncestor(CK_EXPR)->xCast().m_xTypeId) {
-    pCI->vPrintBoard(__FILE__,__func__,__LINE__,true);
+    pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
     vDump(__func__);
     NEVER_REACH;
   }

@@ -66,7 +66,7 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_40_W_L_C_E, _FOOTER_);
 
- //// m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ //// m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   /* ARCHETYPE :
       select count(*)
@@ -82,11 +82,11 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
 
   XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI, "40_W_L_C_E"_Stz, CK_o_WHERE,P_CrlSqy);
- // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   XF_Flatten_Smoosh* pSmoosh = new XF_Flatten_Smoosh;
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
- // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+ // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

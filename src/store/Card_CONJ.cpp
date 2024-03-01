@@ -336,7 +336,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
   if (pSymbol()->bHasFacet("exists"_Stz)) {
 
-   // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
     SYM(SF_RLN_OP,"=="_Stz);
 
@@ -358,7 +358,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     p_term1->vApplyCast_x(p_expr_dic->xCast());
 
-   // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
     return;
   }
 
@@ -388,7 +388,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     p_term_head->vApplyCast_x(p_expr_dic->xCast());
 
-   // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
     return;
   }
@@ -537,7 +537,7 @@ void Card_CONJ::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       _pCard_RlnConj(this)->vValidate(pCI, iDepth + 1, this); break;
 
     default:
-     // pCI->vPrintBoard(__FILE__,__func__,__LINE__,true);
+     // pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
       vDump(__func__);
       vValidationFailed("<<replace>> %p"_Stz,this);
   }

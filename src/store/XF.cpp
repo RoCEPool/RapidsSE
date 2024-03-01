@@ -428,7 +428,7 @@ void XF::vCrosscheck_Optimisations(void)
     if (m_pCI->pBoard()->pState()->bHasName(szOptimisation))
       continue;
 
-   // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
+   // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
     vTrace("Missing optimisation : %lld %lls\n"_Stz,i_OT,szOptimisation);
     NEVER_REACH
   }

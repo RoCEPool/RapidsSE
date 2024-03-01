@@ -588,7 +588,7 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_NONE);
 
   if (! pSub_expr())
-    pCI->vPrintBoard(__FILE__,__func__,__LINE__,true);
+    pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
   vValidate_notHave(CK_s_KEY, CK_NONE);
