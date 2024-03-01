@@ -26,8 +26,6 @@ namespace STORE
     CorrelatedJoin(void);
    ~CorrelatedJoin(void) noexcept(false);
 
-    void vCorrelate(CardIter* pCI, eSM eCorrelate);
-
     void vVia_gbyAgg_Promotion(CardIter* pCI);
 
   private:

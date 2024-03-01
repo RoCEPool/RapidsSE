@@ -41,17 +41,6 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vCorrelate(CardIter* pCI, eSM Correlate)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(Correlate);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert call of sub-query to correlated join to left sub-stream            */
 /*----------------------------------------------------------------------------*/
 void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
