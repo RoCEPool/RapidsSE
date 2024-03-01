@@ -3,7 +3,7 @@
 # This is a recursive testList file.
 
 ////////////////// to be enabled when colsReq done
-../../../seth/tests/tests1N4P/Optimiser_SF0001/testList
+//../../../seth/tests/tests1N4P/Optimiser_SF0001/testList
 //../../../seth/tests/tests1N4P/CombinedV2/testList
 ../../../seth/tests/tests1N4P/Filter/testList
 //../../../seth/tests/tests1N4P/JoinOrder/testList
