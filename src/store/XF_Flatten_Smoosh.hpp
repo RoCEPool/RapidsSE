@@ -25,7 +25,6 @@ namespace STORE
     XF_Flatten_Smoosh(void);
    ~XF_Flatten_Smoosh(void) noexcept(false);
 
-    void vSmoosh(CardIter* pCI, eSM eSmoosh);
 
     void vInto_KEYnotEXISTS(CardIter* pCI);
 

@@ -1871,7 +1871,7 @@ void CardIter::vPrintBoard(const char* azFile, const char* azFunc, i8 iLineNo, b
 
 
   s256 sWhere;
-    sWhere.vCatSprint("EndTransform %s :: %s() %s:%lld"_Stz,
+    sWhere.vCatSprint("EndTransform: %s %s() %s:%lld"_Stz,
                       aXF[m_pBench->eXform()],
                       azFunc,
                       azFile,
