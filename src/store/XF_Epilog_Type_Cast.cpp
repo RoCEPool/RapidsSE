@@ -62,7 +62,7 @@ void XF_Epilog_Type_Cast::vCast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_TYPE_CAST, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_EPILOG_TYPE_CAST, "type cast"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_TYPE_CAST);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE()) {

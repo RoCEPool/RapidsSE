@@ -67,7 +67,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_CUT_SORT, "Cut sort"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_CUT_SORT);
 
   m_pCI->vClearRestart();
 

@@ -68,7 +68,7 @@ void XF_Prolog_Validate_Board::vValidate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_VALIDATE_BOARD, "validate boards"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_VALIDATE_BOARD);
 
   Card_OP* p_OP = nullptr;
   //Card_Scan* p_scan = nullptr;

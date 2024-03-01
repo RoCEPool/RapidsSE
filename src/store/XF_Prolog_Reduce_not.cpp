@@ -62,7 +62,7 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_REDUCE_NOT, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_REDUCE_NOT, "not ops"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_REDUCE_NOT);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachSubOfMain(CK_RPNCALC)) {

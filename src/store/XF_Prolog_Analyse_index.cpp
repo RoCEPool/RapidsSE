@@ -62,7 +62,7 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_ANALYSE_INDEX, "index analysis"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ANALYSE_INDEX);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append Index List Under All Table

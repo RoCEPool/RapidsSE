@@ -100,7 +100,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_ANALYSE_TABLE, "add a <tableSyn> to all <table>'s"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ANALYSE_TABLE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table synonyms To All Table
@@ -148,7 +148,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSy
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_ANALYSE_TABLE, "add a <tableSyn> to all <table>'s"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ANALYSE_TABLE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table

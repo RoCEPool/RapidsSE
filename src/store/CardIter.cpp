@@ -1259,8 +1259,6 @@ void CardIter::vEndTransform(i8 iLineNo)
 
     G.pDeck->vCheckCorrectness();
 
-    //G.pBoard->pState()->vDumpSet();
-
     if (!  G.pBoard->pState()->bHasName(aXF[m_pBench->eXform()]))
       G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
@@ -2022,7 +2020,7 @@ void CardIter::vPrintBoard(const char* azFile, const char* azFunc, i8 iLineNo, b
 
   G.pBoard->vRenumberCards();
 
-  G.pBoard->vPrintBoard(this,szXdesc());
+  G.pBoard->vPrintBoard(this,aXF[m_pBench->eXform()]);
 
 
   s32 sOT;
@@ -2517,13 +2515,11 @@ void CardIter::G_vSetBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform, Stz* szXdesc)
+void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vTransform(azXfile, azXfunc, eXform, szXdesc);
-
-  //this->vBeginEach();
+  m_pBench->vTransform(azXfile, azXfunc, eXform);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2727,45 +2723,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
 
 }
 
-/*----------------------------------------------------------------------------*/
-/* get transform number                                                       */
-/*----------------------------------------------------------------------------*/
-i8 CardIter::iXform(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  return m_pBench->iXform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-Stz* CardIter::szXdesc(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  return m_pBench->szXdesc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transformation function                                                */
-/*----------------------------------------------------------------------------*/
-Stz* CardIter::szXfunc(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  return m_pBench->szXfunc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* CardIter::szXhand(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  return m_pBench->szXhand();
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Protected ---------------------------------------------------------------*/

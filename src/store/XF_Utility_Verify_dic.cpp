@@ -68,7 +68,7 @@ void XF_Utility_Verify_dic::vVerify_dic_loop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_UTILITY_VERIFY_DIC, "verify dic"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_UTILITY_VERIFY_DIC);
 
   m_pCI->vClearRestart();
 
@@ -978,9 +978,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
         m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
 
-        if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol()))
+        if (m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol()))
           continue;
 //          todo: idxCol should be cast [304]
+//      if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol()))
 //          if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_idxCol->pSymbol()))
 //            continue;
 

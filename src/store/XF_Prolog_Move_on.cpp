@@ -62,7 +62,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_MOVE_ON, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_MOVE_ON, "move <on> in <absJoin>'s to <where>"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_MOVE_ON);
 
   m_pCI->vBeginEach();
   if (m_pCI->G_bEachMain(CK_o_WHERE))

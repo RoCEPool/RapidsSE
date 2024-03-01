@@ -215,18 +215,13 @@ namespace STORE
     void vSet(i8 i_Child);
     void G_vSetBoard(Board* pBoard);
 
-    void vTransform(const char* azXfile, const char* azFunc, eXF eXform, Stz* szXdesc);
+    void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 
     void vUsingBoard(i8 i_Board);
     void vUsingBoard(Board* pBoard);
 
     void vValidateBench(void);
     void vValidateChildren(Card* pCard, i8 iDepth);
-
-    Stz* szXdesc(void);
-    i8   iXform(void);
-    Stz* szXfunc(void);
-    Stz* szXhand(void);
 
   protected:
 

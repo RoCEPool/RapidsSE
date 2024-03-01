@@ -62,7 +62,7 @@ void XF_Prolog_Ensure_level::vEnsure_level(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_ENSURE_LEVEL, "ensure op has level"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ENSURE_LEVEL);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {

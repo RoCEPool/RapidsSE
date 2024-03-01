@@ -67,7 +67,7 @@ bool XF_Optimise_Duplicate_filter::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_DUPLICATE_FILTER, "optimise one time calcs"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_DUPLICATE_FILTER);
 
   m_pCI->vClearRestart();
 

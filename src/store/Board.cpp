@@ -497,10 +497,9 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprintSnippet(false,"Print Board: %s : %s : %s"_Stz,
-                        aXF[m_pBench->eXform()],
-                        aXF_desc[m_pBench->eXform()],
-                        m_pBench->szXdesc());
+  pRibbon->vSprintSnippet(false,"Print Board: %s : %s"_Stz,
+                          aXF[m_pBench->eXform()],
+                          aXF_desc[m_pBench->eXform()]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

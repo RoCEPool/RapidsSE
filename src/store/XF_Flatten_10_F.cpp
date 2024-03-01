@@ -78,7 +78,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
       ;
    */
 
-  m_pCI->vTransform(__FILE__,__func__, XF_FLATTEN_10_F, "((vFlatten_10_F))"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_10_F);
 
  // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 

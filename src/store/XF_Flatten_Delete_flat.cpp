@@ -62,7 +62,7 @@ void XF_Flatten_Delete_flat::vXF_Delete_flat(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_FLAT, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_FLATTEN_DELETE_FLAT, "delete flast"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_DELETE_FLAT);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain(CK_c_FLAT))

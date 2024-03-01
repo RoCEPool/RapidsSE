@@ -65,7 +65,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_FACTOR_BOOLPRED, "refactor boolPred"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_FACTOR_BOOLPRED);
 
   m_pCI->vClearRestart();
 

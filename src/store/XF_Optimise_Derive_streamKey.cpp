@@ -67,7 +67,7 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_DERIVE_STREAMKEY, "Derive stream keys"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_DERIVE_STREAMKEY);
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);

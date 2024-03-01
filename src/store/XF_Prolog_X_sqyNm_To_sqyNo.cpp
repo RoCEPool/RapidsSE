@@ -62,7 +62,7 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SQYNM_TO_SQYNO, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "shorten query names"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_X_SQYNM_TO_SQYNO);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

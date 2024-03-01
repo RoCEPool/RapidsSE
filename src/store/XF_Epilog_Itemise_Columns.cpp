@@ -62,7 +62,7 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ITEMISE_COLUMNS, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_EPILOG_ITEMISE_COLUMNS, "de-duplicate as (column names)"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_ITEMISE_COLUMNS);
 
   Card_As::vItemise_colNm(m_pCI);
   Card_Term::vItemise_colNm(m_pCI);

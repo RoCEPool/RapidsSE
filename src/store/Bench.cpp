@@ -289,7 +289,7 @@ void Bench::vPipelineNm(Stz* szPipelineNm)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform(const char* azXfile, const char* azXfunc, eXF eXform, Stz* szXdesc)
+void Bench::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -298,27 +298,6 @@ void Bench::vTransform(const char* azXfile, const char* azXfunc, eXF eXform, Stz
   vXfile((Stz *) azXfile);
   vXfunc((Stz *) azXfunc);
   vXform(eXform);
-  vXdesc(szXdesc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Bench::szXdesc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  return m_sXdesc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-void Bench::vXdesc(Stz* szXdesc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_sXdesc = szXdesc;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -62,7 +62,7 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_EPILOG_X_TBLCOL_TO_EXPCOL, "transform table-columns to stream-columns"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_X_TBLCOL_TO_EXPCOL);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {

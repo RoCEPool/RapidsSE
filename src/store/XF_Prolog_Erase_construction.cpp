@@ -62,7 +62,7 @@ void XF_Prolog_Erase_construction::vProlog(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ERASE_CONSTRUCTION, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_ERASE_CONSTRUCTION, "erase constructions"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ERASE_CONSTRUCTION);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All AbsJoin

@@ -267,7 +267,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_FLATTEN, "Flatten by decision tree (recursive model)"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN);
 
   if (m_pCI->Sqy.m_pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ XF_Flatten_10_F::vXF_Flatten_10_F(m_pCI);
   else

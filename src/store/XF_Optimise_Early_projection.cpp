@@ -79,7 +79,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
   if (AM::JOB::bHasTag(C_OPTIMISER_EP_DISABLE))
     return bOptRun;
 
-  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_EARLY_PROJECTION, "Early projections"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_EARLY_PROJECTION);
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
@@ -128,7 +128,7 @@ bool XF_Optimise_Early_projection::bEarly_needed_loop(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_EARLY_PROJECTION, "Early projections"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_EARLY_PROJECTION);
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
@@ -231,7 +231,7 @@ bool XF_Optimise_Early_projection::bEarly_projection_loop(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_EARLY_PROJECTION, "Early projections"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_EARLY_PROJECTION);
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 

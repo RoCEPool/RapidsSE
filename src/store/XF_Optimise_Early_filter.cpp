@@ -67,7 +67,7 @@ bool XF_Optimise_Early_filter::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__FILE__,__func__, XF_OPTIMISE_EARLY_FILTER, "optimise early filter"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_EARLY_FILTER);
 
   m_pCI->vClearRestart();
 

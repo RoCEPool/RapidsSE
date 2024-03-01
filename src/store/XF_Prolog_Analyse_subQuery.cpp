@@ -64,7 +64,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__,__func__, XF_PROLOG_ANALYSE_SUBQUERY, "subQuery analysis"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ANALYSE_SUBQUERY);
 
   m_pCI->vBeginBoardIteration();
   while (m_pCI->bEachBoard()) {
