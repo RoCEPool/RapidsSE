@@ -97,8 +97,8 @@ namespace STORE
 
     bool  bAncestor(eCK eCard);
     Card* pAncestor(i8 i_Ancestor);
+    Card* pAncestor(eCK eCard, i8* ai_Ancestor= nullptr);
     void  vAncestorDump(Card* pCard = nullptr);
-    Card* pAncestorFind(eCK eCard, i8* ai_Ancestor=nullptr);
     Card* pAncestorParent(void);
     void  vAncestorPop(void);
     void  vAncestorPush(Card* pCard);

@@ -539,7 +539,7 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   Card::vValidate_hasType();
   Card::vValidate_hasChildren();
 
-  if (xCast().m_xTypeId != pCI->pAncestorFind(CK_EXPR)->xCast().m_xTypeId) {
+  if (xCast().m_xTypeId != pCI->pAncestor(CK_EXPR)->xCast().m_xTypeId) {
     pCI->vPrintBoard(__FILE__,__func__,__LINE__,true);
     vDump(__func__);
     NEVER_REACH;

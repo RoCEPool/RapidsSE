@@ -107,7 +107,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
       p_term_colNm->pSymbol()->vApplyCastFacetsPpy(p_expr_defn->pSymbol());
     }
 
-    if (Card_Expr* p_expr_ancestor = (Card_Expr*)pCI->pAncestorFind(CK_EXPR)) {
+    if (Card_Expr* p_expr_ancestor = (Card_Expr*) pCI->pAncestor(CK_EXPR)) {
       if (p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
         p_expr_ancestor->pSymbol()->vApplyFacet(SF_TBL_COL,p_term_colNm->pSymbol()->szFacet(SF_TBL_COL));
     }

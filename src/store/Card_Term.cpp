@@ -66,8 +66,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     Card_Term *p_term = _pCard_Term(pCard);
     Symbol *pSymbol_term = p_term->pSymbol();
 
-    if ((pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->pAncestorFind(CK_o_INDEXJOIN))) &&
-        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT)))) {
+    if ((pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->pAncestor(CK_o_INDEXJOIN))) &&
+        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_s_CONSTRAINT)))) {
 
       if (!pSymbol_term->bHasFacet(SF_NMD_COL))
         return C_CONTINUE_RECURSION;
@@ -84,7 +84,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (! pSymbol_term->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    if (! (pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))))
+    if (! (pCI->G.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR))))
       return C_CONTINUE_RECURSION;
 
     i8 iItemise = pCI->G.p_expr->iItemise();
@@ -572,7 +572,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL]) ) {
     i8 i_Ancestor;
-    if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR,&i_Ancestor)))) {
+    if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR, &i_Ancestor)))) {
       Card* p_ANCESTOR = pCI->pAncestor(i_Ancestor - 1);
       eCK eAncestor = p_ANCESTOR->eCard();
       RASSERT(CK_t_EMIT == eAncestor ||

@@ -223,7 +223,7 @@ bool CardIter::bAncestor(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (pAncestorFind(eCard))
+  if (pAncestor(eCard))
     return true;
 
   return false;
@@ -240,6 +240,29 @@ Card* CardIter::pAncestor(i8 i_Ancestor)
     return nullptr;
 
   return m_apAncestry[i_Ancestor];
+}
+
+/*----------------------------------------------------------------------------*/
+/* find ancestor                                                             */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pAncestor(eCK eCard, i8* ai_Ancestor)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  for (i8 i_Ancestor = m_nAncestors-1; i_Ancestor >= 0; i_Ancestor--) {
+    Card *pCard_ancestor = m_apAncestry[i_Ancestor];
+
+    if (pCard_ancestor->bIsCard(eCard)) {
+      if (ai_Ancestor)
+        *ai_Ancestor = i_Ancestor;
+      return pCard_ancestor;
+    }
+  }
+
+  if (ai_Ancestor)
+    *ai_Ancestor = C_UNKNOWN;
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,29 +292,6 @@ void CardIter::vAncestorDump(Card* pCard)
   else
     vTrace("\n"_Stz);
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* find ancestor                                                             */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pAncestorFind(eCK eCard, i8* ai_Ancestor)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  for (i8 i_Ancestor = m_nAncestors-1; i_Ancestor >= 0; i_Ancestor--) {
-    Card *pCard_ancestor = m_apAncestry[i_Ancestor];
-
-    if (pCard_ancestor->bIsCard(eCard)) {
-      if (ai_Ancestor)
-        *ai_Ancestor = i_Ancestor;
-      return pCard_ancestor;
-    }
-  }
-
-  if (ai_Ancestor)
-    *ai_Ancestor = C_UNKNOWN;
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
