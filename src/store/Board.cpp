@@ -89,9 +89,9 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmo
   if (! pCI->G.p_emit)
     return;
 
-  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
+  pCI->vAppendNewChild(pCI->G.p_fold, CK_EXPR);
+  pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
+  pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 
   Card_Expr* p_expr_dic =
       pCI->Dic.m_p_expr->pGet_expr((i8) 0);

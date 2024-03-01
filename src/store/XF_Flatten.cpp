@@ -119,20 +119,20 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   for (;;) {
 
     m_pCI->vBeginEach();
-    if (! m_pCI->G_bEachMain(CK_o_CALL))
+    if (! m_pCI->bEachMain(CK_o_CALL))
       break;
 
 //    s256 sSqyNo = m_pCI->G.p_call->szFacet(SF_SQY_NO);
 
     Board *pOuterBoard_save = m_pCI->G.pBoard;
     m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery(m_pCI->G.p_call->pSymbol());
-    m_pCI->G_vPushBoard(m_pCI->Sqy.m_pSubQuery->pBoard());
+    m_pCI->vPushBoard(m_pCI->Sqy.m_pSubQuery->pBoard());
     m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
     vFlatten_recurse(iDepth + 1);
 
-    m_pCI->G_vPopBoard();
-    m_pCI->G_vSetBoard(pOuterBoard_save);
+    m_pCI->vPopBoard();
+    m_pCI->vSetBoard(pOuterBoard_save);
     SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery(m_pCI->G.p_call->pSymbol());
     UNUSED(pSubQuery);
    // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
@@ -149,7 +149,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED))
+    if (! m_pCI->bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED))
       break;
 
     CardIter* pCI = m_pCI;
@@ -164,13 +164,13 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
-      pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
+      pCI->vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
-      pCI->G_vPopBoard();
-      pCI->G_vSetBoard(pOuterBoard_save);
+      pCI->vPopBoard();
+      pCI->vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       UNUSED(pSubQuery);
      // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
@@ -196,7 +196,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_HAVING, CK_BOOLPRED))
+    if (! m_pCI->bEachMainWithSub_reverse_foldBreak_b(CK_o_HAVING, CK_BOOLPRED))
       break;
 
     CardIter* pCI = m_pCI;
@@ -210,13 +210,13 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
-      pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
+      pCI->vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
-      pCI->G_vPopBoard();
-      pCI->G_vSetBoard(pOuterBoard_save);
+      pCI->vPopBoard();
+      pCI->vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       UNUSED(pSubQuery);
      // pCI->vPrintBoard(__FILE__,__func__,__LINE__);

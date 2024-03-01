@@ -102,8 +102,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   // insert new empty early project (has only needed) before this indexJoin
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->G_vInsertBefore(p_project_early, this);
-  pCI->G_vMainResynch();
+  pCI->vInsertBefore(p_project_early, this);
+  pCI->vMainResynch();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
@@ -219,8 +219,8 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   // insert empty early projection (has only needed) before this ordAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->G_vInsertBefore(p_project_early, this);
-  pCI->G_vMainResynch();
+  pCI->vInsertBefore(p_project_early, this);
+  pCI->vMainResynch();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
@@ -265,7 +265,7 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
     throw xError;
   }
 
-//  pCI->G_vNewMember(CK_o_INDEXJOIN);
+//  pCI->vNewMember(CK_o_INDEXJOIN);
 //  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_indexJoin);
   pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->G.p_from->pCard(CK_o_INDEXJOIN));
 

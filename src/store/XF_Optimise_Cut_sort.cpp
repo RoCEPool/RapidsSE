@@ -74,7 +74,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain_NONE()) {
 
     switch (m_pCI->G.e_MainCard) {
 
@@ -87,11 +87,11 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
           break;
 
         m_pCI->vRemoveDeleteCurr(CK_o_SORT);
-//        if (m_pCI->G_bIsNextMain(CK_o_SORT)) {
-//          m_pCI->G_bEachMain_NONE();
+//        if (m_pCI->bIsNextMain(CK_o_SORT)) {
+//          m_pCI->bEachMain_NONE();
 //          m_pCI->vRemoveDeleteCurr(CK_o_SORT);
-//          if (m_pCI->G_bIsNextMain(CK_o_SORT)) {
-//            m_pCI->G_bEachMain_NONE();
+//          if (m_pCI->bIsNextMain(CK_o_SORT)) {
+//            m_pCI->bEachMain_NONE();
 //            m_pCI->vRemoveDeleteCurr(CK_o_SORT);
 //          }
 //        }

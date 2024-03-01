@@ -65,7 +65,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_MOVE_ON);
 
   m_pCI->vBeginEach();
-  if (m_pCI->G_bEachMain(CK_o_WHERE))
+  if (m_pCI->bEachMain(CK_o_WHERE))
     m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,7 +75,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   Card_Scan* p_scan_over = nullptr;
 
   m_pCI->vBeginEachReverse();
-  while (m_pCI->G_bEachMainWithSub_reverse(CK_c_ABSJOIN, CK_ON)) {
+  while (m_pCI->bEachMainWithSub_reverse(CK_c_ABSJOIN, CK_ON)) {
 
     // ignore
     Card_RpnCalc *p_rpnCalc_on = m_pCI->G.p_on->pSub_rpnCalc();
@@ -85,13 +85,13 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     // move LEFT_OUTER to scan
     if (p_rpnCalc_on->bPopDeleteChildIf(CK_TERM,
                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
-      m_pCI->G_vPushIter();
-      if (m_pCI->G_bEachMain_reverse_b(CK_o_SCAN)) {
+      m_pCI->vPushIter();
+      if (m_pCI->bEachMain_reverse_b(CK_o_SCAN)) {
         p_scan_over = m_pCI->G.p_scan;
-        m_pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
+        m_pCI->vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
         m_pCI->G.p_scan->vAppendChild(m_pCI->G.p_outerJoin);
       }
-      m_pCI->G_vPopBoard();
+      m_pCI->vPopBoard();
     }
 
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
@@ -112,8 +112,8 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     if (p_rpnCalc_on->nChildCards()) {
       delete p_rpnCalc_on->pPopChild_tail();
-      m_pCI->G_vAppendNewChild(p_scan_over, CK_s_CONSTRAINT);
-      m_pCI->G_vAppendNewChild(m_pCI->G.p_constraint,CK_RPNCALC);
+      m_pCI->vAppendNewChild(p_scan_over, CK_s_CONSTRAINT);
+      m_pCI->vAppendNewChild(m_pCI->G.p_constraint,CK_RPNCALC);
       m_pCI->G.p_rpnCalc->vTransferChildren(p_rpnCalc_on);
     }
 

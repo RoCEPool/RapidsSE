@@ -194,7 +194,7 @@ void Card_Key::vMapColumns(CardIter *pCI)
     Card_Expr *p_expr_key = xKey.p_expr();
 
     i_Cell++;
-    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
+    pCI->vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
   }
 

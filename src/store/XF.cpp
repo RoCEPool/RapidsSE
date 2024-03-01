@@ -147,7 +147,7 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1/5) prolog
 
-  m_pCI->vPhase(OH_PROLOG);                        //
+  m_pCI->m_pBench->vPhase(m_pCI,OH_PROLOG);                        //
                                                    //
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);
@@ -201,7 +201,7 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2/5) flatten
 
-  m_pCI->vPhase(OH_FLATTEN);                         //
+  m_pCI->m_pBench->vPhase(m_pCI,OH_FLATTEN);                         //
                                                      //
   XF_Flatten::vFlatten(m_pCI);                       //
                                                      //
@@ -215,7 +215,7 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3/5) optimise
 
-  m_pCI->vPhase(OH_OPTIMISE);                          //
+  m_pCI->m_pBench->vPhase(m_pCI,OH_OPTIMISE);                          //
                                                        //
   m_pCI->vBeginBoardIteration();                            //
   RASSERT(m_pCI->bEachBoard());                        //
@@ -245,7 +245,7 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4/5) epilog
 
-  m_pCI->vPhase(OH_EPILOG);                            //
+  m_pCI->m_pBench->vPhase(m_pCI,OH_EPILOG);                            //
                                                        //
   m_pCI->vBeginBoardIteration();                            //
   RASSERT(m_pCI->bEachBoard());                        //
@@ -279,7 +279,7 @@ void XF::vTransform(void)
                                                        //
   vCrosscheck_Optimisations();                         //
 
-  m_pCI->vPhase(OH_SYNTHESISE);                        //
+  m_pCI->m_pBench->vPhase(m_pCI,OH_SYNTHESISE);                        //
                                                        //
   m_pCI->vBeginBoardIteration();                            //
   RASSERT(m_pCI->bEachBoard());                        //
@@ -320,14 +320,14 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_SORT);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMainWith2Sub(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->bEachMainWith2Sub(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vApplyFacets(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_TOP);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMainWith2Sub(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->bEachMainWith2Sub(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vApplyFacets(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
@@ -336,28 +336,28 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_TWEAK_INDEXJOIN);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_o_INDEXJOIN)) {
+    while (m_pCI->bEachMain(CK_o_INDEXJOIN)) {
       m_pCI->G.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexJoin->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_TWEAK_INDEXSCAN);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_o_INDEXSCAN)) {
+    while (m_pCI->bEachMain(CK_o_INDEXSCAN)) {
       m_pCI->G.p_indexScan->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_TWEAK_KEYEXISTS);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_o_KEYEXISTS)) {
+    while (m_pCI->bEachMain(CK_o_KEYEXISTS)) {
       m_pCI->G.p_keyExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_TWEAK_KEYNOTEXISTS);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain(CK_o_KEYNOTEXISTS)) {
+    while (m_pCI->bEachMain(CK_o_KEYNOTEXISTS)) {
       m_pCI->G.p_keyNotExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyNotExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
@@ -653,7 +653,7 @@ bool MakeOptimal::bOptimise_RplScanByIndexScan(void) {
   //    We won't see it till the Filters are moved close to the scans.
 
 //  m_pCI->G_vRestart();
-//  if (m_pCI->G_bEachMainWithSub(CK_o_SCAN,CK_BOUNDS)) {
+//  if (m_pCI->bEachMainWithSub(CK_o_SCAN,CK_BOUNDS)) {
 //    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
 //      m_pCI->G.p_scan->vCard(CK_o_INDEXSCAN);
 //

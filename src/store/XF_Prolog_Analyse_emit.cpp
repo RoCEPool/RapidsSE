@@ -67,14 +67,14 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
   m_pCI->vBeginEach();
   m_pCI->Flux.m_pArriving = m_pCI->G.p_emit = nullptr;
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain_NONE()) {
 
     if (! m_pCI->G.p_OP)
       continue;
 
     m_pCI->G.p_OP->vRecreate_emit(m_pCI);
 
-  } // while (m_pCI->G_bEachMain_NONE())
+  } // while (m_pCI->bEachMain_NONE())
 
    m_pCI->vEndTransform(__LINE__);
 }

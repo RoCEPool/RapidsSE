@@ -67,7 +67,7 @@ void Card_Fold::vMorph_to_flat(CardIter* pCI)
   _static_
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain(CK_c_FOLD))
+  while (pCI->bEachMain(CK_c_FOLD))
     pCI->G.p_fold->vCard(CK_c_FLAT);
 }
 
@@ -78,7 +78,7 @@ void Card_Fold::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _static_
 
-  //pCI->G_vNewMember(CK_EXPR);
+  //pCI->vNewMember(CK_EXPR);
 
   RASSERT(CT_NONE != p_expr_fold->eCTVal());
 

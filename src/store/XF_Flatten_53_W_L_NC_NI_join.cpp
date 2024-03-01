@@ -104,8 +104,8 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   // smoothing
 
   m_pCI->vClearRestart();
-  //RASSERT(m_pCI->G_bEachMainWithSub(CK_o_PROJECT,CK_t_EMIT));
-  RASSERT(m_pCI->G_bEachMain(CK_c_FOLD));
+  //RASSERT(m_pCI->bEachMainWithSub(CK_o_PROJECT,CK_t_EMIT));
+  RASSERT(m_pCI->bEachMain(CK_c_FOLD));
 
   CarryForward* pCarryForward = new CarryForward;
   pCarryForward->Table.m_bReproject = true;

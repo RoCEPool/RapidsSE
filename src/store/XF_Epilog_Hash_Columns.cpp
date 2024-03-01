@@ -65,11 +65,11 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_HASH_COLUMNS);
 
   m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain_NONE()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (CK_c_STAGE == m_pCI->G.e_MainCard) {
-      m_pCI->vNullMembers();
+      m_pCI->vResetMembers();
       continue;
     }
 
@@ -87,7 +87,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (CK_o_HASH == m_pCI->G.e_MainCard) {
-      m_pCI->G_vAppendNewChild(m_pCI->G.p_hash, CK_s_HASHING);
+      m_pCI->vAppendNewChild(m_pCI->G.p_hash, CK_s_HASHING);
 
       Kid xHshColList(m_pCI->G.p_hash->pSub_hshColList());
       while (xHshColList.bEach()) {
@@ -151,11 +151,11 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_HASH_COLUMNS);
 //
 //  m_pCI->vBeginEach();
-//  while (m_pCI->G_bEachMain_NONE()) {
+//  while (m_pCI->bEachMain_NONE()) {
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    if (CK_c_STAGE == m_pCI->G.e_MainCard) {
-//      m_pCI->vNullMembers();
+//      m_pCI->vResetMembers();
 //      continue;
 //    }
 //
@@ -173,7 +173,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    if (CK_o_HASH == m_pCI->G.e_MainCard) {
-//      m_pCI->G_vAppendNewChild(m_pCI->G.p_hash,CK_s_HASHING);
+//      m_pCI->vAppendNewChild(m_pCI->G.p_hash,CK_s_HASHING);
 //
 //      if (m_pCI->G.p_project) {
 //        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();

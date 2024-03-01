@@ -65,7 +65,7 @@ void XF_Epilog_Type_Cast::vCast(void)
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_TYPE_CAST);
 
   m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain_NONE()) {
 
     switch (m_pCI->G.e_MainCard) {
 

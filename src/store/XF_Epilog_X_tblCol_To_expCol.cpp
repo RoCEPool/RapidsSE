@@ -65,7 +65,7 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_X_TBLCOL_TO_EXPCOL);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain_NONE()) {
 
 //    if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
 //

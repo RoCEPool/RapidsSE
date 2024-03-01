@@ -148,7 +148,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
   m_pPipelineDef = new PipelineDef(sQueryNm);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain_NONE()) {
     if (m_pCI->G.p_OP->bIsCard(CK_c_STAGE))
       vCraftStageDef();
     else {

@@ -481,7 +481,7 @@ void Card_Emit::vMapColumns(CardIter* pCI)
 
     i_Cell++;
 
-    pCI->G_vAppendNewChild(pCI->G.p_payloadCells, CK_MAP,p_expr_projection->pSymbol());
+    pCI->vAppendNewChild(pCI->G.p_payloadCells, CK_MAP,p_expr_projection->pSymbol());
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
     pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 

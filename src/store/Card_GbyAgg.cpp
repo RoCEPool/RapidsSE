@@ -110,8 +110,8 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   // insert empty early projection (has only needed) before this gbyAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->G_vInsertBefore(p_project_early, this);
-  pCI->G_vMainResynch();
+  pCI->vInsertBefore(p_project_early, this);
+  pCI->vMainResynch();
 
   Card_OP::vEarlyProject_backstep(pCI);
 

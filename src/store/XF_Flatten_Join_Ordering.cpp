@@ -190,7 +190,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
                             BK_JOINORDERING,
                             aBK[BK_JOINORDERING],
                             m_pCI->m_pBench);
-  m_pCI->G_vPushBoard(pBoard);
+  m_pCI->vPushBoard(pBoard);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) Extract tableList from pipeline
@@ -342,7 +342,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   DELETE_CARD(p_streamPrmAll);
 
   pBoard = m_pCI->G.pBoard;
-  m_pCI->G_vPopBoard();
+  m_pCI->vPopBoard();
   m_pCI->m_pBench->vRemove(pBoard);
   delete pBoard;
 

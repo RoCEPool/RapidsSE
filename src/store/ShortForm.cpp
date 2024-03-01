@@ -34,7 +34,7 @@ ShortForm::ShortForm(CardIter* pCI)
   }
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain_NONE())
+  while (pCI->bEachMain_NONE())
     vAdd(pCI);
 
 

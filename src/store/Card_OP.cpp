@@ -189,7 +189,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
   //Card_OP* p_OP_leaf_maybe = pCI->G.p_OP;
 
-  if (! pCI->G_bEachMain_reverse_NONE())
+  if (! pCI->bEachMain_reverse_NONE())
     return;
 
   // which card did we arrive at?
@@ -305,7 +305,7 @@ void Card_OP::vEnsure_stream(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (! (pCI->G.p_stream = pSub_stream()) ) {
-    pCI->G_vAppendNewChild(this, CK_s_STREAM);
+    pCI->vAppendNewChild(this, CK_s_STREAM);
   }
 
   RASSERT(pCI->G.p_stream);
@@ -427,9 +427,9 @@ void Card_OP::vMapColumns(CardIter *pCI)
   pCI->G.p_key = pSub_key();
   pCI->G.p_emit = pSub_emit();
 
-  pCI->G_vAppendNewChild(CK_SYNTHESIS, CK_s_MAPPING);
-  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
-  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
+  pCI->vAppendNewChild(CK_SYNTHESIS, CK_s_MAPPING);
+  pCI->vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
+  pCI->vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the key

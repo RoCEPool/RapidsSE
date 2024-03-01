@@ -61,7 +61,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain_NONE()) {
+  while (pCI->bEachMain_NONE()) {
 
     if (CK_o_INDEXJOIN == pCI->G.e_MainCard ||
         CK_o_INDEXSCAN == pCI->G.e_MainCard ||
@@ -82,7 +82,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_arriving,
                                                              pCI->G.p_OP);
         UNUSED(eStageCast);
-        pCI->G_vMainResynch();
+        pCI->vMainResynch();
        // pCI->vPrintBoard(__FILE__,__func__,__LINE__);
         vDebugPoint();
       }
@@ -172,7 +172,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
 
       if (p_project_prev && ! p_combined_prev) {
         Card_Combined *p_combined = new Card_Combined;
-        pCI->G_vInsertBefore(p_combined, p_cast_prev);
+        pCI->vInsertBefore(p_combined, p_cast_prev);
       }
 
       break;
@@ -185,12 +185,12 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
       p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr,p_emitted_prev);
 
       if (p_combined_prev) {
-        pCI->G_vInsertBefore(p_hash_prior_new, p_combined_prev);
+        pCI->vInsertBefore(p_hash_prior_new, p_combined_prev);
       }
       else {
-        pCI->G_vInsertBefore(p_hash_prior_new, p_cast_prev);
+        pCI->vInsertBefore(p_hash_prior_new, p_cast_prev);
         Card_Combined* p_combined = new Card_Combined;
-        pCI->G_vInsertBefore(p_combined, p_cast_prev);
+        pCI->vInsertBefore(p_combined, p_cast_prev);
       }
 
       break;

@@ -67,7 +67,7 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
   m_pCI->vClearRestart();
 
   m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain_NONE()) {
     if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
       if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
         continue;
