@@ -217,6 +217,19 @@ void CardIter::vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test ancestry                                                              */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bAncestor(eCK eCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (pAncestorFind(eCard))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ancestor                                                               */
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pAncestor(i8 i_Ancestor)
@@ -279,19 +292,6 @@ Card* CardIter::pAncestorFind(eCK eCard, i8* ai_Ancestor)
     *ai_Ancestor = C_UNKNOWN;
 
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test ancestry                                                              */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bAncestorIncludes(eCK eCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (pAncestorFind(eCard))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

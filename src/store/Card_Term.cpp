@@ -60,7 +60,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (!pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    if (pCI->pAncestorFind(CK_o_KEYEXISTS) || pCI->pAncestorFind(CK_o_KEYNOTEXISTS))
+    if (pCI->bAncestor(CK_o_KEYEXISTS) || pCI->bAncestor(CK_o_KEYNOTEXISTS))
       return C_CONTINUE_RECURSION;
 
     Card_Term *p_term = _pCard_Term(pCard);
@@ -548,7 +548,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
-    if (m_xSymbol.bIs_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
+    if (m_xSymbol.bIs_Col() && ! pCI->bAncestor(CK_s_NEEDED)) {
       if (!m_xSymbol.bValidType()) {
          vMark("?"_Stz,"t"_Stz);
          pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);

@@ -95,10 +95,10 @@ namespace STORE
     void vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol);
     void vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
 
+    bool  bAncestor(eCK eCard);
     Card* pAncestor(i8 i_Ancestor);
     void  vAncestorDump(Card* pCard = nullptr);
     Card* pAncestorFind(eCK eCard, i8* ai_Ancestor=nullptr);
-    bool  bAncestorIncludes(eCK eCard);
     Card* pAncestorParent(void);
     void  vAncestorPop(void);
     void  vAncestorPush(Card* pCard);
