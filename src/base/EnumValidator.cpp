@@ -106,7 +106,6 @@
 #include "eSF.h"
 #include "eSI.h"
 #include "eSK.h"
-#include "eSM.h"
 #include "eSR.h"
 #include "eST.h"
 #include "eSY.h"
@@ -281,7 +280,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aSF[SF_ENUMS - 1],          "aSF[]"_Stz,     "eSF"_Stz },
       {           aSI[SI_ENUMS - 1],          "aSI[]"_Stz,     "eSI"_Stz },
       {           aSK[SK_ENUMS - 1],          "aSK[]"_Stz,     "eSK"_Stz },
-      {           aSM[SM_ENUMS - 1],          "aSM[]"_Stz,     "eSM"_Stz },
       {           aSR[SR_ENUMS - 1],          "aSR[]"_Stz,     "eSR"_Stz },
       {           aST[ST_ENUMS - 1],          "aST[]"_Stz,     "eST"_Stz },
       {    aST_string[ST_ENUMS - 1],   "aST_string[]"_Stz,     "eST"_Stz },

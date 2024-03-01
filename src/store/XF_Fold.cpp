@@ -354,10 +354,9 @@ CarryForward* XF_Fold::pFold_from(Stz* szFoldNm, CardIter* pCI)
 /* XF_Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
 CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
-                                         eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh)
+                                         eCK eCardWithSQ, eQO eWhatOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-  UNUSED(eSmoosh);
 
   CarryForward* pCarryForward = new CarryForward;
 

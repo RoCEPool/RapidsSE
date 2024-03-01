@@ -92,7 +92,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(void)
   //pFold->vFold_basic(m_pCI,"W_L_NC_NI_exists"_Stz,CK_o_WHERE);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz,
-                               CK_o_WHERE, QO_IN_OP, SM_NONE);
+                               CK_o_WHERE, QO_IN_OP);
 
  // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 

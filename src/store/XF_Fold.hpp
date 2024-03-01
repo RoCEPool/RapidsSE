@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Bench.hpp"
-#include "eSM.h"
 
 
 namespace STORE
@@ -63,7 +62,7 @@ namespace STORE
     CarryForward* pFold_from(Stz* szFoldNm, CardIter* pCI);
 
     CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
-                                    eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh);
+                                    eCK eCardWithSQ, eQO eWhatOp);
 
     i8 nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ);
 

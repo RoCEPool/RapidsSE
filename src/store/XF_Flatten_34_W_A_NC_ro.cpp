@@ -83,7 +83,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz,
-                               CK_o_WHERE, QO_RELN_OP, SM_NONE);
+                               CK_o_WHERE, QO_RELN_OP);
 
  // m_pCI->vPrintBoard(__FILE__,__func__,__LINE__);
 
