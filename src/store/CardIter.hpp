@@ -148,9 +148,8 @@ namespace STORE
     bool bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
     bool bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
 
-    void vEnd(void);
     void vEndPhase(void);
-    void vEndTransform(i8 iLineNo=C_UNKNOWN);
+    void vEndTransform(i8 iLineNo);
 
     void vFocusOnMain(void);
     bool bForwards(void);

@@ -1227,16 +1227,6 @@ bool CardIter::bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 /*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
-void CardIter::vEnd(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  G.xKid.vEnded();
-}
-
-/*----------------------------------------------------------------------------*/
-/* end of phase                                                               */
-/*----------------------------------------------------------------------------*/
 void CardIter::vEndPhase(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
