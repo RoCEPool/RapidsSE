@@ -348,10 +348,12 @@ void Step::vParcelPipeOut(void)
 
         if (gxaSizeHeap[eClass].m_fpPostRecvFn)
           gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
+				vTrace("Debug8\n"_Stz);
 
 //        vTrace("i_Stream %lld pDstOp %p pDuplicateOperand %p pCurTask %p\n"_Stz
 //               ,i_Stream,pDstOp,pDuplicateOperand,pCurTask);
         AM::OP::vPipeToOp(pDstOp, pDuplicateOperand, pCurTask);
+				vTrace("Debug9\n"_Stz);
         nQueued++;
       }
 
@@ -367,6 +369,8 @@ void Step::vParcelPipeOut(void)
       // delete the original operand (to be optimised)
       //if (CN_ROWBUFFER != eOperandClass)
       AM::vDeleteOperand(pOperand, pOuterJobOfTask());
+
+			vTrace("Debug10\n"_Stz);
 
       delete pParcel;
 

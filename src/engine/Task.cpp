@@ -341,7 +341,7 @@ void Task::vTaskLoop(void)
 
     // catch lowMemory exception
     catch (LowMemory xLowMemory) {
-      //vTrace("Got xLowMemory\n"_Stz);
+      vTrace("TASK Got xLowMemory\n"_Stz);
       vLowMemoryHandler();
     }
 

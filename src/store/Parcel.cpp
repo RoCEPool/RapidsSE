@@ -802,66 +802,61 @@ void Parcel::vDispatchParcel(Op* pSendOp,
                              LglPtn  tDstLglPtn) {
 	_precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-	try {
-		i8 iDstStage = pDstStage->i_Stage();
+	i8 iDstStage = pDstStage->i_Stage();
 
-		m_iDstNode = iDstNode;
-		m_iDstStage = iDstStage;
-		m_tDstPtn = tDstLglPtn;
+	m_iDstNode = iDstNode;
+	m_iDstStage = iDstStage;
+	m_tDstPtn = tDstLglPtn;
 
-		m_iSrcNodeId = MY::pNode()->iNodeId();
-		m_iCodeLine = iCodeLine;
+	m_iSrcNodeId = MY::pNode()->iNodeId();
+	m_iCodeLine = iCodeLine;
 
+	pSendOp->vSendNode(m_iDstNode);
+
+//  switch (AM::SYSARGS::iNetOpt()) {
+//
+//    case 1:
+//      vDispatchParcel_netopt1(pSendOp,pDstStage);
+//      break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
+
+	// this function is called for each node
+
+	i8 iCurNode = MY::pNode()->iNodeId();
+	Operand *pOperand = pGetOperand();
+
+	if (m_iDstNode == iCurNode) {
+		if (pOperand->bIsBuffer())
+			vPipeBufferViaQueues(pSendOp, pDstStage);
+		else
+			vPipeOperandViaQueues(pSendOp, pDstStage);
+	} else {
 		pSendOp->vSendNode(m_iDstNode);
-
-	//  switch (AM::SYSARGS::iNetOpt()) {
-	//
-	//    case 1:
-	//      vDispatchParcel_netopt1(pSendOp,pDstStage);
-	//      break;
-	//
-	//    default:
-	//      NEVER_REACH;
-	//  }
-
-		// this function is called for each node
-
-		i8 iCurNode = MY::pNode()->iNodeId();
-		Operand *pOperand = pGetOperand();
-
-		if (m_iDstNode == iCurNode) {
-			if (pOperand->bIsBuffer())
-				vPipeBufferViaQueues(pSendOp, pDstStage);
-			else
-				vPipeOperandViaQueues(pSendOp, pDstStage);
-		} else {
-			pSendOp->vSendNode(m_iDstNode);
-			vSendParcelViaSocket(pSendOp);
-		}
-
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-		i8 i_OtherStage = pSendOp->iOtherStage();
-		if (C_UNKNOWN == i_OtherStage)
-			return;
-
-		m_iDstStage = i_OtherStage;
-		//vSendParcelViaSocket(pSendOp);
-
-		Stage *pDstStage_other = pSendOp->pOtherStage();
-
-		if (m_iDstNode == iCurNode) {
-			if (pOperand->bIsBuffer())
-				vPipeBufferViaQueues(pSendOp, pDstStage_other);
-			else
-				vPipeOperandViaQueues(pSendOp, pDstStage_other);
-		} else {
-			pSendOp->vSendNode(m_iDstNode);
-			vSendParcelViaSocket(pSendOp);
-		}
+		vSendParcelViaSocket(pSendOp);
 	}
-	catch (LowMemory xLowMemory) {
-		vTrace("vDispatchParcel: ran into LOWMEMORY\n"_Stz);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	i8 i_OtherStage = pSendOp->iOtherStage();
+	if (C_UNKNOWN == i_OtherStage)
+		return;
+
+	m_iDstStage = i_OtherStage;
+	//vSendParcelViaSocket(pSendOp);
+
+	Stage *pDstStage_other = pSendOp->pOtherStage();
+
+	if (m_iDstNode == iCurNode) {
+		if (pOperand->bIsBuffer())
+			vPipeBufferViaQueues(pSendOp, pDstStage_other);
+		else
+			vPipeOperandViaQueues(pSendOp, pDstStage_other);
+	} else {
+		pSendOp->vSendNode(m_iDstNode);
+		vSendParcelViaSocket(pSendOp);
 	}
 }
 

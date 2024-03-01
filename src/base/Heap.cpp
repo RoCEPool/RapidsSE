@@ -199,7 +199,8 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   }
 
   Object* pObject = reinterpret_cast<Object*>(pPopFree());
-  
+  RASSERT(pObject);
+
   m_nCurrAllocated++;
 
 #ifdef WITH_CHECK_INITIALISED

@@ -97,6 +97,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   // In the process of this we also resolve a command to a pipeline using
   // the dictionary, and substitute pipeline arguments appropriately.
   CommandParser* pCommandParser = new CommandParser(pCommonTagSet, pParentTask);
+	RASSERT(pCommandParser);
 
   TaskList* pTaskList;
 
