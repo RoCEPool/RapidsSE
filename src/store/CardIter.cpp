@@ -1258,8 +1258,8 @@ void CardIter::vEndTransform(i8 iLineNo)
       xDeck.pChild()->vEnsureLast(CK_s_NEEDED);
     }
 
-    vPrintBoard(m_pBench->szXfile()->azChar(),
-                m_pBench->szXfunc()->azChar(),
+    vPrintBoard(m_pBench->szXfunc()->azChar(),
+                m_pBench->szXfile()->azChar(),
                 iLineNo);
 
 //    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {

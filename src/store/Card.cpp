@@ -61,7 +61,6 @@ Stz* P_SendKind     = "eSendKind"_Stz;
 Stz* P_Smoothed     = "bSmoothed"_Stz;
 Stz* P_StageTopo    = "eStageTopo"_Stz;
 Stz* P_SqyCall      = "bSqyCall"_Stz;
-Stz* P_SqyNo        = "i_SqyNo"_Stz;
 Stz* P_Unproject    = "bUnproject"_Stz;
 
 Stz* C_CARD_HISTORY = "<card_history>"_Stz;

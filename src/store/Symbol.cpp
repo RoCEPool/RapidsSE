@@ -3310,7 +3310,7 @@ void Symbol::vFacet_Sqy_No(i8 iSqyNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vFacetSprint(SF_SQY_NO, "$Q%lld"_Stz, iSqyNo);
 

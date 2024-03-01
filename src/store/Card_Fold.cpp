@@ -49,9 +49,9 @@ Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, Stz *szCrlPpy, i8 i_SqyNo)
   Card_Fold* p_fold = new Card_Fold;
 
   p_fold->pSymbol()->vApplyFacet(SF_FLD_NM, szFoldNm);
+  p_fold->pSymbol()->vApplyFacet(SF_SQY_NO, i_SqyNo);
 
   p_fold->pSymbol()->Y_vSet(szCrlPpy);
-  p_fold->pSymbol()->Y_vSet(P_SqyNo,i_SqyNo);
 
   Card_Level* p_level = new Card_Level(AL_NONE);
   p_fold->vAppendChild(p_level);
