@@ -201,14 +201,37 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 		else {
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-			i8 iSrcSize = StrLib::nSize(sValue);
+			//i8 iSrcSize = (i8)strlen(sValue);
 			MemLib::vZero(aDst, iReqDstSize, CN_KEY);
-			MemLib::vCopy(aDst, sValue, iSrcSize, CN_KEY);
+			MemLib::vCopy(aDst, sValue, iSrcLen, CN_KEY);
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			w8* aWrd = (w8*)aDst;
-			for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--)
-				MemLib::vWordFlip(aWrd++);
+			for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--) {
+				//MemLib::vWordFlip(aWrd++);
+
+				_WordAsBytes* aAsBytes = (_WordAsBytes*)aWrd++;
+
+				byte yByte;
+
+				yByte = aAsBytes->m_yaByte[0];
+				aAsBytes->m_yaByte[0] = aAsBytes->m_yaByte[7];
+				aAsBytes->m_yaByte[7] = yByte;
+
+				yByte = aAsBytes->m_yaByte[1];
+				aAsBytes->m_yaByte[1] = aAsBytes->m_yaByte[6];
+				aAsBytes->m_yaByte[6] = yByte;
+
+				yByte = aAsBytes->m_yaByte[2];
+				aAsBytes->m_yaByte[2] = aAsBytes->m_yaByte[5];
+				aAsBytes->m_yaByte[5] = yByte;
+
+				yByte = aAsBytes->m_yaByte[3];
+				aAsBytes->m_yaByte[3] = aAsBytes->m_yaByte[4];
+				aAsBytes->m_yaByte[4] = yByte;
+
+			}
+
 
 			if (iSrcLen == iReqDstSize) {
 				iReqDstSize += C_BYTES_PER_WORD;
