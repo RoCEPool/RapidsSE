@@ -458,7 +458,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 
-	UNUSED(bTouch);
+//	UNUSED(bTouch);
 
   m_nAllocCount = 0;
   //m_nFreeCount  = m_nBuffers;
@@ -492,7 +492,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     pFreePoolBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
     
     //pFreePoolBuffer->aFooter()->vSetFooter();
-    //if (bTouch)
+    if (bTouch)
       pFreePoolBuffer->vZeroData();
 
     pFreePoolBuffer->vSetFooter();
@@ -508,7 +508,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
   pLastBuffer->vSetMagic();
   pLastBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
   //pLastBuffer->aFooter()->vSetFooter();
-  //if (bTouch)
+  if (bTouch)
     pLastBuffer->vZeroData();
 
   pLastBuffer->vSetFooter();
