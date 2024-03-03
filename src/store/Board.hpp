@@ -194,7 +194,7 @@ namespace STORE
     Board(i8 i_Board, eBK eBoard, Stz* szSqyNm, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost);
+    static void vDerive_expr_fold_nc(CardIter* pCI, SubQuery* pSubQuery_leftmost);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
     static bool bFindAndMarkSubQryCall(CardIter* p_conj);

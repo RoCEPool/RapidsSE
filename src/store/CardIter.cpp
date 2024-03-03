@@ -547,7 +547,7 @@ void CardIter::vClearRegisters(void)
   X.m_pExprList_i = nullptr;
   X.m_pExprList_k = nullptr;
 
-  Sqy.m_i_FoldCard = C_UNKNOWN;
+  Sqy.m_i_fold = C_UNKNOWN;
 
 }
 

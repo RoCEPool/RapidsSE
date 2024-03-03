@@ -56,7 +56,7 @@ namespace STORE
       Card_Term* m_pTerm_sqyCall;
       Card_CONJ* m_pConj_sqyCall;
       Card_Correlation* m_pCorrelation;
-      i8         m_i_FoldCard;
+      i8         m_i_fold;
       Card_Expr* m_pExpr_fold;
       Card_Expr* m_pExpr_corr;
       Card*      m_pCard_sqyCopy;

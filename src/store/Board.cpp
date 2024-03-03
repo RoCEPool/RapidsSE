@@ -74,14 +74,14 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* derive the fold expression for a non-correlated subquery                   */
 /*----------------------------------------------------------------------------*/
-void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost)
+void Board::vDerive_expr_fold_nc(CardIter* pCI, SubQuery* pSubQuery_leftmost)
 {
   _static_
 
   pCI->G.p_emit = nullptr;
-  for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
+  for (i8 i_Main = pCI->Sqy.m_i_fold - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
     if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
@@ -89,23 +89,23 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmo
   if (! pCI->G.p_emit)
     return;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Expr* p_expr_result = pCI->Dic.m_p_expr->pGet_expr((i8) 0);
+
   pCI->vAppendNewChild(pCI->G.p_fold, CK_EXPR);
   pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 
-  Card_Expr* p_expr_dic =
-      pCI->Dic.m_p_expr->pGet_expr((i8) 0);
+  pCI->G.p_term->vApplyCast_x(p_expr_result->xCast());
 
-  pCI->G.p_term->vApplyCast_x(p_expr_dic->xCast());
+  pCI->G.p_rpnCalc->vApplyCast_x(p_expr_result->xCast());
 
-  pCI->G.p_rpnCalc->vApplyCast_x(p_expr_dic->xCast());
-
-  s32 sRn;
-  sRn.vSprint("$R%lld"_Stz,pSubQuery_leftmost->pBoard()->i_Board());
-
-  pCI->G.p_expr->pSymbol()->vApplyFacet(SF_SQY_RSL, sRn);
+  pCI->G.p_expr->pSymbol()->vApplyFacet(SF_SQY_RSL, pSubQuery_leftmost->pBoard()->i_Board());
   pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8) 1);
-  pCI->G.p_expr->vApplyCast_x(p_expr_dic->xCast());
+  if (p_expr_result->pSymbol()->bHasFacet(SF_NMD_COL))
+    pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,p_expr_result->pSymbol());
+  pCI->G.p_expr->vApplyCast_x(p_expr_result->xCast());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
 
 
   pCI->G.p_emit = nullptr;
-  for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
+  for (i8 i_Main = pCI->Sqy.m_i_fold - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
     if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
