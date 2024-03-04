@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_10_F.hpp"
 
-#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 #include "XF_Prolog_Analyse_emit.hpp"
 
@@ -85,7 +84,6 @@ void XF_Flatten_10_F::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from
 
-  XF_Fold* pFold = new XF_Fold;
   CarryForward* pCarryForward = pFold_from("From"_Stz,m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -113,7 +111,6 @@ void XF_Flatten_10_F::vFlatten(void)
 
   delete pSmooth;
   delete pCarryForward;
-  delete pFold;
 
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 }

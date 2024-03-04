@@ -7,7 +7,6 @@
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
-#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -48,10 +47,7 @@ void XF_Flatten_52_W_L_NC_I_join::vFlatten(CardIter* pCI)
 {
   _static_
 
-  XF_Fold* pFold = new XF_Fold;
   i8 nTables = nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
-
-  delete pFold;
 
   if (1 == nTables)
     XF_Flatten_53_W_L_NC_NI_join::vFlatten(pCI);

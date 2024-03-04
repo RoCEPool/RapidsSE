@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_32_W_A_NC_I.hpp"
 
-#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
@@ -88,7 +87,6 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  XF_Fold* pFold = new XF_Fold;
   CarryForward* pCarryForward =
       pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_o_WHERE, QO_IN_OP);
 
@@ -106,7 +104,6 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
 
   delete pCarryForward;
   delete pSmooth;
-  delete pFold;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

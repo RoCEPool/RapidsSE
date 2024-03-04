@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
 
-#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
@@ -85,7 +84,6 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  XF_Fold* pFold = new XF_Fold;
   CarryForward* pCarryForward =
       pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz, CK_o_HAVING, QO_RELN_OP);
 
@@ -103,7 +101,6 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  delete pFold;
   delete pCarryForward;
   delete pSmooth;
 

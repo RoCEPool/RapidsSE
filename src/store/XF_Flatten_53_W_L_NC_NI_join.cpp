@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
-#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Smoosh.hpp"
 
@@ -86,8 +85,6 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
   // fold of exists subQuery
 
 
-  XF_Fold* pFold = new XF_Fold;
-
   vFold_basic(m_pCI, "53_W_L_NC_NI_join"_Stz, CK_o_WHERE);
 
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
@@ -120,7 +117,6 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
   delete pSmoosh;
   delete pSmooth;
   delete pCarryForward;
-  delete pFold;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
