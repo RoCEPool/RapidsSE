@@ -124,9 +124,13 @@ void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
 /*----------------------------------------------------------------------------*/
 /* derive the fold expression for a non-correlated subquery                   */
 /*----------------------------------------------------------------------------*/
-void Card_Fold::vDerive_expr_fold_nc(CardIter* pCI, SubQuery* pSubQuery_leftmost)
+void Card_Fold::vDerive_expr_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bCorrelated = pSubQuery_leftmost->nCorrCols();
+  UNUSED(bCorrelated);
+
 
   pCI->G.p_emit = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_fold - 1; i_Main >= 0; i_Main--) {
