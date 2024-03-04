@@ -9,7 +9,16 @@ Stz* aQF[QF_ENUMS]
 {
   /* */ "QF_NONE"_Stz,
 
- //  /* */ "QF_ENUMS"_Stz
+  /* */ "QF_10_F"_Stz,
+  /* */ "QF_24_W_A_C_ro"_Stz,
+  /* */ "QF_32_W_A_NC_I"_Stz,
+  /* */ "QF_34_W_A_NC_ro"_Stz,
+  /* */ "QF_40_W_L_C_E"_Stz,
+  /* */ "QF_52_W_L_NC_I_join"_Stz,
+  /* */ "QF_53_W_L_NC_NI_join"_Stz,
+  /* */ "QF_74_H_A_NC_ro"_Stz,
+
+  //  /* */ "QF_ENUMS"_Stz
 };
 
 /*============================================================================*/
