@@ -68,8 +68,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   pCI->vClearRestart();
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
-   if (bIdentify_Correlation_Key_Predicate(pCI))
-     break;
+    if (bIdentify_Correlation_Key_Predicate(pCI))
+      break;
   RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
@@ -89,8 +89,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   if (pCI->bIsNextMain(CK_o_PROJECT)) {
     RASSERT(pCI->bEachMain(CK_o_PROJECT));
     vEnhance_sq_project_To_Include_Correlation_Key(pCI, C_SQCRLKEY);
-  }
-  else {
+  } else {
 
   }
 
@@ -136,7 +135,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               //             %1
 
   // todo: this should be Card_RlnConj
-  Card_CONJ* p_conj_corr = nullptr;
+  Card_CONJ *p_conj_corr = nullptr;
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
     if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
       break;
@@ -158,8 +157,10 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->bEachMain(CK_c_FOLD));
 
   pCI->vForwards(false);
-  while (!pCI->G.p_MainCard->pSub_emit())
-    pCI->bEachMain_reverse_NONE();
+  while (pCI->bEachMain_reverse_NONE()) {
+    if (pCI->G.p_MainCard->pSub_emit())
+      break;
+  }
   pCI->vForwards(true);
 
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();

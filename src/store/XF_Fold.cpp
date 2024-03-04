@@ -284,7 +284,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   pCI->vBeginEach();
   if (pCI->bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_fold = pCI->G.i_MainCard;
-    pCI->G.p_fold->vDerive_expr_fold(pCI, m_pSubQuery);
+    pCI->G.p_fold->vDerive_emit_fold(pCI, m_pSubQuery);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
@@ -423,7 +423,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vBeginEach();
   if (pCI->bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_fold = pCI->G.i_MainCard;
-    pCI->G.p_fold->vDerive_expr_fold(pCI, m_pSubQuery);
+    pCI->G.p_fold->vDerive_emit_fold(pCI, m_pSubQuery);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);

@@ -122,9 +122,9 @@ void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* derive the fold expression for a non-correlated subquery                   */
+/* derive the fold emit for a (non-correlated?) subquery                      */
 /*----------------------------------------------------------------------------*/
-void Card_Fold::vDerive_expr_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
+void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -145,7 +145,10 @@ void Card_Fold::vDerive_expr_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
 
   Card_Expr* p_expr_result = pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
-  pCI->vAppendNewChild(pCI->G.p_fold, CK_EXPR);
+  pCI->vAppendNewChild(pCI->G.p_fold, CK_s_STREAM);
+  pCI->vAppendNewChild(pCI->G.p_stream, CK_t_EMIT);
+  pCI->vAppendNewChild(pCI->G.p_emit, CK_EXPR);
+
   pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 

@@ -25,7 +25,7 @@ namespace STORE
     static void vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold);
     static void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);
 
-    void vDerive_expr_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost);
+    void vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
