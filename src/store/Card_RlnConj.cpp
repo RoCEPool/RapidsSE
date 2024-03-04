@@ -56,15 +56,11 @@ Card_RlnConj* Card_RlnConj::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get the argument for a correlation                                         */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RlnConj::pGetCorrCol(void)
+Card_Term* Card_RlnConj::pGet_term_corrArg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-//  i8 nChildren = this->nChildCards();
-//  if (2 != nChildren)
-//    return nullptr;
 
   RASSERT(bIsCorrConj());
 

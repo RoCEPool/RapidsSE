@@ -119,7 +119,7 @@ bool XF_Flatten_24_W_A_C_ro::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
     //p_conj->vDump();
     rbIsCorrPred = true;
 
-    Card_Term* pTerm_corrCol = static_cast<Card_RlnConj *>(p_conj)->pGetCorrCol();
+    Card_Term* pTerm_corrCol = static_cast<Card_RlnConj *>(p_conj)->pGet_term_corrArg();
     pCI->Sqy.m_pTerm_corrCol = pTerm_corrCol;
 
     p_conj->vMark1(MARK_AT);

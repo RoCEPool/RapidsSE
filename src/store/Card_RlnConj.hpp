@@ -21,7 +21,7 @@ namespace STORE
     Card_RlnConj* pClone(void);
      void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
 
-    Card_Term* pGetCorrCol(void);
+    Card_Term* pGet_term_corrArg(void);
     char cGetTable_a(void);
     char cGetTable_b(void);
     Card_Term* pGetTerm_0(void);
