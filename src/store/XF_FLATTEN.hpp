@@ -4,12 +4,14 @@
 #pragma once
 
 #include "XF_TRANSFORM.hpp"
+#include "eQF.h"
 
 namespace STORE
 {
   class XF_FLATTEN : public XF_TRANSFORM
   {
-  private:
+  protected:
+   eQF m_eFlatten;
 
   public:
 
