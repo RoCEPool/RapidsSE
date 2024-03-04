@@ -52,7 +52,7 @@ namespace STORE
       SubQuery*  m_pSubQuery;
 
       Card_Term* m_pTerm_sqyArg;
-      Card_Term* m_pTerm_corrCol;
+      Card_Term* m_pTerm_corrArg;
       Card_Term* m_pTerm_sqyCall;
       Card_CONJ* m_pConj_sqyCall;
       Card_Correlation* m_pCorrelation;

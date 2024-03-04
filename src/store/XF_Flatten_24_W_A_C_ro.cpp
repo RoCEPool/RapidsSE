@@ -119,8 +119,8 @@ bool XF_Flatten_24_W_A_C_ro::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
     //p_conj->vDump();
     rbIsCorrPred = true;
 
-    Card_Term* pTerm_corrCol = static_cast<Card_RlnConj *>(p_conj)->pGet_term_corrArg();
-    pCI->Sqy.m_pTerm_corrCol = pTerm_corrCol;
+    Card_Term* p_term_corrArg = static_cast<Card_RlnConj *>(p_conj)->pGet_term_corrArg();
+    pCI->Sqy.m_pTerm_corrArg = p_term_corrArg;
 
     p_conj->vMark1(MARK_AT);
     p_conj->pSymbol()->Y_vSet(P_CrlKeyPred);
@@ -150,7 +150,7 @@ void XF_Flatten_24_W_A_C_ro::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* 
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->Sqy.m_pExpr_corr = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_pTerm_corrCol->pSymbol(),
+  pCI->Sqy.m_pExpr_corr = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_pTerm_corrArg->pSymbol(),
                                                         pCI->G.i_MainCard + 1);
 
   pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
@@ -543,14 +543,14 @@ void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
   //   v                          //  ]filter
   // T T A A A P F T T W A A A    //  .]boolPred
   //   f                          //  ..]cmpPred ==
-  //   p                          //           $d.2  ((pCI->m_pTerm_corrCol))
+  //   p                          //           $d.2  ((pCI->m_pTerm_corrArg))
   //                              //             %1
 
   pCI->vClearRestart();
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
     if (bIdentify_Correlation_Key_Predicate(pCI))
       break;
-  RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
+  RASSERT(pCI->Sqy.m_pTerm_corrArg); // eg $d.2 (L_PARTKEY)
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vIdentify_Expr_Of_Correlation_Key_Column(pCI);
@@ -613,7 +613,7 @@ void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
   // v                             //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred
   // s                             //  ..]cmpPred ==
-  // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
+  // f                             //           $d.2  ((pCI->m_pTerm_corrArg))
   //                               //             %1
 
   // todo: this should be Card_RlnConj
@@ -629,7 +629,7 @@ void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred
   // s                 f           //  ..]cmpPred ==
-  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
+  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrArg))
   //                               //             %1
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
@@ -680,7 +680,7 @@ void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred
   // s                 f           //  ..]cmpPred ==
-  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
+  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrArg))
   //             b <-  cp          //             %1
 
   RASSERT(pCI->bEachMain(CK_c_FOLD));

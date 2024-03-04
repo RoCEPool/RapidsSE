@@ -527,7 +527,7 @@ void CardIter::vClearRegisters(void)
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
 
-  Sqy.m_pTerm_corrCol  = nullptr;
+  Sqy.m_pTerm_corrArg  = nullptr;
 
   Flux.m_pArriving  = nullptr;
   Dic.m_p_expr    = nullptr;
