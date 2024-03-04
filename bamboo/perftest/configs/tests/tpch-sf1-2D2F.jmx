@@ -398,8 +398,6 @@ c5ad.8xlarge</stringProp>
    N_REGIONKEY       INTEGER      NOT NULL,
    N_COMMENT         VARCHAR(152)
 )
-replicated
-tableSize 1
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -418,8 +416,6 @@ tableSize 1
    R_NAME            CHAR(25)     NOT NULL,
    R_COMMENT         VARCHAR(152)
 )
-replicated
-tableSize 1
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1269,7 +1265,7 @@ OUT.flush();</stringProp>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadNation" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">loadReplicated nation &quot;/mnt/disk1/data1/nation.tbl&quot; ;</stringProp>
+              <stringProp name="query">load nation &quot;/mnt/disk1/data1/nation.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1309,7 +1305,7 @@ OUT.flush();</stringProp>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadRegion" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">loadReplicated region &quot;/mnt/disk1/data1/region.tbl&quot; ;</stringProp>
+              <stringProp name="query">load region &quot;/mnt/disk1/data1/region.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
