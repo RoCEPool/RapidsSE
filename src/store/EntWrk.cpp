@@ -182,9 +182,10 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 		i8 iBufRemaining;
 		char* aDst = (char*)ayElmNext_dtm(&iBufRemaining);
 
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		//i8 nElmSize = StrLib::iWordFlip(aDst, iBufRemaining, sValue);
 
-		i8 iSrcLen  = (i8)strlen(sValue);
+		i8 iSrcLen  = (i8)strlen(sValue) + 1;
 
 		i8 iRoundUp = 0;
 		i8 iRemainder = iSrcLen % C_BYTES_PER_WORD;
@@ -193,13 +194,13 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 
 		i8 iReqDstSize = iSrcLen + iRoundUp;
 		ASSERT(0 == iReqDstSize % C_BYTES_PER_WORD);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		//bool bRet = StrLib::bCheckBufferSpace(__func__, iReqDstSize, iBufRemaining, pbResult);
 		if (iBufRemaining < iReqDstSize) {
 			nElmSize = iReqDstSize;
 		}
 		else {
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			//i8 iSrcSize = (i8)strlen(sValue);
 			MemLib::vZero(aDst, iReqDstSize, CN_KEY);
@@ -208,9 +209,11 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			w8* aWrd = (w8*)aDst;
 			for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--) {
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 				//MemLib::vWordFlip(aWrd++);
 
-				_WordAsBytes* aAsBytes = (_WordAsBytes*)aWrd++;
+				_WordAsBytes* aAsBytes = (_WordAsBytes*)aWrd;
 
 				byte yByte;
 
@@ -230,8 +233,9 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 				aAsBytes->m_yaByte[3] = aAsBytes->m_yaByte[4];
 				aAsBytes->m_yaByte[4] = yByte;
 
+				aWrd++;
 			}
-
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			if (iSrcLen == iReqDstSize) {
 				iReqDstSize += C_BYTES_PER_WORD;
