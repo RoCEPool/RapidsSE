@@ -871,11 +871,13 @@ bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
   char acSecond = szArg->cChar(1);
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
+  char acFifth  = szArg->cChar(4);
 
   if (   '$' == acFirst
-      && 'R' == acSecond
-      && StrLib::bIsDigit(acThird)
-      && ! acFourth)
+      && 'S' == acSecond
+      && 'R' == acThird
+      && StrLib::bIsDigit(acFourth)
+      && ! acFifth)
     return true;
 
   return false;
@@ -3372,7 +3374,7 @@ void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given parameter column                                  */
+/* for a subQuery result facet                                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
 {
@@ -3380,7 +3382,7 @@ void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
 
   //RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_SQY_RSL, "$R%lld"_Stz, iOrdinal);
+  vFacetSprint(SF_SQY_RSL, "$SR%lld"_Stz, iOrdinal);
 
   RASSERT(bHasFacet(SF_SQY_RSL));
 }

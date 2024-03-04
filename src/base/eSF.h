@@ -62,7 +62,7 @@ enum eSF // symbol facet
   /* */ SF_SQY_NO,      // SubQuery No         : $Qn
   /* */ SF_SQY_OP,      // SubQuery Op         :
   /* */ SF_SQY_PRM,     // Parameter Column    : %n
-  /* */ SF_SQY_RSL,     // SubQuery Result     :
+  /* */ SF_SQY_RSL,     // SubQuery Result     : $SRn
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
   /* */ SF_STG_NM,      // Stage No            : Sn
   /* */ SF_STR_FN,      // String Function     : SUBSTRING2 ... SUBSTRING3

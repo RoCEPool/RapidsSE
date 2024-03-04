@@ -445,18 +445,16 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
   RASSERT(pSymbol_expr_arriving->bHasFacet(SF_EXP_COL));
 
   if (pSymbol_expr_arriving->bHasFacet(SF_NMD_COL))
-    pSymbol_expr_inducted->vApplyFacet(SF_NMD_COL,
-                                         pSymbol_expr_arriving->szFacet(SF_NMD_COL));
+    pSymbol_expr_inducted->vApplyFacet(SF_NMD_COL,pSymbol_expr_arriving);
   else
     p_expr_inducted->pSymbol()->vApplyFacet(SF_NMD_COL,iExp);
 
-//  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
-//    pSymbol_expr_inducted->vApplyFacet(SF_KEY_COL,
-//                                        pSymbol_expr_arriving->szFacet(SF_KEY_COL));
+  if (pSymbol_expr_arriving->bHasFacet(SF_SQY_RSL))
+    pSymbol_expr_inducted->vApplyFacet(SF_SQY_RSL,pSymbol_expr_arriving);
+
 
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
-    pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,
-                                        pGet_Symbol(0)->szFacet(SF_TBL_COL));
+    pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,pGet_Symbol(0));
   }
 
   Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
