@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_34_W_A_NC_ro.hpp"
 
-#include "XF_Flatten_Smooth.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +92,6 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
   //RASSERT(m_pCI->bEachMainWithSub(CK_o_PROJECT,CK_t_EMIT));
   RASSERT(m_pCI->bEachMain(CK_c_FOLD));
 
-  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   vSmooth(m_pCI,pCarryForward);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -102,7 +100,6 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
 
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
-  delete pSmooth;
   delete pCarryForward;
 
   m_pCI->vEndTransform(__LINE__);

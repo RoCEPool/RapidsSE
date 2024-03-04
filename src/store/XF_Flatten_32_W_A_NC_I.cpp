@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_32_W_A_NC_I.hpp"
 
-#include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +94,6 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
 
   XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
-  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   vSmooth(m_pCI,pCarryForward);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
@@ -103,7 +101,6 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   delete pCarryForward;
-  delete pSmooth;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

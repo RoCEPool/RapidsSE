@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_10_F.hpp"
 
-#include "XF_Flatten_Smooth.hpp"
 #include "XF_Prolog_Analyse_emit.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -90,8 +89,7 @@ void XF_Flatten_10_F::vFlatten(void)
   // smoothing
 
   pCarryForward->Table.m_bReproject = true;
-  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
-  vSmooth(m_pCI,pCarryForward);
+   vSmooth(m_pCI,pCarryForward);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
@@ -109,7 +107,6 @@ void XF_Flatten_10_F::vFlatten(void)
   m_pCI->vEndTransform(__LINE__);
 
 
-  delete pSmooth;
   delete pCarryForward;
 
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);

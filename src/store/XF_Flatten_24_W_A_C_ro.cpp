@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_24_W_A_C_ro.hpp"
 
-#include "XF_Flatten_Smooth.hpp"
 
 
 /*----------------------------------------------------------------------------*/

@@ -7,7 +7,6 @@
 #include "Board.hpp"
 #include "CardIter.hpp"
 #include "XF_Flatten_Smoosh.hpp"
-#include "XF_Flatten_Smooth.hpp"
 #include "Optimiser.hpp"
 
 #include "XF_Flatten_Anchor_table.hpp"

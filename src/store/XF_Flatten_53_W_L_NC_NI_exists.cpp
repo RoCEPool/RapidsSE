@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 
-#include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -94,7 +93,6 @@ void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
 
-  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   vSmooth(m_pCI,pCarryForward);
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
@@ -102,7 +100,6 @@ void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  delete pSmooth;
   delete pCarryForward;
 
   m_pCI->vEndTransform(__LINE__);

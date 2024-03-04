@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
-#include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Smoosh.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +106,6 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
   CarryForward* pCarryForward = new CarryForward;
   pCarryForward->Table.m_bReproject = true;
 
-  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   vSmooth(m_pCI,pCarryForward);
 
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
@@ -115,7 +113,6 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
   m_pCI->G.pDeck->vMarksClearRecursive();
 
   delete pSmoosh;
-  delete pSmooth;
   delete pCarryForward;
 
   m_pCI->vEndTransform(__LINE__);

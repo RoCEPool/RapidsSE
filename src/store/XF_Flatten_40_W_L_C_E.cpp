@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_40_W_L_C_E.hpp"
 
-#include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Smoosh.hpp"
 
 
