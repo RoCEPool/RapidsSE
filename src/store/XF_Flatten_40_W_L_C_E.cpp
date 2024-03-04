@@ -4,7 +4,6 @@
 
 #include "XF_Flatten_40_W_L_C_E.hpp"
 
-#include "XF_Flatten_Smoosh.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -81,13 +80,11 @@ void XF_Flatten_40_W_L_C_E::vFlatten(void)
   vFold_basic(m_pCI, "40_W_L_C_E"_Stz, CK_o_WHERE);
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
-  XF_Flatten_Smoosh* pSmoosh = new XF_Flatten_Smoosh;
-  pSmoosh->vInto_KEYnotEXISTS(m_pCI);
+ vInto_KEYnotEXISTS(m_pCI);
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  delete pSmoosh;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

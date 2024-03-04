@@ -26,6 +26,8 @@ namespace STORE
 
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit=false);
 
+    void vInto_KEYnotEXISTS(CardIter* pCI);
+
   };
 
 }
