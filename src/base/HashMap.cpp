@@ -49,9 +49,8 @@ HashMap::HashMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 
-  m_pHashMapSlot = new HashMapSlot();
-  //HashMapEntry* test = m_pHashMapSlot->m_pEntry[0];
   m_uNoOfEntries        = 0;
+  m_uNoOfSlots          = C_INIT_HASHMAP_SIZE;
 
 #ifdef WITH_HASHMAP_DEBUG
   m_uCollison           = 0;
@@ -66,6 +65,10 @@ HashMap::HashMap(void)
   }
 #endif
 
+  for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
+    m_pHashMapSlot[u_slot] = new HashMapSlot();
+  }
+
   _checkInitialised_(CN_HASHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
@@ -77,7 +80,12 @@ HashMap::HashMap(void)
 HashMap::~HashMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-  delete m_pHashMapSlot;
+//  for(i8 i_slot = 0; i_slot < m_uNoOfSlots; i_slot++) {
+//    HashMapEntry* pDummyEntry = new HashMapEntry(nullptr, nullptr);
+//    pDummyEntry->m_pNext = nullptr;
+//    m_pHashMapSlot[i_slot].m_pEntry = pDummyEntry;
+//  }
+//  delete m_pHashMapSlot;
 }
 
 
@@ -93,9 +101,9 @@ void HashMap::vAnalysis(void)
   vTrace("HM: (with %llu buckets/slots and %llu total entries)\n"
          "    Current Load Factor: %f\n"_Stz,
 
-         m_pHashMapSlot->uGetNoSlots(),
+         m_uNoOfSlots,
          m_uNoOfEntries,
-         (d8)m_uNoOfEntries/m_pHashMapSlot->uGetNoSlots());
+         (d8)m_uNoOfEntries/m_uNoOfSlots);
 
 #ifdef WITH_HASHMAP_DEBUG
 
@@ -141,71 +149,63 @@ void HashMap::vDeleteKey(void* pKey)
   UNUSED(pKey);
   return;
 #else
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
-//  m_okLock.vGrabWrite();
-  HashMapEntry* pDummyEntry = pGetEntryAtIndex(uIndex);
-  RASSERT(pDummyEntry != nullptr);
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabWrite();
+  HashMapEntry* pEntry = _pHashMapEntry(m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pFind(pKey)->aItem());
+  pEntry->vDropLock();
+  ASSERT(pEntry->bLocked() == false);
 
-  m_pHashMapSlot->m_okSlotLock[uIndex].vGrabWrite();
-  // First entry is a dummy entry
-  HashMapEntry* pPrevIter = pDummyEntry;
-  HashMapEntry* pIter = pDummyEntry->m_pNext;
+  bool bResult = m_pHashMapSlot[uIndex]->m_pPdsOfEntries->bDelete(pKey);
+  UNUSED(bResult);
+  ASSERT(bResult);
 
-#ifdef WITH_HASHMAP_DEBUG
-  vAppendHistory(pKey, true, false);
-#endif
-
-  while ( pIter != nullptr ) {
-
-    if ( pIter->m_pKeyObject == pKey ) {
-#ifdef WITH_PAGING
-      // Arjun Hack:check if this databuffer is part of m_pOutputQueue
-      // If it is, it should not be locked
-
-      DataBuffer *pDataBuffer = _pDataBuffer(pIter->m_pValObject);
-      if (pDataBuffer->bOutputQueued()) {
-        RASSERT( ! pIter->m_okLock.bIsLocked());
-      } else {
-        RASSERT(pIter->m_okLock.bIsLocked());
-        // drop lock
-        //vTrace("Deleting key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
-        pIter->m_okLock.vDropRead();
-        // assert it is not locked
-        RASSERT( ! pIter->m_okLock.bIsLocked());
-      }
-//#else
-//      if(pIter->m_okLock.bIsLocked())
-//        pIter->m_okLock.vResetLock();
-#endif
-      RASSERT(pPrevIter != nullptr);
-      pPrevIter->m_pNext = pIter->m_pNext;
-      delete pIter;
-      // Assert before decrement
-      // since unsigned underflow could occur
-      //ASSERT(1 <= m_uNoOfEntries);
-      //m_uNoOfEntries--;
-      m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
-
-//      if ( pPrevIter != nullptr )
-//        pPrevIter->m_pNext = pIter->m_pNext;
-//      else
-//        vSetEntryAtIndex(pIter->m_pNext, uIndex);
-//      delete pIter;
-//      m_okLock.vDropWrite();
-      return;
-    }
-
-    pPrevIter = pIter;
-    pIter = pIter->m_pNext;
-  }
-  m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
-//  m_okLock.vDropWrite();
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vDropWrite();
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* Drop read lock on this key                                                 */
+/* Dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void HashMap::vDump(void)
+{
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  return;
+#else
+
+  i8 iaBI[BI_ENUMS] = {0};
+
+  for(u8 u_index = 0; u_index < m_uNoOfSlots; u_index++) {
+    PdsCursor* pCursor = new PdsCursor(m_pHashMapSlot[u_index]->m_pPdsOfEntries);
+
+    if(pCursor)
+      vTrace("\n"_Stz);
+
+    while( ! pCursor->bIsCurrNull()) {
+      HashMapEntry* pEntry = _pHashMapEntry(pCursor->m_pCurrentBlock->aItem());
+      iaBI[pEntry->m_eBufferIdType]++;
+      vTrace("[%p %p %lld, %lld]\t"_Stz, pEntry->m_pKeyObject, pEntry->m_pValObject, *(pEntry->m_ixAtomicLock), pEntry->m_eBufferIdType);
+
+      pCursor->vNext();
+    }
+    delete pCursor;
+  }
+  vTrace("\n"_Stz);
+
+  vTrace("Crw: %lld, Csv: %lld, HashMapSlot: %lld, Row: %lld, TaskLock: %lld\n"_Stz,
+         iaBI[1],
+         iaBI[2],
+         iaBI[3],
+         iaBI[4],
+         iaBI[5]);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* Drop read lock on this entry
+ *
+ * NOTE: This function is used to tell the paging demon that it's now safe to
+ * page out this buffer. Uses an atomic integer                               */
 /*----------------------------------------------------------------------------*/
 void HashMap::vDropKeyLock(void* pKey)
 {
@@ -214,64 +214,80 @@ void HashMap::vDropKeyLock(void* pKey)
   UNUSED(pKey);
   return;
 #else
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
-  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabRead();
+  HashMapEntry* pEntry = _pHashMapEntry(m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pFind(pKey)->aItem());
+  ASSERT(pEntry);
+  pEntry->vDropLock();
 
-  while ( pIter != nullptr ) {
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
 
-    if ( pIter->m_pKeyObject == pKey ) {
-//      RASSERT(pIter->m_okLock.bIsLocked());
-//      pIter->m_okLock.vDropRead();
-//      if(MY::pTask())
-//        vTrace("Drop key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
-//      else
-//        vTrace("Drop key %p read lock\n"_Stz, pIter->m_pKeyObject);
-      return;
-    }
-    pIter = pIter->m_pNext;
-  }
-  NEVER_REACH;
 #endif
 }
+
+/*----------------------------------------------------------------------------*/
+/* Get the HashMapEntry at the given key                                      */
+/*----------------------------------------------------------------------------*/
+HashMapEntry* HashMap::pEntryAt(void* pKey, bool bLockThis)
+{
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  return (Object*) pKey;
+#else
+  u8 uIndex = uHashFunction(pKey);
+
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabRead();
+  SkipListBlock* pSLBlock = m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pFind(pKey);
+  if( ! pSLBlock ) {
+    m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
+    return nullptr;
+  }
+  HashMapEntry* pEntry = _pHashMapEntry(pSLBlock->aItem());
+
+  if(bLockThis)
+    pEntry->vGrabLock();
+
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
+  return pEntry;
+#endif
+}
+
 /*----------------------------------------------------------------------------*/
 /* Does the given key exist in the hashmap                                    */
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(void* pKey)
 {
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
-  m_okLock.vGrabRead();
-
-  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
-
-  while ( pIter != nullptr ) {
-
-    if ( pIter->m_pKeyObject == pKey ) {
-      m_okLock.vDropRead();
-      return true;
-    }
-
-    pIter = pIter->m_pNext;
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabRead();
+  SkipListBlock* pSLBlock = m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pFind(pKey);
+  if( ! pSLBlock ) {
+    m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
+    return false;
   }
+  return true;
+}
 
-  m_okLock.vDropRead();
-  return false;
-}
 /*----------------------------------------------------------------------------*/
 /* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
-HashMapEntry* HashMap::pGetEntryAtIndex(u8 uIndex)
+u8 HashMap::uHashFunction(void* pKey)
 {
-  return m_pHashMapSlot->m_pEntry[uIndex];
+  return ( (u8) pKey % m_uNoOfSlots );
 }
+
 /*----------------------------------------------------------------------------*/
-/* hash key                                                                   */
+/* hashmap init (add pds used in the hashmap into itself                      */
 /*----------------------------------------------------------------------------*/
-u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
+void HashMap::vInit(void)
 {
-  _static_
-  return ( (u8) pKey % NoOfSlots );
+  // Do we really need to add the Pds buffers used in the hashmap to the hashmap itself?
+  for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
+    Pds* pPds = m_pHashMapSlot[u_slot]->m_pPdsOfEntries;
+    AM::pHashMap()->vInsertKeyValue((void *) pPds->oGetBufferId().m_pvAsAddress, (Object *) pPds, BI_HASHMAPSLOT);
+    pPds->vHashMap(true);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,9 +314,10 @@ u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
 
 /*----------------------------------------------------------------------------*/
 /* Insert a key,value at the front of the chain.                              */
-/* Update value if key already exists                                         */
+/* Update value if key already exists
+ * Grabs a lock on the entry as soon as it is created                         */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
+void HashMap::vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType)
 {
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
@@ -312,45 +329,17 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 //    vReHash();
 //  }
 
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
-//  m_okLock.vGrabWrite();
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabWrite();
 
+  SkipListBlock* pBlock = m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pInsert(pKey);
+  ASSERT(pBlock);
+  void* aAddr = pBlock->aItem();
+  new(aAddr) HashMapEntry(pKey, pValue, eBufferIdType);
 
-  HashMapEntry* pDummyEntry = pGetEntryAtIndex(uIndex);
-  RASSERT(pDummyEntry != nullptr);
-
-  m_pHashMapSlot->m_okSlotLock[uIndex].vGrabWrite();
-  // First entry is a dummy entry
-  HashMapEntry* pIter = pDummyEntry->m_pNext;
-
-  while ( pIter != nullptr ) {
-
-    if ( pIter->m_pKeyObject == pKey ) {
-      pIter->m_pValObject = pValue;
-      m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
-
-#ifdef WITH_HASHMAP_DEBUG
-      vTrace("Key %p already exists, updating value\n"_Stz, pKey);
-      vAppendHistory(pKey, false, true);
-#endif
-//      m_okLock.vDropWrite();
-//      m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
-      return;
-    }
-
-    pIter = pIter->m_pNext;
-  }
-
-  HashMapEntry* pEntry = new HashMapEntry(pKey, pValue);
-  pEntry->m_pNext = pDummyEntry->m_pNext;
-  pDummyEntry->m_pNext = pEntry;
   //m_uNoOfEntries++;
-  m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
-
-//  vInsertEntryAtIndex(pTmpEntry, uIndex);
-
-//  m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vDropWrite();
 
 #ifdef WITH_HASHMAP_DEBUG
   vAppendHistory(pKey, false, true);
@@ -363,31 +352,22 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 /*----------------------------------------------------------------------------*/
 bool HashMap::bIsLocked(void* pKey)
 {
-#ifdef WITHOUT_BUFFERIDHASHMAP
-  // TODO: Hack for performance test
-  UNUSED(pKey);
-  return false;
-#else
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
 
-//  m_okLock.vGrabRead();
+  u8 uIndex = uHashFunction(pKey);
 
-  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
-
-  while ( pIter != nullptr ) {
-
-    // Find the entry that matches this key
-    if ( pIter->m_pKeyObject == pKey ) {
-//      m_okLock.vDropRead();
-      return pIter->m_okLock.bIsLocked();
-    }
-
-    pIter = pIter->m_pNext;
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabRead();
+  SkipListBlock* pBlock = m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pFind(pKey);
+  if(pBlock == nullptr) {
+    m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
+    return false;
   }
 
-//  m_okLock.vDropRead();
-  return false;
-#endif
+  HashMapEntry* pEntry = _pHashMapEntry(pBlock->aItem());
+
+  bool bIsLocked = pEntry->bLocked();
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
+
+  return bIsLocked;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -418,9 +398,9 @@ bool HashMap::bIsLocked(void* pKey)
 //      HashMapEntry* pTmpEntry = pEntry->m_pNext;
 //
 //      //Move Slot from old hash map to new hash map
-//      pEntry->m_pNext = m_pHashMapSlot[uIndex].m_pEntry;
+//      pEntry->m_pNext = m_pHashMapSlot[uIndex]->m_pEntry;
 //
-//      m_pHashMapSlot[uIndex].m_pEntry = pEntry;
+//      m_pHashMapSlot[uIndex]->m_pEntry = pEntry;
 //
 //      uCount--;
 //
@@ -436,50 +416,32 @@ bool HashMap::bIsLocked(void* pKey)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* Get value stored at key if it exists                                       */
+/* Get value stored at key if it exists. Someone is using this buffer.
+ * Hence, lock this entry, unless specified, to prevent it from being
+ * paged out.                                                                 */
 /*----------------------------------------------------------------------------*/
-//void HashMap::vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
-//{
-//  m_pHashMapSlot->m_pEntry[uIndex] = pEntry;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* Get value stored at key if it exists                                       */
-/*----------------------------------------------------------------------------*/
-Object* HashMap::pValueAt(void* pKey)
+Object* HashMap::pValueAt(void* pKey, bool bLockThis)
 {
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
   return (Object*) pKey;
 #else
-  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+  u8 uIndex = uHashFunction(pKey);
 
-//  m_okLock.vGrabRead();
-
-  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
-  RASSERT(pIter != nullptr);
-  m_pHashMapSlot->m_okSlotLock[uIndex].vGrabRead();
-
-  while ( pIter != nullptr ) {
-
-    if ( pIter->m_pKeyObject == pKey ) {
-      // Grab HashMapEntry read lock, to prevent it from potentially
-      // being paged out immediately
-//      pIter->m_okLock.vGrabRead();
-//      vTrace("Value at key %p read locks task\n"_Stz, pIter->m_pKeyObject);
-
-      // Release the HashMap lock
-//      m_okLock.vDropRead();
-      m_pHashMapSlot->m_okSlotLock[uIndex].vDropRead();
-      return pIter->m_pValObject;
-    }
-
-    pIter = pIter->m_pNext;
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabRead();
+  SkipListBlock* pBlock = m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pFind(pKey);
+  if(pBlock == nullptr) {
+    m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
+    return nullptr;
   }
+  HashMapEntry* pEntry = _pHashMapEntry(pBlock->aItem());
 
-  m_pHashMapSlot->m_okSlotLock[uIndex].vDropRead();
-//  m_okLock.vDropRead();
-  return nullptr;
+  if(bLockThis)
+    pEntry->vGrabLock();
+
+  m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
+
+  return pEntry->m_pValObject;
 #endif
 }
 

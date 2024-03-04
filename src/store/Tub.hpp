@@ -10,7 +10,7 @@ namespace STORE
   class Tub : public Object
   {
   private:
-    PdsBufferIdQueue* m_pBufferIdQueue;
+    PdsBufferQueue* m_pBufferAddrQueue;
 
     RowPix*      m_pRowPix;
 

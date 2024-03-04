@@ -58,7 +58,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
   vAddStep("index.isValidUniqueIndex"_Stz,&Step::vIndexIsValidUniqueIndex);
   vAddStep("Index[].name@"_Stz,         &Step::vIndexNameFetch);
-  vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
   vAddStep("Index[].size"_Stz,          &Step::vIndexSize);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
@@ -515,25 +514,6 @@ void Step::vIndexNew(void)
   Index* pIndex = new Index(sIndexNm);
   
   m_pDataStack->vPushPtr(pIndex);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.populate -- populate the index                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexPopulate(void)
-{
-  ENTRY();
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eGetClassNo());
-  
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
-  
-  bool bPopulated = pTable->bPopulateIndex(iIndexNo);
-  
-  m_pDataStack->vPushInt(bPopulated ? 1 : 0);
   
   EXIT();
 }

@@ -53,18 +53,14 @@ namespace STORE
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
-    void* pPdsCrwTablePtn(void);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(i8 iIndexNo);
-    DataBuffer* pRootBuffer(void);
     BufferId oRootBufferId(void);
-    CrwBuffer* pRootCrwBuffer(void);
     void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
-    void vDumpContents(String* pStr);
 
   private:
     Footer* aFooter(void);

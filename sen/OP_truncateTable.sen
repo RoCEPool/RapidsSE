@@ -16,11 +16,15 @@
   Table[].isReplicated if
     // truncate the buffers of the table only on partition 0
     [op].partition@ 0 == if
+      TablePtn[].grabWrite_msecLoop
       TablePtn[].truncate
+      TablePtn[].dropWrite
     then
   else
+    TablePtn[].grabWrite_msecLoop
     // truncate the buffers of the tablePtn
     TablePtn[].truncate
+    TablePtn[].dropWrite
   then
 
   PipeIn[].pipeout

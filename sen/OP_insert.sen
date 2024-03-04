@@ -74,10 +74,11 @@
 
   0 locals| rowsInserted |
 
+  Table[].tablePtnZero to TablePtn[]
   // insert the buffer into the table ptn
-  //TablePtn[].grabWrite_msecLoop
+  TablePtn[].grabWrite_msecLoop
   PipeIn[] Table[].appendBuffer to rowsInserted
-  //TablePtn[].dropWrite
+  TablePtn[].dropWrite
 
   // Accumulate the inserted row counts if we are on the originating node only
   [grid].thisNodeId@ [job].originNodeId@ == if

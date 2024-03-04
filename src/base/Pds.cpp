@@ -88,7 +88,7 @@ Pds::Pds(RowPix* pRowPix, eBT eBufferType)
   m_nRowStringBytes = 0;
 
   // Set compare function ------------------------------
-  m_fpCompare = iIntCompare;
+  m_fpCompare = PdsUtils::iIntCompare;
 
   // Initialise the workspace --------------------------
   m_iFreeListEntries = 0;
@@ -154,7 +154,7 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
   m_nRowStringBytes = 0;
 
   // Set compare function ------------------------------
-  m_fpCompare = iIntCompare;
+  m_fpCompare = PdsUtils::iIntCompare;
 
   // Initialise the workspace --------------------------
   m_iFreeListEntries = 0;
@@ -192,8 +192,8 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(i8 nBytes, CompareFunc fpCompare)
-    : DataBuffer(CN_PDS, false)
+Pds::Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap)
+    : DataBuffer(bAddToHashMap, CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -228,7 +228,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
   if(fpCompare) {
     m_fpCompare = fpCompare;
   } else {
-    m_fpCompare = iIntCompare;
+    m_fpCompare = PdsUtils::iIntCompare;
   }
 
   m_iFreeListEntries = 0;
@@ -913,6 +913,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
       // Currently we do not allow duplicates
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
       if (iCompareRes == 0) {
+        ASSERT(0);
         // Got duplicate key, error
         vMoveToFreeList(pNewSLBlock);
         vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
@@ -1538,27 +1539,6 @@ void Pds::vPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
 
     aPriorVec[i_Level] = pCurr;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* compare two items                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Pds::iIntCompare(void* aItem_l, void* aItem_r)
-{
-  _static_
-  i8 iKey_l = *(i8*) aItem_l;
-  i8 iKey_r = *(i8*) aItem_r;
-
-  // do the node keys match?
-  if (iKey_l == iKey_r)
-    return 0;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (iKey_l >= iKey_r)
-    return 1;
-  else
-    return -1;
 }
 
 /*--------------------------------------------------------------------------*/

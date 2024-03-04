@@ -23,6 +23,7 @@
 void Step::vAddSteps_DataBuffer(void)
 {
   vAddStep("DataBuffer[]"_Stz,             &Step::vDataBufferGet);
+  vAddStep("DataBuffer[].bufferId"_Stz,    &Step::vDataBufferGetBufferIdAsAddr);
   vAddStep("DataBuffer[]\\clear"_Stz,      &Step::vDataBufferGetAndClear);
   vAddStep("DataBuffer[].delete"_Stz,      &Step::vDataBufferDelete);
   vAddStep("DataBuffer[].get"_Stz,         &Step::vDataBufferGet);
@@ -30,6 +31,20 @@ void Step::vAddSteps_DataBuffer(void)
   vAddStep("DataBuffer[].isNull"_Stz,      &Step::vDataBufferIsNull);
   vAddStep("DataBuffer[].set"_Stz,         &Step::vDataBufferSet);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* DataBuffer[].bufferId -- fetch buffer id as address                        */
+/*----------------------------------------------------------------------------*/
+void Step::vDataBufferGetBufferIdAsAddr(void)
+{
+  ENTRY();
+
+  DataBuffer* pDataBuffer = *m_pLogicUnit->m_xpDataBuffer;
+
+  m_pDataStack->vPushPtr((Object*)pDataBuffer->oGetBufferId().m_pvAsAddress);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
