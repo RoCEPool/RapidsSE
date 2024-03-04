@@ -30,7 +30,6 @@ XF_Fold::XF_Fold(i8 i_depth)
   m_p_correlation = nullptr;
 
   m_pSubQuery    = nullptr;
-  m_p_fold       = nullptr;
   m_pOuterQuery  = nullptr;
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
@@ -50,7 +49,6 @@ XF_Fold::XF_Fold(i8 i_depth, Card_Deck* p_deck)
   m_p_correlation = nullptr;
 
   m_pSubQuery    = nullptr;
-  m_p_fold       = nullptr;
   m_pOuterQuery  = nullptr;
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
@@ -112,26 +110,6 @@ i8 XF_Fold::i_depth(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Fold* XF_Fold::p_fold(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  return m_p_fold;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Fold::v_fold(Card_Fold* p_fold)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  m_p_fold = p_fold;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 SubQuery* XF_Fold::pOuterQuery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
@@ -168,8 +146,6 @@ void XF_Fold::vSubQuery(SubQuery* pSubQuery)
 
   m_pSubQuery = pSubQuery;
 }
-
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -253,8 +229,6 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // 5) add <fold> (before MQ)
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, m_pSubQuery->pBoard()->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
-
-  v_fold(pCI->G.p_fold);
 
   // 6) copy up sq (add before fold)
   pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqyCopy);
@@ -392,8 +366,6 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   // 5) add <fold> (before MQ)
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, m_pSubQuery->pBoard()->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
-
-  v_fold(pCI->G.p_fold);
 
   // 6) copy up sq (add before fold)
   pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqyCopy);

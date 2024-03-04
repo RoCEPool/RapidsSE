@@ -20,7 +20,6 @@ namespace STORE
     Card_Correlation* m_p_correlation;
 
     SubQuery*  m_pSubQuery;
-    Card_Fold* m_p_fold;
     SubQuery*  m_pOuterQuery;
 
   protected:
@@ -42,9 +41,6 @@ namespace STORE
     void v_deck(Card_Deck* p_deck);
 
     i8 i_depth(void);
-
-    Card_Fold* p_fold(void);
-    void v_fold(Card_Fold* p_fold);
 
     SubQuery* pOuterQuery(void);
     void vOuterQuery(SubQuery* pOuterQuery);
