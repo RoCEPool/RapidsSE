@@ -14,6 +14,7 @@ namespace BASE
     i8           m_iBufferNo;     // this DataBuffer's buffer number
 
     BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
+    bool        m_bHashMap;
 
     LglPtn m_tLglPtn;
 
@@ -24,11 +25,6 @@ namespace BASE
     Table*     m_pTable_dbuff;
     StreamDef* m_pStreamDef_dbuff;
 
-    // TODO: Arjun - Hack till we figure out a better way to handle the lock problem
-    // during output operator
-    b8    m_bOutputQueue; // is this Buffer in the Output queue?
-    // Refer: Output::vPipeToThis() for an explanation
-
     tXN m_tTxnNo; // transaction number
 
     PadWord m__PadToCacheLine[17];
@@ -36,6 +32,7 @@ namespace BASE
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);
+    DataBuffer(bool bAddToHashMap, eCN eClass, bool bIsPermanent);
 
     ~DataBuffer(void)
 
@@ -75,6 +72,10 @@ namespace BASE
 
     void vGrabWrite(void);
 
+    void vHashMap(bool bInHashMap);
+
+    bool bHashMap(void);
+
     void vLglPtn(LglPtn tLglPtn);
 
     void vLglPtn(i8 tLglPtn);
@@ -90,10 +91,6 @@ namespace BASE
     void vIsPermanent(bool bIsPermanent);
 
     i8   iBufferNo(void);
-
-    bool bOutputQueued(void);
-
-    void vOutputQueued(bool bOutputQueued);
 
     void     vSetBufferNo(i8 iBufferNo);
 

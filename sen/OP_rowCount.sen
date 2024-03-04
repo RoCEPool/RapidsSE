@@ -15,11 +15,19 @@
   // find the __count table
   C_TDEF_COUNT op__tableDef assert
 
-  // create an rowBuffer operand
+  // create a Pds row buffer operand
   BT_COUNT TableDef[] Pds[].new
 
+  // Get the table ptn
+  Table[].tablePtn@ to TablePtn[]
+
+  // grab the lock
+  TablePtn[].grabRead_yieldLoop
+
   // add row count to Pds
-  Table[] Pds[].addRowCount assert
+  TablePtn[] Pds[].addRowCount assert
+
+  TablePtn[].dropRead
 
   // pipeout the Pds
   Pds[].pipeOut

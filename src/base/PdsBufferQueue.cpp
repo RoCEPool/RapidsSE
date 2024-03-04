@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PdsBufferIdQueue.hpp -- Pds of BufferIds used as a queue                   */
+/* PdsBufferQueue.hpp -- Pds of BufferIds used as a queue                   */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -8,36 +8,36 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,PdsBufferIdQueue,CN_PDSBUFFERIDQUEUE)
-__aNewFunction(PdsBufferIdQueue,CN_PDSBUFFERIDQUEUE)
-__vDeleteFunction(PdsBufferIdQueue,CN_PDSBUFFERIDQUEUE)
-__aFooterFunction(PdsBufferIdQueue)
+__pCastFunction(BASE,PdsBufferQueue,CN_PDSBUFFERQUEUE)
+__aNewFunction(PdsBufferQueue,CN_PDSBUFFERQUEUE)
+__vDeleteFunction(PdsBufferQueue,CN_PDSBUFFERQUEUE)
+__aFooterFunction(PdsBufferQueue)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PdsBufferIdQueue::PdsBufferIdQueue(void)
-    : Object(CN_PDSBUFFERIDQUEUE)
+PdsBufferQueue::PdsBufferQueue(void)
+    : Object(CN_PDSBUFFERQUEUE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
   m_iSynthKey  = 0;
+  m_pWorkingBuffer = nullptr;
+  m_pPdsOfBufferAddrs = new Pds_t<PdsItem_Buffer>(nullptr);
 
-  m_pPdsOfBufferIds = new Pds_t<PdsItem_BufferId>(nullptr);
+  _checkInitialised_(CN_PDSBUFFERQUEUE);
 
-  _checkInitialised_(CN_PDSBUFFERIDQUEUE);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PdsBufferIdQueue::~PdsBufferIdQueue(void) noexcept(false)
+PdsBufferQueue::~PdsBufferQueue(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
-  delete m_pPdsOfBufferIds;
+  delete m_pPdsOfBufferAddrs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,22 +46,22 @@ PdsBufferIdQueue::~PdsBufferIdQueue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the file                                                            */
 /*----------------------------------------------------------------------------*/
-void PdsBufferIdQueue::vRepair(Object* pObject)
+void PdsBufferQueue::vRepair(Object* pObject)
 {
   _static_
 
-  PdsBufferIdQueue* pPdsBufferIdQueue = _pPdsBufferIdQueue(pObject);
-  Pds* pPds = pPdsBufferIdQueue->m_pPdsOfBufferIds;
+  PdsBufferQueue* pPdsBufferQueue = _pPdsBufferQueue(pObject);
+  Pds* pPds = pPdsBufferQueue->m_pPdsOfBufferAddrs;
 
   SkipListBlock* pCurrBlock = pPds->pFirstBlock();
 
   while(pCurrBlock) {
     SkipListBlock* pNextBlock = pPds->pNextSLBlock(pCurrBlock, 0);
 
-    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
+    PdsItem_Buffer oPdsStruct = *(PdsItem_Buffer*) pCurrBlock->aItem();
 
-    DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-    pPds->bDelete((void*)&oBufferIdStruct.iKey);
+    DataBuffer* pDataBuffer = oPdsStruct.pDataBuffer;
+    pPds->bDelete((void*)&oPdsStruct.iKey);
     AM::vDeleteOperand(pDataBuffer,nullptr);
 
     pCurrBlock = pNextBlock;
@@ -77,19 +77,21 @@ void PdsBufferIdQueue::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* push buffer to head of queue                                               */
 /*----------------------------------------------------------------------------*/
-void PdsBufferIdQueue::vAddBuffer(DataBuffer* pNewBuffer)
+void PdsBufferQueue::vAddBuffer(DataBuffer* pNewBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
-  PdsItem_BufferId oItem;
+  PdsItem_Buffer oItem;
   oItem.iKey = m_iSynthKey;
-  oItem.oBufferId = pNewBuffer->oGetBufferId();
+  oItem.pDataBuffer = pNewBuffer;
 
-  SkipListBlock* pBlock = m_pPdsOfBufferIds->pAppend((void*) &oItem);
+  SkipListBlock* pBlock = m_pPdsOfBufferAddrs->pAppend((void*) &oItem);
   RASSERT(pBlock != nullptr);
-  *(PdsItem_BufferId*)(pBlock->aItem()) = oItem;
+  *(PdsItem_Buffer*)(pBlock->aItem()) = oItem;
 
   m_iSynthKey++;
+
+  m_pWorkingBuffer = pNewBuffer;
 
   return;
 }
@@ -97,9 +99,9 @@ void PdsBufferIdQueue::vAddBuffer(DataBuffer* pNewBuffer)
 /*----------------------------------------------------------------------------*/
 /* return a completed buffer (if any)                                         */
 /*----------------------------------------------------------------------------*/
-DataBuffer* PdsBufferIdQueue::pCompletedBuffer(void)
+DataBuffer* PdsBufferQueue::pCompletedBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
   // don't return a buffer if only one exists in the pds
   // since it may not be full. Only the buffer at the end
@@ -107,17 +109,20 @@ DataBuffer* PdsBufferIdQueue::pCompletedBuffer(void)
   // a) [Root-Block]-->[Full-Buffer]-->[Full-Buffer]-->[Non-Full-Buffer]-->NULL
   // b) [Root-Block]-->[Non-Full-Buffer]-->NULL
 
-  if(m_pPdsOfBufferIds->iNumEntries(0) <= 1)
+  if(m_pPdsOfBufferAddrs->iNumEntries(0) <= 1)
     return nullptr;
 
-  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
+  SkipListBlock* pCurrBlock = m_pPdsOfBufferAddrs->pFirstBlock();
   RASSERT(pCurrBlock != nullptr);
 
-  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
+  PdsItem_Buffer oPdsStruct = *(PdsItem_Buffer*) pCurrBlock->aItem();
 
-  DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
+  DataBuffer* pDataBuffer = oPdsStruct.pDataBuffer;
 
-  m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
+  if(pDataBuffer == m_pWorkingBuffer)
+    m_pWorkingBuffer = nullptr;
+
+  m_pPdsOfBufferAddrs->bDelete((void*)&oPdsStruct.iKey);
 
   return pDataBuffer;
 }
@@ -125,25 +130,28 @@ DataBuffer* PdsBufferIdQueue::pCompletedBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return last remaining dangling buffer (if any)                             */
 /*----------------------------------------------------------------------------*/
-DataBuffer* PdsBufferIdQueue::pDanglingBuffer(void)
+DataBuffer* PdsBufferQueue::pDanglingBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
-  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) <= 1);
+  ASSERT(m_pPdsOfBufferAddrs->iNumEntries(0) <= 1);
 
-  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
+  if(m_pPdsOfBufferAddrs->iNumEntries(0) == 0)
     return nullptr;
 
-  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
-  RASSERT(pCurrBlock != nullptr);
+  SkipListBlock* pCurrBlock = m_pPdsOfBufferAddrs->pFirstBlock();
+  ASSERT(pCurrBlock != nullptr);
 
-  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
+  PdsItem_Buffer oPdsStruct = *(PdsItem_Buffer*) pCurrBlock->aItem();
 
-  DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
+  DataBuffer* pDataBuffer = oPdsStruct.pDataBuffer;
 
-  m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
+  m_pPdsOfBufferAddrs->bDelete((void*)&oPdsStruct.iKey);
 
-  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) == 0);
+  ASSERT(m_pWorkingBuffer == pDataBuffer);
+  m_pWorkingBuffer = nullptr;
+
+  ASSERT(m_pPdsOfBufferAddrs->iNumEntries(0) == 0);
 
   return pDataBuffer;
 }
@@ -151,36 +159,24 @@ DataBuffer* PdsBufferIdQueue::pDanglingBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return tail of chain (most recently added buffer)                          */
 /*----------------------------------------------------------------------------*/
-DataBuffer* PdsBufferIdQueue::pDataBuffer(void)
+DataBuffer* PdsBufferQueue::pDataBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
-  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
+  if(m_pPdsOfBufferAddrs->iNumEntries(0) == 0) {
+    ASSERT(m_pWorkingBuffer == nullptr);
     return nullptr;
-
-  PdsItem_BufferId oKey;
-  oKey.iKey = C_INT_MAX;
-
-  // Find the last block less than MAX key
-  SkipListBlock* pSearchBlock = m_pPdsOfBufferIds->pFindLessThan((void *) &oKey);
-
-  if(pSearchBlock != nullptr) {
-    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pSearchBlock->aItem();
-
-    DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-    return pDataBuffer;
   }
 
-  RASSERT(0);
-  return nullptr;
+  return m_pWorkingBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Print Pds chain                                                            */
 /*----------------------------------------------------------------------------*/
-void PdsBufferIdQueue::vDump(void)
+void PdsBufferQueue::vDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
   vTrace("Format: SynthKey(BufferId)(DataBufferAddr)-->\n"_Stz);
 
@@ -194,16 +190,16 @@ void PdsBufferIdQueue::vDump(void)
 
 
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-    SkipListBlock* pCursor = (SkipListBlock*) m_pPdsOfBufferIds->pGetAddrFromOffset(m_pPdsOfBufferIds->m_uInUseRootOffset);
+    SkipListBlock* pCursor = (SkipListBlock*) m_pPdsOfBufferAddrs->pGetAddrFromOffset(m_pPdsOfBufferAddrs->m_uInUseRootOffset);
 
-    vTrace("| %5lld | %6lld | "_Stz, i_Level, m_pPdsOfBufferIds->m_iNumEntries[i_Level]);
+    vTrace("| %5lld | %6lld | "_Stz, i_Level, m_pPdsOfBufferAddrs->m_iNumEntries[i_Level]);
 
-    for(i8 iNumEntries = 0; iNumEntries < m_pPdsOfBufferIds->m_iNumEntries[i_Level] + 1; iNumEntries++) {
-      PdsItem_BufferId oItem;
-      oItem = *(PdsItem_BufferId*)(pCursor->aItem());
-      vTrace("%lld(%p)(%p)-->"_Stz, oItem.iKey, oItem.oBufferId.m_pvAsAddress, AM::pHashMap()->pValueAt(oItem.oBufferId.m_pvAsAddress));
+    for(i8 iNumEntries = 0; iNumEntries < m_pPdsOfBufferAddrs->m_iNumEntries[i_Level] + 1; iNumEntries++) {
+      PdsItem_Buffer oItem;
+      oItem = *(PdsItem_Buffer*)(pCursor->aItem());
+      vTrace("%lld(%p)(%p)"_Stz, oItem.iKey, oItem.pDataBuffer);
 
-      pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, i_Level);
+      pCursor = m_pPdsOfBufferAddrs->pNextSLBlock(pCursor, i_Level);
       if(pCursor == nullptr) {
         break;
       }
@@ -217,11 +213,11 @@ void PdsBufferIdQueue::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* is this tub empty?                                                         */
 /*----------------------------------------------------------------------------*/
-bool PdsBufferIdQueue::bIsEmpty(void)
+bool PdsBufferQueue::bIsEmpty(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
-  return m_pPdsOfBufferIds->iNumEntries(0) == 0;
+  return m_pPdsOfBufferAddrs->iNumEntries(0) == 0;
 }
 
 /*============================================================================*/

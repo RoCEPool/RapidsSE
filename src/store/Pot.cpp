@@ -61,7 +61,7 @@ Pot::Pot(void)
   m_pRowPix = nullptr;
 
   m_iSynthKey = 0;
-  m_pPdsOfBuffers = new Pds_t<PotPdsItem>(STORE::iPotPdsItemKeyCompare);
+  m_pPdsOfBufferAddrs = new Pds_t<PotPdsItem>(PdsUtils::iPotPdsItemKeyCompare);
   
   _checkInitialised_(CN_LGLBUFSET);
   
@@ -76,7 +76,7 @@ Pot::~Pot(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   delete m_pRowPix;
-  delete m_pPdsOfBuffers;
+  delete m_pPdsOfBufferAddrs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
   oSearchKey.iSynthKey = C_INT_MAX;
 
   // Find the last block that is less than LglPtn,Max key
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindLessThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // If the block is not null, extract the keys and values
@@ -195,8 +195,7 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
     // If the LglPtn value matches, we found a buffer part of this LglPtn chain
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
-      RASSERT(BufferId::bIsBufferId(pItem->oBufferId));
-      return _pDataBuffer(BufferId::aAddressFromId(pItem->oBufferId));
+      return pItem->pDataBuffer;
     }
   }
 
@@ -216,7 +215,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
   oSearchKey.iSynthKey = C_INT_MIN;
 
   // Get the first block that is greater than LglPtn,Min
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindGreaterThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // If the block is not null, extract the keys and values
@@ -229,26 +228,24 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
 
     // Now figure out whether this is a completed buffer or not by checking the next buffer
     // in the chain
-    SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
+    SkipListBlock* pNextBlock = m_pPdsOfBufferAddrs->pNextSLBlock(pHead, 0);
     if(pNextBlock != nullptr) {
       // Next block exists, check if the key is the same as this LglPtn
       PotPdsItem* pNextItem = (PotPdsItem*) pNextBlock->aItem();
-      RASSERT(pNextItem != nullptr);
+      ASSERT(pNextItem != nullptr);
 
       if(pNextItem->iLglPtn == i_Ptn) {
         // Next block exists for this LglPtn chain
         // Which means our current buffer is a completed buffer
 
-        // Extract the buffer id
-        BufferId oBufferId = pItem->oBufferId;
-        RASSERT(BufferId::bIsBufferId(oBufferId));
+        DataBuffer* pDataBuffer = pItem->pDataBuffer;
 
         // Remove this block from the pds
-        bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
-        RASSERT(bResult);
+        bool bResult = m_pPdsOfBufferAddrs->bDelete((void*)pItem);
+        UNUSED(bResult);
+        ASSERT(bResult);
 
-        // Get the address from the hashmap
-        return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+        return pDataBuffer;
       }
     }
     // Next block does not exist or does not match the LglPtn, hence our current buffer is incomplete
@@ -273,7 +270,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
   // LglBufSet as there can be more than one dangling buffer in the queue
 
   // Find last buffer less than the Key,MAX (i.e front of queue)
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
+  SkipListBlock* pHead = m_pPdsOfBufferAddrs->pFindLessThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
     // Get the current head block of this LglPtn and extract the values
@@ -282,11 +279,11 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     // if the LglPtn matches.
     if(pItem != nullptr && pItem->iLglPtn == i_Ptn) {
-      BufferId oBufferId = pItem->oBufferId;
-      RASSERT(BufferId::bIsBufferId(oBufferId));
-      bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
-      RASSERT(bResult);
-      return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+      DataBuffer* pDataBuffer = pItem->pDataBuffer;
+      bool bResult = m_pPdsOfBufferAddrs->bDelete((void*)pItem);
+      UNUSED(bResult);
+      ASSERT(bResult);
+      return pDataBuffer;
     }
   }
 
@@ -353,7 +350,7 @@ i8 Pot::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  return m_pPdsOfBuffers->iNumEntries(0);
+  return m_pPdsOfBufferAddrs->iNumEntries(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -376,43 +373,13 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   PotPdsItem oItem;
   oItem.iLglPtn = i_Ptn;
   oItem.iSynthKey = m_iSynthKey;
-  oItem.oBufferId = pAddBuffer->oGetBufferId();
+  oItem.pDataBuffer = pAddBuffer;
   m_iSynthKey++;
-  RASSERT(BufferId::bIsBufferId(oItem.oBufferId));
 
-  SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
+  SkipListBlock* pResultBlock = m_pPdsOfBufferAddrs->pInsert((void*) &oItem);
   RASSERT(pResultBlock != nullptr);
 
   *(PotPdsItem*)(pResultBlock->aItem()) = oItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compare two nodes                                                          */
-/*----------------------------------------------------------------------------*/
-i8 STORE::iPotPdsItemKeyCompare(void* aItem_l, void* aItem_r)
-{
-  _static_
-
-  PotPdsItem* pKey_l = (PotPdsItem*) aItem_l;
-  PotPdsItem* pKey_r = (PotPdsItem*) aItem_r;
-
-  // do the node names match?
-  if (pKey_l->iLglPtn == pKey_r->iLglPtn) {
-    if (pKey_l->iSynthKey == pKey_r->iSynthKey) {
-      return 0;
-    }
-    else {
-      if (pKey_l->iSynthKey >= pKey_r->iSynthKey)
-        return 1;
-      else
-        return -1;
-    }
-  } else {
-    if (pKey_l->iLglPtn >= pKey_r->iLglPtn)
-      return 1;
-    else
-      return -1;
-  }
 }
 
 /*============================================================================*/

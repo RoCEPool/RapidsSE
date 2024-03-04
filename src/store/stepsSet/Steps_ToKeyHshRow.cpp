@@ -46,7 +46,7 @@ void Step::vToKeyHshRowCompleted(void)
   
   ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToKeyHshRow;
 
-  Pds* pPdsRowBuffer = pToKeyHshRow->pFullPdsRowBuffer();
+  Pds* pPdsRowBuffer = pToKeyHshRow->pCompleted();
   
   m_pDataStack->vPushPtr(pPdsRowBuffer);
 
@@ -117,7 +117,7 @@ void Step::vToKeyHshRowDangling(void)
   }
   else {
     ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
-    Pds* pPdsRowBuffer = pToKeyHshRow->pDanglingPdsRowBuffer();
+    Pds* pPdsRowBuffer = pToKeyHshRow->pDangling();
     m_pDataStack->vPushPtr(pPdsRowBuffer);
   }
   

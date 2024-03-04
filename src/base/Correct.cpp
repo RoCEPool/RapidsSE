@@ -691,19 +691,19 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
                                           Stz*  szFormat,...)
 {
 //  if (AM::bDeveloper()) {
-//    fprintf(stderr,
-//            "BASE::vThrow:\n"
-//            "eFailure = %lld\n"
-//            "azFunc = %s\n"
-//            "azFilePath = %s\n"
-//            "iLineNo = %lld\n"
-//            "szFormat = %s\n",
-//            (i8)eFailure,
-//            azFunc,
-//            azFilePath,
-//            (i8)iLineNo,
-//            szFormat->azChar()
-//    );
+    fprintf(stderr,
+            "BASE::vThrow:\n"
+            "eFailure = %lld\n"
+            "azFunc = %s\n"
+            "azFilePath = %s\n"
+            "iLineNo = %lld\n"
+            "szFormat = %s\n",
+            (i8)eFailure,
+            azFunc,
+            azFilePath,
+            (i8)iLineNo,
+            szFormat->azChar()
+    );
 //
 //    // put a breakpoint here to trap throws
 //    sleep(0);
