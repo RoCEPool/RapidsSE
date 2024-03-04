@@ -88,7 +88,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 
   XF_Fold* pFold = new XF_Fold;
 
-  pFold->vFold_basic(m_pCI, "53_W_L_NC_NI_join"_Stz, CK_o_WHERE);
+  vFold_basic(m_pCI, "53_W_L_NC_NI_join"_Stz, CK_o_WHERE);
 
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 

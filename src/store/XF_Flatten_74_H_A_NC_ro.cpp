@@ -87,8 +87,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
 
   XF_Fold* pFold = new XF_Fold;
   CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz,
-                               CK_o_HAVING, QO_RELN_OP);
+      pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz, CK_o_HAVING, QO_RELN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | XF_Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having [Sort]

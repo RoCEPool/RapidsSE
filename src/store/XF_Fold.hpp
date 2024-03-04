@@ -27,13 +27,6 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    void vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ);
-
-    CarryForward* pFold_from(Stz* szFoldNm, CardIter* pCI);
-
-    CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
-                                    eCK eCardWithSQ, eQO eWhatOp);
-
   protected:
     Footer* aFooter(void);
   };
