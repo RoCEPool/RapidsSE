@@ -47,8 +47,8 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   // 2) push to sq
-  if (! pCI->bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
+  if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -186,8 +186,8 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   // 2) push to sq
-  if (! pCI->bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
+  if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -456,7 +456,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   Card_Term* p_term_found = p_expr_found->pGet_term(0);
 
 
-  Card_Term* p_term_sqyArg = pCI->Sqy.m_pTerm_sqyArg->pClone();
+  Card_Term* p_term_sqyArg = pCI->Sqy.m_p_term_sqyArg->pClone();
   p_term_sqyArg->vApplyCast_p(p_term_found);
   //p_term_sqyArg->vDump();
 

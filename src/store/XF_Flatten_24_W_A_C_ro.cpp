@@ -100,30 +100,28 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Flatten_24_W_A_C_ro::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
+bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyArg(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold identify the <table>/<filter>/<boolPred>/<cmpPred> which is correlated by parameter
-  bool rbIsCorrPred = false;
+  bool rbsnapped = false;
 
-  auto fbMarkCorrPred = [pCI,&rbIsCorrPred](Card_CONJ* p_conj, bool bUpwards)
+  auto fbMarkCorrPred = [pCI,&rbsnapped](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
-
     if (! p_conj->bIsCorrConj())
       return C_CONTINUE_RECURSION;
 
-    //p_conj->vDump();
-    rbIsCorrPred = true;
-
-    Card_Term* p_term_corrArg = static_cast<Card_RlnConj *>(p_conj)->pGet_term_corrArg();
-    pCI->Sqy.m_pTerm_sqyArg = p_term_corrArg;
-
     p_conj->vMark1(MARK_AT);
     p_conj->pSymbol()->Y_vSet(P_CrlKeyPred);
+
+    pCI->Sqy.m_p_term_sqyArg = static_cast<Card_RlnConj *>(p_conj)->pGet_term_corrArg();
+
+    rbsnapped = true;
+
     return C_TERMINATE_RECURSION;
   };
 
@@ -132,12 +130,10 @@ bool XF_Flatten_24_W_A_C_ro::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
   pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
   Card_CONJ* p_conj = static_cast<Card_CONJ*>(pCI->G.p_boolPred->pGetChild(0));
 
-  //p_conj->vDump(__func__);
-
   bool bIgnore = p_conj->bLambdaWalk_conj(fbMarkCorrPred);
   UNUSED(bIgnore);
 
-  return rbIsCorrPred;
+  return rbsnapped;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +146,7 @@ void XF_Flatten_24_W_A_C_ro::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* 
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->Sqy.m_pExpr_corr = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_pTerm_sqyArg->pSymbol(),
+  pCI->Sqy.m_pExpr_corr = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_sqyArg->pSymbol(),
                                                         pCI->G.i_MainCard + 1);
 
   pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
@@ -543,14 +539,14 @@ void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
   //   v                          //  ]filter
   // T T A A A P F T T W A A A    //  .]boolPred
   //   f                          //  ..]cmpPred ==
-  //   p                          //           $d.2  ((pCI->m_pTerm_corrArg))
+  //   p                          //           $d.2  ((pCI->m_p_term_sqyArg))
   //                              //             %1
 
   pCI->vClearRestart();
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
-    if (bIdentify_Correlation_Key_Predicate(pCI))
+    if (bSnap_term_sqyArg(pCI))
       break;
-  RASSERT(pCI->Sqy.m_pTerm_sqyArg); // eg $d.2 (L_PARTKEY)
+  RASSERT(pCI->Sqy.m_p_term_sqyArg); // eg $d.2 (L_PARTKEY)
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vIdentify_Expr_Of_Correlation_Key_Column(pCI);

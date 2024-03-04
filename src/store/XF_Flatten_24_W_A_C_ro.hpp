@@ -25,7 +25,7 @@ namespace STORE
     void vFlatten(void);
 
   private:
-    bool bIdentify_Correlation_Key_Predicate(CardIter* pCI);
+    bool bSnap_term_sqyArg(CardIter* pCI);
     void vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI);
     void vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter* pCI);
     void vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pCI, Stz* szAs);

@@ -175,18 +175,18 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.p_where->pSymbol()->Y_vSet(P_Smoothed);
 
   if (pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_EQ) {
-    pCI->Sqy.m_pConj_sqyCall->vMorph_sqlOp_To_EQ(pCI);
+    pCI->Sqy.m_p_conj_sqyCall->vMorph_sqlOp_To_EQ(pCI);
   }
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
 
     // replace sqCall with sqResult
-    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NO);
-    pCI->Sqy.m_pTerm_sqyCall->SYM(SF_SQY_RSL, (i8)1);
-    pCI->Sqy.m_pTerm_sqyCall->SYM(SF_EXP_COL, (i8)1);
+    pCI->Sqy.m_p_term_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NO);
+    pCI->Sqy.m_p_term_sqyCall->SYM(SF_SQY_RSL, (i8)1);
+    pCI->Sqy.m_p_term_sqyCall->SYM(SF_EXP_COL, (i8)1);
 
     Card_Expr* p_expr_0 = pCI->Flux.m_pArriving->pGet_expr((i8) 0);
-    pCI->Sqy.m_pTerm_sqyCall->vApplyCast_x(p_expr_0->xCast());
+    pCI->Sqy.m_p_term_sqyCall->vApplyCast_x(p_expr_0->xCast());
 
   }
 

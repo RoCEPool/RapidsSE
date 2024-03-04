@@ -47,9 +47,9 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_pCorrelation = nullptr;
   Sqy.m_i_SubQuery   = C_UNKNOWN;
   Sqy.m_pSubQuery    = nullptr;
-  Sqy.m_pTerm_sqyArg  = nullptr;
-  Sqy.m_pTerm_sqyCall = nullptr;
-  Sqy.m_pConj_sqyCall = nullptr;
+  Sqy.m_p_term_sqyArg  = nullptr;
+  Sqy.m_p_term_sqyCall = nullptr;
+  Sqy.m_p_conj_sqyCall = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
@@ -527,7 +527,7 @@ void CardIter::vClearRegisters(void)
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
 
-  //Sqy.m_pTerm_sqyArg  = nullptr;
+  //Sqy.m_p_term_sqyArg  = nullptr;
 
   Flux.m_pArriving  = nullptr;
   Dic.m_p_expr    = nullptr;
