@@ -151,7 +151,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bLambdaFn);
   UNUSED(bIgnore);
 }
 

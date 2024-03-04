@@ -106,18 +106,18 @@ bool XF_Flatten_24_W_A_C_ro::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold identify the <table>/<filter>/<boolPred>/<cmpPred> which is correlated by parameter
-  bool bIsCorrPred = false;
+  bool rbIsCorrPred = false;
 
-  auto bMarkCorrPred = [pCI,&bIsCorrPred](Card_CONJ* p_conj, bool bUpwards)
+  auto fbMarkCorrPred = [pCI,&rbIsCorrPred](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (!p_conj->bIsCorrConj())
+    if (! p_conj->bIsCorrConj())
       return C_CONTINUE_RECURSION;
 
     //p_conj->vDump();
-    bIsCorrPred = true;
+    rbIsCorrPred = true;
 
     Card_Term* pTerm_corrCol = static_cast<Card_RlnConj *>(p_conj)->pGetCorrCol();
     pCI->Sqy.m_pTerm_corrCol = pTerm_corrCol;
@@ -134,10 +134,10 @@ bool XF_Flatten_24_W_A_C_ro::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
 
   //p_conj->vDump(__func__);
 
-  bool bIgnore = p_conj->bConjRecursive(bMarkCorrPred);
+  bool bIgnore = p_conj->bLambdaWalk_conj(fbMarkCorrPred);
   UNUSED(bIgnore);
 
-  return bIsCorrPred;
+  return rbIsCorrPred;
 }
 
 /*----------------------------------------------------------------------------*/

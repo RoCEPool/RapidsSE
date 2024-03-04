@@ -220,7 +220,7 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bfBump);
+  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bfBump);
   UNUSED(bIgnore);
 }
 
@@ -256,7 +256,7 @@ bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bfContains);
+  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bfContains);
   UNUSED(bIgnore);
 
   return bDoesContain;
@@ -497,7 +497,7 @@ Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(void)
 
   Card_CONJ* p_conj_ROOT = this->pRoot_conj();
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bLambdaFn);
   UNUSED(bIgnore);
 
   return p_rlnConj;
@@ -853,7 +853,7 @@ void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_root->bConjRecursive(bLambdaFn);
+  bool bIgnore = p_conj_root->bLambdaWalk_conj(bLambdaFn);
   UNUSED(bIgnore);
 }
 
@@ -890,7 +890,7 @@ void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_root->bConjRecursive(bfTo_expCol);
+  bool bIgnore = p_conj_root->bLambdaWalk_conj(bfTo_expCol);
   UNUSED(bIgnore);
 }
 

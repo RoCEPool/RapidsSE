@@ -65,46 +65,6 @@ bool Card_CONJ::bIsConj(Card* p_card)
 
 
 /*----------------------------------------------------------------------------*/
-/* visit all sub-cards of pred and apply lambda function                      */
-/*----------------------------------------------------------------------------*/
-bool Card_CONJ::bConjRecursive(std::function<bool(Card_CONJ* p_conj, bool bUpwards)> bfApply)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bContinue;
-
-  eCK eCard = this->eCard();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // only call term once
-
-  if (CK_TERM == eCard) {
-    bContinue = bfApply(this,false);
-    return bContinue;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // apply pred function for downwards
-  bContinue = bfApply(this,false);
-  if (! bContinue)
-    return false;
-
-  // descend into children
-  i8 nSubCards = nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pGetChild(i_Child);
-    bContinue = static_cast<Card_CONJ *>(pSubCard)->bConjRecursive(bfApply);
-    if (! bContinue)
-      return false;
-  }
-
-  // apply pred function for upwards
-  bContinue = bfApply(this,true);
-  return bContinue;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_CONJ::bContains_sqyNo(void)
@@ -325,6 +285,46 @@ bool Card_CONJ::bIsSqyOp(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visit all sub-cards of pred and apply lambda function                      */
+/*----------------------------------------------------------------------------*/
+bool Card_CONJ::bLambdaWalk_conj(std::function<bool(Card_CONJ* p_conj, bool bUpwards)> bfLambdaFn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bContinue;
+
+  eCK eCard = this->eCard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // only call term once
+
+  if (CK_TERM == eCard) {
+    bContinue = bfLambdaFn(this, false);
+    return bContinue;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // apply pred function for downwards
+  bContinue = bfLambdaFn(this, false);
+  if (! bContinue)
+    return false;
+
+  // descend into children
+  i8 nSubCards = nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pGetChild(i_Child);
+    bContinue = static_cast<Card_CONJ *>(pSubCard)->bLambdaWalk_conj(bfLambdaFn);
+    if (! bContinue)
+      return false;
+  }
+
+  // apply pred function for upwards
+  bContinue = bfLambdaFn(this, true);
+  return bContinue;
 }
 
 /*----------------------------------------------------------------------------*/

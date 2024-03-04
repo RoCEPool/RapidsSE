@@ -145,7 +145,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bfMarkSqyCall);
+  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bfMarkSqyCall);
   UNUSED(bIgnore);
 
   return bFoundCall;

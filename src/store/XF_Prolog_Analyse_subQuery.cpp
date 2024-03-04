@@ -205,7 +205,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bLambdaFn);
   UNUSED(bIgnore);
 }
 
@@ -267,7 +267,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bLambdaFn);
   UNUSED(bIgnore);
 }
 

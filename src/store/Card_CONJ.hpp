@@ -15,7 +15,6 @@ namespace STORE
 
     static bool bIsConj(Card* p_card);
 
-    bool bConjRecursive(std::function<bool(Card_CONJ* p_pred, bool bUpwards)> bfApply);
     bool bContains_sqyNo(void);
     bool bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn);
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
@@ -28,11 +27,11 @@ namespace STORE
     bool bIsJoinConj(void);
     bool bIsRelnOp(void);
     bool bIsSqyOp(void);
+    bool bLambdaWalk_conj(std::function<bool(Card_CONJ* p_pred, bool bUpwards)> bfLambdaFn);
     void vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term= nullptr);
-
-     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    Symbol* pTable_WhichTableFor_Conj(CardIter* pCI);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vShortForm(String* pString);
+    Symbol* pTable_WhichTableFor_Conj(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

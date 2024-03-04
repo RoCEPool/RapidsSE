@@ -337,7 +337,7 @@ void Card_Table::vDerive_bounds_From_filter(CardIter *pCI)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    bool bIgnore = p_conj_root->bConjRecursive(bLambdaFn);
+    bool bIgnore = p_conj_root->bLambdaWalk_conj(bLambdaFn);
     UNUSED(bIgnore);
   }
 }
