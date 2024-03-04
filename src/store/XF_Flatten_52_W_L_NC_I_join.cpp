@@ -23,7 +23,7 @@ __aFooterFunction(XF_Flatten_52_W_L_NC_I_join)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_52_W_L_NC_I_join::XF_Flatten_52_W_L_NC_I_join(CardIter* pCI)
-: XF_FLATTEN_ABS(CN_XF_FLATTEN_52_W_L_NC_I_JOIN, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_52_W_L_NC_I_JOIN, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_JOIN, _FOOTER_);
 

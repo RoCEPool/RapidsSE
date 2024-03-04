@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_FLATTEN_ABS.hpp -- FLATTEN                                              */
+/* XF_FLATTEN.hpp -- FLATTEN                                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,14 +7,14 @@
 
 namespace STORE
 {
-  class XF_FLATTEN_ABS : public XF_TRANSFORM
+  class XF_FLATTEN : public XF_TRANSFORM
   {
   private:
 
   public:
 
-    XF_FLATTEN_ABS(eCN eClass, CardIter* pCI);
-   ~XF_FLATTEN_ABS(void) noexcept(false);
+    XF_FLATTEN(eCN eClass, CardIter* pCI);
+   ~XF_FLATTEN(void) noexcept(false);
 
   protected:
     void vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ);

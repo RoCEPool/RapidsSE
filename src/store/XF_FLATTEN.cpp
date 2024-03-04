@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_FLATTEN_ABS.cpp -- Flatten                                              */
+/* XF_FLATTEN.cpp -- Flatten                                              */
 /*============================================================================*/
 
-#include "XF_FLATTEN_ABS.hpp"
+#include "XF_FLATTEN.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_FLATTEN_ABS::XF_FLATTEN_ABS(eCN eClass,  CardIter* pCI)
+XF_FLATTEN::XF_FLATTEN(eCN eClass, CardIter* pCI)
 : XF_TRANSFORM(eClass, pCI)
 {
 }
@@ -21,7 +21,7 @@ XF_FLATTEN_ABS::XF_FLATTEN_ABS(eCN eClass,  CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_FLATTEN_ABS::~XF_FLATTEN_ABS(void) noexcept(false)
+XF_FLATTEN::~XF_FLATTEN(void) noexcept(false)
 {
 }
 
@@ -33,7 +33,7 @@ XF_FLATTEN_ABS::~XF_FLATTEN_ABS(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a sub-query (before outer-query)                                   */
 /*----------------------------------------------------------------------------*/
-void XF_FLATTEN_ABS::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
+void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 {
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vBeginEachReverse();
@@ -116,7 +116,7 @@ void XF_FLATTEN_ABS::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a from                                                                */
 /*----------------------------------------------------------------------------*/
-CarryForward* XF_FLATTEN_ABS::pFold_from(Stz* szFoldNm, CardIter* pCI)
+CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 {
   CarryForward* pCarryForward = new CarryForward;
 
@@ -168,8 +168,8 @@ CarryForward* XF_FLATTEN_ABS::pFold_from(Stz* szFoldNm, CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
-CarryForward* XF_FLATTEN_ABS::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
-                                         eCK eCardWithSQ, eQO eWhatOp)
+CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
+                                            eCK eCardWithSQ, eQO eWhatOp)
 {
   CarryForward* pCarryForward = new CarryForward;
 

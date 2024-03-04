@@ -21,7 +21,7 @@ __aFooterFunction(XF_Flatten_10_F)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_10_F::XF_Flatten_10_F(CardIter* pCI)
-: XF_FLATTEN_ABS(CN_XF_FLATTEN_10_F, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_10_F, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 
