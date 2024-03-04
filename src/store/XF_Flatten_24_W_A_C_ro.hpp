@@ -25,12 +25,6 @@ namespace STORE
     void vFlatten(void);
 
   private:
-    void vDerive_Correlated_emit_fold(CardIter* pCI);
-    void vVia_gbyAgg_Promotion(CardIter* pCI);
-
-
-  private:
-
     bool bIdentify_Correlation_Key_Predicate(CardIter* pCI);
     void vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI);
     void vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter* pCI);
@@ -38,6 +32,8 @@ namespace STORE
     void vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred* p_boolPred);
     void vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred* p_boolPred);
     void vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred* p_boolPred);
+    void vRestate_emit_fold(CardIter* pCI);
+    void vVia_gbyAgg_Promotion(CardIter* pCI);
 
     Footer* aFooter(void);
   };

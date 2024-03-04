@@ -59,7 +59,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* flatten                                                                    */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 {
@@ -86,7 +86,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   vVia_gbyAgg_Promotion(m_pCI);
 
-  vDerive_Correlated_emit_fold(m_pCI);
+  vRestate_emit_fold(m_pCI);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
@@ -94,212 +94,8 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Derive correlated fold projection                                          */
+/*-- private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vDerive_Correlated_emit_fold(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
-
-  pCI->vBeginEach();
-
-  while (pCI->bEachMain_NONE()) {
-
-    if (CK_c_FOLD == pCI->G.e_MainCard)
-      break;
-
-    if (Card_Emit* p_emit = pCI->G.p_MainCard->pSub_emit()) {
-      //pCI->vPrintBoard(__func__,__FILE__,__LINE__);
-      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
-    }
-  }
-
-  RASSERT(CK_c_FOLD == pCI->G.e_MainCard);
-
-  pCI->G.p_stream = new Card_Stream;
-  pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
-  pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert call of sub-query to correlated join to left sub-stream            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
-
-  // We have a flattened query.  It has a left-size SQ, and a right-side OQ
-
-  //        SQ... ...OQ           //
-  // T T A A A P F T T W A A A    //
-  //                              //
-
-  // Start with processing left-side SQ (sub-query)
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // identify correlation key predicate in SQ:<table>/<filter>/<boolPred>//<cmpPred>
-  //
-
-  //   v                          //  ]filter
-  // T T A A A P F T T W A A A    //  .]boolPred
-  //   f                          //  ..]cmpPred ==
-  //   p                          //           $d.2  ((pCI->m_pTerm_corrCol))
-  //                              //             %1
-
-  pCI->vClearRestart();
-  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
-    if (bIdentify_Correlation_Key_Predicate(pCI))
-      break;
-  RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
-
-  // find SQ:<op>/<projection>/<expr> which describes the correlation column
-  vIdentify_Expr_Of_Correlation_Key_Column(pCI);
-  RASSERT(pCI->Sqy.m_pExpr_corr);    // eg $15 (L_PARTKEY)
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enrich SQ:<aggreg> to be SQ:<gbyAgg>/<key=CorrCol>,
-  //   thereby producing ordered subQuery stream
-
-  RASSERT(pCI->bEachMain(CK_o_AGGREG));
-  vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // include correlation column SQ:[<project>/<projection>]
-
-  if (pCI->bIsNextMain(CK_o_PROJECT)) {
-    RASSERT(pCI->bEachMain(CK_o_PROJECT));
-    vEnhance_sq_project_To_Include_Correlation_Key(pCI, C_SQCRLKEY);
-  } else {
-
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get final SQ:<op>/<projection>
-
-  if (CK_o_PROJECT == pCI->G.e_MainCard || CK_o_GBYAGG == pCI->G.e_MainCard)
-    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
-  else
-    NEVER_REACH
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  pCI->vBeginEachReverse();
-  RASSERT(pCI->bEachMain_reverse_b(CK_c_FOLD));
-
-  // Now processing OQ (outer-query)
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // re-project the leading OQ:<table>* sequence
-  pCI->vForwards(true);
-  while (pCI->bIsNextMain(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
-    pCI->G.p_table = pCI->G.p_from->pSub_table();
-    pCI->G.p_OP->vRecreate_emit(pCI);
-
-  }
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  // subQuery subQuery subQuery subQuery subQuery subQuery subQuery subQuery
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  // Convert the OQ to join to the gby correlation column ordered streamed from SQ
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // yank the correlation predicate from SQ
-
-  pCI->vClearRestart();
-
-  // v                             //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolPred
-  // s                             //  ..]cmpPred ==
-  // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
-  //                               //             %1
-
-  // todo: this should be Card_RlnConj
-  Card_CONJ *p_conj_corr = nullptr;
-  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
-    if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
-      break;
-  RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
-
-  // tidy up empty SQ:<table>/<filter>
-  pCI->G.p_from->vCullIfEmpty_filter(pCI->G.p_filter);
-
-  //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolPred
-  // s                 f           //  ..]cmpPred ==
-  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
-  //                               //             %1
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  RASSERT(pCI->bEachMain(CK_c_FOLD));
-
-  pCI->vForwards(false);
-  while (pCI->bEachMain_reverse_NONE()) {
-    if (pCI->G.p_MainCard->pSub_emit())
-      break;
-  }
-  pCI->vForwards(true);
-
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
-  RASSERT(pCI->bEachMain(CK_c_FOLD));
-
-  RASSERT(pCI->bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED));
-  pCI->G.p_boolPred->vBump_expCol(2);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
-
-  p_conj_corr->pSymbol()->Y_vCut(P_CrlKeyPred);
-  p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
-
-  pCI->G.p_boolPred->vExtend_andConj(_pCard_RlnConj(p_conj_corr));
-
-  //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolPred
-  // s                 f           //  ..]roPred <
-  // f                 bc          //           $a.5
-  //                               //           $b.1
-  //                               // __subquery0002
-
-  vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
-
-  vConvert_SqyNo_Into_ExpCol(pCI, pCI->G.p_boolPred);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move the correlation predicate to table as a bounds
-
-  // TODO: this should be done using standard predicate moving
-
-  pCI->vClearRestart();
-
-  //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolPred
-  // s                 f           //  ..]cmpPred ==
-  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
-  //             b <-  cp          //             %1
-
-  RASSERT(pCI->bEachMain(CK_c_FOLD));
-  RASSERT(pCI->bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED));
-  //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolPred);
-  vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolPred);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  pCI->vClearRestart();
-//  if (pCI->bEachMain(CK_c_FOLD)) {
-//    if (pCI->bEachMain(CK_o_WHERE)) {
-//      // TODO:
-//      // R_vUTE_Unproject_foldExpr_After_where();
-//      R_vUTE_Bump_where_BaseOn_foldExpr();
-//    }
-//  }
-
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -697,6 +493,213 @@ void XF_Flatten_24_W_A_C_ro::vMove_corrPred_To_table_filter(CardIter* pCI, Card_
   pCI->G.p_filter->vExtend_rlnConj(p_rlnConj_corr);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Derive correlated fold projection                                          */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
+
+  pCI->vBeginEach();
+
+  while (pCI->bEachMain_NONE()) {
+
+    if (CK_c_FOLD == pCI->G.e_MainCard)
+      break;
+
+    if (Card_Emit* p_emit = pCI->G.p_MainCard->pSub_emit()) {
+      //pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
+    }
+  }
+
+  RASSERT(CK_c_FOLD == pCI->G.e_MainCard);
+
+  pCI->G.p_stream = new Card_Stream;
+  pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
+  pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert call of sub-query to correlated join to left sub-stream            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
+
+  // We have a flattened query.  It has a left-size SQ, and a right-side OQ
+
+  //        SQ... ...OQ           //
+  // T T A A A P F T T W A A A    //
+  //                              //
+
+  // Start with processing left-side SQ (sub-query)
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // identify correlation key predicate in SQ:<table>/<filter>/<boolPred>//<cmpPred>
+  //
+
+  //   v                          //  ]filter
+  // T T A A A P F T T W A A A    //  .]boolPred
+  //   f                          //  ..]cmpPred ==
+  //   p                          //           $d.2  ((pCI->m_pTerm_corrCol))
+  //                              //             %1
+
+  pCI->vClearRestart();
+  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
+    if (bIdentify_Correlation_Key_Predicate(pCI))
+      break;
+  RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
+
+  // find SQ:<op>/<projection>/<expr> which describes the correlation column
+  vIdentify_Expr_Of_Correlation_Key_Column(pCI);
+  RASSERT(pCI->Sqy.m_pExpr_corr);    // eg $15 (L_PARTKEY)
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // enrich SQ:<aggreg> to be SQ:<gbyAgg>/<key=CorrCol>,
+  //   thereby producing ordered subQuery stream
+
+  RASSERT(pCI->bEachMain(CK_o_AGGREG));
+  vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // include correlation column SQ:[<project>/<projection>]
+
+  if (pCI->bIsNextMain(CK_o_PROJECT)) {
+    RASSERT(pCI->bEachMain(CK_o_PROJECT));
+    vEnhance_sq_project_To_Include_Correlation_Key(pCI, C_SQCRLKEY);
+  } else {
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get final SQ:<op>/<projection>
+
+  if (CK_o_PROJECT == pCI->G.e_MainCard || CK_o_GBYAGG == pCI->G.e_MainCard)
+    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+  else
+    NEVER_REACH
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  pCI->vBeginEachReverse();
+  RASSERT(pCI->bEachMain_reverse_b(CK_c_FOLD));
+
+  // Now processing OQ (outer-query)
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // re-project the leading OQ:<table>* sequence
+  pCI->vForwards(true);
+  while (pCI->bIsNextMain(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
+    pCI->G.p_table = pCI->G.p_from->pSub_table();
+    pCI->G.p_OP->vRecreate_emit(pCI);
+
+  }
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // subQuery subQuery subQuery subQuery subQuery subQuery subQuery subQuery
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  // Convert the OQ to join to the gby correlation column ordered streamed from SQ
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // yank the correlation predicate from SQ
+
+  pCI->vClearRestart();
+
+  // v                             //  ]filter
+  // T A A A P F T T T W A A A     //  .]boolPred
+  // s                             //  ..]cmpPred ==
+  // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
+  //                               //             %1
+
+  // todo: this should be Card_RlnConj
+  Card_CONJ *p_conj_corr = nullptr;
+  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
+    if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
+      break;
+  RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
+
+  // tidy up empty SQ:<table>/<filter>
+  pCI->G.p_from->vCullIfEmpty_filter(pCI->G.p_filter);
+
+  //                   v           //  ]filter
+  // T A A A P F T T T W A A A     //  .]boolPred
+  // s                 f           //  ..]cmpPred ==
+  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
+  //                               //             %1
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  RASSERT(pCI->bEachMain(CK_c_FOLD));
+
+  pCI->vForwards(false);
+  while (pCI->bEachMain_reverse_NONE()) {
+    if (pCI->G.p_MainCard->pSub_emit())
+      break;
+  }
+  pCI->vForwards(true);
+
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
+  RASSERT(pCI->bEachMain(CK_c_FOLD));
+
+  RASSERT(pCI->bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED));
+  pCI->G.p_boolPred->vBump_expCol(2);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
+
+  p_conj_corr->pSymbol()->Y_vCut(P_CrlKeyPred);
+  p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
+
+  pCI->G.p_boolPred->vExtend_andConj(_pCard_RlnConj(p_conj_corr));
+
+  //                   v           //  ]filter
+  // T A A A P F T T T W A A A     //  .]boolPred
+  // s                 f           //  ..]roPred <
+  // f                 bc          //           $a.5
+  //                               //           $b.1
+  //                               // __subquery0002
+
+  vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
+
+  vConvert_SqyNo_Into_ExpCol(pCI, pCI->G.p_boolPred);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move the correlation predicate to table as a bounds
+
+  // TODO: this should be done using standard predicate moving
+
+  pCI->vClearRestart();
+
+  //                   v           //  ]filter
+  // T A A A P F T T T W A A A     //  .]boolPred
+  // s                 f           //  ..]cmpPred ==
+  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
+  //             b <-  cp          //             %1
+
+  RASSERT(pCI->bEachMain(CK_c_FOLD));
+  RASSERT(pCI->bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED));
+  //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolPred);
+  vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolPred);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  pCI->vClearRestart();
+//  if (pCI->bEachMain(CK_c_FOLD)) {
+//    if (pCI->bEachMain(CK_o_WHERE)) {
+//      // TODO:
+//      // R_vUTE_Unproject_foldExpr_After_where();
+//      R_vUTE_Bump_where_BaseOn_foldExpr();
+//    }
+//  }
+
+}
 
 /*============================================================================*/
 /* end                                                                        */
