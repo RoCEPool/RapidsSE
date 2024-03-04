@@ -238,7 +238,6 @@
 #include "XF_Flatten_Smoosh.hpp"
 #include "XF_Flatten_Join_Ordering.hpp"
 #include "SawOpCards.hpp"
-#include "CorrelatedJoin.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
 #include "ArgDef.hpp"
@@ -415,7 +414,6 @@ SizeHeap gxaSizeHeap[]
   {CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
   {CN_COMMANDPARSER,            sizeof(CommandParser),            HT_V_LARGE   , FILL },
   {CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,     FILL },
-  {CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
   {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
   {CN_CRWBUFFER,                sizeof(CrwBuffer),                HT_T_LARGE   , FILL },
   {CN_CRWTABLEPTN,              sizeof(CrwTablePtn),              HT_T_TINY    , FILL },

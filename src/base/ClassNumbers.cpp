@@ -85,8 +85,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
     /* */ "COMMANDPARSER"_Stz,          // CN_COMMANDPARSER
     /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
-    /* */ "CORRELATEDJOIN"_Stz,       // CN_CORRELATEDJOIN
-    /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
+   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
     /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
     /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
     /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER

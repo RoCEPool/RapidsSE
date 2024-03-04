@@ -65,7 +65,6 @@ enum eCN : u2 // Class Number
   /* */ CN_COMBINEDSRC,
   /* */ CN_COMMANDPARSER,
   /* */ CN_CONDITIONALQUERYNODEITER,
-  /* */ CN_CORRELATEDJOIN,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTABLEPTN,

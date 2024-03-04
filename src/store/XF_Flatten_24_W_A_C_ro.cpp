@@ -5,7 +5,6 @@
 #include "XF_Flatten_24_W_A_C_ro.hpp"
 
 #include "XF_Flatten_Smooth.hpp"
-#include "CorrelatedJoin.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -84,14 +83,11 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
 
-  CorrelatedJoin* pCorrelatedJoin = new CorrelatedJoin;
   vVia_gbyAgg_Promotion(m_pCI);
 
   vDerive_Correlated_emit_fold(m_pCI);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
-
-  delete pCorrelatedJoin;
 
   m_pCI->vEndTransform(__LINE__);
 }
