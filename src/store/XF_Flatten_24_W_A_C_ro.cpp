@@ -194,7 +194,9 @@ void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
   // re-project the leading OQ:<table>* sequence
   pCI->vForwards(true);
   while (pCI->bIsNextMain(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
-    pCI->G.p_from->vSmooth(pCI);
+    pCI->G.p_table = pCI->G.p_from->pSub_table();
+    pCI->G.p_OP->vRecreate_emit(pCI);
+
   }
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +

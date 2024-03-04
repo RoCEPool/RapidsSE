@@ -287,7 +287,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   // Table*
   while (pCI->bIsNextMain(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
     if (pCarryForward->Table.m_bSeen) {
-      pCI->G.p_from->vSmooth(pCI, pCarryForward);
+      pCI->G.p_table = pCI->G.p_from->pSub_table();
+      pCI->G.p_OP->vRecreate_emit(pCI);
       pCI->vPrintBoard(__func__,__FILE__,__LINE__);
     }
   }
