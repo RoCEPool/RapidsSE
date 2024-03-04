@@ -108,7 +108,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyArg(CardIter* pCI)
   // pre-fold identify the <table>/<filter>/<boolPred>/<cmpPred> which is correlated by parameter
   bool rbsnapped = false;
 
-  auto fbMarkCorrPred = [pCI,&rbsnapped](Card_CONJ* p_conj, bool bUpwards)
+  auto fbSnap_sqyArg = [pCI,&rbsnapped](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -118,7 +118,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyArg(CardIter* pCI)
     p_conj->vMark1(MARK_AT);
     p_conj->pSymbol()->Y_vSet(P_CrlKeyPred);
 
-    pCI->Sqy.m_p_term_sqyArg = static_cast<Card_RlnConj *>(p_conj)->pGet_term_corrArg();
+    pCI->Sqy.m_p_term_sqyArg = static_cast<Card_RlnConj *>(p_conj)->pGet_term_sqyArg();
 
     rbsnapped = true;
 
@@ -128,9 +128,9 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyArg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
-  Card_CONJ* p_conj = static_cast<Card_CONJ*>(pCI->G.p_boolPred->pGetChild(0));
+  Card_CONJ* p_conj_root = pCI->G.p_boolPred->pRoot_conj();
 
-  bool bIgnore = p_conj->bLambdaWalk_conj(fbMarkCorrPred);
+  bool bIgnore = p_conj_root->bLambdaWalk_conj(fbSnap_sqyArg);
   UNUSED(bIgnore);
 
   return rbsnapped;
