@@ -25,6 +25,8 @@ namespace STORE
     void vFlatten(void);
 
   private:
+    void vInto_KEYnotEXISTS(CardIter* pCI);
+
     Footer* aFooter(void);
   };
 
