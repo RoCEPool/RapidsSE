@@ -85,7 +85,7 @@ void XF_Flatten_10_F::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from
 
-  XF_Fold* pFold = new XF_Fold(0);
+  XF_Fold* pFold = new XF_Fold;
   CarryForward* pCarryForward = pFold->pFold_from("From"_Stz,m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

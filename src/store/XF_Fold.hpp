@@ -14,10 +14,6 @@ namespace STORE
   {
   private:
 
-    i8         m_i_depth;
-
-    Card_Correlation* m_p_correlation;
-
     SubQuery*  m_pSubQuery;
     SubQuery*  m_pOuterQuery;
 
@@ -29,13 +25,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    XF_Fold(i8 i_depth);
+    XF_Fold(void);
    ~XF_Fold(void) noexcept(false);
-
-    Card_Correlation* p_correlation(void);
-    void v_correlation(Card_Correlation* p_correlation);
-
-    i8 i_depth(void);
 
     SubQuery* pOuterQuery(void);
     void vOuterQuery(SubQuery* pOuterQuery);

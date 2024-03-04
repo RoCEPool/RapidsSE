@@ -80,7 +80,7 @@ void XF_Flatten_40_W_L_C_E::vFlatten(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_40_W_L_C_E);
 
-  XF_Fold* pFold = new XF_Fold(0);
+  XF_Fold* pFold = new XF_Fold;
   pFold->vFold_basic(m_pCI, "40_W_L_C_E"_Stz, CK_o_WHERE);
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 

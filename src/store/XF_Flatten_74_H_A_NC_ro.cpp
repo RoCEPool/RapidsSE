@@ -85,7 +85,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  XF_Fold* pFold = new XF_Fold(0);
+  XF_Fold* pFold = new XF_Fold;
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz,
                                CK_o_HAVING, QO_RELN_OP);
