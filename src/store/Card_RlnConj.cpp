@@ -56,9 +56,9 @@ Card_RlnConj* Card_RlnConj::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the argument for a correlation                                         */
+/* get the subquery correlation parameter                                     */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RlnConj::pGet_term_sqyArg(void)
+Card_Term* Card_RlnConj::pGet_term_sqyPrm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

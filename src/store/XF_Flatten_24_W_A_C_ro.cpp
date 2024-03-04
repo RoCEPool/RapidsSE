@@ -100,7 +100,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyArg(CardIter* pCI)
+bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyPrm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -118,7 +118,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyArg(CardIter* pCI)
     p_conj->vMark1(MARK_AT);
     p_conj->pSymbol()->Y_vSet(P_CrlKeyPred);
 
-    pCI->Sqy.m_p_term_sqyArg = static_cast<Card_RlnConj *>(p_conj)->pGet_term_sqyArg();
+    pCI->Sqy.m_p_term_sqyPrm = static_cast<Card_RlnConj *>(p_conj)->pGet_term_sqyPrm();
 
     rbsnapped = true;
 
@@ -146,7 +146,7 @@ void XF_Flatten_24_W_A_C_ro::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* 
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->Sqy.m_pExpr_corr = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_sqyArg->pSymbol(),
+  pCI->Sqy.m_pExpr_corr = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_sqyPrm->pSymbol(),
                                                         pCI->G.i_MainCard + 1);
 
   pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
@@ -539,14 +539,14 @@ void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
   //   v                          //  ]filter
   // T T A A A P F T T W A A A    //  .]boolPred
   //   f                          //  ..]cmpPred ==
-  //   p                          //           $d.2  ((pCI->m_p_term_sqyArg))
+  //   p                          //           $d.2  ((pCI->m_p_term_sqyPrm))
   //                              //             %1
 
   pCI->vClearRestart();
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
-    if (bSnap_term_sqyArg(pCI))
+    if (bSnap_term_sqyPrm(pCI))
       break;
-  RASSERT(pCI->Sqy.m_p_term_sqyArg); // eg $d.2 (L_PARTKEY)
+  RASSERT(pCI->Sqy.m_p_term_sqyPrm); // eg $d.2 (L_PARTKEY)
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vIdentify_Expr_Of_Correlation_Key_Column(pCI);

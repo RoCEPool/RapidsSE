@@ -44,14 +44,12 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_pExpr_fold = nullptr;
   Sqy.m_pExpr_corr = nullptr;
 
-  Sqy.m_pCorrelation = nullptr;
-  Sqy.m_i_SubQuery   = C_UNKNOWN;
-  Sqy.m_pSubQuery    = nullptr;
-  Sqy.m_p_term_sqyArg  = nullptr;
+  Sqy.m_pCorrelation   = nullptr;
+  Sqy.m_i_SubQuery     = C_UNKNOWN;
+  Sqy.m_pSubQuery      = nullptr;
   Sqy.m_p_term_sqyCall = nullptr;
   Sqy.m_p_conj_sqyCall = nullptr;
-
-  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
+  Sqy.m_p_term_sqyPrm  = nullptr;
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
@@ -61,8 +59,6 @@ CardIter::CardIter(Bench* pBench)
 
   vResetMembers();
   vClearRegisters();
-
-  //vRestart();
 
   _checkInitialised_(CN_CARDITER);
 
@@ -527,7 +523,7 @@ void CardIter::vClearRegisters(void)
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
 
-  //Sqy.m_p_term_sqyArg  = nullptr;
+  //Sqy.m_p_term_sqyPrm  = nullptr;
 
   Flux.m_pArriving  = nullptr;
   Dic.m_p_expr    = nullptr;

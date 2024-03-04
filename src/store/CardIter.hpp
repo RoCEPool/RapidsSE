@@ -51,9 +51,9 @@ namespace STORE
       i8         m_i_SubQuery;
       SubQuery*  m_pSubQuery;
 
-      Card_Term* m_p_term_sqyArg;
       Card_Term* m_p_term_sqyCall;
       Card_CONJ* m_p_conj_sqyCall;
+      Card_Term* m_p_term_sqyPrm;
 
       Card_Correlation* m_pCorrelation;
 
