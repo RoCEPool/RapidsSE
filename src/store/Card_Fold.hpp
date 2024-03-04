@@ -7,6 +7,8 @@
 
 namespace STORE
 {
+  class SubQuery;
+
   class Card_Fold : public Card_CONSTRUCTION
   {
   public:
@@ -22,6 +24,8 @@ namespace STORE
 
     static void vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold);
     static void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);
+
+    void vDerive_expr_fold_nc(CardIter* pCI, SubQuery* pSubQuery_leftmost);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
