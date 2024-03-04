@@ -14,8 +14,6 @@ namespace STORE
   {
   private:
 
-    SubQuery*  m_pSubQuery;
-
   protected:
     // must be last
     Footer m_xFooter;
@@ -27,8 +25,6 @@ namespace STORE
     XF_Fold(void);
    ~XF_Fold(void) noexcept(false);
 
-    SubQuery* pSubQuery(void);
-    void vSubQuery(SubQuery* pSubQuery);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

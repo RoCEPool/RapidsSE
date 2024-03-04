@@ -24,8 +24,6 @@ XF_Fold::XF_Fold(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
-  m_pSubQuery    = nullptr;
-
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 }
 
@@ -41,27 +39,6 @@ XF_Fold::~XF_Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-SubQuery* XF_Fold::pSubQuery(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  return m_pSubQuery;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Fold::vSubQuery(SubQuery* pSubQuery)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  m_pSubQuery = pSubQuery;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -119,9 +96,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
-  vSubQuery(pCI->pBoard()->pSubQuery());
-
-  SubQuery* pSubQuery_save = m_pSubQuery;
+  SubQuery* pSubQuery_save = pCI->pBoard()->pSubQuery();
 
   i8 i_dup_from = 0;
   pCI->vBeginEach();
@@ -140,7 +115,7 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   pCI->vPopBoard();
 
   // 5) add <fold> (before MQ)
-  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, m_pSubQuery->pBoard()->i_Board());
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, pSubQuery_save->pBoard()->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   // 6) copy up sq (add before fold)
@@ -164,14 +139,12 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(pSubQuery_save == m_pSubQuery);
-
   // 7) derive the fold (SQ result) expr
   pCI->Sqy.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
   if (pCI->bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_fold = pCI->G.i_MainCard;
-    pCI->G.p_fold->vDerive_emit_fold(pCI, m_pSubQuery);
+    pCI->G.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
@@ -265,8 +238,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   }
 
 
-  vSubQuery(pCI->pBoard()->pSubQuery());
-  SubQuery* pSubQuery_save = m_pSubQuery;
+  SubQuery* pSubQuery_save = pCI->pBoard()->pSubQuery();
 
   // 3) get copy of sq
   pCI->Sqy.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
@@ -275,7 +247,7 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vPopBoard();
 
   // 5) add <fold> (before MQ)
-  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, m_pSubQuery->pBoard()->i_Board());
+  pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, pSubQuery_save->pBoard()->i_Board());
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   // 6) copy up sq (add before fold)
@@ -299,14 +271,13 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(pSubQuery_save == m_pSubQuery);
 
   // 7) derive the fold (SQ result) expr
   pCI->Sqy.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
   if (pCI->bEachMain(CK_c_FOLD)) {
     pCI->Sqy.m_i_fold = pCI->G.i_MainCard;
-    pCI->G.p_fold->vDerive_emit_fold(pCI, m_pSubQuery);
+    pCI->G.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
