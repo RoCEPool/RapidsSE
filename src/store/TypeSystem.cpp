@@ -31,6 +31,7 @@ typedef struct {
 
 static Stz* C_DEFAULT_NAMESPACE = "rapids"_Stz;
 static constexpr i8 C_INVALID_TYPEID = -1;
+static constexpr i1 C_INVALID_TYPEID_I1 = -1;
 
 // The set of known types in the system, indexed by their typeId.
 // When we fully support dynamic types then this will change to a
@@ -261,7 +262,7 @@ i8 TypeSystem::iMaxTypeId()
 /*----------------------------------------------------------------------------*/
 /* Returns the integer value for invalid type IDs in the system               */
 /*----------------------------------------------------------------------------*/
-i8 TypeSystem::iInvalidTypeId()
+i1 TypeSystem::iInvalidTypeId()
 {
   return C_INVALID_TYPEID;
 }
