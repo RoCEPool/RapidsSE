@@ -49,7 +49,7 @@ void XF_Flatten_40_W_L_C_E::vFlatten(CardIter* pCI)
 
   XF_Flatten_40_W_L_C_E* pXF_Flatten_40_W_L_C_E = new XF_Flatten_40_W_L_C_E(pCI);
 
-  pXF_Flatten_40_W_L_C_E->vXF_Flatten_40_W_L_C_E();
+  pXF_Flatten_40_W_L_C_E->vFlatten();
 
   delete pXF_Flatten_40_W_L_C_E;
 }
@@ -62,7 +62,7 @@ void XF_Flatten_40_W_L_C_E::vFlatten(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
+void XF_Flatten_40_W_L_C_E::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_40_W_L_C_E, _FOOTER_);
 

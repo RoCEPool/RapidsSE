@@ -48,7 +48,7 @@ void XF_Flatten_10_F::vFlatten(CardIter* pCI)
 
   XF_Flatten_10_F* pXF_Flatten_10_F = new XF_Flatten_10_F(pCI);
 
-  pXF_Flatten_10_F->vXF_Flatten_10_F();
+  pXF_Flatten_10_F->vFlatten();
 
   delete pXF_Flatten_10_F;
 }
@@ -61,7 +61,7 @@ void XF_Flatten_10_F::vFlatten(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_10_F::vXF_Flatten_10_F(void)
+void XF_Flatten_10_F::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 
