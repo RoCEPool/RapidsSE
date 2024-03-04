@@ -64,18 +64,18 @@ void Card_Constraint::vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
   UNUSED(pCI);
   UNUSED(p_expr_fold);
 
-  vBump_Rightwards(1,true);
+  vBump_expCol(1);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_Constraint::vBump_expCol(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_Expr* p_expr = pSub_expr())
-    p_expr->vBump_expCol(nBumpBy, bSkipFoldExpr);
+    p_expr->vBump_expCol(nBumpBy);
 
 }
 

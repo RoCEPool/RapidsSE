@@ -192,7 +192,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 /*----------------------------------------------------------------------------*/
 /* bump any expCol by given amount                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_BoolPred::vBump_expCol(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -200,7 +200,7 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfBump = [nBumpBy,bSkipFoldExpr](Card_CONJ* p_conj, bool bUpwards)
+  auto bfBump = [nBumpBy](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -209,8 +209,6 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_conj);
-    if (bSkipFoldExpr && p_term->pSymbol()->bHasFacet("$1"_Stz))
-      return C_CONTINUE_RECURSION;
 
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
       p_term->vBump_ordCol(SF_EXP_COL,nBumpBy);
