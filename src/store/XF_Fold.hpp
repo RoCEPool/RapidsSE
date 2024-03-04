@@ -25,11 +25,7 @@ namespace STORE
     XF_Fold(void);
    ~XF_Fold(void) noexcept(false);
 
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-    void vDerive_Correleted_fold_projection(CardIter* pCI);
 
     void vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ);
 

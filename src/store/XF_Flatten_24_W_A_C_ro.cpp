@@ -89,7 +89,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
   CorrelatedJoin* pCorrelatedJoin = new CorrelatedJoin;
   pCorrelatedJoin->vVia_gbyAgg_Promotion(m_pCI);
 
-  pFold->vDerive_Correleted_fold_projection(m_pCI);
+  vDerive_Correlated_emit_fold(m_pCI);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
@@ -98,6 +98,34 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   m_pCI->vEndTransform(__LINE__);
 }
+
+/*----------------------------------------------------------------------------*/
+/* Derive correlated fold projection                                          */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_24_W_A_C_ro::vDerive_Correlated_emit_fold(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
+
+  pCI->vBeginEach();
+
+  while (pCI->bEachMain_NONE()) {
+
+    if (CK_c_FOLD == pCI->G.e_MainCard)
+      break;
+
+    if (Card_Emit* p_emit = pCI->G.p_MainCard->pSub_emit()) {
+      //pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
+    }
+  }
+
+  RASSERT(CK_c_FOLD == pCI->G.e_MainCard);
+
+  pCI->G.p_stream = new Card_Stream;
+  pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
+  pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -45,33 +45,6 @@ XF_Fold::~XF_Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Derive correlated fold projection                                          */
-/*----------------------------------------------------------------------------*/
-void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  pCI->vBeginEach();
-
-  while (pCI->bEachMain_NONE()) {
-
-    if (CK_c_FOLD == pCI->G.e_MainCard)
-      break;
-
-    if (Card_Emit* p_emit = pCI->G.p_MainCard->pSub_emit()) {
-      //pCI->vPrintBoard(__func__,__FILE__,__LINE__);
-      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
-    }
-  }
-
-  RASSERT(CK_c_FOLD == pCI->G.e_MainCard);
-
-  pCI->G.p_stream = new Card_Stream;
-  pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
-  pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
-}
-
-/*----------------------------------------------------------------------------*/
 /* XF_Fold a sub-query (before outer-query)                                   */
 /*----------------------------------------------------------------------------*/
 void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)

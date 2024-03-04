@@ -25,6 +25,8 @@ namespace STORE
     void vFlatten(void);
 
   private:
+    void vDerive_Correlated_emit_fold(CardIter* pCI);
+
     Footer* aFooter(void);
   };
 
