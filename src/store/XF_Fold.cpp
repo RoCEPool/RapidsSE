@@ -25,7 +25,6 @@ XF_Fold::XF_Fold(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_pSubQuery    = nullptr;
-  m_pOuterQuery  = nullptr;
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 }
@@ -42,26 +41,6 @@ XF_Fold::~XF_Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-SubQuery* XF_Fold::pOuterQuery(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  return m_pOuterQuery;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Fold::vOuterQuery(SubQuery* pOuterQuery)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  m_pOuterQuery = pOuterQuery;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -121,8 +100,6 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  vOuterQuery(pCI->pBoard()->pSubQuery());
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vBeginEachReverse();
@@ -270,8 +247,6 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   CarryForward* pCarryForward = new CarryForward;
 
-  vOuterQuery(pCI->pBoard()->pSubQuery());
-
   pCI->vBeginEach();
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
@@ -370,8 +345,6 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 i8 XF_Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  vOuterQuery(pCI->pBoard()->pSubQuery());
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vClearRestart();

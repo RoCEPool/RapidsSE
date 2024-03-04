@@ -15,7 +15,6 @@ namespace STORE
   private:
 
     SubQuery*  m_pSubQuery;
-    SubQuery*  m_pOuterQuery;
 
   protected:
     // must be last
@@ -27,9 +26,6 @@ namespace STORE
     
     XF_Fold(void);
    ~XF_Fold(void) noexcept(false);
-
-    SubQuery* pOuterQuery(void);
-    void vOuterQuery(SubQuery* pOuterQuery);
 
     SubQuery* pSubQuery(void);
     void vSubQuery(SubQuery* pSubQuery);
