@@ -374,6 +374,8 @@ void Step::vParcelPipeOut(void)
 
       delete pParcel;
 
+      vTrace("Debug11\n"_Stz);
+
       if (nQueued != AM::PTNMAP::nPtnsPerNode()) {
 
         vTrace("🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪\n"

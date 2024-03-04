@@ -74,20 +74,25 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   // Objective #2 means that we cannot directly reuse some of the existing code that
   // prepares jobs based on a vector of tokens.
 
+  vTrace("ApiParse1\n"_Stz);
   Job* pParentJob = pParentTask->pJob();
-
+  vTrace("ApiParse2\n"_Stz);
   // First create a common tag set that will be copied into the tag set for
   // each job.
   TagSet*   pCommonTagSet = new TagSet;
+  ASSERT(pCommonTagSet);
+  vTrace("ApiParse3\n"_Stz);
 
   // Now we tokenise the command tags passed in and populate the common command tag set.
   TokenVec* pCommonTagTknVec = AM::TOKENISE::pTokeniseSen(szCommandTags);
+  ASSERT(pCommonTagSet);
   CmdHelper::vPopulateTagSet(pCommonTagSet, pCommonTagTknVec);
   delete pCommonTagTknVec;
   pCommonTagTknVec = nullptr;
 
   // We add to this common tag set any inherited tags from the current job
   TagSet* pParentJobTags = pParentTask->pOuterJobOfTask()->pJobTags();
+  ASSERT(pParentJobTags);
 
   if (pParentJobTags->bHasName(C_TAG_CCODE))        pCommonTagSet->vInsert(C_TAG_CCODE);
   if (pParentJobTags->bHasName(C_TAG_JOBMETRICS))   pCommonTagSet->vInsert(C_TAG_JOBMETRICS);
@@ -96,6 +101,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   // Tokenise and parse the command string using ANTLR.
   // In the process of this we also resolve a command to a pipeline using
   // the dictionary, and substitute pipeline arguments appropriately.
+  vTrace("ApiParse4\n"_Stz);
   CommandParser* pCommandParser = new CommandParser(pCommonTagSet, pParentTask);
 	RASSERT(pCommandParser);
 
@@ -103,6 +109,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
 
   try {
     pTaskList = pCommandParser->pParseCommand(szCommand);
+    vTrace("ApiParse5\n"_Stz);
 
   } catch (Parser::SyntaxException& e) {
     delete pCommonTagSet;
@@ -132,13 +139,16 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   delete pCommandParser;
 
   // Do any final adjustments to each command's tag set.
+  vTrace("ApiParse6\n"_Stz);
   Task* pTask;
   pTaskList->vGrabLock();
   pTask = pTaskList->pPeekTask();
   pTaskList->vDropLock();
 
+  vTrace("ApiParse7\n"_Stz);
   while (pTask) {
     TagSet* pCmdTagSet = pTask->pJob()->pJobTags();
+    ASSERT(pCmdTagSet);
 
     // Ensure the tag path is set
     if (!pCmdTagSet->bHasName(C_TAG_PATH)) {
@@ -152,6 +162,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
 
     pTask = pTask->pNextItem();
   }
+  vTrace("ApiParse8\n"_Stz);
 
   if ( AM::pGrid() && ! AM::pGrid()->bHealthy()) {
     eErrCode = EC_NODE_LOSS;
@@ -167,6 +178,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   }
 
 
+  vTrace("ApiParse9\n"_Stz);
   return pTaskList;
 }
 
