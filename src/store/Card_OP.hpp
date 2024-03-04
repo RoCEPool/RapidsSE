@@ -43,7 +43,7 @@ namespace STORE
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
-    void vRecreate_emit(CardIter* pCI);
+    void vRestate_emit(CardIter* pCI);
 
     void vRpn_aggreg      (String* psRpnExpr, Card_Aggreg*    p_aggreg);
     void vRpn_crossJoin   (String* psRpnExpr, Card_CrossJoin* p_crossJoin);

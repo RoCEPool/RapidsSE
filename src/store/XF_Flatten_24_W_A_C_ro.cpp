@@ -591,7 +591,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->vForwards(true);
   while (pCI->bIsNextMain(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
     pCI->G.p_table = pCI->G.p_from->pSub_table();
-    pCI->G.p_OP->vRecreate_emit(pCI);
+    pCI->G.p_OP->vRestate_emit(pCI);
 
   }
 

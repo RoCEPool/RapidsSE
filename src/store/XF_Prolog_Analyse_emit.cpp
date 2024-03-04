@@ -72,7 +72,7 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
     if (! m_pCI->G.p_OP)
       continue;
 
-    m_pCI->G.p_OP->vRecreate_emit(m_pCI);
+    m_pCI->G.p_OP->vRestate_emit(m_pCI);
 
   } // while (m_pCI->bEachMain_NONE())
 

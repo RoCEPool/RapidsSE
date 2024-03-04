@@ -317,7 +317,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   RASSERT(pCI->Early.m_pOP_leaf);
   RASSERT(! pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
-   pCI->G.p_OP->vRecreate_emit(pCI);
+   pCI->G.p_OP->vRestate_emit(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

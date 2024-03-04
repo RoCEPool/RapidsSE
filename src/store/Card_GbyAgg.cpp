@@ -119,7 +119,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  pCI->G.p_gbyAgg->vRecreate_emit(pCI);
+  pCI->G.p_gbyAgg->vRestate_emit(pCI);
 
  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 }
