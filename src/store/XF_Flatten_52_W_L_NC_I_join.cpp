@@ -49,7 +49,7 @@ void XF_Flatten_52_W_L_NC_I_join::vFlatten(CardIter* pCI)
   _static_
 
   XF_Fold* pFold = new XF_Fold;
-  i8 nTables = pFold->nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
+  i8 nTables = nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
 
   delete pFold;
 
@@ -63,6 +63,38 @@ void XF_Flatten_52_W_L_NC_I_join::vFlatten(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* count number of tables in sub-query                                        */
+/*----------------------------------------------------------------------------*/
+i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
+{
+  _static_
+
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
+  pCI->vClearRestart();
+  if (pCI->bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
+    if (! Board::bFindAndMarkSubQryCall(pCI)) {
+      vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
+      NEVER_REACH
+    }
+  }
+  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+
+  // 2) push to sq
+  if (! pCI->bPushBoard(pCI->Sqy.m_pTerm_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_SQY_NO));
+    NEVER_REACH
+  }
+
+  i8 nTables = Card_Table::nTables(pCI);
+
+  // 4) pop back to mq
+  pCI->vPopBoard();
+
+  return nTables;
+}
+
 
 
 /*============================================================================*/

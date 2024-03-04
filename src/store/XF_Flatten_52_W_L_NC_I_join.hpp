@@ -23,6 +23,8 @@ namespace STORE
     static void vFlatten(CardIter* pCI);
 
   private:
+    static i8 nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ);
+
     Footer* aFooter(void);
   };
 
