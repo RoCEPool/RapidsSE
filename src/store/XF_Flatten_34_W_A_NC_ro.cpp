@@ -94,7 +94,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
   RASSERT(m_pCI->bEachMain(CK_c_FOLD));
 
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
-  pSmooth->vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI,pCarryForward);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

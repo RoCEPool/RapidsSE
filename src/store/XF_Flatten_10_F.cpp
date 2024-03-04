@@ -91,7 +91,7 @@ void XF_Flatten_10_F::vFlatten(void)
 
   pCarryForward->Table.m_bReproject = true;
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
-  pSmooth->vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI,pCarryForward);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

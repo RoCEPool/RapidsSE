@@ -24,7 +24,6 @@ namespace STORE
     XF_Flatten_Smooth(void);
    ~XF_Flatten_Smooth(void) noexcept(false);
 
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit=false);
 
   private:
     Footer* aFooter(void);

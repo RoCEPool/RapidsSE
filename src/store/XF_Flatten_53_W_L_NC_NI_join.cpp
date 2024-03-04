@@ -108,7 +108,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
   pCarryForward->Table.m_bReproject = true;
 
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
-  pSmooth->vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI,pCarryForward);
 
  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
