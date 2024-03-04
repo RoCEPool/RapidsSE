@@ -43,7 +43,7 @@ XF_Flatten_24_W_A_C_ro::~XF_Flatten_24_W_A_C_ro(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(CardIter* pCI)
+void XF_Flatten_24_W_A_C_ro::vFlatten(CardIter* pCI)
 {
   _static_
 

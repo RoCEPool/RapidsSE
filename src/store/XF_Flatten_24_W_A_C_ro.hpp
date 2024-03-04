@@ -20,7 +20,7 @@ namespace STORE
     XF_Flatten_24_W_A_C_ro(CardIter* pCI);
    ~XF_Flatten_24_W_A_C_ro(void) noexcept(false);
 
-    static void vXF_Flatten_24_W_A_C_ro(CardIter* pCI);
+    static void vFlatten(CardIter* pCI);
 
     void vXF_Flatten_24_W_A_C_ro(void);
 

@@ -20,7 +20,7 @@ namespace STORE
     XF_Flatten_52_W_L_NC_I_join(CardIter* pCI);
    ~XF_Flatten_52_W_L_NC_I_join(void) noexcept(false);
 
-    static void vXF_Flatten_52_W_L_NC_I_join(CardIter* pCI);
+    static void vFlatten(CardIter* pCI);
 
   private:
     Footer* aFooter(void);

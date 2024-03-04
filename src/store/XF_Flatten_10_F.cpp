@@ -42,7 +42,7 @@ XF_Flatten_10_F::~XF_Flatten_10_F(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_10_F::vXF_Flatten_10_F(CardIter* pCI)
+void XF_Flatten_10_F::vFlatten(CardIter* pCI)
 {
   _static_
 

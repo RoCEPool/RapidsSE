@@ -44,7 +44,7 @@ XF_Flatten_52_W_L_NC_I_join::~XF_Flatten_52_W_L_NC_I_join(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_52_W_L_NC_I_join::vXF_Flatten_52_W_L_NC_I_join(CardIter* pCI)
+void XF_Flatten_52_W_L_NC_I_join::vFlatten(CardIter* pCI)
 {
   _static_
 
@@ -54,9 +54,9 @@ void XF_Flatten_52_W_L_NC_I_join::vXF_Flatten_52_W_L_NC_I_join(CardIter* pCI)
   delete pFold;
 
   if (1 == nTables)
-    XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(pCI);
+    XF_Flatten_53_W_L_NC_NI_join::vFlatten(pCI);
   else
-    XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(pCI);
+    XF_Flatten_53_W_L_NC_NI_exists::vFlatten(pCI);
 }
 
 

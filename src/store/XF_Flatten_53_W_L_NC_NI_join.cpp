@@ -42,7 +42,7 @@ XF_Flatten_53_W_L_NC_NI_join::~XF_Flatten_53_W_L_NC_NI_join(void) noexcept(false
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(CardIter* pCI)
+void XF_Flatten_53_W_L_NC_NI_join::vFlatten(CardIter* pCI)
 {
   _static_
 

@@ -20,7 +20,7 @@ namespace STORE
     XF_Flatten_53_W_L_NC_NI_join(CardIter* pCI);
    ~XF_Flatten_53_W_L_NC_NI_join(void) noexcept(false);
 
-    static void vXF_Flatten_53_W_L_NC_NI_join(CardIter* pCI);
+    static void vFlatten(CardIter* pCI);
 
     void vXF_Flatten_53_W_L_NC_NI_join(void);
 
