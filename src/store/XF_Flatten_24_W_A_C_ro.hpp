@@ -33,7 +33,7 @@ namespace STORE
     void vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred* p_boolPred);
     void vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred* p_boolPred);
     void vRestate_emit_fold(CardIter* pCI);
-    void vVia_gbyAgg_Promotion(CardIter* pCI);
+    void vPromote_aggreg_To_gbyAgg(CardIter* pCI);
 
     Footer* aFooter(void);
   };

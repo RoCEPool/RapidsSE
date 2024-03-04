@@ -84,7 +84,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
 
-  vVia_gbyAgg_Promotion(m_pCI);
+  vPromote_aggreg_To_gbyAgg(m_pCI);
 
   vRestate_emit_fold(m_pCI);
 
@@ -519,7 +519,7 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert call of sub-query to correlated join to left sub-stream            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vVia_gbyAgg_Promotion(CardIter* pCI)
+void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
