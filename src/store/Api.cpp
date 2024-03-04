@@ -103,7 +103,8 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   // the dictionary, and substitute pipeline arguments appropriately.
   vTrace("ApiParse4\n"_Stz);
   CommandParser* pCommandParser = new CommandParser(pCommonTagSet, pParentTask);
-	RASSERT(pCommandParser);
+  vTrace("pCommandParser: %p\n"_Stz, pCommandParser);
+	RASSERT(pCommandParser->eGetClassNo() == BASE::CN_COMMANDPARSER);
 
   TaskList* pTaskList;
 

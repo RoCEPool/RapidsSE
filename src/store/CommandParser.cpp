@@ -94,6 +94,8 @@ CommandParser::~CommandParser(void) noexcept
 /*----------------------------------------------------------------------------*/
 TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPARSER,_FOOTER_);
+  vTrace("pParseCommand1\n"_Stz);
   m_szCurrentFile = szFilePath;
 
   // The thing that gets told of parsing errors.
@@ -103,6 +105,7 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
   std::string sqlStr(szCommand->azChar());
   antlr4::ANTLRInputStream stream(sqlStr);
 
+  vTrace("pParseCommand2\n"_Stz);
   // Create the lexer and get the stream of tokens representing the input command.
   Parser::sqlLexer lexer(&stream);
   lexer.removeErrorListeners();
@@ -111,6 +114,7 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
   // Tokenise the input stream
   antlr4::CommonTokenStream tokens(&lexer);
 
+  vTrace("pParseCommand3\n"_Stz);
   // Check for any syntax errors
   if (errorListener.bGotError()) {
     //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
@@ -119,14 +123,14 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
 
   // Create a parser from the stream of tokens.
   Parser::sqlParser parser(&tokens);
-  
+  vTrace("pParseCommand4\n"_Stz);
   // Add our own error listener so that we can be notified if there is a parsing error.
   parser.removeErrorListeners();
   parser.addErrorListener(&errorListener);
 
   // Parse the token stream.
   Parser::sqlParser::StatementsContext* pStatementsCtx = parser.statements();
-  
+  vTrace("pParseCommand5\n"_Stz);
   // Check for any syntax errors
   if (errorListener.bGotError()) {
     //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
@@ -144,6 +148,7 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
 
   ASSERT(!m_pChildTasks);
 
+  vTrace("pParseCommand6\n"_Stz);
   return pTaskList;
 }
 
