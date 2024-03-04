@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "XF_FLATTEN_ABS.hpp"
 
 namespace STORE
 {
-  class XF_Flatten_40_W_L_C_E : public XF_TRANSFORM
+  class XF_Flatten_40_W_L_C_E : public XF_FLATTEN_ABS
   {
   private:
     // must be last

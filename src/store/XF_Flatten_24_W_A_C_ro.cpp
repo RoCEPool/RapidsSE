@@ -23,7 +23,7 @@ __aFooterFunction(XF_Flatten_24_W_A_C_ro)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_24_W_A_C_ro::XF_Flatten_24_W_A_C_ro(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_24_W_A_C_RO, pCI)
+: XF_FLATTEN_ABS(CN_XF_FLATTEN_24_W_A_C_RO, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 

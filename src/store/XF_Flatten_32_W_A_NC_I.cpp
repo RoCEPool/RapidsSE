@@ -22,7 +22,7 @@ __aFooterFunction(XF_Flatten_32_W_A_NC_I)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_32_W_A_NC_I::XF_Flatten_32_W_A_NC_I(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_32_W_A_NC_I, pCI)
+: XF_FLATTEN_ABS(CN_XF_FLATTEN_32_W_A_NC_I, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_32_W_A_NC_I, _FOOTER_);
 
