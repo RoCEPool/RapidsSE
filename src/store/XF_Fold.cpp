@@ -25,26 +25,6 @@ XF_Fold::XF_Fold(i8 i_depth)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_i_depth      = i_depth;
-  m_p_deck       = nullptr;
-
-  m_p_correlation = nullptr;
-
-  m_pSubQuery    = nullptr;
-  m_pOuterQuery  = nullptr;
-
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-XF_Fold::XF_Fold(i8 i_depth, Card_Deck* p_deck)
-: Object(CN_XF_FOLD)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  m_i_depth      = i_depth;
-  m_p_deck       = p_deck;
 
   m_p_correlation = nullptr;
 
@@ -85,16 +65,6 @@ void XF_Fold::v_correlation(Card_Correlation* p_correlation)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_p_correlation = p_correlation;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Fold::v_deck(Card_Deck* p_deck)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
-
-  m_p_deck = p_deck;
 }
 
 /*----------------------------------------------------------------------------*/

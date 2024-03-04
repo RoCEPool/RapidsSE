@@ -88,7 +88,7 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
+  XF_Fold* pFold = new XF_Fold(0);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz,
                                CK_o_WHERE, QO_IN_OP);

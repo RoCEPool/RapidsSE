@@ -87,7 +87,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold
 
-  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
+  XF_Fold* pFold = new XF_Fold(0);
 
   //pFold->vFold_basic(m_pCI,"W_L_NC_NI_exists"_Stz,CK_o_WHERE);
   CarryForward* pCarryForward =

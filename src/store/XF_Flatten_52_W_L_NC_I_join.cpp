@@ -48,7 +48,7 @@ void XF_Flatten_52_W_L_NC_I_join::vFlatten(CardIter* pCI)
 {
   _static_
 
-  XF_Fold* pFold = new XF_Fold(0, pCI->G.pDeck);
+  XF_Fold* pFold = new XF_Fold(0);
   i8 nTables = pFold->nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
 
   delete pFold;

@@ -15,7 +15,6 @@ namespace STORE
   private:
 
     i8         m_i_depth;
-    Card_Deck* m_p_deck;
 
     Card_Correlation* m_p_correlation;
 
@@ -31,14 +30,10 @@ namespace STORE
     void  operator delete(void*);
     
     XF_Fold(i8 i_depth);
-    XF_Fold(i8 i_depth, Card_Deck* p_deck);
    ~XF_Fold(void) noexcept(false);
 
     Card_Correlation* p_correlation(void);
     void v_correlation(Card_Correlation* p_correlation);
-
-    Card_Deck* p_deck(void);
-    void v_deck(Card_Deck* p_deck);
 
     i8 i_depth(void);
 
