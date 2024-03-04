@@ -233,7 +233,7 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	@echo ""
 	@echo "Linking the rapidsse executable..."
 	@echo ""
-	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) -o $(TARGET_EXE) $(OBJECTS) $(LIBS) 
+	@$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) -o $(TARGET_EXE) $(OBJECTS) $(LIBS)
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
 #-------------------------------------------------------
@@ -245,30 +245,30 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 $(OBJ_DIR)/$(SRC_DIR)/store/Fragments/%.o: $(SRC_DIR)/store/Fragments/%.cpp $(OBJ_DIR)/$(SRC_DIR)/store/Fragments/%.d
 	$(DIR_GUARD)
 	@echo "Compiling fragment file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(FRAGMENT_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(FRAGMENT_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
 
 $(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.o: $(SRC_DIR)/../thirdparty/antlr/generated/%.cpp $(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.d
 	$(DIR_GUARD)
 	@echo "Compiling ANTLR-generated file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(ANTLR_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(ANTLR_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
 
 # Compile general source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile source .c files into object files
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile assembly files into objects
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s 
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
 
 #-------------------------------------------------------
 
