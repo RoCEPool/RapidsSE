@@ -194,10 +194,9 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 
 		//i8 nElmSize = StrLib::iWordFlip(aDst, iBufRemaining, sValue);
 
-		//i8 iSrcLen  = (i8)strlen(sValue);
 		i8 iSrcLen = 0;
-		while (sValue[iSrcLen++] != '\0')
-			;
+		while (sValue[iSrcLen] != '\0')
+			iSrcLen++;
 
 		i8 iRoundUp = 0;
 		i8 iRemainder = iSrcLen % C_BYTES_PER_WORD;
