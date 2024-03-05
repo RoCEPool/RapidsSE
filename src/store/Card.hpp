@@ -233,7 +233,7 @@ extern Stz* MARK_UNVALID;
 extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
 
-extern Stz* C_SQCRLKEY;
+extern Stz* C_CRLKEY;
 
 namespace STORE
 {

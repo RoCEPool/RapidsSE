@@ -209,7 +209,7 @@ void XF_Flatten_24_W_A_C_ro::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(C
     // projection
 
     if (AL_PARTITION == e_Level) {
-      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,C_SQCRLKEY);
+      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr, C_CRLKEY);
     }
     else {
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
@@ -218,7 +218,7 @@ void XF_Flatten_24_W_A_C_ro::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(C
       Symbol xSymbol_KeyCol(SF_KEY_COL,1);
 
       pCI->vNewMember(CK_EXPR);
-      pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, C_SQCRLKEY);
+      pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, C_CRLKEY);
       pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
@@ -572,7 +572,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   if (pCI->bIsNextMain(CK_o_PROJECT)) {
     RASSERT(pCI->bEachMain(CK_o_PROJECT));
-    vEnhance_sq_project_To_Include_Correlation_Key(pCI, C_SQCRLKEY);
+    vEnhance_sq_project_To_Include_Correlation_Key(pCI, C_CRLKEY);
   } else {
 
   }
