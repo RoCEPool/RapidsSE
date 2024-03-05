@@ -33,7 +33,7 @@ Bench::Bench(Optimiser* pOptimiser)
 
   m_iXform        = 0;
   m_eXform        = XF_NONE;
-  m_iPrint        = 0;
+  m_nPrintBoard        = 0;
 
   _checkInitialised_(CN_BENCH);
   
@@ -381,43 +381,23 @@ void Bench::vXfunc(Stz* szXfunc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Bench::szXhand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  return m_sXhand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-void Bench::vXhand(const char* asXhand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_sXhand = asXhand;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get print number                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Bench::iPrint(void)
+i8 Bench::nPrintBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  return m_iPrint;
+  return m_nPrintBoard;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment and get print number                                             */
 /*----------------------------------------------------------------------------*/
-i8 Bench::iPrint_inc(void)
+i8 Bench::nPrintBoard_inc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  return m_iPrint++;
+  return m_nPrintBoard++;
 }
 
 /*----------------------------------------------------------------------------*/

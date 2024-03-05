@@ -291,7 +291,7 @@ void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
 
   i8 iBenchNo = m_pBench->iBenchNo();
   eOH ePhase  = this->ePhase();
-  i8 iPrintNo = m_pBench->iPrint_inc();
+  i8 iPrintNo = m_pBench->nPrintBoard_inc();
   pRibbon->vPrintRibbon(szQueryNm, iBenchNo, ePhase, iPrintNo);
 
   delete pRibbon;

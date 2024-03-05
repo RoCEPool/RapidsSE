@@ -83,10 +83,13 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_24_W_A_C_RO);
 
   vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
+  m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   vPromote_aggreg_To_gbyAgg(m_pCI);
+  m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   vRestate_emit_fold(m_pCI);
+  m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

@@ -19,14 +19,13 @@ namespace STORE
     i8   m_iBenchNo;
     s32  m_sPipelineNm;
 
-    i8   m_iXform;
-    s32  m_sXhand;
     s256 m_sXfile;
-    s256 m_sXfunc;
-    i8   m_iPrint;
-
     eXF  m_eXform;
+    s256 m_sXfunc;
 
+    i8   m_nPrintBoard;
+
+    i8   m_iXform;
 
   public:
 
@@ -39,8 +38,6 @@ namespace STORE
   
     Bench(Optimiser* pOptimiser);
    ~Bench(void) noexcept(false);
-
-
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -76,10 +73,9 @@ namespace STORE
     void vXform_Inc(void);
     Stz* szXfunc(void);
     void vXfunc(Stz* szXfunc);
-    Stz* szXhand(void);
-    void vXhand(const char* asXhand);
-    i8   iPrint(void);
-    i8   iPrint_inc(void);
+
+    i8   nPrintBoard(void);
+    i8   nPrintBoard_inc(void);
     i8   iBenchNo(void);
 
     void vValidate(CardIter* pCI);

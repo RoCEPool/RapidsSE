@@ -1468,7 +1468,7 @@ void Card::vPrintCardRecursive(CardIter* pCI,
     vDebugPoint();
 
   if (C_UNKNOWN == m_iFirstPrint) {
-    m_iFirstPrint = pCI->m_pBench->iPrint();
+    m_iFirstPrint = pCI->m_pBench->nPrintBoard();
     m_eFirst = m_eCard;
   }
   m_nPrintCount++;
