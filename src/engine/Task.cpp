@@ -210,8 +210,8 @@ void Task::vTask(void)
   
   m_pLogicUnit = nullptr;
   m_pLocalFrame = nullptr;
-  m_pPdsOfHme = nullptr;
-  m_iMaxConcurrentLocks = 0;
+//  m_pPdsOfHme = nullptr;
+//  m_iMaxConcurrentLocks = 0;
 
   m_pLocalStrs = new LocalStrs;
 
@@ -221,7 +221,7 @@ void Task::vTask(void)
   
   m_pLogicUnit = new LogicUnit;
 
-  m_pPdsOfHme = new Pds(8, nullptr, false);
+//  m_pPdsOfHme = new Pds(8, nullptr, false);
 
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -271,7 +271,7 @@ Task::~Task(void) noexcept(false)
 //  vTrace("%s %lld\n"_Stz, szTaskNm(), m_iMaxConcurrentLocks);
   // drop locks before deleting?
 //  ASSERT(m_pPdsOfHme->nItems() == 0);
-  delete m_pPdsOfHme;
+//  delete m_pPdsOfHme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,17 +300,17 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  static bool bAddToHashMap = true;
+//  static bool bAddToHashMap = true;
 
   PsxThd::vTlsSet(giTLS_TaskKey,this);
   ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
 
-  if( bAddToHashMap) {
-    AM::pHashMap()->vInsertKeyValue(m_pPdsOfHme->oGetBufferId().m_pvAsAddress,
-                                    m_pPdsOfHme,
-                                    BI_TASKLOCK);
-    bAddToHashMap = false;
-  }
+//  if( bAddToHashMap) {
+//    AM::pHashMap()->vInsertKeyValue(m_pPdsOfHme->oGetBufferId().m_pvAsAddress,
+//                                    m_pPdsOfHme,
+//                                    BI_TASKLOCK);
+//    bAddToHashMap = false;
+//  }
   
   vVerifyTaskComposition();
     
@@ -631,13 +631,14 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Task::vAddHashMapEntry(HashMapEntry *pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  UNUSED(pEntry);
 
-  SkipListBlock* pBlock = m_pPdsOfHme->pInsert(pEntry);
-  *((i8*) pBlock->aItem()) = (i8)pEntry;
-
-  i8 iNumLocks = m_pPdsOfHme->nItems();
-  if( iNumLocks > m_iMaxConcurrentLocks)
-    m_iMaxConcurrentLocks = iNumLocks;
+//  SkipListBlock* pBlock = m_pPdsOfHme->pInsert(pEntry);
+//  *((i8*) pBlock->aItem()) = (i8)pEntry;
+//
+//  i8 iNumLocks = m_pPdsOfHme->nItems();
+//  if( iNumLocks > m_iMaxConcurrentLocks)
+//    m_iMaxConcurrentLocks = iNumLocks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -646,8 +647,10 @@ void Task::vAddHashMapEntry(HashMapEntry *pEntry)
 bool Task::bDeleteHashMapEntry(HashMapEntry *pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  UNUSED(pEntry);
 
-  return m_pPdsOfHme->bDelete(pEntry);
+//  return m_pPdsOfHme->bDelete(pEntry);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1468,17 +1471,17 @@ void Task::vReleaseLockSets(void)
   if (AM::SHOW::bException())
     vTrace("Release HashMap Lock Set\n"_Stz);
 
-  SkipListBlock* pCurrBlock = m_pPdsOfHme->pFirstBlock();
-
-  while(pCurrBlock) {
-    SkipListBlock* pNextBlock = m_pPdsOfHme->pNextSLBlock(pCurrBlock, 0);
-
-    i8 iEntry = *(i8*) pCurrBlock->aItem();
-    HashMapEntry* pEntry = (HashMapEntry*)iEntry;
-    pEntry->vDropLock(); // dropping the lock deletes the entry in this pds
-
-    pCurrBlock = pNextBlock;
-  }
+//  SkipListBlock* pCurrBlock = m_pPdsOfHme->pFirstBlock();
+//
+//  while(pCurrBlock) {
+//    SkipListBlock* pNextBlock = m_pPdsOfHme->pNextSLBlock(pCurrBlock, 0);
+//
+//    i8 iEntry = *(i8*) pCurrBlock->aItem();
+//    HashMapEntry* pEntry = (HashMapEntry*)iEntry;
+//    pEntry->vDropLock(); // dropping the lock deletes the entry in this pds
+//
+//    pCurrBlock = pNextBlock;
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
