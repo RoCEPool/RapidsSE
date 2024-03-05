@@ -82,25 +82,25 @@ begin
     | filter " type BOOLEAN $2 $17 == "
     | filter " type BOOLEAN $11 DATE '1995-09-01' >= "
     | filter " type BOOLEAN $11 DATE '1995-10-01'  < "
-    | aggreg " type DECIMAL ( 19  2 ) )  $6 1.  $7 -  *  sum  ,
-                type DECIMAL ( 19  2 ) )  }  }  $21 'PROMO%'  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | aggreg " type DECIMAL ( 19  4 ) )  $6 1.  $7 -  *  sum  ,
+                type DECIMAL ( 19  4 ) )  }  }  $21 'PROMO%'  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  ,
-              type DECIMAL ( 19  2 ) )  $2 sum  "
+    aggreg " type DECIMAL ( 19  4 ) )  $1 sum  ,
+              type DECIMAL ( 19  4 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S04 on origin :
-    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  ,
-              type DECIMAL ( 19  2 ) )  $2 sum  "
+    aggreg " type DECIMAL ( 19  4 ) )  $1 sum  ,
+              type DECIMAL ( 19  4 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL ( 19  2 ) as promo_revenue 100.00  $2 *  $1 /  "
+    project " type DECIMAL ( 17  17 ) as promo_revenue 100.00  $2 *  $1 /  "
     | combined 0
     | next
 
@@ -111,7 +111,7 @@ begin
 end ;
 
 rows:
-  (19.25)
+  (19.246005465787230)
 
 /optimise_passthru 
 pipeline Query14
@@ -124,33 +124,33 @@ begin
   stage S01 on all partitions :
     indexscan ${testName2}_lineitem IxL_SHIPDATE "LBOUND DATE '1995-09-01' >= UBOUND DATE '1995-10-01' <"
     | project "type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
-               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT"
+               type DECIMAL ( 17  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 17  2 ) as L_DISCOUNT L_DISCOUNT"
     | hash "type INTEGER ( 19 ) L_PARTKEY"
     | combined 0
     | next hashcast
 
   stage S02 on all partitions :
     indexJoin ${testName2}_part IxP_PARTKEY "bound $I1 L_PARTKEY =="
-    | aggreg " type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-                type DECIMAL ( 19  2 ) )  }  }  P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | aggreg " type DECIMAL ( 19  4 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+                type DECIMAL ( 19  4 ) )  }  }  P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    aggreg " type DECIMAL ( 19  2 ) ) $1 sum  ,
-              type DECIMAL ( 19  2 ) ) $2 sum  "
+    aggreg " type DECIMAL ( 19  4 ) ) $1 sum  ,
+              type DECIMAL ( 19  4 ) ) $2 sum  "
     | combined 0
     | next
 
   stage S04 on origin :
-    aggreg " type DECIMAL ( 19  2 ) ) $1 sum  ,
-              type DECIMAL ( 19  2 ) ) $2 sum  "
+    aggreg " type DECIMAL ( 19  4 ) ) $1 sum  ,
+              type DECIMAL ( 19  4 ) ) $2 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL ( 19  2 ) as promo_revenue 100.00  $2 *  $1 /  "
+    project " type DECIMAL ( 17  17 ) as promo_revenue 100.00  $2 *  $1 /  "
     | combined 0
     | next
 
@@ -160,7 +160,7 @@ begin
     | first
 end ;
 rows:
-  (19.25)
+  (19.246005465787230)
 
 CLEANUP {
 }

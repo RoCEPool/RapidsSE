@@ -119,7 +119,7 @@ begin
     indexJoin ${testName2}_lineitem IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | ordagg " ordgroupBy type integer ( 19 ) P_PARTKEY
                aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
-                          type DECIMAL ( 19  2 ) )  L_QUANTITY sum  ,
+                          type DECIMAL ( 17  2 ) )  L_QUANTITY sum  ,
                           type INTEGER ( 19 ) )  L_QUANTITY count  "
     | combined 0
     | next
@@ -127,7 +127,7 @@ begin
   stage S03 on all nodes :
     gbyAgg " groupBy    type integer ( 19 ) P_PARTKEY
              aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
-                        type DECIMAL ( 19  2 ) )  $2 sum  ,
+                        type DECIMAL ( 17  2 ) )  $2 sum  ,
                         type INTEGER ( 19 ) )  $3 sum  "
     | combined 0
     | next
@@ -135,36 +135,36 @@ begin
   stage S04 on origin :
     gbyAgg " groupBy    type integer ( 19 ) P_PARTKEY
              aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
-                        type DECIMAL ( 19  2 ) )  $2 sum  ,
+                        type DECIMAL ( 17  2 ) )  $2 sum  ,
                         type INTEGER ( 19 ) )  $3 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
     project " type integer ( 19 ) as P_PARTKEY P_PARTKEY ,
-              type DECIMAL ( 19  2 ) as AV $2 $3 casttype DECIMAL ( 19  2 ) cast / 0.2 *"
+              type DECIMAL ( 17  17 ) as AV $2 $3 casttype DECIMAL ( 17  2 ) cast / 0.2 *"
     | combined 0
     | next broadcast
 
   stage S06 on all partitions :
     indexJoin ${testName2}_lineitem IxL_PARTKEY "bound $I1 $1 =="
     | filter " type BOOLEAN  L_QUANTITY AV <  "
-    | aggreg " type decimal ( 19  2 ) as avg_yearly ) L_EXTENDEDPRICE sum  "
+    | aggreg " type decimal ( 17  2 ) as avg_yearly ) L_EXTENDEDPRICE sum  "
     | combined 0
     | next
 
   stage S07 on all nodes :
-    aggreg " type decimal ( 19  2 ) as avg_yearly ) $1 sum  "
+    aggreg " type decimal ( 17  2 ) as avg_yearly ) $1 sum  "
     | combined 0
     | next
 
   stage S08 on origin :
-    aggreg " type DECIMAL ( 19  2 ) as avg_yearly ) $1 sum "
+    aggreg " type DECIMAL ( 17  2 ) as avg_yearly ) $1 sum "
     | combined 0
     | next
 
   stage S09 on origin :
-    project " type DECIMAL ( 19  2 ) as avg_yearly $1 7.0 / "
+    project " type DECIMAL ( 17  6 ) as avg_yearly $1 7.0 / "
     | combined 0
     | next
 
@@ -175,7 +175,7 @@ begin
 end ;
 
 rows:
- (2495.31)
+ (2495.310000)
 
 CLEANUP {
 }

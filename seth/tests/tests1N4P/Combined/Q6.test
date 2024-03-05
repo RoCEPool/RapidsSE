@@ -41,7 +41,7 @@ begin
     | next
 
   stage Gs_LINEITEM on all partitions :
-    indexScan ${testName2}_lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+    indexScan Combined_Q6_lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
                                        UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
     | filter "type BOOLEAN L_DISCOUNT 1.01 0.01 - >=
                               L_DISCOUNT 1.01 0.01 + <=
@@ -74,7 +74,7 @@ begin
 end ;
 
 rows:
-  (1877392.75)
+  (1877392.7685)
 
 //------------------------------------------------------------------------------
 // drop the tables

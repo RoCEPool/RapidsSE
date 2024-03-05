@@ -59,15 +59,15 @@ begin
     | stageMarker27171
   stage stageMarker27171 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  $18 $9 ==  and  $13 TIMESTAMP ''1993-10-01 00:00:00''  >=  and  $13 TIMESTAMP ''1994-01-01 00:00:00''  <  and  $26 ''R''  ==  and  $4 $34 ==  and  "
-    | gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $6 , type VARCHAR ( 0 ) as c_phone $5 , type VARCHAR ( 0 ) as n_name $35 , type VARCHAR ( 0 ) as c_address $3 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL ( 19  2 ) )  $23 1.  $24 -  *  sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
+    | gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $6 , type VARCHAR as c_phone $5 , type VARCHAR as n_name $35 , type VARCHAR as c_address $3 , type VARCHAR as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR $K2 , type DECIMAL ( 19  2 ) )  $23 1.  $24 -  *  sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
     | combined 0
     | stageMarker27174
   stage stageMarker27174 on all nodes :
-    gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $4 , type VARCHAR ( 0 ) as c_phone $7 , type VARCHAR ( 0 ) as n_name $5 , type VARCHAR ( 0 ) as c_address $6 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL ( 19  2 ) )  $3 sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
+    gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR $K2 , type DECIMAL ( 19  2 ) )  $3 sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
     | combined 0
     | stageMarker27177
   stage stageMarker27177 on origin :
-    gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR ( 0 ) as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $4 , type VARCHAR ( 0 ) as c_phone $7 , type VARCHAR ( 0 ) as n_name $5 , type VARCHAR ( 0 ) as c_address $6 , type VARCHAR ( 0 ) as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR ( 0 ) $K2 , type DECIMAL ( 19  2 ) as revenue )  $3 sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR ( 0 ) $K5 , type VARCHAR ( 0 ) $K6 , type VARCHAR ( 0 ) $K4 , type VARCHAR ( 0 ) $K7 "
+    gbyAgg " groupBy  type INTEGER ( 19 ) as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL ( 19  2 ) as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER ( 19 ) $K1 , type VARCHAR $K2 , type DECIMAL ( 19  2 ) as revenue )  $3 sum  , type DECIMAL ( 19  2 ) $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
     | sort " type DECIMAL ( 19  2 ) $3 DESC  "
     | limit 20
     | combined 0
@@ -135,65 +135,65 @@ begin
                                //C_NATIONKEY N_NATIONKEY ==  and  "
 
     | gbyAgg " groupBy  type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
-                        type VARCHAR ( 0 ) as C_NAME C_NAME ,
-                        type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
-                        type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
-                        type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                        type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
-                        type VARCHAR ( 0 ) as C_COMMENT C_COMMENT
+                        type VARCHAR as C_NAME C_NAME ,
+                        type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL ,
+                        type VARCHAR as C_PHONE C_PHONE ,
+                        type VARCHAR as N_NAME N_NAME ,
+                        type VARCHAR as C_ADDRESS C_ADDRESS ,
+                        type VARCHAR as C_COMMENT C_COMMENT
                         aggregates
                         type INTEGER ( 19 ) $K1 ,
-                        type VARCHAR ( 0 ) $K2 ,
-                        type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-                        type DECIMAL ( 19  2 ) $K3 ,
-                        type VARCHAR ( 0 ) $K5 ,
-                        type VARCHAR ( 0 ) $K6 ,
-                        type VARCHAR ( 0 ) $K4 ,
-                        type VARCHAR ( 0 ) $K7 "
+                        type VARCHAR $K2 ,
+                        type DECIMAL ( 17  4 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+                        type DECIMAL ( 17  2 ) $K3 ,
+                        type VARCHAR $K5 ,
+                        type VARCHAR $K6 ,
+                        type VARCHAR $K4 ,
+                        type VARCHAR $K7 "
 
     | combined 0
     | next
 
   stage stageMarker27174 on all nodes :
     gbyAgg " groupBy  type INTEGER ( 19 ) as C_CUSTKEY $1 ,
-                      type VARCHAR ( 0 ) as C_NAME $2 ,
-                      type DECIMAL ( 19  2 ) as C_ACCTBAL $4 ,
-                      type VARCHAR ( 0 ) as C_PHONE $7 ,
-                      type VARCHAR ( 0 ) as N_NAME $5 ,
-                      type VARCHAR ( 0 ) as C_ADDRESS $6 ,
-                      type VARCHAR ( 0 ) as C_COMMENT $8
+                      type VARCHAR as C_NAME $2 ,
+                      type DECIMAL ( 17  2 ) as C_ACCTBAL $4 ,
+                      type VARCHAR as C_PHONE $7 ,
+                      type VARCHAR as N_NAME $5 ,
+                      type VARCHAR as C_ADDRESS $6 ,
+                      type VARCHAR as C_COMMENT $8
                       aggregates
                       type INTEGER ( 19 ) $K1 ,
-                      type VARCHAR ( 0 ) $K2 ,
-                      type DECIMAL ( 19  2 ) )  $3 sum  ,
-                      type DECIMAL ( 19  2 ) $K3 ,
-                      type VARCHAR ( 0 ) $K5 ,
-                      type VARCHAR ( 0 ) $K6 ,
-                      type VARCHAR ( 0 ) $K4 ,
-                      type VARCHAR ( 0 ) $K7 "
+                      type VARCHAR $K2 ,
+                      type DECIMAL ( 17  4 ) )  $3 sum  ,
+                      type DECIMAL ( 17  2 ) $K3 ,
+                      type VARCHAR $K5 ,
+                      type VARCHAR $K6 ,
+                      type VARCHAR $K4 ,
+                      type VARCHAR $K7 "
     | combined 0
     | next
   stage stageMarker27177 on origin :
     gbyAgg " groupBy  type INTEGER ( 19 ) as C_CUSTKEY $1 ,
-                      type VARCHAR ( 0 ) as C_NAME $2 ,
-                      type DECIMAL ( 19  2 ) as C_ACCTBAL $4 ,
-                      type VARCHAR ( 0 ) as C_PHONE $7 ,
-                      type VARCHAR ( 0 ) as N_NAME $5 ,
-                      type VARCHAR ( 0 ) as C_ADDRESS $6 ,
-                      type VARCHAR ( 0 ) as C_COMMENT $8
+                      type VARCHAR as C_NAME $2 ,
+                      type DECIMAL ( 17  2 ) as C_ACCTBAL $4 ,
+                      type VARCHAR as C_PHONE $7 ,
+                      type VARCHAR as N_NAME $5 ,
+                      type VARCHAR as C_ADDRESS $6 ,
+                      type VARCHAR as C_COMMENT $8
                       aggregates
                       type INTEGER ( 19 ) $K1 ,
-                      type VARCHAR ( 0 ) $K2 ,
-                      type DECIMAL ( 19  2 ) )  $3 sum  ,
-                      type DECIMAL ( 19  2 ) $K3 ,
-                      type VARCHAR ( 0 ) $K5 ,
-                      type VARCHAR ( 0 ) $K6 ,
-                      type VARCHAR ( 0 ) $K4 ,
-                      type VARCHAR ( 0 ) $K7 "
+                      type VARCHAR $K2 ,
+                      type DECIMAL ( 17  4 ) )  $3 sum  ,
+                      type DECIMAL ( 17  2 ) $K3 ,
+                      type VARCHAR $K5 ,
+                      type VARCHAR $K6 ,
+                      type VARCHAR $K4 ,
+                      type VARCHAR $K7 "
       | combined 0
        | next
   stage stageNew on origin :
-    sort " type DECIMAL ( 19  2 ) $3 ASC  "
+    sort " type DECIMAL ( 17  4 ) $3 ASC  "
     | limit 20
     | combined 0
     | next
@@ -205,26 +205,26 @@ begin
 end ;
 
 rows:
-  (43,'Customer#000000043',-12450.59,9904.28,'ROMANIA','ouSbjHk8lh5fKX3zGso3ZSIj9Aa3PoaFd','29-316-665-2897','ial requests: carefully pending foxes detect quickly. carefully final courts cajole quickly. carefully')
-  (51,'Customer#000000051',-8347.41,855.87,'JAPAN','uR:wEaiTvo4','22-344-885-4251','eposits. furiously regular requests integrate carefully packages. furious')
-  (23,'Customer#000000023',-7809.36,3332.02,'CANADA','OdY W13N7Be3OC5MpgfmcYss0Wn6TKT','13-312-472-8245','deposits. special deposits cajole slyly. fluffily special deposits about the furiously ')
-  (62,'Customer#000000062',-7646.73,595.61,'GERMANY','upJK2Dnw13:','17-361-978-7059','kly special dolphins. pinto beans are slyly. quickly regular accounts are furiously a')
-  (45,'Customer#000000045',-6865.70,9983.38,'INDONESIA','4v3OcpFgoOmMG:CbnF:4mdC','19-715-298-9917','nto beans haggle slyly alongside of t')
-  (36,'Customer#000000036',-6544.60,4987.27,'VIETNAM','3TvCzjuPzpJ0:DdJ8kW5U','31-704-669-5769','haggle. enticing: quiet platelets grow quickly bold sheaves. carefully regular acc')
-  (136,'Customer#000000136',-6205.14,-842.39,'GERMANY','QoLsJ0v5C1IQbh:DS1','17-501-210-4726','ackages sleep ironic: final courts. even requests above the blithely bold requests g')
-  (67,'Customer#000000067',-6131.40,8166.59,'INDONESIA','rfG0cOgtr5W8 xILkwp9fpCS8','19-403-114-4356','indle furiously final: even theodo')
-  (138,'Customer#000000138',-5650.11,430.59,'ETHIOPIA','5uyLAeY7HIGZqtu66Yn08f','15-394-860-4589','ts doze on the busy ideas. regular')
-  (88,'Customer#000000088',-4781.01,8031.44,'MOZAMBIQUE','wtkjBN9eyrFuENSMmMFlJ3e7jE5KXcg','26-516-273-2566','s are quickly above the quickly ironic instructions; even requests about the carefully final deposi')
-  (75,'Customer#000000075',-4737.86,6684.10,'CHINA','Dh 6jZ:cwxWLKQfRKkiGrzv6pm','28-247-803-9025',' instructions cajole even: even deposits. finally bold deposits use above the even pains. slyl')
-  (9,'Customer#000000009',-4679.64,8324.07,'INDIA','xKiAFTjUsCuxfeleNqefumTrjS','18-338-906-3675','r theodolites according to the requests wake thinly excuses: pending requests haggle furiousl')
-  (85,'Customer#000000085',-4161.28,3386.64,'ETHIOPIA','siRerlDwiolhYR 8FgksoezycLj','15-745-585-8219','ronic ideas use above the slowly pendin')
-  (137,'Customer#000000137',-4056.08,7838.30,'MOZAMBIQUE','cdW91p92rlAEHgJafqYyxf1Q','26-777-409-5654','carefully regular theodolites use. silent dolphins cajo')
-  (22,'Customer#000000022',-4042.70,591.98,'CANADA','QI6p41:FNs5k7RZoCCVPUTkUdYpB','13-806-545-9701','s nod furiously above the furiously ironic ideas. ')
-  (60,'Customer#000000060',-3497.38,2741.87,'JAPAN','FyodhjwMChsZmUz7Jz0H','22-480-575-5866','latelets. blithely unusual courts boost furiously about the packages. blithely final instruct')
-  (129,'Customer#000000129',-3109.03,9127.27,'GERMANY','q7m7rbMM0BpaCdmxloCgBDRCleXsXkdD8kf','17-415-148-7416',' unusual deposits boost carefully furiously silent ideas. pending accounts cajole slyly across')
-  (12,'Customer#000000012',-2937.30,3396.49,'JORDAN','9PWKuhzT4Zr1Q','23-791-276-1263',' to the carefully final braids. blithely regular requests nag. ironic theodolites boost quickly along')
-  (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
-  (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
+  ( 43, 'Customer#000000043', -12450.6141, 9904.28,   'ROMANIA',   'ouSbjHk8lh5fKX3zGso3ZSIj9Aa3PoaFd', '29-316-665-2897', 'ial requests: carefully pending foxes detect quickly. carefully final courts cajole quickly. carefully')
+  ( 51, 'Customer#000000051',  -8347.4184,  855.87,     'JAPAN',                         'uR:wEaiTvo4', '22-344-885-4251',  'eposits. furiously regular requests integrate carefully packages. furious')
+  ( 23, 'Customer#000000023',  -7809.3720, 3332.02,    'CANADA',     'OdY W13N7Be3OC5MpgfmcYss0Wn6TKT', '13-312-472-8245', 'deposits. special deposits cajole slyly. fluffily special deposits about the furiously ')
+  ( 62, 'Customer#000000062',  -7646.7439,  595.61,   'GERMANY',                         'upJK2Dnw13:', '17-361-978-7059', 'kly special dolphins. pinto beans are slyly. quickly regular accounts are furiously a')
+  ( 45, 'Customer#000000045',  -6865.7142, 9983.38, 'INDONESIA',             '4v3OcpFgoOmMG:CbnF:4mdC', '19-715-298-9917', 'nto beans haggle slyly alongside of t')
+  ( 36, 'Customer#000000036',  -6544.6080, 4987.27,   'VIETNAM',               '3TvCzjuPzpJ0:DdJ8kW5U', '31-704-669-5769', 'haggle. enticing: quiet platelets grow quickly bold sheaves. carefully regular acc')
+  (136, 'Customer#000000136',  -6205.1577, -842.39,   'GERMANY',                  'QoLsJ0v5C1IQbh:DS1', '17-501-210-4726', 'ackages sleep ironic: final courts. even requests above the blithely bold requests g')
+  ( 67, 'Customer#000000067',  -6131.4064, 8166.59, 'INDONESIA',           'rfG0cOgtr5W8 xILkwp9fpCS8', '19-403-114-4356', 'indle furiously final: even theodo')
+  (138, 'Customer#000000138',  -5650.1155,  430.59,  'ETHIOPIA',              '5uyLAeY7HIGZqtu66Yn08f', '15-394-860-4589', 'ts doze on the busy ideas. regular')
+  ( 88, 'Customer#000000088',  -4781.0112, 8031.44,'MOZAMBIQUE',     'wtkjBN9eyrFuENSMmMFlJ3e7jE5KXcg', '26-516-273-2566', 's are quickly above the quickly ironic instructions; even requests about the carefully final deposi')
+  ( 75, 'Customer#000000075',  -4737.8688, 6684.10,     'CHINA',          'Dh 6jZ:cwxWLKQfRKkiGrzv6pm', '28-247-803-9025', ' instructions cajole even: even deposits. finally bold deposits use above the even pains. slyl')
+  (  9, 'Customer#000000009',  -4679.6470, 8324.07,     'INDIA',          'xKiAFTjUsCuxfeleNqefumTrjS', '18-338-906-3675', 'r theodolites according to the requests wake thinly excuses: pending requests haggle furiousl')
+  ( 85, 'Customer#000000085',  -4161.2889, 3386.64,  'ETHIOPIA',         'siRerlDwiolhYR 8FgksoezycLj', '15-745-585-8219', 'ronic ideas use above the slowly pendin')
+  (137, 'Customer#000000137',  -4056.0880, 7838.30,'MOZAMBIQUE',            'cdW91p92rlAEHgJafqYyxf1Q', '26-777-409-5654', 'carefully regular theodolites use. silent dolphins cajo')
+  ( 22, 'Customer#000000022',  -4042.7060,  591.98,    'CANADA',        'QI6p41:FNs5k7RZoCCVPUTkUdYpB', '13-806-545-9701', 's nod furiously above the furiously ironic ideas. ')
+  ( 60, 'Customer#000000060',  -3497.3914, 2741.87,     'JAPAN',                'FyodhjwMChsZmUz7Jz0H', '22-480-575-5866', 'latelets. blithely unusual courts boost furiously about the packages. blithely final instruct')
+  (129, 'Customer#000000129',  -3109.0386, 9127.27,   'GERMANY', 'q7m7rbMM0BpaCdmxloCgBDRCleXsXkdD8kf', '17-415-148-7416', ' unusual deposits boost carefully furiously silent ideas. pending accounts cajole slyly across')
+  ( 12, 'Customer#000000012',  -2937.3084, 3396.49,    'JORDAN',                       '9PWKuhzT4Zr1Q', '23-791-276-1263', ' to the carefully final braids. blithely regular requests nag. ironic theodolites boost quickly along')
+  ( 27, 'Customer#000000027',  -2753.2560, 5679.84,    'CANADA',                   'IS8GIyxpBrLpMT0u7', '13-137-193-2709', ' about the carefully ironic pinto beans. accoun')
+  ( 25, 'Customer#000000025',  -2643.4072, 7133.70,     'JAPAN',               'Hp8GyFQgGHFYSilH5tBfe', '22-603-468-3533', 'y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
 
 /optimise_passthru 
 pipeline unnamed
@@ -247,12 +247,12 @@ pipeline unnamed
       indexJoin ${testName2}_Customer IxC_CUSTKEY expr bound $I1 _custkey ==  //J1
       | project expr  type INTEGER ( 19 ) as _custkey _custkey ,
                       type INTEGER ( 19 ) as _orderkey _orderkey ,
-                      type VARCHAR ( 0 ) as c_name c_name ,
-                      type DECIMAL ( 19  2 ) as c_acctbal C_ACCTBAL ,
+                      type VARCHAR  as c_name c_name ,
+                      type DECIMAL ( 17  2 ) as c_acctbal C_ACCTBAL ,
                       type INTEGER ( 19 ) as C_NATIONKEY c_nationkey ,
-                      type VARCHAR ( 0 ) as c_address c_address ,
-                      type VARCHAR ( 0 ) as c_phone c_phone ,
-                      type VARCHAR ( 0 ) as c_comment c_comment
+                      type VARCHAR  as c_address c_address ,
+                      type VARCHAR  as c_phone c_phone ,
+                      type VARCHAR  as c_comment c_comment
       | combined 0
       | next
 
@@ -260,12 +260,12 @@ pipeline unnamed
     indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY ==" // J2 - Nation
     | project expr type INTEGER ( 19 ) as _custkey _custkey ,
                    type INTEGER ( 19 ) as _orderkey _orderkey ,
-                   type VARCHAR ( 0 ) as c_name c_name ,
-                   type DECIMAL ( 19  2 ) as c_acctbal c_acctbal ,
-                   type VARCHAR ( 0 ) as n_name n_name ,
-                   type VARCHAR ( 0 ) as c_address c_address ,
-                   type VARCHAR ( 0 ) as c_phone c_phone ,
-                   type VARCHAR ( 0 ) as c_comment c_comment
+                   type VARCHAR  as c_name c_name ,
+                   type DECIMAL ( 17  2 ) as c_acctbal c_acctbal ,
+                   type VARCHAR  as n_name n_name ,
+                   type VARCHAR  as c_address c_address ,
+                   type VARCHAR  as c_phone c_phone ,
+                   type VARCHAR  as c_comment c_comment
     | hash expr type INTEGER ( 19 ) _orderkey
     | combined 0
     | next hashcast
@@ -279,13 +279,13 @@ pipeline unnamed
       | gbyAgg expr groupby type INTEGER ( 19 ) _custkey
                      aggregates
                      type INTEGER ( 19 ) as _custkey $K1 ,
-                     type VARCHAR ( 0 ) as c_name c_name ,
-                     type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
-                     type DECIMAL ( 19  2 ) as c_acctbal c_acctbal ,
-                     type VARCHAR ( 0 ) as n_name n_name ,
-                     type VARCHAR ( 0 ) as c_address c_address ,
-                     type VARCHAR ( 0 ) as c_phone c_phone ,
-                     type VARCHAR ( 0 ) as c_comment c_comment
+                     type VARCHAR  as c_name c_name ,
+                     type DECIMAL ( 17  4 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
+                     type DECIMAL ( 17  2 ) as c_acctbal c_acctbal ,
+                     type VARCHAR  as n_name n_name ,
+                     type VARCHAR  as c_address c_address ,
+                     type VARCHAR  as c_phone c_phone ,
+                     type VARCHAR  as c_comment c_comment
       | combined 0
       | next
 
@@ -294,31 +294,31 @@ pipeline unnamed
       gbyAgg expr groupby type INTEGER ( 19 ) _custkey
                   aggregates
                   type INTEGER ( 19 ) as _custkey $K1 ,
-                  type VARCHAR ( 0 ) as c_name c_name ,
-                  type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum ,
-                  type DECIMAL ( 19  2 ) as c_acctbal c_acctbal ,
-                  type VARCHAR ( 0 ) as n_name n_name ,
-                  type VARCHAR ( 0 ) as c_address c_address ,
-                  type VARCHAR ( 0 ) as c_phone c_phone ,
-                  type VARCHAR ( 0 ) as c_comment c_comment
+                  type VARCHAR  as c_name c_name ,
+                  type DECIMAL ( 17  4 ) as REVENUE ) REVENUE  sum ,
+                  type DECIMAL ( 17  2 ) as c_acctbal c_acctbal ,
+                  type VARCHAR  as n_name n_name ,
+                  type VARCHAR  as c_address c_address ,
+                  type VARCHAR  as c_phone c_phone ,
+                  type VARCHAR  as c_comment c_comment
       | combined 0
       | next
 
     stage G_GAG_O on origin :
       gbyAgg expr groupby type INTEGER ( 19 ) _custkey
                   aggregates type INTEGER ( 19 ) as _custkey $K1 ,
-                  type VARCHAR ( 0 ) as c_name c_name ,
-                  type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum ,
-                  type DECIMAL ( 19  2 ) as c_acctbal c_acctbal ,
-                  type VARCHAR ( 0 ) as n_name n_name ,
-                  type VARCHAR ( 0 ) as c_address c_address ,
-                  type VARCHAR ( 0 ) as c_phone c_phone ,
-                  type VARCHAR ( 0 ) as c_comment c_comment
+                  type VARCHAR  as c_name c_name ,
+                  type DECIMAL ( 17  4 ) as REVENUE ) REVENUE  sum ,
+                  type DECIMAL ( 17  2 ) as c_acctbal c_acctbal ,
+                  type VARCHAR  as n_name n_name ,
+                  type VARCHAR  as c_address c_address ,
+                  type VARCHAR  as c_phone c_phone ,
+                  type VARCHAR  as c_comment c_comment
       | combined 0
       | next
 
     stage stageNew on origin :
-      sort " type DECIMAL ( 19  2 ) $3 ASC  "
+      sort " type DECIMAL ( 17  4 ) $3 ASC  "
       | limit 20
       | combined 0
       | next
@@ -331,26 +331,26 @@ pipeline unnamed
   end ;
 
 rows:
-  (43,'Customer#000000043',-12450.59,9904.28,'ROMANIA','ouSbjHk8lh5fKX3zGso3ZSIj9Aa3PoaFd','29-316-665-2897','ial requests: carefully pending foxes detect quickly. carefully final courts cajole quickly. carefully')
-  (51,'Customer#000000051',-8347.41,855.87,'JAPAN','uR:wEaiTvo4','22-344-885-4251','eposits. furiously regular requests integrate carefully packages. furious')
-  (23,'Customer#000000023',-7809.36,3332.02,'CANADA','OdY W13N7Be3OC5MpgfmcYss0Wn6TKT','13-312-472-8245','deposits. special deposits cajole slyly. fluffily special deposits about the furiously ')
-  (62,'Customer#000000062',-7646.73,595.61,'GERMANY','upJK2Dnw13:','17-361-978-7059','kly special dolphins. pinto beans are slyly. quickly regular accounts are furiously a')
-  (45,'Customer#000000045',-6865.70,9983.38,'INDONESIA','4v3OcpFgoOmMG:CbnF:4mdC','19-715-298-9917','nto beans haggle slyly alongside of t')
-  (36,'Customer#000000036',-6544.60,4987.27,'VIETNAM','3TvCzjuPzpJ0:DdJ8kW5U','31-704-669-5769','haggle. enticing: quiet platelets grow quickly bold sheaves. carefully regular acc')
-  (136,'Customer#000000136',-6205.14,-842.39,'GERMANY','QoLsJ0v5C1IQbh:DS1','17-501-210-4726','ackages sleep ironic: final courts. even requests above the blithely bold requests g')
-  (67,'Customer#000000067',-6131.40,8166.59,'INDONESIA','rfG0cOgtr5W8 xILkwp9fpCS8','19-403-114-4356','indle furiously final: even theodo')
-  (138,'Customer#000000138',-5650.11,430.59,'ETHIOPIA','5uyLAeY7HIGZqtu66Yn08f','15-394-860-4589','ts doze on the busy ideas. regular')
-  (88,'Customer#000000088',-4781.01,8031.44,'MOZAMBIQUE','wtkjBN9eyrFuENSMmMFlJ3e7jE5KXcg','26-516-273-2566','s are quickly above the quickly ironic instructions; even requests about the carefully final deposi')
-  (75,'Customer#000000075',-4737.86,6684.10,'CHINA','Dh 6jZ:cwxWLKQfRKkiGrzv6pm','28-247-803-9025',' instructions cajole even: even deposits. finally bold deposits use above the even pains. slyl')
-  (9,'Customer#000000009',-4679.64,8324.07,'INDIA','xKiAFTjUsCuxfeleNqefumTrjS','18-338-906-3675','r theodolites according to the requests wake thinly excuses: pending requests haggle furiousl')
-  (85,'Customer#000000085',-4161.28,3386.64,'ETHIOPIA','siRerlDwiolhYR 8FgksoezycLj','15-745-585-8219','ronic ideas use above the slowly pendin')
-  (137,'Customer#000000137',-4056.08,7838.30,'MOZAMBIQUE','cdW91p92rlAEHgJafqYyxf1Q','26-777-409-5654','carefully regular theodolites use. silent dolphins cajo')
-  (22,'Customer#000000022',-4042.70,591.98,'CANADA','QI6p41:FNs5k7RZoCCVPUTkUdYpB','13-806-545-9701','s nod furiously above the furiously ironic ideas. ')
-  (60,'Customer#000000060',-3497.38,2741.87,'JAPAN','FyodhjwMChsZmUz7Jz0H','22-480-575-5866','latelets. blithely unusual courts boost furiously about the packages. blithely final instruct')
-  (129,'Customer#000000129',-3109.03,9127.27,'GERMANY','q7m7rbMM0BpaCdmxloCgBDRCleXsXkdD8kf','17-415-148-7416',' unusual deposits boost carefully furiously silent ideas. pending accounts cajole slyly across')
-  (12,'Customer#000000012',-2937.30,3396.49,'JORDAN','9PWKuhzT4Zr1Q','23-791-276-1263',' to the carefully final braids. blithely regular requests nag. ironic theodolites boost quickly along')
-  (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
-  (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
+  ( 43, 'Customer#000000043', -12450.6141, 9904.28,   'ROMANIA',   'ouSbjHk8lh5fKX3zGso3ZSIj9Aa3PoaFd', '29-316-665-2897', 'ial requests: carefully pending foxes detect quickly. carefully final courts cajole quickly. carefully')
+  ( 51, 'Customer#000000051',  -8347.4184,  855.87,     'JAPAN',                         'uR:wEaiTvo4', '22-344-885-4251',  'eposits. furiously regular requests integrate carefully packages. furious')
+  ( 23, 'Customer#000000023',  -7809.3720, 3332.02,    'CANADA',     'OdY W13N7Be3OC5MpgfmcYss0Wn6TKT', '13-312-472-8245', 'deposits. special deposits cajole slyly. fluffily special deposits about the furiously ')
+  ( 62, 'Customer#000000062',  -7646.7439,  595.61,   'GERMANY',                         'upJK2Dnw13:', '17-361-978-7059', 'kly special dolphins. pinto beans are slyly. quickly regular accounts are furiously a')
+  ( 45, 'Customer#000000045',  -6865.7142, 9983.38, 'INDONESIA',             '4v3OcpFgoOmMG:CbnF:4mdC', '19-715-298-9917', 'nto beans haggle slyly alongside of t')
+  ( 36, 'Customer#000000036',  -6544.6080, 4987.27,   'VIETNAM',               '3TvCzjuPzpJ0:DdJ8kW5U', '31-704-669-5769', 'haggle. enticing: quiet platelets grow quickly bold sheaves. carefully regular acc')
+  (136, 'Customer#000000136',  -6205.1577, -842.39,   'GERMANY',                  'QoLsJ0v5C1IQbh:DS1', '17-501-210-4726', 'ackages sleep ironic: final courts. even requests above the blithely bold requests g')
+  ( 67, 'Customer#000000067',  -6131.4064, 8166.59, 'INDONESIA',           'rfG0cOgtr5W8 xILkwp9fpCS8', '19-403-114-4356', 'indle furiously final: even theodo')
+  (138, 'Customer#000000138',  -5650.1155,  430.59,  'ETHIOPIA',              '5uyLAeY7HIGZqtu66Yn08f', '15-394-860-4589', 'ts doze on the busy ideas. regular')
+  ( 88, 'Customer#000000088',  -4781.0112, 8031.44,'MOZAMBIQUE',     'wtkjBN9eyrFuENSMmMFlJ3e7jE5KXcg', '26-516-273-2566', 's are quickly above the quickly ironic instructions; even requests about the carefully final deposi')
+  ( 75, 'Customer#000000075',  -4737.8688, 6684.10,     'CHINA',          'Dh 6jZ:cwxWLKQfRKkiGrzv6pm', '28-247-803-9025', ' instructions cajole even: even deposits. finally bold deposits use above the even pains. slyl')
+  (  9, 'Customer#000000009',  -4679.6470, 8324.07,     'INDIA',          'xKiAFTjUsCuxfeleNqefumTrjS', '18-338-906-3675', 'r theodolites according to the requests wake thinly excuses: pending requests haggle furiousl')
+  ( 85, 'Customer#000000085',  -4161.2889, 3386.64,  'ETHIOPIA',         'siRerlDwiolhYR 8FgksoezycLj', '15-745-585-8219', 'ronic ideas use above the slowly pendin')
+  (137, 'Customer#000000137',  -4056.0880, 7838.30,'MOZAMBIQUE',            'cdW91p92rlAEHgJafqYyxf1Q', '26-777-409-5654', 'carefully regular theodolites use. silent dolphins cajo')
+  ( 22, 'Customer#000000022',  -4042.7060,  591.98,    'CANADA',        'QI6p41:FNs5k7RZoCCVPUTkUdYpB', '13-806-545-9701', 's nod furiously above the furiously ironic ideas. ')
+  ( 60, 'Customer#000000060',  -3497.3914, 2741.87,     'JAPAN',                'FyodhjwMChsZmUz7Jz0H', '22-480-575-5866', 'latelets. blithely unusual courts boost furiously about the packages. blithely final instruct')
+  (129, 'Customer#000000129',  -3109.0386, 9127.27,   'GERMANY', 'q7m7rbMM0BpaCdmxloCgBDRCleXsXkdD8kf', '17-415-148-7416', ' unusual deposits boost carefully furiously silent ideas. pending accounts cajole slyly across')
+  ( 12, 'Customer#000000012',  -2937.3084, 3396.49,    'JORDAN',                       '9PWKuhzT4Zr1Q', '23-791-276-1263', ' to the carefully final braids. blithely regular requests nag. ironic theodolites boost quickly along')
+  ( 27, 'Customer#000000027',  -2753.2560, 5679.84,    'CANADA',                   'IS8GIyxpBrLpMT0u7', '13-137-193-2709', ' about the carefully ironic pinto beans. accoun')
+  ( 25, 'Customer#000000025',  -2643.4072, 7133.70,     'JAPAN',               'Hp8GyFQgGHFYSilH5tBfe', '22-603-468-3533', 'y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
 
 sleep 4;
 success
@@ -375,12 +375,12 @@ begin
     indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR ( 0 ) as C_NAME C_NAME ,
-               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR  as C_NAME C_NAME ,
+               type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL ,
                type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
-               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
-               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
-               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+               type VARCHAR  as C_ADDRESS C_ADDRESS ,
+               type VARCHAR  as C_PHONE C_PHONE ,
+               type VARCHAR  as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
@@ -388,12 +388,12 @@ begin
     indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR ( 0 ) as C_NAME C_NAME ,
-               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR ( 0 ) as N_NAME N_NAME ,
-               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
-               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
-               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+               type VARCHAR  as C_NAME C_NAME ,
+               type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR  as N_NAME N_NAME ,
+               type VARCHAR  as C_ADDRESS C_ADDRESS ,
+               type VARCHAR  as C_PHONE C_PHONE ,
+               type VARCHAR  as C_COMMENT C_COMMENT"
     | hash expr type INTEGER ( 19 ) O_ORDERKEY
     | combined 0
     | next hashcast
@@ -403,44 +403,44 @@ begin
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
     | gbyAgg  "groupby    type INTEGER ( 19 ) O_CUSTKEY
                aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
-                          type VARCHAR ( 0 ) as C_NAME C_NAME ,
-                          type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
-                          type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
-                          type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                          type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
-                          type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
-                          type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+                          type VARCHAR  as C_NAME C_NAME ,
+                          type DECIMAL ( 17  4 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
+                          type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL ,
+                          type VARCHAR  as N_NAME N_NAME ,
+                          type VARCHAR  as C_ADDRESS C_ADDRESS ,
+                          type VARCHAR  as C_PHONE C_PHONE ,
+                          type VARCHAR  as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S04 on all nodes :
     gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
             aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
-                       type VARCHAR ( 0 ) as C_NAME C_NAME ,
-                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum ,
-                       type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
-                       type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                       type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
-                       type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
-                       type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+                       type VARCHAR  as C_NAME C_NAME ,
+                       type DECIMAL ( 17  4 ) as REVENUE ) REVENUE  sum ,
+                       type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL ,
+                       type VARCHAR  as N_NAME N_NAME ,
+                       type VARCHAR  as C_ADDRESS C_ADDRESS ,
+                       type VARCHAR  as C_PHONE C_PHONE ,
+                       type VARCHAR  as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S05 on origin :
     gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
             aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
-                       type VARCHAR ( 0 ) as C_NAME C_NAME ,
-                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum ,
-                       type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
-                       type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                       type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
-                       type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
-                       type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+                       type VARCHAR  as C_NAME C_NAME ,
+                       type DECIMAL ( 17  4 ) as REVENUE ) REVENUE  sum ,
+                       type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL ,
+                       type VARCHAR  as N_NAME N_NAME ,
+                       type VARCHAR  as C_ADDRESS C_ADDRESS ,
+                       type VARCHAR  as C_PHONE C_PHONE ,
+                       type VARCHAR  as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S06 on origin :
-    sort " type DECIMAL ( 19  2 ) REVENUE ASC  "
+    sort " type DECIMAL ( 17  4 ) REVENUE ASC  "
     | limit 20
     | combined 0
     | next
@@ -453,26 +453,26 @@ end ;
 
 
 rows:
-  (43,'Customer#000000043',-12450.59,9904.28,'ROMANIA','ouSbjHk8lh5fKX3zGso3ZSIj9Aa3PoaFd','29-316-665-2897','ial requests: carefully pending foxes detect quickly. carefully final courts cajole quickly. carefully')
-  (51,'Customer#000000051',-8347.41,855.87,'JAPAN','uR:wEaiTvo4','22-344-885-4251','eposits. furiously regular requests integrate carefully packages. furious')
-  (23,'Customer#000000023',-7809.36,3332.02,'CANADA','OdY W13N7Be3OC5MpgfmcYss0Wn6TKT','13-312-472-8245','deposits. special deposits cajole slyly. fluffily special deposits about the furiously ')
-  (62,'Customer#000000062',-7646.73,595.61,'GERMANY','upJK2Dnw13:','17-361-978-7059','kly special dolphins. pinto beans are slyly. quickly regular accounts are furiously a')
-  (45,'Customer#000000045',-6865.70,9983.38,'INDONESIA','4v3OcpFgoOmMG:CbnF:4mdC','19-715-298-9917','nto beans haggle slyly alongside of t')
-  (36,'Customer#000000036',-6544.60,4987.27,'VIETNAM','3TvCzjuPzpJ0:DdJ8kW5U','31-704-669-5769','haggle. enticing: quiet platelets grow quickly bold sheaves. carefully regular acc')
-  (136,'Customer#000000136',-6205.14,-842.39,'GERMANY','QoLsJ0v5C1IQbh:DS1','17-501-210-4726','ackages sleep ironic: final courts. even requests above the blithely bold requests g')
-  (67,'Customer#000000067',-6131.40,8166.59,'INDONESIA','rfG0cOgtr5W8 xILkwp9fpCS8','19-403-114-4356','indle furiously final: even theodo')
-  (138,'Customer#000000138',-5650.11,430.59,'ETHIOPIA','5uyLAeY7HIGZqtu66Yn08f','15-394-860-4589','ts doze on the busy ideas. regular')
-  (88,'Customer#000000088',-4781.01,8031.44,'MOZAMBIQUE','wtkjBN9eyrFuENSMmMFlJ3e7jE5KXcg','26-516-273-2566','s are quickly above the quickly ironic instructions; even requests about the carefully final deposi')
-  (75,'Customer#000000075',-4737.86,6684.10,'CHINA','Dh 6jZ:cwxWLKQfRKkiGrzv6pm','28-247-803-9025',' instructions cajole even: even deposits. finally bold deposits use above the even pains. slyl')
-  (9,'Customer#000000009',-4679.64,8324.07,'INDIA','xKiAFTjUsCuxfeleNqefumTrjS','18-338-906-3675','r theodolites according to the requests wake thinly excuses: pending requests haggle furiousl')
-  (85,'Customer#000000085',-4161.28,3386.64,'ETHIOPIA','siRerlDwiolhYR 8FgksoezycLj','15-745-585-8219','ronic ideas use above the slowly pendin')
-  (137,'Customer#000000137',-4056.08,7838.30,'MOZAMBIQUE','cdW91p92rlAEHgJafqYyxf1Q','26-777-409-5654','carefully regular theodolites use. silent dolphins cajo')
-  (22,'Customer#000000022',-4042.70,591.98,'CANADA','QI6p41:FNs5k7RZoCCVPUTkUdYpB','13-806-545-9701','s nod furiously above the furiously ironic ideas. ')
-  (60,'Customer#000000060',-3497.38,2741.87,'JAPAN','FyodhjwMChsZmUz7Jz0H','22-480-575-5866','latelets. blithely unusual courts boost furiously about the packages. blithely final instruct')
-  (129,'Customer#000000129',-3109.03,9127.27,'GERMANY','q7m7rbMM0BpaCdmxloCgBDRCleXsXkdD8kf','17-415-148-7416',' unusual deposits boost carefully furiously silent ideas. pending accounts cajole slyly across')
-  (12,'Customer#000000012',-2937.30,3396.49,'JORDAN','9PWKuhzT4Zr1Q','23-791-276-1263',' to the carefully final braids. blithely regular requests nag. ironic theodolites boost quickly along')
-  (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
-  (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
+  ( 43, 'Customer#000000043', -12450.6141, 9904.28,   'ROMANIA',   'ouSbjHk8lh5fKX3zGso3ZSIj9Aa3PoaFd', '29-316-665-2897', 'ial requests: carefully pending foxes detect quickly. carefully final courts cajole quickly. carefully')
+  ( 51, 'Customer#000000051',  -8347.4184,  855.87,     'JAPAN',                         'uR:wEaiTvo4', '22-344-885-4251',  'eposits. furiously regular requests integrate carefully packages. furious')
+  ( 23, 'Customer#000000023',  -7809.3720, 3332.02,    'CANADA',     'OdY W13N7Be3OC5MpgfmcYss0Wn6TKT', '13-312-472-8245', 'deposits. special deposits cajole slyly. fluffily special deposits about the furiously ')
+  ( 62, 'Customer#000000062',  -7646.7439,  595.61,   'GERMANY',                         'upJK2Dnw13:', '17-361-978-7059', 'kly special dolphins. pinto beans are slyly. quickly regular accounts are furiously a')
+  ( 45, 'Customer#000000045',  -6865.7142, 9983.38, 'INDONESIA',             '4v3OcpFgoOmMG:CbnF:4mdC', '19-715-298-9917', 'nto beans haggle slyly alongside of t')
+  ( 36, 'Customer#000000036',  -6544.6080, 4987.27,   'VIETNAM',               '3TvCzjuPzpJ0:DdJ8kW5U', '31-704-669-5769', 'haggle. enticing: quiet platelets grow quickly bold sheaves. carefully regular acc')
+  (136, 'Customer#000000136',  -6205.1577, -842.39,   'GERMANY',                  'QoLsJ0v5C1IQbh:DS1', '17-501-210-4726', 'ackages sleep ironic: final courts. even requests above the blithely bold requests g')
+  ( 67, 'Customer#000000067',  -6131.4064, 8166.59, 'INDONESIA',           'rfG0cOgtr5W8 xILkwp9fpCS8', '19-403-114-4356', 'indle furiously final: even theodo')
+  (138, 'Customer#000000138',  -5650.1155,  430.59,  'ETHIOPIA',              '5uyLAeY7HIGZqtu66Yn08f', '15-394-860-4589', 'ts doze on the busy ideas. regular')
+  ( 88, 'Customer#000000088',  -4781.0112, 8031.44,'MOZAMBIQUE',     'wtkjBN9eyrFuENSMmMFlJ3e7jE5KXcg', '26-516-273-2566', 's are quickly above the quickly ironic instructions; even requests about the carefully final deposi')
+  ( 75, 'Customer#000000075',  -4737.8688, 6684.10,     'CHINA',          'Dh 6jZ:cwxWLKQfRKkiGrzv6pm', '28-247-803-9025', ' instructions cajole even: even deposits. finally bold deposits use above the even pains. slyl')
+  (  9, 'Customer#000000009',  -4679.6470, 8324.07,     'INDIA',          'xKiAFTjUsCuxfeleNqefumTrjS', '18-338-906-3675', 'r theodolites according to the requests wake thinly excuses: pending requests haggle furiousl')
+  ( 85, 'Customer#000000085',  -4161.2889, 3386.64,  'ETHIOPIA',         'siRerlDwiolhYR 8FgksoezycLj', '15-745-585-8219', 'ronic ideas use above the slowly pendin')
+  (137, 'Customer#000000137',  -4056.0880, 7838.30,'MOZAMBIQUE',            'cdW91p92rlAEHgJafqYyxf1Q', '26-777-409-5654', 'carefully regular theodolites use. silent dolphins cajo')
+  ( 22, 'Customer#000000022',  -4042.7060,  591.98,    'CANADA',        'QI6p41:FNs5k7RZoCCVPUTkUdYpB', '13-806-545-9701', 's nod furiously above the furiously ironic ideas. ')
+  ( 60, 'Customer#000000060',  -3497.3914, 2741.87,     'JAPAN',                'FyodhjwMChsZmUz7Jz0H', '22-480-575-5866', 'latelets. blithely unusual courts boost furiously about the packages. blithely final instruct')
+  (129, 'Customer#000000129',  -3109.0386, 9127.27,   'GERMANY', 'q7m7rbMM0BpaCdmxloCgBDRCleXsXkdD8kf', '17-415-148-7416', ' unusual deposits boost carefully furiously silent ideas. pending accounts cajole slyly across')
+  ( 12, 'Customer#000000012',  -2937.3084, 3396.49,    'JORDAN',                       '9PWKuhzT4Zr1Q', '23-791-276-1263', ' to the carefully final braids. blithely regular requests nag. ironic theodolites boost quickly along')
+  ( 27, 'Customer#000000027',  -2753.2560, 5679.84,    'CANADA',                   'IS8GIyxpBrLpMT0u7', '13-137-193-2709', ' about the carefully ironic pinto beans. accoun')
+  ( 25, 'Customer#000000025',  -2643.4072, 7133.70,     'JAPAN',               'Hp8GyFQgGHFYSilH5tBfe', '22-603-468-3533', 'y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
 
 // with ordAgg and sort; is slower
 /optimise_passthru 
@@ -509,17 +509,17 @@ begin
      | next
 
    stage S03 on all partitions :
-    ordAgg  "ordGroupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
+    ordAgg  "ordGroupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 17  4 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum "
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 17  4 ) as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S05 on origin :
-    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum"
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 , type DECIMAL ( 17  4 ) as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
@@ -531,18 +531,18 @@ begin
 
   stage S07 on all partitions :
     indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY , type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY , type VARCHAR ( 0 ) as C_NAME C_NAME , type DECIMAL ( 19  2 ) as REVENUE ) REVENUE , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL , type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS , type VARCHAR ( 0 ) as C_PHONE C_PHONE , type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY , type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY , type VARCHAR  as C_NAME C_NAME , type DECIMAL ( 17  4 ) as REVENUE ) REVENUE , type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL , type VARCHAR  as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR  as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY , type VARCHAR ( 0 ) as C_NAME C_NAME , type DECIMAL ( 19  2 ) as REVENUE ) REVENUE , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL , type VARCHAR ( 0 ) as N_NAME N_NAME , type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS , type VARCHAR ( 0 ) as C_PHONE C_PHONE , type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY , type VARCHAR  as C_NAME C_NAME , type DECIMAL ( 17  4 ) as REVENUE ) REVENUE , type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL , type VARCHAR  as N_NAME N_NAME , type VARCHAR  as C_ADDRESS C_ADDRESS , type VARCHAR  as C_PHONE C_PHONE , type VARCHAR  as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S06 on origin :
-    sort " type DECIMAL ( 19  2 ) REVENUE ASC  "
+    sort " type DECIMAL ( 17  4 ) REVENUE ASC  "
     | combined 0
     | next
 
@@ -552,26 +552,26 @@ begin
     | first
 end ;
 rows:
- (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
- (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
- (89,'Customer#000000089',-2570.76,1530.76,'KENYA','dtR: y9JQWUO6FoJExyp8whOU','24-394-451-5404','counts are slyly beyond the slyly final accounts. quickly final ideas wake. r')
- (141,'Customer#000000141',-2275.06,6706.14,'ARGENTINA','5IW:WROVnikc3l7DwiUDGQNGsLBGOL6Dc0','11-936-295-6204','packages nag furiously. carefully unusual accounts snooze according to the fluffily regular pinto beans. slyly spec')
- (94,'Customer#000000094',-2008.57,5500.11,'INDONESIA','IfVNIN9KtkScJ9dUjK3Pg5gY1aFeaXewwf','19-953-499-8833','latelets across the bold: final requests sleep according to the fluffily bold accounts. unusual deposits amon')
- (121,'Customer#000000121',-1954.31,6428.32,'PERU','tv nCR2YKupGN73mQudO','27-411-990-2959','uriously stealthy ideas. carefully final courts use carefully')
- (32,'Customer#000000032',-1221.62,3471.53,'MOROCCO','jD2xZzi UmId:DCtNBLXKj9q0Tlp2iQ6ZcO3J','25-430-914-2194','cial ideas. final: furious requests across the e')
- (64,'Customer#000000064',-1063.07,-646.64,'CANADA','MbCeGY20kaKK3oalJD:OT','13-558-731-7204','structions after the quietly ironic theodolites cajole be')
- (143,'Customer#000000143',-977.05,2186.50,'MOZAMBIQUE','681r22uL452zqk 8By7I9o9enQfx0','26-314-406-7725','across the blithely unusual requests haggle theodo')
- (39,'Customer#000000039',-938.95,6264.31,'BRAZIL','nnbRg:Pvy33dfkorYE FdeZ60','12-387-467-6509','tions. slyly silent excuses slee')
- (77,'Customer#000000077',-739.20,1738.87,'PERU','4tAE5KdMFGD4byHtXF92vx','27-269-357-4674','uffily silent requests. carefully ironic asymptotes among the ironic hockey players are carefully bli')
- (57,'Customer#000000057',-619.61,4151.93,'VIETNAM','97XYbsuOPRXPWU','31-835-306-1650','ove the carefully special packages. even: unusual deposits sleep slyly pend')
- (95,'Customer#000000095',-608.84,5327.38,'MOROCCO','EU0xvmWvOmUUn5J:2z85DQyG7QCJ9Xq7','25-923-255-2929','ithely. ruthlessly final requests wake slyly alongside of the furiously silent pinto beans. even the')
- (66,'Customer#000000066',-391.72,242.77,'RUSSIA','XbsEqXH1ETbJYYtA1A','32-213-373-5094','le slyly accounts. carefully silent packages benea')
- (142,'Customer#000000142',-238.00,2209.81,'INDONESIA','AnJ5lxtLjioClr2khl9pb8NLxG2:','19-407-425-2584','. even: express theodolites upo')
- (148,'Customer#000000148',-226.12,2135.60,'IRAQ','BhSPlEWGvIJyT9swk vCWE','21-562-498-6636','ing to the carefully ironic requests. carefully regular dependencies about the theodolites wake furious')
- (26,'Customer#000000026',-219.09,5182.05,'RUSSIA','8ljrc5ZeMl7UciP','32-363-455-4837','c requests use furiously ironic requests. slyly ironic dependencies us')
- (61,'Customer#000000061',0.00,1536.24,'PERU','9kndve4EAJxhg3veF BfXr7AqOsT39o gtqjaYE','27-626-559-8599','egular packages shall have to impress along the ')
- (98,'Customer#000000098',0.00,-551.37,'JAPAN','7yiheXNSpuEAwbswDW','22-885-845-6889','ages. furiously pending accounts are quickly carefully final foxes: busily pe')
- (13,'Customer#000000013',0.00,3857.34,'CANADA','nsXQu0oVjD7PM659uC3SRSp','13-761-547-5974','ounts sleep carefully after the close frays. carefully bold notornis use ironic requests. blithely')
+  (27 ,'Customer#000000027' ,-2753.2560 ,5679.84 ,    'CANADA' ,                      'IS8GIyxpBrLpMT0u7' ,'13-137-193-2709' ,                                                                    ' about the carefully ironic pinto beans. accoun')
+  (25 ,'Customer#000000025' ,-2643.4072 ,7133.70 ,     'JAPAN' ,                  'Hp8GyFQgGHFYSilH5tBfe' ,'22-603-468-3533' ,       'y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
+  (89 ,'Customer#000000089' ,-2570.7698 ,1530.76 ,     'KENYA' ,              'dtR: y9JQWUO6FoJExyp8whOU' ,'24-394-451-5404' ,                                      'counts are slyly beyond the slyly final accounts. quickly final ideas wake. r')
+ (141 ,'Customer#000000141' ,-2275.0680 ,6706.14 , 'ARGENTINA' ,     '5IW:WROVnikc3l7DwiUDGQNGsLBGOL6Dc0' ,'11-936-295-6204' ,'packages nag furiously. carefully unusual accounts snooze according to the fluffily regular pinto beans. slyly spec')
+  (94 ,'Customer#000000094' ,-2008.5816 ,5500.11 , 'INDONESIA' ,     'IfVNIN9KtkScJ9dUjK3Pg5gY1aFeaXewwf' ,'19-953-499-8833' ,      'latelets across the bold: final requests sleep according to the fluffily bold accounts. unusual deposits amon')
+ (121 ,'Customer#000000121' ,-1954.3210 ,6428.32 ,      'PERU' ,                   'tv nCR2YKupGN73mQudO' ,'27-411-990-2959' ,                                                      'uriously stealthy ideas. carefully final courts use carefully')
+  (32 ,'Customer#000000032' ,-1221.6204 ,3471.53 ,   'MOROCCO' ,  'jD2xZzi UmId:DCtNBLXKj9q0Tlp2iQ6ZcO3J' ,'25-430-914-2194' ,                                                                   'cial ideas. final: furious requests across the e')
+  (64 ,'Customer#000000064' ,-1063.0710 ,-646.64 ,    'CANADA' ,                  'MbCeGY20kaKK3oalJD:OT' ,'13-558-731-7204' ,                                                          'structions after the quietly ironic theodolites cajole be')
+ (143 ,'Customer#000000143' , -977.0560 ,2186.50 ,'MOZAMBIQUE' ,          '681r22uL452zqk 8By7I9o9enQfx0' ,'26-314-406-7725' ,                                                                 'across the blithely unusual requests haggle theodo')
+  (39 ,'Customer#000000039' , -938.9576 ,6264.31 ,    'BRAZIL' ,              'nnbRg:Pvy33dfkorYE FdeZ60' ,'12-387-467-6509' ,                                                                                   'tions. slyly silent excuses slee')
+  (77 ,'Customer#000000077' , -739.2008 ,1738.87 ,      'PERU' ,                 '4tAE5KdMFGD4byHtXF92vx' ,'27-269-357-4674' ,              'uffily silent requests. carefully ironic asymptotes among the ironic hockey players are carefully bli')
+  (57 ,'Customer#000000057' , -619.6185 ,4151.93 ,   'VIETNAM' ,                         '97XYbsuOPRXPWU' ,'31-835-306-1650' ,                                        'ove the carefully special packages. even: unusual deposits sleep slyly pend')
+  (95 ,'Customer#000000095' , -608.8482 ,5327.38 ,   'MOROCCO' ,       'EU0xvmWvOmUUn5J:2z85DQyG7QCJ9Xq7' ,'25-923-255-2929' ,               'ithely. ruthlessly final requests wake slyly alongside of the furiously silent pinto beans. even the')
+  (66 ,'Customer#000000066' , -391.7232 , 242.77 ,    'RUSSIA' ,                     'XbsEqXH1ETbJYYtA1A' ,'32-213-373-5094' ,                                                                 'le slyly accounts. carefully silent packages benea')
+ (142 ,'Customer#000000142' , -238.0096 ,2209.81 , 'INDONESIA' ,           'AnJ5lxtLjioClr2khl9pb8NLxG2:' ,'19-407-425-2584' ,                                                                                    '. even: express theodolites upo')
+ (148 ,'Customer#000000148' , -226.1295 ,2135.60 ,      'IRAQ' ,                 'BhSPlEWGvIJyT9swk vCWE' ,'21-562-498-6636' ,            'ing to the carefully ironic requests. carefully regular dependencies about the theodolites wake furious')
+  (26 ,'Customer#000000026' , -219.0942 ,5182.05 ,    'RUSSIA' ,                        '8ljrc5ZeMl7UciP' ,'32-363-455-4837' ,                                             'c requests use furiously ironic requests. slyly ironic dependencies us')
+  (61 ,'Customer#000000061' ,    0.0000 ,1536.24 ,      'PERU' ,'9kndve4EAJxhg3veF BfXr7AqOsT39o gtqjaYE' ,'27-626-559-8599' ,                                                                   'egular packages shall have to impress along the ')
+  (98 ,'Customer#000000098' ,    0.0000 ,-551.37 ,     'JAPAN' ,                     '7yiheXNSpuEAwbswDW' ,'22-885-845-6889' ,                                      'ages. furiously pending accounts are quickly carefully final foxes: busily pe')
+  (13 ,'Customer#000000013' ,    0.0000 ,3857.34 ,    'CANADA' ,                'nsXQu0oVjD7PM659uC3SRSp' ,'13-761-547-5974' ,                 'ounts sleep carefully after the close frays. carefully bold notornis use ironic requests. blithely')
 
 
 /optimise_passthru 
@@ -596,26 +596,26 @@ begin
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
     | gbyAgg  "groupby    type INTEGER ( 19 ) O_CUSTKEY
                aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
-                          type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
+                          type DECIMAL ( 17  4 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S03 on all nodes :
     gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
             aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
-                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum "
+                       type DECIMAL ( 17  4 ) as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S04 on origin :
     gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
             aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
-                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum"
+                       type DECIMAL ( 17  4 ) as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
   stage S05 on origin :
-    top "type DECIMAL ( 19  2 ) REVENUE " 20
+    top "type DECIMAL ( 17  4 ) REVENUE " 20
     | hash expr type INTEGER ( 19 ) O_CUSTKEY
     | combined 0
     | next hashcast
@@ -624,30 +624,30 @@ begin
     indexJoin ${testName2}_Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
-               type VARCHAR ( 0 ) as C_NAME C_NAME ,
-               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
-               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
-               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
-               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+               type VARCHAR  as C_NAME C_NAME ,
+               type DECIMAL ( 17  4 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR  as C_ADDRESS C_ADDRESS ,
+               type VARCHAR  as C_PHONE C_PHONE ,
+               type VARCHAR  as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S07 on all partitions :
     indexjoin ${testName2}_Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
-               type VARCHAR ( 0 ) as C_NAME C_NAME ,
-               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
-               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR ( 0 ) as N_NAME N_NAME ,
-               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
-               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
-               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+               type VARCHAR  as C_NAME C_NAME ,
+               type DECIMAL ( 17  4 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR  as N_NAME N_NAME ,
+               type VARCHAR  as C_ADDRESS C_ADDRESS ,
+               type VARCHAR  as C_PHONE C_PHONE ,
+               type VARCHAR  as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on origin :
-    sort " type DECIMAL ( 19  2 ) REVENUE DESC  "
+    sort " type DECIMAL ( 17  4 ) REVENUE DESC  "
     | combined 0
     | next
 
@@ -661,26 +661,26 @@ end ;
 //rows should be ordered... but if duplicates seth complains
 
 rows:
- (13,'Customer#000000013',0.00,3857.34,'CANADA','nsXQu0oVjD7PM659uC3SRSp','13-761-547-5974','ounts sleep carefully after the close frays. carefully bold notornis use ironic requests. blithely')
- (61,'Customer#000000061',0.00,1536.24,'PERU','9kndve4EAJxhg3veF BfXr7AqOsT39o gtqjaYE','27-626-559-8599','egular packages shall have to impress along the ')
- (98,'Customer#000000098',0.00,-551.37,'JAPAN','7yiheXNSpuEAwbswDW','22-885-845-6889','ages. furiously pending accounts are quickly carefully final foxes: busily pe')
- (26,'Customer#000000026',-219.09,5182.05,'RUSSIA','8ljrc5ZeMl7UciP','32-363-455-4837','c requests use furiously ironic requests. slyly ironic dependencies us')
- (148,'Customer#000000148',-226.12,2135.60,'IRAQ','BhSPlEWGvIJyT9swk vCWE','21-562-498-6636','ing to the carefully ironic requests. carefully regular dependencies about the theodolites wake furious')
- (142,'Customer#000000142',-238.00,2209.81,'INDONESIA','AnJ5lxtLjioClr2khl9pb8NLxG2:','19-407-425-2584','. even: express theodolites upo')
- (66,'Customer#000000066',-391.72,242.77,'RUSSIA','XbsEqXH1ETbJYYtA1A','32-213-373-5094','le slyly accounts. carefully silent packages benea')
- (95,'Customer#000000095',-608.84,5327.38,'MOROCCO','EU0xvmWvOmUUn5J:2z85DQyG7QCJ9Xq7','25-923-255-2929','ithely. ruthlessly final requests wake slyly alongside of the furiously silent pinto beans. even the')
- (57,'Customer#000000057',-619.61,4151.93,'VIETNAM','97XYbsuOPRXPWU','31-835-306-1650','ove the carefully special packages. even: unusual deposits sleep slyly pend')
- (77,'Customer#000000077',-739.20,1738.87,'PERU','4tAE5KdMFGD4byHtXF92vx','27-269-357-4674','uffily silent requests. carefully ironic asymptotes among the ironic hockey players are carefully bli')
- (39,'Customer#000000039',-938.95,6264.31,'BRAZIL','nnbRg:Pvy33dfkorYE FdeZ60','12-387-467-6509','tions. slyly silent excuses slee')
- (143,'Customer#000000143',-977.05,2186.50,'MOZAMBIQUE','681r22uL452zqk 8By7I9o9enQfx0','26-314-406-7725','across the blithely unusual requests haggle theodo')
- (64,'Customer#000000064',-1063.07,-646.64,'CANADA','MbCeGY20kaKK3oalJD:OT','13-558-731-7204','structions after the quietly ironic theodolites cajole be')
- (32,'Customer#000000032',-1221.62,3471.53,'MOROCCO','jD2xZzi UmId:DCtNBLXKj9q0Tlp2iQ6ZcO3J','25-430-914-2194','cial ideas. final: furious requests across the e')
- (121,'Customer#000000121',-1954.31,6428.32,'PERU','tv nCR2YKupGN73mQudO','27-411-990-2959','uriously stealthy ideas. carefully final courts use carefully')
- (94,'Customer#000000094',-2008.57,5500.11,'INDONESIA','IfVNIN9KtkScJ9dUjK3Pg5gY1aFeaXewwf','19-953-499-8833','latelets across the bold: final requests sleep according to the fluffily bold accounts. unusual deposits amon')
- (141,'Customer#000000141',-2275.06,6706.14,'ARGENTINA','5IW:WROVnikc3l7DwiUDGQNGsLBGOL6Dc0','11-936-295-6204','packages nag furiously. carefully unusual accounts snooze according to the fluffily regular pinto beans. slyly spec')
- (89,'Customer#000000089',-2570.76,1530.76,'KENYA','dtR: y9JQWUO6FoJExyp8whOU','24-394-451-5404','counts are slyly beyond the slyly final accounts. quickly final ideas wake. r')
- (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
- (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
+  (13 ,'Customer#000000013' ,    0.0000 ,3857.34 ,    'CANADA' ,                'nsXQu0oVjD7PM659uC3SRSp' ,'13-761-547-5974' ,                 'ounts sleep carefully after the close frays. carefully bold notornis use ironic requests. blithely')
+  (61 ,'Customer#000000061' ,    0.0000 ,1536.24 ,      'PERU' ,'9kndve4EAJxhg3veF BfXr7AqOsT39o gtqjaYE' ,'27-626-559-8599' ,                                                                   'egular packages shall have to impress along the ')
+  (98 ,'Customer#000000098' ,    0.0000 ,-551.37 ,     'JAPAN' ,                     '7yiheXNSpuEAwbswDW' ,'22-885-845-6889' ,                                      'ages. furiously pending accounts are quickly carefully final foxes: busily pe')
+  (26 ,'Customer#000000026' , -219.0942 ,5182.05 ,    'RUSSIA' ,                        '8ljrc5ZeMl7UciP' ,'32-363-455-4837' ,                                             'c requests use furiously ironic requests. slyly ironic dependencies us')
+ (148 ,'Customer#000000148' , -226.1295 ,2135.60 ,      'IRAQ' ,                 'BhSPlEWGvIJyT9swk vCWE' ,'21-562-498-6636' ,            'ing to the carefully ironic requests. carefully regular dependencies about the theodolites wake furious')
+ (142 ,'Customer#000000142' , -238.0096 ,2209.81 , 'INDONESIA' ,           'AnJ5lxtLjioClr2khl9pb8NLxG2:' ,'19-407-425-2584' ,                                                                                    '. even: express theodolites upo')
+  (66 ,'Customer#000000066' , -391.7232 , 242.77 ,    'RUSSIA' ,                     'XbsEqXH1ETbJYYtA1A' ,'32-213-373-5094' ,                                                                 'le slyly accounts. carefully silent packages benea')
+  (95 ,'Customer#000000095' , -608.8482 ,5327.38 ,   'MOROCCO' ,       'EU0xvmWvOmUUn5J:2z85DQyG7QCJ9Xq7' ,'25-923-255-2929' ,               'ithely. ruthlessly final requests wake slyly alongside of the furiously silent pinto beans. even the')
+  (57 ,'Customer#000000057' , -619.6185 ,4151.93 ,   'VIETNAM' ,                         '97XYbsuOPRXPWU' ,'31-835-306-1650' ,                                        'ove the carefully special packages. even: unusual deposits sleep slyly pend')
+  (77 ,'Customer#000000077' , -739.2008 ,1738.87 ,      'PERU' ,                 '4tAE5KdMFGD4byHtXF92vx' ,'27-269-357-4674' ,              'uffily silent requests. carefully ironic asymptotes among the ironic hockey players are carefully bli')
+  (39 ,'Customer#000000039' , -938.9576 ,6264.31 ,    'BRAZIL' ,              'nnbRg:Pvy33dfkorYE FdeZ60' ,'12-387-467-6509' ,                                                                                   'tions. slyly silent excuses slee')
+ (143 ,'Customer#000000143' , -977.0560 ,2186.50 ,'MOZAMBIQUE' ,          '681r22uL452zqk 8By7I9o9enQfx0' ,'26-314-406-7725' ,                                                                 'across the blithely unusual requests haggle theodo')
+  (64 ,'Customer#000000064' ,-1063.0710 ,-646.64 ,    'CANADA' ,                  'MbCeGY20kaKK3oalJD:OT' ,'13-558-731-7204' ,                                                          'structions after the quietly ironic theodolites cajole be')
+  (32 ,'Customer#000000032' ,-1221.6204 ,3471.53 ,   'MOROCCO' ,  'jD2xZzi UmId:DCtNBLXKj9q0Tlp2iQ6ZcO3J' ,'25-430-914-2194' ,                                                                   'cial ideas. final: furious requests across the e')
+ (121 ,'Customer#000000121' ,-1954.3210 ,6428.32 ,      'PERU' ,                   'tv nCR2YKupGN73mQudO' ,'27-411-990-2959' ,                                                      'uriously stealthy ideas. carefully final courts use carefully')
+  (94 ,'Customer#000000094' ,-2008.5816 ,5500.11 , 'INDONESIA' ,     'IfVNIN9KtkScJ9dUjK3Pg5gY1aFeaXewwf' ,'19-953-499-8833' ,      'latelets across the bold: final requests sleep according to the fluffily bold accounts. unusual deposits amon')
+ (141 ,'Customer#000000141' ,-2275.0680 ,6706.14 , 'ARGENTINA' ,     '5IW:WROVnikc3l7DwiUDGQNGsLBGOL6Dc0' ,'11-936-295-6204' ,'packages nag furiously. carefully unusual accounts snooze according to the fluffily regular pinto beans. slyly spec')
+  (89 ,'Customer#000000089' ,-2570.7698 ,1530.76 ,     'KENYA' ,              'dtR: y9JQWUO6FoJExyp8whOU' ,'24-394-451-5404' ,                                      'counts are slyly beyond the slyly final accounts. quickly final ideas wake. r')
+  (25 ,'Customer#000000025' ,-2643.4072 ,7133.70 ,     'JAPAN' ,                  'Hp8GyFQgGHFYSilH5tBfe' ,'22-603-468-3533' ,       'y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
+  (27 ,'Customer#000000027' ,-2753.2560 ,5679.84 ,    'CANADA' ,                      'IS8GIyxpBrLpMT0u7' ,'13-137-193-2709' ,                                                                    ' about the carefully ironic pinto beans. accoun')
 
 CLEANUP {
 }

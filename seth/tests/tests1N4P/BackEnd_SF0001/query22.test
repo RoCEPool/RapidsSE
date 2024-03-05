@@ -56,7 +56,7 @@ begin
     stage stageMarker1075 on all partitions :
       scan rapidsse public ${testName2}_orders
       | filter " type BOOLEAN  $2 %1 ==  "
-      | project " type INTEGER ( 19 ) as O_ORDERKEY $1 , type INTEGER ( 19 ) as O_CUSTKEY $2 , type VARCHAR ( 0 ) as O_ORDERSTATUS $3 , type DECIMAL ( 19  2 ) as O_TOTALPRICE $4 , type DATE as O_ORDERDATE $5 , type VARCHAR ( 0 ) as O_ORDERPRIORITY $6 , type VARCHAR ( 0 ) as O_CLERK $7 , type INTEGER ( 19 ) as O_SHIPPRIORITY $8 , type VARCHAR ( 0 ) as O_COMMENT $9 "
+      | project " type INTEGER ( 19 ) as O_ORDERKEY $1 , type INTEGER ( 19 ) as O_CUSTKEY $2 , type VARCHAR ( 0 ) as O_ORDERSTATUS $3 , type DECIMAL ( 17  2 ) as O_TOTALPRICE $4 , type DATE as O_ORDERDATE $5 , type VARCHAR ( 0 ) as O_ORDERPRIORITY $6 , type VARCHAR ( 0 ) as O_CLERK $7 , type INTEGER ( 19 ) as O_SHIPPRIORITY $8 , type VARCHAR ( 0 ) as O_COMMENT $9 "
       | combined 0
       | stageLast
     stage stageLast on origin :
@@ -74,19 +74,19 @@ begin
     stage stageMarker1081 on all partitions :
       scan rapidsse public ${testName2}_Customer
       | filter " type BOOLEAN  $6 0.00  >  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  and  "
-      | aggreg " type DECIMAL ( 19  2 ) )  $6 sum  , type INTEGER ( 19 ) )  $6 count  "
+      | aggreg " type DECIMAL ( 17  2 ) )  $6 sum  , type INTEGER ( 19 ) )  $6 count  "
       | combined 0
       | stageMarker1084
     stage stageMarker1084 on all nodes :
-      aggreg " type DECIMAL ( 19  2 ) )  $1 sum  , type INTEGER ( 19 ) )  $2 sum  "
+      aggreg " type DECIMAL ( 17  2 ) )  $1 sum  , type INTEGER ( 19 ) )  $2 sum  "
       | combined 0
       | stageMarker1226
     stage stageMarker1226 on origin :
-      aggreg " type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $1 sum  "
+      aggreg " type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 17  2 ) )  $1 sum  "
       | combined 0
       | stageMarker1087
     stage stageMarker1087 on origin :
-      project " type DECIMAL ( 19  2 ) $2 $1 casttype DECIMAL ( 19  2 ) CAST  /  "
+      project " type DECIMAL ( 17  17 ) $2 $1 casttype DECIMAL ( 17  0 ) CAST  /  "
       | combined 0
       | stageLast
     stage stageLast on origin :
@@ -104,7 +104,7 @@ begin
     stage stageMarker1093 on all partitions :
       scan rapidsse public ${testName2}_Customer
       | filter " type BOOLEAN  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  $6 __subquery0003  >  and  $1 __subquery0005  exists  not  and  "
-      | project " type VARCHAR ( 0 ) as cntrycode $5 1  2  substring3  , type DECIMAL ( 19  2 ) as c_acctbal $6 "
+      | project " type VARCHAR ( 0 ) as cntrycode $5 1  2  substring3  , type DECIMAL ( 17  2 ) as c_acctbal $6 "
       | combined 0
       | stageLast
     stage stageLast on origin :
@@ -119,15 +119,15 @@ begin
     | stageMarker1099
   stage stageMarker1099 on all partitions :
     call "custsale "
-    | gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  countAll  , type DECIMAL ( 19  2 ) )  $2 sum  "
+    | gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  countAll  , type DECIMAL ( 17  2 ) )  $2 sum  "
     | combined 0
     | stageMarker1102
   stage stageMarker1102 on all nodes :
-    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 17  2 ) )  $3 sum  "
     | combined 0
     | stageMarker1105
   stage stageMarker1105 on origin :
-    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) as numcust )  $2 sum  , type DECIMAL ( 19  2 ) as totacctbal )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) as numcust )  $2 sum  , type DECIMAL ( 17  2 ) as totacctbal )  $3 sum  "
     | sort " type VARCHAR ( 0 ) as cntrycode $1 ASC  "
     | combined 0
     | stageLast
@@ -153,22 +153,22 @@ begin
     scan ${testName2}_Customer
     | filter " type BOOLEAN  C_ACCTBAL 0.00  >
                }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
-    | aggreg " type DECIMAL ( 19  2 ) )  C_ACCTBAL sum  , type INTEGER ( 19 ) )  C_ACCTBAL count  "
+    | aggreg " type DECIMAL ( 17  2 ) )  C_ACCTBAL sum  , type INTEGER ( 19 ) )  C_ACCTBAL count  "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  , type INTEGER ( 19 ) )  $2 sum  "
+    aggreg " type DECIMAL ( 17  2 ) )  $1 sum  , type INTEGER ( 19 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S04 on origin :
-    aggreg " type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $1 sum  "
+    aggreg " type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 17  2 ) )  $1 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL ( 19  2 ) as acctbal $2 $1 casttype DECIMAL ( 19  2 ) CAST  /  "
+    project " type DECIMAL ( 17  17 ) as acctbal $2 $1 casttype DECIMAL ( 17  0 ) CAST  /  "
     | combined 0
     | next broadcast
 
@@ -176,29 +176,29 @@ begin
     indexJoin ${testName2}_Customer IxC_CUSTKEY "bound $I1"
     | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in
               C_ACCTBAL acctbal  >  and "
-    | project " type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL "
+    | project " type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  , type DECIMAL ( 17  2 ) as C_ACCTBAL C_ACCTBAL "
     | combined 0
     | next
 
   stage S07 on all partitions :
     keyExists ${testName2}_ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                    "type BOOLEAN O_CUSTKEY 0 >"
-    | project " type VARCHAR ( 0 ) as cntrycode  cntrycode , type DECIMAL ( 19  2 ) as C_ACCTBAL  C_ACCTBAL"
+    | project " type VARCHAR ( 0 ) as cntrycode  cntrycode , type DECIMAL ( 17  2 ) as C_ACCTBAL  C_ACCTBAL"
     | combined 0
     | next
 
  stage S08 on all partitions :
-    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) )  countAll  , type DECIMAL ( 19  2 ) )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) )  countAll  , type DECIMAL ( 17  2 ) )  $2 sum  "
     | combined 0
     | next
 
   stage S09 on all nodes :
-    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 17  2 ) )  $3 sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) as numcust )  $2 sum  , type DECIMAL ( 19  2 ) as totacctbal )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) as numcust )  $2 sum  , type DECIMAL ( 17  2 ) as totacctbal )  $3 sum  "
     | combined 0
     | next
 
@@ -214,13 +214,13 @@ begin
 end ;
 
 rows:
- ('13',2,13545.30)
- ('17',1,9127.27)
- ('18',3,22156.91)
- ('23',3,25483.06)
- ('29',4,36059.01)
- ('30',2,17528.46)
- ('31',2,18611.84)
+ ('13' ,2 ,13545.30)
+ ('17' ,1 , 9127.27)
+ ('18' ,3 ,22156.91)
+ ('23' ,3 ,25483.06)
+ ('29' ,4 ,36059.01)
+ ('30' ,2 ,17528.46)
+ ('31' ,2 ,18611.84) 
 
 CLEANUP {
 }

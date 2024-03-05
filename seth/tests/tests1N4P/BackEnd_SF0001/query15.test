@@ -154,26 +154,26 @@ pipeline Query15
      indexScan ${testName2}_lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1996-01-01' >= UBOUND $I1 DATE '1996-04-01' <"
      | gbyAgg " groupBy    type INTEGER ( 19 ) as l_suppkey $3
                 aggregates type INTEGER ( 19 ) $K1 ,
-                           type DECIMAL ( 19  2 ) )  $6 1.00  $7 -  *  sum  "
+                           type DECIMAL ( 17  4 ) )  $6 1.00  $7 -  *  sum  "
      | combined 0
      | next
 
    stage S03 on all nodes :
      gbyAgg " groupBy    type INTEGER ( 19 ) as l_suppkey $1
               aggregates type INTEGER ( 19 ) $K1 ,
-                         type DECIMAL ( 19  2 ) )  $2 sum  "
+                         type DECIMAL ( 17  4 ) )  $2 sum  "
      | combined 0
      | next
 
    stage S04 on origin :
      gbyAgg " groupBy    type INTEGER ( 19 ) as l_suppkey $1
               aggregates type INTEGER ( 19 ) as supplier_no $K1 ,
-                         type DECIMAL ( 19  2 ) as TOTAL_REVENUE ) $2 sum  "
+                         type DECIMAL ( 17  4 ) as TOTAL_REVENUE ) $2 sum  "
      | combined 0
      | next
 
    stage S05 on origin :
-     top "type DECIMAL ( 19  2 ) $2" 1
+     top "type DECIMAL ( 17  4 ) $2" 1
      | hash "type INTEGER ( 19 ) supplier_no"
      | combined 0
      | next hashcast
@@ -181,10 +181,10 @@ pipeline Query15
    stage S06 on all partitions :
      indexJoin ${testName2}_supplier IxS_SUPPKEY "BOUND $I1 supplier_no =="
      | project "type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
-                type VARCHAR ( 0 ) as S_NAME S_NAME ,
-                type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
-                type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
-                type DECIMAL ( 19  2 ) TOTAL_REVENUE "
+                type VARCHAR as S_NAME S_NAME ,
+                type VARCHAR as S_ADDRESS S_ADDRESS ,
+                type VARCHAR as S_PHONE S_PHONE ,
+                type DECIMAL ( 17  4 ) TOTAL_REVENUE "
      | combined 0
      | next
 
@@ -195,7 +195,7 @@ pipeline Query15
  end ;
 
  rows:
-  (9,'Supplier#000000009','1KhUgZegwM3ua7dsYmekYBsK','20-403-398-8662',-28876.51)
+  (9,'Supplier#000000009','1KhUgZegwM3ua7dsYmekYBsK','20-403-398-8662',-28876.5820)
 
 CLEANUP {
 }

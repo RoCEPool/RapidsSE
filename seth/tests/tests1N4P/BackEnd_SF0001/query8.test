@@ -360,11 +360,11 @@ end ;
 
 rows: (1996,0.00)
 
-*/
+
 
 sleep 4;
 success
-
+*/
 
 // customer->
 /optimise_passthru 
@@ -408,8 +408,8 @@ begin
     | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
                type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
-               type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice ,
-               type DECIMAL ( 19  2 ) as l_discount l_discount"
+               type DECIMAL ( 17  2 ) as l_extendedprice l_extendedprice ,
+               type DECIMAL ( 17  2 ) as l_discount l_discount"
     | hash "type INTEGER ( 19 ) L_PARTKEY"
     | combined 0
     | next hashcast
@@ -419,8 +419,8 @@ begin
     | filter "type BOOLEAN P_TYPE 'ECONOMY ANODIZED TIN' =="
     | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
-               type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice ,
-               type DECIMAL ( 19  2 ) as l_discount l_discount"
+               type DECIMAL ( 17  2 ) as l_extendedprice l_extendedprice ,
+               type DECIMAL ( 17  2 ) as l_discount l_discount"
     | hash "type INTEGER ( 19 ) L_SUPPKEY"
     | combined 0
     | next hashcast
@@ -429,15 +429,15 @@ begin
     indexJoin ${testName2}_supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
-               type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice ,
-               type DECIMAL ( 19  2 ) as l_discount l_discount"
+               type DECIMAL ( 17  2 ) as l_extendedprice l_extendedprice ,
+               type DECIMAL ( 17  2 ) as l_discount l_discount"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexJoin ${testName2}_nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER ( 19 ) as O_YEAR O_YEAR ,
-               type DECIMAL ( 19  2 ) as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
+               type DECIMAL ( 17  4 ) as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
                type VARCHAR ( 0 ) as NATION N_NAME"
     | combined 0
     | next
@@ -446,8 +446,8 @@ begin
     gbyAgg " groupBy type INTEGER ( 19 ) O_YEAR
              aggregates
                      type INTEGER ( 19 ) as O_YEAR $K1 ,
-                     type DECIMAL ( 19  2 )  ) VOLUME sum  ,
-                     type DECIMAL ( 19  2 ) )  } type DECIMAL ( 19  2 ) NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
+                     type DECIMAL ( 17  4 )  ) VOLUME sum  ,
+                     type DECIMAL ( 17  2 ) )  } type DECIMAL ( 17  2 ) NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | next
 
@@ -455,8 +455,8 @@ begin
     gbyAgg " groupBy type INTEGER ( 19 ) O_YEAR
              aggregates
                      type INTEGER ( 19 ) as O_YEAR $K1 ,
-                     type DECIMAL ( 19  2 ) )  $2 sum  ,
-                     type DECIMAL ( 19  2 ) )  $3 sum  "
+                     type DECIMAL ( 17  4 ) )  $2 sum  ,
+                     type DECIMAL ( 17  2 ) )  $3 sum  "
     | combined 0
     | next
 
@@ -464,14 +464,14 @@ begin
     gbyAgg " groupBy type INTEGER ( 19 ) O_YEAR
              aggregates
                      type INTEGER ( 19 ) as O_YEAR $K1 ,
-                     type DECIMAL ( 19  2 ) )  $2 sum  ,
-                     type DECIMAL ( 19  2 ) )  $3 sum  "
+                     type DECIMAL ( 17  4 ) )  $2 sum  ,
+                     type DECIMAL ( 17  2 ) )  $3 sum  "
     | combined 0
     | next
 
   stage S012 on origin :
     project " type INTEGER ( 19 ) as O_YEAR O_YEAR ,
-              type DECIMAL ( 19  2 ) as mkt_share $3 $2 /  "
+              type DECIMAL ( 17  17 ) as mkt_share $3 $2 /  "
     | combined 0
     | next
 
@@ -481,7 +481,7 @@ begin
     | first
 end ;
 
-rows: (1996,0.00)
+rows: (1996, 0.00000000000000000)
 
 sleep 4;
 success

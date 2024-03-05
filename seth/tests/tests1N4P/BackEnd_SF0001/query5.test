@@ -200,8 +200,8 @@ begin
 end ;
 
 ordered rows:
- ('ARGENTINA',-8058.15)
- ('PERU',-14237.80)
+ ('ARGENTINA',-8058.1735)
+ ('PERU',-14237.8225)
 
 sleep 4;
 success
@@ -283,8 +283,8 @@ begin
 end ;
 
 ordered rows:
- ('ARGENTINA',-8058.15)
- ('PERU',-14237.80)
+ ('ARGENTINA',-8058.1735)
+ ('PERU',-14237.8225)
 
 sleep 4;
 success
@@ -392,8 +392,8 @@ end ;
 
 
 ordered rows:
- ('ARGENTINA',-8058.15)
- ('PERU',-14237.80)
+ ('ARGENTINA',-8058.1735)
+ ('PERU',-14237.8225)
 
 
 sleep 4;
@@ -499,8 +499,8 @@ begin
 end ;
 
 ordered rows:
- ('ARGENTINA',-8058.15)
- ('PERU',-14237.80)
+ ('ARGENTINA',-8058.1735)
+ ('PERU',-14237.8225)
 
 
 MemoryLeaks;

@@ -129,7 +129,7 @@ begin
     stage stageMarker2100 on all partitions :
       scan rapidsse public ${testName2}_Lineitem
       | filter " type BOOLEAN  $1 %1 ==  $3 %2 !=  and  "
-      | project " type INTEGER ( 19 ) as L_ORDERKEY $1 , type INTEGER ( 19 ) as L_PARTKEY $2 , type INTEGER ( 19 ) as L_SUPPKEY $3 , type INTEGER ( 19 ) as L_LINENUMBER $4 , type DECIMAL ( 19  2 ) as L_QUANTITY $5 , type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE $6 , type DECIMAL ( 19  2 ) as L_DISCOUNT $7 , type DECIMAL ( 19  2 ) as L_TAX $8 , type VARCHAR ( 0 ) as L_RETURNFLAG $9 , type VARCHAR ( 0 ) as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR ( 0 ) as L_SHIPINSTRUCT $14 , type VARCHAR ( 0 ) as L_SHIPMODE $15 , type VARCHAR ( 0 ) as L_COMMENT $16 "
+      | project " type INTEGER ( 19 ) as L_ORDERKEY $1 , type INTEGER ( 19 ) as L_PARTKEY $2 , type INTEGER ( 19 ) as L_SUPPKEY $3 , type INTEGER ( 19 ) as L_LINENUMBER $4 , type DECIMAL ( 17  2 ) as L_QUANTITY $5 , type DECIMAL ( 17  2 ) as L_EXTENDEDPRICE $6 , type DECIMAL ( 17  2 ) as L_DISCOUNT $7 , type DECIMAL ( 17  2 ) as L_TAX $8 , type VARCHAR ( 0 ) as L_RETURNFLAG $9 , type VARCHAR ( 0 ) as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR ( 0 ) as L_SHIPINSTRUCT $14 , type VARCHAR ( 0 ) as L_SHIPMODE $15 , type VARCHAR ( 0 ) as L_COMMENT $16 "
       | combined 0
       | stageLast
     stage stageLast on origin :
@@ -148,7 +148,7 @@ begin
     stage stageMarker2106 on all partitions :
       scan rapidsse public ${testName2}_Lineitem
       | filter " type BOOLEAN  $1 %1 ==  $3 %2 !=  and  $13 $12 >  and  "
-      | project " type INTEGER ( 19 ) as L_ORDERKEY $1 , type INTEGER ( 19 ) as L_PARTKEY $2 , type INTEGER ( 19 ) as L_SUPPKEY $3 , type INTEGER ( 19 ) as L_LINENUMBER $4 , type DECIMAL ( 19  2 ) as L_QUANTITY $5 , type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE $6 , type DECIMAL ( 19  2 ) as L_DISCOUNT $7 , type DECIMAL ( 19  2 ) as L_TAX $8 , type VARCHAR ( 0 ) as L_RETURNFLAG $9 , type VARCHAR ( 0 ) as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR ( 0 ) as L_SHIPINSTRUCT $14 , type VARCHAR ( 0 ) as L_SHIPMODE $15 , type VARCHAR ( 0 ) as L_COMMENT $16 "
+      | project " type INTEGER ( 19 ) as L_ORDERKEY $1 , type INTEGER ( 19 ) as L_PARTKEY $2 , type INTEGER ( 19 ) as L_SUPPKEY $3 , type INTEGER ( 19 ) as L_LINENUMBER $4 , type DECIMAL ( 17  2 ) as L_QUANTITY $5 , type DECIMAL ( 17  2 ) as L_EXTENDEDPRICE $6 , type DECIMAL ( 17  2 ) as L_DISCOUNT $7 , type DECIMAL ( 17  2 ) as L_TAX $8 , type VARCHAR ( 0 ) as L_RETURNFLAG $9 , type VARCHAR ( 0 ) as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR ( 0 ) as L_SHIPINSTRUCT $14 , type VARCHAR ( 0 ) as L_SHIPMODE $15 , type VARCHAR ( 0 ) as L_COMMENT $16 "
       | combined 0
       | stageLast
     stage stageLast on origin :

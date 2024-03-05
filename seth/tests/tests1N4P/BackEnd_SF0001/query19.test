@@ -92,16 +92,16 @@ begin
     | abstractJoin "CROSS true  "
     | stageMarker2365
   stage stageMarker2365 on all partitions :
-    filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#12''  ==  and  }  ''SM CASE''  ''M BOX''  ''SM PACK''  ''SM PKG''  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL ( 19  2 ) CAST  <=  and  }  1  5  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  $17 $2 ==  $20 ''Brand#23''  ==  and  }  ''MED BAG''  ''MED BOX''  ''MED PKG''  ''MED PACK''  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL ( 19  2 ) CAST  <=  and  }  1  10  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  $17 $2 ==  $20 ''Brand#34''  ==  and  }  ''LG CASE''  ''LG BOX''  ''LG PACK''  ''LG PKG''  #4  $23 in  and  $5 20.00  >=  and  $5 20  10  +  casttype DECIMAL ( 19  2 ) CAST  <=  and  }  1  15  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  "
-    | aggreg " type DECIMAL ( 19  2 ) )  $6 1.00  $7 -  *  sum  "
+    filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#12''  ==  and  }  ''SM CASE''  ''M BOX''  ''SM PACK''  ''SM PKG''  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL ( 17  2 ) CAST  <=  and  }  1  5  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  $17 $2 ==  $20 ''Brand#23''  ==  and  }  ''MED BAG''  ''MED BOX''  ''MED PKG''  ''MED PACK''  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL ( 17  2 ) CAST  <=  and  }  1  10  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  $17 $2 ==  $20 ''Brand#34''  ==  and  }  ''LG CASE''  ''LG BOX''  ''LG PACK''  ''LG PKG''  #4  $23 in  and  $5 20.00  >=  and  $5 20  10  +  casttype DECIMAL ( 17  2 ) CAST  <=  and  }  1  15  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  "
+    | aggreg " type DECIMAL ( 17  4 ) )  $6 1.00  $7 -  *  sum  "
     | combined 0
     | stageMarker2368
   stage stageMarker2368 on all nodes :
-    aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
+    aggreg " type DECIMAL ( 17  4 ) )  $1 sum  "
     | combined 0
     | stageMarker2371
   stage stageMarker2371 on origin :
-    aggreg " type DECIMAL ( 19  2 ) as revenue )  $1 sum  "
+    aggreg " type DECIMAL ( 17  4 ) as revenue )  $1 sum  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -129,20 +129,20 @@ pipeline unamed
    stage stageMarker2362 on all partitions :
      indexJoin ${testName2}_part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
      | filter " type BOOLEAN
-                  $20 'Brand#12'  == }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL ( 19  2 ) CAST  <=  and  }  1  5  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and
-                  $20 'Brand#23'  == }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL ( 19  2 ) CAST  <=  and  }  1  10  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or
-                  $20 'Brand#34'  == }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  $23 in  and  $5 20.00  >=  and  $5 20  10  +  casttype DECIMAL ( 19  2 ) CAST  <=  and  }  1  15  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or  "
-     | aggreg " type DECIMAL ( 19  2 ) )  $6 1.00  $7 -  *  sum  "
+                  $20 'Brand#12'  == }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL ( 17  2 ) CAST  <=  and  }  1  5  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and
+                  $20 'Brand#23'  == }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL ( 17  2 ) CAST  <=  and  }  1  10  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or
+                  $20 'Brand#34'  == }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  $23 in  and  $5 20.00  >=  and  $5 20  10  +  casttype DECIMAL ( 17  2 ) CAST  <=  and  }  1  15  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or  "
+     | aggreg " type DECIMAL ( 17  4 ) )  $6 1.00  $7 -  *  sum  "
      | combined 0
      | next
 
    stage stageMarker2368 on all nodes :
-     aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
+     aggreg " type DECIMAL ( 17  4 ) )  $1 sum  "
      | combined 0
      | next
 
    stage stageMarker2371 on origin :
-     aggreg " type DECIMAL ( 19  2 ) as revenue )  $1 sum  "
+     aggreg " type DECIMAL ( 17  4 ) as revenue )  $1 sum  "
      | combined 0
      | next
 
@@ -153,7 +153,7 @@ pipeline unamed
  end ;
 
 rows:
-  (-257.45)
+  (-257.4580)
 
 // added filters earlier
 // SF10: 2.9 secs
@@ -170,14 +170,14 @@ pipeline unamed
      | filter "type BOOLEAN l_quantity 1.00 >= l_quantity 30.00 <= and
                }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
                 L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and"
-     | project " type INTEGER ( 19 ) as l_partkey l_partkey , type DECIMAL ( 19  2 ) as l_quantity l_quantity , type DECIMAL ( 19  2 ) as l_discount l_discount , type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice , type VARCHAR ( 0 ) as l_shipmode l_shipmode , type VARCHAR ( 0 ) as l_shipinstruct l_shipinstruct"
+     | project " type INTEGER ( 19 ) as l_partkey l_partkey , type DECIMAL ( 17  2 ) as l_quantity l_quantity , type DECIMAL ( 17  2 ) as l_discount l_discount , type DECIMAL ( 17  2 ) as l_extendedprice l_extendedprice , type VARCHAR ( 0 ) as l_shipmode l_shipmode , type VARCHAR ( 0 ) as l_shipinstruct l_shipinstruct"
      | hash "type INTEGER ( 19 ) l_partkey"
      | combined 0
      | next hashcast
 
    stage stageMarker2362 on all partitions :
      indexJoin ${testName2}_part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
-     | project " type INTEGER ( 19 ) as l_partkey l_partkey , type DECIMAL ( 19  2 ) as l_quantity l_quantity , type DECIMAL ( 19  2 ) as l_discount l_discount , type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice  , type VARCHAR ( 0 ) as l_shipmode l_shipmode , type VARCHAR ( 0 ) as l_shipinstruct l_shipinstruct ,
+     | project " type INTEGER ( 19 ) as l_partkey l_partkey , type DECIMAL ( 17  2 ) as l_quantity l_quantity , type DECIMAL ( 17  2 ) as l_discount l_discount , type DECIMAL ( 17  2 ) as l_extendedprice l_extendedprice  , type VARCHAR ( 0 ) as l_shipmode l_shipmode , type VARCHAR ( 0 ) as l_shipinstruct l_shipinstruct ,
                  type INTEGER ( 19 ) as p_size p_size , type VARCHAR ( 0 ) as p_brand p_brand , type varchar ( 0 ) as p_container p_container"
      | filter " type BOOLEAN
                   P_BRAND 'Brand#12'  ==
@@ -205,17 +205,17 @@ pipeline unamed
      | next
 
   stage stageMarker2368 on all partitions :
-     aggreg " type DECIMAL ( 19  2 ) )  l_extendedprice 1.00  l_discount -  *  sum  "
+     aggreg " type DECIMAL ( 17  4 ) )  l_extendedprice 1.00  l_discount -  *  sum  "
      | combined 0
      | next
 
    stage stageMarker2368_a on all nodes :
-     aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
+     aggreg " type DECIMAL ( 17  4 ) )  $1 sum  "
      | combined 0
      | next
 
    stage stageMarker2371 on origin :
-     aggreg " type DECIMAL ( 19  2 ) as revenue )  $1 sum  "
+     aggreg " type DECIMAL ( 17  4 ) as revenue )  $1 sum  "
      | combined 0
      | next
 
@@ -225,7 +225,7 @@ pipeline unamed
      | stageStart
  end ;
 rows:
-  (-257.45)
+  (-257.4580)
 
 // best performance SF10: 258ms
 // changed join order and broadcast
@@ -257,9 +257,9 @@ begin
  stage S02 on all partitions :
    indexJoin ${testName2}_lineitem IxL_PARTKEY "BOUND $I1 p_partkey ==" //J1
    | project " type INTEGER ( 19 ) as L_PARTKEY l_partkey ,
-               type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY ,
-               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
-               type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice  ,
+               type DECIMAL ( 17  2 ) as L_QUANTITY L_QUANTITY ,
+               type DECIMAL ( 17  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type DECIMAL ( 17  2 ) as l_extendedprice l_extendedprice  ,
                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE ,
                type VARCHAR ( 0 ) as L_SHIPINSTRUCT L_SHIPINSTRUCT ,
                type INTEGER ( 19 ) as P_SIZE P_SIZE ,
@@ -285,17 +285,17 @@ begin
    | next
 
 stage S03 on all partitions :
-   aggreg " type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  "
+   aggreg " type DECIMAL ( 17  4 ) )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  "
    | combined 0
    | next
 
  stage S04 on all nodes :
-   aggreg " type DECIMAL ( 19  2 ) )  $1 sum  "
+   aggreg " type DECIMAL ( 17  4 ) )  $1 sum  "
    | combined 0
    | next
 
  stage S05 on origin :
-   aggreg " type DECIMAL ( 19  2 ) as revenue )  $1 sum  "
+   aggreg " type DECIMAL ( 17  4 ) as revenue )  $1 sum  "
    | combined 0
    | next
 
@@ -306,7 +306,7 @@ stage S03 on all partitions :
 end ;
 
  rows:
-   (-257.45)
+   (-257.4580)
 
 CLEANUP {
 }

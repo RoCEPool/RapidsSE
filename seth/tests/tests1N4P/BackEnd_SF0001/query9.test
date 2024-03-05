@@ -137,7 +137,7 @@ pipeline unamed
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
+               type DECIMAL ( 17  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
@@ -146,7 +146,7 @@ pipeline unamed
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
-               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+               type DECIMAL ( 17  4 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
     | hash "type INTEGER ( 19 ) L_SUPPKEY"
     | combined 0
     | next hashcast
@@ -155,7 +155,7 @@ pipeline unamed
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
-               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT "
+               type DECIMAL ( 17  4 ) as AMOUNT AMOUNT "
     | combined 0
     | next broadcast
 
@@ -163,50 +163,50 @@ pipeline unamed
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
-               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
+               type DECIMAL ( 17  4 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S06 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
+    | project "type VARCHAR as NATION N_NAME ,
                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
-               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
+               type DECIMAL ( 17  4 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER ( 19 ) O_YEAR
             aggregates
-                    type VARCHAR ( 0 ) as NATION $K1 ,
+                    type VARCHAR as NATION $K1 ,
                     type INTEGER ( 19 ) as O_YEAR $K2 ,
-                    type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  "
+                    type DECIMAL ( 17  4 ) as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER ( 19 ) O_YEAR
             aggregates
-                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type VARCHAR as NATION $K1 ,
                      type INTEGER ( 19 ) as O_YEAR $K2 ,
-                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+                     type DECIMAL ( 17  4 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER ( 19 ) O_YEAR
             aggregates
-                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type VARCHAR as NATION $K1 ,
                      type INTEGER ( 19 ) as O_YEAR $K2 ,
-                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+                     type DECIMAL ( 17  4 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
+    sort "type VARCHAR as NATION NATION ASC ,
           type INTEGER ( 19 ) as O_YEAR O_YEAR ASC"
     | combined 0
     | next
@@ -555,7 +555,7 @@ pipeline Query9
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
+               type DECIMAL ( 17  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | hash "type INTEGER ( 19 ) PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -565,7 +565,7 @@ pipeline Query9
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
+               type DECIMAL ( 17  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
@@ -575,7 +575,7 @@ pipeline Query9
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
-               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+               type DECIMAL ( 17  4 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
     | combined 0
     | next broadcast
 
@@ -583,7 +583,7 @@ pipeline Query9
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
-               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
+               type DECIMAL ( 17  4 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
@@ -592,7 +592,7 @@ pipeline Query9
                        type INTEGER ( 19 ) O_YEAR
             aggregates type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
                        type INTEGER ( 19 ) as O_YEAR $K2 ,
-                       type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  "
+                       type DECIMAL ( 17  4 ) as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
@@ -601,7 +601,7 @@ pipeline Query9
     type INTEGER ( 19 ) O_YEAR
     aggregates type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
     type INTEGER ( 19 ) as O_YEAR $K2 ,
-    type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+    type DECIMAL ( 17  4 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
@@ -610,21 +610,21 @@ pipeline Query9
                        type INTEGER ( 19 ) O_YEAR
             aggregates type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
                        type INTEGER ( 19 ) as O_YEAR $K2 ,
-                       type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+                       type DECIMAL ( 17  4 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | hash "type INTEGER ( 19 ) S_NATIONKEY"
     | combined 0
     | next hashcast
 
   stage S09 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
+    | project "type VARCHAR as NATION N_NAME ,
                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
-               type DECIMAL ( 19  2 ) as SUM_PROFIT SUM_PROFIT"
+               type DECIMAL ( 17  4 ) as SUM_PROFIT SUM_PROFIT"
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
+    sort "type VARCHAR as NATION NATION ASC ,
           type INTEGER ( 19 ) as O_YEAR O_YEAR ASC"
     | combined 0
     | next
@@ -656,7 +656,7 @@ pipeline Query9
     indexJoin ${testName2}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
+               type DECIMAL ( 17  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
@@ -665,7 +665,7 @@ pipeline Query9
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
-               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+               type DECIMAL ( 17  4 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
     | hash "type INTEGER ( 19 ) L_SUPPKEY"
     | combined 0
     | next hashcast
@@ -674,7 +674,7 @@ pipeline Query9
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
-               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT "
+               type DECIMAL ( 17  4 ) as AMOUNT AMOUNT "
     | combined 0
     | next broadcast
 
@@ -682,50 +682,50 @@ pipeline Query9
     indexJoin ${testName2}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
-               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
+               type DECIMAL ( 17  4 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S06 on all partitions :
     indexJoin ${testName2}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
+    | project "type VARCHAR  as NATION N_NAME ,
                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
-               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
+               type DECIMAL ( 17  4 ) as AMOUNT AMOUNT"
     | combined 0
     | next
 
   stage S07 on all partitions :
-    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER ( 19 ) O_YEAR
             aggregates
-                    type VARCHAR ( 0 ) as NATION $K1 ,
+                    type VARCHAR as NATION $K1 ,
                     type INTEGER ( 19 ) as O_YEAR $K2 ,
-                    type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  "
+                    type DECIMAL ( 17  4 ) as SUM_PROFIT ) AMOUNT sum  "
     | combined 0
     | next
 
   stage S08 on all nodes :
-    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+    gbyAgg "groupBy type VARCHAR  NATION ,
                     type INTEGER ( 19 ) O_YEAR
             aggregates
-                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type VARCHAR as NATION $K1 ,
                      type INTEGER ( 19 ) as O_YEAR $K2 ,
-                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+                     type DECIMAL ( 17  4 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+    gbyAgg "groupBy type VARCHAR  NATION ,
                     type INTEGER ( 19 ) O_YEAR
             aggregates
-                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type VARCHAR  as NATION $K1 ,
                      type INTEGER ( 19 ) as O_YEAR $K2 ,
-                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+                     type DECIMAL ( 17  4 ) as SUM_PROFIT ) SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
+    sort "type VARCHAR  as NATION NATION ASC ,
           type INTEGER ( 19 ) as O_YEAR O_YEAR DESC"
     | combined 0
     | next
@@ -737,47 +737,47 @@ pipeline Query9
   end ;
 
 rows:
- ('ARGENTINA',1998,-419055.24)
- ('ARGENTINA',1997,-436760.81)
- ('ARGENTINA',1996,-318328.79)
- ('ARGENTINA',1995,-578217.20)
- ('ARGENTINA',1994,-621194.32)
- ('ARGENTINA',1993,-552384.90)
- ('ARGENTINA',1992,-458738.64)
- ('IRAN',1997,-180388.92)
- ('IRAN',1996,-429987.60)
- ('IRAN',1995,-336785.92)
- ('IRAN',1994,-153745.88)
- ('IRAN',1993,-570838.08)
- ('IRAN',1992,-401772.12)
- ('IRAQ',1998,-402638.36)
- ('IRAQ',1997,-547157.56)
- ('IRAQ',1996,-665277.60)
- ('IRAQ',1995,-647499.08)
- ('IRAQ',1994,-544533.96)
- ('IRAQ',1993,-985782.88)
- ('IRAQ',1992,-302350.22)
- ('KENYA',1998,-40301.88)
- ('KENYA',1997,-105136.44)
- ('KENYA',1996,-215488.36)
- ('KENYA',1995,-419160.12)
- ('KENYA',1994,-131197.08)
- ('KENYA',1993,-322905.08)
- ('KENYA',1992,-392335.72)
- ('MOROCCO',1998,-74149.92)
- ('MOROCCO',1997,-183387.00)
- ('MOROCCO',1996,-21783.86)
- ('MOROCCO',1995,-59660.49)
- ('MOROCCO',1994,-140614.84)
- ('MOROCCO',1993,-312128.74)
- ('MOROCCO',1992,-343648.03)
- ('UNITED KINGDOM',1998,-154214.69)
- ('UNITED KINGDOM',1997,-590320.76)
- ('UNITED KINGDOM',1996,-534419.20)
- ('UNITED KINGDOM',1995,-124186.13)
- ('UNITED KINGDOM',1994,-105642.74)
- ('UNITED KINGDOM',1993,-430280.83)
- ('UNITED KINGDOM',1992,-541653.61)
+ (     'ARGENTINA', 1998, -419055.3884)
+ (     'ARGENTINA', 1997, -436760.8800)
+ (     'ARGENTINA', 1996, -318328.8932)
+ (     'ARGENTINA', 1995, -578217.3228)
+ (     'ARGENTINA', 1994, -621194.5356)
+ (     'ARGENTINA', 1993, -552385.0736)
+ (     'ARGENTINA', 1992, -458738.7384)
+ (          'IRAN', 1997, -180388.9976)
+ (          'IRAN', 1996, -429987.6936)
+ (          'IRAN', 1995, -336785.9928)
+ (          'IRAN', 1994, -153745.9240)
+ (          'IRAN', 1993, -570838.2092)
+ (          'IRAN', 1992, -401772.2336)
+ (          'IRAQ', 1998, -402638.5104)
+ (          'IRAQ', 1997, -547157.7064)
+ (          'IRAQ', 1996, -665277.7896)
+ (          'IRAQ', 1995, -647499.1592)
+ (          'IRAQ', 1994, -544534.1524)
+ (          'IRAQ', 1993, -985783.1636)
+ (          'IRAQ', 1992, -302350.2908)
+ (         'KENYA', 1998,  -40301.9040)
+ (         'KENYA', 1997, -105136.4744)
+ (         'KENYA', 1996, -215488.4292)
+ (         'KENYA', 1995, -419160.2148)
+ (         'KENYA', 1994, -131197.1616)
+ (         'KENYA', 1993, -322905.1412)
+ (         'KENYA', 1992, -392335.8140)
+ (       'MOROCCO', 1998,  -74149.9400)
+ (       'MOROCCO', 1997, -183387.0628)
+ (       'MOROCCO', 1996,  -21783.8600)
+ (       'MOROCCO', 1995,  -59660.5204)
+ (       'MOROCCO', 1994, -140614.9280)
+ (       'MOROCCO', 1993, -312128.8516)
+ (       'MOROCCO', 1992, -343648.1948)
+ ('UNITED KINGDOM', 1998, -154214.7308)
+ ('UNITED KINGDOM', 1997, -590320.9832)
+ ('UNITED KINGDOM', 1996, -534419.3392)
+ ('UNITED KINGDOM', 1995, -124186.2368)
+ ('UNITED KINGDOM', 1994, -105642.7608)
+ ('UNITED KINGDOM', 1993, -430281.0608)
+ ('UNITED KINGDOM', 1992, -541653.8204)
 
 CLEANUP {
 }
