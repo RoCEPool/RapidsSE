@@ -647,6 +647,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             );
   }
 
+  vPrintProperties(pRibbon, iDepth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // secondary facets
@@ -659,6 +660,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             aFacet->m_sFacet.szStz(),
                             i_Facet_secondary);
   }
+
 }
 
 /*----------------------------------------------------------------------------*/

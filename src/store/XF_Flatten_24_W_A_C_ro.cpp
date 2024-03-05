@@ -119,7 +119,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyPrm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     p_conj->vMark1(MARK_AT);
-    p_conj->pSymbol()->Y_vSet(P_CrlConj);
+    p_conj->pSymbol()->Y_vSet(P_CrlKeyConj);
 
     pCI->Sqy.m_p_term_sqyPrm = static_cast<Card_RlnConj *>(p_conj)->pGet_term_sqyPrm();
 
@@ -154,6 +154,8 @@ void XF_Flatten_24_W_A_C_ro::vSnap_expr_emit_Of_sqyPrm(CardIter* pCI)
 
   pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
   pCI->Sqy.m_pExpr_corr->pSymbol()->Y_vSet(P_CrlKeyExpr);
+
+  pCI->Sqy.m_pExpr_corr->vDump(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,7 +426,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_Bool
     if (!p_conj->bContains_sqyNo())
       return;
 
-    RASSERT(! p_conj->pSymbol()->Y_bHas(P_CrlConj));
+    RASSERT(! p_conj->pSymbol()->Y_bHas(P_CrlKeyConj));
     RASSERT(p_conj->bIsRelnOp());
 
     for (Kid xConj(p_conj); xConj.bEach(); /**/) {
@@ -625,7 +627,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
     if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
       break;
-  RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlConj));
+  RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyConj));
 
   // tidy up empty SQ:<table>/<filter>
   pCI->G.p_from->vCullIfEmpty_filter(pCI->G.p_filter);
@@ -658,7 +660,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
 
-  p_conj_corr->pSymbol()->Y_vCut(P_CrlConj);
+  p_conj_corr->pSymbol()->Y_vCut(P_CrlKeyConj);
   p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
 
   pCI->G.p_boolPred->vExtend_andConj(_pCard_RlnConj(p_conj_corr));

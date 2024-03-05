@@ -170,7 +170,7 @@ extern Stz* P_Cell;
 extern Stz* P_ChosenBound;
 extern Stz* P_ChosenIndex;
 extern Stz* P_Count;
-extern Stz* P_CrlConj;
+extern Stz* P_CrlKeyConj;
 extern Stz* P_CrlKeyExpr;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_CrlRslTest;
@@ -425,8 +425,7 @@ namespace STORE
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);
 
-  private:
-  private:
+  protected:
     void vCoord(void);
     void vCoord(Card* pParentCard);
 
