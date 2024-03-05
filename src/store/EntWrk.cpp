@@ -180,7 +180,17 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 	else {
 
 		i8 iBufRemaining;
-		char* aDst = (char*)ayElmNext_dtm(&iBufRemaining);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		//char* aDst = (char*)ayElmNext_dtm(&iBufRemaining);
+
+		i8 nElmSeqSize = m_xEnt.nElmSeqSizeGen();
+		Dtm* ayNextElm = aAdd<Dtm*>(aElmSeq_dtm(),nElmSeqSize);
+
+		iBufRemaining = (i8) sizeof(m_yaKeySpace) - nElmSeqSize;
+
+		char* aDst = (char*) ayNextElm;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		//i8 nElmSize = StrLib::iWordFlip(aDst, iBufRemaining, sValue);
 
