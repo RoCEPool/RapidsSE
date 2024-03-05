@@ -64,6 +64,7 @@ namespace STORE
     static bool bIs_CastType(Stz* szArg);        // CASTTYPE
     static bool bIs_Col_Type(Stz* szArg);        // BOOLEAN, ... VARCHAR
     static bool bIs_Comma(Stz* szArg);           // ,
+    static bool bIs_Crl_Key(Stz* szArg);         // %n
     static bool bIs_Cross(Stz* szArg);           // CROSS
     static bool bIs_Dcm_Lit(Stz* szArg);         // StrLib::bIsDecimal()
     static bool bIs_Direction(Stz* szArg);       // asc, desc
@@ -93,7 +94,6 @@ namespace STORE
     static bool bIs_Sqy_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Sqy_No(Stz* szArg);          // $Qn (or __subqueryN)
     static bool bIs_Sqy_Op(Stz* szArg);          // exists, in, notExists, notIn
-    static bool bIs_Sqy_Prm(Stz* szArg);         // %n
     static bool bIs_Sqy_Rsl(Stz* szArg);         // __n
     static bool bIs_Stg_Cast(Stz* szArg);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szArg);          // Sn
@@ -235,6 +235,8 @@ namespace STORE
     void vFacet_CastType(Stz* szCastType);
     void vFacet_Col_Type(Stz* szColType);
     void vFacet_Comma(Stz* szComma);
+    void vFacet_Crl_Key(i8 iOrdinal);
+    void vFacet_Crl_Key(Stz* szSqyPrm);
     void vFacet_Cross(Stz* szCross);
     void vFacet_Dcm_Lit(Stz* szDcmLit);
     void vFacet_Direction(Stz* szDirection);
@@ -271,8 +273,6 @@ namespace STORE
     void vFacet_Sqy_No(i8 iSqyNo);
     void vFacet_Sqy_No(Stz* szSqyNo);
     void vFacet_Sqy_Op(Stz* szSqyOp);
-    void vFacet_Sqy_Prm(i8 iOrdinal);
-    void vFacet_Sqy_Prm(Stz* szSqyPrm);
     void vFacet_Sqy_Rsl(i8 iOrdinal);
     void vFacet_Sqy_Rsl(Stz* szSqyRsl);
     void vFacet_Stg_Cast(Stz* szStgCast);

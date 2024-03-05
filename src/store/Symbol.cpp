@@ -161,7 +161,7 @@ eSF Symbol::eEval_facet(Stz* szArg)
   if (bIs_Parenthesis(szArg))  return SF_PARENTHESIS;
   if (bIs_Rln_Op(szArg))       return SF_RLN_OP;
   if (bIs_Sqy_No(szArg))       return SF_SQY_NO;
-  if (bIs_Sqy_Prm(szArg))      return SF_CRL_KEY;
+  if (bIs_Crl_Key(szArg))      return SF_CRL_KEY;
   if (bIs_Sqy_Op(szArg))       return SF_SQY_OP;
   if (bIs_Sqy_Rsl(szArg))      return SF_SQY_RSL;
   if (bIs_Stg_Cast(szArg))     return SF_STG_CAST;
@@ -365,6 +365,26 @@ bool Symbol::bIs_Comma(Stz* szArg)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given arg a subquery correlation-key?  (i.e. %n)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Crl_Key(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+
+  if (   '%' == acFirst
+         && StrLib::bIsDigit(acSecond)
+         && ! acThird)
+    return true;
+  else
+    return false;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -841,26 +861,6 @@ bool Symbol::bIs_Sqy_Op(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given arg a subquery correlation-parameter?  (i.e. %n)                  */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Prm(Stz* szArg)
-{
-  _static_
-
-  char acFirst  = szArg->cChar(0);
-  char acSecond = szArg->cChar(1);
-  char acThird  = szArg->cChar(2);
-
-  if (   '%' == acFirst
-      && StrLib::bIsDigit(acSecond)
-      && ! acThird)
-    return true;
-  else
-    return false;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given arg a subQuery result column?  (i.e. $Rn)                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
@@ -1183,7 +1183,7 @@ bool Symbol::bPossibleNm(Stz* szArg)
 
   if (bIs_Exp_Col(szArg))  return false;
   if (bIs_Tbl_Col(szArg))  return false;
-  if (bIs_Sqy_Prm(szArg))  return false;
+  if (bIs_Crl_Key(szArg))  return false;
   if (bIs_Sqy_Rsl(szArg))  return false;
 
   return true;
@@ -1354,13 +1354,13 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
+    case SF_CRL_KEY:    vFacet_Crl_Key(iInt);    break;
     case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
     case SF_NMD_COL:    vFacet_Nmd_Col(iInt);    break;
-    case SF_CRL_KEY:    vFacet_Sqy_Prm(iInt);    break;
     case SF_SQY_RSL:    vFacet_Sqy_Rsl(iInt);    break;
     case SF_SQY_NO:     vFacet_Sqy_No(iInt);     break;
     case SF_STG_NM:     vFacet_Stg_Nm(iInt);     break;
@@ -1393,6 +1393,7 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
     case SF_CASTTYPE:    vFacet_CastType(szArg);    break;
     case SF_COL_TYPE:    vFacet_Col_Type(szArg);    break;
     case SF_COMMA:       vFacet_Comma(szArg);       break;
+    case SF_CRL_KEY:     vFacet_Crl_Key(szArg);     break;
     case SF_CROSS:       vFacet_Cross(szArg);       break;
     case SF_DCM_LIT:     vFacet_Dcm_Lit(szArg);     break;
     case SF_DIRECTION:   vFacet_Direction(szArg);   break;
@@ -1419,7 +1420,6 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
     case SF_PARENTHESIS: vFacet_Parenthesis(szArg); break;
     case SF_SQY_NM:      vFacet_Sqy_Nm(szArg);      break;
     case SF_SQY_NO:      vFacet_Sqy_No(szArg);      break;
-    case SF_CRL_KEY:     vFacet_Sqy_Prm(szArg);     break;
     case SF_SQY_RSL:     vFacet_Sqy_Rsl(szArg);     break;
     case SF_RLN_OP:      vFacet_Rln_Op(szArg);      break;
     case SF_SQY_OP:      vFacet_Sqy_Op(szArg);      break;
@@ -2232,6 +2232,7 @@ bool Symbol::bValidate(void)
       case SF_CASTTYPE:    b = bIs_CastType(szFacet);    break;
       case SF_COL_TYPE:    b = bIs_Col_Type(szFacet);    break;
       case SF_COMMA:       b = bIs_Comma(szFacet);       break;
+      case SF_CRL_KEY:     b = bIs_Crl_Key(szFacet);     break;
       case SF_CROSS:       b = bIs_Cross(szFacet);       break;
       case SF_DCM_LIT:     b = bIs_Dcm_Lit(szFacet);     break;
       case SF_DIRECTION:   b = bIs_Direction(szFacet);   break;
@@ -2257,7 +2258,6 @@ bool Symbol::bValidate(void)
       case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet);      break;
       case SF_SQY_NO:      b = bIs_Sqy_No(szFacet);      break;
       case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet);      break;
-      case SF_CRL_KEY: b = bIs_Sqy_Prm(szFacet);     break;
       case SF_SQY_RSL:     b = bIs_Sqy_Rsl(szFacet);     break;
       case SF_STG_NM:      b = bIs_Stg_Nm(szFacet);      break;
       case SF_STG_CAST:    b = bIs_Stg_Cast(szFacet);    break;
@@ -2814,6 +2814,34 @@ void Symbol::vFacet_Comma(Stz* szComma)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given subquery correlation key                          */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Crl_Key(i8 iOrdinal)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! bHasFacets());
+
+  vFacetSprint(SF_CRL_KEY, "%%%lld"_Stz, iOrdinal);
+
+  RASSERT(bHasFacet(SF_CRL_KEY));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given subquery correlation key                          */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Crl_Key(Stz* szSqyPrm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  //RASSERT(! bHasFacets());
+
+  vFacetSet(SF_CRL_KEY, szSqyPrm);
+
+  RASSERT(bHasFacet(SF_CRL_KEY));
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given cross                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Cross(Stz* szCross)
@@ -3343,34 +3371,6 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
 
   RASSERT(bHasFacet(SF_SQY_OP));
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given parameter column                                  */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Sqy_Prm(i8 iOrdinal)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(! bHasFacets());
-
-  vFacetSprint(SF_CRL_KEY, "%%%lld"_Stz, iOrdinal);
-
-  RASSERT(bHasFacet(SF_CRL_KEY));
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given parameter column                                  */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  //RASSERT(! bHasFacets());
-
-  vFacetSet(SF_CRL_KEY, szSqyPrm);
-
-  RASSERT(bHasFacet(SF_CRL_KEY));
 }
 
 /*----------------------------------------------------------------------------*/
