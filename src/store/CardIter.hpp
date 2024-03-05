@@ -59,7 +59,7 @@ namespace STORE
 
       i8         m_i_fold;
       Card_Expr* m_pExpr_fold;
-      Card_Expr* m_pExpr_corr;
+      Card_Expr* m_p_expr_crlKey;
       Card*      m_pCard_sqyCopy;
     } Sqy;
 

@@ -142,20 +142,20 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyPrm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vSnap_expr_emit_Of_sqyPrm(CardIter* pCI)
+void XF_Flatten_24_W_A_C_ro::vSnap_expr_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->Sqy.m_pExpr_corr = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_sqyPrm->pSymbol(),
+  pCI->Sqy.m_p_expr_crlKey = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_sqyPrm->pSymbol(),
                                                         pCI->G.i_MainCard + 1);
 
-  pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
-  pCI->Sqy.m_pExpr_corr->pSymbol()->Y_vSet(P_CrlKeyExpr);
+  pCI->Sqy.m_p_expr_crlKey->vMark1(MARK_AT);
+  pCI->Sqy.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyExpr);
 
-  pCI->Sqy.m_pExpr_corr->vDump(__func__);
+  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,7 @@ void XF_Flatten_24_W_A_C_ro::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(C
     // key
 
     if (AL_PARTITION == e_Level) {
-      pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->Sqy.m_pExpr_corr);
+      pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->Sqy.m_p_expr_crlKey);
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
       if (1 == pCI->G.p_key->nChildCards())
         pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
@@ -194,15 +194,15 @@ void XF_Flatten_24_W_A_C_ro::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(C
     else {
       pCI->vNewMember(CK_EXPR);
       pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->G.p_expr->vApplyCast_x(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_expr->vApplyCast_x(pCI->Sqy.m_p_expr_crlKey->xCast());
       pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-      pCI->G.p_term->vApplyCast_x(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_term->vApplyCast_x(pCI->Sqy.m_p_expr_crlKey->xCast());
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
       if (1 == pCI->G.p_key->nChildCards())
         pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
 
-      pCI->G.p_rpnCalc->vApplyCast_x(pCI->Sqy.m_pExpr_corr->xCast());
-      pCI->G.p_term->vApplyCast_x(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_rpnCalc->vApplyCast_x(pCI->Sqy.m_p_expr_crlKey->xCast());
+      pCI->G.p_term->vApplyCast_x(pCI->Sqy.m_p_expr_crlKey->xCast());
 
     }
     // TODO: hack...
@@ -556,10 +556,11 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   RASSERT(pCI->Sqy.m_p_term_sqyPrm);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
-  vSnap_expr_emit_Of_sqyPrm(pCI);
+  vSnap_expr_crlKey(pCI);
   pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
-  RASSERT(pCI->Sqy.m_pExpr_corr &&    // eg $15 (L_PARTKEY)
-          pCI->Sqy.m_pExpr_corr->pSymbol()->bMatches(pCI->Sqy.m_p_term_sqyPrm->pSymbol()));
+  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
+  RASSERT(pCI->Sqy.m_p_expr_crlKey &&    // eg $15 (L_PARTKEY)
+          pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_sqyPrm->pSymbol()));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -568,6 +569,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   RASSERT(pCI->bEachMain(CK_o_AGGREG));
   vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
+  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // include correlation column SQ:[<project>/<projection>]
@@ -575,6 +577,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   if (pCI->bIsNextMain(CK_o_PROJECT)) {
     RASSERT(pCI->bEachMain(CK_o_PROJECT));
     vEnhance_sq_project_To_Include_Correlation_Key(pCI, C_CRLKEY);
+    pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
   } else {
 
   }
