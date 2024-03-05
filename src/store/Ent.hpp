@@ -119,14 +119,7 @@ namespace STORE
     /*----------------------------------------------------------------------------*/
 		inline i8 nElmSeqSizeGen(void)
 		{
-			i8 nBytes;
-
-			if (KE_GENERAL == m_xRef.eKind())
-				nBytes = m_xKey.nElmSeqSize();
-			else
-				nBytes = 0;
-
-			return nBytes;
+			return m_xKey.nElmSeqSize();;
 		}
 
 		/*----------------------------------------------------------------------------*/
