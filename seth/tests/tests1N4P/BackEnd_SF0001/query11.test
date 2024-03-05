@@ -150,59 +150,59 @@ begin
   stage stageMarkerC on all partitions :
     indexJoin ${testName2}_nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
-    | aggreg " type DECIMAL ( 17  4 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  2 ) CAST  *  sum  "
+    | aggreg " type DECIMAL ( 17  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  0 ) CAST  *  sum  "
     | combined 0
     | next
 
   stage stageMarkerD on all nodes :
-    aggreg " type DECIMAL ( 17  4 ) as INNERRESULT )  $1 sum"
+    aggreg " type DECIMAL ( 17  2 ) as INNERRESULT )  $1 sum"
     | combined 0
     | next
 
   stage stageMarkerD on origin :
-    aggreg " type DECIMAL ( 17  4 ) as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL ( 17  2 ) as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
   stage stageMarkerD_a on origin :
-    project " type DECIMAL ( 17  10 ) as INNERRESULT $1 0.000001  *  "
+    project " type DECIMAL ( 17  8 ) as INNERRESULT $1 0.000001  *  "
     | combined 0
     | next broadcast
 
   stage stageMarkerE on all partitions :
     indexJoin ${testName2}_partsupp IxPS_SUPPKEY "BOUND $I1"
-    | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY , type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY , type DECIMAL ( 17  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY , type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY , type DECIMAL ( 17  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | hash "type INTEGER ( 19 ) PS_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarkerF on all partitions :
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
-    | project " type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY , type DECIMAL ( 17  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    | project " type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY , type DECIMAL ( 17  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerG on all partitions :
     indexJoin ${testName2}_nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
-    | gbyAgg " groupBy type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  4 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  2 ) CAST  *  sum  , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    | gbyAgg " groupBy type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  0 ) CAST  *  sum  , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerH on all nodes :
-    gbyAgg " groupBy type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  4 ) )  $2 sum  , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    gbyAgg " groupBy type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  2 ) )  $2 sum  , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerI on origin :
-    gbyAgg " groupBy  type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  4 ) as VALUE )  $2 sum  , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    gbyAgg " groupBy  type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  2 ) as VALUE )  $2 sum  , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerJ on origin :
     filter " type BOOLEAN  value INNERRESULT  >  "
-    | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY , type DECIMAL ( 17  4 ) as VALUE VALUE"
-    | sort " type DECIMAL ( 17  4 ) $2 ASC  "
+    | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY , type DECIMAL ( 17  2 ) as VALUE VALUE"
+    | sort " type DECIMAL ( 17  2 ) $2 ASC  "
     | combined 0
     | next
 
@@ -242,58 +242,58 @@ begin
 
  stage stageMarkerC on all partitions :
     indexJoin ${testName2}_partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " type DECIMAL ( 17  5 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  2 ) CAST  *  sum  "
+    | aggreg " type DECIMAL ( 17  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  0 ) CAST  *  sum  "
     | combined 0
     | next
 
   stage stageMarkerD on all nodes :
-    aggreg " type DECIMAL ( 17  4 ) as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL ( 17  2 ) as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
  stage stageMarkerD on origin :
-    aggreg " type DECIMAL ( 17  4 ) as INNERRESULT )  $1 sum "
+    aggreg " type DECIMAL ( 17  2 ) as INNERRESULT )  $1 sum "
     | combined 0
     | next
 
  stage stageMarkerD_a on origin :
-    project " type DECIMAL ( 17  10 ) as INNERRESULT $1 0.000001  *  "
+    project " type DECIMAL ( 17  8 ) as INNERRESULT $1 0.000001  *  "
     | combined 0
     | next broadcast
 
   stage stageMarkerE on all partitions :
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1"
-    | project " type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT "
+    | project " type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT "
     | combined 0
     | next
 
   stage stageMarkerF on all partitions :
     indexJoin ${testName2}_nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
-    | project " type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    | project " type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next broadcast
 
   stage stageMarkerG on all partitions :
     indexJoin ${testName2}_partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | gbyAgg " groupBy type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  4 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  2 ) CAST  *  sum  , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    | gbyAgg " groupBy type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  0 ) CAST  *  sum  , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerH on all nodes :
-    gbyAgg " groupBy type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  4 ) )  $2 sum  , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    gbyAgg " groupBy type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  2 ) )  $2 sum  , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerI on origin :
-    gbyAgg " groupBy  type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  4 ) as VALUE )  $2 sum  , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+    gbyAgg " groupBy  type INTEGER ( 19 ) PS_PARTKEY aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 , type DECIMAL ( 17  2 ) as VALUE )  $2 sum  , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerJ on origin :
     filter " type BOOLEAN  value INNERRESULT  >  "
-    | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY , type DECIMAL ( 17  4 ) as VALUE VALUE"
-    | sort " type DECIMAL ( 17  4 ) $2 ASC  "
+    | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY , type DECIMAL ( 17  2 ) as VALUE VALUE"
+    | sort " type DECIMAL ( 17  2 ) $2 ASC  "
     | combined 0
     | next
 
@@ -334,17 +334,17 @@ begin
 
  stage S03 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " type DECIMAL ( 17  4 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  2 ) CAST  *  sum  "
+    | aggreg " type DECIMAL ( 17  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  0 ) CAST  *  sum  "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    aggreg " type DECIMAL ( 17  4 ) as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL ( 17  2 ) as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    aggreg " type DECIMAL ( 17  10 ) as INNERRESULT )  $1 sum   0.000001  *  "
+    aggreg " type DECIMAL ( 17  8 ) as INNERRESULT )  $1 sum   0.000001  *  "
     | combined 0
     | next broadcast
 
@@ -352,14 +352,14 @@ begin
     indexJoin ${testName2}_nation IxN_NATIONKEY "bound $I1"
     | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | project " type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
-                type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S07 on all partitions :
     indexJoin ${testName2}_supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
     | project " type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
-                type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next broadcast
 
@@ -368,31 +368,31 @@ begin
     | gbyAgg " groupBy    type INTEGER ( 19 ) PS_PARTKEY
                aggregates
                           type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
-                          type DECIMAL ( 17  4 ) as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  2 ) CAST  *  sum  ,
-                          type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                          type DECIMAL ( 17  2 ) as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  0 ) CAST  *  sum  ,
+                          type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S09 on all nodes :
     gbyAgg " groupBy    type INTEGER ( 19 ) PS_PARTKEY
              aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
-                        type DECIMAL ( 17  4 ) as VALUE ) VALUE sum  , type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                        type DECIMAL ( 17  2 ) as VALUE ) VALUE sum  , type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S10 on origin :
     gbyAgg " groupBy    type INTEGER ( 19 ) PS_PARTKEY
              aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
-                        type DECIMAL ( 17  4 ) as VALUE as VALUE ) VALUE sum  ,
-                        type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                        type DECIMAL ( 17  2 ) as VALUE as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S11 on origin :
     filter " type BOOLEAN  value INNERRESULT  >  "
     | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
-                type DECIMAL ( 17  4 ) as VALUE VALUE"
-    | sort " type DECIMAL ( 17  10 ) VALUE ASC  "
+                type DECIMAL ( 17  2 ) as VALUE VALUE"
+    | sort " type DECIMAL ( 17  2 ) VALUE ASC  "
     | combined 0
     | next
 
@@ -431,22 +431,22 @@ begin
 
  stage S03 on all partitions :
     indexJoin ${testName2}_partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " type DECIMAL ( 17  4 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  2 ) CAST  *  sum  "
+    | aggreg " type DECIMAL ( 17  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  0 ) CAST  *  sum  "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    aggreg " type DECIMAL ( 17  4 ) as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL ( 17  2 ) as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    aggreg " type DECIMAL ( 17  24 ) as INNERRESULT )  $1 sum "
+    aggreg " type DECIMAL ( 17  2 ) as INNERRESULT )  $1 sum "
     | combined 0
     | next broadcast
 
   stage S05 on origin :
-    project " type DECIMAL ( 17  10 ) as INNERRESULT $1 0.000001  *  "
+    project " type DECIMAL ( 17  8 ) as INNERRESULT $1 0.000001  *  "
     | combined 0
     | next broadcast
 
@@ -454,7 +454,7 @@ begin
     indexJoin ${testName2}_supplier IxS_SUPPKEY "bound $I1"
     | project " type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
                 type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
-                type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
@@ -462,7 +462,7 @@ begin
     indexJoin ${testName2}_nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | project " type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
-                type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next broadcast
 
@@ -470,32 +470,32 @@ begin
     indexJoin ${testName2}_partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
     | gbyAgg " groupBy    type INTEGER ( 19 ) PS_PARTKEY
                aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
-                          type DECIMAL ( 17  4 ) as VALUE )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  2 ) CAST  *  sum  ,
-                          type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                          type DECIMAL ( 17  2 ) as VALUE )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 17  0 ) CAST  *  sum  ,
+                          type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S09 on all nodes :
     gbyAgg " groupBy    type INTEGER ( 19 ) PS_PARTKEY
              aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
-                        type DECIMAL ( 17  4 ) as VALUE ) VALUE sum  ,
-                        type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                        type DECIMAL ( 17  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S10 on origin :
     gbyAgg " groupBy    type INTEGER ( 19 ) PS_PARTKEY
              aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
-                        type DECIMAL ( 17  4 ) as VALUE )  VALUE sum  ,
-                        type DECIMAL ( 17  10 ) as INNERRESULT INNERRESULT"
+                        type DECIMAL ( 17  2 ) as VALUE )  VALUE sum  ,
+                        type DECIMAL ( 17  8 ) as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S11 on origin :
     filter " type BOOLEAN  value INNERRESULT  >  "
     | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
-                type DECIMAL ( 17  4 ) as VALUE VALUE"
-    | sort " type DECIMAL ( 17  4 ) VALUE DESC  "
+                type DECIMAL ( 17  2 ) as VALUE VALUE"
+    | sort " type DECIMAL ( 17  2 ) VALUE DESC  "
     | combined 0
     | next
 
