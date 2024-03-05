@@ -338,7 +338,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_Boo
       while (xKid.bEach()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (xKid.pChild()->pSymbol()->bHasFacet(SF_SQY_PRM)) {
+        if (xKid.pChild()->pSymbol()->bHasFacet(SF_CRL_KEY)) {
 
           Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
           xKid.pChild()->pSymbol()->vApplyCastFacets(&x_Symbol_expCol1);  // TODO: hack!!

@@ -230,8 +230,8 @@ bool Card_CONJ::bIsCorrConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->pSymbol()->bHasFacet(SF_SQY_PRM) && (p_term_1->pSymbol()->bHasFacet(SF_EXP_COL) || p_term_1->pSymbol()->bHasFacet(SF_TBL_COL))) ||
-      (p_term_1->pSymbol()->bHasFacet(SF_SQY_PRM) && (p_term_0->pSymbol()->bHasFacet(SF_EXP_COL) || p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))))
+  if ((p_term_0->pSymbol()->bHasFacet(SF_CRL_KEY) && (p_term_1->pSymbol()->bHasFacet(SF_EXP_COL) || p_term_1->pSymbol()->bHasFacet(SF_TBL_COL))) ||
+      (p_term_1->pSymbol()->bHasFacet(SF_CRL_KEY) && (p_term_0->pSymbol()->bHasFacet(SF_EXP_COL) || p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))))
     return true;
 
   return false;

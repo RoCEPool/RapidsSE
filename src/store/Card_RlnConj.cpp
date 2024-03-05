@@ -67,10 +67,10 @@ Card_Term* Card_RlnConj::pGet_term_sqyPrm(void)
   Card* p_child_0 = this->pGetChild(0);
   Card* p_child_1 = this->pGetChild(1);
 
-  if (p_child_0->pSymbol()->bHasFacet(SF_SQY_PRM))
+  if (p_child_0->pSymbol()->bHasFacet(SF_CRL_KEY))
     return _pCard_Term(p_child_1);
 
-  if (p_child_1->pSymbol()->bHasFacet(SF_SQY_PRM))
+  if (p_child_1->pSymbol()->bHasFacet(SF_CRL_KEY))
     return _pCard_Term(p_child_0);
 
   return nullptr;

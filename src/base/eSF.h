@@ -21,6 +21,7 @@ enum eSF // symbol facet
   /* */ SF_CASTTYPE,    // CastType            : CASTTYPE
   /* */ SF_COL_TYPE,    // Column Type         : BOOLEAN, ... VARCHAR
   /* */ SF_COMMA,       // comma               : ,
+  /* */ SF_CRL_KEY,     // Correlation Key     : %n
   /* */ SF_CROSS,       // Cross               : CROSS
 
   /* */ SF_DCM_LIT,     // Decimal Literal     : StrLib::bIsDecimal()
@@ -61,7 +62,6 @@ enum eSF // symbol facet
   /* */ SF_SQY_NM,      // Subquery name       : bIsName
   /* */ SF_SQY_NO,      // SubQuery No         : $Qn
   /* */ SF_SQY_OP,      // SubQuery Op         :
-  /* */ SF_SQY_PRM,     // Parameter Column    : %n
   /* */ SF_SQY_RSL,     // SubQuery Result     : $SRn
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
   /* */ SF_STG_NM,      // Stage No            : Sn

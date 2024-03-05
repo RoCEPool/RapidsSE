@@ -161,7 +161,7 @@ eSF Symbol::eEval_facet(Stz* szArg)
   if (bIs_Parenthesis(szArg))  return SF_PARENTHESIS;
   if (bIs_Rln_Op(szArg))       return SF_RLN_OP;
   if (bIs_Sqy_No(szArg))       return SF_SQY_NO;
-  if (bIs_Sqy_Prm(szArg))      return SF_SQY_PRM;
+  if (bIs_Sqy_Prm(szArg))      return SF_CRL_KEY;
   if (bIs_Sqy_Op(szArg))       return SF_SQY_OP;
   if (bIs_Sqy_Rsl(szArg))      return SF_SQY_RSL;
   if (bIs_Stg_Cast(szArg))     return SF_STG_CAST;
@@ -1360,7 +1360,7 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
     case SF_NMD_COL:    vFacet_Nmd_Col(iInt);    break;
-    case SF_SQY_PRM:    vFacet_Sqy_Prm(iInt);    break;
+    case SF_CRL_KEY:    vFacet_Sqy_Prm(iInt);    break;
     case SF_SQY_RSL:    vFacet_Sqy_Rsl(iInt);    break;
     case SF_SQY_NO:     vFacet_Sqy_No(iInt);     break;
     case SF_STG_NM:     vFacet_Stg_Nm(iInt);     break;
@@ -1419,7 +1419,7 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
     case SF_PARENTHESIS: vFacet_Parenthesis(szArg); break;
     case SF_SQY_NM:      vFacet_Sqy_Nm(szArg);      break;
     case SF_SQY_NO:      vFacet_Sqy_No(szArg);      break;
-    case SF_SQY_PRM:     vFacet_Sqy_Prm(szArg);     break;
+    case SF_CRL_KEY:     vFacet_Sqy_Prm(szArg);     break;
     case SF_SQY_RSL:     vFacet_Sqy_Rsl(szArg);     break;
     case SF_RLN_OP:      vFacet_Rln_Op(szArg);      break;
     case SF_SQY_OP:      vFacet_Sqy_Op(szArg);      break;
@@ -2257,7 +2257,7 @@ bool Symbol::bValidate(void)
       case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet);      break;
       case SF_SQY_NO:      b = bIs_Sqy_No(szFacet);      break;
       case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet);      break;
-      case SF_SQY_PRM:     b = bIs_Sqy_Prm(szFacet);     break;
+      case SF_CRL_KEY: b = bIs_Sqy_Prm(szFacet);     break;
       case SF_SQY_RSL:     b = bIs_Sqy_Rsl(szFacet);     break;
       case SF_STG_NM:      b = bIs_Stg_Nm(szFacet);      break;
       case SF_STG_CAST:    b = bIs_Stg_Cast(szFacet);    break;
@@ -3354,9 +3354,9 @@ void Symbol::vFacet_Sqy_Prm(i8 iOrdinal)
 
   RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_SQY_PRM, "%%%lld"_Stz, iOrdinal);
+  vFacetSprint(SF_CRL_KEY, "%%%lld"_Stz, iOrdinal);
 
-  RASSERT(bHasFacet(SF_SQY_PRM));
+  RASSERT(bHasFacet(SF_CRL_KEY));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3368,9 +3368,9 @@ void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
 
   //RASSERT(! bHasFacets());
 
-  vFacetSet(SF_SQY_PRM, szSqyPrm);
+  vFacetSet(SF_CRL_KEY, szSqyPrm);
 
-  RASSERT(bHasFacet(SF_SQY_PRM));
+  RASSERT(bHasFacet(SF_CRL_KEY));
 }
 
 /*----------------------------------------------------------------------------*/

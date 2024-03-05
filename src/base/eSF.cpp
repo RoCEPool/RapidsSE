@@ -23,6 +23,7 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_CASTTYPE"_Stz,
   /* */ "SF_COL_TYPE"_Stz,
   /* */ "SF_COMMA"_Stz,
+  /* */ "SF_CRL_KEY"_Stz,
   /* */ "SF_CROSS"_Stz,
 
   /* */ "SF_DCM_LIT"_Stz,
@@ -63,7 +64,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_SQY_NM"_Stz,
   /* */ "SF_SQY_NO"_Stz,
   /* */ "SF_SQY_OP"_Stz,
-  /* */ "SF_SQY_PRM"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
   /* */ "SF_STG_CAST"_Stz,
   /* */ "SF_STG_NM"_Stz,
