@@ -212,15 +212,24 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 		}
 		else {
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+/*
 			//i8 iSrcSize = (i8)strlen(sValue);
 			//MemLib::vZero(aDst, iReqDstSize, CN_KEY);
-			for (i8 i = 0; i < iReqDstSize; i++)
+			for (i8 i = iSrcLen; i < iReqDstSize; i++)
 				aDst[i] = 0;
 
 			//MemLib::vCopy(aDst, sValue, iSrcLen+1, CN_KEY);
 			for (i8 i = 0; i < iSrcLen; i++)
 				aDst[i] = sValue[i];
+*/
+			for (i8 i = 0; i < iReqDstSize; i++) {
+				if (i < iSrcLen) {
+					aDst[i] = sValue[i];
+					continue;
+				}
+
+				aDst[i] = 0;
+			}
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			w8* aWrd = (w8*)aDst;
