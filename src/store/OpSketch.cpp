@@ -1436,9 +1436,11 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
                         xStencilRow[m_eStencilTo], sColumn.azChar());
 
   if (m_eSketchKind == SK_GBYAGG) {
-    vInitAgg(ePreExp);
-    sOperation.vSprint("_ASSIGN(aDynamicT->m_aiPayload[%lld])"_Stz, i_ColPL);
-    m_pInitStack->vPushStr(sOperation);
+		if (ePreExp != PE_ALL && ePreExp != PE_CNT) {
+			vInitAgg(ePreExp);
+			sOperation.vSprint("_ASSIGN(aDynamicT->m_aiPayload[%lld])"_Stz, i_ColPL);
+			m_pInitStack->vPushStr(sOperation);
+		}
   } else {
     vInitAgg(ePreExp);
 
