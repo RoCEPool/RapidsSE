@@ -116,7 +116,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyPrm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     p_conj->vMark1(MARK_AT);
-    p_conj->pSymbol()->Y_vSet(P_CrlKeyPred);
+    p_conj->pSymbol()->Y_vSet(P_CrlConj);
 
     pCI->Sqy.m_p_term_sqyPrm = static_cast<Card_RlnConj *>(p_conj)->pGet_term_sqyPrm();
 
@@ -139,7 +139,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyPrm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
+void XF_Flatten_24_W_A_C_ro::vSnap_expr_emit_Of_sqyPrm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -421,7 +421,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_Bool
     if (!p_conj->bContains_sqyNo())
       return;
 
-    RASSERT(! p_conj->pSymbol()->Y_bHas(P_CrlKeyPred));
+    RASSERT(! p_conj->pSymbol()->Y_bHas(P_CrlConj));
     RASSERT(p_conj->bIsRelnOp());
 
     for (Kid xConj(p_conj); xConj.bEach(); /**/) {
@@ -539,18 +539,23 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //   v                          //  ]filter
   // T T A A A P F T T W A A A    //  .]boolPred
   //   f                          //  ..]cmpPred ==
-  //   p                          //           $d.2  ((pCI->m_p_term_sqyPrm))
-  //                              //             %1
+  //   p                          //           $d.2
+  //                              //             %1 ((pCI->Sqy.m_p_term_sqyPrm))
 
   pCI->vClearRestart();
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
     if (bSnap_term_sqyPrm(pCI))
       break;
-  RASSERT(pCI->Sqy.m_p_term_sqyPrm); // eg $d.2 (L_PARTKEY)
+  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+  pCI->Sqy.m_p_term_sqyPrm->vDump(__func__);
+  RASSERT(pCI->Sqy.m_p_term_sqyPrm);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
-  vIdentify_Expr_Of_Correlation_Key_Column(pCI);
-  RASSERT(pCI->Sqy.m_pExpr_corr);    // eg $15 (L_PARTKEY)
+  vSnap_expr_emit_Of_sqyPrm(pCI);
+  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+  RASSERT(pCI->Sqy.m_pExpr_corr &&    // eg $15 (L_PARTKEY)
+          pCI->Sqy.m_pExpr_corr->pSymbol()->bMatches(pCI->Sqy.m_p_term_sqyPrm->pSymbol()));
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enrich SQ:<aggreg> to be SQ:<gbyAgg>/<key=CorrCol>,
@@ -617,7 +622,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
     if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
       break;
-  RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
+  RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlConj));
 
   // tidy up empty SQ:<table>/<filter>
   pCI->G.p_from->vCullIfEmpty_filter(pCI->G.p_filter);
@@ -650,7 +655,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
 
-  p_conj_corr->pSymbol()->Y_vCut(P_CrlKeyPred);
+  p_conj_corr->pSymbol()->Y_vCut(P_CrlConj);
   p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
 
   pCI->G.p_boolPred->vExtend_andConj(_pCard_RlnConj(p_conj_corr));
