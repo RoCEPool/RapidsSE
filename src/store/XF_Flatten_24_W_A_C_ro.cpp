@@ -153,7 +153,7 @@ void XF_Flatten_24_W_A_C_ro::vSnap_expr_emit_Of_sqyPrm(CardIter* pCI)
                                                         pCI->G.i_MainCard + 1);
 
   pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
-  pCI->Sqy.m_pExpr_corr->pSymbol()->Y_vSet(P_CrlExpr);
+  pCI->Sqy.m_pExpr_corr->pSymbol()->Y_vSet(P_CrlKeyExpr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,7 +327,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_Boo
 
     if (p_conj->bIsCard(CK_RLNCONJ)) {
 
-      if (!p_conj->pSymbol()->Y_bHas(P_CrlTest))
+      if (!p_conj->pSymbol()->Y_bHas(P_CrlKeyTest))
         return;
 
       RASSERT(p_conj->pSymbol()->bHasFacet("=="_Stz));
@@ -659,7 +659,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
 
   p_conj_corr->pSymbol()->Y_vCut(P_CrlConj);
-  p_conj_corr->pSymbol()->Y_vSet(P_CrlTest);
+  p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
 
   pCI->G.p_boolPred->vExtend_andConj(_pCard_RlnConj(p_conj_corr));
 
