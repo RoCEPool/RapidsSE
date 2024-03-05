@@ -161,7 +161,7 @@ namespace STORE
                      i8 i_Col, i8 iColPL);
     void vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, bool bConstraint = false);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-    void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType, TypeId xResultExprType, i8 i_OutputCol);
+    void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType, TypeId xResultExprType, i8 iResultLength, i8 iResultScale);
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn, bool bConstaint);
     void vPushCount(TypedStack *pExprStack, IntStack *pExprType, Token *pTkn);
     void vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp);

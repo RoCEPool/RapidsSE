@@ -876,6 +876,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
       eCastType = StreamDefBase::eDatum(pTkn->szChars());
+      iResultLength = -1;
+      iResultScale = -1;
 #ifdef TYPE_DETAILED
 			// is there a ( ?
 			pTkn = pTokenVec->pGet(i_Tkn+1);
@@ -910,7 +912,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
     if (pTkn->bSame("cast"_Stz)) {
       ePreExp = PE_CST;
-      vPushCast(pExprStack, pExprType, eCastType, xResultExprType, i_Col);
+      vPushCast(pExprStack, pExprType, eCastType, xResultExprType, iResultLength, iResultScale);
       continue;
     }
 
@@ -1662,7 +1664,8 @@ void OpSketch::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push cast expression                                                       */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastType, TypeId xResultExprType, i8 i_OutputCol) {
+void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastType, TypeId xResultExprType,
+                         i8 iResultLength, i8 iResultScale) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1672,12 +1675,6 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get column type
   eDM eColType1 = (eDM) pExprType->iPop();
-
-  // get the output column precision and scale
-  Column* pCol = m_pStreamDefOut->pGetColumn(i_OutputCol);
-  i8 iPrecision = pCol->iColumnLength();
-  i8 iScale = pCol->iColumnScale();
-
   eFM eOperation = FM_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1713,11 +1710,11 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
         // Some types have specific calling parameters
         switch (eResult) {
           case DM_VCH:
-            sOperation.vCatSprint("(&paW, aDynamicT, &szStrArea, &nAreaRemaining, %lld);"_Stz, iPrecision);
+            sOperation.vCatSprint("(&paW, aDynamicT, &szStrArea, &nAreaRemaining, %lld);"_Stz, iResultLength);
             break;
 
           case DM_BCD:
-            sOperation.vCatSprint("(&paW, aDynamicT, %lld, %lld);"_Stz, iPrecision, iScale);
+            sOperation.vCatSprint("(&paW, aDynamicT, %lld, %lld);"_Stz, iResultLength, iResultScale);
             break;
 
           default:
