@@ -1842,7 +1842,7 @@ void CardIter::vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, b
 
   G.pBoard->vRenumberCards();
 
-  G.pBoard->vPrintBoard(this,aXF[m_pBench->eXform()]);
+  G.pBoard->vPrintBoard(this);
 
 
   s32 sOT;

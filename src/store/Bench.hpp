@@ -24,6 +24,7 @@ namespace STORE
     s256 m_sXfunc;
 
     i8   m_nPrintBoard;
+    i8   m_nTransformPrint;
 
     i8   m_iXform;
 
@@ -77,6 +78,8 @@ namespace STORE
     i8   nPrintBoard(void);
     i8   nPrintBoard_inc(void);
     i8   iBenchNo(void);
+
+    i8   nTransformPrint_inc(void);
 
     void vValidate(CardIter* pCI);
 

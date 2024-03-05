@@ -209,7 +209,7 @@ namespace STORE
 
     void vEndPhase(void);
 
-    void vPrintBoard(CardIter* pCI, Stz* szDescription=nullptr);
+    void vPrintBoard(CardIter* pCI);
 
     bool bPastPhase(eOH ePhase);
 
@@ -226,9 +226,7 @@ namespace STORE
   private:
     void vPinMargin(Ribbon* pRibbon);
     void vPinCards(CardIter* pCI, Ribbon* pRibbon);
-    void vPinTitle(Ribbon* pRibbon,
-                   i8 iTransformNo,
-                   Stz* szExplain=nullptr);
+    void vPinTitle(Ribbon* pRibbon);
 
     Footer* aFooter(void);
   };

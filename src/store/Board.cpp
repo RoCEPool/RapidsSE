@@ -271,7 +271,7 @@ void Board::vPhase(eOH ePhase)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
+void Board::vPrintBoard(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -279,7 +279,7 @@ void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
 
   Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl());
 
-  vPinTitle(pRibbon, m_pBench->iXform(), szDescription);
+  vPinTitle(pRibbon);
 
   vPinCards(pCI, pRibbon);
 
@@ -450,20 +450,18 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinTitle(Ribbon* pRibbon,
-                      i8 iTransformNo, Stz* szDescription)
+void Board::vPinTitle(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  UNUSED(iTransformNo);
-  UNUSED(szDescription);
 
   if (! m_pDeck->nItems())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprintSnippet(false,"PrintBoard: %s -- %s"_Stz,
+  pRibbon->vSprintSnippet(false,"PrintBoard: %s/%lld -- %s"_Stz,
                           aXF[m_pBench->eXform()],
+                          m_pBench->nTransformPrint_inc(),
                           aXF_desc[m_pBench->eXform()]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

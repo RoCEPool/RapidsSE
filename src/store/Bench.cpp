@@ -33,7 +33,8 @@ Bench::Bench(Optimiser* pOptimiser)
 
   m_iXform        = 0;
   m_eXform        = XF_NONE;
-  m_nPrintBoard        = 0;
+  m_nPrintBoard   = 0;
+  m_nTransformPrint = 0;
 
   _checkInitialised_(CN_BENCH);
   
@@ -298,6 +299,8 @@ void Bench::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
   vXfile((Stz *) azXfile);
   vXfunc((Stz *) azXfunc);
   vXform(eXform);
+
+  m_nTransformPrint = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -408,6 +411,16 @@ i8 Bench::iBenchNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   return m_iBenchNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment and get transform print number                                   */
+/*----------------------------------------------------------------------------*/
+i8 Bench::nTransformPrint_inc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_nTransformPrint++;
 }
 
 
