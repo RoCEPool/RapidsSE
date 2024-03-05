@@ -411,8 +411,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
 	TypeId xResultExprType;
-	i8 iResultLength;
-	i8 iResultScale;
+	i8 iResultLength = -1;
+	i8 iResultScale = -1;
 
 	UNUSED(iResultLength);
 	UNUSED(iResultScale);
