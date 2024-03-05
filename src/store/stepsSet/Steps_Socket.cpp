@@ -369,7 +369,8 @@ void Step::vSocketRecvObject(void)
   if (pReceivedObject && CN_PARCEL == pReceivedObject->eGetClassNo()) {
     AM::PARCEL::vRecvContents((Parcel*)pReceivedObject,pSocket);
 
-    MY::pOp()->vOpTrace((Parcel*)pReceivedObject,(Stz*)__func__,false);
+		if (AM::TRACE::bVerbose(C_VB_OP))
+      MY::pOp()->vOpTrace((Parcel*)pReceivedObject,(Stz*)__func__,false);
   }
   
   pSocket->vReceivedObject(pReceivedObject);

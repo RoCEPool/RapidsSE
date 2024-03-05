@@ -1187,10 +1187,6 @@ void Op::vOpTrace(Operand* pOperand
   if (AM::TRACE::bVBlong())
     goto L_Long_Form;
 
-  
-  if (! AM::TRACE::bVerbose(C_VB_OP))
-    return;
-
   if (pOperand) {
     if (BufferId::bIsBufferId(pOperand))
       sOperand = "BUFFERID"_Stz;
@@ -1421,7 +1417,8 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  vOpTrace(pOperand,(Stz*)__func__);
+	if (AM::TRACE::bVerbose(C_VB_OP))
+	  vOpTrace(pOperand,(Stz*)__func__);
 
   // TODO: Arjun remove tmp BufferId check...
   if( ! BufferId::bIsBufferId(pOperand) ) {
@@ -1443,7 +1440,8 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  vOpTrace(pOperand,(Stz*)__func__);
+	if (AM::TRACE::bVerbose(C_VB_OP))
+		vOpTrace(pOperand,(Stz*)__func__);
 
   // TODO: Arjun remove tmp BufferId check...
   if( ! BufferId::bIsBufferId(pOperand)) {
@@ -1512,7 +1510,8 @@ Operand* Op::pPopLeft(void)
   
   if (pOperand) {
     vDropTaskLock();
-    vOpTrace(pOperand,(Stz*)__func__,false);
+		if (AM::TRACE::bVerbose(C_VB_OP))
+			vOpTrace(pOperand,(Stz*)__func__,false);
     AM::vOperandsDec();
     
     AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
@@ -1630,7 +1629,8 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
 
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
 
-  vOpTrace(pOperand
+	if (AM::TRACE::bVerbose(C_VB_OP))
+		vOpTrace(pOperand
            ,(Stz*)__func__
            ,false
            ,bLeft ? "Left"_Stz : "OoO"_Stz);
