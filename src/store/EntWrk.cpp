@@ -214,8 +214,13 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			//i8 iSrcSize = (i8)strlen(sValue);
-			MemLib::vZero(aDst, iReqDstSize, CN_KEY);
-			MemLib::vCopy(aDst, sValue, iSrcLen+1, CN_KEY);
+			//MemLib::vZero(aDst, iReqDstSize, CN_KEY);
+			for (i8 i = 0; i < iReqDstSize; i++)
+				aDst[i] = 0;
+
+			//MemLib::vCopy(aDst, sValue, iSrcLen+1, CN_KEY);
+			for (i8 i = 0; i < iSrcLen; i++)
+				aDst[i] = sValue[i];
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			w8* aWrd = (w8*)aDst;
@@ -249,7 +254,9 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 				iReqDstSize += C_BYTES_PER_WORD;
 				//bRet = StrLib::bCheckBufferSpace(__func__, iReqDstSize, iBufRemaining, pbResult);
 				if (iBufRemaining >= iReqDstSize) {
-					MemLib::vZero(aWrd, 8, CN_KEY);
+					//MemLib::vZero(aWrd, 8, CN_KEY);
+					for (i8 i = 0; i < 8; i++)
+						aWrd[i] = 0;
 				}
 			}
 
