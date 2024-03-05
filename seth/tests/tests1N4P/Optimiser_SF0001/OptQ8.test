@@ -37,7 +37,7 @@ group by
 order
   by o_year;
 
-rows: (1996,0.00)
+rows: (1996,0.000000000)
 
 CLEANUP {
 }

@@ -27,7 +27,7 @@ where
   and l_discount between 1.05 - 0.01 and 1.05 + 0.01
   and l_quantity < 24;
 
-rows: (2141345.51)
+rows: (2141345.5547)
 
 MemoryLeaks;
  rows: 0

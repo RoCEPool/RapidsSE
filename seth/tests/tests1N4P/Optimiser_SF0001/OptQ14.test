@@ -19,7 +19,7 @@ where
   and l_shipdate >= DATE '1995-09-01'
   and l_shipdate < DATE '1995-10-01';
 rows:
-  (19.25)
+  (19.246005465787230)
 
 MemoryLeaks;
 rows: 0

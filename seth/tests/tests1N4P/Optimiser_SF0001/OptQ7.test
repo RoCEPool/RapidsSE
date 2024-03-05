@@ -42,8 +42,8 @@ order by
   l_year;
 
 rows:
-  ('IRAN','GERMANY',1995,-7157.99)
-  ('IRAN','GERMANY',1996,-14234.13)
+ ('IRAN','GERMANY',1995,-7158.0298)
+ ('IRAN','GERMANY',1996,-14234.1824)
 
 MemoryLeaks;
 rows: 0

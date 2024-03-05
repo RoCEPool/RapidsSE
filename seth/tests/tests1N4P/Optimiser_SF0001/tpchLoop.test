@@ -167,7 +167,6 @@ INCLUDE 'tpchSchemaDrop.test';
 } -- end of loop
 
 CLEANUP {
-
   drop table ${testName2}_customer;
   mute
 
@@ -191,5 +190,6 @@ CLEANUP {
 
   drop table ${testName2}_nation;
   mute
+
 }
 
