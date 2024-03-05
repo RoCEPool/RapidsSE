@@ -62,7 +62,6 @@ namespace STORE
     eCN   eGetClassNo(void);
   
     Dtm*  aElmSeq_dtm(void);
-    i8    nElmSeqSize(void);
     void  vElmSeqSize(i8 nElmSeqSize);
     i8    iEntryNo(void);
     void  vEntryNo(i8 iEntryNo);
@@ -104,6 +103,36 @@ namespace STORE
 
     bool  bValidEnt(void);
     bool  bIsMagicValid(void);
+
+		/*----------------------------------------------------------------------------*/
+    /* get size of the element sequence                                           */
+    /*----------------------------------------------------------------------------*/
+		inline i8 nElmSeqSizeGen(void)
+		{
+			i8 nBytes;
+
+			if (KE_GENERAL == m_xRef.eKind())
+				nBytes = m_xKey.nElmSeqSize();
+			else
+				nBytes = 0;
+
+			return nBytes;
+		}
+
+		/*----------------------------------------------------------------------------*/
+		/* get size of the element sequence                                           */
+		/*----------------------------------------------------------------------------*/
+		inline i8 nElmSeqSize(void)
+		{
+			i8 nBytes;
+
+			if (KE_GENERAL == m_xRef.eKind())
+				nBytes = m_xKey.nElmSeqSize();
+			else
+				nBytes = 0;
+
+			return nBytes;
+		}
 
 		/*----------------------------------------------------------------------------*/
     /* get address of key                                                         */

@@ -160,21 +160,6 @@ Dtm* Ent::aElmSeq_dtm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of the element sequence                                           */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nElmSeqSize(void)
-{
-  i8 nBytes;
-
-  if (KE_GENERAL == m_xRef.eKind())
-    nBytes = m_xKey.nElmSeqSize();
-  else
-    nBytes = 0;
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set size of the element sequence                                           */
 /*----------------------------------------------------------------------------*/
 void Ent::vElmSeqSize(i8 nElmSeqSize)
