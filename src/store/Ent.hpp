@@ -60,8 +60,7 @@ namespace STORE
     void  vDesc(bool bDesc);
     bool  bDesc(void);
     eCN   eGetClassNo(void);
-  
-    Dtm*  aElmSeq_dtm(void);
+
     void  vElmSeqSize(i8 nElmSeqSize);
     i8    iEntryNo(void);
     void  vEntryNo(i8 iEntryNo);
@@ -74,7 +73,6 @@ namespace STORE
     i8    iItem(void);
     void  vItem(i8 iItem);
 
-    eKE   eKind(void);
     void  vKind(eKE eKind);
 
     tET   tNextEntry(i8 i_Level);
@@ -103,6 +101,18 @@ namespace STORE
 
     bool  bValidEnt(void);
     bool  bIsMagicValid(void);
+
+		/*----------------------------------------------------------------------------*/
+		/* get address of the element bytes of the key in this entry                  */
+		/*----------------------------------------------------------------------------*/
+		Dtm* aElmSeq_dtm(void)
+		{
+			Dtm* aElmSeq = aKey()->aElmSeq_dtm();
+
+			ASSERT(aElmSeq == aAdd<Dtm*>(this,sizeof(Ent)));
+
+			return aElmSeq;
+		}
 
 		/*----------------------------------------------------------------------------*/
     /* get size of the element sequence                                           */
@@ -142,7 +152,15 @@ namespace STORE
 			return &m_xKey;
 		}
 
- };
+		/*----------------------------------------------------------------------------*/
+		/* get entry key kind                                                        */
+		/*----------------------------------------------------------------------------*/
+		eKE eKind(void)
+		{
+			return m_xRef.eKind();
+		}
+
+		};
   
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */

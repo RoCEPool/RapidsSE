@@ -48,8 +48,6 @@ namespace STORE
     i8    iGetIntElm(IndexDef* pIndexDef, i8 i_Element);
     i8    iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue, i8 iKeyBufSize);
     Stz*  szGetStrElm(void);
-    void  vIncElmSeqSize(i8 nDeltaBytes);
-    void  vElmSeqSize(i8 nElmSeqSize);
     void  vReset(void);
     void  vShow(IndexDef* pIndexDef);
     void  vShowIntKey(void);
@@ -68,6 +66,22 @@ namespace STORE
 		inline i8 nElmSeqSize(void)
 		{
 			return m_nElmSeqSize;
+		}
+
+		/*----------------------------------------------------------------------------*/
+		/* increment the size of the element sequence                                 */
+		/*----------------------------------------------------------------------------*/
+		void vIncElmSeqSize(i8 nDeltaBytes)
+		{
+			m_nElmSeqSize += nDeltaBytes;
+		}
+
+		/*----------------------------------------------------------------------------*/
+		/* set size of the element sequence                                           */
+		/*----------------------------------------------------------------------------*/
+		void vElmSeqSize(i8 nElmSeqSize)
+		{
+			m_nElmSeqSize = (i4)nElmSeqSize;
 		}
 
   };

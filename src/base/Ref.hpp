@@ -47,7 +47,6 @@ namespace BASE
     bool  bIsNil(void);
     i8    iItem(void);
     void  vItem(i8 iItem);
-    eKE   eKind(void);
     void  vKind(eKE eKind);
     bool  bPayload(void);
     void  vPayload(bool bPayLoad);
@@ -56,7 +55,16 @@ namespace BASE
     void  vSetNil(void);
     i8    nSkipLevels(void);
     void  vSkipLevels(i8 nSkipLevels);
-  };
+
+		/*----------------------------------------------------------------------------*/
+		/* get entry key kind                                                         */
+		/*----------------------------------------------------------------------------*/
+		eKE eKind(void)
+		{
+			return (eKE)m_uKind;
+		}
+
+		};
 }
 
 /*============================================================================*/
