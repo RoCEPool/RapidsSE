@@ -65,11 +65,15 @@ HashMap::HashMap(void)
     xHistory[i].m_bInserted = false;
   }
 #endif
-
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
+    m_pHashMapSlot[u_slot] = nullptr;
+  }
+#else
   for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
     m_pHashMapSlot[u_slot] = new HashMapSlot();
   }
-
+#endif
   _checkInitialised_(CN_HASHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
