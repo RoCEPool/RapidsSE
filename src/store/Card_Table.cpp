@@ -90,7 +90,7 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   _static_
 
-  while (pCI->bEachMainWith3Sub(CK_o_FROM, CK_s_TABLE, CK_s_INJECTABLE, CK_t_INDEXLIST)) {
+  while (pCI->bEachMain(CK_o_FROM, CK_s_TABLE, CK_s_INJECTABLE, CK_t_INDEXLIST)) {
 
     Kid xKid(pCI->G.p_indexList);
     while (xKid.bEach(CK_INDEX)) {
@@ -122,7 +122,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachMainWithSub(CK_o_FROM, CK_s_TABLE)) {
+  while (pCI->bEachMain(CK_o_FROM, CK_s_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_TBL_NM));
 
@@ -140,11 +140,11 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_s_TABLE, CK_t_INDEXLIST))
+  while (pCI->bEachMain(CK_o_FROM, CK_s_TABLE, CK_t_INDEXLIST))
     pCI->G.p_indexList->vDeleteAll_bounds();
 
   pCI->vBeginEach();
-  while (pCI->bEachMainWith3Sub(CK_o_FROM, CK_s_TABLE, CK_o_FILTER, CK_t_INDEXLIST))
+  while (pCI->bEachMain(CK_o_FROM, CK_s_TABLE, CK_o_FILTER, CK_t_INDEXLIST))
     pCI->G.p_table->vDerive_bounds_From_filter(pCI);
 }
 
@@ -197,7 +197,7 @@ i8 Card_Table::nTables(CardIter* pCI)
   i8 nTables = 0;
 
   pCI->vBeginEach();
-  while (pCI->bEachMainWithSub(CK_o_FROM, CK_s_TABLE))
+  while (pCI->bEachMain(CK_o_FROM, CK_s_TABLE))
     nTables++;
 
   return nTables;

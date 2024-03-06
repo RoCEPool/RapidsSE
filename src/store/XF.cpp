@@ -320,14 +320,14 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_SORT);
     m_pCI->vBeginEach();
-    while (m_pCI->bEachMainWith2Sub(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->bEachMain(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vApplyFacets(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_TOP);
     m_pCI->vBeginEach();
-    while (m_pCI->bEachMainWith2Sub(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->bEachMain(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
       m_pCI->G.p_emit->vApplyFacets(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
@@ -653,7 +653,7 @@ bool MakeOptimal::bOptimise_RplScanByIndexScan(void) {
   //    We won't see it till the Filters are moved close to the scans.
 
 //  m_pCI->G_vRestart();
-//  if (m_pCI->bEachMainWithSub(CK_o_SCAN,CK_BOUNDS)) {
+//  if (m_pCI->bEachMain(CK_o_SCAN,CK_BOUNDS)) {
 //    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
 //      m_pCI->G.p_scan->vCard(CK_o_INDEXSCAN);
 //

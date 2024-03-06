@@ -85,7 +85,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vClearRestart();
-  while (pCI->bEachMain_NONE()) {
+  while (pCI->bEachMain()) {
 
     if (pCI->G.p_MainCard->pSub_emit())
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
@@ -177,7 +177,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vBeginEach();
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
-  if (pCI->bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
+  if (pCI->bEachMain(eCardWithSQ, CK_BOOLPRED)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
@@ -213,7 +213,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vClearRestart();
-  while (pCI->bEachMain_NONE()) {
+  while (pCI->bEachMain()) {
 
     if (pCI->G.p_MainCard->pSub_emit())
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
@@ -469,7 +469,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   pCI->vClearRestart();
-  if (pCI->bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED)) {
+  if (pCI->bEachMain(CK_o_WHERE, CK_BOOLPRED)) {
     (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 

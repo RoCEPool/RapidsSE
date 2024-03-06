@@ -237,7 +237,7 @@ bool XF_Optimise_Early_projection::bEarly_projection_loop(void)
 
   m_pCI->vBeginEach();
 
-  while (m_pCI->bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
     bOptRun = bEarly_projection_OP();
   }
 

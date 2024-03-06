@@ -71,7 +71,7 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
   m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_SCAN_TO_INDEXSCAN);
 
   m_pCI->vClearRestart();
-  if (m_pCI->bEachMainWith2Sub(CK_o_SCAN, CK_t_INDEXLIST, CK_BOUNDS)) {
+  if (m_pCI->bEachMain(CK_o_SCAN, CK_t_INDEXLIST, CK_BOUNDS)) {
 
     if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
         m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {

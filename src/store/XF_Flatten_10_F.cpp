@@ -98,7 +98,7 @@ void XF_Flatten_10_F::vFlatten(void)
   if (m_pCI->bEachMain(CK_c_FOLD)) {
     if (m_pCI->bEachMain(CK_o_WHERE)) {
       Card_Level* p_level_where = m_pCI->G.p_where->pSub_level();
-      if (m_pCI->bEachMainWithSub(CK_o_PROJECT, CK_s_LEVEL)) {
+      if (m_pCI->bEachMain(CK_o_PROJECT, CK_s_LEVEL)) {
         p_level_where->pSymbol()->Y_vSet(P_Level, m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
       }
     }

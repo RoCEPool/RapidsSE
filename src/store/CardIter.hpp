@@ -132,13 +132,13 @@ namespace STORE
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
-    bool bEachMain_NONE(void);
-    bool bEachMain(eCK eOfMainKind);
-    bool bEachMain_foldBreak(eCK eOfMainKind);
-    bool bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
-    bool bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
-    bool bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
-    bool bEachMainWith3Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2, eCK eAndSubKind3);
+    bool bEachMain(void);
+    bool bEachMain(eCK eMain);
+    bool bEachMain_foldBreak(eCK eMain);
+    bool bEachMain(eCK eMain, eCK eSub);
+    bool bEachMain(eCK eMain, eCK eSub, Stz* szSubFacet);
+    bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2);
+    bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3);
 
     bool bEachMain_reverse_NONE(void);
     bool bEachMain_reverse_b(eCK eOfMainKind);

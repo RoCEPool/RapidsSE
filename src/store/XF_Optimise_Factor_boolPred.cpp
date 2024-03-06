@@ -69,7 +69,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
     switch (m_pCI->G.e_MainCard) {
 
       case CK_o_CROSSJOIN:

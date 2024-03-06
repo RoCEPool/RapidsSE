@@ -68,7 +68,7 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vClearRestart();
-  if (pCI->bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
+  if (pCI->bEachMain(eCardWithSQ, CK_BOOLPRED)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
       NEVER_REACH

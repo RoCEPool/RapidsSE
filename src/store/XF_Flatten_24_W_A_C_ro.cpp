@@ -242,7 +242,7 @@ void XF_Flatten_24_W_A_C_ro::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(C
     pCI->G.p_key->vRenumberAll_expr();
     pCI->G.p_emit->vRenumberAll_expr();
 
-    if (pCI->bEachMain_NONE()) {
+    if (pCI->bEachMain()) {
       if (! pCI->G.p_MainCard->bIsCard(CK_o_AGGREG)) {
         bool b = pCI->bRewindMain();
         RASSERT(b);
@@ -503,7 +503,7 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
   pCI->vBeginEach();
 
-  while (pCI->bEachMain_NONE()) {
+  while (pCI->bEachMain()) {
 
     if (CK_c_FOLD == pCI->G.e_MainCard)
       break;
@@ -548,7 +548,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //                              //             %1
 
   pCI->vClearRestart();
-  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
+  while (pCI->bEachMain(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
     if (bSnap_term_crlKey(pCI))
       break;
   pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
@@ -625,7 +625,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // f                             //           $d.2  ((pCI->m_pTerm_corrArg))
   //                               //             %1
 
-   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
+   while (pCI->bEachMain(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
     if (pCI->G.p_boolPred->bHasSub(pCI->Sqy.m_p_conj_crlKey)) {
       pCI->G.p_boolPred->vRemoveSub(pCI->Sqy.m_p_conj_crlKey);
         break;
@@ -657,7 +657,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
   RASSERT(pCI->bEachMain(CK_c_FOLD));
 
-  RASSERT(pCI->bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED));
+  RASSERT(pCI->bEachMain(CK_o_WHERE, CK_BOOLPRED));
   pCI->G.p_boolPred->vBump_expCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -693,7 +693,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //             b <-  cp          //             %1
 
   RASSERT(pCI->bEachMain(CK_c_FOLD));
-  RASSERT(pCI->bEachMainWithSub(CK_o_WHERE, CK_BOOLPRED));
+  RASSERT(pCI->bEachMain(CK_o_WHERE, CK_BOOLPRED));
   //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolPred);
   vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolPred);
 

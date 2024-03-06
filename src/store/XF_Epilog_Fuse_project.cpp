@@ -65,7 +65,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_FUSE_PROJECT);
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
     // test for injecting op
     if (! m_pCI->G.p_MainCard->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE))
@@ -137,7 +137,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
     if (CK_o_INDEXJOIN != m_pCI->G.e_MainCard) {
       if (m_pCI->G.p_MainCard->pSub_emit())
@@ -164,7 +164,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
     if (CK_o_CROSSJOIN != m_pCI->G.e_MainCard) {
       if (m_pCI->G.p_MainCard->pSub_emit())
