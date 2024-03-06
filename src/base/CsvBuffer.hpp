@@ -46,6 +46,7 @@ namespace BASE
     void       vReportNm(Stz* szReportNm);
     void       vTake(i8 nBytes);
     i8         nTrim(void);
+    bool       bValidCsvBuffer(void);
 
   private:
     Footer* aFooter(void);

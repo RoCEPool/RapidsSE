@@ -98,6 +98,7 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void HashMap::vAnalysis(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   vTrace("HM: (with %llu buckets/slots and %llu total entries)\n"
          "    Current Load Factor: %f\n"_Stz,
 
@@ -144,6 +145,7 @@ void HashMap::vAppendHistory(void* pKey, bool bDeleted, bool bInserted)
 /*----------------------------------------------------------------------------*/
 void HashMap::vDeleteKey(void* pKey)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
   UNUSED(pKey);
@@ -169,6 +171,7 @@ void HashMap::vDeleteKey(void* pKey)
 /*----------------------------------------------------------------------------*/
 void HashMap::vDump(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
   return;
 #else
@@ -209,6 +212,7 @@ void HashMap::vDump(void)
 /*----------------------------------------------------------------------------*/
 void HashMap::vDropKeyLock(void* pKey)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
   UNUSED(pKey);
@@ -222,7 +226,6 @@ void HashMap::vDropKeyLock(void* pKey)
   pEntry->vDropLock();
 
   m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
-
 #endif
 }
 
@@ -231,6 +234,7 @@ void HashMap::vDropKeyLock(void* pKey)
 /*----------------------------------------------------------------------------*/
 HashMapEntry* HashMap::pEntryAt(void* pKey, bool bLockThis)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
   return (Object*) pKey;
@@ -258,6 +262,8 @@ HashMapEntry* HashMap::pEntryAt(void* pKey, bool bLockThis)
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(void* pKey)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
+
   u8 uIndex = uHashFunction(pKey);
 
   m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabRead();
@@ -282,6 +288,7 @@ u8 HashMap::uHashFunction(void* pKey)
 /*----------------------------------------------------------------------------*/
 void HashMap::vInit(void)
 {
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   // Do we really need to add the Pds buffers used in the hashmap to the hashmap itself?
   for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
     Pds* pPds = m_pHashMapSlot[u_slot]->m_pPdsOfEntries;
@@ -319,15 +326,13 @@ void HashMap::vInit(void)
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
   UNUSED(pKey);
   UNUSED(pValue);
   return;
 #else
-//  if(m_uNoOfEntries/m_pHashMapSlot->uGetNoSlots() > 0.75) {
-//    vReHash();
-//  }
 
   u8 uIndex = uHashFunction(pKey);
 
@@ -341,9 +346,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType)
   //m_uNoOfEntries++;
   m_pHashMapSlot[uIndex]->m_okSlotLock.vDropWrite();
 
-#ifdef WITH_HASHMAP_DEBUG
-  vAppendHistory(pKey, false, true);
-#endif
+
 #endif
 }
 
@@ -352,6 +355,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType)
 /*----------------------------------------------------------------------------*/
 bool HashMap::bIsLocked(void* pKey)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 
   u8 uIndex = uHashFunction(pKey);
 
@@ -422,6 +426,7 @@ bool HashMap::bIsLocked(void* pKey)
 /*----------------------------------------------------------------------------*/
 Object* HashMap::pValueAt(void* pKey, bool bLockThis)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
   return (Object*) pKey;
@@ -443,6 +448,98 @@ Object* HashMap::pValueAt(void* pKey, bool bLockThis)
 
   return pEntry->m_pValObject;
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid data buffer                                                 */
+/*----------------------------------------------------------------------------*/
+bool HashMap::bValidDataBuffer(DataBuffer* pDataBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
+
+  eCN eClass = pDataBuffer->eGetClassNo();
+  bool bResult = false;
+  switch (eClass) {
+    case CN_PDS: {
+      Pds *pPds = _pPds(pDataBuffer);
+      bResult = pPds->bValidPdsBuffer();
+      if(! bResult)
+        vTrace("Validate failed\n"_Stz);
+      break;
+    }
+
+    case CN_CRWBUFFER: {
+      CrwBuffer *pCrwBuffer = _pCrwBuffer(pDataBuffer);
+      bResult = pCrwBuffer->bValidCrwBuffer();
+      if(! bResult)
+        vTrace("Validate failed\n"_Stz);
+      break;
+    }
+
+    case CN_CSVBUFFER: {
+      CsvBuffer *pCsvBuffer = _pCsvBuffer(pDataBuffer);
+      bResult = pCsvBuffer->bValidCsvBuffer();
+      if(! bResult)
+        vTrace("Validate failed\n"_Stz);
+      break;
+    }
+
+    default: {
+      bResult = false;
+      vTrace("Validate failed\n"_Stz);
+      break;
+    }
+  }
+
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Verify all header, footer for buffers in this hashmap                      */
+/*----------------------------------------------------------------------------*/
+bool HashMap::bVerify(bool bLock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
+
+  i8 iaBI[BI_ENUMS] = {0};
+  i8 iTotalEntries = 0;
+  UNUSED(iTotalEntries);
+
+
+  for(u8 u_index = 0; u_index < m_uNoOfSlots; u_index++) {
+    if(bLock)
+      m_pHashMapSlot[u_index]->m_okSlotLock.vGrabRead();
+
+    Pds* pPds = m_pHashMapSlot[u_index]->m_pPdsOfEntries;
+    ASSERT(pPds);
+
+    bool bResult = bValidDataBuffer(pPds);
+    UNUSED(bResult);
+//    ASSERT(bResult);
+
+    PdsCursor* pCursor = new PdsCursor(pPds);
+
+    while( ! pCursor->bIsCurrNull()) {
+      HashMapEntry* pEntry = _pHashMapEntry(pCursor->m_pCurrentBlock->aItem());
+
+      iaBI[pEntry->m_eBufferIdType]++;
+      iTotalEntries++;
+      ASSERT(BufferId::bIsBufferId(pEntry->m_pKeyObject));
+      ASSERT(pEntry->m_pValObject);
+
+      DataBuffer* pDataBuffer = _pDataBuffer(pEntry->m_pValObject);
+      UNUSED(pDataBuffer);
+      bResult = bValidDataBuffer(pDataBuffer);
+//      ASSERT(bResult);
+
+      pCursor->vNext();
+    }
+    delete pCursor;
+
+    if(bLock)
+      m_pHashMapSlot[u_index]->m_okSlotLock.vDropRead();
+  }
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

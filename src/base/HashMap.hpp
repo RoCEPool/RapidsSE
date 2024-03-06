@@ -56,7 +56,9 @@ namespace BASE
     void    vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType);
     bool    bIsLocked(void* pKey);
 //    void    vReHash(void);
+    bool    bValidDataBuffer(DataBuffer* pDataBuffer);
     Object* pValueAt(void* pKey, bool bLockThis = true);
+    bool    bVerify(bool bLock);
 
 #ifdef WITH_HASHMAP_DEBUG
     void    vAppendHistory(void* pKey,

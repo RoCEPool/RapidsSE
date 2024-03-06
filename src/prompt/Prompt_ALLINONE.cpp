@@ -3054,7 +3054,7 @@ PromptFun __Prompt_pdsTest (
 bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-  AM::pHashMap()->vDump();
+  AM::pHashMap()->bVerify(true);
 //  typedef Pds_t<i8> Pds_i8;
 //  Pds_i8* PDS_i8;
 //  bool bResult = false;

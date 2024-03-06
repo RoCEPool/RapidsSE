@@ -282,6 +282,31 @@ i8 CsvBuffer::nTrim(void)
   return nTrimmed;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for valid csv buffer                                                  */
+/*----------------------------------------------------------------------------*/
+bool CsvBuffer::bValidCsvBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+
+  if (! bIsMagicValid()) {
+    vTrace("Not valid magic\n"_Stz);
+    return false;
+  }
+
+  if (CN_CSVBUFFER != eGetClassNo()) {
+    vTrace("Not valid class\n"_Stz);
+    return false;
+  }
+
+  if (! aFooter()->bValidFooter()) {
+    vTrace("Not valid footer\n"_Stz);
+    return false;
+  }
+
+  return true;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
