@@ -127,14 +127,14 @@ bool Board::bMark_sqyCall(CardIter* pCI)
 
       RASSERT(p_conj->bIsSqyOp());
 
-      pCI->Sqy.m_p_term_sqyPrm = p_conj->pGetTerm(0);
+      pCI->Sqy.m_p_term_crlKey = p_conj->pGetTerm(0);
       pCI->Sqy.m_p_term_sqyCall = p_conj->pGetTerm(1);
       return C_TERMINATE_RECURSION;
     }
 
     if (p_conj->pSymbol()->bHasFacet("in"_Stz) || p_conj->pSymbol()->bHasFacet("notIn"_Stz)) {
       RASSERT(p_conj->bIsSqyOp());
-      pCI->Sqy.m_p_term_sqyPrm = p_conj->pGetTerm(2);
+      pCI->Sqy.m_p_term_crlKey = p_conj->pGetTerm(2);
       return C_TERMINATE_RECURSION;
     }
 

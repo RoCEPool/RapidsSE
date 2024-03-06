@@ -456,7 +456,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   Card_Term* p_term_found = p_expr_found->pGet_term(0);
 
 
-  Card_Term* p_term_sqyArg = pCI->Sqy.m_p_term_sqyPrm->pClone();
+  Card_Term* p_term_sqyArg = pCI->Sqy.m_p_term_crlKey->pClone();
   p_term_sqyArg->vApplyCast_p(p_term_found);
   //p_term_sqyArg->vDump();
 

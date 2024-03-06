@@ -53,7 +53,7 @@ namespace STORE
 
       Card_Term* m_p_term_sqyCall;
       Card_CONJ* m_p_conj_sqyCall;
-      Card_Term* m_p_term_sqyPrm;
+      Card_Term* m_p_term_crlKey;
 
       Card_Correlation* m_pCorrelation;
 

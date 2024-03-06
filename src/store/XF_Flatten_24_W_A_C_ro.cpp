@@ -100,7 +100,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyPrm(CardIter* pCI)
+bool XF_Flatten_24_W_A_C_ro::bSnap_term_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -118,7 +118,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_sqyPrm(CardIter* pCI)
     p_conj->vMark1(MARK_AT);
     p_conj->pSymbol()->Y_vSet(P_CrlKeyConj);
 
-    pCI->Sqy.m_p_term_sqyPrm = static_cast<Card_RlnConj *>(p_conj)->pGet_term_sqyPrm();
+    pCI->Sqy.m_p_term_crlKey = static_cast<Card_RlnConj *>(p_conj)->pGet_term_crlKey();
 
     rbsnapped = true;
 
@@ -146,7 +146,7 @@ void XF_Flatten_24_W_A_C_ro::vSnap_expr_crlKey(CardIter* pCI)
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->Sqy.m_p_expr_crlKey = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_sqyPrm->pSymbol(),
+  pCI->Sqy.m_p_expr_crlKey = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_crlKey->pSymbol(),
                                                         pCI->G.i_MainCard + 1);
 
   pCI->Sqy.m_p_expr_crlKey->vMark1(MARK_AT);
@@ -541,23 +541,23 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //   v                          //  ]filter
   // T T A A A P F T T W A A A    //  .]boolPred
   //   f                          //  ..]cmpPred ==
-  //   p                          //           $d.2
-  //                              //             %1 ((pCI->Sqy.m_p_term_sqyPrm))
+  //   p                          //           $d.2 ((pCI->Sqy.m_p_term_crlKey))
+  //                              //             %1
 
   pCI->vClearRestart();
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
-    if (bSnap_term_sqyPrm(pCI))
+    if (bSnap_term_crlKey(pCI))
       break;
-  //pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
-  //pCI->Sqy.m_p_term_sqyPrm->vDump(__func__);
-  RASSERT(pCI->Sqy.m_p_term_sqyPrm);
+  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+  pCI->Sqy.m_p_term_crlKey->vDump(__func__);
+  RASSERT(pCI->Sqy.m_p_term_crlKey);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vSnap_expr_crlKey(pCI);
   //pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
   //pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_expr_crlKey &&    // eg $15 (L_PARTKEY)
-          pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_sqyPrm->pSymbol()));
+          pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_crlKey->pSymbol()));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

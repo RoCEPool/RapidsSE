@@ -49,7 +49,7 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_pSubQuery      = nullptr;
   Sqy.m_p_term_sqyCall = nullptr;
   Sqy.m_p_conj_sqyCall = nullptr;
-  Sqy.m_p_term_sqyPrm  = nullptr;
+  Sqy.m_p_term_crlKey  = nullptr;
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
@@ -523,7 +523,7 @@ void CardIter::vClearRegisters(void)
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
 
-  //Sqy.m_p_term_sqyPrm  = nullptr;
+  //Sqy.m_p_term_crlKey  = nullptr;
 
   Flux.m_pArriving  = nullptr;
   Dic.m_p_expr    = nullptr;
