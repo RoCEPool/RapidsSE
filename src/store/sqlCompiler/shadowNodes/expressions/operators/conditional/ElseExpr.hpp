@@ -42,7 +42,8 @@ namespace Parser
     static i8 iScale(QueryNode* pExprNode, PlanNode* pRootNode);
 
     // Tries to coerce the result expression of this ELSE statement to a given type
-    static void vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pElseExpr, PlanNode* pRootNode);
+    static void vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pElseExpr,
+                                    PlanNode* pRootNode, i8 iPrecision, i8 iScale);
   };
 
 }

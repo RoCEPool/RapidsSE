@@ -385,16 +385,17 @@ SELECT vch_col14, int_col1, dec_col6, CASE vch_col14
 FROM ${testName2}_datums;
 
 rows:
-  ('hello',1000,41.04,1000.00)
-  ('life',2000,47.04,null)
-  ('x',null,41.04,null)
-  ('life',4000,null,null)
-  ('124',5000,41.04,null)
-  ('blue',6000,null,null)
-  ('red',7000,41.04,null)
-  ('pink',8000,23.04,null)
-  (null,9000,4001.04,null)
-  ('hello',10000,477.04,10000.00)
+  ('hello' , 1000 ,  41.04 , 1000.00)
+   ('life' , 2000 ,  47.04 ,    null)
+      ('x' , null ,  41.04 ,    null)
+   ('life' , 4000 ,   null ,    null)
+    ('124' , 5000 ,  41.04 ,    null)
+   ('blue' , 6000 ,   null ,    null)
+    ('red' , 7000 ,  41.04 ,    null)
+   ('pink' , 8000 ,  23.04 ,    null)
+     (null , 9000 ,4001.04 ,    null)
+  ('hello' ,10000 , 477.04 ,10000.00)
+
 
 // Case with mix of numeric types. decimals (col9) are promoted to a float (col8)
 SELECT vch_col14, flt_col8, dec_col6, CASE vch_col14

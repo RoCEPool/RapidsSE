@@ -51,7 +51,8 @@ namespace Parser
     static void vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode);
 
     // Tries to coerce the result expression of this WHEN statement to a given type
-    static void vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pWhenExpr, PlanNode* pRootNode);
+    static void vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pWhenExpr,
+                                    PlanNode* pRootNode, i8 iPrecision, i8 iScale);
   };
 
 }

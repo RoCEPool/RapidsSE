@@ -390,20 +390,44 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
     return;
   }
 
+  i8 iPrecision = -1;
+  i8 iScale = -1;
+  if (xCoercibleTarget.eCTVal() == CT_DECIMAL) {
+    // If the target type is a decimal then let's find the largest precision
+    // and scale we need to support.
+    pWhenOrElseIter->vBeforeFirst();
+
+    while (pWhenOrElseIter->bHasNext()) {
+      QueryNode *pWhenOrElseExpr = _pQueryNode(pWhenOrElseIter->pNext());
+
+      if (Expr::xTypeId(pWhenOrElseExpr, pRootNode).eCTVal() != CT_DECIMAL) {
+        continue;
+      }
+
+      i8 iValuePrecision = Expr::iPrecision(pWhenOrElseExpr, pRootNode);
+      i8 iValueScale = Expr::iScale(pWhenOrElseExpr, pRootNode);
+
+      if (iValuePrecision > iPrecision)   iPrecision = iValuePrecision;
+      if (iValueScale > iScale)               iScale = iValueScale;
+    }
+  }
+
   // Now coerce the result expr of each WHEN/ELSE clause to this type
   pWhenOrElseIter->vBeforeFirst();
   while (pWhenOrElseIter->bHasNext()) {
     QueryNode* pWhenOrElseExpr = _pQueryNode(pWhenOrElseIter->pNext());
 
-    if (Expr::xTypeId(pWhenOrElseExpr, pRootNode) == xCoercibleTarget) {
+    if (Expr::xTypeId(pWhenOrElseExpr, pRootNode) == xCoercibleTarget &&
+        Expr::iPrecision(pWhenOrElseExpr, pRootNode) == iPrecision &&
+        Expr::iScale(pWhenOrElseExpr, pRootNode) == iScale) {
       continue;
     }
 
     if (WhenExpr::bIsOfType(pWhenOrElseExpr)) {
-      WhenExpr::vCoerceResultExprTo(xCoercibleTarget, pWhenOrElseExpr, pRootNode);
+      WhenExpr::vCoerceResultExprTo(xCoercibleTarget, pWhenOrElseExpr, pRootNode, iPrecision, iScale);
 
     } else if (ElseExpr::bIsOfType(pWhenOrElseExpr)) {
-      ElseExpr::vCoerceResultExprTo(xCoercibleTarget, pWhenOrElseExpr, pRootNode);
+      ElseExpr::vCoerceResultExprTo(xCoercibleTarget, pWhenOrElseExpr, pRootNode, iPrecision, iScale);
 
     } else {
       NEVER_REACH

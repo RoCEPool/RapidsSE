@@ -12,6 +12,7 @@
 #include "GraphEditor.hpp"
 #include "ShadowRoot.hpp"
 #include "TypeSystem.hpp"
+#include "CastExpr.hpp"
 
 using namespace Parser;
 
@@ -232,7 +233,8 @@ void WhenExpr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Tries to coerce the result expr of this WHEN statement to a given type     */
 /*----------------------------------------------------------------------------*/
-void WhenExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pWhenExpr, PlanNode* pRootNode)
+void WhenExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pWhenExpr,
+                                   PlanNode* pRootNode, i8 iPrecision, i8 iScale)
 {
   _static_
   ASSERT(pWhenExpr);
@@ -242,7 +244,8 @@ void WhenExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pWhenEx
   ASSERT(xCoercibleTargetId.bIsValid());
 
   QueryNode* pResult = WhenExpr::pResultExpr(pWhenExpr);
-  QueryNode* pCoercedResult = Expr::pCoerceTo(xCoercibleTargetId, pResult, pRootNode);
+  QueryNode* pCoercedResult = CastExpr::pCoerceTo(xCoercibleTargetId, pResult,
+                                                  pRootNode, iPrecision, iScale);
 
   ASSERT(pCoercedResult);
   ASSERT(Expr::bIsOfType(pCoercedResult));

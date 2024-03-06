@@ -12,6 +12,7 @@
 #include "ShadowRoot.hpp"
 #include "GraphEditor.hpp"
 #include "TypeSystem.hpp"
+#include "CastExpr.hpp"
 
 using namespace Parser;
 
@@ -165,7 +166,8 @@ i8 ElseExpr::iScale(QueryNode* pExprNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Tries to coerce the result expr of this ELSE statement to a given type     */
 /*----------------------------------------------------------------------------*/
-void ElseExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pElseExpr, PlanNode* pRootNode)
+void ElseExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pElseExpr,
+                                   PlanNode* pRootNode, i8 iPrecision, i8 iScale)
 {
   _static_
   ASSERT(pElseExpr);
@@ -175,7 +177,8 @@ void ElseExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pElseEx
   ASSERT(xCoercibleTargetId.bIsValid());
 
   QueryNode* pResult = ElseExpr::pElseExpr(pElseExpr);
-  QueryNode* pCoercedResult = Expr::pCoerceTo(xCoercibleTargetId, pResult, pRootNode);
+  QueryNode* pCoercedResult = CastExpr::pCoerceTo(xCoercibleTargetId, pResult,
+                                                  pRootNode, iPrecision, iScale);
 
   ASSERT(pCoercedResult);
   ASSERT(Expr::bIsOfType(pCoercedResult));
