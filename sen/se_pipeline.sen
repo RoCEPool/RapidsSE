@@ -10,7 +10,9 @@
 
 : BufferId[].pipeOut
 
-  BufferId[]\clear
+  BufferId[]
+
+  nullptr to BufferId[]
 
   [op].pipeout
 ;
@@ -36,7 +38,9 @@
 
 : BufferId[].pipeBackin
 
-  BufferId[]\clear
+  BufferId[]
+
+  nullptr to BufferId[]
 
   [op].pipeBackin
 ;
