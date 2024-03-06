@@ -626,14 +626,21 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //                               //             %1
 
   // todo: this should be Card_RlnConj
-  Card_CONJ *p_conj_corr = nullptr;
-  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
-    if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
-      break;
-  p_conj_corr->vDump(__func__);
-  RASSERT(p_conj_corr == pCI->Sqy.m_p_conj_crlKey);
-  RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyConj));
-
+//  {
+//    Card_CONJ *p_conj_corr = nullptr;
+//    while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
+//      if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
+//        break;
+//    p_conj_corr->vDump(__func__);
+//    RASSERT(p_conj_corr == pCI->Sqy.m_p_conj_crlKey);
+//  }
+  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
+    if (pCI->G.p_boolPred->bHasSubRecursive(pCI->Sqy.m_p_conj_crlKey)) {
+      pCI->G.p_boolPred->vRemoveSub(pCI->Sqy.m_p_conj_crlKey);
+        break;
+    }
+  }
+  RASSERT(pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_bHas(P_CrlKeyConj));
   // tidy up empty SQ:<table>/<filter>
   pCI->G.p_from->vCullIfEmpty_filter(pCI->G.p_filter);
 
@@ -665,10 +672,10 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
 
-  p_conj_corr->pSymbol()->Y_vCut(P_CrlKeyConj);
-  p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
+  pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vCut(P_CrlKeyConj);
+  pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyTest);
 
-  pCI->G.p_boolPred->vExtend_andConj(_pCard_RlnConj(p_conj_corr));
+  pCI->G.p_boolPred->vExtend_andConj(_pCard_RlnConj(pCI->Sqy.m_p_conj_crlKey));
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred
