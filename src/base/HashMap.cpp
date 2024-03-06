@@ -253,7 +253,9 @@ HashMapEntry* HashMap::pEntryAt(void* pKey, bool bLockThis)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
-  return (Object*) pKey;
+  UNUSED(pKey);
+  UNUSED(bLockThis);
+  return nullptr;
 #else
   u8 uIndex = uHashFunction(pKey);
 
@@ -279,7 +281,10 @@ HashMapEntry* HashMap::pEntryAt(void* pKey, bool bLockThis)
 bool HashMap::bExists(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  UNUSED(pKey);
+  return true;
+#else
   u8 uIndex = uHashFunction(pKey);
 
   m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabRead();
@@ -289,6 +294,7 @@ bool HashMap::bExists(void* pKey)
     return false;
   }
   return true;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,12 +311,16 @@ u8 HashMap::uHashFunction(void* pKey)
 void HashMap::vInit(void)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  return;
+#else
   // Do we really need to add the Pds buffers used in the hashmap to the hashmap itself?
   for(u8 u_slot = 0; u_slot < m_uNoOfSlots; u_slot++) {
     Pds* pPds = m_pHashMapSlot[u_slot]->m_pPdsOfEntries;
     AM::pHashMap()->vInsertKeyValue((void *) pPds->oGetBufferId().m_pvAsAddress, (Object *) pPds, BI_HASHMAPSLOT);
     pPds->vHashMap(true);
   }
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,6 +357,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType)
   // TODO: Hack for performance test
   UNUSED(pKey);
   UNUSED(pValue);
+  UNUSED(eBufferIdType);
   return;
 #else
 
@@ -372,7 +383,10 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType)
 bool HashMap::bIsLocked(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  UNUSED(pKey);
+  return false;
+#else
   u8 uIndex = uHashFunction(pKey);
 
   m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabRead();
@@ -388,6 +402,7 @@ bool HashMap::bIsLocked(void* pKey)
   m_pHashMapSlot[uIndex]->m_okSlotLock.vDropRead();
 
   return bIsLocked;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -445,6 +460,7 @@ Object* HashMap::pValueAt(void* pKey, bool bLockThis)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
   // TODO: Hack for performance test
+  UNUSED(bLockThis);
   return (Object*) pKey;
 #else
   u8 uIndex = uHashFunction(pKey);
@@ -525,6 +541,10 @@ bool HashMap::bVerify(bool bLock)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  UNUSED(bLock);
+  return true;
+#else
   i8 iaBI[BI_ENUMS] = {0};
   i8 iTotalEntries = 0;
   UNUSED(iTotalEntries);
@@ -564,6 +584,7 @@ bool HashMap::bVerify(bool bLock)
       m_pHashMapSlot[u_index]->m_okSlotLock.vDropRead();
   }
   return true;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

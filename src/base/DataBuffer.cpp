@@ -113,8 +113,6 @@ DataBuffer::~DataBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
-// TODO: Hack for performance test
-  AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
 #else
   if(m_oBufferId.m_iAsI8 != 0 && m_bHashMap)
     AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
