@@ -173,7 +173,6 @@ extern Stz* P_Count;
 extern Stz* P_CrlKeyConj;
 extern Stz* P_CrlKeyExpr;
 extern Stz* P_CrlKeyTest;
-extern Stz* P_CrlRslTest;
 extern Stz* P_DebugOption;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
@@ -195,6 +194,7 @@ extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
 extern Stz* P_SqyCall;
+extern Stz* P_SqlRslTest;
 extern Stz* P_Unproject;
 
 extern Stz* C_CARD_HISTORY;

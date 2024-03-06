@@ -455,7 +455,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_Bool
       Card_Expr* p_expr_found = pCI->Flux.m_pArriving->pGet_expr(1);
       p_child_conj->vApplyCast_x(p_expr_found->xCast());
 
-      p_conj->pSymbol()->Y_vSet(P_CrlRslTest);
+      p_conj->pSymbol()->Y_vSet(P_SqlRslTest);
     }
 
     return;
@@ -476,7 +476,7 @@ void XF_Flatten_24_W_A_C_ro::vMove_corrPred_To_table_filter(CardIter* pCI, Card_
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
   // todo: this should be Card_RlnConj
-  Card_RlnConj* p_rlnConj_corr = p_boolPred->pFind_rlnConj(P_CrlRslTest);
+  Card_RlnConj* p_rlnConj_corr = p_boolPred->pFind_rlnConj(P_SqlRslTest);
   if (! p_rlnConj_corr)
     return;
 
