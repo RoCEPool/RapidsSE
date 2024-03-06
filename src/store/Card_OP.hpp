@@ -23,7 +23,7 @@ namespace STORE
 
     void vUpdate_expCol(Card_Emit* p_arriving, bool bAlt=false);
 
-    void vCullIfEmpty_filter(Card_Filter* p_filter);
+    void vCull_filter_IfEmpty(Card_Filter* p_filter);
 
     void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);

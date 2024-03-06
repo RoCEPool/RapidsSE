@@ -633,7 +633,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   }
   RASSERT(pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_bHas(P_CrlKeyConj));
   // tidy up empty SQ:<table>/<filter>
-  pCI->G.p_from->vCullIfEmpty_filter(pCI->G.p_filter);
+  pCI->G.p_from->vCull_filter_IfEmpty(pCI->G.p_filter);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred
@@ -673,7 +673,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // s                 f           //  ..]roPred <
   // f                 bc          //           $a.5
   //                               //           $b.1
-  //                               // __subquery0002
+  //                               //           $Q1
 
   vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
 

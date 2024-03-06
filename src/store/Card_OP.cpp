@@ -123,7 +123,7 @@ void Card_OP::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)
 /*----------------------------------------------------------------------------*/
 /* remove and delete filter if it's empty                                     */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCullIfEmpty_filter(Card_Filter* p_filter)
+void Card_OP::vCull_filter_IfEmpty(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
