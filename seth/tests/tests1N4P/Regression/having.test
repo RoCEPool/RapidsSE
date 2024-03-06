@@ -27,48 +27,48 @@ ordered rows:
 // Result file: ../queries/having/results/having2.res
 select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
 ordered rows:
-  ( 62, 128.00000000000000,  'BLACK', 'ttt')
-  (243, 132.00000000000000, 'ORANGE', 'nnn')
-  (201, 122.00000000000000,   'PINK', 'vvv')
-  (457, 109.00000000000000, 'PURPLE', 'www')
-  (213, 93.000000000000000,    'RED', 'ccc')
-  (402, 172.00000000000000,   'TEAL', 'ccc')
-  ( 46, 106.00000000000000,   'aqua', 'nnn')
-  ( 74, 101.00000000000000,   'aqua', 'bbb')
-  (  5, 123.00000000000000,  'black', 'iii')
-  (124, 144.00000000000000,  'black', 'mmm')
-  (235, 158.00000000000000,  'black', 'bbb')
-  (336, 40.000000000000000,   'blue', 'ppp')
-  (303, 62.000000000000000,   'gold', 'ccc')
-  (222, 62.000000000000000,  'green', 'yyy')
-  (415, 30.000000000000000,  'green', 'uuu')
-  (260, 81.000000000000000,   'grey', 'lll')
-  (380, 129.00000000000000, 'maroon', 'xxx')
-  (141, 31.000000000000000, 'orange', 'aaa')
-  (467, 57.000000000000000, 'orange', 'kkk')
-  ( 26, 86.000000000000000,  'peach', 'ooo')
-  (215, 140.00000000000000, 'purple', 'rrr')
-  (154, 178.00000000000000, 'violet', 'ddd')
+  ( 62, 128.000000,  'BLACK', 'ttt')
+  (243, 132.000000, 'ORANGE', 'nnn')
+  (201, 122.000000,   'PINK', 'vvv')
+  (457, 109.000000, 'PURPLE', 'www')
+  (213,  93.000000,    'RED', 'ccc')
+  (402, 172.000000,   'TEAL', 'ccc')
+  ( 46, 106.000000,   'aqua', 'nnn')
+  ( 74, 101.000000,   'aqua', 'bbb')
+  (  5, 123.000000,  'black', 'iii')
+  (124, 144.000000,  'black', 'mmm')
+  (235, 158.000000,  'black', 'bbb')
+  (336,  40.000000,   'blue', 'ppp')
+  (303,  62.000000,   'gold', 'ccc')
+  (222,  62.000000,  'green', 'yyy')
+  (415,  30.000000,  'green', 'uuu')
+  (260,  81.000000,   'grey', 'lll')
+  (380, 129.000000, 'maroon', 'xxx')
+  (141,  31.000000, 'orange', 'aaa')
+  (467,  57.000000, 'orange', 'kkk')
+  ( 26,  86.000000,  'peach', 'ooo')
+  (215, 140.000000, 'purple', 'rrr')
+  (154, 178.000000, 'violet', 'ddd')
 
 // Source file: ../queries/having/rhaving3.sql
 // Result file: ../queries/having/results/having3.res
 select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
 ordered rows:
-  ( 95, 662.00000000000000, 'GREEN', 'aaa')
-  (235, 158.00000000000000, 'black', 'bbb')
-  (  5, 123.00000000000000, 'black', 'iii')
-  (124, 144.00000000000000, 'black', 'mmm')
-  (175, 764.00000000000000, 'maroon', 'aaa')
-  (141, 31.000000000000000, 'orange', 'aaa')
+  ( 95, 662.000000, 'GREEN', 'aaa')
+  (235, 158.000000, 'black', 'bbb')
+  (  5, 123.000000, 'black', 'iii')
+  (124, 144.000000, 'black', 'mmm')
+  (175, 764.000000, 'maroon', 'aaa')
+  (141,  31.000000, 'orange', 'aaa')
 
 
 // Source file: ../queries/having/rhaving4.sql
 // Result file: ../queries/having/results/having4.res
 select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' order by colb1, ucolvc;
 ordered rows:
-  (235, 158.00000000000000, 'black', 'bbb')
-  (  5, 123.00000000000000, 'black', 'iii')
-  (124, 144.00000000000000, 'black', 'mmm')
+  (235, 158.000000, 'black', 'bbb')
+  (  5, 123.000000, 'black', 'iii')
+  (124, 144.000000, 'black', 'mmm')
 
 
 // Source file: ../queries/having/rhaving5.sql
@@ -128,47 +128,47 @@ rows:
 // Result file: ../queries/having/results/having2.res
 select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200;
 rows:
-  ( 62, 128.00000000000000, 'BLACK', 'ttt')
-  (243, 132.00000000000000, 'ORANGE', 'nnn')
-  (201, 122.00000000000000, 'PINK', 'vvv')
-  (457, 109.00000000000000, 'PURPLE', 'www')
-  (213, 93.000000000000000, 'RED', 'ccc')
-  (402, 172.00000000000000, 'TEAL', 'ccc')
-  ( 46, 106.00000000000000, 'aqua', 'nnn')
-  ( 74, 101.00000000000000, 'aqua', 'bbb')
-  (  5, 123.00000000000000, 'black', 'iii')
-  (124, 144.00000000000000, 'black', 'mmm')
-  (235, 158.00000000000000, 'black', 'bbb')
-  (336, 40.000000000000000, 'blue', 'ppp')
-  (303, 62.000000000000000, 'gold', 'ccc')
-  (222, 62.000000000000000, 'green', 'yyy')
-  (415, 30.000000000000000, 'green', 'uuu')
-  (260, 81.000000000000000, 'grey', 'lll')
-  (380, 129.00000000000000, 'maroon', 'xxx')
-  (141, 31.000000000000000, 'orange', 'aaa')
-  (467, 57.000000000000000, 'orange', 'kkk')
-  ( 26, 86.000000000000000, 'peach', 'ooo')
-  (215, 140.00000000000000, 'purple', 'rrr')
-  (154, 178.00000000000000, 'violet', 'ddd')
+  ( 62, 128.000000, 'BLACK', 'ttt')
+  (243, 132.000000, 'ORANGE', 'nnn')
+  (201, 122.000000, 'PINK', 'vvv')
+  (457, 109.000000, 'PURPLE', 'www')
+  (213,  93.000000, 'RED', 'ccc')
+  (402, 172.000000, 'TEAL', 'ccc')
+  ( 46, 106.000000, 'aqua', 'nnn')
+  ( 74, 101.000000, 'aqua', 'bbb')
+  (  5, 123.000000, 'black', 'iii')
+  (124, 144.000000, 'black', 'mmm')
+  (235, 158.000000, 'black', 'bbb')
+  (336,  40.000000, 'blue', 'ppp')
+  (303,  62.000000, 'gold', 'ccc')
+  (222,  62.000000, 'green', 'yyy')
+  (415,  30.000000, 'green', 'uuu')
+  (260,  81.000000, 'grey', 'lll')
+  (380, 129.000000, 'maroon', 'xxx')
+  (141,  31.000000, 'orange', 'aaa')
+  (467,  57.000000, 'orange', 'kkk')
+  ( 26,  86.000000, 'peach', 'ooo')
+  (215, 140.000000, 'purple', 'rrr')
+  (154, 178.000000, 'violet', 'ddd')
 
 // Source file: ../queries/having/rhaving3.sql
 // Result file: ../queries/having/results/having3.res
 select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa';
 rows:
-  ( 95, 662.00000000000000, 'GREEN', 'aaa')
-  (235, 158.00000000000000, 'black', 'bbb')
-  (  5, 123.00000000000000, 'black', 'iii')
-  (124, 144.00000000000000, 'black', 'mmm')
-  (175, 764.00000000000000, 'maroon', 'aaa')
-  (141, 31.000000000000000, 'orange', 'aaa')
+  ( 95, 662.000000, 'GREEN', 'aaa')
+  (235, 158.000000, 'black', 'bbb')
+  (  5, 123.000000, 'black', 'iii')
+  (124, 144.000000, 'black', 'mmm')
+  (175, 764.000000, 'maroon', 'aaa')
+  (141,  31.000000, 'orange', 'aaa')
 
 // Source file: ../queries/having/rhaving4.sql
 // Result file: ../queries/having/results/having4.res
 select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black';
 rows:
-  (235, 158.00000000000000, 'black', 'bbb')
-  (  5, 123.00000000000000, 'black', 'iii')
-  (124, 144.00000000000000, 'black', 'mmm')
+  (235, 158.000000, 'black', 'bbb')
+  (  5, 123.000000, 'black', 'iii')
+  (124, 144.000000, 'black', 'mmm')
 
 // Source file: ../queries/having/rhaving5.sql
 // Result file: ../queries/having/results/having5.res

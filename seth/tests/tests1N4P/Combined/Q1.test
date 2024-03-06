@@ -74,8 +74,8 @@ begin
       type VARCHAR as L_LINESTATUS $K2 ,
       type DECIMAL ( 17  2 ) as SUM_QTY )  L_QUANTITY sum  ,
       type DECIMAL ( 17  2 ) as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
-      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum  ,
-      type DECIMAL ( 17  2 ) as SUM_CHARGE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  1.0  L_TAX +  *  sum  ,
+      type DECIMAL ( 17  4 ) as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum  ,
+      type DECIMAL ( 17  6 ) as SUM_CHARGE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  1.0  L_TAX +  *  sum  ,
       type INTEGER ( 19 ) as CNT_EXTENDEDPRICE ) L_EXTENDEDPRICE count  ,
       type INTEGER ( 19 ) as CNT_QTY )  L_QUANTITY count  ,
       type DECIMAL ( 17  2 ) as SUM_DISCOUNT ) L_DISCOUNT sum  ,
@@ -96,8 +96,8 @@ begin
         type VARCHAR as L_LINESTATUS $K2 ,
         type DECIMAL ( 17  2 ) as SUM_QTY           ) SUM_QTY sum  ,
         type DECIMAL ( 17  2 ) as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
-        type DECIMAL ( 17  2 ) as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
-        type DECIMAL ( 17  2 ) as SUM_CHARGE        ) SUM_CHARGE  sum  ,
+        type DECIMAL ( 17  4 ) as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
+        type DECIMAL ( 17  6 ) as SUM_CHARGE        ) SUM_CHARGE  sum  ,
         type INTEGER ( 19 ) as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
         type INTEGER ( 19 ) as CNT_QTY           ) CNT_QTY sum  ,
         type DECIMAL ( 17  2 ) as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
@@ -116,8 +116,8 @@ begin
       type VARCHAR as L_LINESTATUS $K2 ,
       type DECIMAL ( 17  2 ) as SUM_QTY           ) SUM_QTY sum  ,
       type DECIMAL ( 17  2 ) as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
-      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
-      type DECIMAL ( 17  2 ) as SUM_CHARGE        ) SUM_CHARGE  sum  ,
+      type DECIMAL ( 17  4 ) as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
+      type DECIMAL ( 17  6 ) as SUM_CHARGE        ) SUM_CHARGE  sum  ,
       type INTEGER ( 19 ) as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
       type INTEGER ( 19 ) as CNT_QTY           ) CNT_QTY sum  ,
       type DECIMAL ( 17  2 ) as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
@@ -133,11 +133,11 @@ begin
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL ( 17  2 ) as SUM_QTY SUM_QTY ,
       type DECIMAL ( 17  2 ) as SUM_BASE_PRICE SUM_BASE_PRICE ,
-      type DECIMAL ( 17  2 ) as SUM_DISC_PRICE SUM_DISC_PRICE ,
-      type DECIMAL ( 17  2 ) as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL ( 17  4 ) as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL ( 17  6 ) as SUM_CHARGE SUM_CHARGE ,
       type DECIMAL ( 17  2 ) as AVG_QTY SUM_QTY CNT_QTY casttype DECIMAL ( 17  0 ) CAST  /  ,
-      type DECIMAL ( 17  2 ) as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE casttype DECIMAL ( 17  0 ) CAST  /  ,
-      type DECIMAL ( 17  2 ) as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT casttype DECIMAL ( 17  0 ) CAST  / ,
+      type DECIMAL ( 17  17 ) as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE casttype DECIMAL ( 17  0 ) CAST  /  ,
+      type DECIMAL ( 17  17 ) as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT casttype DECIMAL ( 17  0 ) CAST  / ,
       type INTEGER ( 19 ) as COUNT_ORDER COUNT_ORDER "
     | combined 0
     | next
@@ -150,10 +150,10 @@ begin
 end ;
 
 rows:
-  ('A', 'F', 37474.00,  56250004.88, -2850619.2887,  -5813095.448628, 25.354533153, 38058.190040595, 1.050866035, 1478)
-  ('N', 'F',  1041.00,   1614635.42,   -64993.4564,   -132418.853560,   27.3947368,   42490.4057895,   1.0428947,   38)
-  ('N', 'O', 75062.00, 112768276.42, -5569449.6841, -11358789.836075, 25.566076294, 38408.813494550, 1.049669619, 2936)
-  ('R', 'F', 36470.00,  54082045.78, -2697677.4503,  -5504516.833022, 25.048076923, 37144.262211538, 1.050006868, 1456)
+  ('A', 'F', 37474.00,  56250004.88, -2850619.2887,  -5813095.448628, 25.3545332, 38058.1900406, 1.0508660, 1478)
+  ('N', 'F',  1041.00,   1614635.42,   -64993.4564,   -132418.853560, 27.394737,  42490.405789,  1.042895,   38)
+  ('N', 'O', 75062.00, 112768276.42, -5569449.6841, -11358789.836075, 25.5660763, 38408.8134946, 1.0496696, 2936)
+  ('R', 'F', 36470.00,  54082045.78, -2697677.4503,  -5504516.833022, 25.0480769, 37144.2622115, 1.0500069, 1456)
 
 //------------------------------------------------------------------------------
 // drop the tables
