@@ -46,13 +46,9 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 #else
   m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 #endif
-  if(eClassNo == CN_CRWBUFFER)
-    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_CRW);
-  else if(eClassNo == CN_CSVBUFFER)
-    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_CSV);
-  else
-    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_ROW);
-
+  HashMap* pHashMap = AM::pHashMap();
+  eBI eBufferEntry = pHashMap->eClassToBI(eClassNo);
+  pHashMap->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, eBufferEntry);
   m_bHashMap = true;
 
   m_tLglPtn     = C_UNKNOWN;
@@ -89,10 +85,9 @@ DataBuffer::DataBuffer(bool bAddToHashMap, eCN eClassNo, bool bIsPermanent)
   m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 #endif
   if(bAddToHashMap) {
-    if(eClassNo == CN_CRWBUFFER)
-      AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_CRW);
-    else
-      AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, BI_ROW);
+    HashMap* pHashMap = AM::pHashMap();
+    eBI eBufferEntry = pHashMap->eClassToBI(eClassNo);
+    pHashMap->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, eBufferEntry);
   }
 
   m_bHashMap = bAddToHashMap;

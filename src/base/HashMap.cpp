@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
+//#include "EntBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -139,6 +140,21 @@ void HashMap::vAppendHistory(void* pKey, bool bDeleted, bool bInserted)
   m_nHistory++;
 }
 #endif
+/*----------------------------------------------------------------------------*/
+/* delete a given key                                                         */
+/*----------------------------------------------------------------------------*/
+eBI HashMap::eClassToBI(eCN eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
+
+  switch (eClass) {
+    case CN_PDS:        return BI_ROW;
+    case CN_CRWBUFFER:  return BI_CRW;
+    case CN_CSVBUFFER:  return BI_CSV;
+    case CN_ENTBUFFER:  return BI_ENT;
+    default:            return BI_NONE;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* delete a given key                                                         */
@@ -483,10 +499,18 @@ bool HashMap::bValidDataBuffer(DataBuffer* pDataBuffer)
         vTrace("Validate failed\n"_Stz);
       break;
     }
+// Header problems with ent buffer
+//    case CN_ENTBUFFER: {
+//      EntBuffer *pEntBuffer = STORE::_pEntBuffer(pDataBuffer);
+//      bResult = pEntBuffer->bValidEntBuffer();
+//      if(! bResult)
+//        vTrace("Validate failed\n"_Stz);
+//      break;
+//    }
 
     default: {
-      bResult = false;
-      vTrace("Validate failed\n"_Stz);
+      bResult = true;
+//      vTrace("Validate failed, got class %s\n"_Stz, aCN[eClass]);
       break;
     }
   }

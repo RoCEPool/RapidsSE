@@ -43,6 +43,7 @@ namespace BASE
     ~HashMap(void) noexcept(false);
 
     void    vAnalysis(void);
+    eBI     eClassToBI(eCN eClass);
     void    vDeleteKey(void* pKey);
     void    vDump(void);
     void    vDropKeyLock(void* pKey);
