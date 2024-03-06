@@ -171,7 +171,7 @@ extern Stz* P_ChosenBound;
 extern Stz* P_ChosenIndex;
 extern Stz* P_Count;
 extern Stz* P_CrlKeyConj;
-extern Stz* P_CrlKeyExpr;
+extern Stz* P_CrlKeyDefn;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_DebugOption;
 extern Stz* P_Early;

@@ -153,7 +153,7 @@ void XF_Flatten_24_W_A_C_ro::vSnap_expr_crlKey(CardIter* pCI)
                                                         pCI->G.i_MainCard + 1);
 
   pCI->Sqy.m_p_expr_crlKey->vMark1(MARK_AT);
-  pCI->Sqy.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyExpr);
+  pCI->Sqy.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyDefn);
 
   pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
 }
