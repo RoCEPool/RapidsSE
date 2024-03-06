@@ -943,7 +943,7 @@ bool Card::bHasFacetRecursive(eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasSubRecursive(Card* pSubCard)
+bool Card::bHasSub(Card* pSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -951,7 +951,7 @@ bool Card::bHasSubRecursive(Card* pSubCard)
     return true;
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-     if (xKid.pChild()->bHasSubRecursive(pSubCard))
+     if (xKid.pChild()->bHasSub(pSubCard))
       return true;
   }
 

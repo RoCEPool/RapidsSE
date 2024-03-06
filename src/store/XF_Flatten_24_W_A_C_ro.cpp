@@ -625,17 +625,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // f                             //           $d.2  ((pCI->m_pTerm_corrArg))
   //                               //             %1
 
-  // todo: this should be Card_RlnConj
-//  {
-//    Card_CONJ *p_conj_corr = nullptr;
-//    while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
-//      if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
-//        break;
-//    p_conj_corr->vDump(__func__);
-//    RASSERT(p_conj_corr == pCI->Sqy.m_p_conj_crlKey);
-//  }
-  while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
-    if (pCI->G.p_boolPred->bHasSubRecursive(pCI->Sqy.m_p_conj_crlKey)) {
+   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
+    if (pCI->G.p_boolPred->bHasSub(pCI->Sqy.m_p_conj_crlKey)) {
       pCI->G.p_boolPred->vRemoveSub(pCI->Sqy.m_p_conj_crlKey);
         break;
     }

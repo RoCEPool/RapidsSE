@@ -342,7 +342,7 @@ namespace STORE
     i8    nFunctionCount(void);
 
     bool bHasFacetRecursive(eSF eFacet);
-    bool bHasSubRecursive(Card* pSubCard);
+    bool bHasSub(Card* pSubCard);
 
     void vIncFunctionCount(void);
     bool bIsCard(eCK eCard);
