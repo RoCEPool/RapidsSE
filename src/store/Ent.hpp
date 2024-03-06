@@ -105,7 +105,7 @@ namespace STORE
 		/*----------------------------------------------------------------------------*/
 		/* get address of the element bytes of the key in this entry                  */
 		/*----------------------------------------------------------------------------*/
-		Dtm* aElmSeq_dtm(void)
+		inline Dtm* aElmSeq_dtm(void)
 		{
 			Dtm* aElmSeq = aKey()->aElmSeq_dtm();
 
@@ -148,7 +148,7 @@ namespace STORE
 		/*----------------------------------------------------------------------------*/
 		/* get entry key kind                                                        */
 		/*----------------------------------------------------------------------------*/
-		eKE eKind(void)
+		inline eKE eKind(void)
 		{
 			return m_xRef.eKind();
 		}

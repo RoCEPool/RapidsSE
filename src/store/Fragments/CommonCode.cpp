@@ -304,9 +304,9 @@ void vIndexInsertContinue(Dynamic_T* aDynamicT) {
   {
     // marker-start
 
-  }
+    }
 
-  aEntFound = aEntInserted;
+    aEntFound = aEntInserted;
 // marker-end
 
 }

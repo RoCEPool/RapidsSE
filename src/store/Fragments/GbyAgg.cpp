@@ -215,10 +215,6 @@ i8 iGbyAggIntKeyEnd(Dynamic_T* aDynamicT) {
   {
   // marker-start
 
-    // check for error
-    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
-      return 0;
-    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

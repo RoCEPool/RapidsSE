@@ -71,7 +71,7 @@ namespace STORE
 		/*----------------------------------------------------------------------------*/
 		/* increment the size of the element sequence                                 */
 		/*----------------------------------------------------------------------------*/
-		void vIncElmSeqSize(i8 nDeltaBytes)
+		inline void vIncElmSeqSize(i8 nDeltaBytes)
 		{
 			m_nElmSeqSize += nDeltaBytes;
 		}
@@ -79,7 +79,7 @@ namespace STORE
 		/*----------------------------------------------------------------------------*/
 		/* set size of the element sequence                                           */
 		/*----------------------------------------------------------------------------*/
-		void vElmSeqSize(i8 nElmSeqSize)
+		inline void vElmSeqSize(i8 nElmSeqSize)
 		{
 			m_nElmSeqSize = (i4)nElmSeqSize;
 		}

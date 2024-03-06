@@ -180,12 +180,15 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 	else {
 
 		i8 iBufRemaining;
+		Key* aKey = m_xEnt.aKey();
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		//char* aDst = (char*)ayElmNext_dtm(&iBufRemaining);
 
 		i8 nElmSeqSize = m_xEnt.nElmSeqSizeGen();
-		char* aDst = (char*)aAdd<Dtm*>(m_xEnt.aElmSeq_dtm(),nElmSeqSize);
+		//char* aDst = (char*)aAdd<Dtm*>(m_xEnt.aElmSeq_dtm(),nElmSeqSize);
+
+		char* aDst = (char*)aKey->aElmSeq_dtm() + nElmSeqSize;
 
 		//iBufRemaining = (i8) sizeof(m_yaKeySpace) - nElmSeqSize;
 		iBufRemaining = (i8) C_MAX_KEY - nElmSeqSize;
@@ -274,7 +277,7 @@ void EntWrk::vAppendElementEntStz(char* sValue)
 		}
 
 		//vIncElmSeqSize(nElmSize);
-		m_xEnt.aKey()->vIncElmSeqSize(nElmSize);
+		aKey->vIncElmSeqSize(nElmSize);
 	}
 }
 
