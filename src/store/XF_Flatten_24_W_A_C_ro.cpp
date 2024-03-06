@@ -335,7 +335,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_Boo
       while (xKid.bEach()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (xKid.pChild()->pSymbol()->bHasFacet(SF_CRL_KEY)) {
+        if (xKid.pChild()->pSymbol()->bHasFacet(SF_SQY_PRM)) {
 
           Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
           xKid.pChild()->pSymbol()->vApplyCastFacets(&x_Symbol_expCol1);  // TODO: hack!!
@@ -440,7 +440,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_Bool
 
 //      Stz* szSqyNo = p_child_conj->szFacet(SF_SQY_NO);
 //      RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
-      pCI->m_pBench->vDump(__func__);
+//      pCI->m_pBench->vDump(__func__);
       RASSERT(pCI->m_pBench->bKnown_sqy(p_child_conj->pSymbol()));
 
 

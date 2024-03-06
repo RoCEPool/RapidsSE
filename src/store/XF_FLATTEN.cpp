@@ -446,11 +446,11 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // todo: the %1 needs to be decoded... its a parameter
   Card* p_parent;
-  Symbol xPrmOrd(SF_CRL_KEY, 1);
+  Symbol xPrmOrd(SF_SQY_PRM, 1);
   Card_Term* p_term_sqyarg = _pCard_Term(p_from_exists->pFindSymbolRecursive(CK_TERM,&xPrmOrd,p_parent));
 
   Card_Expr* p_expr_found =
-      p_emitted_table->pGet_expr(p_term_sqyarg->pSymbol()->iTo_ordinal(SF_CRL_KEY) - 1);
+      p_emitted_table->pGet_expr(p_term_sqyarg->pSymbol()->iTo_ordinal(SF_SQY_PRM) - 1);
 
   //p_expr_found->vDump();
   Card_Term* p_term_found = p_expr_found->pGet_term(0);
@@ -461,7 +461,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   //p_term_sqyArg->vDump();
 
 
-  Symbol xSymbol_prmCol(SF_CRL_KEY, 1);
+  Symbol xSymbol_prmCol(SF_SQY_PRM, 1);
   p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmCol, p_term_sqyArg->pSymbol());
 
   delete p_term_sqyArg;
