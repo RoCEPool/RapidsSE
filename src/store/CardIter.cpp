@@ -882,7 +882,7 @@ bool CardIter::bEachMain(eCK eMain, eCK eSub, Stz* szSubFacet)
   _precondition_( _MAGIC_, _FOOTER_);
 
   while (bEachMain(eMain, eSub)) {
-    if (G.p_SubOfMain->pSymbol()->szFacet((i8)0)->bSame(szSubFacet)) {
+    if (G.p_SubOfMain->pSymbol()->bHasFacet(szSubFacet)) {
       RASSERT(G.p_SubOfMain->pSymbol()->bSingleFaceted());
       return true;
     }
