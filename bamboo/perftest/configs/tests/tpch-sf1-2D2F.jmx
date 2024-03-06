@@ -502,7 +502,7 @@ group by
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_ORDERKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_ORDERKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_ORDERKEY ON lineitem (L_ORDERKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -515,7 +515,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_PARTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_PARTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_PARTKEY ON lineitem (L_PARTKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -528,7 +528,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_SHIPDATE" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_SHIPDATE" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_SHIPDATE ON lineitem (L_SHIPDATE);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -541,7 +541,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_SUPPKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_SUPPKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_SUPPKEY ON lineitem (L_SUPPKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -554,7 +554,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_RECEIPTDATE" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_RECEIPTDATE" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_RECEIPTDATE ON lineitem (L_RECEIPTDATE);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -567,7 +567,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_CUSTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_CUSTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxO_CUSTKEY ON orders(O_CUSTKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -580,7 +580,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_ORDERKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_ORDERKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -593,7 +593,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_ORDERDATE" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxO_ORDERDATE" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxO_ORDERDATE ON orders(O_ORDERDATE);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -606,7 +606,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_SUPPKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_SUPPKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxPS_SUPPKEY ON partsupp(ps_suppkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -619,7 +619,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_PARTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_PARTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxPS_PARTKEY ON partsupp(ps_partkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -632,7 +632,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxP_PARTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxP_PARTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxP_PARTKEY ON part(p_partkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -645,7 +645,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxC_CUSTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxC_CUSTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxC_CUSTKEY ON customer(c_custkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -658,7 +658,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxC_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxC_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxC_NATIONKEY ON customer(c_nationkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -671,7 +671,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_SUPPKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_SUPPKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxS_SUPPKEY ON supplier(S_SUPPKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -684,7 +684,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxS_NATIONKEY ON supplier(S_NATIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -697,7 +697,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -710,7 +710,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_REGIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_REGIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -723,7 +723,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxR_REGIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxR_REGIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxR_REGIONKEY ON region(R_REGIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -948,7 +948,7 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_ORDERKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_ORDERKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_ORDERKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -961,7 +961,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
@@ -971,7 +971,7 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_PARTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_PARTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -984,7 +984,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_SHIPDATE" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_SHIPDATE" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_SHIPDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -997,7 +997,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_SUPPKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_SUPPKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1010,7 +1010,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_RECEIPTDATE" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_RECEIPTDATE" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_RECEIPTDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1051,7 +1051,7 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_CUSTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_CUSTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index orders IxO_CUSTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1064,7 +1064,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_ORDERKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_ORDERKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index orders IxO_ORDERKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1077,7 +1077,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_ORDERDATE" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_ORDERDATE" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index orders IxO_ORDERDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1108,7 +1108,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxPS_SUPPKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxPS_SUPPKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index partsupp IxPS_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1121,7 +1121,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxPS_PARTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxPS_PARTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index partsupp IxPS_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1152,7 +1152,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxP_PARTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxP_PARTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index part IxP_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1193,7 +1193,7 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxC_CUSTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxC_CUSTKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index customer IxC_CUSTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1206,7 +1206,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxC_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxC_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index customer IxC_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1237,7 +1237,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxS_SUPPKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxS_SUPPKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index supplier IxS_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1250,7 +1250,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxS_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxS_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index supplier IxS_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1277,7 +1277,7 @@ OUT.flush();</stringProp>
               <stringProp name="TestPlan.comments">Note: This is not a distributed load because the table is so small.</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxN_NATIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxN_NATIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index nation IxN_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1290,7 +1290,7 @@ OUT.flush();</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxN_REGIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxN_REGIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index nation IxN_REGIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1327,7 +1327,7 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxR_REGIONKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxR_REGIONKEY" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index region IxR_REGIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1691,7 +1691,7 @@ OUT.flush();</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="true"/>
           <hashTree>
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
