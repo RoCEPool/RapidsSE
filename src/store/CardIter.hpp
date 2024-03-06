@@ -10,6 +10,8 @@
 #include "Bench.hpp"
 #include "eXF.h"
 
+#define PRINTBOARD_dbg() vPrintBoard(__func__,__FILE__,__LINE__,true)
+
 namespace STORE
 {
   const i8 C_CARD_ANCESTRY = 16;

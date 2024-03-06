@@ -113,7 +113,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G.p_OP = pCI->G.p_indexJoin;
   pCI->G.p_indexJoin->vRestate_emit(pCI);
 
-  //pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+  //pCI->PRINTBOARD_dbg();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

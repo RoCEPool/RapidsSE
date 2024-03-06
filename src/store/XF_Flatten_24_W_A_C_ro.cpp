@@ -674,14 +674,14 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //                               //           $b.1
   //                               //           $Q1
 
-  pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+  pCI->PRINTBOARD_dbg();
   pCI->G.p_boolPred->vDump(__func__);
   vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
   pCI->G.p_boolPred->vDump(__func__);
   vConvert_SqyNo_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
-  pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+  pCI->PRINTBOARD_dbg();
   pCI->G.p_boolPred->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

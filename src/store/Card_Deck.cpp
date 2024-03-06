@@ -421,14 +421,14 @@ void Card_Deck::vValidate(CardIter* pCI)
   vMark1RecursiveIf(MARK_BLANK, MARK_VALID);
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_UNVALID)) {
-   // pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+   // pCI->PRINTBOARD_dbg();
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH
   }
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_DUPLICATE)) {
-   // pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+   // pCI->PRINTBOARD_dbg();
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH

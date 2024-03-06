@@ -537,7 +537,7 @@ void Card_CONJ::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       _pCard_RlnConj(this)->vValidate(pCI, iDepth + 1, this); break;
 
     default:
-     // pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+     // pCI->PRINTBOARD_dbg();
       vDump(__func__);
       vValidationFailed("<<replace>> %p"_Stz,this);
   }

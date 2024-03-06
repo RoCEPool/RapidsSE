@@ -562,7 +562,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           }
 
           // todo: seems the bound is invalid [298]
-//          m_pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+//          m_pCI->PRINTBOARD_dbg();
 //          m_pCI->G.p_bound->vDump(__func__);
 //          m_pCI->G.p_term->vDump(__func__);
 //          NEVER_REACH
@@ -1011,7 +1011,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           }
 
           // todo: seems the bound is invalid [298]
-//          m_pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+//          m_pCI->PRINTBOARD_dbg();
 //          m_pCI->G.p_bound->vDump(__func__);
 //          m_pCI->G.p_term->vDump(__func__);
 //          NEVER_REACH
