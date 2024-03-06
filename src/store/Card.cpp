@@ -925,24 +925,6 @@ i8 Card::nFunctionCount(void)
 /*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasFacetRecursive(eSF eFacet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bHasFacet(eFacet))
-    return true;
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (xKid.pChild()->bHasFacetRecursive(eFacet))
-      return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given card a sub card of this card?                                     */
-/*----------------------------------------------------------------------------*/
 bool Card::bHasSub(Card* pSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -952,6 +934,24 @@ bool Card::bHasSub(Card* pSubCard)
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
      if (xKid.pChild()->bHasSub(pSubCard))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a sub card with given facet?                                      */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasSubFacet(eSF eFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->bHasFacet(eFacet))
+    return true;
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (xKid.pChild()->bHasSubFacet(eFacet))
       return true;
   }
 

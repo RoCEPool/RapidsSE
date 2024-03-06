@@ -427,7 +427,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI,
 
     RASSERT(p_conj_arg->bIsCard(CK_RLNCONJ));
 
-    if (!p_conj_arg->bContains_sqyNo())
+    if (! p_conj_arg->bHasSubFacet(SF_SQY_NO))
       return;
 
     RASSERT(! p_conj_arg->pSymbol()->Y_bHas(P_CrlKeyConj));
