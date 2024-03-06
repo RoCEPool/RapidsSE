@@ -39,7 +39,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vBeginEachReverse();
   if (pCI->bEachMainWithSub_reverse_foldBreak_b(eCardWithSQ, CK_BOOLPRED)) {
-    if (! Board::bFindAndMarkSubQryCall(pCI)) {
+    if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
     }
@@ -178,7 +178,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   if (pCI->bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
-    if (! Board::bFindAndMarkSubQryCall(pCI)) {
+    if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
     }

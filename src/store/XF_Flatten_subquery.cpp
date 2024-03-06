@@ -269,7 +269,7 @@ void XF_Flatten_subquery::vFlattenByDecisionTree(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
-  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_SUBQUERY);
+//  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_SUBQUERY);
 
   if (m_pCI->Sqy.m_pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ XF_Flatten_10_F::vFlatten(m_pCI);
   else
@@ -339,7 +339,7 @@ void XF_Flatten_subquery::vFlattenByDecisionTree(void)
   else
     NEVER_REACH;
 
-  m_pCI->vEndTransform(__LINE__);
+//  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

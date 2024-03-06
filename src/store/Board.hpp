@@ -196,7 +196,7 @@ namespace STORE
 
     static void vDerive_foldProjection_F(CardIter* pCI);
 
-    static bool bFindAndMarkSubQryCall(CardIter* p_conj);
+    static bool bMark_sqyCall(CardIter* pCI);
 
     i8   i_Board(void);
     void vBoardNo(i8 i_Board);

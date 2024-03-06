@@ -83,13 +83,10 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_24_W_A_C_RO);
 
   vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
-  m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   vPromote_aggreg_To_gbyAgg(m_pCI);
-  m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   vRestate_emit_fold(m_pCI);
-  m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
@@ -155,7 +152,7 @@ void XF_Flatten_24_W_A_C_ro::vSnap_expr_crlKey(CardIter* pCI)
   pCI->Sqy.m_p_expr_crlKey->vMark1(MARK_AT);
   pCI->Sqy.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyDefn);
 
-  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
+  //pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -551,14 +548,14 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
     if (bSnap_term_sqyPrm(pCI))
       break;
-  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
-  pCI->Sqy.m_p_term_sqyPrm->vDump(__func__);
+  //pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+  //pCI->Sqy.m_p_term_sqyPrm->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_term_sqyPrm);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vSnap_expr_crlKey(pCI);
-  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
-  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
+  //pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+  //pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_expr_crlKey &&    // eg $15 (L_PARTKEY)
           pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_sqyPrm->pSymbol()));
 
@@ -569,7 +566,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   RASSERT(pCI->bEachMain(CK_o_AGGREG));
   vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
-  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+  //pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // include correlation column SQ:[<project>/<projection>]
@@ -577,7 +574,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   if (pCI->bIsNextMain(CK_o_PROJECT)) {
     RASSERT(pCI->bEachMain(CK_o_PROJECT));
     vEnhance_sq_project_To_Include_Correlation_Key(pCI, C_CRLKEY);
-    pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+    //pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
   } else {
 
   }
