@@ -19982,7 +19982,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  [op].opName@ \"TOGGLING TO ABNORMAL HANDLERS FOR OP %v\" str.format .\n"
     "  \"default_abnormalHandlers\" FIND execute\n"
-    "  \"default_internalErrorHandlers\" FIND execute\n"
+    "  \"toggle_PdsRowBufferHandler\" FIND execute\n"
     "  //[op].opName@ \"TOGGLED TO ABNORMAL HANDLERS FOR OP %v\" str.format .\n"
     "\n"
     "\n"
