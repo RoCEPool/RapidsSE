@@ -314,43 +314,45 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_sq_project_To_Include_Correlation_Key(Card
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_boolPred)
+void XF_Flatten_24_W_A_C_ro::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI,
+                                                         Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vResolve = [pCI](Card_CONJ* p_conj,
+  auto vResolve = [pCI](Card_CONJ* p_conj_arg,
                         auto&& vResolve /*oddity permits recursive lambda*/)
   {
-    if (!Card_CONJ::bIsConj(p_conj))
+    if (! Card_CONJ::bIsConj(p_conj_arg))
       return; /* this effectively declares resolve as void */
 
-    if (p_conj->bIsCard(CK_RLNCONJ)) {
+    if (p_conj_arg->bIsCard(CK_RLNCONJ)) {
 
-      if (!p_conj->pSymbol()->Y_bHas(P_CrlKeyTest))
+      if (!p_conj_arg->pSymbol()->Y_bHas(P_CrlKeyTest))
         return;
 
-      RASSERT(p_conj->pSymbol()->bHasFacet("=="_Stz));
+      RASSERT(p_conj_arg->pSymbol()->bHasFacet("=="_Stz));
 
-      Kid xKid(p_conj);
-      while (xKid.bEach()) {
+      Kid xConj(p_conj_arg);
+      while (xConj.bEach()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (xKid.pChild()->pSymbol()->bHasFacet(SF_SQY_PRM)) {
+        if (xConj.pChild()->pSymbol()->bHasFacet(SF_SQY_PRM)) {
 
-          Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-          xKid.pChild()->pSymbol()->vApplyCastFacets(&x_Symbol_expCol1);  // TODO: hack!!
+          Symbol xSym_expCol1(SF_EXP_COL, 1);
+          xConj.pChild()->pSymbol()->vApplyCastFacets(&xSym_expCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
               pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-          xKid.pChild()->vApplyCast_x(p_expr_found->xCast());
+          xConj.pChild()->vApplyCast_x(p_expr_found->xCast());
 
+          xConj.pChild()->vMark1(MARK_CHANGED);
         }
         else
-        if (xKid.pChild()->bIsCard(CK_TERM) && xKid.pChild()->pSymbol()->bHasFacet(SF_TBL_COL)) {
+        if (xConj.pChild()->bIsCard(CK_TERM) && xConj.pChild()->pSymbol()->bHasFacet(SF_TBL_COL)) {
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack
@@ -361,7 +363,8 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_Boo
 
           Card_Expr* p_expr_otr = pCI->pBackSearch_expr_For_colNm(pSym_term, pCI->i_Child());
           Stz* szProjectedCol = p_expr_otr->pGet_term(0)->szFacet(SF_TBL_COL);
-          xKid.pChild()->pSymbol()->vApplyFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
+          xConj.pChild()->pSymbol()->vApplyFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
+          xConj.pChild()->vMark1(MARK_CHANGED);
 
           DELETE_CARD(p_term);
         }
@@ -372,11 +375,11 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_Boo
       return;
     }
     else
-    if (p_conj->bIsCard(CK_ANDCONJ) || p_conj->bIsCard(CK_ORCONJ)) {
-      Kid xKid(p_conj);
-      while (xKid.bEach()) {
-        RASSERT(Card_CONJ::bIsConj(xKid.pChild()));
-        vResolve((Card_CONJ*)xKid.pChild(), vResolve);
+    if (p_conj_arg->bIsCard(CK_ANDCONJ) || p_conj_arg->bIsCard(CK_ORCONJ)) {
+      Kid xConj(p_conj_arg);
+      while (xConj.bEach()) {
+        RASSERT(Card_CONJ::bIsConj(xConj.pChild()));
+        vResolve((Card_CONJ*)xConj.pChild(), vResolve);
       }
     }
     else {
@@ -387,31 +390,32 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyPrm_Into_ExpCol(CardIter* pCI, Card_Boo
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJ* p_conj = static_cast<Card_CONJ*>(p_boolPred->pGetChild(0));
+  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
 
-  vResolve(p_conj, vResolve);
+  vResolve(p_conj_root, vResolve);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_BoolPred *p_boolPred)
+void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI,
+                                                        Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto vResolve = [pCI](Card_CONJ* p_conj,
+  auto vResolve = [pCI](Card_CONJ* p_conj_arg,
                         auto&& vResolve /*oddity permits recursive lambda*/)
   {
-    if (!Card_CONJ::bIsConj(p_conj))
+    if (! Card_CONJ::bIsConj(p_conj_arg))
       return; /* this effectively declares resolve as void */
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // process AND or OR
 
-    if (p_conj->bIsCard(CK_ANDCONJ) || p_conj->bIsCard(CK_ORCONJ)) {
-      for (Kid xConj(p_conj); xConj.bEach(); /**/) {
+    if (p_conj_arg->bIsCard(CK_ANDCONJ) || p_conj_arg->bIsCard(CK_ORCONJ)) {
+      for (Kid xConj(p_conj_arg); xConj.bEach(); /**/) {
         RASSERT(Card_CONJ::bIsConj(xConj.pChild()));
         vResolve(static_cast<Card_CONJ*>(xConj.pChild()), vResolve);
       }
@@ -421,41 +425,36 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_Bool
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // process <RLNCONJ>
 
-    RASSERT(p_conj->bIsCard(CK_RLNCONJ));
+    RASSERT(p_conj_arg->bIsCard(CK_RLNCONJ));
 
-    if (!p_conj->bContains_sqyNo())
+    if (!p_conj_arg->bContains_sqyNo())
       return;
 
-    RASSERT(! p_conj->pSymbol()->Y_bHas(P_CrlKeyConj));
-    RASSERT(p_conj->bIsRelnOp());
+    RASSERT(! p_conj_arg->pSymbol()->Y_bHas(P_CrlKeyConj));
+    RASSERT(p_conj_arg->bIsRelnOp());
 
-    for (Kid xConj(p_conj); xConj.bEach(); /**/) {
-
-      Card* p_child_conj = xConj.pChild();
-      if (Card_CONJ::bIsConj(p_child_conj)) {
-        vResolve(static_cast<Card_CONJ*>(p_child_conj), vResolve);
+    for (Kid xConj(p_conj_arg); xConj.bEach(); /**/) {
+      Card* p_conj_child = xConj.pChild();
+      if (Card_CONJ::bIsConj(p_conj_child)) {
+        vResolve(static_cast<Card_CONJ*>(p_conj_child), vResolve);
         continue;
       }
-      // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-      if (! p_child_conj->pSymbol()->bHasFacet(SF_SQY_NO))
+      if (! p_conj_child->pSymbol()->bHasFacet(SF_SQY_NO))
         continue;
 
-//      Stz* szSqyNo = p_child_conj->szFacet(SF_SQY_NO);
-//      RASSERT(Symbol::bIs_Sqy_No(szSqyNo));
-//      pCI->m_pBench->vDump(__func__);
-      RASSERT(pCI->m_pBench->bKnown_sqy(p_child_conj->pSymbol()));
-
+      RASSERT(pCI->m_pBench->bKnown_sqy(p_conj_child->pSymbol()));
 
       Card* p_prev_conj = xConj.pPrev();
-      p_conj->vRemoveChild(p_prev_conj);
+      p_conj_arg->vRemoveChild(p_prev_conj);
       DELETE_CARD(p_prev_conj);
 
-      p_child_conj->pSymbol()->vApplyFacet(SF_EXP_COL, "$2"_Stz);
+      p_conj_child->pSymbol()->vApplyFacet(SF_EXP_COL, "$2"_Stz);
       Card_Expr* p_expr_found = pCI->Flux.m_pArriving->pGet_expr(1);
-      p_child_conj->vApplyCast_x(p_expr_found->xCast());
+      p_conj_child->vApplyCast_x(p_expr_found->xCast());
+      p_conj_child->vMark1(MARK_CHANGED);
 
-      p_conj->pSymbol()->Y_vSet(P_SqlRslTest);
+      p_conj_arg->pSymbol()->Y_vSet(P_SqlRslTest);
     }
 
     return;
@@ -463,9 +462,9 @@ void XF_Flatten_24_W_A_C_ro::vConvert_SqyNo_Into_ExpCol(CardIter* pCI, Card_Bool
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJ* p_conj = static_cast<Card_CONJ*>(p_boolPred->pGetChild(0));
+  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
 
-  vResolve(p_conj, vResolve);
+  vResolve(p_conj_root, vResolve);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -675,9 +674,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //                               //           $b.1
   //                               //           $Q1
 
+  pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+  pCI->G.p_boolPred->vDump(__func__);
   vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
+  pCI->G.p_boolPred->vDump(__func__);
   vConvert_SqyNo_Into_ExpCol(pCI, pCI->G.p_boolPred);
+
+  pCI->vPrintBoard(__func__,__FILE__,__LINE__,true);
+  pCI->G.p_boolPred->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
