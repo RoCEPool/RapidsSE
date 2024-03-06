@@ -84,6 +84,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
 
+  m_pCI->G.pBoard->vRenumberCards();
   vPromote_aggreg_To_gbyAgg(m_pCI);
 
   vRestate_emit_fold(m_pCI);
@@ -115,8 +116,10 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_crlKey(CardIter* pCI)
     if (! p_conj->bIsCorrConj())
       return C_CONTINUE_RECURSION;
 
-    p_conj->vMark1(MARK_AT);
-    p_conj->pSymbol()->Y_vSet(P_CrlKeyConj);
+    pCI->Sqy.m_p_conj_crlKey = p_conj;
+
+    pCI->Sqy.m_p_conj_crlKey->vMark1(MARK_AT);
+    pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyConj);
 
     pCI->Sqy.m_p_term_crlKey = static_cast<Card_RlnConj *>(p_conj)->pGet_term_crlKey();
 
@@ -549,13 +552,13 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
     if (bSnap_term_crlKey(pCI))
       break;
   pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
-  pCI->Sqy.m_p_term_crlKey->vDump(__func__);
+  pCI->Sqy.m_p_conj_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_term_crlKey);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vSnap_expr_crlKey(pCI);
-  //pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
-  //pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
+  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_expr_crlKey &&    // eg $15 (L_PARTKEY)
           pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_crlKey->pSymbol()));
 
@@ -566,7 +569,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   RASSERT(pCI->bEachMain(CK_o_AGGREG));
   vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
-  //pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
+  pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // include correlation column SQ:[<project>/<projection>]
@@ -627,6 +630,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   while (pCI->bEachMainWith2Sub(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED))
     if ((p_conj_corr = pCI->G.p_boolPred->pYank_rlnConj(MARK_AT)))
       break;
+  p_conj_corr->vDump(__func__);
+  RASSERT(p_conj_corr == pCI->Sqy.m_p_conj_crlKey);
   RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyConj));
 
   // tidy up empty SQ:<table>/<filter>

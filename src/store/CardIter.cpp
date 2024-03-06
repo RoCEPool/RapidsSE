@@ -50,6 +50,7 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_p_term_sqyCall = nullptr;
   Sqy.m_p_conj_sqyCall = nullptr;
   Sqy.m_p_term_crlKey  = nullptr;
+  Sqy.m_p_conj_crlKey  = nullptr;
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;

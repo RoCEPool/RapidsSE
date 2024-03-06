@@ -51,15 +51,16 @@ namespace STORE
       i8         m_i_SubQuery;
       SubQuery*  m_pSubQuery;
 
-      Card_Term* m_p_term_sqyCall;
       Card_CONJ* m_p_conj_sqyCall;
+      Card_Term* m_p_term_sqyCall;
+      Card_CONJ* m_p_conj_crlKey;
       Card_Term* m_p_term_crlKey;
+      Card_Expr* m_p_expr_crlKey;
 
       Card_Correlation* m_pCorrelation;
 
       i8         m_i_fold;
       Card_Expr* m_pExpr_fold;
-      Card_Expr* m_p_expr_crlKey;
       Card*      m_pCard_sqyCopy;
     } Sqy;
 
