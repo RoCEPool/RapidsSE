@@ -356,13 +356,12 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 			while (aNextEntry_sl) {
 
-				//bNextKeyIsGE = Key::bGreaterEqualAsc(aNextEntry_sl->aKey(), aForKey);
 				//eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
 				Key* aKey_l = aNextEntry_sl->aKey();
 				i8 nKeyBytes_l = aKey_l->nElmSeqSize();
 
-				const i8 * iWord1 = (const i8*)aAdd<Dtm*>(aKey_l,sizeof(nKeyBytes_l));//aKey_l->aElmSeq_dtm();
+				const i8 * iWord1 = (const i8*)aAdd<Dtm*>(aKey_l,sizeof(nKeyBytes_l));
 				const i8 * iWord2 = iWord_r;
 
 				i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
