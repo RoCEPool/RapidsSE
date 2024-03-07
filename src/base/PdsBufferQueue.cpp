@@ -22,7 +22,7 @@ PdsBufferQueue::PdsBufferQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
   m_iSynthKey  = 0;
-  m_pWorkingBuffer = nullptr;
+//  m_pWorkingBuffer = nullptr;
   m_pPdsOfBufferAddrs = new Pds_t<PdsItem_Buffer>(nullptr);
 
   _checkInitialised_(CN_PDSBUFFERQUEUE);
@@ -91,7 +91,7 @@ void PdsBufferQueue::vAddBuffer(DataBuffer* pNewBuffer)
 
   m_iSynthKey++;
 
-  m_pWorkingBuffer = pNewBuffer;
+//  m_pWorkingBuffer = pNewBuffer;
 
   return;
 }
@@ -113,14 +113,14 @@ DataBuffer* PdsBufferQueue::pCompletedBuffer(void)
     return nullptr;
 
   SkipListBlock* pCurrBlock = m_pPdsOfBufferAddrs->pFirstBlock();
-  RASSERT(pCurrBlock != nullptr);
+  ASSERT(pCurrBlock != nullptr);
 
   PdsItem_Buffer oPdsStruct = *(PdsItem_Buffer*) pCurrBlock->aItem();
 
   DataBuffer* pDataBuffer = oPdsStruct.pDataBuffer;
 
-  if(pDataBuffer == m_pWorkingBuffer)
-    m_pWorkingBuffer = nullptr;
+//  if(pDataBuffer == m_pWorkingBuffer)
+//    m_pWorkingBuffer = nullptr;
 
   m_pPdsOfBufferAddrs->bDelete((void*)&oPdsStruct.iKey);
 
@@ -148,8 +148,8 @@ DataBuffer* PdsBufferQueue::pDanglingBuffer(void)
 
   m_pPdsOfBufferAddrs->bDelete((void*)&oPdsStruct.iKey);
 
-  ASSERT(m_pWorkingBuffer == pDataBuffer);
-  m_pWorkingBuffer = nullptr;
+//  ASSERT(m_pWorkingBuffer == pDataBuffer);
+//  m_pWorkingBuffer = nullptr;
 
   ASSERT(m_pPdsOfBufferAddrs->iNumEntries(0) == 0);
 
@@ -164,11 +164,21 @@ DataBuffer* PdsBufferQueue::pDataBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
   if(m_pPdsOfBufferAddrs->iNumEntries(0) == 0) {
-    ASSERT(m_pWorkingBuffer == nullptr);
+//    ASSERT(m_pWorkingBuffer == nullptr);
     return nullptr;
   }
 
-  return m_pWorkingBuffer;
+  PdsItem_Buffer oKey;
+  oKey.iKey = C_INT_MAX;
+  // Find the last block less than MAX key
+  SkipListBlock* pSearchBlock = m_pPdsOfBufferAddrs->pFindLessThan((void *) &oKey);
+  if(pSearchBlock != nullptr) {
+    PdsItem_Buffer oPdsStruct = *(PdsItem_Buffer*) pSearchBlock->aItem();
+    DataBuffer* pDataBuffer = oPdsStruct.pDataBuffer;
+    return pDataBuffer;
+  }
+  RASSERT(0);
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

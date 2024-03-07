@@ -48,6 +48,7 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
   m_nErrors = 0;
   m_i_Rec   = -1;
   m_bFirst  = true;
+  m_pCurrPdsRowBuffer = nullptr;
   m_pBufferAddrQueue = new PdsBufferQueue();
 
   //--
@@ -93,6 +94,7 @@ ToKeyHshRow::~ToKeyHshRow(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   delete m_pBufferAddrQueue;
+  m_pCurrPdsRowBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,9 +126,18 @@ Pds* ToKeyHshRow::pDangling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  // Note: pDanglingBuffer() deletes the entry in the pds, hence we call it here
+  // Note: remove -----------------
+  // return the member and set it to null, no need to iterate pds
+  // currently just sanity checking
   Pds* m_pDanglingPdsRowBuffer = _pPds(m_pBufferAddrQueue->pDanglingBuffer());
+  ASSERT(m_pCurrPdsRowBuffer == m_pDanglingPdsRowBuffer);
   ASSERT(m_pBufferAddrQueue->bIsEmpty());
+  // -------------
+  m_pCurrPdsRowBuffer = nullptr;
+
+//  // Note: pDanglingBuffer() deletes the entry in the pds, hence we call it here
+//  Pds* m_pDanglingPdsRowBuffer = _pPds(m_pBufferAddrQueue->pDanglingBuffer());
+//  ASSERT(m_pBufferAddrQueue->bIsEmpty());
 
   return m_pDanglingPdsRowBuffer;
 }
@@ -150,10 +161,10 @@ Pds* ToKeyHshRow::pPdsRowBuffer(void)
 
   //Remove-------
 //  Pds* pPdsRowBuffer = _pPds(m_pBufferAddrQueue->pDataBuffer());
-//  RASSERT(m_pCurrPdsRowBuffer == pPdsRowBuffer);
+//  ASSERT(m_pCurrPdsRowBuffer == pPdsRowBuffer);
   //-------
 
-  return _pPds(m_pBufferAddrQueue->pDataBuffer());
+  return m_pCurrPdsRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,6 +212,8 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
   Pds* pNewPdsRowBuffer = new Pds(m_pStreamDef,true);
 
   m_pBufferAddrQueue->vAddBuffer(pNewPdsRowBuffer);
+
+  m_pCurrPdsRowBuffer = pNewPdsRowBuffer;
 
   return;
 }

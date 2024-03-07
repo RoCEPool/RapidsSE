@@ -18,6 +18,7 @@ namespace STORE
     bool       m_bFirst;
     i8         m_i_Rec;
 
+    Pds*              m_pCurrPdsRowBuffer;
     PdsBufferQueue* m_pBufferAddrQueue;
   
     //--

@@ -9,7 +9,7 @@ namespace BASE
   {
   private:
     i8                        m_iSynthKey;     // Synthetic key for the Pds
-    DataBuffer*               m_pWorkingBuffer; // Temporary current working buffer
+//    DataBuffer*               m_pWorkingBuffer; // Temporary current working buffer
     Pds_t<PdsItem_Buffer>*  m_pPdsOfBufferAddrs;
 
     // must be last
