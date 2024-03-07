@@ -1444,6 +1444,24 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* format and apply facet                                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyFacet_varg(eSF eFacet, Stz* szFormat, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  s256 sFacet;
+
+  va_list vaArgs;
+
+  va_start(vaArgs,szFormat);
+  sFacet.vSprintVA(szFormat,vaArgs);
+  va_end(vaArgs);
+
+  vApplyFacet(eFacet, sFacet);
+}
+
+/*----------------------------------------------------------------------------*/
 /* apply facets from given symbol                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vApplyFacets(Symbol* pSymbol_arg)
