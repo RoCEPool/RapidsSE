@@ -299,7 +299,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE col2         WHEN ''AUSTRALIA'' THEN col1         WHEN ''INDIA''     THEN col9         ELSE NULL       END FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN (CAST(rapidsse.public.${testName2}_extractTest.col1 AS DECIMAL)) WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''INDIA'') THEN rapidsse.public.${testName2}_extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN (CAST($1 AS DECIMAL)) WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: DECIMAL(17,0)
+      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN (CAST(rapidsse.public.${testName2}_extractTest.col1 AS DECIMAL(17,0))) WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''INDIA'') THEN rapidsse.public.${testName2}_extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN (CAST($1 AS DECIMAL(17,0))) WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: DECIMAL(17,0)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.${testName2}_extractTest)')

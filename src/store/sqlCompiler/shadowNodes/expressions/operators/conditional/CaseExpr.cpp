@@ -417,9 +417,20 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
   while (pWhenOrElseIter->bHasNext()) {
     QueryNode* pWhenOrElseExpr = _pQueryNode(pWhenOrElseIter->pNext());
 
-    if (Expr::xTypeId(pWhenOrElseExpr, pRootNode) == xCoercibleTarget &&
-        Expr::iPrecision(pWhenOrElseExpr, pRootNode) == iPrecision &&
-        Expr::iScale(pWhenOrElseExpr, pRootNode) == iScale) {
+    TypeId xId = Expr::xTypeId(pWhenOrElseExpr, pRootNode);
+    i8 iWhenElsePrec = Expr::iPrecision(pWhenOrElseExpr, pRootNode);
+    i8 iWhenElseScale = Expr::iScale(pWhenOrElseExpr, pRootNode);
+
+    b1 bSkipCoercion =
+        ( xId == TypeId::xIdOf(CT_UNKNOWN) )
+     || ( xId != TypeId::xIdOf(CT_DECIMAL) && xId == xCoercibleTarget )
+     || (    xId == TypeId::xIdOf(CT_DECIMAL)
+          && xId == xCoercibleTarget
+          && iWhenElsePrec == iPrecision
+          && iWhenElseScale == iScale
+        );
+
+    if (bSkipCoercion) {
       continue;
     }
 
