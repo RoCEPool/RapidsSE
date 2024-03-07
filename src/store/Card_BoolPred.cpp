@@ -484,9 +484,12 @@ Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(void)
   auto bLambdaFn = [&p_rlnConj](Card_CONJ* p_conj, bool bUpwards)
   {
     UNUSED(bUpwards);
+    if (! p_conj->bIsCard(CK_RLNCONJ))
+      return C_CONTINUE_RECURSION;
 
-    if (p_conj->bContains_sqyNo()) {
+    if (p_conj->bHasChildFacet(SF_SQY_NO)) {
       p_rlnConj = _pCard_RlnConj(p_conj);
+      p_rlnConj->vDump(__func__);
       return C_TERMINATE_RECURSION;
     }
 

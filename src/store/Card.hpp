@@ -341,8 +341,9 @@ namespace STORE
     void  vFixedDepth(i8 iFixedDepth);
     i8    nFunctionCount(void);
 
+    bool bHasChildFacet(eSF eFacet);
     bool bHasSub(Card* pSubCard);
-    bool bHasSubFacet(eSF eFacet);
+    bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
 
     void vIncFunctionCount(void);
     bool bIsCard(eCK eCard);
