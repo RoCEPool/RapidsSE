@@ -15,7 +15,6 @@ namespace STORE
 
     static bool bIsConj(Card* p_card);
 
-    bool bContains_sqyNo(void);
     bool bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn);
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     Stz* szGetTerm_sqyNo(CardIter* pCI);
