@@ -269,6 +269,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap)
 /*----------------------------------------------------------------------------*/
 Pds::~Pds(void) noexcept(false)
 {
+	_precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
 
 
