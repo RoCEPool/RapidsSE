@@ -10,10 +10,6 @@ success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/optimiser_trace
-/transliterated
-/weaved
-/pipeline_Def
 /pipelineName = "r_FOLD_40_W_L_C_E"
 select count(*)
   from orders

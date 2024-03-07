@@ -65,22 +65,22 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
+Card_Expr* Card_Expr::pCraft_expr_gby_From_expr_crlKey(Card_Expr* pExpr_crlKey)
 {
   _static_
 
-  RASSERT(CT_NONE != pExpr_corr->eCTVal());
+  RASSERT(CT_NONE != pExpr_crlKey->eCTVal());
 
   Card_Expr*    p_expr_gby = new Card_Expr;
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
+  Card_RpnCalc* p_rpnCalc  = new Card_RpnCalc;
+  Card_Term*    p_term     = pExpr_crlKey->pSub_term()->pClone();
 
   p_expr_gby->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->vApplyCast_x(pExpr_corr->xCast());
-  p_term->vApplyCast_x(pExpr_corr->xCast());
-  p_expr_gby->vApplyCast_x(pExpr_corr->xCast());
+  p_rpnCalc->vApplyCast_x(pExpr_crlKey->xCast());
+  p_term->vApplyCast_x(pExpr_crlKey->xCast());
+  p_expr_gby->vApplyCast_x(pExpr_crlKey->xCast());
 
   return p_expr_gby;
 }

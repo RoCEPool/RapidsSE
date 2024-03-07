@@ -172,6 +172,7 @@ extern Stz* P_ChosenIndex;
 extern Stz* P_Count;
 extern Stz* P_CrlKeyConj;
 extern Stz* P_CrlKeyDefn;
+extern Stz* P_CrlKeyTerm;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_DebugOption;
 extern Stz* P_Early;
@@ -234,6 +235,7 @@ extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
 
 extern Stz* C_CRLKEY;
+extern Stz* C_SQYRSL;
 
 namespace STORE
 {

@@ -36,6 +36,7 @@ Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
 Stz* P_Count        = "nCount"_Stz;
 Stz* P_CrlKeyConj   = "bCrlKeyConj"_Stz;
 Stz* P_CrlKeyDefn   = "bCrlKeyDefn"_Stz;
+Stz* P_CrlKeyTerm   = "bCrlKeyTerm"_Stz;
 Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
 Stz* P_DebugOption  = "szDebugOption"_Stz;
 Stz* P_Early        = "bEarly"_Stz;
@@ -98,6 +99,7 @@ Stz* MARK_UNVALID    = "X"_Stz;
 Stz* MARK_VALID      = "Y"_Stz;
 
 Stz* C_CRLKEY      = "_CRLKEY_"_Stz;
+Stz* C_SQYRSL      = "_SQYRSL_"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

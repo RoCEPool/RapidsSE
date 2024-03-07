@@ -10,6 +10,10 @@ success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
 /pipelineName = "r_FOLD_24_W_A_C_ro"
 select count(*)
   from Lineitem, Part, PartSupp
