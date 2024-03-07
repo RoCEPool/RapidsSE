@@ -8,15 +8,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,PdsBufferQueue,CN_PDSBUFFERQUEUE)
-__aNewFunction(PdsBufferQueue,CN_PDSBUFFERQUEUE)
-__vDeleteFunction(PdsBufferQueue,CN_PDSBUFFERQUEUE)
-__aFooterFunction(PdsBufferQueue)
+__pCastFunction(BASE,PdsBufferIdQueue,CN_PDSBUFFERQUEUE)
+__aNewFunction(PdsBufferIdQueue,CN_PDSBUFFERQUEUE)
+__vDeleteFunction(PdsBufferIdQueue,CN_PDSBUFFERQUEUE)
+__aFooterFunction(PdsBufferIdQueue)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PdsBufferQueue::PdsBufferQueue(void)
+PdsBufferIdQueue::PdsBufferIdQueue(void)
     : Object(CN_PDSBUFFERQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
@@ -33,7 +33,7 @@ PdsBufferQueue::PdsBufferQueue(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PdsBufferQueue::~PdsBufferQueue(void) noexcept(false)
+PdsBufferIdQueue::~PdsBufferIdQueue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
@@ -46,11 +46,11 @@ PdsBufferQueue::~PdsBufferQueue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the file                                                            */
 /*----------------------------------------------------------------------------*/
-void PdsBufferQueue::vRepair(Object* pObject)
+void PdsBufferIdQueue::vRepair(Object* pObject)
 {
   _static_
 
-  PdsBufferQueue* pPdsBufferQueue = _pPdsBufferQueue(pObject);
+  PdsBufferIdQueue* pPdsBufferQueue = _pPdsBufferIdQueue(pObject);
   Pds* pPds = pPdsBufferQueue->m_pPdsOfBufferAddrs;
 
   SkipListBlock* pCurrBlock = pPds->pFirstBlock();
@@ -77,7 +77,7 @@ void PdsBufferQueue::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* push buffer to head of queue                                               */
 /*----------------------------------------------------------------------------*/
-void PdsBufferQueue::vAddBuffer(DataBuffer* pNewBuffer)
+void PdsBufferIdQueue::vAddBuffer(DataBuffer* pNewBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
@@ -99,7 +99,7 @@ void PdsBufferQueue::vAddBuffer(DataBuffer* pNewBuffer)
 /*----------------------------------------------------------------------------*/
 /* return a completed buffer (if any)                                         */
 /*----------------------------------------------------------------------------*/
-DataBuffer* PdsBufferQueue::pCompletedBuffer(void)
+DataBuffer* PdsBufferIdQueue::pCompletedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
@@ -130,7 +130,7 @@ DataBuffer* PdsBufferQueue::pCompletedBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return last remaining dangling buffer (if any)                             */
 /*----------------------------------------------------------------------------*/
-DataBuffer* PdsBufferQueue::pDanglingBuffer(void)
+DataBuffer* PdsBufferIdQueue::pDanglingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
@@ -159,7 +159,7 @@ DataBuffer* PdsBufferQueue::pDanglingBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return tail of chain (most recently added buffer)                          */
 /*----------------------------------------------------------------------------*/
-DataBuffer* PdsBufferQueue::pDataBuffer(void)
+DataBuffer* PdsBufferIdQueue::pDataBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
@@ -184,7 +184,7 @@ DataBuffer* PdsBufferQueue::pDataBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* Print Pds chain                                                            */
 /*----------------------------------------------------------------------------*/
-void PdsBufferQueue::vDump(void)
+void PdsBufferIdQueue::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 
@@ -223,7 +223,7 @@ void PdsBufferQueue::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* is this tub empty?                                                         */
 /*----------------------------------------------------------------------------*/
-bool PdsBufferQueue::bIsEmpty(void)
+bool PdsBufferIdQueue::bIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERQUEUE,_FOOTER_);
 

@@ -19,7 +19,7 @@ namespace STORE
     i8         m_i_Rec;
 
     Pds*              m_pCurrPdsRowBuffer;
-    PdsBufferQueue* m_pBufferAddrQueue;
+    PdsBufferIdQueue* m_pBufferIdQueue;
   
     //--
   
@@ -61,8 +61,8 @@ namespace STORE
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
     bool bConvertCsv(CsvBuffer* pCsvBuffer);
 
-    Pds* pDangling(void);
-    Pds* pCompleted(void);
+    Pds* pDanglingPdsRowBuffer(void);
+    Pds* pFullPdsRowBuffer(void);
     Pds* pPdsRowBuffer(void);
 
     i8 iRowsProcessed(void);

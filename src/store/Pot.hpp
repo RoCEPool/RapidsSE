@@ -8,7 +8,7 @@ namespace STORE
   typedef struct {
     i8 iLglPtn;
     i8 iSynthKey;
-    DataBuffer* pDataBuffer;
+    BufferId oBufferId;
   } PotPdsItem;
 
   class Pot : public Object
@@ -18,7 +18,7 @@ namespace STORE
     RowPix* m_pRowPix;    // condensed stream def
 
     i8                      m_iSynthKey;     // Synthetic key used to append buffers to the Pds structure
-    Pds_t<PotPdsItem>*      m_pPdsOfBufferAddrs; // Pds of buffers
+    Pds_t<PotPdsItem>*      m_pPdsOfBuffers; // Pds of buffers
 
     // must be last
     Footer m_xFooter;
@@ -51,6 +51,8 @@ namespace STORE
 
     Footer* aFooter(void);
   };
+
+  static i8 iPotPdsItemKeyCompare(void* aItem_l, void* aItem_r);
 
   Pot* _pPot(void* aAddr);
 }

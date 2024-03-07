@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class PdsBufferQueue : public Object
+  class PdsBufferIdQueue : public Object
   {
   private:
     i8                        m_iSynthKey;     // Synthetic key for the Pds
@@ -19,8 +19,8 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    PdsBufferQueue(void);
-    ~PdsBufferQueue(void) noexcept(false);
+    PdsBufferIdQueue(void);
+    ~PdsBufferIdQueue(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
@@ -34,7 +34,7 @@ namespace BASE
     Footer* aFooter(void);
   };
 
-  PdsBufferQueue* _pPdsBufferQueue(void* aAddr);
+  PdsBufferIdQueue* _pPdsBufferIdQueue(void* aAddr);
 }
 
 /*============================================================================*/

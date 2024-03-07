@@ -62,7 +62,7 @@ Tub::Tub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  m_pBufferAddrQueue = new PdsBufferQueue();
+  m_pBufferIdQueue = new PdsBufferIdQueue();
 
   m_pRowPix      = nullptr;
   
@@ -80,7 +80,7 @@ Tub::~Tub(void) noexcept(false)
 
   delete m_pRowPix;
 
-  delete m_pBufferAddrQueue;
+  delete m_pBufferIdQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +219,7 @@ void Tub::vAddBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  m_pBufferAddrQueue->vAddBuffer(pDataBuffer);
+  m_pBufferIdQueue->vAddBuffer(pDataBuffer);
 
   return;
 }
@@ -231,7 +231,7 @@ DataBuffer* Tub::pCompletedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  return m_pBufferAddrQueue->pCompletedBuffer();
+  return m_pBufferIdQueue->pCompletedBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,7 +241,7 @@ DataBuffer* Tub::pDanglingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  return m_pBufferAddrQueue->pDanglingBuffer();
+  return m_pBufferIdQueue->pDanglingBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,7 +251,7 @@ bool Tub::bIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
   
-  return m_pBufferAddrQueue->bIsEmpty();
+  return m_pBufferIdQueue->bIsEmpty();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,7 +281,7 @@ DataBuffer* Tub::pWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  return m_pBufferAddrQueue->pDataBuffer();
+  return m_pBufferIdQueue->pDataBuffer();
 }
 
 /*============================================================================*/
