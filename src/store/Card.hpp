@@ -328,15 +328,15 @@ namespace STORE
     bool  bEither(i8 /*eCK*/ iKind_first, ...);
 
     Stz*  szFacet(eSF eFacet_xchk);
-    Card* pFindCardRecursive(eCK eOfCard);
+    Card* pFindCardRecursive(eCK eCard);
     Card* pFindParentRecursive(Card* pChild);
-    Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
-    Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
-    Card* pFindMark1Recursive(Stz* szMark1, eCK eOfCard=CK_NONE);
-    Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
-    Card* pFindMark2Recursive(Stz* szMark2, eCK eOfCard=CK_NONE);
+    Card* pFindPpyRecursive(Stz* szPpy, eCK eCard=CK_NONE);
+    Card* pFindMark1Recursive(char cMark1, eCK eCard=CK_NONE);
+    Card* pFindMark1Recursive(Stz* szMark1, eCK eCard=CK_NONE);
+    Card* pFindMark2Recursive(char cMark2, eCK eCard=CK_NONE);
+    Card* pFindMark2Recursive(Stz* szMark2, eCK eCard=CK_NONE);
     Card* pFindCard_WithSubFacet(eCK eCard, eSF eFacet);
-    Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);

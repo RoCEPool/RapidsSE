@@ -740,15 +740,15 @@ Card* Card::pFindParentRecursive(Card* pChild)
 /*----------------------------------------------------------------------------*/
 /* attempt find card                                                          */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindCardRecursive(eCK eOfCard)
+Card* Card::pFindCardRecursive(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsCard(eOfCard))
+  if (bIsCard(eCard))
     return this;
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindCardRecursive(eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindCardRecursive(eCard))
       return pFoundCard;
   }
 
@@ -758,17 +758,17 @@ Card* Card::pFindCardRecursive(eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find mark1 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindMark1Recursive(char cMark1, eCK eOfCard)
+Card* Card::pFindMark1Recursive(char cMark1, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (cMark1 == this->cMark1())
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(cMark1,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(cMark1, eCard))
       return pFoundCard;
   }
 
@@ -778,17 +778,17 @@ Card* Card::pFindMark1Recursive(char cMark1, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find mark1 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eOfCard)
+Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (this->bMark1(szMark1))
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(szMark1,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(szMark1, eCard))
       return pFoundCard;
   }
 
@@ -798,17 +798,17 @@ Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find mark2 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindMark2Recursive(char cMark2, eCK eOfCard)
+Card* Card::pFindMark2Recursive(char cMark2, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (cMark2 == this->cMark2())
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(cMark2,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(cMark2, eCard))
       return pFoundCard;
   }
 
@@ -818,17 +818,17 @@ Card* Card::pFindMark2Recursive(char cMark2, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find mark2 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eOfCard)
+Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (this->bMark2(szMark2))
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(szMark2,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(szMark2, eCard))
       return pFoundCard;
   }
 
@@ -856,17 +856,17 @@ Card* Card::pFindCard_WithSubFacet(eCK eCard, eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /* find property recursively within this card                                 */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
+Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (pSymbol()->Y_bHas(szPpy))
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindPpyRecursive(szPpy,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindPpyRecursive(szPpy, eCard))
       return pFoundCard;
   }
 
@@ -876,17 +876,17 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* attempt find of symbolic value                                             */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _pWalkParent_)
+Card* Card::pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Card* _pWalkParent_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eOfCard == m_eCard && bSymbolMatches(pSymbol)) {
+  if (eCard == m_eCard && bSymbolMatches(pSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindSymbolRecursive(eOfCard, pSymbol, rpParent, this))
+    if (Card *pFoundCard = xKid.pChild()->pFindSymbolRecursive(eCard, pSymbol, rpParent, this))
       return pFoundCard;
   }
 
