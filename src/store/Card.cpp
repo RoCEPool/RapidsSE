@@ -98,7 +98,7 @@ Stz* MARK_UP         = "^"_Stz;
 Stz* MARK_UNVALID    = "X"_Stz;
 Stz* MARK_VALID      = "Y"_Stz;
 
-Stz* C_CRLKEY      = "_CRLKEY_"_Stz;
+Stz* C_CRLKEY      = "_CRLKEY%lld_"_Stz;
 Stz* C_SQYRSL      = "_SQYRSL_"_Stz;
 
 /*----------------------------------------------------------------------------*/

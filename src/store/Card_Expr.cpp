@@ -88,7 +88,7 @@ Card_Expr* Card_Expr::pCraft_expr_gby_From_expr_crlKey(Card_Expr* pExpr_crlKey)
 /*----------------------------------------------------------------------------*/
 /* form project expression from gby key expression                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
+Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szNdmCol_expr)
 {
   _static_
 
@@ -97,7 +97,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
-  p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,szAs);
+  p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, szNdmCol_expr, 1);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
