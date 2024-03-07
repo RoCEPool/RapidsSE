@@ -28,7 +28,7 @@ namespace STORE
     bool bSnap_term_crlKey(CardIter* pCI);
     void vSnap_expr_crlKey(CardIter* pCI);
     void vPromote_sq_aggreg_To_gbyAgg_crlKey(CardIter* pCI);
-    void vEnhance_sq_project_Adding_crlKey(CardIter* pCI, Stz* szNmdCol_crlKey);
+    void vEnhance_sq_project_Adding_crlKey(CardIter* pCI);
     void vConvert_SqyNo_Into_ExpCol(CardIter* p_conj_arg, Card_BoolPred* p_boolPred);
     void vConvert_SqyPrm_Into_ExpCol(CardIter* p_conj_arg, Card_BoolPred* p_boolPred);
     void vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred* p_boolPred);

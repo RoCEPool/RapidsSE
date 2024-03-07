@@ -214,7 +214,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_sq_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     // projection
 
     if (AL_PARTITION == e_Level) {
-      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr, C_CRLKEY);
+      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr);
     }
     else {
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
@@ -258,8 +258,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_sq_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vEnhance_sq_project_Adding_crlKey(CardIter* pCI,
-                                                               Stz* szNmdCol_crlKey)
+void XF_Flatten_24_W_A_C_ro::vEnhance_sq_project_Adding_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -275,7 +274,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_sq_project_Adding_crlKey(CardIter* pCI,
 
   // push <project>/_SQCRLKEY_
   pCI->vPushNewChild(pCI->G.p_emit, CK_EXPR);
-  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, szNmdCol_crlKey,1);
+  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, 1);
   pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
   pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
@@ -566,7 +565,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   if (pCI->bIsNextMain(CK_o_PROJECT)) {
     RASSERT(pCI->bEachMain(CK_o_PROJECT));
-    vEnhance_sq_project_Adding_crlKey(pCI, C_CRLKEY);
+    vEnhance_sq_project_Adding_crlKey(pCI);
     pCI->vPrintBoard(__func__ ,__FILE__,__LINE__,true);
   }
 
