@@ -335,6 +335,7 @@ namespace STORE
     Card* pFindMark1Recursive(Stz* szMark1, eCK eOfCard=CK_NONE);
     Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
     Card* pFindMark2Recursive(Stz* szMark2, eCK eOfCard=CK_NONE);
+    Card* pFindSub_facet(eSF eFacet, i8 iDepth=0);
     Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
