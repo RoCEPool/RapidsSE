@@ -82,18 +82,19 @@ EntBuffer* EntBuffer::pFindLeafBuffer_gen(Key* aForKey)
   return pEntBuffer;
 }
 
-/*
+
 
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */
 /*----------------------------------------------------------------------------*/
+/*
 EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
   //RASSERT(KE_GENERAL == m_eEntKind);
 
-  /*
+  ?*
 
      return the leaf buffer which has the key closest before given key
 
@@ -104,7 +105,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
      [0,1,2][3,4,5][6,7,9][9,10,11][12,13,14]
                       ^
 
-   */
+   *?
 
 
   EntBuffer* pEntBuffer = this;
@@ -126,7 +127,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
         m_nTabs++;
 #endif
 
-		//*ppEntPrior = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+		// *ppEntPrior = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -255,7 +256,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 		ASSERT(*ppEntPrior);
     //Ent* aEntPrev = aEnt;
-		//*ppEntPrior = aEntPrev;
+		// *ppEntPrior = aEntPrev;
 
 //    aEnt = pEntBuffer->pFindEntryPrevTo_ascGen(aEnt,aForKey);
 //    if (! aEnt) {
@@ -285,8 +286,6 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-
-	//RASSERT(KE_GENERAL == m_eEntKind);
 
 	/*
 
