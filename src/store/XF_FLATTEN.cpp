@@ -423,7 +423,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);
 
   pCI->G.p_boolPred = pCI->G.p_where->pSub_boolPred();
-  pCI->G.p_rlnConj = pCI->G.p_boolPred->pFind_rlnConj_With_sqyCall();
+  pCI->G.p_rlnConj  = _pCard_RlnConj(pCI->G.p_boolPred->pFindCard_WithSubFacet(CK_RLNCONJ,SF_SQY_NO));
 
   if (pCI->G.p_rlnConj->pSymbol()->bHasFacet("in"_Stz) ||
       pCI->G.p_rlnConj->pSymbol()->bHasFacet("exists"_Stz))

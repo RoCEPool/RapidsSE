@@ -475,40 +475,6 @@ Card_RlnConj * Card_BoolPred::pFind_rlnConj(Stz* szWithPpy)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RlnConj* p_rlnConj = nullptr;
-
-  auto bLambdaFn = [&p_rlnConj](Card_CONJ* p_conj, bool bUpwards)
-  {
-    UNUSED(bUpwards);
-    if (! p_conj->bIsCard(CK_RLNCONJ))
-      return C_CONTINUE_RECURSION;
-
-    if (p_conj->bHasChildFacet(SF_SQY_NO)) {
-      p_rlnConj = _pCard_RlnConj(p_conj);
-      p_rlnConj->vDump(__func__);
-      return C_TERMINATE_RECURSION;
-    }
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_CONJ* p_conj_ROOT = this->pRoot_conj();
-
-  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bLambdaFn);
-  UNUSED(bIgnore);
-
-  return p_rlnConj;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bHas_term(Symbol* pWithSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

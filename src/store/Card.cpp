@@ -838,15 +838,15 @@ Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find sub card with given facet                                             */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindSub_facet(eSF eFacet, i8 iDepth)
+Card* Card::pFindCard_WithSubFacet(eCK eCard, eSF eFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (iDepth && pSymbol()->bHasFacet(eFacet))
+  if (eCard == this->eCard() && bHasSubFacet(eFacet))
     return this;
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindSub_facet(eFacet,++iDepth))
+    if (Card *pFoundCard = xKid.pChild()->pFindCard_WithSubFacet(eCard,eFacet))
       return pFoundCard;
   }
 
