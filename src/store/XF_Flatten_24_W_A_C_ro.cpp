@@ -291,7 +291,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_sq_project_Adding_crlKey(CardIter* pCI)
   // supplemental
 
   pCI->G.p_expr = pCI->G.p_emit->pGet_expr(1);
-  pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,C_SQYRSL);
+  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL,C_SQYRSL, 1);
 
 
 
