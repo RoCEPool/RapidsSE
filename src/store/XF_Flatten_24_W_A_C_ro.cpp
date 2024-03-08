@@ -538,15 +538,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   while (pCI->bEachMain(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
     if (bSnap_term_crlKey(pCI))
       break;
-  pCI->PRINTBOARD_dbg();
-  pCI->Sqy.m_p_conj_crlKey->vDump(__func__);
-  pCI->Sqy.m_p_term_crlKey->vDump(__func__);
+//  pCI->PRINTBOARD_dbg();
+//  pCI->Sqy.m_p_conj_crlKey->vDump(__func__);
+//  pCI->Sqy.m_p_term_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_term_crlKey);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vSnap_expr_crlKey(pCI);
-  pCI->PRINTBOARD_dbg();
-  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
+//  pCI->PRINTBOARD_dbg();
+//  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_expr_crlKey &&    // eg $15 (L_PARTKEY)
           pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_crlKey->pSymbol()));
 
@@ -557,7 +557,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   RASSERT(pCI->bEachMain(CK_o_AGGREG));
   vPromote_sq_aggreg_To_gbyAgg_crlKey(pCI);
-  pCI->PRINTBOARD_dbg();
+//  pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // include correlation column SQ:[<project>/<projection>]
@@ -565,7 +565,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   if (pCI->bIsNextMain(CK_o_PROJECT)) {
     RASSERT(pCI->bEachMain(CK_o_PROJECT));
     vEnhance_sq_project_Adding_crlKey(pCI);
-    pCI->PRINTBOARD_dbg();
+//    pCI->PRINTBOARD_dbg();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -661,15 +661,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //                               //           $b.1
   //                               //           $Q1
 
-  pCI->PRINTBOARD_dbg();
-  pCI->G.p_boolPred->vDump(__func__);
+//  pCI->PRINTBOARD_dbg();
+//  pCI->G.p_boolPred->vDump(__func__);
   vConvert_SqyPrm_Into_ExpCol(pCI, pCI->G.p_boolPred);
 
-  pCI->G.p_boolPred->vDump(__func__);
+//  pCI->G.p_boolPred->vDump(__func__);
   vConvert_sqyNo_Into_expCol(pCI, pCI->G.p_boolPred);
 
-  pCI->PRINTBOARD_dbg();
-  pCI->G.p_boolPred->vDump(__func__);
+//  pCI->PRINTBOARD_dbg();
+//  pCI->G.p_boolPred->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds

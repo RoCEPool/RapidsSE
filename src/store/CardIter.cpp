@@ -1833,6 +1833,9 @@ void CardIter::vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, b
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
+  if (bForce)
+    vDebugPoint();
+
   if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE) && ! bForce)
     return;
 

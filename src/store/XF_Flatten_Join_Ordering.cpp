@@ -356,7 +356,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
-  m_pCI->PRINTBOARD_dbg();
+  //m_pCI->PRINTBOARD_dbg();
 
   //m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 

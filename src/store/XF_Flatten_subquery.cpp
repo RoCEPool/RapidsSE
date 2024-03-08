@@ -225,7 +225,7 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
 
       vFlattenByDecisionTree();
 
-      pCI->PRINTBOARD_dbg();
+      //pCI->PRINTBOARD_dbg();
 
      // XF_Flatten_Left_subQuery::vRemove_LeftMost(pCI);
 

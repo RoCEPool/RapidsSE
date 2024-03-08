@@ -91,7 +91,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
 
   XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
-  m_pCI->PRINTBOARD_dbg();
+  //m_pCI->PRINTBOARD_dbg();
 
   vSmooth(m_pCI,pCarryForward);
 
