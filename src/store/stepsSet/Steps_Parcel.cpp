@@ -338,22 +338,22 @@ void Step::vParcelPipeOut(void)
 
         //Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
         //MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
-        vTrace("Debug6\n"_Stz);
+        //vTrace("Debug6\n"_Stz);
         Operand *pDuplicateOperand = pOperand->pDuplicateOperand();
         if(!pDuplicateOperand) {
           vTrace("Failed to duplicate operand\n"_Stz);
           continue;
         }
-        vTrace("Debug7\n"_Stz);
+        //vTrace("Debug7\n"_Stz);
 
         if (gxaSizeHeap[eClass].m_fpPostRecvFn)
           gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
-				vTrace("Debug8\n"_Stz);
+				//vTrace("Debug8\n"_Stz);
 
 //        vTrace("i_Stream %lld pDstOp %p pDuplicateOperand %p pCurTask %p\n"_Stz
 //               ,i_Stream,pDstOp,pDuplicateOperand,pCurTask);
         AM::OP::vPipeToOp(pDstOp, pDuplicateOperand, pCurTask);
-				vTrace("Debug9\n"_Stz);
+				//vTrace("Debug9\n"_Stz);
         nQueued++;
       }
 
@@ -370,11 +370,11 @@ void Step::vParcelPipeOut(void)
       //if (CN_ROWBUFFER != eOperandClass)
       AM::vDeleteOperand(pOperand, pOuterJobOfTask());
 
-			vTrace("Debug10\n"_Stz);
+			//vTrace("Debug10\n"_Stz);
 
       delete pParcel;
 
-      vTrace("Debug11\n"_Stz);
+      //vTrace("Debug11\n"_Stz);
 
       if (nQueued != AM::PTNMAP::nPtnsPerNode()) {
 
