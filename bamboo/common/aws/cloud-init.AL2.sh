@@ -3,11 +3,55 @@
 
 # This is a generic cloud-init script that can be used when starting a new EC2 instance.
 
+# ----------------------------------------------------------------------
+# Functions
+# ----------------------------------------------------------------------
+
+# A function that retries a command until it returns a successful exit code.
+# Each subsequent attempt is separated by a 1 second delay.
+# Params:
+#  $1 : maximum number of retries
+#  $@ : The command to execute, as an array
+#
+function retryCommand() {
+  local maxRetries="$1"
+  shift
+  local cmd=("$@")
+  local retries=1
+
+  # check that maxRetries has been provided
+  re='^[0-9]+$'
+  if ! [[ "${maxRetries}" =~ $re ]] ; then
+     echo "ERROR: First parameter to function retryCommand() is not a number" >&2; exit 1
+  fi
+
+  while [ "${retries}" -le "${maxRetries}" ]; do
+    if [ "${retries}" -gt 1 ]; then
+      echo "...retry attempt #${retries}"
+    fi
+
+    ((retries++))
+
+    if "${cmd[@]}"; then
+      true
+      return
+    fi
+
+    sleep 1
+  done
+
+  false
+  return
+}
+# ----------------------------------------------------------------------
+
 # We wrap everything in a subshell to redirect all output through the tee command
 # and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
 TEXLIVE_OUTPUT="/cloud-init-texlive.log"
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
+MAX_NETWORK_RETRIES=10
+MAX_YUM_RETRIES=3
 
 {
   if which tee &>/dev/null; then
@@ -374,16 +418,21 @@ EOF
   echo
   if ! which aws; then
     # AWS CLI needs curl and unzip
-    while ! yum install -y curl wget unzip; do
-      sleep 1
-    done
+    declare -a cmd
+    cmd=("yum" "install" "-y" "curl" "wget" "unzip")
+    if ! retryCommand "${MAX_YUM_RETRIES}" "${cmd[@]}"; then
+      echo "ERROR: Could not download and install curl, wget and unzip - the yum repository may be "\
+            "unavailable or a network error could be preventing access."
+    fi
 
-    while ! curl -L "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
-      sleep 1
-    done
-
-    unzip awscliv2.zip
-    ./aws/install
+    cmd=("curl" "-L" "--fail" "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" "-o" "awscliv2.zip")
+    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
+      unzip awscliv2.zip
+      ./aws/install
+    else
+      echo "ERROR: Could not download AWS CLIv2 - the version might be old and may need to be updated "\
+            "or a network error could be preventing access."
+    fi
   fi
 
   # ----------------------------------------------------------------------------------------
@@ -435,12 +484,17 @@ EOF
   echo "*** Shellcheck ***"
   (
     cd /usr/local/bin
-    while ! curl -L "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" -o "shellcheck-stable.linux.x86_64.tar.xz"; do
-      sleep 1
-    done
-    tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
-    chown root:root shellcheck
-    rm -f shellcheck-stable.linux.x86_64.tar.xz
+    declare -a cmd
+    cmd=("curl" "-L" "--fail" "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" "-o" "shellcheck-stable.linux.x86_64.tar.xz")
+
+    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
+      tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
+      chown root:root shellcheck
+      rm -f shellcheck-stable.linux.x86_64.tar.xz
+    else
+      echo "ERROR: Could not download ShellCheck - the version might be old and may need to be updated "\
+            "or a network error could be preventing access."
+    fi
   )
 
   # ----------------------------------------------------------------------------------------
@@ -448,22 +502,26 @@ EOF
   echo
   echo "*** Installing jmeter ***"
   echo
-  pushd "$(pwd)"
-  cd /opt
-  JMETER_VER="5.6"
-  JMETER_NAME="apache-jmeter-${JMETER_VER}"
-  JMETER_FILE="${JMETER_NAME}.tgz"
-  if ! curl --fail "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" -o "${JMETER_FILE}"; then
-    echo "ERROR: Could not download JMeter - the version might be old and may need to be updated."
-  else
-    tar xvzf "${JMETER_FILE}"
-    rm -f "$JMETER_FILE"
-    ln -s "${JMETER_NAME}" jmeter
-    chown -R ec2-user:ec2-user "${JMETER_NAME}"
-    chown ec2-user:ec2-user jmeter
-  fi
+  (
+    cd /opt
+    JMETER_VER="5.6"
+    JMETER_NAME="apache-jmeter-${JMETER_VER}"
+    JMETER_FILE="${JMETER_NAME}.tgz"
 
-  popd
+    declare -a cmd
+    cmd=("curl" "-L" "--fail" "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" "-o" "${JMETER_FILE}")
+
+    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
+      tar xvzf "${JMETER_FILE}"
+      rm -f "$JMETER_FILE"
+      ln -s "${JMETER_NAME}" jmeter
+      chown -R ec2-user:ec2-user "${JMETER_NAME}"
+      chown ec2-user:ec2-user jmeter
+    else
+      echo "ERROR: Could not download JMeter - the version might be old and may need to be updated "\
+            "or a network error could be preventing access."
+    fi
+  )
 
   # Add this JMeter installation to the PATH for the ec2-user
   bash_profile="${OS_HOME_DIR}/.bash_profile"
