@@ -302,7 +302,7 @@ def __create_cluster_regr_record(cur: typing.Union[psycopg.Cursor[typing.Any], p
         sql = "INSERT INTO cluster (clusterName, numNodes, ptnsPerNode, threadsPerNode, sharedMem, " \
               "params, isRegrConfig) " \
               "VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING clusterId"
-    data = (cluster_config.get_cluster_name(),
+        data = (cluster_config.get_cluster_name(),
                 cluster_config.get_num_nodes(),
                 cluster_config.get_partitions(),
                 cluster_config.get_threads(),
