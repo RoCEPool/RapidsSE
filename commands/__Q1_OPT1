@@ -1,11 +1,6 @@
 /*============================================================================*/
-/* __Q1_SF1                                                                   */
+/* __Q1_OPT1                                                                  */
 /*============================================================================*/
-
-//print "Q1";
-
-file __TPCH_SCHEMA_LOAD_SF1;
-
 
 select
  l_returnflag,
@@ -19,7 +14,7 @@ select
  avg(l_discount)                                     as avg_disc,
  count(*)                                            as count_order
   from LineItem
- where l_shipdate <= DATE '1998-12-01' - interval '90' day
+ where l_shipdate <= DATE '1998-09-01'
  group by l_returnflag, l_linestatus
  order by l_returnflag, l_linestatus;
 
