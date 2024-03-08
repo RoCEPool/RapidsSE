@@ -318,7 +318,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
   if (pSymbol()->bHasFacet("exists"_Stz)) {
 
-   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
 
     SYM(SF_RLN_OP,"=="_Stz);
 
@@ -340,7 +340,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     p_term1->vApplyCast_x(p_expr_dic->xCast());
 
-   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
     return;
   }
 
@@ -370,7 +370,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     p_term_head->vApplyCast_x(p_expr_dic->xCast());
 
-   // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
 
     return;
   }

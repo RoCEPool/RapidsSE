@@ -137,11 +137,11 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
     m_pCI->vSetBoard(pOuterBoard_save);
     SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery(m_pCI->G.p_call->pSymbol());
     UNUSED(pSubQuery);
-   // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+   // m_pCI->PRINTBOARD_dbg();
 
     vFlattenByDecisionTree();
 
-   // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+   // m_pCI->PRINTBOARD_dbg();
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -175,11 +175,11 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
       pCI->vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       UNUSED(pSubQuery);
-     // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+     // pCI->PRINTBOARD_dbg();
 
       vFlattenByDecisionTree();
 
-     // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+     // pCI->PRINTBOARD_dbg();
 
       bFound = true;
       return C_TERMINATE_RECURSION;
@@ -221,11 +221,11 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
       pCI->vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       UNUSED(pSubQuery);
-     // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+     // pCI->PRINTBOARD_dbg();
 
       vFlattenByDecisionTree();
 
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
 
      // XF_Flatten_Left_subQuery::vRemove_LeftMost(pCI);
 
@@ -257,7 +257,7 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
   Card_Fold::vMorph_to_flat(m_pCI);
 
 
-  // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // m_pCI->PRINTBOARD_dbg();
 
   vDebugPoint();
 }

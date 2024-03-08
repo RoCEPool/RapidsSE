@@ -345,9 +345,9 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
   p_joinOrdering->vReorder(m_pCI->G.pDeck);
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
 
   DELETE_CARD(p_joinOrdering);
@@ -356,13 +356,13 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
-  m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  m_pCI->PRINTBOARD_dbg();
 
   //m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->vEndTransform(__LINE__);
 }

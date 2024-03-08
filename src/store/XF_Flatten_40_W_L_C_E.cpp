@@ -63,7 +63,7 @@ void XF_Flatten_40_W_L_C_E::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_40_W_L_C_E, _FOOTER_);
 
- //// m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ //// m_pCI->PRINTBOARD_dbg();
 
   /* ARCHETYPE :
       select count(*)
@@ -78,10 +78,10 @@ void XF_Flatten_40_W_L_C_E::vFlatten(void)
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_40_W_L_C_E);
 
   vFold_basic(m_pCI, "40_W_L_C_E"_Stz, CK_o_WHERE);
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
  vInto_KEYnotEXISTS(m_pCI);
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

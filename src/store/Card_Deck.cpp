@@ -83,7 +83,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              pCI->G.p_OP);
         UNUSED(eStageCast);
         pCI->vMainResynch();
-       // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+       // pCI->PRINTBOARD_dbg();
         vDebugPoint();
       }
 
@@ -112,7 +112,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   delete p_streamPtn;
 
- // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
   vDebugPoint();
 }
 

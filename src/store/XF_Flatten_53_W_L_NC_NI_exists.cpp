@@ -62,7 +62,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // W L NC NI
   // push a (linear non-correlated not in) sub-query before the main-query
@@ -90,11 +90,11 @@ void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
       pFold_nc_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz,
                                CK_o_WHERE, QO_IN_OP);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
 
   vSmooth(m_pCI,pCarryForward);
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

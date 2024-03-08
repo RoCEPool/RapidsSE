@@ -138,7 +138,7 @@ void XF_Epilog_Type_Cast::vCast(void)
 
         if (m_pCI->m_pBench->eXform() == XF_EPILOG_TYPE_CAST &&
             CK_o_GBYAGG == m_pCI->G.e_MainCard) {
-          m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+          m_pCI->PRINTBOARD_dbg();
           vDebugPoint();
         }
 

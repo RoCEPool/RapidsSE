@@ -74,7 +74,7 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
       NEVER_REACH
     }
   }
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   // 2) push to sq
   if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {

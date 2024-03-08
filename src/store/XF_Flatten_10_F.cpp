@@ -63,7 +63,7 @@ void XF_Flatten_10_F::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // F
   // (refer: Q7,8,9)
@@ -78,7 +78,7 @@ void XF_Flatten_10_F::vFlatten(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_10_F);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from

@@ -44,7 +44,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
       NEVER_REACH
     }
   }
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   // 2) push to sq
   if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
@@ -52,7 +52,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
     NEVER_REACH
   }
 
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   SubQuery* pSubQuery_save = pCI->pBoard()->pSubQuery();
 
@@ -105,13 +105,13 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
     pCI->G.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   pCI->Sqy.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
 
@@ -183,7 +183,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
       NEVER_REACH
     }
   }
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   // 2) push to sq
   if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
@@ -234,7 +234,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
     pCI->G.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -259,7 +259,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   if (pCarryForward->Sort.m_bSeen)
     pCarryForward->Sort.m_bCorrect_After_Inject = true;
 
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   return pCarryForward;
 }
@@ -274,7 +274,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
     return;
 
 
-  pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  pCI->PRINTBOARD_dbg();
 
   pCI->vBeginEach();
   RASSERT(pCI->bEachMain(CK_c_FOLD));
@@ -289,7 +289,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
     if (pCarryForward->Table.m_bSeen) {
       pCI->G.p_table = pCI->G.p_from->pSub_table();
       pCI->G.p_OP->vRestate_emit(pCI);
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
     }
   }
 
@@ -301,7 +301,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
       //pCI->Flux.m_pArriving->vDump(__func__,"Smooth where"_Stz);
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
       pCI->G.p_where->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
     }
   }
 
@@ -310,7 +310,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   if (pCI->bIsNextMain(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
     }
   }
 
@@ -318,7 +318,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   if (pCI->bIsNextMain(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
     }
   }
 
@@ -326,7 +326,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   if (pCI->bIsNextMain(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
 
     }
     pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_gbyAgg->pSub_emit();
@@ -336,7 +336,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   if (pCI->bIsNextMain(CK_o_PROJECT) && pCI->bEachMain(CK_o_PROJECT)) {
     if (pCarryForward->Project_postAgg.m_bSeen) {
       pCI->G.p_project->vSmooth_postAgg(pCI, pCarryForward);
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
     }
   }
 
@@ -344,7 +344,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   if (pCI->bIsNextMain(CK_o_HAVING) && pCI->bEachMain(CK_o_HAVING)) {
     if (pCarryForward->Having.m_bSeen) {
       pCI->G.p_having->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
     }
   }
 
@@ -352,7 +352,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   if (pCI->bIsNextMain(CK_o_SORT) && pCI->bEachMain(CK_o_SORT)) {
     if (pCarryForward->Sort.m_bSeen) {
       pCI->G.p_sort->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+      pCI->PRINTBOARD_dbg();
     }
   }
 
@@ -363,17 +363,17 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
     pCI->G.p_having->vAcclimate_foldExpr(pCI);
     pCI->G.p_emit = pCI->G.p_project->pSub_emit();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
-    pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+    pCI->PRINTBOARD_dbg();
   }
   else
   if (pCarryForward->Unproject.m_bUnproject_foldExpr) {
     pCI->G.p_emit = pCI->G.p_gbyAgg->pSub_emit();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
-    pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+    pCI->PRINTBOARD_dbg();
     vDebugPoint();
   }
 
-  pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  pCI->PRINTBOARD_dbg();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,7 +406,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 //  pCI->G.pDeck->vDeleteChild(pCI->G.p_where);
   pCI->G.pDeck->vDeleteChild(pCI->G.p_project);
 
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -466,7 +466,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   delete p_term_sqyArg;
 
-  // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   pCI->vClearRestart();
   if (pCI->bEachMain(CK_o_WHERE, CK_BOOLPRED)) {

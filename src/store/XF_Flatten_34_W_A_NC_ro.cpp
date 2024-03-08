@@ -63,7 +63,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_34_W_A_NC_RO, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // W A NC ro
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
@@ -81,7 +81,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
   CarryForward* pCarryForward =
       pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_o_WHERE, QO_RELN_OP);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing W_A_NC_ro
@@ -98,7 +98,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   delete pCarryForward;
 

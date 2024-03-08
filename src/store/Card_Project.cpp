@@ -186,7 +186,7 @@ void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 
   pCI->Early.m_pOP_leaf = this;
 
- // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
   vDebugPoint();
 }
@@ -221,7 +221,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_emit;
 
- // pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
   vDebugPoint();
 }

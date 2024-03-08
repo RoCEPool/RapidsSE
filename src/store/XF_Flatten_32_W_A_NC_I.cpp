@@ -63,7 +63,7 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_32_W_A_NC_I, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // W A NC I
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
@@ -98,7 +98,7 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   delete pCarryForward;
 

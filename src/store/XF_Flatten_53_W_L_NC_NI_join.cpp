@@ -61,7 +61,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // W L NC NI
   // (refer: Q16)
@@ -84,13 +84,13 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 
   vFold_basic(m_pCI, "53_W_L_NC_NI_join"_Stz, CK_o_WHERE);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smooshing
 
   vInto_KEYnotEXISTS(m_pCI);
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
@@ -104,7 +104,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 
   vSmooth(m_pCI,pCarryForward);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

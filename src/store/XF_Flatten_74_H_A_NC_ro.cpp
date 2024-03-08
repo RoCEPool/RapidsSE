@@ -63,7 +63,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // H A NC ro (refer: Q11)
   // - the nc subquery produces a single nc result, such as avg(col)
@@ -91,7 +91,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
 
   XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
-  m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+  m_pCI->PRINTBOARD_dbg();
 
   vSmooth(m_pCI,pCarryForward);
 

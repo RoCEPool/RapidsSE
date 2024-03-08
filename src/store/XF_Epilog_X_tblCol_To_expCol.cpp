@@ -78,7 +78,7 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 //    }
     vTo_expCol();
 
-//    m_pCI->vPrintBoard(__func__,__FILE__,__LINE__);
+//    m_pCI->PRINTBOARD_dbg();
     vDebugPoint();
   }
 
