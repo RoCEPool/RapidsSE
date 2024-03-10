@@ -110,6 +110,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pCI->G.pBoard->vRenumberCards();
 
   // pCI->PRINTBOARD_dbg();
 }
