@@ -356,7 +356,7 @@ EOF
 
   # ----------------------------------------------------------------------------------------
   # Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
-  SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
+  SHM_SIZE=$(grep "MemTotal:" < /proc/meminfo | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
   if [ "${SHM_SIZE}" -eq 0 ]; then
     SHM_SIZE=1
   fi
@@ -452,8 +452,11 @@ EOF
     {
       echo
       echo 'TEXLIVEDIR="/usr/local/texlive"'
+      # shellcheck disable=SC2016
       echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux:${TEXLIVEDIR}/bin/aarch64-linux"'
+      # shellcheck disable=SC2016
       echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
+      # shellcheck disable=SC2016
       echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
       echo
       echo 'export PATH MANPATH INFOPATH'
@@ -627,7 +630,7 @@ EOF
   touch "${SPOT_NOTIFIER_OUTPUT}"
   chown "${OS_USER}:${OS_USER}" "${SPOT_NOTIFIER_OUTPUT}"
 
-  sudo -H -u ${OS_USER} nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
+  sudo -H -u ${OS_USER} nohup "${SPOT_NOTIFIER}" 2>&1 | sudo -H -u ${OS_USER} tee "${SPOT_NOTIFIER_OUTPUT}" > /dev/null &
 
   # ----------------------------------------------------------------------------------------
   # Vim annoyances
@@ -662,6 +665,7 @@ EOF
   {
     echo "";
     echo '#export PS1="[\u@\h \W]\$ ';
+    # shellcheck disable=SC2028
     echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "';
     echo "";
   } >> "${bash_profile}"
