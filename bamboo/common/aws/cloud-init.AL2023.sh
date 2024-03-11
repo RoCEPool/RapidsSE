@@ -3,11 +3,56 @@
 
 # This is a cloud-init script that can be used when starting a new EC2 instance with AmazonLinux2023.
 
+# ----------------------------------------------------------------------
+# Functions
+# ----------------------------------------------------------------------
+
+# A function that retries a command until it returns a successful exit code.
+# Each subsequent attempt is separated by a 1 second delay.
+# Params:
+#  $1 : maximum number of retries
+#  $@ : The command to execute, as an array
+#
+function retryCommand() {
+  local maxRetries="$1"
+  shift
+  local cmd=("$@")
+  local retries=1
+
+  # check that maxRetries has been provided
+  re='^[0-9]+$'
+  if ! [[ "${maxRetries}" =~ $re ]] ; then
+     echo "ERROR: First parameter to function retryCommand() is not a number" >&2; exit 1
+  fi
+
+  while [ "${retries}" -le "${maxRetries}" ]; do
+    if [ "${retries}" -gt 1 ]; then
+      echo "...retry attempt #${retries}"
+    fi
+
+    ((retries++))
+
+    if "${cmd[@]}"; then
+      true
+      return
+    fi
+
+    sleep 1
+  done
+
+  false
+  return
+}
+# ----------------------------------------------------------------------
+
+
 # We wrap everything in a subshell to redirect all output through the tee command
 # and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
 TEXLIVE_OUTPUT="/cloud-init-texlive.log"
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
+MAX_NETWORK_RETRIES=10
+MAX_DNF_RETRIES=3
 
 {
   if which tee &>/dev/null; then
@@ -30,10 +75,15 @@ chmod a+r "${TEXLIVE_OUTPUT}"
   echo "Starting the cloud-init setup script."
   echo "*************************************"
 
-  readonly PLATFORM="AL2023"
-  readonly OS_USER="ec2-user"
-  readonly OS_HOME_DIR="/home/${OS_USER}"
-  readonly ARCH="$(uname -p)" # should be "x86_64" or "aarch64"
+  PLATFORM="AL2023"
+  OS_USER="ec2-user"
+  OS_HOME_DIR="/home/${OS_USER}"
+  ARCH="$(uname -p)" # should be "x86_64" or "aarch64"
+
+  readonly PLATFORM
+  readonly OS_USER
+  readonly OS_HOME_DIR
+  readonly ARCH
 
   if [ -f /etc/system-release ]; then
     OS_VER=$(cat /etc/system-release)
@@ -212,7 +262,7 @@ EOF
 
   # ----------------------------------------------------------------------------------------
   # Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
-  SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
+  SHM_SIZE=$(grep "MemTotal:" < /proc/meminfo | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
   if [ "${SHM_SIZE}" -eq 0 ]; then
     SHM_SIZE=1
   fi
@@ -278,16 +328,21 @@ EOF
   echo
   if ! which aws; then
     # AWS CLI needs curl and unzip
-    while ! dnf install -y curl wget unzip; do
-      sleep 1
-    done
+        declare -a cmd
+    cmd=("dnf" "install" "-y" "curl" "wget" "unzip")
+    if ! retryCommand "${MAX_DNF_RETRIES}" "${cmd[@]}"; then
+      echo "ERROR: Could not download and install curl, wget and unzip - the dnf repository may be "\
+            "unavailable or a network error could be preventing access."
+    fi
 
-    while ! curl -L "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH}.zip" -o "awscliv2.zip"; do
-      sleep 1
-    done
-
-    unzip awscliv2.zip
-    ./aws/install
+    cmd=("curl" "-L" "--fail" "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" "-o" "awscliv2.zip")
+    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
+      unzip awscliv2.zip
+      ./aws/install
+    else
+      echo "ERROR: Could not download AWS CLIv2 - the version might be old and may need to be updated "\
+            "or a network error could be preventing access."
+    fi
   fi
 
   # ----------------------------------------------------------------------------------------
@@ -307,8 +362,11 @@ EOF
     {
       echo
       echo 'TEXLIVEDIR="/usr/local/texlive"'
+      # shellcheck disable=SC2016
       echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/$(uname -p)-linux"'
+      # shellcheck disable=SC2016
       echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
+      # shellcheck disable=SC2016
       echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
       echo
       echo 'export PATH MANPATH INFOPATH'
@@ -335,12 +393,18 @@ EOF
   echo "*** Shellcheck ***"
   (
     cd /usr/local/bin
-    while ! curl -L "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.${ARCH}.tar.xz" -o "shellcheck-stable.linux.${ARCH}.tar.xz"; do
-      sleep 1
-    done
-    tar xvJf shellcheck-stable.linux.${ARCH}.tar.xz --strip-components=1 shellcheck-stable/shellcheck
-    chown root:root shellcheck
-    rm -f shellcheck-stable.linux.${ARCH}.tar.xz
+
+    declare -a cmd
+    cmd=("curl" "-L" "--fail" "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" "-o" "shellcheck-stable.linux.x86_64.tar.xz")
+
+    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
+      tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
+      chown root:root shellcheck
+      rm -f shellcheck-stable.linux.x86_64.tar.xz
+    else
+      echo "ERROR: Could not download ShellCheck - the version might be old and may need to be updated "\
+            "or a network error could be preventing access."
+    fi
   )
 
   # ----------------------------------------------------------------------------------------
@@ -348,22 +412,27 @@ EOF
   echo
   echo "*** Installing jmeter ***"
   echo
-  pushd "$(pwd)"
-  cd /opt
-  JMETER_VER="5.6"
-  JMETER_NAME="apache-jmeter-${JMETER_VER}"
-  JMETER_FILE="${JMETER_NAME}.tgz"
-  if ! curl --fail "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" -o "${JMETER_FILE}"; then
-    echo "ERROR: Could not download JMeter - the version might be old and may need to be updated."
-  else
-    tar xvzf "${JMETER_FILE}"
-    rm -f "$JMETER_FILE"
-    ln -s "${JMETER_NAME}" jmeter
-    chown -R ec2-user:ec2-user "${JMETER_NAME}"
-    chown ec2-user:ec2-user jmeter
-  fi
 
-  popd
+  (
+    cd /opt
+    JMETER_VER="5.6"
+    JMETER_NAME="apache-jmeter-${JMETER_VER}"
+    JMETER_FILE="${JMETER_NAME}.tgz"
+
+    declare -a cmd
+    cmd=("curl" "-L" "--fail" "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" "-o" "${JMETER_FILE}")
+
+    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
+      tar xvzf "${JMETER_FILE}"
+      rm -f "$JMETER_FILE"
+      ln -s "${JMETER_NAME}" jmeter
+      chown -R ec2-user:ec2-user "${JMETER_NAME}"
+      chown ec2-user:ec2-user jmeter
+    else
+      echo "ERROR: Could not download JMeter - the version might be old and may need to be updated "\
+            "or a network error could be preventing access."
+    fi
+  )
 
   # Add this JMeter installation to the PATH for the ec2-user
   bash_profile="${OS_HOME_DIR}/.bash_profile"
@@ -466,7 +535,7 @@ EOF
   touch "${SPOT_NOTIFIER_OUTPUT}"
   chown "${OS_USER}:${OS_USER}" "${SPOT_NOTIFIER_OUTPUT}"
 
-  sudo -H -u ${OS_USER} nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
+  sudo -H -u ${OS_USER} nohup "${SPOT_NOTIFIER}" 2>&1 | sudo -H -u ${OS_USER} tee "${SPOT_NOTIFIER_OUTPUT}" > /dev/null &
 
   # ----------------------------------------------------------------------------------------
   # Vim annoyances
@@ -501,6 +570,7 @@ EOF
   {
     echo "";
     echo '#export PS1="[\u@\h \W]\$ ';
+    # shellcheck disable=SC2028
     echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "';
     echo "";
   } >> "${bash_profile}"

@@ -74,14 +74,21 @@ chmod a+r "${TEXLIVE_OUTPUT}"
   echo "Starting the cloud-init setup script."
   echo "*************************************"
 
-  readonly CENTOS7="centos7"
-  readonly AL2="amazon2"
+  CENTOS7="centos7"
+  AL2="amazon2"
 
-  readonly AL2_USER="ec2-user"
-  readonly CENTOS7_USER="centos"
+  AL2_USER="ec2-user"
+  CENTOS7_USER="centos"
 
-  readonly AL2_HOME_DIR="/home/${AL2_USER}"
-  readonly CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
+  AL2_HOME_DIR="/home/${AL2_USER}"
+  CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
+
+  readonly CENTOS7
+  readonly AL2
+  readonly AL2_USER
+  readonly CENTOS7_USER
+  readonly AL2_HOME_DIR
+  readonly CENTOS7_HOME_DIR
 
   OS_DIST="unknown"
   OS_USER="unknown"
