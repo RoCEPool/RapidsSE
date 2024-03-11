@@ -68,11 +68,11 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_CULL_BOUND, "cull non-used bounds"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_CULL_BOUND);
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
     if (!(m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXJOIN) ||
           m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXSCAN)))
@@ -100,13 +100,13 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_CULL_USED_BOUND, "cull nused bounds"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_CULL_USED_BOUND);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark any cmpPred that are a bound in bounds
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
     if (! (m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXJOIN) ||
            m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXSCAN) ||
@@ -156,7 +156,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   m_pCI->vClearRestart();
 
   i8 nCulled = 0;
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
     if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
       nCulled += m_pCI->G.p_filter->nCullMarked_rlnConj(MARK_AT);
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))

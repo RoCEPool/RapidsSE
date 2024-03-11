@@ -150,7 +150,7 @@ void Card_RpnCalc::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   TypeId xTypeId_save = xCast().m_xTypeId;
   if (! xTypeId_save.bIsValid()) {
-    pCI->vPrintBoard(__func__,__LINE__,true);
+    pCI->PRINTBOARD_dbg();
     vDump(__func__);
     NEVER_REACH
   }
@@ -529,11 +529,18 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_EXPR,
+
+                                     CK_NONE);
+
+  vValidate_mustHave(CK_TERM, CK_NONE);
+
   Card::vValidate_hasType();
   Card::vValidate_hasChildren();
 
-  if (xCast().m_xTypeId != pCI->pAncestorFind(CK_EXPR)->xCast().m_xTypeId) {
-    pCI->vPrintBoard(__func__,__LINE__,true);
+  if (xCast().m_xTypeId != pCI->pAncestor(CK_EXPR)->xCast().m_xTypeId) {
+    pCI->PRINTBOARD_dbg();
     vDump(__func__);
     NEVER_REACH;
   }
@@ -542,8 +549,8 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   (void)Card::eValidate_parentEither(pCI,CK_EXPR,CK_NONE);
 
-  if (pCI->pAncestorFind(CK_s_INJECTABLE)) {
-    if (! m_xSymbol.bHasType()) {
+  if (pCI->bAncestor(CK_s_INJECTABLE)) {
+    if (!m_xSymbol.bValidType()) {
       vDump(__func__);
       vValidationFailed("Type Missing : %p"_Stz,this);
     }

@@ -93,8 +93,18 @@ void Card_Injectable::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //RASSERT(CK_s_STREAM == pParent->eCard());
-  
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_o_CROSSJOIN,
+                                     CK_o_FROM,
+                                     CK_o_INFLATE,
+                                     CK_o_INDEXJOIN,
+                                     CK_o_INDEXSCAN,
+                                     CK_o_KEYEXISTS,
+                                     CK_o_KEYNOTEXISTS,
+                                     CK_o_SCAN,
+                                     CK_NONE);
+  vValidate_mustHave(CK_EXPR,CK_NONE);
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

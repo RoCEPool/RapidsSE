@@ -194,10 +194,9 @@ namespace STORE
     Board(i8 i_Board, eBK eBoard, Stz* szSqyNm, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
-    static bool bFindAndMarkSubQryCall(CardIter* p_conj);
+    static bool bMark_sqyCall(CardIter* pCI);
 
     i8   i_Board(void);
     void vBoardNo(i8 i_Board);
@@ -210,7 +209,7 @@ namespace STORE
 
     void vEndPhase(void);
 
-    void vPrintBoard(CardIter* pCI, Stz* szDescription=nullptr);
+    void vPrintBoard(CardIter* pCI);
 
     bool bPastPhase(eOH ePhase);
 
@@ -227,9 +226,7 @@ namespace STORE
   private:
     void vPinMargin(Ribbon* pRibbon);
     void vPinCards(CardIter* pCI, Ribbon* pRibbon);
-    void vPinTitle(Ribbon* pRibbon,
-                   i8 iTransformNo,
-                   Stz* szExplain=nullptr);
+    void vPinTitle(Ribbon* pRibbon);
 
     Footer* aFooter(void);
   };

@@ -62,7 +62,7 @@ void XF_Flatten_Pullup_rlnConj::vXF_Pullup_rlnConj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_PULLUP_RLNCONJ, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_PULLUP_RLNCONJ, "use @c to move predicates"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_PULLUP_RLNCONJ);
 
   // @ mark where predicates wrt. table
   Card_Where::vMarkWhereConjWrtTable(m_pCI);

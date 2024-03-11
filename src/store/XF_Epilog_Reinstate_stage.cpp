@@ -62,7 +62,7 @@ void XF_Epilog_Reinstate_stage::vReinstate_stage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_REINSTATE_STAGE, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_REINSTATE_STAGE, "reinstate stages"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_REINSTATE_STAGE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All SubQuery

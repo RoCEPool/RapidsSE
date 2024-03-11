@@ -170,11 +170,10 @@ extern Stz* P_Cell;
 extern Stz* P_ChosenBound;
 extern Stz* P_ChosenIndex;
 extern Stz* P_Count;
-extern Stz* P_CrlKeyExpr;
-extern Stz* P_CrlKeyPred;
+extern Stz* P_CrlKeyConj;
+extern Stz* P_CrlKeyDefn;
+extern Stz* P_CrlKeyTerm;
 extern Stz* P_CrlKeyTest;
-extern Stz* P_CrlRslTest;
-extern Stz* P_CrlSqy;
 extern Stz* P_DebugOption;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
@@ -186,7 +185,6 @@ extern Stz* P_Injected;
 extern Stz* P_Invalid;
 extern Stz* P_Key;
 extern Stz* P_Level;
-extern Stz* P_NonCrlSqy;
 extern Stz* P_PrmOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;
@@ -197,7 +195,7 @@ extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
 extern Stz* P_SqyCall;
-extern Stz* P_SqyNo;
+extern Stz* P_SqyRslTest;
 extern Stz* P_Unproject;
 
 extern Stz* C_CARD_HISTORY;
@@ -236,7 +234,8 @@ extern Stz* MARK_UNVALID;
 extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
 
-extern Stz* C_SQCRLKEY;
+extern Stz* C_CRLKEY;
+extern Stz* C_SQYRSL;
 
 namespace STORE
 {
@@ -331,21 +330,23 @@ namespace STORE
     bool  bEither(i8 /*eCK*/ iKind_first, ...);
 
     Stz*  szFacet(eSF eFacet_xchk);
-    Card* pFindCardRecursive(eCK eOfCard);
+    Card* pFindCardRecursive(eCK eCard);
     Card* pFindParentRecursive(Card* pChild);
-    Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
-    Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
-    Card* pFindMark1Recursive(Stz* szMark1, eCK eOfCard=CK_NONE);
-    Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
-    Card* pFindMark2Recursive(Stz* szMark2, eCK eOfCard=CK_NONE);
-    Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindPpyRecursive(Stz* szPpy, eCK eCard=CK_NONE);
+    Card* pFindMark1Recursive(char cMark1, eCK eCard=CK_NONE);
+    Card* pFindMark1Recursive(Stz* szMark1, eCK eCard=CK_NONE);
+    Card* pFindMark2Recursive(char cMark2, eCK eCard=CK_NONE);
+    Card* pFindMark2Recursive(Stz* szMark2, eCK eCard=CK_NONE);
+    Card* pFindCard_WithSubFacet(eCK eCard, eSF eFacet);
+    Card* pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);
     i8    nFunctionCount(void);
 
-    bool bHasFacetRecursive(eSF eFacet);
-    bool bHasSubRecursive(Card* pSubCard);
+    bool bHasChildFacet(eSF eFacet);
+    bool bHasSub(Card* pSubCard);
+    bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
 
     void vIncFunctionCount(void);
     bool bIsCard(eCK eCard);
@@ -404,6 +405,7 @@ namespace STORE
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
+    i8   nSubCards(eCK eSub_arg);
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);
     bool bSymbolMatches(Card* pCard_arg);
@@ -427,8 +429,7 @@ namespace STORE
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);
 
-  private:
-  private:
+  protected:
     void vCoord(void);
     void vCoord(Card* pParentCard);
 

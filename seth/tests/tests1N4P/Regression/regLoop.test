@@ -21,6 +21,9 @@ INCLUDE 'regrLoadData.test';
 //LOG 'Running regression tests...';
 
 
+LOG 'aggs-count.test ...';
+INCLUDE 'aggs-count.test';
+
 LOG 'having.test ...';
 INCLUDE 'having.test';
 

@@ -7,8 +7,6 @@
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
-#include "XF_Fold.hpp"
-#include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -24,7 +22,7 @@ __aFooterFunction(XF_Flatten_52_W_L_NC_I_join)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_52_W_L_NC_I_join::XF_Flatten_52_W_L_NC_I_join(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_52_W_L_NC_I_JOIN, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_52_W_L_NC_I_JOIN, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_JOIN, _FOOTER_);
 
@@ -44,25 +42,54 @@ XF_Flatten_52_W_L_NC_I_join::~XF_Flatten_52_W_L_NC_I_join(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_52_W_L_NC_I_join::vXF_Flatten_52_W_L_NC_I_join(CardIter* pCI)
+void XF_Flatten_52_W_L_NC_I_join::vFlatten(CardIter* pCI)
 {
   _static_
 
-  XF_Fold* pFold = new XF_Fold(0, pCI->G.pDeck);
-  i8 nTables = pFold->nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
-
-  delete pFold;
+  i8 nTables = nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
 
   if (1 == nTables)
-    XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(pCI);
+    XF_Flatten_53_W_L_NC_NI_join::vFlatten(pCI);
   else
-    XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(pCI);
+    XF_Flatten_53_W_L_NC_NI_exists::vFlatten(pCI);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* count number of tables in sub-query                                        */
+/*----------------------------------------------------------------------------*/
+i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
+{
+  _static_
+
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
+  pCI->vClearRestart();
+  if (pCI->bEachMain(eCardWithSQ, CK_BOOLPRED)) {
+    if (!Board::bMark_sqyCall(pCI)) {
+      vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
+      NEVER_REACH
+    }
+  }
+  // pCI->PRINTBOARD_dbg();
+
+  // 2) push to sq
+  if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_p_term_sqyCall->szFacet(SF_SQY_NO));
+    NEVER_REACH
+  }
+
+  i8 nTables = Card_Table::nTables(pCI);
+
+  // 4) pop back to mq
+  pCI->vPopBoard();
+
+  return nTables;
+}
+
 
 
 /*============================================================================*/

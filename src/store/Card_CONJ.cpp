@@ -65,64 +65,6 @@ bool Card_CONJ::bIsConj(Card* p_card)
 
 
 /*----------------------------------------------------------------------------*/
-/* visit all sub-cards of pred and apply lambda function                      */
-/*----------------------------------------------------------------------------*/
-bool Card_CONJ::bConjRecursive(std::function<bool(Card_CONJ* p_conj, bool bUpwards)> bfApply)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bContinue;
-
-  eCK eCard = this->eCard();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // only call term once
-
-  if (CK_TERM == eCard) {
-    bContinue = bfApply(this,false);
-    return bContinue;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // apply pred function for downwards
-  bContinue = bfApply(this,false);
-  if (! bContinue)
-    return false;
-
-  // descend into children
-  i8 nSubCards = nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pGetChild(i_Child);
-    bContinue = static_cast<Card_CONJ *>(pSubCard)->bConjRecursive(bfApply);
-    if (! bContinue)
-      return false;
-  }
-
-  // apply pred function for upwards
-  bContinue = bfApply(this,true);
-  return bContinue;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_CONJ::bContains_sqyNo(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  //this->vDump();
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_SQY_NO)) {
-      return true;
-    }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_CONJ::bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn)
@@ -328,6 +270,46 @@ bool Card_CONJ::bIsSqyOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* visit all sub-cards of pred and apply lambda function                      */
+/*----------------------------------------------------------------------------*/
+bool Card_CONJ::bLambdaWalk_conj(std::function<bool(Card_CONJ* p_conj, bool bUpwards)> bfLambdaFn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bContinue;
+
+  eCK eCard = this->eCard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // only call term once
+
+  if (CK_TERM == eCard) {
+    bContinue = bfLambdaFn(this, false);
+    return bContinue;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // apply pred function for downwards
+  bContinue = bfLambdaFn(this, false);
+  if (! bContinue)
+    return false;
+
+  // descend into children
+  i8 nSubCards = nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pGetChild(i_Child);
+    bContinue = static_cast<Card_CONJ *>(pSubCard)->bLambdaWalk_conj(bfLambdaFn);
+    if (! bContinue)
+      return false;
+  }
+
+  // apply pred function for upwards
+  bContinue = bfLambdaFn(this, true);
+  return bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
@@ -336,7 +318,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
   if (pSymbol()->bHasFacet("exists"_Stz)) {
 
-   // pCI->vPrintBoard(__func__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
 
     SYM(SF_RLN_OP,"=="_Stz);
 
@@ -358,7 +340,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     p_term1->vApplyCast_x(p_expr_dic->xCast());
 
-   // pCI->vPrintBoard(__func__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
     return;
   }
 
@@ -388,7 +370,7 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 
     p_term_head->vApplyCast_x(p_expr_dic->xCast());
 
-   // pCI->vPrintBoard(__func__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
 
     return;
   }
@@ -537,7 +519,7 @@ void Card_CONJ::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       _pCard_RlnConj(this)->vValidate(pCI, iDepth + 1, this); break;
 
     default:
-     // pCI->vPrintBoard(__func__,__LINE__,true);
+     // pCI->PRINTBOARD_dbg();
       vDump(__func__);
       vValidationFailed("<<replace>> %p"_Stz,this);
   }

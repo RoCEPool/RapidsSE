@@ -66,25 +66,25 @@ void XF_Epilog_Promote_filter::vPromote_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_PROMOTE_FILTER, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_PROMOTE_FILTER, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_PROMOTE_FILTER);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_o_SCAN, CK_o_FILTER)) {
+  while (m_pCI->bEachMain(CK_o_SCAN, CK_o_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_o_INDEXSCAN, CK_o_FILTER)) {
+  while (m_pCI->bEachMain(CK_o_INDEXSCAN, CK_o_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_o_INDEXJOIN, CK_o_FILTER)) {
+  while (m_pCI->bEachMain(CK_o_INDEXJOIN, CK_o_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_o_CROSSJOIN, CK_o_FILTER)) {
+  while (m_pCI->bEachMain(CK_o_CROSSJOIN, CK_o_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 

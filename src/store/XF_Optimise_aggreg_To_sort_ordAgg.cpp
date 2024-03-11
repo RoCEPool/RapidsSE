@@ -65,7 +65,7 @@ bool XF_Optimise_aggreg_To_sort_ordAgg::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, "optimise one time calcs"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG);
 
   m_pCI->vClearRestart();
 

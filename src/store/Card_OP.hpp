@@ -21,9 +21,9 @@ namespace STORE
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
-    void vUpdate_expCol(Card_Emit* p_arriving);
+    void vUpdate_expCol(Card_Emit* p_arriving, bool bAlt=false);
 
-    void vCullIfEmpty_filter(Card_Filter* p_filter);
+    void vCull_filter_IfEmpty(Card_Filter* p_filter);
 
     void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);
@@ -43,7 +43,7 @@ namespace STORE
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
-    void vRecreate_emit(CardIter* pCI);
+    void vRestate_emit(CardIter* pCI);
 
     void vRpn_aggreg      (String* psRpnExpr, Card_Aggreg*    p_aggreg);
     void vRpn_crossJoin   (String* psRpnExpr, Card_CrossJoin* p_crossJoin);

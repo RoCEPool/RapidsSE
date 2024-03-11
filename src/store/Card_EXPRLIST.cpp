@@ -203,6 +203,21 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches(eSF eFacet_arg, Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    if (xKid.p_expr()->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
+      return xKid.p_expr();
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol* pSymbol_arg, Kid* aKid)

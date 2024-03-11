@@ -1,12 +1,14 @@
 /*============================================================================*/
-/* XF_Flatten.cpp -- Flatten SubQueries                                */
+/* XF_Flatten_subquery.cpp -- Flatten SubQueries                                */
 /*============================================================================*/
 
-#include "XF_Flatten.hpp"
+#include "XF_Flatten_subquery.hpp"
 
 #include "Board.hpp"
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
+
+#include "eXF.h"
 #include "XF_Flatten_Join_Ordering.hpp"
 
 #include "XF_Flatten_10_F.hpp"
@@ -29,36 +31,36 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten, CN_XF_FLATTEN)
-__aNewFunction(XF_Flatten, CN_XF_FLATTEN)
-__vDeleteFunction(XF_Flatten, CN_XF_FLATTEN)
-__aFooterFunction(XF_Flatten)
+__pCastFunction(STORE, XF_Flatten_subquery, CN_XF_FLATTEN_SUBQUERY)
+__aNewFunction(XF_Flatten_subquery, CN_XF_FLATTEN_SUBQUERY)
+__vDeleteFunction(XF_Flatten_subquery, CN_XF_FLATTEN_SUBQUERY)
+__aFooterFunction(XF_Flatten_subquery)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Flatten::XF_Flatten(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN)
+XF_Flatten_subquery::XF_Flatten_subquery(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_SUBQUERY)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
   m_pCI = pCI;
 
-  _checkInitialised_(CN_XF_FLATTEN);
+  _checkInitialised_(CN_XF_FLATTEN_SUBQUERY);
 
   m_pCI->vUsingBoard((i8)0);
   m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Flatten::~XF_Flatten(void) noexcept(false)
+XF_Flatten_subquery::~XF_Flatten_subquery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,11 +70,11 @@ XF_Flatten::~XF_Flatten(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten::vFlatten(CardIter* pCI)
+void XF_Flatten_subquery::vFlatten(CardIter* pCI)
 {
   _static_
 
-  XF_Flatten* pMakeFlat = new XF_Flatten(pCI);
+  XF_Flatten_subquery* pMakeFlat = new XF_Flatten_subquery(pCI);
 
   pMakeFlat->vFlatten();
 
@@ -88,9 +90,9 @@ void XF_Flatten::vFlatten(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten::vFlatten(void)
+void XF_Flatten_subquery::vFlatten(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
   m_pCI->G.pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
   m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
@@ -104,9 +106,9 @@ void XF_Flatten::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten::vFlatten_recurse(i8 iDepth)
+void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
   // things before sub-queries
 
@@ -119,27 +121,27 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   for (;;) {
 
     m_pCI->vBeginEach();
-    if (! m_pCI->G_bEachMain(CK_o_CALL))
+    if (! m_pCI->bEachMain(CK_o_CALL))
       break;
 
 //    s256 sSqyNo = m_pCI->G.p_call->szFacet(SF_SQY_NO);
 
     Board *pOuterBoard_save = m_pCI->G.pBoard;
     m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery(m_pCI->G.p_call->pSymbol());
-    m_pCI->G_vPushBoard(m_pCI->Sqy.m_pSubQuery->pBoard());
+    m_pCI->vPushBoard(m_pCI->Sqy.m_pSubQuery->pBoard());
     m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
     vFlatten_recurse(iDepth + 1);
 
-    m_pCI->G_vPopBoard();
-    m_pCI->G_vSetBoard(pOuterBoard_save);
+    m_pCI->vPopBoard();
+    m_pCI->vSetBoard(pOuterBoard_save);
     SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pFindSubQuery(m_pCI->G.p_call->pSymbol());
     UNUSED(pSubQuery);
-   // m_pCI->vPrintBoard(__func__,__LINE__);
+   // m_pCI->PRINTBOARD_dbg();
 
     vFlattenByDecisionTree();
 
-   // m_pCI->vPrintBoard(__func__,__LINE__);
+   // m_pCI->PRINTBOARD_dbg();
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -149,7 +151,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED))
+    if (! m_pCI->bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED))
       break;
 
     CardIter* pCI = m_pCI;
@@ -164,20 +166,20 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
-      pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
+      pCI->vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
-      pCI->G_vPopBoard();
-      pCI->G_vSetBoard(pOuterBoard_save);
+      pCI->vPopBoard();
+      pCI->vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       UNUSED(pSubQuery);
-     // pCI->vPrintBoard(__func__,__LINE__);
+     // pCI->PRINTBOARD_dbg();
 
       vFlattenByDecisionTree();
 
-     // pCI->vPrintBoard(__func__,__LINE__);
+     // pCI->PRINTBOARD_dbg();
 
       bFound = true;
       return C_TERMINATE_RECURSION;
@@ -196,7 +198,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_o_HAVING, CK_BOOLPRED))
+    if (! m_pCI->bEachMainWithSub_reverse_foldBreak_b(CK_o_HAVING, CK_BOOLPRED))
       break;
 
     CardIter* pCI = m_pCI;
@@ -210,20 +212,20 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
-      pCI->G_vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
+      pCI->vPushBoard(pCI->Sqy.m_pSubQuery->pBoard());
       pCI->Sqy.m_pSubQuery = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
-      pCI->G_vPopBoard();
-      pCI->G_vSetBoard(pOuterBoard_save);
+      pCI->vPopBoard();
+      pCI->vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       UNUSED(pSubQuery);
-     // pCI->vPrintBoard(__func__,__LINE__);
+     // pCI->PRINTBOARD_dbg();
 
       vFlattenByDecisionTree();
 
-      pCI->vPrintBoard(__func__,__LINE__);
+      //pCI->PRINTBOARD_dbg();
 
      // XF_Flatten_Left_subQuery::vRemove_LeftMost(pCI);
 
@@ -255,7 +257,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   Card_Fold::vMorph_to_flat(m_pCI);
 
 
-  // m_pCI->vPrintBoard(__func__,__LINE__);
+  // m_pCI->PRINTBOARD_dbg();
 
   vDebugPoint();
 }
@@ -263,13 +265,13 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten::vFlattenByDecisionTree(void)
+void XF_Flatten_subquery::vFlattenByDecisionTree(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_FLATTEN, "Flatten by decision tree (recursive model)"_Stz);
+//  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_SUBQUERY);
 
-  if (m_pCI->Sqy.m_pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ XF_Flatten_10_F::vXF_Flatten_10_F(m_pCI);
+  if (m_pCI->Sqy.m_pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ XF_Flatten_10_F::vFlatten(m_pCI);
   else
   if (m_pCI->Sqy.m_pSubQuery->bViaWhere()) {
     if (m_pCI->Sqy.m_pSubQuery->bIsAggregation()) {
@@ -278,17 +280,17 @@ void XF_Flatten::vFlattenByDecisionTree(void)
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
-        else                                             /* W_A_C_ro   Q2,17 */ XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(m_pCI);
+        else                                             /* W_A_C_ro   Q2,17 */ XF_Flatten_24_W_A_C_ro::vFlatten(m_pCI);
       } else {                                                                      /* 30*/
              if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(m_pCI);
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ XF_Flatten_32_W_A_NC_I::vFlatten(m_pCI);
         else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                             /* W_A_NC_ro    Q15 */ XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(m_pCI);
+        else                                             /* W_A_NC_ro    Q15 */ XF_Flatten_34_W_A_NC_ro::vFlatten(m_pCI);
       }
     } else {
       if (m_pCI->Sqy.m_pSubQuery->bIsCorrelated()) {                                /* 40*/
-             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_L_C_E       Q4 */ XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(m_pCI);
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_L_C_E       Q4 */ XF_Flatten_40_W_L_C_E::vFlatten(m_pCI);
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
@@ -296,8 +298,8 @@ void XF_Flatten::vFlattenByDecisionTree(void)
       } else {                                                                      /* 50*/
              if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_L_NC_I         */ XF_Flatten_52_W_L_NC_I_join::vXF_Flatten_52_W_L_NC_I_join(m_pCI);
-        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(m_pCI);
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_L_NC_I         */ XF_Flatten_52_W_L_NC_I_join::vFlatten(m_pCI);
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ XF_Flatten_53_W_L_NC_NI_join::vFlatten(m_pCI);
         else                                             /* W_L_NC_ro        */ NEVER_REACH
       }
     }
@@ -316,7 +318,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
-        else                                             /* H_A_NC_ro    Q11 */ XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(m_pCI);
+        else                                             /* H_A_NC_ro    Q11 */ XF_Flatten_74_H_A_NC_ro::vFlatten(m_pCI);
       }
     } else {
       if (m_pCI->Sqy.m_pSubQuery->bIsCorrelated()) {                                /* 80*/
@@ -337,7 +339,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
   else
     NEVER_REACH;
 
-  m_pCI->vEndTransform(__LINE__);
+//  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

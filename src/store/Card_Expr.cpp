@@ -65,22 +65,22 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
+Card_Expr* Card_Expr::pCraft_expr_gby_From_expr_crlKey(Card_Expr* pExpr_crlKey)
 {
   _static_
 
-  RASSERT(CT_NONE != pExpr_corr->eCTVal());
+  RASSERT(CT_NONE != pExpr_crlKey->eCTVal());
 
   Card_Expr*    p_expr_gby = new Card_Expr;
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
+  Card_RpnCalc* p_rpnCalc  = new Card_RpnCalc;
+  Card_Term*    p_term     = pExpr_crlKey->pSub_term()->pClone();
 
   p_expr_gby->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->vApplyCast_x(pExpr_corr->xCast());
-  p_term->vApplyCast_x(pExpr_corr->xCast());
-  p_expr_gby->vApplyCast_x(pExpr_corr->xCast());
+  p_rpnCalc->vApplyCast_x(pExpr_crlKey->xCast());
+  p_term->vApplyCast_x(pExpr_crlKey->xCast());
+  p_expr_gby->vApplyCast_x(pExpr_crlKey->xCast());
 
   return p_expr_gby;
 }
@@ -88,7 +88,7 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 /*----------------------------------------------------------------------------*/
 /* form project expression from gby key expression                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
+Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby)
 {
   _static_
 
@@ -97,7 +97,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
-  p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,szAs);
+  p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, 1);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
@@ -208,15 +208,15 @@ Card_Expr* Card_Expr::pCast_expr_term_expCol(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_Expr::vBump_expCol(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vBump_expCol(nBumpBy, bSkipFoldExpr);
+    p_boolPred->vBump_expCol(nBumpBy);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vBump_expCol(nBumpBy, bSkipFoldExpr);
+    p_rpnCalc->vBump_expCol(nBumpBy);
 
 }
 
@@ -297,7 +297,7 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   Symbol* pSymbol_expr = pSymbol();
   if (! xCast().m_xTypeId.bIsValid()) {
-    pCI->vPrintBoard(__func__,__LINE__,true);
+    pCI->PRINTBOARD_dbg();
     vDump(__func__ );
     NEVER_REACH
   }
@@ -445,18 +445,16 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
   RASSERT(pSymbol_expr_arriving->bHasFacet(SF_EXP_COL));
 
   if (pSymbol_expr_arriving->bHasFacet(SF_NMD_COL))
-    pSymbol_expr_inducted->vApplyFacet(SF_NMD_COL,
-                                         pSymbol_expr_arriving->szFacet(SF_NMD_COL));
+    pSymbol_expr_inducted->vApplyFacet(SF_NMD_COL,pSymbol_expr_arriving);
   else
     p_expr_inducted->pSymbol()->vApplyFacet(SF_NMD_COL,iExp);
 
-//  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
-//    pSymbol_expr_inducted->vApplyFacet(SF_KEY_COL,
-//                                        pSymbol_expr_arriving->szFacet(SF_KEY_COL));
+  if (pSymbol_expr_arriving->bHasFacet(SF_SQY_RSL))
+    pSymbol_expr_inducted->vApplyFacet(SF_SQY_RSL,pSymbol_expr_arriving);
+
 
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
-    pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,
-                                        pGet_Symbol(0)->szFacet(SF_TBL_COL));
+    pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,pGet_Symbol(0));
   }
 
   Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
@@ -649,6 +647,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             );
   }
 
+  vPrintProperties(pRibbon, iDepth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // secondary facets
@@ -661,6 +660,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             aFacet->m_sFacet.szStz(),
                             i_Facet_secondary);
   }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -785,17 +785,26 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (m_xSymbol.nTypeLength() == 0) {
       vMark("?"_Stz,"l"_Stz);
       pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
-      pCI->vPrintBoard(__func__,__LINE__,true);
+      pCI->PRINTBOARD_dbg();
       vDump(__func__);
       vValidationFailed("Decimal length is 0 : %p"_Stz, this);
     }
   }
 
-  (void)Card::eValidate_parentEither(pCI, CK_t_EMIT, CK_c_FLAT, CK_c_FOLD,
-                                          CK_s_INJECTABLE, CK_s_KEY,
-                                          CK_s_NEEDED, CK_STREAMKEY, CK_NONE);
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_t_EMIT,
+                                     CK_c_FLAT,
+                                     CK_c_FOLD,
+                                     CK_s_INJECTABLE,
+                                     CK_s_KEY,
+                                     CK_s_NEEDED,
+                                     CK_STREAMKEY,
+                                     CK_NONE);
 
-  if (pCI->pAncestorFind(CK_s_KEY)) {
+  vValidate_mustHave(CK_RPNCALC, CK_NONE);
+
+
+  if (pCI->bAncestor(CK_s_KEY)) {
     //vDump(__func__);
     if (! m_xSymbol.bHasFacet(SF_KEY_COL) || ! m_xSymbol.bValidate()) {
       vDump(__func__);

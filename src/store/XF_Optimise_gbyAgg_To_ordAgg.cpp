@@ -67,14 +67,14 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_GBYAGG_TO_ORDAGG, "Promote gbyAgg to ordAgg"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_GBYAGG_TO_ORDAGG);
 
   m_pCI->vClearRestart();
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
     switch (m_pCI->G.e_MainCard) {
 

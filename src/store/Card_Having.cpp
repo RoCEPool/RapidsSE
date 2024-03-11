@@ -120,7 +120,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
     Card_Term* p_term_1 = _pCard_Term(pCard->pGet(1));
     pCard->vRemoveChild(p_term_1);
     Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-    pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
+    pCI->vAppendNewChild(pCard, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 
     Card_Expr* p_expr_found =
         pCI->Dic.m_p_expr->pGet_expr((i8) 0);

@@ -4,9 +4,6 @@
 
 #include "XF_Flatten_40_W_L_C_E.hpp"
 
-#include "XF_Fold.hpp"
-#include "XF_Flatten_Smooth.hpp"
-#include "XF_Flatten_Smoosh.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +20,7 @@ __aFooterFunction(XF_Flatten_40_W_L_C_E)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_40_W_L_C_E::XF_Flatten_40_W_L_C_E(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_40_W_L_C_E, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_40_W_L_C_E, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_40_W_L_C_E, _FOOTER_);
 
@@ -43,13 +40,13 @@ XF_Flatten_40_W_L_C_E::~XF_Flatten_40_W_L_C_E(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(CardIter* pCI)
+void XF_Flatten_40_W_L_C_E::vFlatten(CardIter* pCI)
 {
   _static_
 
   XF_Flatten_40_W_L_C_E* pXF_Flatten_40_W_L_C_E = new XF_Flatten_40_W_L_C_E(pCI);
 
-  pXF_Flatten_40_W_L_C_E->vXF_Flatten_40_W_L_C_E();
+  pXF_Flatten_40_W_L_C_E->vFlatten();
 
   delete pXF_Flatten_40_W_L_C_E;
 }
@@ -62,11 +59,11 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
+void XF_Flatten_40_W_L_C_E::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_40_W_L_C_E, _FOOTER_);
 
- //// m_pCI->vPrintBoard(__func__,__LINE__);
+ //// m_pCI->PRINTBOARD_dbg();
 
   /* ARCHETYPE :
       select count(*)
@@ -78,20 +75,16 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_40_W_L_C_E, "((vFlatten_40_W_L_C_E))"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_40_W_L_C_E);
 
-  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
-  pFold->vFold_basic(m_pCI, "40_W_L_C_E"_Stz, CK_o_WHERE,P_CrlSqy);
- // m_pCI->vPrintBoard(__func__,__LINE__);
+  vFold_basic(m_pCI, "40_W_L_C_E"_Stz, CK_o_WHERE);
+ // m_pCI->PRINTBOARD_dbg();
 
-  XF_Flatten_Smoosh* pSmoosh = new XF_Flatten_Smoosh;
-  pSmoosh->vInto_KEYnotEXISTS(m_pCI);
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ vInto_KEYnotEXISTS(m_pCI);
+ // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  delete pSmoosh;
-  delete pFold;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

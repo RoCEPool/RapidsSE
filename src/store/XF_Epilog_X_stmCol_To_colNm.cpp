@@ -62,11 +62,11 @@ void XF_Epilog_X_stmCol_To_colNm::vX_stmCol_to_colNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_STMCOL_TO_COLNM, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_X_STMCOL_TO_COLNM, "stream-column to column-name"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_X_STMCOL_TO_COLNM);
 
   m_pCI->vBeginEach();
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
 //    if (! (   CK_o_KEYEXISTS    == m_pCI->G.e_MainCard
 //              || CK_o_KEYNOTEXISTS == m_pCI->G.e_MainCard))

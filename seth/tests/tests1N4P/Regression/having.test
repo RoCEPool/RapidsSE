@@ -1,3 +1,48 @@
+// Source file: ../queries/having/rhaving2.sql
+// Result file: ../queries/having/results/having2.res
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
+/pipelineName = "Having2"
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
+ordered rows:
+  (62, 128.00, 'BLACK', 'ttt')
+  (243, 132.00, 'ORANGE', 'nnn')
+  (201, 122.00, 'PINK', 'vvv')
+  (457, 109.00, 'PURPLE', 'www')
+  (213, 93.00, 'RED', 'ccc')
+  (402, 172.00, 'TEAL', 'ccc')
+  (46, 106.00, 'aqua', 'nnn')
+  (74, 101.00, 'aqua', 'bbb')
+  (5, 123.00, 'black', 'iii')
+  (124, 144.00, 'black', 'mmm')
+  (235, 158.00, 'black', 'bbb')
+  (336, 40.00, 'blue', 'ppp')
+  (303, 62.00, 'gold', 'ccc')
+  (222, 62.00, 'green', 'yyy')
+  (415, 30.00, 'green', 'uuu')
+  (260, 81.00, 'grey', 'lll')
+  (380, 129.00, 'maroon', 'xxx')
+  (141, 31.00, 'orange', 'aaa')
+  (467, 57.00, 'orange', 'kkk')
+  (26, 86.00, 'peach', 'ooo')
+  (215, 140.00, 'purple', 'rrr')
+  (154, 178.00, 'violet', 'ddd')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Source file: ../queries/having/rnhaving1.sql
 // Result file: none

@@ -82,7 +82,7 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
       xCI_bounds.pChild()->vMark1(MARK_AT);
     }
 
-   // pCI->vPrintBoard(__func__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
     nCulled += p_bounds->nCullBound(MARK_AT);
 
   }
@@ -272,6 +272,9 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vValidate_mustHave(CK_INDEXNM,CK_NONE);
+  vValidate_mayHave(CK_BOUNDS,CK_IDXCOLLIST,CK_INDEXNM,CK_NONE);
+
+  (void)Card::eValidate_parentEither(pCI, CK_t_INDEXLIST, CK_NONE);
 
   if (pSymbol()->Y_bHas(P_ChosenIndex)) {
     RASSERT(pFindPpyRecursive(P_ChosenBound, CK_BOUND));

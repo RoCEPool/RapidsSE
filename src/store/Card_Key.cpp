@@ -194,7 +194,7 @@ void Card_Key::vMapColumns(CardIter *pCI)
     Card_Expr *p_expr_key = xKey.p_expr();
 
     i_Cell++;
-    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
+    pCI->vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
   }
 
@@ -289,9 +289,15 @@ IndexDef* Card_Key::pToIndexDef(void)
 void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
+
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_o_GBYAGG,
+                                     CK_o_INDEXJOIN,
+                                     CK_o_SORT,
+                                     CK_NONE);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

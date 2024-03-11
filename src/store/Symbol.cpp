@@ -399,7 +399,7 @@ bool Symbol::bIs_Direction(Stz* szArg)
 {
   _static_
 
-  if (szArg->bSame("ASC"_Stz))   return true;
+       if (szArg->bSame("ASC"_Stz))   return true;
   else if (szArg->bSame("DESC"_Stz))  return true;
 
   return false;
@@ -441,8 +441,8 @@ bool Symbol::bIs_Exp_Col(Stz* szArg)
   char acFirst  = szArg->cChar(0);
   char acSecond = szArg->cChar(1);
 
-  if ('$' == acFirst &&
-      StrLib::bIsDigit(acSecond))
+  if (   '$' == acFirst
+      && StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
@@ -495,7 +495,7 @@ bool Symbol::bIs_Idx_Col(Stz* szArg)
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
 
-  if ('$' == acFirst
+  if (   '$' == acFirst
       && ('I' == acSecond || 'i' == acSecond)
       && StrLib::bIsDigit(acThird)
       && ! acFourth)
@@ -622,8 +622,8 @@ bool Symbol::bIs_List_Cnt(Stz* szArg)
   char acFirst  = szArg->cChar(0);
   char acSecond = szArg->cChar(1);
 
-  if ('#' == acFirst &&
-      StrLib::bIsDigit(acSecond))
+  if (   '#' == acFirst
+      && StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
@@ -641,7 +641,7 @@ bool Symbol::bIs_Key_Col(Stz* szArg)
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
 
-  if ('$' == acFirst
+  if (   '$' == acFirst
       && ('K' == acSecond || 'k' == acSecond)
       && StrLib::bIsDigit(acThird)
       && ! acFourth)
@@ -717,6 +717,27 @@ bool Symbol::bIs_Nmd_Col(Stz* szArg)
   if (bIs_When(szArg))        return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given arg a synthetic column name?                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Nmd_Col_synthetic(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
+
+  if (   'C' == acFirst
+      && 'O' == acSecond
+      && 'L' == acThird
+      && StrLib::bIsDigit(acFourth))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -796,7 +817,7 @@ bool Symbol::bIs_Sqy_No(Stz *szArg)
   char acSecond = szArg->cChar(1);
   char acThird  = szArg->cChar(2);
 
-  if ('$' == acFirst
+  if (   '$' == acFirst
       && 'Q' == acSecond
       && StrLib::bIsDigit(acThird))
     return true;
@@ -820,7 +841,7 @@ bool Symbol::bIs_Sqy_Op(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given arg a subquery correlation-parameter?  (i.e. %n)                  */
+/* is given arg a subquery parameter?  (i.e. %n)                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Prm(Stz* szArg)
 {
@@ -830,7 +851,7 @@ bool Symbol::bIs_Sqy_Prm(Stz* szArg)
   char acSecond = szArg->cChar(1);
   char acThird  = szArg->cChar(2);
 
-  if ('%' == acFirst
+  if (   '%' == acFirst
       && StrLib::bIsDigit(acSecond)
       && ! acThird)
     return true;
@@ -850,11 +871,13 @@ bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
   char acSecond = szArg->cChar(1);
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
+  char acFifth  = szArg->cChar(4);
 
   if (   '$' == acFirst
-      && 'R' == acSecond
-      && StrLib::bIsDigit(acThird)
-      && ! acFourth)
+      && 'S' == acSecond
+      && 'R' == acThird
+      && StrLib::bIsDigit(acFourth)
+      && ! acFifth)
     return true;
 
   return false;
@@ -883,7 +906,7 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szArg)
   char acFirst  = szArg->cChar(0);
   char acSecond = szArg->cChar(1);
 
-  if ('S' == acFirst
+  if (   'S' == acFirst
       && StrLib::bIsDigit(acSecond))
     return true;
 
@@ -931,7 +954,7 @@ bool Symbol::bIs_Tbl_Col(Stz* szArg)
   char acFourth = szArg->cChar(3);
   char acFifth  = szArg->cChar(4);
 
-  if ('$' == acFirst
+  if (   '$' == acFirst
       && '$' == acSecond
       && StrLib::bIsAlpha(acThird)
       && '.' == acFourth
@@ -966,10 +989,10 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
 
-  if ('$' == acFirst &&
-      'T' == acSecond &&
-      StrLib::bIsAlpha(acThird) &&
-      '\0' == acFourth)
+  if (   '$' == acFirst
+      && 'T' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '\0' == acFourth)
     return true;
 
   return false;
@@ -987,10 +1010,10 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
   char acThird  = szArg->cChar(2);
   char acFourth = szArg->cChar(3);
 
-  if ('$' == acFirst &&
-      'T' == acSecond &&
-      StrLib::bIsUpperCase(acThird) &&
-      '\0' == acFourth)
+  if (   '$' == acFirst
+      && 'T' == acSecond
+      && StrLib::bIsUpperCase(acThird)
+      && '\0' == acFourth)
     return true;
 
   return false;
@@ -1331,7 +1354,7 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
+   case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
@@ -1396,10 +1419,10 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
     case SF_PARENTHESIS: vFacet_Parenthesis(szArg); break;
     case SF_SQY_NM:      vFacet_Sqy_Nm(szArg);      break;
     case SF_SQY_NO:      vFacet_Sqy_No(szArg);      break;
-    case SF_SQY_PRM:     vFacet_Sqy_Prm(szArg);     break;
-    case SF_SQY_RSL:     vFacet_Sqy_Rsl(szArg);     break;
     case SF_RLN_OP:      vFacet_Rln_Op(szArg);      break;
     case SF_SQY_OP:      vFacet_Sqy_Op(szArg);      break;
+    case SF_SQY_PRM:     vFacet_Sqy_Prm(szArg);     break;
+    case SF_SQY_RSL:     vFacet_Sqy_Rsl(szArg);     break;
     case SF_STG_CAST:    vFacet_Stg_Cast(szArg);    break;
     case SF_STR_FN:      vFacet_Str_Fn(szArg);      break;
     case SF_STR_LIT:     vFacet_Str_Lit(szArg);     break;
@@ -1418,6 +1441,24 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
   }
 
   RASSERT(bHasFacets());
+}
+
+/*----------------------------------------------------------------------------*/
+/* format and apply facet                                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyFacet_varg(eSF eFacet, Stz* szFormat, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  s256 sFacet;
+
+  va_list vaArgs;
+
+  va_start(vaArgs,szFormat);
+  sFacet.vSprintVA(szFormat,vaArgs);
+  va_end(vaArgs);
+
+  vApplyFacet(eFacet, sFacet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1442,6 +1483,18 @@ Cast Symbol::xCast(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_xCast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get eCT                                                                    */
+/*----------------------------------------------------------------------------*/
+eCT Symbol::eColType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  eCT eColType = m_xCast.m_xTypeId.eCTVal();
+
+  return eColType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1526,30 +1579,6 @@ void Symbol::vDump(Stz* szTitle)
          ,Stz::szTab(1)
          ,sProperties.szStz()
          );
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Symbol::eEval_rlnOp(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  eRO eRelnOp = eEvalRelnOp(szFacet(SF_RLN_OP));
-
-  return eRelnOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate sub-query op                                                      */
-/*----------------------------------------------------------------------------*/
-eQO Symbol::eEval_sqyOp(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  eQO eSubQryOp = eEvalSubQryOp(szFacet(SF_SQY_OP));
-
-  return eSubQryOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1790,6 +1819,42 @@ bool Symbol::bHasFacets(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does symbol a symbolic value?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bHasFacets(i8 /*eSF*/ iFacet_first, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  bool bHasAll = true;
+
+  va_list xArgs;
+  va_start(xArgs, iFacet_first);
+
+  eSF eFacet_mustHave = (eSF) iFacet_first;
+  while (SF_NONE != eFacet_mustHave) {
+
+    bool bMustHave = false;
+    for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+      if (eFacet_mustHave == xaFacet[i_Facet].m_eFacet) {
+        bMustHave = true;
+        break;
+      }
+    }
+
+    if (! bMustHave) {
+      bHasAll = false;
+      break;
+    }
+
+    eFacet_mustHave = (eSF)va_arg(xArgs, i8);
+  }
+
+  va_end(xArgs);
+
+  return bHasAll;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does symbol have properties?                                               */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bHasProperties(void)
@@ -1800,16 +1865,6 @@ bool Symbol::bHasProperties(void)
     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does symbol have a type?                                                   */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bHasType(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  return m_xCast.m_xTypeId.bIsValid();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1838,6 +1893,7 @@ bool Symbol::bIs_Col(void)
   if (bHasFacet(SF_EXP_COL))  return true;
   if (bHasFacet(SF_KEY_COL))  return true;
   if (bHasFacet(SF_ITM_COL))  return true;
+  if (bHasFacet(SF_NMD_COL))  return true;
   if (bHasFacet(SF_TBL_COL))  return true;
 
   return false;
@@ -1924,10 +1980,12 @@ bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE != eFacet_ignore);
+
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
 
-    if (SF_NONE != eFacet_ignore && eFacet_this == eFacet_ignore)
+    if (eFacet_this == eFacet_ignore)
       continue;
 
     if (bMatches(eFacet_this, pSymbol_arg)) {
@@ -1941,9 +1999,13 @@ bool Symbol::bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have multiple facets ?                                    */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bMultiFaceted(void)
+bool Symbol::bMultiFaceted(i8 nFacets_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 nFacets_this = nFacets();
+  if (C_UNKNOWN != nFacets_arg && nFacets_arg != nFacets_this)
+    return false;
 
   if (nFacets() > 1)
     return true;
@@ -1973,16 +2035,65 @@ bool Symbol::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this symbol only have one facet ?                                     */
+/* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSingleFaceted(void)
+eRO Symbol::eRlnOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (nFacets() == 1)
-    return true;
+  eRO eRelnOp = eEvalRelnOp(szFacet(SF_RLN_OP));
 
-  return false;
+  return eRelnOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have same cast as arg ?                                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bSameCast(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (xTypeId() != pSymbol_arg->xTypeId())
+    return false;
+
+  if (nTypeLength() != pSymbol_arg->nTypeLength())
+    return false;
+
+  if (nTypeScale() != pSymbol_arg->nTypeScale())
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol only have one facet ?                                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bSingleFaceted(eSF eFacet_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 nFacets_this = nFacets();
+
+  if (nFacets_this != 1)
+    return false;
+
+  if (SF_NONE != eFacet_arg)
+    if (eFacet_arg != aFacet(0)->m_eFacet)
+      return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate sub-query op                                                      */
+/*----------------------------------------------------------------------------*/
+eQO Symbol::eSqyOp(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  eQO eSubQryOp = eEvalSubQryOp(szFacet(SF_SQY_OP));
+
+  return eSubQryOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2201,6 +2312,59 @@ void Symbol::vValidate(void)
     NEVER_REACH
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have a valid cast?                                             */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bValidCast(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! bValidType())
+    return false;
+
+  if (! bValidLenScale())
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have a valid length & scale ?                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bValidLenScale(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  bool bValid;
+
+  eCT eColType = this->eColType();
+  switch (eColType) {
+
+    case CT_DECIMAL:
+      if (nTypeLength())
+        bValid = true;
+      else
+        bValid = false;
+      break;
+
+    default:
+      bValid = true;
+  }
+
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have a valid type?                                             */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bValidType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_xTypeId.bIsValid();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
@@ -3166,7 +3330,7 @@ void Symbol::vFacet_Sqy_No(i8 iSqyNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vFacetSprint(SF_SQY_NO, "$Q%lld"_Stz, iSqyNo);
 
@@ -3200,7 +3364,7 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given parameter column                                  */
+/* set this symbol to given subquery parameter                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Sqy_Prm(i8 iOrdinal)
 {
@@ -3214,7 +3378,7 @@ void Symbol::vFacet_Sqy_Prm(i8 iOrdinal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given parameter column                                  */
+/* set this symbol to given subquery parameter                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
 {
@@ -3228,7 +3392,7 @@ void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given parameter column                                  */
+/* for a subQuery result facet                                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
 {
@@ -3236,7 +3400,7 @@ void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
 
   //RASSERT(! bHasFacets());
 
-  vFacetSprint(SF_SQY_RSL, "$R%lld"_Stz, iOrdinal);
+  vFacetSprint(SF_SQY_RSL, "$SR%lld"_Stz, iOrdinal);
 
   RASSERT(bHasFacet(SF_SQY_RSL));
 }

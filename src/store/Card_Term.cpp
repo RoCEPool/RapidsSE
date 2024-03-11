@@ -60,14 +60,14 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (!pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    if (pCI->pAncestorFind(CK_o_KEYEXISTS) || pCI->pAncestorFind(CK_o_KEYNOTEXISTS))
+    if (pCI->bAncestor(CK_o_KEYEXISTS) || pCI->bAncestor(CK_o_KEYNOTEXISTS))
       return C_CONTINUE_RECURSION;
 
     Card_Term *p_term = _pCard_Term(pCard);
     Symbol *pSymbol_term = p_term->pSymbol();
 
-    if ((pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->pAncestorFind(CK_o_INDEXJOIN))) &&
-        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_s_CONSTRAINT)))) {
+    if ((pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->pAncestor(CK_o_INDEXJOIN))) &&
+        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_s_CONSTRAINT)))) {
 
       if (!pSymbol_term->bHasFacet(SF_NMD_COL))
         return C_CONTINUE_RECURSION;
@@ -84,7 +84,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (! pSymbol_term->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    if (! (pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))))
+    if (! (pCI->G.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR))))
       return C_CONTINUE_RECURSION;
 
     i8 iItemise = pCI->G.p_expr->iItemise();
@@ -229,7 +229,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
 
   pSym_term->vApplyCast(p_expr_matched->pSymbol()->xCast());
 
-  if (pSym_term->bHasType())
+  if (pSym_term->bValidType())
     rxCast_last = pSym_term->xCast();
 }
 
@@ -352,7 +352,7 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr)
+void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -360,12 +360,16 @@ void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr)
   if (! pSym_term->bHasFacet(SF_EXP_COL))
     return;
 
-#if 1
-  if (Card_Expr* p_expr_dic = p_Dic_expr->pFindExprOfSymbol(pSym_term)) {
-#else
-    // I thnk it should be this form
-  if (Card_Expr* p_expr_dic = p_Dic_expr->pFind_expr_Matches(pSym_term)) {
-#endif
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    vDebugPoint();
+
+  Card_Expr* p_expr_dic;
+  if (bAlt)
+    p_expr_dic = p_Dic_expr->pFind_expr_Matches(pSym_term);
+  else
+    p_expr_dic = p_Dic_expr->pFindExprOfSymbol(pSym_term);
+
+  if (p_expr_dic) {
     pSym_term->vApplyCastFacets(p_expr_dic->pSymbol());
     vMark1(MARK_CHANGED);
   }
@@ -491,7 +495,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
   // not converted
 //  if (!pCI->X.m_pExprList_i)
-//    pCI->vPrintBoard(__func__,__LINE__,true);
+//    pCI->PRINTBOARD_dbg();
 //    pSymbol_this->vDump();
 //  RASSERT(pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol));
 
@@ -521,14 +525,34 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_RPNCALC,
                                      CK_NONE);
 
+  Symbol* pSym_term = pSymbol();
+  if (pSym_term->bIs_Col()) {
+    if (pSym_term->bHasFacet(SF_EXP_COL)) {
+      vDebugPoint();
+    }
+    if (pSym_term->bHasFacet(SF_ITM_COL)) {
+      vDebugPoint();
+    }
+    if (pSym_term->bHasFacet(SF_KEY_COL)) {
+      vDebugPoint();
+    }
+    if (pSym_term->bHasFacet(SF_NMD_COL)) {
+      vDebugPoint();
+    }
+    if (pSym_term->bHasFacet(SF_TBL_COL)) {
+      vDebugPoint();
+    }
+  }
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
-    if (m_xSymbol.bIs_Col() && ! pCI->pAncestorFind(CK_s_NEEDED)) {
-      if (! m_xSymbol.bHasType()) {
+    if (m_xSymbol.bIs_Col() && ! pCI->bAncestor(CK_s_NEEDED)) {
+      if (!m_xSymbol.bValidType()) {
          vMark("?"_Stz,"t"_Stz);
          pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);
-         pCI->vPrintBoard(__func__,__LINE__,true);
+         pCI->PRINTBOARD_dbg();
          vDump(__func__);
          vValidationFailed("Type Missing : %p"_Stz,this);
       }
@@ -536,7 +560,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
         if (m_xSymbol.nTypeLength() == 0) {
           vMark("?"_Stz,"l"_Stz);
           pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
-          pCI->vPrintBoard(__func__,__LINE__,true);
+          pCI->PRINTBOARD_dbg();
           vDump(__func__);
           vValidationFailed("Decimal length is 0 : %p"_Stz, this);
         }
@@ -548,7 +572,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL]) ) {
     i8 i_Ancestor;
-    if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR,&i_Ancestor)))) {
+    if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR, &i_Ancestor)))) {
       Card* p_ANCESTOR = pCI->pAncestor(i_Ancestor - 1);
       eCK eAncestor = p_ANCESTOR->eCard();
       RASSERT(CK_t_EMIT == eAncestor ||
@@ -562,7 +586,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
            ) {
         Card_EXPRLIST* p_EXPRLIST = (Card_EXPRLIST*)p_ANCESTOR;
         if (! p_EXPRLIST->bTestFind_expr_Matching(pCI->G.p_expr,this->pSymbol(),SF_EXP_COL)) {
-          pCI->vPrintBoard(__func__,__LINE__,true);
+          pCI->PRINTBOARD_dbg();
           p_EXPRLIST->vDump(__func__ );
           pCI->G.p_expr->vDump(__func__ );
           NEVER_REACH

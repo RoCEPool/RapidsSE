@@ -62,10 +62,10 @@ void XF_Epilog_Determine_Columns::vDeterime_Columns(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_DETERMINE_COLUMNS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_DETERMINE_COLUMNS, "determine columns required"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_DETERMINE_COLUMNS);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
   }
 
   m_pCI->vEndTransform(__LINE__);

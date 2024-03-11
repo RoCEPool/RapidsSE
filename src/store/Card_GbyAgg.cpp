@@ -95,7 +95,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard(__func__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
     return;
   }
 
@@ -110,8 +110,8 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   // insert empty early projection (has only needed) before this gbyAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->G_vInsertBefore(p_project_early, this);
-  pCI->G_vMainResynch();
+  pCI->vInsertBefore(p_project_early, this);
+  pCI->vMainResynch();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
@@ -119,9 +119,20 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  pCI->G.p_gbyAgg->vRecreate_emit(pCI);
+  pCI->G.p_gbyAgg->vRestate_emit(pCI);
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft needed                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_GbyAgg::vCraft_needed_root(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->Early.m_pNeeded_later = pCI->G.p_emit->pCraft_needed_root(pCI);
+  DELETE_CARD(pCI->Early.m_pNeeded_later);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +191,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
   pCI->G.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 

@@ -4,8 +4,6 @@
 
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 
-#include "XF_Fold.hpp"
-#include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -21,7 +19,7 @@ __aFooterFunction(XF_Flatten_53_W_L_NC_NI_exists)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_53_W_L_NC_NI_exists::XF_Flatten_53_W_L_NC_NI_exists(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, _FOOTER_);
 
@@ -41,13 +39,13 @@ XF_Flatten_53_W_L_NC_NI_exists::~XF_Flatten_53_W_L_NC_NI_exists(void) noexcept(f
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(CardIter* pCI)
+void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(CardIter* pCI)
 {
   _static_
 
   XF_Flatten_53_W_L_NC_NI_exists* pXF_Flatten_53_W_L_NC_NI_exists = new XF_Flatten_53_W_L_NC_NI_exists(pCI);
 
-  pXF_Flatten_53_W_L_NC_NI_exists->vXF_Flatten_53_W_L_NC_NI_exists();
+  pXF_Flatten_53_W_L_NC_NI_exists->vFlatten();
 
   delete pXF_Flatten_53_W_L_NC_NI_exists;
 }
@@ -60,11 +58,11 @@ void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(CardIter* p
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(void)
+void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // W L NC NI
   // push a (linear non-correlated not in) sub-query before the main-query
@@ -81,33 +79,28 @@ void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_53_W_L_NC_NI_EXISTS, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_53_W_L_NC_NI_EXISTS);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold
 
-  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
-
   //pFold->vFold_basic(m_pCI,"W_L_NC_NI_exists"_Stz,CK_o_WHERE);
   CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz,
-                               CK_o_WHERE, QO_IN_OP, SM_NONE);
+      pFold_nc_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz,
+                               CK_o_WHERE, QO_IN_OP);
 
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
 
-  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
-  pSmooth->vSmooth(m_pCI,pCarryForward);
- // m_pCI->vPrintBoard(__func__,__LINE__);
+  vSmooth(m_pCI,pCarryForward);
+ // m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  delete pSmooth;
   delete pCarryForward;
-  delete pFold;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

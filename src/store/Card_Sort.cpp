@@ -78,7 +78,8 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_sort->vDeleteSub(pCI->G.p_emit);
 
   Card_Emit* p_emit_sort =  pCI->Flux.m_pArriving->pInduct(pCI);
-//  p_emit_sort->vDump(__func__);
+  //p_emit_sort->vDump(__func__);
+  //pCI->G.p_key->vDump(__func__);
 //  for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
 //    Card_Expr* p_expr_key = xKey_sort.p_expr();
 //
@@ -94,6 +95,9 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     if (! p_expr_key)
       continue;
     Symbol* pSym_expr_key = p_expr_key->pSymbol();
+    //p_expr_emit_sort->vDump(__func__);
+    //p_expr_key->vDump(__func__);
+    //p_expr_emit_sort->pGet_term(0)->vDump(__func__);
     p_expr_emit_sort->pGet_term(0)->pSymbol()->vApplyFacets(pSym_expr_key);
    }
 

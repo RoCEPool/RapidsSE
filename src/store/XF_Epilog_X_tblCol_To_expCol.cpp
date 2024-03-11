@@ -62,10 +62,10 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_X_TBLCOL_TO_EXPCOL, "transform table-columns to stream-columns"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_X_TBLCOL_TO_EXPCOL);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
 //    if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
 //
@@ -78,7 +78,7 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 //    }
     vTo_expCol();
 
-//    m_pCI->vPrintBoard(__func__,__LINE__);
+//    m_pCI->PRINTBOARD_dbg();
     vDebugPoint();
   }
 

@@ -1,16 +1,25 @@
 /*============================================================================*/
-/* eSM.h -- XF_Flatten_Smoosh                                                         */
+/* eQF.h - query flattening                                                   */
 /*============================================================================*/
 #pragma once
 
-enum eSM // smoosh
+enum eQF // symbol facet
 {
-  /* */ SM_NONE=0,
-  /* */ SM_NOT_IN_into_KEYNOTEXISTS,
-  /* */ SM_ENUMS
+  /* */ QF_NONE = 0,    // none
+
+  /* */ QF_10_F,
+  /* */ QF_24_W_A_C_ro,
+  /* */ QF_32_W_A_NC_I,
+  /* */ QF_34_W_A_NC_ro,
+  /* */ QF_40_W_L_C_E,
+  /* */ QF_52_W_L_NC_I_join,
+  /* */ QF_53_W_L_NC_NI_join,
+  /* */ QF_74_H_A_NC_ro,
+
+  /* */ QF_ENUMS
 };
 
-extern Stz* aSM[SM_ENUMS];
+extern Stz* aQF[QF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -85,6 +85,7 @@ namespace STORE
     static bool bIs_Mth_Op(Stz* szArg);          // +, -, *, /
     static bool bIs_Negate(Stz* szArg);          // NULL
     static bool bIs_Nmd_Col(Stz* szArg);         // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Nmd_Col_synthetic(Stz* szArg);  // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Note(Stz* szArg);            // ...any...
     static bool bIs_Null(Stz* szArg);            // NULL
     static bool bIs_Parenthesis(Stz* szArg);     // ( or )
@@ -130,19 +131,18 @@ namespace STORE
     void vApplyFacet(eSF eFacet, char cChr, i8 iInt);
     void vApplyFacet(eSF eFacet, i8 iInt);
     void vApplyFacet(eSF eFacet, Stz* szArg);
+    void vApplyFacet_varg(eSF eFacet, Stz* szFormat, ...);
     void vApplyFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vApplyFacet(eSF eFacet, Symbol* pSymbol);
     void vApplyFacets(Symbol* pSymbol_arg);
 
     Cast xCast(void);
+    eCT  eColType(void);
     void vCullFacet(eSF eFacet_except);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vDump(Stz* szTitle=""_Stz);
-
-    eRO  eEval_rlnOp(void);
-    eQO  eEval_sqyOp(void);
 
     Facet* aFacet(eSF eFacet);
     Facet* aFacet(i8 i_Facet);
@@ -162,8 +162,8 @@ namespace STORE
     bool bHasFacet(eSF eFacet, Stz* szArg);
     bool bHasFacet(Stz* szArg);
     bool bHasFacets(void);
+    bool bHasFacets(i8 /*eSF*/ iFacet_first, ...);
     bool bHasProperties(void);
-    bool bHasType(void);
 
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
@@ -175,11 +175,15 @@ namespace STORE
     bool bMatches(eSF eFacet, Symbol* pSymbol_arg);
     bool bMatches(Symbol* pSymbol_arg);
     bool bMatches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
-    bool bMultiFaceted(void);
+    bool bMultiFaceted(i8 nFacets_arg=C_UNKNOWN);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
-    bool bSingleFaceted(void);
+    eRO  eRlnOp(void);
+
+    bool bSameCast(Symbol* pSymbol_arg);
+    bool bSingleFaceted(eSF eFacet_arg=SF_NONE);
+    eQO  eSqyOp(void);
 
     char   cTblSyn(void);
     i8     iTo_integer(eSF eFacet);
@@ -191,6 +195,10 @@ namespace STORE
 
     bool bValidate(void);
     void vValidate(void);
+
+    bool bValidCast(void);
+    bool bValidLenScale(void);
+    bool bValidType(void);
 
     void Y_vAll(Symbol* pSymbol_arg);
     void Y_vCut(Stz* szPpyNm);

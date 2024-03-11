@@ -62,12 +62,12 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_X_EXPCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_X_EXPCOL_TO_TBLCOL);
 
   m_pCI->vClearRestart();
 
   m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
     if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
       if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
         continue;

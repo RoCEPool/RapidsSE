@@ -62,14 +62,14 @@ void XF_Epilog_Append_synthesis::vAppend_synthesis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_APPEND_SYNTHESIS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_APPEND_SYNTHESIS, "append synthesis"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_APPEND_SYNTHESIS);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
     if (m_pCI->G.p_MainCard->bIsCard(CK_c_STAGE))
       continue;
 
-    m_pCI->G_vAppendNewChild(m_pCI->G.p_MainCard, CK_SYNTHESIS);
+    m_pCI->vAppendNewChild(m_pCI->G.p_MainCard, CK_SYNTHESIS);
   }
 
   m_pCI->vEndTransform(__LINE__);

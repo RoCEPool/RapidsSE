@@ -61,7 +61,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain_NONE()) {
+  while (pCI->bEachMain()) {
 
     if (CK_o_INDEXJOIN == pCI->G.e_MainCard ||
         CK_o_INDEXSCAN == pCI->G.e_MainCard ||
@@ -82,8 +82,8 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_arriving,
                                                              pCI->G.p_OP);
         UNUSED(eStageCast);
-        pCI->G_vMainResynch();
-       // pCI->vPrintBoard(__func__,__LINE__);
+        pCI->vMainResynch();
+       // pCI->PRINTBOARD_dbg();
         vDebugPoint();
       }
 
@@ -112,7 +112,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   delete p_streamPtn;
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
   vDebugPoint();
 }
 
@@ -172,7 +172,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
 
       if (p_project_prev && ! p_combined_prev) {
         Card_Combined *p_combined = new Card_Combined;
-        pCI->G_vInsertBefore(p_combined, p_cast_prev);
+        pCI->vInsertBefore(p_combined, p_cast_prev);
       }
 
       break;
@@ -181,16 +181,16 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
     case XK_HASHCAST:
       p_cast_prev->SYM(SF_STG_CAST,"hashcast"_Stz);
 
-      pCI->G.p_expr = pCI->pExpr_For_col(p_term_tblCol_hash, pCI->G.i_MainCard);
+      pCI->G.p_expr = pCI->pBackSearch_expr_For_col(p_term_tblCol_hash->pSymbol(), pCI->G.i_MainCard);
       p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr,p_emitted_prev);
 
       if (p_combined_prev) {
-        pCI->G_vInsertBefore(p_hash_prior_new, p_combined_prev);
+        pCI->vInsertBefore(p_hash_prior_new, p_combined_prev);
       }
       else {
-        pCI->G_vInsertBefore(p_hash_prior_new, p_cast_prev);
+        pCI->vInsertBefore(p_hash_prior_new, p_cast_prev);
         Card_Combined* p_combined = new Card_Combined;
-        pCI->G_vInsertBefore(p_combined, p_cast_prev);
+        pCI->vInsertBefore(p_combined, p_cast_prev);
       }
 
       break;
@@ -421,14 +421,14 @@ void Card_Deck::vValidate(CardIter* pCI)
   vMark1RecursiveIf(MARK_BLANK, MARK_VALID);
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_UNVALID)) {
-   // pCI->vPrintBoard(__func__,__LINE__,true);
+   // pCI->PRINTBOARD_dbg();
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH
   }
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_DUPLICATE)) {
-   // pCI->vPrintBoard(__func__,__LINE__,true);
+   // pCI->PRINTBOARD_dbg();
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH

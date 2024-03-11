@@ -18,8 +18,8 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------
-    static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
-    static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
+    static Card_Expr* pCraft_expr_gby_From_expr_crlKey(Card_Expr* pExpr_crlKey);
+    static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
     static Card_Expr* pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
@@ -27,7 +27,7 @@ namespace STORE
     static Card_Expr* pCast_expr_term_expCol(Card_Term* p_term);
 
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
-    void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vBump_expCol(i8 nBumpBy);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);

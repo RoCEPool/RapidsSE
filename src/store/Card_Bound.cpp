@@ -370,14 +370,12 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bHasFacet(SF_IDX_COL)) {
-    Card::vValidate(pCI,iDepth,pParent);
-  pCI->vValidateChildren(this,iDepth+1);
-    vValidationPassed();
-    return;
-  }
+  vValidate_mayHave(CK_TERM,CK_NONE);
+  vValidate_mustHave(CK_TERM,CK_NONE);
 
   RASSERT(pSymbol()->bHasFacet(SF_RLN_OP) || ! pSymbol()->nFacets());
+
+  (void)Card::eValidate_parentEither(pCI, CK_BOUNDS, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

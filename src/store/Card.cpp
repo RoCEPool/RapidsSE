@@ -34,11 +34,10 @@ Stz* P_Cell         = "i_Cell"_Stz;
 Stz* P_ChosenBound  = "bChosenBound"_Stz;
 Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
 Stz* P_Count        = "nCount"_Stz;
-Stz* P_CrlKeyExpr   = "bCrlKeyExpr"_Stz;
-Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
+Stz* P_CrlKeyConj   = "bCrlKeyConj"_Stz;
+Stz* P_CrlKeyDefn   = "bCrlKeyDefn"_Stz;
+Stz* P_CrlKeyTerm   = "bCrlKeyTerm"_Stz;
 Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
-Stz* P_CrlRslTest   = "bCrlRslTest"_Stz;
-Stz* P_CrlSqy       = "bCrlSqy"_Stz;
 Stz* P_DebugOption  = "szDebugOption"_Stz;
 Stz* P_Early        = "bEarly"_Stz;
 Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
@@ -50,7 +49,6 @@ Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
 Stz* P_Invalid      = "bInvalid"_Stz;
 Stz* P_Key          = "bKey"_Stz;
 Stz* P_Level        = "eLevel"_Stz;
-Stz* P_NonCrlSqy    = "bNonCrlSqy"_Stz;
 Stz* P_Payload      = "bPayload"_Stz;
 Stz* P_PrmOdn       = "szPrmOdn"_Stz;
 Stz* P_Permutation  = "i_Permutation"_Stz;
@@ -61,7 +59,7 @@ Stz* P_SendKind     = "eSendKind"_Stz;
 Stz* P_Smoothed     = "bSmoothed"_Stz;
 Stz* P_StageTopo    = "eStageTopo"_Stz;
 Stz* P_SqyCall      = "bSqyCall"_Stz;
-Stz* P_SqyNo        = "i_SqyNo"_Stz;
+Stz* P_SqyRslTest   = "bSqyRslTest"_Stz;
 Stz* P_Unproject    = "bUnproject"_Stz;
 
 Stz* C_CARD_HISTORY = "<card_history>"_Stz;
@@ -100,7 +98,8 @@ Stz* MARK_UP         = "^"_Stz;
 Stz* MARK_UNVALID    = "X"_Stz;
 Stz* MARK_VALID      = "Y"_Stz;
 
-Stz* C_SQCRLKEY      = "_SQCRLKEY_"_Stz;
+Stz* C_CRLKEY      = "_CRLKEY_Q%lld_"_Stz;
+Stz* C_SQYRSL      = "_SQYRSL_Q%lld_"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -110,10 +109,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (CK_o_CROSSJOIN == eCard)
-    vDebugPoint();
-
-  if (CK_BOUNDS == eCard)
+  if (CK_o_CORRELATION == eCard)
     vDebugPoint();
 
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
@@ -746,15 +742,15 @@ Card* Card::pFindParentRecursive(Card* pChild)
 /*----------------------------------------------------------------------------*/
 /* attempt find card                                                          */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindCardRecursive(eCK eOfCard)
+Card* Card::pFindCardRecursive(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsCard(eOfCard))
+  if (bIsCard(eCard))
     return this;
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindCardRecursive(eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindCardRecursive(eCard))
       return pFoundCard;
   }
 
@@ -764,17 +760,17 @@ Card* Card::pFindCardRecursive(eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find mark1 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindMark1Recursive(char cMark1, eCK eOfCard)
+Card* Card::pFindMark1Recursive(char cMark1, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (cMark1 == this->cMark1())
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(cMark1,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(cMark1, eCard))
       return pFoundCard;
   }
 
@@ -784,17 +780,17 @@ Card* Card::pFindMark1Recursive(char cMark1, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find mark1 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eOfCard)
+Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (this->bMark1(szMark1))
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(szMark1,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(szMark1, eCard))
       return pFoundCard;
   }
 
@@ -804,17 +800,17 @@ Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find mark2 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindMark2Recursive(char cMark2, eCK eOfCard)
+Card* Card::pFindMark2Recursive(char cMark2, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (cMark2 == this->cMark2())
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(cMark2,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(cMark2, eCard))
       return pFoundCard;
   }
 
@@ -824,17 +820,35 @@ Card* Card::pFindMark2Recursive(char cMark2, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find mark2 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eOfCard)
+Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (this->bMark2(szMark2))
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(szMark2,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(szMark2, eCard))
+      return pFoundCard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find sub card with given facet                                             */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindCard_WithSubFacet(eCK eCard, eSF eFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard == this->eCard() && bHasSubFacet(eFacet))
+    return this;
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (Card *pFoundCard = xKid.pChild()->pFindCard_WithSubFacet(eCard,eFacet))
       return pFoundCard;
   }
 
@@ -844,17 +858,17 @@ Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* find property recursively within this card                                 */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
+Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+  if ( (CK_NONE == eCard || eCard == m_eCard)) {
     if (pSymbol()->Y_bHas(szPpy))
       return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindPpyRecursive(szPpy,eOfCard))
+    if (Card *pFoundCard = xKid.pChild()->pFindPpyRecursive(szPpy, eCard))
       return pFoundCard;
   }
 
@@ -864,17 +878,17 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* attempt find of symbolic value                                             */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _pWalkParent_)
+Card* Card::pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Card* _pWalkParent_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eOfCard == m_eCard && bSymbolMatches(pSymbol)) {
+  if (eCard == m_eCard && bSymbolMatches(pSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindSymbolRecursive(eOfCard, pSymbol, rpParent, this))
+    if (Card *pFoundCard = xKid.pChild()->pFindSymbolRecursive(eCard, pSymbol, rpParent, this))
       return pFoundCard;
   }
 
@@ -929,17 +943,14 @@ i8 Card::nFunctionCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given card a sub card of this card?                                     */
+/* is there a sub card with given facet?                                      */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasFacetRecursive(eSF eFacet)
+bool Card::bHasChildFacet(eSF eFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bHasFacet(eFacet))
-    return true;
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (xKid.pChild()->bHasFacetRecursive(eFacet))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (xCard.pChild()->pSymbol()->bHasFacet(eFacet))
       return true;
   }
 
@@ -949,7 +960,7 @@ bool Card::bHasFacetRecursive(eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasSubRecursive(Card* pSubCard)
+bool Card::bHasSub(Card* pSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -957,7 +968,25 @@ bool Card::bHasSubRecursive(Card* pSubCard)
     return true;
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-     if (xKid.pChild()->bHasSubRecursive(pSubCard))
+     if (xKid.pChild()->bHasSub(pSubCard))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a sub card with given facet?                                      */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasSubFacet(eSF eFacet, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (iDepth && pSymbol()->bHasFacet(eFacet))
+    return true;
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (xKid.pChild()->bHasSubFacet(eFacet,++iDepth))
       return true;
   }
 
@@ -1474,7 +1503,7 @@ void Card::vPrintCardRecursive(CardIter* pCI,
     vDebugPoint();
 
   if (C_UNKNOWN == m_iFirstPrint) {
-    m_iFirstPrint = pCI->m_pBench->iPrint();
+    m_iFirstPrint = pCI->m_pBench->nPrintBoard();
     m_eFirst = m_eCard;
   }
   m_nPrintCount++;
@@ -1663,6 +1692,25 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Card::nSubCards(eCK eSub_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nFound = 0;
+  if (eSub_arg == eCard())
+    nFound++;
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChild = pGetChild(i_Child);
+    nFound += pChild->nSubCards(eSub_arg);
+  }
+
+  return nFound;
+}
+/*----------------------------------------------------------------------------*/
 /* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
 Symbol* Card::pSymbol(void)
@@ -1754,7 +1802,7 @@ void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(bFixedDepth(iDepth));
 
   if (! m_xSymbol.bValidate()) {
-    pCI->vPrintBoard(__func__,__LINE__,true);
+    pCI->PRINTBOARD_dbg();
     vDump(__func__);
     vValidationFailed("Invalid Symbol : %p"_Stz, this);
   }
@@ -1776,7 +1824,7 @@ void Card::vValidate_hasChildren(void)
 /*----------------------------------------------------------------------------*/
 void Card::vValidate_hasType(void)
 {
-  if (! pSymbol()->bHasType()) {
+  if (!pSymbol()->bValidType()) {
     vDump(__func__);
     NEVER_REACH
   }
@@ -1814,11 +1862,11 @@ void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
     va_start(xArgs, iCard_first);
     eCK eCard_mayHave = (eCK) iCard_first;
     while (CK_NONE != eCard_mayHave) {
-      eCard_mayHave = (eCK)va_arg(xArgs, i8);
       if (eCard_test == eCard_mayHave) {
         bMayHave = true;
         break;
       }
+      eCard_mayHave = (eCK)va_arg(xArgs, i8);
     }
     va_end(xArgs);
 

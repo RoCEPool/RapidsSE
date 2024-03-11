@@ -6,9 +6,6 @@
 
 #include "Board.hpp"
 #include "CardIter.hpp"
-#include "XF_Fold.hpp"
-#include "XF_Flatten_Smoosh.hpp"
-#include "XF_Flatten_Smooth.hpp"
 #include "Optimiser.hpp"
 
 #include "XF_Flatten_Anchor_table.hpp"
@@ -158,7 +155,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_JOIN_ORDERING, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_JOIN_ORDERING, "join ordering"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_JOIN_ORDERING);
 
   File* pFile = nullptr;
 
@@ -190,7 +187,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
                             BK_JOINORDERING,
                             aBK[BK_JOINORDERING],
                             m_pCI->m_pBench);
-  m_pCI->G_vPushBoard(pBoard);
+  m_pCI->vPushBoard(pBoard);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) Extract tableList from pipeline
@@ -342,15 +339,15 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   DELETE_CARD(p_streamPrmAll);
 
   pBoard = m_pCI->G.pBoard;
-  m_pCI->G_vPopBoard();
+  m_pCI->vPopBoard();
   m_pCI->m_pBench->vRemove(pBoard);
   delete pBoard;
 
   m_pCI->vValidateBench();
 
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
   p_joinOrdering->vReorder(m_pCI->G.pDeck);
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
 
   DELETE_CARD(p_joinOrdering);
@@ -359,13 +356,13 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->vValidateBench();
 
-  m_pCI->vPrintBoard(__func__,__LINE__);
+  //m_pCI->PRINTBOARD_dbg();
 
   //m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->vEndTransform(__LINE__);
 }

@@ -56,15 +56,11 @@ Card_RlnConj* Card_RlnConj::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get the subquery correlation parameter                                     */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RlnConj::pGetCorrCol(void)
+Card_Term* Card_RlnConj::pGet_term_crlKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-//  i8 nChildren = this->nChildCards();
-//  if (2 != nChildren)
-//    return nullptr;
 
   RASSERT(bIsCorrConj());
 
@@ -74,12 +70,10 @@ Card_Term* Card_RlnConj::pGetCorrCol(void)
   if (p_child_0->pSymbol()->bHasFacet(SF_SQY_PRM))
     return _pCard_Term(p_child_1);
 
-  else
   if (p_child_1->pSymbol()->bHasFacet(SF_SQY_PRM))
     return _pCard_Term(p_child_0);
 
-  else
-    return nullptr;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

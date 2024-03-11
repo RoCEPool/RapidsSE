@@ -24,7 +24,7 @@ ShortForm::ShortForm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SHORTFORM, _FOOTER_);
 
-  m_iPrint = pCI->m_pBench->iPrint();
+  m_iPrint = pCI->m_pBench->nPrintBoard();
   m_i_Stage_curr = C_UNKNOWN;
 
   m_nOps = 0;
@@ -34,7 +34,7 @@ ShortForm::ShortForm(CardIter* pCI)
   }
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain_NONE())
+  while (pCI->bEachMain())
     vAdd(pCI);
 
 

@@ -78,7 +78,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 
-   // pCI->vPrintBoard(__func__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
     return;
 
 
@@ -93,8 +93,8 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   // insert new empty early project (has only needed) before this indexJoin
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->G_vInsertBefore(p_project_early, this);
-  pCI->G_vMainResynch();
+  pCI->vInsertBefore(p_project_early, this);
+  pCI->vMainResynch();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
@@ -102,7 +102,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 
 
   pCI->G.p_OP = pCI->G.p_keyNotExists;
-  pCI->G.p_keyNotExists->vRecreate_emit(pCI);
+  pCI->G.p_keyNotExists->vRestate_emit(pCI);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

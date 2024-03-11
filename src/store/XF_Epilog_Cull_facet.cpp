@@ -62,7 +62,7 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_CULL_FACET, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_CULL_FACET, "cull facet"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_CULL_FACET);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -75,13 +75,13 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
     Card_Term* p_term = _pCard_Term(pCard);
     Symbol* pSym_term = p_term->pSymbol();
 
-    if (pCI->pAncestorFind(CK_s_INJECTABLE))
+    if (pCI->bAncestor(CK_s_INJECTABLE))
       return true;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    if (pCI->pAncestorFind(CK_o_KEYEXISTS) || pCI->pAncestorFind(CK_o_KEYNOTEXISTS)) {
-      if (pCI->pAncestorFind(CK_s_CONSTRAINT)) {
+    if (pCI->bAncestor(CK_o_KEYEXISTS) || pCI->bAncestor(CK_o_KEYNOTEXISTS)) {
+      if (pCI->bAncestor(CK_s_CONSTRAINT)) {
         if (pSym_term->bIs_Col()) {
           if (pSym_term->bHasFacet(SF_EXP_COL))
             pSym_term->vCullFacet(SF_EXP_COL);

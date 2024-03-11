@@ -67,7 +67,7 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_DERIVE_STREAMKEY, "Derive stream keys"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_DERIVE_STREAMKEY);
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
@@ -106,7 +106,7 @@ bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
       break;
     }
 
-    if (! m_pCI->G_bEachMain_NONE())
+    if (!m_pCI->bEachMain())
       break;
   }
 
@@ -120,7 +120,7 @@ void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachMain()) {
 
     switch (m_pCI->G.e_MainCard) {
 
@@ -134,7 +134,7 @@ void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
         break;
     }
 
-   // m_pCI->vPrintBoard(__func__,__LINE__);
+   // m_pCI->PRINTBOARD_dbg();
 
     if (! m_pCI->StreamOrder.m_pStreamKey)
       break;

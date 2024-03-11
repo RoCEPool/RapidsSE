@@ -50,20 +50,20 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 
   pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
 
-//  pCI->G_vNewMember(CK_o_CROSSJOIN);
+//  pCI->vNewMember(CK_o_CROSSJOIN);
 //  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
 
 
   pCI->G.p_crossJoin = _pCard_CrossJoin(pCI->G.p_from->pCard(CK_o_CROSSJOIN));
   pCI->G.p_index = pCI->G.p_crossJoin->pSub_index();
 
-  pCI->G_vNewMember(CK_BOUNDS,Symbol(SF_CROSS,"cross"_Stz));
+  pCI->vNewMember(CK_BOUNDS,Symbol(SF_CROSS,"cross"_Stz));
   pCI->G.p_index->vAppendChild(pCI->G.p_bounds);
 
-  pCI->G_vNewMember(CK_BOUND);
+  pCI->vNewMember(CK_BOUND);
   pCI->G.p_bounds->vAppendChild(pCI->G.p_bound);
 
-  pCI->G_vNewMember(CK_TERM,Symbol(SF_IDX_COL,1));
+  pCI->vNewMember(CK_TERM,Symbol(SF_IDX_COL,1));
   pCI->G.p_bound->vAppendChild(pCI->G.p_term);
 
   pCI->G.p_indexList->vChoose_index_For_crossJoin();
@@ -85,7 +85,7 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
   //   we can restore to this save if projection needed get extended
   Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
@@ -95,11 +95,11 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
-  pCI->G.p_OP->vRecreate_emit(pCI);
+  pCI->G.p_OP->vRestate_emit(pCI);
 
-  // pCI->vPrintBoard(__func__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

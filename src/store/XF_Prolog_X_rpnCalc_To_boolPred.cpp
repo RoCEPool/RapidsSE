@@ -62,35 +62,35 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_RPNCALC_TO_BOOLPRED, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_X_RPNCALC_TO_BOOLPRED, "all $n become $c.n"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_X_RPNCALC_TO_BOOLPRED);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_o_FROM, CK_s_CONSTRAINT)) {
+  while (m_pCI->bEachMain(CK_o_FROM, CK_s_CONSTRAINT)) {
     m_pCI->G.p_rpnCalc = m_pCI->G.p_constraint->pSub_rpnCalc();
     m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->pTo_boolPred();
     m_pCI->G.p_from->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+    m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_o_WHERE, CK_RPNCALC)) {
+  while (m_pCI->bEachMain(CK_o_WHERE, CK_RPNCALC)) {
     m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->pTo_boolPred();
     m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+    m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_o_HAVING, CK_RPNCALC)) {
+  while (m_pCI->bEachMain(CK_o_HAVING, CK_RPNCALC)) {
     m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->pTo_boolPred();
     m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
-    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+    m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
   }
 
 //  m_pCI->vClearRestart();
-//  while (m_pCI->G_bEachMainWith2Sub(CK_o_INDEXJOIN, CK_s_CONSTRAINT, CK_RPNCALC)) {
+//  while (m_pCI->bEachMain(CK_o_INDEXJOIN, CK_s_CONSTRAINT, CK_RPNCALC)) {
 //    m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->pTo_boolPred(m_pCI);
 //    m_pCI->G.p_indexScan->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
-//    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+//    m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
 //  }
 
   m_pCI->vEndTransform(__LINE__);

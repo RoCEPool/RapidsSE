@@ -76,52 +76,13 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost)
-{
-  _static_
-
-  pCI->G.p_emit = nullptr;
-  for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if ((pCI->G.p_emit = pMain->pSub_emit()))
-      break;
-  }
-  if (! pCI->G.p_emit)
-    return;
-
-  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-
-  Card_Expr* p_expr_dic =
-      pCI->Dic.m_p_expr->pGet_expr((i8) 0);
-
-  pCI->G.p_term->vApplyCast_x(p_expr_dic->xCast());
-
-  pCI->G.p_rpnCalc->vApplyCast_x(p_expr_dic->xCast());
-
-  s32 sResultN;
-
-  sResultN.vSprint("__RESULT%lld"_Stz,pSubQuery_leftmost->pBoard()->i_Board());
-  s32 sRn;
-  sRn.vSprint("$R%lld"_Stz,pSubQuery_leftmost->pBoard()->i_Board());
-
-  pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, sResultN);
-  pCI->G.p_expr->pSymbol()->vApplyFacet(SF_SQY_RSL, sRn);
-  pCI->G.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8) 1);
-  pCI->G.p_expr->vApplyCast_x(p_expr_dic->xCast());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vDerive_foldProjection_F(CardIter* pCI)
 {
   _static_
 
 
   pCI->G.p_emit = nullptr;
-  for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
+  for (i8 i_Main = pCI->Sqy.m_i_fold - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
     if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
@@ -137,7 +98,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* find and mark possible call to subquery referenced in pCI->G.p_boolPred    */
 /*----------------------------------------------------------------------------*/
-bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
+bool Board::bMark_sqyCall(CardIter* pCI)
 {
   _static_
 
@@ -154,11 +115,11 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (! (pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
+    if (! (pCI->Sqy.m_p_term_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
       return C_CONTINUE_RECURSION;
 
-   pCI->Sqy.m_pConj_sqyCall = p_conj;
-    pCI->Sqy.m_pConj_sqyCall->vMark1(MARK_AT);
+   pCI->Sqy.m_p_conj_sqyCall = p_conj;
+    pCI->Sqy.m_p_conj_sqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
     if (p_conj->pSymbol()->bHasFacet("exists"_Stz) ||
@@ -166,14 +127,14 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
       RASSERT(p_conj->bIsSqyOp());
 
-      pCI->Sqy.m_pTerm_sqyArg = p_conj->pGetTerm(0);
-      pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm(1);
+      pCI->Sqy.m_p_term_crlKey = p_conj->pGetTerm(0);
+      pCI->Sqy.m_p_term_sqyCall = p_conj->pGetTerm(1);
       return C_TERMINATE_RECURSION;
     }
 
     if (p_conj->pSymbol()->bHasFacet("in"_Stz) || p_conj->pSymbol()->bHasFacet("notIn"_Stz)) {
       RASSERT(p_conj->bIsSqyOp());
-      pCI->Sqy.m_pTerm_sqyArg = p_conj->pGetTerm(2);
+      pCI->Sqy.m_p_term_crlKey = p_conj->pGetTerm(2);
       return C_TERMINATE_RECURSION;
     }
 
@@ -184,7 +145,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bfMarkSqyCall);
+  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bfMarkSqyCall);
   UNUSED(bIgnore);
 
   return bFoundCall;
@@ -310,7 +271,7 @@ void Board::vPhase(eOH ePhase)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
+void Board::vPrintBoard(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -318,7 +279,7 @@ void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
 
   Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl());
 
-  vPinTitle(pRibbon, m_pBench->iXform(), szDescription);
+  vPinTitle(pRibbon);
 
   vPinCards(pCI, pRibbon);
 
@@ -330,7 +291,7 @@ void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
 
   i8 iBenchNo = m_pBench->iBenchNo();
   eOH ePhase  = this->ePhase();
-  i8 iPrintNo = m_pBench->iPrint_inc();
+  i8 iPrintNo = m_pBench->nPrintBoard_inc();
   pRibbon->vPrintRibbon(szQueryNm, iBenchNo, ePhase, iPrintNo);
 
   delete pRibbon;
@@ -489,22 +450,19 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinTitle(Ribbon* pRibbon,
-                      i8 iTransformNo, Stz* szDescription)
+void Board::vPinTitle(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  UNUSED(iTransformNo);
-  UNUSED(szDescription);
 
   if (! m_pDeck->nItems())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprintSnippet(false,"Print Board: %s : %s : %s"_Stz,
-                        aXF[m_pBench->eXform()],
-                        aXF_desc[m_pBench->eXform()],
-                        m_pBench->szXdesc());
+  pRibbon->vSprintSnippet(false,"PrintBoard: %s/%lld -- %s"_Stz,
+                          aXF[m_pBench->eXform()],
+                          m_pBench->nTransformPrint_inc(),
+                          aXF_desc[m_pBench->eXform()]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

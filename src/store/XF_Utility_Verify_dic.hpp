@@ -1,40 +1,37 @@
 /*============================================================================*/
-/* XF_Flatten_Smoosh.hpp -- XF_Flatten_Smoosh                                                       */
+/* XF_Utility_Verify_dic.hpp -- Verify dic                                    */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-#include "eSM.h"
+#include "XF_PROLOG.hpp"
 
 namespace STORE
 {
-  class CardIter;
-  class CarryForward;
-
-  class XF_Flatten_Smoosh : public Object
+  class XF_Utility_Verify_dic : public XF_PROLOG
   {
   private:
-
     // must be last
     Footer m_xFooter;
 
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
-    XF_Flatten_Smoosh(void);
-   ~XF_Flatten_Smoosh(void) noexcept(false);
+  
+    XF_Utility_Verify_dic(CardIter* pCI);
+   ~XF_Utility_Verify_dic(void) noexcept(false);
 
-    void vSmoosh(CardIter* pCI, eSM eSmoosh);
+    static void vVerify(CardIter* pCI);
 
-    void vInto_KEYnotEXISTS(CardIter* pCI);
+    void vVerify(void);
+
+    void vVerify_dic_loop(void);
+    void vVerify_dic_OP(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Flatten_Smoosh* _pXF_Flatten_Smoosh(void* aAddr);
-
+  XF_Utility_Verify_dic* _pXF_Utility_Verify_dic(void* aAddr);
 }
 
 /*============================================================================*/

@@ -67,22 +67,22 @@ i8 ChildCards::nChildCards(void)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-i8 ChildCards::nChildCards(eCK eChild)
+i8 ChildCards::nChildCards(eCK eChild_arg)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 nChildren = 0;
+  i8 nFound = 0;
 
-  eCK eSubCard;
-  i8 nSubCards = nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChild(i_Child, eSubCard);
+  eCK eChild_card;
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChild = pGetChild(i_Child, eChild_card);
 
-    if (eChild == pSubCard->eCard())
-      nChildren++;
+    if (eChild_arg == pChild->eCard())
+      nFound++;
   }
 
-  return nChildren;
+  return nFound;
 }
 
 /*----------------------------------------------------------------------------*/

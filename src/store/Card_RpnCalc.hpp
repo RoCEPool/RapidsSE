@@ -7,6 +7,7 @@
 
 namespace STORE
 {
+  // todo: Can remove this [296]
   class Card_RpnCalc : public Card_TERMLIST
   {  
   public:

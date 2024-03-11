@@ -187,10 +187,10 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr)
             pChild->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
           // TODO: this rule should be in validate?
-          if (!pChild->pSymbol()->bHasType()) {
+          if (!pChild->pSymbol()->bValidType()) {
             //p_part->vDump();
             //pChild->vDump();
-            RASSERT(pChild->pSymbol()->bHasType());
+            RASSERT(pChild->pSymbol()->bValidType());
           }
         }
         psRpnExpr->vCatSprint(" %s"_Stz, pChild->pSymbol()->szFacet_term());
