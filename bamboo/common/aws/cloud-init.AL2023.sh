@@ -328,7 +328,7 @@ EOF
   echo
   if ! which aws; then
     # AWS CLI needs curl and unzip
-        declare -a cmd
+    declare -a cmd
     cmd=("dnf" "install" "-y" "curl" "wget" "unzip")
     if ! retryCommand "${MAX_DNF_RETRIES}" "${cmd[@]}"; then
       echo "ERROR: Could not download and install curl, wget and unzip - the dnf repository may be "\
