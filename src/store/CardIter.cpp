@@ -1780,6 +1780,51 @@ void CardIter::vNewMember(eCK eMember, Symbol xSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* position on given card of sequence                                         */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bPositionOn(eCK eKind_find, i8 /* eCK */  iKind_First, ...)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  UNUSED(eKind_find);
+  
+  va_list xaArgs;
+
+  va_start(xaArgs,iKind_First);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  eCK eKind_each = CK_NONE;
+
+//  Card* pKind_found = nullptr;
+
+  for (eKind_each = (eCK)iKind_First;
+       CK_NONE != eKind_each;
+       eKind_each = (eCK)va_arg(xaArgs, i8)) {
+
+//    if (1) {
+//      Kind_found = nullptr
+//      break;
+//    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  va_start(xaArgs,iKind_First);
+
+  for (/**/;
+       CK_NONE != eKind_each;
+       eKind_each = (eCK)va_arg(xaArgs, i8)) {
+
+  }
+
+  va_end(xaArgs);
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/
 void CardIter::vPopBoard(void)
