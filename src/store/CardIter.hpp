@@ -159,6 +159,7 @@ namespace STORE
     void vEndPhase(void);
     void vEndTransform(i8 iLineNo);
 
+    Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);
     void vFocusOnMain(void);
     bool bForwards(void);
     void vForwards(bool bForward);

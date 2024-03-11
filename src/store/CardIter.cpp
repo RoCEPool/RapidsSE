@@ -1268,6 +1268,29 @@ void CardIter::vEndTransform(i8 iLineNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_OP* CardIter::pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (C_UNKNOWN == i_Before)
+    i_Before = i_Child();
+
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card_OP *p_OP = (Card_OP*)G.pDeck->pGetChild(i_Main);
+    if (p_OP->bIsCard(CK_o_FROM)) {
+      Card_Table* p_table_test = p_OP->pSub_table();
+      p_table_test->vDump(__func__);
+      if (p_table_test->bSame(pSym_tblSyn)) {
+        return p_OP;
+      }
+    }
+  }
+
+  return nullptr;
+}
+/*----------------------------------------------------------------------------*/
 /* focus on main                                                              */
 /*----------------------------------------------------------------------------*/
 void CardIter::vFocusOnMain(void)

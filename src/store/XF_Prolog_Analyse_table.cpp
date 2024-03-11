@@ -106,7 +106,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
   // Affix Table synonyms To All Table
   m_pCI->vBeginEach();
   while (m_pCI->bEachMain(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM))  {
-    m_pCI->G.p_table->vSet_Syn(m_pCI, pSymbol_tableSyn);
+    m_pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

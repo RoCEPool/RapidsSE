@@ -469,9 +469,8 @@ void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* p
   //p_rlnConj_sqyRslTest->vDump();
 
   Card_Term* p_term_tblCol = pCI->Sqy.m_p_conj_rslTest->pGetFirstTerm_tblCol();
-  char cTblSyn = p_term_tblCol->pSymbol()->cTblSyn();
-
-  Card_OP* p_OP = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
+  Symbol* pSym_term_tblCol = p_term_tblCol->pSymbol();
+  Card_OP* p_OP = pCI->pFind_from_By_tblSyn(pSym_term_tblCol, pCI->G.i_MainCard);
 
   pCI->G.p_filter = p_OP->pEnsure_filter();
 

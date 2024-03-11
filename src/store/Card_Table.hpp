@@ -28,7 +28,6 @@ namespace STORE
     static void vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn);
     static void vAppendIndexList(CardIter* pCI);
     static void vDeriveBoundsFromFilter(CardIter* pCI);
-    static Card_OP* pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
     static void vFixTablePos(CardIter* pCI);
     static i8 nTables(CardIter* pCI);
     static i8 nTables_reverse_foldBreak(CardIter* pCI);
@@ -43,7 +42,8 @@ namespace STORE
     void vMorph_table_To_EEop(CardIter *pCI);
     bool bScopeContains_Conj(Card_CONJ* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
-    void vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn);
+    bool bSame(Symbol* pSymbol_tableSyn);
+    void vSet_Syn(Symbol* pSymbol_tableSyn);
     void vShortForm(String* pString_m, String* pString_b);
     Table* pGet_Table(void);
 

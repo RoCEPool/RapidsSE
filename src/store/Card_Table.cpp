@@ -110,7 +110,7 @@ void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn
 
   pCI->vBeginEach();
   while (pCI->bEachSubOfMain(CK_s_TABLE))  {
-    pCI->G.p_table->vSet_Syn(pCI, pSymbol_tableSyn);
+    pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 }
 
@@ -146,29 +146,6 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   pCI->vBeginEach();
   while (pCI->bEachMain(CK_o_FROM, CK_s_TABLE, CK_o_FILTER, CK_t_INDEXLIST))
     pCI->G.p_table->vDerive_bounds_From_filter(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_OP* Card_Table::pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before)
-{
-  _static_
-
-  if (C_UNKNOWN == i_Before)
-    i_Before = pCI->i_Child();
-
-  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card_OP *p_OP = (Card_OP*)pCI->G.pDeck->pGetChild(i_Main);
-    if (p_OP->bIsCard(CK_o_FROM)) {
-      Card_Table* p_table_test = p_OP->pSub_table();
-      if (cTblSyn == p_table_test->pSymbol()->cTblSyn()) {
-        return p_OP;
-      }
-    }
-  }
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -460,11 +437,21 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
 /*----------------------------------------------------------------------------*/
 /* set synonym of table                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
+bool Card_Table::bSame(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pCI);
+  if (pSymbol()->cTblSyn() == pSymbol_tableSyn->cTblSyn())
+    return true;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set synonym of table                                                       */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   SYM(pSymbol_tableSyn);
   this->vMark1(MARK_CHANGED);
