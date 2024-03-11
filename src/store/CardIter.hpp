@@ -212,7 +212,6 @@ namespace STORE
     void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 i_Child);
-    void vSetBoard(Board* pBoard);
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 

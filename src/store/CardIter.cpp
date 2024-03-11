@@ -1985,7 +1985,7 @@ void CardIter::vPushBoard(Board* pBoard)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vSetBoard(pBoard);
+  vUsingBoard(pBoard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2454,20 +2454,6 @@ void CardIter::vSet(i8 i_Child)
   RASSERT(G.xKid.bWithinRange());
 
   G.xKid.vReposition(i_Child);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vSetBoard(Board* pBoard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  G.pBoard = pBoard;
-  G.pDeck  = G.pBoard->pDeck();
-  //G.pSubQuery_Q = G.pBoard->pSubQuery();
-
-  this->vChangeCard(G.pBoard->pDeck());
 }
 
 /*----------------------------------------------------------------------------*/

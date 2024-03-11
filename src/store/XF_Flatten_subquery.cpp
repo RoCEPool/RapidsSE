@@ -130,7 +130,7 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
     vFlatten_recurse(iDepth + 1);
 
     m_pCI->vPopBoard();
-    m_pCI->vSetBoard(pOuterBoard_save);
+    m_pCI->vUsingBoard(pOuterBoard_save);
     m_pCI->G.pSubQuery_Q = m_pCI->m_pBench->pFindSubQuery(m_pCI->G.p_call->pSymbol());
    // m_pCI->PRINTBOARD_dbg();
 
@@ -167,7 +167,7 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
       vFlatten_recurse(iDepth + 1);
 
       pCI->vPopBoard();
-      pCI->vSetBoard(pOuterBoard_save);
+      pCI->vUsingBoard(pOuterBoard_save);
       pCI->G.pSubQuery_Q = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
      // pCI->PRINTBOARD_dbg();
 
@@ -211,7 +211,7 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
       vFlatten_recurse(iDepth + 1);
 
       pCI->vPopBoard();
-      pCI->vSetBoard(pOuterBoard_save);
+      pCI->vUsingBoard(pOuterBoard_save);
       pCI->G.pSubQuery_Q = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
      // pCI->PRINTBOARD_dbg();
 
