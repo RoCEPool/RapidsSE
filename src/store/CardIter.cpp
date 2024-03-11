@@ -45,7 +45,6 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_p_expr_crlKey = nullptr;
 
   Sqy.m_pCorrelation   = nullptr;
-  Sqy.m_pSubQuery_Q      = nullptr;
   Sqy.m_p_term_sqyCall = nullptr;
   Sqy.m_p_conj_iqyCall = nullptr;
   Sqy.m_p_term_crlKey  = nullptr;
@@ -2192,6 +2191,7 @@ void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
 void CardIter::vResetMembers(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+  G.pSubQuery_Q      = nullptr;
 
   G.p_absJoin          = nullptr;
   G.p_address          = nullptr;
@@ -2465,7 +2465,7 @@ void CardIter::vSetBoard(Board* pBoard)
 
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
-  //Sqy.m_pSubQuery_Q = G.pBoard->pSubQuery();
+  //G.pSubQuery_Q = G.pBoard->pSubQuery();
 
   this->vChangeCard(G.pBoard->pDeck());
 }
@@ -2502,6 +2502,7 @@ void CardIter::vUsingBoard(Board* pBoard)
 
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
+  G.pSubQuery_Q = G.pBoard->pSubQuery();
 
   this->vChangeCard(G.pBoard->pDeck());
 }

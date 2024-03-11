@@ -15,6 +15,7 @@ namespace STORE
   public:
     i8          i_Board;
     Board*      pBoard;
+    SubQuery*   pSubQuery_Q;
     Card_Deck*  pDeck;
 
   // - - - - - - - - - - - - -

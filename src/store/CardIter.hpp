@@ -50,7 +50,6 @@ namespace STORE
     } Next;
 
     struct {
-      SubQuery*  m_pSubQuery_Q;
 
       union {
         Card_CONJ*    m_p_conj_iqyCall;
