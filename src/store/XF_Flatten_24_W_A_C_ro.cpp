@@ -524,6 +524,9 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   // Start with processing left-side IQ (inner sub-query)
 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // innerQuery innerQuery innerQuery innerQuery innerQuery innerQuery innerQuery
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // snap correlation key in IQ:<from>/<filter>/<boolPred>//<rlnConj>
@@ -570,23 +573,17 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  pCI->vBeginEachReverse();
-  RASSERT(pCI->bEachMain_reverse_b(CK_c_FOLD));
+  RASSERT(pCI->bEachMain(CK_c_FOLD));
 
-  // Now processing OQ (outer-query)
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  // outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // re-project the leading OQ:<table>* sequence
-  pCI->vForwards(true);
+  // re-project the leading OQ:<from>* sequence
   while (pCI->bIsNextMain(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
     pCI->G.p_table = pCI->G.p_from->pSub_table();
     pCI->G.p_OP->vRestate_emit(pCI);
-
   }
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  // subQuery subQuery subQuery subQuery subQuery subQuery subQuery subQuery
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
   // Convert the OQ to join to the gby correlation column ordered streamed from SQ
 
@@ -601,10 +598,10 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // f         +                   //           $d.2  ((pCI->m_pTerm_corrArg))
   //           +                   //             %1
 
-   while (pCI->bEachMain(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
+  while (pCI->bEachMain(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
     if (pCI->G.p_boolPred->bHasSub(pCI->Sqy.m_p_conj_crlKey)) {
       pCI->G.p_boolPred->vRemoveSub(pCI->Sqy.m_p_conj_crlKey);
-        break;
+      break;
     }
   }
   RASSERT(pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_bHas(P_CrlKeyConj));
