@@ -777,7 +777,7 @@ bool PsxThd::bSpawnThread(void* pFun(void*), void* pArg)
   
   pthread_attr_t tattr;
 
-  size_t size = C_10MB;
+  size_t size = C_1MB * 24;
 
   /* initialized with default attributes */
   i8 rCode = pthread_attr_init(&tattr);
