@@ -265,6 +265,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_aExtern_EntBufferNextEntry = nullptr;
 	m_xDynamicT.m_fp_vExtern_EntPayloadCreate = nullptr;
 
+	m_xDynamicT.m_fp_vExtern_IndexFindT = nullptr;
 	m_xDynamicT.m_fp_vExtern_IndexNew = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeBegin = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAsc = nullptr;

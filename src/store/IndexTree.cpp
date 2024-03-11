@@ -29,6 +29,9 @@
 #include "Table.hpp"
 
 #include "ClangDynamic.h"
+#include "Op.hpp"
+#include "Stage.hpp"
+#include "Stream.hpp"
 
 bool mbCheckPriorVec = false;
 
@@ -207,6 +210,35 @@ extern "C" void vExtern_IndexNew(void* aDynamic, i8 nNumCols, ColumnInfo* pColum
 	EntWrk::vEntKind(pEntWrk, bPayload, pIndexDef->eKeyKind());
 
 	pDynamicT->m_xIndexInfoPL.m_aIndexTree = pIndexTree;
+}
+
+extern "C" void vExtern_IndexFindT(void* aDynamic, char* aTableName, char* aIndexName) {
+
+	LglPtn tLglPtn;
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+	Table* pTable = AM::pTableFind((Stz*)aTableName);
+	Index* pIndex = pTable->pFindIndex((Stz*)aIndexName);
+	pDynamicT->m_xIndexInfoT.m_aIndexDef = pIndex->pIndexDef();
+	StreamDef* pStreamDef = pTable->pStreamDef();
+	Op* pOp = MY::pOp();
+
+	if (pStreamDef->bReplicated()) {
+
+		Stage*  pStage   = pOp->pStage();
+		Stream* pStream0 = pStage->pGet(0);
+		Op*     pOp0_0   = pStream0->pGet(0);
+
+		tLglPtn = pOp0_0->tLglPtn();
+	}
+	else {
+		tLglPtn = pOp->tLglPtn();
+	}
+
+	i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
+	TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+	i8 iIndexNo = pIndex->iIndexNo();
+	pDynamicT->m_xIndexInfoT.m_aIndexTree = pTablePtn->pIndexTree(iIndexNo);
 }
 
 extern "C" void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {

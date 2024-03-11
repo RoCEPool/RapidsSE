@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* __Q6_OPT3                                                                  */
+/* __Q6_OPT4                                                                  */
 /*============================================================================*/
 
-// OPT3 at :
+// OPT4 started at :
 // on iMac:
 //  SF10-1N-1P : 2.43
 //  SF10-1N-4P : 1.06s
@@ -10,6 +10,12 @@
 //file _lineitem;
 //create index IxL_SHIPDATE on lineitem (L_SHIPDATE);
 //load lineitem "../TPCH/SF10/lineitem.tbl";
+
+// Converting 4 calls to SE to a single call to find the index
+//  (also now as function pointer)
+// on iMac:
+//  SF10-1N-1P : 2.45
+//  SF10-1N-4P : 1.32s
 
 /keepCodeFile
 /optimise_passthru
