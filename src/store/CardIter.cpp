@@ -779,6 +779,7 @@ bool CardIter::bEachMain(void)
   }
 
   G.p_MainCard = nullptr;
+  G.e_MainCard = CK_NONE;
   G.xKid.vEnded();
   return false;
 }
@@ -1782,47 +1783,66 @@ void CardIter::vNewMember(eCK eMember, Symbol xSymbol)
 /*----------------------------------------------------------------------------*/
 /* position on given card of sequence                                         */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bPositionOn(eCK eKind_find, i8 /* eCK */  iKind_First, ...)
+bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  UNUSED(eKind_find);
-  
+  Card* pCard_found = nullptr;
+
   va_list xaArgs;
-
   va_start(xaArgs,iKind_First);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find first card
 
-  eCK eKind_each = CK_NONE;
+  eCK eKind_first = (eCK)iKind_First;
+  while (bEachMain()) {
+    if (eKind_first == G.e_MainCard)
+      break;
+  }
 
-//  Card* pKind_found = nullptr;
-
-  for (eKind_each = (eCK)iKind_First;
-       CK_NONE != eKind_each;
-       eKind_each = (eCK)va_arg(xaArgs, i8)) {
-
-//    if (1) {
-//      Kind_found = nullptr
-//      break;
-//    }
+  if (! G.e_MainCard) {
+    va_end(xaArgs);
+    return false;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // each card in sequence
 
-  va_start(xaArgs,iKind_First);
+  eCK eKind_each;
 
-  for (/**/;
+  if (eKind_on == G.e_MainCard) {
+    pCard_found = G.p_MainCard;
+  }
+
+  for (eKind_each = (eCK)va_arg(xaArgs, i8);
        CK_NONE != eKind_each;
        eKind_each = (eCK)va_arg(xaArgs, i8)) {
 
+    if (! bEachMain()) {
+      va_end(xaArgs);
+      return false;
+    }
+
+    if (! pCard_found && eKind_on == G.e_MainCard) {
+      pCard_found = G.p_MainCard;
+    }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // did we find card in valid sequence?
 
   va_end(xaArgs);
 
+  if (pCard_found) {
+    vSet(pCard_found);
+    G.p_MainCard = G.xKid.pChild();
+    vFocusOnMain();
+    return true;
+  }
+
   return false;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
