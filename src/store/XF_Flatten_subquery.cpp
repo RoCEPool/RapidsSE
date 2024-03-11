@@ -169,8 +169,7 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
 
       pCI->vPopBoard();
       pCI->vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery_Q = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
-      UNUSED(pSubQuery);
+      pCI->Sqy.m_pSubQuery_Q = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
      // pCI->PRINTBOARD_dbg();
 
       vFlattenByDecisionTree();
@@ -209,14 +208,12 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery_Q = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
       pCI->vPushBoard(pCI->Sqy.m_pSubQuery_Q->pBoard());
-      pCI->Sqy.m_pSubQuery_Q = pCI->G.pBoard->pSubQuery();
 
       vFlatten_recurse(iDepth + 1);
 
       pCI->vPopBoard();
       pCI->vSetBoard(pOuterBoard_save);
-      SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery_Q = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
-      UNUSED(pSubQuery);
+      pCI->Sqy.m_pSubQuery_Q = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
      // pCI->PRINTBOARD_dbg();
 
       vFlattenByDecisionTree();
