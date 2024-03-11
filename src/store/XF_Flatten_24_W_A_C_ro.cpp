@@ -579,25 +579,23 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  // re-project the leading OQ:<from>* sequence
+  // restate the emits of the leading OQ:<from>* sequence
+  pCI->Flux.m_pArriving = nullptr;
   while (pCI->bIsNextMain(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
-    pCI->G.p_table = pCI->G.p_from->pSub_table();
     pCI->G.p_OP->vRestate_emit(pCI);
   }
 
-  // Convert the OQ to join to the gby correlation column ordered streamed from SQ
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // yank the correlation predicate from SQ
-
-  pCI->vClearRestart();
+  // Convert the OQ to join to the IQ gby correlation column ordered streamed from SQ
 
   // v                             //  ]filter
-  // T A A A P + T T T W A A A     //  .]boolPred
+  // F G G G P + F F F W A A A     //  .]boolPred
   // s         +                   //  ..]cmpPred ==
   // f         +                   //           $d.2  ((pCI->m_pTerm_corrArg))
   //           +                   //             %1
 
+
+  pCI->vClearRestart();
   while (pCI->bEachMain(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
     if (pCI->G.p_boolPred->bHasSub(pCI->Sqy.m_p_conj_crlKey)) {
       pCI->G.p_boolPred->vRemoveSub(pCI->Sqy.m_p_conj_crlKey);
