@@ -190,6 +190,34 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add given rlnConj to this boolPred                                         */
+/*----------------------------------------------------------------------------*/
+void Card_BoolPred::vAppend_and_rlnConj(Card_RlnConj *p_rlnConj)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // no conjunctions; simply append given rlnConj to this boolPred
+  if (0 == nChildCards()) {
+    vAppendChild(p_rlnConj);
+    return;
+  }
+
+  // top is andConj; append given rlnConj to that andConj
+  if (CK_ANDCONJ == ePeekChild()) {
+    pPeekChild()->vAppendChild(p_rlnConj);
+    return;
+  }
+
+  Card* p_top = pPopChild();
+
+  Card_AndConj* pCard_conjAnd = new Card_AndConj;
+  pCard_conjAnd->vAppendChild(p_top);
+  pCard_conjAnd->vAppendChild(p_rlnConj);
+
+  vAppendChild(pCard_conjAnd);
+}
+
+/*----------------------------------------------------------------------------*/
 /* bump any expCol by given amount                                            */
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vBump_expCol(i8 nBumpBy)
@@ -287,7 +315,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
       continue;
 
     pCI->G.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
-    pCI->G.p_filter->vAppend_rlnConj(p_rlnConj->pClone());
+    pCI->G.p_filter->pSub_boolPred()->vAppend_and_rlnConj(p_rlnConj->pClone());
 
     pCI->G.p_filter->vMark1(p_table->cMark1());
     pCI->G.p_filter->vMark2(p_table->cMark2());
@@ -429,47 +457,6 @@ void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
   for (Kid xBoolPred(this); xBoolPred.bEach(CK_TERM); /**/) {
     xBoolPred.p_term()->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given rlnConj to this boolPred                                         */
-/*----------------------------------------------------------------------------*/
-void Card_BoolPred::vAppend_andConj(Card_RlnConj *p_rlnConj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  // no conjunctions; simply append given rlnConj to this boolPred
-  if (0 == nChildCards()) {
-    vAppendChild(p_rlnConj);
-    return;
-  }
-
-  // top is andConj; append given rlnConj to that andConj
-  if (CK_ANDCONJ == ePeekChild()) {
-    pPeekChild()->vAppendChild(p_rlnConj);
-    return;
-  }
-
-  Card* p_top = pPopChild();
-
-  Card_AndConj* pCard_conjAnd = new Card_AndConj;
-  pCard_conjAnd->vAppendChild(p_top);
-  pCard_conjAnd->vAppendChild(p_rlnConj);
-
-  vAppendChild(pCard_conjAnd);
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <boolPred>> and mark any <conj> which could be moved               */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj * Card_BoolPred::pFind_rlnConj(Stz* szWithPpy)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RlnConj* p_rlnConj =
-      _pCard_RlnConj(pFindPpyRecursive(szWithPpy, CK_RLNCONJ));
-
-  return p_rlnConj;
 }
 
 /*----------------------------------------------------------------------------*/

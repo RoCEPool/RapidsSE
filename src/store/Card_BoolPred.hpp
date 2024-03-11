@@ -19,6 +19,7 @@ namespace STORE
 
     static Card_BoolPred* pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg);
 
+    void vAppend_and_rlnConj(Card_RlnConj *p_rlnConj);
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vBump_expCol(i8 p_conj);
     bool bContains(Symbol* pGivenSymbol);
@@ -27,9 +28,7 @@ namespace STORE
     i8   nCullMarked_rlnConj(Stz* szWithMark);
     bool bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn);
-    void vAppend_andConj(Card_RlnConj *p_rlnConj);
-    Card_RlnConj * pFind_rlnConj(Stz* szWithPpy);
-     bool bHas_term(Symbol* pWithSymbol);
+    bool bHas_term(Symbol* pWithSymbol);
     bool bIsBraced(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);

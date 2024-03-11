@@ -475,7 +475,7 @@ void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* p
 
   pCI->G.p_filter = p_OP->pEnsure_filter();
 
-  pCI->G.p_filter->vAppend_rlnConj(pCI->Sqy.m_p_conj_rslTest);
+  pCI->G.p_filter->pSub_boolPred()->vAppend_and_rlnConj(pCI->Sqy.m_p_conj_rslTest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -638,7 +638,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vCut(P_CrlKeyConj);
   pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyTest);
 
-  pCI->G.p_boolPred->vAppend_andConj(_pCard_RlnConj(pCI->Sqy.m_p_conj_crlKey));
+  pCI->G.p_boolPred->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Sqy.m_p_conj_crlKey));
 
   //                   v           //  ]filter
   // F A A A P + F F F W A A A     //  .]boolPred

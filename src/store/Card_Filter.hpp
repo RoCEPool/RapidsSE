@@ -26,7 +26,6 @@ namespace STORE
     i8 nCullMarked_rlnConj(Stz* szWithMark);
     void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_update(CardIter* pCI);
-    void vAppend_rlnConj(Card_RlnConj *p_rlnConj);
     bool bIsEmpty(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 

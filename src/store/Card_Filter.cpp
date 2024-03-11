@@ -174,18 +174,6 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vAppend_rlnConj(Card_RlnConj *p_rlnConj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_BoolPred* p_calcBool = this->pSub_boolPred();
-
-  p_calcBool->vAppend_andConj(p_rlnConj);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Card_Filter::bIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
