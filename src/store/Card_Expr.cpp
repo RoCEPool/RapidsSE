@@ -88,25 +88,25 @@ Card_Expr* Card_Expr::pCraft_expr_gby_From_expr_crlKey(Card_Expr* pExpr_crlKey)
 /*----------------------------------------------------------------------------*/
 /* form project expression from gby key expression                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby)
+Card_Expr* Card_Expr::pCraft_expr_project_From_expr_gbyAgg(Card_Expr* p_expr_gbyAgg)
 {
   _static_
 
-  RASSERT(CT_NONE != p_expr_gby->eCTVal());
+  RASSERT(CT_NONE != p_expr_gbyAgg->eCTVal());
 
-  Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
+  Symbol xSymbol_Kn(SF_KEY_COL, p_expr_gbyAgg->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
   p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, 1);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
+  Card_Term*    p_term    = p_expr_gbyAgg->pSub_term()->pClone(&xSymbol_Kn);
 
   p_expr->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->vApplyCast_x(p_expr_gby->xCast());
-  p_term->vApplyCast_x(p_expr_gby->xCast());
-  p_expr->vApplyCast_x(p_expr_gby->xCast());
+  p_rpnCalc->vApplyCast_x(p_expr_gbyAgg->xCast());
+  p_term->vApplyCast_x(p_expr_gbyAgg->xCast());
+  p_expr->vApplyCast_x(p_expr_gbyAgg->xCast());
 
   return p_expr;
 }

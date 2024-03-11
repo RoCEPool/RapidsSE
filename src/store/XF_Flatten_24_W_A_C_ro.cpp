@@ -130,6 +130,8 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  pCI->vClearRestart();
+
   while (pCI->bEachMain(CK_o_FROM, CK_t_EMIT, CK_o_FILTER)) {
 
     pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
@@ -153,13 +155,16 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
   return true;
 }
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* promote aggreg of inner query to be a gbyAgg keyed by crlKey               */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  // promote sq <aggreg> seq to <gbyAgg> seq
+  // promote IQ <aggreg>... to <gbyAgg>...
+
+  pCI->vClearRestart();
+  RASSERT(pCI->bEachMain_foldBreak(CK_o_AGGREG));
 
   for (i8 i_agg = 0; i_agg < 3; i_agg++) {
 
@@ -207,7 +212,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     // projection
 
     if (AL_PARTITION == e_Level) {
-      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr);
+      pCI->G.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI->G.p_expr);
     }
     else {
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
@@ -511,7 +516,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // We have a flattened query.  It has a left-size IQ, and a right-side OQ
 
   //        IQ... ...OQ           //
-  // F F A A A P | F F W A A A    //
+  // F F A A A P + F F W A A A    //
   //                              //
 
   // Start with processing left-side IQ (inner sub-query)
@@ -529,28 +534,19 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //             +                //            $d.2 ((pCI->Sqy.m_p_term_crlKey))
   //             +                //              %1 // correlation parameter
 
-  pCI->vClearRestart();
   bool bSnapped = bSnap_IQ_crlKey(pCI);
   RASSERT(bSnapped);
   pCI->PRINTBOARD_dbg();
   pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
   pCI->Sqy.m_p_conj_crlKey->vDump(__func__);
   pCI->Sqy.m_p_term_crlKey->vDump(__func__);
-  RASSERT(pCI->Sqy.m_p_term_crlKey);
-
-  // snap IQ:<FROM>/<emit>/<expr> which describes the correlation key
-//  vSnap_IQ_expr_crlKey(pCI);
-//  pCI->PRINTBOARD_dbg();
-//  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
-  RASSERT(pCI->Sqy.m_p_expr_crlKey &&    // eg $15 (L_PARTKEY)
-          pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_crlKey->pSymbol()));
+  RASSERT(pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_crlKey->pSymbol()));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // promote IQ:<aggreg> to be IQ:<gbyAgg>/<key=crlKey>
   //   thereby producing ordered subQuery stream
 
-  RASSERT(pCI->bEachMain(CK_o_AGGREG));
   vPromote_IQ_aggreg_To_gbyAgg_crlKey(pCI);
   pCI->PRINTBOARD_dbg();
 
