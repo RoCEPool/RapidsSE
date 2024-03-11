@@ -175,7 +175,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.p_where->pSymbol()->Y_vSet(P_Smoothed);
 
   if (pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_EQ) {
-    pCI->Sqy.m_p_conj_sqyCall->vMorph_sqlOp_To_EQ(pCI);
+    pCI->Sqy.m_p_conj_iqyCall->vMorph_sqlOp_To_EQ(pCI);
   }
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {

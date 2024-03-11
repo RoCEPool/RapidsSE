@@ -48,7 +48,7 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_i_SubQuery     = C_UNKNOWN;
   Sqy.m_pSubQuery      = nullptr;
   Sqy.m_p_term_sqyCall = nullptr;
-  Sqy.m_p_conj_sqyCall = nullptr;
+  Sqy.m_p_conj_iqyCall = nullptr;
   Sqy.m_p_term_crlKey  = nullptr;
   Sqy.m_p_conj_crlKey  = nullptr;
 

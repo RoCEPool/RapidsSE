@@ -174,13 +174,13 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vExtend_rlnConj(Card_RlnConj *p_rlnConj)
+void Card_Filter::vAppend_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_BoolPred* p_calcBool = this->pSub_boolPred();
 
-  p_calcBool->vExtend_andConj(p_rlnConj);
+  p_calcBool->vAppend_andConj(p_rlnConj);
 }
 
 /*----------------------------------------------------------------------------*/

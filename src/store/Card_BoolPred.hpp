@@ -27,7 +27,7 @@ namespace STORE
     i8   nCullMarked_rlnConj(Stz* szWithMark);
     bool bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn);
-    void vExtend_andConj(Card_RlnConj *p_rlnConj);
+    void vAppend_andConj(Card_RlnConj *p_rlnConj);
     Card_RlnConj * pFind_rlnConj(Stz* szWithPpy);
      bool bHas_term(Symbol* pWithSymbol);
     bool bIsBraced(void);

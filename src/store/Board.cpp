@@ -118,8 +118,8 @@ bool Board::bMark_sqyCall(CardIter* pCI)
     if (! (pCI->Sqy.m_p_term_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
       return C_CONTINUE_RECURSION;
 
-   pCI->Sqy.m_p_conj_sqyCall = p_conj;
-    pCI->Sqy.m_p_conj_sqyCall->vMark1(MARK_AT);
+   pCI->Sqy.m_p_conj_iqyCall = p_conj;
+    pCI->Sqy.m_p_conj_iqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
     if (p_conj->pSymbol()->bHasFacet("exists"_Stz) ||

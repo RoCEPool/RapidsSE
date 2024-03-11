@@ -287,7 +287,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
       continue;
 
     pCI->G.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
-    pCI->G.p_filter->vExtend_rlnConj(p_rlnConj->pClone());
+    pCI->G.p_filter->vAppend_rlnConj(p_rlnConj->pClone());
 
     pCI->G.p_filter->vMark1(p_table->cMark1());
     pCI->G.p_filter->vMark2(p_table->cMark2());
@@ -434,7 +434,7 @@ void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 /*----------------------------------------------------------------------------*/
 /* add given rlnConj to this boolPred                                         */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vExtend_andConj(Card_RlnConj *p_rlnConj)
+void Card_BoolPred::vAppend_andConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

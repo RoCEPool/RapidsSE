@@ -53,8 +53,12 @@ namespace STORE
       i8         m_i_SubQuery;
       SubQuery*  m_pSubQuery;
 
-      Card_CONJ* m_p_conj_sqyCall;
+      union {
+        Card_CONJ*    m_p_conj_iqyCall;
+        Card_RlnConj* m_p_conj_rslTest;
+      };
       Card_Term* m_p_term_sqyCall;
+
       Card_CONJ* m_p_conj_crlKey;
       Card_Term* m_p_term_crlKey;
       Card_Expr* m_p_expr_crlKey;
