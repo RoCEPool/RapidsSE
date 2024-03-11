@@ -100,7 +100,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Flatten_24_W_A_C_ro::bSnap_term_crlKey(CardIter* pCI)
+bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -140,68 +140,18 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_crlKey(CardIter* pCI)
     if (rbSnapped)
       break;
   }
-
-  return rbSnapped;
-}
-/*----------------------------------------------------------------------------*/
-//bool XF_Flatten_24_W_A_C_ro::bSnap_term_crlKey(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // pre-fold identify the <table>/<filter>/<boolPred>/<cmpPred> which is correlated by parameter
-//  bool rbSnapped = false;
-//
-//  auto fbSnap_sqyArg = [pCI,&rbSnapped](Card_CONJ* p_conj, bool bUpwards)
-//  {
-//    if (bUpwards)
-//      return C_CONTINUE_RECURSION;
-//    if (! p_conj->bIsCorrConj())
-//      return C_CONTINUE_RECURSION;
-//
-//    pCI->Sqy.m_p_conj_crlKey = p_conj;
-//
-//    pCI->Sqy.m_p_conj_crlKey->vMark1(MARK_AT);
-//    pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyConj);
-//
-//    pCI->Sqy.m_p_term_crlKey = static_cast<Card_RlnConj *>(p_conj)->pGet_term_crlKey();
-//    pCI->Sqy.m_p_term_crlKey->pSymbol()->Y_vSet(P_CrlKeyTerm);
-//
-//    rbSnapped = true;
-//
-//    return C_TERMINATE_RECURSION;
-//  };
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
-//  Card_CONJ* p_conj_root = pCI->G.p_boolPred->pRoot_conj();
-//
-//  bool bIgnore = p_conj_root->bLambdaWalk_conj(fbSnap_sqyArg);
-//  UNUSED(bIgnore);
-//
-//  return rbSnapped;
-//}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vSnap_IQ_expr_crlKey(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
-
-  // find the <table>/<stream>/<stmColList>/<stmCol>
-  //  corresponding to the correlated predicate
+  
+  if (! rbSnapped)
+    return false;
 
   pCI->Sqy.m_p_expr_crlKey = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_crlKey->pSymbol(),
-                                                        pCI->G.i_MainCard + 1);
+                                                           pCI->G.i_MainCard + 1);
 
   pCI->Sqy.m_p_expr_crlKey->vMark1(MARK_AT);
   pCI->Sqy.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyDefn);
 
-  //pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
+  return true;
 }
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -580,17 +530,18 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //             +                //              %1 // correlation parameter
 
   pCI->vClearRestart();
-  bool bSnapped = bSnap_term_crlKey(pCI);
+  bool bSnapped = bSnap_IQ_crlKey(pCI);
   RASSERT(bSnapped);
   pCI->PRINTBOARD_dbg();
+  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
   pCI->Sqy.m_p_conj_crlKey->vDump(__func__);
   pCI->Sqy.m_p_term_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_term_crlKey);
 
   // snap IQ:<FROM>/<emit>/<expr> which describes the correlation key
-  vSnap_IQ_expr_crlKey(pCI);
-  pCI->PRINTBOARD_dbg();
-  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
+//  vSnap_IQ_expr_crlKey(pCI);
+//  pCI->PRINTBOARD_dbg();
+//  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_expr_crlKey &&    // eg $15 (L_PARTKEY)
           pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_crlKey->pSymbol()));
 

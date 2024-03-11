@@ -25,8 +25,7 @@ namespace STORE
     void vFlatten(void);
 
   private:
-    bool bSnap_term_crlKey(CardIter* pCI);
-    void vSnap_IQ_expr_crlKey(CardIter* pCI);
+    bool bSnap_IQ_crlKey(CardIter* pCI);
     void vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI);
     void vEnhance_IQ_project_Add_crlKey(CardIter* pCI);
     void vConvert_sqyNo_Into_expCol(CardIter* pCI, Card_BoolPred* p_boolPred);
