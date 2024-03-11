@@ -45,8 +45,7 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_p_expr_crlKey = nullptr;
 
   Sqy.m_pCorrelation   = nullptr;
-  Sqy.m_i_SubQuery     = C_UNKNOWN;
-  Sqy.m_pSubQuery      = nullptr;
+  Sqy.m_pSubQuery_Q      = nullptr;
   Sqy.m_p_term_sqyCall = nullptr;
   Sqy.m_p_conj_iqyCall = nullptr;
   Sqy.m_p_term_crlKey  = nullptr;
@@ -2466,7 +2465,7 @@ void CardIter::vSetBoard(Board* pBoard)
 
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
-  //Sqy.m_pSubQuery = G.pBoard->pSubQuery();
+  //Sqy.m_pSubQuery_Q = G.pBoard->pSubQuery();
 
   this->vChangeCard(G.pBoard->pDeck());
 }
