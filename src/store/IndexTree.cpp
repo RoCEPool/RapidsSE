@@ -116,6 +116,43 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Externs -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamic, i8 nPayloadBytes, bool *pbInsertedEntry) {
+
+	// get Dynamic
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+
+	// get the IndexTree
+	IndexTree* pIndexTree = (IndexTree*)pDynamicT->m_xIndexInfoPL.m_aIndexTree;
+
+	// get the key
+	Key* aKey = (Key*)pDynamicT->m_xIndexInfoPL.m_aEntKey;
+
+	// get the ent
+	Ent* pEntInt = (Ent*)pDynamicT->m_xIndexInfoPL.m_aEntInt;
+
+	// find and insert entry
+	Ent* pEntInserted =  pIndexTree->aFindInsertEntryAscGen(aKey, pEntInt, nPayloadBytes, pbInsertedEntry, &pDynamicT->m_iErrorCode);
+
+	//pDynamicT->m_aiPayload = pEntInserted->aiPayload();
+
+	pDynamicT->m_aiPayload = (i8 *) ((char *) pEntInserted
+																	 + sizeof(struct Ent_int)
+																	 + ((struct Ent_int *) pEntInserted)->m_iIntElm0
+																	 + 8);
+
+//	if (*pbInsertedEntry) {
+//		// zero the payload
+//
+//		for (i8 i = 0; i < nPayloadBytes; i++)
+//			pDynamicT->m_aiPayload[i] = 0;
+//	}
+
+
+
+	return pEntInserted;
+}
+
+
 extern "C" void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) {
   return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
 }
@@ -147,9 +184,11 @@ extern "C" void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) {
 	return pIndexTree;
 }
 
-extern "C" void vExtern_IndexNew(void* aDynamicT, i8 nNumCols, ColumnInfo* pColumnInfo, bool bPayload) {
+extern "C" void vExtern_IndexNew(void* aDynamic, i8 nNumCols, ColumnInfo* pColumnInfo, bool bPayload) {
 
-	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamicT;
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+	EntWrk* pEntWrk = (EntWrk*)pDynamicT->m_xIndexInfoPL.m_aEntWrk;
+
 	IndexDef* pIndexDef = new IndexDef;
 
 	for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
@@ -160,13 +199,14 @@ extern "C" void vExtern_IndexNew(void* aDynamicT, i8 nNumCols, ColumnInfo* pColu
 		if (pColumnInfo[i_Col].m_bIsAscending == 0)
 			pIndexDef->vHasDescending(true);
 	}
-	pDynamicT->m_xIndexInfoPL.m_aIndexDef = (void*)pIndexDef;
+
+	pDynamicT->m_xIndexInfoPL.m_aIndexDef = pIndexDef;
 
   IndexTree* pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
 
-	pDynamicT->m_xIndexInfoPL.m_aIndexTree = (void*)pIndexTree;
+	EntWrk::vEntKind(pEntWrk, bPayload, pIndexDef->eKeyKind());
 
-	EntWrk::vEntKind((EntWrk*)pDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
+	pDynamicT->m_xIndexInfoPL.m_aIndexTree = pIndexTree;
 }
 
 extern "C" void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {

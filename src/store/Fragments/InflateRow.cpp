@@ -56,7 +56,7 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// get the next row (should be able to add rowsize)
 #ifdef WITH_CLANG
-	aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsRowBufferCellArray(aDynamicT->m_aPdsRowBuffer, i_CurrentRow);
+	aDynamicT->m_xRowInfoIT.m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsRowBufferCellArray(aDynamicT->m_aPdsRowBuffer, i_CurrentRow);
 #endif
 
 	aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;

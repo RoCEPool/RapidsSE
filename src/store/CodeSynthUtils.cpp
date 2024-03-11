@@ -562,7 +562,7 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
 
   if (StrLib::bContains(sLine->azStr(), "__EXTERN_ROWPIX__")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "vExtern_TubRowPix");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "aDynamicT->m_fp_vExtern_TubRowPix");
       RASSERT(bResult);
    }
     else {
@@ -575,7 +575,7 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
   if (StrLib::bContains(sLine->azStr(), "__EXTERN_ALLOTROW__()")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",
-                                 "aExtern_TubAllotRowPds((void*)aDynamicT->m_pTub,&azStringDyn,&nMaxStrAreaLen,&aDynamicT->m_iErrorCode)");
+                                 "aDynamicT->m_fp_aExtern_TubAllotRowPds((void*)aDynamicT->m_pTub,&azStringDyn,&nMaxStrAreaLen,&aDynamicT->m_iErrorCode)");
       RASSERT(bResult);
     }
     else {
@@ -590,7 +590,7 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
   if (StrLib::bContains(sLine->azStr(), "__EXTERN_ROWSTRSIZE")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWSTRSIZE__",
-                                 "vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize)");
+                                 "aDynamicT->m_fp_vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize)");
       RASSERT(bResult);
     }
     else {
@@ -640,7 +640,7 @@ void CodeSynthUtils::vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch) {
     if (pOpSketch->m_eSketchKind == SK_GBYAGG ||
         pOpSketch->m_eSketchKind == SK_SORT) {
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_INSERTENT__()",
-         "aExtern_IndexTreeInsertEnt(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);");
+         "aDynamicT->m_fp_aExtern_IndexTreeInsertEnt(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);");
       RASSERT(bResult);
     }
     else {

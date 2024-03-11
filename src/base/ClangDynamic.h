@@ -112,6 +112,30 @@ struct Dynamic_T
 //  i8      m_iOrdAggDone;
 
   i8    m_iaPow10[16];
+
+	//
+	// extern function pointers
+	//
+	void  (*m_fp_vExtern_EntWrkAppendElementStz)(i8,void*);
+	void* (*m_fp_aExtern_EntBufferNextEntry)(void**,void*);
+	void (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
+
+	void* (*m_fp_vExtern_IndexNew)(void*,i8,void*,bool);
+	void* (*m_fp_aExtern_IndexTreeBegin)(void*,void**);
+	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
+
+		void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
+	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
+
+	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);
+
+	void* (*m_fp_aExtern_RowPixNew)(i8,void*);
+
+	void* (*m_fp_aExtern_StreamDefNew)(i8,void*);
+
+	void* (*m_fp_aExtern_TubAllotRowPds)(void*,char**,i8*,i8*);
+	void  (*m_fp_vExtern_TubRowPix)(void*,void*);
+	void  (*m_fp_vExtern_TubRowStrSize)(void*,i8);
 };
 
 /*============================================================================*/

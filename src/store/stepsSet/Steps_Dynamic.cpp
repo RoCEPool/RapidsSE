@@ -72,7 +72,7 @@ void Step::vDynamicExecute(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the trace flag
-  i8 iTrace = m_pDataStack->iPopInt(__func__);
+  bool bTrace = m_pDataStack->iPopBol(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the function pointer
@@ -89,7 +89,7 @@ void Step::vDynamicExecute(void)
   aDynamicT->m_pTub = * m_pLogicUnit->m_xpTub;
   aDynamicT->m_iErrorCode = (i8)EC_NONE;
   aDynamicT->m_eStrInflateRule = SI_STRAREA_ADR;
-  aDynamicT->m_bTrace     = iTrace;
+  aDynamicT->m_bTrace     = bTrace;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DataBuffer ?
@@ -117,14 +117,14 @@ void Step::vDynamicExecute(void)
   }
 
   /***************************************************
-  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
+  if ( afFun ==  m_pLogicUnit->EosHandler ) {
     // invoke with null databuffer (ordAgg)
     if (aDynamicT->m_iHasOrdAggRow) {
       aDynamicT->m_iOrdAggDone = 1;
       if (aDynamicT->m_iIndexScan)
-        iResult = m_pLogicUnit->m_afFun2(aDynamicT);
+        iResult = m_pLogicUnit->m_afIndexHandler(aDynamicT);
       else
-        iResult = m_pLogicUnit->m_afFun1(aDynamicT);
+        iResult = m_pLogicUnit->m_afPdsHandler(aDynamicT);
     }
   }
   *******************************************************/
@@ -134,7 +134,7 @@ void Step::vDynamicExecute(void)
   iResult = afFun(aDynamicT);
 
   // EOS marker handler done ?
-  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
+  if ( afFun ==  m_pLogicUnit->m_afEosHandler ) {
     IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoPL.m_aIndexTree);
     delete pIndexTree;
     aDynamicT->m_xIndexInfoPL.m_aIndexTree = nullptr;

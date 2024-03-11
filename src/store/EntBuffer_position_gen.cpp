@@ -82,16 +82,19 @@ EntBuffer* EntBuffer::pFindLeafBuffer_gen(Key* aForKey)
   return pEntBuffer;
 }
 
+
+
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
+/*
+EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  RASSERT(KE_GENERAL == m_eEntKind);
+  //RASSERT(KE_GENERAL == m_eEntKind);
 
-  /*
+  ?*
 
      return the leaf buffer which has the key closest before given key
 
@@ -102,13 +105,18 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
      [0,1,2][3,4,5][6,7,9][9,10,11][12,13,14]
                       ^
 
-   */
+   *?
 
 
   EntBuffer* pEntBuffer = this;
+	Ent *aNextEntry_sl;
+	tET tNextEntry;
 
-  i8 iBufferHeight;
-  Ent* aEnt;
+  //i8 iBufferHeight;
+  //Ent* aEnt;
+
+	i8 nKeyBytes_r = aForKey->nElmSeqSize();
+	const i8 * iWord_r = (const i8*)aAdd<Dtm*>(aForKey,sizeof(nKeyBytes_r));//aForKey->aElmSeq_dtm();
 
   while (true) {
 
@@ -119,37 +127,292 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
         m_nTabs++;
 #endif
 
-    iBufferHeight = pEntBuffer->iBufferHeight();
-    if (iBufferHeight == 0)
-      break;
+		// *ppEntPrior = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		if (nItems() == 0) {
+			*ppEntPrior = aSkipRoots();
+			if (pEntBuffer->m_iBufferHeight == 0) {
+				break;
+			}
+			// get the index buffer of the entry
+			pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
+			ASSERT(pEntBuffer);
+			ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
+			continue;
+		}
+
+		Ent *aScanEntry_sl = aSkipRoots();
+
+		//bool bNextKeyIsGE;
+
+		for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+
+			//Ent *aNextEntry_sl = aNextEntry_flat(aScanEntry_sl, i_ScanLevel);
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+			tNextEntry = aScanEntry_sl->m_taNextEntry[i_ScanLevel];
+
+			if (C_ENT_END_TICKET == tNextEntry) {
+				//aNextEntry_sl = nullptr;
+				continue;
+			}
+
+			i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+
+			aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+
+
+
+			while (aNextEntry_sl) {
+
+				//bNextKeyIsGE = Key::bGreaterEqualAsc(aNextEntry_sl->aKey(), aForKey);
+				//eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+				Key* aKey_l = aNextEntry_sl->aKey();
+				i8 nKeyBytes_l = aKey_l->nElmSeqSize();
+				//i8 nKeyBytes_r = aForKey->nElmSeqSize();
+
+				const i8 * iWord1 = (const i8*)aAdd<Dtm*>(aKey_l,sizeof(nKeyBytes_l));//aKey_l->aElmSeq_dtm();
+				//const i8 * iWord2 = (const i8*)aAdd<Dtm*>(aForKey,sizeof(nKeyBytes_r));//aForKey->aElmSeq_dtm();
+				const i8 * iWord2 = iWord_r;
+
+				i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+				//i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+
+				i8 iCmp = 0;
+				//const i8 *iWord1 = (const i8*)ayKeyBytes_l;
+				//const i8 *iWord2 = (const i8*)ayKeyBytes_r;
+
+				while (nCmpBytes > 0) {
+					if (*iWord1++ != *iWord2++) {
+						iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
+						break;
+					}
+					nCmpBytes -=8;
+				}
+
+				//if (nCmpBytes == 0)
+				//	iCmp = 0;
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+//					if (iCmp < 0)
+//						return KC_BEFORE;
+//
+//					if (iCmp == 0) {
+//						if (nKeyBytes_l < nKeyBytes_r)
+//							return KC_BEFORE;
+//
+//						if (nKeyBytes_l == nKeyBytes_r)
+//							return KC_SAME;
+//
+//						if (nKeyBytes_l > nKeyBytes_r)
+//							return KC_AFTER;
+//					}
+//
+//					return KC_AFTER;
+
+
+				//if (eCmp == KC_AFTER || eCmp == KC_SAME)
+				//	break;
+
+				if ( iCmp > 0 || (iCmp == 0 && nKeyBytes_l >= nKeyBytes_r))
+					break;
+
+
+				aScanEntry_sl = aNextEntry_sl;
+
+
+				//aNextEntry_sl = aNextEntry_flat(aNextEntry_sl, i_ScanLevel);
+
+				tNextEntry = aNextEntry_sl->m_taNextEntry[i_ScanLevel];
+
+				if (C_ENT_END_TICKET == tNextEntry)
+					aNextEntry_sl = nullptr;
+				else {
+					i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+
+					aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
+				}
+
+
+
+			}
+
+		}
+
+		*ppEntPrior = aScanEntry_sl;
+
+    if (pEntBuffer->m_iBufferHeight == 0) {
+			break;
+		}
 
     // get the entry
     //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aEnt1);
 
-    aEnt = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
-    ASSERT(aEnt);
-    Ent* aEntPrev = aEnt;
+		ASSERT(*ppEntPrior);
+    //Ent* aEntPrev = aEnt;
+		// *ppEntPrior = aEntPrev;
 
-    aEnt = pEntBuffer->pFindEntryPrevTo_ascGen(aEnt,aForKey);
-    if (! aEnt) {
-      aForKey->vShow(pIndexDef());
-      vTrace("\n"_Stz);
-
-      aEntPrev->aKey()->vShow(pIndexDef());
-      vTrace("\n"_Stz);
-
-      pEntBuffer->vDump();
-    }
-    ASSERT(aEnt);
+//    aEnt = pEntBuffer->pFindEntryPrevTo_ascGen(aEnt,aForKey);
+//    if (! aEnt) {
+//      aForKey->vShow(pIndexDef());
+//      vTrace("\n"_Stz);
+//
+//      aEntPrev->aKey()->vShow(pIndexDef());
+//      vTrace("\n"_Stz);
+//
+//      pEntBuffer->vDump();
+//    }
+//    ASSERT(aEnt);
 
     // get the index buffer of the entry
-    pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
+    pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
     ASSERT(pEntBuffer);
     ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
   }
 
   return pEntBuffer;
+}
+*/
+
+/*----------------------------------------------------------------------------*/
+/* position at a leaf buffer starting from this buffer                        */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+	/*
+
+		 return the leaf buffer which has the key closest before given key
+
+		 9?
+
+		 [1,9]
+		 [1,3,6]              [9,12]
+		 [0,1,2][3,4,5][6,7,9][9,10,11][12,13,14]
+											^
+
+	 */
+
+
+	EntBuffer* pEntBuffer = this;
+	Ent *aNextEntry_sl;
+	tET tNextEntry;
+
+	i8 nKeyBytes_r = aForKey->nElmSeqSize();
+	const i8 * iWord_r = (const i8*)aAdd<Dtm*>(aForKey,sizeof(nKeyBytes_r));
+
+	while (true) {
+
+#ifdef EB_TRACE_INSERT
+		vTrace("?? pFindLeafBuffer_gen"_Stz);
+        pEntBuffer->vTraceWhere();
+        vTrace("\n"_Stz);
+        m_nTabs++;
+#endif
+
+		//*ppEntPrior = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		if (nItems() == 0) {
+			*ppEntPrior = aSkipRoots();
+			if (pEntBuffer->m_iBufferHeight == 0) {
+				break;
+			}
+			// get the index buffer of the entry
+			pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
+			ASSERT(pEntBuffer);
+			ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
+			continue;
+		}
+
+		Ent *aScanEntry_sl = aSkipRoots();
+
+
+		for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+			tNextEntry = aScanEntry_sl->m_taNextEntry[i_ScanLevel];
+
+			if (C_ENT_END_TICKET == tNextEntry) {
+				//aNextEntry_sl = nullptr;
+				continue;
+			}
+
+			i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+
+			aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+
+
+			while (aNextEntry_sl) {
+
+				//eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+				Key* aKey_l = aNextEntry_sl->aKey();
+				i8 nKeyBytes_l = aKey_l->nElmSeqSize();
+
+				const i8 * iWord1 = (const i8*)aAdd<Dtm*>(aKey_l,sizeof(nKeyBytes_l));
+				const i8 * iWord2 = iWord_r;
+
+				i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+				//i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+
+				i8 iCmp = 0;
+
+				while (nCmpBytes > 0) {
+					if (*iWord1++ != *iWord2++) {
+						iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
+						break;
+					}
+					nCmpBytes -=8;
+				}
+
+				if ( iCmp > 0 || (iCmp == 0 && nKeyBytes_l >= nKeyBytes_r))
+					break;
+
+
+				aScanEntry_sl = aNextEntry_sl;
+
+
+				tNextEntry = aNextEntry_sl->m_taNextEntry[i_ScanLevel];
+
+				if (C_ENT_END_TICKET == tNextEntry)
+					aNextEntry_sl = nullptr;
+				else {
+					i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+
+					aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
+				}
+
+			}
+
+		}
+
+		*ppEntPrior = aScanEntry_sl;
+
+		if (pEntBuffer->m_iBufferHeight == 0) {
+			break;
+		}
+
+		ASSERT(*ppEntPrior);
+
+		// get the index buffer of the entry
+		pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
+		ASSERT(pEntBuffer);
+		ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
+	}
+
+	return pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

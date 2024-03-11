@@ -59,7 +59,7 @@
   //"OP_dynamic got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Fun0[] 0 dynamic[].execute not if
+  CrwBuffer[] CrwHandler[] false dynamic[].execute not if
     to errorCode
 
     // cleanup
@@ -119,7 +119,7 @@
   Pipein[].pipeout
 
   // execute function to generate the streamDefOut
-  nullptr Fun4[] 0 Dynamic[].execute assert
+  nullptr StreamDefHandler[] false Dynamic[].execute assert
 
   // get streamDefOut from Dynamic
   Dynamic[].streamDefOut to StreamDefOut[]
@@ -131,10 +131,10 @@
   Dynamic[].IsIndexScan@ if
 
     // execute the indexScan handler function
-    nullptr Fun2[] 0 Dynamic[].execute assert
+    nullptr IndexHandler[] false Dynamic[].execute assert
 
     // execute the EOS handler function
-    nullptr Fun3[] 1 Dynamic[].execute assert
+    nullptr EosHandler[] false Dynamic[].execute assert
 
     // pipeout all Tub[]/Pot[]
     Dynamic[].hashRows@ if
@@ -159,7 +159,7 @@
 
  0 locals| errorCode |
 
-  nullptr Fun3[] 0 dynamic[].execute not if
+  nullptr EosHandler[] false dynamic[].execute not if
     to errorCode
     Pipein[].delete
     Tub[].deleteAllBuffers
@@ -215,7 +215,7 @@
     exit
   then
 
-  Pds[] Fun1_[] 0 dynamic[].execute not if
+  Pds[] PdsHandler[] false dynamic[].execute not if
     to errorCode
 
     // cleanup
@@ -290,7 +290,9 @@
 
   LibInfo[].findFunctions
 
-  Fun2[].isNotNull if
+  0 StartHandler[] false dynamic[].execute assert
+
+  IndexHandler[].isNotNull if
     true dynamic[].IsIndexScan!
   then
 

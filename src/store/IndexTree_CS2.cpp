@@ -3263,6 +3263,102 @@ Ent* IndexTree::aFindEntry_CS2_v27(IndexTree* pIndexTree,
     return nullptr;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* find an entry in the indexTree                                             */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes, bool* pbInserted, i8* piErrorCode) {
+
+	EntBuffer* pEntBuffer = nullptr;
+
+	//
+	// aPositionPriorEntryAsc(aKey, &pEntBuffer);
+	//
+	Ent* pEntFound;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// root buffer ?
+	if ( ! m_pRootEntBuffer )
+		pEntFound = nullptr;
+	else {
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+		// position at H0 buffer
+		pEntBuffer = m_pRootEntBuffer->pFindLeafBuffer_ascGen(aKey, &pEntFound);
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// found entry ?
+	if ( pEntFound ) {
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+		// move to next entry
+		pEntFound = EntBuffer::pMoveToNextEntry(pEntFound, &pEntBuffer);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+		// found next entry ?
+		if (pEntFound) {
+
+			Key *aEntKey = pEntFound->aKey();
+
+			//
+			// eCmp = Key::eCompareAsc(aEntKey, aKey);
+			//
+
+			i8 nKeyBytes_l = aEntKey->nElmSeqSize();
+			i8 nKeyBytes_r = aKey->nElmSeqSize();
+
+			Dtm* ayKeyBytes_l = aEntKey->aElmSeq_dtm();
+			Dtm* ayKeyBytes_r = aKey->aElmSeq_dtm();
+
+			i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+			//
+			// i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+      //
+
+			i8 iCmp;
+			const i8 *iWord1 = (const i8*)ayKeyBytes_l;
+			const i8 *iWord2 = (const i8*)ayKeyBytes_r;
+
+			while (nCmpBytes > 0) {
+				if (*iWord1++ != *iWord2++) {
+					iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
+					break;
+				}
+				nCmpBytes -=8;
+			}
+      if (nCmpBytes == 0)
+			  iCmp = 0;
+
+			if ( !(iCmp == 0 && nKeyBytes_l == nKeyBytes_r))
+				pEntFound = nullptr;
+		}
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// not found entry ?
+	if (!pEntFound) {
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+		// create payload
+		Ent::vPayloadCreate(pEntInt, nPayloadBytes);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+		// insert entry
+		try {
+			pEntFound = aInsertEntry(pEntInt);
+			*pbInserted = true;
+		}
+		catch (LowMemory xLowMemory) {
+			*piErrorCode = EC_LOW_MEMORY;
+			return nullptr;
+		}
+	}
+
+	return pEntFound;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

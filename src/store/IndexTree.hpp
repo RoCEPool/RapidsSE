@@ -99,6 +99,7 @@ namespace STORE
     i8         nEntBuffers(void);
     void       vEntBuffersDec(void);
     void       vEntBuffersInc(void);
+		Ent*       aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes, bool* pbInsertedEntry, i8* piErrorCode);
     EntBuffer* pFirstH0Buffer(void);
     Rrf        xwGetRef(Key* aFindKey);
     Index*     pIndex(void);

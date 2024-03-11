@@ -158,7 +158,7 @@ void vIndexJoinCrossPosition(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at beginning of the index
-  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aExtern_IndexTreeBegin(
+  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aDynamicT->m_fp_aExtern_IndexTreeBegin(
         __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
 #endif
 
@@ -369,7 +369,7 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
 
   // move to next entry
 #ifdef WITH_CLANG
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
       &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
 #endif
 
@@ -447,7 +447,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 
   // move to next entry
 #ifdef WITH_CLANG
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
       &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
 #endif
 
@@ -512,7 +512,7 @@ i8 iIndexAntiJoinConstraint(Dynamic_T* aDynamicT) {
 			aDynamicT->m_bProcessRow = false;
 
     // move to next entry
-    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
         &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
 #endif
         goto __L_LABEL_INDEX_DEREF__;
@@ -570,7 +570,7 @@ i8 iIndexSemiJoinConstraint(Dynamic_T* aDynamicT) {
     if ( ! aDynamicT->m_bProcessRow ) {
 #ifdef WITH_CLANG
         // move to next entry
-    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
         &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
 #endif
         goto __L_LABEL_INDEX_DEREF__;

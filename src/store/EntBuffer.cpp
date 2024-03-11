@@ -107,8 +107,8 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree)
 
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
-  
-  
+
+	m_nLevels             = AM::nLvlLevels();
   m_nInsert             = 0;
   m_nSplit              = 0;
   m_nMove               = 0;
@@ -402,7 +402,19 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
 
   EntBuffer* pEntBuffer = *ppEntBuffer;
 
-  aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  //aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	tET tNextEntry = aEnt->m_taNextEntry[0];
+
+	if (C_ENT_END_TICKET == tNextEntry)
+		aEnt = nullptr;
+	else {
+
+	  i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA;
+
+	  aEnt = (Ent*) ((char*)pEntBuffer + 624 + iNextEntryOffset);
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (aEnt)
     return aEnt;
@@ -802,10 +814,8 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
   
 //  vTrace("  0:%p 1:%p 2:%p\n"_Stz,
 //         aPriorVec[0],aPriorVec[1],aPriorVec[2]);
-  
-  i8 nLvlLevels = AM::nLvlLevels();
 
-  for (i8 i_Lvl = 0; i_Lvl < nLvlLevels; i_Lvl++) {
+  for (i8 i_Lvl = 0; i_Lvl < m_nLevels; i_Lvl++) {
     Ent* aEnt = aPriorVec[i_Lvl];
     if (aEnt == aSkipRoots())
       vTrace("SKIP ROOT\n"_Stz);
