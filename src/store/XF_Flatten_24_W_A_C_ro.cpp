@@ -254,11 +254,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* enhance possible last IQ project adding crlKey to emit                     */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_project_Add_crlKey(CardIter* pCI)
+void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
+
+  if (! pCI->bIsNextMain(CK_o_PROJECT))
+    return;
+  RASSERT(pCI->bEachMain(CK_o_PROJECT));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold sq <project>
@@ -297,7 +301,6 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_project_Add_crlKey(CardIter* pCI)
 
   pCI->G.p_emit->vRenumberAll_expr();
 }
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -553,11 +556,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add correlation key to IQ:[<project>/<emit>/<crlKey>]
 
-  if (pCI->bIsNextMain(CK_o_PROJECT)) {
-    RASSERT(pCI->bEachMain(CK_o_PROJECT));
-    vEnhance_IQ_project_Add_crlKey(pCI);
-    pCI->PRINTBOARD_dbg();
-  }
+  vEnhance_IQ_emit_project_Add_crlKey(pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // snap final IQ:<op>/<emit>
