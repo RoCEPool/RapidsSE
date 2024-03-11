@@ -142,7 +142,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_term_crlKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vSnap_expr_crlKey(CardIter* pCI)
+void XF_Flatten_24_W_A_C_ro::vSnap_IQ_expr_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -161,7 +161,7 @@ void XF_Flatten_24_W_A_C_ro::vSnap_expr_crlKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vPromote_sq_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
+void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -257,7 +257,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_sq_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vEnhance_sq_project_Adding_crlKey(CardIter* pCI)
+void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_project_Add_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -514,61 +514,63 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  // We have a flattened query.  It has a left-size SQ, and a right-side OQ
+  // We have a flattened query.  It has a left-size IQ, and a right-side OQ
 
-  //        SQ... ...OQ           //
-  // T T A A A P F T T W A A A    //
+  //        IQ... ...OQ           //
+  // F F A A A P | F F W A A A    //
   //                              //
 
-  // Start with processing left-side SQ (sub-query)
+  // Start with processing left-side IQ (inner sub-query)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // identify correlation key predicate in SQ:<table>/<filter>/<boolPred>//<cmpPred>
+  // snap correlation key in IQ:<from>/<filter>/<boolPred>//<rlnConj>
   //
 
-  //   v                          //  ]filter
-  // F F A A A P f F F W A A A    //  .]boolPred
-  //   f                          //  ..]cmpPred ==
-  //   p                          //           $d.2 ((pCI->Sqy.m_p_term_crlKey))
-  //                              //             %1
+  //   v                          //
+  // F F A A A P + F F W A A A    // ]FROM
+  //   f         +                //  .]filter
+  //   b         +                //  ..]boolPred
+  //   r         +                //  ...]rlnConj == ((pCI->Sqy.m_p_conj_crlKey))
+  //             +                //            $d.2 ((pCI->Sqy.m_p_term_crlKey))
+  //             +                //              %1 // correlation parameter
 
   pCI->vClearRestart();
   while (pCI->bEachMain(CK_o_FROM, CK_t_EMIT, CK_o_FILTER))
     if (bSnap_term_crlKey(pCI))
       break;
-//  pCI->PRINTBOARD_dbg();
-//  pCI->Sqy.m_p_conj_crlKey->vDump(__func__);
-//  pCI->Sqy.m_p_term_crlKey->vDump(__func__);
+  pCI->PRINTBOARD_dbg();
+  pCI->Sqy.m_p_conj_crlKey->vDump(__func__);
+  pCI->Sqy.m_p_term_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_term_crlKey);
 
-  // find SQ:<op>/<projection>/<expr> which describes the correlation column
-  vSnap_expr_crlKey(pCI);
-//  pCI->PRINTBOARD_dbg();
-//  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
+  // snap IQ:<FROM>/<emit>/<expr> which describes the correlation key
+  vSnap_IQ_expr_crlKey(pCI);
+  pCI->PRINTBOARD_dbg();
+  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
   RASSERT(pCI->Sqy.m_p_expr_crlKey &&    // eg $15 (L_PARTKEY)
           pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_crlKey->pSymbol()));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enrich SQ:<aggreg> to be SQ:<gbyAgg>/<key=CorrCol>,
+  // promote IQ:<aggreg> to be IQ:<gbyAgg>/<key=crlKey>
   //   thereby producing ordered subQuery stream
 
   RASSERT(pCI->bEachMain(CK_o_AGGREG));
-  vPromote_sq_aggreg_To_gbyAgg_crlKey(pCI);
-//  pCI->PRINTBOARD_dbg();
+  vPromote_IQ_aggreg_To_gbyAgg_crlKey(pCI);
+  pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // include correlation column SQ:[<project>/<projection>]
+  // add correlation key to IQ:[<project>/<emit>/<crlKey>]
 
   if (pCI->bIsNextMain(CK_o_PROJECT)) {
     RASSERT(pCI->bEachMain(CK_o_PROJECT));
-    vEnhance_sq_project_Adding_crlKey(pCI);
-//    pCI->PRINTBOARD_dbg();
+    vEnhance_IQ_project_Add_crlKey(pCI);
+    pCI->PRINTBOARD_dbg();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get final SQ:<op>/<projection>
+  // snap final IQ:<op>/<emit>
 
   if (CK_o_PROJECT == pCI->G.e_MainCard || CK_o_GBYAGG == pCI->G.e_MainCard)
     pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
@@ -605,10 +607,10 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->vClearRestart();
 
   // v                             //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolPred
-  // s                             //  ..]cmpPred ==
-  // f                             //           $d.2  ((pCI->m_pTerm_corrArg))
-  //                               //             %1
+  // T A A A P + T T T W A A A     //  .]boolPred
+  // s         +                   //  ..]cmpPred ==
+  // f         +                   //           $d.2  ((pCI->m_pTerm_corrArg))
+  //           +                   //             %1
 
    while (pCI->bEachMain(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
     if (pCI->G.p_boolPred->bHasSub(pCI->Sqy.m_p_conj_crlKey)) {
@@ -621,10 +623,10 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->G.p_from->vCull_filter_IfEmpty(pCI->G.p_filter);
 
   //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolPred
-  // s                 f           //  ..]cmpPred ==
-  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrArg))
-  //                               //             %1
+  // T A A A P + T T T W A A A     //  .]boolPred
+  // s         +       f           //  ..]cmpPred ==
+  // f         +       bc          //           $d.2  ((pCI->m_pTerm_corrArg))
+  //           +                   //             %1
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
@@ -654,11 +656,11 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->G.p_boolPred->vExtend_andConj(_pCard_RlnConj(pCI->Sqy.m_p_conj_crlKey));
 
   //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolPred
-  // s                 f           //  ..]roPred <
-  // f                 bc          //           $a.5
-  //                               //           $b.1
-  //                               //           $Q1
+  // T A A A P + T T T W A A A     //  .]boolPred
+  // s         +       f           //  ..]roPred <
+  // f         +       bc          //           $a.5
+  //           +                   //           $b.1
+  //           +                   //           $Q1
 
 //  pCI->PRINTBOARD_dbg();
 //  pCI->G.p_boolPred->vDump(__func__);
@@ -678,10 +680,10 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->vClearRestart();
 
   //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolPred
-  // s                 f           //  ..]cmpPred ==
-  // f                 bc          //           $d.2  ((pCI->m_pTerm_corrArg))
-  //             b <-  cp          //             %1
+  // T A A A P + T T T W A A A     //  .]boolPred
+  // s         +       f           //  ..]cmpPred ==
+  // f         +       bc          //           $d.2  ((pCI->m_pTerm_corrArg))
+  //           + b <-  cp          //             %1
 
   RASSERT(pCI->bEachMain(CK_c_FOLD));
   RASSERT(pCI->bEachMain(CK_o_WHERE, CK_BOOLPRED));
