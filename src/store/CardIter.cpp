@@ -1581,8 +1581,7 @@ void CardIter::vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_ADDRESS:          G.p_address          = _pCard_Address(pCard); break;
     case CK_o_AGGREG: G.p_aggreg           = _pCard_Aggreg(pCard);
                               G.p_OP               = (Card_OP*)pCard; break;
-    case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);
-                              G.p_CONJ             = (Card_CONJ*)pCard; break;
+    case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);break;
 
     case CK_BOOLPRED: G.p_boolPred         = _pCard_BoolPred(pCard); break;
     case CK_BOUND:            G.p_bound            = _pCard_Bound(pCard); break;
@@ -1673,12 +1672,10 @@ void CardIter::vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_s_NEEDED: G.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
-    case CK_NOTCONJ:          G.p_notConj           = _pCard_NotConj(pCard);
-                              G.p_CONJ              = (Card_CONJ*)pCard; break;
+    case CK_NOTCONJ:          G.p_notConj           = _pCard_NotConj(pCard);break;
 
     case CK_ON:               G.p_on                = _pCard_On(pCard); break;
-    case CK_ORCONJ:           G.p_orConj            = _pCard_OrConj(pCard);
-                              G.p_CONJ              = (Card_CONJ*)pCard; break;
+    case CK_ORCONJ:           G.p_orConj            = _pCard_OrConj(pCard);break;
     case CK_o_ORDAGG: G.p_ordAgg            = _pCard_OrdAgg(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
@@ -1690,8 +1687,7 @@ void CardIter::vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_RELNOP:           G.p_relnOp            = _pCard_RelnOp(pCard); break;
     case CK_REQUIRED:         G.p_required          = _pCard_Required(pCard); break;
-    case CK_RLNCONJ:          G.p_rlnConj           = _pCard_RlnConj(pCard);
-                              G.p_CONJ              = (Card_CONJ*)pCard; break;
+    case CK_RLNCONJ:          G.p_rlnConj           = _pCard_RlnConj(pCard);break;
     case CK_ROWCOUNT:         G.p_rowCount          = _pCard_RowCount(pCard); break;
     case CK_ROWSIZE:          G.p_rowSize           = _pCard_RowSize(pCard); break;
     case CK_RPNCALC:          G.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
@@ -2345,9 +2341,7 @@ void CardIter::vResetMembers(void)
 
   G.p_xcard            = nullptr;
 
-  G.p_CARD             = nullptr;
   G.p_NEW              = nullptr;
-  G.p_CONJ             = nullptr;
 
   G.p_OP = nullptr;
 }

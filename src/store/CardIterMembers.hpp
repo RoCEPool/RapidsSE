@@ -33,10 +33,8 @@ namespace STORE
     eCK    e_MainCard;
     i8     i_MainCard;
 
-    Card*                p_CARD;
     Card*                p_NEW;
     Card_OP *            p_OP;
-    Card_CONJ *   p_CONJ;
 
     Card * p_SubOfMain;
     eCK    e_SubOfMain;
