@@ -72,7 +72,7 @@ CardIter::~CardIter(void) noexcept(false)
   _precondition_(_MAGIC_,_FOOTER_);
 
   while (nItems())
-    bPopRecurseIter();
+    vRestore_G_Members();
 
   RASSERT(0 == nItems());
 
@@ -2001,6 +2001,22 @@ void CardIter::vPushNewChild(Card* pParent, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool CardIter::bRecurseActive(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  CardIterMembers* pPeg = pPeek(0);
+  if (! pPeg)
+    return false;
+  if (pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardIter::vRecurseBegin(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -2046,7 +2062,8 @@ Card* CardIter::pRecurseEach(void)
   if (bEachMain())
     return G.p_MainCard;
 
-  while (bPopRecurseIter()) {
+  while (bRecurseActive()) {
+    vRestore_G_Members();
     if (bEachMain())
       return G.p_MainCard;
   }
@@ -2600,22 +2617,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
 /*-- Protected ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bPopRecurseIter(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  CardIterMembers* pPeg = pPeek(0);
-  if (! pPeg || pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
-    return false;
-
-  vRestore_G_Members();
-
-  return true;
-}
 
 /*============================================================================*/
 /* end                                                                        */

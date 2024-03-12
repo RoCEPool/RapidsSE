@@ -191,6 +191,7 @@ namespace STORE
     void vSnapFluxArriving(void);
     void vPushNewChild(Card* pParent, eCK eChild);
 
+    bool bRecurseActive(void);
     void vRecurseBegin(Card* pCard);
     Card* pRecurseEach(void);
     Card* pRecurseEach(eCK eCard);
@@ -218,7 +219,6 @@ namespace STORE
 
   protected:
 
-    bool bPopRecurseIter(void);
 
   private:
 
