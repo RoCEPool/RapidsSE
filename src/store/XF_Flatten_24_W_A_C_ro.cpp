@@ -331,8 +331,8 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
 
         if (xConj.pChild()->pSymbol()->bHasFacet(SF_SQY_PRM)) {
 
-          Symbol xSym_expCol1(SF_EXP_COL, 1);
-          xConj.pChild()->pSymbol()->vApplyCastFacets(&xSym_expCol1);  // TODO: hack!!
+          Symbol xSym_expCol1(SF_EXP_COL, pCI->Flat.m_pSqy_inner->pBoard()->i_Board());
+          xConj.pChild()->pSymbol()->vApplyFacets(&xSym_expCol1);
 
           Card_Expr* p_expr_found =
               pCI->Flux.m_pArriving->pGet_expr((i8) 0);
@@ -646,15 +646,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //           +                   //           $b.1
   //           +                   //           $Q1
 
-//  pCI->PRINTBOARD_dbg();
-//  pCI->G.p_boolPred->vDump(__func__);
+  //pCI->PRINTBOARD_dbg();
+  //pCI->G.p_boolPred->vDump(__func__);
   vConvert_OQ_sqyPrm_Into_expCol(pCI, pCI->G.p_boolPred);
 
-//  pCI->G.p_boolPred->vDump(__func__);
+  //pCI->G.p_boolPred->vDump(__func__);
   vConvert_OQ_sqyNo_Into_expCol(pCI, pCI->G.p_boolPred);
 
-//  pCI->PRINTBOARD_dbg();
-//  pCI->G.p_boolPred->vDump(__func__);
+  //pCI->PRINTBOARD_dbg();
+  //pCI->G.p_boolPred->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
