@@ -190,7 +190,6 @@ namespace STORE
     Card* pPrevChildIf(eCK eCard);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
-    bool bPushBoard(Symbol* pSymbol);
     void vPushNewChild(Card* pParent, eCK eChild);
     void vPushIter(void);
 

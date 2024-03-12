@@ -1995,23 +1995,6 @@ void CardIter::vSnapFluxArriving(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find and push board onto iter stack                                        */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bPushBoard(Symbol* pSymbol)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Board*  pBoard = m_pBench->pFindBoard(pSymbol);
-  if (! pBoard)
-    return false;
-
-  vPushIter();
-  vUsingBoard(pBoard);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vPushNewChild(Card* pParent, eCK eChild)
