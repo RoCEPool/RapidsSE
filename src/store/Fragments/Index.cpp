@@ -175,8 +175,9 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at lower bound
-  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
+	__INDEX_POSITION_LOWER__(&__INDEX_INFO__);
+  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+  //    &__INDEX_INFO__);
 #endif
 
   // marker-end
@@ -218,8 +219,7 @@ void vIndexPositionUpper(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at upper bound
-  __INDEX_INFO__.m_aEntUpper =  (struct Ent_int *)__INDEX_POSITION_UPPER__(
-      __INDEX_INFO__.m_aIndexTree, __INDEX_INFO__.m_aEntKey);
+  __INDEX_POSITION_UPPER__(&__INDEX_INFO__);
 #endif
 
   // marker-end

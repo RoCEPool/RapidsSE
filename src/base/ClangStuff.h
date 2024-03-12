@@ -37,11 +37,11 @@ extern void* aExtern_IndexTreeInsertEnt(void* aIndexDef, void* aEnt, i8* piError
 extern void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode)
   __attribute__((weak_import));
 
-extern void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) __attribute__((weak_import));
-extern void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) __attribute__((weak_import));
-extern void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) __attribute__((weak_import));
-extern void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey) __attribute__((weak_import));
-extern void *aExtern_IndexTreePositionLT(void* aIndexTree, void* aKey) __attribute__((weak_import));
+extern void  vExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionGE(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionGT(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionLE(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionLT(void* aIndexInfo) __attribute__((weak_import));
 
 extern void vExtern_RunningHash(i8* piKeyHash, byte* aMixVal, i8 iSize) __attribute__((weak_import));
 

@@ -272,6 +272,11 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindInsertGenAsc = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEnt = nullptr;
 
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionGE = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionGT = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionLE = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionLT = nullptr;
+
 	m_xDynamicT.m_fp_aExtern_PdsRowBufferCellArray = nullptr;
 
 	m_xDynamicT.m_fp_aExtern_RowPixNew = nullptr;

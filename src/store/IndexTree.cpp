@@ -241,17 +241,116 @@ extern "C" void vExtern_IndexFindT(void* aDynamic, char* aTableName, char* aInde
 	pDynamicT->m_xIndexInfoT.m_aIndexTree = pTablePtn->pIndexTree(iIndexNo);
 }
 
-extern "C" void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
-  return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+extern "C" void vExtern_IndexTreePositionGE(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer *pEntBuffer = nullptr;
+	Ent *aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
+	if (!pEntBuffer) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	if (!aEnt) {
+		pIndexInfo->m_aEntInt = nullptr;
+	  return;
+  }
+
+	aEnt = EntBuffer::pMoveToGreaterEqualEntry(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntBuffer = pEntBuffer;
+	pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
 }
-extern "C" void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
-  return IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+
+extern "C" void vExtern_IndexTreePositionGT(void* aIndexInfo) {
+
+  IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
+	if ( !pEntBuffer ) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToGreaterThanEntry(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntBuffer = pEntBuffer;
+	pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
 }
-extern "C" void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey) {
-  return IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
+
+extern "C" void vExtern_IndexTreePositionLE(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
+	if ( !pEntBuffer ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToGreaterThanEntry(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntUpper = (Ent_int*)aEnt;
+
 }
-extern "C" void *aExtern_IndexTreePositionLT(void* aIndexTree, void* aKey) {
-  return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+extern "C" void vExtern_IndexTreePositionLT(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
+	if ( !pEntBuffer ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+
+	pIndexInfo->m_aEntUpper = (Ent_int*)aEnt;
 }
 
 

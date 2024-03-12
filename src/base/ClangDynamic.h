@@ -116,7 +116,7 @@ struct Dynamic_T
 	//
 	// extern function pointers
 	//
-	void  (*m_fp_vExtern_EntWrkAppendElementStz)(i8,void*);
+	void  (*m_fp_vExtern_EntWrkAppendElementStz)(void*,char*);
 	void* (*m_fp_aExtern_EntBufferNextEntry)(void**,void*);
 	void (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
 
@@ -124,6 +124,11 @@ struct Dynamic_T
 	void* (*m_fp_vExtern_IndexNew)(void*,i8,void*,bool);
 	void* (*m_fp_aExtern_IndexTreeBegin)(void*,void**);
 	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
+
+	void  (*m_fp_vExtern_IndexTreePositionGE)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionGT)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionLE)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionLT)(void*);
 
 		void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
 	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);

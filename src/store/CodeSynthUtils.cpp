@@ -784,11 +784,11 @@ void CodeSynthUtils::vReplaceIndexPosition(String* sLine, OpSketch* pOpSketch)
     switch(pOpSketch->m_eLowerIP) {
       case IP_GT:
         bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                   "__INDEX_POSITION_LOWER__", "aExtern_IndexTreePositionGT");
+                                   "__INDEX_POSITION_LOWER__", "aDynamicT->m_fp_vExtern_IndexTreePositionGT");
         break;
       case IP_GE:
         bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                   "__INDEX_POSITION_LOWER__", "aExtern_IndexTreePositionGE");
+                                   "__INDEX_POSITION_LOWER__", "aDynamicT->m_fp_vExtern_IndexTreePositionGE");
         break;
       default:
         RASSERT(0);
@@ -801,12 +801,12 @@ void CodeSynthUtils::vReplaceIndexPosition(String* sLine, OpSketch* pOpSketch)
     switch(pOpSketch->m_eUpperIP) {
       case IP_LT:
         bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                   "__INDEX_POSITION_UPPER__", "aExtern_IndexTreePositionLT");
+                                   "__INDEX_POSITION_UPPER__", "aDynamicT->m_fp_vExtern_IndexTreePositionLT");
         RASSERT(bResult);
         break;
       case IP_LE:
         bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                   "__INDEX_POSITION_UPPER__", "aExtern_IndexTreePositionLE");
+                                   "__INDEX_POSITION_UPPER__", "aDynamicT->m_fp_vExtern_IndexTreePositionLE");
         RASSERT(bResult);
         break;
       default:

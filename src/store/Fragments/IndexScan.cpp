@@ -45,14 +45,7 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
   paW = &aDynamicT->m_aW[0];
 
-    //strcpy(&aDynamicT->m_xIndexInfoT.m_cTableName[0], "__TABLENAME__");
-    //strcpy(&aDynamicT->m_xIndexInfoT.m_cIndexName[0], "__INDEXNAME__");
-
   #ifdef WITH_CLANG
-    //aDynamicT->m_xIndexInfoT.m_aTable = aExtern_FindTable(aDynamicT->m_xIndexInfoT.m_cTableName);
-    //aDynamicT->m_xIndexInfoT.m_aIndex = aExtern_FindIndex(aDynamicT->m_xIndexInfoT.m_aTable, aDynamicT->m_xIndexInfoT.m_cIndexName);
-    //aDynamicT->m_xIndexInfoT.m_aIndexDef = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoT.m_aIndex);
-    //aDynamicT->m_xIndexInfoT.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoT.m_aTable, aDynamicT->m_xIndexInfoT.m_aIndex);
 		aDynamicT->m_fp_vExtern_IndexFindT(aDynamicT,"__TABLENAME__","__INDEXNAME__");
   #endif
 

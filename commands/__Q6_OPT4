@@ -17,8 +17,17 @@
 //  SF10-1N-1P : 2.45
 //  SF10-1N-4P : 1.32s
 
+
+// Flattening the positioning in index calls (via function pointers)
+//  (also now as function pointer)
+// on iMac:
+//  SF10-1N-1P : 2.48
+//  SF10-1N-4P : 1.33s
+
 /keepCodeFile
 /optimise_passthru
+/hasCodeFile
+/useCodeFile = "unamed_NODE1_2"
 pipeline unamed
 begin
 

@@ -51,7 +51,15 @@ i8 iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc)
   //  return iReqDstSize;
   //}
 
-  memset(psDst,0,iReqDstSize);
+	if (iDstBufSize < iReqDstSize) {
+		printf("Warning: Unhandled string truncation occurred in function %s.\n"
+					 "Destination buffer required %lld bytes, only had %lld bytes.\n",
+					 __func__,
+					 iReqDstSize,
+					 iDstBufSize);
+	}
+
+	memset(psDst,0,iReqDstSize);
   //MemLib::vZero(psDst, iReqDstSize, CN_KEY);
 
   //memcpy(psDst,psSrc,(size_t)iReqDstSize);
@@ -120,6 +128,11 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc = &aExtern_IndexTreeFindEntryAsc;
 	aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc = &aExtern_IndexTreeFindInsertGenAsc;
 	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt = &aExtern_IndexTreeInsertEnt;
+
+	aDynamicT->m_fp_vExtern_IndexTreePositionGE = &vExtern_IndexTreePositionGE;
+	aDynamicT->m_fp_vExtern_IndexTreePositionGT = &vExtern_IndexTreePositionGT;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLE = &vExtern_IndexTreePositionLE;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLT = &vExtern_IndexTreePositionLT;
 
 	aDynamicT->m_fp_aExtern_PdsRowBufferCellArray = &aExtern_PdsRowBufferCellArray;
 
