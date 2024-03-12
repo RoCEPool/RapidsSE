@@ -346,6 +346,7 @@ public:
   // dataBuffer
   void vDataBufferDelete(void);
   void vDataBufferGet(void);
+  void vDataBufferGetBufferIdAsAddr(void);
   void vDataBufferGetAndClear(void);
   void vDataBufferIsNotNull(void);
   void vDataBufferIsNull(void);
