@@ -48,7 +48,7 @@ XF_Flatten_subquery::XF_Flatten_subquery(CardIter* pCI)
 
   _checkInitialised_(CN_XF_FLATTEN_SUBQUERY);
 
-  m_pCI->vUsingBoard((i8)0);
+  m_pCI->vUsingBoard(nullptr);
 
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
@@ -93,7 +93,7 @@ void XF_Flatten_subquery::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
-  m_pCI->vUsingBoard((i8)0);
+  m_pCI->vUsingBoard(nullptr);
 
   vFlatten_recurse(nullptr,0);
 

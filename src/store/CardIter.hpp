@@ -211,7 +211,6 @@ namespace STORE
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 
-    void vUsingBoard(i8 i_Board);
     void vUsingBoard(Board* pBoard);
 
     void vValidateBench(void);

@@ -729,7 +729,8 @@ bool CardIter::bEachBoard(void)
   _precondition_( _MAGIC_, _FOOTER_);
 
   if (pEachBoard()) {
-    vUsingBoard(G.i_Board);
+    Board* pBoard = m_pBench->pGetBoard(G.i_Board);
+    vUsingBoard(pBoard);
     return true;
   }
 
@@ -2404,24 +2405,14 @@ void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
 }
 
 /*----------------------------------------------------------------------------*/
-
-/* set up which board to use                                                  */
-/*----------------------------------------------------------------------------*/
-void CardIter::vUsingBoard(i8 i_Board)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  Board* pBoard = m_pBench->pGetBoard(i_Board);
-
-  vUsingBoard(pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set up which board to use                                                  */
 /*----------------------------------------------------------------------------*/
 void CardIter::vUsingBoard(Board* pBoard)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  if (! pBoard)
+    pBoard = m_pBench->pGetBoard(0);
 
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
