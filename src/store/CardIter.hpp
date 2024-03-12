@@ -190,7 +190,6 @@ namespace STORE
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
     void vPushNewChild(Card* pParent, eCK eChild);
-    void vPushIter(void);
 
     void vRecurseBegin(Card* pCard);
     Card* pRecurseEach(void);

@@ -187,7 +187,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
                             BK_JOINORDERING,
                             aBK[BK_JOINORDERING],
                             m_pCI->m_pBench);
-  m_pCI->vPushIter();
+  m_pCI->vSave_G_Members();
   m_pCI->vUsingBoard(pBoard);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

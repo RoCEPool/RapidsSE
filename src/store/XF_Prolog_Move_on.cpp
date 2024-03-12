@@ -85,7 +85,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     // move LEFT_OUTER to scan
     if (p_rpnCalc_on->bPopDeleteChildIf(CK_TERM,
                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
-      m_pCI->vPushIter();
+      m_pCI->vSave_G_Members();
       if (m_pCI->bEachMain_reverse_b(CK_o_SCAN)) {
         p_scan_over = m_pCI->G.p_scan;
         m_pCI->vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));

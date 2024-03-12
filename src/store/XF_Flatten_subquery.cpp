@@ -111,7 +111,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   if (iDepth) {
     pBoard_outer = m_pCI->G.pBoard;
     SubQuery *pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
-    m_pCI->vPushIter();
+    m_pCI->vSave_G_Members();
     m_pCI->vUsingBoard(pSqy_inner->pBoard());
   }
 

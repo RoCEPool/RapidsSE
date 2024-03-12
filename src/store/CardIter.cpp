@@ -1998,22 +1998,6 @@ void CardIter::vPushNewChild(Card* pParent, eCK eChild)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
-void CardIter::vPushIter(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-//  Xsentinals* pTransformIterSave = new Xsentinals;
-//
-//  pTransformIterSave->vCopyFrom(this->aXsentinels());
-//
-//  m_pTransformIterList->vPush(pTransformIterSave);
-
-  this->vSave_G_Members();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vRecurseBegin(Card* pCard)

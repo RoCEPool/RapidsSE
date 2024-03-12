@@ -53,7 +53,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
     NEVER_REACH
   }
 
-  pCI->vPushIter();
+  pCI->vSave_G_Members();
   pCI->vUsingBoard(pBoard);
 
   // pCI->PRINTBOARD_dbg();
@@ -145,7 +145,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // x) push to sq
 
-  pCI->vPushIter();
+  pCI->vSave_G_Members();
   pCI->vUsingBoard(pBoard);
 
   pCI->Flat.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
@@ -200,7 +200,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
     vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
-  pCI->vPushIter();
+  pCI->vSave_G_Members();
   pCI->vUsingBoard(pBoard);
 
 

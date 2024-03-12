@@ -82,7 +82,7 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
     vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
-  pCI->vPushIter();
+  pCI->vSave_G_Members();
   pCI->vUsingBoard(pBoard);
 
   i8 nTables = Card_Table::nTables(pCI);
