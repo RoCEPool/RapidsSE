@@ -116,12 +116,12 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
     if (! p_conj->bIsCorrConj())
       return C_CONTINUE_RECURSION;
 
-    pCI->Sqy.m_p_conj_crlKey = p_conj;
-    pCI->Sqy.m_p_conj_crlKey->vMark1(MARK_AT);
-    pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyConj);
+    pCI->Flat.m_p_conj_crlKey = p_conj;
+    pCI->Flat.m_p_conj_crlKey->vMark1(MARK_AT);
+    pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyConj);
 
-    pCI->Sqy.m_p_term_crlKey = static_cast<Card_RlnConj *>(p_conj)->pGet_term_crlKey();
-    pCI->Sqy.m_p_term_crlKey->pSymbol()->Y_vSet(P_CrlKeyTerm);
+    pCI->Flat.m_p_term_crlKey = static_cast<Card_RlnConj *>(p_conj)->pGet_term_crlKey();
+    pCI->Flat.m_p_term_crlKey->pSymbol()->Y_vSet(P_CrlKeyTerm);
 
     rbSnapped = true;
 
@@ -146,11 +146,11 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
   if (! rbSnapped)
     return false;
 
-  pCI->Sqy.m_p_expr_crlKey = pCI->pBackSearch_expr_For_col(pCI->Sqy.m_p_term_crlKey->pSymbol(),
+  pCI->Flat.m_p_expr_crlKey = pCI->pBackSearch_expr_For_col(pCI->Flat.m_p_term_crlKey->pSymbol(),
                                                            pCI->G.i_MainCard + 1);
 
-  pCI->Sqy.m_p_expr_crlKey->vMark1(MARK_AT);
-  pCI->Sqy.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyDefn);
+  pCI->Flat.m_p_expr_crlKey->vMark1(MARK_AT);
+  pCI->Flat.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyDefn);
 
   return true;
 }
@@ -185,7 +185,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     // key
 
     if (AL_PARTITION == e_Level) {
-      pCI->G.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Sqy.m_p_expr_crlKey);
+      pCI->G.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
       if (1 == pCI->G.p_key->nChildCards())
         pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
@@ -193,15 +193,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     else {
       pCI->vNewMember(CK_EXPR);
       pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->G.p_expr->vApplyCast_x(pCI->Sqy.m_p_expr_crlKey->xCast());
+      pCI->G.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
       pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-      pCI->G.p_term->vApplyCast_x(pCI->Sqy.m_p_expr_crlKey->xCast());
+      pCI->G.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
       if (1 == pCI->G.p_key->nChildCards())
         pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
 
-      pCI->G.p_rpnCalc->vApplyCast_x(pCI->Sqy.m_p_expr_crlKey->xCast());
-      pCI->G.p_term->vApplyCast_x(pCI->Sqy.m_p_expr_crlKey->xCast());
+      pCI->G.p_rpnCalc->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
+      pCI->G.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
 
     }
     // TODO: hack...
@@ -343,7 +343,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
         }
         else
         if (xConj.pChild()->bIsCard(CK_TERM) && xConj.pChild()->pSymbol()->bHasFacet(SF_TBL_COL)) {
-          Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
+          Card_OuterColNm* p_outerColNm = pCI->Flat.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack
           Card* p_card = p_outerColNm->pDupCardRecursive();
@@ -464,17 +464,17 @@ void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* p
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  p_boolPred->vRemove_rlnConj(pCI->Sqy.m_p_conj_rslTest);
+  p_boolPred->vRemove_rlnConj(pCI->Flat.m_p_conj_rslTest);
 
   //p_rlnConj_sqyRslTest->vDump();
 
-  Card_Term* p_term_tblCol = pCI->Sqy.m_p_conj_rslTest->pGetFirstTerm_tblCol();
+  Card_Term* p_term_tblCol = pCI->Flat.m_p_conj_rslTest->pGetFirstTerm_tblCol();
   Symbol* pSym_term_tblCol = p_term_tblCol->pSymbol();
   Card_OP* p_OP = pCI->pFind_from_By_tblSyn(pSym_term_tblCol, pCI->G.i_MainCard);
 
   pCI->G.p_filter = p_OP->pEnsure_filter();
 
-  pCI->G.p_filter->pSub_boolPred()->vAppend_and_rlnConj(pCI->Sqy.m_p_conj_rslTest);
+  pCI->G.p_filter->pSub_boolPred()->vAppend_and_rlnConj(pCI->Flat.m_p_conj_rslTest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,17 +531,17 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // F F A A A P + F F W A A A    // ]FROM
   //   f         +                //  .]filter
   //   b         +                //  ..]boolPred
-  //   r         +                //  ...]rlnConj == ((pCI->Sqy.m_p_conj_crlKey))
-  //             +                //            $d.2 ((pCI->Sqy.m_p_term_crlKey))
+  //   r         +                //  ...]rlnConj == ((pCI->Flat.m_p_conj_crlKey))
+  //             +                //            $d.2 ((pCI->Flat.m_p_term_crlKey))
   //             +                //              %1 // correlation parameter
 
   bool bSnapped = bSnap_IQ_crlKey(pCI);
   RASSERT(bSnapped);
   pCI->PRINTBOARD_dbg();
-  pCI->Sqy.m_p_expr_crlKey->vDump(__func__);
-  pCI->Sqy.m_p_conj_crlKey->vDump(__func__);
-  pCI->Sqy.m_p_term_crlKey->vDump(__func__);
-  RASSERT(pCI->Sqy.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Sqy.m_p_term_crlKey->pSymbol()));
+//  pCI->Flat.m_p_expr_crlKey->vDump(__func__);
+//  pCI->Flat.m_p_conj_crlKey->vDump(__func__);
+//  pCI->Flat.m_p_term_crlKey->vDump(__func__);
+  RASSERT(pCI->Flat.m_p_expr_crlKey->pSymbol()->bMatches(pCI->Flat.m_p_term_crlKey->pSymbol()));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -592,12 +592,12 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   pCI->vClearRestart();
   while (pCI->bEachMain(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
-    if (pCI->G.p_boolPred->bHasSub(pCI->Sqy.m_p_conj_crlKey)) {
-      pCI->G.p_boolPred->vRemoveSub(pCI->Sqy.m_p_conj_crlKey);
+    if (pCI->G.p_boolPred->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
+      pCI->G.p_boolPred->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
       break;
     }
   }
-  RASSERT(pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_bHas(P_CrlKeyConj));
+  RASSERT(pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_bHas(P_CrlKeyConj));
   // tidy up empty SQ:<table>/<filter>
   pCI->G.p_from->vCull_filter_IfEmpty(pCI->G.p_filter);
 
@@ -634,10 +634,10 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append correlation key conjunction onto the OQ:<where>/<filter>/<boolPred>
 
-  pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vCut(P_CrlKeyConj);
-  pCI->Sqy.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyTest);
+  pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vCut(P_CrlKeyConj);
+  pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyTest);
 
-  pCI->G.p_boolPred->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Sqy.m_p_conj_crlKey));
+  pCI->G.p_boolPred->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Flat.m_p_conj_crlKey));
 
   //                   v           //  ]filter
   // F A A A P + F F F W A A A     //  .]boolPred

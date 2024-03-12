@@ -77,8 +77,8 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
   // pCI->PRINTBOARD_dbg();
 
   // 2) push to sq
-  if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_p_term_sqyCall->szFacet(SF_SQY_NO));
+  if (! pCI->bPushBoard(pCI->Flat.m_p_term_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 

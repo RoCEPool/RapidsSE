@@ -66,7 +66,7 @@ namespace STORE
       i8         m_i_fold;
       Card_Expr* m_pExpr_fold;
       Card*      m_pCard_sqyCopy;
-    } Sqy;
+    } Flat;
 
     struct {
       Card_StreamKey * m_pStreamKey;

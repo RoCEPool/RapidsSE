@@ -47,8 +47,8 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // pCI->PRINTBOARD_dbg();
 
   // 2) push to sq
-  if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_p_term_sqyCall->szFacet(SF_SQY_NO));
+  if (! pCI->bPushBoard(pCI->Flat.m_p_term_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -59,7 +59,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   i8 i_dup_from = 0;
   pCI->vBeginEach();
   if (pCI->bEachMain(CK_o_CORRELATION)) {
-    pCI->Sqy.m_pCorrelation = pCI->G.pDeck->pSub_correlation();
+    pCI->Flat.m_pCorrelation = pCI->G.pDeck->pSub_correlation();
     i_dup_from = 1;
   }
 
@@ -67,7 +67,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
 
   // 3) get copy of sq
-  pCI->Sqy.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(i_dup_from);
+  pCI->Flat.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(i_dup_from);
 
   // 4) pop back to mq
   pCI->vPopBoard();
@@ -77,9 +77,9 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   // 6) copy up sq (add before fold)
-  pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqyCopy);
-  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->Sqy.m_pCard_sqyCopy);
-  DELETE_CARD(pCI->Sqy.m_pCard_sqyCopy);
+  pCI->G.pDeck->vPushChild(pCI->Flat.m_pCard_sqyCopy);
+  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->Flat.m_pCard_sqyCopy);
+  DELETE_CARD(pCI->Flat.m_pCard_sqyCopy);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -98,12 +98,12 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // 7) derive the fold (SQ result) expr
-  pCI->Sqy.m_pExpr_fold = nullptr;
+  pCI->Flat.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
   if (pCI->bEachMain(CK_c_FOLD)) {
-    pCI->Sqy.m_i_fold = pCI->G.i_MainCard;
+    pCI->Flat.m_i_fold = pCI->G.i_MainCard;
     pCI->G.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
-    pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
+    pCI->Flat.m_pExpr_fold = pCI->G.p_expr;
   }
   // pCI->PRINTBOARD_dbg();
 
@@ -140,7 +140,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
     NEVER_REACH
   }
 
-  pCI->Sqy.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
+  pCI->Flat.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
   // pCI->PRINTBOARD_dbg();
 
@@ -149,9 +149,9 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // x) pop back to mq
   pCI->vPopBoard();
 
-  pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqyCopy);
-  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->Sqy.m_pCard_sqyCopy);
-  DELETE_CARD(pCI->Sqy.m_pCard_sqyCopy);
+  pCI->G.pDeck->vPushChild(pCI->Flat.m_pCard_sqyCopy);
+  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->Flat.m_pCard_sqyCopy);
+  DELETE_CARD(pCI->Flat.m_pCard_sqyCopy);
 
   pCI->G.pDeck->vRemoveChild(pCI->G.p_call);
   DELETE_CARD(pCI->G.p_call);
@@ -159,7 +159,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // 7) derive the fold (SQ result) expr
   pCI->vClearRestart();
   if (pCI->bEachMain(CK_c_FOLD)) {
-    pCI->Sqy.m_i_fold = pCI->G.i_MainCard;
+    pCI->Flat.m_i_fold = pCI->G.i_MainCard;
     Board::vDerive_foldProjection_F(pCI);
   }
 
@@ -187,8 +187,8 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   // pCI->PRINTBOARD_dbg();
 
   // 2) push to sq
-  if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_p_term_sqyCall->szFacet(SF_SQY_NO));
+  if (! pCI->bPushBoard(pCI->Flat.m_p_term_sqyCall->pSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
 
@@ -196,7 +196,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   SubQuery* pSubQuery_save = pCI->pBoard()->pSubQuery();
 
   // 3) get copy of sq
-  pCI->Sqy.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
+  pCI->Flat.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
   // 4) pop back to mq
   pCI->vPopBoard();
@@ -206,9 +206,9 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
 
   // 6) copy up sq (add before fold)
-  pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqyCopy);
-  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->Sqy.m_pCard_sqyCopy);
-  DELETE_CARD(pCI->Sqy.m_pCard_sqyCopy);
+  pCI->G.pDeck->vPushChild(pCI->Flat.m_pCard_sqyCopy);
+  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->Flat.m_pCard_sqyCopy);
+  DELETE_CARD(pCI->Flat.m_pCard_sqyCopy);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -228,12 +228,12 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
 
   // 7) derive the fold (SQ result) expr
-  pCI->Sqy.m_pExpr_fold = nullptr;
+  pCI->Flat.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
   if (pCI->bEachMain(CK_c_FOLD)) {
-    pCI->Sqy.m_i_fold = pCI->G.i_MainCard;
+    pCI->Flat.m_i_fold = pCI->G.i_MainCard;
     pCI->G.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
-    pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
+    pCI->Flat.m_pExpr_fold = pCI->G.p_expr;
   }
   // pCI->PRINTBOARD_dbg();
 
@@ -441,7 +441,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! pCI->Sqy.m_pCorrelation) {
+  if (! pCI->Flat.m_pCorrelation) {
     return;
   }
 
@@ -457,7 +457,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   Card_Term* p_term_found = p_expr_found->pGet_term(0);
 
 
-  Card_Term* p_term_sqyArg = pCI->Sqy.m_p_term_crlKey->pClone();
+  Card_Term* p_term_sqyArg = pCI->Flat.m_p_term_crlKey->pClone();
   p_term_sqyArg->vApplyCast_p(p_term_found);
   //p_term_sqyArg->vDump();
 

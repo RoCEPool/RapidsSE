@@ -237,14 +237,14 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->pSymbol()->vApplyFacets(pCI->Sqy.m_pExpr_fold->pSymbol());
+  pCI->G.p_expr->pSymbol()->vApplyFacets(pCI->Flat.m_pExpr_fold->pSymbol());
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppendChild(pCI->G.p_rpnCalc);
   pCI->G.p_expr->vApplyCast_p(pCI->G.p_rpnCalc);
 
   Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
+  pCI->G.p_term = pCI->Flat.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
 
   pCI->G.p_rpnCalc->vAppendChild(pCI->G.p_term);
 

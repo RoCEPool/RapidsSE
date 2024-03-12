@@ -39,16 +39,16 @@ CardIter::CardIter(Bench* pBench)
 
   G.m_bDontDescend = false;
 
-  Sqy.m_pCard_sqyCopy = nullptr;
+  Flat.m_pCard_sqyCopy = nullptr;
 
-  Sqy.m_pExpr_fold = nullptr;
-  Sqy.m_p_expr_crlKey = nullptr;
+  Flat.m_pExpr_fold = nullptr;
+  Flat.m_p_expr_crlKey = nullptr;
 
-  Sqy.m_pCorrelation   = nullptr;
-  Sqy.m_p_term_sqyCall = nullptr;
-  Sqy.m_p_conj_iqyCall = nullptr;
-  Sqy.m_p_term_crlKey  = nullptr;
-  Sqy.m_p_conj_crlKey  = nullptr;
+  Flat.m_pCorrelation   = nullptr;
+  Flat.m_p_term_sqyCall = nullptr;
+  Flat.m_p_conj_iqyCall = nullptr;
+  Flat.m_p_term_crlKey  = nullptr;
+  Flat.m_p_conj_crlKey  = nullptr;
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
@@ -546,7 +546,7 @@ void CardIter::vClearRegisters(void)
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
 
-  //Sqy.m_p_term_crlKey  = nullptr;
+  //Flat.m_p_term_crlKey  = nullptr;
 
   Flux.m_pArriving  = nullptr;
   Dic.m_p_expr    = nullptr;
@@ -566,7 +566,7 @@ void CardIter::vClearRegisters(void)
   X.m_pExprList_i = nullptr;
   X.m_pExprList_k = nullptr;
 
-  Sqy.m_i_fold = C_UNKNOWN;
+  Flat.m_i_fold = C_UNKNOWN;
 
 }
 
@@ -1303,7 +1303,7 @@ Card_OP* CardIter::pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before)
     Card_OP *p_OP = (Card_OP*)G.pDeck->pGetChild(i_Main);
     if (p_OP->bIsCard(CK_o_FROM)) {
       Card_Table* p_table_test = p_OP->pSub_table();
-      p_table_test->vDump(__func__);
+      //p_table_test->vDump(__func__);
       if (p_table_test->bSame(pSym_tblSyn)) {
         return p_OP;
       }

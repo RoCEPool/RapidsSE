@@ -82,7 +82,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
 
 
   pCI->G.p_emit = nullptr;
-  for (i8 i_Main = pCI->Sqy.m_i_fold - 1; i_Main >= 0; i_Main--) {
+  for (i8 i_Main = pCI->Flat.m_i_fold - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
     if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
@@ -115,11 +115,11 @@ bool Board::bMark_sqyCall(CardIter* pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (! (pCI->Sqy.m_p_term_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
+    if (! (pCI->Flat.m_p_term_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
       return C_CONTINUE_RECURSION;
 
-   pCI->Sqy.m_p_conj_iqyCall = p_conj;
-    pCI->Sqy.m_p_conj_iqyCall->vMark1(MARK_AT);
+   pCI->Flat.m_p_conj_iqyCall = p_conj;
+    pCI->Flat.m_p_conj_iqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
     if (p_conj->pSymbol()->bHasFacet("exists"_Stz) ||
@@ -127,14 +127,14 @@ bool Board::bMark_sqyCall(CardIter* pCI)
 
       RASSERT(p_conj->bIsSqyOp());
 
-      pCI->Sqy.m_p_term_crlKey = p_conj->pGetTerm(0);
-      pCI->Sqy.m_p_term_sqyCall = p_conj->pGetTerm(1);
+      pCI->Flat.m_p_term_crlKey = p_conj->pGetTerm(0);
+      pCI->Flat.m_p_term_sqyCall = p_conj->pGetTerm(1);
       return C_TERMINATE_RECURSION;
     }
 
     if (p_conj->pSymbol()->bHasFacet("in"_Stz) || p_conj->pSymbol()->bHasFacet("notIn"_Stz)) {
       RASSERT(p_conj->bIsSqyOp());
-      pCI->Sqy.m_p_term_crlKey = p_conj->pGetTerm(2);
+      pCI->Flat.m_p_term_crlKey = p_conj->pGetTerm(2);
       return C_TERMINATE_RECURSION;
     }
 

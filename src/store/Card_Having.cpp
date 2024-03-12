@@ -50,7 +50,7 @@ void Card_Having::vAcclimate_foldExpr(CardIter* pCI)
 
   pCI->G.p_constraint = pSub_constraint();
 
-  pCI->G.p_constraint->vAcclimate_foldExpr(pCI,pCI->Sqy.m_pExpr_fold);
+  pCI->G.p_constraint->vAcclimate_foldExpr(pCI,pCI->Flat.m_pExpr_fold);
 }
 
 /*----------------------------------------------------------------------------*/
