@@ -57,8 +57,6 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   m_pTable_dbuff = nullptr;
   m_pStreamDef_dbuff = nullptr;
 
-  m_bOutputQueue = false;
-
   m_tTxnNo = C_UNKNOWN;
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
@@ -339,26 +337,6 @@ i8 DataBuffer::iBufferNo(void)
   i8 i_PoolBuffer = pPoolBuffer->iBufferNo();
 
   return i_PoolBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get output queue flag                                                      */
-/*----------------------------------------------------------------------------*/
-bool DataBuffer::bOutputQueued(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  return m_bOutputQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set output queue flag                                                      */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vOutputQueued(bool bOutputQueued)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_bOutputQueue = bOutputQueued;
 }
 
 /*----------------------------------------------------------------------------*/

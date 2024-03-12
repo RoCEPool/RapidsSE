@@ -164,16 +164,12 @@ void HashMap::vDeleteKey(void* pKey)
       // If it is, it should not be locked
 
       DataBuffer *pDataBuffer = _pDataBuffer(pIter->m_pValObject);
-      if (pDataBuffer->bOutputQueued()) {
-        RASSERT( ! pIter->m_okLock.bIsLocked());
-      } else {
-        RASSERT(pIter->m_okLock.bIsLocked());
-        // drop lock
-        //vTrace("Deleting key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
-        pIter->m_okLock.vDropRead();
-        // assert it is not locked
-        RASSERT( ! pIter->m_okLock.bIsLocked());
-      }
+      RASSERT(pIter->m_okLock.bIsLocked());
+      // drop lock
+      //vTrace("Deleting key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
+      pIter->m_okLock.vDropRead();
+      // assert it is not locked
+      RASSERT( ! pIter->m_okLock.bIsLocked());
 //#else
 //      if(pIter->m_okLock.bIsLocked())
 //        pIter->m_okLock.vResetLock();
