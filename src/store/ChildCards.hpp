@@ -65,8 +65,8 @@ namespace STORE
 
     bool bRemoveChild(Card* pChild);
     void vRemoveChild(Card* pChild);
+    void vRemoveChildLeavingSubs(Card* pChild);
     void vRemoveSub(Card* pSub);
-    void vReplaceChildWithItsSubs(Card* pChild);
     void vReplaceChild(Card* pChild, Card* pWith);
     void vRotateFirst(Card* pChild);
     void vRotateLast(Card* pChild);

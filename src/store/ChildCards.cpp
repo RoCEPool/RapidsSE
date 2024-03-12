@@ -562,6 +562,23 @@ void ChildCards::vRemoveChild(Card* pChild)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove given child card from this card and replace it with its children    */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRemoveChildLeavingSubs(Card* pChild)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  Card* pAfter = pChild;
+
+  while (Card* pSub = pChild->pPopChild()) {
+    vInsertChildAfter(pSub, pAfter);
+    pAfter = pSub;
+  }
+
+  vRemoveChild(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given subCard (recursive)                                           */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vRemoveSub(Card* pSub)
@@ -585,23 +602,6 @@ void ChildCards::vRemoveSub(Card* pSub)
   }
 
   delete pSubCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove given child card from this card and replace it with its children    */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vReplaceChildWithItsSubs(Card* pChild)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  Card* pAfter = pChild;
-
-  while (Card* pSub = pChild->pPopChild()) {
-    vInsertChildAfter(pSub, pAfter);
-    pAfter = pSub;
-  }
-
-  vRemoveChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/

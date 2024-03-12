@@ -49,11 +49,11 @@ CardIter::CardIter(Bench* pBench)
 
   Flat.m_pCorrelation   = nullptr;
 
-  Flat.m_pCard_sqyCopy  = nullptr;
+  Flat.m_pCopy_inner  = nullptr;
 
   Flat.m_i_fold         = C_UNKNOWN;
   Flat.m_pExpr_fold     = nullptr;
-  Flat.m_pCard_sqyCopy  = nullptr;
+  Flat.m_pCopy_inner  = nullptr;
 
 //  G.pBoard    = nullptr;
 //  G.pDeck     = nullptr;
