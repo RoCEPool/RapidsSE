@@ -123,6 +123,8 @@ namespace STORE
     void vChangeCard(Card* pCard);
     i8   i_Child(void);
     Card* pChild(void);
+    void vChild(i8 i_Child);
+    void vChild(Card* pChild);
     void vClearRegisters(void);
     void vClearRegistersIf(Card* pCard);
     void vClearRestart(void);
@@ -209,9 +211,7 @@ namespace STORE
     bool bRewindMain(void);
 
     void vSave(void);
-    void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);
-    void vSet(i8 i_Child);
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 

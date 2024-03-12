@@ -504,6 +504,30 @@ Card* CardIter::pChild(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vChild(i8 i_Child)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  RASSERT(G.xKid.bWithinRange());
+
+  G.xKid.vReposition(i_Child);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vChild(Card* pChild)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  RASSERT(G.xKid.bWithinRange());
+
+  G.xKid.vReposition(G.xKid.pParent()->iFindChild(pChild));
+}
+
+/*----------------------------------------------------------------------------*/
 /* clear the general M registers                                              */
 /*----------------------------------------------------------------------------*/
 void CardIter::vClearRegisters(void)
@@ -1856,7 +1880,7 @@ bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
   va_end(xaArgs);
 
   if (pCard_found) {
-    vSet(pCard_found);
+    vChild(pCard_found);
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
     return true;
@@ -2423,18 +2447,6 @@ void CardIter::vSave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSet(Card* pChild)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.bWithinRange());
-
-  G.xKid.vReposition(G.xKid.pParent()->iFindChild(pChild));
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::vSet(CardIter* pCardIter_src)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -2443,18 +2455,6 @@ void CardIter::vSet(CardIter* pCardIter_src)
   G.xKid.vReposition(pCardIter_src->G.xKid.i_Child());
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vSet(i8 i_Child)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.bWithinRange());
-
-  G.xKid.vReposition(i_Child);
-}
 
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
