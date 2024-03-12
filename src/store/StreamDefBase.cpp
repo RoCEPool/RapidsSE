@@ -953,10 +953,11 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col, String* psErrStr)
       if (pTkn->bSame("char"_Stz) ||
           pTkn->bSame("varbinary"_Stz)) {
         eError = eParseColumnVarchar(pTknVec,pCol,psErrStr);
-      }
-      else
+        
+      } else {
         eError = EC_INVALID_COMMAND;
         psErrStr->vSprint("Unknown type %s"_Stz, aCT[eColumn]);
+      }
       break;
       
   }
