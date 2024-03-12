@@ -2030,7 +2030,7 @@ Card* CardIter::pRecurseEach(void)
   if (G.p_MainCard && (! G.m_bDontDescend) ) {
     if (G.p_MainCard->nChildCards()) {
 
-      vPushRecurseIter();
+       vSave_G_Members();
       vChangeCard(G.p_MainCard);
       bEachMain();
 
@@ -2615,18 +2615,6 @@ bool CardIter::bPopRecurseIter(void)
   vRestore_G_Members();
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vPushRecurseIter(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  RASSERT(G.m_i_RecursionDepth);
-
-  vSave_G_Members();
 }
 
 /*============================================================================*/

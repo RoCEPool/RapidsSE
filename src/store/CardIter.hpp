@@ -219,7 +219,6 @@ namespace STORE
   protected:
 
     bool bPopRecurseIter(void);
-    void vPushRecurseIter(void);
 
   private:
 
