@@ -21,13 +21,13 @@ namespace STORE
  {
   public:
 
-    CardIterMembers G;
-
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
     Symbol      m_xSymbol_tableSyn;
 
     i8          m_i_RecursionDepth;
+
+    CardIterMembers G;
 
     struct {
       Card_OP*      m_pOP_root;

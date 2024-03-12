@@ -33,7 +33,7 @@ namespace STORE
 
     void vFlatten_recurse(i8 iDepth);
 
-    void vFlattenByDecisionTree(Symbol* pSym);
+    void vFlattenByDecisionTree(Symbol* pSym_term_sqyNo);
 
   protected:
     Footer* aFooter(void);

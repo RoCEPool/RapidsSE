@@ -121,20 +121,21 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
     if (! m_pCI->bEachMain(CK_o_CALL))
       break;
 
-    Board *pOuterBoard_save = m_pCI->G.pBoard;
-    SubQuery* pSubQuery = m_pCI->m_pBench->pFindSubQuery(m_pCI->G.p_call->pSymbol());
-    m_pCI->vPushBoard(pSubQuery->pBoard());
+    Symbol* pSym_sqyNo_inner = m_pCI->G.p_call->pSymbol();
+
+    Board *pBoard_outer = m_pCI->G.pBoard;
+    SubQuery* pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
+    m_pCI->vPushBoard(pSqy_inner->pBoard());
 
     vFlatten_recurse(iDepth + 1);
 
     m_pCI->vPopBoard();
-    m_pCI->vUsingBoard(pOuterBoard_save);
-    //pSubQuery = m_pCI->m_pBench->pFindSubQuery(m_pCI->G.p_call->pSymbol());
-   // m_pCI->PRINTBOARD_dbg();
+    m_pCI->vUsingBoard(pBoard_outer);
+    // m_pCI->PRINTBOARD_dbg();
 
-    vFlattenByDecisionTree(m_pCI->G.p_call->pSymbol());
+    vFlattenByDecisionTree(pSym_sqyNo_inner);
 
-   // m_pCI->PRINTBOARD_dbg();
+    // m_pCI->PRINTBOARD_dbg();
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -154,20 +155,19 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
        if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
          return C_CONTINUE_RECURSION;
 
-//      s256 sSqyNo = p_term->szFacet(SF_SQY_NO);
-//      RASSERT(pCI->m_pBench->bKnown_sqyNo_v2(sSqyNo)); //temp
+      Symbol* pSym_sqyNo_inner = p_term->pSymbol();
 
-      Board* pOuterBoard_save = pCI->G.pBoard;
-      SubQuery* pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
-      pCI->vPushBoard(pSubQuery->pBoard());
+      Board* pBoard_outer = pCI->G.pBoard;
+      SubQuery* pSqy_inner = pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
+      pCI->vPushBoard(pSqy_inner->pBoard());
 
       vFlatten_recurse(iDepth + 1);
 
       pCI->vPopBoard();
-      pCI->vUsingBoard(pOuterBoard_save);
+      pCI->vUsingBoard(pBoard_outer);
       // pCI->PRINTBOARD_dbg();
 
-      vFlattenByDecisionTree(p_term->pSymbol());
+      vFlattenByDecisionTree(pSym_sqyNo_inner);
 
      // pCI->PRINTBOARD_dbg();
 
@@ -198,23 +198,20 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
       if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
         return C_CONTINUE_RECURSION;
 
-      //s256 sSqyNo = p_term->szFacet(SF_SQY_NO);
+      Symbol* pSym_sqyNo_inner = p_term->pSymbol();
 
-      Board* pOuterBoard_save = pCI->G.pBoard;
-      SubQuery* pSubQuery = pCI->m_pBench->pFindSubQuery(p_term->pSymbol());
-      pCI->vPushBoard(pSubQuery->pBoard());
+      Board* pBoard_outer = pCI->G.pBoard;
+      SubQuery* pSqy_inner = pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
+      pCI->vPushBoard(pSqy_inner->pBoard());
 
       vFlatten_recurse(iDepth + 1);
 
       pCI->vPopBoard();
-      pCI->vUsingBoard(pOuterBoard_save);
+      pCI->vUsingBoard(pBoard_outer);
      // pCI->PRINTBOARD_dbg();
 
-      vFlattenByDecisionTree(p_term->pSymbol());
-
+      vFlattenByDecisionTree(pSym_sqyNo_inner);
       //pCI->PRINTBOARD_dbg();
-
-     // XF_Flatten_Left_subQuery::vRemove_LeftMost(pCI);
 
       bFound = true;
       return C_TERMINATE_RECURSION;
@@ -252,11 +249,11 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_subquery::vFlattenByDecisionTree(Symbol* pSym)
+void XF_Flatten_subquery::vFlattenByDecisionTree(Symbol* pSym_sqyNo_inner)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
-  SubQuery* pSubQuery = m_pCI->m_pBench->pFindSubQuery(pSym);
+  SubQuery* pSubQuery = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
 
 //  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_SUBQUERY);
 
