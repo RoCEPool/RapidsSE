@@ -1896,7 +1896,7 @@ void CardIter::vPopBoard(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  this->vRestore();
+  this->vRestore_G_Members();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2054,7 +2054,7 @@ void CardIter::vPushIter(void)
 //
 //  m_pTransformIterList->vPush(pTransformIterSave);
 
-  this->vSave();
+  this->vSave_G_Members();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2064,7 +2064,7 @@ void CardIter::vRecurseBegin(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vSave();
+  vSave_G_Members();
 
   m_i_RecursionDepth++;
   G.m_i_RecursionDepth = m_i_RecursionDepth;
@@ -2134,7 +2134,7 @@ void CardIter::vRecurseEnd(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vRestore();
+  vRestore_G_Members();
 
   m_i_RecursionDepth--;
 
@@ -2215,7 +2215,6 @@ void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
 void CardIter::vResetMembers(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
-  G.pSubQuery_Q      = nullptr;
 
   G.p_absJoin          = nullptr;
   G.p_address          = nullptr;
@@ -2421,27 +2420,27 @@ bool CardIter::bRewindMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRestore(void)
+void CardIter::vRestore_G_Members(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  CardIterMembers* pRestore = pPop();
+  CardIterMembers* pMembers_popped = pPop();
 
-  G.vCopyFrom(pRestore);
+  G.vCopyFrom(pMembers_popped);
 
-  delete pRestore;
+  delete pMembers_popped;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSave(void)
+void CardIter::vSave_G_Members(void)
 {
-  CardIterMembers* pSave = new CardIterMembers;
+  CardIterMembers* pMembers_save = new CardIterMembers;
 
-  pSave->vCopyFrom(&G);
+  pMembers_save->vCopyFrom(&G);
 
-  vPush(pSave);
+  vPush(pMembers_save);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2488,7 +2487,6 @@ void CardIter::vUsingBoard(Board* pBoard)
 
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
-  G.pSubQuery_Q = G.pBoard->pSubQuery();
 
   vChangeCard(G.pBoard->pDeck());
 }
@@ -2685,7 +2683,7 @@ bool CardIter::bPopRecurseIter(void)
   if (! pPeg || pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
     return false;
 
-  vRestore();
+  vRestore_G_Members();
 
   return true;
 }
@@ -2699,7 +2697,7 @@ void CardIter::vPushRecurseIter(void)
 
   RASSERT(G.m_i_RecursionDepth);
 
-  vSave();
+  vSave_G_Members();
 }
 
 /*============================================================================*/

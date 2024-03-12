@@ -206,11 +206,11 @@ namespace STORE
     void vResetMembers(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Emit* pResolvePrior_projection(void);
-    void vRestore(void);
+    void vRestore_G_Members(void);
     Card* pRewindChild(void);
     bool bRewindMain(void);
 
-    void vSave(void);
+    void vSave_G_Members(void);
     void vSet(CardIter* pCardIter_src);
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
