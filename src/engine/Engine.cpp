@@ -104,7 +104,9 @@ pthread_key_t gbTLS_FaultInjection  = false;
 pthread_key_t giTLS_FaultPoint      = C_UNKNOWN;
 pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
 pthread_key_t giTLS_PDSCrwTablePtn  = C_UNKNOWN;
-
+#ifdef WITH_THREADSTACKSIZE
+pthread_key_t giTLS_ThreadStackAddr  = C_UNKNOWN;
+#endif
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
 /*----------------------------------------------------------------------------*/
