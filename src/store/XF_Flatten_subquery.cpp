@@ -95,7 +95,7 @@ void XF_Flatten_subquery::vFlatten(void)
 
   m_pCI->vUsingBoard((i8)0);
 
-  vFlatten_recurse(0);
+  vFlatten_recurse(nullptr,0);
 
   XF_Flatten_Delete_flat::vXF_Delete_flat(m_pCI);
 }
@@ -103,12 +103,22 @@ void XF_Flatten_subquery::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
+void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
-  // things before sub-queries
+  Board *pBoard_outer = nullptr;
+  if (iDepth) {
+    pBoard_outer = m_pCI->G.pBoard;
+    SubQuery *pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
+    m_pCI->vPushBoard(pSqy_inner->pBoard());
+  }
 
+  // v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v
+  // v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v
+  // v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v
+
+  // things before sub-queries
 
   XF_Flatten_X_expCol_To_tblCol::vFlatten(m_pCI);
 
@@ -116,26 +126,13 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
   // flatten the sub-queries of this outer query
 
   for (;;) {
-
     m_pCI->vBeginEach();
     if (! m_pCI->bEachMain(CK_o_CALL))
       break;
 
-    Symbol* pSym_sqyNo_inner = m_pCI->G.p_call->pSymbol();
-
-    Board *pBoard_outer = m_pCI->G.pBoard;
-    SubQuery* pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
-    m_pCI->vPushBoard(pSqy_inner->pBoard());
-
-    vFlatten_recurse(iDepth + 1);
-
-    m_pCI->vPopBoard();
-    m_pCI->vUsingBoard(pBoard_outer);
-    // m_pCI->PRINTBOARD_dbg();
-
-    vFlattenByDecisionTree(pSym_sqyNo_inner);
-
-    // m_pCI->PRINTBOARD_dbg();
+    Symbol* pSym_sqyNo_nested = m_pCI->G.p_call->pSymbol();
+    vFlatten_recurse(pSym_sqyNo_nested, iDepth + 1);
+    vFlattenByDecisionTree(pSym_sqyNo_nested);
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -144,32 +141,17 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
 
   do {
     m_pCI->vBeginEachReverse();
-
     if (! m_pCI->bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED))
       break;
 
-    CardIter* pCI = m_pCI;
-
-    auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
+    auto bLambdaFn = [&bFound,this, iDepth](Card_Term* p_term)
     {
        if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
          return C_CONTINUE_RECURSION;
 
-      Symbol* pSym_sqyNo_inner = p_term->pSymbol();
-
-      Board* pBoard_outer = pCI->G.pBoard;
-      SubQuery* pSqy_inner = pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
-      pCI->vPushBoard(pSqy_inner->pBoard());
-
-      vFlatten_recurse(iDepth + 1);
-
-      pCI->vPopBoard();
-      pCI->vUsingBoard(pBoard_outer);
-      // pCI->PRINTBOARD_dbg();
-
-      vFlattenByDecisionTree(pSym_sqyNo_inner);
-
-     // pCI->PRINTBOARD_dbg();
+      Symbol* pSym_sqyNo_nested = p_term->pSymbol();
+      vFlatten_recurse(pSym_sqyNo_nested, iDepth + 1);
+      vFlattenByDecisionTree(pSym_sqyNo_nested);
 
       bFound = true;
       return C_TERMINATE_RECURSION;
@@ -191,27 +173,14 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
     if (! m_pCI->bEachMainWithSub_reverse_foldBreak_b(CK_o_HAVING, CK_BOOLPRED))
       break;
 
-    CardIter* pCI = m_pCI;
-
-    auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
+    auto bLambdaFn = [&bFound,this,iDepth](Card_Term* p_term)
     {
       if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
         return C_CONTINUE_RECURSION;
 
-      Symbol* pSym_sqyNo_inner = p_term->pSymbol();
-
-      Board* pBoard_outer = pCI->G.pBoard;
-      SubQuery* pSqy_inner = pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
-      pCI->vPushBoard(pSqy_inner->pBoard());
-
-      vFlatten_recurse(iDepth + 1);
-
-      pCI->vPopBoard();
-      pCI->vUsingBoard(pBoard_outer);
-     // pCI->PRINTBOARD_dbg();
-
-      vFlattenByDecisionTree(pSym_sqyNo_inner);
-      //pCI->PRINTBOARD_dbg();
+      Symbol* pSym_sqyNo_nested = p_term->pSymbol();
+      vFlatten_recurse(pSym_sqyNo_nested, iDepth + 1);
+      vFlattenByDecisionTree(pSym_sqyNo_nested);
 
       bFound = true;
       return C_TERMINATE_RECURSION;
@@ -227,12 +196,8 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
 
-  //RASSERT(0 == m_pCI->pBoard()->pDeck()->nChildCards(CK_SUBQUERY));
-
   XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
-
   XF_Flatten_Join_Ordering::vXF_Join_Ordering(m_pCI);
-
   XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,8 +205,16 @@ void XF_Flatten_subquery::vFlatten_recurse(i8 iDepth)
 
   Card_Fold::vMorph_to_flat(m_pCI);
 
-
   // m_pCI->PRINTBOARD_dbg();
+
+  // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
+  // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
+  // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
+
+  if (iDepth) {
+    m_pCI->vPopBoard();
+    m_pCI->vUsingBoard(pBoard_outer);
+  }
 
   vDebugPoint();
 }
@@ -253,79 +226,75 @@ void XF_Flatten_subquery::vFlattenByDecisionTree(Symbol* pSym_sqyNo_inner)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
-  SubQuery* pSubQuery = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
+  SubQuery* pSqy_called = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
 
-//  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_SUBQUERY);
-
-  if (pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ XF_Flatten_10_F::vFlatten(m_pCI);
+  if (pSqy_called->bViaFrom())                /* Fsq_      Q7,8,9 */ XF_Flatten_10_F::vFlatten(m_pCI);
   else
-  if (pSubQuery->bViaWhere()) {
-    if (pSubQuery->bIsAggregation()) {
-      if (pSubQuery->bIsCorrelated()) {                                /* 20*/
-             if (pSubQuery->bByExists())    /* W_A_C_E          */ NEVER_REACH
-        else if (pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
-        else if (pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
-        else if (pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
-        else                                             /* W_A_C_ro   Q2,17 */ XF_Flatten_24_W_A_C_ro::vFlatten(m_pCI);
-      } else {                                                                      /* 30*/
-             if (pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
-        else if (pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ XF_Flatten_32_W_A_NC_I::vFlatten(m_pCI);
-        else if (pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                             /* W_A_NC_ro    Q15 */ XF_Flatten_34_W_A_NC_ro::vFlatten(m_pCI);
+  if (pSqy_called->bViaWhere()) {
+    if (pSqy_called->bIsAggregation()) {
+      if (pSqy_called->bIsCorrelated()) {     /* 20*/
+             if (pSqy_called->bByExists())    /* W_A_C_E          */ NEVER_REACH
+        else if (pSqy_called->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
+        else if (pSqy_called->bByIn())        /* W_A_C_I          */ NEVER_REACH
+        else if (pSqy_called->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
+        else                                  /* W_A_C_ro   Q2,17 */ XF_Flatten_24_W_A_C_ro::vFlatten(m_pCI);
+      } else {                                /* 30*/
+             if (pSqy_called->bByExists())    /* W_A_NC_E         */ NEVER_REACH
+        else if (pSqy_called->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
+        else if (pSqy_called->bByIn())        /* W_A_NC_I     Q18 */ XF_Flatten_32_W_A_NC_I::vFlatten(m_pCI);
+        else if (pSqy_called->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
+        else                                  /* W_A_NC_ro    Q15 */ XF_Flatten_34_W_A_NC_ro::vFlatten(m_pCI);
       }
     } else {
-      if (pSubQuery->bIsCorrelated()) {                                /* 40*/
-             if (pSubQuery->bByExists())    /* W_L_C_E       Q4 */ XF_Flatten_40_W_L_C_E::vFlatten(m_pCI);
-        else if (pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
-        else if (pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
-        else if (pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
-        else                                             /* W_L_C_ro         */ NEVER_REACH
-      } else {                                                                      /* 50*/
-             if (pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
-        else if (pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (pSubQuery->bByIn())        /* W_L_NC_I         */ XF_Flatten_52_W_L_NC_I_join::vFlatten(m_pCI);
-        else if (pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ XF_Flatten_53_W_L_NC_NI_join::vFlatten(m_pCI);
-        else                                             /* W_L_NC_ro        */ NEVER_REACH
+      if (pSqy_called->bIsCorrelated()) {     /* 40*/
+             if (pSqy_called->bByExists())    /* W_L_C_E       Q4 */ XF_Flatten_40_W_L_C_E::vFlatten(m_pCI);
+        else if (pSqy_called->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
+        else if (pSqy_called->bByIn())        /* W_L_C_I          */ NEVER_REACH
+        else if (pSqy_called->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
+        else                                  /* W_L_C_ro         */ NEVER_REACH
+      } else {                                /* 50*/
+             if (pSqy_called->bByExists())    /* W_L_NC_E         */ NEVER_REACH
+        else if (pSqy_called->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
+        else if (pSqy_called->bByIn())        /* W_L_NC_I         */ XF_Flatten_52_W_L_NC_I_join::vFlatten(m_pCI);
+        else if (pSqy_called->bByNotIn())     /* W_L_NC_NI    Q16 */ XF_Flatten_53_W_L_NC_NI_join::vFlatten(m_pCI);
+        else                                  /* W_L_NC_ro        */ NEVER_REACH
       }
     }
   }
   else
-  if (pSubQuery->bViaHaving()) {
-    if (pSubQuery->bIsAggregation()) {
-      if (pSubQuery->bIsCorrelated()) {                                /* 60*/
-             if (pSubQuery->bByExists())    /* H_A_C_E          */ NEVER_REACH
-        else if (pSubQuery->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
-        else if (pSubQuery->bByIn())        /* H_A_C_I          */ NEVER_REACH
-        else if (pSubQuery->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
-        else                                             /* H_A_C_ro         */ NEVER_REACH
-      } else {                                                                      /* 70*/
-             if (pSubQuery->bByExists())    /* H_A_NC_E         */ NEVER_REACH
-        else if (pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
-        else if (pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
-        else if (pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
-        else                                             /* H_A_NC_ro    Q11 */ XF_Flatten_74_H_A_NC_ro::vFlatten(m_pCI);
+  if (pSqy_called->bViaHaving()) {
+    if (pSqy_called->bIsAggregation()) {
+      if (pSqy_called->bIsCorrelated()) {     /* 60*/
+             if (pSqy_called->bByExists())    /* H_A_C_E          */ NEVER_REACH
+        else if (pSqy_called->bByNotExists()) /* H_A_C_NE         */ NEVER_REACH
+        else if (pSqy_called->bByIn())        /* H_A_C_I          */ NEVER_REACH
+        else if (pSqy_called->bByNotIn())     /* H_A_C_NI         */ NEVER_REACH
+        else                                  /* H_A_C_ro         */ NEVER_REACH
+      } else {                                /* 70*/
+             if (pSqy_called->bByExists())    /* H_A_NC_E         */ NEVER_REACH
+        else if (pSqy_called->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
+        else if (pSqy_called->bByIn())        /* H_A_NC_I         */ NEVER_REACH
+        else if (pSqy_called->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
+        else                                  /* H_A_NC_ro    Q11 */ XF_Flatten_74_H_A_NC_ro::vFlatten(m_pCI);
       }
     } else {
-      if (pSubQuery->bIsCorrelated()) {                                /* 80*/
-             if (pSubQuery->bByExists())    /* H_L_C_E          */ NEVER_REACH
-        else if (pSubQuery->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
-        else if (pSubQuery->bByIn())        /* H_L_C_I          */ NEVER_REACH
-        else if (pSubQuery->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
-        else                                             /* H_L_C_ro         */ NEVER_REACH
-      } else {                                                                      /* 90*/
-             if (pSubQuery->bByExists())    /* H_L_NC_E         */ NEVER_REACH
-        else if (pSubQuery->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
-        else if (pSubQuery->bByIn())        /* H_L_NC_I         */ NEVER_REACH
-        else if (pSubQuery->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
-        else                                             /* H_L_NC_ro        */ NEVER_REACH
+      if (pSqy_called->bIsCorrelated()) {     /* 80*/
+             if (pSqy_called->bByExists())    /* H_L_C_E          */ NEVER_REACH
+        else if (pSqy_called->bByNotExists()) /* H_L_C_NE         */ NEVER_REACH
+        else if (pSqy_called->bByIn())        /* H_L_C_I          */ NEVER_REACH
+        else if (pSqy_called->bByNotIn())     /* H_L_C_NI         */ NEVER_REACH
+        else                                  /* H_L_C_ro         */ NEVER_REACH
+      } else {                                /* 90*/
+             if (pSqy_called->bByExists())    /* H_L_NC_E         */ NEVER_REACH
+        else if (pSqy_called->bByNotExists()) /* H_L_NC_NE        */ NEVER_REACH
+        else if (pSqy_called->bByIn())        /* H_L_NC_I         */ NEVER_REACH
+        else if (pSqy_called->bByNotIn())     /* H_L_NC_NI        */ NEVER_REACH
+        else                                  /* H_L_NC_ro        */ NEVER_REACH
       }
     }
   }
   else
     NEVER_REACH;
-
-//  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/
