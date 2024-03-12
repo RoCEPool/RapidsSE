@@ -39,19 +39,24 @@ CardIter::CardIter(Bench* pBench)
 
   G.m_bDontDescend = false;
 
-  Flat.m_pCard_sqyCopy = nullptr;
+  Flat.m_pSqy_inner     = nullptr;
+  Flat.m_p_conj_iqyCall = nullptr;
+  Flat.m_p_term_sqyCall = nullptr;
+  Flat.m_p_expr_crlKey  = nullptr;
 
-  Flat.m_pExpr_fold = nullptr;
-  Flat.m_p_expr_crlKey = nullptr;
+  Flat.m_p_conj_crlKey  = nullptr;
+  Flat.m_p_term_crlKey  = nullptr;
 
   Flat.m_pCorrelation   = nullptr;
-  Flat.m_p_term_sqyCall = nullptr;
-  Flat.m_p_conj_iqyCall = nullptr;
-  Flat.m_p_term_crlKey  = nullptr;
-  Flat.m_p_conj_crlKey  = nullptr;
 
-  G.pBoard    = nullptr;
-  G.pDeck     = nullptr;
+  Flat.m_pCard_sqyCopy  = nullptr;
+
+  Flat.m_i_fold         = C_UNKNOWN;
+  Flat.m_pExpr_fold     = nullptr;
+  Flat.m_pCard_sqyCopy  = nullptr;
+
+//  G.pBoard    = nullptr;
+//  G.pDeck     = nullptr;
 
   m_nAncestors = 0;
   MemLib::vZero(m_apAncestry,sizeof(m_apAncestry),CN_CARDITER);

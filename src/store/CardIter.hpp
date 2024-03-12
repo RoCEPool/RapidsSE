@@ -51,6 +51,8 @@ namespace STORE
 
     struct {
 
+      SubQuery* m_pSqy_inner;
+
       union {
         Card_CONJ*    m_p_conj_iqyCall;
         Card_RlnConj* m_p_conj_rslTest;
