@@ -184,7 +184,6 @@ namespace STORE
     Card* pNextChild(void);
     Card* pNextChildIf(eCK eCard);
 
-    void vPopBoard(void);
     bool bPositionOn(eCK eKind_on, i8 /* eCK */ iKind_First, ...);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);

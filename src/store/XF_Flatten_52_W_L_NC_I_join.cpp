@@ -88,7 +88,8 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
   i8 nTables = Card_Table::nTables(pCI);
 
   // 4) pop back to mq
-  pCI->vPopBoard();
+  //pCI->vPopBoard();
+  pCI->vRestore_G_Members();
 
   return nTables;
 }
