@@ -2490,7 +2490,7 @@ void CardIter::vUsingBoard(Board* pBoard)
   G.pDeck  = G.pBoard->pDeck();
   G.pSubQuery_Q = G.pBoard->pSubQuery();
 
-  this->vChangeCard(G.pBoard->pDeck());
+  vChangeCard(G.pBoard->pDeck());
 }
 
 /*----------------------------------------------------------------------------*/

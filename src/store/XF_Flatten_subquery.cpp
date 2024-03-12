@@ -93,10 +93,8 @@ void XF_Flatten_subquery::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
-  m_pCI->G.pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
-  m_pCI->G.pSubQuery_Q = m_pCI->G.pBoard->pSubQuery();
+  m_pCI->vUsingBoard((i8)0);
 
-//  vFlatten_recurse();
   vFlatten_recurse(0);
 
   XF_Flatten_Delete_flat::vXF_Delete_flat(m_pCI);
