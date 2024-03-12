@@ -1995,20 +1995,6 @@ void CardIter::vSnapFluxArriving(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push current M iterator onto iter stack                                    */
-/*----------------------------------------------------------------------------*/
-void CardIter::vPushBoard(Board* pBoard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  vPushIter();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vUsingBoard(pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
 /* find and push board onto iter stack                                        */
 /*----------------------------------------------------------------------------*/
 bool CardIter::bPushBoard(Symbol* pSymbol)
@@ -2019,7 +2005,8 @@ bool CardIter::bPushBoard(Symbol* pSymbol)
   if (! pBoard)
     return false;
 
-  vPushBoard(pBoard);
+  vPushIter();
+  vUsingBoard(pBoard);
 
   return true;
 }
