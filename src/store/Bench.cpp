@@ -439,7 +439,7 @@ void Bench::vValidate(CardIter* pCI)
   i8 nBoards = this->nBoards();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
-    pCI->vUsingBoard(pBoard);
+    pCI->vUseBoard(pBoard);
     RASSERT(pCI->G.pBoard);
 
     //pBoard->pState()->vDumpSet();

@@ -83,7 +83,7 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
     NEVER_REACH
   }
   pCI->vSave_G_Members();
-  pCI->vUsingBoard(pBoard);
+  pCI->vUseBoard(pBoard);
 
   i8 nTables = Card_Table::nTables(pCI);
 

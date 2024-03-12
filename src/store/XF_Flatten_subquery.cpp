@@ -48,7 +48,7 @@ XF_Flatten_subquery::XF_Flatten_subquery(CardIter* pCI)
 
   _checkInitialised_(CN_XF_FLATTEN_SUBQUERY);
 
-  m_pCI->vUsingBoard(nullptr);
+  m_pCI->vUseBoard(nullptr);
 
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
@@ -93,7 +93,7 @@ void XF_Flatten_subquery::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
-  m_pCI->vUsingBoard(nullptr);
+  m_pCI->vUseBoard(nullptr);
 
   vFlatten_recurse(nullptr,0);
 
@@ -112,7 +112,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
     pBoard_outer = m_pCI->G.pBoard;
     SubQuery *pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
     m_pCI->vSave_G_Members();
-    m_pCI->vUsingBoard(pSqy_inner->pBoard());
+    m_pCI->vUseBoard(pSqy_inner->pBoard());
   }
 
   // v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v
@@ -215,7 +215,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   if (iDepth) {
     //m_pCI->vPopBoard();
     m_pCI->vRestore_G_Members();
-    m_pCI->vUsingBoard(pBoard_outer);
+    m_pCI->vUseBoard(pBoard_outer);
   }
 
   vDebugPoint();

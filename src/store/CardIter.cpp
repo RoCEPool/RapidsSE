@@ -471,21 +471,6 @@ void CardIter::vBurst(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vChangeCard(Card* pCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  G.xKid.vParent(pCard);
-
-  G.p_MainCard = nullptr;
-  vMember(pCard);
-
-  //vBegin();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 i8 CardIter::i_Child(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -730,7 +715,7 @@ bool CardIter::bEachBoard(void)
 
   if (pEachBoard()) {
     Board* pBoard = m_pBench->pGetBoard(G.i_Board);
-    vUsingBoard(pBoard);
+    vUseBoard(pBoard);
     return true;
   }
 
@@ -774,7 +759,7 @@ Board* CardIter::pEachBoard(i8& ri_Board)
   G.pBoard = m_pBench->pGetBoard(G.i_Board);
   ri_Board = G.i_Board;
 
-  vChangeCard(G.pBoard->pDeck());
+  vUseCard(G.pBoard->pDeck());
 
   return G.pBoard;
 }
@@ -2026,7 +2011,7 @@ void CardIter::vRecurseBegin(Card* pCard)
   m_i_RecursionDepth++;
   G.m_i_RecursionDepth = m_i_RecursionDepth;
 
-  vChangeCard(pCard);
+  vUseCard(pCard);
   vDontDescend(false);
 
   G.xKid.vForwards(true);
@@ -2047,7 +2032,7 @@ Card* CardIter::pRecurseEach(void)
     if (G.p_MainCard->nChildCards()) {
 
        vSave_G_Members();
-      vChangeCard(G.p_MainCard);
+      vUseCard(G.p_MainCard);
       bEachMain();
 
       return G.p_MainCard;
@@ -2400,18 +2385,6 @@ void CardIter::vSave_G_Members(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vSet(CardIter* pCardIter_src)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  G.xKid.vParent(pCardIter_src->G.xKid.pParent());
-  G.xKid.vReposition(pCardIter_src->G.xKid.i_Child());
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
 void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
@@ -2422,9 +2395,9 @@ void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set up which board to use                                                  */
+/* which board to use                                                         */
 /*----------------------------------------------------------------------------*/
-void CardIter::vUsingBoard(Board* pBoard)
+void CardIter::vUseBoard(Board* pBoard)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -2434,7 +2407,22 @@ void CardIter::vUsingBoard(Board* pBoard)
   G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
 
-  vChangeCard(G.pBoard->pDeck());
+  vUseCard(G.pBoard->pDeck());
+}
+
+/*----------------------------------------------------------------------------*/
+/* which card to use                                                          */
+/*----------------------------------------------------------------------------*/
+void CardIter::vUseCard(Card* pCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.xKid.vParent(pCard);
+
+  G.p_MainCard = nullptr;
+  vMember(pCard);
+
+  //vBegin();
 }
 
 /*----------------------------------------------------------------------------*/

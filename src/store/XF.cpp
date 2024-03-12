@@ -372,7 +372,7 @@ void XF::vTransform_passThru(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->vUsingBoard(nullptr);
+  m_pCI->vUseBoard(nullptr);
 
   XF_Epilog_X_tblCol_To_expCol::vConvert(m_pCI);       // tblCol -> stmCol
   //XF_Epilog_X_stmCol_To_colNm::vConvert_board(m_pCI);        //

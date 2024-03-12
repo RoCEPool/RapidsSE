@@ -120,7 +120,6 @@ namespace STORE
     Board* pBoard(void);
     void vBurst(Card* pCard);
 
-    void vChangeCard(Card* pCard);
     i8   i_Child(void);
     Card* pChild(void);
     void vChild(i8 i_Child);
@@ -208,11 +207,11 @@ namespace STORE
     bool bRewindMain(void);
 
     void vSave_G_Members(void);
-    void vSet(CardIter* pCardIter_src);
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 
-    void vUsingBoard(Board* pBoard);
+    void vUseBoard(Board* pBoard);
+    void vUseCard(Card* pCard);
 
     void vValidateBench(void);
     void vValidateChildren(Card* pCard, i8 iDepth);

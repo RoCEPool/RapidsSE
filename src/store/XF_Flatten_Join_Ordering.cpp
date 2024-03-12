@@ -188,7 +188,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
                             aBK[BK_JOINORDERING],
                             m_pCI->m_pBench);
   m_pCI->vSave_G_Members();
-  m_pCI->vUsingBoard(pBoard);
+  m_pCI->vUseBoard(pBoard);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) Extract tableList from pipeline

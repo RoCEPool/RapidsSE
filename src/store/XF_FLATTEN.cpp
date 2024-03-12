@@ -54,7 +54,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   }
 
   pCI->vSave_G_Members();
-  pCI->vUsingBoard(pBoard);
+  pCI->vUseBoard(pBoard);
 
   // pCI->PRINTBOARD_dbg();
 
@@ -146,7 +146,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // x) push to sq
 
   pCI->vSave_G_Members();
-  pCI->vUsingBoard(pBoard);
+  pCI->vUseBoard(pBoard);
 
   pCI->Flat.m_pCard_sqyCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
@@ -201,7 +201,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
     NEVER_REACH
   }
   pCI->vSave_G_Members();
-  pCI->vUsingBoard(pBoard);
+  pCI->vUseBoard(pBoard);
 
 
   SubQuery* pSubQuery_save = pCI->pBoard()->pSubQuery();
