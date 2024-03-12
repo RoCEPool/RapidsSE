@@ -10,6 +10,7 @@
 : syntaxTable_DataMarker
 
   0 locals| errorCode |
+  0 locals| errorStr |
 
   //[job].tagSet@ tagSet.asStr .
   Pipein[].pipeout
@@ -17,7 +18,8 @@
   <etc> <tableNm> "create table %v %v ;" str.format // dup .
   streamDef::parse not if
     to errorCode
-    errorCode op__execErr
+    to errorStr
+    errorStr errorCode op__execErrMsg
     true
     exit
   else

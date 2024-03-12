@@ -208,12 +208,14 @@ void Step::vStreamDefLftParse(void)
   //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   
   StreamDef* pStreamDef = new StreamDef;
-  
-  eEC eResult = pStreamDef->eParseCmd(sCmd);
+
+  s2K sErrStr;
+  eEC eResult = pStreamDef->eParseCmd(sCmd, sErrStr);
   
   if (eResult != EC_NONE) {
 
-    // push the error on the stack
+    // push the error string and error code on the stack
+    m_pDataStack->vPushStr(sErrStr);
     m_pDataStack->vPushInt(eResult);
 
     // push false

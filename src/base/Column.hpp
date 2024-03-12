@@ -45,9 +45,9 @@ namespace BASE
     static eDM  eDatum(eCT eColumnType);
     static eCT  eColumn(Stz* szType);
     static eCT  eColumnType(eDM eDatum);
-    static bool bValidBcd(i8 iPrecision, i8 iScale);
-    static bool bValidFlt(i8 iSize);
-    static bool bValidVch(i8 iSize);
+    static bool bValidBcd(i8 iPrecision, i8 iScale, String* psErrStr = nullptr);
+    static bool bValidFlt(i8 iSize, String* psErrStr = nullptr);
+    static bool bValidVch(i8 iSize, String* psErrStr = nullptr);
 
     void vIsAscending(bool bIsAscending);
     bool bIsAscending(void);

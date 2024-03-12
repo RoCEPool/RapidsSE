@@ -467,12 +467,12 @@ i8 StreamDefBase::nOrders(void)
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseCmd(Stz* szCmd)
+eEC StreamDefBase::eParseCmd(Stz* szCmd, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  eEC eError = eParse(szCmd);
-  
+  eEC eError = eParse(szCmd, psErrStr);
+
   return eError;
 }
 
@@ -764,7 +764,7 @@ void StreamDefBase::vUnique(bool bUnique)
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParse(Stz* szCmd)
+eEC StreamDefBase::eParse(Stz* szCmd, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -795,7 +795,7 @@ eEC StreamDefBase::eParse(Stz* szCmd)
   // table name
   // -- -- -- --
 
-  eError = eValidateTableName(pTknVec);
+  eError = eValidateTableName(pTknVec, psErrStr);
   if (EC_NONE != eError) {
     goto L_RETURN;
   }
@@ -847,7 +847,7 @@ eEC StreamDefBase::eParse(Stz* szCmd)
     // -- -- -- -- --
     // parse column
     // -- -- -- -- --
-    eError = eParseColumn(pTknVec,i_Col);
+    eError = eParseColumn(pTknVec,i_Col, psErrStr);
     if (EC_NONE != eError) {
       goto L_RETURN;
     }
@@ -858,6 +858,7 @@ eEC StreamDefBase::eParse(Stz* szCmd)
   
   // did we get any columns ?
   if (i_Col == 0) {
+    psErrStr->vCopy("no columns specified"_Stz);
     eError = EC_INVALID_COMMAND;
     goto L_RETURN;
   }
@@ -866,7 +867,7 @@ eEC StreamDefBase::eParse(Stz* szCmd)
   pLastCol = pGetColumn(i_Col-1);
   pLastCol->vIsLastColumn(true);
   
-  eError = eParseTableClauses(pTknVec);
+  eError = eParseTableClauses(pTknVec, psErrStr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -880,7 +881,7 @@ L_RETURN:
 /*----------------------------------------------------------------------------*/
 /* parse column                                                               */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
+eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -895,7 +896,7 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
 
 	// -- -- -- --
 	// validate column name
-	eError = eValidateColumnName(pTknVec);
+	eError = eValidateColumnName(pTknVec, psErrStr);
 	if (EC_NONE != eError) {
 		return eError;
 	}
@@ -922,6 +923,7 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
     Column* pCol_search = pGetColumn(i_Search);
     if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
       eError = EC_DUPLICATE_COLUMN;
+      psErrStr->vCopy(pCol->szColNm());
       return eError;
     }
   }
@@ -935,25 +937,26 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   
   switch (eColumn) {
       
-    case CT_BOOLEAN:   eError = eParseColumnBoolean   (pTknVec,pCol);  break;
-    case CT_DATE:      eError = eParseColumnDate      (pTknVec,pCol);  break;
-    case CT_DECIMAL:   eError = eParseColumnDecimal   (pTknVec,pCol);  break;
-    case CT_FLOAT:     eError = eParseColumnFloat     (pTknVec,pCol);  break;
-    case CT_INTEGER:   eError = eParseColumnInteger   (pTknVec,pCol);  break;
-    case CT_INTERVAL_DT: eError = eParseColumnInterval(pTknVec,pCol);  break;
-    case CT_INTERVAL_YM: NEVER_REACH;                                  break;
-    case CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
-    case CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
-    case CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
-    case CT_UNKNOWN:   NEVER_REACH;                                    break;
+    case CT_BOOLEAN:   eError = eParseColumnBoolean   (pTknVec,pCol,psErrStr);  break;
+    case CT_DATE:      eError = eParseColumnDate      (pTknVec,pCol,psErrStr);  break;
+    case CT_DECIMAL:   eError = eParseColumnDecimal   (pTknVec,pCol,psErrStr);  break;
+    case CT_FLOAT:     eError = eParseColumnFloat     (pTknVec,pCol,psErrStr);  break;
+    case CT_INTEGER:   eError = eParseColumnInteger   (pTknVec,pCol,psErrStr);  break;
+    case CT_INTERVAL_DT: eError = eParseColumnInterval(pTknVec,pCol,psErrStr);  break;
+    case CT_INTERVAL_YM: NEVER_REACH;                                           break;
+    case CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol,psErrStr);  break;
+    case CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol,psErrStr);  break;
+    case CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol,psErrStr);  break;
+    case CT_UNKNOWN:   NEVER_REACH;                                             break;
 
     default:
       if (pTkn->bSame("char"_Stz) ||
           pTkn->bSame("varbinary"_Stz)) {
-        eError = eParseColumnVarchar(pTknVec,pCol);
+        eError = eParseColumnVarchar(pTknVec,pCol,psErrStr);
       }
       else
         eError = EC_INVALID_COMMAND;
+        psErrStr->vSprint("Unknown type %s"_Stz, aCT[eColumn]);
       break;
       
   }
@@ -961,7 +964,7 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   if (EC_NONE != eError)
     return eError;
   
-  eError = eParseColumnClauses(pTknVec,pCol);
+  eError = eParseColumnClauses(pTknVec,pCol,psErrStr);
   if (EC_NONE != eError)
     return eError;
   
@@ -971,11 +974,12 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* parse boolean column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
-  
+  UNUSED(psErrStr);
+
   pCol->vColumnTypeId(TypeId::xIdOf(CT_BOOLEAN));
   pCol->vDatum(DM_BOL);
   
@@ -985,10 +989,11 @@ eEC StreamDefBase::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse date column                                                          */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnDate(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
+  UNUSED(psErrStr);
 
   pCol->vColumnTypeId(TypeId::xIdOf(CT_DATE));
   pCol->vDatum(DM_DTE);
@@ -999,7 +1004,7 @@ eEC StreamDefBase::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse decimal column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1026,33 +1031,37 @@ eEC StreamDefBase::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   pTkn = pTknVec->pNextToken(); dPT();
   
   // check if it was numeric
-  if ( ! pTkn->bIsInteger() )
+  if ( ! pTkn->bIsInteger() ) {
+    psErrStr->vCopy("decimal precision must be an integer"_Stz);
     return EC_INVALID_COMMAND;
+  }
   
   iPrecision = pTkn->iToI8();
   
   pTkn = pTknVec->pNextToken(); dPT();
-  
-  if (!pTkn->bSame(","_Stz))
-    return EC_INVALID_COMMAND;
-  
-  pTkn = pTknVec->pNextToken(); dPT();
-  
-  // check if it was numeric
-  if ( ! pTkn->bIsInteger() )
-    return EC_INVALID_COMMAND;
-  
-  // get the scale
-  iScale = pTkn->iToI8();
-  
-  pTkn = pTknVec->pNextToken(); dPT();
+
+  if (pTkn->bSame(","_Stz)) { // optional scale
+    pTkn = pTknVec->pNextToken(); dPT();
+
+    // check if it was numeric
+    if ( ! pTkn->bIsInteger() ) {
+      psErrStr->vCopy("decimal scale must be an integer"_Stz);
+      return EC_INVALID_COMMAND;
+    }
+
+    // get the scale
+    iScale = pTkn->iToI8();
+
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+
   if (! pTkn->bSame(")"_Stz))
     return EC_INVALID_COMMAND;
 
   //if (iScale != 2)
   //  return EC_DECIMAL_NOT_SUPPORTED;
 
-  if (! Column::bValidBcd(iPrecision, iScale))
+  if (! Column::bValidBcd(iPrecision, iScale, psErrStr))
     return EC_INVALID_COMMAND;
   
   // set scale and length in column
@@ -1065,7 +1074,7 @@ eEC StreamDefBase::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse float column                                                         */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnFloat(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1092,6 +1101,7 @@ eEC StreamDefBase::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
   
   // check if it was numeric
   if ( ! pTkn->bIsInteger() ) {
+    psErrStr->vCopy("column length must be an integer"_Stz);
     return EC_INVALID_COMMAND;
   }
   
@@ -1103,7 +1113,7 @@ eEC StreamDefBase::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
     return EC_INVALID_COMMAND;
   }
   
-  if (! Column::bValidFlt(iSize)) {
+  if (! Column::bValidFlt(iSize, psErrStr)) {
     return EC_INVALID_COMMAND;
   }
   
@@ -1116,10 +1126,11 @@ eEC StreamDefBase::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse integer column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnInteger(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
+  UNUSED(psErrStr);
 
   pCol->vColumnTypeId(TypeId::xIdOf(CT_INTEGER));
   pCol->vDatum(DM_INT);
@@ -1132,11 +1143,12 @@ eEC StreamDefBase::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse interval column                                                      */
 /**/
-eEC StreamDefBase::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnInterval(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
   UNUSED(pCol);
+  UNUSED(psErrStr);
 
   return EC_INTERVAL_NOT_SUPPORTED;
 
@@ -1149,10 +1161,11 @@ eEC StreamDefBase::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse time column                                                          */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnTime(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
+  UNUSED(psErrStr);
 
   pCol->vColumnTypeId(TypeId::xIdOf(CT_TIME));
   pCol->vDatum(DM_TME);
@@ -1163,10 +1176,11 @@ eEC StreamDefBase::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse timestamp column                                                     */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
+  UNUSED(psErrStr);
 
   pCol->vColumnTypeId(TypeId::xIdOf(CT_TIMESTAMP));
   pCol->vDatum(DM_TSP);
@@ -1177,7 +1191,7 @@ eEC StreamDefBase::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse varchar column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1205,15 +1219,19 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   pTkn = pTknVec->pNextToken(); dPT();
   
   // check if it was numeric
-  if (! pTkn->bIsInteger())
+  if (! pTkn->bIsInteger()) {
+    psErrStr->vCopy("string length must be an integer"_Stz);
     return EC_INVALID_COMMAND;
+  }
   
   // get size
   iSize = pTkn->iToI8();
 
   // check if size is 0
-  if (iSize == 0)
+  if (iSize == 0) {
+    psErrStr->vCopy("string length cannot be zero"_Stz);
     return EC_INVALID_COMMAND;
+  }
 
   pTkn = pTknVec->pNextToken(); dPT();
   
@@ -1221,7 +1239,7 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
     return EC_INVALID_COMMAND;
   
   // valid the size
-  if (! Column::bValidVch(iSize))
+  if (! Column::bValidVch(iSize, psErrStr))
     return EC_INVALID_COMMAND;
   
   // set size in column
@@ -1233,7 +1251,7 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse column clause                                                        */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseColumnClauses(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1245,7 +1263,7 @@ eEC StreamDefBase::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
         
     if (pTkn->bSame("not"_Stz)) {
       
-      eError = eParseNotNull(pTknVec,pCol);
+      eError = eParseNotNull(pTknVec,pCol, psErrStr);
       if (EC_NONE != eError) {
         pCol->vIsNullable(false);
         return eError;
@@ -1286,9 +1304,10 @@ eEC StreamDefBase::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse not null column clause                                               */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseNotNull(TokenVec* pTknVec, Column* pCol)
+eEC StreamDefBase::eParseNotNull(TokenVec* pTknVec, Column* pCol, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  UNUSED(psErrStr);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
   
@@ -1306,7 +1325,7 @@ eEC StreamDefBase::eParseNotNull(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse table clauses                                                        */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
+eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1320,7 +1339,7 @@ eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
     
     if ( pTkn->bSame("partition"_Stz)) {
       
-      eError = eParsePartitionBy(pTknVec);
+      eError = eParsePartitionBy(pTknVec, psErrStr);
       if (EC_NONE != eError)
         return eError;
       
@@ -1331,7 +1350,7 @@ eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
     
     if ( pTkn->bSame("replicated"_Stz)) {
       
-      eError = eParseReplicated(pTknVec);
+      eError = eParseReplicated(pTknVec, psErrStr);
       if (EC_NONE != eError)
         return eError;
       
@@ -1340,7 +1359,7 @@ eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
     
     if ( pTkn->bSame("rowsize"_Stz)) {
       
-      eError = eParseRowSize(pTknVec);
+      eError = eParseRowSize(pTknVec, psErrStr);
       if (EC_NONE != eError)
         return eError;
       
@@ -1349,7 +1368,7 @@ eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
     
     if ( pTkn->bSame("tablesize"_Stz)) {
       
-      eError = eParseTableSize(pTknVec);
+      eError = eParseTableSize(pTknVec, psErrStr);
       if (EC_NONE != eError)
         return eError;
       
@@ -1371,7 +1390,7 @@ eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse partition clause                                                     */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
+eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1402,10 +1421,12 @@ eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
     iPartKeys++;
     
     if ( ! pTkn ) {
+      psErrStr->vCopy("missing column list in PARTITION BY clause"_Stz);
       return EC_INVALID_COMMAND;
     }
-    
+
     if ( pTkn->bSame(";"_Stz) ) {
+      psErrStr->vCopy("missing column list in PARTITION BY clause"_Stz);
       return EC_INVALID_COMMAND;
     }
     
@@ -1419,6 +1440,7 @@ eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
       }
     }
     if ( ! bFound) {
+      psErrStr->vSprint("column %s"_Stz, pTkn->szChars());
       return EC_INVALID_PARTITION_KEY;
     }
     pTkn = pTknVec->pNextToken(); dPT();
@@ -1439,10 +1461,11 @@ eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse replicate clasue                                                     */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseReplicated(TokenVec* pTknVec)
+eEC StreamDefBase::eParseReplicated(TokenVec* pTknVec, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
+  UNUSED(psErrStr);
 
   m_bReplicated = true;
   
@@ -1452,7 +1475,7 @@ eEC StreamDefBase::eParseReplicated(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse rowsize clause                                                       */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseRowSize(TokenVec* pTknVec)
+eEC StreamDefBase::eParseRowSize(TokenVec* pTknVec, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1461,6 +1484,7 @@ eEC StreamDefBase::eParseRowSize(TokenVec* pTknVec)
   
   // check if it was numeric
   if ( ! pTkn->bIsInteger() ) {
+    psErrStr->vCopy("row size must be an integer"_Stz);
     return EC_INVALID_COMMAND;
   }
   
@@ -1473,7 +1497,7 @@ eEC StreamDefBase::eParseRowSize(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse tablesize clause                                                     */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec)
+eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1482,6 +1506,7 @@ eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec)
   
   // check if it was numeric
   if ( ! pTkn->bIsInteger() ) {
+    psErrStr->vCopy("table size must be an integer"_Stz);
     return EC_INVALID_COMMAND;
   }
   
@@ -1494,7 +1519,7 @@ eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* validate column name                                                       */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
+eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec, String* psErrStr)
 {
 	_precondition_(_ADDRESS_,_MAGIC_);
 
@@ -1502,6 +1527,7 @@ eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
 	Stz* szColumnNm = pTknVec->pCurrToken()->szChars();
 
 	if (szColumnNm->nLength() > C_MAX_COLUMN_NAME_LENGTH - 1) {
+    psErrStr->vSprint("column name length must be <= %lld bytes"_Stz, C_MAX_COLUMN_NAME_LENGTH - 1);
 		return EC_MAX_COLUMN_NAME_LENGTH;
 	}
 
@@ -1512,6 +1538,7 @@ eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
 			!(cStartChar >= 'a' && cStartChar <= 'z') &&
 			!(cStartChar == '_'))
 	{
+    psErrStr->vCopy("column name must start with a character or underscore"_Stz);
 		return EC_SYNTAX_ERROR;
 	}
 
@@ -1519,6 +1546,7 @@ eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
 	for(i8 i = 33; i <= 47 ; i++)
 	{
 		if( szColumnNm->bContains(StrLib::szCharToStr(i))) {
+      psErrStr->vCopy("column name contains invalid characters"_Stz);
 			return EC_SYNTAX_ERROR;
 		}
 	}
@@ -1526,6 +1554,7 @@ eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
 	for(i8 i = 58; i <= 64 ; i++)
 	{
 		if( szColumnNm->bContains(StrLib::szCharToStr(i))) {
+      psErrStr->vCopy("column name contains invalid characters"_Stz);
 			return EC_SYNTAX_ERROR;
 		}
 	}
@@ -1533,11 +1562,13 @@ eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
 	if( szColumnNm->bContains("|"_Stz) ||
 			szColumnNm->bContains("^"_Stz) ||
 			szColumnNm->bContains("~"_Stz)) {
+    psErrStr->vCopy("column name contains invalid characters"_Stz);
 		return EC_SYNTAX_ERROR;
 	}
 
 	// Check if the table name is a reserved word
 	if (ReservedWords::bIsAReservedWord(szColumnNm)) {
+    psErrStr->vCopy(szColumnNm);
 		return EC_RESERVED_WORD;
 	}
 
@@ -1547,7 +1578,7 @@ eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
 /*----------------------------------------------------------------------------*/
 /* validate table name                                                        */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
+eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec, String* psErrStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -1555,6 +1586,7 @@ eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
   m_sStreamDefNm = pTknVec->pNextToken()->szChars();
 
   if (m_sStreamDefNm.nLength() > C_MAX_TABLE_NAME_LENGTH - 1) {
+    psErrStr->vSprint("table name length must be <= %lld bytes"_Stz, C_MAX_TABLE_NAME_LENGTH - 1);
     return EC_MAX_TABLE_NAME_LENGTH;
   }
 
@@ -1565,6 +1597,7 @@ eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
       !(cStartChar >= 'a' && cStartChar <= 'z') &&
       !(cStartChar == '_'))
   {
+    psErrStr->vCopy("table name must start with a character or underscore"_Stz);
     return EC_SYNTAX_ERROR;
   }
 
@@ -1572,6 +1605,7 @@ eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
   for(i8 i = 33; i <= 47 ; i++)
   {
     if( m_sStreamDefNm.bContains(StrLib::szCharToStr(i))) {
+      psErrStr->vCopy("column name contains invalid characters"_Stz);
       return EC_SYNTAX_ERROR;
     }
   }
@@ -1579,6 +1613,7 @@ eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
   for(i8 i = 58; i <= 64 ; i++)
   {
     if( m_sStreamDefNm.bContains(StrLib::szCharToStr(i))) {
+      psErrStr->vCopy("column name contains invalid characters"_Stz);
       return EC_SYNTAX_ERROR;
     }
   }
@@ -1586,11 +1621,13 @@ eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
   if( m_sStreamDefNm.bContains("|"_Stz) ||
       m_sStreamDefNm.bContains("^"_Stz) ||
       m_sStreamDefNm.bContains("~"_Stz)) {
+    psErrStr->vCopy("column name contains invalid characters"_Stz);
     return EC_SYNTAX_ERROR;
   }
 
   // Check if the table name is a reserved word
   if (ReservedWords::bIsAReservedWord(m_sStreamDefNm)) {
+    psErrStr->vCopy(m_sStreamDefNm);
     return EC_RESERVED_WORD;
   }
 

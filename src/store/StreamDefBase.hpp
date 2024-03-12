@@ -76,7 +76,7 @@ namespace STORE
   
     i8      nOrders(void);
   
-    eEC     eParseCmd(Stz* szCmd);
+    eEC     eParseCmd(Stz* szCmd, String* psErrStr);
     void    vPrint(void);
   
     bool    bReplicated(void);
@@ -98,30 +98,30 @@ namespace STORE
 
   private:
     
-    eEC eParse(Stz* szCmd);
-    eEC eParseColumn(TokenVec* pTknVec, i8 i_Col);
+    eEC eParse(Stz* szCmd, String* psErrStr);
+    eEC eParseColumn(TokenVec* pTknVec, i8 i_Col, String* psErrStr);
     
-    eEC eParseColumnBoolean  (TokenVec* pTknVec, Column* pCol);
-    eEC eParseColumnDate     (TokenVec* pTknVec, Column* pCol);
-    eEC eParseColumnDecimal  (TokenVec* pTknVec, Column* pCol);
-    eEC eParseColumnFloat    (TokenVec* pTknVec, Column* pCol);
-    eEC eParseColumnInteger  (TokenVec* pTknVec, Column* pCol);
-    eEC eParseColumnInterval (TokenVec* pTknVec, Column* pCol);
-    eEC eParseColumnTime     (TokenVec* pTknVec, Column* pCol);
-    eEC eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol);
-    eEC eParseColumnVarchar  (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnBoolean  (TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseColumnDate     (TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseColumnDecimal  (TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseColumnFloat    (TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseColumnInteger  (TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseColumnInterval (TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseColumnTime     (TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseColumnVarchar  (TokenVec* pTknVec, Column* pCol, String* psErrStr);
     
-    eEC eParseColumnClauses  (TokenVec* pTknVec, Column* pCol);
-    eEC eParseNotNull        (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnClauses  (TokenVec* pTknVec, Column* pCol, String* psErrStr);
+    eEC eParseNotNull        (TokenVec* pTknVec, Column* pCol, String* psErrStr);
     
-    eEC eParseTableClauses   (TokenVec* pTknVec);
-    eEC eParsePartitionBy    (TokenVec* pTknVec);
-    eEC eParseReplicated     (TokenVec* pTknVec);
-    eEC eParseRowSize        (TokenVec* pTknVec);
-    eEC eParseTableSize      (TokenVec* pTknVec);
+    eEC eParseTableClauses   (TokenVec* pTknVec, String* psErrStr);
+    eEC eParsePartitionBy    (TokenVec* pTknVec, String* psErrStr);
+    eEC eParseReplicated     (TokenVec* pTknVec, String* psErrStr);
+    eEC eParseRowSize        (TokenVec* pTknVec, String* psErrStr);
+    eEC eParseTableSize      (TokenVec* pTknVec, String* psErrStr);
 
-		eEC eValidateColumnName   (TokenVec* pTknVec);
-    eEC eValidateTableName   (TokenVec* pTknVec);
+		eEC eValidateColumnName   (TokenVec* pTknVec, String* psErrStr);
+    eEC eValidateTableName   (TokenVec* pTknVec, String* psErrStr);
 
   };
 

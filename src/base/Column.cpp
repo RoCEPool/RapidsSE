@@ -127,16 +127,22 @@ eDM Column::eDatum(eCT eColumnType)
 /*----------------------------------------------------------------------------*/
 /* is the bcd size valid ?                                                    */
 /*----------------------------------------------------------------------------*/
-bool Column::bValidBcd(i8 iPrecision, i8 iScale)
+bool Column::bValidBcd(i8 iPrecision, i8 iScale, String* psErrStr)
 {
-  if (iPrecision > C_MAX_BCD_PRECISION)
+  if (iPrecision > C_MAX_BCD_PRECISION) {
+    if (psErrStr) psErrStr->vSprint("precision must be <= %lld"_Stz, C_MAX_BCD_PRECISION);
     return false;
+  }
+
+  if (iScale > iPrecision) {
+    if (psErrStr) psErrStr->vCopy("decimal scale must be <= precision"_Stz);
+    return false;
+  }
   
-  if (iScale > iPrecision)
+  if (iScale > C_MAX_BCD_SCALE) {
+    if (psErrStr) psErrStr->vSprint("decimal scale must be <= %lld"_Stz, C_MAX_BCD_SCALE);
     return false;
-  
-  if (iScale > C_MAX_BCD_PRECISION)
-    return false;
+  }
   
   return true;
 }
@@ -144,10 +150,12 @@ bool Column::bValidBcd(i8 iPrecision, i8 iScale)
 /*----------------------------------------------------------------------------*/
 /* is the flt size valid ?                                                    */
 /*----------------------------------------------------------------------------*/
-bool Column::bValidFlt(i8 iPrecision)
+bool Column::bValidFlt(i8 iPrecision, String* psErrStr)
 {
-  if (iPrecision > C_MAX_FLT_PRECISION)
+  if (iPrecision > C_MAX_FLT_PRECISION) {
+    if (psErrStr) psErrStr->vSprint("float precision must be <= %lld"_Stz, C_MAX_FLT_PRECISION);
     return false;
+  }
   
   return true;
 }
@@ -155,10 +163,12 @@ bool Column::bValidFlt(i8 iPrecision)
 /*----------------------------------------------------------------------------*/
 /* is the vch size valid ?                                                    */
 /*----------------------------------------------------------------------------*/
-bool Column::bValidVch(i8 iSize)
+bool Column::bValidVch(i8 iSize, String* psErrStr)
 {
-  if (iSize > C_MAX_VCH_PRECISION)
+  if (iSize > C_MAX_VCH_PRECISION) {
+    if (psErrStr) psErrStr->vSprint("string length must be <= %lld"_Stz, C_MAX_VCH_PRECISION);
     return false;
+  }
   
   return true;
 }
