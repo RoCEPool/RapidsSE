@@ -2835,34 +2835,62 @@ antlrcpp::Any SqlPlanner::visitCastOp(sqlParser::CastOpContext* pCtx)
   TypeId xTypeId = xExtractDataType(pCtx->dataType());
   i8 iPrecision = -1;
   i8 iScale = -1;
+  b1 bGotPrecision = false;
+  b1 bGotScale = false;
 
   if (pCtx->dataType()->sqlDataType()->precision()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->precision()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->size()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->size()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->varyingLenChar() &&
              pCtx->dataType()->sqlDataType()->varyingLenChar()->size()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->varyingLenChar()->size()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->fixedLenChar() &&
              pCtx->dataType()->sqlDataType()->fixedLenChar()->size()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->fixedLenChar()->size()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->intervalType() &&
              pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType() &&
              pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType()->precision()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType()->precision()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->intervalType() &&
              pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType() &&
              pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType()->precision()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType()->precision()->integerLiteral());
+    bGotPrecision = true;
   }
 
   if (pCtx->dataType()->sqlDataType()->scale()) {
     iScale = iCleanInt(pCtx->dataType()->sqlDataType()->scale()->integerLiteral());
+    bGotScale = true;
+  }
+
+  if (bGotPrecision) {
+    if (iPrecision > C_MAX_BCD_PRECISION) {
+      SemanticException::vThrow(EC_INVALID_CAST, "; precision must be <= %lld"_Stz, C_MAX_BCD_PRECISION);
+
+    } else if (iPrecision <= 0) {
+      SemanticException::vThrow(EC_INVALID_CAST, "; precision must be a positive number"_Stz);
+    }
+  }
+
+  if (bGotScale) {
+    // Must have also got a precision too
+    if (iScale > iPrecision) {
+      SemanticException::vThrow(EC_INVALID_CAST, "; decimal scale must be <= precision"_Stz);
+
+    } else if (iScale > C_MAX_BCD_SCALE) {
+      SemanticException::vThrow(EC_INVALID_CAST, "; decimal scale must be <= %lld"_Stz, C_MAX_BCD_SCALE);
+    }
   }
 
   QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId, iPrecision, iScale);
@@ -2885,30 +2913,62 @@ antlrcpp::Any SqlPlanner::visitInlineCast(sqlParser::InlineCastContext* pCtx)
   TypeId xTypeId = xExtractDataType(pCtx->dataType());
   i8 iPrecision = -1;
   i8 iScale = -1;
+  b1 bGotPrecision = false;
+  b1 bGotScale = false;
 
   if (pCtx->dataType()->sqlDataType()->precision()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->precision()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->size()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->size()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->varyingLenChar() &&
              pCtx->dataType()->sqlDataType()->varyingLenChar()->size()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->varyingLenChar()->size()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->fixedLenChar() &&
              pCtx->dataType()->sqlDataType()->fixedLenChar()->size()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->fixedLenChar()->size()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->intervalType() &&
              pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType() &&
              pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType()->precision()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->intervalType()->yearMonthIntervalType()->precision()->integerLiteral());
+    bGotPrecision = true;
 
   } else if (pCtx->dataType()->sqlDataType()->intervalType() &&
              pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType() &&
              pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType()->precision()) {
     iPrecision = iCleanInt(pCtx->dataType()->sqlDataType()->intervalType()->dayTimeIntervalType()->precision()->integerLiteral());
+    bGotPrecision = true;
+  }
+
+  if (pCtx->dataType()->sqlDataType()->scale()) {
+    iScale = iCleanInt(pCtx->dataType()->sqlDataType()->scale()->integerLiteral());
+    bGotScale = true;
+  }
+
+  if (bGotPrecision) {
+    if (iPrecision > C_MAX_BCD_PRECISION) {
+      SemanticException::vThrow(EC_INVALID_CAST, "; precision must be <= %lld"_Stz, C_MAX_BCD_PRECISION);
+
+    } else if (iPrecision <= 0) {
+      SemanticException::vThrow(EC_INVALID_CAST, "; precision must be a positive number"_Stz);
+    }
+  }
+
+  if (bGotScale) {
+    // Must have also got a precision too
+    if (iScale > iPrecision) {
+      SemanticException::vThrow(EC_INVALID_CAST, "; decimal scale must be <= precision"_Stz);
+
+    } else if (iScale > C_MAX_BCD_SCALE) {
+      SemanticException::vThrow(EC_INVALID_CAST, "; decimal scale must be <= %lld"_Stz, C_MAX_BCD_SCALE);
+    }
   }
 
   QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId, iPrecision, iScale);

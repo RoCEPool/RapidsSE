@@ -298,6 +298,21 @@ rows: ("-999999999999999.99")
 //failure contains: 'EC_NOT_IMPLEMENTED'
 
 
+// Invalid decimal casts
+SELECT CAST(1 AS DECIMAL(0)) FROM ${testName2}_test;
+failure contains: 'precision must be a positive number'
+
+SELECT CAST(1 AS DECIMAL(-1)) FROM ${testName2}_test;
+failure contains: 'EC_SYNTAX_ERROR'
+
+SELECT CAST(1 AS DECIMAL(18)) FROM ${testName2}_test;
+failure contains: 'precision must be <= 17'
+
+SELECT CAST(1 AS DECIMAL(4,-1)) FROM ${testName2}_test;
+failure contains: 'EC_SYNTAX_ERROR'
+
+SELECT CAST(1 AS DECIMAL(4,6)) FROM ${testName2}_test;
+failure contains: 'decimal scale must be <= precision'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
