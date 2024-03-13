@@ -76,7 +76,7 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // conversions prior to projection
 
-    if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
+    if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
       if (m_pCI->Flux.m_pArriving)
         m_pCI->G.p_key->vX_expCol_To_tblCol(m_pCI);
       m_pCI->G.p_key = nullptr;
