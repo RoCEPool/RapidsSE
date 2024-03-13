@@ -70,7 +70,7 @@ void XF_Prolog_Validate_Board::vValidate(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_VALIDATE_BOARD);
 
-  Card_OP* p_OP = nullptr;
+  Card* p_OP = nullptr;
   //Card_Scan* p_scan = nullptr;
 
   m_pCI->vClearRestart();
@@ -93,8 +93,8 @@ void XF_Prolog_Validate_Board::vValidate(void)
         break;
 
       default:
-        if (m_pCI->G.p_OP)
-          p_OP = m_pCI->G.p_OP;
+        if (m_pCI->G.p_MainCard->bIsOp())
+          p_OP = m_pCI->G.p_MainCard;
         break;
     }
   }
