@@ -71,7 +71,7 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 //
 //      if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
 //        if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
-//          m_pCI->vSnapFluxArriving();
+//          m_pCI->vSnapArriving();
 //          continue;
 //        }
 //      }
@@ -136,7 +136,7 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
   // aspects of operators which need the emit of the operator
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  m_pCI->vSnapFluxArriving();
+  m_pCI->vSnapArriving();
   if (m_pCI->G.p_OP->pSub_emit())
     m_pCI->X.m_pExprList_a = m_pCI->G.p_OP->pSub_emit();
 

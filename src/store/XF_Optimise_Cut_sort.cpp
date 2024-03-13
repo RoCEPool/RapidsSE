@@ -87,10 +87,10 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
           break;
 
         m_pCI->vRemoveDeleteMain(CK_o_SORT);
-//        if (m_pCI->bIsNextMain(CK_o_SORT)) {
+//        if (m_pCI->pNextChildIf(CK_o_SORT)) {
 //          m_pCI->bEachMain();
 //          m_pCI->vRemoveDeleteMain(CK_o_SORT);
-//          if (m_pCI->bIsNextMain(CK_o_SORT)) {
+//          if (m_pCI->pNextChildIf(CK_o_SORT)) {
 //            m_pCI->bEachMain();
 //            m_pCI->vRemoveDeleteMain(CK_o_SORT);
 //          }

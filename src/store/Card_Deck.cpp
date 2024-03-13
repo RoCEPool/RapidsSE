@@ -82,7 +82,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_arriving,
                                                              pCI->G.p_OP);
         UNUSED(eStageCast);
-        pCI->vMainResynch();
+        pCI->vResynchMain();
        // pCI->PRINTBOARD_dbg();
         vDebugPoint();
       }

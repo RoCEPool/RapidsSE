@@ -138,8 +138,8 @@ void CardIter::vAppendChild(eCK eParent, eCK eChild)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card* pParent = pGetMember(eParent);
-  Card* pChild  = pGetMember(eChild);
+  Card* pParent = pMember(eParent);
+  Card* pChild  = pMember(eChild);
 
   pParent->vAppendChild(pChild);
 }
@@ -151,7 +151,7 @@ void CardIter::vAppendChild(eCK eParent, Card* pChild)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  Card* pParent = pGetMember(eParent);
+  Card* pParent = pMember(eParent);
 
   pParent->vAppendChild(pChild);
 
@@ -166,7 +166,7 @@ void CardIter::vAppendNewChild(eCK eParent, eCK eChild)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card* pParent = pGetMember(eParent);
+  Card* pParent = pMember(eParent);
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
   pParent->vAppendChild(pChild);
@@ -491,18 +491,6 @@ Card* CardIter::pChild(void)
   _precondition_( _MAGIC_, _FOOTER_);
 
   return G.xKid.pChild();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vChild(i8 i_Child)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.bWithinRange());
-
-  G.xKid.vReposition(i_Child);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1345,7 +1333,7 @@ void CardIter::vForwards(bool bForward)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardIter::pGetChild(i8 i_Child)
+Card* CardIter::pChild(i8 i_Child)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -1355,9 +1343,29 @@ Card* CardIter::pGetChild(i8 i_Child)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vInsertAfter(Card* pCard, Card* pAfter)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.pDeck->vInsertChildAfter(pCard,pAfter);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vInsertBefore(Card* pCard, Card* pBefore)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.pDeck->vInsertChildBefore(pCard,pBefore);
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch M member by decoding given eMember                                   */
 /*----------------------------------------------------------------------------*/
-Card* CardIter::pGetMember(eCK eMember)
+Card* CardIter::pMember(eCK eMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -1499,59 +1507,13 @@ Card* CardIter::pGetMember(eCK eMember)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set member card                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vInsertAfter(Card* pCard, Card* pAfter)
+void CardIter::vMember(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.pDeck->vInsertChildAfter(pCard,pAfter);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vInsertBefore(Card* pCard, Card* pBefore)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  G.pDeck->vInsertChildBefore(pCard,pBefore);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bIsNextMain(eCK eMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (this->pNextChildIf(eMember))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vMainResynch(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  G.xKid.vReposition(G.p_MainCard);
-  RASSERT(G.p_MainCard == G.xKid.pChild());
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vMainResynch(Card* pCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  G.p_MainCard = pCard;
-  vMainResynch();
+  vMember(pCard->eCard(),pCard,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1730,16 +1692,6 @@ void CardIter::vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     default:
       NEVER_REACH
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* set member card                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vMember(Card* pCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  vMember(pCard->eCard(),pCard,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1940,22 +1892,9 @@ void CardIter::vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, b
 }
 
 /*----------------------------------------------------------------------------*/
-/* capture prior projection                                                   */
-/*----------------------------------------------------------------------------*/
-void CardIter::vSnapFluxArriving(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (Card_Emit* p_emit = G.p_OP->pSub_emit()) {
-    Flux.m_pArriving = p_emit;
-    Dic.m_p_expr = p_emit;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vPushNewChild(Card* pParent, eCK eChild)
+void CardIter::vPushChild(Card* pParent, eCK eChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -2292,6 +2231,28 @@ void CardIter::vRestoreMembers(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::vResynchMain(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.xKid.vReposition(G.p_MainCard);
+  RASSERT(G.p_MainCard == G.xKid.pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vResynchMain(Card* pCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.p_MainCard = pCard;
+  vResynchMain();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardIter::vSaveMembers(void)
 {
   CardIterMembers* pMembers_save = new CardIterMembers;
@@ -2299,6 +2260,19 @@ void CardIter::vSaveMembers(void)
   pMembers_save->vCopyFrom(&G);
 
   vPush(pMembers_save);
+}
+
+/*----------------------------------------------------------------------------*/
+/* capture prior projection                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vSnapArriving(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (Card_Emit* p_emit = G.p_OP->pSub_emit()) {
+    Flux.m_pArriving = p_emit;
+    Dic.m_p_expr = p_emit;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

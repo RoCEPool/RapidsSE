@@ -93,7 +93,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
       pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
-    if (pCI->bIsNextMain(CK_c_FOLD))
+    if (pCI->pNextChildIf(CK_c_FOLD))
       break;
   }
 
@@ -229,7 +229,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
       pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
-    if (pCI->bIsNextMain(CK_c_FOLD))
+    if (pCI->pNextChildIf(CK_c_FOLD))
       break;
   }
 
@@ -291,11 +291,11 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_c_FOLD));
   //RASSERT(pCI->m_pExpr_fold);
 
-  if(pCI->bIsNextMain(CK_SUBQUERY))
+  if(pCI->pNextChildIf(CK_SUBQUERY))
     RASSERT(pCI->pAdvanceChild());
 
   // Table*
-  while (pCI->bIsNextMain(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
+  while (pCI->pNextChildIf(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
     if (pCarryForward->Table.m_bSeen) {
       pCI->G.p_table = pCI->G.p_from->pSub_table();
       pCI->G.p_OP->vRestate_emit(pCI);
@@ -306,7 +306,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 
 
   // [Where]
-  if (pCI->bIsNextMain(CK_o_WHERE) && pCI->bEachMain(CK_o_WHERE)) {
+  if (pCI->pNextChildIf(CK_o_WHERE) && pCI->bEachMain(CK_o_WHERE)) {
     if (pCarryForward->Where_preAgg.m_bSeen) {
       //pCI->Flux.m_pArriving->vDump(__func__,"Smooth where"_Stz);
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
@@ -317,7 +317,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 
 
   // GbyAgg_partition
-  if (pCI->bIsNextMain(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
+  if (pCI->pNextChildIf(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -325,7 +325,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // GbyAgg_node
-  if (pCI->bIsNextMain(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
+  if (pCI->pNextChildIf(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -333,7 +333,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // GbyAgg_origin
-  if (pCI->bIsNextMain(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
+  if (pCI->pNextChildIf(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -343,7 +343,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // [project (avg)]
-  if (pCI->bIsNextMain(CK_o_PROJECT) && pCI->bEachMain(CK_o_PROJECT)) {
+  if (pCI->pNextChildIf(CK_o_PROJECT) && pCI->bEachMain(CK_o_PROJECT)) {
     if (pCarryForward->Project_postAgg.m_bSeen) {
       pCI->G.p_project->vSmooth_postAgg(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -351,7 +351,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // Having
-  if (pCI->bIsNextMain(CK_o_HAVING) && pCI->bEachMain(CK_o_HAVING)) {
+  if (pCI->pNextChildIf(CK_o_HAVING) && pCI->bEachMain(CK_o_HAVING)) {
     if (pCarryForward->Having.m_bSeen) {
       pCI->G.p_having->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -359,7 +359,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // Sort
-  if (pCI->bIsNextMain(CK_o_SORT) && pCI->bEachMain(CK_o_SORT)) {
+  if (pCI->pNextChildIf(CK_o_SORT) && pCI->bEachMain(CK_o_SORT)) {
     if (pCarryForward->Sort.m_bSeen) {
       pCI->G.p_sort->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();

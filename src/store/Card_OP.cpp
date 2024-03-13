@@ -945,7 +945,7 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
   if (! pCard_bounds)
     return;
 
-  //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pGetChild(0);
+  //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pChild(0);
 
   Card_Bound* p_bound = nullptr;
   for (Kid xKid(pCard_bounds); xKid.bEach(CK_BOUND); /**/) {

@@ -124,7 +124,7 @@ namespace STORE
 
     i8   i_Child(void);
     Card* pChild(void);
-    void vChild(i8 i_Child);
+    Card* pChild(i8 i_Child);
     void vChild(Card* pChild);
     void vClearRegisters(void);
     void vClearRegistersIf(Card* pCard);
@@ -165,19 +165,14 @@ namespace STORE
     bool bForwards(void);
     void vForwards(bool bForward);
 
-    Card* pGetChild(i8 i_Child);
-    Card* pGetMember(eCK eMember);
-
     void vInsertAfter(Card* pCard, Card* pAfter);
     void vInsertBefore(Card* pCard, Card* pBefore);
-    bool bIsNextMain(eCK eMember);
 
     bool bLambdaWalk(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
 
-    void vMainResynch(void);
-    void vMainResynch(Card* pCard);
-    void vMember(eCK eMember, Card* pCard, const char* asFuncNm);
+    Card* pMember(eCK eMember);
     void vMember(Card* pCard);
+    void vMember(eCK eMember, Card* pCard, const char* asFuncNm);
     bool bMore(void);
 
     void  vNewMember(eCK eMember);
@@ -188,8 +183,7 @@ namespace STORE
     bool bPositionOn(eCK eKind_on, i8 /* eCK */ iKind_First, ...);
     Card* pPrevChild(void);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
-    void vSnapFluxArriving(void);
-    void vPushNewChild(Card* pParent, eCK eChild);
+    void vPushChild(Card* pParent, eCK eChild);
 
     bool bRecurseActive(void);
     void vRecurseBegin(Card* pCard);
@@ -201,9 +195,12 @@ namespace STORE
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Emit* pResolvePrior_projection(void);
     void vRestoreMembers(void);
+    void vResynchMain(void);
+    void vResynchMain(Card* pCard);
     bool bRewindMain(void);
 
     void vSaveMembers(void);
+    void vSnapArriving(void);
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 
