@@ -2312,32 +2312,15 @@ Card_Emit* CardIter::pResolvePrior_projection(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pRewindChild(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-//  if (G.xKid.m_i_Child == 0) {
-//    G.xKid.m_i_Child= C_UNKNOWN;
-//    return nullptr;
-//  }
-//
-//  G.xKid.m_i_Child--;
-
-  G.xKid.vBackstep();
-
-  return G.xKid.pChild();
-}
-
-/*----------------------------------------------------------------------------*/
 /* step main register next main and update M member                           */
 /*----------------------------------------------------------------------------*/
 bool CardIter::bRewindMain(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if ((G.p_MainCard = this->pRewindChild())) {
+  G.xKid.vBackstep();
+
+  if ((G.p_MainCard = G.xKid.pChild())) {
     vFocusOnMain();
     vMember(G.e_MainCard, G.p_MainCard, __func__);
     return true;
