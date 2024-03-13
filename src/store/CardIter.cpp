@@ -796,7 +796,7 @@ bool CardIter::bEachMain(void)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
-  
+
   while (G.xKid.bEach()) {
     if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
       continue;

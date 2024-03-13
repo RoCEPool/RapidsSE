@@ -309,7 +309,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   Card_OP::vEarlyProject_backstep(pCI);
 
-  pCI->G.p_MainCard = pCI->G.p_MainCard = this;
+  pCI->G.p_MainCard = this;
   pCI->G.e_MainCard = CK_o_PROJECT;
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
