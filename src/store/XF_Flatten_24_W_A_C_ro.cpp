@@ -212,7 +212,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     // projection
 
     if (AL_PARTITION == e_Level) {
-      pCI->G.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI->G.p_expr);
+      pCI->G.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI,pCI->G.p_expr);
     }
     else {
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
@@ -295,7 +295,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
   // supplemental
 
   pCI->G.p_expr = pCI->G.p_emit->pGet_expr(1);
-  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL,C_SQYRSL, 1);
+  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL,C_SQYRSL, i_Board);
 
 
 
