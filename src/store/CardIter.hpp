@@ -196,8 +196,6 @@ namespace STORE
     Card* pRecurseEach(void);
     Card* pRecurseEach(eCK eCard);
     void vRecurseEnd(void);
-    void vRemoveChild(Card* pChild);
-    void vRemoveCurr(eCK eCrossCheck);
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);

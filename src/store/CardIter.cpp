@@ -2078,39 +2078,6 @@ void CardIter::vRecurseEnd(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRemoveChild(Card* pChild)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.bWithinRange());
-
-  if (pChild == G.xKid.pChild())
-    vRemoveCurr(G.xKid.eChild());
-  else
-    G.xKid.pParent()->vRemoveChild(pChild);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRemoveCurr(eCK eCrossCheck)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.bWithinRange());
-
-  RASSERT(eCrossCheck == G.xKid.eChild());
-
-  Card* pChild = G.xKid.pChild();
-
-  G.xKid.pParent()->vRemoveChild(pChild);
-
-  G.xKid.vBackstep();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, _FOOTER_);
