@@ -80,7 +80,7 @@ void Card_Emit::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_key = pCI->G.p_OP->pSub_key();
+  pCI->G.p_key = pCI->G.p_MainCard->pSub_key();
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
     pCI->G.p_expr = xEmit.p_expr();
@@ -128,11 +128,11 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   // this projection will be in an aggreg, gbyAgg or ordAgg
-  RASSERT(pCI->G.p_OP->bIsEarlyRoot());
+  RASSERT(((Card_OP*)pCI->G.p_MainCard)->bIsEarlyRoot());
 
   //this->vDump(__func__);
 
-  pCI->G.p_key = pCI->G.p_OP->pSub_key();
+  pCI->G.p_key = pCI->G.p_MainCard->pSub_key();
 
   Card_Needed* p_needed = new Card_Needed;
 
@@ -187,7 +187,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
           vDebugPoint();
         }
         else {
-          pCI->G.p_OP->vDump(__func__);
+          pCI->G.p_MainCard->vDump(__func__);
           p_expr_key->pSymbol()->vDump();
           NEVER_REACH
         }
@@ -237,7 +237,7 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_OP->bIsEarlyRoot());
+  RASSERT(((Card_OP*)pCI->G.p_MainCard)->bIsEarlyRoot());
 
   Card_Needed *p_needed = new Card_Needed;
 
