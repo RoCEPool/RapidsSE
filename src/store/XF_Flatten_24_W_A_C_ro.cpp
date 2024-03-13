@@ -221,7 +221,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
       Symbol xSymbol_KeyCol(SF_KEY_COL,1);
 
       pCI->vNewMember(CK_EXPR);
-      pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY,1);
+      i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
+      pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
       pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
@@ -276,7 +277,8 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 
   // push <project>/_SQCRLKEY_
   pCI->vPushNewChild(pCI->G.p_emit, CK_EXPR);
-  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, 1);
+  i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
+  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
   pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
   pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
