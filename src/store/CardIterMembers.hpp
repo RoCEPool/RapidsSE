@@ -33,8 +33,7 @@ namespace STORE
     eCK    e_MainCard;
     i8     i_MainCard;
 
-    Card*                p_NEW;
-    Card_OP *            p_OP;
+    Card_OP * p_OP;
 
     Card * p_SubOfMain;
     eCK    e_SubOfMain;
@@ -100,7 +99,7 @@ namespace STORE
     Card_IndexNm *       p_indexNm;
     Card_IndexScan *     p_indexScan;
     Card_Inflate *       p_inflate;
-    Card_Injectable *      p_injectable;
+    Card_Injectable *    p_injectable;
 
     Card_JoinCast *      p_joinCast;
     Card_JoinEstimate *  p_joinEstimate;
@@ -158,7 +157,7 @@ namespace STORE
     Card_StreamSet *     p_streamSet;
     Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
-    Card_Synthesis *    p_synthesis;
+    Card_Synthesis *     p_synthesis;
 
     Card_Table *         p_table;
     Card_TableInfo *     p_tableInfo;

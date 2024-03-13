@@ -1795,9 +1795,9 @@ void CardIter::vNewMember(eCK eMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.p_NEW = new Card(eMember,C_UNKNOWN);
+  Card* pNew = new Card(eMember,C_UNKNOWN);
 
-  vMember(eMember, G.p_NEW, __func__);
+  vMember(eMember, pNew, __func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1807,9 +1807,11 @@ void CardIter::vNewMember(eCK eMember, Symbol xSymbol)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vNewMember(eMember);
+  Card* pNew = new Card(eMember,C_UNKNOWN);
 
-  G.p_NEW->pSymbol()->vApplyCastFacets(&xSymbol);
+  vMember(eMember, pNew, __func__);
+
+  pNew->pSymbol()->vApplyCastFacets(&xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2164,6 +2166,8 @@ void CardIter::vResetMembers(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  G.p_OP = nullptr;
+
   G.p_absJoin          = nullptr;
   G.p_address          = nullptr;
   G.p_aggreg           = nullptr;
@@ -2292,10 +2296,6 @@ void CardIter::vResetMembers(void)
   G.p_where            = nullptr;
 
   G.p_xcard            = nullptr;
-
-  G.p_NEW              = nullptr;
-
-  G.p_OP = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
