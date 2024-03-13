@@ -43,15 +43,17 @@ failure contains: 'table exists'
 drop table ${testName2}_T1 ;
 success
 
-// the following crashes SE
-// create table with an name longer than 32 chars
-/*
-//(7) create table T1abcdefghijklmnopqrstuvwxyz0123456789 (
+// (7) create table with an name longer than 32 chars
+create table ${testName2}_T1abcdefghijklmnopqrstuvwxyz0123456789 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 );
 success
-*/
+
+// (7b) drop table T1abcdefghijklmnopqrstuvwxyz0123456789
+drop table ${testName2}_T1abcdefghijklmnopqrstuvwxyz0123456789 ;
+success
+
 
 // (8) invalid syntax (missing ',')
 create table ${testName2}_T1 (
@@ -232,6 +234,101 @@ create table ${testName2}_T1 (
                  c1  integer NOT NUKK
                  );
 failure contains: 'EC_SYNTAX_ERROR; Line: 2; Column: 33; mismatched input ''NUKK'' expecting SQL_NULL'
+
+
+///////////////////////
+// Precision & Scale //
+///////////////////////
+
+// Create a table with an valid precision
+create table ${testName2}_T1 (
+  c1  DECIMAL(17)
+);
+success
+
+lscol ${testName2}_T1;
+rows: ('c1', 'DECIMAL', 17, 0, true, true)
+
+drop table ${testName2}_T1;
+success
+
+
+// Create a table with an valid precision and scale
+create table ${testName2}_T1 (
+  c1  DECIMAL(17,2)
+);
+success
+
+lscol ${testName2}_T1;
+rows: ('c1', 'DECIMAL', 17, 2, true, true)
+
+drop table ${testName2}_T1;
+success
+
+
+// Create a table with an valid precision and scale
+create table ${testName2}_T1 (
+  c1  DECIMAL(6,6)
+);
+success
+
+lscol ${testName2}_T1;
+rows: ('c1', 'DECIMAL', 6, 6, true, true)
+
+drop table ${testName2}_T1;
+success
+
+
+
+// Create a table with an valid precision and scale
+create table ${testName2}_T1 (
+  c1  DECIMAL(17,17)
+);
+success
+
+lscol ${testName2}_T1;
+rows: ('c1', 'DECIMAL', 17, 17, true, true)
+
+drop table ${testName2}_T1;
+success
+
+
+
+
+// Create a table with an invalid precision
+create table ${testName2}_T1 (
+  c1  DECIMAL(18)
+);
+failure contains: 'precision must be <= 17'
+
+create table ${testName2}_T1 (
+  c1  DECIMAL(0)
+);
+failure contains: 'precision must be a positive number'
+
+create table ${testName2}_T1 (
+  c1  DECIMAL(-1)
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+
+// Create a table with a valid precision but an invalid scale
+create table ${testName2}_T1 (
+  c1  DECIMAL(17,-1)
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table ${testName2}_T1 (
+  c1  DECIMAL(17,18)
+);
+failure contains: 'scale must be <= precision'
+
+
+create table ${testName2}_T1 (
+  c1  DECIMAL(4,6)
+);
+failure contains: 'scale must be <= precision'
+
 
 ///////////
 // lscol //

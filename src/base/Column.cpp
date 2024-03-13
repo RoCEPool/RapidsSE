@@ -134,6 +134,11 @@ bool Column::bValidBcd(i8 iPrecision, i8 iScale, String* psErrStr)
     return false;
   }
 
+  if (iPrecision <= 0) {
+    if (psErrStr) psErrStr->vCopy("precision must be a positive number"_Stz);
+    return false;
+  }
+
   if (iScale > iPrecision) {
     if (psErrStr) psErrStr->vCopy("decimal scale must be <= precision"_Stz);
     return false;

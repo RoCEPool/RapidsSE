@@ -19,7 +19,11 @@
   streamDef::parse not if
     to errorCode
     to errorStr
-    errorStr errorCode op__execErrMsg
+
+    // Create & push a string with the error code desc & error message
+    errorStr errorCode attachmap::errorText@ "%v: %v" str.format
+      errorCode op__execErrMsg
+
     true
     exit
   else
