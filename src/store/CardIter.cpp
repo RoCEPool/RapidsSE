@@ -2245,7 +2245,7 @@ void CardIter::vSnapArriving(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (Card_Emit* p_emit = G.p_OP->pSub_emit()) {
+  if (Card_Emit* p_emit = G.p_MainCard->pSub_emit()) {
     Flux.m_pArriving = p_emit;
     Dic.m_p_expr = p_emit;
   }
