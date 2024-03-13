@@ -635,9 +635,18 @@ Object* Socket::pObjectRecv(eCN eClass)
       pDataBuffer->vSetBufferId(
           AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
 #endif
-      AM::pHashMap()->vInsertKeyValue(
-          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-          (Object *) pReceivedObject);
+      if(eClass == BASE::CN_PDS){
+        ASSERT(eClass == BASE::CN_PDS);
+        Pds* pPds = _pPds(pDataBuffer);
+        pPds->m_fpCompare = PdsUtils::iIntCompare;
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject);
+      } else {
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject);
+      }
     }
 
   m_pTotup->vAdd(eClass, nSize);

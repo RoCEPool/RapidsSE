@@ -138,9 +138,18 @@ Object* Object::pMemoryCopy(void)
     pDataBuffer->vSetBufferId(
         AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
 #endif
-    AM::pHashMap()->vInsertKeyValue(
-        (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-        (Object *) pCopy);
+    if(eClass == BASE::CN_PDS){
+      ASSERT(eClass == BASE::CN_PDS);
+      Pds* pPds = _pPds(pDataBuffer);
+      pPds->m_fpCompare = PdsUtils::iIntCompare;
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pCopy);
+    } else {
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pCopy);
+    }
   }
 
   return pCopy;

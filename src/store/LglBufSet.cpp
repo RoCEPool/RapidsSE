@@ -25,7 +25,7 @@ LglBufSet::LglBufSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   m_iSynthKey = 0;
-  m_pPdsOfBuffers = new Pds_t<LglBufSetItem>(STORE::iLglBufSetKeyCompare);
+  m_pPdsOfBuffers = new Pds_t<LglBufSetItem>(PdsUtils::iLglBufSetKeyCompare);
 
   _checkInitialised_(CN_LGLBUFSET);
 
@@ -195,35 +195,6 @@ DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
     }
   }
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compare two nodes                                          */
-/*----------------------------------------------------------------------------*/
-i8 STORE::iLglBufSetKeyCompare(void* aItem_l, void* aItem_r)
-{
-  _static_
-
-  LglBufSetItem* pKey_l = (LglBufSetItem*) aItem_l;
-  LglBufSetItem* pKey_r = (LglBufSetItem*) aItem_r;
-
-  // do the node names match?
-  if (pKey_l->iLglPtn == pKey_r->iLglPtn) {
-    if (pKey_l->iSynthKey == pKey_r->iSynthKey) {
-      return 0;
-    }
-    else {
-      if (pKey_l->iSynthKey >= pKey_r->iSynthKey)
-        return 1;
-      else
-        return -1;
-    }
-  } else {
-    if (pKey_l->iLglPtn >= pKey_r->iLglPtn)
-      return 1;
-    else
-      return -1;
-  }
 }
 
 /*============================================================================*/
