@@ -154,8 +154,8 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->PRINTBOARD_dbg();
 
-  pCI->G.p_OP = pCI->G.p_where;
-  pCI->G.p_OP->vRestate_emit(pCI);
+  pCI->G.p_MainCard = pCI->G.p_where;
+  ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
 
  // pCI->PRINTBOARD_dbg();
 
@@ -190,7 +190,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   }
 
-  RASSERT(pCI->G.p_OP == pCI->G.p_where);
+  RASSERT(pCI->G.p_MainCard == pCI->G.p_where);
   pCI->G.p_where->vRestate_emit(pCI);
 }
 

@@ -309,7 +309,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   Card_OP::vEarlyProject_backstep(pCI);
 
-  pCI->G.p_MainCard = pCI->G.p_OP = this;
+  pCI->G.p_MainCard = pCI->G.p_MainCard = this;
   pCI->G.e_MainCard = CK_o_PROJECT;
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
@@ -317,7 +317,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   RASSERT(pCI->Early.m_pOP_leaf);
   RASSERT(! pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
 
-   pCI->G.p_OP->vRestate_emit(pCI);
+  ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
