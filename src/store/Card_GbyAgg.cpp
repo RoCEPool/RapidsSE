@@ -90,7 +90,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   // if the immediate previous card is a project then rely on that project
   //   to have determined what projections are needed
 
-  if (pCI->pPrevChild()->bIsCard(CK_o_PROJECT)) {
+  if (pCI->pChildPrev()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();

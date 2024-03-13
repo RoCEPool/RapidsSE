@@ -506,6 +506,49 @@ void CardIter::vChild(Card* pChild)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pChildNext(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  i8 i_Next = G.xKid.i_Child() + 1;
+
+  if (i_Next >= G.xKid.pParent()->nChildCards())
+    return nullptr;
+
+  Card* pNextMain = G.xKid.pParent()->pGetChild(i_Next);
+
+  return pNextMain;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pChildNextIf(eCK eCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pNextMain = this->pChildNext();
+  if (! pNextMain || eCard != pNextMain->eCard())
+    return nullptr;
+
+  return pNextMain;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pChildPrev(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pChild = G.xKid.pPrev();
+
+  return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
 /* clear the general M registers                                              */
 /*----------------------------------------------------------------------------*/
 void CardIter::vClearRegisters(void)
@@ -1710,37 +1753,6 @@ bool CardIter::bMore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pNextChild(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  i8 i_Next = G.xKid.i_Child() + 1;
-
-  if (i_Next >= G.xKid.pParent()->nChildCards())
-    return nullptr;
-
-  Card* pNextMain = G.xKid.pParent()->pGetChild(i_Next);
-
-  return pNextMain;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pNextChildIf(eCK eCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Card* pNextMain = this->pNextChild();
-  if (! pNextMain || eCard != pNextMain->eCard())
-    return nullptr;
-
-  return pNextMain;
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new card and optionally set member                                */
 /*----------------------------------------------------------------------------*/
 void CardIter::vNewMember(eCK eMember)
@@ -1828,18 +1840,6 @@ bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
   }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pPrevChild(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Card* pChild = G.xKid.pPrev();
-
-  return pChild;
 }
 
 /*----------------------------------------------------------------------------*/

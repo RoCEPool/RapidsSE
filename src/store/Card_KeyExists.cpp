@@ -76,7 +76,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pPrevChild()->bIsCard(CK_o_PROJECT)) {
+  if (pCI->pChildPrev()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();

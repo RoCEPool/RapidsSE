@@ -71,7 +71,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
     if (! m_pCI->G.p_MainCard->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE))
       goto L_UPDATE_PRIOR_EMITTED;
 
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pChildNextIf(CK_o_PROJECT));
 
     m_pCI->G.p_stream = m_pCI->G.p_MainCard->pSub_stream();
 
@@ -104,7 +104,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachMain(CK_o_SCAN)) {
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pChildNextIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
@@ -121,7 +121,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachMain(CK_o_INDEXSCAN)) {
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pChildNextIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
@@ -145,7 +145,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
       continue;
     }
 
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pChildNextIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
@@ -172,7 +172,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
       continue;
     }
 
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_o_PROJECT));
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pChildNextIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {

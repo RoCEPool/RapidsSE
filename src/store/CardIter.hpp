@@ -126,6 +126,9 @@ namespace STORE
     Card* pChild(void);
     Card* pChild(i8 i_Child);
     void vChild(Card* pChild);
+    Card* pChildNext(void);
+    Card* pChildNextIf(eCK eCard);
+    Card* pChildPrev(void);
     void vClearRegisters(void);
     void vClearRegistersIf(Card* pCard);
     void vClearRestart(void);
@@ -177,11 +180,8 @@ namespace STORE
 
     void  vNewMember(eCK eMember);
     void  vNewMember(eCK eMember, Symbol xSymbol);
-    Card* pNextChild(void);
-    Card* pNextChildIf(eCK eCard);
 
     bool bPositionOn(eCK eKind_on, i8 /* eCK */ iKind_First, ...);
-    Card* pPrevChild(void);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
     void vPushChild(Card* pParent, eCK eChild);
 
