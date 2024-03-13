@@ -2875,15 +2875,23 @@ antlrcpp::Any SqlPlanner::visitCastOp(sqlParser::CastOpContext* pCtx)
   }
 
   if (bGotPrecision) {
-    if (iPrecision > C_MAX_BCD_PRECISION) {
-      SemanticException::vThrow(EC_INVALID_CAST, "; precision must be <= %lld"_Stz, C_MAX_BCD_PRECISION);
+    if (xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
+      if (iPrecision > C_MAX_BCD_PRECISION) {
+        SemanticException::vThrow(EC_INVALID_CAST, "; precision must be <= %lld"_Stz, C_MAX_BCD_PRECISION);
 
-    } else if (iPrecision <= 0) {
-      SemanticException::vThrow(EC_INVALID_CAST, "; precision must be a positive number"_Stz);
+      } else if (iPrecision <= 0) {
+        SemanticException::vThrow(EC_INVALID_CAST, "; precision must be a positive number"_Stz);
+      }
+    }
+
+    if (xTypeId == TypeId::xIdOf(CT_VARCHAR) || xTypeId == TypeId::xIdOf(CT_CHAR)) {
+      if (iPrecision <= 0) {
+        SemanticException::vThrow(EC_INVALID_CAST, "; precision must be a positive number"_Stz);
+      }
     }
   }
 
-  if (bGotScale) {
+  if (bGotScale && xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
     // Must have also got a precision too
     if (iScale > iPrecision) {
       SemanticException::vThrow(EC_INVALID_CAST, "; decimal scale must be <= precision"_Stz);
