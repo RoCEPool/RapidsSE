@@ -70,7 +70,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
   vAddStep("Table[].tablePtnGet"_Stz,      &Step::vTableTablePtnGet);
   vAddStep("Table[].tablePtnZero"_Stz,     &Step::vTableTablePtnZero);
-  vAddStep("Table[].tablePtn"_Stz,     &Step::vTableToLglPtn);
+  vAddStep("Table[].toLglPtn"_Stz,     &Step::vTableToLglPtn);
   vAddStep("Table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("Table[].visualize"_Stz,        &Step::vTableVisualize);
 }
