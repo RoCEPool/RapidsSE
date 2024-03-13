@@ -70,7 +70,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
         CK_o_SCAN == pCI->G.e_MainCard) {
 
       if (! p_OP_prev) {
-        Card_Table* p_table_first = pCI->G.p_OP->pSub_table();
+        Card_Table* p_table_first = pCI->G.p_MainCard->pSub_table();
         p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
@@ -80,14 +80,14 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_combined_prior,
                                                              p_cast_prior,
                                                              p_arriving,
-                                                             pCI->G.p_OP);
+                                                             (Card_OP*)pCI->G.p_MainCard);
         UNUSED(eStageCast);
         pCI->vResynchMain();
        // pCI->PRINTBOARD_dbg();
         vDebugPoint();
       }
 
-      p_OP_prev = pCI->G.p_OP;
+      p_OP_prev = (Card_OP*)pCI->G.p_MainCard;
       p_project_prior  = nullptr;
       p_combined_prior = nullptr;
       p_cast_prior     = nullptr;
@@ -106,8 +106,8 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
     }
 
     // -- -- -- -- --
-    if (pCI->G.p_OP->pSub_emit())
-      p_arriving = pCI->G.p_OP->pSub_emit();
+    if (pCI->G.p_MainCard->pSub_emit())
+      p_arriving = pCI->G.p_MainCard->pSub_emit();
   }
 
   delete p_streamPtn;
