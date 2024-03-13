@@ -86,7 +86,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
 
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->G.p_MainCard->pSymbol()->Y_vSet(P_FusedProject);
 
     L_UPDATE_PRIOR_EMITTED:
     if (m_pCI->G.p_MainCard->pSub_emit())
@@ -116,7 +116,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->G.p_MainCard->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vClearRestart();
@@ -133,7 +133,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->G.p_MainCard->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vClearRestart();
@@ -159,7 +159,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->G.p_MainCard->pSymbol()->Y_vSet(P_FusedProject);
     m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emit();
   }
 
@@ -186,7 +186,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     m_pCI->G.p_stream = m_pCI->G.p_crossJoin->pSub_stream();
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->G.p_MainCard->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vEndTransform(__LINE__);
