@@ -129,10 +129,15 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 	aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc = &aExtern_IndexTreeFindInsertGenAsc;
 	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt = &aExtern_IndexTreeInsertEnt;
 
-	aDynamicT->m_fp_vExtern_IndexTreePositionGE = &vExtern_IndexTreePositionGE;
-	aDynamicT->m_fp_vExtern_IndexTreePositionGT = &vExtern_IndexTreePositionGT;
-  aDynamicT->m_fp_vExtern_IndexTreePositionLE = &vExtern_IndexTreePositionLE;
-  aDynamicT->m_fp_vExtern_IndexTreePositionLT = &vExtern_IndexTreePositionLT;
+	aDynamicT->m_fp_vExtern_IndexTreePositionGE_gen = &vExtern_IndexTreePositionGE_gen;
+	aDynamicT->m_fp_vExtern_IndexTreePositionGT_gen = &vExtern_IndexTreePositionGT_gen;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLE_gen = &vExtern_IndexTreePositionLE_gen;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLT_gen = &vExtern_IndexTreePositionLT_gen;
+
+	aDynamicT->m_fp_vExtern_IndexTreePositionGE_int = &vExtern_IndexTreePositionGE_int;
+	aDynamicT->m_fp_vExtern_IndexTreePositionGT_int = &vExtern_IndexTreePositionGT_int;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLE_int = &vExtern_IndexTreePositionLE_int;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLT_int = &vExtern_IndexTreePositionLT_int;
 
 	aDynamicT->m_fp_aExtern_PdsRowBufferCellArray = &aExtern_PdsRowBufferCellArray;
 

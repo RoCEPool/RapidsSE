@@ -114,6 +114,8 @@ namespace STORE
     void       vLazyBuild(void);
     EntBuffer* pNewRootBuffer(void);
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
+		EntBuffer* pPositionH0Buffer_gen(Key* aFindKey);
+		EntBuffer* pPositionH0Buffer_int(Key* aFindKey);
     Ent*       aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer);
     Ent*       aPositionPriorEntryAsc(Key* aFindKey, EntBuffer** ppEntBuffer);
     EntBuffer* pRootBuffer(void);

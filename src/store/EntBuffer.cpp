@@ -1183,7 +1183,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_gen(Ent* aEnt, Key* aGivenKey, EntBuffe
       *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
-        return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+        return pMoveToGreaterEqualEntry_gen((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
       }
     }
     else
@@ -1223,7 +1223,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffe
       *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
-        return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+        return pMoveToGreaterEqualEntry_int((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
       }
     }
     else

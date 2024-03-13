@@ -24,10 +24,13 @@
 //  SF10-1N-1P : 2.48
 //  SF10-1N-4P : 1.33s
 
+// Separating out int/gen key related calls during positioning.
+// on iMac:
+//  SF10-1N-1P : 2.45 to 2.69
+//  SF10-1N-4P : 1.14 to 1.32s
+
 /keepCodeFile
 /optimise_passthru
-/hasCodeFile
-/useCodeFile = "unamed_NODE1_2"
 pipeline unamed
 begin
 

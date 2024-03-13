@@ -782,14 +782,25 @@ void CodeSynthUtils::vReplaceIndexPosition(String* sLine, OpSketch* pOpSketch)
 
   if (StrLib::bContains(sLine->azStr(), "__INDEX_POSITION_LOWER__")) {
     switch(pOpSketch->m_eLowerIP) {
+
       case IP_GT:
-        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                   "__INDEX_POSITION_LOWER__", "aDynamicT->m_fp_vExtern_IndexTreePositionGT");
+				if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+          bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+             "__INDEX_POSITION_LOWER__", "aDynamicT->m_fp_vExtern_IndexTreePositionGT_int");
+				else
+					bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+																		 "__INDEX_POSITION_LOWER__", "aDynamicT->m_fp_vExtern_IndexTreePositionGT_gen");
         break;
+
       case IP_GE:
-        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                   "__INDEX_POSITION_LOWER__", "aDynamicT->m_fp_vExtern_IndexTreePositionGE");
+				if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+          bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+						"__INDEX_POSITION_LOWER__", "aDynamicT->m_fp_vExtern_IndexTreePositionGE_int");
+				else
+					bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+																		 "__INDEX_POSITION_LOWER__", "aDynamicT->m_fp_vExtern_IndexTreePositionGE_gen");
         break;
+
       default:
         RASSERT(0);
     }
@@ -799,16 +810,28 @@ void CodeSynthUtils::vReplaceIndexPosition(String* sLine, OpSketch* pOpSketch)
 
   if (StrLib::bContains(sLine->azStr(), "__INDEX_POSITION_UPPER__")) {
     switch(pOpSketch->m_eUpperIP) {
+
       case IP_LT:
-        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                   "__INDEX_POSITION_UPPER__", "aDynamicT->m_fp_vExtern_IndexTreePositionLT");
+				if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+          bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+            "__INDEX_POSITION_UPPER__", "aDynamicT->m_fp_vExtern_IndexTreePositionLT_int");
+				else
+				  bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+					  "__INDEX_POSITION_UPPER__", "aDynamicT->m_fp_vExtern_IndexTreePositionLT_gen");
         RASSERT(bResult);
         break;
+
       case IP_LE:
-        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                   "__INDEX_POSITION_UPPER__", "aDynamicT->m_fp_vExtern_IndexTreePositionLE");
+				if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+          bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+						"__INDEX_POSITION_UPPER__", "aDynamicT->m_fp_vExtern_IndexTreePositionLE_int");
+				else
+				  bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+						"__INDEX_POSITION_UPPER__", "aDynamicT->m_fp_vExtern_IndexTreePositionLE_gen");
+
         RASSERT(bResult);
         break;
+
       default:
         RASSERT(0);
     }

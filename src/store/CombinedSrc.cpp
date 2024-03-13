@@ -154,10 +154,18 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // position at lower bound
-				if (pOpSketch->eSketchKind() == SK_ANTIJOIN)
-					vAppendCodeFragment(pOpSketch, "vIndexAntiJoinPosition"_Stz, pOperatorFile);
-				else
-          vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
+				if (pOpSketch->eSketchKind() == SK_ANTIJOIN) {
+					if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+						vAppendCodeFragment(pOpSketch, "vIndexAntiJoinPosition_int"_Stz, pOperatorFile);
+					else
+						vAppendCodeFragment(pOpSketch, "vIndexAntiJoinPosition_gen"_Stz, pOperatorFile);
+				}
+				else {
+					if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+					  vAppendCodeFragment(pOpSketch, "vIndexJoinPosition_int"_Stz, pOperatorFile);
+					else
+						vAppendCodeFragment(pOpSketch, "vIndexJoinPosition_gen"_Stz, pOperatorFile);
+				}
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // dereference the join
@@ -481,7 +489,11 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 					// generate expressions for populating the key
 					vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
 
-          vAppendCodeFragment(pOpSketch, "vIndexLeftOuterJoinPosition"_Stz, pOperatorFile);
+					if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+						vAppendCodeFragment(pOpSketch, "vIndexLeftOuterJoinPosition_int"_Stz, pOperatorFile);
+					else
+						vAppendCodeFragment(pOpSketch, "vIndexLeftOuterJoinPosition_gen"_Stz, pOperatorFile);
+
 					vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -519,7 +531,11 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // position the index
-          vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
+					if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+            vAppendCodeFragment(pOpSketch, "vIndexJoinPosition_int"_Stz, pOperatorFile);
+					else
+						vAppendCodeFragment(pOpSketch, "vIndexJoinPosition_gen"_Stz, pOperatorFile);
+
 					vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
