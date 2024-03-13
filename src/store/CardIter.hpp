@@ -174,8 +174,7 @@ namespace STORE
     bool bLambdaWalk(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
 
     Card* pMember(eCK eMember);
-    void vMember(Card* pCard);
-    void vMember(eCK eMember, Card* pCard, const char* asFuncNm);
+    void vMember(eCK eMember, Card* pCard);
     bool bMore(void);
 
     void  vNewMember(eCK eMember);

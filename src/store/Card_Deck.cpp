@@ -292,7 +292,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
     eCK eChild = pChild->eCard();
 
-    pCI->vMember(pChild);
+    pCI->vMember(eChild,pChild);
 
     switch (eChild) {
 

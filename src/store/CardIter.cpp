@@ -155,7 +155,7 @@ void CardIter::vAppendChild(eCK eParent, Card* pChild)
 
   pParent->vAppendChild(pChild);
 
-  vMember(pChild->eCard(), pChild, __func__);
+  vMember(pChild->eCard(), pChild);
 
 }
 
@@ -170,7 +170,7 @@ void CardIter::vAppendNewChild(eCK eParent, eCK eChild)
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
   pParent->vAppendChild(pChild);
-  vMember(eChild, pChild, __func__);
+  vMember(eChild, pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +183,7 @@ void CardIter::vAppendNewChild(Card* pParent, eCK eChild)
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
   pParent->vAppendChild(pChild);
-  vMember(eChild, pChild, __func__);
+  vMember(eChild, pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,7 +198,7 @@ void CardIter::vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol)
   pChild->pSymbol()->vApplyCastFacetsPpy(pSymbol);
 
   pParent->vAppendChild(pChild);
-  vMember(eChild, pChild, __func__);
+  vMember(eChild, pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,7 +213,7 @@ void CardIter::vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
   pChild->pSymbol()->vApplyCastFacets(&xSymbol);
 
   pParent->vAppendChild(pChild);
-  vMember(eChild, pChild, __func__);
+  vMember(eChild, pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -470,7 +470,7 @@ void CardIter::vBurst(Card* pCard)
   _precondition_(_MAGIC_,_FOOTER_);
 
   for (Kid xCard(pCard); xCard.bEach(); /**/)
-    vMember(xCard.pChild());
+    vMember(xCard.pChild()->eCard(),xCard.pChild());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -707,7 +707,7 @@ void CardIter::vDeleteMember(Card* pMember)
   eCK eMember = pMember->eCard();
 
   vClearRegistersIf(pMember);
-  vMember(eMember, nullptr, __func__);
+  vMember(eMember, nullptr);
 
   DELETE_CARD(pMember);
 }
@@ -722,7 +722,7 @@ void CardIter::vDeleteWhenEmptySub(eCK eMain, eCK eSub)
   if (!bEachMain(eMain, eSub))
     return;
 
-  vMember(G.e_MainCard, G.p_MainCard, __func__);
+  vMember(G.e_MainCard, G.p_MainCard);
   G.e_SubOfMain = G.p_SubOfMain->eCard();
 
 
@@ -818,7 +818,7 @@ bool CardIter::bEachMain(void)
 
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    vMember(G.p_MainCard->eCard(), G.p_MainCard);
     return true;
   }
 
@@ -849,7 +849,7 @@ bool CardIter::bEachMain(eCK eMain)
 
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    vMember(G.p_MainCard->eCard(), G.p_MainCard);
     return true;
   }
 
@@ -882,7 +882,7 @@ bool CardIter::bEachMain_foldBreak(eCK eMain)
 
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    vMember(G.p_MainCard->eCard(), G.p_MainCard);
     return true;
   }
 
@@ -906,7 +906,7 @@ bool CardIter::bEachMain(eCK eMain, eCK eSub)
       continue;
 
     G.e_SubOfMain = G.p_SubOfMain->eCard();
-    vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    vMember(G.e_SubOfMain, G.p_SubOfMain);
     return true;
   }
 
@@ -914,7 +914,7 @@ bool CardIter::bEachMain(eCK eMain, eCK eSub)
 
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
-  vMember(eSub, nullptr, __func__);
+  vMember(eSub, nullptr);
 
   return false;
 }
@@ -950,7 +950,7 @@ bool CardIter::bEachMain(eCK eMain, eCK eSub1, eCK eSub2)
       continue;
 
     G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
-    vMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
+    vMember(G.e_Sub2OfMain, G.p_Sub2OfMain);
     return true;
   }
 
@@ -958,7 +958,7 @@ bool CardIter::bEachMain(eCK eMain, eCK eSub1, eCK eSub2)
 
   G.p_Sub2OfMain = nullptr;
   G.e_Sub2OfMain = CK_NONE;
-  vMember(eSub2, nullptr, __func__);
+  vMember(eSub2, nullptr);
 
   return false;
 }
@@ -977,7 +977,7 @@ bool CardIter::bEachMain(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3)
       continue;
 
     G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
-    vMember(G.e_Sub3OfMain, G.p_Sub3OfMain, __func__);
+    vMember(G.e_Sub3OfMain, G.p_Sub3OfMain);
     return true;
   }
 
@@ -985,7 +985,7 @@ bool CardIter::bEachMain(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3)
 
   G.p_Sub3OfMain = nullptr;
   G.e_Sub3OfMain = CK_NONE;
-  vMember(eSub3, nullptr, __func__);
+  vMember(eSub3, nullptr);
 
   return false;
 
@@ -1011,7 +1011,7 @@ bool CardIter::bEachMain_reverse(void)
 
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    vMember(G.p_MainCard->eCard(), G.p_MainCard);
     return true;
   }
 
@@ -1042,7 +1042,7 @@ bool CardIter::bEachMain_reverse(eCK eOfMainKind)
 
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    vMember(G.p_MainCard->eCard(), G.p_MainCard);
     return true;
   }
 
@@ -1077,7 +1077,7 @@ bool CardIter::bEachMain_reverse_foldBreak(eCK eOfMainKind)
 
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    vMember(G.p_MainCard->eCard(), G.p_MainCard);
     return true;
   }
 
@@ -1101,18 +1101,18 @@ bool CardIter::bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 
     vFocusOnMain();
 
-    vMember(G.e_MainCard, G.p_MainCard, __func__);
+    vMember(G.e_MainCard, G.p_MainCard);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
-    vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    vMember(G.e_SubOfMain, G.p_SubOfMain);
     return true;
   }
 
   G.p_MainCard  = nullptr;
   G.e_MainCard  = CK_NONE;
-  vMember(eOfMainKind, nullptr, __func__);
+  vMember(eOfMainKind, nullptr);
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
-  vMember(eAndSubKind, nullptr, __func__);
+  vMember(eAndSubKind, nullptr);
   return false;
 }
 
@@ -1131,19 +1131,19 @@ bool CardIter::bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKi
 
     vFocusOnMain();
 
-    vMember(G.e_MainCard, G.p_MainCard, __func__);
+    vMember(G.e_MainCard, G.p_MainCard);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
-    vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    vMember(G.e_SubOfMain, G.p_SubOfMain);
     return true;
   }
 
   // did not find card
   G.p_MainCard  = nullptr;
   G.e_MainCard  = CK_NONE;
-  vMember(eOfMainKind, nullptr, __func__);
+  vMember(eOfMainKind, nullptr);
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
-  vMember(eAndSubKind, nullptr, __func__);
+  vMember(eAndSubKind, nullptr);
   return false;
 }
 
@@ -1162,9 +1162,9 @@ bool CardIter::bEachSubOfMain(eCK eSubKind)
 
     vFocusOnMain();
 
-    vMember(G.e_MainCard, G.p_MainCard, __func__);
+    vMember(G.e_MainCard, G.p_MainCard);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
-    vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    vMember(G.e_SubOfMain, G.p_SubOfMain);
     return true;
   }
 
@@ -1172,7 +1172,7 @@ bool CardIter::bEachSubOfMain(eCK eSubKind)
   G.e_MainCard  = CK_NONE;
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
-  vMember(eSubKind, nullptr, __func__);
+  vMember(eSubKind, nullptr);
   return false;
 }
 
@@ -1195,11 +1195,11 @@ bool CardIter::bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 
     vFocusOnMain();
 
-    vMember(G.e_MainCard, G.p_MainCard, __func__);
+    vMember(G.e_MainCard, G.p_MainCard);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
-    vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    vMember(G.e_SubOfMain, G.p_SubOfMain);
     G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
-    vMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
+    vMember(G.e_Sub2OfMain, G.p_Sub2OfMain);
     return true;
   }
 
@@ -1207,10 +1207,10 @@ bool CardIter::bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
   G.e_MainCard  = CK_NONE;
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
-  vMember(eSubKind1, nullptr, __func__);
+  vMember(eSubKind1, nullptr);
   G.p_Sub2OfMain = nullptr;
   G.e_Sub2OfMain = CK_NONE;
-  vMember(eSubKind2, nullptr, __func__);
+  vMember(eSubKind2, nullptr);
   return false;
 }
 
@@ -1237,13 +1237,13 @@ bool CardIter::bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 
     vFocusOnMain();
 
-    vMember(G.e_MainCard, G.p_MainCard, __func__);
+    vMember(G.e_MainCard, G.p_MainCard);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
-    vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    vMember(G.e_SubOfMain, G.p_SubOfMain);
     G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
-    vMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
+    vMember(G.e_Sub2OfMain, G.p_Sub2OfMain);
     G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
-    vMember(G.e_Sub3OfMain, G.p_Sub3OfMain, __func__);
+    vMember(G.e_Sub3OfMain, G.p_Sub3OfMain);
     return true;
   }
 
@@ -1251,13 +1251,13 @@ bool CardIter::bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
   G.e_MainCard  = CK_NONE;
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
-  vMember(eSubKind1, nullptr, __func__);
+  vMember(eSubKind1, nullptr);
   G.p_Sub2OfMain = nullptr;
   G.e_Sub2OfMain = CK_NONE;
-  vMember(eSubKind2, nullptr, __func__);
+  vMember(eSubKind2, nullptr);
   G.p_Sub3OfMain = nullptr;
   G.e_Sub3OfMain = CK_NONE;
-  vMember(eSubKind3, nullptr, __func__);
+  vMember(eSubKind3, nullptr);
   return false;
 }
 
@@ -1552,20 +1552,9 @@ Card* CardIter::pMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /* set member card                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vMember(Card* pCard)
+void CardIter::vMember(eCK eMember, Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-
-  vMember(pCard->eCard(),pCard,__func__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set member card                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vMember(eCK eMember, Card* pCard, const char* asFuncNm)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-  UNUSED(asFuncNm);
 
   RASSERT(!pCard || pCard->bIsCard(eMember));
 
@@ -1761,7 +1750,7 @@ void CardIter::vNewMember(eCK eMember)
 
   Card* pNew = new Card(eMember,C_UNKNOWN);
 
-  vMember(eMember, pNew, __func__);
+  vMember(eMember, pNew);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1773,7 +1762,7 @@ void CardIter::vNewMember(eCK eMember, Symbol xSymbol)
 
   Card* pNew = new Card(eMember,C_UNKNOWN);
 
-  vMember(eMember, pNew, __func__);
+  vMember(eMember, pNew);
 
   pNew->pSymbol()->vApplyCastFacets(&xSymbol);
 }
@@ -1901,7 +1890,7 @@ void CardIter::vPushChild(Card* pParent, eCK eChild)
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
   pParent->vPushChild(pChild);
-  vMember(eChild, pChild, __func__);
+  vMember(eChild, pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2024,7 +2013,7 @@ void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
   G.p_MainCard = nullptr;
   G.e_MainCard = CK_NONE;
 
-  vMember(eCrossCheck, nullptr, __func__);
+  vMember(eCrossCheck, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2206,7 +2195,7 @@ bool CardIter::bRewindMain(void)
 
   if ((G.p_MainCard = G.xKid.pChild())) {
     vFocusOnMain();
-    vMember(G.e_MainCard, G.p_MainCard, __func__);
+    vMember(G.e_MainCard, G.p_MainCard);
     return true;
   }
 
@@ -2311,7 +2300,7 @@ void CardIter::vUseCard(Card* pCard)
   G.xKid.vParent(pCard);
 
   G.p_MainCard = nullptr;
-  vMember(pCard);
+  vMember(pCard->eCard(),pCard);
 
   //vBegin();
 }
@@ -2345,7 +2334,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
 
     eCK eChild = pChild->eCard();
 
-    vMember(pChild);
+    vMember(eChild, pChild);
 
     switch (eChild) {
 
