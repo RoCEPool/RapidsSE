@@ -796,9 +796,7 @@ bool CardIter::bEachMain(void)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
-
-  G.p_OP = nullptr;
-
+  
   while (G.xKid.bEach()) {
     if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
       continue;
@@ -827,7 +825,7 @@ bool CardIter::bEachMain(eCK eMain)
 
   RASSERT(Card_MAIN::bIsMain(eMain));
 
-  G.p_OP = nullptr;
+  G.p_MainCard = nullptr;
 
   while (G.xKid.bEach()) {
 
@@ -857,7 +855,7 @@ bool CardIter::bEachMain_foldBreak(eCK eMain)
 
   RASSERT(Card_MAIN::bIsMain(eMain));
 
-  G.p_OP = nullptr;
+  G.p_MainCard = nullptr;
 
   while (G.xKid.bEach()) {
 
@@ -990,7 +988,7 @@ bool CardIter::bEachMain_reverse(void)
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
-  G.p_OP = nullptr;
+  G.p_MainCard = nullptr;
 
   while (G.xKid.bEach_reverse()) {
     if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
@@ -1021,7 +1019,7 @@ bool CardIter::bEachMain_reverse(eCK eOfMainKind)
 
   RASSERT(Card_MAIN::bIsMain(eOfMainKind));
 
-  G.p_OP = nullptr;
+  G.p_MainCard = nullptr;
 
   while (G.xKid.bEach_reverse()) {
     if (G.xKid.pChild()->eCard() != eOfMainKind)
@@ -1052,7 +1050,7 @@ bool CardIter::bEachMain_reverse_foldBreak(eCK eOfMainKind)
 
   RASSERT(Card_MAIN::bIsMain(eOfMainKind));
 
-  G.p_OP = nullptr;
+  G.p_MainCard = nullptr;
 
   while (G.xKid.bEach_reverse()) {
 
@@ -2010,7 +2008,6 @@ void CardIter::vResetMembers(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.p_OP = nullptr;
 
   G.p_absJoin          = nullptr;
   G.p_address          = nullptr;
