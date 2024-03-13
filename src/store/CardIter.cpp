@@ -1885,15 +1885,6 @@ Card* CardIter::pPrevChild(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-//  RASSERT(G.xKid.bWithinRange());
-//
-//  i8 i_Prev = G.xKid.i_Child() - 1;
-//
-//  if (i_Prev < 0)
-//    return nullptr;
-//
-//  Card* pChild = G.xKid.pParent()->pGetChild(i_Prev);
-
   Card* pChild = G.xKid.pPrev();
 
   return pChild;
@@ -2076,33 +2067,20 @@ void CardIter::vRecurseEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.bWithinRange());
-
-  RASSERT(eCrossCheck == G.xKid.eChild());
-
-  Card* pChild = G.xKid.pChild();
-
-  G.xKid.pParent()->vRemoveChild(pChild);
-
-  delete pChild;
-
-  G.xKid.vBackstep();
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove main card from deck and delete it; clear M member to null           */
 /*----------------------------------------------------------------------------*/
 void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  this->vRemoveDeleteCurr(eCrossCheck);
+  RASSERT(G.xKid.bWithinRange());
+  RASSERT(eCrossCheck == G.xKid.eChild());
+
+  Card* pChild = G.xKid.pChild();
+  G.xKid.pParent()->vRemoveChild(pChild);
+  delete pChild;
+
+  G.xKid.vBackstep();
 
   G.p_MainCard = nullptr;
   G.e_MainCard = CK_NONE;

@@ -86,13 +86,13 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
         if (! m_pCI->StreamOrder.m_pStreamKey->bIsEquivalentTo(m_pCI->G.p_key))
           break;
 
-        m_pCI->vRemoveDeleteCurr(CK_o_SORT);
+        m_pCI->vRemoveDeleteMain(CK_o_SORT);
 //        if (m_pCI->bIsNextMain(CK_o_SORT)) {
 //          m_pCI->bEachMain();
-//          m_pCI->vRemoveDeleteCurr(CK_o_SORT);
+//          m_pCI->vRemoveDeleteMain(CK_o_SORT);
 //          if (m_pCI->bIsNextMain(CK_o_SORT)) {
 //            m_pCI->bEachMain();
-//            m_pCI->vRemoveDeleteCurr(CK_o_SORT);
+//            m_pCI->vRemoveDeleteMain(CK_o_SORT);
 //          }
 //        }
 
