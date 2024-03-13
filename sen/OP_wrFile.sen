@@ -25,7 +25,10 @@
   PipeIn[]\clear to CrwBuffer[]
 
   CrwBuffer[].writetoFile0
-  nullptr to CrwBuffer[]
+
+  // Drop the atomic lock on this buffer in the HashMap
+  // and set the register to nullptr
+  CrwBuffer[].dropLockAndClear
 
   true
 ;

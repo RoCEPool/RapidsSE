@@ -15,7 +15,7 @@
   // find the __count table
   C_TDEF_COUNT op__tableDef assert
 
-  // create a pds row buffer operand
+  // create a Pds row buffer operand
   BT_COUNT TableDef[] Pds[].new
 
   // Get the table ptn
