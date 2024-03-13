@@ -96,7 +96,6 @@ namespace STORE
    ~CardIter(void) noexcept(false);
 
     Card* pAdvanceChild(void);
-    void vAppendChild(eCK eParent, eCK eChild);
     void vAppendChild(eCK eParent, Card* pChild);
     void vAppendNewChild(eCK eParent, eCK eChild);
     void vAppendNewChild(Card* pParent, eCK eChild);

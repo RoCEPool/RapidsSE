@@ -134,19 +134,6 @@ bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vAppendChild(eCK eParent, eCK eChild)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  Card* pParent = pMember(eParent);
-  Card* pChild  = pMember(eChild);
-
-  pParent->vAppendChild(pChild);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::vAppendChild(eCK eParent, Card* pChild)
 {
   _precondition_(_MAGIC_,_FOOTER_);

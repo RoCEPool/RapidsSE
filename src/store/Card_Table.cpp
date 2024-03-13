@@ -128,7 +128,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
 
     pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
 
-    pCI->vAppendChild(CK_s_TABLE, CK_t_INDEXLIST);
+    pCI->vAppendChild(CK_s_TABLE, pCI->G.p_indexList);
   }
 }
 
