@@ -93,7 +93,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
     bool bEarlyRoot = false;
 
-    while (m_pCI->bEachMain_reverse_NONE()) {
+    while (m_pCI->bEachMain_reverse()) {
       if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot()) {
         bEarlyRoot = true;
         break;
@@ -135,7 +135,7 @@ bool XF_Optimise_Early_projection::bEarly_needed_loop(void)
   m_pCI->vForwards(false);
   m_pCI->vBeginEachReverse();
 
-  while (m_pCI->bEachMain_reverse_NONE()) {
+  while (m_pCI->bEachMain_reverse()) {
     bOptRun = bEarly_needed_OP();
   }
 

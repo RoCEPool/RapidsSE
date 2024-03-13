@@ -111,7 +111,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   if (iDepth) {
     pBoard_outer = m_pCI->G.pBoard;
     SubQuery *pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
-    m_pCI->vSave_G_Members();
+    m_pCI->vSaveMembers();
     m_pCI->vUseBoard(pSqy_inner->pBoard());
   }
 
@@ -142,7 +142,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
   do {
     m_pCI->vBeginEachReverse();
-    if (! m_pCI->bEachMainWithSub_reverse_foldBreak_b(CK_o_WHERE, CK_BOOLPRED))
+    if (!m_pCI->bEachMainWithSub_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED))
       break;
 
     auto bLambdaFn = [&bFound,this, iDepth](Card_Term* p_term)
@@ -171,7 +171,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->bEachMainWithSub_reverse_foldBreak_b(CK_o_HAVING, CK_BOOLPRED))
+    if (!m_pCI->bEachMainWithSub_reverse_foldBreak(CK_o_HAVING, CK_BOOLPRED))
       break;
 
     auto bLambdaFn = [&bFound,this,iDepth](Card_Term* p_term)
@@ -214,7 +214,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
   if (iDepth) {
     //m_pCI->vPopBoard();
-    m_pCI->vRestore_G_Members();
+    m_pCI->vRestoreMembers();
     m_pCI->vUseBoard(pBoard_outer);
   }
 

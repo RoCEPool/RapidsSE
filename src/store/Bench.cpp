@@ -239,14 +239,14 @@ bool Bench::bPastPhase(CardIter* pCI, eOH ePhase)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   bool bPast = true;
-  pCI->vSave_G_Members();
+  pCI->vSaveMembers();
 
   pCI->vBeginBoardIteration();
   while (pCI->bEachBoard())
     if (! pCI->pBoard()->bPastPhase(ePhase))
       bPast = false;
 
-  pCI->vRestore_G_Members();
+  pCI->vRestoreMembers();
 
   return bPast;
 }
@@ -258,13 +258,13 @@ void Bench::vPhase(CardIter* pCI, eOH ePhase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  pCI->vSave_G_Members();
+  pCI->vSaveMembers();
 
   pCI->vBeginBoardIteration();
   while (pCI->bEachBoard())
     pCI->pBoard()->vPhase(ePhase);
 
-  pCI->vRestore_G_Members();
+  pCI->vRestoreMembers();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,7 +434,7 @@ void Bench::vValidate(CardIter* pCI)
 //  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
 //    return;
 
-  pCI->vSave_G_Members();
+  pCI->vSaveMembers();
 
   i8 nBoards = this->nBoards();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
@@ -457,7 +457,7 @@ void Bench::vValidate(CardIter* pCI)
       break;
   }
 
-  pCI->vRestore_G_Members();
+  pCI->vRestoreMembers();
 
 
   XC::vXC(pCI);

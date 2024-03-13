@@ -38,7 +38,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 {
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vBeginEachReverse();
-  if (pCI->bEachMainWithSub_reverse_foldBreak_b(eCardWithSQ, CK_BOOLPRED)) {
+  if (pCI->bEachMainWithSub_reverse_foldBreak(eCardWithSQ, CK_BOOLPRED)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
@@ -53,7 +53,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
     NEVER_REACH
   }
 
-  pCI->vSave_G_Members();
+  pCI->vSaveMembers();
   Board* pBoard_outer = pCI->pBoard();
   pCI->vUseBoard(pBoard_inner);
 
@@ -72,7 +72,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
   // 4) pop back to outer query
   pCI->vUseBoard(pBoard_outer);
-  pCI->vRestore_G_Members();
+  pCI->vRestoreMembers();
 
   // 5) add <fold> (before MQ)
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, pBoard_inner->i_Board());
@@ -142,7 +142,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // x) push to sq
 
-  pCI->vSave_G_Members();
+  pCI->vSaveMembers();
   pCI->vUseBoard(pBoard);
 
   pCI->Flat.m_pCopy_inner = pCI->G.pDeck->pDupSubCardsRecursive(0);
@@ -153,7 +153,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // x) pop back to mq
   //pCI->vPopBoard();
-  pCI->vRestore_G_Members();
+  pCI->vRestoreMembers();
   pCI->G.pDeck->vPushChild(pCI->Flat.m_pCopy_inner);
   pCI->G.pDeck->vRemoveChildLeavingSubs(pCI->Flat.m_pCopy_inner);
   DELETE_CARD(pCI->Flat.m_pCopy_inner);
@@ -197,7 +197,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
     vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
-  pCI->vSave_G_Members();
+  pCI->vSaveMembers();
   pCI->vUseBoard(pBoard);
 
 
@@ -208,7 +208,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // 4) pop back to mq
   //pCI->vPopBoard();
-  pCI->vRestore_G_Members();
+  pCI->vRestoreMembers();
 
   // 5) add <fold> (before MQ)
   pCI->G.p_fold = Card_Fold::pCraft_fold(szFoldNm, pSubQuery_save->pBoard()->i_Board());
@@ -421,13 +421,13 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vBeginEachReverse();
-  RASSERT(pCI->bEachMain_reverse_foldBreak_b(CK_o_WHERE));
+  RASSERT(pCI->bEachMain_reverse_foldBreak(CK_o_WHERE));
 
-  RASSERT(pCI->bEachMain_reverse_foldBreak_b(CK_o_FROM));
+  RASSERT(pCI->bEachMain_reverse_foldBreak(CK_o_FROM));
   Card_Emit* p_emitted_table = pCI->G.p_from->pSub_emit();
 
   pCI->vBeginEachReverse();
-  RASSERT(pCI->bEachMain_reverse_foldBreak_b(CK_o_WHERE));
+  RASSERT(pCI->bEachMain_reverse_foldBreak(CK_o_WHERE));
 
 
   pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);

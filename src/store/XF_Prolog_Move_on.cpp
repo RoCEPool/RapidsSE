@@ -85,14 +85,14 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     // move LEFT_OUTER to scan
     if (p_rpnCalc_on->bPopDeleteChildIf(CK_TERM,
                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
-      m_pCI->vSave_G_Members();
-      if (m_pCI->bEachMain_reverse_b(CK_o_SCAN)) {
+      m_pCI->vSaveMembers();
+      if (m_pCI->bEachMain_reverse(CK_o_SCAN)) {
         p_scan_over = m_pCI->G.p_scan;
         m_pCI->vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
         m_pCI->G.p_scan->vAppendChild(m_pCI->G.p_outerJoin);
       }
       //m_pCI->vPopBoard();
-      m_pCI->vRestore_G_Members();
+      m_pCI->vRestoreMembers();
     }
 
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);

@@ -147,11 +147,11 @@ namespace STORE
     bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2);
     bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3);
 
-    bool bEachMain_reverse_NONE(void);
-    bool bEachMain_reverse_b(eCK eOfMainKind);
-    bool bEachMain_reverse_foldBreak_b(eCK eOfMainKind);
+    bool bEachMain_reverse(void);
+    bool bEachMain_reverse(eCK eOfMainKind);
+    bool bEachMain_reverse_foldBreak(eCK eOfMainKind);
     bool bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind);
-    bool bEachMainWithSub_reverse_foldBreak_b(eCK eOfMainKind, eCK eAndSubKind);
+    bool bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind);
 
     bool bEachSubOfMain(eCK eSubKind);
     bool bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
@@ -200,10 +200,10 @@ namespace STORE
     void vResetMembers(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Emit* pResolvePrior_projection(void);
-    void vRestore_G_Members(void);
+    void vRestoreMembers(void);
     bool bRewindMain(void);
 
-    void vSave_G_Members(void);
+    void vSaveMembers(void);
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 

@@ -77,7 +77,7 @@ CardIter::~CardIter(void) noexcept(false)
   _precondition_(_MAGIC_,_FOOTER_);
 
   while (nItems())
-    vRestore_G_Members();
+    vRestoreMembers();
 
   RASSERT(0 == nItems());
 
@@ -963,7 +963,7 @@ bool CardIter::bEachMain(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachMain_reverse_NONE(void)
+bool CardIter::bEachMain_reverse(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -992,7 +992,7 @@ bool CardIter::bEachMain_reverse_NONE(void)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachMain_reverse_b(eCK eOfMainKind)
+bool CardIter::bEachMain_reverse(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1023,7 +1023,7 @@ bool CardIter::bEachMain_reverse_b(eCK eOfMainKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
+bool CardIter::bEachMain_reverse_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1064,7 +1064,7 @@ bool CardIter::bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 
   RASSERT(! Card_MAIN::bIsMain(eAndSubKind));
 
-  while (bEachMain_reverse_b(eOfMainKind)) {
+  while (bEachMain_reverse(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -1088,13 +1088,13 @@ bool CardIter::bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update G   */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachMainWithSub_reverse_foldBreak_b(eCK eOfMainKind, eCK eAndSubKind)
+bool CardIter::bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(! Card_MAIN::bIsMain(eAndSubKind) || CK_o_FILTER == eAndSubKind);
 
-  while (bEachMain_reverse_foldBreak_b(eOfMainKind)) {
+  while (bEachMain_reverse_foldBreak(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -1988,7 +1988,7 @@ void CardIter::vRecurseBegin(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vSave_G_Members();
+  vSaveMembers();
 
   m_i_RecursionDepth++;
   G.m_i_RecursionDepth = m_i_RecursionDepth;
@@ -2013,7 +2013,7 @@ Card* CardIter::pRecurseEach(void)
   if (G.p_MainCard && (! G.m_bDontDescend) ) {
     if (G.p_MainCard->nChildCards()) {
 
-       vSave_G_Members();
+      vSaveMembers();
       vUseCard(G.p_MainCard);
       bEachMain();
 
@@ -2030,7 +2030,7 @@ Card* CardIter::pRecurseEach(void)
     return G.p_MainCard;
 
   while (bRecurseActive()) {
-    vRestore_G_Members();
+    vRestoreMembers();
     if (bEachMain())
       return G.p_MainCard;
   }
@@ -2059,7 +2059,7 @@ void CardIter::vRecurseEnd(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vRestore_G_Members();
+  vRestoreMembers();
 
   m_i_RecursionDepth--;
 
@@ -2278,7 +2278,7 @@ bool CardIter::bRewindMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRestore_G_Members(void)
+void CardIter::vRestoreMembers(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -2292,7 +2292,7 @@ void CardIter::vRestore_G_Members(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSave_G_Members(void)
+void CardIter::vSaveMembers(void)
 {
   CardIterMembers* pMembers_save = new CardIterMembers;
 
