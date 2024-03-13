@@ -97,30 +97,30 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 
-  if (m_pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt)) {
+  if (m_pCI->G.p_MainCard->pSymbol()->Y_bHas(P_BreakPt)) {
     //vDump();
     vDebugPoint();
   }
 
-  if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG) && m_pCI->G.p_OP->i_Child() == 6) {
-    //m_pCI->G.p_OP->vDump(__func__);
+  if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG) && m_pCI->G.p_MainCard->i_Child() == 6) {
+    //m_pCI->G.p_MainCard->vDump(__func__);
     vDebugPoint();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->X.m_pExprList_i = m_pCI->G.p_OP->pSub_injectable();
-  m_pCI->X.m_pExprList_k = m_pCI->G.p_OP->pSub_key();
+  m_pCI->X.m_pExprList_i = m_pCI->G.p_MainCard->pSub_injectable();
+  m_pCI->X.m_pExprList_k = m_pCI->G.p_MainCard->pSub_key();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList()))
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
     m_pCI->G.p_indexList->vX_tblCol_To_expCol(m_pCI);
 
-  if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key()))
+  if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key()))
     m_pCI->G.p_key->vX_tblCol_To_expCol(m_pCI);
 
-  if (CK_o_FILTER == m_pCI->G.p_OP->eCard())
+  if (CK_o_FILTER == m_pCI->G.p_MainCard->eCard())
     m_pCI->G.p_filter->vX_tblCol_To_expCol(m_pCI);
   else
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
@@ -137,8 +137,8 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   m_pCI->vSnapArriving();
-  if (m_pCI->G.p_OP->pSub_emit())
-    m_pCI->X.m_pExprList_a = m_pCI->G.p_OP->pSub_emit();
+  if (m_pCI->G.p_MainCard->pSub_emit())
+    m_pCI->X.m_pExprList_a = m_pCI->G.p_MainCard->pSub_emit();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
