@@ -2158,6 +2158,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableTablePtnFetch(void);
   void vTableTablePtnGet(void);
   void vTableTablePtnZero(void);
+  void vTableToLglPtn(void);
   void vTableUniqueName(void);
   void vTableVerify(void);
   void vTableVisualize(void);
