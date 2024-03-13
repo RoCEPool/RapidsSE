@@ -1900,22 +1900,6 @@ Card* CardIter::pPrevChild(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pPrevChildIf(eCK eCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
- RASSERT(G.xKid.bWithinRange());
-
-  Card* pPrevMain = this->pPrevChild();
-  if (! pPrevMain || eCard != pPrevMain->eCard())
-    return nullptr;
-
-  return pPrevMain;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce)

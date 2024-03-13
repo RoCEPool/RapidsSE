@@ -187,7 +187,6 @@ namespace STORE
 
     bool bPositionOn(eCK eKind_on, i8 /* eCK */ iKind_First, ...);
     Card* pPrevChild(void);
-    Card* pPrevChildIf(eCK eCard);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
     void vSnapFluxArriving(void);
     void vPushNewChild(Card* pParent, eCK eChild);
