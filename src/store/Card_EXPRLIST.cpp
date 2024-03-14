@@ -537,7 +537,7 @@ void Card_EXPRLIST::vUpdate_cast(Card_EXPRLIST *p_exprList_ref)
     if (p_expr_ref) {
       p_expr_this->vApplyCast_x(p_expr_ref->xCast());
       p_expr_this->pSub_rpnCalc()->vApplyCast_x(p_expr_ref->xCast());
-      p_expr_this->pSub_rpnCalc()->pGetTerm(0)->vApplyCast_x(p_expr_ref->xCast());
+      p_expr_this->pGet_term(0)->vApplyCast_x(p_expr_ref->xCast());
     }
   }
 }

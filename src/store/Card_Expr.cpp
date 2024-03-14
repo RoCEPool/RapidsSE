@@ -418,7 +418,7 @@ Symbol* Card_Expr::pGet_Symbol(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term* p_term_i = pSub_rpnCalc()->pGetTerm(i_Term);
+  Card_Term* p_term_i = pGet_term(i_Term);
   if (! p_term_i)
     return nullptr;
 
@@ -434,9 +434,12 @@ Card_Term* Card_Expr::pGet_term(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term* p_term_i = pSub_rpnCalc()->pGetTerm(i_Term);
+  if (i_Term >= pSub_rpnCalc()->nChildCards())
+    return nullptr;
 
-  return p_term_i;
+  Card_Term* p_term = _pCard_Term(pSub_rpnCalc()->pGetChild(i_Term));
+
+  return p_term;
 }
 
 /*----------------------------------------------------------------------------*/
