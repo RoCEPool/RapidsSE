@@ -17,7 +17,7 @@ namespace STORE
     Card_Emit(void);
    ~Card_Emit(void) noexcept(false);
 
-    static Card_Emit* pResolvePriorProjection(CardIter* pCI);
+    static Card_Emit* pResolvePrior_emit(CardIter* pCI);
 
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vApplyFacets(Card_Key* p_key);

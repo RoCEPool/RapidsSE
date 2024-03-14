@@ -189,7 +189,7 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 
   i8 nTables = 0;
 
-  pCI->vBeginEachReverse();
+  pCI->vBeginEach_reverse();
   while (pCI->bEachMain_reverse_foldBreak(CK_o_FROM))
     nTables++;
 

@@ -261,7 +261,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  if (!pCI->pChildNextIf(CK_o_PROJECT))
+  if (!pCI->pPeekNextIf(CK_o_PROJECT))
     return;
   RASSERT(pCI->bEachMain(CK_o_PROJECT));
 
@@ -578,7 +578,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   // restate the emits of the leading OQ:<from>* sequence
   pCI->Flux.m_pArriving = nullptr;
-  while (pCI->pChildNextIf(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
+  while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
     ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
   }
 

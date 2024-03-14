@@ -141,8 +141,8 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   bool bFound;
 
   do {
-    m_pCI->vBeginEachReverse();
-    if (!m_pCI->bEachMainWithSub_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED))
+    m_pCI->vBeginEach_reverse();
+    if (!m_pCI->bEachMain_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED))
       break;
 
     auto bLambdaFn = [&bFound,this, iDepth](Card_Term* p_term)
@@ -169,9 +169,9 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   do {
-    m_pCI->vBeginEachReverse();
+    m_pCI->vBeginEach_reverse();
 
-    if (!m_pCI->bEachMainWithSub_reverse_foldBreak(CK_o_HAVING, CK_BOOLPRED))
+    if (!m_pCI->bEachMain_reverse_foldBreak(CK_o_HAVING, CK_BOOLPRED))
       break;
 
     auto bLambdaFn = [&bFound,this,iDepth](Card_Term* p_term)

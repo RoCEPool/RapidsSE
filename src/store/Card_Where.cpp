@@ -48,9 +48,9 @@ void Card_Where::vCullMarked_rlnConj(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEachReverse();
+  pCI->vBeginEach_reverse();
 
-  while (pCI->bEachMainWithSub_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
+  while (pCI->bEachMain_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
     (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 }
@@ -62,9 +62,9 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEachReverse();
+  pCI->vBeginEach_reverse();
 
-  while (pCI->bEachMainWithSub_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
+  while (pCI->bEachMain_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
     if (0 == pCI->G.p_boolPred->nChildCards()) {
       pCI->vRemoveDeleteMain(CK_o_WHERE);
     }
@@ -78,9 +78,9 @@ void Card_Where::vMarkWhereConjWrtTable(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEachReverse();
+  pCI->vBeginEach_reverse();
 
-  while (pCI->bEachMainWithSub_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
+  while (pCI->bEachMain_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
     pCI->G.p_boolPred->vMark_rlnConj_Wrt_table(pCI, MARK_AT);
   }
 }
@@ -92,9 +92,9 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 
   _static_
 
-  pCI->vBeginEachReverse();
+  pCI->vBeginEach_reverse();
 
-  while (pCI->bEachMainWithSub_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
+  while (pCI->bEachMain_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
     pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(pCI, szWithMark);
   }
 }

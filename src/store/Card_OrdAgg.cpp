@@ -55,7 +55,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(! pCI->Early.m_pNeeded_later);
 
-  if (pCI->pChildPrev()->bIsCard(CK_o_PROJECT))
+  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
     return;
 
   pCI->G.p_key = pSub_key();

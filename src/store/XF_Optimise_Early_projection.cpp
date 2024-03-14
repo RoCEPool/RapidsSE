@@ -84,7 +84,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
   m_pCI->vForwards(false);
-  m_pCI->vBeginEachReverse();
+  m_pCI->vBeginEach_reverse();
 
   for (;;) {
 
@@ -133,7 +133,7 @@ bool XF_Optimise_Early_projection::bEarly_needed_loop(void)
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
   m_pCI->vForwards(false);
-  m_pCI->vBeginEachReverse();
+  m_pCI->vBeginEach_reverse();
 
   while (m_pCI->bEachMain_reverse()) {
     bOptRun = bEarly_needed_OP();

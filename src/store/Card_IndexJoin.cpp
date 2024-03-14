@@ -81,8 +81,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pChildPrev()->bIsCard(CK_o_GBYAGG) ||
-      pCI->pChildPrev()->bIsCard(CK_o_PROJECT)) {
+  if (pCI->pPeekPrev()->bIsCard(CK_o_GBYAGG) ||
+      pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
@@ -206,7 +206,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(! pCI->Early.m_pNeeded_later);
 
-  if (pCI->pChildPrev()->bIsCard(CK_o_PROJECT))
+  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
     return;
 
   pCI->G.p_key = pSub_key();

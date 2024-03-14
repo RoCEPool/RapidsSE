@@ -152,18 +152,18 @@ void XF::vTransform(void)
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);
   }
-//  m_pCI->vBeginBoardIteration();                        //
+//  m_pCI->vBeginBoard();                        //
 //  while (m_pCI->bEachBoard()) {                    //
 //    XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);   //
 //   }                                                //
-  m_pCI->vBeginBoardIteration();                        //
+  m_pCI->vBeginBoard();                        //
   while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_sqyNm_toSqyNo(m_pCI);    //
   }                                                //
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);
   }
-  m_pCI->vBeginBoardIteration();                        //
+  m_pCI->vBeginBoard();                        //
   while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_Validate_Board::vValidate(m_pCI);    //
   }                                                //
@@ -172,7 +172,7 @@ void XF::vTransform(void)
   }
 
 
-  m_pCI->vBeginBoardIteration();                        //
+  m_pCI->vBeginBoard();                        //
   while (m_pCI->bEachBoard()) {                    //
                                                    //
     // initial adjustments                         //
@@ -217,7 +217,7 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vPhase(m_pCI,OH_OPTIMISE);                          //
                                                        //
-  m_pCI->vBeginBoardIteration();                            //
+  m_pCI->vBeginBoard();                            //
   RASSERT(m_pCI->bEachBoard());                        //
                                                        //
   XF_Optimise_from_To_OP::vOptimise(m_pCI);            //
@@ -247,7 +247,7 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vPhase(m_pCI,OH_EPILOG);                            //
                                                        //
-  m_pCI->vBeginBoardIteration();                            //
+  m_pCI->vBeginBoard();                            //
   RASSERT(m_pCI->bEachBoard());                        //
                                                        //
   XF_Epilog_Promote_filter::vPromote(m_pCI);           //
@@ -281,7 +281,7 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vPhase(m_pCI,OH_SYNTHESISE);                        //
                                                        //
-  m_pCI->vBeginBoardIteration();                            //
+  m_pCI->vBeginBoard();                            //
   RASSERT(m_pCI->bEachBoard());                        //
                                                        //
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);       //
@@ -299,13 +299,13 @@ void XF::vTransform_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
-  m_pCI->vBeginBoardIteration();
+  m_pCI->vBeginBoard();
   while (m_pCI->bEachBoard()) {
     //XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);
     XF_Prolog_Validate_Board::vValidate(m_pCI);
   }
 
-  m_pCI->vBeginBoardIteration();
+  m_pCI->vBeginBoard();
   while (m_pCI->bEachBoard()) {
 
     XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(m_pCI);
@@ -415,7 +415,7 @@ void XF::vCrosscheck_Optimisations(void)
   //MY::pJob()->pJobTags()->vDumpSet();
 
   s32 sOT;
-  m_pCI->vBeginBoardIteration();                            //
+  m_pCI->vBeginBoard();                            //
   RASSERT(m_pCI->bEachBoard());                        //
 
   for (i8 i_OT = 0; i_OT < OT_ENUMS; i_OT++) {

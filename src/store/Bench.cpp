@@ -115,7 +115,7 @@ void Bench::vEndPhase(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  pCI->vBeginBoardIteration();
+  pCI->vBeginBoard();
   while (pCI->bEachBoard())
     pCI->pBoard()->vEndPhase();
 }
@@ -241,7 +241,7 @@ bool Bench::bPastPhase(CardIter* pCI, eOH ePhase)
   bool bPast = true;
   pCI->vSaveMembers();
 
-  pCI->vBeginBoardIteration();
+  pCI->vBeginBoard();
   while (pCI->bEachBoard())
     if (! pCI->pBoard()->bPastPhase(ePhase))
       bPast = false;
@@ -260,7 +260,7 @@ void Bench::vPhase(CardIter* pCI, eOH ePhase)
 
   pCI->vSaveMembers();
 
-  pCI->vBeginBoardIteration();
+  pCI->vBeginBoard();
   while (pCI->bEachBoard())
     pCI->pBoard()->vPhase(ePhase);
 

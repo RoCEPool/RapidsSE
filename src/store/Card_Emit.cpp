@@ -52,7 +52,7 @@ Card_Emit::~Card_Emit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* resolve (right-left) projection prior to main card                         */
 /*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pResolvePriorProjection(CardIter* pCI)
+Card_Emit* Card_Emit::pResolvePrior_emit(CardIter* pCI)
 {
   _static_
 

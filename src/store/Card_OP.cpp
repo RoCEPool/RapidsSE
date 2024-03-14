@@ -320,7 +320,7 @@ bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
 
 //  eCK eCard = this->eCard();
 
-  Card* pChild_prev = pCI->pChildPrev();
+  Card* pChild_prev = pCI->pPeekPrev();
   eCK   eChild_prev = pChild_prev ? pChild_prev->eCard() : CK_NONE;
 
   if (CK_NONE      == eChild_prev ||

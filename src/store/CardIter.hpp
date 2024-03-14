@@ -115,9 +115,9 @@ namespace STORE
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
-    void vBeginBoardIteration(void);
+    void vBeginBoard(void);
     void vBeginEach(void);
-    void vBeginEachReverse(void);
+    void vBeginEach_reverse(void);
     Board* pBoard(void);
     void vBurst(Card* pCard);
 
@@ -125,9 +125,6 @@ namespace STORE
     Card* pChild(void);
     Card* pChild(i8 i_Child);
     void vChild(Card* pChild);
-    Card* pChildNext(void);
-    Card* pChildNextIf(eCK eCard);
-    Card* pChildPrev(void);
     void vClearRegisters(void);
     void vClearRegistersIf(Card* pCard);
     void vClearRestart(void);
@@ -150,14 +147,14 @@ namespace STORE
     bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3);
 
     bool bEachMain_reverse(void);
-    bool bEachMain_reverse(eCK eOfMainKind);
-    bool bEachMain_reverse_foldBreak(eCK eOfMainKind);
-    bool bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind);
-    bool bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind);
+    bool bEachMain_reverse(eCK eMain);
+    bool bEachMain_reverse_foldBreak(eCK eMain);
+    bool bEachMain_reverse(eCK eMain, eCK eSub);
+    bool bEachMain_reverse_foldBreak(eCK eMain, eCK eSub);
 
-    bool bEachSubOfMain(eCK eSubKind);
-    bool bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
-    bool bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
+    bool bEachSubOfMain(eCK eSub);
+    bool bEach2SubOfMain(eCK eSub1, eCK eSub2);
+    bool bEach3SubOfMain(eCK eSub1, eCK eSub2, eCK eSub3);
 
     void vEndPhase(void);
     void vEndTransform(i8 iLineNo);
@@ -179,6 +176,9 @@ namespace STORE
     void  vNewMember(eCK eMember);
     void  vNewMember(eCK eMember, Symbol xSymbol);
 
+    Card* pPeekNext(void);
+    Card* pPeekNextIf(eCK eCard);
+    Card* pPeekPrev(void);
     bool bPositionOn(eCK eKind_on, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
     void vPushChild(Card* pParent, eCK eChild);
@@ -190,8 +190,8 @@ namespace STORE
     void vRecurseEnd(void);
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);
+    Card_Emit* pResolvePrior_emit(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
-    Card_Emit* pResolvePrior_projection(void);
     void vRestoreMembers(void);
     void vResynchMain(void);
     void vResynchMain(Card* pCard);
