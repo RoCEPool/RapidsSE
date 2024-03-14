@@ -213,11 +213,15 @@ void Card_Expr::vBump_expCol(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vBump_expCol(nBumpBy);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vBump_expCol(nBumpBy);
+  //p_rpnCalc->vBump_expCol(nBumpBy);
+  Kid xKid(pSub_rpnCalc());
+  while (xKid.bEach(CK_TERM)) {
+
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
+      xKid.p_term()->vBump_ordCol(SF_EXP_COL,nBumpBy);
+      xKid.p_term()->vMark1(MARK_CHANGED);
+    }
+  }
 
 }
 

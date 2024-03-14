@@ -18,7 +18,6 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
-    void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_RpnCalc* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
