@@ -1001,21 +1001,6 @@ i8  Table::nParcelObjects(void)
   return m_pParcel ? m_pParcel->nItems() : 0;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* dump all contents of the table partition                                   */
-/*----------------------------------------------------------------------------*/
-void Table::vDumpTablePtn(String* pStr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  i8 nPtns = m_pTablePtnVec->nItems();
-
-  for (i8 i_Ptn=0; i_Ptn< nPtns; i_Ptn++) {
-    TablePtn *pTablePtn = m_pTablePtnVec->pGet(i_Ptn);
-    pTablePtn->vDumpContents(pStr);
-  }
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

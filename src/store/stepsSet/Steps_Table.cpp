@@ -52,7 +52,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
-  vAddStep("Table[].dumpbkt"_Stz,          &Step::vTableDumpBkt);
   vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
@@ -232,30 +231,6 @@ void Step::vTableDump(void)
     pTablePtn->vDropRead();
   }
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Table[].dumpbkt                                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vTableDumpBkt(void)
-{
-  ENTRY();
-
-  s4K sDumpBuffer = "\n\n\n==== DumpBucket Table: ====================================\n"_Stz;
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-
-  i8 nPtns = AM::PTNMAP::nPtnsPerNode();
-
-  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_KEYBUCKETS);
-
-  s4K sPtnBuf;
-  pTable->vDumpTablePtn(sPtnBuf);
-  sDumpBuffer.vConcat(sPtnBuf);
-
-  sDumpBuffer.vConcat("======================================================\n\n"_Stz);
-  m_pDataStack->vPushStr(sDumpBuffer);
-
   EXIT();
 }
 

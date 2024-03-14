@@ -105,7 +105,6 @@ namespace STORE
     i8   iReassembleObj(void);
     i8   iReassembleFromParcel(Parcel* pParcel);
     bool bUpdateBucket(Parcel* pParcel);
-    void vDumpTablePtn(String* pStr);
 
   private:
     Footer* aFooter(void);
