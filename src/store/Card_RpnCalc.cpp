@@ -142,22 +142,6 @@ Card_RpnCalc* Card_RpnCalc::pInduct(Card_Expr* p_expr_arriving)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a literals rpnCalc?                                                */
-/*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsLiterals(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this rpnCalc a simple expression of a column ?                          */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsScalarCol(void)

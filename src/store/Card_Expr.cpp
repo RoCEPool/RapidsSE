@@ -542,16 +542,14 @@ bool Card_Expr::bIsLiterals(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bCompound = false;
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    bCompound = p_boolPred->bIsLiterals();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bCompound = p_rpnCalc->bIsLiterals();
+  Kid xKid(pSub_rpnCalc());
+  while (xKid.bEach(CK_TERM)) {
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) ||
+        xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return false;
   }
 
-  return bCompound;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
