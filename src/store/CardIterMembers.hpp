@@ -34,11 +34,8 @@ namespace STORE
     i8     i_Op;
 
     Card * p_Sub;
-    eCK    e_Sub;
     Card * p_Sub2;
-    eCK    e_Sub2;
     Card * p_Sub3;
-    eCK    e_Sub3;
 
     // - - - - - - - - - - - - - - - - - -
 
