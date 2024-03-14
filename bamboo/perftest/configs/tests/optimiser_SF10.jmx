@@ -1818,7 +1818,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -1850,50 +1850,44 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
-                <stringProp name="query">select
-  s_acctbal,
-  s_name,
-  n_name,
-  p_partkey,
-  p_mfgr,
-  s_address,
-  s_phone,
-  s_comment
-from
-  part,
-  supplier,
-  partsupp,
-  nation,
-  region
-where
-  p_partkey = ps_partkey
-  and s_suppkey = ps_suppkey
-  and p_size = 15
-  and p_type like &apos;%BRASS&apos;
-  and s_nationkey = n_nationkey
-  and n_regionkey = r_regionkey
-  and r_name = &apos;EUROPE&apos;
-  and ps_supplycost = (
-    select
-      min(ps_supplycost)
-    from
-      partsupp,
-      supplier,
-      nation,
-      region
-    where
-      p_partkey = ps_partkey
-      and s_suppkey = ps_suppkey
-      and s_nationkey = n_nationkey
-      and n_regionkey = r_regionkey
-      and r_name = &apos;EUROPE&apos;
-  )
-order by
-  s_acctbal desc,
-  n_name,
-  s_name,
-  p_partkey
-limit 100;</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    indexscan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1994-01-01&apos; &gt;=
+                                     UBOUND $I1 DATE &apos;1995-01-01&apos; &lt;&quot;
+    |  project   &quot;type DECIMAL ( 15 2 ) as C0_L_QUANTITY $5
+                 , type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $6
+                 , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $7
+                 , type DATE as C2_L_SHIPDATE $11&quot;
+    | filter    &quot; type BOOLEAN } 0.05 0.07 $3 between $1 24.00 &lt; and &quot;
+    | aggreg    &quot;   type DECIMAL ( 19 2 ) as C0_COL0 ) $2 $3 * sum &quot;
+    | dynamic
+    | next
+
+  stage S04 on all nodes :
+    aggreg    &quot;   type DECIMAL ( 19 2 ) as C0_COL0 ) $1 sum &quot;
+    | dynamic
+    | next
+
+  stage S05 on origin :
+    aggreg    &quot;   type DECIMAL ( 19 2 ) as C0_Revenue ) $1 sum &quot;
+    | dynamic
+    | next
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2161,7 +2155,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q6 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q6 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2193,15 +2187,44 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
-                <stringProp name="query">select 
-  sum(l_extendedprice*l_discount) as revenue
-from 
-  lineitem
-where 
-  l_shipdate &gt;= date &apos;1994-01-01&apos;
-  and l_shipdate &lt; date &apos;1994-01-01&apos; + interval &apos;1&apos; year
-  and l_discount between 0.06 - 0.01 and 0.06 + 0.01
-  and l_quantity &lt; 24;</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    indexscan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1994-01-01&apos; &gt;=
+                                     UBOUND $I1 DATE &apos;1995-01-01&apos; &lt;&quot;
+    |  project   &quot;type DECIMAL ( 15 2 ) as C0_L_QUANTITY $5
+                 , type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $6
+                 , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $7
+                 , type DATE as C2_L_SHIPDATE $11&quot;
+    | filter    &quot; type BOOLEAN } 0.05 0.07 $3 between $1 24.00 &lt; and &quot;
+    | aggreg    &quot;   type DECIMAL ( 19 2 ) as C0_COL0 ) $2 $3 * sum &quot;
+    | dynamic
+    | next
+
+  stage S04 on all nodes :
+    aggreg    &quot;   type DECIMAL ( 19 2 ) as C0_COL0 ) $1 sum &quot;
+    | dynamic
+    | next
+
+  stage S05 on origin :
+    aggreg    &quot;   type DECIMAL ( 19 2 ) as C0_Revenue ) $1 sum &quot;
+    | dynamic
+    | next
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
