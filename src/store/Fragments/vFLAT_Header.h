@@ -122,7 +122,7 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 	aDynamicT->m_fp_aExtern_EntBufferNextEntry = &aExtern_EntBufferNextEntry;
 	aDynamicT->m_fp_vExtern_EntPayloadCreate = &vExtern_EntPayloadCreate;
 
-	aDynamicT->m_fp_vExtern_IndexFindT = &vExtern_IndexFindT;
+	aDynamicT->m_fp_vExtern_IndexFind = &vExtern_IndexFind;
 	aDynamicT->m_fp_vExtern_IndexNew = &vExtern_IndexNew;
 	aDynamicT->m_fp_aExtern_IndexTreeBegin = &aExtern_IndexTreeBegin;
 	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc = &aExtern_IndexTreeFindEntryAsc;

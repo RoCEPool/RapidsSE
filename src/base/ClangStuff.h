@@ -22,7 +22,7 @@ extern void* aExtern_GetIndexTree(void* aTable, void* aIndex) __attribute__((wea
 
 extern void* aExtern_IndexDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
 
-extern void* vExtern_IndexFindT(void* aDynamicT,char*,char*) __attribute__((weak_import));
+extern void* vExtern_IndexFind(void* aIndexInfo,char*,char*) __attribute__((weak_import));
 extern void* vExtern_IndexNew(void* aDynamicT, i8 nNumCols, void* pColumnInfo, bool bPayload) __attribute__((weak_import));
 
 extern void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamicT, i8 nPayloadBytes, bool* pbInsertedEntry) __attribute__((weak_import));

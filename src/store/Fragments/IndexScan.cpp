@@ -46,7 +46,7 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   paW = &aDynamicT->m_aW[0];
 
   #ifdef WITH_CLANG
-		aDynamicT->m_fp_vExtern_IndexFindT(aDynamicT,"__TABLENAME__","__INDEXNAME__");
+		aDynamicT->m_fp_vExtern_IndexFindT(&aDynamicT->m_xIndexInfoT,"__TABLENAME__","__INDEXNAME__");
   #endif
 
     i_CurrentRow = -1;

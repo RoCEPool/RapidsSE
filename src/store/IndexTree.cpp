@@ -212,13 +212,16 @@ extern "C" void vExtern_IndexNew(void* aDynamic, i8 nNumCols, ColumnInfo* pColum
 	pDynamicT->m_xIndexInfoPL.m_aIndexTree = pIndexTree;
 }
 
-extern "C" void vExtern_IndexFindT(void* aDynamic, char* aTableName, char* aIndexName) {
+extern "C" void vExtern_IndexFind(void* aIndexInfo, char* aTableName, char* aIndexName) {
 
 	LglPtn tLglPtn;
-	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+	IndexInfo* pIndexInfo = (IndexInfo*)aIndexInfo;
+
 	Table* pTable = AM::pTableFind((Stz*)aTableName);
 	Index* pIndex = pTable->pFindIndex((Stz*)aIndexName);
-	pDynamicT->m_xIndexInfoT.m_aIndexDef = pIndex->pIndexDef();
+
+	pIndexInfo->m_aIndexDef = pIndex->pIndexDef();
+
 	StreamDef* pStreamDef = pTable->pStreamDef();
 	Op* pOp = MY::pOp();
 
@@ -238,7 +241,7 @@ extern "C" void vExtern_IndexFindT(void* aDynamic, char* aTableName, char* aInde
 	TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
 	i8 iIndexNo = pIndex->iIndexNo();
-	pDynamicT->m_xIndexInfoT.m_aIndexTree = pTablePtn->pIndexTree(iIndexNo);
+	pIndexInfo->m_aIndexTree = pTablePtn->pIndexTree(iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/

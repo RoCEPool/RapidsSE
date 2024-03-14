@@ -38,15 +38,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
   if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
 
 #ifdef WITH_CLANG
-    strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
-    strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
-
-    aDynamicT->m_xIndexInfoJ.m_aTable     = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
-    aDynamicT->m_xIndexInfoJ.m_aIndex     = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
-    aDynamicT->m_xIndexInfoJ.m_aIndexDef  = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
-    aDynamicT->m_xIndexInfoJ.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_aIndex);
-
-    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
+		aDynamicT->m_fp_vExtern_IndexFind(&aDynamicT->m_xIndexInfoJ,"__TABLENAME__","__INDEXNAME__");
 #endif
     bLeftOuterRow = false;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
@@ -73,15 +65,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
 
 #ifdef WITH_CLANG
-    strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
-    strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
-
-    aDynamicT->m_xIndexInfoJ.m_aTable     = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
-    aDynamicT->m_xIndexInfoJ.m_aIndex     = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
-    aDynamicT->m_xIndexInfoJ.m_aIndexDef  = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
-    aDynamicT->m_xIndexInfoJ.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_aIndex);
-
-    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
+		aDynamicT->m_fp_vExtern_IndexFindT(&aDynamicT->m_xIndexInfoJ,"__TABLENAME__","__INDEXNAME__");
 #endif
     bLeftOuterRow = false;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;

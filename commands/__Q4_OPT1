@@ -1,0 +1,137 @@
+/*============================================================================*/
+/* __Q4_OPT1                                                                  */
+/*============================================================================*/
+
+// From oroginal weaved :
+//   Merged S01 and S02 (early projection)
+//   Merged S03, S04 and S05
+
+/keepCodeFile
+/optimise_passthru
+pipeline Query4
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan orders
+    | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
+                            O_ORDERDATE DATE '1993-10-01' < and "
+    | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | hash "type INTEGER ( 19 ) O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+                                      "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | gbyAgg "groupby type VARCHAR ( 15 ) O_ORDERPRIORITY
+              aggregates
+              type VARCHAR ( 15 ) as O_ORDERPRIORITY $K1 ,
+              type INTEGER ( 19 ) as ORDER_COUNT ) countAll"
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+            aggregates
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg "groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+            aggregates
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    output
+    | sink
+    | first
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+/* original weaved
+
+
+/*
+pipeline unamed
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Orders
+  //| inflate   Orders
+  //| filter    " type BOOLEAN $5 DATE '1993-07-01' >= $5 DATE '1993-10-01' < and "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+  //  project   "   type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $6
+  //              , type INTEGER ( 19 ) as C1_O_ORDERKEY $1 "
+  //| hash      "type VARCHAR $1"
+      dynamic
+    | next      hashcast
+
+  stage S03 on all partitions :
+  //  keyExists Lineitem IxL_ORDERKEY " BOUND $I1 $2 == " " type BOOLEAN L_COMMITDATE L_RECEIPTDATE < "
+      dynamic
+    | next
+
+  stage S04 on all partitions :
+  //  project   " type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $1 "
+      dynamic
+    | next
+
+  stage S05 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_O_ORDERPRIORITY $1
+  //              aggregates
+  //                type VARCHAR as C0_COL0 $K1
+  //              , type INTEGER ( 19 ) as C1_COL1 ) countAll "
+      dynamic
+    | next
+
+  stage S06 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR $1
+  //              aggregates
+  //                type VARCHAR as C0_COL0 $K1
+  //              , type INTEGER ( 19 ) as C1_COL1 ) $2 sum "
+      dynamic
+    | next
+
+  stage S07 on origin :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR $1
+  //              aggregates
+  //                type VARCHAR as C0_COL0 $K1
+  //              , type INTEGER ( 19 ) as C1_order_count ) $2 sum "
+      dynamic
+    | next
+
+  stage S08 on origin :
+      output
+    | sink
+    | first
+
+end ;
+*/
+
