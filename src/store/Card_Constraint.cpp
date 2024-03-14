@@ -102,8 +102,8 @@ void Card_Constraint::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
   if ((pCI->G.p_boolPred = pSub_boolPred()))
     pCI->G.p_boolPred->vApplyCast(pCI,/*??*/p_Dic_expr);
   else
-  if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/p_Dic_expr);
+  if ((pCI->G.p_expr = pSub_expr()))
+    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/

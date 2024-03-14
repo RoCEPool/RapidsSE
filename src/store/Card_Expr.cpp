@@ -307,9 +307,42 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   TypeId xTypeId_save = xCast().m_xTypeId;
 
-  pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/p_Dic_expr);
+  //pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/p_Dic_expr);
 
+  {
+    Cast xCast_last;
+    xCast_last.m_xTypeId = TypeId();
+    xCast_last.m_nTypeLength = 0;
+    xCast_last.m_nTypeScale = 0;
+    RASSERT(!xCast_last.m_xTypeId.bIsValid());
 
+    TypeId xTypeId_save = xCast().m_xTypeId;
+    if (!xTypeId_save.bIsValid()) {
+      pCI->PRINTBOARD_dbg();
+      vDump(__func__);
+      NEVER_REACH
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // rpnCalc is a set of terms
+    for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
+      pCI->G.p_term = xRpnCalc.p_term();
+      pCI->G.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
+    }
+    pCI->G.p_term = nullptr;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (xCast_last.m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId) {
+      if (xCast_last.m_nTypeLength != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
+          xCast_last.m_nTypeScale != pCI->G.p_rpnCalc->xCast().m_nTypeScale ||
+          xCast_last.m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable)
+        vApplyCast_x(pCI->G.p_rpnCalc->xCast());
+    }
+
+    RASSERT(xTypeId_save == xCast().m_xTypeId);
+  }
 
 //  if (pSymbol()->xCast().m_xTypeId != pCI->G.p_rpnCalc->xCast().m_xTypeId) {
 //    vDump(__func__);

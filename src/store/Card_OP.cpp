@@ -636,9 +636,10 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     if ((pCI->G.p_boolPred = pCI->G.p_Op->pSub_boolPred())) {
       pCI->G.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
     }
-    else
-    if ((pCI->G.p_rpnCalc = pCI->G.p_Op->pSub_rpnCalc()))
-      pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+    else {
+      pCI->G.p_expr = pCI->G.p_Op->pSub_expr();
+      pCI->G.p_expr->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+    }
   }
 
 //  pCI->G.p_Op->vDump(__func__);
