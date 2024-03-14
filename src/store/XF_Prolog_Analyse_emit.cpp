@@ -69,10 +69,10 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
   while (m_pCI->bEachOp()) {
 
-    if (! m_pCI->G.p_MainCard->bIsOp())
+    if (! m_pCI->G.p_Op->bIsOp())
       continue;
 
-    ((Card_OP*)m_pCI->G.p_MainCard)->vRestate_emit(m_pCI);
+    ((Card_OP*)m_pCI->G.p_Op)->vRestate_emit(m_pCI);
 
   } // while (m_pCI->bEachOp())
 

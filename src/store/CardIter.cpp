@@ -501,9 +501,9 @@ void CardIter::vClearRegisters(void)
 
   MemLib::vZero(G.md_Coord,sizeof(G.md_Coord),CN_CARDITER);
 
-  G.p_MainCard         = nullptr;
-  G.e_MainCard         = CK_NONE;
-  G.i_MainCard         = C_UNKNOWN;
+  G.p_Op         = nullptr;
+  G.e_Op         = CK_NONE;
+  G.i_Op         = C_UNKNOWN;
   G.p_SubOfMain        = nullptr;
   G.e_SubOfMain        = CK_NONE;
   G.p_Sub2OfMain       = nullptr;
@@ -542,9 +542,9 @@ void CardIter::vClearRegistersIf(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (pCard == G.p_MainCard) {
-    G.p_MainCard = nullptr;
-    G.e_MainCard = CK_NONE;
+  if (pCard == G.p_Op) {
+    G.p_Op = nullptr;
+    G.e_Op = CK_NONE;
   }
   if (pCard == G.p_SubOfMain) {
     G.p_SubOfMain = nullptr;
@@ -666,7 +666,7 @@ void CardIter::vDeleteWhenEmptySub(eCK eOp, eCK eSub)
   if (!bEachOp(eOp, eSub))
     return;
 
-  vMember(G.e_MainCard, G.p_MainCard);
+  vMember(G.e_Op, G.p_Op);
   G.e_SubOfMain = G.p_SubOfMain->eCard();
 
 
@@ -758,14 +758,14 @@ bool CardIter::bEachOp(void)
     if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
       continue;
 
-    G.p_MainCard = G.xKid.pChild();
+    G.p_Op = G.xKid.pChild();
     vFocusOnOp();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard);
+    vMember(G.p_Op->eCard(), G.p_Op);
     return true;
   }
 
-  G.p_MainCard = nullptr;
-  G.e_MainCard = CK_NONE;
+  G.p_Op = nullptr;
+  G.e_Op = CK_NONE;
   G.xKid.vEnded();
   return false;
 }
@@ -782,20 +782,20 @@ bool CardIter::bEachOp(eCK eOp)
 
   RASSERT(Card_OP::bIsMain(eOp));
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
 
   while (G.xKid.bEach()) {
 
     if (G.xKid.pChild()->eCard() != eOp)
       continue;
 
-    G.p_MainCard = G.xKid.pChild();
+    G.p_Op = G.xKid.pChild();
     vFocusOnOp();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard);
+    vMember(G.p_Op->eCard(), G.p_Op);
     return true;
   }
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
   G.xKid.vEnded();
   return false;
 }
@@ -812,7 +812,7 @@ bool CardIter::bEachOp_foldBreak(eCK eOp)
 
   RASSERT(Card_OP::bIsMain(eOp));
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
 
   while (G.xKid.bEach()) {
 
@@ -822,13 +822,13 @@ bool CardIter::bEachOp_foldBreak(eCK eOp)
     if (G.xKid.pChild()->eCard() != eOp)
       continue;
 
-    G.p_MainCard = G.xKid.pChild();
+    G.p_Op = G.xKid.pChild();
     vFocusOnOp();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard);
+    vMember(G.p_Op->eCard(), G.p_Op);
     return true;
   }
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
   G.xKid.vEnded();
   return false;
 
@@ -844,7 +844,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub)
   RASSERT(! Card_OP::bIsMain(eSub) || CK_o_FILTER == eSub);
 
   while (bEachOp(eOp)) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub)))
+    if (! (G.p_SubOfMain = G.p_Op->pFindSubCard(eSub)))
       continue;
 
     G.e_SubOfMain = G.p_SubOfMain->eCard();
@@ -888,7 +888,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub1, eCK eSub2)
   RASSERT(! Card_OP::bIsMain(eSub2) || CK_o_FILTER == eSub2);
 
   while (bEachOp(eOp, eSub1)) {
-    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eSub2)))
+    if (! (G.p_Sub2OfMain = G.p_Op->pFindSubCard(eSub2)))
       continue;
 
     G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
@@ -915,7 +915,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub1, eCK eSub2, eCK eSub3)
   RASSERT(! Card_OP::bIsMain(eSub3));
 
   while (bEachOp(eOp, eSub1, eSub2)) {
-    if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eSub3)))
+    if (! (G.p_Sub3OfMain = G.p_Op->pFindSubCard(eSub3)))
       continue;
 
     G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
@@ -945,19 +945,19 @@ bool CardIter::bEachOp_reverse(void)
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
 
   while (G.xKid.bEach_reverse()) {
     if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
       continue;
 
-    G.p_MainCard = G.xKid.pChild();
+    G.p_Op = G.xKid.pChild();
     vFocusOnOp();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard);
+    vMember(G.p_Op->eCard(), G.p_Op);
     return true;
   }
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
   G.xKid.vEnded();
   return false;
 }
@@ -976,19 +976,19 @@ bool CardIter::bEachOp_reverse(eCK eOp)
 
   RASSERT(Card_OP::bIsMain(eOp));
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
 
   while (G.xKid.bEach_reverse()) {
     if (G.xKid.pChild()->eCard() != eOp)
       continue;
 
-    G.p_MainCard = G.xKid.pChild();
+    G.p_Op = G.xKid.pChild();
     vFocusOnOp();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard);
+    vMember(G.p_Op->eCard(), G.p_Op);
     return true;
   }
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
   G.xKid.vEnded();
   return false;
 }
@@ -1007,7 +1007,7 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eOp)
 
   RASSERT(Card_OP::bIsMain(eOp));
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
 
   while (G.xKid.bEach_reverse()) {
 
@@ -1017,13 +1017,13 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eOp)
     if (G.xKid.pChild()->eCard() != eOp)
       continue;
 
-    G.p_MainCard = G.xKid.pChild();
+    G.p_Op = G.xKid.pChild();
     vFocusOnOp();
-    vMember(G.p_MainCard->eCard(), G.p_MainCard);
+    vMember(G.p_Op->eCard(), G.p_Op);
     return true;
   }
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
   G.xKid.vEnded();
   return false;
 }
@@ -1038,19 +1038,19 @@ bool CardIter::bEachOp_reverse(eCK eOp, eCK eSub)
   RASSERT(! Card_OP::bIsMain(eSub));
 
   while (bEachOp_reverse(eOp)) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub)))
+    if (! (G.p_SubOfMain = G.p_Op->pFindSubCard(eSub)))
       continue;
 
     vFocusOnOp();
 
-    vMember(G.e_MainCard, G.p_MainCard);
+    vMember(G.e_Op, G.p_Op);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     vMember(G.e_SubOfMain, G.p_SubOfMain);
     return true;
   }
 
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
+  G.p_Op  = nullptr;
+  G.e_Op  = CK_NONE;
   vMember(eOp, nullptr);
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
@@ -1068,20 +1068,20 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eOp, eCK eSub)
   RASSERT(! Card_OP::bIsMain(eSub) || CK_o_FILTER == eSub);
 
   while (bEachOp_reverse_foldBreak(eOp)) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub)))
+    if (! (G.p_SubOfMain = G.p_Op->pFindSubCard(eSub)))
       continue;
 
     vFocusOnOp();
 
-    vMember(G.e_MainCard, G.p_MainCard);
+    vMember(G.e_Op, G.p_Op);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     vMember(G.e_SubOfMain, G.p_SubOfMain);
     return true;
   }
 
   // did not find card
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
+  G.p_Op  = nullptr;
+  G.e_Op  = CK_NONE;
   vMember(eOp, nullptr);
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
@@ -1099,19 +1099,19 @@ bool CardIter::bEachSubOfOp(eCK eSub)
   RASSERT(! Card_OP::bIsMain(eSub));
 
   while (bEachOp()) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub)))
+    if (! (G.p_SubOfMain = G.p_Op->pFindSubCard(eSub)))
       continue;
 
     vFocusOnOp();
 
-    vMember(G.e_MainCard, G.p_MainCard);
+    vMember(G.e_Op, G.p_Op);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     vMember(G.e_SubOfMain, G.p_SubOfMain);
     return true;
   }
 
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
+  G.p_Op  = nullptr;
+  G.e_Op  = CK_NONE;
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
   vMember(eSub, nullptr);
@@ -1129,15 +1129,15 @@ bool CardIter::bEach2SubOfOp(eCK eSub1, eCK eSub2)
   RASSERT(! Card_OP::bIsMain(eSub2));
 
   while (bEachOp()) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub1)))
+    if (! (G.p_SubOfMain = G.p_Op->pFindSubCard(eSub1)))
       continue;
 
-    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eSub2)))
+    if (! (G.p_Sub2OfMain = G.p_Op->pFindSubCard(eSub2)))
       continue;
 
     vFocusOnOp();
 
-    vMember(G.e_MainCard, G.p_MainCard);
+    vMember(G.e_Op, G.p_Op);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     vMember(G.e_SubOfMain, G.p_SubOfMain);
     G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
@@ -1145,8 +1145,8 @@ bool CardIter::bEach2SubOfOp(eCK eSub1, eCK eSub2)
     return true;
   }
 
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
+  G.p_Op  = nullptr;
+  G.e_Op  = CK_NONE;
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
   vMember(eSub1, nullptr);
@@ -1168,18 +1168,18 @@ bool CardIter::bEach3SubOfOp(eCK eSub1, eCK eSub2, eCK eSub3)
   RASSERT(! Card_OP::bIsMain(eSub3));
 
   while (bEachOp()) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub1)))
+    if (! (G.p_SubOfMain = G.p_Op->pFindSubCard(eSub1)))
       continue;
 
-    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eSub2)))
+    if (! (G.p_Sub2OfMain = G.p_Op->pFindSubCard(eSub2)))
       continue;
 
-    if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eSub3)))
+    if (! (G.p_Sub3OfMain = G.p_Op->pFindSubCard(eSub3)))
       continue;
 
     vFocusOnOp();
 
-    vMember(G.e_MainCard, G.p_MainCard);
+    vMember(G.e_Op, G.p_Op);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     vMember(G.e_SubOfMain, G.p_SubOfMain);
     G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
@@ -1189,8 +1189,8 @@ bool CardIter::bEach3SubOfOp(eCK eSub1, eCK eSub2, eCK eSub3)
     return true;
   }
 
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
+  G.p_Op  = nullptr;
+  G.e_Op  = CK_NONE;
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
   vMember(eSub1, nullptr);
@@ -1283,16 +1283,16 @@ void CardIter::vFocusOnOp(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-//  if (! G.p_MainCard->bIsMain())
+//  if (! G.p_Op->bIsMain())
 //    return;
 //
-//  RASSERT(G.p_MainCard->bIsMain());
+//  RASSERT(G.p_Op->bIsMain());
 
   MemLib::vZero(G.md_Coord, sizeof(G.md_Coord), CN_CARDITER);
-  StrLib::vCopy(G.md_Coord, sizeof(G.md_Coord),G.p_MainCard->szCoord()->azChar());
+  StrLib::vCopy(G.md_Coord, sizeof(G.md_Coord),G.p_Op->szCoord()->azChar());
 
-  G.e_MainCard = G.p_MainCard->eCard();
-  G.i_MainCard = this->i_Child();
+  G.e_Op = G.p_Op->eCard();
+  G.i_Op = this->i_Child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1769,11 +1769,11 @@ bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
 
   eCK eKind_first = (eCK)iKind_First;
   while (bEachOp()) {
-    if (eKind_first == G.e_MainCard)
+    if (eKind_first == G.e_Op)
       break;
   }
 
-  if (! G.e_MainCard) {
+  if (! G.e_Op) {
     va_end(xaArgs);
     return false;
   }
@@ -1783,8 +1783,8 @@ bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
 
   eCK eKind_each;
 
-  if (eKind_on == G.e_MainCard) {
-    pCard_found = G.p_MainCard;
+  if (eKind_on == G.e_Op) {
+    pCard_found = G.p_Op;
   }
 
   for (eKind_each = (eCK)va_arg(xaArgs, i8);
@@ -1796,8 +1796,8 @@ bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
       return false;
     }
 
-    if (! pCard_found && eKind_on == G.e_MainCard) {
-      pCard_found = G.p_MainCard;
+    if (! pCard_found && eKind_on == G.e_Op) {
+      pCard_found = G.p_Op;
     }
   }
 
@@ -1808,7 +1808,7 @@ bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
 
   if (pCard_found) {
     vChild(pCard_found);
-    G.p_MainCard = G.xKid.pChild();
+    G.p_Op = G.xKid.pChild();
     vFocusOnOp();
     return true;
   }
@@ -1923,14 +1923,14 @@ Card* CardIter::pRecurseEach(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // descend into current child
 
-  if (G.p_MainCard && (! G.m_bDontDescend) ) {
-    if (G.p_MainCard->nChildCards()) {
+  if (G.p_Op && (! G.m_bDontDescend) ) {
+    if (G.p_Op->nChildCards()) {
 
       vSaveMembers();
-      vUseCard(G.p_MainCard);
+      vUseCard(G.p_Op);
       bEachOp();
 
-      return G.p_MainCard;
+      return G.p_Op;
     }
   }
 
@@ -1940,12 +1940,12 @@ Card* CardIter::pRecurseEach(void)
   // visit next child
 
   if (bEachOp())
-    return G.p_MainCard;
+    return G.p_Op;
 
   while (bRecurseActive()) {
     vRestoreMembers();
     if (bEachOp())
-      return G.p_MainCard;
+      return G.p_Op;
   }
 
   return nullptr;
@@ -1995,8 +1995,8 @@ void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
 
   G.xKid.vBackstep();
 
-  G.p_MainCard = nullptr;
-  G.e_MainCard = CK_NONE;
+  G.p_Op = nullptr;
+  G.e_Op = CK_NONE;
 
   vMember(eCrossCheck, nullptr);
 }
@@ -2177,13 +2177,13 @@ bool CardIter::bRewindOp(void)
 
   G.xKid.vBackstep();
 
-  if ((G.p_MainCard = G.xKid.pChild())) {
+  if ((G.p_Op = G.xKid.pChild())) {
     vFocusOnOp();
-    vMember(G.e_MainCard, G.p_MainCard);
+    vMember(G.e_Op, G.p_Op);
     return true;
   }
 
-  G.e_MainCard = CK_NONE;
+  G.e_Op = CK_NONE;
   return false;
 }
 
@@ -2208,8 +2208,8 @@ void CardIter::vResynchOp(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.vReposition(G.p_MainCard);
-  RASSERT(G.p_MainCard == G.xKid.pChild());
+  G.xKid.vReposition(G.p_Op);
+  RASSERT(G.p_Op == G.xKid.pChild());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2219,7 +2219,7 @@ void CardIter::vResynchOp(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.p_MainCard = pCard;
+  G.p_Op = pCard;
   vResynchOp();
 }
 
@@ -2242,7 +2242,7 @@ void CardIter::vSnapArriving(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (Card_Emit* p_emit = G.p_MainCard->pSub_emit()) {
+  if (Card_Emit* p_emit = G.p_Op->pSub_emit()) {
     Flux.m_pArriving = p_emit;
     Dic.m_p_expr = p_emit;
   }
@@ -2283,7 +2283,7 @@ void CardIter::vUseCard(Card* pCard)
 
   G.xKid.vParent(pCard);
 
-  G.p_MainCard = nullptr;
+  G.p_Op = nullptr;
   vMember(pCard->eCard(),pCard);
 
   //vBegin();

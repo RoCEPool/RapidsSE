@@ -113,7 +113,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_Op);
 
   Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
 
@@ -138,7 +138,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     Card_Expr* p_expr_resolved;
 
     Symbol* pSymbol = p_term->pSymbol();
-    pCI->G.p_injectable = pCI->G.p_MainCard->pSub_injectable();
+    pCI->G.p_injectable = pCI->G.p_Op->pSub_injectable();
     p_expr_resolved = pCI->G.p_injectable->pFind_expr_Matches(pSymbol);
 
     szColNm = p_expr_resolved->szFacet(SF_NMD_COL);

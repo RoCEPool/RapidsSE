@@ -68,25 +68,25 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
   while (m_pCI->bEachOp()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_c_STAGE == m_pCI->G.e_MainCard) {
+    if (CK_c_STAGE == m_pCI->G.e_Op) {
       m_pCI->vResetMembers();
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_o_PROJECT == m_pCI->G.e_MainCard) {
+    if (CK_o_PROJECT == m_pCI->G.e_Op) {
       m_pCI->G.p_top = nullptr;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_o_TOP == m_pCI->G.e_MainCard) {
+    if (CK_o_TOP == m_pCI->G.e_Op) {
       m_pCI->G.p_project = nullptr;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_o_HASH == m_pCI->G.e_MainCard) {
+    if (CK_o_HASH == m_pCI->G.e_Op) {
       m_pCI->vAppendNewChild(m_pCI->G.p_hash, CK_s_HASHING);
 
       Kid xHshColList(m_pCI->G.p_hash->pSub_hshColList());
@@ -154,25 +154,25 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //  while (m_pCI->bEachOp()) {
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_c_STAGE == m_pCI->G.e_MainCard) {
+//    if (CK_c_STAGE == m_pCI->G.e_Op) {
 //      m_pCI->vResetMembers();
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_o_PROJECT == m_pCI->G.e_MainCard) {
+//    if (CK_o_PROJECT == m_pCI->G.e_Op) {
 //      m_pCI->G.p_top = nullptr;
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_o_TOP == m_pCI->G.e_MainCard) {
+//    if (CK_o_TOP == m_pCI->G.e_Op) {
 //      m_pCI->G.p_project = nullptr;
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_o_HASH == m_pCI->G.e_MainCard) {
+//    if (CK_o_HASH == m_pCI->G.e_Op) {
 //      m_pCI->vAppendNewChild(m_pCI->G.p_hash,CK_s_HASHING);
 //
 //      if (m_pCI->G.p_project) {

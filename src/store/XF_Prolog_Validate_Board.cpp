@@ -75,7 +75,7 @@ void XF_Prolog_Validate_Board::vValidate(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
-    switch (m_pCI->G.e_MainCard) {
+    switch (m_pCI->G.e_Op) {
 
       //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;
 
@@ -93,8 +93,8 @@ void XF_Prolog_Validate_Board::vValidate(void)
         break;
 
       default:
-        if (m_pCI->G.p_MainCard->bIsOp())
-          p_OP = m_pCI->G.p_MainCard;
+        if (m_pCI->G.p_Op->bIsOp())
+          p_OP = m_pCI->G.p_Op;
         break;
     }
   }

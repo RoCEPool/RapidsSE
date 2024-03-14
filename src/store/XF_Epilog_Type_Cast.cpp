@@ -67,7 +67,7 @@ void XF_Epilog_Type_Cast::vCast(void)
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
-    switch (m_pCI->G.e_MainCard) {
+    switch (m_pCI->G.e_Op) {
 
       case CK_o_FROM:
         break;
@@ -108,23 +108,23 @@ void XF_Epilog_Type_Cast::vCast(void)
         break;
 
       default:
-        m_pCI->G.p_MainCard->vDump(__func__);
+        m_pCI->G.p_Op->vDump(__func__);
         NEVER_REACH
         break;
     } // switch
 
-    if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
+    if ((m_pCI->G.p_key = m_pCI->G.p_Op->pSub_key())) {
       m_pCI->G.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
       m_pCI->G.p_key->vRenumberAll_expr();
       m_pCI->G.p_key = nullptr;
     }
 
-    if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
+    if ((m_pCI->G.p_emit = m_pCI->G.p_Op->pSub_emit())) {
 
-      if (CK_o_FROM == m_pCI->G.e_MainCard ||
-          CK_o_SCAN == m_pCI->G.e_MainCard ||
-          CK_o_INDEXJOIN == m_pCI->G.e_MainCard ||
-          CK_o_INDEXSCAN == m_pCI->G.e_MainCard) {
+      if (CK_o_FROM == m_pCI->G.e_Op ||
+          CK_o_SCAN == m_pCI->G.e_Op ||
+          CK_o_INDEXJOIN == m_pCI->G.e_Op ||
+          CK_o_INDEXSCAN == m_pCI->G.e_Op) {
 
         m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
 
@@ -132,12 +132,12 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_emit->vRenumberAll_expr();
       }
       else if (m_pCI->Flux.m_pArriving) {
-        if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key())) {
+        if ((m_pCI->G.p_key = m_pCI->G.p_Op->pSub_key())) {
           m_pCI->G.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
         }
 
         if (m_pCI->m_pBench->eXform() == XF_EPILOG_TYPE_CAST &&
-            CK_o_GBYAGG == m_pCI->G.e_MainCard) {
+            CK_o_GBYAGG == m_pCI->G.e_Op) {
           //m_pCI->PRINTBOARD_dbg();
           vDebugPoint();
         }
@@ -151,21 +151,21 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
       }
 
-      if ((m_pCI->G.p_streamKey = m_pCI->G.p_MainCard->pSub_streamKey()))
+      if ((m_pCI->G.p_streamKey = m_pCI->G.p_Op->pSub_streamKey()))
         m_pCI->G.p_streamKey->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
 
-      if ((m_pCI->G.p_boolPred = m_pCI->G.p_MainCard->pSub_boolPred())) {
+      if ((m_pCI->G.p_boolPred = m_pCI->G.p_Op->pSub_boolPred())) {
         //m_pCI->G.p_boolPred->vDump(__func__);
         m_pCI->G.p_boolPred->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
       }
 
-//      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_MainCard->pSub_rpnCalc()))
+//      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_Op->pSub_rpnCalc()))
 //        m_pCI->G.p_rpnCalc->vApplyCast(m_pCI);
 
-      if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
+      if ((m_pCI->G.p_indexList = m_pCI->G.p_Op->pSub_indexList()))
         m_pCI->G.p_indexList->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
 
-      if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
+      if ((m_pCI->G.p_constraint = m_pCI->G.p_Op->pSub_constraint()))
         m_pCI->G.p_constraint->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
     }
     else {

@@ -70,11 +70,11 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
   m_pCI->vClearRestart();
 
   while (m_pCI->bEachOp()) {
-    switch (m_pCI->G.e_MainCard) {
+    switch (m_pCI->G.e_Op) {
 
       case CK_o_CROSSJOIN:
-        RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
-        if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+        RASSERT(! m_pCI->G.p_Op->pSub_constraint());
+        if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
@@ -86,78 +86,78 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         break;
 
       case CK_o_FROM:
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_Op->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
-        if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+        if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_o_HAVING:
-        RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
-        if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+        RASSERT(! m_pCI->G.p_Op->pSub_constraint());
+        if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_o_INDEXJOIN:
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_Op->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
-        if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+        if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_o_INDEXSCAN:
-        RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
-        if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+        RASSERT(! m_pCI->G.p_Op->pSub_constraint());
+        if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_o_KEYEXISTS:
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_Op->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
-        RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
+        RASSERT(! m_pCI->G.p_Op->pSub_filter());
         break;
 
       case CK_o_KEYNOTEXISTS:
-        if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+        if ((m_pCI->G.p_constraint = m_pCI->G.p_Op->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
-        RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
+        RASSERT(! m_pCI->G.p_Op->pSub_filter());
         break;
 
       case CK_o_SCAN:
-        RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
-        if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+        RASSERT(! m_pCI->G.p_Op->pSub_constraint());
+        if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_o_WHERE:
-        RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
-        if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+        RASSERT(! m_pCI->G.p_Op->pSub_constraint());
+        if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
             vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       default:
-        RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
-        RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
+        RASSERT(! m_pCI->G.p_Op->pSub_constraint());
+        RASSERT(! m_pCI->G.p_Op->pSub_filter());
         break;
     }
   }

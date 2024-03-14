@@ -66,37 +66,37 @@ void ShortForm::vAdd(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SHORTFORM, _FOOTER_);
 
-  if (pCI->G.p_MainCard->bIsCard(CK_c_STAGE)) {
+  if (pCI->G.p_Op->bIsCard(CK_c_STAGE)) {
     m_i_Stage_curr++;
-    m_sStage_curr = pCI->G.p_MainCard->szFacet(SF_STG_NM);
+    m_sStage_curr = pCI->G.p_Op->szFacet(SF_STG_NM);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - -
 
   m_axOp[m_nOps].m_i_Stage = m_i_Stage_curr;
-  m_axOp[m_nOps].m_i_Op    = pCI->G.i_MainCard;
+  m_axOp[m_nOps].m_i_Op    = pCI->G.i_Op;
   m_axOp[m_nOps].m_sStage  = m_sStage_curr;
 
-  if (pCI->G.p_MainCard->bIsCard(CK_o_PROJECT) &&
-      pCI->G.p_MainCard->pSymbol()->Y_bHas(P_Early))
+  if (pCI->G.p_Op->bIsCard(CK_o_PROJECT) &&
+      pCI->G.p_Op->pSymbol()->Y_bHas(P_Early))
     m_axOp[m_nOps].m_sOp     = "early"_Stz;
   else
-    m_axOp[m_nOps].m_sOp     = pCI->G.p_MainCard->szCardNm();
+    m_axOp[m_nOps].m_sOp     = pCI->G.p_Op->szCardNm();
 
-  if ((pCI->G.p_table = pCI->G.p_MainCard->pSub_table()))
+  if ((pCI->G.p_table = pCI->G.p_Op->pSub_table()))
     pCI->G.p_table->vShortForm(m_axOp[m_nOps].m_sMeta, m_axOp[m_nOps].m_sBounds);
 
-  if ((pCI->G.p_injectable = pCI->G.p_MainCard->pSub_injectable()))
+  if ((pCI->G.p_injectable = pCI->G.p_Op->pSub_injectable()))
     pCI->G.p_injectable->vShortForm(m_axOp[m_nOps].m_sInjected);
-  if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit()))
+  if ((pCI->G.p_emit = pCI->G.p_Op->pSub_emit()))
     pCI->G.p_emit->vShortForm(m_axOp[m_nOps].m_sEmitted);
-  if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key()))
+  if ((pCI->G.p_key = pCI->G.p_Op->pSub_key()))
     pCI->G.p_key->vShortForm(m_axOp[m_nOps].m_sKey);
 
-  if (pCI->G.p_MainCard->bIsCard(CK_o_FILTER))
+  if (pCI->G.p_Op->bIsCard(CK_o_FILTER))
     pCI->G.p_filter->vShortForm(m_axOp[m_nOps].m_sFilter);
   else
-  if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
+  if ((pCI->G.p_filter = pCI->G.p_Op->pSub_filter()))
     pCI->G.p_filter->vShortForm(m_axOp[m_nOps].m_sFilter);
 
   m_nOps++;

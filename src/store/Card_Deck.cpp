@@ -63,14 +63,14 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   pCI->vBeginEach();
   while (pCI->bEachOp()) {
 
-    if (CK_o_INDEXJOIN == pCI->G.e_MainCard ||
-        CK_o_INDEXSCAN == pCI->G.e_MainCard ||
-        CK_o_KEYEXISTS == pCI->G.e_MainCard ||
-        CK_o_KEYNOTEXISTS == pCI->G.e_MainCard ||
-        CK_o_SCAN == pCI->G.e_MainCard) {
+    if (CK_o_INDEXJOIN == pCI->G.e_Op ||
+        CK_o_INDEXSCAN == pCI->G.e_Op ||
+        CK_o_KEYEXISTS == pCI->G.e_Op ||
+        CK_o_KEYNOTEXISTS == pCI->G.e_Op ||
+        CK_o_SCAN == pCI->G.e_Op) {
 
       if (! p_OP_prev) {
-        Card_Table* p_table_first = pCI->G.p_MainCard->pSub_table();
+        Card_Table* p_table_first = pCI->G.p_Op->pSub_table();
         p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
@@ -80,34 +80,34 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_combined_prior,
                                                              p_cast_prior,
                                                              p_arriving,
-                                                             (Card_OP*)pCI->G.p_MainCard);
+                                                             (Card_OP*)pCI->G.p_Op);
         UNUSED(eStageCast);
         pCI->vResynchOp();
        // pCI->PRINTBOARD_dbg();
         vDebugPoint();
       }
 
-      p_OP_prev = (Card_OP*)pCI->G.p_MainCard;
+      p_OP_prev = (Card_OP*)pCI->G.p_Op;
       p_project_prior  = nullptr;
       p_combined_prior = nullptr;
       p_cast_prior     = nullptr;
     }
-    else if (CK_o_PROJECT == pCI->G.e_MainCard) {
+    else if (CK_o_PROJECT == pCI->G.e_Op) {
       p_project_prior  = pCI->G.p_project;
       p_combined_prior = nullptr;
       p_cast_prior     = nullptr;
     }
-    else if (CK_c_COMBINED == pCI->G.e_MainCard) {
+    else if (CK_c_COMBINED == pCI->G.e_Op) {
       p_combined_prior = pCI->G.p_combined;
       p_cast_prior     = nullptr;
     }
-    else if (CK_o_CAST == pCI->G.e_MainCard) {
+    else if (CK_o_CAST == pCI->G.e_Op) {
       p_cast_prior = pCI->G.p_cast;
     }
 
     // -- -- -- -- --
-    if (pCI->G.p_MainCard->pSub_emit())
-      p_arriving = pCI->G.p_MainCard->pSub_emit();
+    if (pCI->G.p_Op->pSub_emit())
+      p_arriving = pCI->G.p_Op->pSub_emit();
   }
 
   delete p_streamPtn;
@@ -181,7 +181,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
     case XK_HASHCAST:
       p_cast_prev->SYM(SF_STG_CAST,"hashcast"_Stz);
 
-      pCI->G.p_expr = pCI->pBackSearch_expr_For_col(p_term_tblCol_hash->pSymbol(), pCI->G.i_MainCard);
+      pCI->G.p_expr = pCI->pBackSearch_expr_For_col(p_term_tblCol_hash->pSymbol(), pCI->G.i_Op);
       p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr,p_emitted_prev);
 
       if (p_combined_prev) {

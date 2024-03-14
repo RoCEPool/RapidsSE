@@ -353,7 +353,7 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
 
   // TABLE to:
   // a) SCAN
-  if (0 == pCI->G.i_MainCard)  {
+  if (0 == pCI->G.i_Op)  {
     Card_Scan::vMorph_table_To_scan(pCI);
   }
     // b) KEYEXISTS
@@ -365,7 +365,7 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
     Card_KeyNotExists::vMorph_from_To_keyNotExists(pCI);
   }
     // d) CROSSJOIN
-  else if (! pCI->G.p_from->pSub_bounds()) { // && bFold && pCI->G.i_MainCard == i_Fold+1) {
+  else if (! pCI->G.p_from->pSub_bounds()) { // && bFold && pCI->G.i_Op == i_Fold+1) {
     Card_CrossJoin::vMorph_table_To_crossJoin(pCI);
   }
     // e) INDEXJOIN

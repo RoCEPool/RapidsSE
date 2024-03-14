@@ -442,11 +442,11 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (pSymbol_this->bHasFacet(SF_EXP_COL))
     return;
   if (pSymbol_this->bHasFacet(SF_KEY_COL)) {
-    if (CK_o_GBYAGG == pCI->G.e_MainCard)
+    if (CK_o_GBYAGG == pCI->G.e_Op)
       return;
-    if (CK_o_INDEXJOIN == pCI->G.e_MainCard)
+    if (CK_o_INDEXJOIN == pCI->G.e_Op)
       return;
-    if (CK_o_SORT == pCI->G.e_MainCard)
+    if (CK_o_SORT == pCI->G.e_Op)
       return;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

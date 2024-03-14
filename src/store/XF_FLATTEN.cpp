@@ -89,9 +89,9 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   pCI->vClearRestart();
   while (pCI->bEachOp()) {
 
-    if (pCI->G.p_MainCard->pSub_emit())
+    if (pCI->G.p_Op->pSub_emit())
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
-      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+      pCI->G.p_emit = pCI->G.p_Op->pSub_emit();
 
     if (pCI->pPeekNextIf(CK_c_FOLD))
       break;
@@ -103,7 +103,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   pCI->Flat.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
   if (pCI->bEachOp(CK_c_FOLD)) {
-    pCI->Flat.m_i_fold = pCI->G.i_MainCard;
+    pCI->Flat.m_i_fold = pCI->G.i_Op;
     pCI->G.p_fold->vDerive_emit_fold(pCI, pBoard_inner->pSubQuery());
     pCI->Flat.m_pExpr_fold = pCI->G.p_expr;
   }
@@ -164,7 +164,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
   // 7) derive the fold (SQ result) expr
   pCI->vClearRestart();
   if (pCI->bEachOp(CK_c_FOLD)) {
-    pCI->Flat.m_i_fold = pCI->G.i_MainCard;
+    pCI->Flat.m_i_fold = pCI->G.i_Op;
     Board::vDerive_foldProjection_F(pCI);
   }
 
@@ -225,9 +225,9 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vClearRestart();
   while (pCI->bEachOp()) {
 
-    if (pCI->G.p_MainCard->pSub_emit())
+    if (pCI->G.p_Op->pSub_emit())
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
-      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+      pCI->G.p_emit = pCI->G.p_Op->pSub_emit();
 
     if (pCI->pPeekNextIf(CK_c_FOLD))
       break;
@@ -240,7 +240,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->Flat.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
   if (pCI->bEachOp(CK_c_FOLD)) {
-    pCI->Flat.m_i_fold = pCI->G.i_MainCard;
+    pCI->Flat.m_i_fold = pCI->G.i_Op;
     pCI->G.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
     pCI->Flat.m_pExpr_fold = pCI->G.p_expr;
   }
@@ -288,7 +288,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 
   pCI->vBeginEach();
   RASSERT(pCI->bEachOp(CK_c_FOLD));
-  RASSERT(pCI->G.p_MainCard->bIsCard(CK_c_FOLD));
+  RASSERT(pCI->G.p_Op->bIsCard(CK_c_FOLD));
   //RASSERT(pCI->m_pExpr_fold);
 
   if(pCI->pPeekNextIf(CK_SUBQUERY))
@@ -298,7 +298,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
     if (pCarryForward->Table.m_bSeen) {
       pCI->G.p_table = pCI->G.p_from->pSub_table();
-      ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
+      ((Card_OP*)pCI->G.p_Op)->vRestate_emit(pCI);
       //pCI->PRINTBOARD_dbg();
     }
   }

@@ -67,9 +67,9 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
 
-//    if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG)) {
+//    if (m_pCI->G.p_Op->bIsCard(CK_o_GBYAGG)) {
 //
-//      if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
+//      if ((m_pCI->G.p_level = m_pCI->G.p_Op->pSub_level())) {
 //        if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
 //          m_pCI->vSnapArriving();
 //          continue;
@@ -97,39 +97,39 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL, _FOOTER_);
 
-  if (m_pCI->G.p_MainCard->pSymbol()->Y_bHas(P_BreakPt)) {
+  if (m_pCI->G.p_Op->pSymbol()->Y_bHas(P_BreakPt)) {
     //vDump();
     vDebugPoint();
   }
 
-  if (m_pCI->G.p_MainCard->bIsCard(CK_o_GBYAGG) && m_pCI->G.p_MainCard->i_Child() == 6) {
-    //m_pCI->G.p_MainCard->vDump(__func__);
+  if (m_pCI->G.p_Op->bIsCard(CK_o_GBYAGG) && m_pCI->G.p_Op->i_Child() == 6) {
+    //m_pCI->G.p_Op->vDump(__func__);
     vDebugPoint();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->X.m_pExprList_i = m_pCI->G.p_MainCard->pSub_injectable();
-  m_pCI->X.m_pExprList_k = m_pCI->G.p_MainCard->pSub_key();
+  m_pCI->X.m_pExprList_i = m_pCI->G.p_Op->pSub_injectable();
+  m_pCI->X.m_pExprList_k = m_pCI->G.p_Op->pSub_key();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_Op->pSub_indexList()))
     m_pCI->G.p_indexList->vX_tblCol_To_expCol(m_pCI);
 
-  if ((m_pCI->G.p_key = m_pCI->G.p_MainCard->pSub_key()))
+  if ((m_pCI->G.p_key = m_pCI->G.p_Op->pSub_key()))
     m_pCI->G.p_key->vX_tblCol_To_expCol(m_pCI);
 
-  if (CK_o_FILTER == m_pCI->G.p_MainCard->eCard())
+  if (CK_o_FILTER == m_pCI->G.p_Op->eCard())
     m_pCI->G.p_filter->vX_tblCol_To_expCol(m_pCI);
   else
-  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+  if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter()))
     m_pCI->G.p_filter->vX_tblCol_To_expCol(m_pCI);
 
-  if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList()))
+  if ((m_pCI->G.p_hshColList = m_pCI->G.p_Op->pSub_hshColList()))
     m_pCI->G.p_hshColList->vX_tblCol_To_expCol(m_pCI);
 
-  if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit()))
+  if ((m_pCI->G.p_emit = m_pCI->G.p_Op->pSub_emit()))
     m_pCI->G.p_emit->vX_tblCol_To_expCol(m_pCI);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -137,15 +137,15 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   m_pCI->vSnapArriving();
-  if (m_pCI->G.p_MainCard->pSub_emit())
-    m_pCI->X.m_pExprList_a = m_pCI->G.p_MainCard->pSub_emit();
+  if (m_pCI->G.p_Op->pSub_emit())
+    m_pCI->X.m_pExprList_a = m_pCI->G.p_Op->pSub_emit();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_Op->pSub_constraint()))
       m_pCI->G.p_constraint->vX_tblCol_To_expCol(m_pCI);
 
-  if ((m_pCI->G.p_streamKey = m_pCI->G.p_MainCard->pSub_streamKey()))
+  if ((m_pCI->G.p_streamKey = m_pCI->G.p_Op->pSub_streamKey()))
     m_pCI->G.p_streamKey->vX_tblCol_To_expCol(m_pCI);
 }
 

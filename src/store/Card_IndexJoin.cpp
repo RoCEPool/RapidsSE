@@ -110,7 +110,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   pCI->G.p_table = pSub_table();
-  pCI->G.p_MainCard = pCI->G.p_indexJoin;
+  pCI->G.p_Op = pCI->G.p_indexJoin;
   pCI->G.p_indexJoin->vRestate_emit(pCI);
 
   //pCI->PRINTBOARD_dbg();

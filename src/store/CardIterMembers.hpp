@@ -29,9 +29,9 @@ namespace STORE
     // - - - - - - - - - - - - -
 
     char   md_Coord[256];
-    Card * p_MainCard;
-    eCK    e_MainCard;
-    i8     i_MainCard;
+    Card * p_Op;
+    eCK    e_Op;
+    i8     i_Op;
 
     Card * p_SubOfMain;
     eCK    e_SubOfMain;

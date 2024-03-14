@@ -76,7 +76,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
   while (m_pCI->bEachOp()) {
 
-    switch (m_pCI->G.e_MainCard) {
+    switch (m_pCI->G.e_Op) {
 
       case CK_o_SORT:
         if (! m_pCI->StreamOrder.m_pStreamKey)
@@ -100,8 +100,8 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
         break;
 
       default:
-        if (m_pCI->G.p_MainCard->pSub_emit()) {
-          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_MainCard->pSub_emit();
+        if (m_pCI->G.p_Op->pSub_emit()) {
+          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_Op->pSub_emit();
           m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmitted->pSub_streamKey();
         }
         break;

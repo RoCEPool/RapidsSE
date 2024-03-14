@@ -74,10 +74,10 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   while (m_pCI->bEachOp()) {
 
-    if (!(m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXJOIN) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXSCAN)))
+    if (!(m_pCI->G.p_Op->bIsCard(CK_o_INDEXJOIN) ||
+          m_pCI->G.p_Op->bIsCard(CK_o_INDEXSCAN)))
       continue;
-    if (!(m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
+    if (!(m_pCI->G.p_indexList = m_pCI->G.p_Op->pSub_indexList()))
       continue;
 
     // have <bounds> & <filter> under <main>
@@ -108,16 +108,16 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
 
-    if (! (m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXJOIN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXSCAN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_o_KEYEXISTS) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_o_KEYNOTEXISTS)
+    if (! (m_pCI->G.p_Op->bIsCard(CK_o_INDEXJOIN) ||
+           m_pCI->G.p_Op->bIsCard(CK_o_INDEXSCAN) ||
+           m_pCI->G.p_Op->bIsCard(CK_o_KEYEXISTS) ||
+           m_pCI->G.p_Op->bIsCard(CK_o_KEYNOTEXISTS)
     ))
       continue;
-    if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))
+    if (! (m_pCI->G.p_bounds = m_pCI->G.p_Op->pSub_bounds()))
       continue;
 
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+    if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter())) {
 
       // have <bounds> & <filter> under <main>
 
@@ -132,7 +132,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
       continue;
     }
 
-    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    if ((m_pCI->G.p_constraint = m_pCI->G.p_Op->pSub_constraint())) {
 
       // have <bounds> & <filter> under <main>
 
@@ -157,9 +157,9 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
   i8 nCulled = 0;
   while (m_pCI->bEachOp()) {
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
+    if ((m_pCI->G.p_filter = m_pCI->G.p_Op->pSub_filter()))
       nCulled += m_pCI->G.p_filter->nCullMarked_rlnConj(MARK_AT);
-    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
+    if ((m_pCI->G.p_constraint = m_pCI->G.p_Op->pSub_constraint()))
       nCulled += m_pCI->G.p_constraint->nCullMarked_rlnConj(MARK_AT);
   }
 

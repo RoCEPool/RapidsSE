@@ -89,15 +89,15 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
   Card_OP::vEarlyProject_backstep(pCI);
 
-  pCI->G.p_MainCard = this;
-  pCI->G.e_MainCard = CK_o_CROSSJOIN;
+  pCI->G.p_Op = this;
+  pCI->G.e_Op = CK_o_CROSSJOIN;
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
  // pCI->PRINTBOARD_dbg();
 
-  ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
+  ((Card_OP*)pCI->G.p_Op)->vRestate_emit(pCI);
 
   // pCI->PRINTBOARD_dbg();
 

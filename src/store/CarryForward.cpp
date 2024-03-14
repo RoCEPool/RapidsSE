@@ -195,7 +195,7 @@ void CarryForward::vSetSeen(CardIter* pCI)
   pCI->vBeginEach();
 
   RASSERT(pCI->bEachOp(CK_c_FOLD));
-  RASSERT(pCI->G.p_MainCard->bIsCard(CK_c_FOLD));
+  RASSERT(pCI->G.p_Op->bIsCard(CK_c_FOLD));
 
   // SubQuery
   if (pCI->pPeekNextIf(CK_SUBQUERY))

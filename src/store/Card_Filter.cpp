@@ -56,8 +56,8 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
   _static_
 
   while (pCI->bEachOp()) {
-    if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
-      ((Card_OP*)pCI->G.p_MainCard)->vCull_filter_IfEmpty(pCI->G.p_filter);
+    if ((pCI->G.p_filter = pCI->G.p_Op->pSub_filter()))
+      ((Card_OP*)pCI->G.p_Op)->vCull_filter_IfEmpty(pCI->G.p_filter);
   }
 }
 
@@ -69,22 +69,22 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 {
   _static_
 
-  if (!pCI->G.p_MainCard->pSub_emit())
-    pCI->G.p_MainCard->vDump(__func__);
+  if (!pCI->G.p_Op->pSub_emit())
+    pCI->G.p_Op->vDump(__func__);
 
-  RASSERT(pCI->G.p_MainCard->pSub_emit());
+  RASSERT(pCI->G.p_Op->pSub_emit());
 
-  pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
+  pCI->G.p_Op->vRemoveChild(pCI->G.p_filter);
 
 
   pCI->G.p_filter->vEnsure_stream(pCI);
 
-  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_emit()->pClone());
+  pCI->G.p_stream->vAppendChild(pCI->G.p_Op->pSub_emit()->pClone());
 
-  pCI->G.pDeck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_MainCard);
+  pCI->G.pDeck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_Op);
 
   if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPushChild(pCI->G.p_MainCard->pSub_level()->pDupCardRecursive());
+    pCI->G.p_filter->vPushChild(pCI->G.p_Op->pSub_level()->pDupCardRecursive());
   }
 }
 
@@ -162,7 +162,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->PRINTBOARD_dbg();
 
-  ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
+  ((Card_OP*)pCI->G.p_Op)->vRestate_emit(pCI);
 
   //pCI->PRINTBOARD_dbg();
 

@@ -67,14 +67,14 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
-    if (CK_o_SCAN == m_pCI->G.e_MainCard) {
+    if (CK_o_SCAN == m_pCI->G.e_Op) {
       m_pCI->G.p_inflate = new Card_Inflate;
       m_pCI->vInsertAfter(m_pCI->G.p_inflate,m_pCI->G.p_scan);
 
       if (m_pCI->G.p_scan->pSymbol()->Y_bHas(P_FusedProject))
         m_pCI->G.p_inflate->pSymbol()->Y_vSet(P_FusedProject);
 
-      m_pCI->vBurst(m_pCI->G.p_MainCard);
+      m_pCI->vBurst(m_pCI->G.p_Op);
 
       if (m_pCI->G.p_table)
         m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_table->pDupCardRecursive());

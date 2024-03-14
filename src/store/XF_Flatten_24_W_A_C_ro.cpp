@@ -147,7 +147,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
     return false;
 
   pCI->Flat.m_p_expr_crlKey = pCI->pBackSearch_expr_For_col(pCI->Flat.m_p_term_crlKey->pSymbol(),
-                                                           pCI->G.i_MainCard + 1);
+                                                            pCI->G.i_Op + 1);
 
   pCI->Flat.m_p_expr_crlKey->vMark1(MARK_AT);
   pCI->Flat.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyDefn);
@@ -168,8 +168,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
   for (i8 i_agg = 0; i_agg < 3; i_agg++) {
 
-    pCI->G.p_MainCard->vCard(CK_o_GBYAGG);
-    pCI->G.p_gbyAgg = _pCard_GbyAgg(pCI->G.p_MainCard);
+    pCI->G.p_Op->vCard(CK_o_GBYAGG);
+    pCI->G.p_gbyAgg = _pCard_GbyAgg(pCI->G.p_Op);
 
     pCI->G.p_level = pCI->G.p_gbyAgg->pSub_level();
     eAL e_Level = (eAL) pCI->G.p_level->pSymbol()->Y_iGet(P_Level);
@@ -245,7 +245,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     pCI->G.p_emit->vRenumberAll_expr();
 
     if (pCI->bEachOp()) {
-      if (! pCI->G.p_MainCard->bIsCard(CK_o_AGGREG)) {
+      if (! pCI->G.p_Op->bIsCard(CK_o_AGGREG)) {
         bool b = pCI->bRewindOp();
         RASSERT(b);
         break;
@@ -268,7 +268,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold sq <project>
 
-  RASSERT (pCI->G.p_MainCard->bIsCard(CK_o_PROJECT));
+  RASSERT (pCI->G.p_Op->bIsCard(CK_o_PROJECT));
   RASSERT(CT_NONE != pCI->G.p_key->eCTVal());
 
   pCI->G.p_emit = pCI->G.p_project->pSub_emit();
@@ -472,7 +472,7 @@ void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* p
 
   Card_Term* p_term_tblCol = pCI->Flat.m_p_conj_rslTest->pGetFirstTerm_tblCol();
   Symbol* pSym_term_tblCol = p_term_tblCol->pSymbol();
-  Card_OP* p_OP = pCI->pFind_from_By_tblSyn(pSym_term_tblCol, pCI->G.i_MainCard);
+  Card_OP* p_OP = pCI->pFind_from_By_tblSyn(pSym_term_tblCol, pCI->G.i_Op);
 
   pCI->G.p_filter = p_OP->pEnsure_filter();
 
@@ -490,16 +490,16 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
   while (pCI->bEachOp()) {
 
-    if (CK_c_FOLD == pCI->G.e_MainCard)
+    if (CK_c_FOLD == pCI->G.e_Op)
       break;
 
-    if (Card_Emit* p_emit = pCI->G.p_MainCard->pSub_emit()) {
+    if (Card_Emit* p_emit = pCI->G.p_Op->pSub_emit()) {
       //pCI->PRINTBOARD_dbg();
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
     }
   }
 
-  RASSERT(CK_c_FOLD == pCI->G.e_MainCard);
+  RASSERT(CK_c_FOLD == pCI->G.e_Op);
 
   pCI->G.p_stream = new Card_Stream;
   pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
@@ -561,8 +561,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // snap final IQ:<op>/<emit>
 
-  if (CK_o_PROJECT == pCI->G.e_MainCard || CK_o_GBYAGG == pCI->G.e_MainCard)
-    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+  if (CK_o_PROJECT == pCI->G.e_Op || CK_o_GBYAGG == pCI->G.e_Op)
+    pCI->G.p_emit = pCI->G.p_Op->pSub_emit();
   else
     NEVER_REACH
 
@@ -579,7 +579,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // restate the emits of the leading OQ:<from>* sequence
   pCI->Flux.m_pArriving = nullptr;
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
-    ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
+    ((Card_OP*)pCI->G.p_Op)->vRestate_emit(pCI);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -619,12 +619,12 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   pCI->vForwards(false);
   while (pCI->bEachOp_reverse()) {
-    if (pCI->G.p_MainCard->pSub_emit())
+    if (pCI->G.p_Op->pSub_emit())
       break;
   }
   pCI->vForwards(true);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_Op->pSub_emit();
   RASSERT(pCI->bEachOp(CK_c_FOLD));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
