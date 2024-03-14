@@ -46,7 +46,7 @@ void Card_CONSTRUCTION::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
-  Card_MAIN::vValidate(pCI, iDepth, pParent);
+  RASSERT(1 == iDepth);
 }
 
 /*============================================================================*/
