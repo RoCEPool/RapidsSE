@@ -15,7 +15,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CONSTRUCTION::Card_CONSTRUCTION(eCK eCard, i8 iFixedDepth)
-: Card_MAIN(eCard, iFixedDepth)
+: Card_OP(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
