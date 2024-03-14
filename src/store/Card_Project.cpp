@@ -304,7 +304,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   // insert empty early projection (has only needed) before this ordAgg
 //  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
 //  pCI->vInsertBefore(p_project_early, this);
-//  pCI->vResynchMain();
+//  pCI->vResynchOp();
   vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
   Card_OP::vEarlyProject_backstep(pCI);

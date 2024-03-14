@@ -65,7 +65,7 @@ void Card_Fold::vMorph_to_flat(CardIter* pCI)
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachMain(CK_c_FOLD))
+  while (pCI->bEachOp(CK_c_FOLD))
     pCI->G.p_fold->vCard(CK_c_FLAT);
 }
 

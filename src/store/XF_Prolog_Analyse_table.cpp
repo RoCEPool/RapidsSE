@@ -105,14 +105,14 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table synonyms To All Table
   m_pCI->vBeginEach();
-  while (m_pCI->bEachMain(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM))  {
+  while (m_pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM))  {
     m_pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Info Under All Table
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM)) {
+  while (m_pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM)) {
 
     Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
@@ -155,7 +155,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSy
   Card_Table::vAffixTableSyn_passThru(m_pCI, pSymbol_tableSyn);
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachSubOfMain(CK_s_TABLE)) {
+  while (m_pCI->bEachSubOfOp(CK_s_TABLE)) {
 
     Card_TableNm *p_tableNm = m_pCI->G.p_table->pSub_tableNm();
     Table *pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));

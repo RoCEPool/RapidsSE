@@ -106,7 +106,7 @@ bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
       break;
     }
 
-    if (!m_pCI->bEachMain())
+    if (!m_pCI->bEachOp())
       break;
   }
 
@@ -120,7 +120,7 @@ void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
     switch (m_pCI->G.e_MainCard) {
 

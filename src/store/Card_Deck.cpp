@@ -61,7 +61,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
   pCI->vBeginEach();
-  while (pCI->bEachMain()) {
+  while (pCI->bEachOp()) {
 
     if (CK_o_INDEXJOIN == pCI->G.e_MainCard ||
         CK_o_INDEXSCAN == pCI->G.e_MainCard ||
@@ -82,7 +82,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_arriving,
                                                              (Card_OP*)pCI->G.p_MainCard);
         UNUSED(eStageCast);
-        pCI->vResynchMain();
+        pCI->vResynchOp();
        // pCI->PRINTBOARD_dbg();
         vDebugPoint();
       }

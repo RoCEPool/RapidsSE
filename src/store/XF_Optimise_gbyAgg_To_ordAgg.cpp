@@ -74,7 +74,7 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
 
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
     switch (m_pCI->G.e_MainCard) {
 

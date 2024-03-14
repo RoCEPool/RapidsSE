@@ -138,29 +138,29 @@ namespace STORE
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
-    bool bEachMain(void);
-    bool bEachMain(eCK eMain);
-    bool bEachMain_foldBreak(eCK eMain);
-    bool bEachMain(eCK eMain, eCK eSub);
-    bool bEachMain(eCK eMain, eCK eSub, Stz* szSubFacet);
-    bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2);
-    bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3);
+    bool bEachOp(void);
+    bool bEachOp(eCK eMain);
+    bool bEachOp_foldBreak(eCK eMain);
+    bool bEachOp(eCK eMain, eCK eSub);
+    bool bEachOp(eCK eMain, eCK eSub, Stz* szSubFacet);
+    bool bEachOp(eCK eMain, eCK eSub1, eCK eSub2);
+    bool bEachOp(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3);
 
-    bool bEachMain_reverse(void);
-    bool bEachMain_reverse(eCK eMain);
-    bool bEachMain_reverse_foldBreak(eCK eMain);
-    bool bEachMain_reverse(eCK eMain, eCK eSub);
-    bool bEachMain_reverse_foldBreak(eCK eMain, eCK eSub);
+    bool bEachOp_reverse(void);
+    bool bEachOp_reverse(eCK eMain);
+    bool bEachOp_reverse_foldBreak(eCK eMain);
+    bool bEachOp_reverse(eCK eMain, eCK eSub);
+    bool bEachOp_reverse_foldBreak(eCK eMain, eCK eSub);
 
-    bool bEachSubOfMain(eCK eSub);
-    bool bEach2SubOfMain(eCK eSub1, eCK eSub2);
-    bool bEach3SubOfMain(eCK eSub1, eCK eSub2, eCK eSub3);
+    bool bEachSubOfOp(eCK eSub);
+    bool bEach2SubOfOp(eCK eSub1, eCK eSub2);
+    bool bEach3SubOfOp(eCK eSub1, eCK eSub2, eCK eSub3);
 
     void vEndPhase(void);
     void vEndTransform(i8 iLineNo);
 
     Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);
-    void vFocusOnMain(void);
+    void vFocusOnOp(void);
     bool bForwards(void);
     void vForwards(bool bForward);
 
@@ -193,9 +193,9 @@ namespace STORE
     Card_Emit* pResolvePrior_emit(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     void vRestoreMembers(void);
-    void vResynchMain(void);
-    void vResynchMain(Card* pCard);
-    bool bRewindMain(void);
+    void vResynchOp(void);
+    void vResynchOp(Card* pCard);
+    bool bRewindOp(void);
 
     void vSaveMembers(void);
     void vSnapArriving(void);

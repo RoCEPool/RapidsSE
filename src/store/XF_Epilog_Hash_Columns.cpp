@@ -65,7 +65,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_HASH_COLUMNS);
 
   m_pCI->vBeginEach();
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (CK_c_STAGE == m_pCI->G.e_MainCard) {
@@ -151,7 +151,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_HASH_COLUMNS);
 //
 //  m_pCI->vBeginEach();
-//  while (m_pCI->bEachMain()) {
+//  while (m_pCI->bEachOp()) {
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    if (CK_c_STAGE == m_pCI->G.e_MainCard) {

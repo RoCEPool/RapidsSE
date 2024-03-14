@@ -132,7 +132,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
 
   pCI->vClearRestart();
 
-  while (pCI->bEachMain(CK_o_FROM, CK_t_EMIT, CK_o_FILTER)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_t_EMIT, CK_o_FILTER)) {
 
     pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
     Card_CONJ *p_conj_root = pCI->G.p_boolPred->pRoot_conj();
@@ -164,7 +164,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
   // promote IQ <aggreg>... to <gbyAgg>...
 
   pCI->vClearRestart();
-  RASSERT(pCI->bEachMain_foldBreak(CK_o_AGGREG));
+  RASSERT(pCI->bEachOp_foldBreak(CK_o_AGGREG));
 
   for (i8 i_agg = 0; i_agg < 3; i_agg++) {
 
@@ -244,9 +244,9 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     pCI->G.p_key->vRenumberAll_expr();
     pCI->G.p_emit->vRenumberAll_expr();
 
-    if (pCI->bEachMain()) {
+    if (pCI->bEachOp()) {
       if (! pCI->G.p_MainCard->bIsCard(CK_o_AGGREG)) {
-        bool b = pCI->bRewindMain();
+        bool b = pCI->bRewindOp();
         RASSERT(b);
         break;
       }
@@ -263,7 +263,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 
   if (!pCI->pPeekNextIf(CK_o_PROJECT))
     return;
-  RASSERT(pCI->bEachMain(CK_o_PROJECT));
+  RASSERT(pCI->bEachOp(CK_o_PROJECT));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold sq <project>
@@ -488,7 +488,7 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
   pCI->vBeginEach();
 
-  while (pCI->bEachMain()) {
+  while (pCI->bEachOp()) {
 
     if (CK_c_FOLD == pCI->G.e_MainCard)
       break;
@@ -570,7 +570,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  RASSERT(pCI->bEachMain(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_c_FOLD));
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery
@@ -578,7 +578,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   // restate the emits of the leading OQ:<from>* sequence
   pCI->Flux.m_pArriving = nullptr;
-  while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
+  while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
     ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
   }
 
@@ -593,7 +593,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
 
   pCI->vClearRestart();
-  while (pCI->bEachMain(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
     if (pCI->G.p_boolPred->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
       pCI->G.p_boolPred->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
       break;
@@ -613,24 +613,24 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  RASSERT(pCI->bEachMain(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_c_FOLD));
 
   // todo: this is messy and unclear
 
   pCI->vForwards(false);
-  while (pCI->bEachMain_reverse()) {
+  while (pCI->bEachOp_reverse()) {
     if (pCI->G.p_MainCard->pSub_emit())
       break;
   }
   pCI->vForwards(true);
 
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
-  RASSERT(pCI->bEachMain(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_c_FOLD));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ???
 
-  RASSERT(pCI->bEachMain(CK_o_WHERE, CK_BOOLPRED));
+  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED));
   pCI->G.p_boolPred->vBump_expCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -671,15 +671,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // f         +       bc          //           $d.2  ((pCI->m_pTerm_corrArg))
   //           + b <-  cp          //             %1
 
-  RASSERT(pCI->bEachMain(CK_c_FOLD));
-  RASSERT(pCI->bEachMain(CK_o_WHERE, CK_BOOLPRED));
+  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED));
   vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->G.p_boolPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 //  pCI->vClearRestart();
-//  if (pCI->bEachMain(CK_c_FOLD)) {
-//    if (pCI->bEachMain(CK_o_WHERE)) {
+//  if (pCI->bEachOp(CK_c_FOLD)) {
+//    if (pCI->bEachOp(CK_o_WHERE)) {
 //      // TODO:
 //      // R_vUTE_Unproject_foldExpr_After_where();
 //      R_vUTE_Bump_where_BaseOn_foldExpr();

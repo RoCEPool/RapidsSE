@@ -74,7 +74,7 @@ void XF_Prolog_Validate_Board::vValidate(void)
   //Card_Scan* p_scan = nullptr;
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
     switch (m_pCI->G.e_MainCard) {
 
       //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;

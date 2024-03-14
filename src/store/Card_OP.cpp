@@ -189,7 +189,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
   //Card_OP* p_OP_leaf_maybe = pCI->G.p_MainCard;
 
-  if (!pCI->bEachMain_reverse())
+  if (!pCI->bEachOp_reverse())
     return;
 
   // which card did we arrive at?

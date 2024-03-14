@@ -72,7 +72,7 @@ void XF_Utility_Verify_dic::vVerify_dic_loop(void)
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
     vVerify_dic_OP();
 

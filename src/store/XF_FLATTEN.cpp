@@ -38,7 +38,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 {
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vBeginEach_reverse();
-  if (pCI->bEachMain_reverse_foldBreak(eCardWithSQ, CK_BOOLPRED)) {
+  if (pCI->bEachOp_reverse_foldBreak(eCardWithSQ, CK_BOOLPRED)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
@@ -61,7 +61,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
   i8 i_dup_from = 0;
   pCI->vBeginEach();
-  if (pCI->bEachMain(CK_o_CORRELATION)) {
+  if (pCI->bEachOp(CK_o_CORRELATION)) {
     pCI->Flat.m_pCorrelation = pCI->G.pDeck->pSub_correlation();
     i_dup_from = 1;
   }
@@ -87,7 +87,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vClearRestart();
-  while (pCI->bEachMain()) {
+  while (pCI->bEachOp()) {
 
     if (pCI->G.p_MainCard->pSub_emit())
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
@@ -102,7 +102,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // 7) derive the fold (SQ result) expr
   pCI->Flat.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
-  if (pCI->bEachMain(CK_c_FOLD)) {
+  if (pCI->bEachOp(CK_c_FOLD)) {
     pCI->Flat.m_i_fold = pCI->G.i_MainCard;
     pCI->G.p_fold->vDerive_emit_fold(pCI, pBoard_inner->pSubQuery());
     pCI->Flat.m_pExpr_fold = pCI->G.p_expr;
@@ -126,7 +126,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolPred>
 
-  RASSERT(pCI->bEachMain(CK_o_CALL));
+  RASSERT(pCI->bEachOp(CK_o_CALL));
 
   Board* pBoard = pCI->m_pBench->pFindBoard(pCI->G.p_call->pSymbol());
   if (! pBoard) {
@@ -163,7 +163,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // 7) derive the fold (SQ result) expr
   pCI->vClearRestart();
-  if (pCI->bEachMain(CK_c_FOLD)) {
+  if (pCI->bEachOp(CK_c_FOLD)) {
     pCI->Flat.m_i_fold = pCI->G.i_MainCard;
     Board::vDerive_foldProjection_F(pCI);
   }
@@ -183,7 +183,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vBeginEach();
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
-  if (pCI->bEachMain(eCardWithSQ, CK_BOOLPRED)) {
+  if (pCI->bEachOp(eCardWithSQ, CK_BOOLPRED)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
@@ -223,7 +223,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vClearRestart();
-  while (pCI->bEachMain()) {
+  while (pCI->bEachOp()) {
 
     if (pCI->G.p_MainCard->pSub_emit())
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
@@ -239,7 +239,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   // 7) derive the fold (SQ result) expr
   pCI->Flat.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
-  if (pCI->bEachMain(CK_c_FOLD)) {
+  if (pCI->bEachOp(CK_c_FOLD)) {
     pCI->Flat.m_i_fold = pCI->G.i_MainCard;
     pCI->G.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
     pCI->Flat.m_pExpr_fold = pCI->G.p_expr;
@@ -287,7 +287,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   //pCI->PRINTBOARD_dbg();
 
   pCI->vBeginEach();
-  RASSERT(pCI->bEachMain(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_c_FOLD));
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_c_FOLD));
   //RASSERT(pCI->m_pExpr_fold);
 
@@ -295,7 +295,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
     RASSERT(pCI->pAdvanceChild());
 
   // Table*
-  while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachMain(CK_o_FROM)) {
+  while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
     if (pCarryForward->Table.m_bSeen) {
       pCI->G.p_table = pCI->G.p_from->pSub_table();
       ((Card_OP*)pCI->G.p_MainCard)->vRestate_emit(pCI);
@@ -306,7 +306,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 
 
   // [Where]
-  if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachMain(CK_o_WHERE)) {
+  if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachOp(CK_o_WHERE)) {
     if (pCarryForward->Where_preAgg.m_bSeen) {
       //pCI->Flux.m_pArriving->vDump(__func__,"Smooth where"_Stz);
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
@@ -317,7 +317,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 
 
   // GbyAgg_partition
-  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
+  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -325,7 +325,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // GbyAgg_node
-  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
+  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -333,7 +333,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // GbyAgg_origin
-  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachMain(CK_o_GBYAGG)) {
+  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -343,7 +343,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // [project (avg)]
-  if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachMain(CK_o_PROJECT)) {
+  if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachOp(CK_o_PROJECT)) {
     if (pCarryForward->Project_postAgg.m_bSeen) {
       pCI->G.p_project->vSmooth_postAgg(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -351,7 +351,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // Having
-  if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachMain(CK_o_HAVING)) {
+  if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachOp(CK_o_HAVING)) {
     if (pCarryForward->Having.m_bSeen) {
       pCI->G.p_having->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -359,7 +359,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   }
 
   // Sort
-  if (pCI->pPeekNextIf(CK_o_SORT) && pCI->bEachMain(CK_o_SORT)) {
+  if (pCI->pPeekNextIf(CK_o_SORT) && pCI->bEachOp(CK_o_SORT)) {
     if (pCarryForward->Sort.m_bSeen) {
       pCI->G.p_sort->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
@@ -392,11 +392,11 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 {
   pCI->vClearRestart();
-  RASSERT(pCI->bEachMain_foldBreak(CK_o_FROM));
+  RASSERT(pCI->bEachOp_foldBreak(CK_o_FROM));
 
 
-  //RASSERT(pCI->bEachMain(CK_o_WHERE));
-  RASSERT(pCI->bEachMain_foldBreak(CK_o_PROJECT));
+  //RASSERT(pCI->bEachOp(CK_o_WHERE));
+  RASSERT(pCI->bEachOp_foldBreak(CK_o_PROJECT));
 
 //  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
 //  pCI->G.p_where->vRemoveSub(pCI->G.p_constraint);
@@ -421,13 +421,13 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vBeginEach_reverse();
-  RASSERT(pCI->bEachMain_reverse_foldBreak(CK_o_WHERE));
+  RASSERT(pCI->bEachOp_reverse_foldBreak(CK_o_WHERE));
 
-  RASSERT(pCI->bEachMain_reverse_foldBreak(CK_o_FROM));
+  RASSERT(pCI->bEachOp_reverse_foldBreak(CK_o_FROM));
   Card_Emit* p_emitted_table = pCI->G.p_from->pSub_emit();
 
   pCI->vBeginEach_reverse();
-  RASSERT(pCI->bEachMain_reverse_foldBreak(CK_o_WHERE));
+  RASSERT(pCI->bEachOp_reverse_foldBreak(CK_o_WHERE));
 
 
   pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);
@@ -479,7 +479,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   // pCI->PRINTBOARD_dbg();
 
   pCI->vClearRestart();
-  if (pCI->bEachMain(CK_o_WHERE, CK_BOOLPRED)) {
+  if (pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED)) {
     (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 

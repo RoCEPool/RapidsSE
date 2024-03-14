@@ -65,17 +65,17 @@ void XF_Epilog_Map_Columns::vMap_Columns(void)
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_MAP_COLUMNS);
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain(CK_o_GBYAGG, CK_SYNTHESIS)) {
+  while (m_pCI->bEachOp(CK_o_GBYAGG, CK_SYNTHESIS)) {
     ((Card_OP*)m_pCI->G.p_MainCard)->vMapColumns(m_pCI);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain(CK_o_SORT, CK_SYNTHESIS)) {
+  while (m_pCI->bEachOp(CK_o_SORT, CK_SYNTHESIS)) {
     ((Card_OP*)m_pCI->G.p_MainCard)->vMapColumns(m_pCI);
   }
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain(CK_o_TOP, CK_SYNTHESIS)) {
+  while (m_pCI->bEachOp(CK_o_TOP, CK_SYNTHESIS)) {
     ((Card_OP*)m_pCI->G.p_MainCard)->vMapColumns(m_pCI);
   }
 
