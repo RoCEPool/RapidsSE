@@ -33,12 +33,12 @@ namespace STORE
     eCK    e_Op;
     i8     i_Op;
 
-    Card * p_SubOfMain;
-    eCK    e_SubOfMain;
-    Card * p_Sub2OfMain;
-    eCK    e_Sub2OfMain;
-    Card * p_Sub3OfMain;
-    eCK    e_Sub3OfMain;
+    Card * p_Sub;
+    eCK    e_Sub;
+    Card * p_Sub2;
+    eCK    e_Sub2;
+    Card * p_Sub3;
+    eCK    e_Sub3;
 
     // - - - - - - - - - - - - - - - - - -
 
@@ -71,7 +71,7 @@ namespace STORE
     Card_Direction *     p_direction;
     Card_Disposition *   p_disposition;
 
-    Card_Emit *       p_emit;
+    Card_Emit *          p_emit;
     Card_Expr *          p_expr;
 
     Card_Filter *        p_filter;
