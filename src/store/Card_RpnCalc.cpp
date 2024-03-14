@@ -70,41 +70,6 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_RpnCalc* Card_RpnCalc::pClone(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  return _pCard_RpnCalc(pDupCardRecursive());
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this rpnCalc contain given term?                                      */
-/*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bContains(Symbol* pSymbol_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bMatches(pSymbol_arg))
-      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* ensure all terms have a type                                               */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
-    xTerm.p_term()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* return first key col in this rpn sequence                                  */
@@ -115,63 +80,6 @@ Symbol* Card_RpnCalc::pFirstColSym(void)
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
     if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xKid.p_term()->pSymbol();
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return first key col in this rpn sequence                                  */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_RpnCalc::pFirstKeyCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
-      return xKid.p_term()->pSymbol();
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return first key col in this rpn sequence                                  */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_RpnCalc::pFirstNmdCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_NMD_COL))
-      return xKid.p_term()->pSymbol();
-
-  return nullptr;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* return first stmCol in this rpn sequence                                   */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_RpnCalc::pFirstStmCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
-      return xKid.p_term()->pSymbol();
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return first tblCol in this rpn sequence                                   */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_RpnCalc::pFirstTblCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -201,7 +109,6 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-//    if (xKid.p_term()->bSymbolMatches(pSymbol))
     if (xKid.p_term()->pSymbol()->bMatches(pSymbol))
       return true;
   }

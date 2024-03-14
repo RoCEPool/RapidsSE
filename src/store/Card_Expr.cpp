@@ -209,91 +209,6 @@ Card_Expr* Card_Expr::pCast_expr_term_expCol(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vBump_expCol(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //p_rpnCalc->vBump_expCol(nBumpBy);
-  Kid xKid(pSub_rpnCalc());
-  while (xKid.bEach(CK_TERM)) {
-
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-      xKid.p_term()->vBump_ordCol(SF_EXP_COL,nBumpBy);
-      xKid.p_term()->vMark1(MARK_CHANGED);
-    }
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pClone(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Expr* p_clone = _pCard_Expr(pDupCardRecursive());
-
-  return p_clone;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bContains(Symbol* pSymbol_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    return p_boolPred->bContains(pSymbol_arg);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    return p_rpnCalc->bContains(pSymbol_arg);
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* ensure expression has a SF_NMD_COL                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* pSym_expr = pSymbol();
-  if (pSym_expr->bHasFacet(SF_NMD_COL))
-    return;
-
-  if (! bIsCompound()) {
-    Card_Term* p_term0 = pGet_term0();
-    Symbol* pSym_term0 = p_term0->pSymbol();
-    if (pSym_term0->bHasFacet(SF_NMD_COL)) {
-      pSym_expr->vApplyFacet(SF_NMD_COL, pSym_term0);
-      return;
-    }
-  }
-
-  // synthetic column name
-  pSym_expr->vApplyFacet(SF_NMD_COL,iExpCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -374,15 +289,98 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vBump_expCol(i8 nBumpBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //p_rpnCalc->vBump_expCol(nBumpBy);
+  Kid xKid(pSub_rpnCalc());
+  while (xKid.bEach(CK_TERM)) {
+
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
+      xKid.p_term()->vBump_ordCol(SF_EXP_COL,nBumpBy);
+      xKid.p_term()->vMark1(MARK_CHANGED);
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pClone(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_clone = _pCard_Expr(pDupCardRecursive());
+
+  return p_clone;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bContains(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->pSymbol()->bMatches(pSymbol_arg))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xTerm(pSub_rpnCalc()); xTerm.bEach(CK_TERM); /**/) {
+    xTerm.p_term()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure expression has a SF_NMD_COL                                         */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSym_expr = pSymbol();
+  if (pSym_expr->bHasFacet(SF_NMD_COL))
+    return;
+
+  if (! bIsCompound()) {
+    Card_Term* p_term0 = pGet_term0();
+    Symbol* pSym_term0 = p_term0->pSymbol();
+    if (pSym_term0->bHasFacet(SF_NMD_COL)) {
+      pSym_expr->vApplyFacet(SF_NMD_COL, pSym_term0);
+      return;
+    }
+  }
+
+  // synthetic column name
+  pSym_expr->vApplyFacet(SF_NMD_COL,iExpCol);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get first stm col                                                          */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_Expr::pFirst_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* p_expCol = pSub_rpnCalc()->pFirstStmCol();
+  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+      return xKid.p_term()->pSymbol();
 
-  return p_expCol;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -392,21 +390,11 @@ Symbol* Card_Expr::pFirst_keyCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* p_keyCol = pSub_rpnCalc()->pFirstKeyCol();
+  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
+      return xKid.p_term()->pSymbol();
 
-  return p_keyCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get first key col                                                          */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirst_nmdCol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* p_nmdCol = pSub_rpnCalc()->pFirstNmdCol();
-
-  return p_nmdCol;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -416,9 +404,11 @@ Symbol* Card_Expr::pFirst_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* p_tblCol = pSub_rpnCalc()->pFirstTblCol();
+  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xKid.p_term()->pSymbol();
 
-  return p_tblCol;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -35,7 +35,6 @@ namespace STORE
 
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
-    Symbol* pFirst_nmdCol(void);
     Symbol* pFirst_tblCol(void);
 
     Symbol* pGet_Symbol(i8 i_Term);

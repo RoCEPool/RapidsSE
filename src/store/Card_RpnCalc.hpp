@@ -18,14 +18,7 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
-    Card_RpnCalc* pClone(void);
-    bool bContains(Symbol* pSymbol_arg);
-    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     Symbol* pFirstColSym(void);
-    Symbol* pFirstKeyCol(void);
-    Symbol* pFirstNmdCol(void);
-    Symbol* pFirstStmCol(void);
-    Symbol* pFirstTblCol(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Symbol* pSymbol);
     Card_RpnCalc* pInduct(Card_Expr* p_expr_arriving);
