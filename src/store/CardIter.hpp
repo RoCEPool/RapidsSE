@@ -131,7 +131,7 @@ namespace STORE
     eOA  eCueUser(String* psPrompt);
 
     void vDeleteMember(Card* pMember);
-    void vDeleteWhenEmptySub(eCK eMain, eCK eSub);
+    void vDeleteWhenEmptySub(eCK eOp, eCK eSub);
     void vDontDescend(bool bDontDescend);
 
     bool   bEachBoard(void);
@@ -139,18 +139,18 @@ namespace STORE
     Board* pEachBoard(i8& ri_Board);
 
     bool bEachOp(void);
-    bool bEachOp(eCK eMain);
-    bool bEachOp_foldBreak(eCK eMain);
-    bool bEachOp(eCK eMain, eCK eSub);
-    bool bEachOp(eCK eMain, eCK eSub, Stz* szSubFacet);
-    bool bEachOp(eCK eMain, eCK eSub1, eCK eSub2);
-    bool bEachOp(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3);
+    bool bEachOp(eCK eOp);
+    bool bEachOp_foldBreak(eCK eOp);
+    bool bEachOp(eCK eOp, eCK eSub);
+    bool bEachOp(eCK eOp, eCK eSub, Stz* szSubFacet);
+    bool bEachOp(eCK eOp, eCK eSub1, eCK eSub2);
+    bool bEachOp(eCK eOp, eCK eSub1, eCK eSub2, eCK eSub3);
 
     bool bEachOp_reverse(void);
-    bool bEachOp_reverse(eCK eMain);
-    bool bEachOp_reverse_foldBreak(eCK eMain);
-    bool bEachOp_reverse(eCK eMain, eCK eSub);
-    bool bEachOp_reverse_foldBreak(eCK eMain, eCK eSub);
+    bool bEachOp_reverse(eCK eOp);
+    bool bEachOp_reverse_foldBreak(eCK eOp);
+    bool bEachOp_reverse(eCK eOp, eCK eSub);
+    bool bEachOp_reverse_foldBreak(eCK eOp, eCK eSub);
 
     bool bEachSubOfOp(eCK eSub);
     bool bEach2SubOfOp(eCK eSub1, eCK eSub2);

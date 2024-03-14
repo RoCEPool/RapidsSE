@@ -659,11 +659,11 @@ void CardIter::vDeleteMember(Card* pMember)
 /*----------------------------------------------------------------------------*/
 /* delete main when given sub is empty                                        */
 /*----------------------------------------------------------------------------*/
-void CardIter::vDeleteWhenEmptySub(eCK eMain, eCK eSub)
+void CardIter::vDeleteWhenEmptySub(eCK eOp, eCK eSub)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (!bEachOp(eMain, eSub))
+  if (!bEachOp(eOp, eSub))
     return;
 
   vMember(G.e_MainCard, G.p_MainCard);
@@ -673,7 +673,7 @@ void CardIter::vDeleteWhenEmptySub(eCK eMain, eCK eSub)
   if (G.p_SubOfMain->nChildCards())
     return;
 
-  vRemoveDeleteMain(eMain);
+  vRemoveDeleteMain(eOp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -773,20 +773,20 @@ bool CardIter::bEachOp(void)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp(eCK eMain)
+bool CardIter::bEachOp(eCK eOp)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
-  RASSERT(Card_OP::bIsMain(eMain));
+  RASSERT(Card_OP::bIsMain(eOp));
 
   G.p_MainCard = nullptr;
 
   while (G.xKid.bEach()) {
 
-    if (G.xKid.pChild()->eCard() != eMain)
+    if (G.xKid.pChild()->eCard() != eOp)
       continue;
 
     G.p_MainCard = G.xKid.pChild();
@@ -803,14 +803,14 @@ bool CardIter::bEachOp(eCK eMain)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp_foldBreak(eCK eMain)
+bool CardIter::bEachOp_foldBreak(eCK eOp)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
-  RASSERT(Card_OP::bIsMain(eMain));
+  RASSERT(Card_OP::bIsMain(eOp));
 
   G.p_MainCard = nullptr;
 
@@ -819,7 +819,7 @@ bool CardIter::bEachOp_foldBreak(eCK eMain)
     if (G.xKid.pChild()->bIsCard(CK_c_FOLD))
       return false;
 
-    if (G.xKid.pChild()->eCard() != eMain)
+    if (G.xKid.pChild()->eCard() != eOp)
       continue;
 
     G.p_MainCard = G.xKid.pChild();
@@ -837,13 +837,13 @@ bool CardIter::bEachOp_foldBreak(eCK eMain)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp(eCK eMain, eCK eSub)
+bool CardIter::bEachOp(eCK eOp, eCK eSub)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(! Card_OP::bIsMain(eSub) || CK_o_FILTER == eSub);
 
-  while (bEachOp(eMain)) {
+  while (bEachOp(eOp)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub)))
       continue;
 
@@ -864,11 +864,11 @@ bool CardIter::bEachOp(eCK eMain, eCK eSub)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp(eCK eMain, eCK eSub, Stz* szSubFacet)
+bool CardIter::bEachOp(eCK eOp, eCK eSub, Stz* szSubFacet)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (bEachOp(eMain, eSub)) {
+  while (bEachOp(eOp, eSub)) {
     if (G.p_SubOfMain->pSymbol()->bHasFacet(szSubFacet)) {
       RASSERT(G.p_SubOfMain->pSymbol()->bSingleFaceted());
       return true;
@@ -881,13 +881,13 @@ bool CardIter::bEachOp(eCK eMain, eCK eSub, Stz* szSubFacet)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp(eCK eMain, eCK eSub1, eCK eSub2)
+bool CardIter::bEachOp(eCK eOp, eCK eSub1, eCK eSub2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(! Card_OP::bIsMain(eSub2) || CK_o_FILTER == eSub2);
 
-  while (bEachOp(eMain, eSub1)) {
+  while (bEachOp(eOp, eSub1)) {
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eSub2)))
       continue;
 
@@ -908,13 +908,13 @@ bool CardIter::bEachOp(eCK eMain, eCK eSub1, eCK eSub2)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3)
+bool CardIter::bEachOp(eCK eOp, eCK eSub1, eCK eSub2, eCK eSub3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(! Card_OP::bIsMain(eSub3));
 
-  while (bEachOp(eMain, eSub1, eSub2)) {
+  while (bEachOp(eOp, eSub1, eSub2)) {
     if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eSub3)))
       continue;
 
@@ -965,7 +965,7 @@ bool CardIter::bEachOp_reverse(void)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp_reverse(eCK eMain)
+bool CardIter::bEachOp_reverse(eCK eOp)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -974,12 +974,12 @@ bool CardIter::bEachOp_reverse(eCK eMain)
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
-  RASSERT(Card_OP::bIsMain(eMain));
+  RASSERT(Card_OP::bIsMain(eOp));
 
   G.p_MainCard = nullptr;
 
   while (G.xKid.bEach_reverse()) {
-    if (G.xKid.pChild()->eCard() != eMain)
+    if (G.xKid.pChild()->eCard() != eOp)
       continue;
 
     G.p_MainCard = G.xKid.pChild();
@@ -996,7 +996,7 @@ bool CardIter::bEachOp_reverse(eCK eMain)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp_reverse_foldBreak(eCK eMain)
+bool CardIter::bEachOp_reverse_foldBreak(eCK eOp)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1005,7 +1005,7 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eMain)
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
-  RASSERT(Card_OP::bIsMain(eMain));
+  RASSERT(Card_OP::bIsMain(eOp));
 
   G.p_MainCard = nullptr;
 
@@ -1014,7 +1014,7 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eMain)
     if (G.xKid.pChild()->bIsCard(CK_c_FOLD))
       return false;
 
-    if (G.xKid.pChild()->eCard() != eMain)
+    if (G.xKid.pChild()->eCard() != eOp)
       continue;
 
     G.p_MainCard = G.xKid.pChild();
@@ -1031,13 +1031,13 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eMain)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update G   */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp_reverse(eCK eMain, eCK eSub)
+bool CardIter::bEachOp_reverse(eCK eOp, eCK eSub)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(! Card_OP::bIsMain(eSub));
 
-  while (bEachOp_reverse(eMain)) {
+  while (bEachOp_reverse(eOp)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub)))
       continue;
 
@@ -1051,7 +1051,7 @@ bool CardIter::bEachOp_reverse(eCK eMain, eCK eSub)
 
   G.p_MainCard  = nullptr;
   G.e_MainCard  = CK_NONE;
-  vMember(eMain, nullptr);
+  vMember(eOp, nullptr);
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
   vMember(eSub, nullptr);
@@ -1061,13 +1061,13 @@ bool CardIter::bEachOp_reverse(eCK eMain, eCK eSub)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update G   */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp_reverse_foldBreak(eCK eMain, eCK eSub)
+bool CardIter::bEachOp_reverse_foldBreak(eCK eOp, eCK eSub)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(! Card_OP::bIsMain(eSub) || CK_o_FILTER == eSub);
 
-  while (bEachOp_reverse_foldBreak(eMain)) {
+  while (bEachOp_reverse_foldBreak(eOp)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSub)))
       continue;
 
@@ -1082,7 +1082,7 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eMain, eCK eSub)
   // did not find card
   G.p_MainCard  = nullptr;
   G.e_MainCard  = CK_NONE;
-  vMember(eMain, nullptr);
+  vMember(eOp, nullptr);
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
   vMember(eSub, nullptr);
