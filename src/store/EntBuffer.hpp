@@ -136,9 +136,8 @@ namespace STORE
     void       vBufferCount(i8& nBufferCount);
     EntBuffer* pHigherEntBuffer(void);
     void       vHigherEntBuffer(EntBuffer* pHigherBuffer);
-    EntBuffer* pNextEntBuffer(void);
-    void       vNextEntBuffer(EntBuffer* pNextBuffer);
-    EntBuffer* pPrevEntBuffer(void);
+		void       vNextEntBuffer(EntBuffer* pNextBuffer);
+		EntBuffer* pPrevEntBuffer(void);
     void       vPrevEntBuffer(EntBuffer* pPrevBuffer);
 
     //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
@@ -147,7 +146,6 @@ namespace STORE
     // entry functions
   
     Ent* aEntArray(void);
-    Ent* aLeadEntry(void);
     Ent* aLastEntry(void);
     Ent* aNextEntry(Ent* aPrevEntry);
     void vShowEntry(Ent* pEntry);
@@ -254,7 +252,6 @@ namespace STORE
     void        vLazyBuild(void);
     i8          iLengthList(void);
     i8          iLengthSubList(void);
-    Ent*        aNextEntry(Ent* aEnt, i8 i_Offset);
     Ent*        aNextEntry_flat(Ent* aEnt, i8 i_Offset);
     void        vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
     void        vReset(void);
@@ -339,10 +336,77 @@ namespace STORE
 
     public:
     Footer* aFooter(void);
-  };
-  
-  EntBuffer* _pEntBuffer(void* aAddr);
-  void* aGetNextEntry(void** ppEntBuffer, void* aPrevEntry);
+
+	/*----------------------------------------------------------------------------*/
+	/* get next entry                                                             */
+	/*----------------------------------------------------------------------------*/
+	#if 0
+
+	inline Ent* aNextEntry(Ent* aCurrent, i8 iLevel)
+	{
+		_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+		ASSERT(aCurrent);
+		ASSERT(iLevel <= 5);
+
+		ASSERT(aCurrent->bValidEnt());
+
+		tET tNextEntry = aCurrent->tNextEntry(iLevel);
+
+		if (C_ENT_END_TICKET == tNextEntry)
+			return nullptr;
+
+		//RASSERT(tNextEntry < m_nItems);
+
+		//vTrace("DIFF: %lldB\n"_Stz,nDifference(this,aGetItem(0)));
+
+		i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
+		Ent* aNextEnt = aGetItem(iNextEntryOffset);
+
+		ASSERT(! aNextEnt || aNextEnt->bValidEnt());
+
+		return aNextEnt;
+	}
+
+	/*----------------------------------------------------------------------------*/
+
+	#else
+
+		inline Ent* aNextEntry(Ent* aCurrent, i8 iLevel)
+		{
+			_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+			return aNextEntry_flat(aCurrent,iLevel);
+		}
+
+	#endif
+
+	/*----------------------------------------------------------------------------*/
+  /* get next buffer                                                            */
+  /*----------------------------------------------------------------------------*/
+	inline EntBuffer* pNextEntBuffer(void)
+	{
+		_precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+		return reinterpret_cast<EntBuffer*>(m_tNextBuffer.pGetDataBuffer());
+	}
+
+	/*----------------------------------------------------------------------------*/
+	/* get lead entry (the entry after head entry                                 */
+  /*----------------------------------------------------------------------------*/
+	inline Ent* aLeadEntry(void)
+	{
+		_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+
+		Ent* aFirst = aNextEntry(aSkipRoots(),0);
+
+		ASSERT(! aFirst || aFirst->bValidEnt());
+
+		return aFirst;
+	}
+	};
+	EntBuffer* _pEntBuffer(void* aAddr);
 }
 
 /*============================================================================*/
