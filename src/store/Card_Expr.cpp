@@ -733,6 +733,17 @@ void Card_Expr::vShortForm(String* pString, Stz* szSep)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vUpdate_expCol(Card_Emit* p_arriving)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
+    xKid.p_term()->vUpdate_expCol(p_arriving);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)

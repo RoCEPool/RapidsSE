@@ -113,17 +113,6 @@ bool Card_RpnCalc::bContains(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vUpdate_expCol(Card_Emit* p_arriving)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    xKid.p_term()->vUpdate_expCol(p_arriving);
-}
-
-/*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)

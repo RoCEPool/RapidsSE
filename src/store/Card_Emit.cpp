@@ -563,14 +563,11 @@ void Card_Emit::vShortForm(String* pString)
 void Card_Emit::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(bAlt);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-
-    if (Card_BoolPred* p_boolPred = xKid.p_expr()->pSub_boolPred())
-      p_boolPred->vUpdate_expCol(p_arriving,bAlt);
-    else
-    if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
-      p_rpnCalc->vUpdate_expCol(p_arriving);
+    Card_Expr *p_expr = xKid.p_expr();
+    p_expr->vUpdate_expCol(p_arriving);
   }
 }
 

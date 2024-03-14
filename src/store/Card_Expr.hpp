@@ -32,13 +32,16 @@ namespace STORE
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsure_expr_Has_nmdCol(i8 iExpCol);
+
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
     Symbol* pFirst_nmdCol(void);
     Symbol* pFirst_tblCol(void);
+
     Symbol* pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
+
     bool bHasTerm(Symbol* pSymbol);
 
     Card_Expr *pInduct(i8 iExp);
@@ -57,8 +60,9 @@ namespace STORE
     void vRenumberForm_expCol(i8 i_Expr);
 
     bool bSameAs(Card_Expr* pExpr_arg);
-
     void vShortForm(String* pString, Stz* szSep);
+
+    void vUpdate_expCol(Card_Emit* p_arriving);
 
     void vX_tblCol_To_expCol(CardIter* pCI);
     void vX_expCol_To_tblCol(CardIter* pCI);
