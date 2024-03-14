@@ -22,9 +22,7 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Symbol* pSymbol);
     Card_RpnCalc* pInduct(Card_Expr* p_expr_arriving);
-    bool bIsAggCalc(void);
-    bool bIsCompound(void);
-    bool bIsLiterals(void);
+     bool bIsLiterals(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bNeedsBrace(void);

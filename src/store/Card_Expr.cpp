@@ -529,16 +529,10 @@ bool Card_Expr::bIsCompound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bCompound = false;
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    bCompound = p_boolPred->bIsCompound();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bCompound = p_rpnCalc->bIsCompound();
-  }
+  if (pSub_rpnCalc()->nChildCards() > 1)
+    return true;
 
-  return bCompound;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

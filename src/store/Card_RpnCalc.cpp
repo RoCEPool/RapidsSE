@@ -142,36 +142,6 @@ Card_RpnCalc* Card_RpnCalc::pInduct(Card_Expr* p_expr_arriving)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this rpnCalc an aggregate function sequence ?                           */
-/*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsAggCalc(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (nChildCards() < 0)
-    return false;
-
-  Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->pSymbol()->bHasFacet((SF_PARENTHESIS)))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a compound rpnCalc?                                                */
-/*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsCompound(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (nChildCards() > 1)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a literals rpnCalc?                                                */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsLiterals(void)
