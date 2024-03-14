@@ -16,6 +16,16 @@ Data Types
 .. index::
    single: data types; supported
    single: RapidsSE; supported data types
+   single: ``INTEGER`` (supported data types)
+   single: ``FLOAT`` (supported data types)
+   single: ``DECIMAL`` (supported data types)
+   single: ``BOOLEAN`` (supported data types)
+   single: ``DATE`` (supported data types)
+   single: ``TIME`` (supported data types)
+   single: ``TIMESTAMP`` (supported data types)
+   single: ``CHAR`` (supported data types)
+   single: ``VARCHAR`` (supported data types)
+   single: ``INTERVAL`` (supported data types)
 
 Supported Data Types
 --------------------
@@ -39,9 +49,15 @@ below.
                   ``1.797693134862315708145274237317043567981e+308``
    ``DECIMAL``    RapidsSE v1.x supports decimals with a maximum precision and scale of 17 digits.
                   The range of the mantissa (the un-scaled value) is from
-                  ``-99,999,999,999,999,999`` to ``99,999,999,999,999,999``. With a scale of 2 the
-                  range of the overall value is ``-999,999,999,999,999.99`` to
-                  ``999,999,999,999,999.99``
+                  ``-99,999,999,999,999,999`` to ``99,999,999,999,999,999``.
+
+                  Decimals also support a scale (the number of digits to the right of the
+                  decimal point) from 0 to 17. As the scale is increased, the range of the
+                  integral (whole number) portion is reduced accordingly. For example, with a
+                  scale of 2 the supported value range is ``-999,999,999,999,999.99`` to
+                  ``999,999,999,999,999.99``. With a scale of 17 the supported value range is
+                  ``-0.999,999,999,999,999,99`` to ``0.999,999,999,999,999,99``. This is covered
+                  further in the :ref:`section below<decimals>`.
    ``BOOLEAN``    No limits
    ``DATE``       For RapidsSE v1.x the range of valid years is ``1900`` to ``2155``
    ``TIME``       No limits
@@ -76,6 +92,142 @@ below.
                     | ``HOUR TO SECOND``   : +/-     20,015,998 hours, 20 minutes, 37.927935 seconds
                     | ``MINUTE TO SECOND`` : +/-  1,200,959,900 minutes, 37.927935 seconds
    =============  ===========================================================================
+
+
+.. index::
+   single: data types; decimals
+
+.. _decimals:
+
+Decimals
+---------
+
+.. index::
+   single: decimals; overview
+   single: precision (decimal)
+   single: scale (decimal)
+
+Decimal Overview
+`````````````````
+
+The ``DECIMAL`` data type is an exact data type that precisely represents
+values and calculations within a limited range of precision and scale.
+``DECIMAL``\ s are often used for precise calculations where the approximate
+representation of a floating point number is not appropriate (e.g. operations
+involving money).
+
+The *precision* of a ``DECIMAL`` data type is the maximum number of digits
+(base 10) that are allowed to be represented. RapidsSE has supports a maximum
+precision of 17, meaning that it can represent a value as large as
+``99,999,999,999,999,999`` or as precise as ``0.999,999,999,999,999,99``.
+
+A column or expression can also be defined with a smaller precision. If a value
+exceeds the precision and cannot be represented then an error is returned.
+For example, if a column is defined as a ``DECIMAL`` with a precision of 3 then
+it cannot return a value greater than ``999``.
+
+The *scale* of a ``DECIMAL`` data type is the maximum number of digits that can
+appear to the right of a decimal point. These digits are also counted towards
+the precision of the ``DECIMAL`` too. So a value typically cannot have a very
+large integral (whole number) component as well as a very large fractional
+component at the same time. A scale value of ``0`` means that the ``DECIMAL``
+does not have any digits to the right of a decimal place and therefore it has
+integral (whole number) values only. While this is similar to an ``INTEGER`` it
+is important to note that a ``DECIMAL`` with a zero scale does not have the
+same range as as ``INTEGER``.
+
+
+The precision and scale of a ``DECIMAL`` is specified by writing the precision
+and (optionally) the scale, separated by a single comma, in parentheses immediately
+after the ``DECIMAL`` keyword. Here are some examples:
+
+.. code:: sql
+
+   DECIMAL
+   DECIMAL(4)
+   DECIMAL(4,2)
+   DECIMAL(4,4)
+
+When a ``DECIMAL`` data type is specified without a precision and scale then
+RapidsSE will use the default precision of ``17`` and a default scale of ``0``. If a
+precision is specified but not a scale then RapidsSE will use the default scale
+of ``0``. A scale cannot be specified without specifying a precision.
+
+RapidsSE supports a precision in the range [``1``, ``17``]. A negative or zero
+precision does not make sense.
+
+RapidsSE supports a scale in the range [``0``, precision]. That is, the maximum
+value for the scale cannot exceed the maximum value of the precision for that
+column or expression type. So if a ``DECIMAL`` column is defined with a precision
+of ``4`` then the scale for that column cannot be any larger than ``4``.
+
+RapidsSE does not support negative scales.
+
+
+.. index::
+   single: decimals; expressions affecting precision & scale
+   single: expressions; decimal precision & scale
+
+Decimal Operations Affecting Precision and Scale
+````````````````````````````````````````````````
+
+``DECIMAL`` expressions support a range of arithmetic and aggregate operations.
+The evaluation of a ``DECIMAL`` expression will typically produce a result as
+another ``DECIMAL`` that has a different precision or scale. This is because
+calculations can cause the number of digits in the integral component to overflow
+or the number of fractional digits to be increased to accurate capture the exact
+result.
+
+For example the expression ``9. + 2.`` is the addition of two ``DECIMAL`` values
+that each have a precision of ``1``. However the result of this operation (``11.``)
+has a precision of ``2`` because the integral component has overflowed into two
+digits.
+
+Similarly, the expression ``9.2 * 2.0`` has two operands that each have a precision
+of ``2`` and a scale of ``1``. The result, ``18.40``, has a precision of ``4`` and a
+scale of ``2``. The last digit, ``0``, is significant to the accuracy of the calculation.
+
+There are rules that govern how much precision and scale a result of an expression
+will have. These are described below. An important point to remember is that the
+actual precision and scale of the result will depend on the precision and scale of
+the specific operands involved, not the precision and scale of any column definitions
+that they may have come from.
+
+.. table:: Precision and scale in decimal expression operations
+   :name: decimal-prec-scale-operations-table
+   :widths: 15, 53, 32
+
+   ================ ============================================ =====================
+   Operation        Precision                                    Scale
+   ================ ============================================ =====================
+   ``arg1 + arg2``  ``max(s1, s2) + max(p1 - s1, p2 - s2) + 1``  ``max(s1, s2)``
+   ``arg1 - arg2``  ``max(s1, s2) + max(p1 - s1, p2 - s2) + 1``  ``max(s1, s2)``
+   ``arg1 * arg2``  ``p1 + p2``                                  ``s1 + s2``
+   ``arg1 / arg2``  ``p1 - s1 + s2 + max(6, s1 + p2 + 1)``       ``max(6, s1 + p2 + 1)``
+   ``SUM(arg1)``    ``p_max``                                    ``s1``
+   ``COUNT(arg1)``  ``19``                                       ``0``
+   ``AVG(arg1)``    ``p_max``                                    ``s1 + p_max + 1``
+   ``MIN(arg1)``    ``p1``                                       ``s1``
+   ``MAX(arg1)``    ``p1``                                       ``s1``
+   ================ ============================================ =====================
+
+In the above table:
+
+* ``p1`` and ``p2`` refer to the precision of the value of ``arg1``
+  and ``arg2`` respectively;
+
+* ``s1`` and ``s2`` refer to the scale of the value of ``arg1``
+  and ``arg2`` respectively;
+
+* ``p_max`` refers to the maximum ``DECIMAL`` precision supported, which is 17;
+
+* ``max(a, b)`` means that larger value of ``a`` or ``b``.
+
+
+
+Scale truncation, integral preservation.
+
+Loading of decimals will be rounded to fit the precision/scale of the column definition
 
 
 .. index::
