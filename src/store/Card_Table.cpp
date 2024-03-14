@@ -109,7 +109,7 @@ void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachSubOfOp(CK_s_TABLE))  {
+  while (pCI->bEachOp_bySub(CK_s_TABLE))  {
     pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 }
@@ -155,7 +155,7 @@ void Card_Table::vFixTablePos(CardIter* pCI)
 {
   _static_
 
-  for (Kid xKid(pCI->G.pDeck); xKid.bEach(CK_o_FROM); /**/) {
+  for (Kid xKid(pCI->G.p_deck); xKid.bEach(CK_o_FROM); /**/) {
     Card_Table* p_table = xKid.pChild()->pSub_table();
     if (p_table->bUsesSqyRsl()) {
       p_table->pSymbol()->Y_vSet(P_FixedPos,(i8)0);

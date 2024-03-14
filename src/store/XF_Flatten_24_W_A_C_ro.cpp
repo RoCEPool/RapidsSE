@@ -88,7 +88,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   vRestate_emit_fold(m_pCI);
 
-  m_pCI->G.pDeck->vMarksClearRecursive();
+  m_pCI->G.p_deck->vMarksClearRecursive();
 
   m_pCI->vEndTransform(__LINE__);
 }

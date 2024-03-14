@@ -56,7 +56,7 @@ CardIter::CardIter(Bench* pBench)
   Flat.m_pCopy_inner  = nullptr;
 
 //  G.pBoard    = nullptr;
-//  G.pDeck     = nullptr;
+//  G.p_deck     = nullptr;
 
   m_nAncestors = 0;
   MemLib::vZero(m_apAncestry,sizeof(m_apAncestry),CN_CARDITER);
@@ -341,7 +341,7 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
   Card_Expr* p_expr_col = nullptr;
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = this->G.pDeck->pGetChild(i_Main);
+    Card *pMain = this->G.p_deck->pGetChild(i_Main);
     Card_Emit* p_emit = pMain->pSub_emit();
 
     if (!p_emit)
@@ -388,7 +388,7 @@ Card_Expr* CardIter::pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before)
   Card_Expr* p_expr_col = nullptr;
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = this->G.pDeck->pGetChild(i_Main);
+    Card *pMain = this->G.p_deck->pGetChild(i_Main);
 
     if (Card_Emit* p_emit = pMain->pSub_emit()) {
       i8 nChildren_prj = p_emit->nChildCards();
@@ -1074,7 +1074,7 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eOp, eCK eSub)
 /*----------------------------------------------------------------------------*/
 /* step main register to next main which has sub and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachSubOfOp(eCK eSub)
+bool CardIter::bEachOp_bySub(eCK eSub)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1101,7 +1101,7 @@ bool CardIter::bEachSubOfOp(eCK eSub)
 /*----------------------------------------------------------------------------*/
 /* step main register to next main which has sub and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEach2SubOfOp(eCK eSub1, eCK eSub2)
+bool CardIter::bEachOp_by2Sub(eCK eSub1, eCK eSub2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1135,7 +1135,7 @@ bool CardIter::bEach2SubOfOp(eCK eSub1, eCK eSub2)
 /*----------------------------------------------------------------------------*/
 /* step main register to next main which has sub and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEach3SubOfOp(eCK eSub1, eCK eSub2, eCK eSub3)
+bool CardIter::bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1196,12 +1196,12 @@ void CardIter::vEndTransform(i8 iLineNo)
 
   if (G.pBoard) {
 
-    G.pDeck->vCheckCorrectness();
+    G.p_deck->vCheckCorrectness();
 
     if (!  G.pBoard->pState()->bHasName(aXF[m_pBench->eXform()]))
       G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
-    for (Kid xDeck(G.pDeck); xDeck.bEach(); /**/) {
+    for (Kid xDeck(G.p_deck); xDeck.bEach(); /**/) {
       xDeck.pChild()->vEnsureFirst(CK_s_LEVEL);
       xDeck.pChild()->vEnsureLast(CK_s_CONSTRAINT);
       xDeck.pChild()->vEnsureLast(CK_s_NEEDED);
@@ -1234,7 +1234,7 @@ Card_OP* CardIter::pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before)
     i_Before = i_Child();
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card_OP *p_OP = (Card_OP*)G.pDeck->pGetChild(i_Main);
+    Card_OP *p_OP = (Card_OP*)G.p_deck->pGetChild(i_Main);
     if (p_OP->bIsCard(CK_o_FROM)) {
       Card_Table* p_table_test = p_OP->pSub_table();
       //p_table_test->vDump(__func__);
@@ -1304,7 +1304,7 @@ void CardIter::vInsertAfter(Card* pCard, Card* pAfter)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.pDeck->vInsertChildAfter(pCard,pAfter);
+  G.p_deck->vInsertChildAfter(pCard, pAfter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1314,7 +1314,7 @@ void CardIter::vInsertBefore(Card* pCard, Card* pBefore)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.pDeck->vInsertChildBefore(pCard,pBefore);
+  G.p_deck->vInsertChildBefore(pCard, pBefore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1500,7 +1500,7 @@ void CardIter::vMember(eCK eMember, Card* pCard)
     case CK_COUNT:         G.p_count             = _pCard_Count(pCard); break;
     case CK_o_CROSSJOIN:   G.p_crossJoin         = _pCard_CrossJoin(pCard); break;
 
-    case CK_DECK:          G.pDeck               = _pCard_Deck(pCard); break;
+    case CK_DECK:          G.p_deck               = _pCard_Deck(pCard); break;
     case CK_DECISION:      G.p_decision          = _pCard_Decision(pCard); break;
     case CK_DIRECTION:     G.p_direction         = _pCard_Direction(pCard); break;
     case CK_DISPOSITION:   G.p_disposition       = _pCard_Disposition(pCard); break;
@@ -2212,7 +2212,7 @@ void CardIter::vUseBoard(Board* pBoard)
     pBoard = m_pBench->pGetBoard(0);
 
   G.pBoard = pBoard;
-  G.pDeck  = G.pBoard->pDeck();
+  G.p_deck  = G.pBoard->pDeck();
 
   vUseCard(G.pBoard->pDeck());
 }

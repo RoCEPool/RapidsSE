@@ -85,7 +85,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
     }
 
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
 
     L_UPDATE_PRIOR_EMITTED:
@@ -115,7 +115,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
 
     m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
   }
 
@@ -132,7 +132,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
 
     m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
   }
 
@@ -158,7 +158,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     // can fuse next projection
     m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
     m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_Op->pSub_emit();
   }
@@ -185,7 +185,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     // can fuse next projection
     m_pCI->G.p_stream = m_pCI->G.p_crossJoin->pSub_stream();
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
   }
 

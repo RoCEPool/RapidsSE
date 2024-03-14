@@ -59,7 +59,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
 
   Card_Project* p_project_unproject = new Card_Project(CK_o_PROJECT);
-  pCI->G.pDeck->vAppendChild(p_project_unproject);
+  pCI->G.p_deck->vAppendChild(p_project_unproject);
   p_project_unproject->pSymbol()->Y_vSet(P_Unproject);
 
   Card_Level* p_level = new Card_Level(AL_ORIGIN);

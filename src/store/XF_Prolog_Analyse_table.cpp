@@ -155,7 +155,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSy
   Card_Table::vAffixTableSyn_passThru(m_pCI, pSymbol_tableSyn);
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachSubOfOp(CK_s_TABLE)) {
+  while (m_pCI->bEachOp_bySub(CK_s_TABLE)) {
 
     Card_TableNm *p_tableNm = m_pCI->G.p_table->pSub_tableNm();
     Table *pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));

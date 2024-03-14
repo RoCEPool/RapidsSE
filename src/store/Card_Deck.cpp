@@ -74,13 +74,13 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
         p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
-        eStageCast = pCI->G.pDeck->eAddStageCast_toPrev_cast(pCI,
-                                                             p_streamPtn,
-                                                             p_project_prior,
-                                                             p_combined_prior,
-                                                             p_cast_prior,
-                                                             p_arriving,
-                                                             (Card_OP*)pCI->G.p_Op);
+        eStageCast = pCI->G.p_deck->eAddStageCast_toPrev_cast(pCI,
+                                                              p_streamPtn,
+                                                              p_project_prior,
+                                                              p_combined_prior,
+                                                              p_cast_prior,
+                                                              p_arriving,
+                                                              (Card_OP*)pCI->G.p_Op);
         UNUSED(eStageCast);
         pCI->vResynchOp();
        // pCI->PRINTBOARD_dbg();

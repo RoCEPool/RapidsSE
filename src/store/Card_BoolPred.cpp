@@ -297,7 +297,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Deck* pDeck = pCI->G.pDeck;
+  Card_Deck* pDeck = pCI->G.p_deck;
   Card *pMainCard;
 
   pCI->vRecurseBegin(this);

@@ -81,7 +81,7 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 
   pCI->G.p_stream->vAppendChild(pCI->G.p_Op->pSub_emit()->pClone());
 
-  pCI->G.pDeck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_Op);
+  pCI->G.p_deck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_Op);
 
   if (! pCI->G.p_filter->pSub_level()) {
     pCI->G.p_filter->vPushChild(pCI->G.p_Op->pSub_level()->pDupCardRecursive());

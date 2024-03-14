@@ -79,7 +79,7 @@ void XF_Flatten_Left_subQuery::vRemove_LeftMost(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_LEFT_SUBQUERY);
 
-  Kid xDeck(m_pCI->G.pDeck);
+  Kid xDeck(m_pCI->G.p_deck);
   if (xDeck.bEach()) {
     if (CK_SUBQUERY == xDeck.eChild()) {
       xDeck.vDelete();
@@ -98,9 +98,9 @@ void XF_Flatten_Left_subQuery::vRotate_Next(void)
 
   //m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_LEFT_SUBQUERY);
 
-  Kid xDeck(m_pCI->G.pDeck);
+  Kid xDeck(m_pCI->G.p_deck);
   if (xDeck.bEach(CK_SUBQUERY)) {
-    m_pCI->G.pDeck->vRotateFirst(xDeck.pChild());
+    m_pCI->G.p_deck->vRotateFirst(xDeck.pChild());
   }
 
   //m_pCI->vEndTransform(__LINE__);

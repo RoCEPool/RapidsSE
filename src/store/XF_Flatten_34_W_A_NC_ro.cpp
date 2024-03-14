@@ -96,7 +96,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->G.pDeck->vMarksClearRecursive();
+  m_pCI->G.p_deck->vMarksClearRecursive();
 
  // m_pCI->PRINTBOARD_dbg();
 

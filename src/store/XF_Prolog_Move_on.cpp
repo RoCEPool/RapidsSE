@@ -102,7 +102,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     if (! m_pCI->G.p_where) {
       // create a new <where>/...
       m_pCI->G.p_where = Card_Where::pNewWhereAssembly();
-      m_pCI->G.pDeck->vInsertChildAfter(m_pCI->G.p_where,m_pCI->G.p_absJoin);
+      m_pCI->G.p_deck->vInsertChildAfter(m_pCI->G.p_where, m_pCI->G.p_absJoin);
 
       m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc();
     }

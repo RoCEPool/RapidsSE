@@ -152,9 +152,9 @@ namespace STORE
     bool bEachOp_reverse(eCK eOp, eCK eSub);
     bool bEachOp_reverse_foldBreak(eCK eOp, eCK eSub);
 
-    bool bEachSubOfOp(eCK eSub);
-    bool bEach2SubOfOp(eCK eSub1, eCK eSub2);
-    bool bEach3SubOfOp(eCK eSub1, eCK eSub2, eCK eSub3);
+    bool bEachOp_bySub(eCK eSub);
+    bool bEachOp_by2Sub(eCK eSub1, eCK eSub2);
+    bool bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3);
 
     void vEndPhase(void);
     void vEndTransform(i8 iLineNo);
@@ -208,11 +208,7 @@ namespace STORE
     void vValidateBench(void);
     void vValidateChildren(Card* pCard, i8 iDepth);
 
-  protected:
-
-
   private:
-
     Footer* aFooter(void);
   };
 

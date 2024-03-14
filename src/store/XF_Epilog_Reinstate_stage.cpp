@@ -66,7 +66,7 @@ void XF_Epilog_Reinstate_stage::vReinstate_stage(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All SubQuery
-//  for (Kid xKid(m_pCI->G.pDeck); xKid.bEach(CK_SUBQUERY); /**/) {
+//  for (Kid xKid(m_pCI->G.p_deck); xKid.bEach(CK_SUBQUERY); /**/) {
 //    xKid.vDelete();
 //  }
 

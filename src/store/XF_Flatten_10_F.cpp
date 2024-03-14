@@ -91,7 +91,7 @@ void XF_Flatten_10_F::vFlatten(void)
   pCarryForward->Table.m_bReproject = true;
    vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.pDeck->vMarksClearRecursive();
+  m_pCI->G.p_deck->vMarksClearRecursive();
 
   // todo: discuss with Alka
   m_pCI->vClearRestart();

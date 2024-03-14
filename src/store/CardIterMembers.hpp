@@ -15,7 +15,6 @@ namespace STORE
   public:
     i8          i_Board;
     Board*      pBoard;
-    Card_Deck*  pDeck;
 
   // - - - - - - - - - - - - -
   private:
@@ -65,6 +64,7 @@ namespace STORE
     Card_CrossJoin *     p_crossJoin;
 
     Card_Decision *      p_decision;
+    Card_Deck*           p_deck;
     Card_Direction *     p_direction;
     Card_Disposition *   p_disposition;
 

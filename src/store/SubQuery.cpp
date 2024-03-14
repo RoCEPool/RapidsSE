@@ -441,7 +441,7 @@ void SubQuery::vValidate(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBQUERY, _FOOTER_);
 
   RASSERT(pCI->G.pBoard);
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
+  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.p_deck);
 
   if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
     return;
@@ -450,7 +450,7 @@ void SubQuery::vValidate(CardIter* pCI)
 
   pCI->vSaveMembers();
   pCI->vResetMembers();
-  pCI->G.pDeck->vValidate(pCI);
+  pCI->G.p_deck->vValidate(pCI);
   pCI->vRestoreMembers();
 }
 

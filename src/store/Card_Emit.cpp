@@ -56,7 +56,7 @@ Card_Emit* Card_Emit::pResolvePrior_emit(CardIter* pCI)
 {
   _static_
 
-  Kid xKid(pCI->G.pDeck);
+  Kid xKid(pCI->G.p_deck);
 
   xKid.vBegin_reverse();
   xKid.vReposition(pCI->G.i_Op);

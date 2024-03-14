@@ -111,7 +111,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
  // m_pCI->PRINTBOARD_dbg();
 
- m_pCI->G.pDeck->vMarksClearRecursive();
+ m_pCI->G.p_deck->vMarksClearRecursive();
 
  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

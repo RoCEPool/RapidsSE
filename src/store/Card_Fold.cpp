@@ -134,7 +134,7 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
 
   pCI->G.p_emit = nullptr;
   for (i8 i_Main = pCI->Flat.m_i_fold - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
+    Card *pMain = pCI->G.p_deck->pGetChild(i_Main);
     if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
   }
