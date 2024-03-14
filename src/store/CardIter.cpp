@@ -359,7 +359,7 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
       if (1 != p_rpnCalc->nChildCards())
         continue;
 
-      Symbol* pSym_rpnCalc_term0 = p_rpnCalc->pGetTerm(0)->pSymbol();
+      Symbol* pSym_rpnCalc_term0 = p_expr_prj->pGet_term(0)->pSymbol();
       RASSERT(pSym_rpnCalc_term0->bIs_Col());
 
       if (pSym_rpnCalc_term0->bMatches(pSym_term_arg)) {

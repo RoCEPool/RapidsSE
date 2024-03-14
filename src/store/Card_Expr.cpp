@@ -449,9 +449,8 @@ Card_Term* Card_Expr::pGet_term0(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
-  RASSERT(1 == p_rpnCalc->nChildCards());
-  Card_Term* p_term0 = p_rpnCalc->pGetTerm(0);
+  RASSERT(1 == pSub_rpnCalc()->nChildCards());
+  Card_Term* p_term0 = pGet_term(0);
 
   return p_term0;
 }

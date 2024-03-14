@@ -253,9 +253,7 @@ IndexDef* Card_Key::pToIndexDef(void)
   while (xKey.bEach(CK_EXPR)) {
     Card_Expr* p_expr = xKey.p_expr();
 
-    Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
-
-    Card_Term* p_term = p_rpnCalc->pGetTerm(0);
+    Card_Term* p_term = p_expr->pGet_term(0);
     if (! p_term)
       continue;
 
