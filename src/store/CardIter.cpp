@@ -1326,135 +1326,135 @@ Card* CardIter::pMember(eCK eMember)
 
   switch (eMember) {
 
-    case CK_c_ABSJOIN:          return G.p_absJoin;
-    case CK_ADDRESS:          return G.p_address;
-    case CK_o_AGGREG:           return G.p_aggreg;
-    case CK_ANDCONJ:          return G.p_andConj;
+    case CK_c_ABSJOIN:      return G.p_absJoin;
+    case CK_ADDRESS:        return G.p_address;
+    case CK_o_AGGREG:       return G.p_aggreg;
+    case CK_ANDCONJ:        return G.p_andConj;
 
-    case CK_BOOLPRED:         return G.p_boolPred;
-    case CK_BOUND:            return G.p_bound;
-    case CK_BOUNDS:           return G.p_bounds;
+    case CK_BOOLPRED:       return G.p_boolPred;
+    case CK_BOUND:          return G.p_bound;
+    case CK_BOUNDS:         return G.p_bounds;
 
-    case CK_o_CALL:             return G.p_call;
-    case CK_CALLER:           return G.p_caller;
-    case CK_CALLOP:           return G.p_callOp;
-    case CK_o_CAST:             return G.p_cast;
-    case CK_CLAUSE:           return G.p_clause;
-    case CK_c_COMBINED:         return G.p_combined;
-    case CK_s_CONSTRAINT:       return G.p_constraint;
-    case CK_CORRCOLS:         return G.p_corrCols;
-    case CK_o_CORRELATION:      return G.p_correlation;
-    case CK_COSTJOINING:      return G.p_costJoining;
-    case CK_COSTNETWORK:      return G.p_costNetwork;
-    case CK_COSTSTREAM:       return G.p_costQuery;
-    case CK_COSTUNICAST:      return G.p_costUnicast;
-    case CK_COUNT:            return G.p_count;
-    case CK_o_CROSSJOIN:        return G.p_crossJoin;
+    case CK_o_CALL:         return G.p_call;
+    case CK_CALLER:         return G.p_caller;
+    case CK_CALLOP:         return G.p_callOp;
+    case CK_o_CAST:         return G.p_cast;
+    case CK_CLAUSE:         return G.p_clause;
+    case CK_c_COMBINED:     return G.p_combined;
+    case CK_s_CONSTRAINT:   return G.p_constraint;
+    case CK_CORRCOLS:       return G.p_corrCols;
+    case CK_o_CORRELATION:  return G.p_correlation;
+    case CK_COSTJOINING:    return G.p_costJoining;
+    case CK_COSTNETWORK:    return G.p_costNetwork;
+    case CK_COSTSTREAM:     return G.p_costQuery;
+    case CK_COSTUNICAST:    return G.p_costUnicast;
+    case CK_COUNT:          return G.p_count;
+    case CK_o_CROSSJOIN:    return G.p_crossJoin;
 
-    case CK_DECISION:         return G.p_decision;
-    case CK_DIRECTION:        return G.p_direction;
-    case CK_DISPOSITION:      return G.p_disposition;
+    case CK_DECISION:       return G.p_decision;
+    case CK_DIRECTION:      return G.p_direction;
+    case CK_DISPOSITION:    return G.p_disposition;
 
-    case CK_t_EMIT:          return G.p_emit;
-    case CK_EXPR:             return G.p_expr;
+    case CK_t_EMIT:         return G.p_emit;
+    case CK_EXPR:           return G.p_expr;
 
-    case CK_o_FILTER:           return G.p_filter;
-    case CK_FILTPRED:         return G.p_filtPred;
-    case CK_FILTPREDLIST:     return G.p_filtPredList;
-    case CK_c_FLAT:             return G.p_flat;
-    case CK_c_FOLD:             return G.p_fold;
-    case CK_o_FROM:             return G.p_from;
+    case CK_o_FILTER:       return G.p_filter;
+    case CK_FILTPRED:       return G.p_filtPred;
+    case CK_FILTPREDLIST:   return G.p_filtPredList;
+    case CK_c_FLAT:         return G.p_flat;
+    case CK_c_FOLD:         return G.p_fold;
+    case CK_o_FROM:         return G.p_from;
 
-    case CK_o_GBYAGG:           return G.p_gbyAgg;
+    case CK_o_GBYAGG:       return G.p_gbyAgg;
 
-    case CK_o_HASH:             return G.p_hash;
-    case CK_s_HASHING:          return G.p_hashing;
-    case CK_o_HAVING:           return G.p_having;
-    case CK_t_HSHCOL:           return G.p_hshCol;
-    case CK_s_HSHCOLLIST:       return G.p_hshColList;
+    case CK_o_HASH:         return G.p_hash;
+    case CK_s_HASHING:      return G.p_hashing;
+    case CK_o_HAVING:       return G.p_having;
+    case CK_t_HSHCOL:       return G.p_hshCol;
+    case CK_s_HSHCOLLIST:   return G.p_hshColList;
 
-    case CK_IDXCOL:           return G.p_idxCol;
-    case CK_IDXCOLLIST:       return G.p_idxColList;
-    case CK_INDEX:            return G.p_index;
-    case CK_o_INDEXJOIN:        return G.p_indexJoin;
-    case CK_t_INDEXLIST:        return G.p_indexList;
-    case CK_INDEXNM:          return G.p_indexNm;
-    case CK_o_INDEXSCAN:        return G.p_indexScan;
-    case CK_o_INFLATE:          return G.p_inflate;
-    case CK_s_INJECTABLE:         return G.p_injectable;
+    case CK_IDXCOL:         return G.p_idxCol;
+    case CK_IDXCOLLIST:     return G.p_idxColList;
+    case CK_INDEX:          return G.p_index;
+    case CK_o_INDEXJOIN:    return G.p_indexJoin;
+    case CK_t_INDEXLIST:    return G.p_indexList;
+    case CK_INDEXNM:        return G.p_indexNm;
+    case CK_o_INDEXSCAN:    return G.p_indexScan;
+    case CK_o_INFLATE:      return G.p_inflate;
+    case CK_s_INJECTABLE:   return G.p_injectable;
 
-    case CK_JOINCAST:         return G.p_joinCast;
-    case CK_JOINESTIMATE:     return G.p_joinEstimate;
-    case CK_JOINORDER:        return G.p_joinOrder;
-    case CK_JOINORDERING:     return G.p_joinOrdering;
-    case CK_JOINPREDLIST:     return G.p_joinPredList;
+    case CK_JOINCAST:       return G.p_joinCast;
+    case CK_JOINESTIMATE:   return G.p_joinEstimate;
+    case CK_JOINORDER:      return G.p_joinOrder;
+    case CK_JOINORDERING:   return G.p_joinOrdering;
+    case CK_JOINPREDLIST:   return G.p_joinPredList;
 
-    case CK_s_KEY:              return G.p_key;
-    case CK_KEYCELLS:         return G.p_keyCells;
-    case CK_o_KEYEXISTS:        return G.p_keyExists;
-    case CK_o_KEYNOTEXISTS:     return G.p_keyNotExists;
+    case CK_s_KEY:          return G.p_key;
+    case CK_KEYCELLS:       return G.p_keyCells;
+    case CK_o_KEYEXISTS:    return G.p_keyExists;
+    case CK_o_KEYNOTEXISTS: return G.p_keyNotExists;
 
-    case CK_s_LEVEL:            return G.p_level;
-    case CK_o_LIMIT:            return G.p_limit;
+    case CK_s_LEVEL:        return G.p_level;
+    case CK_o_LIMIT:        return G.p_limit;
 
-    case CK_MAP:              return G.p_map;
-    case CK_s_MAPPING:          return G.p_mapping;
+    case CK_MAP:            return G.p_map;
+    case CK_s_MAPPING:      return G.p_mapping;
 
-    case CK_s_NEEDED:           return G.p_needed;
-    case CK_NOTE:             return G.p_note;
-    case CK_NOTCONJ:          return G.p_notConj;
+    case CK_s_NEEDED:       return G.p_needed;
+    case CK_NOTE:           return G.p_note;
+    case CK_NOTCONJ:        return G.p_notConj;
 
-    case CK_ON:               return G.p_on;
-    case CK_o_ORDAGG:           return G.p_ordAgg;
-    case CK_ORCONJ:           return G.p_orConj;
-    case CK_OUTERCOLNM:       return G.p_outerColNm;
-    case CK_OUTERJOIN:        return G.p_outerJoin;
+    case CK_ON:             return G.p_on;
+    case CK_o_ORDAGG:       return G.p_ordAgg;
+    case CK_ORCONJ:         return G.p_orConj;
+    case CK_OUTERCOLNM:     return G.p_outerColNm;
+    case CK_OUTERJOIN:      return G.p_outerJoin;
 
-    case CK_PAYLOADCELLS:     return G.p_payloadCells;
-    case CK_o_PROJECT:          return G.p_project;
+    case CK_PAYLOADCELLS:   return G.p_payloadCells;
+    case CK_o_PROJECT:      return G.p_project;
 
-    case CK_RELNOP:           return G.p_relnOp;
-    case CK_REQUIRED:         return G.p_required;
-    case CK_RLNCONJ:          return G.p_rlnConj;
-    case CK_ROWCOUNT:         return G.p_rowCount;
-    case CK_ROWSIZE:          return G.p_rowSize;
-    case CK_RPNCALC:          return G.p_rpnCalc;
+    case CK_RELNOP:         return G.p_relnOp;
+    case CK_REQUIRED:       return G.p_required;
+    case CK_RLNCONJ:        return G.p_rlnConj;
+    case CK_ROWCOUNT:       return G.p_rowCount;
+    case CK_ROWSIZE:        return G.p_rowSize;
+    case CK_RPNCALC:        return G.p_rpnCalc;
 
-    case CK_o_SCAN:             return G.p_scan;
-    case CK_SECTION:          return G.p_section;
-    case CK_c_SEND:             return G.p_send;
-    case CK_SPARE:            return G.p_spare;
-    case CK_o_SORT:             return G.p_sort;
-    case CK_SQYCALLS:         return G.p_sqyCalls;
-    case CK_SQYINFO:          return G.p_sqyInfo;
-    case CK_SQYNO:            return G.p_sqyNo;
-    case CK_c_STAGE:            return G.p_stage;
-    case CK_s_STREAM:           return G.p_stream;
-    case CK_STREAMHEAD:       return G.p_streamHead;
-    case CK_STREAMJOIN:       return G.p_streamJoin;
-    case CK_STREAMKEY:        return G.p_streamKey;
-    case CK_STREAMPER:        return G.p_streamPer;
-    case CK_STREAMPTN:        return G.p_streamPtn;
-    case CK_STREAMSET:        return G.p_streamSet;
-    case CK_SUBQUERY:         return G.p_subQuery;
-    case CK_SUBSET:           return G.p_subSet;
-    case CK_SYNTHESIS:        return G.p_synthesis;
+    case CK_o_SCAN:         return G.p_scan;
+    case CK_SECTION:        return G.p_section;
+    case CK_c_SEND:         return G.p_send;
+    case CK_SPARE:          return G.p_spare;
+    case CK_o_SORT:         return G.p_sort;
+    case CK_SQYCALLS:       return G.p_sqyCalls;
+    case CK_SQYINFO:        return G.p_sqyInfo;
+    case CK_SQYNO:          return G.p_sqyNo;
+    case CK_c_STAGE:        return G.p_stage;
+    case CK_s_STREAM:       return G.p_stream;
+    case CK_STREAMHEAD:     return G.p_streamHead;
+    case CK_STREAMJOIN:     return G.p_streamJoin;
+    case CK_STREAMKEY:      return G.p_streamKey;
+    case CK_STREAMPER:      return G.p_streamPer;
+    case CK_STREAMPTN:      return G.p_streamPtn;
+    case CK_STREAMSET:      return G.p_streamSet;
+    case CK_SUBQUERY:       return G.p_subQuery;
+    case CK_SUBSET:         return G.p_subSet;
+    case CK_SYNTHESIS:      return G.p_synthesis;
 
-    case CK_s_TABLE:            return G.p_table;
-    case CK_t_TABLEINFO:        return G.p_tableInfo;
-    case CK_TABLELIST:        return G.p_tableList;
-    case CK_t_TABLENM:          return G.p_tableNm;
-    case CK_TABLEPTN:         return G.p_tablePtn;
-    case CK_TABLESIZE:        return G.p_tableSize;
-    case CK_TERM:             return G.p_term;
-    case CK_o_TOP:              return G.p_top;
-    case CK_TOPOLOGY:         return G.p_topology;
+    case CK_s_TABLE:        return G.p_table;
+    case CK_t_TABLEINFO:    return G.p_tableInfo;
+    case CK_TABLELIST:      return G.p_tableList;
+    case CK_t_TABLENM:      return G.p_tableNm;
+    case CK_TABLEPTN:       return G.p_tablePtn;
+    case CK_TABLESIZE:      return G.p_tableSize;
+    case CK_TERM:           return G.p_term;
+    case CK_o_TOP:          return G.p_top;
+    case CK_TOPOLOGY:       return G.p_topology;
 
-    case CK_UNIQUE:           return G.p_unique;
+    case CK_UNIQUE:         return G.p_unique;
 
-    case CK_o_WHERE:            return G.p_where;
+    case CK_o_WHERE:        return G.p_where;
 
-    case CK_XCARD:            return G.p_xcard;
+    case CK_XCARD:          return G.p_xcard;
 
     default:
       NEVER_REACH
@@ -1474,164 +1474,137 @@ void CardIter::vMember(eCK eMember, Card* pCard)
 
     case CK_NONE: break;
 
-    case CK_c_ABSJOIN: G.p_absJoin          = _pCard_AbsJoin(pCard); break;
-    case CK_ADDRESS:          G.p_address          = _pCard_Address(pCard); break;
-    case CK_o_AGGREG: G.p_aggreg           = _pCard_Aggreg(pCard);
-                              break;
-    case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);break;
+    case CK_c_ABSJOIN:     G.p_absJoin           = _pCard_AbsJoin(pCard); break;
+    case CK_ADDRESS:       G.p_address           = _pCard_Address(pCard); break;
+    case CK_o_AGGREG:      G.p_aggreg            = _pCard_Aggreg(pCard);  break;
+    case CK_ANDCONJ:       G.p_andConj           = _pCard_AndConj(pCard);break;
 
-    case CK_BOOLPRED: G.p_boolPred         = _pCard_BoolPred(pCard); break;
-    case CK_BOUND:            G.p_bound            = _pCard_Bound(pCard); break;
-    case CK_BOUNDS:           G.p_bounds           = _pCard_Bounds(pCard); break;
+    case CK_BOOLPRED:      G.p_boolPred          = _pCard_BoolPred(pCard); break;
+    case CK_BOUND:         G.p_bound             = _pCard_Bound(pCard); break;
+    case CK_BOUNDS:        G.p_bounds            = _pCard_Bounds(pCard); break;
 
-    case CK_o_CALL: G.p_call              = _pCard_Call(pCard);
-                              break;
-    case CK_CALLER:           G.p_caller            = _pCard_Caller(pCard); break;
-    case CK_CALLOP:           G.p_callOp            = _pCard_CallOp(pCard); break;
-    case CK_o_CAST: G.p_cast              = _pCard_Cast(pCard);
-                              break;
-    case CK_CLAUSE:           G.p_clause            = _pCard_Clause(pCard); break;
+    case CK_o_CALL:        G.p_call              = _pCard_Call(pCard); break;
+    case CK_CALLER:        G.p_caller            = _pCard_Caller(pCard); break;
+    case CK_CALLOP:        G.p_callOp            = _pCard_CallOp(pCard); break;
+    case CK_o_CAST:        G.p_cast              = _pCard_Cast(pCard); break;
+    case CK_CLAUSE:        G.p_clause            = _pCard_Clause(pCard); break;
 
-    case CK_c_COMBINED: G.p_combined          = _pCard_Combined(pCard);
-                              break;
-    case CK_s_CONSTRAINT: G.p_constraint        = _pCard_Constraint(pCard); break;
-    case CK_CORRCOLS:         G.p_corrCols          = _pCard_CorrCols(pCard); break;
-    case CK_o_CORRELATION: G.p_correlation       = _pCard_Correlation(pCard); ;
-                              break;
-    case CK_COSTJOINING:      G.p_costJoining       = _pCard_CostJoining(pCard); break;
-    case CK_COSTNETWORK:      G.p_costNetwork       = _pCard_CostNetwork(pCard); break;
-    case CK_COSTSTREAM:       G.p_costQuery         = _pCard_CostStream(pCard); break;
-    case CK_COSTUNICAST:      G.p_costUnicast       = _pCard_CostUnicast(pCard); break;
-    case CK_COUNT:            G.p_count             = _pCard_Count(pCard); break;
-    case CK_o_CROSSJOIN: G.p_crossJoin         = _pCard_CrossJoin(pCard);
-                              break;
+    case CK_c_COMBINED:    G.p_combined          = _pCard_Combined(pCard); break;
+    case CK_s_CONSTRAINT:  G.p_constraint        = _pCard_Constraint(pCard); break;
+    case CK_CORRCOLS:      G.p_corrCols          = _pCard_CorrCols(pCard); break;
+    case CK_o_CORRELATION: G.p_correlation       = _pCard_Correlation(pCard); break;
+    case CK_COSTJOINING:   G.p_costJoining       = _pCard_CostJoining(pCard); break;
+    case CK_COSTNETWORK:   G.p_costNetwork       = _pCard_CostNetwork(pCard); break;
+    case CK_COSTSTREAM:    G.p_costQuery         = _pCard_CostStream(pCard); break;
+    case CK_COSTUNICAST:   G.p_costUnicast       = _pCard_CostUnicast(pCard); break;
+    case CK_COUNT:         G.p_count             = _pCard_Count(pCard); break;
+    case CK_o_CROSSJOIN:   G.p_crossJoin         = _pCard_CrossJoin(pCard); break;
 
-    case CK_DECK:             G.pDeck               = _pCard_Deck(pCard); break;
-    case CK_DECISION:         G.p_decision          = _pCard_Decision(pCard); break;
-    case CK_DIRECTION:        G.p_direction         = _pCard_Direction(pCard); break;
-    case CK_DISPOSITION:      G.p_disposition       = _pCard_Disposition(pCard); break;
+    case CK_DECK:          G.pDeck               = _pCard_Deck(pCard); break;
+    case CK_DECISION:      G.p_decision          = _pCard_Decision(pCard); break;
+    case CK_DIRECTION:     G.p_direction         = _pCard_Direction(pCard); break;
+    case CK_DISPOSITION:   G.p_disposition       = _pCard_Disposition(pCard); break;
 
-    case CK_t_EMIT: G.p_emit              = _pCard_Emit(pCard); break;
-    case CK_EXPR:             G.p_expr              = _pCard_Expr(pCard); break;
+    case CK_t_EMIT:        G.p_emit              = _pCard_Emit(pCard); break;
+    case CK_EXPR:          G.p_expr              = _pCard_Expr(pCard); break;
 
-    case CK_o_FILTER: G.p_filter            = _pCard_Filter(pCard);
-                              break;
-    case CK_FILTPRED:         G.p_filtPred          = _pCard_FiltPred(pCard); break;
-    case CK_FILTPREDLIST:     G.p_filtPredList      = _pCard_FiltPredList(pCard); break;
-    case CK_c_FLAT: G.p_flat              = _pCard_Flat(pCard); break;
-    case CK_c_FOLD: G.p_fold              = _pCard_Fold(pCard); break;
-    case CK_o_FROM: G.p_from              = _pCard_From(pCard);
-                              break;
+    case CK_o_FILTER:      G.p_filter            = _pCard_Filter(pCard); break;
+    case CK_FILTPRED:      G.p_filtPred          = _pCard_FiltPred(pCard); break;
+    case CK_FILTPREDLIST:  G.p_filtPredList      = _pCard_FiltPredList(pCard); break;
+    case CK_c_FLAT:        G.p_flat              = _pCard_Flat(pCard); break;
+    case CK_c_FOLD:        G.p_fold              = _pCard_Fold(pCard); break;
+    case CK_o_FROM:        G.p_from              = _pCard_From(pCard); break;
 
-    case CK_o_GBYAGG: G.p_gbyAgg            = _pCard_GbyAgg(pCard);
-                              break;
+    case CK_o_GBYAGG:      G.p_gbyAgg            = _pCard_GbyAgg(pCard); break;
 
-    case CK_o_HASH: G.p_hash              = _pCard_Hash(pCard);
-                              break;
-    case CK_s_HASHING: G.p_hashing           = _pCard_Hashing(pCard); break;
-    case CK_o_HAVING: G.p_having            = _pCard_Having(pCard);
-                              break;
-    case CK_t_HSHCOL: G.p_hshCol            = _pCard_HshCol(pCard); break;
-    case CK_s_HSHCOLLIST: G.p_hshColList        = _pCard_HshColList(pCard); break;
+    case CK_o_HASH:        G.p_hash              = _pCard_Hash(pCard); break;
+    case CK_s_HASHING:     G.p_hashing           = _pCard_Hashing(pCard); break;
+    case CK_o_HAVING:      G.p_having            = _pCard_Having(pCard); break;
+    case CK_t_HSHCOL:      G.p_hshCol            = _pCard_HshCol(pCard); break;
+    case CK_s_HSHCOLLIST:  G.p_hshColList        = _pCard_HshColList(pCard); break;
 
-    case CK_IDXCOL:           G.p_idxCol            = _pCard_IdxCol(pCard); break;
-    case CK_IDXCOLLIST:       G.p_idxColList        = _pCard_IdxColList(pCard); break;
-    case CK_INDEX:            G.p_index             = _pCard_Index(pCard); break;
-    case CK_o_INDEXJOIN: G.p_indexJoin         = _pCard_IndexJoin(pCard);
-                              break;
-    case CK_t_INDEXLIST: G.p_indexList         = _pCard_IndexList(pCard); break;
-    case CK_INDEXNM:          G.p_indexNm           = _pCard_IndexNm(pCard); break;
-    case CK_o_INDEXSCAN: G.p_indexScan         = _pCard_IndexScan(pCard);
-                              break;
-    case CK_s_INJECTABLE: G.p_injectable          = _pCard_Injectable(pCard); break;
-    case CK_o_INFLATE: G.p_inflate           = _pCard_Inflate(pCard);
-                              break;
+    case CK_IDXCOL:        G.p_idxCol            = _pCard_IdxCol(pCard); break;
+    case CK_IDXCOLLIST:    G.p_idxColList        = _pCard_IdxColList(pCard); break;
+    case CK_INDEX:         G.p_index             = _pCard_Index(pCard); break;
+    case CK_o_INDEXJOIN:   G.p_indexJoin         = _pCard_IndexJoin(pCard); break;
+    case CK_t_INDEXLIST:   G.p_indexList         = _pCard_IndexList(pCard); break;
+    case CK_INDEXNM:       G.p_indexNm           = _pCard_IndexNm(pCard); break;
+    case CK_o_INDEXSCAN:   G.p_indexScan         = _pCard_IndexScan(pCard); break;
+    case CK_s_INJECTABLE:  G.p_injectable        = _pCard_Injectable(pCard); break;
+    case CK_o_INFLATE:     G.p_inflate           = _pCard_Inflate(pCard); break;
 
-    case CK_JOINCAST:         G.p_joinCast          = _pCard_JoinCast(pCard); break;
-    case CK_JOINESTIMATE:     G.p_joinEstimate      = _pCard_JoinEstimate(pCard); break;
-    case CK_JOINORDER:        G.p_joinOrder         = _pCard_JoinOrder(pCard); break;
-    case CK_JOINORDERING:     G.p_joinOrdering      = _pCard_JoinOrdering(pCard); break;
-    case CK_JOINPREDLIST:     G.p_joinPredList      = _pCard_JoinPredList(pCard); break;
+    case CK_JOINCAST:      G.p_joinCast          = _pCard_JoinCast(pCard); break;
+    case CK_JOINESTIMATE:  G.p_joinEstimate      = _pCard_JoinEstimate(pCard); break;
+    case CK_JOINORDER:     G.p_joinOrder         = _pCard_JoinOrder(pCard); break;
+    case CK_JOINORDERING:  G.p_joinOrdering      = _pCard_JoinOrdering(pCard); break;
+    case CK_JOINPREDLIST:  G.p_joinPredList      = _pCard_JoinPredList(pCard); break;
 
-    case CK_s_KEY: G.p_key               = _pCard_Key(pCard); break;
-    case CK_KEYCELLS:         G.p_keyCells          = _pCard_KeyCells(pCard); break;
-    case CK_o_KEYEXISTS: G.p_keyExists         = _pCard_KeyExists(pCard);
-                              break;
-    case CK_o_KEYNOTEXISTS: G.p_keyNotExists      = _pCard_KeyNotExists(pCard);
-                              break;
+    case CK_s_KEY:         G.p_key               = _pCard_Key(pCard); break;
+    case CK_KEYCELLS:      G.p_keyCells          = _pCard_KeyCells(pCard); break;
+    case CK_o_KEYEXISTS:   G.p_keyExists         = _pCard_KeyExists(pCard); break;
+    case CK_o_KEYNOTEXISTS:G.p_keyNotExists      = _pCard_KeyNotExists(pCard); break;
 
-    case CK_s_LEVEL: G.p_level             = _pCard_Level(pCard); break;
-    case CK_o_LIMIT: G.p_limit             = _pCard_Limit(pCard);
-                              break;
+    case CK_s_LEVEL:       G.p_level             = _pCard_Level(pCard); break;
+    case CK_o_LIMIT:       G.p_limit             = _pCard_Limit(pCard); break;
 
-    case CK_MAP:              G.p_map               = _pCard_Map(pCard); break;
-    case CK_s_MAPPING: G.p_mapping           = _pCard_Mapping(pCard); break;
+    case CK_MAP:           G.p_map               = _pCard_Map(pCard); break;
+    case CK_s_MAPPING:     G.p_mapping           = _pCard_Mapping(pCard); break;
 
-    case CK_s_NEEDED: G.p_needed            = _pCard_Needed(pCard); break;
-    case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
-    case CK_NOTCONJ:          G.p_notConj           = _pCard_NotConj(pCard);break;
+    case CK_s_NEEDED:      G.p_needed            = _pCard_Needed(pCard); break;
+    case CK_NOTE:          G.p_note              = _pCard_Note(pCard); break;
+    case CK_NOTCONJ:       G.p_notConj           = _pCard_NotConj(pCard);break;
 
-    case CK_ON:               G.p_on                = _pCard_On(pCard); break;
-    case CK_ORCONJ:           G.p_orConj            = _pCard_OrConj(pCard);break;
-    case CK_o_ORDAGG: G.p_ordAgg            = _pCard_OrdAgg(pCard);
-                              break;
-    case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
-    case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
+    case CK_ON:            G.p_on                = _pCard_On(pCard); break;
+    case CK_ORCONJ:        G.p_orConj            = _pCard_OrConj(pCard);break;
+    case CK_o_ORDAGG:      G.p_ordAgg            = _pCard_OrdAgg(pCard); break;
+    case CK_OUTERCOLNM:    G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
+    case CK_OUTERJOIN:     G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
-    case CK_PAYLOADCELLS:     G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
-    case CK_o_PROJECT: G.p_project           = _pCard_Project(pCard);
-                              break;
+    case CK_PAYLOADCELLS:  G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
+    case CK_o_PROJECT:     G.p_project           = _pCard_Project(pCard); break;
 
-    case CK_RELNOP:           G.p_relnOp            = _pCard_RelnOp(pCard); break;
-    case CK_REQUIRED:         G.p_required          = _pCard_Required(pCard); break;
-    case CK_RLNCONJ:          G.p_rlnConj           = _pCard_RlnConj(pCard);break;
-    case CK_ROWCOUNT:         G.p_rowCount          = _pCard_RowCount(pCard); break;
-    case CK_ROWSIZE:          G.p_rowSize           = _pCard_RowSize(pCard); break;
-    case CK_RPNCALC:          G.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
+    case CK_RELNOP:        G.p_relnOp            = _pCard_RelnOp(pCard); break;
+    case CK_REQUIRED:      G.p_required          = _pCard_Required(pCard); break;
+    case CK_RLNCONJ:       G.p_rlnConj           = _pCard_RlnConj(pCard);break;
+    case CK_ROWCOUNT:      G.p_rowCount          = _pCard_RowCount(pCard); break;
+    case CK_ROWSIZE:       G.p_rowSize           = _pCard_RowSize(pCard); break;
+    case CK_RPNCALC:       G.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
 
-    case CK_o_SCAN: G.p_scan              = _pCard_Scan(pCard);
-                              break;
-    case CK_SECTION:          G.p_section           = _pCard_Section(pCard); break;
-    case CK_c_SEND: G.p_send              = _pCard_Send(pCard);
-                              break;
-    case CK_o_SORT: G.p_sort              = _pCard_Sort(pCard);
-                              break;
-    case CK_SPARE:            G.p_spare             = _pCard_Spare(pCard);
-                              break;
-    case CK_SQYCALLS:         G.p_sqyCalls          = _pCard_SqyCalls(pCard); break;
-    case CK_SQYINFO:          G.p_sqyInfo           = _pCard_SqyInfo(pCard); break;
-    case CK_SQYNO:            G.p_sqyNo             = _pCard_SqyNo(pCard); break;
-    case CK_c_STAGE: G.p_stage             = _pCard_Stage(pCard);
-                              break;
-    case CK_s_STREAM: G.p_stream            = _pCard_Stream(pCard); break;
-    case CK_STREAMHEAD:       G.p_streamHead        = _pCard_StreamHead(pCard); break;
-    case CK_STREAMJOIN:       G.p_streamJoin        = _pCard_StreamJoin(pCard); break;
-    case CK_STREAMKEY:        G.p_streamKey         = _pCard_StreamKey(pCard); break;
-    case CK_STREAMPER:        G.p_streamPer         = _pCard_StreamPer(pCard); break;
-    case CK_STREAMPTN:        G.p_streamPtn         = _pCard_StreamPtn(pCard); break;
-    case CK_STREAMSET:        G.p_streamSet         = _pCard_StreamSet(pCard); break;
-    case CK_SUBQUERY:         G.p_subQuery          = _pCard_SubQuery(pCard); break;
-    case CK_SUBSET:           G.p_subSet            = _pCard_SubSet(pCard); break;
-    case CK_SYNTHESIS:        G.p_synthesis         = _pCard_Synthesis(pCard); break;
+    case CK_o_SCAN:        G.p_scan              = _pCard_Scan(pCard); break;
+    case CK_SECTION:       G.p_section           = _pCard_Section(pCard); break;
+    case CK_c_SEND:        G.p_send              = _pCard_Send(pCard); break;
+    case CK_o_SORT:        G.p_sort              = _pCard_Sort(pCard); break;
+    case CK_SPARE:         G.p_spare             = _pCard_Spare(pCard); break;
+    case CK_SQYCALLS:      G.p_sqyCalls          = _pCard_SqyCalls(pCard); break;
+    case CK_SQYINFO:       G.p_sqyInfo           = _pCard_SqyInfo(pCard); break;
+    case CK_SQYNO:         G.p_sqyNo             = _pCard_SqyNo(pCard); break;
+    case CK_c_STAGE:       G.p_stage             = _pCard_Stage(pCard); break;
+    case CK_s_STREAM:      G.p_stream            = _pCard_Stream(pCard); break;
+    case CK_STREAMHEAD:    G.p_streamHead        = _pCard_StreamHead(pCard); break;
+    case CK_STREAMJOIN:    G.p_streamJoin        = _pCard_StreamJoin(pCard); break;
+    case CK_STREAMKEY:     G.p_streamKey         = _pCard_StreamKey(pCard); break;
+    case CK_STREAMPER:     G.p_streamPer         = _pCard_StreamPer(pCard); break;
+    case CK_STREAMPTN:     G.p_streamPtn         = _pCard_StreamPtn(pCard); break;
+    case CK_STREAMSET:     G.p_streamSet         = _pCard_StreamSet(pCard); break;
+    case CK_SUBQUERY:      G.p_subQuery          = _pCard_SubQuery(pCard); break;
+    case CK_SUBSET:        G.p_subSet            = _pCard_SubSet(pCard); break;
+    case CK_SYNTHESIS:     G.p_synthesis         = _pCard_Synthesis(pCard); break;
 
-    case CK_s_TABLE: G.p_table             = _pCard_Table(pCard);
-                              break;
-    case CK_t_TABLEINFO: G.p_tableInfo         = _pCard_TableInfo(pCard); break;
-    case CK_TABLELIST:        G.p_tableList         = _pCard_TableList(pCard); break;
-    case CK_t_TABLENM: G.p_tableNm           = _pCard_TableNm(pCard); break;
-    case CK_TABLEPTN:         G.p_tablePtn          = _pCard_TablePtn(pCard); break;
-    case CK_TABLESIZE:        G.p_tableSize         = _pCard_TableSize(pCard); break;
-    case CK_TERM:             G.p_term              = _pCard_Term(pCard); break;
-    case CK_o_TOP: G.p_top               = _pCard_Top(pCard);
-                              break;
-    case CK_TOPOLOGY:         G.p_topology          = _pCard_Topology(pCard); break;
+    case CK_s_TABLE:       G.p_table             = _pCard_Table(pCard); break;
+    case CK_t_TABLEINFO:   G.p_tableInfo         = _pCard_TableInfo(pCard); break;
+    case CK_TABLELIST:     G.p_tableList         = _pCard_TableList(pCard); break;
+    case CK_t_TABLENM:     G.p_tableNm           = _pCard_TableNm(pCard); break;
+    case CK_TABLEPTN:      G.p_tablePtn          = _pCard_TablePtn(pCard); break;
+    case CK_TABLESIZE:     G.p_tableSize         = _pCard_TableSize(pCard); break;
+    case CK_TERM:          G.p_term              = _pCard_Term(pCard); break;
+    case CK_o_TOP:         G.p_top               = _pCard_Top(pCard); break;
+    case CK_TOPOLOGY:      G.p_topology          = _pCard_Topology(pCard); break;
 
-    case CK_UNIQUE:           G.p_unique            = _pCard_Unique(pCard); break;
+    case CK_UNIQUE:        G.p_unique            = _pCard_Unique(pCard); break;
 
-    case CK_o_WHERE: G.p_where             = _pCard_Where(pCard);
-                              break;
+    case CK_o_WHERE:       G.p_where             = _pCard_Where(pCard); break;
 
-    case CK_XCARD:            G.p_xcard             = _pCard_XCard(pCard); break;
+    case CK_XCARD:         G.p_xcard             = _pCard_XCard(pCard); break;
 
     default:
       NEVER_REACH
@@ -2006,7 +1979,7 @@ void CardIter::vResetMembers(void)
   G.p_direction        = nullptr;
   G.p_disposition      = nullptr;
 
-  G.p_emit          = nullptr;
+  G.p_emit             = nullptr;
   G.p_expr             = nullptr;
 
   G.p_filter           = nullptr;
@@ -2032,7 +2005,7 @@ void CardIter::vResetMembers(void)
   G.p_indexNm          = nullptr;
   G.p_indexScan        = nullptr;
   G.p_inflate          = nullptr;
-  G.p_injectable         = nullptr;
+  G.p_injectable       = nullptr;
 
   G.p_joinCast         = nullptr;
   G.p_joinOrder        = nullptr;
@@ -2293,40 +2266,40 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
     switch (eChild) {
 
       case CK_c_ABSJOIN:      G.p_absJoin->vValidate(this, iDepth, pCard);  break;
-      case CK_ADDRESS:      G.p_address->vValidate(this, iDepth, pCard);  break;
+      case CK_ADDRESS:        G.p_address->vValidate(this, iDepth, pCard);  break;
       case CK_o_AGGREG:       G.p_aggreg->vValidate(this, iDepth, pCard);  break;
-      case CK_ANDCONJ:      G.p_andConj->vValidate(this, iDepth, pCard);  break;
+      case CK_ANDCONJ:        G.p_andConj->vValidate(this, iDepth, pCard);  break;
 
-      case CK_BOOLPRED:     G.p_boolPred->vValidate(this, iDepth, pCard);  break;
-      case CK_BOUND:        G.p_bound->vValidate(this, iDepth, pCard);  break;
-      case CK_BOUNDS:       G.p_bounds->vValidate(this, iDepth, pCard);  break;
+      case CK_BOOLPRED:       G.p_boolPred->vValidate(this, iDepth, pCard);  break;
+      case CK_BOUND:          G.p_bound->vValidate(this, iDepth, pCard);  break;
+      case CK_BOUNDS:         G.p_bounds->vValidate(this, iDepth, pCard);  break;
 
       case CK_o_CALL:         G.p_call->vValidate(this, iDepth, pCard);  break;
-      case CK_CALLER:       G.p_caller->vValidate(this, iDepth, pCard);  break;
-      case CK_CALLOP:       G.p_callOp->vValidate(this, iDepth, pCard);  break;
+      case CK_CALLER:         G.p_caller->vValidate(this, iDepth, pCard);  break;
+      case CK_CALLOP:         G.p_callOp->vValidate(this, iDepth, pCard);  break;
       case CK_o_CAST:         G.p_cast->vValidate(this, iDepth, pCard);  break;
-      case CK_CLAUSE:       G.p_clause->vValidate(this, iDepth, pCard);  break;
+      case CK_CLAUSE:         G.p_clause->vValidate(this, iDepth, pCard);  break;
       case CK_c_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
       case CK_s_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
-      case CK_CORRCOLS:     G.p_corrCols->vValidate(this, iDepth, pCard);  break;
+      case CK_CORRCOLS:       G.p_corrCols->vValidate(this, iDepth, pCard);  break;
       case CK_o_CORRELATION:  G.p_correlation->vValidate(this, iDepth, pCard);  break;
-      case CK_COSTJOINING:  G.p_costJoining->vValidate(this, iDepth, pCard);  break;
-      case CK_COSTNETWORK:  G.p_costNetwork->vValidate(this, iDepth, pCard);  break;
-      case CK_COSTSTREAM:   G.p_costQuery->vValidate(this, iDepth, pCard);  break;
-      case CK_COSTUNICAST:  G.p_costUnicast->vValidate(this, iDepth, pCard);  break;
-      case CK_COUNT:        G.p_count->vValidate(this, iDepth, pCard);  break;
+      case CK_COSTJOINING:    G.p_costJoining->vValidate(this, iDepth, pCard);  break;
+      case CK_COSTNETWORK:    G.p_costNetwork->vValidate(this, iDepth, pCard);  break;
+      case CK_COSTSTREAM:     G.p_costQuery->vValidate(this, iDepth, pCard);  break;
+      case CK_COSTUNICAST:    G.p_costUnicast->vValidate(this, iDepth, pCard);  break;
+      case CK_COUNT:          G.p_count->vValidate(this, iDepth, pCard);  break;
       case CK_o_CROSSJOIN:    G.p_crossJoin->vValidate(this, iDepth, pCard);  break;
 
-      case CK_DECISION:     G.p_decision->vValidate(this, iDepth, pCard);  break;
-      case CK_DIRECTION:    G.p_direction->vValidate(this, iDepth, pCard);  break;
-      case CK_DISPOSITION:  G.p_disposition->vValidate(this, iDepth, pCard);  break;
+      case CK_DECISION:       G.p_decision->vValidate(this, iDepth, pCard);  break;
+      case CK_DIRECTION:      G.p_direction->vValidate(this, iDepth, pCard);  break;
+      case CK_DISPOSITION:    G.p_disposition->vValidate(this, iDepth, pCard);  break;
 
-      case CK_t_EMIT:      G.p_emit->vValidate(this, iDepth, pCard);  break;
-      case CK_EXPR:         G.p_expr->vValidate(this, iDepth, pCard);  break;
+      case CK_t_EMIT:         G.p_emit->vValidate(this, iDepth, pCard);  break;
+      case CK_EXPR:           G.p_expr->vValidate(this, iDepth, pCard);  break;
 
       case CK_o_FILTER:       G.p_filter->vValidate(this, iDepth, pCard);  break;
-      case CK_FILTPRED:     G.p_filtPred->vValidate(this, iDepth, pCard);  break;
-      case CK_FILTPREDLIST: G.p_filtPredList->vValidate(this, iDepth, pCard);  break;
+      case CK_FILTPRED:       G.p_filtPred->vValidate(this, iDepth, pCard);  break;
+      case CK_FILTPREDLIST:   G.p_filtPredList->vValidate(this, iDepth, pCard);  break;
       case CK_c_FLAT:         G.p_flat->vValidate(this, iDepth, pCard);  break;
       case CK_c_FOLD:         G.p_fold->vValidate(this, iDepth, pCard);  break;
       case CK_o_FROM:         G.p_from->vValidate(this, iDepth, pCard);  break;
@@ -2339,88 +2312,88 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_t_HSHCOL:       G.p_hshCol->vValidate(this, iDepth, pCard);  break;
       case CK_s_HSHCOLLIST:   G.p_hshColList->vValidate(this, iDepth, pCard);  break;
 
-      case CK_IDXCOL:       G.p_idxCol->vValidate(this, iDepth, pCard);  break;
-      case CK_IDXCOLLIST:   G.p_idxColList->vValidate(this, iDepth, pCard);  break;
-      case CK_INDEX:        G.p_index->vValidate(this, iDepth, pCard);  break;
+      case CK_IDXCOL:         G.p_idxCol->vValidate(this, iDepth, pCard);  break;
+      case CK_IDXCOLLIST:     G.p_idxColList->vValidate(this, iDepth, pCard);  break;
+      case CK_INDEX:          G.p_index->vValidate(this, iDepth, pCard);  break;
       case CK_o_INDEXJOIN:    G.p_indexJoin->vValidate(this, iDepth, pCard);  break;
       case CK_t_INDEXLIST:    G.p_indexList->vValidate(this, iDepth, pCard);  break;
-      case CK_INDEXNM:      G.p_indexNm->vValidate(this, iDepth, pCard);  break;
+      case CK_INDEXNM:        G.p_indexNm->vValidate(this, iDepth, pCard);  break;
       case CK_o_INDEXSCAN:    G.p_indexScan->vValidate(this, iDepth, pCard);  break;
       case CK_o_INFLATE:      G.p_inflate->vValidate(this, iDepth, pCard);  break;
-      case CK_s_INJECTABLE:     G.p_injectable->vValidate(this, iDepth, pCard);  break;
+      case CK_s_INJECTABLE:   G.p_injectable->vValidate(this, iDepth, pCard);  break;
 
-      case CK_JOINCAST:     G.p_joinCast->vValidate(this, iDepth, pCard);  break;
-      case CK_JOINESTIMATE: G.p_joinEstimate->vValidate(this, iDepth, pCard);  break;
-      case CK_JOINORDER:    G.p_joinOrder->vValidate(this, iDepth, pCard);  break;
-      case CK_JOINORDERING: G.p_joinOrdering->vValidate(this, iDepth, pCard);  break;
-      case CK_JOINPREDLIST: G.p_joinPredList->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINCAST:       G.p_joinCast->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINESTIMATE:   G.p_joinEstimate->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINORDER:      G.p_joinOrder->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINORDERING:   G.p_joinOrdering->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINPREDLIST:   G.p_joinPredList->vValidate(this, iDepth, pCard);  break;
 
       case CK_s_KEY:          G.p_key->vValidate(this, iDepth, pCard);  break;
-      case CK_KEYCELLS:     G.p_keyCells->vValidate(this, iDepth, pCard);  break;
+      case CK_KEYCELLS:       G.p_keyCells->vValidate(this, iDepth, pCard);  break;
       case CK_o_KEYEXISTS:    G.p_keyExists->vValidate(this, iDepth, pCard);  break;
       case CK_o_KEYNOTEXISTS: G.p_keyNotExists->vValidate(this, iDepth, pCard);  break;
 
       case CK_s_LEVEL:        G.p_level->vValidate(this, iDepth, pCard);  break;
       case CK_o_LIMIT:        G.p_limit->vValidate(this, iDepth, pCard);  break;
 
-      case CK_MAP:          G.p_map->vValidate(this, iDepth, pCard);  break;
+      case CK_MAP:            G.p_map->vValidate(this, iDepth, pCard);  break;
       case CK_s_MAPPING:      G.p_mapping->vValidate(this, iDepth, pCard);  break;
 
       case CK_s_NEEDED:       G.p_needed->vValidate(this, iDepth, pCard);  break;
-      case CK_NOTE:         G.p_note->vValidate(this, iDepth, pCard);  break;
-      case CK_NOTCONJ:      G.p_notConj->vValidate(this, iDepth, pCard);  break;
+      case CK_NOTE:           G.p_note->vValidate(this, iDepth, pCard);  break;
+      case CK_NOTCONJ:        G.p_notConj->vValidate(this, iDepth, pCard);  break;
 
-      case CK_ON:           G.p_on->vValidate(this, iDepth, pCard);  break;
+      case CK_ON:             G.p_on->vValidate(this, iDepth, pCard);  break;
       case CK_o_ORDAGG:       G.p_ordAgg->vValidate(this, iDepth, pCard);  break;
-      case CK_ORCONJ:       G.p_orConj->vValidate(this, iDepth, pCard);  break;
-      case CK_OUTERCOLNM:   G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
-      case CK_OUTERJOIN:    G.p_outerJoin->vValidate(this, iDepth, pCard);  break;
+      case CK_ORCONJ:         G.p_orConj->vValidate(this, iDepth, pCard);  break;
+      case CK_OUTERCOLNM:     G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
+      case CK_OUTERJOIN:      G.p_outerJoin->vValidate(this, iDepth, pCard);  break;
 
-      case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
+      case CK_PAYLOADCELLS:   G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
       case CK_o_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
 
-      case CK_RELNOP:       G.p_relnOp->vValidate(this, iDepth, pCard);  break;
-      case CK_REQUIRED:     G.p_required->vValidate(this, iDepth, pCard);  break;
-      case CK_RLNCONJ:      G.p_rlnConj->vValidate(this, iDepth, pCard);  break;
-      case CK_ROWCOUNT:     G.p_rowCount->vValidate(this, iDepth, pCard);  break;
-      case CK_ROWSIZE:      G.p_rowSize->vValidate(this, iDepth, pCard);  break;
-      case CK_RPNCALC:      G.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
+      case CK_RELNOP:         G.p_relnOp->vValidate(this, iDepth, pCard);  break;
+      case CK_REQUIRED:       G.p_required->vValidate(this, iDepth, pCard);  break;
+      case CK_RLNCONJ:        G.p_rlnConj->vValidate(this, iDepth, pCard);  break;
+      case CK_ROWCOUNT:       G.p_rowCount->vValidate(this, iDepth, pCard);  break;
+      case CK_ROWSIZE:        G.p_rowSize->vValidate(this, iDepth, pCard);  break;
+      case CK_RPNCALC:        G.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
 
-      case CK_o_SCAN:       G.p_scan->vValidate(this, iDepth, pCard);  break;
-      case CK_SECTION:    G.p_section->vValidate(this, iDepth, pCard);  break;
-      case CK_c_SEND:       G.p_send->vValidate(this, iDepth, pCard);  break;
-      case CK_SPARE:      G.p_spare->vValidate(this, iDepth, pCard);  break;
-      case CK_o_SORT:       G.p_sort->vValidate(this, iDepth, pCard);  break;
-      case CK_SQYCALLS:   G.p_sqyCalls->vValidate(this, iDepth, pCard);  break;
-      case CK_SQYINFO:    G.p_sqyInfo->vValidate(this, iDepth, pCard);  break;
-      case CK_SQYNO:      G.p_sqyNo->vValidate(this, iDepth, pCard);  break;
-      case CK_c_STAGE:      G.p_stage->vValidate(this, iDepth, pCard);  break;
-      case CK_s_STREAM:     G.p_stream->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMHEAD: G.p_streamHead->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMJOIN: G.p_streamJoin->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMKEY:  G.p_streamKey->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMPER:  G.p_streamPer->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMPTN:  G.p_streamPtn->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMSET:  G.p_streamSet->vValidate(this, iDepth, pCard);  break;
-      case CK_SUBQUERY:   G.p_subQuery->vValidate(this, iDepth, pCard);  break;
-      case CK_SUBSET:     G.p_subSet->vValidate(this, iDepth, pCard);  break;
-      case CK_SYNTHESIS:  G.p_synthesis->vValidate(this, iDepth, pCard);  break;
+      case CK_o_SCAN:         G.p_scan->vValidate(this, iDepth, pCard);  break;
+      case CK_SECTION:        G.p_section->vValidate(this, iDepth, pCard);  break;
+      case CK_c_SEND:         G.p_send->vValidate(this, iDepth, pCard);  break;
+      case CK_SPARE:          G.p_spare->vValidate(this, iDepth, pCard);  break;
+      case CK_o_SORT:         G.p_sort->vValidate(this, iDepth, pCard);  break;
+      case CK_SQYCALLS:       G.p_sqyCalls->vValidate(this, iDepth, pCard);  break;
+      case CK_SQYINFO:        G.p_sqyInfo->vValidate(this, iDepth, pCard);  break;
+      case CK_SQYNO:          G.p_sqyNo->vValidate(this, iDepth, pCard);  break;
+      case CK_c_STAGE:        G.p_stage->vValidate(this, iDepth, pCard);  break;
+      case CK_s_STREAM:       G.p_stream->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMHEAD:     G.p_streamHead->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMJOIN:     G.p_streamJoin->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMKEY:      G.p_streamKey->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMPER:      G.p_streamPer->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMPTN:      G.p_streamPtn->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMSET:      G.p_streamSet->vValidate(this, iDepth, pCard);  break;
+      case CK_SUBQUERY:       G.p_subQuery->vValidate(this, iDepth, pCard);  break;
+      case CK_SUBSET:         G.p_subSet->vValidate(this, iDepth, pCard);  break;
+      case CK_SYNTHESIS:      G.p_synthesis->vValidate(this, iDepth, pCard);  break;
 
-      case CK_s_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;
-      case CK_t_TABLEINFO: G.p_tableInfo->vValidate(this, iDepth, pCard);  break;
-      case CK_TABLELIST: G.p_tableList->vValidate(this, iDepth, pCard);  break;
-      case CK_t_TABLENM:   G.p_tableNm->vValidate(this, iDepth, pCard);  break;
-      case CK_TABLEPTN:  G.p_tablePtn->vValidate(this, iDepth, pCard);  break;
-      case CK_TABLESIZE: G.p_tableSize->vValidate(this, iDepth, pCard);  break;
-      case CK_TERM:      G.p_term->vValidate(this, iDepth, pCard);  break;
-      case CK_o_TOP:       G.p_top->vValidate(this, iDepth, pCard);  break;
-      case CK_TOPOLOGY:  G.p_topology->vValidate(this, iDepth, pCard);  break;
+      case CK_s_TABLE:        G.p_table->vValidate(this, iDepth, pCard);  break;
+      case CK_t_TABLEINFO:    G.p_tableInfo->vValidate(this, iDepth, pCard);  break;
+      case CK_TABLELIST:      G.p_tableList->vValidate(this, iDepth, pCard);  break;
+      case CK_t_TABLENM:      G.p_tableNm->vValidate(this, iDepth, pCard);  break;
+      case CK_TABLEPTN:       G.p_tablePtn->vValidate(this, iDepth, pCard);  break;
+      case CK_TABLESIZE:      G.p_tableSize->vValidate(this, iDepth, pCard);  break;
+      case CK_TERM:           G.p_term->vValidate(this, iDepth, pCard);  break;
+      case CK_o_TOP:          G.p_top->vValidate(this, iDepth, pCard);  break;
+      case CK_TOPOLOGY:       G.p_topology->vValidate(this, iDepth, pCard);  break;
 
-      case CK_UNIQUE:    G.p_unique->vValidate(this, iDepth, pCard);  break;
+      case CK_UNIQUE:         G.p_unique->vValidate(this, iDepth, pCard);  break;
 
-      case CK_o_WHERE:     G.p_where->vValidate(this, iDepth, pCard);  break;
+      case CK_o_WHERE:        G.p_where->vValidate(this, iDepth, pCard);  break;
 
-      case CK_XCARD:     G.p_xcard->vValidate(this, iDepth, pCard);  break;
+      case CK_XCARD:          G.p_xcard->vValidate(this, iDepth, pCard);  break;
 
       default:
         NEVER_REACH
