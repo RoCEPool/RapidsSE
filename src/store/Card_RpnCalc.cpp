@@ -194,31 +194,6 @@ void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nChildren = nChildCards();
-
-  if (nChildren != p_rpnCalc_arg->nChildCards())
-    return false;
-
-  for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
-    Card_Term* p_term_this = this->pGetTerm(i_Child);
-    Card_Term* p_term_arg = p_rpnCalc_arg->pGetTerm(i_Child);
-
-    if (p_term_this->bSymbolMatches(p_term_arg))
-      continue;
-
-    return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* short form                                                                 */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vShortForm(String* pString, Stz* szSep)

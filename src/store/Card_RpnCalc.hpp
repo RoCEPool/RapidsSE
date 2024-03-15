@@ -25,7 +25,6 @@ namespace STORE
     bool bIsScalarCol(void);
     bool bNeedsBrace(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     void vShortForm(String* pString, Stz* szSep);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolPred* pTo_boolPred(void);

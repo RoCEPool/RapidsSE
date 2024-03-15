@@ -104,25 +104,9 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 
   RASSERT(CT_NONE != this->eCTVal());
 
-//  if (xTypeId() != p_key_arg->xTypeId())
-//    return false;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_RpnCalc* p_rpnCalc_this = pSub_rpnCalc();
-  Card_RpnCalc* p_rpnCalc_arg  = p_key_arg->pSub_rpnCalc();
-
-  if (p_rpnCalc_this) {
-    if (p_rpnCalc_arg) {
-      if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
-        return false;
-    }
-    else {
-      return false;
-    }
-  }
-  else
-  if (p_rpnCalc_arg) {
+  if (! pSub_expr()->bSameAs(p_key_arg->pSub_expr())) {
     return false;
   }
 
