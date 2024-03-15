@@ -159,23 +159,6 @@ bool Card_RpnCalc::bIsScalarCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this rpnCalc a simple expression of a key ?                             */
-/*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsScalarKey(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (nChildCards() > 1)
-    return false;
-
-  Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->pSymbol()->bHasFacet(SF_KEY_COL))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bNeedsBrace(void)

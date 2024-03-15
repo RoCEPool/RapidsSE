@@ -48,7 +48,6 @@ namespace STORE
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
-    bool bIsScalarKey(void);
     bool bIsExpressionOfKey(void);
 
     bool bMatches(Card_Expr* p_expr_arg);

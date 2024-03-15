@@ -559,35 +559,14 @@ bool Card_Expr::bIsScalarCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bScalarCol = false;
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    bScalarCol = p_boolPred->bIsScalarCol();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bScalarCol = p_rpnCalc->bIsScalarCol();
-  }
+  if (pSub_rpnCalc()->nChildCards() > 1)
+    return false;
 
-  return bScalarCol;
-}
+  Card_Term* p_term_0 = pGet_term(0);
+  if (! p_term_0->pSymbol()->bHasFacet(SF_EXP_COL) &&  !p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))
+    return false;
 
-/*----------------------------------------------------------------------------*/
-/* is this expr a simple expression of a key?                                 */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsScalarKey(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  bool bScalarKey = false;
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    bScalarKey = p_boolPred->bIsScalarKey();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bScalarKey = p_rpnCalc->bIsScalarKey();
-  }
-
-  return bScalarKey;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
