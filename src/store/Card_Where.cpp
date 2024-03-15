@@ -111,8 +111,11 @@ Card_Where* Card_Where::pNewWhereAssembly(void)
   Card_Filter* p_filter = new Card_Filter;
   p_where->vAppendChild(p_filter);
 
+  Card_Expr* p_expr = new Card_Expr;
+  p_filter->vAppendChild(p_expr);
+
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_filter->vAppendChild(p_rpnCalc);
+  p_expr->vAppendChild(p_rpnCalc);
 
   return p_where;
 }
