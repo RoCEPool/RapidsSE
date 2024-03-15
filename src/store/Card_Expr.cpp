@@ -372,7 +372,7 @@ void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 /*----------------------------------------------------------------------------*/
 /* return first key col in this rpn sequence                                  */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirstColSym(void)
+Symbol* Card_Expr::pFirst_colSym(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -612,6 +612,22 @@ bool Card_Expr::bMatches(Card_Expr* p_expr_arg)
 
   if (pSymbol_this->bMatches(pSymbol_arg))
     return true;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bNeedsBrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xKid(pSub_rpnCalc());
+  while (xKid.bEach(CK_TERM)) {
+    if (xKid.p_term()->pSymbol()->bNeedsBrace())
+      return true;
+  }
+
   return false;
 }
 

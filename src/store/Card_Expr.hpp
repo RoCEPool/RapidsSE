@@ -33,12 +33,12 @@ namespace STORE
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsure_expr_Has_nmdCol(i8 iExpCol);
 
-    Symbol* pFirstColSym(void);
+    Symbol* pFirst_colSym(void);
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
     Symbol* pFirst_tblCol(void);
 
-    Symbol* pGet_Symbol(i8 i_Term);
+    Symbol*    pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
 
@@ -52,6 +52,8 @@ namespace STORE
     bool bIsExpressionOfKey(void);
 
     bool bMatches(Card_Expr* p_expr_arg);
+
+    bool bNeedsBrace(void);
 
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
