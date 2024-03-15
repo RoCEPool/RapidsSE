@@ -1482,23 +1482,7 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_RpnCalc* p_rpnCalc = nullptr;
-
-  i8 nSubCards = p_expr->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pCard = p_expr->pGet(i_Child);
-
-    eCK eCard = pCard->eCard();
-
-    switch (eCard) {
-      case CK_RPNCALC:
-        p_rpnCalc = _pCard_RpnCalc(pCard);
-        break;
-
-      default:
-        break;
-    }
-  }
+  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1507,14 +1491,12 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
 
   psRpnExpr->vCatSprint(" type %s"_Stz, aCT[xCast.m_xTypeId.eCTVal()]);
 
-//#ifdef TYPE_DETAILED
   if (xCast.m_nTypeLength || xCast.m_nTypeScale) {
     psRpnExpr->vCatSprint(" ( %lld"_Stz, xCast.m_nTypeLength);
     if (xCast.m_nTypeScale)
       psRpnExpr->vCatSprint(" %lld"_Stz, xCast.m_nTypeScale);
     psRpnExpr->vCatSprint(" )"_Stz);
   }
-//#endif
 
   if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
     RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
