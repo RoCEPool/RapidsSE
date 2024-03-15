@@ -1516,11 +1516,6 @@ void Card_OP::vRpn_rpnCalc(String* psRpnExpr, Card_RpnCalc* p_rpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!p_rpnCalc->pSymbol()->bValidType()) {
-    p_rpnCalc->vDump(__func__);
-    RASSERT(p_rpnCalc->pSymbol()->bValidType());
-  }
-
   i8 nSubCards = p_rpnCalc->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card* pCard = p_rpnCalc->pGet(i_Child);

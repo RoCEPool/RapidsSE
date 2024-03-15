@@ -1416,11 +1416,15 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 
   Card_Constraint* p_constraint = new Card_Constraint;
 
-  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
 
+  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
   p_rpnCalc->vApplyCast_x(xCast);
 
-  p_constraint->vAppendChild(p_rpnCalc);
+  Card_Expr* p_expr = new Card_Expr;
+  p_expr->vAppendChild(p_rpnCalc);
+  p_expr->vApplyCast_x(xCast);
+
+  p_constraint->vAppendChild(p_expr);
 
   return p_constraint;
 }
