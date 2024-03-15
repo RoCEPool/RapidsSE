@@ -33,6 +33,7 @@ namespace STORE
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsure_expr_Has_nmdCol(i8 iExpCol);
 
+    Symbol* pFirstColSym(void);
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
     Symbol* pFirst_tblCol(void);

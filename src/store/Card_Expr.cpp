@@ -370,6 +370,20 @@ void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return first key col in this rpn sequence                                  */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pFirstColSym(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xKid.p_term()->pSymbol();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get first stm col                                                          */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_Expr::pFirst_expCol(void)
@@ -488,7 +502,6 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
   }
 
   Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
-
   p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
 
   return p_expr_inducted;
