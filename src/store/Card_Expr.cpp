@@ -470,6 +470,31 @@ Card_Term* Card_Expr::pGet_term0(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does expression have term ?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bHas = false;
+
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    bHas = p_boolPred->bHas_term(pSymbol);
+  else {
+    Kid xKid(pSub_rpnCalc());
+    while (xKid.bEach(CK_TERM)) {
+      if (xKid.p_term()->pSymbol()->bMatches(pSymbol))
+        return true;
+    }
+
+    return false;
+
+  }
+
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
 /* induct this arriving expr                                                  */
 /*----------------------------------------------------------------------------*/
 Card_Expr * Card_Expr::pInduct(i8 iExp)
@@ -580,24 +605,6 @@ bool Card_Expr::bIsScalarCol(void)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does expression have term ?                                                */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasTerm(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  bool bHas = false;
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    bHas = p_boolPred->bHas_term(pSymbol);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    bHas = p_rpnCalc->bHasTerm(pSymbol);
-
-  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/
