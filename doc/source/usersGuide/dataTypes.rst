@@ -58,6 +58,9 @@ below.
                   ``999,999,999,999,999.99``. With a scale of 17 the supported value range is
                   ``-0.999,999,999,999,999,99`` to ``0.999,999,999,999,999,99``. This is covered
                   further in the :ref:`section below<decimals>`.
+
+                  If not specified, the default precision of a ``DECIMAL`` is ``17``. The
+                  default scale is ``0``.
    ``BOOLEAN``    No limits
    ``DATE``       For RapidsSE v1.x the range of valid years is ``1900`` to ``2155``
    ``TIME``       No limits
@@ -173,9 +176,9 @@ Decimal Operations Affecting Precision and Scale
 
 ``DECIMAL`` expressions support a range of arithmetic and aggregate operations.
 The evaluation of a ``DECIMAL`` expression will typically produce a result as
-another ``DECIMAL`` that has a different precision or scale. This is because
+another ``DECIMAL`` that can have a different precision or scale. This is because
 calculations can cause the number of digits in the integral component to overflow
-or the number of fractional digits to be increased to accurate capture the exact
+or the number of fractional digits to be increased to accurately capture the exact
 result.
 
 For example the expression ``9. + 2.`` is the addition of two ``DECIMAL`` values
@@ -188,28 +191,28 @@ of ``2`` and a scale of ``1``. The result, ``18.40``, has a precision of ``4`` a
 scale of ``2``. The last digit, ``0``, is significant to the accuracy of the calculation.
 
 There are rules that govern how much precision and scale a result of an expression
-will have. These are described below. An important point to remember is that the
-actual precision and scale of the result will depend on the precision and scale of
-the specific operands involved, not the precision and scale of any column definitions
-that they may have come from.
+will have. These are described in :numref:`decimal-prec-scale-operations-table` below.
+An important point to remember is that the actual precision and scale of the result
+will depend on the precision and scale of the specific operands involved, not the
+precision and scale of any column definitions that they may have come from.
 
 .. table:: Precision and scale in decimal expression operations
    :name: decimal-prec-scale-operations-table
    :widths: 15, 53, 32
 
-   ================ ============================================ =====================
+   ================ ============================================ =============================
    Operation        Precision                                    Scale
-   ================ ============================================ =====================
-   ``arg1 + arg2``  ``max(s1, s2) + max(p1 - s1, p2 - s2) + 1``  ``max(s1, s2)``
-   ``arg1 - arg2``  ``max(s1, s2) + max(p1 - s1, p2 - s2) + 1``  ``max(s1, s2)``
+   ================ ============================================ =============================
+   ``arg1 + arg2``  ``max(s1, s2) + max(p1-s1, p2-s2) + 1``      ``max(s1, s2)``
+   ``arg1 - arg2``  ``max(s1, s2) + max(p1-s1, p2-s2) + 1``      ``max(s1, s2)``
    ``arg1 * arg2``  ``p1 + p2``                                  ``s1 + s2``
-   ``arg1 / arg2``  ``p1 - s1 + s2 + max(6, s1 + p2 + 1)``       ``max(6, s1 + p2 + 1)``
+   ``arg1 / arg2``  ``p1 - s1 + s2 + max(6, s1+p2+1)``           ``max(6, s1 + p2 + 1)``
    ``SUM(arg1)``    ``p_max``                                    ``s1``
    ``COUNT(arg1)``  ``19``                                       ``0``
-   ``AVG(arg1)``    ``p_max``                                    ``s1 + p_max + 1``
+   ``AVG(arg1)``    ``p_max``                                    ``max(6, s1 + p_count + 1``)
    ``MIN(arg1)``    ``p1``                                       ``s1``
    ``MAX(arg1)``    ``p1``                                       ``s1``
-   ================ ============================================ =====================
+   ================ ============================================ =============================
 
 In the above table:
 
@@ -219,15 +222,53 @@ In the above table:
 * ``s1`` and ``s2`` refer to the scale of the value of ``arg1``
   and ``arg2`` respectively;
 
-* ``p_max`` refers to the maximum ``DECIMAL`` precision supported, which is 17;
+* ``p_max`` refers to the maximum ``DECIMAL`` precision supported, which is ``17``;
+
+* ``p_count`` in an ``AVG()`` calculation refers to the precision of the ``COUNT()``
+  expression that is divided into the ``SUM()`` expression to produce the average.
 
 * ``max(a, b)`` means that larger value of ``a`` or ``b``.
 
+The precision and scale of a ``COUNT()`` aggregation is always (19,0) because
+the result is actually of an ``INTEGER`` and not a DECIMAL.
+
+Finally, the ``AVG()`` expression is executed as a ``SUM()`` divided by a
+``COUNT()``. Thus the rules for decimal division apply. The scale of the
+result ultimately depends on the precision of the ``COUNT()`` expression
+result - When more rows are counted then the result of ``AVG()`` will have
+more decimal places. At the minimum an ``AVG()`` will produce at least
+6 digits of scale, unless the scale needs to be reduced in order to fit
+the integral (whole number) component. This is described in the following
+section.
 
 
-Scale truncation, integral preservation.
+Scale Truncation & Rounding
+```````````````````````````
 
-Loading of decimals will be rounded to fit the precision/scale of the column definition
+While :numref:`decimal-prec-scale-operations-table` details how the result
+expressions precision and scale are calculated, it is important to note that
+RapidsSE does not do infinite arbitrary precision calculations.
+
+If the calculated precision or scale exceeds the maximum supported precision or
+scale of RapidsSE then the result will be limited to the RapidsSE maximum
+precision and scale. If the integral (whole number) portion of the value cannot
+be completely represented in this precision then an error is returned that the
+value is out of bounds.
+
+However in the case where the integral portion of a result can be represented
+but there isn't enough precision (digits) to represent all of the calculated
+scale then the scale digits will be truncated such that the result fits all of the
+integral portion and as much fractional portion (scale digits) as possible. The
+least significant digit of the fractional portion will be rounded up or down
+as appropriate when any scale digits are truncated.
+
+Similarly, when decimal values are loaded into a table their values will
+automatically be truncated and rounded to fit the desired scale of the table's
+column definition. e.g. if the value ``12.345`` is being loaded into a table
+whose column is defined as ``DECIMAL(4,1)`` then the value will be loaded
+as ``12.3`` instead.
+
+
 
 
 .. index::

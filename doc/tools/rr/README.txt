@@ -2,7 +2,9 @@ RR - Railroad Diagram Generator
 
   version 1.67
   released Jan 18, 2023
-  from https://bottlecaps.de/rr
+  from https://bottlecaps.de/rr (IPv6 only)
+       https://rr.red-dove.com/ui (IPv4 mirror)
+       https://github.com/GuntherRademacher/rr (source)
 
 Usage: java -jar rr.war {-suppressebnf|-keeprecursion|-nofactoring|-noinline|-noepsilon|-color:COLOR|-offset:OFFSET|-png|-md|-out:FILE|width:PIXELS}... GRAMMAR
     or java -jar rr.war -gui [-port:PORT]
