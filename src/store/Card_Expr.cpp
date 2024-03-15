@@ -806,8 +806,20 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
   if ((pCI->G.p_boolPred = pSub_boolPred()))
     pCI->G.p_boolPred->vX_expCol_To_tblCol(pCI);
   else
-  if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vX_expCol_To_tblCol(pCI);
+  if ((pCI->G.p_rpnCalc = pSub_rpnCalc())) {
+    //vDump(__func__);
+    Kid xKid(pSub_rpnCalc());
+    while (xKid.bEach(CK_TERM)) {
+      if (!xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+        continue;
+
+      pCI->G.p_term = xKid.p_term();
+      pCI->G.p_term->vX_expCol_To_tblCol(pCI);
+    }
+
+    pCI->G.p_term = nullptr;
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -108,25 +108,6 @@ void Card_RpnCalc::vTransfer(STORE::Card_RpnCalc *p_rpnCalc, eSF eSymbol_limit)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert stmCol to tblCol                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vX_expCol_To_tblCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
-      continue;
-
-    pCI->G.p_term = xKid.p_term();
-    pCI->G.p_term->vX_expCol_To_tblCol(pCI);
-  }
-
-  pCI->G.p_term = nullptr;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
