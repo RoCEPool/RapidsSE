@@ -92,8 +92,10 @@ void Card_CONDITION::vX_tblCol_To_expCol(CardIter* pCI)
   pCI->G.p_rpnCalc  = nullptr;
   if ((pCI->G.p_boolPred = pSub_boolPred()))
     pCI->G.p_boolPred->vX_tblCol_To_expCol(pCI);
-  else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vX_tblCol_To_expCol(pCI);
+  else if ((pCI->G.p_expr = pSub_expr())) {
+    //vDump(__func__);
+    pCI->G.p_expr->vX_tblCol_To_expCol(pCI);
+  }
 
   pCI->G.p_boolPred = nullptr;
   pCI->G.p_rpnCalc  = nullptr;
