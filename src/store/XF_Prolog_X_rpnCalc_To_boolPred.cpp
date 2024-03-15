@@ -66,7 +66,9 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_FROM, CK_s_CONSTRAINT)) {
-    m_pCI->G.p_rpnCalc = m_pCI->G.p_constraint->pSub_rpnCalc();
+    m_pCI->G.p_constraint->vDump(__func__);
+    m_pCI->G.p_expr = m_pCI->G.p_constraint->pSub_expr();
+    m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc();
     m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->pTo_boolPred();
     m_pCI->G.p_from->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
     m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
