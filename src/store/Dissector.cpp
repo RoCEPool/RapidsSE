@@ -415,10 +415,10 @@ Card* Dissector::pOp_filter(void)
   i8 i_Expr = 1;
   Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
 
-  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
-  p_expr->vRemoveSub(p_rpnCalc);
-  DELETE_CARD(p_expr);
-  p_filter->vAppendChild(p_rpnCalc);
+//  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
+//  p_expr->vRemoveSub(p_rpnCalc);
+//  DELETE_CARD(p_expr);
+  p_filter->vAppendChild(p_expr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it filter or having?
