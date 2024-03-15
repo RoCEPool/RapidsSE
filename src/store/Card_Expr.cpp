@@ -692,27 +692,21 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  if (xTypeId() != p_expr_arg->xTypeId())
-//    return false;
+  i8 nChildren = pSub_rpnCalc()->nChildCards();
 
-  Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
-  Card_RpnCalc* p_rpnCalc_arg  = p_expr_arg->pSub_rpnCalc();
-  if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
+  if (nChildren != p_expr_arg->pSub_rpnCalc()->nChildCards())
     return false;
 
-//  if (Card_Direction* p_direction_this = pSub_direction()) {
-//    if (Card_Direction *p_direction_arg = p_expr_arg->pSub_direction()) {
-//      if (! p_direction_this->pSymbol()->bSame(p_direction_arg->pSymbol()))
-//        return false;
-//    }
-//    else {
-//      return false;
-//    }
-//  }
-//  else
-//  if (p_expr_arg->pSub_direction()) {
-//    return false;
-//  }
+  for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
+    Card_Term* p_term_this = pGet_term(i_Child);
+    Card_Term* p_term_arg = p_expr_arg->pGet_term(i_Child);
+
+    if (p_term_this->bSymbolMatches(p_term_arg))
+      continue;
+
+    return false;
+  }
+
 
   return true;
 }
