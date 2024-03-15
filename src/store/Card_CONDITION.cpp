@@ -99,18 +99,6 @@ void Card_CONDITION::vX_tblCol_To_expCol(CardIter* pCI)
   pCI->G.p_rpnCalc  = nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_CONDITION::vShortForm(String* p_string)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vShortForm(p_string);
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

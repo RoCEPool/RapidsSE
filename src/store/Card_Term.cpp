@@ -340,16 +340,6 @@ void Card_Term::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* short form                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vShortForm(String* pString, Stz* szSep)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pString->vCatSprint("%s%s"_Stz, szSep, m_xSymbol.szFacet((i8)0));
-}
-
-/*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)

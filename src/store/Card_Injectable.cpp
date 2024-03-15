@@ -74,19 +74,6 @@ Card_Injectable* Card_Injectable::pNew_injectable(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* short form                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_Injectable::vShortForm(String* pString)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pString->vCopy("i:"_Stz);
-  Card_EXPRLIST::vShortForm(pString);
-  //pString->vConcat("}"_Stz);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Injectable::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

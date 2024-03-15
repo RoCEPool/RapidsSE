@@ -147,22 +147,6 @@ bool Card_Bounds::bUsesSqyRsl(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vShortForm(String* pString_b)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(pString_b);
-
-  Stz* szSep = ""_Stz;
-  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/) {
-    xKid.p_bound()->vShortForm(pString_b,szSep);
-    szSep = ","_Stz;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

@@ -121,20 +121,6 @@ void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* short form                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vShortForm(String* pString, Stz* szSep)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    xKid.p_term()->vShortForm(pString,szSep);
-    szSep = " "_Stz;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolPred>                                            */
 /*----------------------------------------------------------------------------*/
 Card_BoolPred* Card_RpnCalc::pTo_boolPred(void)

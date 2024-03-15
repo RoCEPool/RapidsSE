@@ -545,19 +545,6 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* short form                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_Emit::vShortForm(String* pString)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pString->vCopy("e:"_Stz);
-  Card_EXPRLIST::vShortForm(pString);
-  //pString->vConcat("}"_Stz);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Emit::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)

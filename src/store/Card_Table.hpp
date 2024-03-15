@@ -44,8 +44,7 @@ namespace STORE
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     bool bSame(Symbol* pSymbol_tableSyn);
     void vSet_Syn(Symbol* pSymbol_tableSyn);
-    void vShortForm(String* pString_m, String* pString_b);
-    Table* pGet_Table(void);
+   Table* pGet_Table(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

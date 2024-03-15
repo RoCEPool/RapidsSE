@@ -34,7 +34,6 @@ namespace STORE
     void vMapColumns(CardIter* pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     Card_Expr* pResolve_expr(Card_Term* p_term);
-    void vShortForm(String* pString);
     void vUpdate_expCol(Card_Emit* p_arriving, bool bAlt=false);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

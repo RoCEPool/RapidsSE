@@ -841,21 +841,6 @@ Card_CONJ* Card_BoolPred::pRoot_conj(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* short form                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_BoolPred::vShortForm(String* pString)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (! nChildCards())
-    return;
-
-  Card_CONJ* p_conj = pRoot_conj();
-
-  p_conj->vShortForm(pString);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)

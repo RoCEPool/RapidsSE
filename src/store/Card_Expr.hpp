@@ -61,7 +61,6 @@ namespace STORE
     void vRenumberForm_expCol(i8 i_Expr);
 
     bool bSameAs(Card_Expr* pExpr_arg);
-    void vShortForm(String* pString, Stz* szSep);
 
     Card_BoolPred* pTo_boolPred(void);
 

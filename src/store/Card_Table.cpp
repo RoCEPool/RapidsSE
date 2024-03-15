@@ -465,31 +465,6 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Table::vShortForm(String* pString_m, String* pString_b)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szSep = ""_Stz;
-  if (Card_TableNm* p_tableNm = pSub_tableNm()) {
-    pString_m->vCatSprint("%c.%s"_Stz,
-                          pSymbol()->bHasFacets() ? pSymbol()->cTblSyn() : ' ',
-                          p_tableNm->szFacet(SF_TBL_NM));
-    szSep = ","_Stz;
-  }
-
-  if (Card_Index* p_index = pFindChosenIndex()) {
-    if (Card_IndexNm* p_indexNm = p_index->pSub_indexNm())
-      pString_m->vCatSprint("%s%s"_Stz, szSep, p_indexNm->szFacet(SF_IDX_NM));
-    if (Card_Bounds* p_bounds = p_index->pSub_bounds())
-      p_bounds->vShortForm(pString_b);
-  }
-
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate table                                                             */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
