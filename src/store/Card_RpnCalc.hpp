@@ -21,7 +21,6 @@ namespace STORE
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     void vX_expCol_To_tblCol(CardIter* pCI);
-    void vX_tblCol_To_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

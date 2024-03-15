@@ -109,7 +109,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (CK_ON == eCard)
+  if (CK_t_HSHCOL == eCard)
     vDebugPoint();
 
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);

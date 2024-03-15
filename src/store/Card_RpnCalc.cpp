@@ -127,20 +127,6 @@ void Card_RpnCalc::vX_expCol_To_tblCol(CardIter* pCI)
   pCI->G.p_term = nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert tblCol to stmCol                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vX_tblCol_To_expCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (Kid xRpnCalc(this);xRpnCalc.bEach(CK_TERM); /**/) {
-    pCI->G.p_term = xRpnCalc.p_term();
-    pCI->G.p_term->vX_tblCol_To_expCol(pCI);
-  }
-
-  pCI->G.p_term = nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
