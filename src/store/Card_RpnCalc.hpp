@@ -20,7 +20,6 @@ namespace STORE
 
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Symbol* pSymbol);
-    bool bNeedsBrace(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vShortForm(String* pString, Stz* szSep);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
