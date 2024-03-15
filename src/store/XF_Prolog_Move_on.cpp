@@ -80,6 +80,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     //m_pCI->G.p_on->vDump(__func__);
 
     // ignore
+    Card_Expr *p_expr_on = m_pCI->G.p_on->pSub_expr();
     Card_RpnCalc *p_rpnCalc_on = m_pCI->G.p_on->pSub_rpnCalc();
     if (! p_rpnCalc_on->nChildCards())
       continue;
@@ -97,7 +98,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       m_pCI->vRestoreMembers();
     }
 
-    Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
+    Card_Term *p_term_0 = p_expr_on->pGet_term(0);
     if (p_term_0->pSymbol()->bHasFacet("CROSS"_Stz))
       continue;
 

@@ -18,7 +18,6 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
-    Card_Term* pGetTerm(i8 i_Term);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     void vX_expCol_To_tblCol(CardIter* pCI);
