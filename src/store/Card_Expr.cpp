@@ -824,10 +824,14 @@ void Card_Expr::vX_tblCol_To_expCol(CardIter* pCI)
     p_boolPred->vX_tblCol_To_expCol(pCI);
     p_boolPred = nullptr;
   }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    p_rpnCalc->vX_tblCol_To_expCol(pCI);
-    p_rpnCalc = nullptr;
+  else {
+    for (Kid xRpnCalc(pSub_rpnCalc());xRpnCalc.bEach(CK_TERM); /**/) {
+      pCI->G.p_term = xRpnCalc.p_term();
+      pCI->G.p_term->vX_tblCol_To_expCol(pCI);
+    }
+
+    pCI->G.p_term = nullptr;
+
   }
 
   pCI->vAncestorPop();
