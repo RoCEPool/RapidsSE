@@ -265,8 +265,12 @@ Card* Dissector::pOp_absJoin(void)
   xCast.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
   p_rpnCalc->pSymbol()->vApplyCast(xCast);
 
+  Card_Expr* p_expr = new Card_Expr;
+  p_expr->vAppendChild(p_rpnCalc);
+  p_expr->pSymbol()->vApplyCast(xCast);
+
   Card_On* p_on = new Card_On;
-  p_on->vAppendChild(p_rpnCalc);
+  p_on->vAppendChild(p_expr);
 
   p_absJoin->vAppendChild(p_on);
 
