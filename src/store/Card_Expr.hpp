@@ -63,6 +63,9 @@ namespace STORE
     bool bSameAs(Card_Expr* pExpr_arg);
     void vShortForm(String* pString, Stz* szSep);
 
+    Card_BoolPred* pTo_boolPred(void);
+
+
     void vUpdate_expCol(Card_Emit* p_arriving);
 
     void vX_tblCol_To_expCol(CardIter* pCI);

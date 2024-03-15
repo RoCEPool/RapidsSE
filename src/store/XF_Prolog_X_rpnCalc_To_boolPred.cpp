@@ -74,6 +74,7 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_WHERE, CK_RPNCALC)) {
+    m_pCI->G.p_expr = m_pCI->G.p_where->pSub_expr();
     m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->pTo_boolPred();
     m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
     m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
@@ -81,6 +82,7 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_HAVING, CK_RPNCALC)) {
+    m_pCI->G.p_expr = m_pCI->G.p_having->pSub_expr();
     m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->pTo_boolPred();
     m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
     m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);

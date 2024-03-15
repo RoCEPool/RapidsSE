@@ -18,6 +18,7 @@ namespace STORE
    ~Card_BoolPred(void) noexcept(false);
 
     static Card_BoolPred* pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg);
+    static Card_BoolPred* pTo_boolPred(Card_Expr* p_expr_arg);
 
     void vAppend_and_rlnConj(Card_RlnConj *p_rlnConj);
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
