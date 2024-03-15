@@ -19,7 +19,6 @@ namespace STORE
 
     static void vDeleteEmptyFilters(CardIter* pCI);
     static void vIndividuate_filter(CardIter* pCI);
-    static Card_Filter* pNew(Card_Constraint* p_constraint);
 
 
     void vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt=false);

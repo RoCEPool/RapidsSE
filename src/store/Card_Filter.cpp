@@ -88,18 +88,6 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
-{
-  _static_
-
-  Card_Filter* p_filter = new Card_Filter;
-
-  p_filter->vAppendChild(p_constraint);
-  return p_filter;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
