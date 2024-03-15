@@ -6,7 +6,6 @@
 #include "Cue.hpp"
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
-#include "ShortForm.hpp"
 
 #include "eOT.h"
 
@@ -1211,11 +1210,6 @@ void CardIter::vEndTransform(i8 iLineNo)
                 m_pBench->szXfile()->azChar(),
                 iLineNo);
 
-//    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
-//      ShortForm *pShortForm = new ShortForm(this);
-//      pShortForm->vDump(0);
-//      delete pShortForm;
-//    }
   }
 
   vValidateBench();

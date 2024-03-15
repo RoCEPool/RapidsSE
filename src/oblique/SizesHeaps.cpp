@@ -324,7 +324,6 @@
 #include "SketchTkn.hpp"
 #include "ColHsh.hpp"
 #include "ColInj.hpp"
-#include "ShortForm.hpp"
 #include "ColPpg.hpp"
 #include "MatrixPrint.hpp"
 
@@ -673,8 +672,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SEPROMPT,        sizeof(SePrompt),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUT,        sizeof(ShortCut),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUTVEC,     sizeof(ShortCutVec),        HT_T_MEDIUM  , FILL },
-  { CN_SHORTFORM,       sizeof(ShortForm),          HT_T_LARGE  , FILL },
-  {CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
+   {CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
   {CN_SKETCHTKN,       sizeof(SketchTkn),          HT_T_TINY    , FILL },
   {CN_SKIPLIST,        sizeof(SkipListNL),         HT_T_TINY    , FILL },
   {CN_SKIPLISTNODE,    sizeof(SkipListNode),       HT_INVALID   , FILL },
