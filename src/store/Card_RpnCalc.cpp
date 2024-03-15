@@ -70,21 +70,6 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* return first key col in this rpn sequence                                  */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_RpnCalc::pFirstColSym(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xKid.p_term()->pSymbol();
-
-  return nullptr;
-}
-
 /*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -114,48 +99,6 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
   }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* induct this arriving rpcCalc                                               */
-/*----------------------------------------------------------------------------*/
-Card_RpnCalc* Card_RpnCalc::pInduct(Card_Expr* p_expr_arriving)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_RpnCalc* p_rpnCalc_inducted = new Card_RpnCalc;
-
-  p_rpnCalc_inducted->vApplyCast_p(this);
-
-  Card_Term* p_term_inducted = new Card_Term;
-  p_term_inducted->vApplyCast_p(this);
-  p_rpnCalc_inducted->vAppendChild(p_term_inducted);
-
-  if (bIsScalarCol() && pFirstColSym()->bHasFacet(SF_TBL_COL)) {
-    p_term_inducted ->SYM(SF_TBL_COL, pFirstColSym()->szFacet(SF_TBL_COL));
-  }
-  if (p_expr_arriving->pSymbol()->bHasFacet(SF_EXP_COL)) {
-    p_term_inducted ->SYM(SF_EXP_COL, p_expr_arriving->szFacet(SF_EXP_COL));
-  }
-
-  return p_rpnCalc_inducted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this rpnCalc a simple expression of a column ?                          */
-/*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsScalarCol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (nChildCards() > 1)
-    return false;
-
-  Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->pSymbol()->bHasFacet(SF_EXP_COL) &&  !p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))
-    return false;
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

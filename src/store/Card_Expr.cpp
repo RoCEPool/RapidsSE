@@ -501,7 +501,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_RpnCalc* p_rpnCalc_arriving = pSub_rpnCalc();
+  //Card_RpnCalc* p_rpnCalc_arriving = pSub_rpnCalc();
 
   Card_Expr* p_expr_inducted = new Card_Expr;
   Symbol* pSymbol_expr_inducted = p_expr_inducted->pSymbol();
@@ -526,7 +526,31 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
     pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,pGet_Symbol(0));
   }
 
-  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
+//  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
+//  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
+
+
+
+
+  Card_RpnCalc* p_rpnCalc_inducted = new Card_RpnCalc;
+
+  p_rpnCalc_inducted->vApplyCast_p(this);
+
+  Card_Term* p_term_inducted = new Card_Term;
+  p_term_inducted->vApplyCast_p(this);
+  p_rpnCalc_inducted->vAppendChild(p_term_inducted);
+
+  if (bIsScalarCol() && pFirst_colSym()->bHasFacet(SF_TBL_COL)) {
+    p_term_inducted ->SYM(SF_TBL_COL, pFirst_colSym()->szFacet(SF_TBL_COL));
+  }
+  if (pSymbol()->bHasFacet(SF_EXP_COL)) {
+    p_term_inducted ->SYM(SF_EXP_COL, szFacet(SF_EXP_COL));
+  }
+
+
+
+
+
   p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
 
   return p_expr_inducted;

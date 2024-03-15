@@ -18,11 +18,8 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
-    Symbol* pFirstColSym(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Symbol* pSymbol);
-    Card_RpnCalc* pInduct(Card_Expr* p_expr_arriving);
-    bool bIsScalarCol(void);
     bool bNeedsBrace(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vShortForm(String* pString, Stz* szSep);
