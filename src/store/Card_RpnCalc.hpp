@@ -19,10 +19,8 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     Card_Term* pGetTerm(i8 i_Term);
-    bool bHasTerm(Symbol* pSymbol);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
-    Card_BoolPred* pTo_boolPred(void);
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);
 

@@ -88,22 +88,6 @@ Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (xKid.p_term()->pSymbol()->bMatches(pSymbol))
-      return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -118,17 +102,6 @@ void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
                           szCardNm(),
                           sType_short.szStz(),
                           m_xSymbol.xCast().m_nTypeLength);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert <rpnCalc> to <boolPred>                                            */
-/*----------------------------------------------------------------------------*/
-Card_BoolPred* Card_RpnCalc::pTo_boolPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(this);
-  return p_boolPred;
 }
 
 /*----------------------------------------------------------------------------*/

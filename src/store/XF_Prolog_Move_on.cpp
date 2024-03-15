@@ -77,6 +77,8 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   m_pCI->vBeginEach_reverse();
   while (m_pCI->bEachOp_reverse(CK_c_ABSJOIN, CK_ON)) {
 
+    //m_pCI->G.p_on->vDump(__func__);
+
     // ignore
     Card_RpnCalc *p_rpnCalc_on = m_pCI->G.p_on->pSub_rpnCalc();
     if (! p_rpnCalc_on->nChildCards())
