@@ -65,7 +65,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
 
 #ifdef WITH_CLANG
-		aDynamicT->m_fp_vExtern_IndexFindT(&aDynamicT->m_xIndexInfoJ,"__TABLENAME__","__INDEXNAME__");
+		aDynamicT->m_fp_vExtern_IndexFind(&aDynamicT->m_xIndexInfoJ,"__TABLENAME__","__INDEXNAME__");
 #endif
     bLeftOuterRow = false;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
