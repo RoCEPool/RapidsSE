@@ -63,6 +63,7 @@ namespace STORE
     bool bSameAs(Card_Expr* pExpr_arg);
 
     Card_BoolPred* pTo_boolPred(void);
+    void vTransfer(STORE::Card_RpnCalc *p_rpnCalc_from, eSF eSymbol_limit);
 
 
     void vUpdate_expCol(Card_Emit* p_arriving);

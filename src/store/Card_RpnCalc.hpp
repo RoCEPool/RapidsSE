@@ -19,7 +19,6 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

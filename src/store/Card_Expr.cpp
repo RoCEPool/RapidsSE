@@ -785,6 +785,27 @@ Card_BoolPred* Card_Expr::pTo_boolPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Expr::vTransfer(STORE::Card_RpnCalc *p_rpnCalc_from, eSF eSymbol_limit)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RpnCalc* p_rpn_calc_this = pSub_rpnCalc();
+
+  bool bAppendAnd = false;
+  if (p_rpn_calc_this->nChildCards())
+    bAppendAnd = true;
+
+  p_rpn_calc_this->vTransferChildren(p_rpnCalc_from, eSymbol_limit);
+
+  if (bAppendAnd) {
+    Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
+    p_rpn_calc_this->vAppendChild(p_term_and);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Expr::vUpdate_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
