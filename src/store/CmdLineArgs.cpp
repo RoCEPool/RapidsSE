@@ -1112,11 +1112,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //if (szArg->bSame("--verbose"_Stz)) {
+    if (szArg->bSame("--verbose"_Stz)) {
       m_xSysArgs.m_bTraceableComponents[TC_VERBOSE] = true;
-		  m_xSysArgs.m_bTraceableComponents[TC_WLP] = true;
-    //  continue;
-    //}
+		  continue;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--welcome"_Stz)) {
