@@ -109,7 +109,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   TaskList* pTaskList;
 
   try {
-		AM::ENGINE::vSignalHandler(SIGSEGV);
+		//AM::ENGINE::vSignalHandler(SIGSEGV);
 
     pTaskList = pCommandParser->pParseCommand(szCommand);
     vTrace("ApiParse5\n"_Stz);
