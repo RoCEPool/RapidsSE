@@ -754,7 +754,7 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 
   i8 nChildren = pSub_rpnCalc()->nChildCards();
 
-  if (nChildren != p_expr_arg->pSub_rpnCalc()->nChildCards())
+  if (nChildren != p_expr_arg->pSub_rpnCalc(C_NOT_NULL)->nChildCards())
     return false;
 
   for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {

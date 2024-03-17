@@ -98,7 +98,6 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   (void)Card::eValidate_parentEither(pCI,
                                      CK_EXPR,
-
                                      CK_NONE);
 
   vValidate_mustHave(CK_TERM, CK_NONE);

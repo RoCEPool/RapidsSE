@@ -43,10 +43,7 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc();
-
-    if (! p_rpnCalc)
-      continue;
+    Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc(C_NOT_NULL);
 
     Kid xCI2(p_rpnCalc);
     while ((xCI2.bEach(CK_TERM))) {
@@ -70,10 +67,7 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc();
-
-    if (! p_rpnCalc)
-      continue;
+    Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc(C_NOT_NULL);
 
     Kid xCI2(p_rpnCalc);
     while (xCI2.bEach(CK_TERM)) {
@@ -521,7 +515,7 @@ void Card_EXPRLIST::vUpdate_cast(Card_EXPRLIST *p_exprList_ref)
 
     if (p_expr_ref) {
       p_expr_this->vApplyCast_x(p_expr_ref->xCast());
-      p_expr_this->pSub_rpnCalc()->vApplyCast_x(p_expr_ref->xCast());
+      p_expr_this->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(p_expr_ref->xCast());
       p_expr_this->pGet_term(0)->vApplyCast_x(p_expr_ref->xCast());
     }
   }

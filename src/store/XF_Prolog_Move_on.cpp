@@ -65,8 +65,10 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_MOVE_ON);
 
   m_pCI->vBeginEach();
-  if (m_pCI->bEachOp(CK_o_WHERE))
-    m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc();
+  if (m_pCI->bEachOp(CK_o_WHERE)) {
+    m_pCI->G.p_expr = m_pCI->G.p_where->pSub_expr(C_NOT_NULL);
+    m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc(C_NOT_NULL);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each <absJoin>/<on>/<rpnCalc>
@@ -81,7 +83,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     // ignore
     Card_Expr *p_expr_on = m_pCI->G.p_on->pSub_expr();
-    Card_RpnCalc *p_rpnCalc_on = p_expr_on->pSub_rpnCalc();
+    Card_RpnCalc *p_rpnCalc_on = p_expr_on->pSub_rpnCalc(C_NOT_NULL);
     if (! p_rpnCalc_on->nChildCards())
       continue;
 
@@ -108,7 +110,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       m_pCI->G.p_deck->vInsertChildAfter(m_pCI->G.p_where, m_pCI->G.p_absJoin);
     }
     m_pCI->G.p_expr = m_pCI->G.p_where->pSub_expr();
-    m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc();
+    m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
 
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>

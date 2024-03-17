@@ -335,7 +335,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 
     Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
     Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
-    if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc()->nChildCards()) {
+    if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc(C_NOT_NULL)->nChildCards()) {
 
       // annotation or direction in passing
       if (p_expr_runkey->pSub_direction() && ! p_expr_prjCol->pSub_direction()) {

@@ -419,7 +419,7 @@ Card* Dissector::pOp_filter(void)
   i8 i_Expr = 1;
   Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
 
-//  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
+//  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc(C_NOT_NULL);
 //  p_expr->vRemoveSub(p_rpnCalc);
 //  DELETE_CARD(p_expr);
   p_filter->vAppendChild(p_expr);
@@ -471,7 +471,7 @@ Card* Dissector::pOp_filter(void)
 //  i8 i_Expr = 1;
 //  Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
 //
-//  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
+//  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc(C_NOT_NULL);
 //  p_expr->vRemoveSub(p_rpnCalc);
 //  DELETE_CARD(p_expr);
 //
@@ -1503,7 +1503,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   p_rpnCalc->vApplyCast_x(xCast);
   p_expr->vApplyCast_x(xCast);
 
-  if (bIsKeyExpr && p_expr->pSub_rpnCalc()->nChildCards() == 1) {
+  if (bIsKeyExpr && p_expr->pSub_rpnCalc(C_NOT_NULL)->nChildCards() == 1) {
     Card_Term* p_term_0 = p_expr->pGet_term0();
     p_term_0->vApplyCast_x(xCast);
   }
@@ -1633,7 +1633,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
       xCast.m_nTypeLength = 19;
       xCast.m_nTypeScale = 2;
       p_expr->vApplyCast_x(xCast);
-      p_expr->pSub_rpnCalc()->vApplyCast_x(xCast);
+      p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
     }
 
     p_key->vAppendChild(p_expr);
@@ -1686,7 +1686,7 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
       xCast.m_nTypeLength = 19;
       xCast.m_nTypeScale = 2;
       p_expr->vApplyCast_x(xCast);
-      p_expr->pSub_rpnCalc()->vApplyCast_x(xCast);
+      p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
     }
 
 

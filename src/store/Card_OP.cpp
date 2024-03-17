@@ -820,7 +820,7 @@ void Card_OP::vRpn_filter(String* psRpnExpr, Card_Filter* p_filter)
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = p_filter->pSub_rpnCalc();
+    Card_RpnCalc *pCard_Calc = p_filter->pSub_rpnCalc(C_NOT_NULL);
     vRpn_rpnCalc(psRpnExpr, pCard_Calc);
   }
 }
@@ -925,7 +925,7 @@ void Card_OP::vRpn_having(String* psRpnExpr, Card_Having* p_having)
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = p_having->pSub_rpnCalc();
+    Card_RpnCalc *pCard_Calc = p_having->pSub_rpnCalc(C_NOT_NULL);
     vRpn_rpnCalc(psRpnExpr, pCard_Calc);
   }
 }
@@ -1018,7 +1018,7 @@ void Card_OP::vRpn_indexJoin_constraint(String* psRpnExpr, Card_IndexJoin* p_ind
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc(C_NOT_NULL);
     vRpn_rpnCalc(psRpnExpr, pCard_Calc);
   }
 
@@ -1182,7 +1182,7 @@ void Card_OP::vRpn_keyExists_constraint(String* psRpnExpr, Card_KeyExists* p_key
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc(C_NOT_NULL);
     vRpn_rpnCalc(psRpnExpr, pCard_Calc);
   }
 
@@ -1273,7 +1273,7 @@ void Card_OP::vRpn_keyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists*
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc(C_NOT_NULL);
     vRpn_rpnCalc(psRpnExpr, pCard_Calc);
   }
 
@@ -1444,7 +1444,7 @@ void Card_OP::vRpn_top(String* psRpnExpr, Card_Top* p_top)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Key *pCard_key = p_top->pSub_key();
-  Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc();
+  Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc(C_NOT_NULL);
 
   TypeId xTypeId = pCard_Calc->xTypeId();
 
@@ -1467,7 +1467,7 @@ void Card_OP::vRpn_where(String* psRpnExpr, Card_Where* p_where)
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = p_where->pSub_rpnCalc();
+    Card_RpnCalc *pCard_Calc = p_where->pSub_rpnCalc(C_NOT_NULL);
     vRpn_rpnCalc(psRpnExpr, pCard_Calc);
   }
 }
@@ -1482,7 +1482,7 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
+  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc(C_NOT_NULL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

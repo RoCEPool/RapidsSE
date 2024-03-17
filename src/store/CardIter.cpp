@@ -352,7 +352,7 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
       if (!pChild_prj->bIsCard(CK_EXPR))
         continue;
       Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-      Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc();
+      Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc(C_NOT_NULL);
       if (! p_rpnCalc)
         continue;
       if (1 != p_rpnCalc->nChildCards())

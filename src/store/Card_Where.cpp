@@ -206,6 +206,11 @@ void Card_Where::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_s_LEVEL, CK_NONE);
 
+  if (!pSub_boolPred())
+    vDump(__func__);
+
+  vValidate_mustHave(CK_o_FILTER, CK_NONE);
+
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

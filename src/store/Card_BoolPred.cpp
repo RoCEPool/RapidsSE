@@ -67,7 +67,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
   if (p_expr_arg->bHasTerm(&xWhen)) {
-    p_boolPred_new->vTransferChildren(p_expr_arg->pSub_rpnCalc());
+    p_boolPred_new->vTransferChildren(p_expr_arg->pSub_rpnCalc(C_NOT_NULL));
     return p_boolPred_new;
   }
 
@@ -83,7 +83,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
   Card_OrConj*  p_orConj  = nullptr;
 
 
-  while (Card_Term* p_term_rpn = _pCard_Term(p_expr_arg->pSub_rpnCalc()->pPopChild())) {
+  while (Card_Term* p_term_rpn = _pCard_Term(p_expr_arg->pSub_rpnCalc(C_NOT_NULL)->pPopChild())) {
 
 //    p_boolPred_new->vDump(__func__,"BOOLPRED_NEW"_Stz);
 //    pStack_conj->vDump(__func__, "STACK_OP"_Stz);
@@ -787,19 +787,19 @@ void Card_BoolPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  Card::vValidate_hasChildren();
   (void)Card::eValidate_parentEither(pCI,
                                      CK_s_CONSTRAINT,
                                      CK_EXPR,
                                      CK_o_FILTER,
                                      CK_NONE);
 
-
   if (nChildCards())
-    Card::eValidate_mustSome(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,
-                               CK_TERM,CK_NONE);
-
-  (void)Card::eValidate_parentEither(pCI, CK_s_CONSTRAINT, CK_EXPR, CK_o_FILTER, CK_NONE);
+    Card::eValidate_mustSome(CK_ANDCONJ,
+                             CK_NOTCONJ,
+                             CK_ORCONJ,
+                             CK_RLNCONJ,
+                             CK_TERM,
+                             CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

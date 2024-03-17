@@ -110,8 +110,8 @@ void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
 
   pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->vAppendChild(p_expr_fold->pSub_rpnCalc()->pDupCardRecursive());
-  pCI->G.p_expr->vApplyCast_p(p_expr_fold->pSub_rpnCalc());
+  pCI->G.p_expr->vAppendChild(p_expr_fold->pSub_rpnCalc(C_NOT_NULL)->pDupCardRecursive());
+  pCI->G.p_expr->vApplyCast_p(p_expr_fold->pSub_rpnCalc(C_NOT_NULL));
 
   pCI->G.p_key->vPushChild(pCI->G.p_expr);
 }

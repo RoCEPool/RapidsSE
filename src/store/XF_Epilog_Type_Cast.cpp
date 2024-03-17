@@ -159,7 +159,7 @@ void XF_Epilog_Type_Cast::vCast(void)
         m_pCI->G.p_boolPred->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
       }
 
-//      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_Op->pSub_rpnCalc()))
+//      if ((m_pCI->G.p_rpnCalc = m_pCI->G.p_Op->pSub_rpnCalc(C_NOT_NULL)))
 //        m_pCI->G.p_rpnCalc->vApplyCast(m_pCI);
 
       if ((m_pCI->G.p_indexList = m_pCI->G.p_Op->pSub_indexList()))
