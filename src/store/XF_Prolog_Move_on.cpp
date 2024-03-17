@@ -106,12 +106,15 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       // create a new <where>/...
       m_pCI->G.p_where = Card_Where::pNewWhereAssembly();
       m_pCI->G.p_deck->vInsertChildAfter(m_pCI->G.p_where, m_pCI->G.p_absJoin);
-
-      m_pCI->G.p_expr = m_pCI->G.p_where->pSub_expr();
-      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc();
     }
+    m_pCI->G.p_expr = m_pCI->G.p_where->pSub_expr();
+    m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc();
+
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
+    if (!m_pCI->G.p_expr)
+      m_pCI->G.p_where->vDump(__func__);
+
     m_pCI->G.p_expr->vTransfer(p_rpnCalc_on,SF_RLN_OP);
     m_pCI->G.p_rpnCalc->vApplyCast_x(p_rpnCalc_on->xCast());
     m_pCI->G.p_expr->vApplyCast_x(p_rpnCalc_on->xCast());
