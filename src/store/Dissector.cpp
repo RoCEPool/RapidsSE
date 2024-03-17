@@ -419,9 +419,6 @@ Card* Dissector::pOp_filter(void)
   i8 i_Expr = 1;
   Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
 
-//  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc(C_NOT_NULL);
-//  p_expr->vRemoveSub(p_rpnCalc);
-//  DELETE_CARD(p_expr);
   p_filter->vAppendChild(p_expr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -452,59 +449,6 @@ Card* Dissector::pOp_filter(void)
     return p_where;
   }
 }
-/*----------------------------------------------------------------------------*/
-//Card* Dissector::pOp_filter(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // op arguments
-//
-//  vCheckArgs(1);
-//
-//  Card_RpnExpr* p_rpnExpr = pArg_rpnExpr(0);
-//  Card_Filter* p_filter = new Card_Filter;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // filtElist : filter expression list
-//
-//  i8 i_Expr = 1;
-//  Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
-//
-//  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc(C_NOT_NULL);
-//  p_expr->vRemoveSub(p_rpnCalc);
-//  DELETE_CARD(p_expr);
-//
-//  p_filter->vAppendChild(p_rpnCalc);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // is it filter or having?
-//
-//  if (m_bSawAggOp || m_bSawProjectOp) {
-//    Card_Having* p_having = new Card_Having;
-//    p_having->vTransferChildren(p_filter);
-//    delete p_filter;
-//    delete p_rpnExpr;
-//
-//    eAL eAggLevel = m_pStageSpec->eAggegLevel();
-//    Card_Level* p_aggLevel = new Card_Level(eAggLevel);
-//    p_having->vPush(p_aggLevel);
-//
-//    return p_having;
-//  }
-//  else {
-//    delete p_rpnExpr;
-//
-//    p_filter->vCard(CK_o_WHERE);
-//    Card_Where* p_where = _pCard_Where(p_filter);
-//
-//    eAL eAggLevel = m_pStageSpec->eAggegLevel();
-//    Card_Level* p_aggLevel = new Card_Level(eAggLevel);
-//    p_where->vPush(p_aggLevel);
-//
-//    return p_where;
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /* dissect : gbyAgg <szRpnExpr : 0) aggElist ; 1) gbyElist>                   */
