@@ -54,7 +54,6 @@ namespace STORE
     bool bMatches(Card_Expr* p_expr_arg);
 
     bool bNeedsBrace(void);
-
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     void vRenumberForm_keyCol(i8 i_Expr);
@@ -62,7 +61,6 @@ namespace STORE
 
     bool bSameAs(Card_Expr* pExpr_arg);
 
-    Card_BoolPred* pTo_boolPred(void);
     void vTransfer(STORE::Card_RpnCalc *p_rpnCalc_from, eSF eSymbol_limit);
 
 

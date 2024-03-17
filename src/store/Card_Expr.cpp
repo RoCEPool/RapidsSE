@@ -772,17 +772,6 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert <rpnCalc> to <boolPred>                                            */
-/*----------------------------------------------------------------------------*/
-Card_BoolPred* Card_Expr::pTo_boolPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(this);
-  return p_boolPred;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vTransfer(STORE::Card_RpnCalc *p_rpnCalc_from, eSF eSymbol_limit)

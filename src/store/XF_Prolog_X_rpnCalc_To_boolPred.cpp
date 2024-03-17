@@ -68,33 +68,26 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
   while (m_pCI->bEachOp(CK_o_FROM, CK_s_CONSTRAINT)) {
     m_pCI->G.p_constraint->vDump(__func__);
     m_pCI->G.p_expr = m_pCI->G.p_constraint->pSub_expr();
-    m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
-    m_pCI->G.p_boolPred = m_pCI->G.p_expr->pTo_boolPred();
-    m_pCI->G.p_from->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
-    m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
+    Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_WHERE, CK_RPNCALC)) {
     m_pCI->G.p_filter = m_pCI->G.p_where->pSub_filter();
     m_pCI->G.p_expr = m_pCI->G.p_filter->pSub_expr();
-    m_pCI->G.p_boolPred = m_pCI->G.p_expr->pTo_boolPred();
-    m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
-    m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
+    Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_HAVING, CK_RPNCALC)) {
     m_pCI->G.p_filter = m_pCI->G.p_having->pSub_filter();
     m_pCI->G.p_expr = m_pCI->G.p_filter->pSub_expr();
-    m_pCI->G.p_boolPred = m_pCI->G.p_expr->pTo_boolPred();
-    m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
-    m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
+    Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
   }
 
 //  m_pCI->vClearRestart();
 //  while (m_pCI->bEachOp(CK_o_INDEXJOIN, CK_s_CONSTRAINT, CK_RPNCALC)) {
-//    m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->pTo_boolPred(m_pCI);
+//    m_pCI->G.p_boolPred = m_pCI->G.p_rpnCalc->vTo_boolPred(m_pCI);
 //    m_pCI->G.p_indexScan->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolPred);
 //    m_pCI->vDeleteMember(m_pCI->G.p_rpnCalc);
 //  }

@@ -52,7 +52,7 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolPred>                                            */
 /*----------------------------------------------------------------------------*/
-Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
+void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
 {
   _static_
 
@@ -67,8 +67,11 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
   if (p_expr_arg->bHasTerm(&xWhen)) {
-    p_boolPred_new->vTransferChildren(p_expr_arg->pSub_rpnCalc(C_NOT_NULL));
-    return p_boolPred_new;
+    Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
+    p_boolPred_new->vTransferChildren(p_rpnCalc_arg);
+    p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
+    DELETE_CARD(p_rpnCalc_arg);
+    return;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -181,7 +184,10 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
   RASSERT(0 == pStack_term->nChildCards());
   DELETE_CARD(pStack_term);
 
-  return p_boolPred_new;
+
+  Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
+  p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
+  DELETE_CARD(p_rpnCalc_arg);
 }
 
 
