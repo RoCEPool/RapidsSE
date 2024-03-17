@@ -74,6 +74,9 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   if (p_expr->pSub_rpnCalc())
     p_rpnCalc->vAppendChild(p_expr->pGet_term(0)->pDupCardRecursive());
+  else
+    NEVER_REACH
+    
   p_expr_new->vAppendChild(p_rpnCalc);
 
   p_rpnCalc->vApplyCast_x(p_expr->xCast());
