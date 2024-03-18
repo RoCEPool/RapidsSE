@@ -25,33 +25,36 @@ HashMapEntry* BASE::_pHashMapEntry(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* HashMapEntry::operator new(size_t)
 {
-  void* pObject = Heaps::pAllocate(CN_HASHMAPENTRY);
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+         "fatal: Row class cannot be new'd\n"_Stz);
 
-  return pObject;
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void HashMapEntry::operator delete(void* pHashMapEntryAddress)
+void* HashMapEntry::operator new(size_t, void* aAddress)
 {
-  HashMapEntry* pHashMapEntry = reinterpret_cast<HashMapEntry*>(pHashMapEntryAddress);
-
-  Heaps::vFree(pHashMapEntry);
+  return aAddress;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMapEntry::HashMapEntry(void* pKey, Object* pValue)
+HashMapEntry::HashMapEntry(void* pKey, Object* pValue, eBI eBufferIdType)
 : Object(CN_HASHMAPENTRY)
-, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
 
+  m_ixAtomicLock.vCheckInit();
+  vGrabLock();
+  Task* pTask = AM::pThisTLSTask();
+  if(pTask)
+    pTask->vAddHashMapEntry(this);
+  m_eBufferIdType = eBufferIdType;
   m_pKeyObject = pKey;
   m_pValObject = pValue;
-  m_pNext = nullptr;
 
   _checkInitialised_(CN_HASHMAPENTRY);
 
@@ -64,12 +67,57 @@ HashMapEntry::HashMapEntry(void* pKey, Object* pValue)
 HashMapEntry::~HashMapEntry(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPENTRY,_FOOTER_);
+  vDropLock();
+  Task* pTask = AM::pThisTLSTask();
+  if(pTask) {
+    bool bResult = pTask->bDeleteHashMapEntry(this);
+    UNUSED(bResult);
+    ASSERT(bResult);
+  }
+
+  ASSERT((*m_ixAtomicLock) == 0);
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* Decrement atomic lock                                                      */
+/*----------------------------------------------------------------------------*/
+void HashMapEntry::vDropLock(void)
+{
+  ASSERT((*m_ixAtomicLock) > 0);
+  m_ixAtomicLock.iDec();
+  Task* pTask = AM::pThisTLSTask();
+  if(pTask) {
+    bool bResult = pTask->bDeleteHashMapEntry(this);
+    UNUSED(bResult);
+//    ASSERT(bResult);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Increment atomic lock                                                      */
+/*----------------------------------------------------------------------------*/
+void HashMapEntry::vGrabLock(void)
+{
+  ASSERT((*m_ixAtomicLock) >= 0);
+  m_ixAtomicLock.iInc();
+  Task* pTask = AM::pThisTLSTask();
+  if(pTask)
+    pTask->vAddHashMapEntry(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Decriment atomic lock                                                      */
+/*----------------------------------------------------------------------------*/
+bool HashMapEntry::bLocked(void)
+{
+  ASSERT((*m_ixAtomicLock) >= 0);
+  return (*m_ixAtomicLock) > 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

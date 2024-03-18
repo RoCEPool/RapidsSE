@@ -84,6 +84,7 @@ AttachMap::AttachMap(bool bNoFree)
 
   m_pFileMap        = new FileMap();
   m_pHashMap        = new HashMap();
+  m_pHashMap->vInit();
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;

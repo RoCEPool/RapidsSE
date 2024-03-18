@@ -192,8 +192,8 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(i8 nBytes, CompareFunc fpCompare)
-    : DataBuffer(CN_PDS, false)
+Pds::Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap)
+    : DataBuffer(bAddToHashMap, CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -269,6 +269,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
 /*----------------------------------------------------------------------------*/
 Pds::~Pds(void) noexcept(false)
 {
+	_precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
 
 
@@ -913,6 +914,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
       // Currently we do not allow duplicates
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
       if (iCompareRes == 0) {
+        ASSERT(0);
         // Got duplicate key, error
         vMoveToFreeList(pNewSLBlock);
         vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
@@ -1345,6 +1347,31 @@ void Pds::vValidate(void)
     pNext = pNextSLBlock(pNext, 0);
   }
     ASSERT(iCount == m_iFreeListEntries);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid Pds buffer                                                  */
+/*----------------------------------------------------------------------------*/
+bool Pds::bValidPdsBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  if (! bIsMagicValid()) {
+    vTrace("Not valid magic\n"_Stz);
+    return false;
+  }
+
+  if (CN_PDS != eGetClassNo()) {
+    vTrace("Not valid class\n"_Stz);
+    return false;
+  }
+
+  if (! aFooter()->bValidFooter()) {
+    vTrace("Not valid footer\n"_Stz);
+    return false;
+  }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
