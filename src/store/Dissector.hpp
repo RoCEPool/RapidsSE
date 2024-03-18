@@ -84,7 +84,7 @@ namespace STORE
                                      bool bEnsureDirection);
     Card_Emit*       pPop_emit      (Card_RpnExpr* p_rpnExpr);
     Card_RpnCalc*    pPop_rpnCalc   (Card_RpnExpr* p_rpnExpr);
-    Card_OnClause*   pPop_onClause  (Card_RpnExpr* p_rpnExpr);
+    Card_On * pPop_on  (Card_RpnExpr* p_rpnExpr);
 
     void             vCheckArgs     (i8 nArgs);
 

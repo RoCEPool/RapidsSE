@@ -263,12 +263,8 @@ Card* Dissector::pOp_absJoin(void)
   Cast xCast;
   xCast.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
 
-  Card_OnClause* p_onClause = pPop_onClause(p_rpnExpr);
-  p_onClause->pSymbol()->vApplyCast(xCast);
-
-  Card_On* p_on = new Card_On;
-  p_on->vAppendChild(p_onClause);
-
+  Card_On* p_on = pPop_on(p_rpnExpr);
+  p_on->pSymbol()->vApplyCast(xCast);
 
   p_absJoin->vAppendChild(p_on);
 
@@ -1710,11 +1706,11 @@ Card_RpnCalc* Dissector::pPop_rpnCalc(Card_RpnExpr* p_rpnExpr)
 /*----------------------------------------------------------------------------*/
 /* pop rpnCalc                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OnClause* Dissector::pPop_onClause(Card_RpnExpr* p_rpnExpr)
+Card_On * Dissector::pPop_on(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card_OnClause* p_OnClause = new Card_OnClause;
+  Card_On* p_On = new Card_On;
 
   Card_Term* p_term_popped = nullptr;
   while ( (p_term_popped = _pCard_Term(p_rpnExpr->pPopChild())) ) {
@@ -1732,14 +1728,14 @@ Card_OnClause* Dissector::pPop_onClause(Card_RpnExpr* p_rpnExpr)
     }
 
     if (p_term_popped->pSymbol()->bHasFacet(SF_AGG_FN))
-      p_OnClause->pSymbol()->Y_vSet(P_AggOp);
+      p_On->pSymbol()->Y_vSet(P_AggOp);
 
-    p_OnClause->vAppendChild(p_term_popped);
+    p_On->vAppendChild(p_term_popped);
   }
 
-  p_OnClause->vDump(__func__);
+  p_On->vDump(__func__);
 
-  return p_OnClause;
+  return p_On;
 }
 
 

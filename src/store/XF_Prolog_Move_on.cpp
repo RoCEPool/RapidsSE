@@ -82,12 +82,11 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     m_pCI->G.p_on->vDump(__func__);
 
     // ignore
-    Card_OnClause *p_onClause = m_pCI->G.p_on->pSub_onClause(C_NOT_NULL);
-    if (! p_onClause->nChildCards())
+    if (! m_pCI->G.p_on->nChildCards())
       continue;
 
     // move LEFT_OUTER to scan
-    if (p_onClause->bPopDeleteChildIf(CK_TERM,
+    if (m_pCI->G.p_on->bPopDeleteChildIf(CK_TERM,
                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
       if (m_pCI->bEachOp_reverse(CK_o_SCAN)) {
         p_scan_over = m_pCI->G.p_scan;
@@ -96,7 +95,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       }
     }
 
-    Card_Term *p_term_0 = _pCard_Term(p_onClause->pGetChild(0));
+    Card_Term *p_term_0 = _pCard_Term(m_pCI->G.p_on->pGetChild(0));
     if (p_term_0->pSymbol()->bHasFacet("CROSS"_Stz))
       continue;
 
@@ -113,17 +112,17 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     if (!m_pCI->G.p_expr)
       m_pCI->G.p_where->vDump(__func__);
 
-    m_pCI->G.p_expr->vTransfer(p_onClause,SF_RLN_OP);
-    m_pCI->G.p_rpnCalc->vApplyCast_x(p_onClause->xCast());
-    m_pCI->G.p_expr->vApplyCast_x(p_onClause->xCast());
+    m_pCI->G.p_expr->vTransfer(m_pCI->G.p_on,SF_RLN_OP);
+    m_pCI->G.p_rpnCalc->vApplyCast_x(m_pCI->G.p_on->xCast());
+    m_pCI->G.p_expr->vApplyCast_x(m_pCI->G.p_on->xCast());
 
-    if (p_onClause->nChildCards()) {
-      delete p_onClause->pPopChild_tail();
+    if (m_pCI->G.p_on->nChildCards()) {
+      delete m_pCI->G.p_on->pPopChild_tail();
       m_pCI->vAppendNewChild(p_scan_over, CK_s_CONSTRAINT);
       m_pCI->vAppendNewChild(m_pCI->G.p_constraint, CK_EXPR);
       m_pCI->vAppendNewChild(m_pCI->G.p_expr,CK_RPNCALC);
-      m_pCI->G.p_expr->vApplyCast_x(p_onClause->xCast());
-      m_pCI->G.p_rpnCalc->vTransferChildren(p_onClause);
+      m_pCI->G.p_expr->vApplyCast_x(m_pCI->G.p_on->xCast());
+      m_pCI->G.p_rpnCalc->vTransferChildren(m_pCI->G.p_on);
     }
 
     // remove and delete <absJoin>/<on>
