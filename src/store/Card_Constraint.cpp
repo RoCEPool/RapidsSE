@@ -56,6 +56,24 @@ Card_Constraint::~Card_Constraint(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* create new <where>/<constraint>/<expr $1>/<rpnCalc>                        */
+/*----------------------------------------------------------------------------*/
+Card_Constraint* Card_Constraint::pNewAssembly_constraint(void)
+{
+  _static_
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+
+  Card_Expr* p_expr = new Card_Expr;
+  p_expr->vAppendChild(p_rpnCalc);
+
+  Card_Constraint* p_constraint = new Card_Constraint;
+  p_constraint->vAppendChild(p_expr);
+
+  return p_constraint;
+}
+
+/*----------------------------------------------------------------------------*/
 /* acclimate for injected fold expr                                           */
 /*----------------------------------------------------------------------------*/
 void Card_Constraint::vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)

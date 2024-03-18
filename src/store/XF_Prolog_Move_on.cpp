@@ -111,9 +111,10 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     if (m_pCI->G.p_on->nChildCards()) {
       delete m_pCI->G.p_on->pPopChild_tail();
-      m_pCI->vAppendNewChild(p_scan_over, CK_s_CONSTRAINT);
-      m_pCI->vAppendNewChild(m_pCI->G.p_constraint, CK_EXPR);
-      m_pCI->vAppendNewChild(m_pCI->G.p_expr,CK_RPNCALC);
+      m_pCI->G.p_constraint = Card_Constraint::pNewAssembly_constraint();
+      m_pCI->G.p_expr = m_pCI->G.p_constraint->pSub_expr();
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc();
+      p_scan_over->vAppendChild(m_pCI->G.p_constraint);
       m_pCI->G.p_expr->vApplyCast_x(m_pCI->G.p_on->xCast());
       m_pCI->G.p_rpnCalc->vTransferChildren(m_pCI->G.p_on);
     }

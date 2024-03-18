@@ -16,6 +16,8 @@ namespace STORE
     Card_Constraint(void);
    ~Card_Constraint(void) noexcept(false);
 
+    static Card_Constraint* pNewAssembly_constraint(void);
+
     void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
     void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
     void vBump_expCol(i8 nBumpBy);
