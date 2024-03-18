@@ -68,24 +68,39 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
   while (m_pCI->bEachOp(CK_o_FROM, CK_s_CONSTRAINT)) {
     m_pCI->G.p_constraint->vDump(__func__);
     m_pCI->G.p_expr = m_pCI->G.p_constraint->pSub_expr();
+#ifdef Z_SIMPLE_BOOLPRED
     if (m_pCI->G.p_expr->pSub_rpnCalc())
       Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
+#else
+    if (m_pCI->G.p_expr->pSub_rpnCalc())
+      Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
+#endif
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_WHERE, CK_RPNCALC)) {
     m_pCI->G.p_filter = m_pCI->G.p_where->pSub_filter();
     m_pCI->G.p_expr = m_pCI->G.p_filter->pSub_expr();
+#ifdef Z_SIMPLE_BOOLPRED
     if (m_pCI->G.p_expr->pSub_rpnCalc())
       Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
+#else
+    if (m_pCI->G.p_expr->pSub_rpnCalc())
+      Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
+#endif
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_HAVING, CK_RPNCALC)) {
     m_pCI->G.p_filter = m_pCI->G.p_having->pSub_filter();
     m_pCI->G.p_expr = m_pCI->G.p_filter->pSub_expr();
+#ifdef Z_SIMPLE_BOOLPRED
     if (m_pCI->G.p_expr->pSub_rpnCalc())
       Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
+#else
+    if (m_pCI->G.p_expr->pSub_rpnCalc())
+      Card_BoolPred::vTo_boolPred(m_pCI->G.p_expr);
+#endif
   }
 
   m_pCI->vEndTransform(__LINE__);

@@ -192,15 +192,14 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
 
   p_boolPred_new->xTypeId() = TypeId::xIdOf(CT_BOOLEAN);
 
+  Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // does the expression have a WHEN in it?
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
   if (p_expr_arg->bHasTerm(&xWhen)) {
-    Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
     p_boolPred_new->vTransferChildren(p_rpnCalc_arg);
-    //p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
-    DELETE_CARD(p_expr_arg);
     return p_boolPred_new;
   }
 
@@ -215,7 +214,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
   Card_NotConj* p_notConj = nullptr;
   Card_OrConj*  p_orConj  = nullptr;
 
-  while (Card_Term* p_term_rpn = _pCard_Term(p_expr_arg->pSub_rpnCalc(C_NOT_NULL)->pPopChild())) {
+  while (Card_Term* p_term_rpn = _pCard_Term(p_rpnCalc_arg->pPopChild())) {
 
     eTE eTerm_rpn = p_term_rpn->eEvalTerm();
     switch (eTerm_rpn) {
@@ -237,7 +236,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
           p_boolPred_new->vPush(p_andConj);
         }
         else {
-          p_andConj  = _pCard_AndConj(p_term_rpn->pCard(CK_ANDCONJ));
+          p_andConj = _pCard_AndConj(p_term_rpn->pCard(CK_ANDCONJ));
           p_andConj->vPushChild(p_boolPred_new->pPopChild());
           p_andConj->vPushChild(p_boolPred_new->pPopChild());
           p_boolPred_new->vPush(p_andConj);
@@ -307,10 +306,6 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
   DELETE_CARD(pStack_conj);
   RASSERT(0 == pStack_term->nChildCards());
   DELETE_CARD(pStack_term);
-
-  //Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
-  //p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
-  DELETE_CARD(p_expr_arg);
 
   return p_boolPred_new;
 }

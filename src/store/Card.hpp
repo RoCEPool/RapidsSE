@@ -106,7 +106,6 @@ namespace STORE
   class Card_NotConj;
 
   class Card_On;
-  class Card_OnClause;
   class Card_OP;
   class Card_OrdAgg;
   class Card_OrConj;
