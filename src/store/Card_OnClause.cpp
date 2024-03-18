@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_OnClause, CK_ON)
+__pCastFunction_Card(STORE, Card_OnClause, CK_ONCLAUSE)
 __aNewFunction(Card_OnClause, CN_CARD)
 __vDeleteFunction(Card_OnClause, CN_CARD)
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_OnClause, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OnClause::Card_OnClause(void)
-: Card_symbol(CK_ON, C_UNKNOWN)
+: Card_symbol(CK_ONCLAUSE, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

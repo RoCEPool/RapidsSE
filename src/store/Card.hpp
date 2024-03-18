@@ -104,6 +104,7 @@ namespace STORE
   class Card_NotConj;
 
   class Card_On;
+  class Card_OnClause;
   class Card_OP;
   class Card_OrdAgg;
   class Card_OrConj;
@@ -498,6 +499,7 @@ namespace STORE
     Card_NotConj*       pSub_notConj(bool bNotNull=false);
     Card_Note*          pSub_note(bool bNotNull=false);
     Card_On*            pSub_on(bool bNotNull=false);
+    Card_OnClause*      pSub_onClause(bool bNotNull=false);
     Card_OuterColNm*    pSub_outerColNm(bool bNotNull=false);
     Card_OuterJoin*     pSub_outerJoin(bool bNotNull=false);
     Card_PayloadCells*  pSub_payloadCells(bool bNotNull=false);

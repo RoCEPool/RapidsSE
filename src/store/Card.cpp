@@ -3412,6 +3412,24 @@ Card_On* Card::pSub_on(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_OnClause.hpp"
+Card_OnClause* Card::pSub_onClause(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_OnClause* p_onClause =
+      _pCard_OnClause(pFindSubCard(CK_ONCLAUSE));
+
+  if (bNotNull && !p_onClause) {
+    NEVER_REACH
+  }
+
+  return p_onClause;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_OuterColNm.hpp"
 Card_OuterColNm* Card::pSub_outerColNm(bool bNotNull)
 {
