@@ -52,9 +52,6 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolPred>                                            */
 /*----------------------------------------------------------------------------*/
-
-#ifdef Z_SIMPLE_BOOLPRED
-
 void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
 {
   _static_
@@ -64,7 +61,7 @@ void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
   p_boolPred_new->xTypeId() = TypeId::xIdOf(CT_BOOLEAN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // does the rpn calc have a when in it?
+  // does the expression have a WHEN in it?
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
   if (p_expr_arg->bHasTerm(&xWhen)) {
@@ -183,11 +180,11 @@ void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
   p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
   DELETE_CARD(p_rpnCalc_arg);
 }
-
-#else
 
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
+/* convert <expr>/<rpnCalc> to <boolPred>                                     */
+/*----------------------------------------------------------------------------*/
+Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
 {
   _static_
 
@@ -196,15 +193,15 @@ void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
   p_boolPred_new->xTypeId() = TypeId::xIdOf(CT_BOOLEAN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // does the rpn calc have a when in it?
+  // does the expression have a WHEN in it?
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
   if (p_expr_arg->bHasTerm(&xWhen)) {
     Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
     p_boolPred_new->vTransferChildren(p_rpnCalc_arg);
-    p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
-    DELETE_CARD(p_rpnCalc_arg);
-    return;
+    //p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
+    DELETE_CARD(p_expr_arg);
+    return p_boolPred_new;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -311,12 +308,13 @@ void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
   RASSERT(0 == pStack_term->nChildCards());
   DELETE_CARD(pStack_term);
 
-  Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
-  p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
-  DELETE_CARD(p_rpnCalc_arg);
+  //Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
+  //p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
+  DELETE_CARD(p_expr_arg);
+
+  return p_boolPred_new;
 }
 
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
