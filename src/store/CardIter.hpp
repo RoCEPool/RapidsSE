@@ -179,7 +179,7 @@ namespace STORE
     Card* pPeekNext(void);
     Card* pPeekNextIf(eCK eCard);
     Card* pPeekPrev(void);
-    bool bPositionOn(eCK eKind_on, i8 /* eCK */ iKind_First, ...);
+    bool bPositionAt(eCK eKind_at, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
     void vPushChild(Card* pParent, eCK eChild);
 

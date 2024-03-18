@@ -1696,7 +1696,7 @@ Card* CardIter::pPeekPrev(void)
 /*----------------------------------------------------------------------------*/
 /* position on given card of sequence                                         */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
+bool CardIter::bPositionAt(eCK eKind_at, i8 /* eCK */  iKind_First, ...)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -1724,7 +1724,7 @@ bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
 
   eCK eKind_each;
 
-  if (eKind_on == G.e_Op) {
+  if (eKind_at == G.e_Op) {
     pCard_found = G.p_Op;
   }
 
@@ -1737,7 +1737,7 @@ bool CardIter::bPositionOn(eCK eKind_on, i8 /* eCK */  iKind_First, ...)
       return false;
     }
 
-    if (! pCard_found && eKind_on == G.e_Op) {
+    if (! pCard_found && eKind_at == G.e_Op) {
       pCard_found = G.p_Op;
     }
   }

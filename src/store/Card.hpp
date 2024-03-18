@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_SIMPLE_BOOLPRED
+//#define Z_SIMPLE_BOOLPRED
 
 namespace STORE
 {
