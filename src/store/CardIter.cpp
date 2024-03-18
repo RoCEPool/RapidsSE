@@ -1312,13 +1312,13 @@ void CardIter::vInsertBefore(Card* pCard, Card* pBefore)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch M member by decoding given eMember                                   */
+/* fetch M member by decoding given eCard                                   */
 /*----------------------------------------------------------------------------*/
-Card* CardIter::pMember(eCK eMember)
+Card* CardIter::pMember(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  switch (eMember) {
+  switch (eCard) {
 
     case CK_c_ABSJOIN:      return G.p_absJoin;
     case CK_ADDRESS:        return G.p_address;
@@ -1458,13 +1458,13 @@ Card* CardIter::pMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /* set member card                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vMember(eCK eMember, Card* pCard)
+void CardIter::vMember(eCK eCard, Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(!pCard || pCard->bIsCard(eMember));
+  RASSERT(!pCard || pCard->bIsCard(eCard));
 
-  switch (eMember) {
+  switch (eCard) {
 
     case CK_NONE: break;
 
@@ -1623,25 +1623,29 @@ bool CardIter::bMore(void)
 /*----------------------------------------------------------------------------*/
 /* create a new card and optionally set member                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::vNewMember(eCK eMember)
+void CardIter::vNewMember(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
+  if (CK_RPNCALC == eCard)
+    vDebugPoint();
 
-  Card* pNew = new Card(eMember,C_UNKNOWN);
+  Card* pNew = new Card(eCard,C_UNKNOWN);
 
-  vMember(eMember, pNew);
+  vMember(eCard, pNew);
 }
 
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void CardIter::vNewMember(eCK eMember, Symbol xSymbol)
+void CardIter::vNewMember(eCK eCard, Symbol xSymbol)
 {
   _precondition_(_MAGIC_, _FOOTER_);
+  if (CK_RPNCALC == eCard)
+    vDebugPoint();
 
-  Card* pNew = new Card(eMember,C_UNKNOWN);
+  Card* pNew = new Card(eCard,C_UNKNOWN);
 
-  vMember(eMember, pNew);
+  vMember(eCard, pNew);
 
   pNew->pSymbol()->vApplyCastFacets(&xSymbol);
 }
