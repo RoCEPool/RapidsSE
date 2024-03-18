@@ -1325,17 +1325,10 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Cast xCast = xPop_cast(p_rpnExpr);
-
   Card_Constraint* p_constraint = new Card_Constraint;
 
-
-  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
-  p_rpnCalc->vApplyCast_x(xCast);
-
-  Card_Expr* p_expr = new Card_Expr;
-  p_expr->vAppendChild(p_rpnCalc);
-  p_expr->vApplyCast_x(xCast);
+  i8 i_Expr = 1;
+  Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
 
   p_constraint->vAppendChild(p_expr);
 
