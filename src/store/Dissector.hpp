@@ -80,11 +80,10 @@ namespace STORE
                                      bool bEnsureDirection);
     Card_HshCol*     pPop_hshCol    (Card_RpnExpr* p_rpnExpr);
     Card_HshColList* pPop_hshColList(Card_RpnExpr* p_rpnExpr);
-    Card_Key*        pPop_key       (Card_RpnExpr* p_rpnExpr,
-                                     bool bEnsureDirection);
+    Card_Key*        pPop_key       (Card_RpnExpr* p_rpnExpr);
     Card_Emit*       pPop_emit      (Card_RpnExpr* p_rpnExpr);
     Card_RpnCalc*    pPop_rpnCalc   (Card_RpnExpr* p_rpnExpr);
-    Card_On * pPop_on  (Card_RpnExpr* p_rpnExpr);
+    Card_On*         pPop_on  (Card_RpnExpr* p_rpnExpr);
 
     void             vCheckArgs     (i8 nArgs);
 

@@ -473,7 +473,7 @@ Card* Dissector::pOp_gbyAgg(void)
   // gbyElist : optional groupBy expression list
 
   if (p_rpnExpr->nItems()) {
-    Card_Key* p_key = pPop_key(p_rpnExpr, true);
+    Card_Key* p_key = pPop_key(p_rpnExpr);
     p_aggreg->vAppendChild(p_key);
     p_aggreg->vCard(CK_o_GBYAGG);
   }
@@ -861,7 +861,7 @@ Card* Dissector::pOp_ordAgg(void)
   p_ordAgg->vAppendChild(p_aggLevel);
 
   if (p_rpnExpr->nItems()) {
-    Card_Key* p_key = pPop_key(p_rpnExpr, true);
+    Card_Key* p_key = pPop_key(p_rpnExpr);
     p_ordAgg->vAppendChild(p_key);
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1054,7 +1054,7 @@ Card* Dissector::pOp_sort(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sbyElist : sortBy expression list
 
-  Card_Key* p_key = pPop_key(p_rpnExpr, true);
+  Card_Key* p_key = pPop_key(p_rpnExpr);
   p_sort->vAppendChild(p_key);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1099,7 +1099,7 @@ Card* Dissector::pOp_top(void)
   // sbyElist : sortBy expression list
 
   Card_RpnExpr* p_rpnExpr = pArg_rpnExpr(0);
-  Card_Key* p_key = pPop_key(p_rpnExpr, true);
+  Card_Key* p_key = pPop_key(p_rpnExpr);
   p_top->vAppendChild(p_key);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1423,6 +1423,8 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [ ASC | DESC ]
 
+#ifndef Z_KEY_DIRECTION
+
   Card* p_term_head = p_rpnExpr->pHead();
   if (p_term_head
       && (p_term_head->pSymbol()->bHasFacet("ASC"_Stz) ||
@@ -1436,6 +1438,8 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     Card_Direction* p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
     p_expr->vAppendChild(p_direction);
   }
+
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1490,7 +1494,7 @@ Card_HshColList* Dissector::pPop_hshColList(Card_RpnExpr* p_rpnExpr)
 /*----------------------------------------------------------------------------*/
 /* pop key                                                                    */
 /*----------------------------------------------------------------------------*/
-Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
+Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -1521,7 +1525,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
     }
 
     // TYPE <type> <calcExpr> [ AS <as> ]
-    Card_Expr* p_expr = pPop_expr(p_rpnExpr, true, i_Expr, bEnsureDirection);
+    Card_Expr* p_expr = pPop_expr(p_rpnExpr, true, i_Expr, true);
     p_expr->v_Child(++i_CardNo);
 
 //    if (bEnsureDirection) {
