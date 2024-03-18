@@ -105,13 +105,8 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     m_pCI->G.p_expr = m_pCI->G.p_where->pSub_expr();
     m_pCI->G.p_rpnCalc = m_pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
 
-
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
-    if (!m_pCI->G.p_expr)
-      m_pCI->G.p_where->vDump(__func__);
-
     m_pCI->G.p_expr->vTransfer(m_pCI->G.p_on,SF_RLN_OP);
-    m_pCI->G.p_rpnCalc->vApplyCast_x(m_pCI->G.p_on->xCast());
     m_pCI->G.p_expr->vApplyCast_x(m_pCI->G.p_on->xCast());
 
     if (m_pCI->G.p_on->nChildCards()) {

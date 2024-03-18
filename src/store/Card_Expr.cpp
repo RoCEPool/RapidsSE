@@ -790,6 +790,9 @@ void Card_Expr::vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit)
     Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
     p_rpn_calc_this->vAppendChild(p_term_and);
   }
+
+  p_rpn_calc_this->vApplyCast_x(pChild_src->xCast());
+
 }
 
 /*----------------------------------------------------------------------------*/
