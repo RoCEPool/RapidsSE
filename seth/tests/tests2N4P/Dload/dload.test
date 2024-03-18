@@ -22,6 +22,9 @@ create table ${testName2}_lineitem (
 );
 success
 
+set trace WLP=true;
+set trace VERBOSE=true;
+
 dload ${testName2}_lineitem
   paths "../DATA/TPCH/lineitem10k.csv"
         "../DATA/TPCH/lineitem_100k.csv"
@@ -34,6 +37,9 @@ rows:
 
 drop table ${testName2}_lineitem;
 success
+
+set trace WLP=false;
+set trace VERBOSE=false;
 
 CLEANUP {
   
