@@ -2122,6 +2122,19 @@ eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_parentMust(CardIter* pCI, eCK eParent)
+{
+
+  if (CK_NONE == pCI->bAncestor(eParent)) {
+    pCI->vAncestorDump(this);
+    vValidationFailed("%s"_Stz,__func__);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* validation has failed                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vValidationFailed(Stz *szFormat, ...)

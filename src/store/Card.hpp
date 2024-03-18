@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_SIMPLE_BOOLPRED
+//#define Z_KEY_DIRECTION
 
 namespace STORE
 {
@@ -428,6 +428,7 @@ namespace STORE
     void vValidate_noChildren(void);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
     eCK  eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
+    void vValidate_parentMust(CardIter* pCI, eCK eParent);
 
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);

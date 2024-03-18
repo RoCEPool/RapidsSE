@@ -904,6 +904,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       vDump(__func__);
       vValidationFailed("SF_KEY_COL Missing : %p"_Stz,this);
     }
+
+    RASSERT(bIsScalarCol());
   }
 
   Card::vValidate(pCI,iDepth,pParent);
