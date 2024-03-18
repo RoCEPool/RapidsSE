@@ -896,14 +896,19 @@ void StrLib::vCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResul
 {
   _static_
 
-  i8 iSrcLen = nLength(psSrc);
+  i8 iReqBufSize = nLength(psSrc) + 1;  // how much space required (including the null terminator)
 
-  // Note: Not using strncpy() because when the source size is smaller than the
-  // destination buffer it will fill the destination buffer with nulls. This
-  // obviously leads to poor performance when the destination buffer is much
-  // larger than the string.
-  i8 nBytes = nCopy(psDst, iDstBufSize, psSrc, iSrcLen, pbResult);
-  UNUSED(nBytes);
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+
+  // Note, using strncpy() instead of calling nCopy() above as strncpy() is
+  // likely optimised for more efficient copying than byte by byte.
+  // Note that strncpy() doesn't guarantee that the buffer is null terminated
+  // if length(psSrc) >= iDstBufSize. If length(psSrc) < iDstBufSize then
+  // nulls are written to the remaining bytes.
+  strncpy(psDst, psSrc, iDstBufSize);
+  psDst[iDstBufSize - 1] = 0;
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
