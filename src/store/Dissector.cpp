@@ -1356,6 +1356,35 @@ Card_Direction* Dissector::pPop_direction(Card_RpnExpr* p_rpnExpr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop direction                                                              */
+/*----------------------------------------------------------------------------*/
+Card_Direction* Dissector::pPop_direction2(Card_RpnExpr* p_rpnExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_Direction* p_direction;
+
+  Card* p_term_head = p_rpnExpr->pHead();
+  if (p_term_head
+      && (p_term_head->pSymbol()->bHasFacet("ASC"_Stz) ||
+          p_term_head->pSymbol()->bHasFacet("DESC"_Stz))) {
+
+    // ASC | DESC
+    Card_Term *p_term = _pCard_Term(p_rpnExpr->pPopChild());
+    Stz *szDirn = p_term->szFacet(SF_DIRECTION);
+    RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
+    p_direction = (new Card_Direction)->SYM(SF_DIRECTION, szDirn);
+    delete p_term;
+  }
+  else {
+    p_direction = (new Card_Direction)->SYM(SF_DIRECTION, "ASC"_Stz);
+  }
+
+  return p_direction;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* pop expr                                                                   */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,

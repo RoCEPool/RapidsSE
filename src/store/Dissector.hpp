@@ -75,6 +75,7 @@ namespace STORE
     Cast             xPop_cast       (Card_RpnExpr* p_rpnExpr);
     Card_Constraint* pPop_constraint(Card_RpnExpr* p_rpnExpr);
     Card_Direction*  pPop_direction (Card_RpnExpr* p_rpnExpr);
+    Card_Direction*  pPop_direction2(Card_RpnExpr* p_rpnExpr);
     Card_Expr*       pPop_expr      (Card_RpnExpr* p_rpnExpr,
                                      bool bIsKeyExpr, i8& ri_Expr,
                                      bool bEnsureDirection);
