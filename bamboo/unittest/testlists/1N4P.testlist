@@ -7,6 +7,7 @@
 ////////////////// to be enabled when colInj/ colPpg done
 
 ../../../seth/tests/dummyTests/testList
+../../../seth/tests/tests1N4P/Tpch_SF1/testList
 
 ../../../seth/tests/tests1N4P/GbyAgg/testList
 ../../../seth/tests/tests1N4P/OrderBy/testList
