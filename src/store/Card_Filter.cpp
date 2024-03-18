@@ -88,10 +88,46 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* create new <where>/<filter>/<expr>/<rpnCalc>                               */
+/*----------------------------------------------------------------------------*/
+Card_Filter* Card_Filter::pNewAssembly(CardIter* pCI)
+{
+  _static_
+
+  Card_Filter* p_filter = new Card_Filter;
+
+  Card_Expr* p_expr = new Card_Expr;
+  p_filter->vAppendChild(p_expr);
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  p_expr->vAppendChild(p_rpnCalc);
+
+  if (pCI) {
+    pCI->G.p_filter  = p_filter;
+    pCI->G.p_expr    = p_expr;
+    pCI->G.p_rpnCalc = p_rpnCalc;
+  }
+
+  return p_filter;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* burst <filter>/<expr>/<rpnCalc>                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vBurstAssembly(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_filter  = this;
+  pCI->G.p_expr    = pCI->G.p_filter->pSub_expr(C_NOT_NULL);
+  pCI->G.p_rpnCalc = pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

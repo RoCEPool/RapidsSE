@@ -52,13 +52,13 @@ Card_Constraint::~Card_Constraint(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create new <where>/<constraint>/<expr $1>/<rpnCalc>                        */
+/* create new <constraint>/<expr $1>/<rpnCalc>                                */
 /*----------------------------------------------------------------------------*/
-Card_Constraint* Card_Constraint::pNewAssembly_constraint(void)
+Card_Constraint* Card_Constraint::pNewAssembly(CardIter* pCI)
 {
   _static_
 
@@ -70,8 +70,18 @@ Card_Constraint* Card_Constraint::pNewAssembly_constraint(void)
   Card_Constraint* p_constraint = new Card_Constraint;
   p_constraint->vAppendChild(p_expr);
 
+  if (pCI) {
+    pCI->G.p_constraint = p_constraint;
+    pCI->G.p_expr       = p_expr;
+    pCI->G.p_rpnCalc    = p_rpnCalc;
+  }
+
   return p_constraint;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* acclimate for injected fold expr                                           */
@@ -95,6 +105,18 @@ void Card_Constraint::vBump_expCol(i8 nBumpBy)
   if (Card_Expr* p_expr = pSub_expr())
     p_expr->vBump_expCol(nBumpBy);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* burst <constraint>/<expr $1>/<rpnCalc>                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Constraint::vBurstAssembly(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_constraint = this;
+  pCI->G.p_expr       = pCI->G.p_constraint->pSub_expr(C_NOT_NULL);
+  pCI->G.p_rpnCalc    = pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -42,6 +42,34 @@ Card_Where::~Card_Where(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* create new <where>/<filter>/<expr>/<rpnCalc>                               */
+/*----------------------------------------------------------------------------*/
+Card_Where* Card_Where::pNewAssembly(CardIter* pCI)
+{
+  _static_
+
+  Card_Where* p_where = new Card_Where;
+
+  Card_Filter* p_filter = new Card_Filter;
+  p_where->vAppendChild(p_filter);
+
+  Card_Expr* p_expr = new Card_Expr;
+  p_filter->vAppendChild(p_expr);
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  p_expr->vAppendChild(p_rpnCalc);
+
+  if (pCI) {
+    pCI->G.p_where   = p_where;
+    pCI->G.p_filter  = p_filter;
+    pCI->G.p_expr    = p_expr;
+    pCI->G.p_rpnCalc = p_rpnCalc;
+  }
+
+  return p_where;
+}
+
+/*----------------------------------------------------------------------------*/
 /* cull marked cmp predicate                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_Where::vCullMarked_rlnConj(CardIter* pCI) {
@@ -100,29 +128,21 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* create new <where>/<constraint>/<expr $1>/<rpnCalc>                        */
-/*----------------------------------------------------------------------------*/
-Card_Where* Card_Where::pNewWhereAssembly(void)
-{
-  _static_
-
-  Card_Where* p_where = new Card_Where;
-
-  Card_Filter* p_filter = new Card_Filter;
-  p_where->vAppendChild(p_filter);
-
-  Card_Expr* p_expr = new Card_Expr;
-  p_filter->vAppendChild(p_expr);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_expr->vAppendChild(p_rpnCalc);
-
-  return p_where;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* burst <where>/<filter>/<expr>/<rpnCalc>                                    */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vBurstAssembly(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_where   = this;
+  pCI->G.p_filter  = pCI->G.p_where->pSub_filter(C_NOT_NULL);
+  pCI->G.p_expr    = pCI->G.p_filter->pSub_expr(C_NOT_NULL);
+  pCI->G.p_rpnCalc = pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
