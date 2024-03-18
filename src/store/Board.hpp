@@ -101,6 +101,7 @@
 #include "Card_NotConj.hpp"
 
 #include "Card_On.hpp"
+#include "Card_OnClause.hpp"
 #include "Card_OrdAgg.hpp"
 #include "Card_OrConj.hpp"
 #include "Card_OuterColNm.hpp"
