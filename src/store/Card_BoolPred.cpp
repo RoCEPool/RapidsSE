@@ -914,7 +914,6 @@ void Card_BoolPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   (void)Card::eValidate_parentEither(pCI,
                                      CK_s_CONSTRAINT,
-                                     CK_EXPR,
                                      CK_o_FILTER,
                                      CK_NONE);
 
