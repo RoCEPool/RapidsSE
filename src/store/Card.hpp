@@ -395,17 +395,18 @@ namespace STORE
     void vOnRemove_child(Card* pParent=nullptr);
     void vOnRemove_parent(Card* pChild=nullptr);
 
-    void vPrintCardRecursive(CardIter* pCI,
-                             Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                             bool& rbPrune, eAL eLevel,
-                             bool bPrintBelow, i8 iXform, Stz* szXfunc);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
+    void vPrintRecursive(CardIter* pCI,
+                         Ribbon* pRibbon, i8 iDepth, Card* pParent,
+                         bool& rbPrune, eAL eLevel,
+                         bool bPrintBelow, i8 iXform, Stz* szXfunc);
 
     void vRemovedCorrectly(bool bRemoved=true);
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
-    void vReplaceSubCard(Card* pSub, Card* pWith);
+    void vReplaceDelete(Card* pSub, Card* pWith);
+    void vReplaceSub(Card* pSub, Card* pWith);
 
     i8   nSubCards(eCK eSub_arg);
     Symbol* pSymbol(void);

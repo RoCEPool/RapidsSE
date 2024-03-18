@@ -431,15 +431,15 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
     Card_Level* p_level = xBI.pChild()->pSub_level();
     if (p_level)
       eLevel = (eAL) p_level->pSymbol()->Y_iGet(P_Level);
-    xBI.pChild()->vPrintCardRecursive(pCI,
-                                      pSubRibbon,
-                                      0,
-                                      m_pDeck,
-                                      bPrune,
-                                      eLevel,
-                                      false,
-                                      m_pBench->iXform(),
-                                      m_pBench->szXfunc());
+    xBI.pChild()->vPrintRecursive(pCI,
+                                  pSubRibbon,
+                                  0,
+                                  m_pDeck,
+                                  bPrune,
+                                  eLevel,
+                                  false,
+                                  m_pBench->iXform(),
+                                  m_pBench->szXfunc());
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);

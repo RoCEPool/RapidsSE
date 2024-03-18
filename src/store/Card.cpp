@@ -1492,10 +1492,10 @@ void Card::vOnRemove_parent(Card* pChild)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardRecursive(CardIter* pCI,
-                               Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                               bool& rbPrune, eAL eLevel,
-                               bool bPrintBelow, i8 iXform, Stz* szXfunc)
+void Card::vPrintRecursive(CardIter* pCI,
+                           Ribbon* pRibbon, i8 iDepth, Card* pParent,
+                           bool& rbPrune, eAL eLevel,
+                           bool bPrintBelow, i8 iXform, Stz* szXfunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1556,15 +1556,15 @@ void Card::vPrintCardRecursive(CardIter* pCI,
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintCardRecursive(pCI,
-                                  pRibbon,
-                                  iDepth + 1,
-                                  this,
-                                  rbPrune,
-                                  eLevel,
-                                  bPrintBelow,
-                                  iXform,
-                                  szXfunc);
+    pSubCard->vPrintRecursive(pCI,
+                              pRibbon,
+                              iDepth + 1,
+                              this,
+                              rbPrune,
+                              eLevel,
+                              bPrintBelow,
+                              iXform,
+                              szXfunc);
   }
 
   delete pSubCard_I;
@@ -1680,9 +1680,23 @@ void Card::vRenumberRecursive(Card* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* replace and delete subCard                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vReplaceDelete(Card* pSub, Card* pWith)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* pParent = pFindParentRecursive(pSub);
+
+  pParent->vReplaceChild(pSub,pWith);
+
+  DELETE_CARD(pSub);
+}
+
+/*----------------------------------------------------------------------------*/
 /* replace subCard                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vReplaceSubCard(Card* pSub, Card* pWith)
+void Card::vReplaceSub(Card* pSub, Card* pWith)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
