@@ -774,7 +774,7 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vTransfer(STORE::Card_RpnCalc *p_rpnCalc_from, eSF eSymbol_limit)
+void Card_Expr::vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -784,7 +784,7 @@ void Card_Expr::vTransfer(STORE::Card_RpnCalc *p_rpnCalc_from, eSF eSymbol_limit
   if (p_rpn_calc_this->nChildCards())
     bAppendAnd = true;
 
-  p_rpn_calc_this->vTransferChildren(p_rpnCalc_from, eSymbol_limit);
+  p_rpn_calc_this->vTransferChildren(pChild_src, eSymbol_limit);
 
   if (bAppendAnd) {
     Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
