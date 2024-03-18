@@ -204,9 +204,6 @@ void Dissector::vOp(i8 i_OpSpec)
 
   m_pOpArgs = m_pOpSpec->pArgTags();
 
-  //vTrace("Op %s\n"_Stz,m_szOpNm);
-  //m_pOpArgs->vDumpSet(true);
-
        if (m_szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_absJoin     ();
   else if (m_szOpNm->bSame("aggreg"_Stz))       pCard = pOp_aggreg      ();
   else if (m_szOpNm->bSame("call"_Stz))         pCard = pOp_call        ();
@@ -267,8 +264,6 @@ Card* Dissector::pOp_absJoin(void)
   p_on->pSymbol()->vApplyCast(xCast);
 
   p_absJoin->vAppendChild(p_on);
-
-  p_absJoin->vDump(__func__);
 
   delete p_rpnExpr;
 
@@ -544,10 +539,6 @@ Card* Dissector::pOp_indexJoin(void)
   Card_RpnExpr* p_rpnExpr_constraint =
       m_pOpArgs->nItems() >= 4 ? pArg_rpnExpr(3) : nullptr;
 
-  //p_rpnExpr_bound->vDump();
-
-  //Table* pTable = AM::pTableFind(szTableNm);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_IndexJoin* p_indexJoin = new Card_IndexJoin;
@@ -621,7 +612,6 @@ Card* Dissector::pOp_indexJoin(void)
 
   if (p_rpnExpr_constraint) {
     Card_Constraint* p_constraint = pPop_constraint(p_rpnExpr_constraint);
-    //p_constraint->vDump(__func__);
     p_indexJoin->vAppendChild(p_constraint);
   }
 
@@ -631,8 +621,6 @@ Card* Dissector::pOp_indexJoin(void)
 
   if (p_rpnExpr_constraint)
     delete p_rpnExpr_constraint;
-
-  //p_indexJoin->vDump();
 
   return p_indexJoin;
 }
@@ -652,10 +640,6 @@ Card* Dissector::pOp_indexScan(void)
   Stz* szTableNm = szArgValue(0);
   Stz* szIndexNm = szArgValue(1);
   Card_RpnExpr* p_rpnExpr_bounds = pArg_rpnExpr(2);
-
-  //Table* pTable = AM::pTableFind(szTableNm);
-
-  //p_rpnExpr_bounds->vDump();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -702,8 +686,6 @@ Card* Dissector::pOp_indexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete p_rpnExpr_bounds;
-
-  //p_indexScan->vDump();
 
   return p_indexScan;
 }
@@ -753,22 +735,18 @@ Card* Dissector::pOp_keyExists(void)
   // index bounds
 
   Card_Bounds* p_bounds = pPop_bounds(p_rpnExpr_bounds);
-  //p_bounds->vDump(__func__);
   p_indexList->pSub_index()->vAppendChild(p_bounds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // constraint
 
   Card_Constraint* p_constraint = pPop_constraint(p_rpnExpr_constraint);
-  //p_constraint->vDump(__func__);
   p_keyExists->vAppendChild(p_constraint);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete p_rpnExpr_bounds;
   delete p_rpnExpr_constraint;
-
-  //p_keyExists->vDump(__func__);
 
   return p_keyExists;
 }
@@ -818,22 +796,18 @@ Card* Dissector::pOp_keyNotExists(void)
   // index bounds
 
   Card_Bounds* p_bounds = pPop_bounds(p_rpnExpr_bounds);
-  //p_bounds->vDump(__func__);
   p_indexList->pSub_index()->vAppendChild(p_bounds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // constraint
 
   Card_Constraint* p_constraint = pPop_constraint(p_rpnExpr_constraint);
-  //p_constraint->vDump(__func__);
   p_keyNotExists->vAppendChild(p_constraint);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete p_rpnExpr_bounds;
   delete p_rpnExpr_constraint;
-
-  //p_keyNotExists->vDump(__func__);
 
   return p_keyNotExists;
 }
@@ -844,8 +818,6 @@ Card* Dissector::pOp_keyNotExists(void)
 Card* Dissector::pOp_limit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  //m_pOpArgs->vDumpSet(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // op arguments
@@ -888,7 +860,6 @@ Card* Dissector::pOp_ordAgg(void)
   if (p_rpnExpr->nItems()) {
     Card_Key* p_key = pPop_key(p_rpnExpr, true);
     p_ordAgg->vAppendChild(p_key);
-    //p_ordAgg->vCard(CK_o_GBYAGG);
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
@@ -1233,8 +1204,6 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  //p_rpnExpr->vDump();
-
   // is there a bound term sequence at the top of rpnTerms?
   Card* p_rpnItem = p_rpnExpr->pHead();
   if (! p_rpnItem || !p_rpnItem->pSymbol()->bHasFacet(SF_BOUND))
@@ -1273,9 +1242,6 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
 
   delete p_rpnItem;
   p_bound->vDeleteChild(p_term_last);
-
-  //p_bound->vDump();
-  //p_rpnExpr->vDump();
 
   return p_bound;
 }
@@ -1698,8 +1664,6 @@ Card_On * Dissector::pPop_on(Card_RpnExpr* p_rpnExpr)
 
     p_On->vAppendChild(p_term_popped);
   }
-
-  p_On->vDump(__func__);
 
   return p_On;
 }
