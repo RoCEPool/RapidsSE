@@ -18,6 +18,8 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
+#define Z_ONCLAUSE
+
 namespace STORE
 {
   class Card_AbsJoin;

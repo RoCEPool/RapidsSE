@@ -260,14 +260,24 @@ Card* Dissector::pOp_absJoin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // expr : expression list
 
-  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
   Cast xCast;
   xCast.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
+
+#ifdef Z_ONCLAUSE
+  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
   p_rpnCalc->pSymbol()->vApplyCast(xCast);
 
   Card_OnClause* p_OnClause = new Card_OnClause;
   p_OnClause->vAppendChild(p_rpnCalc);
   p_OnClause->pSymbol()->vApplyCast(xCast);
+#else
+  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
+  p_rpnCalc->pSymbol()->vApplyCast(xCast);
+
+  Card_OnClause* p_OnClause = new Card_OnClause;
+  p_OnClause->vAppendChild(p_rpnCalc);
+  p_OnClause->pSymbol()->vApplyCast(xCast);
+#endif
 
   Card_On* p_on = new Card_On;
   p_on->vAppendChild(p_OnClause);
