@@ -85,12 +85,7 @@ void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
   Card_NotConj* p_notConj = nullptr;
   Card_OrConj*  p_orConj  = nullptr;
 
-
   while (Card_Term* p_term_rpn = _pCard_Term(p_expr_arg->pSub_rpnCalc(C_NOT_NULL)->pPopChild())) {
-
-//    p_boolPred_new->vDump(__func__,"BOOLPRED_NEW"_Stz);
-//    pStack_conj->vDump(__func__, "STACK_OP"_Stz);
-//    pStack_term->vDump(__func__,"STACK_TERM"_Stz);
 
     eTE eTerm_rpn = p_term_rpn->eEvalTerm();
     switch (eTerm_rpn) {
@@ -178,18 +173,15 @@ void Card_BoolPred::vTo_boolPred(Card_Expr* p_expr_arg)
     }
   }
 
-
   RASSERT(0 == pStack_conj->nChildCards());
   DELETE_CARD(pStack_conj);
   RASSERT(0 == pStack_term->nChildCards());
   DELETE_CARD(pStack_term);
 
-
   Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
   p_expr_arg->vReplaceSubCard(p_rpnCalc_arg,p_boolPred_new);
   DELETE_CARD(p_rpnCalc_arg);
 }
-
 
 
 /*----------------------------------------------------------------------------*/

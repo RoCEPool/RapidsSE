@@ -218,7 +218,7 @@ void Dissector::vOp(i8 i_OpSpec)
   else if (m_szOpNm->bSame("keyExists"_Stz))    pCard = pOp_keyExists   ();
   else if (m_szOpNm->bSame("keyNotExists"_Stz)) pCard = pOp_keyNotExists();
   else if (m_szOpNm->bSame("limit"_Stz))        pCard = pOp_limit       ();
-  else if (m_szOpNm->bSame("ordagg"_Stz))       pCard = pOp_ordAgg      ();
+  else if (m_szOpNm->bSame("ordAgg"_Stz))       pCard = pOp_ordAgg      ();
   else if (m_szOpNm->bSame("orderBy"_Stz))      pCard = pOp_sort        ();
   else if (m_szOpNm->bSame("output"_Stz))       pCard = pOp_output      ();
   else if (m_szOpNm->bSame("pulse"_Stz))        pCard = pOp_pulse       ();
@@ -409,6 +409,9 @@ Card* Dissector::pOp_filter(void)
 
   i8 i_Expr = 1;
   Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
+
+  RASSERT(1 == p_expr->nChildCards());
+  //Card_BoolPred::vTo_boolPred(p_expr);
 
   p_filter->vAppendChild(p_expr);
 
