@@ -1717,6 +1717,39 @@ Card_RpnCalc* Dissector::pPop_rpnCalc(Card_RpnExpr* p_rpnExpr)
   return p_rpnCalc;
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop rpnCalc                                                                */
+/*----------------------------------------------------------------------------*/
+Card_OnClause* Dissector::pPop_onClause(Card_RpnExpr* p_rpnExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_OnClause* p_OnClause = new Card_OnClause;
+
+  Card_Term* p_term_popped = nullptr;
+  while ( (p_term_popped = _pCard_Term(p_rpnExpr->pPopChild())) ) {
+
+    if (
+        p_term_popped->pSymbol()->bHasFacet("AGGREGATES"_Stz)
+        || p_term_popped->pSymbol()->bHasFacet("AS"_Stz)
+        || p_term_popped->pSymbol()->bHasFacet("ASC"_Stz)
+        || p_term_popped->pSymbol()->bHasFacet("DESC"_Stz)
+        || p_term_popped->pSymbol()->bHasFacet("GROUPBY"_Stz)
+        || p_term_popped->pSymbol()->bHasFacet(SF_COMMA)
+        ) {
+      p_rpnExpr->vPushChild(p_term_popped);
+      break;
+    }
+
+    if (p_term_popped->pSymbol()->bHasFacet(SF_AGG_FN))
+      p_OnClause->pSymbol()->Y_vSet(P_AggOp);
+
+    p_OnClause->vAppendChild(p_term_popped);
+  }
+
+  return p_OnClause;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
