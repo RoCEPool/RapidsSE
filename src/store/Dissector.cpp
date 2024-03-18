@@ -264,25 +264,26 @@ Card* Dissector::pOp_absJoin(void)
   xCast.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
 
 #ifdef Z_ONCLAUSE
-  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
-  p_rpnCalc->pSymbol()->vApplyCast(xCast);
+  Card_OnClause* p_onClause = pPop_onClause(p_rpnExpr);
+  p_onClause->pSymbol()->vApplyCast(xCast);
 
-  Card_OnClause* p_OnClause = new Card_OnClause;
-  p_OnClause->vAppendChild(p_rpnCalc);
-  p_OnClause->pSymbol()->vApplyCast(xCast);
+  Card_On* p_on = new Card_On;
+  p_on->vAppendChild(p_onClause);
 #else
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
   p_rpnCalc->pSymbol()->vApplyCast(xCast);
 
-  Card_OnClause* p_OnClause = new Card_OnClause;
-  p_OnClause->vAppendChild(p_rpnCalc);
-  p_OnClause->pSymbol()->vApplyCast(xCast);
+  Card_OnClause* p_onClause = new Card_OnClause;
+  p_onClause->vAppendChild(p_rpnCalc);
+  p_onClause->pSymbol()->vApplyCast(xCast);
+  Card_On* p_on = new Card_On;
+  p_on->vAppendChild(p_onClause);
 #endif
 
-  Card_On* p_on = new Card_On;
-  p_on->vAppendChild(p_OnClause);
 
   p_absJoin->vAppendChild(p_on);
+
+  p_absJoin->vDump(__func__);
 
   delete p_rpnExpr;
 
@@ -1746,6 +1747,8 @@ Card_OnClause* Dissector::pPop_onClause(Card_RpnExpr* p_rpnExpr)
 
     p_OnClause->vAppendChild(p_term_popped);
   }
+
+  p_OnClause->vDump(__func__);
 
   return p_OnClause;
 }

@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_ONCLAUSE
+//#define Z_ONCLAUSE
 
 namespace STORE
 {
