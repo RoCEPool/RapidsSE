@@ -105,7 +105,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_NOTCONJ"_Stz,      // CK_NOTCONJ
 
   /* */ "CK_ON"_Stz,           // CK_ON
-  /* */ "CK_ONCLAUSE"_Stz,     // CK_ONCLAUSE
   /* */ "CK_ORCONJ"_Stz,       // CK_ORCONJ
   /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
   /* */ "CK_OUTERJOIN"_Stz,    // CK_OUTERJOIN
@@ -251,7 +250,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "notConj"_Stz,         // CK_NOTCONJ
 
   /* */ "on"_Stz,              // CK_ON
-  /* */ "onClause"_Stz,        // CK_ONCLAUSE
   /* */ "orConj"_Stz,          // CK_ORCONJ
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN

@@ -274,40 +274,6 @@ Card* Dissector::pOp_absJoin(void)
 
   return p_absJoin;
 }
-/*----------------------------------------------------------------------------*/
-//Card* Dissector::pOp_absJoin(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // op arguments
-//
-//  vCheckArgs(1);
-//
-//  Card_RpnExpr* p_rpnExpr = pArg_rpnExpr(0);
-//  Card_AbsJoin* p_absJoin = new Card_AbsJoin;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // expr : expression list
-//
-//  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
-//  Cast xCast;
-//  xCast.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
-//  p_rpnCalc->pSymbol()->vApplyCast(xCast);
-//
-//  Card_Expr* p_expr = new Card_Expr;
-//  p_expr->vAppendChild(p_rpnCalc);
-//  p_expr->pSymbol()->vApplyCast(xCast);
-//
-//  Card_On* p_on = new Card_On;
-//  p_on->vAppendChild(p_expr);
-//
-//  p_absJoin->vAppendChild(p_on);
-//
-//  delete p_rpnExpr;
-//
-//  return p_absJoin;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* dissect : aggreg <szRpnExpr : 0) aggElist ; 1) gbyElist>                   */

@@ -107,7 +107,6 @@ enum eCK : i8 // card kind
   /* */ CK_NOTCONJ,
 
   /* */ CK_ON,
-  /* */ CK_ONCLAUSE,
   /* */ CK_ORCONJ,
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,

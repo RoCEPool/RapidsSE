@@ -118,7 +118,6 @@ namespace STORE
     Card_NotConj *       p_notConj;
 
     Card_On *            p_on;
-    Card_OnClause *      p_onClause;
     Card_OrdAgg *        p_ordAgg;
     Card_OrConj *        p_orConj;
     Card_OuterColNm *    p_outerColNm;

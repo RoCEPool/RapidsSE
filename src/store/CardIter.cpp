@@ -1399,7 +1399,6 @@ Card* CardIter::pMember(eCK eMember)
     case CK_NOTCONJ:        return G.p_notConj;
 
     case CK_ON:             return G.p_on;
-    case CK_ONCLAUSE:       return G.p_onClause;
     case CK_o_ORDAGG:       return G.p_ordAgg;
     case CK_ORCONJ:         return G.p_orConj;
     case CK_OUTERCOLNM:     return G.p_outerColNm;
@@ -1550,7 +1549,6 @@ void CardIter::vMember(eCK eMember, Card* pCard)
     case CK_NOTCONJ:       G.p_notConj           = _pCard_NotConj(pCard);break;
 
     case CK_ON:            G.p_on                = _pCard_On(pCard); break;
-    case CK_ONCLAUSE:      G.p_onClause          = _pCard_OnClause(pCard); break;
     case CK_ORCONJ:        G.p_orConj            = _pCard_OrConj(pCard);break;
     case CK_o_ORDAGG:      G.p_ordAgg            = _pCard_OrdAgg(pCard); break;
     case CK_OUTERCOLNM:    G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
@@ -2026,7 +2024,6 @@ void CardIter::vResetMembers(void)
   G.p_notConj          = nullptr;
 
   G.p_on               = nullptr;
-  G.p_onClause         = nullptr;
   G.p_ordAgg           = nullptr;
   G.p_orConj           = nullptr;
   G.p_outerColNm       = nullptr;
@@ -2341,7 +2338,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_NOTCONJ:        G.p_notConj->vValidate(this, iDepth, pCard);  break;
 
       case CK_ON:             G.p_on->vValidate(this, iDepth, pCard);  break;
-      case CK_ONCLAUSE:       G.p_onClause->vValidate(this, iDepth, pCard);  break;
       case CK_o_ORDAGG:       G.p_ordAgg->vValidate(this, iDepth, pCard);  break;
       case CK_ORCONJ:         G.p_orConj->vValidate(this, iDepth, pCard);  break;
       case CK_OUTERCOLNM:     G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
