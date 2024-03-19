@@ -384,9 +384,10 @@ StreamDef* Card_EXPRLIST::pTo_StreamDef(ColMap* pColMap,
   if (CK_o_SORT == p_OP->eCard()) {
 
 #ifdef Z_KEY_DIRECTION
-    for (Kid xExprList(this); xExprList.bEach(CK_DIRECTION); /**/) {
-      Card_Direction *p_direction = xExprList.p_direction();
-      Card_Expr *p_expr = p_direction->pSub_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
+//      Card_Direction *p_direction = xExprList.p_direction();
+//      Card_Expr *p_expr = p_direction->pSub_expr();
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
