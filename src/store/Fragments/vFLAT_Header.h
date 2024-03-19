@@ -18,7 +18,7 @@
   return 0;                                                                                    \
 }
 
-typedef signed char i1;
+typedef char i1;
 typedef unsigned short u2;
 typedef long long i8;
 typedef unsigned char byte;

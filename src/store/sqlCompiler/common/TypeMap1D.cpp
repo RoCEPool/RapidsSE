@@ -141,9 +141,7 @@ TypeMap1D::TypeMap1D()
 
   i8 nBytes = m_iSize * (i8) sizeof(*m_aiTypeArray);
   m_aiTypeArray = (i1*) malloc(nBytes);
-  for (i8 i=0; i<nBytes; i++) {
-    m_aiTypeArray[i] = TypeSystem::iInvalidTypeId();
-  }
+  memset(m_aiTypeArray, (int) TypeSystem::iInvalidTypeId(), nBytes);
 
   vInitStaticArrays();
 

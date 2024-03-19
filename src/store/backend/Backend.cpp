@@ -842,8 +842,6 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       else
         bFirstExpr = true;
 
-      sAliasName.vReset();
-
       // get the next projectedColumn from the iterator
       QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
       ASSERT(pProjectedColumn);
@@ -1586,15 +1584,9 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 			TypeId xTypeId = Expr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot);
 
 #ifdef TYPE_DETAILED
+
 			i8 iLength = pBackend->iGetLength(eType);
 			i8 iScale = pBackend->iGetScale(eType);
-
-      sPipeline->vCatSprint(
-          " casttype %s ( %lld %lld ) "
-          ""_Stz,
-          aCT[eType],
-          iLength,
-          iScale);
 
 			if (eType == CT_INTERVAL_YM || eType == CT_INTERVAL_DT) {
 				sPipeline->vCatSprint(

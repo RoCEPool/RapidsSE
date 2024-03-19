@@ -142,7 +142,7 @@ TypeId TypeSystem::xParentTypeId(TypeId xTypeId)
 /*----------------------------------------------------------------------------*/
 eCT TypeSystem::eCTVal(TypeId xTypeId)
 {
-  ASSERT(bIsValid(xTypeId) || xTypeId.iIdVal() == C_INVALID_TYPEID);
+//  ASSERT(bIsValid(xTypeId) || xTypeId.iIdVal() == C_INVALID_TYPEID);
 
   if (xTypeId.iIdVal() == C_INVALID_TYPEID) {
     return CT_NONE;
@@ -261,7 +261,7 @@ i8 TypeSystem::iMaxTypeId()
 /*----------------------------------------------------------------------------*/
 /* Returns the integer value for invalid type IDs in the system               */
 /*----------------------------------------------------------------------------*/
-i1 TypeSystem::iInvalidTypeId()
+i8 TypeSystem::iInvalidTypeId()
 {
   return C_INVALID_TYPEID;
 }

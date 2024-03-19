@@ -43,7 +43,7 @@ namespace STORE
     static TypeId xIdOf(eIV eVal);
     static TypeId xIdOf(Stz* szNamespace, Stz* szTypeName);
 
-    static i1 iInvalidTypeId();
+    static i8 iInvalidTypeId();
   };
   
 }
