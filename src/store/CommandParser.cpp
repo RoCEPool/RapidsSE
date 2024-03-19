@@ -98,8 +98,13 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
   vTrace("pParseCommand1 %s\n"_Stz, szCommand);
   m_szCurrentFile = szFilePath;
 
+	i8 x, y;
+	vTrace("x = %p\n"_Stz, &x);
+	vTrace("y = %p\n"_Stz, &y);
+
   // The thing that gets told of parsing errors.
   Parser::ErrorListener errorListener;
+	vTrace("errorListener = %p\n"_Stz, &errorListener);
 
   // We need to give the Lexer a CharStream, but that requires an STL-string...
   std::string sqlStr(szCommand->azChar());
@@ -127,6 +132,17 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
 	vTrace("pParseCommand1a\n"_Stz);
   parser.addErrorListener(&errorListener);
 	vTrace("pParseCommand1b\n"_Stz);
+
+	vTrace("Local variables\n"_Stz);
+
+	vTrace("errorListener = %p\n"_Stz, &errorListener);
+	vTrace("sqlStr = %p\n"_Stz, &sqlStr);
+	vTrace("stream = %p\n"_Stz, &stream);
+	vTrace("lexer = %p\n"_Stz, &lexer);
+	vTrace("tokens = %p\n"_Stz, &tokens);
+	vTrace("parser = %p\n"_Stz, &parser);
+
+	vThreadCallStackDump();
 
   // Parse the token stream.
   Parser::sqlParser::StatementsContext* pStatementsCtx = parser.statements();
