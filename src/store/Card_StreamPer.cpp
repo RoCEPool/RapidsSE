@@ -424,10 +424,10 @@ bool Card_StreamPer::bHasKnownJoin(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach()) {
-    ASSERT(xKid.pChild()->bIsCard(CK_STREAMHEAD) || xKid.pChild()->bIsCard(CK_STREAMJOIN))
-    if (xKid.pChild()->pSymbol()->cTblSyn() == cTblSyn)
+  Kid xStreamPer(this);
+  while (xStreamPer.bEach()) {
+    ASSERT(xStreamPer.pChild()->bIsCard(CK_STREAMHEAD) || xStreamPer.pChild()->bIsCard(CK_STREAMJOIN))
+    if (xStreamPer.pChild()->pSymbol()->cTblSyn() == cTblSyn)
       return true;
   }
 
@@ -476,28 +476,28 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(cTblSyn_locus);
 
-  Kid xKid(this);
+  Kid xStreamPer(this);
 
-  while (xKid.bEach()) {
+  while (xStreamPer.bEach()) {
 
-    if (xKid.pChild()->pSymbol()->cTblSyn() == cTblSyn_prior)
+    if (xStreamPer.pChild()->pSymbol()->cTblSyn() == cTblSyn_prior)
       break;
 
-    if (! xKid.pChild()->bIsCard(CK_STREAMJOIN))
+    if (! xStreamPer.pChild()->bIsCard(CK_STREAMJOIN))
       continue;
 
  }
 
-  while (xKid.bEach()) {
+  while (xStreamPer.bEach()) {
 
-    if (! xKid.pChild()->bIsCard(CK_STREAMJOIN))
+    if (! xStreamPer.pChild()->bIsCard(CK_STREAMJOIN))
       continue;
 
-    Card_JoinCast* p_joinCast = xKid.p_streamJoin()->pSub_joinCast();
+    Card_JoinCast* p_joinCast = xStreamPer.p_streamJoin()->pSub_joinCast();
     if (p_joinCast && ! p_joinCast->pSymbol()->bHasFacet("XK_UNICAST"_Stz))
       return false;
 
-    if (xKid.pChild()->pSymbol()->cTblSyn() == cTblSyn_prev)
+    if (xStreamPer.pChild()->pSymbol()->cTblSyn() == cTblSyn_prev)
       break;
   }
 

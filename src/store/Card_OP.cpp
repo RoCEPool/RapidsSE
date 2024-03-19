@@ -435,13 +435,13 @@ void Card_OP::vMapColumns(CardIter *pCI)
   // map the columns of the key
 
   pCI->G.p_key->vMapColumns(pCI);
-  pCI->G.p_keyCells->vDump(__func__);
+  //pCI->G.p_keyCells->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the projection
 
   pCI->G.p_emit->vMapColumns(pCI);
-  pCI->G.p_payloadCells->vDump(__func__);
+  //pCI->G.p_payloadCells->vDump(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -956,10 +956,10 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
   //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pChild(0);
 
   Card_Bound* p_bound = nullptr;
-  for (Kid xKid(pCard_bounds); xKid.bEach(CK_BOUND); /**/) {
+  for (Kid xBound(pCard_bounds); xBound.bEach(CK_BOUND); /**/) {
 
-    if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
-      p_bound = _pCard_Bound(xKid.pChild());
+    if (xBound.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
+      p_bound = _pCard_Bound(xBound.pChild());
       break;
     }
   }
@@ -1051,10 +1051,10 @@ void Card_OP::vRpn_indexScan(String* psRpnExpr, Card_IndexScan* p_indexScan)
       return;
   }
 
-  Kid xKid(pCard_bounds);
-  while (xKid.bEach(CK_BOUND)) {
+  Kid xBound(pCard_bounds);
+  while (xBound.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xKid.p_bound();
+    Card_Bound* p_bound = xBound.p_bound();
 
     if (p_bound->bIsLBound() || p_bound->bIsUBound()) {
 
@@ -1124,10 +1124,10 @@ void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
       return;
   }
 
-  Kid xKid(pCard_bounds);
-  while (xKid.bEach(CK_BOUND)) {
+  Kid xBound(pCard_bounds);
+  while (xBound.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xKid.p_bound();
+    Card_Bound* p_bound = xBound.p_bound();
 
     if (! p_bound->bIsEBound())
       continue;
@@ -1215,10 +1215,10 @@ void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotEx
       return;
   }
 
-  Kid xKid(pCard_bounds);
-  while (xKid.bEach(CK_BOUND)) {
+  Kid xBound(pCard_bounds);
+  while (xBound.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xKid.p_bound();
+    Card_Bound* p_bound = xBound.p_bound();
 
     if (! p_bound->bIsEBound())
       continue;
