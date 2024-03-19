@@ -468,7 +468,7 @@ void Card_Emit::vMapColumns(CardIter* pCI)
       nExpr_key++;
 
       Symbol *pSymbol_keyCol = p_expr_projection->pFirst_keyCol();
-      Card_Map* p_map_keyCell = pCI->G.p_keyCells->pGetMap(pSymbol_keyCol);
+      Card_Map* p_map_keyCell = pCI->G.p_keyCells->pGet_map(pSymbol_keyCol);
       p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
       i_Cell_key = pSymbol_keyCol->iTo_ordinal(SF_KEY_COL);

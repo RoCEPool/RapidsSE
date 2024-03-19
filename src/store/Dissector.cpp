@@ -1630,9 +1630,12 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
 #ifdef Z_KEY_DIRECTION
     p_expr = pPop_expr2(p_rpnExpr, true, i_Expr);
     Card_Direction* p_direction = pPop_direction2(p_rpnExpr);
+    p_direction->vAppendChild(p_expr);
     p_key->vAppendChild(p_direction);
 #else
     p_expr = pPop_expr(p_rpnExpr, true, i_Expr, true);
+    p_key->vAppendChild(p_expr);
+
 #endif
     p_expr->v_Child(++i_CardNo);
 
@@ -1650,7 +1653,6 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
       p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
     }
 
-    p_key->vAppendChild(p_expr);
 
     if (1 == p_key->nChildCards())
       p_key->vApplyCast_x(p_expr->xCast());

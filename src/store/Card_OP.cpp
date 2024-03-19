@@ -688,17 +688,22 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     for (Kid xEmit(pCI->G.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
       for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
 
-        Card_Term *p_term = xRpnCalc.p_term();
-        Symbol *pSym_term = p_term->pSymbol();
-        if (! pSym_term->bHasFacet(SF_KEY_COL))
+        Card_Term *p_term_keyCol = xRpnCalc.p_term();
+        Symbol *pSym_term_keyCol = p_term_keyCol->pSymbol();
+        if (! pSym_term_keyCol->bHasFacet(SF_KEY_COL))
           continue;
 
-        i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
+        i8 i_Key = pSym_term_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
+#ifdef Z_KEY_DIRECTION
+        pCI->G.p_direction = pCI->G.p_key->pGet_direction(i_Key);
+        Card_Expr *p_expr_key = pCI->G.p_direction->pSub_expr(C_NOT_NULL);
+#else
         Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(i_Key);
+#endif
 
         if (p_expr_key->bIsScalarCol()) {
           //p_expr_key->pSymbol()->vDump();
-          p_expr_key->pSymbol()->vApplyFacets(pSym_term);
+          p_expr_key->pSymbol()->vApplyFacets(pSym_term_keyCol);
           //p_expr_key->pSymbol()->vDump();
           vDebugPoint();
         }

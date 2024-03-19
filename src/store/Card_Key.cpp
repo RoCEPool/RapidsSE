@@ -99,6 +99,50 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure cast info                                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
+    pCI->G.p_expr = xKey.p_expr();
+    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
+  }
+
+  pCI->G.p_expr = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find expression which expresses the given symbol                           */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
+    Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
+
+    if (pSymbol_term0->bMatches(pSymbol))
+      return xKey.p_expr();
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a particular direction                                                 */
+/*----------------------------------------------------------------------------*/
+Card_Direction* Card_Key::pGet_direction(i8 i_Direction)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Direction));
+
+  return p_direction;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Key::bIsEqual(Card_Key* p_key_arg)
@@ -137,37 +181,6 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* ensure cast info                                                           */
-/*----------------------------------------------------------------------------*/
-void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    pCI->G.p_expr = xKey.p_expr();
-    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
-  }
-
-  pCI->G.p_expr = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find expression which expresses the given symbol                           */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
-
-    if (pSymbol_term0->bMatches(pSymbol))
-      return xKey.p_expr();
-  }
-
-  return nullptr;
-}
 /*----------------------------------------------------------------------------*/
 /* map the columns of this key                                                */
 /*----------------------------------------------------------------------------*/

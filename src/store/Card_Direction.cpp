@@ -60,7 +60,11 @@ void Card_Direction::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+#ifdef Z_KEY_DIRECTION
+  Card::vValidate_parentMust(pCI,CK_s_KEY);
+#else
   Card::vValidate_parentMust(pCI,CK_EXPR);
+#endif
 
   RASSERT(pSymbol()->bHasFacet(SF_DIRECTION));
 
