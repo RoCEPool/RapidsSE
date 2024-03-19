@@ -1630,9 +1630,20 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
 
   ColMap* pColMap = ppColMap? *ppColMap : nullptr;
 
+  if (CK_o_GBYAGG == eCard()) {
+//    pColMap->vDump();
+//    p_key->vDump(__func__);
+    vDebugPoint();
+  }
+
   StreamDef* pStreamDef_emitted =
       p_emit->pTo_StreamDef(pColMap, p_key, this);
 
+  if (CK_o_GBYAGG == eCard()) {
+//    pColMap->vDump();
+//    pStreamDef_emitted->vDump();
+    vDebugPoint();
+  }
 
   if (CK_o_GBYAGG == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
