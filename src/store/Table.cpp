@@ -60,7 +60,7 @@ extern "C" void* aExtern_FindIndex(void* aTable, void* szIndexName) {
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HACK(Table,"define table partitioning");
+//HACK(Table,"define table partitioning");
 
 Table::Table(Stz* szTableNm, eTT eKind)
 : Operand(CN_TABLE)

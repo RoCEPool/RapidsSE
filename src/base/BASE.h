@@ -78,7 +78,7 @@ extern d8 C_D8_MID;
 
 //------------------------------------------------------------------------------
 
-#include "Hack.hpp"
+//#include "Hack.hpp"
 
 #include "eFK.h"
 #include "Exception.hpp"

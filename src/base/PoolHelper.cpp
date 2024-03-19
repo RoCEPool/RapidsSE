@@ -1101,7 +1101,7 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool                                      */
 /*----------------------------------------------------------------------------*/
-HACK(PoolHelper,"vObjectSnapshot() is ignoring tiny heap : Ray 28-Dec-2020)");
+//HACK(PoolHelper,"vObjectSnapshot() is ignoring tiny heap : Ray 28-Dec-2020)");
 
 void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
 {
