@@ -862,10 +862,7 @@ i8 StrLib::nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, i8 iSrcLen, boo
 {
 	_static_
 
-  // Note: Not using strncpy() because when the source size is smaller than the
-  // destination buffer it will fill the destination buffer with nulls. This
-  // obviously leads to poor performance when the destination buffer is much
-  // larger than the string.
+	//i8 iReqBufSize = nLength(psSrc) + 1;  // how much space required (including the null terminator)
 
 	i8 iReqBufSize = iSrcLen + 1;
 
@@ -908,7 +905,6 @@ void StrLib::vCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResul
   // nulls are written to the remaining bytes.
   strncpy(psDst, psSrc, iDstBufSize);
   psDst[iDstBufSize - 1] = 0;
-  return;
 }
 
 /*----------------------------------------------------------------------------*/

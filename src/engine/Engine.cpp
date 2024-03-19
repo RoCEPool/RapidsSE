@@ -1716,7 +1716,7 @@ void Engine::vSignalHandler(int iSignal)
 
 
   // print out all the frames to stderr
-  //vThreadCallStackDump();
+  vThreadCallStackDump();
 
 
   switch(iSignal)
