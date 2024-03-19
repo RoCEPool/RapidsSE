@@ -114,10 +114,10 @@ bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
   }
 
   vAncestorPush(pCard);
-  Kid xKid(pCard);
-  while (xKid.bEach()) {
-    xKid.pChild()->vItemise(xKid.i_Child());
-    bool bContinue = bLambdaWalk(xKid.pChild(),eToSubs, bfLambdaFn);
+  Kid xCard(pCard);
+  while (xCard.bEach()) {
+    xCard.pChild()->vItemise(xCard.i_Child());
+    bool bContinue = bLambdaWalk(xCard.pChild(), eToSubs, bfLambdaFn);
     if (! bContinue) {
       vAncestorPop();
       return C_TERMINATE_RECURSION;

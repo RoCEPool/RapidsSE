@@ -57,21 +57,21 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
 
   Card_TableList* p_tableList = new Card_TableList;
 
-  Kid xKid(p_deck);
-  xKid.vEnded();
-  xKid.vBegin_reverse();
+  Kid xDeck(p_deck);
+  xDeck.vEnded();
+  xDeck.vBegin_reverse();
 
-  if (xKid.bEach_reverse(CK_c_FOLD)) {
-    xKid.vForwards(true);
+  if (xDeck.bEach_reverse(CK_c_FOLD)) {
+    xDeck.vForwards(true);
   }
   else {
-    xKid.vEnded();
-    xKid.vBegin();
+    xDeck.vEnded();
+    xDeck.vBegin();
   }
 
-  while (xKid.bEach(CK_o_FROM, CK_s_TABLE)) {
+  while (xDeck.bEach(CK_o_FROM, CK_s_TABLE)) {
 
-    Card_Table* p_table = _pCard_Table(xKid.pSub1());
+    Card_Table* p_table = _pCard_Table(xDeck.pSub1());
 
     Card* p_table_dup = _pCard_Table(p_table->pDupCard());
     p_tableList->vAppendChild(p_table_dup);

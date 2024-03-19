@@ -71,12 +71,12 @@ bool Card_CONJ::bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach()) {
-    if (!Card_CONJ::bIsConj(xKid.pChild()))
+  Kid xCONJ(this);
+  while (xCONJ.bEach()) {
+    if (!Card_CONJ::bIsConj(xCONJ.pChild()))
       continue;
 
-    bool bContinue = ((Card_CONJ*)xKid.pChild())->bDescend(bfLambdaFn);
+    bool bContinue = ((Card_CONJ*) xCONJ.pChild())->bDescend(bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }

@@ -75,8 +75,8 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
-  Kid xKid(this);
-  while (xKid.bEach()) {
+  Kid xStreamPer(this);
+  while (xStreamPer.bEach()) {
 
     nUnfiltBuff_prev_join = nUnfiltBuff_producedBy_join;
 
@@ -84,10 +84,10 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     // stream head
 
     // calculate the buffers produced at the start of join sequence
-    if (xKid.pChild()->bIsCard(CK_STREAMHEAD)) {
+    if (xStreamPer.pChild()->bIsCard(CK_STREAMHEAD)) {
 
       // get info of stream start
-      char cTblSyn_head = xKid.p_streamHead()->pSymbol()->cTblSyn();
+      char cTblSyn_head = xStreamPer.p_streamHead()->pSymbol()->cTblSyn();
 
       nUnfiltBuff_producedBy_join = p_tableList->nGetTableSize(cTblSyn_head) * C_EXPANSION_COEFF;
 
@@ -100,30 +100,30 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // stream join
 
-    if (! xKid.pChild()->bIsCard(CK_STREAMJOIN))
+    if (!xStreamPer.pChild()->bIsCard(CK_STREAMJOIN))
       continue;
 
     // get info for this join
-    char cTblSyn_join = xKid.p_streamJoin()->pSymbol()->cTblSyn();
+    char cTblSyn_join = xStreamPer.p_streamJoin()->pSymbol()->cTblSyn();
 
     eXK eJoinCast = this->eJoinCast(p_streamPtn,
                                     p_tableList,
-                                    xKid.p_streamJoin());
+                                    xStreamPer.p_streamJoin());
 
     // calculate the various costs of join sequence
     i8 nBuff_joining_with = p_tableList->nGetTableSize(cTblSyn_join);
 
     nUnfiltBuff_producedBy_join =
-        xKid.p_streamJoin()->nEstJoinCost(i_Permutation,
-                                         i_Join,
-                                         nUnfiltBuff_prev_join,
-                                         nFilterPred_prev,
-                                         eJoinCast,
-                                         nBuff_joining_with
+        xStreamPer.p_streamJoin()->nEstJoinCost(i_Permutation,
+                                                i_Join,
+                                                nUnfiltBuff_prev_join,
+                                                nFilterPred_prev,
+                                                eJoinCast,
+                                                nBuff_joining_with
         );
 
     // running sum of the network and unicast costs
-    Card_JoinEstimate* p_joinEstimate = xKid.p_streamJoin()->pSub_joinEstimate();
+    Card_JoinEstimate* p_joinEstimate = xStreamPer.p_streamJoin()->pSub_joinEstimate();
     Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
     nSumNetworkCost += p_costNetwork->pSymbol()->iTo_integer(SF_INT_LIT);
     Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();

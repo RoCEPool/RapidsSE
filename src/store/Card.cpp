@@ -384,8 +384,8 @@ bool Card::bAllChildren(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (! xKid.pChild()->bIsCard(eCard))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (! xCard.pChild()->bIsCard(eCard))
       return false;
   }
 
@@ -483,8 +483,8 @@ void Card::vCheckCorrectness(void)
 
   RASSERT(CK_DECK == eCard() || m_bAddedCorrectly);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    xKid.pChild()->vCheckCorrectness();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    xCard.pChild()->vCheckCorrectness();
   }
 }
 
@@ -547,8 +547,8 @@ void Card::vDeleteFacetRecursive(eSF eFacet)
 
   pSymbol()->vDeleteFacet(eFacet);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    xKid.pChild()->vDeleteFacetRecursive(eFacet);
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    xCard.pChild()->vDeleteFacetRecursive(eFacet);
   }
 }
 
@@ -590,8 +590,8 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
         , m_xSymbol.xCast().m_nTypeScale
   );
 
-  for (Kid xKid(this); xKid.bEach(); /**/)
-    xKid.pChild()->vDump(azFunc, nullptr, iDepth + 1);
+  for (Kid xCard(this); xCard.bEach(); /**/)
+    xCard.pChild()->vDump(azFunc, nullptr, iDepth + 1);
 
   if (0 == iDepth)
     vTrace("$$\n"_Stz);
@@ -636,8 +636,8 @@ Card* Card::pDupCardRecursive(void)
   Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
   pCard_dup->pSymbol()->vApplyCastFacetsPpy(pSymbol());
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card* pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card* pSubCard = xCard.pChild();
     
     Card* pSubCard_dup = pSubCard->pDupCardRecursive();
     pCard_dup->vAppendChild(pSubCard_dup);
@@ -726,8 +726,8 @@ Card* Card::pFindParentRecursive(Card* pChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card* pTestCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card* pTestCard = xCard.pChild();
     if (pChild == pTestCard)
       return this;
 
@@ -749,8 +749,8 @@ Card* Card::pFindCardRecursive(eCK eCard)
   if (bIsCard(eCard))
     return this;
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindCardRecursive(eCard))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (Card *pFoundCard = xCard.pChild()->pFindCardRecursive(eCard))
       return pFoundCard;
   }
 
@@ -769,8 +769,8 @@ Card* Card::pFindMark1Recursive(char cMark1, eCK eCard)
       return this;
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(cMark1, eCard))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (Card *pFoundCard = xCard.pChild()->pFindMark1Recursive(cMark1, eCard))
       return pFoundCard;
   }
 
@@ -789,8 +789,8 @@ Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eCard)
       return this;
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark1Recursive(szMark1, eCard))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (Card *pFoundCard = xCard.pChild()->pFindMark1Recursive(szMark1, eCard))
       return pFoundCard;
   }
 
@@ -809,8 +809,8 @@ Card* Card::pFindMark2Recursive(char cMark2, eCK eCard)
       return this;
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(cMark2, eCard))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (Card *pFoundCard = xCard.pChild()->pFindMark2Recursive(cMark2, eCard))
       return pFoundCard;
   }
 
@@ -829,8 +829,8 @@ Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eCard)
       return this;
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindMark2Recursive(szMark2, eCard))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (Card *pFoundCard = xCard.pChild()->pFindMark2Recursive(szMark2, eCard))
       return pFoundCard;
   }
 
@@ -847,8 +847,8 @@ Card* Card::pFindCard_WithSubFacet(eCK eCard, eSF eFacet)
   if (eCard == this->eCard() && bHasSubFacet(eFacet))
     return this;
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindCard_WithSubFacet(eCard,eFacet))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (Card *pFoundCard = xCard.pChild()->pFindCard_WithSubFacet(eCard,eFacet))
       return pFoundCard;
   }
 
@@ -867,8 +867,8 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eCard)
       return this;
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindPpyRecursive(szPpy, eCard))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (Card *pFoundCard = xCard.pChild()->pFindPpyRecursive(szPpy, eCard))
       return pFoundCard;
   }
 
@@ -887,8 +887,8 @@ Card* Card::pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Ca
     return this;
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (Card *pFoundCard = xKid.pChild()->pFindSymbolRecursive(eCard, pSymbol, rpParent, this))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (Card *pFoundCard = xCard.pChild()->pFindSymbolRecursive(eCard, pSymbol, rpParent, this))
       return pFoundCard;
   }
 
@@ -967,8 +967,8 @@ bool Card::bHasSub(Card* pSubCard)
   if (this == pSubCard)
     return true;
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-     if (xKid.pChild()->bHasSub(pSubCard))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+     if (xCard.pChild()->bHasSub(pSubCard))
       return true;
   }
 
@@ -985,8 +985,8 @@ bool Card::bHasSubFacet(eSF eFacet, i8 iDepth)
   if (iDepth && pSymbol()->bHasFacet(eFacet))
     return true;
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (xKid.pChild()->bHasSubFacet(eFacet,++iDepth))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (xCard.pChild()->bHasSubFacet(eFacet,++iDepth))
       return true;
   }
 
@@ -1129,8 +1129,8 @@ bool Card::bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
       return C_TERMINATE_RECURSION;
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    bool bContinue = xKid.pChild()->bLambdaWalk(eToSubs, bfLambdaFn);
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    bool bContinue = xCard.pChild()->bLambdaWalk(eToSubs, bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -1151,8 +1151,8 @@ bool Card::bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn)
       return false;
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (!xKid.pChild()->bLambdaWalk_term(bfLambdaFn))
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    if (!xCard.pChild()->bLambdaWalk_term(bfLambdaFn))
       return false;
   }
 
@@ -1232,8 +1232,8 @@ void Card::vMark1Recursive(char cMark1)
 
   vMark1(cMark1);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card *pSubCard = xCard.pChild();
 
     pSubCard->vMark1Recursive(cMark1);
   }
@@ -1248,8 +1248,8 @@ void Card::vMark1Recursive(Stz* szMark1)
 
   vMark1(szMark1);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card *pSubCard = xCard.pChild();
 
     pSubCard->vMark1Recursive(szMark1);
   }
@@ -1266,8 +1266,8 @@ void Card::vMark1RecursiveIf(char cMark1, char cIf)
     vMark1(cMark1);
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card *pSubCard = xCard.pChild();
 
     pSubCard->vMark1RecursiveIf(cMark1,cIf);
   }
@@ -1284,8 +1284,8 @@ void Card::vMark1RecursiveIf(Stz* szMark1, Stz* szIf)
     vMark1(szMark1);
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card *pSubCard = xCard.pChild();
 
     pSubCard->vMark1RecursiveIf(szMark1,szIf);
   }
@@ -1353,8 +1353,8 @@ void Card::vMark2Recursive(char cMark2)
 
   vMark2(cMark2);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card *pSubCard = xCard.pChild();
 
     pSubCard->vMark2Recursive(cMark2);
   }
@@ -1369,8 +1369,8 @@ void Card::vMark2Recursive(Stz* szMark2)
 
   vMark2(szMark2);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card *pSubCard = xCard.pChild();
 
     pSubCard->vMark2Recursive(szMark2);
   }
@@ -1387,8 +1387,8 @@ void Card::vMark2RecursiveIf(char cMark2, char cIf)
     vMark2(cMark2);
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card *pSubCard = xCard.pChild();
 
     pSubCard->vMark2RecursiveIf(cMark2,cIf);
   }
@@ -1405,8 +1405,8 @@ void Card::vMark2RecursiveIf(Stz* szMark2, Stz* szIf)
     vMark2(szMark2);
   }
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
+  for (Kid xCard(this); xCard.bEach(); /**/) {
+    Card *pSubCard = xCard.pChild();
 
     pSubCard->vMark2RecursiveIf(szMark2,szIf);
   }

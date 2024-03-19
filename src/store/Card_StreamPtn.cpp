@@ -61,9 +61,9 @@ bool Card_StreamPtn::bContainsKey(Symbol *p_Y_tblCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_STREAMKEY)) {
-    if (xKid.p_streamKey()->pSymbol()->bMatches(p_Y_tblCol))
+  Kid xStreamPtn(this);
+  while (xStreamPtn.bEach(CK_STREAMKEY)) {
+    if (xStreamPtn.p_streamKey()->pSymbol()->bMatches(p_Y_tblCol))
       return true;
   }
 
