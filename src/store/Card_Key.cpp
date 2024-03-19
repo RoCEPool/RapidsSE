@@ -240,7 +240,7 @@ void Card_Key::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* convert key to indexDef                                                    */
 /*----------------------------------------------------------------------------*/
-IndexDef* Card_Key::pToIndexDef(void)
+IndexDef* Card_Key::pTo_IndexDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -248,8 +248,32 @@ IndexDef* Card_Key::pToIndexDef(void)
 
   IndexDef* pIndexDef = new IndexDef;
 
-  Kid xKey(this);
-  while (xKey.bEach(CK_EXPR)) {
+#ifdef Z_KEY_DIRECTION
+  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
+
+    Card_Direction* p_direction = xKey.p_direction();
+    Card_Expr* p_expr = p_direction->pSub_expr();
+
+    Card_Term* p_term = p_expr->pGet_term(0);
+    if (! p_term)
+      continue;
+
+    Stz* szColNm  = p_term->szFacet(SF_EXP_COL);
+    TypeId xTypeId = p_term->xTypeId();
+
+    if (! szColNm || CT_NONE == xTypeId.eCTVal())
+      continue;
+
+    bool bAscending = true;
+    if (p_expr->bIsDescending()) {
+      bAscending = false;
+      bHasDescending = true;
+    }
+    pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
+  }
+
+#else
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr = xKey.p_expr();
 
     Card_Term* p_term = p_expr->pGet_term(0);
@@ -269,6 +293,7 @@ IndexDef* Card_Key::pToIndexDef(void)
     }
     pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
   }
+#endif
 
   if (bHasDescending)
     pIndexDef->vHasDescending(true);

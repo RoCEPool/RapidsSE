@@ -27,7 +27,7 @@ namespace STORE
     void vMapColumns(CardIter *pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
-    IndexDef* pToIndexDef(void);
+    IndexDef* pTo_IndexDef(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

@@ -1600,7 +1600,7 @@ IndexDef* Card_OP::pCraftIndexDef_key(void)
   if (! p_key)
     return nullptr;
 
-  IndexDef* pIndexDef = p_key->pToIndexDef();
+  IndexDef* pIndexDef = p_key->pTo_IndexDef();
 
   return pIndexDef;
 }
