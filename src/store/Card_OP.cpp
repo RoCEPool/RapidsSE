@@ -435,11 +435,13 @@ void Card_OP::vMapColumns(CardIter *pCI)
   // map the columns of the key
 
   pCI->G.p_key->vMapColumns(pCI);
+  pCI->G.p_keyCells->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the projection
 
   pCI->G.p_emit->vMapColumns(pCI);
+  pCI->G.p_payloadCells->vDump(__func__);
 }
 
 /*----------------------------------------------------------------------------*/

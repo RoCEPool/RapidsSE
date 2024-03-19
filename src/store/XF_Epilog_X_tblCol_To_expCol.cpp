@@ -68,9 +68,14 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
   while (m_pCI->bEachOp()) {
     if (CK_o_GBYAGG == m_pCI->G.e_Op)
       vDebugPoint();
+    if (CK_o_SORT == m_pCI->G.e_Op) {
+      //m_pCI->G.p_Op->vDump(__func__);
+      vDebugPoint();
+    }
 
     vTo_expCol();
-    m_pCI->PRINTBOARD_dbg();
+    //m_pCI->PRINTBOARD_dbg();
+    //m_pCI->G.p_Op->vDump(__func__);
     vDebugPoint();
   }
 
