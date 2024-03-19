@@ -66,19 +66,11 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
+    if (CK_o_GBYAGG == m_pCI->G.e_Op)
+      vDebugPoint();
 
-//    if (m_pCI->G.p_Op->bIsCard(CK_o_GBYAGG)) {
-//
-//      if ((m_pCI->G.p_level = m_pCI->G.p_Op->pSub_level())) {
-//        if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
-//          m_pCI->vSnapArriving();
-//          continue;
-//        }
-//      }
-//    }
     vTo_expCol();
-
-//    m_pCI->PRINTBOARD_dbg();
+    m_pCI->PRINTBOARD_dbg();
     vDebugPoint();
   }
 
