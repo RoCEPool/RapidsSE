@@ -13,7 +13,7 @@
 #include "Pipeline.hpp"
 
 extern pthread_key_t giTLS_StepAccum;
-extern pthread_key_t giTLS_PDSCrwTablePtn;
+//extern pthread_key_t giTLS_PDSCrwTablePtn;
 
 /*----------------------------------------------------------------------------*/
 /* get elapsed time since boot in nanoseconds                                 */
@@ -438,13 +438,14 @@ eEV MY::eOperand(void)
 void* MY::pPdsCrwTablePtn(void)
 {
   _static_
-  i8 iTLSVal = (i8) giTLS_PDSCrwTablePtn;
-  if (C_UNKNOWN == iTLSVal)
-    return nullptr;
-
-  void* pPdsBufferId = static_cast<void*>(PsxThd::pTlsGet(giTLS_PDSCrwTablePtn));
-
-  return pPdsBufferId;
+//  i8 iTLSVal = (i8) giTLS_PDSCrwTablePtn;
+//  if (C_UNKNOWN == iTLSVal)
+//    return nullptr;
+//
+//  void* pPdsBufferId = static_cast<void*>(PsxThd::pTlsGet(giTLS_PDSCrwTablePtn));
+//
+//  return pPdsBufferId;
+return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -453,8 +454,9 @@ void* MY::pPdsCrwTablePtn(void)
 void MY::vPdsCrwTablePtn(void* pPdsBufferId)
 {
   _static_
+	UNUSED(pPdsBufferId);
 
-  PsxThd::vTlsSet(giTLS_PDSCrwTablePtn,pPdsBufferId);
+  //PsxThd::vTlsSet(giTLS_PDSCrwTablePtn,pPdsBufferId);
 
 }
 

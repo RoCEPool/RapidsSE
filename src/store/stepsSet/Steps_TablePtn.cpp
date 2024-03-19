@@ -26,7 +26,7 @@
 #include "Pds.hpp"
 #include "PdsCursor.hpp"
 
-extern pthread_key_t giTLS_PDSCrwTablePtn;
+//extern pthread_key_t giTLS_PDSCrwTablePtn;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
