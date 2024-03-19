@@ -444,7 +444,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 
   if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
-        m_pCI->Flux.m_pArriving->pToStreamDef(nullptr, nullptr, p_OP);
+        m_pCI->Flux.m_pArriving->pTo_StreamDef(nullptr, nullptr, p_OP);
   }
   else
 
@@ -454,7 +454,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
   else
   if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
-        m_pCI->Flux.m_pArriving->pToStreamDef(nullptr, nullptr, p_OP);
+        m_pCI->Flux.m_pArriving->pTo_StreamDef(nullptr, nullptr, p_OP);
   }
   else
   if (p_OP->bIsCard(CK_o_INFLATE)) {

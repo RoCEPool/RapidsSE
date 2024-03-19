@@ -1629,22 +1629,22 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
   ColMap* pColMap = ppColMap? *ppColMap : nullptr;
 
   StreamDef* pStreamDef_emitted =
-      p_emit->pToStreamDef(pColMap, p_key, this);
+      p_emit->pTo_StreamDef(pColMap, p_key, this);
 
 
   if (CK_o_GBYAGG == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    p_mapping->vToColMap(pColMap);
+    p_mapping->vTo_ColMap(pColMap);
   }
   else
   if (CK_o_SORT == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    p_mapping->vToColMap(pColMap);
+    p_mapping->vTo_ColMap(pColMap);
   }
   else
   if (CK_o_TOP == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    p_mapping->vToColMap(pColMap);
+    p_mapping->vTo_ColMap(pColMap);
   }
 
   if (pColMap)

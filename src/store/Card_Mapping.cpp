@@ -42,7 +42,7 @@ Card_Mapping::~Card_Mapping(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Mapping::vToColMap(ColMap* pColMap)
+void Card_Mapping::vTo_ColMap(ColMap* pColMap)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
