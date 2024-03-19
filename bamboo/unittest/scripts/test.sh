@@ -33,7 +33,7 @@ readonly DEBUG=0
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
 # Defaulting to 45 minutes.
-readonly SETH_TIMEOUT="3800"
+readonly SETH_TIMEOUT="1200"
 
 # Maximum disk space utilisation % that we will accept on the current partition
 # before we forcibly stop the tests. This is trying to catch situations where

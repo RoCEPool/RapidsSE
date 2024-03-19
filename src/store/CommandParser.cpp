@@ -124,7 +124,9 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
   vTrace("pParseCommand1\n"_Stz);
   // Add our own error listener so that we can be notified if there is a parsing error.
   parser.removeErrorListeners();
+	vTrace("pParseCommand1a\n"_Stz);
   parser.addErrorListener(&errorListener);
+	vTrace("pParseCommand1b\n"_Stz);
 
   // Parse the token stream.
   Parser::sqlParser::StatementsContext* pStatementsCtx = parser.statements();
