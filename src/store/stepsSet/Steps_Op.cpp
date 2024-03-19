@@ -386,7 +386,6 @@ void Step::vOpPipeOut(void)
       pOperand = _pOperand((Object*)pDataBuffer->oGetBufferId().m_pvAsAddress);
     }
   }
-
 //  if (pOperand->bIsBuffer()) {
 //    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
 //    pLogicUnit->m_xpStats->m_nBuffOut++;

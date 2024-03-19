@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PdsBufferIdQueue.hpp -- Pds of BufferIds used as a queue                   */
+/* PdsBufferQueue.hpp -- Pds of Buffer addresses used as a queue              */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,8 @@ namespace BASE
   {
   private:
     i8                        m_iSynthKey;     // Synthetic key for the Pds
-    Pds_t<PdsItem_BufferId>*  m_pPdsOfBufferIds;
+//    DataBuffer*               m_pWorkingBuffer; // Temporary current working buffer
+    Pds_t<PdsItem_BufferId>*  m_pPdsOfBufferAddrs;
 
     // must be last
     Footer m_xFooter;

@@ -69,7 +69,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
   vAddStep("Table[].tablePtnGet"_Stz,      &Step::vTableTablePtnGet);
   vAddStep("Table[].tablePtnZero"_Stz,     &Step::vTableTablePtnZero);
-  vAddStep("Table[].toLglPtn"_Stz,     &Step::vTableToLglPtn);
+  vAddStep("Table[].toLglPtn"_Stz,          &Step::vTableToLglPtn);
   vAddStep("Table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("Table[].visualize"_Stz,        &Step::vTableVisualize);
 }
@@ -396,7 +396,7 @@ void Step::vTableTablePtnZero(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   TablePtn* pTablePtn = pTable->pTablePtn(0);
-
+  
   m_pDataStack->vPushPtr(pTablePtn);
   
   EXIT();
@@ -775,8 +775,8 @@ void Step::vTableVisualize(void)
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-    vTrace("Table Partition %lld\n"_Stz, i_TablePtn);
     pTablePtn->bGrabRead();
+    vTrace("Table Partition %lld\n"_Stz, i_TablePtn);
     pTablePtn->vVisualizeTable();
     pTablePtn->vDropRead();
   }

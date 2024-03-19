@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PdsItem_BufferId.hpp -- A structure for Key and BufferId for Pds Item      */
+/* PdsItem_BufferId.h -- A structure for Key and BufferId for Pds Item        */
 /*============================================================================*/
 
 #pragma once
@@ -8,7 +8,7 @@ namespace BASE
 {
   typedef struct {
     i8 iKey;
-    BufferId oBufferId;
+    DataBuffer* pDataBuffer;
   } PdsItem_BufferId;
 }
 

@@ -94,6 +94,8 @@ CommandParser::~CommandParser(void) noexcept
 /*----------------------------------------------------------------------------*/
 TaskList* CommandParser::pParseCommand(Stz* szCommand, Stz* szFilePath)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPARSER,_FOOTER_);
+
   m_szCurrentFile = szFilePath;
 
   // The thing that gets told of parsing errors.

@@ -704,7 +704,6 @@ void vDdlLockAssertNone(void);
   void vIndexIsValidUniqueIndex(void);
   void vIndexNameFetch(void);
   void vIndexNew(void);
-  void vIndexPopulate(void);
   void vIndexTableFetch(void);
   void vIndexTableStore(void);
 

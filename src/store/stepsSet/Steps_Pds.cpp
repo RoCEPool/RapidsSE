@@ -114,6 +114,7 @@ void Step::vPdsAddAnalyzeTable(void)
   ENTRY();
 
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+
   i8 i_LglPtn = m_pDataStack->iPopInt(__func__);
 
   // get the pds row buffer
@@ -532,6 +533,7 @@ void Step::vPdsAddRowCount(void)
 {
   ENTRY();
 
+  // get the table
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
