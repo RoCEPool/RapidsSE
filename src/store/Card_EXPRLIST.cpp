@@ -40,10 +40,10 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR)) {
+  Kid xEXPRLIST(this);
+  while (xEXPRLIST.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc(C_NOT_NULL);
+    Card_RpnCalc* p_rpnCalc = xEXPRLIST.p_expr()->pSub_rpnCalc(C_NOT_NULL);
 
     Kid xCI2(p_rpnCalc);
     while ((xCI2.bEach(CK_TERM))) {
@@ -64,10 +64,10 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR)) {
+  Kid xEXPRLIST(this);
+  while (xEXPRLIST.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc(C_NOT_NULL);
+    Card_RpnCalc* p_rpnCalc = xEXPRLIST.p_expr()->pSub_rpnCalc(C_NOT_NULL);
 
     Kid xCI2(p_rpnCalc);
     while (xCI2.bEach(CK_TERM)) {
@@ -88,9 +88,9 @@ void Card_EXPRLIST::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vBump_expCol(nBumpBy);
+  Kid xEXPRLIST(this);
+  while (xEXPRLIST.bEach(CK_EXPR))
+    xEXPRLIST.p_expr()->vBump_expCol(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,9 +151,9 @@ void Card_EXPRLIST::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  Kid xEXPRLIST(this);
+  while (xEXPRLIST.bEach(CK_EXPR))
+    xEXPRLIST.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,9 +163,9 @@ void Card_EXPRLIST::vEnsure_expr_Has_nmdCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vEnsure_expr_Has_nmdCol(xKid.i_Child());
+  Kid xEXPRLIST(this);
+  while (xEXPRLIST.bEach(CK_EXPR))
+    xEXPRLIST.p_expr()->vEnsure_expr_Has_nmdCol(xEXPRLIST.i_Child());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,9 +188,9 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bMatches(pSymbol_arg))
-      return xKid.p_expr();
+  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
+    if (xEXPRLIST.p_expr()->pSymbol()->bMatches(pSymbol_arg))
+      return xEXPRLIST.p_expr();
   }
 
   return nullptr;
@@ -203,9 +203,9 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(eSF eFacet_arg, Symbol* pSymbol_arg
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
-      return xKid.p_expr();
+  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
+    if (xEXPRLIST.p_expr()->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
+      return xEXPRLIST.p_expr();
   }
 
   return nullptr;
@@ -233,9 +233,9 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches_ignoring(Symbol *pSymbol_arg, eSF e
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore))
-      return xKid.p_expr();
+  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
+    if (xEXPRLIST.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore))
+      return xEXPRLIST.p_expr();
   }
 
   return nullptr;
@@ -263,11 +263,11 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
   bool bIsKeyExpr = bIsCard(CK_s_KEY);
 
   i8 i_Expr = 1;
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
     if (bIsKeyExpr)
-      xKid.p_expr()->vRenumberForm_keyCol(i_Expr++);
+      xEXPRLIST.p_expr()->vRenumberForm_keyCol(i_Expr++);
     else
-      xKid.p_expr()->vRenumberForm_expCol(i_Expr++);
+      xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
   }
 }
 
@@ -316,9 +316,9 @@ bool Card_EXPRLIST::bTestFind_expr_Matching(Card_Expr* p_expr_arg,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore) &&
-        xKid.p_expr() == p_expr_arg)
+  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
+    if (xEXPRLIST.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore) &&
+        xEXPRLIST.p_expr() == p_expr_arg)
       return true;
   }
 
@@ -538,8 +538,8 @@ void Card_EXPRLIST::vUpdate_cast(Card_EXPRLIST *p_exprList_ref)
   vDump(__func__,"vUpdate_cast"_Stz);
   p_exprList_ref->vDump(__func__,"p_exprList_ref"_Stz);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card_Expr* p_expr_this = xKid.p_expr();
+  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(); /**/) {
+    Card_Expr* p_expr_this = xEXPRLIST.p_expr();
     if (!p_expr_this->bIsScalarCol())
       continue;
 
@@ -562,9 +562,9 @@ void Card_EXPRLIST::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR)) {
-    pCI->G.p_expr = xKid.p_expr();
+  Kid xEXPRLIST(this);
+  while (xEXPRLIST.bEach(CK_EXPR)) {
+    pCI->G.p_expr = xEXPRLIST.p_expr();
     pCI->G.p_expr->vX_expCol_To_tblCol(pCI);
   }
 
@@ -578,9 +578,9 @@ void Card_EXPRLIST::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR)) {
-    pCI->G.p_expr = xKid.p_expr();
+  Kid xEXPRLIST(this);
+  while (xEXPRLIST.bEach(CK_EXPR)) {
+    pCI->G.p_expr = xEXPRLIST.p_expr();
     pCI->G.p_expr->vX_tblCol_To_expCol(pCI);
   }
 

@@ -2253,9 +2253,9 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
   i8 nAncestors_plusOne = nAncestors();
   RASSERT(nAncestors_start + 1 == nAncestors_plusOne);
 
-  for (Kid xKid(pCard); xKid.bEach(); /**/) {
+  for (Kid xCard(pCard); xCard.bEach(); /**/) {
 
-    Card* pChild = xKid.pChild();
+    Card* pChild = xCard.pChild();
 
     eCK eChild = pChild->eCard();
 
