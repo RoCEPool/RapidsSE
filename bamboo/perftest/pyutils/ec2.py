@@ -166,7 +166,7 @@ def start_instances(instance_type: str,
         "SubnetId": C_SUBNET_F,
         "UserData": __get_boot_script(cloudinit_path, ctx),
         "DisableApiTermination": False,
-        "IamInstanceProfile": { },
+        "IamInstanceProfile": {},
         "TagSpecifications": [{
             "ResourceType": "instance",
             "Tags": [
@@ -642,7 +642,7 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [str], ip_addresses: [str],
             except subprocess.CalledProcessError as e:
                 if attempts % C_MSG_PERIOD == 0:
                     LOG.info(f"{ctx}Instance at {ip_addr} not yet accepting SSH connections: "
-                              f"Exit code = {e.returncode}, stdout = \"{e.stdout}\", stderr = \"{e.stderr}\"")
+                             f"Exit code = {e.returncode}, stdout = \"{e.stdout}\", stderr = \"{e.stderr}\"")
                 last_error = e.stderr
                 time.sleep(1.0)
                 current_time = time.time()
@@ -779,6 +779,7 @@ def __copy_cloudinit_logs(ip_addresses: [str], cloudinit_src: pathlib.Path, clou
         except errors.SshError as e:
             LOG.error(e)
             # Keep trying other instances in this test
+            pass
 
 def record_started_instances(instance_ids: [str], instance_file: pathlib.Path):
     """

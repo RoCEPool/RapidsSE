@@ -89,7 +89,8 @@ def main() -> int:
     if len(git_branch) == 0:
         git_branch = get_git_branch_from_system()
 
-    jobrunner = JobRunner(job_path,
+    jobrunner = JobRunner(C_REPO_ROOT,
+                          job_path,
                           bamboo_plan_key,
                           bamboo_build_num,
                           git_hash,

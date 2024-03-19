@@ -228,7 +228,7 @@ class TestRunner:
         command = f"ln -s {target_dir} {from_dir}"
 
         LOG.info(f"About to create a symbolic link for the test supportFiles directory on host "
-                  f"{self.ip_addr}: {command}")
+                 f"{self.ip_addr}: {command}")
 
         try:
             ssh.run_ssh(self.ip_addr, command, 10)

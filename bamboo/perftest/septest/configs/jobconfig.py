@@ -29,6 +29,7 @@ class JobConfig:
     C_ISREGRESSION = "IsRegression"
     C_DURATION = "MaxDuration"
     C_CONTINUEONFAILURE = "ContinueOnTestFailure"
+    C_COMPILEONTARGET = "CompileOnTarget"
     C_HARDWARECONFIG = "HardwareConfigPath"
     C_CLUSTERCONFIG = "ClusterConfigPath"
     C_TESTPATH = "TestPath"
@@ -51,6 +52,7 @@ class JobConfig:
         is_regr = self.get_is_regression()
         duration = self.get_max_duration()
         continue_test_failure = self.get_continue_on_test_failure()
+        compile_on_target = self.get_compile_on_target()
         hw_path_str = self.get_hardware_config_path()
         cluster_path_str = self.get_cluster_config_path()
         test_paths = self.get_test_paths()
@@ -66,6 +68,8 @@ class JobConfig:
         if continue_test_failure is None:
             msg = f"Config file field {self.C_CONTINUEONFAILURE} must be set in file: {path}"
             raise ConfigurationError(msg)
+
+        # compile_on_target doesn't need error checking
 
         # Check the hardware config paths
         self.__validate_path(hw_path_str, self.C_HARDWARECONFIG, path)
@@ -102,6 +106,9 @@ class JobConfig:
 
     def get_continue_on_test_failure(self) -> bool:
         return self.parser.getboolean(self.C_SECTION, self.C_CONTINUEONFAILURE)
+
+    def get_compile_on_target(self) -> bool:
+        return self.parser.getboolean(self.C_SECTION, self.C_COMPILEONTARGET, fallback=False)
 
     def get_hardware_config_path(self) -> str:
         """Returns the path of the hardware config file as stored in the job config file"""
