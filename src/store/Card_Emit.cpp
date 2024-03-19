@@ -355,9 +355,9 @@ Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    if (xKid.p_expr()->bHasTerm(pSymbol))
-      return xKid.p_expr();
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/)
+    if (xEmit.p_expr()->bHasTerm(pSymbol))
+      return xEmit.p_expr();
 
   return nullptr;
 }
@@ -370,15 +370,15 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
 
   Card_Emit *p_emit_inducted = new Card_Emit;
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    Card_Expr *p_expr_arriving = xKid.p_expr();
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_arriving = xEmit.p_expr();
 
     // exclude not needed expressions
     if (pCI->G.p_needed)
       if (! pCI->G.p_needed->bNeeded_expr(p_expr_arriving))
         continue;
 
-    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct(xKid.i_Child()+1);
+    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct(xEmit.i_Child()+1);
     p_emit_inducted->vAppendChild(p_expr_inducted);
   }
 
@@ -420,8 +420,8 @@ bool Card_Emit::bIsCompound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    if (xKid.p_expr()->bIsCompound())
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/)
+    if (xEmit.p_expr()->bIsCompound())
       return true;
 
   return false;
@@ -436,8 +436,8 @@ bool Card_Emit::bIsLiterals(void)
 
   bool bLiterals = true;
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    if (! xKid.p_expr()->bIsLiterals()) {
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/)
+    if (! xEmit.p_expr()->bIsLiterals()) {
       bLiterals = false;
       break;
     }
@@ -552,8 +552,8 @@ void Card_Emit::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(bAlt);
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    Card_Expr *p_expr = xKid.p_expr();
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr = xEmit.p_expr();
     p_expr->vUpdate_expCol(p_arriving);
   }
 }

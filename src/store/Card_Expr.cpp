@@ -296,12 +296,12 @@ void Card_Expr::vBump_expCol(i8 nBumpBy)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   //p_rpnCalc->vBump_expCol(nBumpBy);
-  Kid xKid(pSub_rpnCalc());
-  while (xKid.bEach(CK_TERM)) {
+  Kid xRpnCalc(pSub_rpnCalc());
+  while (xRpnCalc.bEach(CK_TERM)) {
 
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-      xKid.p_term()->vBump_ordCol(SF_EXP_COL,nBumpBy);
-      xKid.p_term()->vMark1(MARK_CHANGED);
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
+      xRpnCalc.p_term()->vBump_ordCol(SF_EXP_COL, nBumpBy);
+      xRpnCalc.p_term()->vMark1(MARK_CHANGED);
     }
   }
 
@@ -326,8 +326,8 @@ bool Card_Expr::bContains(Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bMatches(pSymbol_arg))
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bMatches(pSymbol_arg))
       return true;
 
   return false;
@@ -376,9 +376,9 @@ Symbol* Card_Expr::pFirst_colSym(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xKid.p_term()->pSymbol();
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xRpnCalc.p_term()->pSymbol();
 
   return nullptr;
 }
@@ -390,9 +390,9 @@ Symbol* Card_Expr::pFirst_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
-      return xKid.p_term()->pSymbol();
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+      return xRpnCalc.p_term()->pSymbol();
 
   return nullptr;
 }
@@ -404,9 +404,9 @@ Symbol* Card_Expr::pFirst_keyCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
-      return xKid.p_term()->pSymbol();
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
+      return xRpnCalc.p_term()->pSymbol();
 
   return nullptr;
 }
@@ -418,9 +418,9 @@ Symbol* Card_Expr::pFirst_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xKid.p_term()->pSymbol();
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xRpnCalc.p_term()->pSymbol();
 
   return nullptr;
 }
@@ -481,9 +481,9 @@ bool Card_Expr::bHasTerm(Symbol* pSymbol)
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
     bHas = p_boolPred->bHas_term(pSymbol);
   else {
-    Kid xKid(pSub_rpnCalc());
-    while (xKid.bEach(CK_TERM)) {
-      if (xKid.p_term()->pSymbol()->bMatches(pSymbol))
+    Kid xRpnCalc(pSub_rpnCalc());
+    while (xRpnCalc.bEach(CK_TERM)) {
+      if (xRpnCalc.p_term()->pSymbol()->bMatches(pSymbol))
         return true;
     }
 
@@ -604,10 +604,10 @@ bool Card_Expr::bIsLiterals(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(pSub_rpnCalc());
-  while (xKid.bEach(CK_TERM)) {
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) ||
-        xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+  Kid xRpnCalc(pSub_rpnCalc());
+  while (xRpnCalc.bEach(CK_TERM)) {
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) ||
+        xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       return false;
   }
 
@@ -653,9 +653,9 @@ bool Card_Expr::bNeedsBrace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(pSub_rpnCalc());
-  while (xKid.bEach(CK_TERM)) {
-    if (xKid.p_term()->pSymbol()->bNeedsBrace())
+  Kid xRpnCalc(pSub_rpnCalc());
+  while (xRpnCalc.bEach(CK_TERM)) {
+    if (xRpnCalc.p_term()->pSymbol()->bNeedsBrace())
       return true;
   }
 
@@ -802,8 +802,8 @@ void Card_Expr::vUpdate_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(pSub_rpnCalc()); xKid.bEach(CK_TERM); /**/)
-    xKid.p_term()->vUpdate_expCol(p_arriving);
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    xRpnCalc.p_term()->vUpdate_expCol(p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -821,12 +821,12 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
   else
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc())) {
     //vDump(__func__);
-    Kid xKid(pSub_rpnCalc());
-    while (xKid.bEach(CK_TERM)) {
-      if (!xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+    Kid xRpnCalc(pSub_rpnCalc());
+    while (xRpnCalc.bEach(CK_TERM)) {
+      if (!xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
         continue;
 
-      pCI->G.p_term = xKid.p_term();
+      pCI->G.p_term = xRpnCalc.p_term();
       pCI->G.p_term->vX_expCol_To_tblCol(pCI);
     }
 

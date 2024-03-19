@@ -138,10 +138,10 @@ Card_Term* Card_CONJ::pGetFirstTerm_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xKid.p_term();
+  Kid xCONJ(this);
+  while (xCONJ.bEach(CK_TERM))
+    if (xCONJ.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xCONJ.p_term();
 
   return nullptr;
 }
@@ -170,9 +170,9 @@ Card_Term* Card_CONJ::pGetTerm_sqyNo(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    Card_Term* p_term = xKid.p_term();
+  Kid xCONJ(this);
+  while (xCONJ.bEach(CK_TERM)) {
+    Card_Term* p_term = xCONJ.p_term();
     if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
       continue;
 

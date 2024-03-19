@@ -175,9 +175,9 @@ bool Card_RlnConj::bIsEq(Card_RlnConj* p_rlnConj_arg)
   if (nChildCards() != p_rlnConj_arg->nChildCards())
     return false;
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card_Term* p_term_this = xKid.p_term();
-    Card_Term* p_term_that = p_rlnConj_arg->pGetTerm(xKid.i_Child());
+  for (Kid xRlnConj(this); xRlnConj.bEach(); /**/) {
+    Card_Term* p_term_this = xRlnConj.p_term();
+    Card_Term* p_term_that = p_rlnConj_arg->pGetTerm(xRlnConj.i_Child());
 
     Symbol* pSymbol_this = p_term_this->pSymbol();
     Symbol* pSymbol_that = p_term_that->pSymbol();

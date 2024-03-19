@@ -401,9 +401,9 @@ bool Card_Table::bScopeContains_Conj(Card_CONJ* p_conj,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(p_conj);
-  while (xKid.bEach(CK_TERM)) {
-    if (! this->bScopeContains_term(xKid.p_term(), pScope))
+  Kid xConj(p_conj);
+  while (xConj.bEach(CK_TERM)) {
+    if (! this->bScopeContains_term(xConj.p_term(), pScope))
       return false;
   }
 

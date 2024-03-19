@@ -226,9 +226,9 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   //p_streamPrmAll->vDump(__func__);
 
   m_pCI->G.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "All Permutations"_Stz));
-  Kid xKid(p_streamPrmAll);
-  while (xKid.bEach())
-    m_pCI->G.p_deck->vAppendChild(xKid.p_streamPer()->pDupCardRecursive());
+  Kid xStreamPrmAll(p_streamPrmAll);
+  while (xStreamPrmAll.bEach())
+    m_pCI->G.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
 
   // 5) Remove invalid permutations
 
@@ -236,10 +236,10 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   //p_streamPrmAll->vDump(__func__);
   m_pCI->G.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "Valid Permutations"_Stz));
 
-  xKid.vEnded();
-  xKid.vBegin();
-  while (xKid.bEach())
-    m_pCI->G.p_deck->vAppendChild(xKid.p_streamPer()->pDupCardRecursive());
+  xStreamPrmAll.vEnded();
+  xStreamPrmAll.vBegin();
+  while (xStreamPrmAll.bEach())
+    m_pCI->G.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
 
   if (! p_streamPrmAll->nChildCards()) {
     s4K sTableList;
@@ -254,18 +254,18 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   p_streamPrmAll->vEstCostsForAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_filtPredList);
   m_pCI->G.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "Join Cost Est."_Stz));
 
-  xKid.vEnded();
-  xKid.vBegin();
-  while (xKid.bEach())
-    m_pCI->G.p_deck->vAppendChild(xKid.p_streamPer()->pDupCardRecursive());
+  xStreamPrmAll.vEnded();
+  xStreamPrmAll.vBegin();
+  while (xStreamPrmAll.bEach())
+    m_pCI->G.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
 
   // get the join permutations strings
 
-  xKid.vEnded();
-  xKid.vBegin();
+  xStreamPrmAll.vEnded();
+  xStreamPrmAll.vBegin();
   i8 iJoinPermutations = 0;
-  while (xKid.bEach(CK_STREAMPER)) {
-    Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xKid.p_streamPer());
+  while (xStreamPrmAll.bEach(CK_STREAMPER)) {
+    Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xStreamPrmAll.p_streamPer());
     //p_joinOrdering->vDump();
     s4K sJoinOrder;
     if (pFile) {

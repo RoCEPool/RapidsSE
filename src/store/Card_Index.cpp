@@ -220,11 +220,11 @@ bool Card_Index::bTblCol_IsKeyIn_index(Stz* szTblCol)
 
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 
-  Kid xKid(p_idxColList);
-  while (xKid.bEach(CK_IDXCOL)) {
+  Kid xIdxColList(p_idxColList);
+  while (xIdxColList.bEach(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xKid.pChild()->pSymbol()->bHasFacet(szTblCol))
+    if (xIdxColList.pChild()->pSymbol()->bHasFacet(szTblCol))
       return true;
   }
 
