@@ -470,7 +470,7 @@ Pds* SeApi::pSearchCatalogs(Stz* szCatalogName)
     
   Metadata* pMetadata = new Metadata;
   
-  Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPCATALOG);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_LOOKUPCATALOG);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -494,7 +494,7 @@ Pds* SeApi::pSearchColumns(Stz* szCatalogName,
     
   Metadata* pMetadata = new Metadata;
   
-  Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_COLUMNDEFS);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -518,7 +518,7 @@ Pds* SeApi::pSearchIndexes(Stz* szCatalogName,
 
   Metadata* pMetadata = new Metadata;
 
-  Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPINDEX);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_LOOKUPINDEX);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -543,7 +543,7 @@ Pds* SeApi::pSearchIndexColumns(Stz* szCatalogName,
 
   Metadata* pMetadata = new Metadata;
 
-  Table* pLookupTable = AM::pTableFind(C_TDEF_INDEXCOLUMNDEFS);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_INDEXCOLUMNDEFS);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -565,7 +565,7 @@ Pds* SeApi::pSearchSchemas(Stz* szCatalogName,
     
   Metadata* pMetadata = new Metadata;
   
-  Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPSCHEMA);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_LOOKUPSCHEMA);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -588,7 +588,7 @@ Pds* SeApi::pSearchTables(Stz* szCatalogName,
     
   Metadata* pMetadata = new Metadata;
   
-  Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPTABLE);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_LOOKUPTABLE);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
 	Pds* pPds = new Pds(pLookupStreamDef);

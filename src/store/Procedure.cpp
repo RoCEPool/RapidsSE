@@ -526,7 +526,7 @@ Word* Procedure::pFindProcedure(Stz* szProcedure)
 
   Dic* pDicRoot = AM::DIC::pRoot();
 
-  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+  Word* pProcCatg = pDicRoot->pFindWord((Stz*)C_PROCEDURE_CATG);
 
   if (!pProcCatg)
     return nullptr;
@@ -550,7 +550,7 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
   
   Dic* pDicRoot = AM::DIC::pRoot();
 
-  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+  Word* pProcCatg = pDicRoot->pFindWord((Stz*)C_PROCEDURE_CATG);
   
   if (! pProcCatg)
     return nullptr;
@@ -699,7 +699,7 @@ void Procedure::vParseAndAdd(void)
   
   Dic* pDicRoot = AM::DIC::pRoot();
 
-  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+  Word* pProcCatg = pDicRoot->pFindWord((Stz*)C_PROCEDURE_CATG);
   
   m_pProcWord = pDicRoot->pFindWord(m_sProcNm);
 //  m_pProcWord->vCategoryEnum(WC_PROCEDURE);
@@ -1088,7 +1088,7 @@ void Procedure::vAddProcedureWord(void)
 
   Dic* pDicRoot = AM::DIC::pRoot();
 
-  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+  Word* pProcCatg = pDicRoot->pFindWord((Stz*)C_PROCEDURE_CATG);
   
   m_pProcWord = pDicRoot->pFindWord(m_sProcNm);
   

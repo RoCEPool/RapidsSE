@@ -137,7 +137,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
   
   AM::JOBS::vJobsActiveInc();
   
-  m_oJobTags.vInsert(C_TAG_PATH,C_SE_PATH);
+  m_oJobTags.vInsert((Stz*)C_TAG_PATH,(Stz*)C_SE_PATH);
 
   AM::JLIST::vInsertJob(this);
   

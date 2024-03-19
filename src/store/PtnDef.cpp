@@ -935,7 +935,7 @@ eEC PtnDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
   
-  if (! pTkn->bSame(C_NULL))
+  if (! pTkn->bSame((Stz*)C_NULL))
     return EC_INVALID_COMMAND;
   
   pCol->vIsNullable(false);

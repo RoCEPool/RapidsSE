@@ -220,7 +220,7 @@ void Record::vAppendCsvVal(eDM eDatum, i8 iScale, i8 iVal)
   const char* azLastChar = azRecordLastChar();
 
   if (C_DATUM_NULL == iVal) {
-    StrLib::vAppendString(&m_azCursor, azLastChar, C_NULL->azChar());
+    StrLib::vAppendString(&m_azCursor, azLastChar, ((Stz*)C_NULL)->azChar());
     return;
   }
     

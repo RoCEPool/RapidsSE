@@ -159,7 +159,7 @@ void Step::vApiForkChild(void)
     if (m_pJob)
       pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
     else
-      pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
+      pCmdTagSet->vReplace((Stz*)C_TAG_PATH,(Stz*)C_SE_PATH_ROOT);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -256,7 +256,7 @@ void Step::vApiForkChildNestedSql(void)
     if (m_pJob)
       pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
     else
-      pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
+      pCmdTagSet->vReplace((Stz*)C_TAG_PATH,(Stz*)C_SE_PATH_ROOT);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -335,7 +335,7 @@ void Step::vApiForkDemon(void)
     if (m_pJob)
       pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
     else
-      pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
+      pCmdTagSet->vReplace((Stz*)C_TAG_PATH,(Stz*)C_SE_PATH_ROOT);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -410,7 +410,7 @@ void Step::vApiForkChild2PC(void)
     if (m_pJob)
       pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
     else
-      pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
+      pCmdTagSet->vReplace((Stz*)C_TAG_PATH,(Stz*)C_SE_PATH_ROOT);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

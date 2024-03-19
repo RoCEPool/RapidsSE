@@ -79,7 +79,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   RASSERT(tDistId.bIsUnknown());
 
   m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
-  m_pRootJob->vFolderPath(C_SE_PATH);
+  m_pRootJob->vFolderPath((Stz*)C_SE_PATH);
   m_pRootJob->vSystemCloser(false);
   m_pRootJob->vOutputCreate();
   m_pRootJob->vOutputBeginProc();

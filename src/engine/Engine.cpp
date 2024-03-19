@@ -799,43 +799,43 @@ void Engine::vInternalTables(void)
 {
   StreamDef* pStreamDef;
   
-  pStreamDef = AM::pStreamDefFind(C_TDEF_DEREFMETRICS);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_DEREFMETRICS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_DEREFMETRICS,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTLOG);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_EVENTLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTLOG,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBMETRICS);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_JOBMETRICS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBMETRICS,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBNETDISSECT);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_JOBNETDISSECT);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBNETDISSECT,pStreamDef);
   
-  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBNETWORK);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_JOBNETWORK);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBNETWORK,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBOPERANDS);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_JOBOPERANDS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBOPERANDS,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBOPERATORS);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_JOBOPERATORS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBOPERATORS,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_MEMORYLOG);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_MEMORYLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_MEMORYLOG,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_OPERANDLOG);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_OPERANDLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_OPERANDLOG,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_PAGEINREQUEST);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_PAGEINREQUEST);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_PAGEINREQUEST,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_PROMPTOUT);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_PROMPTOUT);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_PROMPTOUT,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_RESOURCELOG);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_RESOURCELOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_RESOURCELOG,pStreamDef);
   
-  pStreamDef = AM::pStreamDefFind(C_TDEF_SYSMETRICS);
+  pStreamDef = AM::pStreamDefFind((Stz*)C_TDEF_SYSMETRICS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_SYSMETRICS,pStreamDef);
 
 }

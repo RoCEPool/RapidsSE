@@ -81,7 +81,7 @@ void PagingMetrics::vReportDerefMetrics(Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the internal derefMetrics table
   
-  Table* pJobMetricsTable = AM::pTableFind(C_TDEF_DEREFMETRICS);
+  Table* pJobMetricsTable = AM::pTableFind((Stz*)C_TDEF_DEREFMETRICS);
   StreamDef* pStreamDef = pJobMetricsTable->pStreamDef();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -117,7 +117,7 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the internal jobMetrics table
   
-  Table* pJobMetricsTable = AM::pTableFind(C_TDEF_JOBMETRICS);
+  Table* pJobMetricsTable = AM::pTableFind((Stz*)C_TDEF_JOBMETRICS);
   StreamDef* pStreamDef = pJobMetricsTable->pStreamDef();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -228,7 +228,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
 //  }
 //
   // find the internal netDissect table
-  Table* pJobNetDissectTable = AM::pTableFind(C_TDEF_JOBNETDISSECT);
+  Table* pJobNetDissectTable = AM::pTableFind((Stz*)C_TDEF_JOBNETDISSECT);
   StreamDef* pStreamDef = pJobNetDissectTable->pStreamDef();
 
   // get a working buffer from the tub
@@ -439,7 +439,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
 //  }
   
   // find the internal jobNetwork table
-  Table* pJobNetworkTable = AM::pTableFind(C_TDEF_JOBNETWORK);
+  Table* pJobNetworkTable = AM::pTableFind((Stz*)C_TDEF_JOBNETWORK);
   StreamDef* pStreamDef = pJobNetworkTable->pStreamDef();
 
   // get a working buffer from the tub
@@ -526,7 +526,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
   i8 iParticipantTsc = pJob->iTscParticipant();
   
   // find the internal jobOpererands table
-  Table* pJobOperandsTable = AM::pTableFind(C_TDEF_JOBOPERANDS);
+  Table* pJobOperandsTable = AM::pTableFind((Stz*)C_TDEF_JOBOPERANDS);
   StreamDef* pStreamDef = pJobOperandsTable->pStreamDef();
 
   // get a working buffer from the tub
@@ -646,7 +646,7 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
   //JobReport* pJobReport = new JobReport(iJob, pJob);
 
   // find the internal jobOperators table
-  Table* pJobOperatorsTable = AM::pTableFind(C_TDEF_JOBOPERATORS);
+  Table* pJobOperatorsTable = AM::pTableFind((Stz*)C_TDEF_JOBOPERATORS);
   StreamDef* pStreamDef = pJobOperatorsTable->pStreamDef();
 
   // get a working buffer from the tub

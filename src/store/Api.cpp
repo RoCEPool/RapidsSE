@@ -159,7 +159,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
         pCmdTagSet->vReplace(C_TAG_PATH, pParentJob->pJobTags()->szValue(C_TAG_PATH));
 
       } else {
-        pCmdTagSet->vReplace(C_TAG_PATH, C_SE_PATH_ROOT);
+        pCmdTagSet->vReplace((Stz*)C_TAG_PATH, (Stz*)C_SE_PATH_ROOT);
       }
     }
 

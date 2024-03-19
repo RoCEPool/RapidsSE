@@ -480,13 +480,13 @@ Stz* ExplainOp::szTableDef(QueryNode* pNode)
   ASSERT(!pFormatNode || ShadowNode::bIsExactType(pFormatNode, C_FORMAT_DEFN));
 
   if (!pFormatNode) {
-    return C_TDEF_EXPLAIN;
+    return (Stz*)C_TDEF_EXPLAIN;
   }
 
   Stz* szFormat = pFormatNode->szValue();
 
   if (szFormat->bSame(C_FORMAT_PRETTY)) {
-    return C_TDEF_EXPLAIN;
+    return (Stz*)C_TDEF_EXPLAIN;
 
   } else if (szFormat->bSame(C_FORMAT_ROW)) {
     NOT_IMPLEMENTED_YET

@@ -529,7 +529,7 @@ Pds* Metadata::pColumnDefs(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
-  Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_COLUMNDEFS);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -595,7 +595,7 @@ Pds* Metadata::pIndexColumnDefs(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
-  Table* pLookupTable = AM::pTableFind(C_TDEF_INDEXCOLUMNDEFS);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_INDEXCOLUMNDEFS);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -664,7 +664,7 @@ Pds* Metadata::pPartitionKey(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
-  Table* pLookupTable = AM::pTableFind(C_TDEF_PARTITIONKEY);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_PARTITIONKEY);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -719,7 +719,7 @@ Pds* Metadata::pLookupCatalog(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
-  Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPCATALOG);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_LOOKUPCATALOG);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -749,7 +749,7 @@ Pds* Metadata::pLookupIndex(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
-  Table* pLookupIndex = AM::pTableFind(C_TDEF_LOOKUPINDEX);
+  Table* pLookupIndex = AM::pTableFind((Stz*)C_TDEF_LOOKUPINDEX);
 
   StreamDef* pLookupStreamDef = pLookupIndex->pStreamDef();
 
@@ -781,7 +781,7 @@ Pds* Metadata::pLookupSchema(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPSCHEMA);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_LOOKUPSCHEMA);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);
@@ -811,7 +811,7 @@ Pds* Metadata::pLookupTable(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPTABLE);
+  Table* pLookupTable = AM::pTableFind((Stz*)C_TDEF_LOOKUPTABLE);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   Pds* pPds = new Pds(pLookupStreamDef);

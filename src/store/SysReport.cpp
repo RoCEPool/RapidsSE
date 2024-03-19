@@ -58,7 +58,7 @@ void SysReport::vSysLocks(Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the internal systemLocks table
   
-  Table* pSysLocksTable = AM::pTableFind(C_TDEF_SYSLOCKS);
+  Table* pSysLocksTable = AM::pTableFind((Stz*)C_TDEF_SYSLOCKS);
   StreamDef* pStreamDef = pSysLocksTable->pStreamDef();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -155,7 +155,7 @@ void SysReport::vSysMetrics(Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the internal sysMetrics table
   
-  Table* pSysMetricsTable = AM::pTableFind(C_TDEF_SYSMETRICS);
+  Table* pSysMetricsTable = AM::pTableFind((Stz*)C_TDEF_SYSMETRICS);
   StreamDef* pStreamDef = pSysMetricsTable->pStreamDef();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
