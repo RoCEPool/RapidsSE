@@ -2179,7 +2179,6 @@ void vJobIdLastJobIdFetch(void);
   void vTablePtnExtractBufferId(void);
   void vTablePtnPopulateIndex(void);
   void vTablePtnRoot(void);
-  void vTablePtnRootBufferId(void);
   void vTablePtnRootPdsCursor(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
