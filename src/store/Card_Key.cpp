@@ -120,12 +120,24 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+#ifdef Z_KEY_DIRECTION
+  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
+    Card_Direction* p_direction = xKey.p_direction();
+    Card_Expr* p_expr = p_direction->pSub_expr();
+
+    Symbol* pSymbol_term0 = p_expr->pGet_Symbol(0);
+
+    if (pSymbol_term0->bMatches(pSymbol))
+      return p_expr;
+  }
+#else
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
 
     if (pSymbol_term0->bMatches(pSymbol))
       return xKey.p_expr();
   }
+#endif
 
   return nullptr;
 }
