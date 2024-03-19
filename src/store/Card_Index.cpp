@@ -66,10 +66,10 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   //pCI->vUseCard(pCI->G.p_indexList);
 
-  Kid xKid(pCI->G.p_indexList);
-  while (xKid.bEach(CK_INDEX)) {
+  Kid xIndexList(pCI->G.p_indexList);
+  while (xIndexList.bEach(CK_INDEX)) {
 
-    Card_Bounds* p_bounds = xKid.p_index()->pSub_bounds();
+    Card_Bounds* p_bounds = xIndexList.p_index()->pSub_bounds();
     if (! p_bounds)
       continue;
 

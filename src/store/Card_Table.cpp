@@ -274,12 +274,12 @@ void Card_Table::vDerive_bounds_From_filter(CardIter *pCI)
   RASSERT(1 == p_boolPred->nChildCards());
   Card_CONJ* p_conj_root = p_boolPred->pRoot_conj();
 
-  Kid xKid(pCI->G.p_indexList);
-  while (xKid.bEach(CK_INDEX)) {
+  Kid xIndexList(pCI->G.p_indexList);
+  while (xIndexList.bEach(CK_INDEX)) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Card_Index* p_index = xKid.p_index();
+    Card_Index* p_index = xIndexList.p_index();
 
     //p_index->vDump(__func__);
 

@@ -74,17 +74,17 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
 {
   _static_
 
-  Kid xKid(p_deck);
-  while (xKid.bEach(CK_s_TABLE)) {
+  Kid xJoinPredLisy(p_deck);
+  while (xJoinPredLisy.bEach(CK_s_TABLE)) {
     Card_IndexList* p_indexList;
-    if ( (p_indexList = xKid.p_table()->pSub_indexList()) &&
+    if ((p_indexList = xJoinPredLisy.p_table()->pSub_indexList()) &&
         p_indexList->nChildCards())
       continue;
 
     if (! pString->nLength())
-      pString->vSprint("Tables: %s"_Stz, xKid.p_table()->pSub_tableNm()->szFacet(SF_TBL_NM));
+      pString->vSprint("Tables: %s"_Stz, xJoinPredLisy.p_table()->pSub_tableNm()->szFacet(SF_TBL_NM));
     else
-      pString->vCatSprint(", %s"_Stz, xKid.p_table()->pSub_tableNm()->szFacet(SF_TBL_NM));
+      pString->vCatSprint(", %s"_Stz, xJoinPredLisy.p_table()->pSub_tableNm()->szFacet(SF_TBL_NM));
   }
 
 }
