@@ -64,12 +64,6 @@ void XF_Epilog_Reinstate_stage::vReinstate_stage(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_REINSTATE_STAGE);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All SubQuery
-//  for (Kid xKid(m_pCI->G.p_deck); xKid.bEach(CK_SUBQUERY); /**/) {
-//    xKid.vDelete();
-//  }
-
   Card_Stage::vReinstate_stages(m_pCI);
 
   m_pCI->vEndTransform(__LINE__);

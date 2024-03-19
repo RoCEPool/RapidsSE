@@ -286,9 +286,9 @@ void Card_Deck::vValidate(CardIter* pCI)
 
   RASSERT(0 == pCI->nAncestors());
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
+  for (Kid xDeck(this); xDeck.bEach(); /**/) {
 
-    Card* pChild = xKid.pChild();
+    Card* pChild = xDeck.pChild();
 
     eCK eChild = pChild->eCard();
 

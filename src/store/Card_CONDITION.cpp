@@ -78,12 +78,12 @@ void Card_CONDITION::vX_expCol_To_tblCol(CardIter* pCI)
   if ((pCI->G.p_boolPred = pSub_boolPred()))
     pCI->G.p_boolPred->vX_expCol_To_tblCol(pCI);
   else {
-    Kid xKid(pSub_rpnCalc());
-    while (xKid.bEach(CK_TERM)) {
-      if (!xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+    Kid xRpnCalc(pSub_rpnCalc());
+    while (xRpnCalc.bEach(CK_TERM)) {
+      if (!xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
         continue;
 
-      pCI->G.p_term = xKid.p_term();
+      pCI->G.p_term = xRpnCalc.p_term();
       pCI->G.p_term->vX_expCol_To_tblCol(pCI);
     }
 
