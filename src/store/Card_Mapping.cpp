@@ -52,7 +52,8 @@ void Card_Mapping::vTo_ColMap(ColMap* pColMap)
     i8 i_EmittedCol = p_map->pSymbol()->Y_iGet(P_EmittedCol);
     i8 i_Cell       = p_map->pSymbol()->Y_iGet(P_Cell);
 
-    pColMap->vAdd(i_EmittedCol, false, i_Cell);
+    //pColMap->vAdd(i_EmittedCol, false, i_Cell);
+    pColMap->vAdd3(false, i_Cell, /* -> */ i_EmittedCol);
   }
 
   for (Kid xPayloadCells(pSub_payloadCells()); xPayloadCells.bEach(CK_MAP); /**/) {
@@ -61,7 +62,8 @@ void Card_Mapping::vTo_ColMap(ColMap* pColMap)
     i8 i_EmittedCol = p_map->pSymbol()->Y_iGet(P_EmittedCol);
     i8 i_Cell       = p_map->pSymbol()->Y_iGet(P_Cell);
 
-    pColMap->vAdd(i_EmittedCol, true, i_Cell);
+    //pColMap->vAdd(i_EmittedCol, true, i_Cell);
+    pColMap->vAdd3(true, i_Cell, /* -> */ i_EmittedCol);
   }
 }
 

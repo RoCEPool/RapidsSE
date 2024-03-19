@@ -518,14 +518,10 @@ StreamDef* Card_EXPRLIST::pTo_StreamDef(ColMap* pColMap,
     if (pColMap) {
       RASSERT(p_key);
 
-      if (p_expr->pSymbol()->Y_bHas(P_Key))
-        pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
-                      false,
-                      p_expr->pSymbol()->Y_iGet(P_Cell));
-      else
-        pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
-                      true,
-                      p_expr->pSymbol()->Y_iGet(P_Cell));
+      i8 i_Cell       = p_expr->pSymbol()->Y_iGet(P_Cell);
+      i8 i_EmittedCol = p_expr->pSymbol()->Y_iGet(P_EmittedCol);
+      bool bPayload = ! p_expr->pSymbol()->Y_bHas(P_Key);
+      pColMap->vAdd3(bPayload, i_Cell, /* -> */ i_EmittedCol);
     }
   }
 

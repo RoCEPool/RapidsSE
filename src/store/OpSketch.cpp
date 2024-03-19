@@ -191,11 +191,11 @@ void OpSketch::vCopyColMap(ColMap* pColsMap)
 
   m_pColMap->m_nCols = pColsMap->m_nCols;
   for (i8 i_Col = 0; nCols < pColsMap->m_nCols; i_Col++) {
-    if (pColsMap->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
+    if (pColsMap->m_axCol[i_Col].m_i_EmittedCol != C_UNKNOWN) {
       nCols++;
-      m_pColMap->m_axCols[i_Col].m_i_EmittedCol = pColsMap->m_axCols[i_Col].m_i_EmittedCol;
-      m_pColMap->m_axCols[i_Col].m_bPayload = pColsMap->m_axCols[i_Col].m_bPayload;
-      m_pColMap->m_axCols[i_Col].m_i_Cell = pColsMap->m_axCols[i_Col].m_i_Cell;
+      m_pColMap->m_axCol[i_Col].m_i_EmittedCol = pColsMap->m_axCol[i_Col].m_i_EmittedCol;
+      m_pColMap->m_axCol[i_Col].m_bPayload = pColsMap->m_axCol[i_Col].m_bPayload;
+      m_pColMap->m_axCol[i_Col].m_i_Cell = pColsMap->m_axCol[i_Col].m_i_Cell;
     }
   }
 }
@@ -285,7 +285,7 @@ bool OpSketch::bIsPayload(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  return m_pColMap->m_axCols[i_Col].m_bPayload ? true : false;
+  return m_pColMap->m_axCol[i_Col].m_bPayload ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,8 +296,8 @@ bool OpSketch::bIsEmittedColPayload(i8 i_emittedCol)
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
 	for (i8 i_Col = 0; i_Col < m_pColMap->m_nCols; i_Col++) {
-		if (m_pColMap->m_axCols[i_Col].m_i_EmittedCol == i_emittedCol)
-		  return m_pColMap->m_axCols[i_Col].m_bPayload;
+		if (m_pColMap->m_axCol[i_Col].m_i_EmittedCol == i_emittedCol)
+		  return m_pColMap->m_axCol[i_Col].m_bPayload;
 	}
 	RASSERT(0);
 	return false;
