@@ -758,6 +758,25 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
   m_pOpDef->m_pKeyMap = new KeyMap;
 
   m_pCI->G.p_emit = m_pCI->G.p_Op->pSub_emit();
+
+#ifdef Z_KEY_DIRECTION
+  for (Kid xKey(m_pCI->G.p_Op->pSub_key()); xKey.bEach(); /**/) {
+    //xKey.p_expr()->vDump(__func__,"KEY EXPR"_Stz);
+
+    Card_Direction *p_direction_key = xKey.p_direction();
+    Card_Expr *p_expr_key = p_direction_key->pSub_expr();
+
+    if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Matches(p_expr_key->pSymbol()))) {
+      //m_pCI->G.p_expr->vDump(__func__, "EMIT EXPR"_Stz);
+
+      i8 i_EmittedCol = m_pCI->G.p_expr->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
+      i8 i_Cell = p_expr_key->pSymbol()->iTo_ordinal(SF_KEY_COL) - 1;
+      m_pOpDef->m_pKeyMap->vAdd(i_EmittedCol,i_Cell);
+    }
+    else
+      NEVER_REACH
+  }
+#else
   for (Kid xKey(m_pCI->G.p_Op->pSub_key()); xKey.bEach(); /**/) {
     //xKey.p_expr()->vDump(__func__,"KEY EXPR"_Stz);
     if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Matches(xKey.p_expr()->pSymbol()))) {
@@ -770,6 +789,8 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
     else
       NEVER_REACH
   }
+#endif
+
   vDebugPoint();
 }
 

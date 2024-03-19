@@ -573,7 +573,7 @@ bool Card_Expr::bIsDescending(void)
 /*----------------------------------------------------------------------------*/
 /* is this an expression of a key                                             */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsExpressionOfKey(void) {
+bool Card_Expr::bIsKeyCol(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol *pSymbol_0 = pGet_Symbol(0);

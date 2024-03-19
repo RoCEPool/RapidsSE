@@ -190,6 +190,16 @@ void Card_Key::vMapColumns(CardIter *pCI)
 
   i8 i_Cell = 0;
 
+#ifdef Z_KEY_DIRECTION
+  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
+    Card_Direction *p_direction_key = xKey.p_direction();
+    Card_Expr *p_expr_key = p_direction_key->pSub_expr();
+
+    i_Cell++;
+    pCI->vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
+    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
+  }
+#else
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_key = xKey.p_expr();
 
@@ -197,6 +207,7 @@ void Card_Key::vMapColumns(CardIter *pCI)
     pCI->vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
   }
+#endif
 
 }
 

@@ -49,7 +49,7 @@ namespace STORE
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
-    bool bIsExpressionOfKey(void);
+    bool bIsKeyCol(void);
 
     bool bMatches(Card_Expr* p_expr_arg);
 
