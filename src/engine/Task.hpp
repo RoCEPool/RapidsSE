@@ -69,8 +69,8 @@ namespace ENGINE
     LockSet      m_oReadLocks;    // read locks currently held by this task/op
     LockSet      m_oWriteLocks;   // write locks currently held by this task/op
 
-    Pds*         m_pPdsOfHme;     // Pds containing address of HashMapEntries
-    i8           m_iMaxConcurrentLocks;
+//    Pds*         m_pPdsOfHme;     // Pds containing address of HashMapEntries
+//    i8           m_iMaxConcurrentLocks;
   
     LogicUnit*   m_pLogicUnit;    // logic unit
 

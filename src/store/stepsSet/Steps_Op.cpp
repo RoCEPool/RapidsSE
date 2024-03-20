@@ -379,6 +379,13 @@ void Step::vOpPipeOut(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
+  if(! BufferId::bIsBufferId(pOperand)) {
+    if(DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
+      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+      AM::pHashMap()->vDropKeyLock(pDataBuffer->oGetBufferId().m_pvAsAddress);
+      pOperand = _pOperand((Object*)pDataBuffer->oGetBufferId().m_pvAsAddress);
+    }
+  }
 //  if (pOperand->bIsBuffer()) {
 //    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
 //    pLogicUnit->m_xpStats->m_nBuffOut++;
