@@ -235,6 +235,19 @@ Card_Direction* Card_Key::pGet_direction(i8 i_Direction)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a particular direction/expr                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Key::pGet_expr_Of_direction(i8 i_Direction)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Direction));
+  Card_Expr* p_expr = p_direction->pSub_expr();
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Key::bIsEqual(Card_Key* p_key_arg)

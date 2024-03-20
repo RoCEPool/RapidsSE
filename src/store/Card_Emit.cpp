@@ -130,7 +130,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // this projection will be in an aggreg, gbyAgg or ordAgg
   RASSERT(((Card_OP*)pCI->G.p_Op)->bIsEarlyRoot());
 
-  //this->vDump(__func__);
+  this->vDump(__func__);
 
   pCI->G.p_key = pCI->G.p_Op->pSub_key();
 

@@ -26,6 +26,7 @@ namespace STORE
     Card_Expr* pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg);
 
     Card_Direction* pGet_direction(i8 i_Direction);
+    Card_Expr* pGet_expr_Of_direction(i8 i_Direction);
 
     void vMapColumns(CardIter *pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
