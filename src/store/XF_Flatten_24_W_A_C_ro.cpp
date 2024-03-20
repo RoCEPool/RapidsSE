@@ -199,8 +199,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
       }
 #else
       pCI->G.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
-      pCI->Flat.m_p_expr_crlKey->vDump(__func__);
-      pCI->G.p_expr->vDump(__func__);
+      //pCI->Flat.m_p_expr_crlKey->vDump(__func__);
+      //pCI->G.p_expr->vDump(__func__);
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
       if (1 == pCI->G.p_key->nChildCards())
         pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
@@ -247,7 +247,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
     if (AL_PARTITION == e_Level) {
       pCI->G.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI,pCI->G.p_expr);
-      pCI->G.p_expr->vDump(__func__);
+      //pCI->G.p_expr->vDump(__func__);
       vDebugPoint();
     }
     else {
@@ -287,7 +287,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 #endif
     pCI->G.p_emit->vRenumberAll_expr();
 
-    pCI->G.p_key->vDump(__func__);
+    //pCI->G.p_key->vDump(__func__);
     vDebugPoint();
 
     if (pCI->bEachOp()) {

@@ -333,7 +333,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
   if (! pCI->StreamOrder.m_pStreamKey)
     return;
 
-  pCI->StreamOrder.m_pStreamKey->vDump(__func__);
+  //pCI->StreamOrder.m_pStreamKey->vDump(__func__);
 
 #ifdef Z_KEY_DIRECTION
    for (Kid xStreamKey(pCI->StreamOrder.m_pStreamKey); xStreamKey.bEach(CK_DIRECTION); /**/) {
