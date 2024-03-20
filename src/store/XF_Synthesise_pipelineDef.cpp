@@ -760,7 +760,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
   m_pCI->G.p_emit = m_pCI->G.p_Op->pSub_emit();
 
 #ifdef Z_KEY_DIRECTION
-  for (Kid xKey(m_pCI->G.p_Op->pSub_key()); xKey.bEach(); /**/) {
+  for (Kid xKey(m_pCI->G.p_Op->pSub_key()); xKey.bEach(CK_DIRECTION); /**/) {
     //xKey.p_expr()->vDump(__func__,"KEY EXPR"_Stz);
 
     Card_Direction *p_direction_key = xKey.p_direction();
@@ -777,7 +777,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
       NEVER_REACH
   }
 #else
-  for (Kid xKey(m_pCI->G.p_Op->pSub_key()); xKey.bEach(); /**/) {
+  for (Kid xKey(m_pCI->G.p_Op->pSub_key()); xKey.bEach(CK_EXPR); /**/) {
     //xKey.p_expr()->vDump(__func__,"KEY EXPR"_Stz);
     if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Matches(xKey.p_expr()->pSymbol()))) {
       //m_pCI->G.p_expr->vDump(__func__, "EMIT EXPR"_Stz);

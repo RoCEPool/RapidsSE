@@ -36,6 +36,61 @@ load ${testName2}_Region "../DATA/TPCH/region.tbl";
 success
 
 
+
+
+
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - INTEGER
+//------------------------------------------------------------------------------
+
+/optimise_passthru
+pipeline OpTest_12
+begin
+ stage S01 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S02 on all partitions :
+   scan rapidsse public ${testName2}_Nation
+   | gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $3 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
+   | combined 0
+   | next
+
+ stage S03 on all nodes :
+   gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $2 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
+   | combined 0
+   | next
+
+ stage S04 on origin :
+   gbyagg " groupBy  type INTEGER ( 19 ) as n_regionkey $2 aggregates  type INTEGER ( 19 ) )  $1 sum  , type INTEGER ( 19 ) $K1 "
+   | combined 0
+   | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  (50,0)
+  (47,1)
+  (68,2)
+  (77,3)
+  (58,4)
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------------------------------------------------
 // PROJECT
 //------------------------------------------------------------------------------
