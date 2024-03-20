@@ -57,8 +57,12 @@ extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((we
 extern void* aExtern_PdsRowBufferCellArray(void* aPdsRowBuffer, i8 iRow) __attribute__((weak_import));
 
 extern void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) __attribute__((weak_import));
-extern void  vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) __attribute__((weak_import));
+
+extern i8    iExtern_PotAllotRowPds(void* aDynamic, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) __attribute__((weak_import));
+extern void  vExtern_PotRowStrSize(void* pPot, i8 iLglPtn, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_PotRowPix(void* pPot, void* pRowPix) __attribute__((weak_import));
+
+//extern i8 iExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn)  __attribute__((weak_import));
 
 extern void* aExtern_StreamDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
 

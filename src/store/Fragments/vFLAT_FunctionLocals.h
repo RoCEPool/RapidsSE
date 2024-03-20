@@ -25,6 +25,7 @@
   i8 nDstSize       __attribute__ ((unused));
   i8 iOffset        __attribute__ ((unused));
   i8 iMixVal        __attribute__ ((unused));
+	i8 iMixLen        __attribute__ ((unused));
 	i8 iKeyHash       __attribute__ ((unused));
   i8 iKeySize       __attribute__ ((unused));
   i8 iBufferJ       __attribute__ ((unused));

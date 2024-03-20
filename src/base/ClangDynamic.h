@@ -130,15 +130,17 @@ struct Dynamic_T
 	void  (*m_fp_vExtern_IndexTreePositionLE_gen)(void*);
 	void  (*m_fp_vExtern_IndexTreePositionLT_gen)(void*);
 
-		void  (*m_fp_vExtern_IndexTreePositionGE_int)(void*);
-		void  (*m_fp_vExtern_IndexTreePositionGT_int)(void*);
-		void  (*m_fp_vExtern_IndexTreePositionLE_int)(void*);
-		void  (*m_fp_vExtern_IndexTreePositionLT_int)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionGE_int)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionGT_int)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionLE_int)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionLT_int)(void*);
 
-		void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
+	void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
 	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
 
 	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);
+	i8    (*m_fp_iExtern_PotAllotRowPds)(void*,byte*,i8,char**,i8*);
+	void  (*m_fp_vExtern_PotRowPix)(void*,void*);
 
 	void* (*m_fp_aExtern_RowPixNew)(i8,void*);
 

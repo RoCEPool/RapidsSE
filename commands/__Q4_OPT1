@@ -18,10 +18,11 @@ begin
 
   stage S01 on all partitions :
     scan orders
+    | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE ,
+               type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY"
     | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
                             O_ORDERDATE DATE '1993-10-01' < and "
-    | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY"
     | hash "type INTEGER ( 19 ) O_ORDERKEY"
     | combined 0
     | next hashcast

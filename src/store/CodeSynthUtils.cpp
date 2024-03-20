@@ -567,7 +567,8 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
    }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "vExtern_PotRowPix");
+			bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "vExtern_PotRowPix");
+			//bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "aDynamicT->m_fp_vExtern_PotRowPix");
       RASSERT(bResult);
     }
   }
@@ -580,8 +581,9 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",
-                                 "aExtern_PotAllotRowPds((void*)aDynamicT->m_pPot,iKeyHash,&azStringDyn,&nMaxStrAreaLen,&aDynamicT->m_iErrorCode)");
+			bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",
+			"aExtern_PotAllotRowPds((void*)aDynamicT->m_pPot,iKeyHash,&azStringDyn,&nMaxStrAreaLen,&aDynamicT->m_iErrorCode)");
+      //                           "aDynamicT->m_fp_iExtern_PotAllotRowPds((void*)aDynamicT,(byte*)&iMixVal,iMixLen,&azStringDyn,&nMaxStrAreaLen)");
 
       RASSERT(bResult);
     }
@@ -596,7 +598,9 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWSTRSIZE__",
-                                 "vExtern_PotRowStrSize(aDynamicT->m_pPot,iKeyHash, nSrcSize)");
+																 "vExtern_PotRowStrSize(aDynamicT->m_pPot,iKeyHash, nSrcSize)");
+
+			//"vExtern_PotRowStrSize(aDynamicT->m_pPot,iLgl, nSrcSize)");
       RASSERT(bResult);
     }
   }

@@ -31,13 +31,14 @@ void vAssignHash(Dynamic_T* aDynamicT) {
 	struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
 	i8 iMixVal;
-	i8 iKeyHash;
+	i8 iMixLen;
 
 	// marker-start
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// column __COLUMN_NO__
 
 	iMixVal = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+	iMixLen = sizeof(i8);
 
 #ifdef WITH_CLANG
   vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
@@ -59,12 +60,14 @@ void vAssignVchHash(Dynamic_T* aDynamicT) {
 
 	char* szMixVal;
 	i8 iKeyHash;
+	i8 iMixLen;
 
 	// marker-start
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// column __COLUMN_NO__
 
 	szMixVal = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+	iMixLen = strlen(szMixVal);
 
 #ifdef WITH_CLANG
 	vExtern_RunningHash(&iKeyHash, (byte*)szMixVal, strlen(szMixVal));
@@ -478,7 +481,9 @@ i8 iPotTubContinue(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	__ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+
+	//i8 iLgl =  = (byte*)__EXTERN_ALLOTROW__();
 	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
 
@@ -521,6 +526,7 @@ i8 iPotTubContinue_pds(Dynamic_T* aDynamicT) {
 	// allocate a row from the tub
 #ifdef WITH_CLANG
   __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	//i8 iLgl = (byte*)__EXTERN_ALLOTROW__();
 #endif
 
 	// check for error
