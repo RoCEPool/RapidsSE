@@ -329,6 +329,26 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
   if (! pCI->StreamOrder.m_pStreamKey)
     return;
 
+  pCI->StreamOrder.m_pStreamKey->vDump(__func__);
+
+#ifdef Z_KEY_DIRECTION
+   for (Kid xStreamKey(pCI->StreamOrder.m_pStreamKey); xStreamKey.bEach(CK_DIRECTION); /**/) {
+     Card_Direction* p_direction = xStreamKey.p_direction();
+     Card_Expr* p_expr_runkey = p_direction->pSub_expr();
+     Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
+     Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
+     if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc(C_NOT_NULL)->nChildCards()) {
+
+       // annotation or direction in passing
+       if (p_expr_runkey->pSub_direction() && ! p_expr_prjCol->pSub_direction()) {
+         p_expr_prjCol->vAppendChild(p_expr_runkey->pSub_direction()->pDupCardRecursive());
+       }
+
+       pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
+     }
+   }
+#else
+
   i8 nKeyExpr = pCI->StreamOrder.m_pStreamKey->nChildCards();
   for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGet_expr(i_RunKeyExpr);
@@ -346,6 +366,8 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
     }
 
   }
+
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
