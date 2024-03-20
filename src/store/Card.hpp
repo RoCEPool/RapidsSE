@@ -482,6 +482,7 @@ namespace STORE
     Card_Hashing*       pSub_hashing(bool bNotNull=false);
     Card_HshCol*        pSub_hshCol(bool bNotNull=false);
     Card_HshColList*    pSub_hshColList(bool bNotNull=false);
+    Card_IdxCol*        pSub_idxCol(bool bNotNull=false);
     Card_IdxColList*    pSub_idxColList(bool bNotNull=false);
     Card_Index*         pSub_index(bool bNotNull=false);
     Card_IndexJoin*     pSub_indexJoin(bool bNotNull=false);
@@ -491,6 +492,7 @@ namespace STORE
     Card_Injectable*    pSub_injectable(bool bNotNull=false);
     Card_JoinCast*      pSub_joinCast(bool bNotNull=false);
     Card_JoinEstimate*  pSub_joinEstimate(bool bNotNull=false);
+    Card_JoinOrder*     pSub_joinOrder(bool bNotNull=false);
     Card_Key*           pSub_key(bool bNotNull=false);
     Card_KeyCells*      pSub_keyCells(bool bNotNull=false);
     Card_KeyExists*     pSub_keyExists(bool bNotNull=false);
@@ -516,6 +518,7 @@ namespace STORE
     Card_SqyCalls*      pSub_sqyCalls(bool bNotNull=false);
     Card_SqyInfo*       pSub_sqyInfo(bool bNotNull=false);
     Card_SqyNo*         pSub_sqyNo(bool bNotNull=false);
+    Card_Stage*         pSub_stage(bool bNotNull=false);
     Card_Stream*        pSub_stream(bool bNotNull=false);
     Card_StreamHead*    pSub_streamHead(bool bNotNull=false);
     Card_StreamJoin*    pSub_streamJoin(bool bNotNull=false);

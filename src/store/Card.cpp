@@ -3079,6 +3079,24 @@ Card_HshColList* Card::pSub_hshColList(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_IdxCol.hpp"
+Card_IdxCol* Card::pSub_idxCol(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IdxCol* p_idxCol =
+      _pCard_IdxCol(pFindSubCard(CK_IDXCOL));
+
+  if (bNotNull && !p_idxCol) {
+    NEVER_REACH
+  }
+
+  return p_idxCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_IdxColList.hpp"
 Card_IdxColList* Card::pSub_idxColList(bool bNotNull)
 {
@@ -3282,14 +3300,32 @@ Card_JoinEstimate* Card::pSub_joinEstimate(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_JoinEstimate* p_joinCost =
+  Card_JoinEstimate* p_joinEstimate =
       _pCard_JoinEstimate(pFindSubCard(CK_JOINESTIMATE));
 
-  if (bNotNull && !p_joinCost) {
+  if (bNotNull && !p_joinEstimate) {
     NEVER_REACH
   }
 
-  return p_joinCost;
+  return p_joinEstimate;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_JoinOrder.hpp"
+Card_JoinOrder* Card::pSub_joinOrder(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_JoinOrder* p_joinOrder =
+      _pCard_JoinOrder(pFindSubCard(CK_JOINORDER));
+
+  if (bNotNull && !p_joinOrder) {
+    NEVER_REACH
+  }
+
+  return p_joinOrder;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3673,6 +3709,24 @@ Card_SqyNo* Card::pSub_sqyNo(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_IdxCol.hpp"
+Card_Stage* Card::pSub_stage(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Stage* p_stage =
+      _pCard_Stage(pFindSubCard(CK_IDXCOL));
+
+  if (bNotNull && !p_stage) {
+    NEVER_REACH
+  }
+
+  return p_stage;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Stream.hpp"
 Card_Stream* Card::pSub_stream(bool bNotNull)
 {
@@ -3691,6 +3745,42 @@ Card_Stream* Card::pSub_stream(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_StreamHead.hpp"
+Card_StreamHead* Card::pSub_streamHead(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamHead* p_streamHead =
+      _pCard_StreamHead(pFindSubCard(CK_STREAMHEAD));
+
+  if (bNotNull && !p_streamHead) {
+    NEVER_REACH
+  }
+
+  return p_streamHead;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StreamJoin.hpp"
+Card_StreamJoin* Card::pSub_streamJoin(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamJoin* p_streamJoin =
+      _pCard_StreamJoin(pFindSubCard(CK_STREAMJOIN));
+
+  if (bNotNull && !p_streamJoin) {
+    NEVER_REACH
+  }
+
+  return p_streamJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_StreamKey.hpp"
 Card_StreamKey* Card::pSub_streamKey(bool bNotNull)
 {
@@ -3704,6 +3794,24 @@ Card_StreamKey* Card::pSub_streamKey(bool bNotNull)
   }
 
   return p_streamKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StreamPer.hpp"
+Card_StreamPer* Card::pSub_streamPer(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamPer* p_streamPer =
+      _pCard_StreamPer(pFindSubCard(CK_STREAMPER));
+
+  if (bNotNull && !p_streamPer) {
+    NEVER_REACH
+  }
+
+  return p_streamPer;
 }
 
 /*----------------------------------------------------------------------------*/
