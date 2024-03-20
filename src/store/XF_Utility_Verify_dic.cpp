@@ -1083,7 +1083,11 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         }
 
         if (m_pCI->G.p_key) {
+#ifdef Z_KEY_DIRECTION
+          if (Card_Expr* p_expr_f = m_pCI->G.p_key->pFind_expr_key_Matches(m_pCI->G.p_term->pSymbol())) {
+#else
           if (Card_Expr* p_expr_f = m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
+#endif
             if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_term->pSymbol())) {
               continue;
             }
