@@ -50,8 +50,10 @@ extern "C" void vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) {
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_TubRowPix(void* pTub, void* pRowPix) {
-  Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
+extern "C" void vExtern_TubRowPix(void* aTub, i8 nColumns, void* pColumnInfo) {
+  Tub* pTub = (Tub*)aTub;
+	RowPix* pRowPix = RowPix::pRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
+	pTub->vRowPix(pRowPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,8 +198,8 @@ void Tub::vTubCreate(Dynamic_T* pDynamicT, i8 nCols, ColumnInfo* pColumnInfo)
 
 	Tub* pTub = (Tub*)pDynamicT->m_pTub;
 	Row* pRow;
-	void* aRowPix = RowPix::aRowPixNew(nCols, pColumnInfo);
-	Tub::vSetRowPix(pTub, (RowPix*)aRowPix);
+	RowPix* pRowPix = RowPix::pRowPixNew(nCols, pColumnInfo);
+	Tub::vSetRowPix(pTub, pRowPix);
 
 	//struct SR_TO* pSR_TO;
 	//struct SR_PL* pSR_PL;

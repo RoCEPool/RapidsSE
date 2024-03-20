@@ -286,8 +286,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_iExtern_PotAllotRowPds = nullptr;
 	m_xDynamicT.m_fp_vExtern_PotRowPix = nullptr;
 
-	m_xDynamicT.m_fp_aExtern_RowPixNew = nullptr;
-
 	m_xDynamicT.m_fp_aExtern_StreamDefNew = nullptr;
 
 	m_xDynamicT.m_fp_aExtern_TubAllotRowPds = nullptr;

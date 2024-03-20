@@ -39,8 +39,10 @@ extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_PotRowPix(void* pPot, void* pRowPix) {
-  Pot::vSetRowPix((Pot*)pPot, (RowPix*)pRowPix);
+extern "C" void vExtern_PotRowPix(void* aPot, i8 nColumns, void* pColumnInfo) {
+	Pot* pPot = (Pot*)aPot;
+	RowPix* pRowPix = RowPix::pRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
+	pPot->vRowPix(pRowPix);
 }
 
 /*----------------------------------------------------------------------------*/

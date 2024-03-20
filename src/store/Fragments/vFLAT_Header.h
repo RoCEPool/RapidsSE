@@ -143,8 +143,6 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 	aDynamicT->m_fp_iExtern_PotAllotRowPds = &iExtern_PotAllotRowPds;
 	aDynamicT->m_fp_aExtern_PdsRowBufferCellArray = &aExtern_PdsRowBufferCellArray;
 
-	aDynamicT->m_fp_aExtern_RowPixNew = &aExtern_RowPixNew;
-
 	aDynamicT->m_fp_aExtern_StreamDefNew = &aExtern_StreamDefNew;
 
 	aDynamicT->m_fp_aExtern_TubAllotRowPds = &aExtern_TubAllotRowPds;
