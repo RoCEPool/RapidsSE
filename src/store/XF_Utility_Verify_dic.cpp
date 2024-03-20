@@ -605,8 +605,22 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         }
 
         if (m_pCI->G.p_key) {
+#ifdef Z_KEY_DIRECTION
+          bool bMatched = false;
+          for (Kid xKey(m_pCI->G.p_key); xKey.bEach(CK_DIRECTION); /**/) {
+            Card_Direction* p_direction = xKey.p_direction();
+            Card_Expr* p_expr = p_direction->pSub_expr();
+            if (p_expr->pSymbol()->bMatches(m_pCI->G.p_term->pSymbol())) {
+              bMatched = true;
+              break;
+            }
+          }
+          if (bMatched)
+            continue;
+#else
           if (m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
             continue;
+#endif
         }
 
         m_pCI->G.p_expr->vDump(__func__);
