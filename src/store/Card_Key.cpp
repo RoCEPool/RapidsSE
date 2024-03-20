@@ -340,7 +340,11 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_o_SORT,
                                      CK_NONE);
 
+#ifdef Z_KEY_DIRECTION
+  vValidate_mustHave(CK_DIRECTION,CK_NONE);
+#else
   vValidate_mustHave(CK_EXPR,CK_NONE);
+#endif
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

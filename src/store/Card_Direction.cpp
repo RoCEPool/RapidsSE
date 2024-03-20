@@ -61,7 +61,7 @@ void Card_Direction::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 #ifdef Z_KEY_DIRECTION
-  Card::vValidate_parentMust(pCI,CK_s_KEY);
+  (void)Card::eValidate_parentEither(pCI,CK_s_KEY,CK_STREAMKEY,CK_NONE);
 #else
   Card::vValidate_parentMust(pCI,CK_EXPR);
 #endif

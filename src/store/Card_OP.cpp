@@ -1432,13 +1432,27 @@ void Card_OP::vRpn_sort(String* psRpnExpr, Card_Sort* p_sort)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Key* pCard_Key =
-      _pCard_Key(p_sort->pFindSubCard(CK_s_KEY));
+  Card_Key* p_key = p_sort->pSub_key();
 
-  i8 nSubCards = pCard_Key->nItems();
+#ifdef Z_KEY_DIRECTION
+  for (Kid xKey(p_key); xKey.bEach(CK_DIRECTION); /**/) {
+    Card_Direction* p_direction = xKey.p_direction();
+
+    Card_Expr* p_expr = p_direction->pSub_expr();
+    if (xKey.i_Child()) {
+      psRpnExpr->vConcat(" ,"_Stz);
+    }
+
+    vRpn_expr(psRpnExpr, p_expr);
+
+    psRpnExpr->vCatSprint(" %s"_Stz, p_direction->pSymbol()->szFacet(SF_DIRECTION));
+
+  }
+#else
+  i8 nSubCards = p_key->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
 
-    Card* pSubCard = pCard_Key->pGet(i_Child);
+    Card* pSubCard = p_key->pGet(i_Child);
     eCK eSubCard = pSubCard->eCard();
 
     if (CK_EXPR != eSubCard)
@@ -1456,6 +1470,7 @@ void Card_OP::vRpn_sort(String* psRpnExpr, Card_Sort* p_sort)
     psRpnExpr->vCatSprint(" %s"_Stz, p_direction->pSymbol()->szFacet(SF_DIRECTION));
 
   }
+#endif
 
 }
 
