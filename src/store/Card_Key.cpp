@@ -205,6 +205,24 @@ Card_Expr* Card_Key::pFind_expr_key_Matches(Symbol *pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Key::pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
+    Card_Direction* p_direction = xKey.p_direction();
+    Card_Expr* p_expr = p_direction->pSub_expr();
+    if (p_expr->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
+      return p_expr;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get a particular direction                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Direction* Card_Key::pGet_direction(i8 i_Direction)
