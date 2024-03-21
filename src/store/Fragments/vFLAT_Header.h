@@ -140,12 +140,12 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
   aDynamicT->m_fp_vExtern_IndexTreePositionLT_int = &vExtern_IndexTreePositionLT_int;
 
 	aDynamicT->m_fp_vExtern_PotRowPix = &vExtern_PotRowPix;
-	aDynamicT->m_fp_iExtern_PotAllotRowPds = &iExtern_PotAllotRowPds;
+	aDynamicT->m_fp_vExtern_PotAllotRowPds = &vExtern_PotAllotRowPds;
 	aDynamicT->m_fp_aExtern_PdsRowBufferCellArray = &aExtern_PdsRowBufferCellArray;
 
 	aDynamicT->m_fp_aExtern_StreamDefNew = &aExtern_StreamDefNew;
 
-	aDynamicT->m_fp_aExtern_TubAllotRowPds = &aExtern_TubAllotRowPds;
+	aDynamicT->m_fp_vExtern_TubAllotRowPds = &vExtern_TubAllotRowPds;
 	aDynamicT->m_fp_vExtern_TubRowPix = &vExtern_TubRowPix;
 	aDynamicT->m_fp_vExtern_TubRowStrSize = &vExtern_TubRowStrSize;
 #endif

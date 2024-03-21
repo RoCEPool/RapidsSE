@@ -29,8 +29,40 @@ __aFooterFunction(Tub)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) {
-  return Tub::aAllotRowPds((Tub*)pTub, aazStrArea, pnMaxStrAreaLen, piErrorCode);
+extern "C" void vExtern_TubAllotRowPds(void* aDynamic, char** aazStrArea, i8* pnMaxStrAreaLen) {
+
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+	Tub* pTub = (Tub*)pDynamicT->m_pTub;
+
+	try {
+		RASSERT(CN_TUB == pTub->eGetClassNo());
+
+		RowPix* pRowPix = pTub->pRowPix();
+
+		Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
+
+		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
+			pPdsRowBuffer = new Pds(pRowPix);
+			pTub->vAddBuffer(pPdsRowBuffer);
+		}
+
+		Row* pRowDst = pPdsRowBuffer->pAllotRow();
+
+		if (pRowDst == nullptr) {
+			pPdsRowBuffer = new Pds(pRowPix);
+			pTub->vAddBuffer(pPdsRowBuffer);
+			pRowDst = pPdsRowBuffer->pAllotRow();
+			RASSERT(pRowDst);
+		}
+
+		*aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+		*pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
+		pDynamicT->m_xRowInfoTO.m_aRowCellArray = pRowDst->aCellArray();
+	}
+	catch (LowMemory xLowMemory) {
+		pDynamicT->m_iErrorCode = EC_LOW_MEMORY;
+		pDynamicT->m_xRowInfoTO.m_aRowCellArray = nullptr;
+	}
 }
 
 /*----------------------------------------------------------------------------*/

@@ -32,7 +32,7 @@ extern "C" void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrAr
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" i8 iExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) {
+extern "C" void vExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) {
 
 	Dynamic_T* pDynamic = (Dynamic_T*)aDynamicT;
 	Pot* pPot = (Pot*)pDynamic->m_pPot;
@@ -68,19 +68,30 @@ extern "C" i8 iExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInLen
 		pPdsRowBuffer->vLglPtn(tLglPtn);
 
 		pDynamic->m_xRowInfoPO.m_aRowCellArray = aDstRow->aCellArray();
-		return tLglPtn.iAsI8();
+		pDynamic->m_xRowInfoPO.m_iLglPtn = tLglPtn.iAsI8();
 	}
 	catch (LowMemory xLowMemory) {
 		pDynamic->m_iErrorCode = EC_LOW_MEMORY;
-		return tLglPtn.iAsI8();
 	}
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
-  Pot::vRowStrSize((Pot*)pPot, iKeyHash, nRowStrSize);
+extern "C" void vExtern_PotRowStrSize(void* aDynamicT, i8 nRowStrSize) {
+  //Pot::vRowStrSize((Pot*)pPot, iKeyHash, nRowStrSize);
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamicT;
+	Pot* pPot = (Pot*)pDynamicT->m_pPot;
+
+	RASSERT(CN_POT == pPot->eGetClassNo());
+
+	//LglPtnMap* pPtnMap = AM::pLglPtnMap();
+	//i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+	LglPtn tLglPtn = pDynamicT->m_xRowInfoPO.m_iLglPtn; //pPtnMap->tHashToLglPtnId(iKeyHsh);
+
+	Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
+
+	pPdsRowBuffer->vDepositString_end(nRowStrSize);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -16,6 +16,7 @@ struct ColumnInfo {
 
 struct RowInfo {
   bool m_bInitialize;
+	i8   m_iLglPtn;
   i8   m_iCell[256];
   char m_cStringArea[16384]; // _C_16KB;
 	i8   m_nStringAreaSize;
@@ -139,12 +140,12 @@ struct Dynamic_T
 	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
 
 	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);
-	i8    (*m_fp_iExtern_PotAllotRowPds)(void*,byte*,i8,char**,i8*);
+	void  (*m_fp_vExtern_PotAllotRowPds)(void*,byte*,i8,char**,i8*);
 	void  (*m_fp_vExtern_PotRowPix)(void*,i8,void*);
 
 	void* (*m_fp_aExtern_StreamDefNew)(i8,void*);
 
-	void* (*m_fp_aExtern_TubAllotRowPds)(void*,char**,i8*,i8*);
+	void  (*m_fp_vExtern_TubAllotRowPds)(void*,char**,i8*);
 	void  (*m_fp_vExtern_TubRowPix)(void*,i8,void*);
 	void  (*m_fp_vExtern_TubRowStrSize)(void*,i8);
 };
