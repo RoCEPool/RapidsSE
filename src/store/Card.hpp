@@ -277,6 +277,7 @@ namespace STORE
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
     i8      m_iItemise;
+    i8      m_iCounter;
     Card*   m_pLastPrintParent;
 
   protected:
@@ -320,6 +321,9 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     Stz* szCoord(void);
+    i8   iCounter_inc(i8 iInc=0);
+    void viCounter_reset(i8 iCounter=0);
+
     eCT  eCTVal(void);
 
     void  vDeleteFacetRecursive(eSF eFacet);

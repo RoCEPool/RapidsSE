@@ -138,6 +138,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_bRemovedCorrectly = false;
 
   m_iItemise = C_UNKNOWN;
+  m_iCounter = 0;
 
   vMark1(MARK_BLANK);
   vMark2(MARK_BLANK);
@@ -526,6 +527,29 @@ Stz* Card::szCoord(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return (Stz*)md_Coord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next counter                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Card::iCounter_inc(i8 iInc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 iCounter = m_iCounter;
+  m_iCounter += iInc;
+
+  return iCounter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset counter                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::viCounter_reset(i8 iCounter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_iCounter = iCounter;
 }
 
 /*----------------------------------------------------------------------------*/
