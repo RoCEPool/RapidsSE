@@ -310,6 +310,7 @@ namespace STORE
 
     void vAddedCorrectly(bool bAppended=true);
     bool bAllChildren(eCK eCard);
+//    void vAppendChild(Card* pChild);
     Card* pAppendNewCard(eCK eCard);
     void vApplyCast_p(Card* pCard_arg);
     void vApplyCast_x(Cast xCast_arg);
@@ -357,6 +358,8 @@ namespace STORE
     bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
 
     void vIncFunctionCount(void);
+//    void  vInsertChildAfter(Card* pChild, Card* pAfter);
+//    void  vInsertChildBefore(Card* pChild, Card* pBefore);
     bool bIsCard(eCK eCard);
     bool bIsConstruction(void);
     bool bIsMain(void);
@@ -421,6 +424,8 @@ namespace STORE
     bool bSymbolMatches(Symbol* pSymbol_arg);
     bool bSymbolMatches(Card* pCard_arg);
 
+//    void vTransferChildren(Card* pFrom);
+//    void vTransferChildren(Card* pFrom, eSF eFacet_stopAfter);
     TypeId xTypeId(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);

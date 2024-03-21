@@ -395,6 +395,19 @@ bool Card::bAllChildren(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append child card                                                          */
+/*----------------------------------------------------------------------------*/
+//void Card::vAppendChild(Card* pChild)
+//{
+//  RASSERT(pChild);
+//
+//  if (m_pCard->bIsCard(CK_s_NEEDED))
+//    vDebugPoint();
+//
+//  ChildCards::vAppendChild(pChild,this);
+//}
+
+/*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
 /*----------------------------------------------------------------------------*/
 Card* Card::pAppendNewCard(eCK eCard)
@@ -1027,6 +1040,28 @@ void Card::vIncFunctionCount(void)
 
   m_nFunctionCount++;
 }
+
+/*----------------------------------------------------------------------------*/
+/* insert child card after given card                                         */
+/*----------------------------------------------------------------------------*/
+//void Card::vInsertChildAfter(Card* pChild, Card* pAfter)
+//{
+//  RASSERT(pChild);
+//  RASSERT(pAfter);
+//
+//  ChildCards::vInsertAfter(pChild,pAfter);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* insert child card before given card                                        */
+/*----------------------------------------------------------------------------*/
+//void Card::vInsertChildBefore(Card* pChild, Card* pBefore)
+//{
+//  RASSERT(pChild);
+//  RASSERT(pBefore);
+//
+//  ChildCards::vInsertBefore(pChild,pBefore);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
@@ -1800,6 +1835,32 @@ bool Card::bSymbolMatches(Symbol* pSymbol_arg)
   else
     return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* transfer all child card (incl. sub-cards) from given card set to this card */
+/*----------------------------------------------------------------------------*/
+//void Card::vTransferChildren(Card* pFrom)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  while (Card* pPoppedChild = pFrom->pPopChild())
+//    vAppendChild(pPoppedChild);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* transfer all child card (incl. sub-cards) from given card set to this card */
+/*----------------------------------------------------------------------------*/
+//void Card::vTransferChildren(Card* pFrom, eSF eFacet_stopAfter)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  while (Card *pPoppedChild = pFrom->pPopChild()) {
+//    vAppendChild(pPoppedChild);
+//
+//    if (pPoppedChild->pSymbol()->bHasFacet(eFacet_stopAfter))
+//      break;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get typeId information                                                     */
