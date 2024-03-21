@@ -110,7 +110,7 @@ void Step::vDynamicExecute(void)
 
       Pds *pPdsRowBuffer = _pPds(pDataBuffer);
 
-      aDynamicT->m_aPdsRowBuffer  = pPdsRowBuffer;
+      aDynamicT->m_xRowInfoIT.m_aPdsRowBuffer = pPdsRowBuffer;
       //aDynamicT->m_xRowInfoIT.m_acStrArea = (char*)pPdsRowBuffer->szStzAllot_begin(); // ALKA TO COME BACK
       aDynamicT->m_nRows       = pPdsRowBuffer->nItems();
     }

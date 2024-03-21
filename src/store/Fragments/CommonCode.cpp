@@ -814,7 +814,7 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // traverse theindex
+  // traverse the index
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
     aDynamicT->m_bProcessRow = true;
@@ -890,7 +890,7 @@ void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 	i8 iMixVal;
 	i8 iMixLen;
 	i8 iKeySize;
-	//i8 iKeyHash;
+	byte* aMixVal;
 
 	struct __STRUCT_FROM__ {
 			union Vch_T __COLUMN_FROM__;
@@ -905,8 +905,9 @@ void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 	struct __STRUCT_TO__* p__STRUCT_TO__;
 
 	// marker-start
-	iMixVal = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8 + iKeySize);
-	iMixLen = sizeof(i8);
+	  iMixVal = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8 + iKeySize);
+	  iMixLen = sizeof(i8);
+	  aMixVal = (byte*)&iMixVal;
 
 //#ifdef WITH_CLANG
 //	vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));

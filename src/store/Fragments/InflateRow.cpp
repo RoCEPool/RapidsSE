@@ -59,9 +59,9 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 #ifdef WITH_CLANG
 	//aDynamicT->m_xRowInfoIT.m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsRowBufferCellArray(aDynamicT->m_aPdsRowBuffer, i_CurrentRow);
 	if ( ! aCurrentRow)
-		aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsFirstRowCellArray(aDynamicT->m_aPdsRowBuffer, &aCurrentRow);
+		aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsFirstRowCellArray(aDynamicT->m_xRowInfoIT.m_aPdsRowBuffer, &aCurrentRow);
 	else
-		aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsNextRowCellArray(aDynamicT->m_aPdsRowBuffer, &aCurrentRow);
+		aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsNextRowCellArray(aDynamicT->m_xRowInfoIT.m_aPdsRowBuffer, &aCurrentRow);
 #endif
 
 	if ( ! aCurrentRow)
