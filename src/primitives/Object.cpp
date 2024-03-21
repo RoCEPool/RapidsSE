@@ -148,7 +148,12 @@ Object* Object::pMemoryCopy(void)
           (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
           (Object *) pCopy,
           BI_CSV);
-    } else {
+    } else if(eClass == BASE::CN_ENTBUFFER){
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pCopy,
+          BI_ENT);
+    } else if(eClass == BASE::CN_PDS){
       ASSERT(eClass == BASE::CN_PDS);
       Pds* pPds = _pPds(pDataBuffer);
       pPds->m_fpCompare = PdsUtils::iIntCompare;
@@ -156,8 +161,9 @@ Object* Object::pMemoryCopy(void)
           (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
           (Object *) pCopy,
           BI_ROW);
+    } else {
+      ASSERT(0);
     }
-
   }
 
   return pCopy;

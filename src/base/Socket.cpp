@@ -645,7 +645,12 @@ Object* Socket::pObjectRecv(eCN eClass)
             (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
             (Object *) pReceivedObject,
             BI_CSV);
-      } else {
+      } else if(eClass == BASE::CN_ENTBUFFER){
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject,
+            BI_ENT);
+      } else if(eClass == BASE::CN_PDS){
         ASSERT(eClass == BASE::CN_PDS);
         Pds* pPds = _pPds(pDataBuffer);
         pPds->m_fpCompare = PdsUtils::iIntCompare;
@@ -653,6 +658,8 @@ Object* Socket::pObjectRecv(eCN eClass)
             (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
             (Object *) pReceivedObject,
             BI_ROW);
+      } else {
+        ASSERT(0);
       }
     }
 
