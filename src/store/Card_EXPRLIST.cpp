@@ -267,7 +267,7 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
 
   if (bIsKeyExpr) {
     for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/)
-      xKey.p_expr(C_SUB)->vRenumberForm_expCol(i_Expr++);
+      xKey.p_expr(C_SUB)->vRenumberForm_keyCol(i_Expr++);
   }
   else {
     for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)

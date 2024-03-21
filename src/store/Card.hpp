@@ -449,6 +449,10 @@ namespace STORE
 
   public:
 
+    Card_Direction*     pGet_direction_z(i8 i_Get);
+    Card_Expr*          pGet_expr_z(i8 i_Get);
+    Card_Term*          pGet_term_z(i8 i_Get);
+
     Card_Address*       pSub_address(bool bNotNull=false);
     Card_Aggreg*        pSub_aggreg(bool bNotNull=false);
     Card_BoolPred*      pSub_boolPred(bool bNotNull=false);
