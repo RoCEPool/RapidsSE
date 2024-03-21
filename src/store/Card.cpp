@@ -121,6 +121,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_i_Child = C_UNKNOWN;
 
   m_pLastPrintParent = nullptr;
+  m_pParent = nullptr;
 
   md__SeqNo = Card::m__iSeqGen++;
   //gapCard[md__SeqNo] = this;
@@ -1511,6 +1512,22 @@ void Card::vOnRemove_parent(Card* pChild)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   UNUSED(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parent card                                                                */
+/*----------------------------------------------------------------------------*/
+Card* Card::pParent(void)
+{
+  return m_pParent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parent card                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vParent(Card* pParent)
+{
+  m_pParent = pParent;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -280,6 +280,8 @@ namespace STORE
     i8      m_iCounter;
     Card*   m_pLastPrintParent;
 
+    Card*   m_pParent;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -399,6 +401,8 @@ namespace STORE
     void vOnRemove_child(Card* pParent=nullptr);
     void vOnRemove_parent(Card* pChild=nullptr);
 
+    Card* pParent(void);
+    void  vParent(Card* pParent);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
     void vPrintRecursive(CardIter* pCI,
