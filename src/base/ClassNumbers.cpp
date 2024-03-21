@@ -21,10 +21,9 @@ eCN ClassNumbers::eFind(Stz* szClassNm)
 /*----------------------------------------------------------------------------*/
 eCN BASE::_eClassNo(i8 iClassNo)
 {
+  ASSERT(iClassNo >= CN_NONE && iClassNo <= CN_ENUMS);
   eCN eClassNo = (eCN)iClassNo;
-  
-  ASSERT(eClassNo >= CN_NONE && eClassNo <= CN_ENUMS);
-  
+
   return eClassNo;
 }
 

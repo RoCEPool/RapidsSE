@@ -12,6 +12,8 @@
   #include <dlfcn.h>
 #endif
 
+extern s256 gi_szaArgv[];
+
 /*----------------------------------------------------------------------------*/
 /* debug point                                                                */
 /*----------------------------------------------------------------------------*/
@@ -269,7 +271,12 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
 
     if (!xDlInfo.dli_sname || !xDlInfo.dli_saddr) {
 //      vTrace("Frame %lld address %p was matched to shared object but not to a symbol: %s\n"_Stz, i, xDlInfo.dli_fname);
-      piOffsets[i] = (i8)pvAddrs[i] - (i8)xDlInfo.dli_fbase;  // This is offset from the base library
+      if (StrLib::bEqualTo(gi_szaArgv[0].azChar(), xDlInfo.dli_fname)) {
+        piOffsets[i] = (i8) pvAddrs[i];
+      } else {
+        piOffsets[i] = (i8) pvAddrs[i] - (i8) xDlInfo.dli_fbase;  // This is offset from the base library
+      }
+
       psFuncNames[i].vCopy("????????"_Stz);
 
       // Try to extract out the function name and offset from the backtrace_symbols()
@@ -292,10 +299,20 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
 
     psFuncNames[i].vCopy((Stz*)xDlInfo.dli_sname);
 
-    // We can calculate the address of the instruction pointer relative
-    // to where this .so was loaded into memory. Then we can use that
-    // with addr2line to find debugging information.
-    void* pvOffsetAddr = (void*)( (u8)pvAddrs[i] - (u8)xDlInfo.dli_fbase );
+    // If the symbol does not correspond to one in the main RapidsSE
+    // executable then it must come from a loaded shared object. In order
+    // to look up the name of the symbol we need to find the relative offset
+    // of the symbol from where this shared object was loaded into the
+    // rapidsse process.
+    //
+    // This is because when we call addr2line we need to tell it the binary
+    // to look at (which could be the rapidsse executable or a .so library)
+    // and then tell it the relative offset for that file.
+    void* pvOffsetAddr = pvAddrs[i];
+
+    if (!StrLib::bEqualTo(gi_szaArgv[0].azChar(), xDlInfo.dli_fname)) {
+      pvOffsetAddr = (void *) ((u8) pvAddrs[i] - (u8) xDlInfo.dli_fbase);
+    }
 
     // Invoke addr2line for this relative address. It will print out two
     // lines. The first is the name of the function (demangled) and the
