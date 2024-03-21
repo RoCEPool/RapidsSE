@@ -73,14 +73,14 @@ old timings
 6,001,215 row(s) affected (38.21 sec)
 */
 
-_customer;
-_lineitem;
-_nation_replicated;
-_orders_custkey;
-_partsupp;
-_part;
-_region_replicated;
-_supplier;
+file _customer;
+file _lineitem;
+file _nation_replicated;
+file _orders_custkey;
+file _partsupp;
+file _part;
+file _region_replicated;
+file _supplier;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
