@@ -19,9 +19,9 @@ namespace STORE
   class ChildCards : public ListExo2_t<Card>
   {
   public:
-    Card* m_pParent;
+    Card* m_pCard;
 
-    ChildCards(Card* pParent);
+    ChildCards(Card* pCard);
    ~ChildCards(void) noexcept(false);
 
     void vAppendChild(Card* pChild);
