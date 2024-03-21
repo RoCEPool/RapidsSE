@@ -542,15 +542,7 @@ void Card_EXPRLIST::vX_tblCol_To_expCol(CardIter* pCI)
   if (CK_o_GBYAGG == pCI->G.e_Op) {
     vDebugPoint();
   }
-#ifdef Z_KEY_DIRECTION
-  Kid xEXPRLIST(this);
-  while (xEXPRLIST.bEach(CK_DIRECTION)) {
-    pCI->G.p_expr = xEXPRLIST.p_expr(C_SUB);
-    pCI->G.p_expr->vX_tblCol_To_expCol(pCI);
-  }
 
-  pCI->G.p_expr = nullptr;
-#else
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR)) {
     pCI->G.p_expr = xEXPRLIST.p_expr();
@@ -558,7 +550,6 @@ void Card_EXPRLIST::vX_tblCol_To_expCol(CardIter* pCI)
   }
 
   pCI->G.p_expr = nullptr;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
