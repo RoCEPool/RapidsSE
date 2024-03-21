@@ -310,7 +310,7 @@ namespace STORE
 
     void vAddedCorrectly(bool bAppended=true);
     bool bAllChildren(eCK eCard);
-//    void vAppendChild(Card* pChild);
+    void vAppendChild(Card* pChild);
     Card* pAppendNewCard(eCK eCard);
     void vApplyCast_p(Card* pCard_arg);
     void vApplyCast_x(Cast xCast_arg);

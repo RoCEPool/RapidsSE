@@ -397,15 +397,12 @@ bool Card::bAllChildren(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* append child card                                                          */
 /*----------------------------------------------------------------------------*/
-//void Card::vAppendChild(Card* pChild)
-//{
-//  RASSERT(pChild);
-//
-//  if (m_pCard->bIsCard(CK_s_NEEDED))
-//    vDebugPoint();
-//
-//  ChildCards::vAppendChild(pChild,this);
-//}
+void Card::vAppendChild(Card* pChild)
+{
+  RASSERT(pChild);
+
+  ChildCards::vAppendChild(pChild,this);
+}
 
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */

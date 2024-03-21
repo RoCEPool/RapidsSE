@@ -42,12 +42,14 @@ ChildCards::~ChildCards(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append child card                                                          */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vAppendChild(Card* pChild)
+void ChildCards::vAppendChild(Card* pChild, Card* pParent)
 {
   RASSERT(pChild);
 
   if (m_pCard->bIsCard(CK_s_NEEDED))
     vDebugPoint();
+
+  pChild->vParent(pParent);
 
   vAppend(pChild);
 
