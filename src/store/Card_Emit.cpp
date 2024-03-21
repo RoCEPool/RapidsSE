@@ -270,7 +270,11 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
         }
         else {
           RASSERT(pSym_term->bSingleFaceted(SF_KEY_COL));
+#ifdef Z_KEY_DIRECTION
+          RASSERT(pCI->G.p_key->pFind_expr_key_Matches(pSym_term));
+#else
           RASSERT(pCI->G.p_key->pFind_expr_Matches(pSym_term));
+#endif
           vDebugPoint();
         }
 #ifdef Z_KEY_DIRECTION
