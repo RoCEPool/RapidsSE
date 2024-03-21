@@ -57,10 +57,12 @@ extern "C" void vExtern_TubAllotRowPds(void* aDynamic, char** aazStrArea, i8* pn
 
 		*aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
 		*pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
+		pDynamicT->m_xRowInfoPO.m_aPdsBuffer = pPdsRowBuffer;
 		pDynamicT->m_xRowInfoTO.m_aRowCellArray = pRowDst->aCellArray();
 	}
 	catch (LowMemory xLowMemory) {
 		pDynamicT->m_iErrorCode = EC_LOW_MEMORY;
+		pDynamicT->m_xRowInfoPO.m_aPdsBuffer = nullptr;
 		pDynamicT->m_xRowInfoTO.m_aRowCellArray = nullptr;
 	}
 }
