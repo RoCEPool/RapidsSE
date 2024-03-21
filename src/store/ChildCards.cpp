@@ -644,8 +644,10 @@ void ChildCards::vRotateLast(Card* pChild)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card* pParent = pChild->pParent();
+
   vRemoveChild(pChild);
-  vAppendChild(pChild);
+  vAppendChild(pChild,pParent);
 }
 
 /*============================================================================*/
