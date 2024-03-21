@@ -72,9 +72,6 @@ namespace STORE
     void vReplaceChild(Card* pChild, Card* pWith);
     void vRotateFirst(Card* pChild);
     void vRotateLast(Card* pChild);
-
-    void vTransferChildren(Card* pFrom);
-    void vTransferChildren(Card* pFrom, eSF eFacet_stopAfter);
   };
 }
 

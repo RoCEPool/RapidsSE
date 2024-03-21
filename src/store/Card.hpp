@@ -424,8 +424,8 @@ namespace STORE
     bool bSymbolMatches(Symbol* pSymbol_arg);
     bool bSymbolMatches(Card* pCard_arg);
 
-//    void vTransferChildren(Card* pFrom);
-//    void vTransferChildren(Card* pFrom, eSF eFacet_stopAfter);
+    void vTransferChildren(Card* pFrom);
+    void vTransferChildren(Card* pFrom, eSF eFacet_stopAfter);
     TypeId xTypeId(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);

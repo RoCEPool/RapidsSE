@@ -646,32 +646,6 @@ void ChildCards::vRotateLast(Card* pChild)
   vAppendChild(pChild);
 }
 
-/*----------------------------------------------------------------------------*/
-/* transfer all child card (incl. sub-cards) from given card set to this card */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vTransferChildren(Card* pFrom)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  while (Card* pPoppedChild = pFrom->pPopChild())
-    vAppendChild(pPoppedChild);
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer all child card (incl. sub-cards) from given card set to this card */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vTransferChildren(Card* pFrom, eSF eFacet_stopAfter)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  while (Card *pPoppedChild = pFrom->pPopChild()) {
-    vAppendChild(pPoppedChild);
-
-    if (pPoppedChild->pSymbol()->bHasFacet(eFacet_stopAfter))
-      break;
-  }
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
