@@ -49,7 +49,7 @@ extern void  vExtern_IndexTreePositionGT_int(void* aIndexInfo) __attribute__((we
 extern void  vExtern_IndexTreePositionLE_int(void* aIndexInfo) __attribute__((weak_import));
 extern void  vExtern_IndexTreePositionLT_int(void* aIndexInfo) __attribute__((weak_import));
 
-extern void vExtern_RunningHash(i8* piKeyHash, byte* aMixVal, i8 iSize) __attribute__((weak_import));
+//extern void vExtern_RunningHash(i8* piKeyHash, byte* aMixVal, i8 iSize) __attribute__((weak_import));
 
 extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
 

@@ -40,9 +40,9 @@ void vAssignHash(Dynamic_T* aDynamicT) {
 	iMixVal = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
 	iMixLen = sizeof(i8);
 
-#ifdef WITH_CLANG
-  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
-#endif
+//#ifdef WITH_CLANG
+//  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
+//#endif
 	// marker-end
 }
 
@@ -69,10 +69,10 @@ void vAssignVchHash(Dynamic_T* aDynamicT) {
 	szMixVal = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
 	iMixLen = strlen(szMixVal);
 
-#ifdef WITH_CLANG
-	vExtern_RunningHash(&iKeyHash, (byte*)szMixVal, strlen(szMixVal));
-	printf("Running hash of %s %lld: %lld\n", szMixVal, strlen(szMixVal), iKeyHash);
-#endif
+//#ifdef WITH_CLANG
+//	vExtern_RunningHash(&iKeyHash, (byte*)szMixVal, strlen(szMixVal));
+//	printf("Running hash of %s %lld: %lld\n", szMixVal, strlen(szMixVal), iKeyHash);
+//#endif
 	// marker-end
 }
 
@@ -885,8 +885,9 @@ void vPLToHashBegin(Dynamic_T* aDynamicT) {
 void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 
 	i8 iMixVal;
+	i8 iMixLen;
 	i8 iKeySize;
-	i8 iKeyHash;
+	//i8 iKeyHash;
 
 	struct __STRUCT_FROM__ {
 			union Vch_T __COLUMN_FROM__;
@@ -902,9 +903,11 @@ void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 
 	// marker-start
 	iMixVal = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8 + iKeySize);
-#ifdef WITH_CLANG
-	vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
-#endif
+	iMixLen = sizeof(i8);
+
+//#ifdef WITH_CLANG
+//	vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
+//#endif
 
 	// marker-end
 }
@@ -1303,6 +1306,7 @@ void vPayLoadToHash(Dynamic_T* aDynamicT) {
 	i8 __INDEX_COLUMN__;
 
 	i8 iMixVal;
+	i8 iMixLen;
 	i8 iKeyHash;
 
 	// marker-start
@@ -1310,9 +1314,11 @@ void vPayLoadToHash(Dynamic_T* aDynamicT) {
 	  // column __COLUMN_NO__
 
 	  iMixVal = aDynamicT->m_aiPayload[__INDEX_COLUMN__];
-#ifdef WITH_CLANG
-	  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
-#endif
+	  iMixLen = sizeof(i8);
+
+//#ifdef WITH_CLANG
+//	  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
+//#endif
 
 	// marker-end
 }
