@@ -69,29 +69,32 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 #ifdef Z_KEY_DIRECTION
   i8 i_Key = nChildCards() + 1;
 
+  Card_Direction *p_direction_new;
+  if (p_expr->pSub_direction()) {
+    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_DIRECTION));
+  }
+  else
+  if (bAsc) {
+    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
+  }
+  else {
+    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, "DESC"_Stz);
+  }
+  vAppendChild(p_direction_new);
+
   Card_Expr* p_expr_new = new Card_Expr;
   p_expr_new->vRenumberForm_keyCol(i_Key);
+  p_direction_new->vAppendChild(p_expr_new);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   if (p_expr->pSub_rpnCalc(C_NOT_NULL))
     p_rpnCalc->vAppendChild(p_expr->pGet_term(0)->pDupCardRecursive());
   else
     NEVER_REACH
-
   p_expr_new->vAppendChild(p_rpnCalc);
 
   p_rpnCalc->vApplyCast_x(p_expr->xCast());
   p_expr_new->vApplyCast_x(p_expr->xCast());
-
-  if (p_expr->pSub_direction()) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_DIRECTION));
-    p_expr_new->vAppendChild(p_direction);
-  }
-  else
-  if (bAsc) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
-    p_expr_new->vAppendChild(p_direction);
-  }
 
   if (0 == i_Key)
     vApplyCast_x(p_expr->xCast());

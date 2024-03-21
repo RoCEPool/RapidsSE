@@ -335,6 +335,9 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (pCI->G.p_Op->bIsCard(CK_o_PROJECT)) {
+    vDebugPoint();
+  }
   if (! pCI->StreamOrder.m_pStreamKey)
     return;
 
@@ -353,7 +356,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
          p_expr_prjCol->vAppendChild(p_expr_runkey->pSub_direction()->pDupCardRecursive());
        }
 
-       pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
+       pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,true);
      }
    }
 #else
