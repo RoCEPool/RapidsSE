@@ -346,7 +346,7 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
     if (!p_emit)
       continue;
 
-    p_emit->vDump(__func__);
+    //p_emit->vDump(__func__);
 
     i8 nChildren_emit = p_emit->nChildCards();
     for (i8 i_Child = 0; i_Child < nChildren_emit; i_Child++) {

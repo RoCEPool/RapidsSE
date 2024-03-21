@@ -262,6 +262,19 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
 
   bool bIsKeyExpr = bIsCard(CK_s_KEY);
 
+#ifdef Z_KEY_DIRECTION
+  i8 i_Expr = 1;
+
+  if (bIsKeyExpr) {
+    for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/)
+      xKey.p_expr(C_SUB)->vRenumberForm_expCol(i_Expr++);
+  }
+  else {
+    for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
+      xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
+  }
+
+#else
   i8 i_Expr = 1;
   for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
     if (bIsKeyExpr)
@@ -269,6 +282,7 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
     else
       xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
   }
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
