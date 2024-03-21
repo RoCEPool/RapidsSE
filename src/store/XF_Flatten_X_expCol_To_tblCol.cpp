@@ -77,8 +77,20 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
     // conversions prior to projection
 
     if ((m_pCI->G.p_key = m_pCI->G.p_Op->pSub_key())) {
-      if (m_pCI->Flux.m_pArriving)
+      if (m_pCI->Flux.m_pArriving) {
+#ifdef Z_KEY_DIRECTION
+        Kid xEXPRLIST(m_pCI->G.p_key);
+        while (xEXPRLIST.bEach(CK_DIRECTION)) {
+          m_pCI->G.p_expr = xEXPRLIST.p_expr(C_SUB);
+          m_pCI->G.p_expr->vX_expCol_To_tblCol(m_pCI);
+        }
+
+        m_pCI->G.p_expr = nullptr;
+#else
         m_pCI->G.p_key->vX_expCol_To_tblCol(m_pCI);
+#endif
+
+      }
       m_pCI->G.p_key = nullptr;
     }
 

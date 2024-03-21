@@ -346,23 +346,25 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
     if (!p_emit)
       continue;
 
+    p_emit->vDump(__func__);
+
     i8 nChildren_emit = p_emit->nChildCards();
     for (i8 i_Child = 0; i_Child < nChildren_emit; i_Child++) {
-      Card *pChild_prj = p_emit->pGetChild(i_Child);
-      if (!pChild_prj->bIsCard(CK_EXPR))
+      Card *pChild_emit = p_emit->pGetChild(i_Child);
+      if (!pChild_emit->bIsCard(CK_EXPR))
         continue;
-      Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-      Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc(C_NOT_NULL);
+      Card_Expr* p_expr_emit = _pCard_Expr(pChild_emit);
+      Card_RpnCalc* p_rpnCalc = p_expr_emit->pSub_rpnCalc(C_NOT_NULL);
       if (! p_rpnCalc)
         continue;
       if (1 != p_rpnCalc->nChildCards())
         continue;
 
-      Symbol* pSym_rpnCalc_term0 = p_expr_prj->pGet_term(0)->pSymbol();
+      Symbol* pSym_rpnCalc_term0 = p_expr_emit->pGet_term(0)->pSymbol();
       RASSERT(pSym_rpnCalc_term0->bIs_Col());
 
       if (pSym_rpnCalc_term0->bMatches(pSym_term_arg)) {
-        p_expr_col = p_expr_prj;
+        p_expr_col = p_expr_emit;
         break;
       }
     }

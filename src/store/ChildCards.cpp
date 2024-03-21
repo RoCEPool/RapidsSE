@@ -15,10 +15,11 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ChildCards::ChildCards(void)
+ChildCards::ChildCards(Card* pParent)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
-          
+
+  m_pParent = pParent;
   //_postcondition_(_ADDRESS_,_FOOTER_);
 }
 
@@ -44,6 +45,9 @@ ChildCards::~ChildCards(void) noexcept(false)
 void ChildCards::vAppendChild(Card* pChild)
 {
   RASSERT(pChild);
+
+  if (m_pParent->bIsCard(CK_s_NEEDED))
+    vDebugPoint();
 
   vAppend(pChild);
 

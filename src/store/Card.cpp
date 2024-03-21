@@ -105,11 +105,11 @@ Stz* C_SQYRSL      = "_SQYRSL_Q%lld_"_Stz;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card::Card(eCK eCard, i8 iFixedDepth)
-: Object(CN_CARD)
+: Object(CN_CARD), ChildCards(this)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (CK_KEYCELLS == eCard)
+  if (CK_s_NEEDED == eCard)
     vDebugPoint();
 
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);

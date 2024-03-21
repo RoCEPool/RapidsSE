@@ -106,6 +106,9 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   // get the root needed form of gbyAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
+  if (1 == m_i_Child)
+    vDebugPoint();
+
   pCI->Early.m_pNeeded_later  = pCI->G.p_emit->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this gbyAgg

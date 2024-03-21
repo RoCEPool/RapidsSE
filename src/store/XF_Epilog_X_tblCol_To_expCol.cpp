@@ -99,7 +99,7 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
     vDebugPoint();
   }
 
-  if (m_pCI->G.p_Op->bIsCard(CK_o_GBYAGG) && m_pCI->G.p_Op->i_Child() == 6) {
+  if (m_pCI->G.p_Op->bIsCard(CK_o_GBYAGG) /*&& m_pCI->G.p_Op->i_Child() == 6*/) {
     //m_pCI->G.p_Op->vDump(__func__);
     vDebugPoint();
   }
