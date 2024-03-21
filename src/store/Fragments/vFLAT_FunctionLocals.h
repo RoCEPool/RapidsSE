@@ -45,6 +45,8 @@
   i8 iScaleDiff      __attribute__ ((unused));
   i8 nMaxStrAreaLen  __attribute__ ((unused));
 
+	byte* aMixVal  __attribute__ ((unused));
+
   union Bcd_T bcdArg1 __attribute__ ((unused));
   union Bcd_T bcdArg2 __attribute__ ((unused));
   union Bcd_T bcdArg3 __attribute__ ((unused));
@@ -68,6 +70,7 @@
   union Tme_T xTme2   __attribute__ ((unused));
   union Tme_T xTme3   __attribute__ ((unused));
 
+	void* aCurrentRow  __attribute__ ((unused));
   void *aIndexCrw     __attribute__ ((unused));
   void *aEntInserted  __attribute__ ((unused));
   void *aEntFound     __attribute__ ((unused));

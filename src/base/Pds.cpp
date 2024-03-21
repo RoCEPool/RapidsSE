@@ -14,11 +14,57 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get address of cell array of first row                                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_PdsFirstRowCellArray(void* aPdsRowBuffer, void** aaCurrentRow)
+{
+	//return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+
+	void* aCellArray = nullptr;
+	Pds* pPdsRowBuffer = (Pds*)aPdsRowBuffer;
+	Row* pRow = pPdsRowBuffer->pFirstRow();
+  *aaCurrentRow = pRow;
+	if (pRow)
+		aCellArray =  (void*)pRow->aCellArray();
+
+	return aCellArray;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of cell array of first row                                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_PdsNextRowCellArray(void* aPdsRowBuffer, void** aaCurrentRow)
+{
+	//return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+
+	void* aCellArray = nullptr;
+	Pds* pPdsRowBuffer = (Pds*)aPdsRowBuffer;
+	Row* pRow = pPdsRowBuffer->pNextRow((Row*)*aaCurrentRow);
+	*aaCurrentRow = pRow;
+	if (pRow)
+	  aCellArray =  (void*)pRow->aCellArray();
+
+	return aCellArray;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of cell array of row                                           */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_PdsRowBufferCellArray(void* pPdsRowBuffer, i8 iRow)
+extern "C" void* aExtern_PdsRowBufferCellArray(void* aPdsRowBuffer, i8 iRow)
 {
-  return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+  //return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+
+	Pds* pPdsRowBuffer = (Pds*)aPdsRowBuffer;
+	SkipListBlock* pSkipListBlock = pPdsRowBuffer->pFind(&iRow);
+	if (pSkipListBlock == nullptr) {
+		return nullptr;
+	}
+
+	// Calculate the address of the Row
+	// <(i8)key><Row>
+	Row* pRow = pSkipListBlock->aRow();
+
+	return (void*)pRow->aCellArray();
 }
 
 /*----------------------------------------------------------------------------*/

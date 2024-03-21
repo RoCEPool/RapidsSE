@@ -141,6 +141,7 @@ struct Dynamic_T
 
 	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);
 	void  (*m_fp_vExtern_PotAllotRowPds)(void*,byte*,i8,char**,i8*);
+	void  (*m_fp_vExtern_PotRowStrSize)(void*,i8);
 	void  (*m_fp_vExtern_PotRowPix)(void*,i8,void*);
 
 	void* (*m_fp_aExtern_StreamDefNew)(i8,void*);

@@ -32,6 +32,7 @@ void vAssignHash(Dynamic_T* aDynamicT) {
 
 	i8 iMixVal;
 	i8 iMixLen;
+	byte* aMixVal;
 
 	// marker-start
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -39,6 +40,7 @@ void vAssignHash(Dynamic_T* aDynamicT) {
 
 	iMixVal = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
 	iMixLen = sizeof(i8);
+	aMixVal = (byte*)&iMixVal;
 
 //#ifdef WITH_CLANG
 //  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
@@ -59,8 +61,8 @@ void vAssignVchHash(Dynamic_T* aDynamicT) {
 	struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
 	char* szMixVal;
-	i8 iKeyHash;
 	i8 iMixLen;
+	byte* aMixVal;
 
 	// marker-start
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,10 +70,11 @@ void vAssignVchHash(Dynamic_T* aDynamicT) {
 
 	szMixVal = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
 	iMixLen = strlen(szMixVal);
+	aMixVal = (byte*)szMixVal;
 
 //#ifdef WITH_CLANG
 //	vExtern_RunningHash(&iKeyHash, (byte*)szMixVal, strlen(szMixVal));
-//	printf("Running hash of %s %lld: %lld\n", szMixVal, strlen(szMixVal), iKeyHash);
+//	printf("Running hash of %s %lld: %lld\n", szMixVal, iMixLen, iKeyHash);
 //#endif
 	// marker-end
 }
@@ -1308,6 +1311,7 @@ void vPayLoadToHash(Dynamic_T* aDynamicT) {
 	i8 iMixVal;
 	i8 iMixLen;
 	i8 iKeyHash;
+	byte* aMixVal;
 
 	// marker-start
 	  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1315,6 +1319,8 @@ void vPayLoadToHash(Dynamic_T* aDynamicT) {
 
 	  iMixVal = aDynamicT->m_aiPayload[__INDEX_COLUMN__];
 	  iMixLen = sizeof(i8);
+		aMixVal = (byte*)&iMixVal;
+
 
 //#ifdef WITH_CLANG
 //	  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
