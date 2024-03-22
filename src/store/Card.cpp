@@ -138,7 +138,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_bAddedCorrectly   = false;
   m_bRemovedCorrectly = false;
 
-  m_iItemise = C_UNKNOWN;
   m_iCounter = 0;
 
   vMark1(MARK_BLANK);
@@ -1161,28 +1160,6 @@ bool Card::bIsPeek(i8 i_Child, eCK eChild)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get itemise                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Card::iItemise(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_iItemise;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set itemise                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vItemise(i8 iItemise)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(CK_DECK != m_eCard);
-
-  m_iItemise = iItemise;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -276,7 +276,6 @@ namespace STORE
     i8      m_nFunctionCount;
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
-    i8      m_iItemise;
     i8      m_iCounter;
     Card*   m_pLastPrintParent;
 
@@ -368,9 +367,6 @@ namespace STORE
     bool bIsPeek(eCK eChild0);
     bool bIsPeek(eCK eChild0, eCK eChild1);
     bool bIsPeek(i8 i_Child, eCK eChild);
-
-    i8   iItemise(void);
-    void vItemise(i8 iItemise);
 
     bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
