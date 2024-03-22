@@ -3271,6 +3271,7 @@ Ent* IndexTree::aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes
 
 	EntBuffer* pEntBuffer = nullptr;
 	Ent* pEntFound = nullptr;
+	Ent* aEnt;
 	Key *aEntKey;
 
 	i8 iCmp;
@@ -3284,8 +3285,26 @@ Ent* IndexTree::aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes
 	const i8 *iWord1;
 	const i8 *iWord2;
 
-	Ent* aEnt = aPositionPriorEntryAsc(aKey, &pEntBuffer);
-	if ( !aEnt )
+	//
+	//Ent* aEnt = aPositionPriorEntryAsc(aKey, &pEntBuffer);
+	//if ( !aEnt )
+	//	goto L_NOTFOUND;
+  //
+
+	// root buffer ?
+	if ( ! m_pRootEntBuffer )
+		goto L_NOTFOUND;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// position at H0 buffer
+	pEntBuffer = m_pRootEntBuffer->pFindLeafBuffer_ascGen(aKey);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
+	// position at prior entry
+	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+
+	// entry ?
+	if ( ! aEnt )
 		goto L_NOTFOUND;
 
 	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);

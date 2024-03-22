@@ -190,7 +190,7 @@ namespace STORE
     EntBuffer* pFindLeafBufferAscDsc(Key* aForKey);
 
     EntBuffer* pFindLeafBuffer_gen(Key* aForKey);
-    EntBuffer* pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior);
+    EntBuffer* pFindLeafBuffer_ascGen(Key* aForKey);
     EntBuffer* pFindLeafBuffer_ascDscGen(Key* aForKey);
 
     EntBuffer* pFindLeafBuffer_int(Key* aForKey);

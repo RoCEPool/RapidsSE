@@ -283,7 +283,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
+EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
@@ -302,112 +302,45 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 
 	EntBuffer* pEntBuffer = this;
-	Ent *aNextEntry_sl;
-	tET tNextEntry;
 
-	i8 nKeyBytes_r = aForKey->nElmSeqSize();
-	const i8 * iWord_r = (const i8*)aAdd<Dtm*>(aForKey,sizeof(nKeyBytes_r));
+	i8 iBufferHeight;
+	Ent* aEnt;
 
 	while (true) {
 
 #ifdef EB_TRACE_INSERT
-		vTrace("?? pFindLeafBuffer_gen"_Stz);
+		vTrace("?? pFindLeafBuffer_ascGen"_Stz);
         pEntBuffer->vTraceWhere();
         vTrace("\n"_Stz);
         m_nTabs++;
 #endif
 
-		//*ppEntPrior = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
-
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-		if (nItems() == 0) {
-			*ppEntPrior = aSkipRoots();
-			if (pEntBuffer->m_iBufferHeight == 0) {
-				break;
-			}
-			// get the index buffer of the entry
-			pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
-			ASSERT(pEntBuffer);
-			ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
-			continue;
-		}
-
-		Ent *aScanEntry_sl = aSkipRoots();
-
-
-		for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-			tNextEntry = aScanEntry_sl->m_taNextEntry[i_ScanLevel];
-
-			if (C_ENT_END_TICKET == tNextEntry) {
-				//aNextEntry_sl = nullptr;
-				continue;
-			}
-
-			i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
-
-			aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-
-
-			while (aNextEntry_sl) {
-
-				//eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
-				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-				Key* aKey_l = aNextEntry_sl->aKey();
-				i8 nKeyBytes_l = aKey_l->nElmSeqSize();
-
-				const i8 * iWord1 = (const i8*)aAdd<Dtm*>(aKey_l,sizeof(nKeyBytes_l));
-				const i8 * iWord2 = iWord_r;
-
-				i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
-
-				//i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
-
-				i8 iCmp = 0;
-
-				while (nCmpBytes > 0) {
-					if (*iWord1++ != *iWord2++) {
-						iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
-						break;
-					}
-					nCmpBytes -=8;
-				}
-
-				if ( iCmp > 0 || (iCmp == 0 && nKeyBytes_l >= nKeyBytes_r))
-					break;
-
-
-				aScanEntry_sl = aNextEntry_sl;
-
-
-				tNextEntry = aNextEntry_sl->m_taNextEntry[i_ScanLevel];
-
-				if (C_ENT_END_TICKET == tNextEntry)
-					aNextEntry_sl = nullptr;
-				else {
-					i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
-
-					aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
-				}
-
-			}
-
-		}
-
-		*ppEntPrior = aScanEntry_sl;
-
-		if (pEntBuffer->m_iBufferHeight == 0) {
+		iBufferHeight = pEntBuffer->iBufferHeight();
+		if (iBufferHeight == 0)
 			break;
-		}
 
-		ASSERT(*ppEntPrior);
+		// get the entry
+		//aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
+		//ASSERT(aEnt1);
+
+		aEnt = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+		ASSERT(aEnt);
+		Ent* aEntPrev = aEnt;
+
+		aEnt = pEntBuffer->pFindEntryPrevTo_ascGen(aEnt,aForKey);
+		if (! aEnt) {
+			aForKey->vShow(pIndexDef());
+			vTrace("\n"_Stz);
+
+			aEntPrev->aKey()->vShow(pIndexDef());
+			vTrace("\n"_Stz);
+
+			pEntBuffer->vDump();
+		}
+		ASSERT(aEnt);
 
 		// get the index buffer of the entry
-		pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
+		pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
 		ASSERT(pEntBuffer);
 		ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
 	}
