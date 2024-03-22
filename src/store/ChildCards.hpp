@@ -63,7 +63,7 @@ namespace STORE
     Card* pPopChild(void);
     Card* pPopChild_tail(void);
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
-    void  vPushChild(Card* pChild);
+    void  vPushChild(Card* pChild, Card* pParent);
 
     bool bRemoveChild(Card* pChild);
     void vRemoveChild(Card* pChild);

@@ -526,10 +526,11 @@ bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vPushChild(Card* pChild)
+void ChildCards::vPushChild(Card* pChild, Card* pParent)
 {
   RASSERT(pChild);
 
+  pChild->vParent(pParent);
   vPush(pChild);
 
   pChild->vAddedCorrectly();
@@ -640,8 +641,9 @@ void ChildCards::vRotateFirst(Card* pChild)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card* pParent = pChild->pParent();
   vRemoveChild(pChild);
-  vPushChild(pChild);
+  vPushChild(pChild,pParent);
 }
 
 /*----------------------------------------------------------------------------*/

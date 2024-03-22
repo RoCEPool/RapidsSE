@@ -1694,6 +1694,16 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vPushChild(Card* pChild)
+{
+  RASSERT(pChild);
+
+  ChildCards::vPushChild(pChild,this);
+}
+
+/*----------------------------------------------------------------------------*/
 /* card has been removed correctly                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vRemovedCorrectly(bool bRemoved)

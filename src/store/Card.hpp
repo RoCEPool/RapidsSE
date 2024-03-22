@@ -412,6 +412,7 @@ namespace STORE
                          Ribbon* pRibbon, i8 iDepth, Card* pParent,
                          bool& rbPrune, eAL eLevel,
                          bool bPrintBelow, i8 iXform, Stz* szXfunc);
+    void  vPushChild(Card* pChild);
 
     void vRemovedCorrectly(bool bRemoved=true);
     void vRenumberRoot(i8 i_Parent);
