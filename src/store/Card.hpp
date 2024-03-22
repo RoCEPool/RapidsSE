@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_KEY_DIRECTION
+#define Z_KEY_DIRECTION
 
 namespace STORE
 {
@@ -324,8 +324,9 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     Stz* szCoord(void);
-    i8   iCounter_inc(i8 iInc=0);
-    void viCounter_reset(i8 iCounter=0);
+    i8   iCounter();
+    void vCounterInc(i8 iInc=1);
+    void vCounterReset(i8 iTo=0);
 
     eCT  eCTVal(void);
 

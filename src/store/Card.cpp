@@ -543,26 +543,33 @@ Stz* Card::szCoord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return next counter                                                        */
+/* return counter                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Card::iCounter_inc(i8 iInc)
+i8 Card::iCounter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iCounter = m_iCounter;
-  m_iCounter += iInc;
+  return m_iCounter;
+}
 
-  return iCounter;
+/*----------------------------------------------------------------------------*/
+/* return next counter                                                        */
+/*----------------------------------------------------------------------------*/
+void Card::vCounterInc(i8 iInc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_iCounter += iInc;
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset counter                                                              */
 /*----------------------------------------------------------------------------*/
-void Card::viCounter_reset(i8 iCounter)
+void Card::vCounterReset(i8 iTo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_iCounter = iCounter;
+  m_iCounter = iTo;
 }
 
 /*----------------------------------------------------------------------------*/

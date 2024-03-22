@@ -107,6 +107,8 @@ bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  pCard->vCounterReset();
+
   if (CK_NONE == eToSubs || eToSubs == pCard->eCard()) {
     bool bContinue = bfLambdaFn(pCard);
     if (! bContinue)
@@ -124,6 +126,7 @@ bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
     }
     else
       vDebugPoint();
+    pCard->vCounterInc();
   }
 
   vAncestorPop();
