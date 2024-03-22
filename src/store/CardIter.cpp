@@ -225,10 +225,14 @@ Card* CardIter::pAncestor(i8 i_Ancestor)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  if (i_Ancestor < 0 || i_Ancestor > m_nAncestors)
+  i8 i_GetAncestor = i_Ancestor;
+  if (i_GetAncestor < 0)
+    i_GetAncestor = m_nAncestors -1 + i_Ancestor;
+
+  if (i_GetAncestor < 0 || i_GetAncestor > m_nAncestors)
     return nullptr;
 
-  return m_apAncestry[i_Ancestor];
+  return m_apAncestry[i_GetAncestor];
 }
 
 /*----------------------------------------------------------------------------*/
