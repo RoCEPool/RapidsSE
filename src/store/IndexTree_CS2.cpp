@@ -3270,11 +3270,21 @@ Ent* IndexTree::aFindEntry_CS2_v27(IndexTree* pIndexTree,
 Ent* IndexTree::aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes, bool* pbInserted, i8* piErrorCode) {
 
 	EntBuffer* pEntBuffer = nullptr;
-	eKC eCmp;
 	Ent* pEntFound = nullptr;
 	Key *aEntKey;
 
-	Ent* aEnt = aPositionPriorEntry(aKey, &pEntBuffer);
+	i8 iCmp;
+	i8 nKeyBytes_l;
+	i8 nKeyBytes_r;
+	i8 nCmpBytes;
+
+	Dtm* ayKeyBytes_l;
+	Dtm* ayKeyBytes_r;
+
+	const i8 *iWord1;
+	const i8 *iWord2;
+
+	Ent* aEnt = aPositionPriorEntryAsc(aKey, &pEntBuffer);
 	if ( !aEnt )
 		goto L_NOTFOUND;
 
@@ -3284,21 +3294,41 @@ Ent* IndexTree::aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes
 
 	aEntKey = aEnt->aKey();
 
-	if (KE_GENERAL == aEnt->eKind()) {
-		eCmp = Key::eCompare(m_pIndexDef, aEntKey, aKey);
-	} else {
-		i8 iEntVal = *(i8 *) aEntKey;
-		i8 iWrkVal = *(i8 *) aKey;
+//	eCmp = Key::eCompare(m_pIndexDef, aEntKey, aKey);
+//
+//	if (eCmp == KC_SAME) {
+//		pEntFound = aEnt;
+//		goto L_RETURN;
+//	}
 
-		if (iEntVal < iWrkVal)
-			eCmp = KC_BEFORE;
-		else if (iEntVal == iWrkVal)
-			eCmp = KC_SAME;
-		else
-			eCmp = KC_AFTER;
+	nKeyBytes_l = aEntKey->nElmSeqSize();
+	nKeyBytes_r = aKey->nElmSeqSize();
+
+	ayKeyBytes_l = aEntKey->aElmSeq_dtm();
+	ayKeyBytes_r = aKey->aElmSeq_dtm();
+
+	nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+	//
+	// i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+	//
+
+	iWord1 = (const i8*)ayKeyBytes_l;
+	iWord2 = (const i8*)ayKeyBytes_r;
+
+	while (nCmpBytes > 0) {
+		if (*iWord1++ != *iWord2++) {
+			iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
+			break;
+		}
+		nCmpBytes -=8;
 	}
+	if (nCmpBytes == 0)
+		iCmp = 0;
 
-	if (eCmp == KC_SAME) {
+	if ( !(iCmp == 0 && nKeyBytes_l == nKeyBytes_r))
+		pEntFound = nullptr;
+	else {
 		pEntFound = aEnt;
 		goto L_RETURN;
 	}
