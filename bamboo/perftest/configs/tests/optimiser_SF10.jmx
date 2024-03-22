@@ -1877,7 +1877,7 @@ OUT.flush();</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -1909,29 +1909,97 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
-                <stringProp name="query">select 
-  l_orderkey,
-  sum(l_extendedprice*(1-l_discount)) as revenue,
-  o_orderdate,
-  o_shippriority
-from 
-  customer, 
-  orders, 
-  lineitem
-where 
-  c_mktsegment = &apos;BUILDING&apos;
-  and c_custkey = o_custkey
-  and l_orderkey = o_orderkey
-  and o_orderdate &lt; &apos;1995-03-15&apos;
-  and l_shipdate &gt; &apos;1995-03-15&apos;
-group by 
-  l_orderkey, 
-  o_orderdate, 
-  o_shippriority
-order by 
-  revenue desc, 
-  o_orderdate
-limit 10;</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Orders
+    | filter    &quot; type BOOLEAN $5 DATE &apos;1995-03-15&apos; &lt; &quot;
+    | project   &quot;   type DATE as C0_O_ORDERDATE $5
+              , type INTEGER ( 19 ) as C1_O_SHIPPRIORITY $8
+              , type INTEGER ( 19 ) as C2_O_CUSTKEY $2
+                , type INTEGER ( 19 ) as C3_O_ORDERKEY $1 &quot;
+    | hash      &quot;type DATE $1&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S02 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY &quot; BOUND $I1 $4 == &quot;
+    | filter    &quot; type BOOLEAN $15 DATE &apos;1995-03-15&apos; &gt; &quot;
+    | project   &quot;   type INTEGER ( 19 ) as C0_L_ORDERKEY $5
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $10
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $11
+                , type DATE as C3_O_ORDERDATE $1
+                , type INTEGER ( 19 ) as C4_O_SHIPPRIORITY $2
+                , type INTEGER ( 19 ) as C5_O_CUSTKEY $3 &quot;
+    | hash      &quot;type INTEGER $1&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S03 on all partitions :
+    indexJoin Customer IxC_CUSTKEY &quot; BOUND $I1 $6 == &quot;
+    | filter    &quot; type BOOLEAN $13 &apos;BUILDING&apos; == &quot;
+    | project   &quot; type INTEGER ( 19 ) as C0_L_ORDERKEY $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                , type DATE as C3_O_ORDERDATE $4
+                , type INTEGER ( 19 ) as C4_O_SHIPPRIORITY $5 &quot;
+    | gbyAgg    &quot; groupBy
+                  type INTEGER ( 19 ) as C0_L_ORDERKEY $1
+                , type DATE as C1_O_ORDERDATE $4
+                , type INTEGER ( 19 ) as C2_O_SHIPPRIORITY $5
+                aggregates
+                  type INTEGER ( 19 ) as C0_COL0 $K1
+                , type DECIMAL ( 19 2 ) as C1_COL1 ) $2 1.00 $3 - * sum
+                , type DATE as C2_COL2 $K2
+                , type INTEGER ( 19 ) as C3_COL3 $K3 &quot;
+    |  dynamic
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg    &quot; groupBy
+                  type INTEGER ( 19 ) $1
+                , type DATE $3
+                , type INTEGER ( 19 ) $4
+                aggregates
+                  type INTEGER ( 19 ) as C0_COL0 $K1
+                , type DECIMAL ( 19 2 ) as C1_COL1 ) $2 sum
+                , type DATE as C2_COL2 $K2
+                , type INTEGER ( 19 ) as C3_COL3 $K3 &quot;
+   |   dynamic
+    | next
+
+  stage S05 on origin :
+    gbyAgg    &quot; groupBy
+                  type INTEGER ( 19 ) $1
+                , type DATE $3
+                , type INTEGER ( 19 ) $4
+                aggregates
+                  type INTEGER ( 19 ) as C0_COL0 $K1
+                , type DECIMAL ( 19 2 ) as C1_Revenue ) $2 sum
+                , type DATE as C2_COL2 $K2
+                , type INTEGER ( 19 ) as C3_COL3 $K3 &quot;
+   |   dynamic
+    | next
+
+  stage S6 on origin :
+    sort      &quot; type DECIMAL ( 19 2 ) $2 DESC , type DATE $3 ASC &quot;
+   | limit      10
+      dynamic
+    | next
+
+  stage S11 on origin :
+      output
+    | sink
+    | first
+
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -1958,7 +2026,7 @@ limit 10;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -1990,26 +2058,57 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
-                <stringProp name="query">select 
-  o_orderpriority, 
-  count(*) as order_count
-from 
-  orders
-where 
-  o_orderdate &gt;= date &apos;1993-07-01&apos;
-  and o_orderdate &lt; date &apos;1993-07-01&apos; + interval &apos;3&apos; month
-  and exists (
-    select 
-      *
-    from 
-      lineitem
-    where 
-      l_orderkey = o_orderkey
-      and l_commitdate &lt; l_receiptdate )
-group by 
-  o_orderpriority
-order by 
-  o_orderpriority;</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query4
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan orders
+    | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE ,
+               type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY&quot;
+    | filter &quot; type BOOLEAN O_ORDERDATE DATE &apos;1993-07-01&apos; &gt;=
+                            O_ORDERDATE DATE &apos;1993-10-01&apos; &lt; and &quot;
+    | hash &quot;type INTEGER ( 19 ) O_ORDERKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  &quot;BOUND $I1 O_ORDERKEY ==&quot;
+                                      &quot;type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt;&quot;
+    | gbyAgg &quot;groupby type VARCHAR ( 15 ) O_ORDERPRIORITY
+              aggregates
+              type VARCHAR ( 15 ) as O_ORDERPRIORITY $K1 ,
+              type INTEGER ( 19 ) as ORDER_COUNT ) countAll&quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    gbyAgg &quot;groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+            aggregates
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum&quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg &quot;groupby type VARCHAR ( 0 ) O_ORDERPRIORITY
+            aggregates
+            type VARCHAR ( 0 ) as O_ORDERPRIORITY $K1 ,
+            type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>

@@ -23,7 +23,7 @@ begin
               , type INTEGER ( 19 ) as C1_O_SHIPPRIORITY $8
               , type INTEGER ( 19 ) as C2_O_CUSTKEY $2
                 , type INTEGER ( 19 ) as C3_O_ORDERKEY $1 "
-  | hash      "type DATE $1"
+    | hash      "type DATE $1"
     |  dynamic
     | next      hashcast
 
