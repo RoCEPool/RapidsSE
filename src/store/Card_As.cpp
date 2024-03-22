@@ -49,7 +49,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
   UNUSED(pCI);
 
-  auto bfItemise_colNm = [](Card* pCard)
+  auto bfItemise_colNm = [pCI](Card* pCard)
   {
     //pCI->vAncestorDump(pCard);
 
@@ -69,7 +69,8 @@ void Card_As::vItemise_colNm(CardIter* pCI)
     if (! p_expr->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    i8 i_Item = p_expr->iItemise();
+    //i8 i_Item = p_expr->iItemise();
+    i8 i_Item = pCI->pAncestorParent()->iCounter();
     Symbol oSymbol_itemise;
     oSymbol_itemise.vApplyFacet(SF_ITM_COL, i_Item, p_expr->pSymbol());
 

@@ -87,7 +87,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (! (pCI->G.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR))))
       return C_CONTINUE_RECURSION;
 
-    i8 i_Item = pCI->G.p_expr->iItemise();
+    //i8 i_Item = pCI->G.p_expr->iItemise();
+    i8 i_Item = pCI->pAncestorParent()->iCounter();
     pSymbol_term->vApplyFacet(SF_ITM_COL, i_Item);
     return C_CONTINUE_RECURSION;
   };
