@@ -109,7 +109,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (CK_s_NEEDED == eCard)
+  if (CK_ANDCONJ == eCard)
     vDebugPoint();
 
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
@@ -376,7 +376,7 @@ void Card::vAddedCorrectly(bool bAppended)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(CK_DECK != eCard());
-  //RASSERT(m_pParent)
+  RASSERT(m_pParent)
 
   m_bAddedCorrectly = bAppended;
 }
@@ -598,9 +598,9 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 
   if (0 == iDepth) {
     if (szTitle)
-      vTrace("^^%s [%s] %p\n"_Stz,szTitle,azFunc,this);
+      vTrace("^^%s [%s] %p /P %p\n"_Stz,szTitle,azFunc,this,m_pParent);
     else
-      vTrace("^^Card Dump [%s] %p\n"_Stz,azFunc,this);
+      vTrace("^^Card Dump [%s] %p /P %p\n"_Stz,azFunc,this,m_pParent);
   }
 
   s4K sFacets;
@@ -609,8 +609,9 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
   s4K sProperties;
   m_xSymbol.Y_vTo_String(sProperties);
 
-  vTrace("  %p %18s %s%s : %s%s <%s> {%s} (%s:%lld.%lld)\n"_Stz
+  vTrace("  %p /P %p %18s %s%s : %s%s <%s> {%s} (%s:%lld.%lld)\n"_Stz
         , this
+        , m_pParent
         , aCK_short[m_eCard]
         , Stz::szTab(iDepth)
         , md_Coord[0] ? md_Coord : (char*)aCK[m_eCard]
