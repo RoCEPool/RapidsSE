@@ -204,6 +204,7 @@ namespace STORE
     Ent*       aFindEntryBefore_ascDscGen(Key* aGivenKey);
 
     Ent*       aFindEntryBefore_int(Key* aGivenKey);
+		Ent*       aFindEntryBefore_MoveGE_int(Key* aGivenKey, EntBuffer** ppEntBuffer);
 
     Ent*       pFindEntryPrevTo_gen(Ent* aGivenEnt, Key* aWithKey);
     Ent*       pFindEntryPrevTo_ascGen(Ent* aGivenEnt, Key* aWithKey);

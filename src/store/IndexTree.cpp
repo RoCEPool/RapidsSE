@@ -262,7 +262,7 @@ extern "C" void vExtern_IndexTreePositionGE_gen(void* aIndexInfo) {
 		return;
 	}
 
-	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	aEnt = pEntBuffer->aFindEntryBefore_gen(aKey);
 	if (!aEnt) {
 		pIndexInfo->m_aEntInt = nullptr;
 	  return;
@@ -292,13 +292,13 @@ extern "C" void vExtern_IndexTreePositionGE_int(void* aIndexInfo) {
 		return;
 	}
 
-	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	aEnt = pEntBuffer->aFindEntryBefore_MoveGE_int(aKey, &pEntBuffer);
 	if (!aEnt) {
 		pIndexInfo->m_aEntInt = nullptr;
 		return;
 	}
 
-	aEnt = EntBuffer::pMoveToGreaterEqualEntry_int(aEnt, aKey, &pEntBuffer);
+	//aEnt = EntBuffer::pMoveToGreaterEqualEntry_int(aEnt, aKey, &pEntBuffer);
 
 	pIndexInfo->m_aEntBuffer = pEntBuffer;
 	pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
@@ -322,7 +322,7 @@ extern "C" void vExtern_IndexTreePositionGT_gen(void* aIndexInfo) {
 		return;
 	}
 
-	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	aEnt = pEntBuffer->aFindEntryBefore_gen(aKey);
 	if ( !aEnt ) {
 		pIndexInfo->m_aEntInt = nullptr;
 		return;
@@ -352,7 +352,7 @@ extern "C" void vExtern_IndexTreePositionGT_int(void* aIndexInfo) {
 		return;
 	}
 
-	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
 	if ( !aEnt ) {
 		pIndexInfo->m_aEntInt = nullptr;
 		return;
@@ -382,7 +382,7 @@ extern "C" void vExtern_IndexTreePositionLE_gen(void* aIndexInfo) {
 		return;
 	}
 
-	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	aEnt = pEntBuffer->aFindEntryBefore_gen(aKey);
 	if ( !aEnt ) {
 		pIndexInfo->m_aEntUpper = nullptr;
 		return;
@@ -417,7 +417,7 @@ extern "C" void vExtern_IndexTreePositionLE_int(void* aIndexInfo) {
 		return;
 	}
 
-	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
 	if ( !aEnt ) {
 		pIndexInfo->m_aEntUpper = nullptr;
 		return;
@@ -452,7 +452,7 @@ extern "C" void vExtern_IndexTreePositionLT_gen(void* aIndexInfo) {
 		return;
 	}
 
-	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	aEnt = pEntBuffer->aFindEntryBefore_gen(aKey);
 	if ( !aEnt ) {
 		pIndexInfo->m_aEntUpper = nullptr;
 		return;
@@ -481,7 +481,7 @@ extern "C" void vExtern_IndexTreePositionLT_int(void* aIndexInfo) {
 		return;
 	}
 
-	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+	aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
 	if ( !aEnt ) {
 		pIndexInfo->m_aEntUpper = nullptr;
 		return;
