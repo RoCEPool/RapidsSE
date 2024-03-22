@@ -480,6 +480,8 @@ Card* ChildCards::pPopChild(void)
   Card* pChild = pPop();
   RASSERT(pChild);
 
+  pChild->vParent(nullptr);
+
   pChild->vRemovedCorrectly();
   pChild->vOnRemove_child();
 
@@ -545,6 +547,7 @@ bool ChildCards::bRemoveChild(Card* pChild)
     return false;
 
   vRemove(pChild);
+  pChild->vParent(nullptr);
 
   pChild->vRemovedCorrectly();
   pChild->vOnRemove_child();
@@ -562,6 +565,7 @@ void ChildCards::vRemoveChild(Card* pChild)
   RASSERT(pChild);
 
   vRemove(pChild);
+  pChild->vParent(nullptr);
 
   pChild->vRemovedCorrectly();
   pChild->vOnRemove_child();
@@ -617,7 +621,10 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
+  pWith->vParent(pChild->pParent());
+
   vReplace(pChild, pWith);
+  pChild->vParent(nullptr);
 
   pWith->vAddedCorrectly();
   pWith->vOnAdd_child();

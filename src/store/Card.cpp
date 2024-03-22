@@ -376,6 +376,8 @@ void Card::vAddedCorrectly(bool bAppended)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(CK_DECK != eCard());
+  //RASSERT(m_pParent)
+
   m_bAddedCorrectly = bAppended;
 }
 
@@ -1698,6 +1700,7 @@ void Card::vRemovedCorrectly(bool bRemoved)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(!m_pParent)
   m_bRemovedCorrectly = bRemoved;
 }
 
