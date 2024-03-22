@@ -69,9 +69,9 @@ void Card_As::vItemise_colNm(CardIter* pCI)
     if (! p_expr->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    i8 iItemise = p_expr->iItemise();
+    i8 i_Item = p_expr->iItemise();
     Symbol oSymbol_itemise;
-    oSymbol_itemise.vApplyFacet(SF_ITM_COL, iItemise, p_expr->pSymbol());
+    oSymbol_itemise.vApplyFacet(SF_ITM_COL, i_Item, p_expr->pSymbol());
 
     p_expr->pSymbol()->vApplyFacet(oSymbol_itemise.aFacet(SF_ITM_COL));
 
