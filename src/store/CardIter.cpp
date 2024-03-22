@@ -273,7 +273,7 @@ void CardIter::vAncestorDump(Card* pCard)
            i_Ancestor,
            pCard_ancestor,
            aCK[pCard_ancestor->eCard()],
-           pCard_ancestor->iItemise());
+           pCard_ancestor->iCounter());
   }
 
   vTrace("$$ Ancestor Dump"_Stz);
@@ -281,7 +281,7 @@ void CardIter::vAncestorDump(Card* pCard)
     vTrace(" %p %s /%lld\n"_Stz,
            pCard,
            aCK[pCard->eCard()],
-           pCard->iItemise());
+           pCard->iCounter());
   else
     vTrace("\n"_Stz);
 
