@@ -405,7 +405,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 //  pCI->G.p_table->vAppendChild(pCI->G.p_constraint);
 
   Card_From* p_from_exists = pCI->G.p_from;
-  pCI->G.p_deck->vRemove(p_from_exists);
+  pCI->G.p_deck->vRemoveChild(p_from_exists);
 
   pCI->G.p_term = pCI->G.p_project->pSub_term();
   pCI->G.p_project->vRemoveSub(pCI->G.p_term);

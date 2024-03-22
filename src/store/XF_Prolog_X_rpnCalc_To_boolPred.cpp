@@ -70,7 +70,7 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
     m_pCI->G.p_expr = m_pCI->G.p_constraint->pSub_expr();
     if (m_pCI->G.p_expr->pSub_rpnCalc()) {
       m_pCI->G.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI->G.p_expr);
-      m_pCI->G.p_constraint->vReplaceDelete(m_pCI->G.p_expr,m_pCI->G.p_boolPred);
+      m_pCI->G.p_constraint->vReplaceSubDelete(m_pCI->G.p_expr, m_pCI->G.p_boolPred);
     }
   }
 
@@ -80,7 +80,7 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
     m_pCI->G.p_expr = m_pCI->G.p_filter->pSub_expr();
     if (m_pCI->G.p_expr->pSub_rpnCalc()) {
       m_pCI->G.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI->G.p_expr);
-      m_pCI->G.p_filter->vReplaceDelete(m_pCI->G.p_expr,m_pCI->G.p_boolPred);
+      m_pCI->G.p_filter->vReplaceSubDelete(m_pCI->G.p_expr, m_pCI->G.p_boolPred);
     }
   }
 
@@ -90,7 +90,7 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
     m_pCI->G.p_expr = m_pCI->G.p_filter->pSub_expr();
     if (m_pCI->G.p_expr->pSub_rpnCalc()) {
       m_pCI->G.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI->G.p_expr);
-      m_pCI->G.p_filter->vReplaceDelete(m_pCI->G.p_expr,m_pCI->G.p_boolPred);
+      m_pCI->G.p_filter->vReplaceSubDelete(m_pCI->G.p_expr, m_pCI->G.p_boolPred);
     }
   }
 

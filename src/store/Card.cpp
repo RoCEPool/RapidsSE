@@ -769,8 +769,10 @@ Card* Card::pFindParentRecursive(Card* pChild)
       return this;
 
     Card* pParent = pTestCard->pFindParentRecursive(pChild);
-    if (pParent)
+    if (pParent) {
+      RASSERT(pChild->pParent() == pParent);
       return pParent;
+    }
   }
 
   return nullptr;
@@ -1561,6 +1563,7 @@ Card* Card::pParent(void)
 /*----------------------------------------------------------------------------*/
 void Card::vParent(Card* pParent)
 {
+  RASSERT(! pParent || ! m_pParent);
   m_pParent = pParent;
 }
 
@@ -1768,12 +1771,12 @@ void Card::vRenumberRecursive(Card* pParent)
 /*----------------------------------------------------------------------------*/
 /* replace and delete subCard                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vReplaceDelete(Card* pSub, Card* pWith)
+void Card::vReplaceSubDelete(Card* pSub, Card* pWith)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card* pParent = pFindParentRecursive(pSub);
-
+  RASSERT(pSub->pParent() == pParent);
   pParent->vReplaceChild(pSub,pWith);
 
   DELETE_CARD(pSub);

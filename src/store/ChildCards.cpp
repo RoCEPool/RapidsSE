@@ -394,6 +394,8 @@ void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
   RASSERT(pChild);
   RASSERT(pAfter);
 
+  pChild->vParent(pAfter->pParent());
+
   vInsertAfter(pChild,pAfter);
 
   pChild->vAddedCorrectly();
@@ -407,6 +409,8 @@ void ChildCards::vInsertChildBefore(Card* pChild, Card* pBefore)
 {
   RASSERT(pChild);
   RASSERT(pBefore);
+
+  pChild->vParent(pBefore->pParent());
 
   vInsertBefore(pChild,pBefore);
 
@@ -547,6 +551,7 @@ bool ChildCards::bRemoveChild(Card* pChild)
   if (C_UNKNOWN == iFindChild(pChild))
     return false;
 
+  RASSERT(pChild->pParent() == this);
   vRemove(pChild);
   pChild->vParent(nullptr);
 
@@ -622,6 +627,7 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
+  //RASSERT(pChild->pParent());
   pWith->vParent(pChild->pParent());
 
   vReplace(pChild, pWith);

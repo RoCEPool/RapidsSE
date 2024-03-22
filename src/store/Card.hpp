@@ -417,7 +417,7 @@ namespace STORE
     void vRemovedCorrectly(bool bRemoved=true);
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
-    void vReplaceDelete(Card* pSub, Card* pWith);
+    void vReplaceSubDelete(Card* pSub, Card* pWith);
     void vReplaceSub(Card* pSub, Card* pWith);
 
     i8   nSubCards(eCK eSub_arg);

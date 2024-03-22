@@ -665,7 +665,7 @@ void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
   //p_rlnConj->vDump(__func__,"REMOVE"_Stz);
   Card* p_rlnConj_parent = pFindParentRecursive(p_rlnConj);
 
-  p_rlnConj_parent->vRemoveSub(p_rlnConj);
+  p_rlnConj_parent->vRemoveChild(p_rlnConj);
 
   if (CK_ANDCONJ == p_rlnConj_parent->eCard() ||
       CK_ORCONJ  == p_rlnConj_parent->eCard()) {
