@@ -1930,6 +1930,21 @@ void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   RASSERT(bFixedDepth(iDepth));
 
+  if (m_pParent) {
+    if (m_pParent->pFindParentRecursive(this) != m_pParent) {
+      pCI->PRINTBOARD_dbg();
+      vDump(__func__);
+      vValidationFailed("Invalid Parent : %p"_Stz, this);
+    }
+  }
+  else {
+    if (CK_DECK != m_eCard) {
+      pCI->PRINTBOARD_dbg();
+      vDump(__func__);
+      vValidationFailed("Missing Parent : %p"_Stz, this);
+    }
+  }
+
   if (! m_xSymbol.bValidate()) {
     pCI->PRINTBOARD_dbg();
     vDump(__func__);
