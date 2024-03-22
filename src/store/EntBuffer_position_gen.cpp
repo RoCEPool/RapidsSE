@@ -305,6 +305,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
 
 	i8 iBufferHeight;
 	Ent* aEnt;
+	i8 nLvlLevels = AM::nLvlLevels();
 
 	while (true) {
 
@@ -319,11 +320,36 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
 		if (iBufferHeight == 0)
 			break;
 
-		// get the entry
-		//aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
-		//ASSERT(aEnt1);
+		//
+		//aEnt = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+		//
+		if (nItems() == 0)
+			aEnt = aSkipRoots();
+    else {
+			Ent *aScanEntry_sl = aSkipRoots();
 
-		aEnt = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+			bool bNextKeyIsGE;
+
+			for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+
+				Ent *aNextEntry_sl = aNextEntry(aScanEntry_sl, i_ScanLevel);
+				while (aNextEntry_sl) {
+
+					bNextKeyIsGE = Key::bGreaterEqualAsc(aNextEntry_sl->aKey(), aForKey);
+					if (bNextKeyIsGE)
+						break;
+
+					aScanEntry_sl = aNextEntry_sl;
+					aNextEntry_sl = aNextEntry(aNextEntry_sl, i_ScanLevel);
+				}
+
+			}
+
+			aEnt = aScanEntry_sl;
+
+		}
+
+
 		ASSERT(aEnt);
 		Ent* aEntPrev = aEnt;
 
