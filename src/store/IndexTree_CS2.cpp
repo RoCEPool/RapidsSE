@@ -3270,6 +3270,41 @@ Ent* IndexTree::aFindEntry_CS2_v27(IndexTree* pIndexTree,
 Ent* IndexTree::aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes, bool* pbInserted, i8* piErrorCode) {
 
 	EntBuffer* pEntBuffer = nullptr;
+	eKC eCmp;
+	Ent* pEntFound = nullptr;
+	Key *aEntKey;
+
+	Ent* aEnt = aPositionPriorEntry(aKey, &pEntBuffer);
+	if ( !aEnt )
+		goto L_NOTFOUND;
+
+	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+	if (!aEnt)
+		goto L_NOTFOUND;
+
+	aEntKey = aEnt->aKey();
+
+	if (KE_GENERAL == aEnt->eKind()) {
+		eCmp = Key::eCompare(m_pIndexDef, aEntKey, aKey);
+	} else {
+		i8 iEntVal = *(i8 *) aEntKey;
+		i8 iWrkVal = *(i8 *) aKey;
+
+		if (iEntVal < iWrkVal)
+			eCmp = KC_BEFORE;
+		else if (iEntVal == iWrkVal)
+			eCmp = KC_SAME;
+		else
+			eCmp = KC_AFTER;
+	}
+
+	if (eCmp == KC_SAME) {
+		pEntFound = aEnt;
+		goto L_RETURN;
+	}
+
+	/*
+	EntBuffer* pEntBuffer = nullptr;
 
 	//
 	// aPositionPriorEntryAsc(aKey, &pEntBuffer);
@@ -3335,27 +3370,31 @@ Ent* IndexTree::aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes
 				pEntFound = nullptr;
 		}
 	}
+*/
+
+
+	L_NOTFOUND:
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
 	// not found entry ?
-	if (!pEntFound) {
+	ASSERT(!pEntFound);
 
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-		// create payload
-		Ent::vPayloadCreate(pEntInt, nPayloadBytes);
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// create payload
+	Ent::vPayloadCreate(pEntInt, nPayloadBytes);
 
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-		// insert entry
-		try {
-			pEntFound = aInsertEntry(pEntInt);
-			*pbInserted = true;
-		}
-		catch (LowMemory xLowMemory) {
-			*piErrorCode = EC_LOW_MEMORY;
-			return nullptr;
-		}
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// insert entry
+	try {
+		pEntFound = aInsertEntry(pEntInt);
+		*pbInserted = true;
+	}
+	catch (LowMemory xLowMemory) {
+		*piErrorCode = EC_LOW_MEMORY;
+		return nullptr;
 	}
 
+	L_RETURN:
 	return pEntFound;
 }
 
