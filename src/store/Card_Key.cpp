@@ -373,7 +373,7 @@ IndexDef* Card_Key::pTo_IndexDef(void)
       continue;
 
     bool bAscending = true;
-    if (p_expr->bIsDescending()) {
+    if (p_direction->pSymbol()->bHasFacet("DESC"_Stz)) {
       bAscending = false;
       bHasDescending = true;
     }
