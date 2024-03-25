@@ -136,12 +136,12 @@ Ent* EntBuffer::aFindEntryBefore_MoveGE_int(Key* aGivenKey_int, EntBuffer** ppEn
 
 	RASSERT(KE_INT == m_eEntKind);
 
+	Ent* aSkipRoots = this->aSkipRoots();
+
 	if (nItems() == 0)
-		return aSkipRoots();
+		return aSkipRoots;
 
 	RASSERT( ! pIndexDef()->bHasDescending() );
-
-	Ent* aSkipRoots = this->aSkipRoots();
 
 	Ent_int* aItemArray = (Ent_int*)this->aItemArray();
 

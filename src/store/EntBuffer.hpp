@@ -149,7 +149,6 @@ namespace STORE
     Ent* aLastEntry(void);
     Ent* aNextEntry(Ent* aPrevEntry);
     void vShowEntry(Ent* pEntry);
-    SkipRoots* aSkipRoots(void);
 
     tET  tToTicket(Ent* pEntry);
   
@@ -406,6 +405,18 @@ namespace STORE
 
 		return aFirst;
 	}
+
+	/*----------------------------------------------------------------------------*/
+	/* get skip roots                                                             */
+	/*----------------------------------------------------------------------------*/
+	inline SkipRoots* aSkipRoots(void)
+	{
+		_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+		return & m_xSkipRoots;
+	}
+
+
 	};
 	EntBuffer* _pEntBuffer(void* aAddr);
 }

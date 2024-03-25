@@ -286,11 +286,22 @@ extern "C" void vExtern_IndexTreePositionGE_int(void* aIndexInfo) {
 	EntBuffer *pEntBuffer = nullptr;
 	Ent *aEnt = nullptr;
 
-	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
-	if (!pEntBuffer) {
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	//	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
+	//	if (!pEntBuffer) {
+	//		pIndexInfo->m_aEntInt = nullptr;
+	//		return;
+	//	}
+
+	EntBuffer* pRootBuffer = pIndexTree->pRootBuffer();
+	if ( !  pRootBuffer) {
 		pIndexInfo->m_aEntInt = nullptr;
 		return;
 	}
+
+	pEntBuffer = pRootBuffer->pFindLeafBuffer_int(aKey);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	aEnt = pEntBuffer->aFindEntryBefore_MoveGE_int(aKey, &pEntBuffer);
 	if (!aEnt) {
@@ -1318,16 +1329,6 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   tLglPtn = m_i_TablePtn;
   m_pRootEntBuffer->vLglPtn(tLglPtn);
 
-  return m_pRootEntBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get root buffer                                                            */
-/*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pRootBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
   return m_pRootEntBuffer;
 }
 

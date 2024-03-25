@@ -1414,16 +1414,6 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get skip roots                                                             */
-/*----------------------------------------------------------------------------*/
-SkipRoots* EntBuffer::aSkipRoots(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  return & m_xSkipRoots;
-}
-
-/*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vShowEntry(Ent* aEnt)

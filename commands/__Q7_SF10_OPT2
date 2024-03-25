@@ -6,6 +6,8 @@
 // SF10-1N1P : 27.93s
 // SF10-1N4P : 20.61s
 
+// NOTE: HASHCASTS in weaved pipelines were incorrect
+
 // To: (__Q7_SF10_OPT1)
 // SF10-1N1P : 26.88s
 // SF10-1N4P : 15.36s
@@ -14,6 +16,11 @@
 // SF10-1N1P : 17.72
 // SF10-1N4P :  7.62s
 
+// To: Optimising vExtern_IndexTreePositionGE_int
+// SF10-1N1P : 14.58
+// SF10-1N4P :
+
+/keepCodeFile
 /optimise_passthru
 pipeline unamed
 begin
