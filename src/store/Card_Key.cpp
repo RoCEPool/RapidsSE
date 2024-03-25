@@ -169,15 +169,16 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymb
 
 #ifdef Z_KEY_DIRECTION
   vDump(__func__);
-  for (pCI->vBeginMember(CK_s_KEY); pCI->bEachMember(CK_DIRECTION,CK_EXPR); /**/) {
+// for (pCI->vBeginMember(CK_s_KEY); pCI->bEachMember(CK_DIRECTION,CK_EXPR); /**/) {
+  for (pCI->vBeginTarget(CK_s_KEY,CK_EXPR); pCI->bEachTarget(); /**/) {
 
     pCI->E.p_key->vDump(__func__);
     pCI->E.p_direction->vDump(__func__);
     pCI->E.p_expr->vDump(__func__);
-    Symbol* pSymbol_term0 = pCI->E.p_expr->pGet_Symbol(0);
+    Symbol* pSym_term0 = pCI->E.p_expr->pGet_Symbol(0);
 
-    if (pSymbol_term0->bMatches(pSymbol))
-      return _pCard_Expr(pCI->pEndMember(CK_EXPR));
+    if (pSym_term0->bMatches(pSymbol))
+      return _pCard_Expr(pCI->pEndTarget());
   }
 //  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
 //    Card_Direction* p_direction = xKey.p_direction();

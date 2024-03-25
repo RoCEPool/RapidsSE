@@ -174,6 +174,7 @@ namespace STORE
     void vEndMember(void);
     void vEndPhase(void);
     Card* pEndTarget(void);
+    void  vEndTarget(void);
     void vEndTransform(i8 iLineNo);
 
     Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);

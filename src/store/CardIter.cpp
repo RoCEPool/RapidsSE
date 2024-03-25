@@ -1349,6 +1349,18 @@ Card* CardIter::pEndTarget(void)
 
   Card* pTarget_end = pMember(Iter.m_eTarget);
 
+  vEndTarget();
+
+  return pTarget_end;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end member                                                                 */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEndTarget(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
   RASSERT(E.xTarget.bBegun());
   RASSERT(! E.xTarget.bEnded());
 
@@ -1356,7 +1368,6 @@ Card* CardIter::pEndTarget(void)
 
   vPopEach();
 
-  return pTarget_end;
 }
 
 /*----------------------------------------------------------------------------*/
