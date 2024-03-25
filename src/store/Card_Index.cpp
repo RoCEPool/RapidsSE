@@ -62,7 +62,7 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   i8 nCulled = 0;
 
-  //pCI->vSaveMembers();
+  //pCI->vPushEach();
 
   //pCI->vUseCard(pCI->G.p_indexList);
 
@@ -87,7 +87,7 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   }
 
-  //pCI->vRestoreMembers();
+  //pCI->vPopEach();
 
   return nCulled;
 }

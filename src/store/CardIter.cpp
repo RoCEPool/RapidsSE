@@ -76,7 +76,7 @@ CardIter::~CardIter(void) noexcept(false)
   _precondition_(_MAGIC_,_FOOTER_);
 
   while (nItems())
-    vRestoreMembers();
+    vPopEach();
 
   RASSERT(0 == nItems());
 
@@ -1691,6 +1691,20 @@ Card* CardIter::pPeekPrev(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vPopEach(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  EachMembers* pMembers_popped = pPop();
+
+  E.vCopyFrom(pMembers_popped);
+
+  delete pMembers_popped;
+}
+
+/*----------------------------------------------------------------------------*/
 /* position on given card of sequence                                         */
 /*----------------------------------------------------------------------------*/
 bool CardIter::bPositionAt(eCK eKind_at, i8 /* eCK */  iKind_First, ...)
@@ -1819,6 +1833,18 @@ void CardIter::vPushChild(Card* pParent, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::vPushEach(void)
+{
+  EachMembers* pMembers_save = new EachMembers;
+
+  pMembers_save->vCopyFrom(&E);
+
+  vPush(pMembers_save);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool CardIter::bRecurseActive(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -1839,7 +1865,7 @@ void CardIter::vRecurseBegin(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vSaveMembers();
+  vPushEach();
 
   m_i_RecursionDepth++;
   E.m_i_RecursionDepth = m_i_RecursionDepth;
@@ -1864,7 +1890,7 @@ Card* CardIter::pRecurseEach(void)
   if (E.p_Op && (! E.m_bDontDescend) ) {
     if (E.p_Op->nChildCards()) {
 
-      vSaveMembers();
+      vPushEach();
       vUseCard(E.p_Op);
       bEachOp();
 
@@ -1881,7 +1907,7 @@ Card* CardIter::pRecurseEach(void)
     return E.p_Op;
 
   while (bRecurseActive()) {
-    vRestoreMembers();
+    vPopEach();
     if (bEachOp())
       return E.p_Op;
   }
@@ -1910,7 +1936,7 @@ void CardIter::vRecurseEnd(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vRestoreMembers();
+  vPopEach();
 
   m_i_RecursionDepth--;
 
@@ -2128,20 +2154,6 @@ bool CardIter::bRewindOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRestoreMembers(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  EachMembers* pMembers_popped = pPop();
-
-  E.vCopyFrom(pMembers_popped);
-
-  delete pMembers_popped;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::vResynchOp(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -2159,18 +2171,6 @@ void CardIter::vResynchOp(Card* pCard)
 
   E.p_Op = pCard;
   vResynchOp();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vSaveMembers(void)
-{
-  EachMembers* pMembers_save = new EachMembers;
-
-  pMembers_save->vCopyFrom(&E);
-
-  vPush(pMembers_save);
 }
 
 /*----------------------------------------------------------------------------*/

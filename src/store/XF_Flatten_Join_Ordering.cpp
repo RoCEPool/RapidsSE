@@ -187,7 +187,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
                             BK_JOINORDERING,
                             aBK[BK_JOINORDERING],
                             m_pCI->m_pBench);
-  m_pCI->vSaveMembers();
+  m_pCI->vPushEach();
   m_pCI->vUseBoard(pBoard);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -341,7 +341,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   pBoard = m_pCI->E.pBoard;
   //m_pCI->vPopBoard();
-  m_pCI->vRestoreMembers();
+  m_pCI->vPopEach();
   m_pCI->m_pBench->vRemove(pBoard);
   delete pBoard;
 

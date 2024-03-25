@@ -448,10 +448,10 @@ void SubQuery::vValidate(CardIter* pCI)
 
   RASSERT(m_xSymbol.bValidate());
 
-  pCI->vSaveMembers();
+  pCI->vPushEach();
   pCI->vResetMembers();
   pCI->E.p_deck->vValidate(pCI);
-  pCI->vRestoreMembers();
+  pCI->vPopEach();
 }
 
 /*============================================================================*/

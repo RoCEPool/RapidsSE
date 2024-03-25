@@ -53,7 +53,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
     NEVER_REACH
   }
 
-  pCI->vSaveMembers();
+  pCI->vPushEach();
   Board* pBoard_outer = pCI->pBoard();
   pCI->vUseBoard(pBoard_inner);
 
@@ -72,7 +72,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
   // 4) pop back to outer query
   pCI->vUseBoard(pBoard_outer);
-  pCI->vRestoreMembers();
+  pCI->vPopEach();
 
   // 5) add <fold> (before MQ)
   pCI->E.p_fold = Card_Fold::pCraft_fold(szFoldNm, pBoard_inner->i_Board());
@@ -143,7 +143,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // x) push to sq
 
-  pCI->vSaveMembers();
+  pCI->vPushEach();
   pCI->vUseBoard(pBoard);
 
   pCI->Flat.m_pCopy_inner = pCI->E.p_deck->pDupSubCardsRecursive(0);
@@ -154,7 +154,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // x) pop back to mq
   //pCI->vPopBoard();
-  pCI->vRestoreMembers();
+  pCI->vPopEach();
   pCI->E.p_deck->vPushChild(pCI->Flat.m_pCopy_inner);
   pCI->E.p_deck->vRemoveChildLeavingSubs(pCI->Flat.m_pCopy_inner);
   DELETE_CARD(pCI->Flat.m_pCopy_inner);
@@ -199,7 +199,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
     vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
-  pCI->vSaveMembers();
+  pCI->vPushEach();
   pCI->vUseBoard(pBoard);
 
 
@@ -210,7 +210,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // 4) pop back to mq
   //pCI->vPopBoard();
-  pCI->vRestoreMembers();
+  pCI->vPopEach();
 
   // 5) add <fold> (before MQ)
   pCI->E.p_fold = Card_Fold::pCraft_fold(szFoldNm, pSubQuery_save->pBoard()->i_Board());

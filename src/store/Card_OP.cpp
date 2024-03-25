@@ -210,46 +210,46 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
     // recurse into...
 
     case CK_o_CROSSJOIN:
-      pCI->vSaveMembers();
+      pCI->vPushEach();
       pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
-      pCI->vRestoreMembers();
+      pCI->vPopEach();
       break;
 
     case CK_o_FILTER:
-      pCI->vSaveMembers();
+      pCI->vPushEach();
       pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
-      pCI->vRestoreMembers();
+      pCI->vPopEach();
       break;
 
     case CK_o_INDEXJOIN:
-      pCI->vSaveMembers();
+      pCI->vPushEach();
       pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
-      pCI->vRestoreMembers();
+      pCI->vPopEach();
       break;
 
     case CK_o_INDEXSCAN:
-      pCI->vSaveMembers();
+      pCI->vPushEach();
       pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
-      pCI->vRestoreMembers();
+      pCI->vPopEach();
       break;
 
     case CK_o_KEYEXISTS:
-      pCI->vSaveMembers();
+      pCI->vPushEach();
       pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
-      pCI->vRestoreMembers();
+      pCI->vPopEach();
       break;
 
     case CK_o_KEYNOTEXISTS:
-      pCI->vSaveMembers();
+      pCI->vPushEach();
       pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
-      pCI->vRestoreMembers();
+      pCI->vPopEach();
       break;
 
     case CK_o_PROJECT:
       if (pCI->E.p_project->pSub_needed()) {
-        pCI->vSaveMembers();
+        pCI->vPushEach();
         pCI->E.p_project->vEarlyProject_recurse_needed(pCI);
-        pCI->vRestoreMembers();
+        pCI->vPopEach();
       }
       else {
         pCI->E.p_project->vEarlyProject_given_leaf(pCI);
@@ -257,15 +257,15 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
       break;
 
     case CK_o_SCAN:
-      pCI->vSaveMembers();
+      pCI->vPushEach();
       pCI->E.p_scan->vEarlyProject_leaf(pCI);
-      pCI->vRestoreMembers();
+      pCI->vPopEach();
       break;
 
     case CK_o_WHERE:
-      pCI->vSaveMembers();
+      pCI->vPushEach();
       pCI->E.p_where->vEarlyProject_recurse_update(pCI);
-      pCI->vRestoreMembers();
+      pCI->vPopEach();
       break;
 
     // -- -- -- -- -- -- --
