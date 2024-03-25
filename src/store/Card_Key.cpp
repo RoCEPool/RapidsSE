@@ -202,6 +202,30 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymb
 }
 
 /*----------------------------------------------------------------------------*/
+/* return direction string of key element                                     */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Key::szDirection(i8 i_Element)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Direction* p_direction = pGet_direction(i_Element);
+
+  return p_direction->szFacet(SF_DIRECTION);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return number of key elements                                              */
+/*----------------------------------------------------------------------------*/
+i8 Card_Key::nElements(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nElements = nChildCards();
+
+  return nElements;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Key::pFind_expr_key_Matches(Symbol *pSymbol_arg)
@@ -261,6 +285,21 @@ Card_Expr* Card_Key::pGet_expr_Of_direction(i8 i_Direction)
   Card_Expr* p_expr = p_direction->pSub_expr();
 
   return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is key element ascending?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_Key::bIsAsc(i8 i_Element)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Direction* p_direction = pGet_direction(i_Element);
+
+  if (p_direction->szFacet(SF_DIRECTION)->bSame(C_ASC))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

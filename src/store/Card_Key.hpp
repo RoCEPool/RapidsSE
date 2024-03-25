@@ -21,12 +21,16 @@ namespace STORE
     void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);
     void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
     Card_Expr* pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol);
-    bool bIsEqual(Card_Key* p_key_arg);
+    Stz* szDirection(i8 i_Element);
+    i8 nElements(void);
     Card_Expr* pFind_expr_key_Matches(Symbol *pSymbol_arg);
     Card_Expr* pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg);
 
     Card_Direction* pGet_direction(i8 i_Direction);
     Card_Expr* pGet_expr_Of_direction(i8 i_Direction);
+
+    bool bIsAsc(i8 i_Element);
+    bool bIsEqual(Card_Key* p_key_arg);
 
     void vMapColumns(CardIter *pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
