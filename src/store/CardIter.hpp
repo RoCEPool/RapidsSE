@@ -127,7 +127,6 @@ namespace STORE
     void vChild(Card* pChild);
     void vClearRegisters(void);
     void vClearRegistersIf(Card* pCard);
-    void vClearRestart(void);
     eOA  eCueUser(String* psPrompt);
 
     void vDeleteMember(Card* pMember);

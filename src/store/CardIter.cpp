@@ -564,19 +564,6 @@ void CardIter::vClearRegistersIf(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restart the M iterator                                                     */
-/*----------------------------------------------------------------------------*/
-void CardIter::vClearRestart(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  this->vBeginEach();
-
-  vResetMembers();
-  vClearRegisters();
-}
-
-/*----------------------------------------------------------------------------*/
 /* cue user                                                                   */
 /*----------------------------------------------------------------------------*/
 eOA CardIter::eCueUser(String* psPrompt)
