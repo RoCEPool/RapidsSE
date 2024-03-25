@@ -18,6 +18,8 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
+#define Z_KEY_DIRECTION
+
 namespace STORE
 {
   class Card_AbsJoin;
@@ -274,8 +276,10 @@ namespace STORE
     i8      m_nFunctionCount;
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
-    i8      m_iItemise;
+    i8      m_iCounter;
     Card*   m_pLastPrintParent;
+
+    Card*   m_pParent;
 
   protected:
     // must be last
@@ -305,6 +309,7 @@ namespace STORE
 
     void vAddedCorrectly(bool bAppended=true);
     bool bAllChildren(eCK eCard);
+    void vAppendChild(Card* pChild);
     Card* pAppendNewCard(eCK eCard);
     void vApplyCast_p(Card* pCard_arg);
     void vApplyCast_x(Cast xCast_arg);
@@ -318,6 +323,10 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     Stz* szCoord(void);
+    i8   iCounter();
+    void vCounterInc(i8 iInc=1);
+    void vCounterReset(i8 iTo=0);
+
     eCT  eCTVal(void);
 
     void  vDeleteFacetRecursive(eSF eFacet);
@@ -349,6 +358,8 @@ namespace STORE
     bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
 
     void vIncFunctionCount(void);
+//    void  vInsertChildAfter(Card* pChild, Card* pAfter);
+//    void  vInsertChildBefore(Card* pChild, Card* pBefore);
     bool bIsCard(eCK eCard);
     bool bIsConstruction(void);
     bool bIsMain(void);
@@ -356,9 +367,6 @@ namespace STORE
     bool bIsPeek(eCK eChild0);
     bool bIsPeek(eCK eChild0, eCK eChild1);
     bool bIsPeek(i8 i_Child, eCK eChild);
-
-    i8   iItemise(void);
-    void vItemise(i8 iItemise);
 
     bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
@@ -393,23 +401,29 @@ namespace STORE
     void vOnRemove_child(Card* pParent=nullptr);
     void vOnRemove_parent(Card* pChild=nullptr);
 
-    void vPrintCardRecursive(CardIter* pCI,
-                             Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                             bool& rbPrune, eAL eLevel,
-                             bool bPrintBelow, i8 iXform, Stz* szXfunc);
+    Card* pParent(void);
+    void  vParent(Card* pParent);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
+    void vPrintRecursive(CardIter* pCI,
+                         Ribbon* pRibbon, i8 iDepth, Card* pParent,
+                         bool& rbPrune, eAL eLevel,
+                         bool bPrintBelow, i8 iXform, Stz* szXfunc);
+    void  vPushChild(Card* pChild);
 
     void vRemovedCorrectly(bool bRemoved=true);
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
-    void vReplaceSubCard(Card* pSub, Card* pWith);
+    void vReplaceSubDelete(Card* pSub, Card* pWith);
+    void vReplaceSub(Card* pSub, Card* pWith);
 
     i8   nSubCards(eCK eSub_arg);
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);
     bool bSymbolMatches(Card* pCard_arg);
 
+    void vTransferChildren(Card* pFrom);
+    void vTransferChildren(Card* pFrom, eSF eFacet_stopAfter);
     TypeId xTypeId(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
@@ -425,6 +439,7 @@ namespace STORE
     void vValidate_noChildren(void);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
     eCK  eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
+    void vValidate_parentMust(CardIter* pCI, eCK eParent);
 
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);
@@ -444,6 +459,10 @@ namespace STORE
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   public:
+
+    Card_Direction*     pGet_direction_z(i8 i_Get);
+    Card_Expr*          pGet_expr_z(i8 i_Get);
+    Card_Term*          pGet_term_z(i8 i_Get);
 
     Card_Address*       pSub_address(bool bNotNull=false);
     Card_Aggreg*        pSub_aggreg(bool bNotNull=false);
@@ -478,6 +497,7 @@ namespace STORE
     Card_Hashing*       pSub_hashing(bool bNotNull=false);
     Card_HshCol*        pSub_hshCol(bool bNotNull=false);
     Card_HshColList*    pSub_hshColList(bool bNotNull=false);
+    Card_IdxCol*        pSub_idxCol(bool bNotNull=false);
     Card_IdxColList*    pSub_idxColList(bool bNotNull=false);
     Card_Index*         pSub_index(bool bNotNull=false);
     Card_IndexJoin*     pSub_indexJoin(bool bNotNull=false);
@@ -487,6 +507,7 @@ namespace STORE
     Card_Injectable*    pSub_injectable(bool bNotNull=false);
     Card_JoinCast*      pSub_joinCast(bool bNotNull=false);
     Card_JoinEstimate*  pSub_joinEstimate(bool bNotNull=false);
+    Card_JoinOrder*     pSub_joinOrder(bool bNotNull=false);
     Card_Key*           pSub_key(bool bNotNull=false);
     Card_KeyCells*      pSub_keyCells(bool bNotNull=false);
     Card_KeyExists*     pSub_keyExists(bool bNotNull=false);
@@ -512,6 +533,7 @@ namespace STORE
     Card_SqyCalls*      pSub_sqyCalls(bool bNotNull=false);
     Card_SqyInfo*       pSub_sqyInfo(bool bNotNull=false);
     Card_SqyNo*         pSub_sqyNo(bool bNotNull=false);
+    Card_Stage*         pSub_stage(bool bNotNull=false);
     Card_Stream*        pSub_stream(bool bNotNull=false);
     Card_StreamHead*    pSub_streamHead(bool bNotNull=false);
     Card_StreamJoin*    pSub_streamJoin(bool bNotNull=false);

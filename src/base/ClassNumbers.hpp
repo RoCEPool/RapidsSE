@@ -326,7 +326,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SEPROMPT,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
-  /* */ CN_SHORTFORM,
   /* */ CN_SINCE,
   /* */ CN_SKETCHTKN,
   /* */ CN_SKIPLIST,

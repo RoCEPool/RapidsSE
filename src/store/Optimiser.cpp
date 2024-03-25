@@ -60,6 +60,11 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   _checkInitialised_(CN_OPTIMISER);
 
+#ifdef Z_KEY_DIRECTION
+  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
+  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
+  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
+#endif
 //  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
 //  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
 //  MY::pJob()->pJobTags()->vAppend(C_WEAVED);

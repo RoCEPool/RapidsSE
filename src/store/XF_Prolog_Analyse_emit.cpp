@@ -65,16 +65,16 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ANALYSE_EMIT);
 
   m_pCI->vBeginEach();
-  m_pCI->Flux.m_pArriving = m_pCI->G.p_emit = nullptr;
+  m_pCI->Flux.m_pArriving = m_pCI->E.p_emit = nullptr;
 
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
-    if (! m_pCI->G.p_OP)
+    if (! m_pCI->E.p_Op->bIsOp())
       continue;
 
-    m_pCI->G.p_OP->vRestate_emit(m_pCI);
+    ((Card_OP*)m_pCI->E.p_Op)->vRestate_emit(m_pCI);
 
-  } // while (m_pCI->bEachMain())
+  } // while (m_pCI->bEachOp())
 
    m_pCI->vEndTransform(__LINE__);
 }

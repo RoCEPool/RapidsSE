@@ -15,8 +15,7 @@ namespace STORE
    ~Card_CONDITION(void) noexcept(false);
 
     void vAddTransients(CardIter* pCI);
-    void vShortForm(String* p_string);
-    void vX_expCol_To_tblCol(CardIter* pCI);
+     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);
   };
 

@@ -15,10 +15,11 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ChildCards::ChildCards(void)
+ChildCards::ChildCards(Card* pCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
-          
+
+  m_pCard = pCard;
   //_postcondition_(_ADDRESS_,_FOOTER_);
 }
 
@@ -41,9 +42,14 @@ ChildCards::~ChildCards(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append child card                                                          */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vAppendChild(Card* pChild)
+void ChildCards::vAppendChild(Card* pChild, Card* pParent)
 {
   RASSERT(pChild);
+
+  if (m_pCard->bIsCard(CK_s_NEEDED))
+    vDebugPoint();
+
+  pChild->vParent(pParent);
 
   vAppend(pChild);
 
@@ -388,6 +394,8 @@ void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
   RASSERT(pChild);
   RASSERT(pAfter);
 
+  pChild->vParent(pAfter->pParent());
+
   vInsertAfter(pChild,pAfter);
 
   pChild->vAddedCorrectly();
@@ -401,6 +409,8 @@ void ChildCards::vInsertChildBefore(Card* pChild, Card* pBefore)
 {
   RASSERT(pChild);
   RASSERT(pBefore);
+
+  pChild->vParent(pBefore->pParent());
 
   vInsertBefore(pChild,pBefore);
 
@@ -474,6 +484,8 @@ Card* ChildCards::pPopChild(void)
   Card* pChild = pPop();
   RASSERT(pChild);
 
+  pChild->vParent(nullptr);
+
   pChild->vRemovedCorrectly();
   pChild->vOnRemove_child();
 
@@ -518,10 +530,11 @@ bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vPushChild(Card* pChild)
+void ChildCards::vPushChild(Card* pChild, Card* pParent)
 {
   RASSERT(pChild);
 
+  pChild->vParent(pParent);
   vPush(pChild);
 
   pChild->vAddedCorrectly();
@@ -538,7 +551,9 @@ bool ChildCards::bRemoveChild(Card* pChild)
   if (C_UNKNOWN == iFindChild(pChild))
     return false;
 
+  RASSERT(pChild->pParent() == this);
   vRemove(pChild);
+  pChild->vParent(nullptr);
 
   pChild->vRemovedCorrectly();
   pChild->vOnRemove_child();
@@ -556,9 +571,27 @@ void ChildCards::vRemoveChild(Card* pChild)
   RASSERT(pChild);
 
   vRemove(pChild);
+  pChild->vParent(nullptr);
 
   pChild->vRemovedCorrectly();
   pChild->vOnRemove_child();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given child card from this card and replace it with its children    */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRemoveChildLeavingSubs(Card* pChild)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  Card* pAfter = pChild;
+
+  while (Card* pSub = pChild->pPopChild()) {
+    vInsertChildAfter(pSub, pAfter);
+    pAfter = pSub;
+  }
+
+  vRemoveChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -588,30 +621,17 @@ void ChildCards::vRemoveSub(Card* pSub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given child card from this card and replace it with its children    */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vReplaceChildWithItsSubs(Card* pChild)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  Card* pAfter = pChild;
-
-  while (Card* pSub = pChild->pPopChild()) {
-    vInsertChildAfter(pSub, pAfter);
-    pAfter = pSub;
-  }
-
-  vRemoveChild(pChild);
-}
-
-/*----------------------------------------------------------------------------*/
 /* replace immediate child with given card                                    */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
+  //RASSERT(pChild->pParent());
+  pWith->vParent(pChild->pParent());
+
   vReplace(pChild, pWith);
+  pChild->vParent(nullptr);
 
   pWith->vAddedCorrectly();
   pWith->vOnAdd_child();
@@ -627,8 +647,9 @@ void ChildCards::vRotateFirst(Card* pChild)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card* pParent = pChild->pParent();
   vRemoveChild(pChild);
-  vPushChild(pChild);
+  vPushChild(pChild,pParent);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -638,34 +659,10 @@ void ChildCards::vRotateLast(Card* pChild)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card* pParent = pChild->pParent();
+
   vRemoveChild(pChild);
-  vAppendChild(pChild);
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer all child card (incl. sub-cards) from given card set to this card */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vTransferChildren(Card* pFrom)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  while (Card* pPoppedChild = pFrom->pPopChild())
-    vAppendChild(pPoppedChild);
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer all child card (incl. sub-cards) from given card set to this card */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vTransferChildren(Card* pFrom, eSF eFacet_stopAfter)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  while (Card *pPoppedChild = pFrom->pPopChild()) {
-    vAppendChild(pPoppedChild);
-
-    if (pPoppedChild->pSymbol()->bHasFacet(eFacet_stopAfter))
-      break;
-  }
+  vAppendChild(pChild,pParent);
 }
 
 /*============================================================================*/

@@ -161,8 +161,8 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pChild = xKid.pChild();
+  for (Kid xCONJSUBROOT(this); xCONJSUBROOT.bEach(); /**/) {
+    Card *pChild = xCONJSUBROOT.pChild();
 
     eCK eChild = pChild->eCard();
     switch (eChild) {

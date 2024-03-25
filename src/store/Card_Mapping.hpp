@@ -17,7 +17,7 @@ namespace STORE
     Card_Mapping(void);
    ~Card_Mapping(void) noexcept(false);
 
-    void vToColMap(ColMap* pColMap);
+    void vTo_ColMap(ColMap* pColMap);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

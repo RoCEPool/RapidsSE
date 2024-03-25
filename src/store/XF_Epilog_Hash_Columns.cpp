@@ -65,51 +65,51 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_HASH_COLUMNS);
 
   m_pCI->vBeginEach();
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_c_STAGE == m_pCI->G.e_MainCard) {
+    if (CK_c_STAGE == m_pCI->E.e_Op) {
       m_pCI->vResetMembers();
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_o_PROJECT == m_pCI->G.e_MainCard) {
-      m_pCI->G.p_top = nullptr;
+    if (CK_o_PROJECT == m_pCI->E.e_Op) {
+      m_pCI->E.p_top = nullptr;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_o_TOP == m_pCI->G.e_MainCard) {
-      m_pCI->G.p_project = nullptr;
+    if (CK_o_TOP == m_pCI->E.e_Op) {
+      m_pCI->E.p_project = nullptr;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_o_HASH == m_pCI->G.e_MainCard) {
-      m_pCI->vAppendNewChild(m_pCI->G.p_hash, CK_s_HASHING);
+    if (CK_o_HASH == m_pCI->E.e_Op) {
+      m_pCI->vAppendNewChild(m_pCI->E.p_hash, CK_s_HASHING);
 
-      Kid xHshColList(m_pCI->G.p_hash->pSub_hshColList());
+      Kid xHshColList(m_pCI->E.p_hash->pSub_hshColList());
       while (xHshColList.bEach()) {
-        m_pCI->G.p_hshCol = xHshColList.p_hshCol();
-        if (m_pCI->G.p_project) {
-          m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
-          m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
-          m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"PROJECT"_Stz);
-          m_pCI->G.p_hashing->vAppendChild(m_pCI->G.p_term);
+        m_pCI->E.p_hshCol = xHshColList.p_hshCol();
+        if (m_pCI->E.p_project) {
+          m_pCI->E.p_term = m_pCI->E.p_hshCol->pSub_term();
+          m_pCI->E.p_term = _pCard_Term(m_pCI->E.p_term->pDupCardRecursive());
+          m_pCI->E.p_term->pSymbol()->Y_vSet(P_HashOf, "PROJECT"_Stz);
+          m_pCI->E.p_hashing->vAppendChild(m_pCI->E.p_term);
         }
         else
-        if (m_pCI->G.p_top) {
-          m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
-          m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
-          m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"TOP"_Stz);
-          m_pCI->G.p_hashing->vAppendChild(m_pCI->G.p_term);
+        if (m_pCI->E.p_top) {
+          m_pCI->E.p_term = m_pCI->E.p_hshCol->pSub_term();
+          m_pCI->E.p_term = _pCard_Term(m_pCI->E.p_term->pDupCardRecursive());
+          m_pCI->E.p_term->pSymbol()->Y_vSet(P_HashOf, "TOP"_Stz);
+          m_pCI->E.p_hashing->vAppendChild(m_pCI->E.p_term);
         }
         else {
-          m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
-          m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
-          m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"other"_Stz);
-          m_pCI->G.p_hashing->vAppendChild(m_pCI->G.p_term);
+          m_pCI->E.p_term = m_pCI->E.p_hshCol->pSub_term();
+          m_pCI->E.p_term = _pCard_Term(m_pCI->E.p_term->pDupCardRecursive());
+          m_pCI->E.p_term->pSymbol()->Y_vSet(P_HashOf, "other"_Stz);
+          m_pCI->E.p_hashing->vAppendChild(m_pCI->E.p_term);
         }
 
       }
@@ -151,28 +151,28 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_HASH_COLUMNS);
 //
 //  m_pCI->vBeginEach();
-//  while (m_pCI->bEachMain()) {
+//  while (m_pCI->bEachOp()) {
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_c_STAGE == m_pCI->G.e_MainCard) {
+//    if (CK_c_STAGE == m_pCI->G.e_Op) {
 //      m_pCI->vResetMembers();
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_o_PROJECT == m_pCI->G.e_MainCard) {
+//    if (CK_o_PROJECT == m_pCI->G.e_Op) {
 //      m_pCI->G.p_top = nullptr;
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_o_TOP == m_pCI->G.e_MainCard) {
+//    if (CK_o_TOP == m_pCI->G.e_Op) {
 //      m_pCI->G.p_project = nullptr;
 //      continue;
 //    }
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_o_HASH == m_pCI->G.e_MainCard) {
+//    if (CK_o_HASH == m_pCI->G.e_Op) {
 //      m_pCI->vAppendNewChild(m_pCI->G.p_hash,CK_s_HASHING);
 //
 //      if (m_pCI->G.p_project) {

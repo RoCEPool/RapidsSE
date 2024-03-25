@@ -131,9 +131,9 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   }
 
   // the join sequence
-  Kid xKid(this);
-  if (xKid.bEach(CK_JOINORDER)) {
-    char cHeadTable = xKid.p_joinOrder()->pSymbol()->cTblSyn();
+  Kid xJoinOrdering(this);
+  if (xJoinOrdering.bEach(CK_JOINORDER)) {
+    char cHeadTable = xJoinOrdering.p_joinOrder()->pSymbol()->cTblSyn();
     s256 sHeadTable = p_tableList->szToTableNm(cHeadTable);
 
     if (bNumbers)
@@ -145,8 +145,8 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
       pString->vSprint("%s"_Stz,sHeadTable.szStz());
   }
 
-  while (xKid.bEach(CK_JOINORDER)) {
-    Card_JoinOrder* p_joinOrder = xKid.p_joinOrder();
+  while (xJoinOrdering.bEach(CK_JOINORDER)) {
+    Card_JoinOrder* p_joinOrder = xJoinOrdering.p_joinOrder();
     char cNextTable = p_joinOrder->pSymbol()->cTblSyn();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
     Card_JoinEstimate* p_joinEstimate = p_joinOrder->pSub_joinEstimate();

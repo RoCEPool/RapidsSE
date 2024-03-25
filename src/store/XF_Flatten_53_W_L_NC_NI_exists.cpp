@@ -98,7 +98,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->G.pDeck->vMarksClearRecursive();
+  m_pCI->E.p_deck->vMarksClearRecursive();
 
   delete pCarryForward;
 

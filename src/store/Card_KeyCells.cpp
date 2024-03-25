@@ -52,15 +52,15 @@ Card_Map* Card_KeyCells::pGetMap(i8 i_Map)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key relating to symbol                                                 */
+/* get map referenced by ordinal symbol                                       */
 /*----------------------------------------------------------------------------*/
-Card_Map* Card_KeyCells::pGetMap(Symbol* pSymbol_ordinal)
+Card_Map* Card_KeyCells::pGet_map(Symbol* pSym_keyCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i_Child  = pSymbol_ordinal->iTo_ordinal(SF_KEY_COL) - 1;
+  i8 i_Map  = pSym_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
 
-  Card_Map* p_map = _pCard_Map(pGetChild(i_Child));
+  Card_Map* p_map = _pCard_Map(pGetChild(i_Map));
 
   return p_map;
 }

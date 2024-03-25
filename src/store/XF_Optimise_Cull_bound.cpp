@@ -72,12 +72,12 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
-    if (!(m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXJOIN) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXSCAN)))
+    if (!(m_pCI->E.p_Op->bIsCard(CK_o_INDEXJOIN) ||
+          m_pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN)))
       continue;
-    if (!(m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
+    if (!(m_pCI->E.p_indexList = m_pCI->E.p_Op->pSub_indexList()))
       continue;
 
     // have <bounds> & <filter> under <main>
@@ -106,41 +106,41 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   // mark any cmpPred that are a bound in bounds
 
   m_pCI->vClearRestart();
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
-    if (! (m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXJOIN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_o_INDEXSCAN) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_o_KEYEXISTS) ||
-           m_pCI->G.p_MainCard->bIsCard(CK_o_KEYNOTEXISTS)
+    if (! (m_pCI->E.p_Op->bIsCard(CK_o_INDEXJOIN) ||
+           m_pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN) ||
+           m_pCI->E.p_Op->bIsCard(CK_o_KEYEXISTS) ||
+           m_pCI->E.p_Op->bIsCard(CK_o_KEYNOTEXISTS)
     ))
       continue;
-    if (! (m_pCI->G.p_bounds = m_pCI->G.p_MainCard->pSub_bounds()))
+    if (! (m_pCI->E.p_bounds = m_pCI->E.p_Op->pSub_bounds()))
       continue;
 
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+    if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
 
       // have <bounds> & <filter> under <main>
 
-      m_pCI->vRecurseBegin(m_pCI->G.p_filter);
-      while ((m_pCI->G.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
-        if (m_pCI->G.p_rlnConj->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
+      m_pCI->vRecurseBegin(m_pCI->E.p_filter);
+      while ((m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
+        if (m_pCI->E.p_rlnConj->bSubsetOf_bounds(m_pCI->E.p_bounds)) {
           //RASSERT(m_pCI->G.p_rlnConj->bIsJoinConj());
-          m_pCI->G.p_rlnConj->vMark1(MARK_AT);
+          m_pCI->E.p_rlnConj->vMark1(MARK_AT);
         }
       }
       m_pCI->vRecurseEnd();
       continue;
     }
 
-    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
 
       // have <bounds> & <filter> under <main>
 
-       m_pCI->vRecurseBegin(m_pCI->G.p_constraint);
-      while ((m_pCI->G.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
-        if (m_pCI->G.p_rlnConj->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
+       m_pCI->vRecurseBegin(m_pCI->E.p_constraint);
+      while ((m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
+        if (m_pCI->E.p_rlnConj->bSubsetOf_bounds(m_pCI->E.p_bounds)) {
           //RASSERT(m_pCI->G.p_rlnConj->bIsJoinConj());
-          m_pCI->G.p_rlnConj->vMark1(MARK_AT);
+          m_pCI->E.p_rlnConj->vMark1(MARK_AT);
         }
       }
 
@@ -156,11 +156,11 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   m_pCI->vClearRestart();
 
   i8 nCulled = 0;
-  while (m_pCI->bEachMain()) {
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      nCulled += m_pCI->G.p_filter->nCullMarked_rlnConj(MARK_AT);
-    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
-      nCulled += m_pCI->G.p_constraint->nCullMarked_rlnConj(MARK_AT);
+  while (m_pCI->bEachOp()) {
+    if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter()))
+      nCulled += m_pCI->E.p_filter->nCullMarked_rlnConj(MARK_AT);
+    if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint()))
+      nCulled += m_pCI->E.p_constraint->nCullMarked_rlnConj(MARK_AT);
   }
 
   if (nCulled)

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ColMap.cpp -- Columns Required Metadata                               */
+/* ColMap.cpp -- Column Mapping                                               */
 /*============================================================================*/
 
 #include "ColMap.hpp"
@@ -23,9 +23,9 @@ ColMap::ColMap(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < C_COLMAP; i_Col++) {
-    m_axCols[i_Col].m_i_EmittedCol = C_UNKNOWN;
-    m_axCols[i_Col].m_bPayload     = false;
-    m_axCols[i_Col].m_i_Cell       = C_UNKNOWN;
+    m_axCol[i_Col].m_bPayload     = false;
+    m_axCol[i_Col].m_i_Cell       = C_UNKNOWN;
+    m_axCol[i_Col].m_i_EmittedCol = C_UNKNOWN;
   }
   m_nCols = 0;
 
@@ -52,15 +52,18 @@ ColMap::~ColMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add column mapping                                                         */
+/* add (payload/key,cell) to (emittedCol) mapping                             */
 /*----------------------------------------------------------------------------*/
-void ColMap::vAdd(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
+void ColMap::vAdd3(bool bPayLoad, i8 i_Cell, i8 i_EmittedCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
 
-  m_axCols[m_nCols].m_i_EmittedCol = i_EmittedCol;
-  m_axCols[m_nCols].m_bPayload     = bPayLoad;
-  m_axCols[m_nCols].m_i_Cell       = i_Cell;
+  RASSERT(i_EmittedCol);
+  RASSERT(i_Cell);
+
+  m_axCol[m_nCols].m_bPayload     = bPayLoad;
+  m_axCol[m_nCols].m_i_Cell       = i_Cell;
+  m_axCol[m_nCols].m_i_EmittedCol = i_EmittedCol;
 
   m_nCols++;
 
@@ -76,11 +79,11 @@ void ColMap::vDump(i8 i_Tab)
   UNUSED(i_Tab);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("               [%lld] %s %lld -> $%lld\n"_Stz,
+    vTrace("               [%lld] (%s,%lld) -> $%lld\n"_Stz,
            i_Col,
-           m_axCols[i_Col].m_bPayload ? "payload cell" : "key cell",
-           m_axCols[i_Col].m_i_Cell,
-           m_axCols[i_Col].m_i_EmittedCol
+           m_axCol[i_Col].m_bPayload ? "payload" : "key",
+           m_axCol[i_Col].m_i_Cell,
+           m_axCol[i_Col].m_i_EmittedCol
            );
   }
 }
@@ -91,7 +94,6 @@ void ColMap::vDump(i8 i_Tab)
 void ColMap::vValidate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
-
 
 }
 

@@ -55,13 +55,13 @@ void Card_Bounds::vX_tblCol_To_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_BOUND)) {
-    pCI->G.p_bound = xKid.p_bound();
-    pCI->G.p_bound->vX_tblCol_To_expCol(pCI);
+  Kid xBounds(this);
+  while (xBounds.bEach(CK_BOUND)) {
+    pCI->E.p_bound = xBounds.p_bound();
+    pCI->E.p_bound->vX_tblCol_To_expCol(pCI);
   }
 
-  pCI->G.p_bound = nullptr;
+  pCI->E.p_bound = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,10 +93,10 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_BOUND)) {
-    if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenBound))
-      return _pCard_Bound(xKid.pChild());
+  Kid xBounds(this);
+  while (xBounds.bEach(CK_BOUND)) {
+    if (xBounds.pChild()->pSymbol()->Y_bHas(P_ChosenBound))
+      return _pCard_Bound(xBounds.pChild());
   }
 
   return nullptr;
@@ -109,8 +109,8 @@ void Card_Bounds::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
-    xKid.p_bound()->vApplyCast(pCI, /*??*/p_Dic_expr);
+  for (Kid xBounds(this); xBounds.bEach(CK_BOUND); /**/)
+    xBounds.p_bound()->vApplyCast(pCI, /*??*/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,28 +136,12 @@ bool Card_Bounds::bUsesSqyRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/) {
-    if (xKid.p_bound()->bUsesSqyRsl())
+  for (Kid xBounds(this); xBounds.bEach(CK_BOUND); /**/) {
+    if (xBounds.p_bound()->bUsesSqyRsl())
       return true;
   }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Bounds::vShortForm(String* pString_b)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(pString_b);
-
-  Stz* szSep = ""_Stz;
-  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/) {
-    xKid.p_bound()->vShortForm(pString_b,szSep);
-    szSep = ","_Stz;
-  }
 }
 
 /*----------------------------------------------------------------------------*/

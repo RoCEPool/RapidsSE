@@ -74,19 +74,19 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
 
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
-    switch (m_pCI->G.e_MainCard) {
+    switch (m_pCI->E.e_Op) {
 
       case CK_o_GBYAGG:
-        if (m_pCI->G.p_gbyAgg->bMorph_gbyAgg_To_ordAgg(m_pCI))
+        if (m_pCI->E.p_gbyAgg->bMorph_gbyAgg_To_ordAgg(m_pCI))
           bOptRun = true;
 
         break;
 
       default:
-        if (m_pCI->G.p_MainCard->pSub_emit()) {
-          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_MainCard->pSub_emit();
+        if (m_pCI->E.p_Op->pSub_emit()) {
+          m_pCI->StreamOrder.m_pEmitted = m_pCI->E.p_Op->pSub_emit();
           m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmitted->pSub_streamKey();
         }
         break;

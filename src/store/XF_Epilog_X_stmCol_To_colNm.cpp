@@ -66,14 +66,14 @@ void XF_Epilog_X_stmCol_To_colNm::vX_stmCol_to_colNm(void)
 
   m_pCI->vBeginEach();
 
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
 
-//    if (! (   CK_o_KEYEXISTS    == m_pCI->G.e_MainCard
-//              || CK_o_KEYNOTEXISTS == m_pCI->G.e_MainCard))
+//    if (! (   CK_o_KEYEXISTS    == m_pCI->G.e_Op
+//              || CK_o_KEYNOTEXISTS == m_pCI->G.e_Op))
 //      continue;
 
-    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
-      m_pCI->G.p_constraint->vResolve_colNm_From_colSym(m_pCI);
+    if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint()))
+      m_pCI->E.p_constraint->vResolve_colNm_From_colSym(m_pCI);
   }
 
   m_pCI->vEndTransform(__LINE__);

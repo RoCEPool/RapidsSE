@@ -66,7 +66,7 @@ void XF_Flatten_Derive_bounds::vXF_Derive_bounds(void)
 
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
 
-  m_pCI->G.pDeck->vMarksClearRecursive();
+  m_pCI->E.p_deck->vMarksClearRecursive();
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

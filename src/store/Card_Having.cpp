@@ -48,9 +48,9 @@ void Card_Having::vAcclimate_foldExpr(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_constraint = pSub_constraint();
+  pCI->E.p_constraint = pSub_constraint();
 
-  pCI->G.p_constraint->vAcclimate_foldExpr(pCI,pCI->Sqy.m_pExpr_fold);
+  pCI->E.p_constraint->vAcclimate_foldExpr(pCI, pCI->Flat.m_pExpr_fold);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_having->pSymbol()->Y_vSet(P_Smoothed);
+  pCI->E.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
   bool bBump = ! bSawProject;
 
@@ -74,7 +74,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_having->pSymbol()->Y_vSet(P_Smoothed);
+  pCI->E.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
   bool bBump = ! pCarryForward->Project_postAgg.m_bSeen;
 
@@ -91,7 +91,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_boolPred = pSub_boolPred();
+  pCI->E.p_boolPred = pSub_boolPred();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -108,7 +108,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bBump)
-    pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn_cmp);
+    pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn_cmp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -127,7 +127,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     RASSERT(CT_NONE != p_expr_found->eCTVal());
 
-    pCI->G.p_term->vApplyCast_x(p_expr_found->xCast());
+    pCI->E.p_term->vApplyCast_x(p_expr_found->xCast());
 
     DELETE_CARD(p_term_1);
 
@@ -136,7 +136,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolPred->bLambdaWalk(CK_RLNCONJ, bLambdaFn_ro);
+  pCI->E.p_boolPred->bLambdaWalk(CK_RLNCONJ, bLambdaFn_ro);
 }
 
 /*----------------------------------------------------------------------------*/

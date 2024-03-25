@@ -31,9 +31,9 @@ namespace STORE
 
   private:
 
-    void vFlatten_recurse(i8 iDepth);
+    void vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth);
 
-    void vFlattenByDecisionTree(void);
+    void vFlattenByDecisionTree(Symbol* pSym_term_sqyNo);
 
   protected:
     Footer* aFooter(void);

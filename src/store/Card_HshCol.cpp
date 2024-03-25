@@ -50,12 +50,12 @@ void Card_HshCol::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+  Kid xHshCol(this);
+  while (xHshCol.bEach(CK_TERM)) {
+    if (!xHshCol.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       continue;
 
-    xKid.p_term()->vX_tblCol_To_expCol(pCI);
+    xHshCol.p_term()->vX_tblCol_To_expCol(pCI);
   }
 }
 

@@ -167,12 +167,12 @@ void Card_Bound::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+  Kid xBound(this);
+  while (xBound.bEach(CK_TERM)) {
+    if (!xBound.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       continue;
 
-    xKid.p_term()->vX_tblCol_To_expCol(pCI);
+    xBound.p_term()->vX_tblCol_To_expCol(pCI);
   }
 }
 
@@ -214,8 +214,8 @@ void Card_Bound::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
   xCast_last.m_nTypeScale = 0;
   RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
+  for (Kid xBound(this); xBound.bEach(CK_TERM); /**/) {
+    xBound.p_term()->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
 
 }
@@ -296,10 +296,10 @@ Card_Term* Card_Bound::pGet_idxCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
-      return xKid.p_term();
+  Kid xBound(this);
+  while (xBound.bEach(CK_TERM))
+    if (xBound.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
+      return xBound.p_term();
 
   return nullptr;
 }
@@ -312,9 +312,9 @@ Card_Term* Card_Bound::pGet_IfNot_idxCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (!xKid.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
-      return xKid.p_term();
+  for (Kid xBound(this); xBound.bEach(CK_TERM); /**/)
+    if (!xBound.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
+      return xBound.p_term();
 
   return nullptr;
 }
@@ -327,9 +327,9 @@ Card_Term* Card_Bound::pGet_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xKid.p_term();
+  for (Kid xBound(this); xBound.bEach(CK_TERM); /**/)
+    if (xBound.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xBound.p_term();
 
   return nullptr;
 }
@@ -341,26 +341,13 @@ bool Card_Bound::bUsesSqyRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) &&
-        1 == xKid.p_term()->pSymbol()->iTo_ordinal(SF_EXP_COL))
+  for (Kid xBound(this); xBound.bEach(CK_TERM); /**/) {
+    if (xBound.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) &&
+        1 == xBound.p_term()->pSymbol()->iTo_ordinal(SF_EXP_COL))
       return true;
   }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Bound::vShortForm(String* pString_b, Stz* szSep)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vShortForm(pString_b,szSep);
-    szSep = " "_Stz;
-  }
 }
 
 /*----------------------------------------------------------------------------*/

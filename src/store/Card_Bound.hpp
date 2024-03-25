@@ -41,8 +41,6 @@ namespace STORE
     Card_Term* pGet_IfNot_idxCol(void);
     Card_Term* pGet_tblCol(void);
 
-    void vShortForm(String* pString_b, Stz* szSep);
-
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

@@ -941,7 +941,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
   vStageFirst();
 
-  Kid xKid(m_pDeck);
+  Kid xDeck(m_pDeck);
   i8 nStages = m_pPipelineDef->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     StageDef* pStageDef = m_pPipelineDef->pGet(i_Stage);
@@ -949,30 +949,30 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
     vStageNext(p_stage);
 
-    xKid.vReposition(p_stage);
-    while (xKid.bEach()) {
+    xDeck.vReposition(p_stage);
+    while (xDeck.bEach()) {
 
-      if (CK_c_STAGE == xKid.eChild())
+      if (CK_c_STAGE == xDeck.eChild())
         break;
-      if (CK_o_CAST == xKid.eChild())
+      if (CK_o_CAST == xDeck.eChild())
         break;
-      if (CK_c_SEND == xKid.eChild())
+      if (CK_c_SEND == xDeck.eChild())
         break;
 
       bool bCommented = true;
-      if (xKid.pChild()->bEither(CK_o_SCAN, CK_s_TABLE, CK_NONE))
+      if (xDeck.pChild()->bEither(CK_o_SCAN, CK_s_TABLE, CK_NONE))
         bCommented = false;
 
-      vOp(xKid.pChild(),bCommented);
+      vOp(xDeck.pChild(), bCommented);
     }
 
     vDynamic(pStageDef);
 
-    if (CK_o_CAST == xKid.eChild())
-      vOp(xKid.pChild());
+    if (CK_o_CAST == xDeck.eChild())
+      vOp(xDeck.pChild());
     else
-    if (CK_c_SEND == xKid.eChild())
-      vOp(xKid.pChild());
+    if (CK_c_SEND == xDeck.eChild())
+      vOp(xDeck.pChild());
 
   }
 

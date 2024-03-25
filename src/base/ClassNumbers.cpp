@@ -346,7 +346,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
     /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
     /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
-		/* */ "SHORTFORM"_Stz,            // CN_SHORTFORM
     /* */ "SINCE"_Stz,                // CN_SINCE
     /* */ "SKETCHTKN"_Stz,            // CN_SKETCHTKN
     /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST

@@ -23,8 +23,6 @@ namespace STORE
 
     void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
 
-    void vShortForm(String* pString_b);
-
     bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqyRsl(void);
 

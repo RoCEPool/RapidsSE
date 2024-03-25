@@ -49,7 +49,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
   UNUSED(pCI);
 
-  auto bfItemise_colNm = [](Card* pCard)
+  auto bfItemise_colNm = [pCI](Card* pCard)
   {
     //pCI->vAncestorDump(pCard);
 
@@ -69,9 +69,13 @@ void Card_As::vItemise_colNm(CardIter* pCI)
     if (! p_expr->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    i8 iItemise = p_expr->iItemise();
+    i8 i_Item;
+    if (pCI->pAncestorParent()->bIsCard(CK_DIRECTION))
+      i_Item = pCI->pAncestor(-1)->iCounter();
+    else
+      i_Item = pCI->pAncestorParent()->iCounter();
     Symbol oSymbol_itemise;
-    oSymbol_itemise.vApplyFacet(SF_ITM_COL, iItemise, p_expr->pSymbol());
+    oSymbol_itemise.vApplyFacet(SF_ITM_COL, i_Item, p_expr->pSymbol());
 
     p_expr->pSymbol()->vApplyFacet(oSymbol_itemise.aFacet(SF_ITM_COL));
 
@@ -80,7 +84,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bLambdaWalk(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
+  pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm);
 }
 
 /*----------------------------------------------------------------------------*/

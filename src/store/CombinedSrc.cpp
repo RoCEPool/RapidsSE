@@ -1127,7 +1127,7 @@ void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
-    i8 i_EmittedCol = pOpSketch->m_pColMap->m_axCols[i_Col].m_i_EmittedCol;
+    i8 i_EmittedCol = pOpSketch->m_pColMap->m_axCol[i_Col].m_i_EmittedCol;
     Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_EmittedCol-1);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1536,7 +1536,7 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 
 				default:
 					vAppendCodeFragmentPL(pOpSketch, "vPayLoadToHash"_Stz, pColumn,
-																pOpSketch->m_pColMap->m_axCols[i_Col].m_i_Cell-1);
+                                pOpSketch->m_pColMap->m_axCol[i_Col].m_i_Cell - 1);
 					break;
 			}
 			continue;
@@ -1575,11 +1575,11 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 		for (i8 i_ColMap = 0; i_ColMap < nColumns; i_ColMap++) {
 
 			// skip payloads
-			if ( pOpSketch->m_pColMap->m_axCols[i_ColMap].m_bPayload )
+			if ( pOpSketch->m_pColMap->m_axCol[i_ColMap].m_bPayload )
 				continue;
 
 			// found the key column
-			if (pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1 == i_StreamCol) {
+			if (pOpSketch->m_pColMap->m_axCol[i_ColMap].m_i_EmittedCol - 1 == i_StreamCol) {
 				switch (pColumn->eColumnType()) {
 
 					case CT_VARCHAR:
@@ -1595,7 +1595,7 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 			}
 
 			// skip the key column
-			Column* pMapColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1);
+			Column* pMapColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColMap->m_axCol[i_ColMap].m_i_EmittedCol - 1);
 
 			switch (pMapColumn->eColumnType()) {
 				// skip the key column
@@ -1762,8 +1762,8 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
-    i8 i_Cell = pOpSketch->m_pColMap->m_axCols[i_Col].m_i_Cell;
-    i8 i_EmittedCol = pOpSketch->m_pColMap->m_axCols[i_Col].m_i_EmittedCol;
+    i8 i_Cell = pOpSketch->m_pColMap->m_axCol[i_Col].m_i_Cell;
+    i8 i_EmittedCol = pOpSketch->m_pColMap->m_axCol[i_Col].m_i_EmittedCol;
     Column *pColumn = pStreamDefOut->pGetColumn(i_EmittedCol-1);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

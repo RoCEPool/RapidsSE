@@ -19,8 +19,6 @@ namespace STORE
 
     static Card_Injectable* pNew_injectable(CardIter* pCI);
 
-    void vShortForm(String* pString);
-
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

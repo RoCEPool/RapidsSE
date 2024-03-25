@@ -71,12 +71,12 @@ bool Card_CONJ::bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach()) {
-    if (!Card_CONJ::bIsConj(xKid.pChild()))
+  Kid xCONJ(this);
+  while (xCONJ.bEach()) {
+    if (!Card_CONJ::bIsConj(xCONJ.pChild()))
       continue;
 
-    bool bContinue = ((Card_CONJ*)xKid.pChild())->bDescend(bfLambdaFn);
+    bool bContinue = ((Card_CONJ*) xCONJ.pChild())->bDescend(bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -138,10 +138,10 @@ Card_Term* Card_CONJ::pGetFirstTerm_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xKid.p_term();
+  Kid xCONJ(this);
+  while (xCONJ.bEach(CK_TERM))
+    if (xCONJ.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xCONJ.p_term();
 
   return nullptr;
 }
@@ -170,9 +170,9 @@ Card_Term* Card_CONJ::pGetTerm_sqyNo(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    Card_Term* p_term = xKid.p_term();
+  Kid xCONJ(this);
+  while (xCONJ.bEach(CK_TERM)) {
+    Card_Term* p_term = xCONJ.p_term();
     if (! p_term->pSymbol()->bHasFacet(SF_SQY_NO))
       continue;
 
@@ -423,8 +423,8 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
   i8 i_Main = 0;
 
   i8 i_Fold = C_UNKNOWN;
-  for (i8 i_Test = 0 ; i_Test < pCI->G.pDeck->nChildCards() ; i_Test++) {
-    Card *pTestCard = pCI->G.pDeck->pGetChild(i_Test);
+  for (i8 i_Test = 0 ; i_Test < pCI->E.p_deck->nChildCards() ; i_Test++) {
+    Card *pTestCard = pCI->E.p_deck->pGetChild(i_Test);
 
     if (pTestCard->bIsCard(CK_c_FOLD))
       i_Fold = i_Test;
@@ -434,7 +434,7 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
     i_Main = i_Fold + 1;
 
   for (/* none */ ; /* none */ ; i_Main++) {
-    Card *pMainCard = pCI->G.pDeck->pGetChild(i_Main);
+    Card *pMainCard = pCI->E.p_deck->pGetChild(i_Main);
 
     if (CK_o_WHERE == pMainCard->eCard()) {
       delete pScope;
@@ -459,41 +459,6 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
   }
 
   NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* concat short form of this conjunction                                      */
-/*----------------------------------------------------------------------------*/
-void Card_CONJ::vShortForm(String* pString)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  //RASSERT(bIsOne(CK_ANDCONJ,CK_RLNCONJ,CK_NOTCONJ,CK_ORCONJ,CK_NONE));
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (xKid.eChild() == CK_TERM) {
-      xKid.p_term()->vShortForm(pString, " "_Stz);
-    }
-    else {
-      xKid.p_CONJ()->vShortForm(pString);
-    }
-  }
-
-  if (bIsCard(CK_ANDCONJ)) {
-    pString->vConcat(" and"_Stz);
-  }
-  else
-  if (bIsCard(CK_RLNCONJ)) {
-    pString->vCatSprint(" %s"_Stz, szFacet(SF_RLN_OP));
-  }
-  else
-  if (bIsCard(CK_NOTCONJ)) {
-    pString->vConcat(" not"_Stz);
-  }
-  else
-  if (bIsCard(CK_ORCONJ)) {
-    pString->vConcat(" or"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

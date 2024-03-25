@@ -15,7 +15,6 @@ namespace STORE
   public:
     i8          i_Board;
     Board*      pBoard;
-    Card_Deck*  pDeck;
 
   // - - - - - - - - - - - - -
   private:
@@ -29,21 +28,13 @@ namespace STORE
     // - - - - - - - - - - - - -
 
     char   md_Coord[256];
-    Card * p_MainCard;
-    eCK    e_MainCard;
-    i8     i_MainCard;
+    Card * p_Op;
+    eCK    e_Op;
+    i8     i_Op;
 
-    Card*                p_CARD;
-    Card*                p_NEW;
-    Card_OP *            p_OP;
-    Card_CONJ *   p_CONJ;
-
-    Card * p_SubOfMain;
-    eCK    e_SubOfMain;
-    Card * p_Sub2OfMain;
-    eCK    e_Sub2OfMain;
-    Card * p_Sub3OfMain;
-    eCK    e_Sub3OfMain;
+    Card * p_Sub;
+    Card * p_Sub2;
+    Card * p_Sub3;
 
     // - - - - - - - - - - - - - - - - - -
 
@@ -73,10 +64,11 @@ namespace STORE
     Card_CrossJoin *     p_crossJoin;
 
     Card_Decision *      p_decision;
+    Card_Deck*           p_deck;
     Card_Direction *     p_direction;
     Card_Disposition *   p_disposition;
 
-    Card_Emit *       p_emit;
+    Card_Emit *          p_emit;
     Card_Expr *          p_expr;
 
     Card_Filter *        p_filter;
@@ -102,7 +94,7 @@ namespace STORE
     Card_IndexNm *       p_indexNm;
     Card_IndexScan *     p_indexScan;
     Card_Inflate *       p_inflate;
-    Card_Injectable *      p_injectable;
+    Card_Injectable *    p_injectable;
 
     Card_JoinCast *      p_joinCast;
     Card_JoinEstimate *  p_joinEstimate;
@@ -160,7 +152,7 @@ namespace STORE
     Card_StreamSet *     p_streamSet;
     Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
-    Card_Synthesis *    p_synthesis;
+    Card_Synthesis *     p_synthesis;
 
     Card_Table *         p_table;
     Card_TableInfo *     p_tableInfo;

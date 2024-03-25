@@ -68,7 +68,7 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vClearRestart();
-  if (pCI->bEachMain(eCardWithSQ, CK_BOOLPRED)) {
+  if (pCI->bEachOp(eCardWithSQ, CK_BOOLPRED)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
       NEVER_REACH
@@ -77,15 +77,19 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
   // pCI->PRINTBOARD_dbg();
 
   // 2) push to sq
-  if (! pCI->bPushBoard(pCI->Sqy.m_p_term_sqyCall->pSymbol())) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Sqy.m_p_term_sqyCall->szFacet(SF_SQY_NO));
+  Board* pBoard = pCI->m_pBench->pFindBoard(pCI->Flat.m_p_term_sqyCall->pSymbol());
+  if (! pBoard) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
+  pCI->vSaveMembers();
+  pCI->vUseBoard(pBoard);
 
   i8 nTables = Card_Table::nTables(pCI);
 
   // 4) pop back to mq
-  pCI->vPopBoard();
+  //pCI->vPopBoard();
+  pCI->vRestoreMembers();
 
   return nTables;
 }

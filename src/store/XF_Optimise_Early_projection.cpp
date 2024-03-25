@@ -84,7 +84,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
   m_pCI->vForwards(false);
-  m_pCI->vBeginEachReverse();
+  m_pCI->vBeginEach_reverse();
 
   for (;;) {
 
@@ -93,8 +93,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
     bool bEarlyRoot = false;
 
-    while (m_pCI->bEachMain_reverse_NONE()) {
-      if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot()) {
+    while (m_pCI->bEachOp_reverse()) {
+      if (Card_OP::bIsOp(m_pCI->E.p_Op) && ((Card_OP*)m_pCI->E.p_Op)->bIsEarlyRoot()) {
         bEarlyRoot = true;
         break;
       }
@@ -102,7 +102,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     if (! bEarlyRoot)
       break;
 
-    m_pCI->G.p_OP->vEarlyProject_root(m_pCI);
+    ((Card_OP*)m_pCI->E.p_Op)->vEarlyProject_root(m_pCI);
 
     if (m_pCI->Early.m_pNeeded_later) {
       DELETE_CARD(m_pCI->Early.m_pNeeded_later);
@@ -111,7 +111,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     bOptRun = true;
 
 
-    m_pCI->vMainResynch(m_pCI->Early.m_pOP_leaf);
+    m_pCI->vResynchOp(m_pCI->Early.m_pOP_leaf);
   }
 
   m_pCI->vEndTransform(__LINE__);
@@ -133,9 +133,9 @@ bool XF_Optimise_Early_projection::bEarly_needed_loop(void)
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
   m_pCI->vForwards(false);
-  m_pCI->vBeginEachReverse();
+  m_pCI->vBeginEach_reverse();
 
-  while (m_pCI->bEachMain_reverse_NONE()) {
+  while (m_pCI->bEachOp_reverse()) {
     bOptRun = bEarly_needed_OP();
   }
 
@@ -155,8 +155,8 @@ bool XF_Optimise_Early_projection::bEarly_needed_OP(void)
 
   bool bOptRun = false;
 
-  RASSERT(m_pCI->G.p_MainCard->bIsOp());
-  switch (m_pCI->G.e_MainCard) {
+  RASSERT(m_pCI->E.p_Op->bIsOp());
+  switch (m_pCI->E.e_Op) {
 
     case CK_o_AGGREG:
     case CK_o_CALL:
@@ -187,31 +187,31 @@ bool XF_Optimise_Early_projection::bEarly_needed_OP(void)
       break;
   }
 
-  if (m_pCI->G.p_OP->bIsEarlyRoot()) {
+  if (((Card_OP*)m_pCI->E.p_Op)->bIsEarlyRoot()) {
 
-    m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
-    m_pCI->G.p_key  = m_pCI->G.p_OP->pSub_key();
+    m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+    m_pCI->E.p_key  = m_pCI->E.p_Op->pSub_key();
 
-    switch (m_pCI->G.e_MainCard) {
+    switch (m_pCI->E.e_Op) {
       case CK_o_AGGREG:
-        m_pCI->G.p_aggreg->vCraft_needed_root(m_pCI);
+        m_pCI->E.p_aggreg->vCraft_needed_root(m_pCI);
         break;
 
       case CK_o_GBYAGG:
-        m_pCI->G.p_gbyAgg->vCraft_needed_root(m_pCI);
+        m_pCI->E.p_gbyAgg->vCraft_needed_root(m_pCI);
         break;
 
       case CK_o_ORDAGG:
-        m_pCI->G.p_ordAgg->vCraft_needed_root(m_pCI);
+        m_pCI->E.p_ordAgg->vCraft_needed_root(m_pCI);
         break;
 
         // -- -- -- -- -- -- --
       case CK_o_PROJECT:
-        m_pCI->G.p_project->vCraft_needed_root(m_pCI);
+        m_pCI->E.p_project->vCraft_needed_root(m_pCI);
         break;
 
       case CK_o_INDEXJOIN:
-        m_pCI->G.p_indexJoin->vCraft_needed_root(m_pCI);
+        m_pCI->E.p_indexJoin->vCraft_needed_root(m_pCI);
         break;
 
       default:
@@ -237,7 +237,7 @@ bool XF_Optimise_Early_projection::bEarly_projection_loop(void)
 
   m_pCI->vBeginEach();
 
-  while (m_pCI->bEachMain()) {
+  while (m_pCI->bEachOp()) {
     bOptRun = bEarly_projection_OP();
   }
 
@@ -257,8 +257,8 @@ bool XF_Optimise_Early_projection::bEarly_projection_OP(void)
 
   bool bOptRun = false;
 
-  RASSERT(m_pCI->G.p_MainCard->bIsOp());
-  switch (m_pCI->G.e_MainCard) {
+  RASSERT(m_pCI->E.p_Op->bIsOp());
+  switch (m_pCI->E.e_Op) {
 
     case CK_o_AGGREG:
     case CK_o_CALL:

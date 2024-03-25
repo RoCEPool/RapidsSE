@@ -25,13 +25,12 @@ namespace STORE
     void vFlatten(void);
 
   private:
-    bool bSnap_term_crlKey(CardIter* pCI);
-    void vSnap_IQ_expr_crlKey(CardIter* pCI);
+    bool bSnap_IQ_crlKey(CardIter* pCI);
     void vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI);
-    void vEnhance_IQ_project_Add_crlKey(CardIter* pCI);
-    void vConvert_sqyNo_Into_expCol(CardIter* pCI, Card_BoolPred* p_boolPred);
-    void vConvert_SqyPrm_Into_ExpCol(CardIter* p_conj_arg, Card_BoolPred* p_boolPred);
-    void vMove_rlnConj_sqyRslTest_To_from_filter(CardIter* pCI, Card_BoolPred* p_boolPred);
+    void vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI);
+    void vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI, Card_BoolPred* p_boolPred);
+    void vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI, Card_BoolPred* p_boolPred);
+    void vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* pCI, Card_BoolPred* p_boolPred);
     void vRestate_emit_fold(CardIter* pCI);
     void vPromote_aggreg_To_gbyAgg(CardIter* pCI);
 

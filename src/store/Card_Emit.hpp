@@ -17,7 +17,7 @@ namespace STORE
     Card_Emit(void);
    ~Card_Emit(void) noexcept(false);
 
-    static Card_Emit* pResolvePriorProjection(CardIter* pCI);
+    static Card_Emit* pResolvePrior_emit(CardIter* pCI);
 
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vApplyFacets(Card_Key* p_key);
@@ -34,7 +34,6 @@ namespace STORE
     void vMapColumns(CardIter* pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     Card_Expr* pResolve_expr(Card_Term* p_term);
-    void vShortForm(String* pString);
     void vUpdate_expCol(Card_Emit* p_arriving, bool bAlt=false);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

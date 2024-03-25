@@ -65,8 +65,10 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_MOVE_ON);
 
   m_pCI->vBeginEach();
-  if (m_pCI->bEachMain(CK_o_WHERE))
-    m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc();
+  if (m_pCI->bEachOp(CK_o_WHERE)) {
+    m_pCI->E.p_expr = m_pCI->E.p_where->pSub_expr(C_NOT_NULL);
+    m_pCI->E.p_rpnCalc = m_pCI->E.p_where->pSub_rpnCalc(C_NOT_NULL);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each <absJoin>/<on>/<rpnCalc>
@@ -74,57 +76,54 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
   Card_Scan* p_scan_over = nullptr;
 
-  m_pCI->vBeginEachReverse();
-  while (m_pCI->bEachMainWithSub_reverse(CK_c_ABSJOIN, CK_ON)) {
+  m_pCI->vBeginEach_reverse();
+  while (m_pCI->bEachOp_reverse(CK_c_ABSJOIN, CK_ON)) {
 
     // ignore
-    Card_RpnCalc *p_rpnCalc_on = m_pCI->G.p_on->pSub_rpnCalc();
-    if (! p_rpnCalc_on->nChildCards())
+    if (! m_pCI->E.p_on->nChildCards())
       continue;
 
     // move LEFT_OUTER to scan
-    if (p_rpnCalc_on->bPopDeleteChildIf(CK_TERM,
-                                        Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
-      m_pCI->vPushIter();
-      if (m_pCI->bEachMain_reverse_b(CK_o_SCAN)) {
-        p_scan_over = m_pCI->G.p_scan;
+    if (m_pCI->E.p_on->bPopDeleteChildIf(CK_TERM,
+                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
+      if (m_pCI->bEachOp_reverse(CK_o_SCAN)) {
+        p_scan_over = m_pCI->E.p_scan;
         m_pCI->vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
-        m_pCI->G.p_scan->vAppendChild(m_pCI->G.p_outerJoin);
+        m_pCI->E.p_scan->vAppendChild(m_pCI->E.p_outerJoin);
       }
-      m_pCI->vPopBoard();
     }
 
-    Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
+    Card_Term *p_term_0 = _pCard_Term(m_pCI->E.p_on->pGetChild(0));
     if (p_term_0->pSymbol()->bHasFacet("CROSS"_Stz))
       continue;
 
-    if (! m_pCI->G.p_where) {
+    if (! m_pCI->E.p_where) {
       // create a new <where>/...
-      m_pCI->G.p_where = Card_Where::pNewWhereAssembly();
-      m_pCI->G.pDeck->vInsertChildAfter(m_pCI->G.p_where,m_pCI->G.p_absJoin);
-
-      m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc();
+      m_pCI->E.p_where = Card_Where::pNewAssembly();
+      m_pCI->E.p_deck->vInsertChildAfter(m_pCI->E.p_where, m_pCI->E.p_absJoin);
     }
+    m_pCI->E.p_expr = m_pCI->E.p_where->pSub_expr();
+    m_pCI->E.p_rpnCalc = m_pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
-    m_pCI->G.p_rpnCalc->vTransfer(p_rpnCalc_on,SF_RLN_OP);
-    m_pCI->G.p_rpnCalc->vApplyCast_x(p_rpnCalc_on->xCast());
+    m_pCI->E.p_expr->vTransfer(m_pCI->E.p_on, SF_RLN_OP);
+    m_pCI->E.p_expr->vApplyCast_x(m_pCI->E.p_on->xCast());
 
-    if (p_rpnCalc_on->nChildCards()) {
-      delete p_rpnCalc_on->pPopChild_tail();
-      m_pCI->vAppendNewChild(p_scan_over, CK_s_CONSTRAINT);
-      m_pCI->vAppendNewChild(m_pCI->G.p_constraint,CK_RPNCALC);
-      m_pCI->G.p_rpnCalc->vTransferChildren(p_rpnCalc_on);
+    if (m_pCI->E.p_on->nChildCards()) {
+      delete m_pCI->E.p_on->pPopChild_tail();
+      m_pCI->E.p_constraint = Card_Constraint::pNewAssembly(m_pCI);
+      p_scan_over->vAppendChild(m_pCI->E.p_constraint);
+      m_pCI->E.p_expr->vApplyCast_x(m_pCI->E.p_on->xCast());
+      m_pCI->E.p_rpnCalc->vTransferChildren(m_pCI->E.p_on);
     }
 
     // remove and delete <absJoin>/<on>
-    m_pCI->G.p_absJoin->vRemoveChild(m_pCI->G.p_on);
-    DELETE_CARD(m_pCI->G.p_on);
+    m_pCI->E.p_absJoin->vRemoveChild(m_pCI->E.p_on);
+    DELETE_CARD(m_pCI->E.p_on);
   }
 
   m_pCI->vEndTransform(__LINE__);
 }
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

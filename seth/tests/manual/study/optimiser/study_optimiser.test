@@ -19,7 +19,9 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-INCLUDE 'r_FOLD_24_W_A_C_ro.test';
+INCLUDE 'tpch_q11.test';
+//LOG 'operator.test';
+//INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
 
 INCLUDE 'select_star.test';
 INCLUDE 'select_sort.test';

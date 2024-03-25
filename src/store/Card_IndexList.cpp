@@ -80,9 +80,9 @@ void Card_IndexList::vDeleteAll_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_INDEX))
-    _pCard_Index(xKid.pChild())->vDeleteBounds();
+  Kid xIndexList(this);
+  while (xIndexList.bEach(CK_INDEX))
+    _pCard_Index(xIndexList.pChild())->vDeleteBounds();
 }
 
 
@@ -93,10 +93,10 @@ Card_Index* Card_IndexList::pFindChosenIndex(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_INDEX)) {
-    if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenIndex))
-      return _pCard_Index(xKid.pChild());
+  Kid xIndexList(this);
+  while (xIndexList.bEach(CK_INDEX)) {
+    if (xIndexList.pChild()->pSymbol()->Y_bHas(P_ChosenIndex))
+      return _pCard_Index(xIndexList.pChild());
   }
 
   return nullptr;
@@ -109,10 +109,10 @@ void Card_IndexList::vChoose_index_For_crossJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_INDEX)) {
-    Card_Index* p_index = _pCard_Index(xKid.pChild());
-    Card_Bounds* p_bounds = xKid.pChild()->pSub_bounds();
+  Kid xIndexList(this);
+  while (xIndexList.bEach(CK_INDEX)) {
+    Card_Index* p_index = _pCard_Index(xIndexList.pChild());
+    Card_Bounds* p_bounds = xIndexList.pChild()->pSub_bounds();
     if (! p_bounds)
       continue;
     Card_Bound* p_bound = p_bounds->pSub_bound();
@@ -132,11 +132,11 @@ void Card_IndexList::vChoose_index_For_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_INDEX)) {
-    if (! xKid.pChild()->pSub_bounds())
+  Kid xIndexList(this);
+  while (xIndexList.bEach(CK_INDEX)) {
+    if (! xIndexList.pChild()->pSub_bounds())
       continue;
-    Card_Index* p_index = _pCard_Index(xKid.pChild());
+    Card_Index* p_index = _pCard_Index(xIndexList.pChild());
     Kid xCI_bounds(p_index->pSub_bounds());
     while (xCI_bounds.bEach(CK_BOUND)) {
       Card_Bound* p_bound = _pCard_Bound(xCI_bounds.pChild());
@@ -157,16 +157,16 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_INDEX)) {
-    if (! xKid.pChild()->pSub_bounds())
+  Kid xIndexList(this);
+  while (xIndexList.bEach(CK_INDEX)) {
+    if (! xIndexList.pChild()->pSub_bounds())
       continue;
 
-    Kid xCI_bounds(xKid.pChild()->pSub_bounds());
+    Kid xCI_bounds(xIndexList.pChild()->pSub_bounds());
     while (xCI_bounds.bEach(CK_BOUND)) {
       if (_pCard_Bound(xCI_bounds.pChild())->bIsLBound() ||
           _pCard_Bound(xCI_bounds.pChild())->bIsUBound()) {
-        _pCard_Index(xKid.pChild())->vSet_Choose_index();
+        _pCard_Index(xIndexList.pChild())->vSet_Choose_index();
         xCI_bounds.pChild()->pSymbol()->Y_vSet(P_ChosenBound);
         return;
       }
@@ -197,8 +197,8 @@ bool Card_IndexList::bUsesSqyRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/) {
-    if (xKid.p_index()->bUsesSqlRsl())
+  for (Kid xIndexList(this); xIndexList.bEach(CK_INDEX); /**/) {
+    if (xIndexList.p_index()->bUsesSqlRsl())
       return true;
   }
 
@@ -212,8 +212,8 @@ void Card_IndexList::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/)
-    xKid.p_index()->vApplyCast(pCI,/*??*/p_Dic_expr);
+  for (Kid xIndexList(this); xIndexList.bEach(CK_INDEX); /**/)
+    xIndexList.p_index()->vApplyCast(pCI,/*??*/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,9 +223,9 @@ void Card_IndexList::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_INDEX))
-    xKid.p_index()->vX_tblCol_To_expCol(pCI);
+  Kid xIndexList(this);
+  while (xIndexList.bEach(CK_INDEX))
+    xIndexList.p_index()->vX_tblCol_To_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,9 +241,9 @@ void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mayHave(CK_INDEX,CK_NONE);
 
   i8 nChosenIndexes = 0;
-  for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/) {
-    pCI->G.p_index = xKid.p_index();
-    if (pCI->G.p_index->pSymbol()->Y_bHas(P_ChosenIndex))
+  for (Kid xIndexList(this); xIndexList.bEach(CK_INDEX); /**/) {
+    pCI->E.p_index = xIndexList.p_index();
+    if (pCI->E.p_index->pSymbol()->Y_bHas(P_ChosenIndex))
       nChosenIndexes++;
   }
   RASSERT(nChosenIndexes <= 1);

@@ -21,13 +21,13 @@ namespace STORE
  {
   public:
 
-    CardIterMembers G;
-
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
     Symbol      m_xSymbol_tableSyn;
 
     i8          m_i_RecursionDepth;
+
+    CardIterMembers E;
 
     struct {
       Card_OP*      m_pOP_root;
@@ -50,11 +50,15 @@ namespace STORE
     } Next;
 
     struct {
-      i8         m_i_SubQuery;
-      SubQuery*  m_pSubQuery;
 
-      Card_CONJ* m_p_conj_sqyCall;
+      SubQuery* m_pSqy_inner;
+
+      union {
+        Card_CONJ*    m_p_conj_iqyCall;
+        Card_RlnConj* m_p_conj_rslTest;
+      };
       Card_Term* m_p_term_sqyCall;
+
       Card_CONJ* m_p_conj_crlKey;
       Card_Term* m_p_term_crlKey;
       Card_Expr* m_p_expr_crlKey;
@@ -63,8 +67,8 @@ namespace STORE
 
       i8         m_i_fold;
       Card_Expr* m_pExpr_fold;
-      Card*      m_pCard_sqyCopy;
-    } Sqy;
+      Card*      m_pCopy_inner;
+    } Flat;
 
     struct {
       Card_StreamKey * m_pStreamKey;
@@ -92,7 +96,6 @@ namespace STORE
    ~CardIter(void) noexcept(false);
 
     Card* pAdvanceChild(void);
-    void vAppendChild(eCK eParent, eCK eChild);
     void vAppendChild(eCK eParent, Card* pChild);
     void vAppendNewChild(eCK eParent, eCK eChild);
     void vAppendNewChild(Card* pParent, eCK eChild);
@@ -112,120 +115,100 @@ namespace STORE
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
-    void vBeginBoardIteration(void);
+    void vBeginBoard(void);
     void vBeginEach(void);
-    void vBeginEachReverse(void);
+    void vBeginEach_reverse(void);
     Board* pBoard(void);
     void vBurst(Card* pCard);
 
-    void vChangeCard(Card* pCard);
     i8   i_Child(void);
     Card* pChild(void);
+    Card* pChild(i8 i_Child);
+    void vChild(Card* pChild);
     void vClearRegisters(void);
     void vClearRegistersIf(Card* pCard);
     void vClearRestart(void);
     eOA  eCueUser(String* psPrompt);
 
     void vDeleteMember(Card* pMember);
-    void vDeleteWhenEmptySub(eCK eMain, eCK eSub);
+    void vDeleteWhenEmptySub(eCK eOp, eCK eSub);
     void vDontDescend(bool bDontDescend);
 
     bool   bEachBoard(void);
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
-    bool bEachMain(void);
-    bool bEachMain(eCK eMain);
-    bool bEachMain_foldBreak(eCK eMain);
-    bool bEachMain(eCK eMain, eCK eSub);
-    bool bEachMain(eCK eMain, eCK eSub, Stz* szSubFacet);
-    bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2);
-    bool bEachMain(eCK eMain, eCK eSub1, eCK eSub2, eCK eSub3);
+    bool bEachOp(void);
+    bool bEachOp(eCK eOp);
+    bool bEachOp_foldBreak(eCK eOp);
+    bool bEachOp(eCK eOp, eCK eSub);
+    bool bEachOp(eCK eOp, eCK eSub, Stz* szSubFacet);
+    bool bEachOp(eCK eOp, eCK eSub1, eCK eSub2);
+    bool bEachOp(eCK eOp, eCK eSub1, eCK eSub2, eCK eSub3);
 
-    bool bEachMain_reverse_NONE(void);
-    bool bEachMain_reverse_b(eCK eOfMainKind);
-    bool bEachMain_reverse_foldBreak_b(eCK eOfMainKind);
-    bool bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind);
-    bool bEachMainWithSub_reverse_foldBreak_b(eCK eOfMainKind, eCK eAndSubKind);
+    bool bEachOp_reverse(void);
+    bool bEachOp_reverse(eCK eOp);
+    bool bEachOp_reverse_foldBreak(eCK eOp);
+    bool bEachOp_reverse(eCK eOp, eCK eSub);
+    bool bEachOp_reverse_foldBreak(eCK eOp, eCK eSub);
 
-    bool bEachSubOfMain(eCK eSubKind);
-    bool bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
-    bool bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
+    bool bEachOp_bySub(eCK eSub);
+    bool bEachOp_by2Sub(eCK eSub1, eCK eSub2);
+    bool bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3);
 
     void vEndPhase(void);
     void vEndTransform(i8 iLineNo);
 
-    void vFocusOnMain(void);
+    Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);
+    void vFocusOnOp(void);
     bool bForwards(void);
     void vForwards(bool bForward);
 
-    Card* pGetChild(i8 i_Child);
-    Card* pGetMember(eCK eMember);
-
     void vInsertAfter(Card* pCard, Card* pAfter);
     void vInsertBefore(Card* pCard, Card* pBefore);
-    bool bIsNextMain(eCK eMember);
 
     bool bLambdaWalk(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
 
-    void vMainResynch(void);
-    void vMainResynch(Card* pCard);
-    void vMember(eCK eMember, Card* pCard, const char* asFuncNm);
-    void vMember(Card* pCard);
+    Card* pMember(eCK eCard);
+    void vMember(eCK eCard, Card* pCard);
     bool bMore(void);
 
-    void  vNewMember(eCK eMember);
-    void  vNewMember(eCK eMember, Symbol xSymbol);
-    Card* pNextChild(void);
-    Card* pNextChildIf(eCK eCard);
+    void  vNewMember(eCK eCard);
+    void  vNewMember(eCK eCard, Symbol xSymbol);
 
-    void vPopBoard(void);
-    bool bPositionOn(eCK eKind_find, i8 /* eCK */ iKind_First, ...);
-    Card* pPrevChild(void);
-    Card* pPrevChildIf(eCK eCard);
+    Card* pPeekNext(void);
+    Card* pPeekNextIf(eCK eCard);
+    Card* pPeekPrev(void);
+    bool bPositionAt(eCK eKind_at, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
-    void vSnapFluxArriving(void);
-    void vPushBoard(Board* pBoard);
-    bool bPushBoard(Symbol* pSymbol);
-    void vPushNewChild(Card* pParent, eCK eChild);
-    void vPushIter(void);
+    void vPushChild(Card* pParent, eCK eChild);
 
+    bool bRecurseActive(void);
     void vRecurseBegin(Card* pCard);
     Card* pRecurseEach(void);
     Card* pRecurseEach(eCK eCard);
     void vRecurseEnd(void);
-    void vRemoveChild(Card* pChild);
-    void vRemoveCurr(eCK eCrossCheck);
-    void vRemoveDeleteCurr(eCK eCrossCheck);
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);
+    Card_Emit* pResolvePrior_emit(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
-    Card_Emit* pResolvePrior_projection(void);
-    void vRestore(void);
-    Card* pRewindChild(void);
-    bool bRewindMain(void);
+    void vRestoreMembers(void);
+    void vResynchOp(void);
+    void vResynchOp(Card* pCard);
+    bool bRewindOp(void);
 
-    void vSave(void);
-    void vSet(Card* pChild);
-    void vSet(CardIter* pCardIter_src);
-    void vSet(i8 i_Child);
-    void vSetBoard(Board* pBoard);
+    void vSaveMembers(void);
+    void vSnapArriving(void);
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 
-    void vUsingBoard(i8 i_Board);
-    void vUsingBoard(Board* pBoard);
+    void vUseBoard(Board* pBoard);
+    void vUseCard(Card* pCard);
 
     void vValidateBench(void);
     void vValidateChildren(Card* pCard, i8 iDepth);
 
-  protected:
-
-    bool bPopRecurseIter(void);
-    void vPushRecurseIter(void);
-
   private:
-
     Footer* aFooter(void);
   };
 

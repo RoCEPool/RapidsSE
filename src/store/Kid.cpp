@@ -530,9 +530,12 @@ Card_AndConj* Kid::p_andConj(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Bound* Kid::p_bound(void)
+Card_Bound* Kid::p_bound(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_bound();
 
   return _pCard_Bound(pChild());
 }
@@ -540,19 +543,12 @@ Card_Bound* Kid::p_bound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CONJ* Kid::p_CONJ(void)
+Card_Correlation* Kid::p_correlation(bool bSub)
 {
   _nonProper_
 
-  return (Card_CONJ*)pChild();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Correlation* Kid::p_correlation(void)
-{
-  _nonProper_
+  if (bSub)
+    return pChild()->pSub_correlation();
 
   return _pCard_Correlation(pChild());
 }
@@ -560,9 +556,25 @@ Card_Correlation* Kid::p_correlation(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Kid::p_expr(void)
+Card_Direction* Kid::p_direction(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_direction();
+
+  return _pCard_Direction(pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Kid::p_expr(bool bSub)
+{
+  _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_expr();
 
   return _pCard_Expr(pChild());
 }
@@ -570,9 +582,12 @@ Card_Expr* Kid::p_expr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Fold* Kid::p_fold(void)
+Card_Fold* Kid::p_fold(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_fold();
 
   return _pCard_Fold(pChild());
 }
@@ -580,9 +595,12 @@ Card_Fold* Kid::p_fold(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_HshCol* Kid::p_hshCol(void)
+Card_HshCol* Kid::p_hshCol(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_hshCol();
 
   return _pCard_HshCol(pChild());
 }
@@ -590,9 +608,12 @@ Card_HshCol* Kid::p_hshCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_IdxCol* Kid::p_idxCol(void)
+Card_IdxCol* Kid::p_idxCol(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_idxCol();
 
   return _pCard_IdxCol(pChild());
 }
@@ -600,9 +621,12 @@ Card_IdxCol* Kid::p_idxCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Index* Kid::p_index(void)
+Card_Index* Kid::p_index(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_index();
 
   return _pCard_Index(pChild());
 }
@@ -610,9 +634,12 @@ Card_Index* Kid::p_index(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrder* Kid::p_joinOrder(void)
+Card_JoinOrder* Kid::p_joinOrder(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_joinOrder();
 
   return _pCard_JoinOrder(pChild());
 }
@@ -620,9 +647,12 @@ Card_JoinOrder* Kid::p_joinOrder(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Map* Kid::p_map(void)
+Card_Map* Kid::p_map(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_map();
 
   return _pCard_Map(pChild());
 }
@@ -630,29 +660,12 @@ Card_Map* Kid::p_map(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_OP* Kid::p_OP(void)
+Card_RpnCalc* Kid::p_rpnCalc(bool bSub)
 {
   _nonProper_
 
-  return (Card_OP*)pChild();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_OrConj* Kid::p_orConj(void)
-{
-  _nonProper_
-
-  return _pCard_OrConj(pChild());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_RpnCalc* Kid::p_rpnCalc(void)
-{
-  _nonProper_
+  if (bSub)
+    return pChild()->pSub_rpnCalc();
 
   return _pCard_RpnCalc(pChild());
 }
@@ -660,9 +673,12 @@ Card_RpnCalc* Kid::p_rpnCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_RlnConj* Kid::p_rlnConj(void)
+Card_RlnConj* Kid::p_rlnConj(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_rlnConj();
 
   return _pCard_RlnConj(pChild());
 }
@@ -670,9 +686,12 @@ Card_RlnConj* Kid::p_rlnConj(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Stage* Kid::p_stage(void)
+Card_Stage* Kid::p_stage(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_stage();
 
   return _pCard_Stage(pChild());
 }
@@ -680,9 +699,12 @@ Card_Stage* Kid::p_stage(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_StreamHead* Kid::p_streamHead(void)
+Card_StreamHead* Kid::p_streamHead(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_streamHead();
 
   return _pCard_StreamHead(pChild());
 }
@@ -690,9 +712,12 @@ Card_StreamHead* Kid::p_streamHead(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_StreamJoin* Kid::p_streamJoin(void)
+Card_StreamJoin* Kid::p_streamJoin(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_streamJoin();
 
   return _pCard_StreamJoin(pChild());
 }
@@ -700,9 +725,12 @@ Card_StreamJoin* Kid::p_streamJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_StreamKey* Kid::p_streamKey(void)
+Card_StreamKey* Kid::p_streamKey(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_streamKey();
 
   return _pCard_StreamKey(pChild());
 }
@@ -710,9 +738,12 @@ Card_StreamKey* Kid::p_streamKey(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_StreamPer* Kid::p_streamPer(void)
+Card_StreamPer* Kid::p_streamPer(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_streamPer();
 
   return _pCard_StreamPer(pChild());
 }
@@ -720,9 +751,12 @@ Card_StreamPer* Kid::p_streamPer(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Table* Kid::p_table(void)
+Card_Table* Kid::p_table(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_table();
 
   return _pCard_Table(pChild());
 }
@@ -730,9 +764,12 @@ Card_Table* Kid::p_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Kid::p_term(void)
+Card_Term* Kid::p_term(bool bSub)
 {
   _nonProper_
+
+  if (bSub)
+    return pChild()->pSub_term();
 
   return _pCard_Term(pChild());
 }
