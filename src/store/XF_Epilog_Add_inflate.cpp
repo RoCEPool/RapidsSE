@@ -67,23 +67,23 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
-    if (CK_o_SCAN == m_pCI->G.e_Op) {
-      m_pCI->G.p_inflate = new Card_Inflate;
-      m_pCI->vInsertAfter(m_pCI->G.p_inflate,m_pCI->G.p_scan);
+    if (CK_o_SCAN == m_pCI->E.e_Op) {
+      m_pCI->E.p_inflate = new Card_Inflate;
+      m_pCI->vInsertAfter(m_pCI->E.p_inflate, m_pCI->E.p_scan);
 
-      if (m_pCI->G.p_scan->pSymbol()->Y_bHas(P_FusedProject))
-        m_pCI->G.p_inflate->pSymbol()->Y_vSet(P_FusedProject);
+      if (m_pCI->E.p_scan->pSymbol()->Y_bHas(P_FusedProject))
+        m_pCI->E.p_inflate->pSymbol()->Y_vSet(P_FusedProject);
 
-      m_pCI->vBurst(m_pCI->G.p_Op);
+      m_pCI->vBurst(m_pCI->E.p_Op);
 
-      if (m_pCI->G.p_table)
-        m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_table->pDupCardRecursive());
-      if (m_pCI->G.p_stream)
-        m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_stream->pDupCardRecursive());
-      if (m_pCI->G.p_injectable)
-        m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_injectable->pDupCardRecursive());
-      if (m_pCI->G.p_synthesis)
-        m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_synthesis->pDupCardRecursive());
+      if (m_pCI->E.p_table)
+        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_table->pDupCardRecursive());
+      if (m_pCI->E.p_stream)
+        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_stream->pDupCardRecursive());
+      if (m_pCI->E.p_injectable)
+        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_injectable->pDupCardRecursive());
+      if (m_pCI->E.p_synthesis)
+        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_synthesis->pDupCardRecursive());
 
     }
   }

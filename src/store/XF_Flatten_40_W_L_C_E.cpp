@@ -83,7 +83,7 @@ void XF_Flatten_40_W_L_C_E::vFlatten(void)
  vInto_KEYnotEXISTS(m_pCI);
  // m_pCI->PRINTBOARD_dbg();
 
-  m_pCI->G.p_deck->vMarksClearRecursive();
+  m_pCI->E.p_deck->vMarksClearRecursive();
 
 
   m_pCI->vEndTransform(__LINE__);

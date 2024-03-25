@@ -81,7 +81,7 @@ void XF_Prolog_Analyse_injectable::vAnalyse_injectable(void)
   m_pCI->vBeginEach();
 
   while (m_pCI->bEachOp(CK_o_FROM, CK_s_TABLE)) {
-    m_pCI->G.p_from->vAnalyse_injectable(m_pCI);
+    m_pCI->E.p_from->vAnalyse_injectable(m_pCI);
   }
 
   m_pCI->vEndTransform(__LINE__);
@@ -98,17 +98,17 @@ void XF_Prolog_Analyse_injectable::vAnalyse_injectable_passThru(void)
 
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_SCAN, CK_s_TABLE)) {
-    m_pCI->G.p_scan->vAnalyse_injectable(m_pCI);
+    m_pCI->E.p_scan->vAnalyse_injectable(m_pCI);
   }
 
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_INDEXSCAN, CK_s_TABLE)) {
-    m_pCI->G.p_indexScan->vAnalyse_injectable(m_pCI);
+    m_pCI->E.p_indexScan->vAnalyse_injectable(m_pCI);
   }
 
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_INDEXJOIN, CK_s_TABLE)) {
-    m_pCI->G.p_indexJoin->vAnalyse_injectable(m_pCI);
+    m_pCI->E.p_indexJoin->vAnalyse_injectable(m_pCI);
   }
 
   m_pCI->vEndTransform(__LINE__);

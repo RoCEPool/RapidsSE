@@ -321,14 +321,14 @@ void XF::vTransform_passThru(void)
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_SORT);
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
-      m_pCI->G.p_emit->vApplyFacets(m_pCI->G.p_key);
+      m_pCI->E.p_emit->vApplyFacets(m_pCI->E.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_TOP);
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
-      m_pCI->G.p_emit->vApplyFacets(m_pCI->G.p_key);
+      m_pCI->E.p_emit->vApplyFacets(m_pCI->E.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
@@ -337,29 +337,29 @@ void XF::vTransform_passThru(void)
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_TWEAK_INDEXJOIN);
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_INDEXJOIN)) {
-      m_pCI->G.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
-      m_pCI->G.p_indexJoin->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
+      m_pCI->E.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
+      m_pCI->E.p_indexJoin->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_TWEAK_INDEXSCAN);
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_INDEXSCAN)) {
-      m_pCI->G.p_indexScan->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
-      m_pCI->G.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
+      m_pCI->E.p_indexScan->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
+      m_pCI->E.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_TWEAK_KEYEXISTS);
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_KEYEXISTS)) {
-      m_pCI->G.p_keyExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
-      m_pCI->G.p_keyExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
+      m_pCI->E.p_keyExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
+      m_pCI->E.p_keyExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_TWEAK_KEYNOTEXISTS);
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_KEYNOTEXISTS)) {
-      m_pCI->G.p_keyNotExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
-      m_pCI->G.p_keyNotExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
+      m_pCI->E.p_keyNotExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
+      m_pCI->E.p_keyNotExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform(__LINE__);
 

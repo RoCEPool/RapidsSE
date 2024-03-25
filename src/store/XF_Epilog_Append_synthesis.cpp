@@ -66,10 +66,10 @@ void XF_Epilog_Append_synthesis::vAppend_synthesis(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
-    if (m_pCI->G.p_Op->bIsCard(CK_c_STAGE))
+    if (m_pCI->E.p_Op->bIsCard(CK_c_STAGE))
       continue;
 
-    m_pCI->vAppendNewChild(m_pCI->G.p_Op, CK_SYNTHESIS);
+    m_pCI->vAppendNewChild(m_pCI->E.p_Op, CK_SYNTHESIS);
   }
 
   m_pCI->vEndTransform(__LINE__);

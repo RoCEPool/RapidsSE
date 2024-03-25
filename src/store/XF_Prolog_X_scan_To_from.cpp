@@ -71,7 +71,7 @@ void XF_Prolog_X_scan_To_from::vX_scan_To_from(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_SCAN))
-    m_pCI->G.p_scan->vCard(CK_o_FROM);
+    m_pCI->E.p_scan->vCard(CK_o_FROM);
 
   m_pCI->vEndTransform(__LINE__);
 

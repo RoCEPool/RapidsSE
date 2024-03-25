@@ -49,10 +49,10 @@ Card_Injectable* Card_Injectable::pNew_injectable(CardIter* pCI)
 {
   _static_;
 
-  Table* pTable = pCI->G.p_table->pGet_Table();
+  Table* pTable = pCI->E.p_table->pGet_Table();
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  char cTblSyn = pCI->G.p_table->pSymbol()->cTblSyn();
+  char cTblSyn = pCI->E.p_table->pSymbol()->cTblSyn();
 
   Card_Injectable* p_injectable = new Card_Injectable;
 

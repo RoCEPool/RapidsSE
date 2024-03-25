@@ -86,7 +86,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_COLNM_TO_EXPCOL, _FOOTER_);
 
-  if (m_pCI->G.p_Op->pSymbol()->Y_bHas(P_BreakPt))
+  if (m_pCI->E.p_Op->pSymbol()->Y_bHas(P_BreakPt))
     vDebugPoint();
 
   RASSERT(m_pCI->Flux.m_pArriving);
@@ -117,7 +117,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bLambdaWalk(pCI->G.p_Op, CK_TERM, fb_colNm_To_expCol);
+  pCI->bLambdaWalk(pCI->E.p_Op, CK_TERM, fb_colNm_To_expCol);
 }
 
 /*============================================================================*/

@@ -106,7 +106,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 
  // m_pCI->PRINTBOARD_dbg();
 
-  m_pCI->G.p_deck->vMarksClearRecursive();
+  m_pCI->E.p_deck->vMarksClearRecursive();
 
   delete pCarryForward;
 

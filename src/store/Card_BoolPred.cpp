@@ -291,7 +291,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Deck* pDeck = pCI->G.p_deck;
+  Card_Deck* pDeck = pCI->E.p_deck;
   Card *pMainCard;
 
   pCI->vRecurseBegin(this);
@@ -308,11 +308,11 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
     if (! p_table)
       continue;
 
-    pCI->G.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
-    pCI->G.p_filter->pSub_boolPred()->vAppend_and_rlnConj(p_rlnConj->pClone());
+    pCI->E.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
+    pCI->E.p_filter->pSub_boolPred()->vAppend_and_rlnConj(p_rlnConj->pClone());
 
-    pCI->G.p_filter->vMark1(p_table->cMark1());
-    pCI->G.p_filter->vMark2(p_table->cMark2());
+    pCI->E.p_filter->vMark1(p_table->cMark1());
+    pCI->E.p_filter->vMark2(p_table->cMark2());
   }
 
   pCI->vRecurseEnd();
@@ -717,16 +717,16 @@ void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
     if (! p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    pCI->G.p_term = _pCard_Term(p_conj);
-    Symbol* pSymbol = pCI->G.p_term->pSymbol();
+    pCI->E.p_term = _pCard_Term(p_conj);
+    Symbol* pSymbol = pCI->E.p_term->pSymbol();
     if (!pSymbol->bHasFacet(SF_EXP_COL)) {
-      pCI->G.p_term = nullptr;
+      pCI->E.p_term = nullptr;
       return C_CONTINUE_RECURSION;
     }
 
-    pCI->G.p_term->vX_expCol_To_tblCol(pCI);
+    pCI->E.p_term->vX_expCol_To_tblCol(pCI);
 
-    pCI->G.p_term = nullptr;
+    pCI->E.p_term = nullptr;
     return C_CONTINUE_RECURSION;
   };
 

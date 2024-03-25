@@ -68,29 +68,29 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
   while (m_pCI->bEachOp()) {
 
     // test for injecting op
-    if (! m_pCI->G.p_Op->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE))
+    if (! m_pCI->E.p_Op->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE))
       goto L_UPDATE_PRIOR_EMITTED;
 
     m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pPeekNextIf(CK_o_PROJECT));
 
-    m_pCI->G.p_stream = m_pCI->G.p_Op->pSub_stream();
+    m_pCI->E.p_stream = m_pCI->E.p_Op->pSub_stream();
 
     // test for viable next <project>
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
-      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
+      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
 
       goto L_UPDATE_PRIOR_EMITTED;
     }
 
-    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->E.p_stream->vFuse_project_Viable(m_pCI);
+    m_pCI->E.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
 
     L_UPDATE_PRIOR_EMITTED:
-    if (m_pCI->G.p_Op->pSub_emit())
-      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_Op->pSub_emit();
+    if (m_pCI->E.p_Op->pSub_emit())
+      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
   }
 
   m_pCI->vEndTransform(__LINE__);
@@ -108,15 +108,15 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
-      m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
-      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
+      m_pCI->E.p_stream = m_pCI->E.p_scan->pSub_stream();
+      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
       continue;
     }
 
-    m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
-    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->E.p_stream = m_pCI->E.p_scan->pSub_stream();
+    m_pCI->E.p_stream->vFuse_project_Viable(m_pCI);
+    m_pCI->E.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vClearRestart();
@@ -125,23 +125,23 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
-      m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
-      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
+      m_pCI->E.p_stream = m_pCI->E.p_indexScan->pSub_stream();
+      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
       continue;
     }
 
-    m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
-    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->E.p_stream = m_pCI->E.p_indexScan->pSub_stream();
+    m_pCI->E.p_stream->vFuse_project_Viable(m_pCI);
+    m_pCI->E.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
 
-    if (CK_o_INDEXJOIN != m_pCI->G.e_Op) {
-      if (m_pCI->G.p_Op->pSub_emit())
-        m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_Op->pSub_emit();
+    if (CK_o_INDEXJOIN != m_pCI->E.e_Op) {
+      if (m_pCI->E.p_Op->pSub_emit())
+        m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
       continue;
     }
 
@@ -149,26 +149,26 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
-      m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
-      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
-      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_Op->pSub_emit();
+      m_pCI->E.p_stream = m_pCI->E.p_indexJoin->pSub_stream();
+      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
+      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
       continue;
     }
 
     // can fuse next projection
-    m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
-    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
-    m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_Op->pSub_emit();
+    m_pCI->E.p_stream = m_pCI->E.p_indexJoin->pSub_stream();
+    m_pCI->E.p_stream->vFuse_project_Viable(m_pCI);
+    m_pCI->E.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
 
-    if (CK_o_CROSSJOIN != m_pCI->G.e_Op) {
-      if (m_pCI->G.p_Op->pSub_emit())
-        m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_Op->pSub_emit();
+    if (CK_o_CROSSJOIN != m_pCI->E.e_Op) {
+      if (m_pCI->E.p_Op->pSub_emit())
+        m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
       continue;
     }
 
@@ -176,17 +176,17 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
-      m_pCI->G.p_stream = m_pCI->G.p_crossJoin->pSub_stream();
-      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
-      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->G.p_Op->pSub_emit();
+      m_pCI->E.p_stream = m_pCI->E.p_crossJoin->pSub_stream();
+      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
+      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
       continue;
     }
 
     // can fuse next projection
-    m_pCI->G.p_stream = m_pCI->G.p_crossJoin->pSub_stream();
-    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->G.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->G.p_Op->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->E.p_stream = m_pCI->E.p_crossJoin->pSub_stream();
+    m_pCI->E.p_stream->vFuse_project_Viable(m_pCI);
+    m_pCI->E.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vEndTransform(__LINE__);

@@ -56,8 +56,8 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
   _static_
 
   while (pCI->bEachOp()) {
-    if ((pCI->G.p_filter = pCI->G.p_Op->pSub_filter()))
-      ((Card_OP*)pCI->G.p_Op)->vCull_filter_IfEmpty(pCI->G.p_filter);
+    if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()))
+      ((Card_OP*)pCI->E.p_Op)->vCull_filter_IfEmpty(pCI->E.p_filter);
   }
 }
 
@@ -69,22 +69,22 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 {
   _static_
 
-  if (!pCI->G.p_Op->pSub_emit())
-    pCI->G.p_Op->vDump(__func__);
+  if (!pCI->E.p_Op->pSub_emit())
+    pCI->E.p_Op->vDump(__func__);
 
-  RASSERT(pCI->G.p_Op->pSub_emit());
+  RASSERT(pCI->E.p_Op->pSub_emit());
 
-  pCI->G.p_Op->vRemoveChild(pCI->G.p_filter);
+  pCI->E.p_Op->vRemoveChild(pCI->E.p_filter);
 
 
-  pCI->G.p_filter->vEnsure_stream(pCI);
+  pCI->E.p_filter->vEnsure_stream(pCI);
 
-  pCI->G.p_stream->vAppendChild(pCI->G.p_Op->pSub_emit()->pClone());
+  pCI->E.p_stream->vAppendChild(pCI->E.p_Op->pSub_emit()->pClone());
 
-  pCI->G.p_deck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_Op);
+  pCI->E.p_deck->vInsertChildAfter(pCI->E.p_filter, pCI->E.p_Op);
 
-  if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPushChild(pCI->G.p_Op->pSub_level()->pDupCardRecursive());
+  if (! pCI->E.p_filter->pSub_level()) {
+    pCI->E.p_filter->vPushChild(pCI->E.p_Op->pSub_level()->pDupCardRecursive());
   }
 }
 
@@ -104,9 +104,9 @@ Card_Filter* Card_Filter::pNewAssembly(CardIter* pCI)
   p_expr->vAppendChild(p_rpnCalc);
 
   if (pCI) {
-    pCI->G.p_filter  = p_filter;
-    pCI->G.p_expr    = p_expr;
-    pCI->G.p_rpnCalc = p_rpnCalc;
+    pCI->E.p_filter  = p_filter;
+    pCI->E.p_expr    = p_expr;
+    pCI->E.p_rpnCalc = p_rpnCalc;
   }
 
   return p_filter;
@@ -124,9 +124,9 @@ void Card_Filter::vBurstAssembly(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_filter  = this;
-  pCI->G.p_expr    = pCI->G.p_filter->pSub_expr(C_NOT_NULL);
-  pCI->G.p_rpnCalc = pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+  pCI->E.p_filter  = this;
+  pCI->E.p_expr    = pCI->E.p_filter->pSub_expr(C_NOT_NULL);
+  pCI->E.p_rpnCalc = pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->PRINTBOARD_dbg();
 
-  ((Card_OP*)pCI->G.p_Op)->vRestate_emit(pCI);
+  ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
 
   //pCI->PRINTBOARD_dbg();
 

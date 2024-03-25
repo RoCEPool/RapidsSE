@@ -87,9 +87,9 @@ void Card_OP::vAnalyse_injectable(CardIter* pCI)
 
   UNUSED(pCI);
 
-  pCI->G.p_injectable = Card_Injectable::pNew_injectable(pCI);
+  pCI->E.p_injectable = Card_Injectable::pNew_injectable(pCI);
 
-  vAppendChild(pCI->G.p_injectable);
+  vAppendChild(pCI->E.p_injectable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_Op->bLambdaWalk(CK_TERM, bfLambdaFn);
+  pCI->E.p_Op->bLambdaWalk(CK_TERM, bfLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,28 +141,28 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  switch (pCI->G.e_Op) {
+  switch (pCI->E.e_Op) {
 
     // -- -- -- -- -- -- --
     case CK_o_AGGREG:
-      pCI->G.p_aggreg->vEarlyProject_root(pCI);
+      pCI->E.p_aggreg->vEarlyProject_root(pCI);
       break;
 
     case CK_o_GBYAGG:
-      pCI->G.p_gbyAgg->vEarlyProject_root(pCI);
+      pCI->E.p_gbyAgg->vEarlyProject_root(pCI);
       break;
 
     case CK_o_ORDAGG:
-      pCI->G.p_ordAgg->vEarlyProject_root(pCI);
+      pCI->E.p_ordAgg->vEarlyProject_root(pCI);
       break;
 
     // -- -- -- -- -- -- --
     case CK_o_PROJECT:
-      pCI->G.p_project->vEarlyProject_root(pCI);
+      pCI->E.p_project->vEarlyProject_root(pCI);
       break;
 
     case CK_o_INDEXJOIN:
-      pCI->G.p_indexJoin->vEarlyProject_root(pCI);
+      pCI->E.p_indexJoin->vEarlyProject_root(pCI);
       break;
 
     // -- -- -- -- -- -- --
@@ -193,17 +193,17 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
     return;
 
   // which card did we arrive at?
-  switch (pCI->G.e_Op) {
+  switch (pCI->E.e_Op) {
 
     // -- -- -- -- -- -- --
     // don't go any further
 
     case CK_o_GBYAGG:
-      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->G.p_Op;
+      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->E.p_Op;
       break;
 
     case CK_o_ORDAGG:
-      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->G.p_Op;
+      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->E.p_Op;
       break;
 
     // -- -- -- -- -- -- --
@@ -211,60 +211,60 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
     case CK_o_CROSSJOIN:
       pCI->vSaveMembers();
-      pCI->G.p_crossJoin->vEarlyProject_recurse_update(pCI);
+      pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
       pCI->vRestoreMembers();
       break;
 
     case CK_o_FILTER:
       pCI->vSaveMembers();
-      pCI->G.p_filter->vEarlyProject_recurse_update(pCI);
+      pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
       pCI->vRestoreMembers();
       break;
 
     case CK_o_INDEXJOIN:
       pCI->vSaveMembers();
-      pCI->G.p_indexJoin->vEarlyProject_recurse_add(pCI);
+      pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
       pCI->vRestoreMembers();
       break;
 
     case CK_o_INDEXSCAN:
       pCI->vSaveMembers();
-      pCI->G.p_indexScan->vEarlyProject_leaf(pCI);
+      pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
       pCI->vRestoreMembers();
       break;
 
     case CK_o_KEYEXISTS:
       pCI->vSaveMembers();
-      pCI->G.p_keyExists->vEarlyProject_recurse_add(pCI);
+      pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
       pCI->vRestoreMembers();
       break;
 
     case CK_o_KEYNOTEXISTS:
       pCI->vSaveMembers();
-      pCI->G.p_keyNotExists->vEarlyProject_recurse_add(pCI);
+      pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
       pCI->vRestoreMembers();
       break;
 
     case CK_o_PROJECT:
-      if (pCI->G.p_project->pSub_needed()) {
+      if (pCI->E.p_project->pSub_needed()) {
         pCI->vSaveMembers();
-        pCI->G.p_project->vEarlyProject_recurse_needed(pCI);
+        pCI->E.p_project->vEarlyProject_recurse_needed(pCI);
         pCI->vRestoreMembers();
       }
       else {
-        pCI->G.p_project->vEarlyProject_given_leaf(pCI);
+        pCI->E.p_project->vEarlyProject_given_leaf(pCI);
       }
       break;
 
     case CK_o_SCAN:
       pCI->vSaveMembers();
-      pCI->G.p_scan->vEarlyProject_leaf(pCI);
+      pCI->E.p_scan->vEarlyProject_leaf(pCI);
       pCI->vRestoreMembers();
       break;
 
     case CK_o_WHERE:
       pCI->vSaveMembers();
-      pCI->G.p_where->vEarlyProject_recurse_update(pCI);
+      pCI->E.p_where->vEarlyProject_recurse_update(pCI);
       pCI->vRestoreMembers();
       break;
 
@@ -272,7 +272,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
     // missing??
 
     default:
-      pCI->G.p_Op->vDump(__func__);
+      pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
   }
 
@@ -304,11 +304,11 @@ void Card_OP::vEnsure_stream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! (pCI->G.p_stream = pSub_stream()) ) {
+  if (! (pCI->E.p_stream = pSub_stream()) ) {
     pCI->vAppendNewChild(this, CK_s_STREAM);
   }
 
-  RASSERT(pCI->G.p_stream);
+  RASSERT(pCI->E.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,23 +424,23 @@ void Card_OP::vMapColumns(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_key = pSub_key();
-  pCI->G.p_emit = pSub_emit();
+  pCI->E.p_key = pSub_key();
+  pCI->E.p_emit = pSub_emit();
 
   pCI->vAppendNewChild(CK_SYNTHESIS, CK_s_MAPPING);
-  pCI->vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
-  pCI->vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
+  pCI->vAppendNewChild(pCI->E.p_mapping, CK_KEYCELLS);
+  pCI->vAppendNewChild(pCI->E.p_mapping, CK_PAYLOADCELLS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the key
 
-  pCI->G.p_key->vMapColumns(pCI);
+  pCI->E.p_key->vMapColumns(pCI);
   //pCI->G.p_keyCells->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the projection
 
-  pCI->G.p_emit->vMapColumns(pCI);
+  pCI->E.p_emit->vMapColumns(pCI);
   //pCI->G.p_payloadCells->vDump(__func__);
 }
 
@@ -465,13 +465,13 @@ bool Card_OP::bPeg_Chosen_index(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_indexList = nullptr;
-  pCI->G.p_index = nullptr;
+  pCI->E.p_indexList = nullptr;
+  pCI->E.p_index = nullptr;
 
-  if (! (pCI->G.p_indexList = pSub_indexList()))
+  if (! (pCI->E.p_indexList = pSub_indexList()))
     return false;
 
-  if (! (pCI->G.p_index = pCI->G.p_indexList->pFindChosenIndex()))
+  if (! (pCI->E.p_index = pCI->E.p_indexList->pFindChosenIndex()))
     return false;
 
   return true;
@@ -484,7 +484,7 @@ bool Card_OP::bPeg_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (pCI->G.p_key = pSub_key()))
+  if (! (pCI->E.p_key = pSub_key()))
     return false;
 
   return true;
@@ -497,7 +497,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (pCI->G.p_emit = pSub_emit()))
+  if (! (pCI->E.p_emit = pSub_emit()))
     return false;
 
   return true;
@@ -510,12 +510,12 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_injectable = pCI->G.p_Op->pSub_injectable();
-  pCI->G.p_key        = pCI->G.p_Op->pSub_key();
-  pCI->G.p_needed     = pCI->G.p_Op->pSub_needed();
-  pCI->G.p_stream     = pCI->G.p_Op->pSub_stream();
+  pCI->E.p_injectable = pCI->E.p_Op->pSub_injectable();
+  pCI->E.p_key        = pCI->E.p_Op->pSub_key();
+  pCI->E.p_needed     = pCI->E.p_Op->pSub_needed();
+  pCI->E.p_stream     = pCI->E.p_Op->pSub_stream();
 
-  eCK eCard_OP = pCI->G.p_Op->eCard();
+  eCK eCard_OP = pCI->E.p_Op->eCard();
   switch (eCard_OP) {
 
     case CK_c_COMBINED:
@@ -523,7 +523,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_c_STAGE:
     case CK_o_CALL:
     case CK_o_CORRELATION:
-      RASSERT(! pCI->G.p_Op->pSub_emit());
+      RASSERT(! pCI->E.p_Op->pSub_emit());
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -531,15 +531,15 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_CROSSJOIN:
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
-      pCI->G.p_emit = pCI->G.p_Op->pSub_emit(C_NOT_NULL);
-      pCI->G.p_emit->vEnsure_expr_Has_nmdCol();
+      pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
+      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
       if (pCI->Flux.m_pArriving) {
         pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
-        pCI->G.p_key = pCI->G.p_Op->pSub_key();
-        pCI->G.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
-        pCI->G.p_key = nullptr;
+        pCI->E.p_key = pCI->E.p_Op->pSub_key();
+        pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+        pCI->E.p_key = nullptr;
       }
-      pCI->G.p_emit->vIncFunctionCount();
+      pCI->E.p_emit->vIncFunctionCount();
       if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
         vDebugPoint();
       break;
@@ -549,46 +549,46 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         vDebugPoint();
       }
 
-      pCI->G.p_emit = pCI->G.p_Op->pSub_emit(C_NOT_NULL);
-      pCI->G.p_emit->vEnsure_expr_Has_nmdCol();
+      pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
+      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
       if (pCI->Flux.m_pArriving) {
         pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
-        pCI->G.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+        pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
-      pCI->G.p_emit->vIncFunctionCount();
+      pCI->E.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_FROM:
-      if (pCI->G.p_Op->pSub_keyExists() || pCI->G.p_Op->pSub_keyNotExists() )
+      if (pCI->E.p_Op->pSub_keyExists() || pCI->E.p_Op->pSub_keyNotExists() )
         goto L_o_KEYEXISTS;
       [[clang::fallthrough]];
     case CK_o_INDEXJOIN:
     case CK_o_INDEXSCAN:
     case CK_o_SCAN:
-      if ((pCI->G.p_emit = pCI->G.p_Op->pSub_emit()))
-        pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+      if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+        pCI->E.p_stream->vDeleteChild(pCI->E.p_emit);
 
       if (pCI->Flux.m_pArriving) {
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
+        pCI->E.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
       }
       else
-        pCI->G.p_emit = new Card_Emit;
+        pCI->E.p_emit = new Card_Emit;
 
-      pCI->G.p_table = pCI->G.p_Op->pSub_table(C_NOT_NULL);
-      pCI->G.p_emit->vInject_expr_nmdCol_table(pCI);
+      pCI->E.p_table = pCI->E.p_Op->pSub_table(C_NOT_NULL);
+      pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
 
 
-      ((Card_OP*)pCI->G.p_Op)->vEnsure_stream(pCI);
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+      ((Card_OP*)pCI->E.p_Op)->vEnsure_stream(pCI);
+      pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
 
-      if ((pCI->G.p_filter = pCI->G.p_Op->pSub_filter()) &&
-          (pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred())) {
+      if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()) &&
+          (pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred())) {
         pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
-        pCI->G.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+        pCI->E.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
 
-      pCI->G.p_emit->vIncFunctionCount();
+      pCI->E.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -604,13 +604,13 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_TOP:
     case CK_o_WHERE:
     L_o_KEYEXISTS:
-      if ((pCI->G.p_emit = pCI->G.p_Op->pSub_emit()))
-        pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+      if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+        pCI->E.p_stream->vDeleteChild(pCI->E.p_emit);
 
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
-      ((Card_OP*)pCI->G.p_Op)->vEnsure_stream(pCI);
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-      pCI->G.p_emit->vIncFunctionCount();
+      pCI->E.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
+      ((Card_OP*)pCI->E.p_Op)->vEnsure_stream(pCI);
+      pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
+      pCI->E.p_emit->vIncFunctionCount();
 
 //      pCI->G.p_Op->vDump(__func__);
 //      vDebugPoint();
@@ -626,7 +626,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       break;
 
     default:
-      pCI->G.p_Op->vDump(__func__);
+      pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
       break;
 
@@ -635,12 +635,12 @@ void Card_OP::vRestate_emit(CardIter* pCI)
   if (   CK_o_HAVING == eCard_OP
       || CK_o_WHERE  == eCard_OP) {
     pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
-    if ((pCI->G.p_boolPred = pCI->G.p_Op->pSub_boolPred())) {
-      pCI->G.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+    if ((pCI->E.p_boolPred = pCI->E.p_Op->pSub_boolPred())) {
+      pCI->E.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
     }
     else {
-      pCI->G.p_expr = pCI->G.p_Op->pSub_expr();
-      pCI->G.p_expr->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+      pCI->E.p_expr = pCI->E.p_Op->pSub_expr();
+      pCI->E.p_expr->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
     }
   }
 
@@ -649,8 +649,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((pCI->G.p_filter = pCI->G.p_Op->pSub_filter())) {
-    RASSERT(pCI->G.p_Op->bEither(CK_o_CROSSJOIN,
+  if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter())) {
+    RASSERT(pCI->E.p_Op->bEither(CK_o_CROSSJOIN,
                                  CK_o_FROM,
                                  CK_o_HAVING,
                                  CK_o_INDEXJOIN,
@@ -660,34 +660,34 @@ void Card_OP::vRestate_emit(CardIter* pCI)
                                  CK_o_SCAN,
                                  CK_o_WHERE,
                                  CK_NONE));
-    if (pCI->G.p_Op->bEither(CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_NONE)) {
+    if (pCI->E.p_Op->bEither(CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_NONE)) {
       if (pCI->Flux.m_pArriving) {
-        pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
+        pCI->Dic.m_p_expr = _pCard_Emit(pCI->E.p_Op->pSub_injectable());
         //pCI->Dic.m_p_expr->vDump(__func__);
-        pCI->G.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr,true);
+        pCI->E.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr, true);
       }
     }
     else {
       if (pCI->Flux.m_pArriving) {
         pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
         //pCI->Dic.m_p_expr->vDump(__func__);
-        if (pCI->G.p_Op->bIsCard(CK_o_HAVING))
-          pCI->G.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr,true);
+        if (pCI->E.p_Op->bIsCard(CK_o_HAVING))
+          pCI->E.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr, true);
         else
-          pCI->G.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr,false);
+          pCI->E.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr, false);
       }
     }
   }
 //  pCI->G.p_Op->vDump(__func__);
 //  vDebugPoint();
 
-  if (pCI->G.p_emit && pCI->G.p_Op->pSub_key()) {
+  if (pCI->E.p_emit && pCI->E.p_Op->pSub_key()) {
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
       vDebugPoint();
-    pCI->G.p_key = pCI->G.p_Op->pSub_key();
-    pCI->G.p_emit->vApplyFacets(pCI->G.p_key);
+    pCI->E.p_key = pCI->E.p_Op->pSub_key();
+    pCI->E.p_emit->vApplyFacets(pCI->E.p_key);
 
-    for (Kid xEmit(pCI->G.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
+    for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
       for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
 
         Card_Term *p_term_keyCol = xRpnCalc.p_term();
@@ -697,9 +697,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
         i8 i_Key = pSym_term_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
 #ifdef Z_KEY_DIRECTION
-        pCI->G.p_key->vDump(__func__);
-        pCI->G.p_direction = pCI->G.p_key->pGet_direction(i_Key);
-        Card_Expr *p_expr_key = pCI->G.p_direction->pSub_expr(C_NOT_NULL);
+        pCI->E.p_key->vDump(__func__);
+        pCI->E.p_direction = pCI->E.p_key->pGet_direction(i_Key);
+        Card_Expr *p_expr_key = pCI->E.p_direction->pSub_expr(C_NOT_NULL);
 #else
         Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(i_Key);
 #endif
@@ -723,20 +723,20 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
   if (CK_o_KEYEXISTS    == eCard_OP ||
       CK_o_KEYNOTEXISTS == eCard_OP) {
-    pCI->Dic.m_p_expr = pCI->G.p_emit;
+    pCI->Dic.m_p_expr = pCI->E.p_emit;
     //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
     vUpdate_expCol(pCI->Dic.m_p_expr);
   }
   if (CK_o_WHERE        == eCard_OP) {
-    pCI->Dic.m_p_expr = pCI->G.p_emit;
+    pCI->Dic.m_p_expr = pCI->E.p_emit;
     vUpdate_expCol(pCI->Dic.m_p_expr);
   }
 
   if (CK_o_SORT== eCard_OP) {
-    pCI->Dic.m_p_expr = pCI->G.p_emit;
-    pCI->G.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+    pCI->Dic.m_p_expr = pCI->E.p_emit;
+    pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
   }
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
+  pCI->Flux.m_pArriving = pCI->E.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/

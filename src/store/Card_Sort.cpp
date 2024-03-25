@@ -48,15 +48,15 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Key(pCI));
-  pCI->G.p_emit->vDelete_streamKey(pCI);
+  pCI->E.p_emit->vDelete_streamKey(pCI);
 
 
-  pCI->G.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
-  pCI->G.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
+  pCI->E.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
+  pCI->E.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->G.p_emit;
+  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,11 +67,11 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCarryForward);
 
-  pCI->G.p_key = pCI->G.p_sort->pSub_key();
+  pCI->E.p_key = pCI->E.p_sort->pSub_key();
 
 #ifdef Z_KEY_DIRECTION
   if (pCarryForward->Sort.m_bCorrect_After_Inject) {
-    for (Kid xKey(pCI->G.p_key); xKey.bEach(CK_DIRECTION); /**/) {
+    for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
       Card_Direction *p_direction = xKey.p_direction();
       Card_Expr *p_expr = p_direction->pSub_expr();
       for (Kid xRpnCalc(p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
@@ -90,8 +90,8 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   vEnsure_stream(pCI);
 
-  if ((pCI->G.p_emit = pCI->G.p_sort->pSub_emit()))
-    pCI->G.p_sort->vDeleteSub(pCI->G.p_emit);
+  if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
+    pCI->E.p_sort->vDeleteSub(pCI->E.p_emit);
 
   Card_Emit* p_emit_sort =  pCI->Flux.m_pArriving->pInduct(pCI);
   //p_emit_sort->vDump(__func__);
@@ -107,7 +107,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   for (Kid xEmit_sort(p_emit_sort); xEmit_sort.bEach(); /**/) {
     Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
-    Card_Expr* p_expr_key = pCI->G.p_key->pDecode_scalar_expr_Via_symbol(p_expr_emit_sort->pSymbol());
+    Card_Expr* p_expr_key = pCI->E.p_key->pDecode_scalar_expr_Via_symbol(p_expr_emit_sort->pSymbol());
     if (! p_expr_key)
       continue;
     Symbol* pSym_expr_key = p_expr_key->pSymbol();
@@ -119,7 +119,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
 
 
-  pCI->G.p_stream->vAppendChild(p_emit_sort);
+  pCI->E.p_stream->vAppendChild(p_emit_sort);
 
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 }

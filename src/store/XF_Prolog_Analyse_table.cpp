@@ -106,7 +106,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
   // Affix Table synonyms To All Table
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM))  {
-    m_pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
+    m_pCI->E.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -114,28 +114,28 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM)) {
 
-    Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
+    Card_TableNm* p_tableNm = m_pCI->E.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
-    m_pCI->G.p_table->pSymbol()->Y_vSet(P_Pointer,pTable);
+    m_pCI->E.p_table->pSymbol()->Y_vSet(P_Pointer, pTable);
 
     i8 jTableSize;
     i8 jRowSize;
     i8 nRowCount;
     Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
 
-    m_pCI->G.p_tablePtn  = Card_TablePtn::pDerive(m_pCI->G.p_table);
-    m_pCI->G.p_tableSize = (new Card_TableSize) ->SYM(SF_INT_LIT,jTableSize);
-    m_pCI->G.p_rowSize   = (new Card_RowSize)   ->SYM(SF_INT_LIT,jRowSize);
-    m_pCI->G.p_rowCount  = (new Card_RowCount)  ->SYM(SF_INT_LIT,nRowCount);
+    m_pCI->E.p_tablePtn  = Card_TablePtn::pDerive(m_pCI->E.p_table);
+    m_pCI->E.p_tableSize = (new Card_TableSize) ->SYM(SF_INT_LIT, jTableSize);
+    m_pCI->E.p_rowSize   = (new Card_RowSize)   ->SYM(SF_INT_LIT, jRowSize);
+    m_pCI->E.p_rowCount  = (new Card_RowCount)  ->SYM(SF_INT_LIT, nRowCount);
 
-    m_pCI->G.p_tableInfo = new Card_TableInfo;
+    m_pCI->E.p_tableInfo = new Card_TableInfo;
 
-    m_pCI->G.p_tableInfo->vAppendChild(m_pCI->G.p_tablePtn);
-    m_pCI->G.p_tableInfo->vAppendChild(m_pCI->G.p_tableSize);
-    m_pCI->G.p_tableInfo->vAppendChild(m_pCI->G.p_rowSize);
-    m_pCI->G.p_tableInfo->vAppendChild(m_pCI->G.p_rowCount);
+    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_tablePtn);
+    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_tableSize);
+    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_rowSize);
+    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_rowCount);
 
-    m_pCI->G.p_table->vAppendChild(m_pCI->G.p_tableInfo);
+    m_pCI->E.p_table->vAppendChild(m_pCI->E.p_tableInfo);
   }
 
   m_pCI->vEndTransform(__LINE__);
@@ -157,9 +157,9 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSy
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp_bySub(CK_s_TABLE)) {
 
-    Card_TableNm *p_tableNm = m_pCI->G.p_table->pSub_tableNm();
+    Card_TableNm *p_tableNm = m_pCI->E.p_table->pSub_tableNm();
     Table *pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
-    m_pCI->G.p_table->pSymbol()->Y_vSet(P_Pointer, pTable);
+    m_pCI->E.p_table->pSymbol()->Y_vSet(P_Pointer, pTable);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

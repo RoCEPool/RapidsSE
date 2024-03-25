@@ -66,12 +66,12 @@ void XF_Prolog_Ensure_level::vEnsure_level(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
-    Card_Level* p_level = m_pCI->G.p_Op->pSub_level();
+    Card_Level* p_level = m_pCI->E.p_Op->pSub_level();
     if (p_level)
       continue;
 
     p_level = new Card_Level(AL_PARTITION);
-    m_pCI->G.p_Op->vPushChild(p_level);
+    m_pCI->E.p_Op->vPushChild(p_level);
   }
 
   m_pCI->vEndTransform(__LINE__);

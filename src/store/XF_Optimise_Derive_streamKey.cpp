@@ -122,13 +122,13 @@ void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
 
   while (m_pCI->bEachOp()) {
 
-    switch (m_pCI->G.e_Op) {
+    switch (m_pCI->E.e_Op) {
 
-      case CK_o_GBYAGG:     m_pCI->G.p_gbyAgg->vDerive_streamKey(m_pCI);     break;
-      case CK_o_INDEXJOIN:  m_pCI->G.p_indexJoin->vDerive_streamKey(m_pCI);  break;
-      case CK_o_INDEXSCAN:  m_pCI->G.p_indexScan->vDerive_streamKey(m_pCI);  break;
-      case CK_o_PROJECT:    m_pCI->G.p_project->vDerive_streamKey(m_pCI);    break;
-      case CK_o_SORT:       m_pCI->G.p_sort->vDerive_streamKey(m_pCI);       break;
+      case CK_o_GBYAGG:     m_pCI->E.p_gbyAgg->vDerive_streamKey(m_pCI);     break;
+      case CK_o_INDEXJOIN:  m_pCI->E.p_indexJoin->vDerive_streamKey(m_pCI);  break;
+      case CK_o_INDEXSCAN:  m_pCI->E.p_indexScan->vDerive_streamKey(m_pCI);  break;
+      case CK_o_PROJECT:    m_pCI->E.p_project->vDerive_streamKey(m_pCI);    break;
+      case CK_o_SORT:       m_pCI->E.p_sort->vDerive_streamKey(m_pCI);       break;
 
       default:
         break;

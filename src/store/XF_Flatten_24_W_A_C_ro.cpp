@@ -88,7 +88,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   vRestate_emit_fold(m_pCI);
 
-  m_pCI->G.p_deck->vMarksClearRecursive();
+  m_pCI->E.p_deck->vMarksClearRecursive();
 
   m_pCI->vEndTransform(__LINE__);
 }
@@ -134,8 +134,8 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
 
   while (pCI->bEachOp(CK_o_FROM, CK_t_EMIT, CK_o_FILTER)) {
 
-    pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
-    Card_CONJ *p_conj_root = pCI->G.p_boolPred->pRoot_conj();
+    pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred();
+    Card_CONJ *p_conj_root = pCI->E.p_boolPred->pRoot_conj();
 
     bool bIgnore = p_conj_root->bLambdaWalk_conj(fbSnap_sqyArg);
     UNUSED(bIgnore);
@@ -147,7 +147,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
     return false;
 
   pCI->Flat.m_p_expr_crlKey = pCI->pBackSearch_expr_For_col(pCI->Flat.m_p_term_crlKey->pSymbol(),
-                                                            pCI->G.i_Op + 1);
+                                                            pCI->E.i_Op + 1);
 
   pCI->Flat.m_p_expr_crlKey->vMark1(MARK_AT);
   pCI->Flat.m_p_expr_crlKey->pSymbol()->Y_vSet(P_CrlKeyDefn);
@@ -168,34 +168,34 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
   for (i8 i_agg = 0; i_agg < 3; i_agg++) {
 
-    pCI->G.p_Op->vCard(CK_o_GBYAGG);
-    pCI->G.p_gbyAgg = _pCard_GbyAgg(pCI->G.p_Op);
+    pCI->E.p_Op->vCard(CK_o_GBYAGG);
+    pCI->E.p_gbyAgg = _pCard_GbyAgg(pCI->E.p_Op);
 
-    pCI->G.p_level = pCI->G.p_gbyAgg->pSub_level();
-    eAL e_Level = (eAL) pCI->G.p_level->pSymbol()->Y_iGet(P_Level);
+    pCI->E.p_level = pCI->E.p_gbyAgg->pSub_level();
+    eAL e_Level = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
 
-    pCI->G.p_stream = pCI->G.p_gbyAgg->pSub_stream();
-    pCI->G.p_emit = pCI->G.p_stream->pSub_emit();
+    pCI->E.p_stream = pCI->E.p_gbyAgg->pSub_stream();
+    pCI->E.p_emit = pCI->E.p_stream->pSub_emit();
 
-    pCI->G.p_key = new Card_Key;
-    pCI->G.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
-    pCI->G.p_gbyAgg->vInsertChildBefore(pCI->G.p_key,pCI->G.p_stream);
+    pCI->E.p_key = new Card_Key;
+    pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
+    pCI->E.p_gbyAgg->vInsertChildBefore(pCI->E.p_key, pCI->E.p_stream);
 
 
     // key
 
     if (AL_PARTITION == e_Level) {
 #ifdef Z_KEY_DIRECTION
-      pCI->G.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION,"ASC"_Stz);
-      pCI->G.p_key->vAppendChild(pCI->G.p_direction);
-      pCI->G.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
+      pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, "ASC"_Stz);
+      pCI->E.p_key->vAppendChild(pCI->E.p_direction);
+      pCI->E.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
       pCI->Flat.m_p_expr_crlKey->vDump(__func__);
-      pCI->G.p_expr->vDump(__func__);
-      pCI->G.p_direction->vAppendChild(pCI->G.p_expr);
+      pCI->E.p_expr->vDump(__func__);
+      pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
 
-      if (1 == pCI->G.p_key->nChildCards()) {
-        pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
-        pCI->G.p_direction->vApplyCast_x(pCI->G.p_expr->xCast());
+      if (1 == pCI->E.p_key->nChildCards()) {
+        pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
+        pCI->E.p_direction->vApplyCast_x(pCI->E.p_expr->xCast());
       }
 #else
       pCI->G.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
@@ -209,20 +209,20 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     else {
 #ifdef Z_KEY_DIRECTION
       pCI->vNewMember(CK_EXPR);
-      pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->G.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-      pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-      pCI->G.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-      pCI->G.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION,"ASC"_Stz);
-      pCI->G.p_direction->vAppendChild(pCI->G.p_expr);
-      pCI->G.p_key->vAppendChild(pCI->G.p_direction);
-      if (1 == pCI->G.p_key->nChildCards()) {
-        pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
-        pCI->G.p_direction->vApplyCast_x(pCI->G.p_expr->xCast());
+      pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
+      pCI->E.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
+      pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
+      pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
+      pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, "ASC"_Stz);
+      pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
+      pCI->E.p_key->vAppendChild(pCI->E.p_direction);
+      if (1 == pCI->E.p_key->nChildCards()) {
+        pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
+        pCI->E.p_direction->vApplyCast_x(pCI->E.p_expr->xCast());
       }
 
-      pCI->G.p_rpnCalc->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-      pCI->G.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
+      pCI->E.p_rpnCalc->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
+      pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
 
 #else
       pCI->vNewMember(CK_EXPR);
@@ -239,59 +239,59 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 #endif
     }
     // TODO: hack...
-    pCI->G.p_expr->v_Child(0);
+    pCI->E.p_expr->v_Child(0);
 
-    pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
+    pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
     // projection
 
     if (AL_PARTITION == e_Level) {
-      pCI->G.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI,pCI->G.p_expr);
+      pCI->E.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI, pCI->E.p_expr);
       //pCI->G.p_expr->vDump(__func__);
       vDebugPoint();
     }
     else {
-      pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
+      pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
 
 
       Symbol xSymbol_KeyCol(SF_KEY_COL,1);
 
       pCI->vNewMember(CK_EXPR);
       i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
-      pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
-      pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
+      pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
+      pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
+      pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
-      pCI->G.p_rpnCalc->vApplyCast_x(pCI->G.p_key->xCast());
-      pCI->G.p_term->vApplyCast_x(pCI->G.p_key->xCast());
-      pCI->G.p_expr->vApplyCast_x(pCI->G.p_key->xCast());
+      pCI->E.p_rpnCalc->vApplyCast_x(pCI->E.p_key->xCast());
+      pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
+      pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
     }
 
-    pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
-    pCI->G.p_emit->vPushChild(pCI->G.p_expr);
+    pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
+    pCI->E.p_emit->vPushChild(pCI->E.p_expr);
 
 
     if (AL_PARTITION != e_Level) {
-      pCI->G.p_emit->vBump_expCol_In_rpnCalc(pCI);
+      pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
       //pCI->G.p_key->Y_vCut(P_ProjBump);
-      pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBumped);
+      pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
     }
 
 #ifdef Z_KEY_DIRECTION
-    for (Kid xKey(pCI->G.p_key); xKey.bEach(CK_DIRECTION); /**/) {
+    for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
       Card_Direction* p_direction = xKey.p_direction();
       p_direction->pSub_expr()->vRenumberForm_keyCol(xKey.i_Child()+1);
     }
 #else
     pCI->G.p_key->vRenumberAll_expr();
 #endif
-    pCI->G.p_emit->vRenumberAll_expr();
+    pCI->E.p_emit->vRenumberAll_expr();
 
     //pCI->G.p_key->vDump(__func__);
     vDebugPoint();
 
     if (pCI->bEachOp()) {
-      if (! pCI->G.p_Op->bIsCard(CK_o_AGGREG)) {
+      if (! pCI->E.p_Op->bIsCard(CK_o_AGGREG)) {
         bool b = pCI->bRewindOp();
         RASSERT(b);
         break;
@@ -316,40 +316,40 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold sq <project>
 
-  RASSERT (pCI->G.p_Op->bIsCard(CK_o_PROJECT));
-  RASSERT(CT_NONE != pCI->G.p_key->eCTVal());
+  RASSERT (pCI->E.p_Op->bIsCard(CK_o_PROJECT));
+  RASSERT(CT_NONE != pCI->E.p_key->eCTVal());
 
-  pCI->G.p_emit = pCI->G.p_project->pSub_emit();
-  pCI->G.p_emit->vBump_expCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
+  pCI->E.p_emit = pCI->E.p_project->pSub_emit();
+  pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
 
 
   // push <project>/_SQCRLKEY_
-  pCI->vPushChild(pCI->G.p_emit, CK_EXPR);
+  pCI->vPushChild(pCI->E.p_emit, CK_EXPR);
   i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
-  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
-  pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
+  pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
+  pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
-  pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
+  pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
 
-  pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
+  pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
   Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
 
 
-  pCI->G.p_rpnCalc->vApplyCast_x(pCI->G.p_key->xCast());
-  pCI->G.p_term->vApplyCast_x(pCI->G.p_key->xCast());
-  pCI->G.p_expr->vApplyCast_x(pCI->G.p_key->xCast());
+  pCI->E.p_rpnCalc->vApplyCast_x(pCI->E.p_key->xCast());
+  pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
+  pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // supplemental
 
-  pCI->G.p_expr = pCI->G.p_emit->pGet_expr(1);
-  pCI->G.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL,C_SQYRSL, i_Board);
+  pCI->E.p_expr = pCI->E.p_emit->pGet_expr(1);
+  pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_SQYRSL, i_Board);
 
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_emit->vRenumberAll_expr();
+  pCI->E.p_emit->vRenumberAll_expr();
 }
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -520,11 +520,11 @@ void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* p
 
   Card_Term* p_term_tblCol = pCI->Flat.m_p_conj_rslTest->pGetFirstTerm_tblCol();
   Symbol* pSym_term_tblCol = p_term_tblCol->pSymbol();
-  Card_OP* p_OP = pCI->pFind_from_By_tblSyn(pSym_term_tblCol, pCI->G.i_Op);
+  Card_OP* p_OP = pCI->pFind_from_By_tblSyn(pSym_term_tblCol, pCI->E.i_Op);
 
-  pCI->G.p_filter = p_OP->pEnsure_filter();
+  pCI->E.p_filter = p_OP->pEnsure_filter();
 
-  pCI->G.p_filter->pSub_boolPred()->vAppend_and_rlnConj(pCI->Flat.m_p_conj_rslTest);
+  pCI->E.p_filter->pSub_boolPred()->vAppend_and_rlnConj(pCI->Flat.m_p_conj_rslTest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -538,20 +538,20 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
   while (pCI->bEachOp()) {
 
-    if (CK_c_FOLD == pCI->G.e_Op)
+    if (CK_c_FOLD == pCI->E.e_Op)
       break;
 
-    if (Card_Emit* p_emit = pCI->G.p_Op->pSub_emit()) {
+    if (Card_Emit* p_emit = pCI->E.p_Op->pSub_emit()) {
       //pCI->PRINTBOARD_dbg();
       pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
     }
   }
 
-  RASSERT(CK_c_FOLD == pCI->G.e_Op);
+  RASSERT(CK_c_FOLD == pCI->E.e_Op);
 
-  pCI->G.p_stream = new Card_Stream;
-  pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
-  pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
+  pCI->E.p_stream = new Card_Stream;
+  pCI->E.p_fold->vAppendChild(pCI->E.p_stream);
+  pCI->E.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -609,8 +609,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // snap final IQ:<op>/<emit>
 
-  if (CK_o_PROJECT == pCI->G.e_Op || CK_o_GBYAGG == pCI->G.e_Op)
-    pCI->G.p_emit = pCI->G.p_Op->pSub_emit();
+  if (CK_o_PROJECT == pCI->E.e_Op || CK_o_GBYAGG == pCI->E.e_Op)
+    pCI->E.p_emit = pCI->E.p_Op->pSub_emit();
   else
     NEVER_REACH
 
@@ -627,7 +627,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // restate the emits of the leading OQ:<from>* sequence
   pCI->Flux.m_pArriving = nullptr;
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
-    ((Card_OP*)pCI->G.p_Op)->vRestate_emit(pCI);
+    ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -642,14 +642,14 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   pCI->vClearRestart();
   while (pCI->bEachOp(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
-    if (pCI->G.p_boolPred->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
-      pCI->G.p_boolPred->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
+    if (pCI->E.p_boolPred->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
+      pCI->E.p_boolPred->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
       break;
     }
   }
   RASSERT(pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_bHas(P_CrlKeyConj));
   // tidy up empty SQ:<table>/<filter>
-  pCI->G.p_from->vCull_filter_IfEmpty(pCI->G.p_filter);
+  pCI->E.p_from->vCull_filter_IfEmpty(pCI->E.p_filter);
 
   //                   v           //  ]filter
   // F A A A P + F F F W A A A     //  .]boolPred
@@ -667,19 +667,19 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   pCI->vForwards(false);
   while (pCI->bEachOp_reverse()) {
-    if (pCI->G.p_Op->pSub_emit())
+    if (pCI->E.p_Op->pSub_emit())
       break;
   }
   pCI->vForwards(true);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->G.p_Op->pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_Op->pSub_emit();
   RASSERT(pCI->bEachOp(CK_c_FOLD));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ???
 
   RASSERT(pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED));
-  pCI->G.p_boolPred->vBump_expCol(2);
+  pCI->E.p_boolPred->vBump_expCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append correlation key conjunction onto the OQ:<where>/<filter>/<boolPred>
@@ -687,7 +687,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vCut(P_CrlKeyConj);
   pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyTest);
 
-  pCI->G.p_boolPred->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Flat.m_p_conj_crlKey));
+  pCI->E.p_boolPred->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Flat.m_p_conj_crlKey));
 
   //                   v           //  ]filter
   // F A A A P + F F F W A A A     //  .]boolPred
@@ -698,10 +698,10 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   //pCI->PRINTBOARD_dbg();
   //pCI->G.p_boolPred->vDump(__func__);
-  vConvert_OQ_sqyPrm_Into_expCol(pCI, pCI->G.p_boolPred);
+  vConvert_OQ_sqyPrm_Into_expCol(pCI, pCI->E.p_boolPred);
 
   //pCI->G.p_boolPred->vDump(__func__);
-  vConvert_OQ_sqyNo_Into_expCol(pCI, pCI->G.p_boolPred);
+  vConvert_OQ_sqyNo_Into_expCol(pCI, pCI->E.p_boolPred);
 
   //pCI->PRINTBOARD_dbg();
   //pCI->G.p_boolPred->vDump(__func__);
@@ -721,7 +721,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   RASSERT(pCI->bEachOp(CK_c_FOLD));
   RASSERT(pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED));
-  vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->G.p_boolPred);
+  vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->E.p_boolPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

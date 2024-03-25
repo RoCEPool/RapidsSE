@@ -66,7 +66,7 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   //pCI->vUseCard(pCI->G.p_indexList);
 
-  Kid xIndexList(pCI->G.p_indexList);
+  Kid xIndexList(pCI->E.p_indexList);
   while (xIndexList.bEach(CK_INDEX)) {
 
     Card_Bounds* p_bounds = xIndexList.p_index()->pSub_bounds();
@@ -143,9 +143,9 @@ void Card_Index::vAdd_streamKey_exprs(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_idxColList = pSub_idxColList();
+  pCI->E.p_idxColList = pSub_idxColList();
 
-  pCI->G.p_idxColList->vAdd_streamKey_exprs(pCI);
+  pCI->E.p_idxColList->vAdd_streamKey_exprs(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,8 +260,8 @@ void Card_Index::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ((pCI->G.p_bounds = pSub_bounds()))
-    pCI->G.p_bounds->vApplyCast(pCI,/**/p_Dic_expr);
+  if ((pCI->E.p_bounds = pSub_bounds()))
+    pCI->E.p_bounds->vApplyCast(pCI,/**/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/

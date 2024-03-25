@@ -539,11 +539,11 @@ void Card_EXPRLIST::vX_expCol_To_tblCol(CardIter* pCI)
 
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR)) {
-    pCI->G.p_expr = xEXPRLIST.p_expr();
-    pCI->G.p_expr->vX_expCol_To_tblCol(pCI);
+    pCI->E.p_expr = xEXPRLIST.p_expr();
+    pCI->E.p_expr->vX_expCol_To_tblCol(pCI);
   }
 
-  pCI->G.p_expr = nullptr;
+  pCI->E.p_expr = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,17 +553,17 @@ void Card_EXPRLIST::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (CK_o_GBYAGG == pCI->G.e_Op) {
+  if (CK_o_GBYAGG == pCI->E.e_Op) {
     vDebugPoint();
   }
 
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR)) {
-    pCI->G.p_expr = xEXPRLIST.p_expr();
-    pCI->G.p_expr->vX_tblCol_To_expCol(pCI);
+    pCI->E.p_expr = xEXPRLIST.p_expr();
+    pCI->E.p_expr->vX_tblCol_To_expCol(pCI);
   }
 
-  pCI->G.p_expr = nullptr;
+  pCI->E.p_expr = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

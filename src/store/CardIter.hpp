@@ -27,7 +27,7 @@ namespace STORE
 
     i8          m_i_RecursionDepth;
 
-    CardIterMembers G;
+    CardIterMembers E;
 
     struct {
       Card_OP*      m_pOP_root;

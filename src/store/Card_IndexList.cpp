@@ -242,8 +242,8 @@ void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   i8 nChosenIndexes = 0;
   for (Kid xIndexList(this); xIndexList.bEach(CK_INDEX); /**/) {
-    pCI->G.p_index = xIndexList.p_index();
-    if (pCI->G.p_index->pSymbol()->Y_bHas(P_ChosenIndex))
+    pCI->E.p_index = xIndexList.p_index();
+    if (pCI->E.p_index->pSymbol()->Y_bHas(P_ChosenIndex))
       nChosenIndexes++;
   }
   RASSERT(nChosenIndexes <= 1);

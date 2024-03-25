@@ -47,18 +47,18 @@ void Card_KeyNotExists::vMorph_from_To_keyNotExists(CardIter *pCI)
 {
   _static_
 
-  if ((pCI->G.p_keyNotExists = pCI->G.p_table->pSub_keyNotExists()))
-    pCI->G.p_from->vDeleteChild(pCI->G.p_keyNotExists);
+  if ((pCI->E.p_keyNotExists = pCI->E.p_table->pSub_keyNotExists()))
+    pCI->E.p_from->vDeleteChild(pCI->E.p_keyNotExists);
 
-  pCI->G.p_keyNotExists = _pCard_KeyNotExists(pCI->G.p_from->pCard(CK_o_KEYNOTEXISTS));
+  pCI->E.p_keyNotExists = _pCard_KeyNotExists(pCI->E.p_from->pCard(CK_o_KEYNOTEXISTS));
 
   // todo: this should be in index list
-  pCI->G.p_index = pCI->G.p_keyNotExists->pSub_index();
-  pCI->G.p_index->vSet_Choose_index();
-  pCI->G.p_index->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
+  pCI->E.p_index = pCI->E.p_keyNotExists->pSub_index();
+  pCI->E.p_index->vSet_Choose_index();
+  pCI->E.p_index->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
 
-  pCI->G.p_filter = pCI->G.p_keyNotExists->pSub_filter();
-  pCI->G.p_filter->vCard(CK_s_CONSTRAINT);
+  pCI->E.p_filter = pCI->E.p_keyNotExists->pSub_filter();
+  pCI->E.p_filter->vCard(CK_s_CONSTRAINT);
 }
 
 
@@ -101,8 +101,8 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
-  pCI->G.p_Op = pCI->G.p_keyNotExists;
-  pCI->G.p_keyNotExists->vRestate_emit(pCI);
+  pCI->E.p_Op = pCI->E.p_keyNotExists;
+  pCI->E.p_keyNotExists->vRestate_emit(pCI);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
@@ -117,14 +117,14 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 
-  pCI->G.p_indexList = pSub_indexList();
-  pCI->G.p_index     = pCI->G.p_indexList->pFindChosenIndex();
-  pCI->G.p_bounds    = pCI->G.p_index->pSub_bounds();
-  pCI->G.p_bound     = pCI->G.p_bounds->pFindChosenBound();
+  pCI->E.p_indexList = pSub_indexList();
+  pCI->E.p_index     = pCI->E.p_indexList->pFindChosenIndex();
+  pCI->E.p_bounds    = pCI->E.p_index->pSub_bounds();
+  pCI->E.p_bound     = pCI->E.p_bounds->pFindChosenBound();
   //pCI->G.p_bound->vDump();
-  pCI->G.p_term      = pCI->G.p_bound->pGet_tblCol();
+  pCI->E.p_term      = pCI->E.p_bound->pGet_tblCol();
 
-  RASSERT(pCI->G.p_term);
+  RASSERT(pCI->E.p_term);
   //pCI->G.p_term->vDump();
 
   /*
@@ -135,11 +135,11 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->G.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->E.p_term->pSymbol())) {
 
     //pCI->Early.m_pNeeded_later->vDump();
 
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->G.p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->E.p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);

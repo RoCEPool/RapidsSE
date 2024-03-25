@@ -66,15 +66,15 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     Card_Term *p_term = _pCard_Term(pCard);
     Symbol *pSymbol_term = p_term->pSymbol();
 
-    if ((pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->pAncestor(CK_o_INDEXJOIN))) &&
-        (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_s_CONSTRAINT)))) {
+    if ((pCI->E.p_indexJoin = _pCard_IndexJoin(pCI->pAncestor(CK_o_INDEXJOIN))) &&
+        (pCI->E.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_s_CONSTRAINT)))) {
 
       if (!pSymbol_term->bHasFacet(SF_NMD_COL))
         return C_CONTINUE_RECURSION;
 
-      pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
-      pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term);
-      pSymbol_term->vApplyFacet(SF_ITM_COL, pCI->G.p_expr->szFacet(SF_ITM_COL));
+      pCI->E.p_emit = pCI->E.p_indexJoin->pSub_emit();
+      pCI->E.p_expr = pCI->E.p_emit->pFind_expr_Matches(pSymbol_term);
+      pSymbol_term->vApplyFacet(SF_ITM_COL, pCI->E.p_expr->szFacet(SF_ITM_COL));
       return C_CONTINUE_RECURSION;
     }
 
@@ -83,7 +83,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (! pSymbol_term->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    if (! (pCI->G.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR))))
+    if (! (pCI->E.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR))))
       return C_CONTINUE_RECURSION;
 
     i8 i_Item;
@@ -97,7 +97,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bLambdaWalk(pCI->G.p_deck, CK_NONE, bfItemise_colNm);
+  pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm);
 
 }
 
@@ -198,14 +198,14 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pCI->G.p_key && pCI->G.p_expr && pCI->G.p_rpnCalc) {
+  if (pCI->E.p_key && pCI->E.p_expr && pCI->E.p_rpnCalc) {
     if (! pCI->Dic.m_p_expr)
       return;
 
     Card_Expr* p_expr_matching = pCI->Dic.m_p_expr->pFind_expr_Matches(pSym_term);
     if (! p_expr_matching)
 #ifdef Z_KEY_DIRECTION
-      p_expr_matching = pCI->G.p_key->pFind_expr_key_Matches(pSym_term);
+      p_expr_matching = pCI->E.p_key->pFind_expr_key_Matches(pSym_term);
 #else
     p_expr_matching = pCI->G.p_key->pFind_expr_Matches(pSym_term);
 #endif
@@ -221,14 +221,14 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
 
   Card_Expr *p_expr_matched = nullptr;
   if (pSym_term->bHasFacet(SF_KEY_COL) && ! pSym_term->bHasFacet(SF_EXP_COL)) {
-    p_expr_matched = pCI->G.p_key->pFind_expr_Matches(pSym_term);
+    p_expr_matched = pCI->E.p_key->pFind_expr_Matches(pSym_term);
   }
   else {
     if (pCI->Dic.m_p_expr)
       p_expr_matched = pCI->Dic.m_p_expr->pFind_expr_Matches(pSym_term);
-    if (! p_expr_matched && pCI->G.p_injectable) {
+    if (! p_expr_matched && pCI->E.p_injectable) {
       vDebugPoint();
-      p_expr_matched = pCI->G.p_injectable->pFind_expr_Matches(pSym_term);
+      p_expr_matched = pCI->E.p_injectable->pFind_expr_Matches(pSym_term);
     }
   }
   if (! p_expr_matched)
@@ -392,11 +392,11 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
       pSymbol_this->vApplyCastFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
 
-      if (pCI->G.p_expr && pCI->G.p_expr->bIsScalarCol() && pCI->G.p_rpnCalc) {
-        pCI->G.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL,pSymbol_term0->szFacet(SF_TBL_COL));
+      if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol() && pCI->E.p_rpnCalc) {
+        pCI->E.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL, pSymbol_term0->szFacet(SF_TBL_COL));
 
         if (pSymbol_term0->bHasFacet(SF_NMD_COL))
-          pCI->G.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,pSymbol_term0->szFacet(SF_NMD_COL));
+          pCI->E.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, pSymbol_term0->szFacet(SF_NMD_COL));
 
       }
 
@@ -411,15 +411,15 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_boolPred || pCI->G.p_bound || pCI->G.p_expr || pCI->G.p_hshCol || pCI->G.p_rpnCalc);
+  RASSERT(pCI->E.p_boolPred || pCI->E.p_bound || pCI->E.p_expr || pCI->E.p_hshCol || pCI->E.p_rpnCalc);
 
   Symbol* pSymbol_this = this->pSymbol();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ../<key>/<expr>|?|/<rpnCalc>/<term>|?|
 
-  if (pCI->G.p_key && pCI->G.p_expr) {
-    Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
+  if (pCI->E.p_key && pCI->E.p_expr) {
+    Symbol* pSymbol_expr = pCI->E.p_expr->pSymbol();
 
     if (pSymbol_this->bHasFacet(SF_KEY_COL) &&
         ! pSymbol_expr->bHasFacet(SF_KEY_COL))
@@ -439,11 +439,11 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (pSymbol_this->bHasFacet(SF_EXP_COL))
     return;
   if (pSymbol_this->bHasFacet(SF_KEY_COL)) {
-    if (CK_o_GBYAGG == pCI->G.e_Op)
+    if (CK_o_GBYAGG == pCI->E.e_Op)
       return;
-    if (CK_o_INDEXJOIN == pCI->G.e_Op)
+    if (CK_o_INDEXJOIN == pCI->E.e_Op)
       return;
-    if (CK_o_SORT == pCI->G.e_Op)
+    if (CK_o_SORT == pCI->E.e_Op)
       return;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -544,7 +544,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
+  if (pCI->E.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
     if (m_xSymbol.bIs_Col() && ! pCI->bAncestor(CK_s_NEEDED)) {
       if (!m_xSymbol.bValidType()) {
          vMark("?"_Stz,"t"_Stz);

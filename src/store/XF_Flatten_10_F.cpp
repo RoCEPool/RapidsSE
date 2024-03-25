@@ -91,15 +91,15 @@ void XF_Flatten_10_F::vFlatten(void)
   pCarryForward->Table.m_bReproject = true;
    vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.p_deck->vMarksClearRecursive();
+  m_pCI->E.p_deck->vMarksClearRecursive();
 
   // todo: discuss with Alka
   m_pCI->vClearRestart();
   if (m_pCI->bEachOp(CK_c_FOLD)) {
     if (m_pCI->bEachOp(CK_o_WHERE)) {
-      Card_Level* p_level_where = m_pCI->G.p_where->pSub_level();
+      Card_Level* p_level_where = m_pCI->E.p_where->pSub_level();
       if (m_pCI->bEachOp(CK_o_PROJECT, CK_s_LEVEL)) {
-        p_level_where->pSymbol()->Y_vSet(P_Level, m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
+        p_level_where->pSymbol()->Y_vSet(P_Level, m_pCI->E.p_level->pSymbol()->Y_iGet(P_Level));
       }
     }
   }

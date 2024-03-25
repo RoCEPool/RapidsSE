@@ -423,8 +423,8 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
   i8 i_Main = 0;
 
   i8 i_Fold = C_UNKNOWN;
-  for (i8 i_Test = 0 ; i_Test < pCI->G.p_deck->nChildCards() ; i_Test++) {
-    Card *pTestCard = pCI->G.p_deck->pGetChild(i_Test);
+  for (i8 i_Test = 0 ; i_Test < pCI->E.p_deck->nChildCards() ; i_Test++) {
+    Card *pTestCard = pCI->E.p_deck->pGetChild(i_Test);
 
     if (pTestCard->bIsCard(CK_c_FOLD))
       i_Fold = i_Test;
@@ -434,7 +434,7 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
     i_Main = i_Fold + 1;
 
   for (/* none */ ; /* none */ ; i_Main++) {
-    Card *pMainCard = pCI->G.p_deck->pGetChild(i_Main);
+    Card *pMainCard = pCI->E.p_deck->pGetChild(i_Main);
 
     if (CK_o_WHERE == pMainCard->eCard()) {
       delete pScope;

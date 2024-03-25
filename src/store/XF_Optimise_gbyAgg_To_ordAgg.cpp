@@ -76,17 +76,17 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
   while (m_pCI->bEachOp()) {
 
-    switch (m_pCI->G.e_Op) {
+    switch (m_pCI->E.e_Op) {
 
       case CK_o_GBYAGG:
-        if (m_pCI->G.p_gbyAgg->bMorph_gbyAgg_To_ordAgg(m_pCI))
+        if (m_pCI->E.p_gbyAgg->bMorph_gbyAgg_To_ordAgg(m_pCI))
           bOptRun = true;
 
         break;
 
       default:
-        if (m_pCI->G.p_Op->pSub_emit()) {
-          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_Op->pSub_emit();
+        if (m_pCI->E.p_Op->pSub_emit()) {
+          m_pCI->StreamOrder.m_pEmitted = m_pCI->E.p_Op->pSub_emit();
           m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmitted->pSub_streamKey();
         }
         break;

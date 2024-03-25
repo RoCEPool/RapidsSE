@@ -73,7 +73,7 @@ void XF_Flatten_Pullup_rlnConj::vXF_Pullup_rlnConj(void)
   // cull @ marked where predicates
   Card_Where::vCullMarked_rlnConj(m_pCI);
 
-  m_pCI->G.p_deck->vMarksClearRecursive();
+  m_pCI->E.p_deck->vMarksClearRecursive();
 
   m_pCI->vEndTransform(__LINE__);
 }

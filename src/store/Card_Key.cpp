@@ -143,9 +143,9 @@ void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 
 #ifdef Z_KEY_DIRECTION
   for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    pCI->G.p_direction = xKey.p_direction();
-    pCI->G.p_expr = pCI->G.p_direction->pSub_expr();
-    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
+    pCI->E.p_direction = xKey.p_direction();
+    pCI->E.p_expr = pCI->E.p_direction->pSub_expr();
+    pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
   }
 #else
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
@@ -154,8 +154,8 @@ void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
   }
 #endif
 
-  pCI->G.p_expr = nullptr;
-  pCI->G.p_direction = nullptr;
+  pCI->E.p_expr = nullptr;
+  pCI->E.p_direction = nullptr;
 
 }
 
@@ -304,8 +304,8 @@ void Card_Key::vMapColumns(CardIter *pCI)
     Card_Expr *p_expr_key = p_direction_key->pSub_expr();
 
     i_Cell++;
-    pCI->vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
-    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
+    pCI->vAppendNewChild(pCI->E.p_keyCells, CK_MAP, p_expr_key->pSymbol());
+    pCI->E.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
   }
 #else
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {

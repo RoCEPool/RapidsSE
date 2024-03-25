@@ -84,7 +84,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bLambdaWalk(pCI->G.p_deck, CK_NONE, bfItemise_colNm);
+  pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm);
 }
 
 /*----------------------------------------------------------------------------*/

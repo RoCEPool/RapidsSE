@@ -71,9 +71,9 @@ Card_Constraint* Card_Constraint::pNewAssembly(CardIter* pCI)
   p_constraint->vAppendChild(p_expr);
 
   if (pCI) {
-    pCI->G.p_constraint = p_constraint;
-    pCI->G.p_expr       = p_expr;
-    pCI->G.p_rpnCalc    = p_rpnCalc;
+    pCI->E.p_constraint = p_constraint;
+    pCI->E.p_expr       = p_expr;
+    pCI->E.p_rpnCalc    = p_rpnCalc;
   }
 
   return p_constraint;
@@ -114,9 +114,9 @@ void Card_Constraint::vBurstAssembly(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_constraint = this;
-  pCI->G.p_expr       = pCI->G.p_constraint->pSub_expr(C_NOT_NULL);
-  pCI->G.p_rpnCalc    = pCI->G.p_expr->pSub_rpnCalc(C_NOT_NULL);
+  pCI->E.p_constraint = this;
+  pCI->E.p_expr       = pCI->E.p_constraint->pSub_expr(C_NOT_NULL);
+  pCI->E.p_rpnCalc    = pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,11 +139,11 @@ void Card_Constraint::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vApplyCast(pCI,/*??*/p_Dic_expr);
+  if ((pCI->E.p_boolPred = pSub_boolPred()))
+    pCI->E.p_boolPred->vApplyCast(pCI,/*??*/p_Dic_expr);
   else
-  if ((pCI->G.p_expr = pSub_expr()))
-    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
+  if ((pCI->E.p_expr = pSub_expr()))
+    pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,7 +155,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   //i8 i_Main = pCI->G.p_deck->iFindChild(pCI->G.p_Op);
 
-  Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
+  Card_BoolPred* p_boolPred = pCI->E.p_constraint->pSub_boolPred();
 
   Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
   if (! p_conj_ROOT)
@@ -178,8 +178,8 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     Card_Expr* p_expr_resolved;
 
     Symbol* pSymbol = p_term->pSymbol();
-    pCI->G.p_injectable = pCI->G.p_Op->pSub_injectable();
-    p_expr_resolved = pCI->G.p_injectable->pFind_expr_Matches(pSymbol);
+    pCI->E.p_injectable = pCI->E.p_Op->pSub_injectable();
+    p_expr_resolved = pCI->E.p_injectable->pFind_expr_Matches(pSymbol);
 
     szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
 

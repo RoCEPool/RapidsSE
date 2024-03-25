@@ -76,14 +76,14 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
   while (m_pCI->bEachOp()) {
 
-    switch (m_pCI->G.e_Op) {
+    switch (m_pCI->E.e_Op) {
 
       case CK_o_SORT:
         if (! m_pCI->StreamOrder.m_pStreamKey)
          break;
 
-        m_pCI->G.p_key = m_pCI->G.p_sort->pSub_key();
-        if (! m_pCI->StreamOrder.m_pStreamKey->bIsEquivalentTo(m_pCI->G.p_key))
+        m_pCI->E.p_key = m_pCI->E.p_sort->pSub_key();
+        if (! m_pCI->StreamOrder.m_pStreamKey->bIsEquivalentTo(m_pCI->E.p_key))
           break;
 
         m_pCI->vRemoveDeleteMain(CK_o_SORT);
@@ -100,8 +100,8 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
         break;
 
       default:
-        if (m_pCI->G.p_Op->pSub_emit()) {
-          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_Op->pSub_emit();
+        if (m_pCI->E.p_Op->pSub_emit()) {
+          m_pCI->StreamOrder.m_pEmitted = m_pCI->E.p_Op->pSub_emit();
           m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmitted->pSub_streamKey();
         }
         break;

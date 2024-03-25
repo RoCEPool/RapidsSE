@@ -69,15 +69,15 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
   m_pCI->vBeginBoard();
   while (m_pCI->bEachBoard()) {
 
-    SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
+    SubQuery* pOuterQuery = m_pCI->E.pBoard->pSubQuery();
     pOuterQuery->vDisposition(QD_LINEAR);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp()) {
-      if (m_pCI->G.p_Op->bIsCard(CK_o_AGGREG) ||
-          m_pCI->G.p_Op->bIsCard(CK_o_GBYAGG)) {
+      if (m_pCI->E.p_Op->bIsCard(CK_o_AGGREG) ||
+          m_pCI->E.p_Op->bIsCard(CK_o_GBYAGG)) {
         pOuterQuery->vDisposition(QD_AGGREGATION);
         break;
       }
@@ -122,11 +122,11 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
 
   m_pCI->vBeginBoard();
   while (m_pCI->bEachBoard()) {
-    SubQuery* pSubQuery = m_pCI->G.pBoard->pSubQuery();
+    SubQuery* pSubQuery = m_pCI->E.pBoard->pSubQuery();
 
-    if ((m_pCI->G.p_subQuery =
-          _pCard_SubQuery(m_pCI->G.pBoard->pDeck()->pFindChild(CK_SUBQUERY)))) {
-      m_pCI->G.p_subQuery->vPopulate_subQuery(m_pCI,pSubQuery);
+    if ((m_pCI->E.p_subQuery =
+          _pCard_SubQuery(m_pCI->E.pBoard->pDeck()->pFindChild(CK_SUBQUERY)))) {
+      m_pCI->E.p_subQuery->vPopulate_subQuery(m_pCI, pSubQuery);
     }
 
     UNUSED(pSubQuery);
@@ -148,13 +148,13 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Board* pBoard = m_pCI->m_pBench->pFindBoard(m_pCI->G.p_call->pSymbol());
+  Board* pBoard = m_pCI->m_pBench->pFindBoard(m_pCI->E.p_call->pSymbol());
   if (!pBoard) {
     m_pCI->m_pBench->vDump(__func__ );
     NEVER_REACH;
   }
   SubQuery *pSubQuery = pBoard->pSubQuery();
-  pSubQuery->vCaller(m_pCI->G.i_Board);
+  pSubQuery->vCaller(m_pCI->E.i_Board);
   pSubQuery->vClause(QC_FROM_CLAUSE);
 
 }
@@ -166,7 +166,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(m_pCI->G.p_boolPred->pGetChild(0));
+  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(m_pCI->E.p_boolPred->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -195,7 +195,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
     Board* pSubBoard = m_pCI->m_pBench->pFindBoard(p_term->pSymbol());
     SubQuery* pSubQuery = pSubBoard->pSubQuery();
 
-    pSubQuery->vCaller(m_pCI->G.i_Board);
+    pSubQuery->vCaller(m_pCI->E.i_Board);
     pSubQuery->vClause(QC_HAVING_CLAUSE);
     pSubQuery->vCallOp(QO_RELN_OP);
     pSubQuery->vRelnOp(eRelnOp);
@@ -216,7 +216,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(m_pCI->G.p_boolPred->pGetChild(0));
+  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(m_pCI->E.p_boolPred->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -247,7 +247,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
       eRO eRlnOp = p_conj->pSymbol()->eRlnOp();
       RASSERT(RO_NONE != eRlnOp);
 
-      pSubQuery->vCaller(m_pCI->G.i_Board);
+      pSubQuery->vCaller(m_pCI->E.i_Board);
       pSubQuery->vClause(QC_WHERE_CLAUSE);
       pSubQuery->vCallOp(QO_RELN_OP);
       pSubQuery->vRelnOp(eRlnOp);
@@ -259,7 +259,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
     eQO eSqyOp = p_conj->pSymbol()->eSqyOp();
     RASSERT(QO_NONE != eSqyOp);
 
-    pSubQuery->vCaller(m_pCI->G.i_Board);
+    pSubQuery->vCaller(m_pCI->E.i_Board);
     pSubQuery->vClause(QC_WHERE_CLAUSE);
     pSubQuery->vCallOp(eSqyOp);
     return C_CONTINUE_RECURSION;

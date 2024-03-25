@@ -149,7 +149,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->bEachOp()) {
-    if (m_pCI->G.p_Op->bIsCard(CK_c_STAGE))
+    if (m_pCI->E.p_Op->bIsCard(CK_c_STAGE))
       vCraftStageDef();
     else {
       vCraftOpDef();
@@ -174,8 +174,8 @@ void XF_Synthesise_pipelineDef::vCraftStageDef(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
-                             m_pCI->G.p_stage->szFacet(SF_STG_NM),
-                             m_pCI->G.p_stage);
+                             m_pCI->E.p_stage->szFacet(SF_STG_NM),
+                             m_pCI->E.p_stage);
   m_pPipelineDef->vAppend(m_pStageDef);
 }
 
@@ -188,17 +188,17 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   RASSERT(m_pStageDef);
 
-  if (m_pCI->G.p_Op->bIsCard(CK_o_ORDAGG))
+  if (m_pCI->E.p_Op->bIsCard(CK_o_ORDAGG))
     vDebugPoint();
 
-  if (m_pCI->G.p_Op->bEither(CK_o_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
+  if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
     return;
 
-  if (m_pCI->G.p_Op->bIsCard(CK_o_SCAN)) {
+  if (m_pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
     return;
   }
 
-  m_pOpDef = new OpDef(m_pStageDef->nItems(), m_pCI->G.p_Op);
+  m_pOpDef = new OpDef(m_pStageDef->nItems(), m_pCI->E.p_Op);
   m_pStageDef->vAppend(m_pOpDef);
 
   vCraftStreamDefs();
@@ -220,7 +220,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_OP* p_OP = (Card_OP*)m_pCI->G.p_Op;
+  Card_OP* p_OP = (Card_OP*)m_pCI->E.p_Op;
 
   s2K sExpr;
   s2K sConstraint;
@@ -383,7 +383,7 @@ void XF_Synthesise_pipelineDef::vCraftIndexes(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_OP* p_OP = (Card_OP*)m_pCI->G.p_Op;
+  Card_OP* p_OP = (Card_OP*)m_pCI->E.p_Op;
 
   eCK eCard = p_OP->eCard();
 
@@ -410,7 +410,7 @@ void XF_Synthesise_pipelineDef::vCraftIndexDefs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_OP* p_OP = (Card_OP*)m_pCI->G.p_Op;
+  Card_OP* p_OP = (Card_OP*)m_pCI->E.p_Op;
 
   eCK eCard = p_OP->eCard();
 
@@ -437,7 +437,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
       vDebugPoint();
   }
 
-  Card_OP* p_OP = (Card_OP*)m_pCI->G.p_Op;
+  Card_OP* p_OP = (Card_OP*)m_pCI->E.p_Op;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // arriving
@@ -499,7 +499,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
   }
 
 
-  Card* p_OP_curr = m_pCI->G.p_Op;
+  Card* p_OP_curr = m_pCI->E.p_Op;
 
   if (! p_OP_curr->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_INFLATE,
                           CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_o_SCAN, CK_NONE))
@@ -615,7 +615,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
       vDebugPoint();
   }
 
-  if (! m_pCI->G.p_Op->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
+  if (! m_pCI->E.p_Op->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
     return;
 
   if (! m_pCI->Flux.m_pArriving)
@@ -628,7 +628,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
   ColPpg* pColPpg = new ColPpg(nArriving);
   m_pOpDef->vColPpg(pColPpg);
 
-  vCraftColPpg(pColPpg, m_pCI->G.p_Op);
+  vCraftColPpg(pColPpg, m_pCI->E.p_Op);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -752,24 +752,24 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (! m_pCI->G.p_Op->bEither(CK_o_ORDAGG, CK_NONE))
+  if (! m_pCI->E.p_Op->bEither(CK_o_ORDAGG, CK_NONE))
     return;
 
   m_pOpDef->m_pKeyMap = new KeyMap;
 
-  m_pCI->G.p_emit = m_pCI->G.p_Op->pSub_emit();
+  m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
 
 #ifdef Z_KEY_DIRECTION
-  for (Kid xKey(m_pCI->G.p_Op->pSub_key()); xKey.bEach(CK_DIRECTION); /**/) {
+  for (Kid xKey(m_pCI->E.p_Op->pSub_key()); xKey.bEach(CK_DIRECTION); /**/) {
     //xKey.p_expr()->vDump(__func__,"KEY EXPR"_Stz);
 
     Card_Direction *p_direction_key = xKey.p_direction();
     Card_Expr *p_expr_key = p_direction_key->pSub_expr();
 
-    if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Matches(p_expr_key->pSymbol()))) {
+    if ((m_pCI->E.p_expr = m_pCI->E.p_emit->pFind_expr_Matches(p_expr_key->pSymbol()))) {
       //m_pCI->G.p_expr->vDump(__func__, "EMIT EXPR"_Stz);
 
-      i8 i_EmittedCol = m_pCI->G.p_expr->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
+      i8 i_EmittedCol = m_pCI->E.p_expr->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
       i8 i_Cell = p_expr_key->pSymbol()->iTo_ordinal(SF_KEY_COL) - 1;
       m_pOpDef->m_pKeyMap->vAdd(i_EmittedCol,i_Cell);
     }

@@ -109,7 +109,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
   Board *pBoard_outer = nullptr;
   if (iDepth) {
-    pBoard_outer = m_pCI->G.pBoard;
+    pBoard_outer = m_pCI->E.pBoard;
     SubQuery *pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
     m_pCI->vSaveMembers();
     m_pCI->vUseBoard(pSqy_inner->pBoard());
@@ -131,7 +131,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
     if (! m_pCI->bEachOp(CK_o_CALL))
       break;
 
-    Symbol* pSym_sqyNo_nested = m_pCI->G.p_call->pSymbol();
+    Symbol* pSym_sqyNo_nested = m_pCI->E.p_call->pSymbol();
     vFlatten_recurse(pSym_sqyNo_nested, iDepth + 1);
     vFlattenByDecisionTree(pSym_sqyNo_nested);
   }
@@ -160,7 +160,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
 
     bFound = false;
-    bool b = m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    bool b = m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
     UNUSED(b);
     vDebugPoint();
   } while (bFound);
@@ -189,7 +189,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
 
     bFound = false;
-    bool b = m_pCI->G.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    bool b = m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
     UNUSED(b);
     vDebugPoint();
   } while (bFound);

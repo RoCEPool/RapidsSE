@@ -47,7 +47,7 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 {
   _static_
 
-    pCI->G.p_from->vCard(CK_o_SCAN);
+    pCI->E.p_from->vCard(CK_o_SCAN);
 }
 
 

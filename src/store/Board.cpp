@@ -81,18 +81,18 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   _static_
 
 
-  pCI->G.p_emit = nullptr;
+  pCI->E.p_emit = nullptr;
   for (i8 i_Main = pCI->Flat.m_i_fold - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = pCI->G.p_deck->pGetChild(i_Main);
-    if ((pCI->G.p_emit = pMain->pSub_emit()))
+    Card *pMain = pCI->E.p_deck->pGetChild(i_Main);
+    if ((pCI->E.p_emit = pMain->pSub_emit()))
       break;
   }
-  if (! pCI->G.p_emit)
+  if (! pCI->E.p_emit)
     return;
 
-  pCI->G.p_stream = new Card_Stream;
-  pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
-  pCI->G.p_stream->vAppendChild(pCI->G.p_emit->pDupCardRecursive());
+  pCI->E.p_stream = new Card_Stream;
+  pCI->E.p_fold->vAppendChild(pCI->E.p_stream);
+  pCI->E.p_stream->vAppendChild(pCI->E.p_emit->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +104,7 @@ bool Board::bMark_sqyCall(CardIter* pCI)
 
   bool bFoundCall = false;
 
-  Card_CONJ* p_conj_ROOT = pCI->G.p_boolPred->pRoot_conj();
+  Card_CONJ* p_conj_ROOT = pCI->E.p_boolPred->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -335,9 +335,9 @@ void Board::vValidate(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  RASSERT(pCI->G.pBoard);
+  RASSERT(pCI->E.pBoard);
 
-  if (pCI->G.pBoard->eBoard() == BK_SUBQUERY) {
+  if (pCI->E.pBoard->eBoard() == BK_SUBQUERY) {
     m_pSubQuery->vValidate(pCI);
   }
 }

@@ -53,13 +53,13 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
   i8 nChildren = this->nChildCards();
   for (i8 i_idxCol = 0; i_idxCol < nChildren; i_idxCol++) {
 
-    pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
+    pCI->E.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
 
-     pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pCI->G.p_idxCol->pSymbol());
-    if (!pCI->G.p_expr)
+     pCI->E.p_expr = pCI->E.p_emit->pFind_expr_Matches(pCI->E.p_idxCol->pSymbol());
+    if (!pCI->E.p_expr)
       continue;
 
-     pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI->G.p_expr,true);
+     pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI->E.p_expr, true);
   }
   //pCI->G.p_key->vDump();
 }
@@ -77,7 +77,7 @@ void Card_IdxColList::vAffix_tblCol(CardIter* pCI)
     Card_IdxCol* p_idxCol = xIdxColList.p_idxCol();
     Symbol* pSym_idxCol   = p_idxCol->pSymbol();
 
-    Card_Expr* p_expr_inj = pCI->G.p_injectable->pFind_expr_Matches(pSym_idxCol);
+    Card_Expr* p_expr_inj = pCI->E.p_injectable->pFind_expr_Matches(pSym_idxCol);
     pSym_idxCol->vApplyFacet(SF_TBL_COL, p_expr_inj->szFacet(SF_TBL_COL));
     p_idxCol->vMark1(MARK_CHANGED);
 

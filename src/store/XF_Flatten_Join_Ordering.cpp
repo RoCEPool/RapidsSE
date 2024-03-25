@@ -181,7 +181,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
     pFile->vPrint("\n"_Stz);
   }
 
-  Card_Deck* pPipeline = m_pCI->G.p_deck;
+  Card_Deck* pPipeline = m_pCI->E.p_deck;
 
   Board* pBoard = new Board(C_UNKNOWN,
                             BK_JOINORDERING,
@@ -193,18 +193,18 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) Extract tableList from pipeline
 
-  m_pCI->G.p_tableList = Card_TableList::pExtractList(pPipeline);
+  m_pCI->E.p_tableList = Card_TableList::pExtractList(pPipeline);
   //m_pCI->G.p_tableList->vDump(__func__);
 
-  m_pCI->G.p_deck->vAppendChild(m_pCI->G.p_tableList);
+  m_pCI->E.p_deck->vAppendChild(m_pCI->E.p_tableList);
 
   // 2) Extract joinPredList from pipeline
 
-  m_pCI->G.p_joinPredList = Card_JoinPredList::pExtractList(pPipeline);
+  m_pCI->E.p_joinPredList = Card_JoinPredList::pExtractList(pPipeline);
   //m_pCI->G.p_joinPredList->vDump(__func__);
-  m_pCI->G.p_deck->vAppendChild(m_pCI->G.p_joinPredList);
+  m_pCI->E.p_deck->vAppendChild(m_pCI->E.p_joinPredList);
 
-  if (! m_pCI->G.p_joinPredList->nChildCards()) {
+  if (! m_pCI->E.p_joinPredList->nChildCards()) {
     s4K sTableList;
     Card_JoinPredList::vTablesWithNoIndexes(pPipeline,sTableList);
 
@@ -214,32 +214,32 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   // 3) Extract filtPredList from pipeline
 
-  m_pCI->G.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
+  m_pCI->E.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
   //m_pCI->G.p_filtPredList->vDump(__func__);
-  m_pCI->G.p_deck->vAppendChild(m_pCI->G.p_filtPredList);
+  m_pCI->E.p_deck->vAppendChild(m_pCI->E.p_filtPredList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4) Compute all possible join permutations
 
   Card_StreamSet* p_streamPrmAll =
-      Card_StreamSet::pComputeAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
+      Card_StreamSet::pComputeAllPermutations(m_pCI->E.p_tableList, m_pCI->E.p_joinPredList);
   //p_streamPrmAll->vDump(__func__);
 
-  m_pCI->G.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "All Permutations"_Stz));
+  m_pCI->E.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "All Permutations"_Stz));
   Kid xStreamPrmAll(p_streamPrmAll);
   while (xStreamPrmAll.bEach())
-    m_pCI->G.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
+    m_pCI->E.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
 
   // 5) Remove invalid permutations
 
   p_streamPrmAll->vRemoveInvalid();
   //p_streamPrmAll->vDump(__func__);
-  m_pCI->G.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "Valid Permutations"_Stz));
+  m_pCI->E.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "Valid Permutations"_Stz));
 
   xStreamPrmAll.vEnded();
   xStreamPrmAll.vBegin();
   while (xStreamPrmAll.bEach())
-    m_pCI->G.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
+    m_pCI->E.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
 
   if (! p_streamPrmAll->nChildCards()) {
     s4K sTableList;
@@ -251,13 +251,13 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5) Calculate join load
 
-  p_streamPrmAll->vEstCostsForAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_filtPredList);
-  m_pCI->G.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "Join Cost Est."_Stz));
+  p_streamPrmAll->vEstCostsForAllPermutations(m_pCI->E.p_tableList, m_pCI->E.p_filtPredList);
+  m_pCI->E.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "Join Cost Est."_Stz));
 
   xStreamPrmAll.vEnded();
   xStreamPrmAll.vBegin();
   while (xStreamPrmAll.bEach())
-    m_pCI->G.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
+    m_pCI->E.p_deck->vAppendChild(xStreamPrmAll.p_streamPer()->pDupCardRecursive());
 
   // get the join permutations strings
 
@@ -269,11 +269,11 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
     //p_joinOrdering->vDump();
     s4K sJoinOrder;
     if (pFile) {
-      p_joinOrdering->vJoinOrderString(sJoinOrder, m_pCI->G.p_tableList, true);
+      p_joinOrdering->vJoinOrderString(sJoinOrder, m_pCI->E.p_tableList, true);
       //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
       pFile->vPrint("%s\n"_Stz, sJoinOrder.szStz());
     }
-    p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
+    p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->E.p_tableList);
     //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
     pOptimiser->vJoinPermutation(iJoinPermutations, sJoinOrder);
     iJoinPermutations++;
@@ -313,19 +313,19 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
     throw xError;
   }
 
-    m_pCI->G.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "Picked Ordering"_Stz));
-  m_pCI->G.p_deck->vAppendChild(p_joinOrdering->pDupCardRecursive());
+    m_pCI->E.p_deck->vAppendChild((new Card_Section) ->SYM(SF_NOTE, "Picked Ordering"_Stz));
+  m_pCI->E.p_deck->vAppendChild(p_joinOrdering->pDupCardRecursive());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 7) get the final join ordering string
 
   s4K sJoinOrdering;
   if (pFile) {
-    p_joinOrdering->vJoinOrderString(sJoinOrdering, m_pCI->G.p_tableList, true);
+    p_joinOrdering->vJoinOrderString(sJoinOrdering, m_pCI->E.p_tableList, true);
     //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
     pFile->vPrint("\nPicked:\n%s\n\n"_Stz, sJoinOrdering.szStz());
   }
-  p_joinOrdering->vJoinOrderString(sJoinOrdering,m_pCI->G.p_tableList);
+  p_joinOrdering->vJoinOrderString(sJoinOrdering,m_pCI->E.p_tableList);
   //vTrace("JoinOrder: %s\n"_Stz,sJoinOrdering.szStz());
   pOptimiser->vJoinOrder(sJoinOrdering);
 
@@ -339,7 +339,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   DELETE_CARD(p_streamPrmAll);
 
-  pBoard = m_pCI->G.pBoard;
+  pBoard = m_pCI->E.pBoard;
   //m_pCI->vPopBoard();
   m_pCI->vRestoreMembers();
   m_pCI->m_pBench->vRemove(pBoard);
@@ -348,7 +348,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   m_pCI->vValidateBench();
 
  // m_pCI->PRINTBOARD_dbg();
-  p_joinOrdering->vReorder(m_pCI->G.p_deck);
+  p_joinOrdering->vReorder(m_pCI->E.p_deck);
  // m_pCI->PRINTBOARD_dbg();
 
 
