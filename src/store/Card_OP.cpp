@@ -1438,12 +1438,14 @@ void Card_OP::vRpn_sort(String* psRpnExpr, Card_Sort* p_sort)
 
   Card_Key* p_key = p_sort->pSub_key();
 
+  Elem xKey_elem(p_key);
+
 #ifdef Z_KEY_DIRECTION
-  for (Kid xKey(p_key); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
+  for (Kid xKey_kid(p_key); xKey_kid.bEach(CK_DIRECTION) && xKey_elem.bNext(); /**/) {
+    Card_Direction* p_direction = p_key->pGet_direction(xKey_elem.iCurr());
 
     Card_Expr* p_expr = p_direction->pSub_expr();
-    if (xKey.i_Child()) {
+    if (xKey_kid.i_Child()) {
       psRpnExpr->vConcat(" ,"_Stz);
     }
 

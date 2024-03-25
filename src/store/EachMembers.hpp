@@ -6,6 +6,7 @@
 #include "Board.hpp"
 
 #include "Kid.hpp"
+#include "Elem.hpp"
 
 namespace STORE
 {
