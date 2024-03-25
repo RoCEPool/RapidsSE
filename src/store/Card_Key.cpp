@@ -177,7 +177,7 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymb
     Symbol* pSymbol_term0 = pCI->E.p_expr->pGet_Symbol(0);
 
     if (pSymbol_term0->bMatches(pSymbol))
-      return pCI->E.p_expr;
+      return _pCard_Expr(pCI->pEndMember(CK_EXPR));
   }
 //  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
 //    Card_Direction* p_direction = xKey.p_direction();

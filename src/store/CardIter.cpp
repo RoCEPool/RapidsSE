@@ -458,6 +458,8 @@ void CardIter::vBeginMember(eCK eSub_Of_Op)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
+  vPushEach();
+
   Card* pSub_Of_Op = E.p_Op->pFindSubCard(eSub_Of_Op);
   vMember(eSub_Of_Op, pSub_Of_Op);
 
@@ -765,6 +767,9 @@ bool CardIter::bEachMember(void)
   }
 
   E.xMember.vEnded();
+
+  vPopEach();
+
   return false;
 }
 
@@ -788,6 +793,9 @@ bool CardIter::bEachMember(eCK eMember2, eCK eMember3)
   }
 
   E.xMember.vEnded();
+
+  vPopEach();
+
   return false;
 }
 
@@ -1241,6 +1249,8 @@ Card* CardIter::pEndMember(eCK eMember)
   RASSERT(! E.xMember.bEnded());
 
   E.xMember.vEnded();
+
+  vPopEach();
 
   return pEnd;
 }
