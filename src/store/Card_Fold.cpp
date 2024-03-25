@@ -107,7 +107,7 @@ void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
   _static_
 
 #ifdef Z_KEY_DIRECTION
-  pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, "ASC"_Stz);
+  pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
 
   pCI->E.p_expr = new Card_Expr;
   pCI->E.p_direction->vAppendChild(pCI->E.p_expr);

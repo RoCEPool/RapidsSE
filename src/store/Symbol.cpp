@@ -399,8 +399,8 @@ bool Symbol::bIs_Direction(Stz* szArg)
 {
   _static_
 
-       if (szArg->bSame("ASC"_Stz))   return true;
-  else if (szArg->bSame("DESC"_Stz))  return true;
+       if (szArg->bSame(C_ASC))   return true;
+  else if (szArg->bSame(C_DESC))  return true;
 
   return false;
 }

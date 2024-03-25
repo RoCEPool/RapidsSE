@@ -564,7 +564,7 @@ bool Card_Expr::bIsDescending(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Direction* p_direction = pSub_direction())
-    if (p_direction->pSymbol()->bHasFacet("DESC"_Stz))
+    if (p_direction->pSymbol()->bHasFacet(C_DESC))
       return true;
 
   return false;

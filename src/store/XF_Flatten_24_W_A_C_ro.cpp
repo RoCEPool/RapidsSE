@@ -188,7 +188,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
     if (AL_PARTITION == e_Level) {
 #ifdef Z_KEY_DIRECTION
-      pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, "ASC"_Stz);
+      pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
       pCI->E.p_key->vAppendChild(pCI->E.p_direction);
       pCI->E.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
       //pCI->Flat.m_p_expr_crlKey->vDump(__func__);
@@ -215,7 +215,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
       pCI->E.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
       pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
       pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-      pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, "ASC"_Stz);
+      pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
       pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
       pCI->E.p_key->vAppendChild(pCI->E.p_direction);
       if (1 == pCI->E.p_key->nChildCards()) {

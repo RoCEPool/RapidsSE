@@ -101,6 +101,9 @@ Stz* MARK_VALID      = "Y"_Stz;
 Stz* C_CRLKEY      = "_CRLKEY_Q%lld_"_Stz;
 Stz* C_SQYRSL      = "_SQYRSL_Q%lld_"_Stz;
 
+Stz* C_ASC         = "ASC"_Stz;
+Stz* C_DESC        = "DESC"_Stz;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

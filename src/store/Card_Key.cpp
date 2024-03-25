@@ -75,10 +75,10 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   }
   else
   if (bAsc) {
-    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
+    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
   }
   else {
-    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, "DESC"_Stz);
+    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, C_DESC);
   }
   vAppendChild(p_direction_new);
 
@@ -123,7 +123,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   }
   else
   if (bAsc) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
+    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
     p_expr_new->vAppendChild(p_direction);
   }
 
@@ -386,7 +386,7 @@ IndexDef* Card_Key::pTo_IndexDef(void)
       continue;
 
     bool bAscending = true;
-    if (p_direction->pSymbol()->bHasFacet("DESC"_Stz)) {
+    if (p_direction->pSymbol()->bHasFacet(C_DESC)) {
       bAscending = false;
       bHasDescending = true;
     }

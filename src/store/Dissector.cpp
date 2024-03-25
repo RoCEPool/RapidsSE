@@ -1345,7 +1345,7 @@ Card_Direction* Dissector::pPop_direction(Card_RpnExpr* p_rpnExpr)
   // ASC | DESC
   Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
   Stz* szDirn = p_term->szFacet(SF_DIRECTION);
-  RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
+  RASSERT(szDirn->bSame(C_ASC) || szDirn->bSame(C_DESC));
 
   Card_Direction* p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, szDirn);
 
@@ -1366,18 +1366,18 @@ Card_Direction* Dissector::pPop_direction2(Card_RpnExpr* p_rpnExpr)
 
   Card* p_term_head = p_rpnExpr->pHead();
   if (p_term_head
-      && (p_term_head->pSymbol()->bHasFacet("ASC"_Stz) ||
-          p_term_head->pSymbol()->bHasFacet("DESC"_Stz))) {
+      && (p_term_head->pSymbol()->bHasFacet(C_ASC) ||
+          p_term_head->pSymbol()->bHasFacet(C_DESC))) {
 
     // ASC | DESC
     Card_Term *p_term = _pCard_Term(p_rpnExpr->pPopChild());
     Stz *szDirn = p_term->szFacet(SF_DIRECTION);
-    RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
+    RASSERT(szDirn->bSame(C_ASC) || szDirn->bSame(C_DESC));
     p_direction = (new Card_Direction)->SYM(SF_DIRECTION, szDirn);
     delete p_term;
   }
   else {
-    p_direction = (new Card_Direction)->SYM(SF_DIRECTION, "ASC"_Stz);
+    p_direction = (new Card_Direction)->SYM(SF_DIRECTION, C_ASC);
   }
 
   return p_direction;
@@ -1457,15 +1457,15 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   Card* p_term_head = p_rpnExpr->pHead();
   if (p_term_head
-      && (p_term_head->pSymbol()->bHasFacet("ASC"_Stz) ||
-          p_term_head->pSymbol()->bHasFacet("DESC"_Stz))) {
+      && (p_term_head->pSymbol()->bHasFacet(C_ASC) ||
+          p_term_head->pSymbol()->bHasFacet(C_DESC))) {
 
     Card_Direction* p_direction = pPop_direction(p_rpnExpr);
     p_expr->vAppendChild(p_direction);
   }
   else
   if (bEnsureDirection) {
-    Card_Direction* p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
+    Card_Direction* p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
     p_expr->vAppendChild(p_direction);
   }
 
@@ -1640,7 +1640,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
     p_expr->v_Child(++i_CardNo);
 
 //    if (bEnsureDirection) {
-//      Card_Direction *p_direction = new Card_Direction("ASC"_Stz);
+//      Card_Direction *p_direction = new Card_Direction(C_ASC);
 //      p_expr->vAppendChild(p_direction);
 //    }
 
@@ -1727,8 +1727,8 @@ Card_RpnCalc* Dissector::pPop_rpnCalc(Card_RpnExpr* p_rpnExpr)
     if (
         p_term_popped->pSymbol()->bHasFacet("AGGREGATES"_Stz)
         || p_term_popped->pSymbol()->bHasFacet("AS"_Stz)
-        || p_term_popped->pSymbol()->bHasFacet("ASC"_Stz)
-        || p_term_popped->pSymbol()->bHasFacet("DESC"_Stz)
+        || p_term_popped->pSymbol()->bHasFacet(C_ASC)
+        || p_term_popped->pSymbol()->bHasFacet(C_DESC)
         || p_term_popped->pSymbol()->bHasFacet("GROUPBY"_Stz)
         || p_term_popped->pSymbol()->bHasFacet(SF_COMMA)
         ) {
@@ -1760,8 +1760,8 @@ Card_On * Dissector::pPop_on(Card_RpnExpr* p_rpnExpr)
     if (
         p_term_popped->pSymbol()->bHasFacet("AGGREGATES"_Stz)
         || p_term_popped->pSymbol()->bHasFacet("AS"_Stz)
-        || p_term_popped->pSymbol()->bHasFacet("ASC"_Stz)
-        || p_term_popped->pSymbol()->bHasFacet("DESC"_Stz)
+        || p_term_popped->pSymbol()->bHasFacet(C_ASC)
+        || p_term_popped->pSymbol()->bHasFacet(C_DESC)
         || p_term_popped->pSymbol()->bHasFacet("GROUPBY"_Stz)
         || p_term_popped->pSymbol()->bHasFacet(SF_COMMA)
         ) {
