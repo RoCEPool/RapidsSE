@@ -56,6 +56,49 @@ load ${testName2}_Orders "../TPCH/SF_0001/orders.tbl";
 success
 
 
+
+
+
+// ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic ordered aggregate
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/optimise_passthru 
+pipeline Q6
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan ${testName2}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg " ORDGROUPBY type integer ( 19 ) $1
+               aggregates type integer ( 19 ) $K1 , type decimal ( 19  2 ) as total )  $5 sum  "
+    | combined 0
+    | next
+
+  stage stageB on all partitions :
+    filter " type BOOLEAN  $2 50.0  >  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 1448
+
+// ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+
+
+
+
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic aggregate
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -64,7 +107,7 @@ success
 //  basic key exists
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /optimise_passthru 
-pipeline Q
+pipeline Q1
 begin
 
   stage first on origin :
@@ -145,7 +188,7 @@ rows:
 //  basic index scan
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /optimise_passthru 
-pipeline Q
+pipeline Q2
   begin
   stage first on origin :
     start
@@ -171,7 +214,7 @@ rows: 921
 //  basic index join
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /optimise_passthru 
-pipeline Q
+pipeline Q3
 begin
   stage stageStart on origin :
     start
@@ -196,7 +239,7 @@ rows: 5996
 //  basic orderby
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /optimise_passthru 
-pipeline unamed
+pipeline Q4
 begin
   stage stageStart on origin :
     start
@@ -220,7 +263,7 @@ rows: 6000
 //  basic top
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /optimise_passthru 
-pipeline Q
+pipeline Q5
 begin
   stage stageStart on origin :
     start
@@ -254,7 +297,7 @@ ordered rows:
 //  basic ordered aggregate
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /optimise_passthru 
-pipeline Q
+pipeline Q6
 begin
   stage stageStart on origin :
     start
@@ -281,7 +324,7 @@ begin
 rows: 1448
 
 /optimise_passthru 
-pipeline Q
+pipeline Q7
 begin
   stage stageStart on origin :
     start
@@ -326,7 +369,7 @@ begin
 
 
 /optimise_passthru 
-pipeline Q
+pipeline Q8
 begin
   stage stageStart on origin :
     start
@@ -361,7 +404,7 @@ contains rows:
 
 
 /optimise_passthru 
-pipeline Q
+pipeline Q9
 begin
   stage stageStart on origin :
     start
@@ -398,7 +441,7 @@ rows:
  (1064,183.00)
 
 /optimise_passthru 
-pipeline Q3
+pipeline Q10
 begin
 
   stage first on origin :
@@ -429,7 +472,7 @@ end ;
 rows: 1451
 
 /optimise_passthru 
-pipeline Q3
+pipeline Q11
 begin
 
   stage first on origin :
@@ -466,7 +509,7 @@ contains rows:
  (2.15,1499)
 
 /optimise_passthru 
-pipeline Q3
+pipeline Q12
 begin
 
   stage first on origin :
@@ -515,7 +558,7 @@ contains rows:
 
 // multi-column ordagg with multi-col indexscan
 /optimise_passthru 
-pipeline Q
+pipeline Q13
 begin
   stage stageStart on origin :
     start
@@ -536,7 +579,7 @@ begin
 rows: 3000
 
 /optimise_passthru 
-pipeline Q
+pipeline Q14
 begin
   stage stageStart on origin :
     start
