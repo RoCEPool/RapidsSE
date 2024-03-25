@@ -79,10 +79,10 @@ create        index IxC_CUSTKEY     on Customer (C_CUSTKEY);
 
 // Lineitem (partitioned on l_orderkey)
 create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
-create        index IxL_SHIPDATE    on Lineitem (L_SHIPDATE);
-//create        index IxL_SUPPKEY     on Lineitem (L_SUPPKEY);
-//create        index IxL_PARTKEY     on Lineitem (L_PARTKEY);
-//create        index IxL_RECEIPTDATE on Lineitem (L_RECEIPTDATE);
+//create        index IxL_SHIPDATE    on Lineitem (L_SHIPDATE);
+create        index IxL_SUPPKEY     on Lineitem (L_SUPPKEY);
+create        index IxL_PARTKEY     on Lineitem (L_PARTKEY);
+create        index IxL_RECEIPTDATE on Lineitem (L_RECEIPTDATE);
 
 // Nation (replicated)
 create        index IxN_NATIONKEY   on Nation   (N_NATIONKEY);
@@ -109,12 +109,12 @@ create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-///time loadReplicated region   "../TPCH/SF10/region.tbl"   ;
-///time loadReplicated nation   "../TPCH/SF10/nation.tbl"   ;
-///time load supplier           "../TPCH/SF10/supplier.tbl" ;
+/time loadReplicated region   "../TPCH/SF10/region.tbl"   ;
+/time loadReplicated nation   "../TPCH/SF10/nation.tbl"   ;
+/time load supplier           "../TPCH/SF10/supplier.tbl" ;
 /time load customer           "../TPCH/SF10/customer.tbl" ;
-///time load part               "../TPCH/SF10/part.tbl"     ;
-///time load partsupp           "../TPCH/SF10/partsupp.tbl" ;
+/time load part               "../TPCH/SF10/part.tbl"     ;
+/time load partsupp           "../TPCH/SF10/partsupp.tbl" ;
 /time load orders             "../TPCH/SF10/orders.tbl"   ;
 /time load lineitem           "../TPCH/SF10/lineitem.tbl" ;
 
