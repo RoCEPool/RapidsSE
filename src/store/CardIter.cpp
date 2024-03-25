@@ -433,6 +433,8 @@ void CardIter::vBeginEach(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
+  vResetMembers();
+
   G.xKid.vBegin();
 }
 
