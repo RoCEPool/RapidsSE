@@ -118,8 +118,7 @@ namespace STORE
     void vBeginBoard(void);
     void vBeginEach(eCK eOp=CK_NONE);
     void vBeginEach_reverse(void);
-    void vBeginMember(eCK eMember);
-    void vBeginMember(eCK eMember1, eCK eMember2);
+    void vBeginMember(eCK eSub_Of_Op);
     Board* pBoard(void);
     void vBurst(Card* pCard);
 
@@ -140,7 +139,7 @@ namespace STORE
     Board* pEachBoard(i8& ri_Board);
 
     bool bEachMember(void);
-    bool bEachMember(eCK eCard);
+    bool bEachMember(eCK eMember2, eCK eMember3);
     bool bEachOp(void);
     bool bEachOp(eCK eOp);
     bool bEachOp_break(eCK eOp, eCK eBreak= CK_c_FOLD);

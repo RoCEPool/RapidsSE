@@ -685,7 +685,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
       vDebugPoint();
     pCI->E.p_key = pCI->E.p_Op->pSub_key();
-    pCI->E.p_emit->vApplyFacets(pCI->E.p_key);
+    pCI->E.p_emit->vApplyFacets(pCI,pCI->E.p_key);
 
     for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
       for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {

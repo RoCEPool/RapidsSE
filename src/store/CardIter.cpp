@@ -454,29 +454,15 @@ void CardIter::vBeginEach_reverse(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vBeginMember(eCK eMember)
+void CardIter::vBeginMember(eCK eSub_Of_Op)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vResetMembers();
+  Card* pSub_Of_Op = E.p_Op->pFindSubCard(eSub_Of_Op);
+  vMember(eSub_Of_Op, pSub_Of_Op);
 
   E.xMember.vBegin();
-  E.xMember.vParent(pMember(eMember));
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vBeginMember(eCK eMember1, eCK eMember2)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Card* pCard1 = E.xEach.pChild()->pFindSubCard(eMember1);
-  vMember(eMember1,pCard1);
-
-  Card* pCard2 =pCard1->pFindSubCard(eMember2);
-  vMember(eMember2,pCard2);
-  E.xMember.vParent(pCard2);
+  E.xMember.vParent(pSub_Of_Op);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -785,15 +771,19 @@ bool CardIter::bEachMember(void)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachMember(eCK eCard)
+bool CardIter::bEachMember(eCK eMember2, eCK eMember3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(E.xMember.bBegun());
   RASSERT(! E.xMember.bEnded());
 
-  while (E.xMember.bEach(eCard)) {
+  while (E.xMember.bEach(eMember2)) {
     vMember(E.xMember.eChild(), E.xMember.pChild());
+
+    Card* pSub_Of_Member = E.xMember.pChild()->pFindSubCard(eMember3);
+    vMember(eMember3, pSub_Of_Member);
+
     return true;
   }
 
