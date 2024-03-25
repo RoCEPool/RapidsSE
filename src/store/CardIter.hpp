@@ -116,7 +116,7 @@ namespace STORE
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
     void vBeginBoard(void);
-    void vBeginEach(void);
+    void vBeginEach(eCK eOp=CK_NONE);
     void vBeginEach_reverse(void);
     Board* pBoard(void);
     void vBurst(Card* pCard);
@@ -139,7 +139,7 @@ namespace STORE
 
     bool bEachOp(void);
     bool bEachOp(eCK eOp);
-    bool bEachOp_foldBreak(eCK eOp);
+    bool bEachOp_break(eCK eOp, eCK eBreak= CK_c_FOLD);
     bool bEachOp(eCK eOp, eCK eSub);
     bool bEachOp(eCK eOp, eCK eSub, Stz* szSubFacet);
     bool bEachOp(eCK eOp, eCK eSub1, eCK eSub2);

@@ -396,11 +396,11 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 {
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  RASSERT(pCI->bEachOp_foldBreak(CK_o_FROM));
+  RASSERT(pCI->bEachOp_break(CK_o_FROM));
 
 
   //RASSERT(pCI->bEachOp(CK_o_WHERE));
-  RASSERT(pCI->bEachOp_foldBreak(CK_o_PROJECT));
+  RASSERT(pCI->bEachOp_break(CK_o_PROJECT));
 
 //  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
 //  pCI->G.p_where->vRemoveSub(pCI->G.p_constraint);

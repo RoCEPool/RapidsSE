@@ -166,7 +166,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  RASSERT(pCI->bEachOp_foldBreak(CK_o_AGGREG));
+  RASSERT(pCI->bEachOp_break(CK_o_AGGREG));
 
   for (i8 i_agg = 0; i_agg < 3; i_agg++) {
 

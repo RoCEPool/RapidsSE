@@ -429,13 +429,16 @@ void CardIter::vBeginBoard(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vBeginEach(void)
+void CardIter::vBeginEach(eCK eOp)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
   vResetMembers();
 
   E.xEach.vBegin();
+
+  if (CK_NONE != eOp)
+    (void)bEachOp(eOp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -791,7 +794,7 @@ bool CardIter::bEachOp(eCK eOp)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp_foldBreak(eCK eOp)
+bool CardIter::bEachOp_break(eCK eOp, eCK eBreak)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -804,7 +807,7 @@ bool CardIter::bEachOp_foldBreak(eCK eOp)
 
   while (E.xEach.bEach()) {
 
-    if (E.xEach.pChild()->bIsCard(CK_c_FOLD))
+    if (E.xEach.pChild()->bIsCard(eBreak))
       return false;
 
     if (E.xEach.pChild()->eCard() != eOp)
