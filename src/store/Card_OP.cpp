@@ -1330,13 +1330,17 @@ void Card_OP::vRpn_ordAgg(String* psRpnExpr, Card_OrdAgg* p_ordAgg)
 
   psRpnExpr->vConcat(" ordGroupBy"_Stz);
 
-  nSubCards = pCard_Key->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_Key->pGet(i_Child);
-    if (! pCard_SUB->bIsCard(CK_EXPR))
-      return;
+//  nSubCards = pCard_Key->nItems();
+//  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+//    Card* pCard_SUB = pCard_Key->pGet(i_Child);
+//    if (! pCard_SUB->bIsCard(CK_EXPR))
+//      return;
 
-    if (i_Child) {
+  for (Kid xKey(pCard_Key); xKey.bEach(CK_DIRECTION); /**/) {
+    Card_Direction* p_direction = xKey.p_direction();
+    Card_Expr* p_expr = p_direction->pSub_expr();
+
+    if (xKey.i_Child()) {
       psRpnExpr->vConcat("\n                 "_Stz);
       psRpnExpr->vConcat(" ,"_Stz);
     }
@@ -1345,25 +1349,24 @@ void Card_OP::vRpn_ordAgg(String* psRpnExpr, Card_OrdAgg* p_ordAgg)
       psRpnExpr->vConcat("  "_Stz);
     }
 
-    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vRpn_expr(psRpnExpr, pCard_Expr);
+    vRpn_expr(psRpnExpr, p_expr);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  Card_Emit* pCard_Projection =
+  Card_Emit* pCard_Emit =
       _pCard_Emit(p_ordAgg->pFindSubCard(CK_t_EMIT));
 
-  if (! pCard_Projection)
+  if (! pCard_Emit)
     return;
 
   psRpnExpr->vConcat("\n                 "_Stz);
   psRpnExpr->vConcat(" aggregates"_Stz);
 
-  nSubCards = pCard_Projection->nItems();
+  nSubCards = pCard_Emit->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_Projection->pGet(i_Child);
+    Card* pCard_SUB = pCard_Emit->pGet(i_Child);
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
 
