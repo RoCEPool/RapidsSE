@@ -86,7 +86,8 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   while (pCI->bEachOp()) {
 
     if (pCI->E.p_Op->pSub_emit())
@@ -162,7 +163,8 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
   DELETE_CARD(pCI->E.p_call);
 
   // 7) derive the fold (SQ result) expr
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   if (pCI->bEachOp(CK_c_FOLD)) {
     pCI->Flat.m_i_fold = pCI->E.i_Op;
     Board::vDerive_foldProjection_F(pCI);
@@ -222,7 +224,8 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   while (pCI->bEachOp()) {
 
     if (pCI->E.p_Op->pSub_emit())
@@ -391,7 +394,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 /*----------------------------------------------------------------------------*/
 void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 {
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   RASSERT(pCI->bEachOp_foldBreak(CK_o_FROM));
 
 
@@ -478,12 +482,14 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // pCI->PRINTBOARD_dbg();
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   if (pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED)) {
     (void)pCI->E.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   pCI->vDeleteWhenEmptySub(CK_o_WHERE, CK_BOOLPRED);
 
   vDebugPoint();

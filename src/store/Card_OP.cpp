@@ -697,7 +697,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
         i8 i_Key = pSym_term_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
 #ifdef Z_KEY_DIRECTION
-        pCI->E.p_key->vDump(__func__);
+        //pCI->E.p_key->vDump(__func__);
         pCI->E.p_direction = pCI->E.p_key->pGet_direction(i_Key);
         Card_Expr *p_expr_key = pCI->E.p_direction->pSub_expr(C_NOT_NULL);
 #else

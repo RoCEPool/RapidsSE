@@ -130,7 +130,8 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
 
   while (pCI->bEachOp(CK_o_FROM, CK_t_EMIT, CK_o_FILTER)) {
 
@@ -163,7 +164,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
   // promote IQ <aggreg>... to <gbyAgg>...
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   RASSERT(pCI->bEachOp_foldBreak(CK_o_AGGREG));
 
   for (i8 i_agg = 0; i_agg < 3; i_agg++) {
@@ -189,8 +191,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
       pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, "ASC"_Stz);
       pCI->E.p_key->vAppendChild(pCI->E.p_direction);
       pCI->E.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
-      pCI->Flat.m_p_expr_crlKey->vDump(__func__);
-      pCI->E.p_expr->vDump(__func__);
+      //pCI->Flat.m_p_expr_crlKey->vDump(__func__);
+      //pCI->E.p_expr->vDump(__func__);
       pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
 
       if (1 == pCI->E.p_key->nChildCards()) {
@@ -640,7 +642,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //           +                   //             %1
 
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   while (pCI->bEachOp(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
     if (pCI->E.p_boolPred->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
       pCI->E.p_boolPred->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
@@ -711,7 +714,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   // TODO: this should be done using standard predicate moving
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
 
   //                   v           //  ]filter
   // F A A A P + F F F W A A A     //  .]boolPred
@@ -725,7 +729,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  pCI->vClearRestart();
+//  pCI->vClearRegisters();
+  pCI->vBeginEach();
 //  if (pCI->bEachOp(CK_c_FOLD)) {
 //    if (pCI->bEachOp(CK_o_WHERE)) {
 //      // TODO:
