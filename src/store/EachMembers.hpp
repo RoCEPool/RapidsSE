@@ -18,8 +18,8 @@ namespace STORE
 
   // - - - - - - - - - - - - -
   private:
-    Kid xEach;
-    Kid xMember;
+    Kid xEachOp;
+    Kid xTarget;
 
   // - - - - - - - - - - - - -
   public:

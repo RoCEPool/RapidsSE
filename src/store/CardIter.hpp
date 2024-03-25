@@ -81,6 +81,15 @@ namespace STORE
       Card_EXPRLIST * m_pExprList_k;
     } X;
 
+    struct {
+      eCK m_ePrimary;
+      eCK m_eTarget;
+      // --
+      eCK m_eSecondary;
+      eCK m_eTertiary;
+    } Iter;
+
+
     i8 m_nAncestors;
     Card* m_apAncestry[C_CARD_ANCESTRY];
 
@@ -119,6 +128,7 @@ namespace STORE
     void vBeginEach(eCK eOp=CK_NONE);
     void vBeginEach_reverse(void);
     void vBeginMember(eCK eSub_Of_Op);
+    void vBeginTarget(eCK ePrimary, eCK eTarget);
     Board* pBoard(void);
     void vBurst(Card* pCard);
 
@@ -158,9 +168,12 @@ namespace STORE
     bool bEachOp_by2Sub(eCK eSub1, eCK eSub2);
     bool bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3);
 
+    bool bEachTarget(void);
+
     Card* pEndMember(eCK eMember);
     void vEndMember(void);
     void vEndPhase(void);
+    Card* pEndTarget(void);
     void vEndTransform(i8 iLineNo);
 
     Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);
