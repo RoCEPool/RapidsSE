@@ -452,6 +452,34 @@ void CardIter::vBeginEach_reverse(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBeginMember(eCK eMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vResetMembers();
+
+  E.xMember.vBegin();
+  E.xMember.vParent(pMember(eMember));
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBeginMember(eCK eMember1, eCK eMember2)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pCard1 = E.xEach.pChild()->pFindSubCard(eMember1);
+  vMember(eMember1,pCard1);
+
+  Card* pCard2 =pCard1->pFindSubCard(eMember2);
+  vMember(eMember2,pCard2);
+  E.xMember.vParent(pCard2);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get board                                                                  */
 /*----------------------------------------------------------------------------*/
 Board* CardIter::pBoard(void)
@@ -733,6 +761,44 @@ Board* CardIter::pEachBoard(i8& ri_Board)
   vUseCard(E.pBoard->pDeck());
 
   return E.pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bEachMember(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xMember.bBegun());
+  RASSERT(! E.xMember.bEnded());
+
+  while (E.xMember.bEach()) {
+    vMember(E.xMember.eChild(), E.xMember.pChild());
+    return true;
+  }
+
+  E.xMember.vEnded();
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bEachMember(eCK eCard)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xMember.bBegun());
+  RASSERT(! E.xMember.bEnded());
+
+  while (E.xMember.bEach(eCard)) {
+    vMember(E.xMember.eChild(), E.xMember.pChild());
+    return true;
+  }
+
+  E.xMember.vEnded();
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
