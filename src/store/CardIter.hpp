@@ -158,6 +158,8 @@ namespace STORE
     bool bEachOp_by2Sub(eCK eSub1, eCK eSub2);
     bool bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3);
 
+    Card* pEndMember(eCK eMember);
+    void vEndMember(void);
     void vEndPhase(void);
     void vEndTransform(i8 iLineNo);
 

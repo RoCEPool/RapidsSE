@@ -1229,6 +1229,36 @@ bool CardIter::bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end member                                                                 */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pEndMember(eCK eMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card* pEnd = pMember(eMember);
+
+  RASSERT(E.xMember.bBegun());
+  RASSERT(! E.xMember.bEnded());
+
+  E.xMember.vEnded();
+
+  return pEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end member                                                                 */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEndMember(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xMember.bBegun());
+  RASSERT(! E.xMember.bEnded());
+
+  E.xMember.vEnded();
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndPhase(void)
