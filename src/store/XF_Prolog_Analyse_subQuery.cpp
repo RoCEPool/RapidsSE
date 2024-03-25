@@ -112,7 +112,8 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // search for parameters
 
-    m_pCI->vClearRestart();
+    m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
     i8 nParams = 0;
     while (m_pCI->bEachOp(CK_o_CORRELATION))
       nParams++;

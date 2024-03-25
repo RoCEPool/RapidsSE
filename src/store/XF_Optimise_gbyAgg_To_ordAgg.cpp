@@ -69,7 +69,8 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_GBYAGG_TO_ORDAGG);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);

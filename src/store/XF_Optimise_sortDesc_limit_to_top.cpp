@@ -69,7 +69,8 @@ bool XF_Optimise_sortDesc_limit_to_top::bOptimise(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_SORTDESC_LIMIT_TO_TOP]);
 

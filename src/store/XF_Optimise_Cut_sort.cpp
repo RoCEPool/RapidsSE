@@ -69,7 +69,8 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_CUT_SORT);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);

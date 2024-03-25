@@ -2206,6 +2206,8 @@ void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  vClearRegisters();
+
   m_pBench->vTransform(azXfile, azXfunc, eXform);
 }
 

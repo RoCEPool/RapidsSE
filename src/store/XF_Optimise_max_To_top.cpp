@@ -69,7 +69,8 @@ bool XF_Optimise_max_To_top::bOptimise(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_MAX_TO_TOP);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_MAX_TO_TOP]);
 

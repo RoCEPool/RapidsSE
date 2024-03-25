@@ -64,7 +64,8 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_X_TBLCOL_TO_EXPCOL);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
     if (CK_o_GBYAGG == m_pCI->E.e_Op)
       vDebugPoint();

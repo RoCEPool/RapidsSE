@@ -64,7 +64,8 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_X_RPNCALC_TO_BOOLPRED);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_FROM, CK_s_CONSTRAINT)) {
     //m_pCI->G.p_constraint->vDump(__func__);
     m_pCI->E.p_expr = m_pCI->E.p_constraint->pSub_expr();
@@ -74,7 +75,8 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
     }
   }
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_WHERE, CK_RPNCALC)) {
     m_pCI->E.p_filter = m_pCI->E.p_where->pSub_filter();
     m_pCI->E.p_expr = m_pCI->E.p_filter->pSub_expr();
@@ -84,7 +86,8 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
     }
   }
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_HAVING, CK_RPNCALC)) {
     m_pCI->E.p_filter = m_pCI->E.p_having->pSub_filter();
     m_pCI->E.p_expr = m_pCI->E.p_filter->pSub_expr();
