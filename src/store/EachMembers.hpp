@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CardIterMembers.hpp --                                                     */
+/* EachMembers.hpp --                                                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@
 
 namespace STORE
 {
-  class CardIterMembers : public Object
+  class EachMembers : public Object
   {
     friend class CardIter;
   public:
@@ -178,10 +178,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CardIterMembers(void);
-   ~CardIterMembers(void) noexcept(false);
+    EachMembers(void);
+   ~EachMembers(void) noexcept(false);
 
-    void vCopyFrom(CardIterMembers* pMembers);
+    void vCopyFrom(EachMembers* pMembers);
 
   private:
 

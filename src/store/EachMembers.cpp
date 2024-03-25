@@ -1,32 +1,32 @@
 /*============================================================================*/
-/* CardIterMembers.cpp --                                                     */
+/* EachMembers.cpp --                                                     */
 /*============================================================================*/
 
-#include "CardIterMembers.hpp"
+#include "EachMembers.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aNewFunction(CardIterMembers, CN_CARDITERMEMBERS)
-__vDeleteFunction(CardIterMembers, CN_CARDITERMEMBERS)
-__aFooterFunction(CardIterMembers)
+__aNewFunction(EachMembers, CN_EACHMEMBERS)
+__vDeleteFunction(EachMembers, CN_EACHMEMBERS)
+__aFooterFunction(EachMembers)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardIterMembers::CardIterMembers(void)
-: Object(CN_CARDITERMEMBERS)
+EachMembers::EachMembers(void)
+: Object(CN_EACHMEMBERS)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  MemLib::vZero(this, sizeof(CardIterMembers), CN_CARDITERMEMBERS);
+  MemLib::vZero(this, sizeof(EachMembers), CN_EACHMEMBERS);
 
   vSetMagic();
-  vSetClassNo(CN_CARDITERMEMBERS);
+  vSetClassNo(CN_EACHMEMBERS);
   m_xFooter.vSetFooter();
 
-  _checkInitialised_(CN_CARDITERMEMBERS);
+  _checkInitialised_(CN_EACHMEMBERS);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -34,7 +34,7 @@ CardIterMembers::CardIterMembers(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-CardIterMembers::~CardIterMembers(void) noexcept(false)
+EachMembers::~EachMembers(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -48,12 +48,12 @@ CardIterMembers::~CardIterMembers(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIterMembers::vCopyFrom(CardIterMembers* pMembers)
+void EachMembers::vCopyFrom(EachMembers* pMembers)
 {
   MemLib::vCopy(this,
                 pMembers,
-                sizeof(CardIterMembers),
-                CN_CARDITERMEMBERS);
+                sizeof(EachMembers),
+                CN_EACHMEMBERS);
 }
 
 

@@ -68,7 +68,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "CARDHISTORY"_Stz,          // CN_CARDHISTORY
     /* */ "CARDIMAGE"_Stz,            // CN_CARDIMAGE
     /* */ "CARDITER"_Stz,             // CN_CARDITER
-    /* */ "CARDITERMEMBERS"_Stz,      // CN_CARDITERMEMBERS
     /* */ "CARDUSAGE"_Stz,            // CN_CARDUSAGE
     /* */ "CARRYFORWARD"_Stz,         // CN_CARRYFORWARD
     /* */ "CATALOG"_Stz,              // CN_CATALOG
@@ -85,7 +84,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
     /* */ "COMMANDPARSER"_Stz,          // CN_COMMANDPARSER
     /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
-   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
+    /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
     /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
     /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
     /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
@@ -110,6 +109,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "DYNAMO"_Stz,               // CN_DYNAMO
 
     /* */ "_E__"_Stz,                 // CN__E__
+    /* */ "EACHMEMBERS"_Stz,          // CN_EACHMEMBERS
     /* */ "EDTVAL"_Stz,               // CN_EDTVAL
     /* */ "ENCODING"_Stz,             // CN_ENCODING
     /* */ "ENT"_Stz,                  // CN_ENT

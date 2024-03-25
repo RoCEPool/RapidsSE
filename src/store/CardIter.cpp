@@ -1836,7 +1836,7 @@ bool CardIter::bRecurseActive(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  CardIterMembers* pPeg = pPeek(0);
+  EachMembers* pPeg = pPeek(0);
   if (! pPeg)
     return false;
   if (pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
@@ -2145,7 +2145,7 @@ void CardIter::vRestoreMembers(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  CardIterMembers* pMembers_popped = pPop();
+  EachMembers* pMembers_popped = pPop();
 
   E.vCopyFrom(pMembers_popped);
 
@@ -2179,7 +2179,7 @@ void CardIter::vResynchOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 void CardIter::vSaveMembers(void)
 {
-  CardIterMembers* pMembers_save = new CardIterMembers;
+  EachMembers* pMembers_save = new EachMembers;
 
   pMembers_save->vCopyFrom(&E);
 

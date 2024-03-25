@@ -48,7 +48,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CARDHISTORY,
   /* */ CN_CARDIMAGE,
   /* */ CN_CARDITER,
-  /* */ CN_CARDITERMEMBERS,
   /* */ CN_CARDUSAGE,
   /* */ CN_CARRYFORWARD,
   /* */ CN_CATALOG,
@@ -90,6 +89,7 @@ enum eCN : u2 // Class Number
   /* */ CN_DYNAMO,
 
   /* */ CN__E__,
+  /* */ CN_EACHMEMBERS,
   /* */ CN_EDTVAL,
   /* */ CN_ENCODING,
   /* */ CN_ENT,

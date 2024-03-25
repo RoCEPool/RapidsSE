@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
-#include "CardIterMembers.hpp"
+#include "EachMembers.hpp"
 #include "PermGen.hpp"
 #include "Index.hpp"
 #include "Bench.hpp"
@@ -17,7 +17,7 @@ namespace STORE
   const i8 C_CARD_ANCESTRY = 16;
 
   class CardIter : public Object
-                 , public ListExo2_t<CardIterMembers>
+                 , public ListExo2_t<EachMembers>
  {
   public:
 
@@ -27,7 +27,7 @@ namespace STORE
 
     i8          m_i_RecursionDepth;
 
-    CardIterMembers E;
+    EachMembers E;
 
     struct {
       Card_OP*      m_pOP_root;
