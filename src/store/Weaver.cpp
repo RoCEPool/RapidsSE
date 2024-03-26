@@ -19,13 +19,14 @@ __aFooterFunction(Weaver)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Weaver::Weaver(Bench* pBench, PipelineDef* pPipelineDef)
+Weaver::Weaver(CardIter* pCI, Bench* pBench, PipelineDef* pPipelineDef)
 : OptimiserTool(CN_WEAVER)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
+  m_pCI          = pCI;
   m_pPipelineDef = pPipelineDef;
-  m_pDeck = nullptr;
+  m_pDeck        = nullptr;
 
   m_pBench     = pBench;
   m_pOptimiser = m_pBench->pOptimiser();

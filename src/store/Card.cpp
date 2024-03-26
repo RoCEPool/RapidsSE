@@ -2621,12 +2621,12 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Direction.hpp"
-Card_Direction* Card::pGet_direction_z(i8 i_Get)
+Card_Direction* Card::pGet_direction_z(i8 i_Element)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Direction* p_direction =
-      _pCard_Direction(pGetChild(i_Get));
+      _pCard_Direction(pGetChild(i_Element));
 
   return p_direction;
 }
@@ -2635,12 +2635,12 @@ Card_Direction* Card::pGet_direction_z(i8 i_Get)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Expr.hpp"
-Card_Expr* Card::pGet_expr_z(i8 i_Get)
+Card_Expr* Card::pGet_expr_z(i8 i_Element)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Expr* p_expr =
-      _pCard_Expr(pGetChild(i_Get));
+      _pCard_Expr(pGetChild(i_Element));
 
   return p_expr;
 }
@@ -2649,12 +2649,12 @@ Card_Expr* Card::pGet_expr_z(i8 i_Get)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Term.hpp"
-Card_Term* Card::pGet_term_z(i8 i_Get)
+Card_Term* Card::pGet_term_z(i8 i_Element)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term =
-      _pCard_Term(pGetChild(i_Get));
+      _pCard_Term(pGetChild(i_Element));
 
   return p_term;
 }

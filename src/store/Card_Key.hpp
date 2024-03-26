@@ -26,8 +26,8 @@ namespace STORE
     Card_Expr* pFind_expr_key_Matches(Symbol *pSymbol_arg);
     Card_Expr* pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg);
 
-    Card_Direction* pGet_direction(i8 i_Direction);
-    Card_Expr* pGet_expr(i8 i_Direction);
+    Card_Direction* pGet_direction(i8 i_Element);
+    Card_Expr* pGet_expr(i8 i_Element);
 
     bool bIsAsc(i8 i_Element);
     bool bIsEqual(Card_Key* p_key_arg);

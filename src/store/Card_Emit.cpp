@@ -401,6 +401,18 @@ Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a particular expr                                                      */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Emit::pGet_expr(i8 i_Element)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_expr = pGet_expr_z(i_Element);
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* induct this arriving emit                                                  */
 /*----------------------------------------------------------------------------*/
 Card_Emit* Card_Emit::pInduct(CardIter* pCI) {

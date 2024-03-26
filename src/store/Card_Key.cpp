@@ -251,11 +251,11 @@ Card_Expr* Card_Key::pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* get a particular direction                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Direction* Card_Key::pGet_direction(i8 i_Direction)
+Card_Direction* Card_Key::pGet_direction(i8 i_Element)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Direction));
+  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Element));
 
   return p_direction;
 }
@@ -263,11 +263,11 @@ Card_Direction* Card_Key::pGet_direction(i8 i_Direction)
 /*----------------------------------------------------------------------------*/
 /* get a particular direction/expr                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pGet_expr(i8 i_Direction)
+Card_Expr* Card_Key::pGet_expr(i8 i_Element)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Direction));
+  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Element));
   Card_Expr* p_expr = p_direction->pSub_expr();
 
   return p_expr;
