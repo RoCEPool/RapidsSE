@@ -193,6 +193,7 @@ namespace STORE
     EntBuffer* pFindLeafBuffer_ascDscGen(Key* aForKey);
 
     EntBuffer* pFindLeafBuffer_int(Key* aForKey);
+		EntBuffer* pFindLeafBuffer_intO(Key* aForKey);
     EntBuffer* pFindLeafBuffer_ascInt(Key* aForKey);
     EntBuffer* pFindLeafBuffer_ascDscInt(Key* aForKey);
 

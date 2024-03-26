@@ -299,8 +299,10 @@ extern "C" void vExtern_IndexTreePositionGE_int(void* aIndexInfo) {
 		return;
 	}
 
-	pEntBuffer = pRootBuffer->pFindLeafBuffer_int(aKey);
-
+	if (pRootBuffer->iBufferHeight() == 0)
+		pEntBuffer = pRootBuffer;
+	else
+		pEntBuffer = pRootBuffer->pFindLeafBuffer_intO(aKey);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	aEnt = pEntBuffer->aFindEntryBefore_MoveGE_int(aKey, &pEntBuffer);
@@ -422,6 +424,8 @@ extern "C" void vExtern_IndexTreePositionLE_int(void* aIndexInfo) {
 	EntBuffer* pEntBuffer = nullptr;
 	Ent* aEnt = nullptr;
 
+	pIndexInfo->m_aEntUpper = nullptr;
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	//	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
@@ -432,23 +436,23 @@ extern "C" void vExtern_IndexTreePositionLE_int(void* aIndexInfo) {
 
 	EntBuffer* pRootBuffer = pIndexTree->pRootBuffer();
 	if ( !  pRootBuffer) {
-		pIndexInfo->m_aEntUpper = nullptr;
 		return;
 	}
 
-	pEntBuffer = pRootBuffer->pFindLeafBuffer_int(aKey);
+	if (pRootBuffer->iBufferHeight() == 0)
+		pEntBuffer = pRootBuffer;
+	else
+	  pEntBuffer = pRootBuffer->pFindLeafBuffer_intO(aKey);
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
 	if ( !aEnt ) {
-		pIndexInfo->m_aEntUpper = nullptr;
 		return;
 	}
 
 	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
 	if ( !aEnt ) {
-		pIndexInfo->m_aEntUpper = nullptr;
 		return;
 	}
 

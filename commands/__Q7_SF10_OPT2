@@ -13,12 +13,12 @@
 // SF10-1N4P : 15.36s
 
 // To: (__Q7_SF10_OPT2)
-// SF10-1N1P : 17.72
+// SF10-1N1P : 17.72s
 // SF10-1N4P :  7.62s
 
 // To: Optimising vExtern_IndexTreePositionGE_int
-// SF10-1N1P : 14.58
-// SF10-1N4P :
+// SF10-1N1P : 14.58s
+// SF10-1N4P : 7.45s
 
 /keepCodeFile
 /optimise_passthru
@@ -40,17 +40,17 @@ begin
 
   stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY " BOUND $I1 $2 == "
-    | filter    " type BOOLEAN $13 DATE '1995-01-01' >= $13 DATE '1996-12-31' <= and "
     | project   "   type DATE as C0_L_SHIPDATE $13
                   , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8
                   , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $9
                   , type INTEGER ( 19 ) as C3_L_SUPPKEY $5
                   , type INTEGER ( 19 ) as C4_O_CUSTKEY $1 "
+    | filter    " type BOOLEAN $1 DATE '1995-01-01' >= $1 DATE '1996-12-31' <= and "
     | hash      "type INTEGER $5"
     | dynamic
     | next      hashcast
 
-  stage S04 on all partitions :
+  stage S03 on all partitions :
     indexJoin Customer IxC_CUSTKEY " BOUND $I1 $5 == "
     | project   "   type DATE as C0_L_SHIPDATE $1
                   , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
@@ -61,7 +61,7 @@ begin
     | dynamic
     | next      hashcast
 
-  stage S06 on all partitions :
+  stage S04 on all partitions :
     indexJoin Supplier IxS_SUPPKEY " BOUND $I1 $5 == "
     |  project   "   type DATE as C0_L_SHIPDATE $1
                    , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
@@ -71,7 +71,7 @@ begin
     | dynamic
     | next
 
-  stage S08 on all partitions :
+  stage S05 on all partitions :
     indexJoin nation IxN_NATIONKEY " BOUND $I1 $5 == "
     | project   "   type VARCHAR ( 25 ) as C0_N_NAME $7
                   , type DATE as C1_L_SHIPDATE $1
@@ -81,13 +81,13 @@ begin
     | dynamic
     | next
 
-  stage S10 on all partitions :
+  stage S6 on all partitions :
     indexJoin nation IxN_NATIONKEY " BOUND $I1 $5 == "
-    | filter    " type BOOLEAN $1 'GERMANY' == $7 'FRANCE' == and $1 'FRANCE' == $7 'GERMANY' == and or "
     | project   "   type VARCHAR as C0_N_NAME $1
                 , type VARCHAR as C1_N_NAME $7
                 , type INTEGER ( 19 ) as C2_l_year $2 extract_year
                 , type DECIMAL ( 19 2 ) as C3_volume $3 1.00 $4 - * "
+    | filter    " type BOOLEAN $1 'GERMANY' == $2 'FRANCE' == and $1 'FRANCE' == $2 'GERMANY' == and or "
     | gbyAgg    " groupBy
                   type VARCHAR $1
                 , type VARCHAR $2
@@ -100,7 +100,7 @@ begin
     | dynamic
     | next      
 
-  stage S13 on all nodes : 
+  stage S7 on all nodes :
     gbyAgg    " groupBy
                   type VARCHAR $1
                 , type VARCHAR $2
@@ -113,7 +113,7 @@ begin
     | dynamic
     | next      
 
-  stage S14 on origin : 
+  stage S8 on origin :
     gbyAgg    " groupBy
                   type VARCHAR $1
                 , type VARCHAR $2
@@ -126,7 +126,7 @@ begin
     | dynamic
     | next      
 
-  stage S15 on origin :
+  stage S9 on origin :
       output
     | sink
     | first

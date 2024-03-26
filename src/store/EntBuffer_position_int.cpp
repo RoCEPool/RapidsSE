@@ -291,6 +291,78 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */
 /*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pFindLeafBuffer_intO(Key* aForKey)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+	RASSERT(KE_INT == m_eEntKind);
+
+	/*
+
+		 return the leaf buffer which has the key closest before given key
+
+		 9?
+
+		 [1,9]
+		 [1,3,6]              [9,12]
+		 [0,1,2][3,4,5][6,7,9][9,10,11][12,13,14]
+											^
+
+	 */
+
+
+	EntBuffer* pEntBuffer = this;
+
+	i8 iBufferHeight;
+	Ent* aEnt;
+	Ent* aEntPrev;
+	UNUSED(aEntPrev);
+
+	while (true) {
+
+#ifdef EB_TRACE_INSERT
+		vTrace("?? pFindLeafBuffer_int "_Stz);
+      pEntBuffer->vTraceWhere();
+      vTrace("\n"_Stz);
+#endif
+
+		iBufferHeight = pEntBuffer->iBufferHeight();
+		if (iBufferHeight == 0)
+			break;
+
+		// get the entry
+		//aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
+		//ASSERT(aEnt1);
+
+		aEnt = pEntBuffer->aFindEntryBefore_int(aForKey);
+		ASSERT(aEnt);
+		aEntPrev = aEnt;
+
+		aEnt = pEntBuffer->pFindEntryPrevTo_int(aEnt,aForKey);
+#ifdef WITH_DEBUG_VERSION
+		if (! aEnt) {
+        aForKey->vShow(pIndexDef());
+        vTrace("\n"_Stz);
+
+        aEntPrev->aKey()->vShow(pIndexDef());
+        vTrace("\n"_Stz);
+
+        pEntBuffer->vDump();
+      }
+      ASSERT(aEnt);
+#endif
+		// get the index buffer of the entry
+		pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
+		ASSERT(pEntBuffer);
+		ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
+	}
+
+	return pEntBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at a leaf buffer starting from this buffer                        */
+/*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pFindLeafBuffer_ascInt(Key* aForKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);

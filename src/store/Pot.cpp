@@ -36,14 +36,16 @@ extern "C" void vExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInL
 
 	Dynamic_T* pDynamic = (Dynamic_T*)aDynamicT;
 	Pot* pPot = (Pot*)pDynamic->m_pPot;
+
+	// calculate the key hash
 	i8 iKeyHash = HshLib::iHash(aMixIn,iMixInLen);
+
+	// get the lgtptn
 	LglPtnMap* pPtnMap = AM::pLglPtnMap();
 	LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHash);
 
 	try {
 		Row* aDstRow;
-
-
 
 		RowPix* pRowPix = pPot->m_pRowPix;
 
