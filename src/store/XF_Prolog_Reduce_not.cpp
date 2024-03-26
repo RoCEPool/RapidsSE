@@ -64,7 +64,8 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_REDUCE_NOT);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp_bySub(CK_RPNCALC)) {
 
     Kid xRpnCalc(m_pCI->E.p_rpnCalc);

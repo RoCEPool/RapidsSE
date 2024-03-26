@@ -67,10 +67,12 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   bool bSawScanOp = false;
   bool bSawSortOp = false;
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   while (pCI->bEachOp(CK_c_FOLD))
     pCI->vRemoveDeleteMain(CK_c_FOLD);
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   while (pCI->bEachOp(CK_c_FLAT))
     pCI->vRemoveDeleteMain(CK_c_FLAT);
 

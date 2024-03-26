@@ -93,7 +93,7 @@ void Card_Emit::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 /*----------------------------------------------------------------------------*/
 /* apply facets from given key                                                */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vApplyFacets(Card_Key* p_key)
+void Card_Emit::vApplyFacets(CardIter *pCI, Card_Key* p_key)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -102,7 +102,7 @@ void Card_Emit::vApplyFacets(Card_Key* p_key)
       continue;
 
     Symbol* pSym_expr_emit = xEmit.p_expr()->pGet_Symbol(0);
-    Card_Expr* p_expr_key = p_key->pDecode_scalar_expr_Via_symbol(pSym_expr_emit);
+    Card_Expr* p_expr_key = p_key->pDecode_scalar_expr_Via_symbol(pCI,pSym_expr_emit);
     if (! p_expr_key)
       continue;
 

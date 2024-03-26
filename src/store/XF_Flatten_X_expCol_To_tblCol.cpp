@@ -64,7 +64,8 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_X_EXPCOL_TO_TBLCOL);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {

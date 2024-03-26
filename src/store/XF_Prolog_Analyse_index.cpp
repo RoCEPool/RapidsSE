@@ -73,7 +73,8 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix TblCol To All IdxCol
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   Card_Table::vAffixTableColOrd(m_pCI);
 
   m_pCI->vEndTransform(__LINE__);

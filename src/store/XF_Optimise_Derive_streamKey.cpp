@@ -96,7 +96,8 @@ bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
 
   bool bFoundKeyStart = false;
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   for (;;) {
     if (m_pCI->pPeekNextIf(CK_o_INDEXSCAN) ||

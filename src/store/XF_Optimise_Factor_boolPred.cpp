@@ -67,7 +67,8 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_FACTOR_BOOLPRED);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   while (m_pCI->bEachOp()) {
     switch (m_pCI->E.e_Op) {

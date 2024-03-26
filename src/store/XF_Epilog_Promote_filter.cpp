@@ -68,22 +68,26 @@ void XF_Epilog_Promote_filter::vPromote_filter(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_PROMOTE_FILTER);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_SCAN, CK_o_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_INDEXSCAN, CK_o_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_INDEXJOIN, CK_o_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_CROSSJOIN, CK_o_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }

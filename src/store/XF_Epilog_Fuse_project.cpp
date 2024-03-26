@@ -64,7 +64,8 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_FUSE_PROJECT);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
     // test for injecting op
@@ -102,7 +103,8 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_FUSE_PROJECT);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_SCAN)) {
     m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pPeekNextIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
@@ -119,7 +121,8 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
   }
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_INDEXSCAN)) {
     m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pPeekNextIf(CK_o_PROJECT));
     if (! m_pCI->Next.m_pProject ||
@@ -136,7 +139,8 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
   }
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
     if (CK_o_INDEXJOIN != m_pCI->E.e_Op) {
@@ -163,7 +167,8 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
   }
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
     if (CK_o_CROSSJOIN != m_pCI->E.e_Op) {

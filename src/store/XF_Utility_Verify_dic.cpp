@@ -70,7 +70,8 @@ void XF_Utility_Verify_dic::vVerify_dic_loop(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_UTILITY_VERIFY_DIC);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   while (m_pCI->bEachOp()) {
 

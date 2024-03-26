@@ -162,20 +162,33 @@ void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(Symbol* pSymbol)
+Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 
 #ifdef Z_KEY_DIRECTION
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
+  vDump(__func__);
+// for (pCI->vBeginMember(CK_s_KEY); pCI->bEachMember(CK_DIRECTION,CK_EXPR); /**/) {
+  for (pCI->vBeginTarget(CK_s_KEY,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    Symbol* pSymbol_term0 = p_expr->pGet_Symbol(0);
+    pCI->E.p_key->vDump(__func__);
+    pCI->E.p_direction->vDump(__func__);
+    pCI->E.p_expr->vDump(__func__);
+    Symbol* pSym_term0 = pCI->E.p_expr->pGet_Symbol(0);
 
-    if (pSymbol_term0->bMatches(pSymbol))
-      return p_expr;
+    if (pSym_term0->bMatches(pSymbol))
+      return _pCard_Expr(pCI->pEndTarget());
   }
+//  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
+//    Card_Direction* p_direction = xKey.p_direction();
+//    Card_Expr* p_expr = p_direction->pSub_expr();
+//
+//    Symbol* pSymbol_term0 = p_expr->pGet_Symbol(0);
+//
+//    if (pSymbol_term0->bMatches(pSymbol))
+//      return p_expr;
+//  }
 #else
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);

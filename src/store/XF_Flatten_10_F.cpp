@@ -94,7 +94,8 @@ void XF_Flatten_10_F::vFlatten(void)
   m_pCI->E.p_deck->vMarksClearRecursive();
 
   // todo: discuss with Alka
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   if (m_pCI->bEachOp(CK_c_FOLD)) {
     if (m_pCI->bEachOp(CK_o_WHERE)) {
       Card_Level* p_level_where = m_pCI->E.p_where->pSub_level();

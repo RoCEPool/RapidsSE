@@ -111,7 +111,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   if (iDepth) {
     pBoard_outer = m_pCI->E.pBoard;
     SubQuery *pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
-    m_pCI->vSaveMembers();
+    m_pCI->vPushEach();
     m_pCI->vUseBoard(pSqy_inner->pBoard());
   }
 
@@ -214,7 +214,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
   if (iDepth) {
     //m_pCI->vPopBoard();
-    m_pCI->vRestoreMembers();
+    m_pCI->vPopEach();
     m_pCI->vUseBoard(pBoard_outer);
   }
 

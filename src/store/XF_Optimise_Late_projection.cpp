@@ -69,7 +69,8 @@ bool XF_Optimise_Late_projection::bOptimise(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_LATE_PROJECTION);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_LATE_PROJECTION]);
 

@@ -20,7 +20,7 @@ namespace STORE
 
     void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);
     void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
-    Card_Expr* pDecode_scalar_expr_Via_symbol(Symbol* pSymbol);
+    Card_Expr* pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol);
     bool bIsEqual(Card_Key* p_key_arg);
     Card_Expr* pFind_expr_key_Matches(Symbol *pSymbol_arg);
     Card_Expr* pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg);

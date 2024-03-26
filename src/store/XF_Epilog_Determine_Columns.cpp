@@ -64,7 +64,8 @@ void XF_Epilog_Determine_Columns::vDeterime_Columns(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_DETERMINE_COLUMNS);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
   }
 

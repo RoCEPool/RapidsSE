@@ -67,7 +67,8 @@ bool XF_Optimise_aggreg_To_sort_ordAgg::bOptimise(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

@@ -64,7 +64,8 @@ void XF_Prolog_Ensure_level::vEnsure_level(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ENSURE_LEVEL);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
     Card_Level* p_level = m_pCI->E.p_Op->pSub_level();
     if (p_level)

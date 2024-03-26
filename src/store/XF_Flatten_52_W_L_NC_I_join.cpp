@@ -67,7 +67,8 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
   _static_
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   if (pCI->bEachOp(eCardWithSQ, CK_BOOLPRED)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
@@ -82,14 +83,14 @@ i8 XF_Flatten_52_W_L_NC_I_join::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, 
     vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
-  pCI->vSaveMembers();
+  pCI->vPushEach();
   pCI->vUseBoard(pBoard);
 
   i8 nTables = Card_Table::nTables(pCI);
 
   // 4) pop back to mq
   //pCI->vPopBoard();
-  pCI->vRestoreMembers();
+  pCI->vPopEach();
 
   return nTables;
 }

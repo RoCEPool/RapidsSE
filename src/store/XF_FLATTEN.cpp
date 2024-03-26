@@ -53,7 +53,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
     NEVER_REACH
   }
 
-  pCI->vSaveMembers();
+  pCI->vPushEach();
   Board* pBoard_outer = pCI->pBoard();
   pCI->vUseBoard(pBoard_inner);
 
@@ -72,7 +72,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
   // 4) pop back to outer query
   pCI->vUseBoard(pBoard_outer);
-  pCI->vRestoreMembers();
+  pCI->vPopEach();
 
   // 5) add <fold> (before MQ)
   pCI->E.p_fold = Card_Fold::pCraft_fold(szFoldNm, pBoard_inner->i_Board());
@@ -86,7 +86,8 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   while (pCI->bEachOp()) {
 
     if (pCI->E.p_Op->pSub_emit())
@@ -142,7 +143,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // x) push to sq
 
-  pCI->vSaveMembers();
+  pCI->vPushEach();
   pCI->vUseBoard(pBoard);
 
   pCI->Flat.m_pCopy_inner = pCI->E.p_deck->pDupSubCardsRecursive(0);
@@ -153,7 +154,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 
   // x) pop back to mq
   //pCI->vPopBoard();
-  pCI->vRestoreMembers();
+  pCI->vPopEach();
   pCI->E.p_deck->vPushChild(pCI->Flat.m_pCopy_inner);
   pCI->E.p_deck->vRemoveChildLeavingSubs(pCI->Flat.m_pCopy_inner);
   DELETE_CARD(pCI->Flat.m_pCopy_inner);
@@ -162,7 +163,8 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
   DELETE_CARD(pCI->E.p_call);
 
   // 7) derive the fold (SQ result) expr
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   if (pCI->bEachOp(CK_c_FOLD)) {
     pCI->Flat.m_i_fold = pCI->E.i_Op;
     Board::vDerive_foldProjection_F(pCI);
@@ -197,7 +199,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
     vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
     NEVER_REACH
   }
-  pCI->vSaveMembers();
+  pCI->vPushEach();
   pCI->vUseBoard(pBoard);
 
 
@@ -208,7 +210,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // 4) pop back to mq
   //pCI->vPopBoard();
-  pCI->vRestoreMembers();
+  pCI->vPopEach();
 
   // 5) add <fold> (before MQ)
   pCI->E.p_fold = Card_Fold::pCraft_fold(szFoldNm, pSubQuery_save->pBoard()->i_Board());
@@ -222,7 +224,8 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   while (pCI->bEachOp()) {
 
     if (pCI->E.p_Op->pSub_emit())
@@ -391,12 +394,13 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 /*----------------------------------------------------------------------------*/
 void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 {
-  pCI->vClearRestart();
-  RASSERT(pCI->bEachOp_foldBreak(CK_o_FROM));
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
+  RASSERT(pCI->bEachOp_break(CK_o_FROM));
 
 
   //RASSERT(pCI->bEachOp(CK_o_WHERE));
-  RASSERT(pCI->bEachOp_foldBreak(CK_o_PROJECT));
+  RASSERT(pCI->bEachOp_break(CK_o_PROJECT));
 
 //  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
 //  pCI->G.p_where->vRemoveSub(pCI->G.p_constraint);
@@ -478,12 +482,14 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // pCI->PRINTBOARD_dbg();
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   if (pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED)) {
     (void)pCI->E.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
-  pCI->vClearRestart();
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
   pCI->vDeleteWhenEmptySub(CK_o_WHERE, CK_BOOLPRED);
 
   vDebugPoint();

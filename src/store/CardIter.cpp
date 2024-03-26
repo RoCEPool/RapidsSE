@@ -34,7 +34,7 @@ CardIter::CardIter(Bench* pBench)
 
   m_i_RecursionDepth = 0;
 
-  E.xKid.vParent(nullptr);
+  E.xEachOp.vParent(nullptr);
 
   E.m_bDontDescend = false;
 
@@ -76,7 +76,7 @@ CardIter::~CardIter(void) noexcept(false)
   _precondition_(_MAGIC_,_FOOTER_);
 
   while (nItems())
-    vRestoreMembers();
+    vPopEach();
 
   RASSERT(0 == nItems());
 
@@ -94,9 +94,9 @@ Card* CardIter::pAdvanceChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  E.xKid.bEach();
+  E.xEachOp.bEach();
 
-  return E.xKid.pChild();
+  return E.xEachOp.pChild();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,13 +429,16 @@ void CardIter::vBeginBoard(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vBeginEach(void)
+void CardIter::vBeginEach(eCK eOp)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
   vResetMembers();
 
-  E.xKid.vBegin();
+  E.xEachOp.vBegin();
+
+  if (CK_NONE != eOp)
+    (void)bEachOp(eOp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -445,7 +448,49 @@ void CardIter::vBeginEach_reverse(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  E.xKid.vBegin_reverse();
+  E.xEachOp.vBegin_reverse();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBeginMember(eCK eSub_Of_Op)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vPushEach();
+
+  Card* pSub_Of_Op = E.p_Op->pFindSubCard(eSub_Of_Op);
+  vMember(eSub_Of_Op, pSub_Of_Op);
+
+  E.xTarget.vBegin();
+  E.xTarget.vParent(pSub_Of_Op);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBeginTarget(eCK ePrimary, eCK eTarget)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vPushEach();
+
+  Iter.m_ePrimary = ePrimary;
+  Iter.m_eTarget  = eTarget;
+
+  if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
+    Iter.m_eSecondary = CK_DIRECTION;
+  }
+  else {
+    NEVER_REACH
+  }
+
+  Card* pPrimary = E.p_Op->pFindSubCard(Iter.m_ePrimary);
+  vMember(Iter.m_ePrimary, pPrimary);
+
+  E.xTarget.vBegin();
+  E.xTarget.vParent(pPrimary);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -476,7 +521,7 @@ i8 CardIter::i_Child(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return E.xKid.i_Child();
+  return E.xEachOp.i_Child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -486,7 +531,7 @@ Card* CardIter::pChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return E.xKid.pChild();
+  return E.xEachOp.pChild();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -496,9 +541,9 @@ void CardIter::vChild(Card* pChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(E.xKid.bWithinRange());
+  RASSERT(E.xEachOp.bWithinRange());
 
-  E.xKid.vReposition(E.xKid.pParent()->iFindChild(pChild));
+  E.xEachOp.vReposition(E.xEachOp.pParent()->iFindChild(pChild));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,18 +555,18 @@ void CardIter::vClearRegisters(void)
 
   MemLib::vZero(E.md_Coord, sizeof(E.md_Coord), CN_CARDITER);
 
-  E.p_Op         = nullptr;
-  E.e_Op         = CK_NONE;
-  E.i_Op         = C_UNKNOWN;
-  E.p_Sub        = nullptr;
-  E.p_Sub2       = nullptr;
-  E.p_Sub3       = nullptr;
+  E.p_Op   = nullptr;
+  E.e_Op   = CK_NONE;
+  E.i_Op   = C_UNKNOWN;
+  E.p_Sub  = nullptr;
+  E.p_Sub2 = nullptr;
+  E.p_Sub3 = nullptr;
 
   //Flat.m_p_term_crlKey  = nullptr;
 
-  Flux.m_pArriving  = nullptr;
-  Dic.m_p_expr    = nullptr;
-  Dic.m_p_key    = nullptr;
+  Flux.m_pArriving = nullptr;
+  Dic.m_p_expr     = nullptr;
+  Dic.m_p_key      = nullptr;
 
   Next.m_pProject   = nullptr;
   Next.m_pEmitted   = nullptr;
@@ -530,8 +575,8 @@ void CardIter::vClearRegisters(void)
   Early.m_pOP_leaf  = nullptr;
   Early.m_pNeeded_later = nullptr;
 
-  StreamOrder.m_pStreamKey  = nullptr;
-  StreamOrder.m_pEmitted = nullptr;
+  StreamOrder.m_pStreamKey = nullptr;
+  StreamOrder.m_pEmitted   = nullptr;
 
   X.m_pExprList_a = nullptr;
   X.m_pExprList_i = nullptr;
@@ -539,6 +584,10 @@ void CardIter::vClearRegisters(void)
 
   Flat.m_i_fold = C_UNKNOWN;
 
+  Iter.m_ePrimary   = CK_NONE;
+  Iter.m_eTarget    = CK_NONE;
+  Iter.m_eSecondary = CK_NONE;
+  Iter.m_eTertiary  = CK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -561,19 +610,6 @@ void CardIter::vClearRegistersIf(Card* pCard)
   if (pCard == E.p_Sub3) {
     E.p_Sub3 = nullptr;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* restart the M iterator                                                     */
-/*----------------------------------------------------------------------------*/
-void CardIter::vClearRestart(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  this->vBeginEach();
-
-  vResetMembers();
-  vClearRegisters();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -748,18 +784,66 @@ Board* CardIter::pEachBoard(i8& ri_Board)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
+bool CardIter::bEachMember(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xTarget.bBegun());
+  RASSERT(! E.xTarget.bEnded());
+
+  while (E.xTarget.bEach()) {
+    vMember(E.xTarget.eChild(), E.xTarget.pChild());
+    return true;
+  }
+
+  E.xTarget.vEnded();
+
+  vPopEach();
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bEachMember(eCK eMember2, eCK eMember3)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xTarget.bBegun());
+  RASSERT(! E.xTarget.bEnded());
+
+  while (E.xTarget.bEach(eMember2)) {
+    vMember(E.xTarget.eChild(), E.xTarget.pChild());
+
+    Card* pSub_Of_Member = E.xTarget.pChild()->pFindSubCard(eMember3);
+    vMember(eMember3, pSub_Of_Member);
+
+    return true;
+  }
+
+  E.xTarget.vEnded();
+
+  vPopEach();
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::bEachOp(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(E.xKid.bBegun());
-  RASSERT(! E.xKid.bEnded());
+  RASSERT(E.xEachOp.bBegun());
+  RASSERT(! E.xEachOp.bEnded());
 
-  while (E.xKid.bEach()) {
-    if (E.xKid.bParentIs(CK_DECK) && ! E.xKid.pChild()->bIsMain())
+  while (E.xEachOp.bEach()) {
+    if (E.xEachOp.bParentIs(CK_DECK) && ! E.xEachOp.pChild()->bIsMain())
       continue;
 
-    E.p_Op = E.xKid.pChild();
+    E.p_Op = E.xEachOp.pChild();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
@@ -767,7 +851,7 @@ bool CardIter::bEachOp(void)
 
   E.p_Op = nullptr;
   E.e_Op = CK_NONE;
-  E.xKid.vEnded();
+  E.xEachOp.vEnded();
   return false;
 }
 
@@ -778,59 +862,59 @@ bool CardIter::bEachOp(eCK eOp)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(E.xKid.bBegun());
-  RASSERT(! E.xKid.bEnded());
+  RASSERT(E.xEachOp.bBegun());
+  RASSERT(! E.xEachOp.bEnded());
 
   RASSERT(Card_OP::bIsMain(eOp));
 
   E.p_Op = nullptr;
 
-  while (E.xKid.bEach()) {
+  while (E.xEachOp.bEach()) {
 
-    if (E.xKid.pChild()->eCard() != eOp)
+    if (E.xEachOp.pChild()->eCard() != eOp)
       continue;
 
-    E.p_Op = E.xKid.pChild();
+    E.p_Op = E.xEachOp.pChild();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
   }
 
   E.p_Op = nullptr;
-  E.xKid.vEnded();
+  E.xEachOp.vEnded();
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bEachOp_foldBreak(eCK eOp)
+bool CardIter::bEachOp_break(eCK eOp, eCK eBreak)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(E.xKid.bBegun());
-  RASSERT(! E.xKid.bEnded());
+  RASSERT(E.xEachOp.bBegun());
+  RASSERT(! E.xEachOp.bEnded());
 
   RASSERT(Card_OP::bIsMain(eOp));
 
   E.p_Op = nullptr;
 
-  while (E.xKid.bEach()) {
+  while (E.xEachOp.bEach()) {
 
-    if (E.xKid.pChild()->bIsCard(CK_c_FOLD))
+    if (E.xEachOp.pChild()->bIsCard(eBreak))
       return false;
 
-    if (E.xKid.pChild()->eCard() != eOp)
+    if (E.xEachOp.pChild()->eCard() != eOp)
       continue;
 
-    E.p_Op = E.xKid.pChild();
+    E.p_Op = E.xEachOp.pChild();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
   }
 
   E.p_Op = nullptr;
-  E.xKid.vEnded();
+  E.xEachOp.vEnded();
   return false;
 
 }
@@ -852,7 +936,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub)
     return true;
   }
 
-  RASSERT(E.xKid.bEnded());
+  RASSERT(E.xEachOp.bEnded());
 
   E.p_Sub = nullptr;
   vMember(CK_NONE, nullptr);
@@ -894,7 +978,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub1, eCK eSub2)
     return true;
   }
 
-  RASSERT(E.xKid.bEnded());
+  RASSERT(E.xEachOp.bEnded());
 
   E.p_Sub2 = nullptr;
   vMember(eSub2, nullptr);
@@ -919,7 +1003,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub1, eCK eSub2, eCK eSub3)
     return true;
   }
 
-  RASSERT(E.xKid.bEnded());
+  RASSERT(E.xEachOp.bEnded());
 
   E.p_Sub3 = nullptr;
   vMember(eSub3, nullptr);
@@ -937,23 +1021,23 @@ bool CardIter::bEachOp_reverse(void)
 
   RASSERT(!bForwards());
 
-  RASSERT(E.xKid.bBegun());
-  RASSERT(! E.xKid.bEnded());
+  RASSERT(E.xEachOp.bBegun());
+  RASSERT(! E.xEachOp.bEnded());
 
   E.p_Op = nullptr;
 
-  while (E.xKid.bEach_reverse()) {
-    if (E.xKid.bParentIs(CK_DECK) && ! E.xKid.pChild()->bIsMain())
+  while (E.xEachOp.bEach_reverse()) {
+    if (E.xEachOp.bParentIs(CK_DECK) && ! E.xEachOp.pChild()->bIsMain())
       continue;
 
-    E.p_Op = E.xKid.pChild();
+    E.p_Op = E.xEachOp.pChild();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
   }
 
   E.p_Op = nullptr;
-  E.xKid.vEnded();
+  E.xEachOp.vEnded();
   return false;
 }
 
@@ -966,25 +1050,25 @@ bool CardIter::bEachOp_reverse(eCK eOp)
 
   RASSERT(!bForwards());
 
-  RASSERT(E.xKid.bBegun());
-  RASSERT(! E.xKid.bEnded());
+  RASSERT(E.xEachOp.bBegun());
+  RASSERT(! E.xEachOp.bEnded());
 
   RASSERT(Card_OP::bIsMain(eOp));
 
   E.p_Op = nullptr;
 
-  while (E.xKid.bEach_reverse()) {
-    if (E.xKid.pChild()->eCard() != eOp)
+  while (E.xEachOp.bEach_reverse()) {
+    if (E.xEachOp.pChild()->eCard() != eOp)
       continue;
 
-    E.p_Op = E.xKid.pChild();
+    E.p_Op = E.xEachOp.pChild();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
   }
 
   E.p_Op = nullptr;
-  E.xKid.vEnded();
+  E.xEachOp.vEnded();
   return false;
 }
 
@@ -997,29 +1081,29 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eOp)
 
   RASSERT(!bForwards());
 
-  RASSERT(E.xKid.bBegun());
-  RASSERT(! E.xKid.bEnded());
+  RASSERT(E.xEachOp.bBegun());
+  RASSERT(! E.xEachOp.bEnded());
 
   RASSERT(Card_OP::bIsMain(eOp));
 
   E.p_Op = nullptr;
 
-  while (E.xKid.bEach_reverse()) {
+  while (E.xEachOp.bEach_reverse()) {
 
-    if (E.xKid.pChild()->bIsCard(CK_c_FOLD))
+    if (E.xEachOp.pChild()->bIsCard(CK_c_FOLD))
       return false;
 
-    if (E.xKid.pChild()->eCard() != eOp)
+    if (E.xEachOp.pChild()->eCard() != eOp)
       continue;
 
-    E.p_Op = E.xKid.pChild();
+    E.p_Op = E.xEachOp.pChild();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
   }
 
   E.p_Op = nullptr;
-  E.xKid.vEnded();
+  E.xEachOp.vEnded();
   return false;
 }
 
@@ -1183,6 +1267,66 @@ bool CardIter::bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3)
 }
 
 /*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bEachTarget(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xTarget.bBegun());
+  RASSERT(! E.xTarget.bEnded());
+
+  while (E.xTarget.bEach(Iter.m_eSecondary)) {
+    vMember(E.xTarget.eChild(), E.xTarget.pChild());
+
+    Card* pTarget = E.xTarget.pChild()->pFindSubCard(Iter.m_eTarget);
+    vMember(Iter.m_eTarget, pTarget);
+
+    return true;
+  }
+
+  E.xTarget.vEnded();
+
+  vPopEach();
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end member                                                                 */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pEndMember(eCK eMember)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card* pEnd = pMember(eMember);
+
+  RASSERT(E.xTarget.bBegun());
+  RASSERT(! E.xTarget.bEnded());
+
+  E.xTarget.vEnded();
+
+  vPopEach();
+
+  return pEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end member                                                                 */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEndMember(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xTarget.bBegun());
+  RASSERT(! E.xTarget.bEnded());
+
+  E.xTarget.vEnded();
+
+  vPopEach();
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndPhase(void)
@@ -1194,6 +1338,36 @@ void CardIter::vEndPhase(void)
   vValidateBench();
 
   RASSERT(0 == nItems());
+}
+
+/*----------------------------------------------------------------------------*/
+/* end member                                                                 */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pEndTarget(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card* pTarget_end = pMember(Iter.m_eTarget);
+
+  vEndTarget();
+
+  return pTarget_end;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end member                                                                 */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEndTarget(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xTarget.bBegun());
+  RASSERT(! E.xTarget.bEnded());
+
+  E.xTarget.vEnded();
+
+  vPopEach();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1224,7 +1398,7 @@ void CardIter::vEndTransform(i8 iLineNo)
 
   vValidateBench();
 
-  E.xKid.vEnded();
+  E.xEachOp.vEnded();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1276,7 +1450,7 @@ bool CardIter::bForwards(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return E.xKid.bForwards();
+  return E.xEachOp.bForwards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1286,7 +1460,7 @@ void CardIter::vForwards(bool bForward)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  E.xKid.vForwards(bForward);
+  E.xEachOp.vForwards(bForward);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1296,7 +1470,7 @@ Card* CardIter::pChild(i8 i_Child)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pChild = E.xKid.pParent()->pGetChild(i_Child);
+  Card* pChild = E.xEachOp.pParent()->pGetChild(i_Child);
 
   return pChild;
 }
@@ -1622,9 +1796,9 @@ bool CardIter::bMore(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(E.xKid.bWithinRange());
+  RASSERT(E.xEachOp.bWithinRange());
 
-  if (E.xKid.bMore())
+  if (E.xEachOp.bMore())
     return true;
 
   return false;
@@ -1667,12 +1841,12 @@ Card* CardIter::pPeekNext(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  i8 i_Next = E.xKid.i_Child() + 1;
+  i8 i_Next = E.xEachOp.i_Child() + 1;
 
-  if (i_Next >= E.xKid.pParent()->nChildCards())
+  if (i_Next >= E.xEachOp.pParent()->nChildCards())
     return nullptr;
 
-  Card* pNextMain = E.xKid.pParent()->pGetChild(i_Next);
+  Card* pNextMain = E.xEachOp.pParent()->pGetChild(i_Next);
 
   return pNextMain;
 }
@@ -1698,9 +1872,23 @@ Card* CardIter::pPeekPrev(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pChild = E.xKid.pPrev();
+  Card* pChild = E.xEachOp.pPrev();
 
   return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vPopEach(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  EachMembers* pMembers_popped = pPop();
+
+  E.vCopyFrom(pMembers_popped);
+
+  delete pMembers_popped;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1759,7 +1947,7 @@ bool CardIter::bPositionAt(eCK eKind_at, i8 /* eCK */  iKind_First, ...)
 
   if (pCard_found) {
     vChild(pCard_found);
-    E.p_Op = E.xKid.pChild();
+    E.p_Op = E.xEachOp.pChild();
     vFocusOnOp();
     return true;
   }
@@ -1832,11 +2020,23 @@ void CardIter::vPushChild(Card* pParent, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::vPushEach(void)
+{
+  EachMembers* pMembers_save = new EachMembers;
+
+  pMembers_save->vCopyFrom(&E);
+
+  vPush(pMembers_save);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool CardIter::bRecurseActive(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  CardIterMembers* pPeg = pPeek(0);
+  EachMembers* pPeg = pPeek(0);
   if (! pPeg)
     return false;
   if (pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
@@ -1852,7 +2052,7 @@ void CardIter::vRecurseBegin(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vSaveMembers();
+  vPushEach();
 
   m_i_RecursionDepth++;
   E.m_i_RecursionDepth = m_i_RecursionDepth;
@@ -1860,7 +2060,7 @@ void CardIter::vRecurseBegin(Card* pCard)
   vUseCard(pCard);
   vDontDescend(false);
 
-  E.xKid.vForwards(true);
+  E.xEachOp.vForwards(true);
 
 }
 
@@ -1877,7 +2077,7 @@ Card* CardIter::pRecurseEach(void)
   if (E.p_Op && (! E.m_bDontDescend) ) {
     if (E.p_Op->nChildCards()) {
 
-      vSaveMembers();
+      vPushEach();
       vUseCard(E.p_Op);
       bEachOp();
 
@@ -1894,7 +2094,7 @@ Card* CardIter::pRecurseEach(void)
     return E.p_Op;
 
   while (bRecurseActive()) {
-    vRestoreMembers();
+    vPopEach();
     if (bEachOp())
       return E.p_Op;
   }
@@ -1923,7 +2123,7 @@ void CardIter::vRecurseEnd(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vRestoreMembers();
+  vPopEach();
 
   m_i_RecursionDepth--;
 
@@ -1937,14 +2137,14 @@ void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(E.xKid.bWithinRange());
-  RASSERT(eCrossCheck == E.xKid.eChild());
+  RASSERT(E.xEachOp.bWithinRange());
+  RASSERT(eCrossCheck == E.xEachOp.eChild());
 
-  Card* pChild = E.xKid.pChild();
-  E.xKid.pParent()->vRemoveChild(pChild);
+  Card* pChild = E.xEachOp.pChild();
+  E.xEachOp.pParent()->vRemoveChild(pChild);
   delete pChild;
 
-  E.xKid.vBackstep();
+  E.xEachOp.vBackstep();
 
   E.p_Op = nullptr;
   E.e_Op = CK_NONE;
@@ -2126,9 +2326,9 @@ bool CardIter::bRewindOp(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  E.xKid.vBackstep();
+  E.xEachOp.vBackstep();
 
-  if ((E.p_Op = E.xKid.pChild())) {
+  if ((E.p_Op = E.xEachOp.pChild())) {
     vFocusOnOp();
     vMember(E.e_Op, E.p_Op);
     return true;
@@ -2141,26 +2341,12 @@ bool CardIter::bRewindOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRestoreMembers(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  CardIterMembers* pMembers_popped = pPop();
-
-  E.vCopyFrom(pMembers_popped);
-
-  delete pMembers_popped;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::vResynchOp(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  E.xKid.vReposition(E.p_Op);
-  RASSERT(E.p_Op == E.xKid.pChild());
+  E.xEachOp.vReposition(E.p_Op);
+  RASSERT(E.p_Op == E.xEachOp.pChild());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2172,18 +2358,6 @@ void CardIter::vResynchOp(Card* pCard)
 
   E.p_Op = pCard;
   vResynchOp();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vSaveMembers(void)
-{
-  CardIterMembers* pMembers_save = new CardIterMembers;
-
-  pMembers_save->vCopyFrom(&E);
-
-  vPush(pMembers_save);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2205,6 +2379,8 @@ void CardIter::vSnapArriving(void)
 void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  vClearRegisters();
 
   m_pBench->vTransform(azXfile, azXfunc, eXform);
 }
@@ -2232,7 +2408,7 @@ void CardIter::vUseCard(Card* pCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  E.xKid.vParent(pCard);
+  E.xEachOp.vParent(pCard);
 
   E.p_Op = nullptr;
   vMember(pCard->eCard(),pCard);

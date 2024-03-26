@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
-#include "CardIterMembers.hpp"
+#include "EachMembers.hpp"
 #include "PermGen.hpp"
 #include "Index.hpp"
 #include "Bench.hpp"
@@ -17,7 +17,7 @@ namespace STORE
   const i8 C_CARD_ANCESTRY = 16;
 
   class CardIter : public Object
-                 , public ListExo2_t<CardIterMembers>
+                 , public ListExo2_t<EachMembers>
  {
   public:
 
@@ -27,7 +27,7 @@ namespace STORE
 
     i8          m_i_RecursionDepth;
 
-    CardIterMembers E;
+    EachMembers E;
 
     struct {
       Card_OP*      m_pOP_root;
@@ -81,6 +81,15 @@ namespace STORE
       Card_EXPRLIST * m_pExprList_k;
     } X;
 
+    struct {
+      eCK m_ePrimary;
+      eCK m_eTarget;
+      // --
+      eCK m_eSecondary;
+      eCK m_eTertiary;
+    } Iter;
+
+
     i8 m_nAncestors;
     Card* m_apAncestry[C_CARD_ANCESTRY];
 
@@ -116,8 +125,10 @@ namespace STORE
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
     void vBeginBoard(void);
-    void vBeginEach(void);
+    void vBeginEach(eCK eOp=CK_NONE);
     void vBeginEach_reverse(void);
+    void vBeginMember(eCK eSub_Of_Op);
+    void vBeginTarget(eCK ePrimary, eCK eTarget);
     Board* pBoard(void);
     void vBurst(Card* pCard);
 
@@ -127,7 +138,6 @@ namespace STORE
     void vChild(Card* pChild);
     void vClearRegisters(void);
     void vClearRegistersIf(Card* pCard);
-    void vClearRestart(void);
     eOA  eCueUser(String* psPrompt);
 
     void vDeleteMember(Card* pMember);
@@ -138,9 +148,11 @@ namespace STORE
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
+    bool bEachMember(void);
+    bool bEachMember(eCK eMember2, eCK eMember3);
     bool bEachOp(void);
     bool bEachOp(eCK eOp);
-    bool bEachOp_foldBreak(eCK eOp);
+    bool bEachOp_break(eCK eOp, eCK eBreak= CK_c_FOLD);
     bool bEachOp(eCK eOp, eCK eSub);
     bool bEachOp(eCK eOp, eCK eSub, Stz* szSubFacet);
     bool bEachOp(eCK eOp, eCK eSub1, eCK eSub2);
@@ -156,7 +168,13 @@ namespace STORE
     bool bEachOp_by2Sub(eCK eSub1, eCK eSub2);
     bool bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3);
 
+    bool bEachTarget(void);
+
+    Card* pEndMember(eCK eMember);
+    void vEndMember(void);
     void vEndPhase(void);
+    Card* pEndTarget(void);
+    void  vEndTarget(void);
     void vEndTransform(i8 iLineNo);
 
     Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);
@@ -179,9 +197,11 @@ namespace STORE
     Card* pPeekNext(void);
     Card* pPeekNextIf(eCK eCard);
     Card* pPeekPrev(void);
+    void vPopEach(void);
     bool bPositionAt(eCK eKind_at, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
     void vPushChild(Card* pParent, eCK eChild);
+    void vPushEach(void);
 
     bool bRecurseActive(void);
     void vRecurseBegin(Card* pCard);
@@ -192,13 +212,11 @@ namespace STORE
     void vResetMembers(void);
     Card_Emit* pResolvePrior_emit(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
-    void vRestoreMembers(void);
     void vResynchOp(void);
     void vResynchOp(Card* pCard);
     bool bRewindOp(void);
 
-    void vSaveMembers(void);
-    void vSnapArriving(void);
+   void vSnapArriving(void);
 
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 

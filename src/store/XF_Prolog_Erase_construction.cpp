@@ -80,14 +80,16 @@ void XF_Prolog_Erase_construction::vProlog(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Send
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_c_SEND)) {
     m_pCI->vRemoveDeleteMain(CK_c_SEND);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Stage
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_c_STAGE)) {
     m_pCI->vRemoveDeleteMain(CK_c_STAGE);
   }
