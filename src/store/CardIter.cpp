@@ -504,7 +504,7 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
     NEVER_REACH
   }
 
-  vMember(Iter.m_ePrimary, pPrimary);
+  //vMember(Iter.m_ePrimary, pPrimary);
 
   E.xTarget.vBegin();
   E.xTarget.vParent(pPrimary);

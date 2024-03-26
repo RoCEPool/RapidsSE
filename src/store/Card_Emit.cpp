@@ -348,9 +348,9 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
   //pCI->StreamOrder.m_pStreamKey->vDump(__func__);
 
 #ifdef Z_KEY_DIRECTION
-   for (Kid xStreamKey(pCI->StreamOrder.m_pStreamKey); xStreamKey.bEach(CK_DIRECTION); /**/) {
-     Card_Direction* p_direction = xStreamKey.p_direction();
-     Card_Expr* p_expr_runkey = p_direction->pSub_expr();
+
+   for (pCI->vBeginTarget(pCI->StreamOrder.m_pStreamKey,CK_EXPR); pCI->bEachTarget(); /**/) {
+     Card_Expr* p_expr_runkey = pCI->E.p_expr;
      Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
      Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
      if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc(C_NOT_NULL)->nChildCards()) {
@@ -364,8 +364,9 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
      }
    }
 
-//   for (pCI->vBeginTarget(pCI->StreamOrder.m_pStreamKey,CK_EXPR); pCI->bEachTarget(); /**/) {
-//     Card_Expr* p_expr_runkey = pCI->E.p_expr;
+//   for (Kid xStreamKey(pCI->StreamOrder.m_pStreamKey); xStreamKey.bEach(CK_DIRECTION); /**/) {
+//     Card_Direction* p_direction = xStreamKey.p_direction();
+//     Card_Expr* p_expr_runkey = p_direction->pSub_expr();
 //     Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
 //     Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
 //     if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc(C_NOT_NULL)->nChildCards()) {
