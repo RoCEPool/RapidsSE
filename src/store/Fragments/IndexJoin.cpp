@@ -198,14 +198,14 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   // dereference the entry
   iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
   iIndexItem   = __INDEX_INFO__.m_aEntInt->Rrf.m_uItem;
-  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
+  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
   ayDstByte = (byte*)__ROW_INFO_TO__.m_aRowCellArray + 8*__COLUMNS_INFLATED__;
   acStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
-  racStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  racStrArea = acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataX = C_1B  + C_8B  + __COLUMNS_TO_INFLATE_;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataX);
