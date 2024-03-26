@@ -155,7 +155,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
         i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
 #ifdef Z_KEY_DIRECTION
-        Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr_Of_direction(i_Key);
+        Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
 #else
         Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(i_Key);
 #endif

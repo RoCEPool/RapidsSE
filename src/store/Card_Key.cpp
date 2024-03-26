@@ -168,27 +168,13 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymb
   UNUSED(pCI);
 
 #ifdef Z_KEY_DIRECTION
-  vDump(__func__);
-// for (pCI->vBeginMember(CK_s_KEY); pCI->bEachMember(CK_DIRECTION,CK_EXPR); /**/) {
   for (pCI->vBeginTarget(CK_s_KEY,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    pCI->E.p_key->vDump(__func__);
-    pCI->E.p_direction->vDump(__func__);
-    pCI->E.p_expr->vDump(__func__);
     Symbol* pSym_term0 = pCI->E.p_expr->pGet_Symbol(0);
 
     if (pSym_term0->bMatches(pSymbol))
       return _pCard_Expr(pCI->pEndTarget());
   }
-//  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-//    Card_Direction* p_direction = xKey.p_direction();
-//    Card_Expr* p_expr = p_direction->pSub_expr();
-//
-//    Symbol* pSymbol_term0 = p_expr->pGet_Symbol(0);
-//
-//    if (pSymbol_term0->bMatches(pSymbol))
-//      return p_expr;
-//  }
 #else
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
@@ -277,7 +263,7 @@ Card_Direction* Card_Key::pGet_direction(i8 i_Direction)
 /*----------------------------------------------------------------------------*/
 /* get a particular direction/expr                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pGet_expr_Of_direction(i8 i_Direction)
+Card_Expr* Card_Key::pGet_expr(i8 i_Direction)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
