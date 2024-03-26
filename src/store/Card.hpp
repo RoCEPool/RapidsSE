@@ -18,8 +18,6 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_KEY_DIRECTION
-
 namespace STORE
 {
   class Card_AbsJoin;
