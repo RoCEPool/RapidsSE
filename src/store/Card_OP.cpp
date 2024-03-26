@@ -853,12 +853,9 @@ void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAg
   psRpnExpr->vConcat(" groupBy"_Stz);
 
 #ifdef Z_KEY_DIRECTION
-//  for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-for (Kid xKey(p_key); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
+  for (pCI->vBeginTarget(p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    Card_Expr* p_expr = p_direction->pSub_expr();
-    if (xKey.i_Child()) {
+    if (pCI->i_Target()) {
       psRpnExpr->vConcat("\n                 "_Stz);
       psRpnExpr->vConcat(" ,"_Stz);
     }
@@ -867,8 +864,25 @@ for (Kid xKey(p_key); xKey.bEach(CK_DIRECTION); /**/) {
       psRpnExpr->vConcat("  "_Stz);
     }
 
-    vRpn_expr(pCI, psRpnExpr, p_expr);
+    vRpn_expr(pCI, psRpnExpr, pCI->E.p_expr);
   }
+
+//  for (Kid xKey(p_key); xKey.bEach(CK_DIRECTION); /**/) {
+//    Card_Direction* p_direction = xKey.p_direction();
+//
+//    Card_Expr* p_expr = p_direction->pSub_expr();
+//    if (xKey.i_Child()) {
+//      psRpnExpr->vConcat("\n                 "_Stz);
+//      psRpnExpr->vConcat(" ,"_Stz);
+//    }
+//    else {
+//      psRpnExpr->vConcat("\n                 "_Stz);
+//      psRpnExpr->vConcat("  "_Stz);
+//    }
+//
+//    vRpn_expr(pCI, psRpnExpr, p_expr);
+//  }
+
 #else
   nSubCards = p_key->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {

@@ -1286,6 +1286,16 @@ bool CardIter::bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
+i8 CardIter::i_Target(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  return E.xTarget.i_Child();
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::bEachTarget(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
