@@ -73,7 +73,7 @@ namespace STORE
     void vRpn_term        (String* psRpnExpr, Card_Term*      p_term);
 
     Index*     pGetIndex_chosenIndex(void);
-    IndexDef*  pCraftIndexDef_key(void);
+    IndexDef*  pCraftIndexDef_key(CardIter* pCI);
     StreamDef* pCraftStreamDef_emitted(ColMap** ppColMap);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

@@ -35,7 +35,7 @@ namespace STORE
     void vMapColumns(CardIter *pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
-    IndexDef* pTo_IndexDef(void);
+    IndexDef* pTo_IndexDef(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

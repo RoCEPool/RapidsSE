@@ -416,13 +416,13 @@ void XF_Synthesise_pipelineDef::vCraftIndexDefs(void)
   eCK eCard = p_OP->eCard();
 
   if (CK_o_GBYAGG == eCard)
-    m_pOpDef->m_pIndexDef_gbyAgg = p_OP->pCraftIndexDef_key();
+    m_pOpDef->m_pIndexDef_gbyAgg = p_OP->pCraftIndexDef_key(m_pCI);
   else
   if (CK_o_SORT == eCard)
-    m_pOpDef->m_pIndexDef_sort = p_OP->pCraftIndexDef_key();
+    m_pOpDef->m_pIndexDef_sort = p_OP->pCraftIndexDef_key(m_pCI);
   else
   if (CK_o_TOP == eCard)
-    m_pOpDef->m_pIndexDef_top = p_OP->pCraftIndexDef_key();
+    m_pOpDef->m_pIndexDef_top = p_OP->pCraftIndexDef_key(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/

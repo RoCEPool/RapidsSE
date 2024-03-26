@@ -18,7 +18,6 @@ namespace STORE
     Board*      pBoard;
 
   // - - - - - - - - - - - - -
-  private:
     Kid xEachOp;
     Kid xTarget;
 

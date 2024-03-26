@@ -390,7 +390,7 @@ void Card_Key::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* convert key to indexDef                                                    */
 /*----------------------------------------------------------------------------*/
-IndexDef* Card_Key::pTo_IndexDef(void)
+IndexDef* Card_Key::pTo_IndexDef(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -399,12 +399,10 @@ IndexDef* Card_Key::pTo_IndexDef(void)
   IndexDef* pIndexDef = new IndexDef;
 
 #ifdef Z_KEY_DIRECTION
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
+//for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
-
-    Card_Term* p_term = p_expr->pGet_term(0);
+    Card_Term* p_term = pCI->E.p_expr->pGet_term(0);
     if (! p_term)
       continue;
 
@@ -415,7 +413,7 @@ IndexDef* Card_Key::pTo_IndexDef(void)
       continue;
 
     bool bAscending = true;
-    if (p_direction->pSymbol()->bHasFacet(C_DESC)) {
+    if (pGet_direction(pCI->E.xTarget.i_Child())->pSymbol()->bHasFacet(C_DESC)) {
       bAscending = false;
       bHasDescending = true;
     }

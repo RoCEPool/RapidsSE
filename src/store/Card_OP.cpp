@@ -1625,7 +1625,7 @@ Index* Card_OP::pGetIndex_chosenIndex(void)
 /*----------------------------------------------------------------------------*/
 /* craft indexDef for key                                                     */
 /*----------------------------------------------------------------------------*/
-IndexDef* Card_OP::pCraftIndexDef_key(void)
+IndexDef* Card_OP::pCraftIndexDef_key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1633,7 +1633,7 @@ IndexDef* Card_OP::pCraftIndexDef_key(void)
   if (! p_key)
     return nullptr;
 
-  IndexDef* pIndexDef = p_key->pTo_IndexDef();
+  IndexDef* pIndexDef = p_key->pTo_IndexDef(pCI);
 
   return pIndexDef;
 }
