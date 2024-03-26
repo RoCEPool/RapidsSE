@@ -606,10 +606,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         }
 
         if (m_pCI->E.p_key) {
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
           bool bMatched = false;
           for (m_pCI->vBeginTarget(m_pCI->E.p_key,CK_EXPR); m_pCI->bEachTarget(); /**/) {
-           if (m_pCI->E.p_expr->pSymbol()->bMatches(m_pCI->E.p_term->pSymbol())) {
+            if (m_pCI->E.p_expr->pSymbol()->bMatches(m_pCI->E.p_term->pSymbol())) {
               bMatched = true;
               m_pCI->vEndTarget();
               break;
@@ -617,7 +617,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           }
           if (bMatched)
             continue;
-#endif
         }
 
         m_pCI->E.p_expr->vDump(__func__);

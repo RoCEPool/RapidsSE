@@ -849,7 +849,7 @@ void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAg
 
   psRpnExpr->vConcat(" groupBy"_Stz);
 
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
   for (pCI->vBeginTarget(p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
 
     if (pCI->i_Target()) {
@@ -863,7 +863,6 @@ void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAg
 
     vRpn_expr(pCI, psRpnExpr, pCI->E.p_expr);
   }
-#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1433,7 +1432,7 @@ void Card_OP::vRpn_sort(CardIter* pCI, String* psRpnExpr, Card_Sort* p_sort)
 
   Card_Key* p_key = p_sort->pSub_key();
 
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
    for (pCI->vBeginTarget(p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
 
     if (pCI->i_Target())
@@ -1442,7 +1441,6 @@ void Card_OP::vRpn_sort(CardIter* pCI, String* psRpnExpr, Card_Sort* p_sort)
 
     psRpnExpr->vCatSprint(" %s"_Stz, p_key->szDirection(pCI->i_Target()));
   }
-#endif
 
 }
 

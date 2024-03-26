@@ -146,7 +146,7 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->E.p_key = pCI->E.p_gbyAgg->pSub_key();
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
   for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
     for (Kid xRpnCalc(pCI->E.p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
       if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
@@ -156,7 +156,6 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
     }
   }
 
-#endif
 
   pCI->E.p_emit = pCI->E.p_gbyAgg->pSub_emit();
   pCI->E.p_emit->vBump_KeyCol_In_rpnCalc(pCI);

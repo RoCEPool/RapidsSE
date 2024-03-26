@@ -760,7 +760,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
 
   m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
 
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
   for (m_pCI->vBeginTarget(m_pCI->E.p_Op->pSub_key(),CK_EXPR); m_pCI->bEachTarget(); /**/) {
 
     if ((m_pCI->E.p_expr = m_pCI->E.p_emit->pFind_expr_Matches(m_pCI->E.p_expr->pSymbol()))) {
@@ -773,7 +773,6 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
       NEVER_REACH
   }
 
-#endif
 
   vDebugPoint();
 }

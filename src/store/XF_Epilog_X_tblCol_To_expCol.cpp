@@ -116,12 +116,11 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
     m_pCI->E.p_indexList->vX_tblCol_To_expCol(m_pCI);
 
   if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
     for (m_pCI->vBeginTarget(m_pCI->E.p_key,CK_EXPR); m_pCI->bEachTarget(); /**/) {
       m_pCI->E.p_expr->vX_tblCol_To_expCol(m_pCI);
     }
     m_pCI->E.p_expr = nullptr;
-#endif
   }
 
   if (CK_o_FILTER == m_pCI->E.p_Op->eCard())

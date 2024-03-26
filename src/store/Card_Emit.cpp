@@ -341,8 +341,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 
   //pCI->StreamOrder.m_pStreamKey->vDump(__func__);
 
-#ifdef Z_KEY_DIRECTION
-
+//Z_KEY_DIRECTION
    for (pCI->vBeginTarget(pCI->StreamOrder.m_pStreamKey,CK_EXPR); pCI->bEachTarget(); /**/) {
      Card_Expr* p_expr_runkey = pCI->E.p_expr;
      Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
@@ -358,7 +357,6 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
      }
    }
 
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

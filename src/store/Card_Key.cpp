@@ -109,11 +109,10 @@ void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
   for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
     pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
   }
-#endif
 
   pCI->E.p_expr = nullptr;
   pCI->E.p_direction = nullptr;
@@ -128,15 +127,12 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymb
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(pCI);
 
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
   for (pCI->vBeginTarget(CK_s_KEY,CK_EXPR); pCI->bEachTarget(); /**/) {
-
     Symbol* pSym_term0 = pCI->E.p_expr->pGet_Symbol(0);
-
     if (pSym_term0->bMatches(pSymbol))
       return _pCard_Expr(pCI->pEndTarget());
   }
-#endif
 
   return nullptr;
 }
@@ -290,12 +286,11 @@ void Card_Key::vMapColumns(CardIter *pCI)
 
   i8 i_Cell = 0;
 
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
   for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
     pCI->vAppendNewChild(pCI->E.p_keyCells, CK_MAP, pCI->E.p_expr->pSymbol());
     pCI->E.p_map->pSymbol()->Y_vSet(P_Cell, ++i_Cell);
   }
-#endif
 
 }
 
@@ -336,9 +331,8 @@ IndexDef* Card_Key::pTo_IndexDef(CardIter* pCI)
 
   IndexDef* pIndexDef = new IndexDef;
 
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
   for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
-
     Card_Term* p_term = pCI->E.p_expr->pGet_term(0);
     if (! p_term)
       continue;
@@ -357,7 +351,6 @@ IndexDef* Card_Key::pTo_IndexDef(CardIter* pCI)
     pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
   }
 
-#endif
 
   if (bHasDescending)
     pIndexDef->vHasDescending(true);

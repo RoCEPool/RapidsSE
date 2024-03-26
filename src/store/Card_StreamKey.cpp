@@ -74,13 +74,6 @@ bool Card_StreamKey::bIsEquivalentTo(Card_Key* p_key_arg)
   //vDump(__func__ ,"this streamKey"_Stz);
   //p_key_arg->vDump(__func__ ,"p_key_arg"_Stz);
 
-#ifndef Z_KEY_DIRECTION
-  if (! bSame(p_key_arg))
-    return false;
-
-  return true;
-#endif
-
 
   i8 nExpr = this->nChildCards();
   if (nExpr != p_key_arg->nChildCards())
