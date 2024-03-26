@@ -262,7 +262,7 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
 
   bool bIsKeyExpr = bIsCard(CK_s_KEY);
 
-#ifdef Z_KEY_DIRECTION
+/**Z_KEY_DIRECTION*/
   i8 i_Expr = 1;
 
   if (bIsKeyExpr) {
@@ -274,7 +274,6 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
       xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
   }
 
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

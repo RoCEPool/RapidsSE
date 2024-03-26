@@ -106,7 +106,7 @@ void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _static_
 
-#ifdef Z_KEY_DIRECTION
+/**Z_KEY_DIRECTION*/
   pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
 
   pCI->E.p_expr = new Card_Expr;
@@ -118,8 +118,6 @@ void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
   pCI->E.p_expr->vApplyCast_p(p_expr_fold->pSub_rpnCalc(C_NOT_NULL));
 
   pCI->E.p_key->vPushChild(pCI->E.p_direction);
-
-#endif
 
   //pCI->G.p_key->vDump(__func__);
   vDebugPoint();

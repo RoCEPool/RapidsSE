@@ -187,7 +187,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     // key
 
     if (AL_PARTITION == e_Level) {
-#ifdef Z_KEY_DIRECTION
+/**Z_KEY_DIRECTION*/
       pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
       pCI->E.p_key->vAppendChild(pCI->E.p_direction);
       pCI->E.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
@@ -199,10 +199,10 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
         pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
         pCI->E.p_direction->vApplyCast_x(pCI->E.p_expr->xCast());
       }
-#endif
+
     }
     else {
-#ifdef Z_KEY_DIRECTION
+/**Z_KEY_DIRECTION*/
       pCI->vNewMember(CK_EXPR);
       pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
       pCI->E.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
@@ -219,7 +219,6 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
       pCI->E.p_rpnCalc->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
       pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
 
-#endif
     }
     // TODO: hack...
     pCI->E.p_expr->v_Child(0);

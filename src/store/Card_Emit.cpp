@@ -154,9 +154,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         RASSERT(pCI->E.p_key);
 
         i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
-#ifdef Z_KEY_DIRECTION
+/**Z_KEY_DIRECTION*/
         Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
-#endif
 
 //        if (p_expr_key->bIsScalarCol()) {
 //          p_expr_key->pSymbol()->vDump();
@@ -268,14 +267,14 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
         }
         else {
           RASSERT(pSym_term->bSingleFaceted(SF_KEY_COL));
-#ifdef Z_KEY_DIRECTION
+/**Z_KEY_DIRECTION*/
           RASSERT(pCI->E.p_key->pFind_expr_key_Matches(pSym_term));
-#endif
+
           vDebugPoint();
         }
-#ifdef Z_KEY_DIRECTION
+/**Z_KEY_DIRECTION*/
         RASSERT(pCI->E.p_key->pFind_expr_key_Matches(SF_KEY_COL, pSym_term));
-#endif
+
         vDebugPoint();
       }
       else
