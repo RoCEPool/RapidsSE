@@ -79,7 +79,6 @@ bool Card_StreamKey::bIsEquivalentTo(Card_Key* p_key_arg)
     return false;
 
   return true;
-
 #endif
 
 
@@ -114,8 +113,6 @@ void Card_StreamKey::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 #ifdef Z_KEY_DIRECTION
   vValidate_mustHave(CK_DIRECTION,CK_NONE);
-#else
-  vValidate_mustHave(CK_EXPR,CK_NONE);
 #endif
 
   Card::vValidate(pCI,iDepth,pParent);

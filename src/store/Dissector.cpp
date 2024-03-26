@@ -1454,24 +1454,6 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [ ASC | DESC ]
 
-#ifndef Z_KEY_DIRECTION
-
-  Card* p_term_head = p_rpnExpr->pHead();
-  if (p_term_head
-      && (p_term_head->pSymbol()->bHasFacet(C_ASC) ||
-          p_term_head->pSymbol()->bHasFacet(C_DESC))) {
-
-    Card_Direction* p_direction = pPop_direction(p_rpnExpr);
-    p_expr->vAppendChild(p_direction);
-  }
-  else
-  if (bEnsureDirection) {
-    Card_Direction* p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
-    p_expr->vAppendChild(p_direction);
-  }
-
-#endif
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ri_Expr++;
@@ -1633,10 +1615,6 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
     Card_Direction* p_direction = pPop_direction2(p_rpnExpr);
     p_direction->vAppendChild(p_expr);
     p_key->vAppendChild(p_direction);
-#else
-    p_expr = pPop_expr(p_rpnExpr, true, i_Expr, true);
-    p_key->vAppendChild(p_expr);
-
 #endif
     p_expr->v_Child(++i_CardNo);
 

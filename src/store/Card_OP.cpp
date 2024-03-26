@@ -697,11 +697,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
         i8 i_Key = pSym_term_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
 #ifdef Z_KEY_DIRECTION
-        //pCI->E.p_key->vDump(__func__);
         pCI->E.p_direction = pCI->E.p_key->pGet_direction(i_Key);
         Card_Expr *p_expr_key = pCI->E.p_direction->pSub_expr(C_NOT_NULL);
-#else
-        Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(i_Key);
 #endif
 
         if (p_expr_key->bIsScalarCol()) {
@@ -865,42 +862,6 @@ void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAg
     }
 
     vRpn_expr(pCI, psRpnExpr, pCI->E.p_expr);
-  }
-
-//  for (Kid xKey(p_key); xKey.bEach(CK_DIRECTION); /**/) {
-//    Card_Direction* p_direction = xKey.p_direction();
-//
-//    Card_Expr* p_expr = p_direction->pSub_expr();
-//    if (xKey.i_Child()) {
-//      psRpnExpr->vConcat("\n                 "_Stz);
-//      psRpnExpr->vConcat(" ,"_Stz);
-//    }
-//    else {
-//      psRpnExpr->vConcat("\n                 "_Stz);
-//      psRpnExpr->vConcat("  "_Stz);
-//    }
-//
-//    vRpn_expr(pCI, psRpnExpr, p_expr);
-//  }
-
-#else
-  nSubCards = p_key->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = p_key->pGet(i_Child);
-    if (! pCard_SUB->bIsCard(CK_EXPR))
-      return;
-
-    if (i_Child) {
-      psRpnExpr->vConcat("\n                 "_Stz);
-      psRpnExpr->vConcat(" ,"_Stz);
-    }
-    else {
-      psRpnExpr->vConcat("\n                 "_Stz);
-      psRpnExpr->vConcat("  "_Stz);
-    }
-
-    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vRpn_expr(psRpnExpr, pCard_Expr);
   }
 #endif
 
@@ -1480,38 +1441,6 @@ void Card_OP::vRpn_sort(CardIter* pCI, String* psRpnExpr, Card_Sort* p_sort)
     vRpn_expr(pCI, psRpnExpr, pCI->E.p_expr);
 
     psRpnExpr->vCatSprint(" %s"_Stz, p_key->szDirection(pCI->i_Target()));
-  }
-
-//  for (Elem xKey_elem(p_key); xKey_elem.bNext(); /**/) {
-//    Card_Expr* p_expr = p_key->pGet_expr(xKey_elem.iCurr());
-//
-//    if (xKey_elem.iCurr())
-//      psRpnExpr->vConcat(" ,"_Stz);
-//    vRpn_expr(pCI, psRpnExpr, p_expr);
-//
-//    psRpnExpr->vCatSprint(" %s"_Stz, p_key->szDirection(xKey_elem.iCurr()));
-//  }
-#else
-  i8 nSubCards = p_key->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-
-    Card* pSubCard = p_key->pGet(i_Child);
-    eCK eSubCard = pSubCard->eCard();
-
-    if (CK_EXPR != eSubCard)
-      continue;
-
-    Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
-
-    if (i_Child)
-      psRpnExpr->vConcat(" ,"_Stz);
-
-    vRpn_expr(psRpnExpr, pCard_Expr);
-
-    Card* p_direction = pCard_Expr->pSub_direction();
-
-    psRpnExpr->vCatSprint(" %s"_Stz, p_direction->pSymbol()->szFacet(SF_DIRECTION));
-
   }
 #endif
 

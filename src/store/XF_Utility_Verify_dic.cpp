@@ -608,7 +608,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (m_pCI->E.p_key) {
 #ifdef Z_KEY_DIRECTION
           bool bMatched = false;
-//        for (Kid xKey(m_pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
           for (m_pCI->vBeginTarget(m_pCI->E.p_key,CK_EXPR); m_pCI->bEachTarget(); /**/) {
            if (m_pCI->E.p_expr->pSymbol()->bMatches(m_pCI->E.p_term->pSymbol())) {
               bMatched = true;
@@ -617,9 +616,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
             }
           }
           if (bMatched)
-            continue;
-#else
-          if (m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol()))
             continue;
 #endif
         }
@@ -1086,8 +1082,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (m_pCI->E.p_key) {
 #ifdef Z_KEY_DIRECTION
           if (Card_Expr* p_expr_f = m_pCI->E.p_key->pFind_expr_key_Matches(m_pCI->E.p_term->pSymbol())) {
-#else
-          if (Card_Expr* p_expr_f = m_pCI->G.p_key->pFind_expr_Matches(m_pCI->G.p_term->pSymbol())) {
 #endif
             if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol())) {
               continue;

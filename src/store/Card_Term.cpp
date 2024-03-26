@@ -206,8 +206,6 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
     if (! p_expr_matching)
 #ifdef Z_KEY_DIRECTION
       p_expr_matching = pCI->E.p_key->pFind_expr_key_Matches(pSym_term);
-#else
-    p_expr_matching = pCI->G.p_key->pFind_expr_Matches(pSym_term);
 #endif
     if (! p_expr_matching)
       return;

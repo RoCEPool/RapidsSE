@@ -274,14 +274,6 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
       xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
   }
 
-#else
-  i8 i_Expr = 1;
-  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
-    if (bIsKeyExpr)
-      xEXPRLIST.p_expr()->vRenumberForm_keyCol(i_Expr++);
-    else
-      xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
-  }
 #endif
 }
 

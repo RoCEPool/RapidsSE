@@ -99,38 +99,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   if (0 == i_Key)
     vApplyCast_x(p_expr->xCast());
 
-#else
-
-  i8 i_Key = nChildCards() + 1;
-
-  Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumberForm_keyCol(i_Key);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  if (p_expr->pSub_rpnCalc(C_NOT_NULL))
-    p_rpnCalc->vAppendChild(p_expr->pGet_term(0)->pDupCardRecursive());
-  else
-    NEVER_REACH
-
-  p_expr_new->vAppendChild(p_rpnCalc);
-
-  p_rpnCalc->vApplyCast_x(p_expr->xCast());
-  p_expr_new->vApplyCast_x(p_expr->xCast());
-
-  if (p_expr->pSub_direction()) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_DIRECTION));
-    p_expr_new->vAppendChild(p_direction);
-  }
-  else
-  if (bAsc) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
-    p_expr_new->vAppendChild(p_direction);
-  }
-
-  if (0 == i_Key)
-    vApplyCast_x(p_expr->xCast());
-
-  vAppendChild(p_expr_new);
 #endif
 }
 
@@ -144,11 +112,6 @@ void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 #ifdef Z_KEY_DIRECTION
   for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
     pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
-  }
-#else
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    pCI->G.p_expr = xKey.p_expr();
-    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
   }
 #endif
 
@@ -172,13 +135,6 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymb
 
     if (pSym_term0->bMatches(pSymbol))
       return _pCard_Expr(pCI->pEndTarget());
-  }
-#else
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
-
-    if (pSymbol_term0->bMatches(pSymbol))
-      return xKey.p_expr();
   }
 #endif
 
@@ -339,24 +295,6 @@ void Card_Key::vMapColumns(CardIter *pCI)
     pCI->vAppendNewChild(pCI->E.p_keyCells, CK_MAP, pCI->E.p_expr->pSymbol());
     pCI->E.p_map->pSymbol()->Y_vSet(P_Cell, ++i_Cell);
   }
-
-//  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-//    Card_Direction *p_direction_key = xKey.p_direction();
-//    Card_Expr *p_expr_key = p_direction_key->pSub_expr();
-//
-//    i_Cell++;
-//    pCI->vAppendNewChild(pCI->E.p_keyCells, CK_MAP, p_expr_key->pSymbol());
-//    pCI->E.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
-//  }
-
-#else
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    Card_Expr *p_expr_key = xKey.p_expr();
-
-    i_Cell++;
-    pCI->vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
-    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
-  }
 #endif
 
 }
@@ -399,7 +337,6 @@ IndexDef* Card_Key::pTo_IndexDef(CardIter* pCI)
   IndexDef* pIndexDef = new IndexDef;
 
 #ifdef Z_KEY_DIRECTION
-//for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
   for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
 
     Card_Term* p_term = pCI->E.p_expr->pGet_term(0);
@@ -420,27 +357,6 @@ IndexDef* Card_Key::pTo_IndexDef(CardIter* pCI)
     pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
   }
 
-#else
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    Card_Expr* p_expr = xKey.p_expr();
-
-    Card_Term* p_term = p_expr->pGet_term(0);
-    if (! p_term)
-      continue;
-
-    Stz* szColNm  = p_term->szFacet(SF_EXP_COL);
-    TypeId xTypeId = p_term->xTypeId();
-
-    if (! szColNm || CT_NONE == xTypeId.eCTVal())
-      continue;
-
-    bool bAscending = true;
-    if (p_expr->bIsDescending()) {
-      bAscending = false;
-      bHasDescending = true;
-    }
-    pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
-  }
 #endif
 
   if (bHasDescending)
@@ -468,8 +384,6 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 #ifdef Z_KEY_DIRECTION
   vValidate_mustHave(CK_DIRECTION,CK_NONE);
-#else
-  vValidate_mustHave(CK_EXPR,CK_NONE);
 #endif
 
   Card::vValidate(pCI,iDepth,pParent);

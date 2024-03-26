@@ -199,13 +199,6 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
         pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
         pCI->E.p_direction->vApplyCast_x(pCI->E.p_expr->xCast());
       }
-#else
-      pCI->G.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
-      //pCI->Flat.m_p_expr_crlKey->vDump(__func__);
-      //pCI->G.p_expr->vDump(__func__);
-      pCI->G.p_key->vAppendChild(pCI->G.p_expr);
-      if (1 == pCI->G.p_key->nChildCards())
-        pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
 #endif
     }
     else {
@@ -226,18 +219,6 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
       pCI->E.p_rpnCalc->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
       pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
 
-#else
-      pCI->vNewMember(CK_EXPR);
-      pCI->vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->G.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-      pCI->vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-      pCI->G.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-      pCI->G.p_key->vAppendChild(pCI->G.p_expr);
-      if (1 == pCI->G.p_key->nChildCards())
-        pCI->G.p_key->vApplyCast_x(pCI->G.p_expr->xCast());
-
-      pCI->G.p_rpnCalc->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-      pCI->G.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
 #endif
     }
     // TODO: hack...
@@ -280,18 +261,9 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     }
 
 #ifdef Z_KEY_DIRECTION
-//  for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
     for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
       pCI->E.p_expr->vRenumberForm_keyCol(pCI->i_Target()+1);
     }
-
-//    for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
-//      Card_Direction* p_direction = xKey.p_direction();
-//      p_direction->pSub_expr()->vRenumberForm_keyCol(xKey.i_Child()+1);
-//    }
-
-#else
-    pCI->G.p_key->vRenumberAll_expr();
 #endif
     pCI->E.p_emit->vRenumberAll_expr();
 
