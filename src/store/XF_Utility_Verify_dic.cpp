@@ -608,11 +608,11 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (m_pCI->E.p_key) {
 #ifdef Z_KEY_DIRECTION
           bool bMatched = false;
-          for (Kid xKey(m_pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
-            Card_Direction* p_direction = xKey.p_direction();
-            Card_Expr* p_expr = p_direction->pSub_expr();
-            if (p_expr->pSymbol()->bMatches(m_pCI->E.p_term->pSymbol())) {
+//        for (Kid xKey(m_pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
+          for (m_pCI->vBeginTarget(m_pCI->E.p_key,CK_EXPR); m_pCI->bEachTarget(); /**/) {
+           if (m_pCI->E.p_expr->pSymbol()->bMatches(m_pCI->E.p_term->pSymbol())) {
               bMatched = true;
+              m_pCI->vEndTarget();
               break;
             }
           }
