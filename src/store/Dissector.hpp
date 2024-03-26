@@ -13,6 +13,8 @@ namespace STORE
   {
   protected:
 
+    CardIter*    m_pCI;
+
     VertexSpec*  m_pPipeSpec;
     DeckSpec*    m_pDeckSpec;
     StageSpec*   m_pStageSpec;
@@ -31,7 +33,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dissector(Bench* pBench);
+    Dissector(CardIter* pCI, Bench* pBench);
    ~Dissector(void) noexcept(false);
   
     void vDissectSpec(VertexSpec* pPipeSpec);

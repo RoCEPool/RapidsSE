@@ -129,6 +129,7 @@ namespace STORE
     void vBeginEach_reverse(void);
     void vBeginMember(eCK eSub_Of_Op);
     void vBeginTarget(eCK ePrimary, eCK eTarget);
+    void vBeginTarget(Card* pPrimary, eCK eTarget);
     Board* pBoard(void);
     void vBurst(Card* pCard);
 

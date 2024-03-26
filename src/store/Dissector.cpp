@@ -23,11 +23,12 @@ __aFooterFunction(Dissector)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dissector::Dissector(Bench* pBench)
+Dissector::Dissector(CardIter* pCI, Bench* pBench)
 : OptimiserTool(CN_DISSECTOR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
+  m_pCI           = pCI;
   m_pBench        = pBench;
   m_pOptimiser    = m_pBench->pOptimiser();
   m_pBoard        = nullptr;

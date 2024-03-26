@@ -494,6 +494,35 @@ void CardIter::vBeginTarget(eCK ePrimary, eCK eTarget)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+
+  vPushEach();
+
+  eCK ePrimary = pPrimary->eCard();
+
+  Iter.m_ePrimary = ePrimary;
+  Iter.m_eTarget  = eTarget;
+
+  if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
+    Iter.m_eSecondary = CK_DIRECTION;
+  }
+  else {
+    NEVER_REACH
+  }
+
+  vMember(Iter.m_ePrimary, pPrimary);
+
+  E.xTarget.vBegin();
+  E.xTarget.vParent(pPrimary);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get board                                                                  */
 /*----------------------------------------------------------------------------*/
 Board* CardIter::pBoard(void)
