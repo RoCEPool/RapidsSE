@@ -2825,6 +2825,126 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_p" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions : 
+      scan      nation
+    | next      
+
+  stage S02 on all partitions : 
+    indexJoin Supplier IxS_SUPPKEY &quot; BOUND $I1 &quot;
+    | filter    &quot; type BOOLEAN $8 $1 == &quot;
+    | project   &quot; type VARCHAR ( 25 ) as C0_N_NAME $2
+                , type INTEGER ( 19 ) as C1_S_SUPPKEY $5 &quot;
+    | dynamic
+    | next
+
+  stage S04 on all partitions : 
+    indexJoin Lineitem IxL_SUPPKEY &quot; BOUND $I1 $2 == &quot;
+    | project   &quot; type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $9
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $7
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $3
+                , type INTEGER ( 19 ) as C5_L_PARTKEY $4
+                , type INTEGER ( 19 ) as C6_L_SUPPKEY $5 &quot;
+    | hash      &quot;type INTEGER $6&quot;
+    |  dynamic
+    | next      hashcast
+
+  stage S06 on all partitions : 
+    indexJoin Part IxP_PARTKEY &quot; BOUND $I1 $6 == &quot;
+    | filter    &quot; type BOOLEAN } $9 &apos;%green%&apos; 5 matchMiddle &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $4
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $5
+                , type INTEGER ( 19 ) as C5_L_PARTKEY $6
+                , type INTEGER ( 19 ) as C6_L_SUPPKEY $7 &quot;
+    | hash      &quot;type INTEGER $6&quot;
+    |  dynamic
+    | next      hashcast
+
+  stage S08 on all partitions : 
+    indexJoin PartSupp IxPS_PARTKEY &quot; BOUND $I1 $6 == &quot;
+    | filter    &quot; type BOOLEAN $9 $7 == &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $11
+                , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $4
+                , type INTEGER ( 19 ) as C5_L_ORDERKEY $5 &quot;
+    |  dynamic
+    | next      broadcast
+
+  stage S10 on all partitions : 
+    indexJoin Orders IxO_ORDERKEY &quot; BOUND $I1 $6 == &quot;
+    | project   &quot;   type VARCHAR as C0_N_NAME $1
+                , type INTEGER ( 19 ) as C1_o_year $11 extract_year
+                , type DECIMAL ( 19 2 ) as C2_amount $2 1.00 $3 - * $4 $5 * - &quot;
+    | gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_COL2 ) $3 sum &quot;
+    |  dynamic
+    | next      
+
+  stage S13 on all nodes : 
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_COL2 ) $3 sum &quot;
+    |  dynamic
+    | next      
+
+  stage S14 on origin : 
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_sum_profit ) $3 sum &quot;
+    |  dynamic
+    | next      
+
+  stage S15 on origin : 
+    sort      &quot; type VARCHAR $1 ASC , type INTEGER ( 19 ) $2 DESC &quot;
+    |  dynamic
+    | next      
+
+  stage S16 on origin :
+      output
+    | sink
+    | first
+
+end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
