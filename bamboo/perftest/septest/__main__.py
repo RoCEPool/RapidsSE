@@ -56,8 +56,6 @@ def main() -> int:
                             help="A set of key/value pairs that are associated and saved with this run.")
     arg_parser.add_argument("--archiveMetrics", action='store_true', required=False, default=False,
                             help="If present, the raw metric files will always be collected and archived in Bamboo.")
-    arg_parser.add_argument("--archiveLogs", action='store_true', required=False, default=False,
-                            help="If present, the SE log files will always be collected and archived in Bamboo.")
     arg_parser.add_argument("--resultDir",   type=str, required=False, default=C_DEFAULT_RESULT_DIR,
                             help="The directory to write results and files to be archived")
     arg_parser.add_argument("--nobuild",     action='store_true', required=False, default=False,
@@ -82,7 +80,6 @@ def main() -> int:
     git_branch = args.branch
     invoking_user = args.user
     archive_metrics = args.archiveMetrics
-    archive_logs = args.archiveLogs
     result_path = args.resultDir
     no_build = args.nobuild
 
@@ -99,7 +96,6 @@ def main() -> int:
                           git_branch,
                           invoking_user,
                           archive_metrics,
-                          archive_logs,
                           result_path,
                           tags,
                           not no_build)

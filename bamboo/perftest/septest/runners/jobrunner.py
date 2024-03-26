@@ -58,7 +58,6 @@ class JobRunner:
                  git_branch: str,
                  invoking_user: str,
                  archive_metrics: bool,
-                 archive_logs: bool,
                  result_path: str,
                  tags: dict,
                  build_se: bool = True):
@@ -88,9 +87,6 @@ class JobRunner:
 
         # Do we want to collect and save the metrics in bamboo afterwards?
         self.archive_metrics = archive_metrics
-
-        # Do we want to collect and save the SE log files in bamboo afterwards?
-        self.archive_logs = archive_logs
 
         # Where to save the overall results and archived files?
         self.result_path = result_path
@@ -446,7 +442,7 @@ class JobRunner:
         # self.archive_metrics is false and a given test is successful.
         # If a test fails, or if self.archive_metrics is true then we keep those artifacts.
 
-        collect_logs = self.archive_logs
+        collect_logs = False
 
         if not self.se_installed:
             # Something went wrong before or during installation. There are no logs to capture.
