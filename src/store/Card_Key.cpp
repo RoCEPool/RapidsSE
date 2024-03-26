@@ -142,11 +142,15 @@ void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef Z_KEY_DIRECTION
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    pCI->E.p_direction = xKey.p_direction();
-    pCI->E.p_expr = pCI->E.p_direction->pSub_expr();
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
     pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
   }
+
+//  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
+//    pCI->E.p_direction = xKey.p_direction();
+//    pCI->E.p_expr = pCI->E.p_direction->pSub_expr();
+//    pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
+//  }
 #else
   for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
     pCI->G.p_expr = xKey.p_expr();
