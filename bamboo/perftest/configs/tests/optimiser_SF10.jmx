@@ -2438,7 +2438,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q7 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q7 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2751,7 +2751,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q9 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q9 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2783,7 +2783,8 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
-                <stringProp name="query">select 
+                <stringProp name="query">/weaved
+select 
   nation, 
   o_year, 
   sum(amount) as sum_profit

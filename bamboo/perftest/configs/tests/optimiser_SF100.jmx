@@ -1711,6 +1711,40 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/weaved
+select
+  l_returnflag,
+  l_linestatus,
+  sum(l_quantity) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice * (1 - l_discount)) as sum_disc_price,
+  sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate &lt;= date &apos;1998-12-01&apos; - interval &apos;90&apos; day
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_p" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline _unnamed_
 begin
@@ -1966,6 +2000,43 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/weaved
+select
+  l_orderkey,
+  sum(l_extendedprice*(1-l_discount)) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where
+  c_mktsegment = &apos;BUILDING&apos;
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate &lt; &apos;1995-03-15&apos;
+  and l_shipdate &gt; &apos;1995-03-15&apos;
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_p" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline unamed
 begin
@@ -2115,6 +2186,39 @@ OUT.flush();</stringProp>
             </LoopController>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/weaved
+select
+  o_orderpriority,
+  count(*) as order_count
+from
+  orders
+where
+  o_orderdate &gt;= date &apos;1993-07-01&apos;
+  and o_orderdate &lt; date &apos;1993-07-01&apos; + interval &apos;3&apos; month
+  and exists (
+    select
+      *
+    from
+      lineitem
+    where
+      l_orderkey = o_orderkey
+      and l_commitdate &lt; l_receiptdate )
+group by
+  o_orderpriority
+order by
+  o_orderpriority;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4_p" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query4
@@ -2307,6 +2411,28 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/weaved
+select
+  sum(l_extendedprice*l_discount) as revenue
+from
+  lineitem
+where
+  l_shipdate &gt;= date &apos;1994-01-01&apos;
+  and l_shipdate &lt; date &apos;1994-01-01&apos; + interval &apos;1&apos; year
+  and l_discount between 0.06 - 0.01 and 0.06 + 0.01
+  and l_quantity &lt; 24;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6_p" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline unamed
 begin
@@ -2371,7 +2497,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q7 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q7 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2403,7 +2529,8 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
-                <stringProp name="query">select 
+                <stringProp name="query">/weaved
+select 
   supp_nation, 
   cust_nation, 
   l_year, 
@@ -2443,6 +2570,129 @@ order by
   supp_nation, 
   cust_nation, 
   l_year;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_p" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    scan      Orders
+    | project   &quot;   type INTEGER ( 19 ) as C0_O_CUSTKEY $2
+                   , type INTEGER ( 19 ) as C1_O_ORDERKEY $1 &quot;
+    | hash      &quot;type INTEGER $2&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S02 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY &quot; BOUND $I1 $2 == &quot;
+    | project   &quot;   type DATE as C0_L_SHIPDATE $13
+                  , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8
+                  , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $9
+                  , type INTEGER ( 19 ) as C3_L_SUPPKEY $5
+                  , type INTEGER ( 19 ) as C4_O_CUSTKEY $1 &quot;
+    | filter    &quot; type BOOLEAN $1 DATE &apos;1995-01-01&apos; &gt;= $1 DATE &apos;1996-12-31&apos; &lt;= and &quot;
+    | hash      &quot;type INTEGER $5&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S03 on all partitions :
+    indexJoin Customer IxC_CUSTKEY &quot; BOUND $I1 $5 == &quot;
+    | project   &quot;   type DATE as C0_L_SHIPDATE $1
+                  , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                  , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                  , type INTEGER ( 19 ) as C3_C_NATIONKEY $9
+                  , type INTEGER ( 19 ) as C4_L_SUPPKEY $4 &quot;
+    | hash      &quot;type INTEGER $5&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S04 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY &quot; BOUND $I1 $5 == &quot;
+    |  project   &quot;   type DATE as C0_L_SHIPDATE $1
+                   , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                   , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                   , type INTEGER ( 19 ) as C3_C_NATIONKEY $4
+                   , type INTEGER ( 19 ) as C4_S_NATIONKEY $9 &quot;
+    | dynamic
+    | next
+
+  stage S05 on all partitions :
+    indexJoin nation IxN_NATIONKEY &quot; BOUND $I1 $5 == &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $7
+                  , type DATE as C1_L_SHIPDATE $1
+                  , type DECIMAL ( 15 2 ) as C2_L_EXTENDEDPRICE $2
+                  , type DECIMAL ( 15 2 ) as C3_L_DISCOUNT $3
+                  , type INTEGER ( 19 ) as C4_C_NATIONKEY $4 &quot;
+    | dynamic
+    | next
+
+  stage S6 on all partitions :
+    indexJoin nation IxN_NATIONKEY &quot; BOUND $I1 $5 == &quot;
+    | project   &quot;   type VARCHAR as C0_N_NAME $1
+                , type VARCHAR as C1_N_NAME $7
+                , type INTEGER ( 19 ) as C2_l_year $2 extract_year
+                , type DECIMAL ( 19 2 ) as C3_volume $3 1.00 $4 - * &quot;
+    | filter    &quot; type BOOLEAN $1 &apos;GERMANY&apos; == $2 &apos;FRANCE&apos; == and $1 &apos;FRANCE&apos; == $2 &apos;GERMANY&apos; == and or &quot;
+    | gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_COL3 ) $4 sum &quot;
+    | dynamic
+    | next      
+
+  stage S7 on all nodes :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_COL3 ) $4 sum &quot;
+    | dynamic
+    | next      
+
+  stage S8 on origin :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_Revenue ) $4 sum &quot;
+    | dynamic
+    | next      
+
+  stage S9 on origin :
+      output
+    | sink
+    | first
+
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2560,7 +2810,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q9 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q9 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2592,7 +2842,8 @@ OUT.flush();</stringProp>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
-                <stringProp name="query">select 
+                <stringProp name="query">/weaved
+select 
   nation, 
   o_year, 
   sum(amount) as sum_profit
