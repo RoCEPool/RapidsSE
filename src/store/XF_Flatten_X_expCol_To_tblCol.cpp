@@ -80,10 +80,10 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
     if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
       if (m_pCI->Flux.m_pArriving) {
 #ifdef Z_KEY_DIRECTION
-        Kid xEXPRLIST(m_pCI->E.p_key);
-        while (xEXPRLIST.bEach(CK_DIRECTION)) {
-          m_pCI->E.p_expr = xEXPRLIST.p_expr(C_SUB);
-          m_pCI->E.p_expr->vX_expCol_To_tblCol(m_pCI);
+//        Kid xEXPRLIST(m_pCI->E.p_key);
+//        while (xEXPRLIST.bEach(CK_DIRECTION)) {
+        for (m_pCI->vBeginTarget(m_pCI->E.p_key,CK_EXPR); m_pCI->bEachTarget(); /**/) {
+           m_pCI->E.p_expr->vX_expCol_To_tblCol(m_pCI);
         }
 
         m_pCI->E.p_expr = nullptr;
