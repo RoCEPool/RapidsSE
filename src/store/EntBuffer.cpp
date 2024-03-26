@@ -1215,7 +1215,10 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffe
       *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
-        return pMoveToGreaterEqualEntry_int((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+        //return pMoveToGreaterEqualEntry_int((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+				pEntBuffer = *ppEntBuffer;
+				aEnt = pEntBuffer->aSkipRoots();
+				aEnt = pEntBuffer->aNextEntry(aEnt,0);
       }
     }
     else

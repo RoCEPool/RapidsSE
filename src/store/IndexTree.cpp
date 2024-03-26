@@ -422,11 +422,23 @@ extern "C" void vExtern_IndexTreePositionLE_int(void* aIndexInfo) {
 	EntBuffer* pEntBuffer = nullptr;
 	Ent* aEnt = nullptr;
 
-	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
-	if ( !pEntBuffer ) {
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	//	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
+	//	if ( !pEntBuffer ) {
+	//		pIndexInfo->m_aEntUpper = nullptr;
+	//		return;
+	//	}
+
+	EntBuffer* pRootBuffer = pIndexTree->pRootBuffer();
+	if ( !  pRootBuffer) {
 		pIndexInfo->m_aEntUpper = nullptr;
 		return;
 	}
+
+	pEntBuffer = pRootBuffer->pFindLeafBuffer_int(aKey);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
 	if ( !aEnt ) {
@@ -1233,8 +1245,9 @@ EntBuffer* IndexTree::pPositionH0Buffer_gen(Key* aFindKey)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
-	if (m_pRootEntBuffer)
+	if (m_pRootEntBuffer) {
 		return m_pRootEntBuffer->pFindLeafBuffer_gen(aFindKey);
+	}
 	else
 		return nullptr;
 }
@@ -1246,8 +1259,9 @@ EntBuffer* IndexTree::pPositionH0Buffer_int(Key* aFindKey)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
-	if (m_pRootEntBuffer)
+	if (m_pRootEntBuffer) {
 		return m_pRootEntBuffer->pFindLeafBuffer_int(aFindKey);
+	}
 	else
 		return nullptr;
 }

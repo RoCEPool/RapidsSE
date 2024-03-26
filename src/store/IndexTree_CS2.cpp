@@ -1349,7 +1349,11 @@ Ent* IndexTree::aFindEntry_CS2_v14(IndexTree* pIndexTree, Key* aKey)
   EntBuffer* pEntBuffer;
 
 #if 0
-  pEntBuffer = pIndexTree->m_pRootEntBuffer->pFindLeafBuffer_int(aKey);
+	iBufferHeight = pIndexTree->m_pRootEntBuffer->iBufferHeight();
+  if (iBufferHeight == 0)
+    pEntBuffer = pIndexTree->m_pRootEntBuffer;
+	else
+    pEntBuffer = pIndexTree->m_pRootEntBuffer->pFindLeafBuffer_int(aKey);
 
   /*-----------------------------------------------------------------------*/
 #else
