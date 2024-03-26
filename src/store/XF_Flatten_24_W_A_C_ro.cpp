@@ -280,10 +280,16 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     }
 
 #ifdef Z_KEY_DIRECTION
-    for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
-      Card_Direction* p_direction = xKey.p_direction();
-      p_direction->pSub_expr()->vRenumberForm_keyCol(xKey.i_Child()+1);
+//  for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
+    for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
+      pCI->E.p_expr->vRenumberForm_keyCol(pCI->i_Target()+1);
     }
+
+//    for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
+//      Card_Direction* p_direction = xKey.p_direction();
+//      p_direction->pSub_expr()->vRenumberForm_keyCol(xKey.i_Child()+1);
+//    }
+
 #else
     pCI->G.p_key->vRenumberAll_expr();
 #endif
