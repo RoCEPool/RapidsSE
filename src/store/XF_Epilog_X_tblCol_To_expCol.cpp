@@ -117,12 +117,18 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
 
   if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
 #ifdef Z_KEY_DIRECTION
-    Kid xKey(m_pCI->E.p_key);
-    while (xKey.bEach(CK_DIRECTION)) {
-      m_pCI->E.p_expr = xKey.p_expr(C_SUB);
+    for (m_pCI->vBeginTarget(m_pCI->E.p_key,CK_EXPR); m_pCI->bEachTarget(); /**/) {
       m_pCI->E.p_expr->vX_tblCol_To_expCol(m_pCI);
     }
     m_pCI->E.p_expr = nullptr;
+
+//    Kid xKey(m_pCI->E.p_key);
+//    while (xKey.bEach(CK_DIRECTION)) {
+//      m_pCI->E.p_expr = xKey.p_expr(C_SUB);
+//      m_pCI->E.p_expr->vX_tblCol_To_expCol(m_pCI);
+//    }
+//    m_pCI->E.p_expr = nullptr;
+
 #else
     m_pCI->G.p_key->vX_tblCol_To_expCol(m_pCI);
 #endif
