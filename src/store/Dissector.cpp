@@ -409,7 +409,7 @@ Card* Dissector::pOp_filter(void)
   // filter expression
 
   i8 i_Expr = 1;
-  Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
+  Card_Expr* p_expr = pPop_expr2(p_rpnExpr, false, i_Expr);
 
   RASSERT(1 == p_expr->nChildCards());
   //Card_BoolPred::vTo_boolPred(p_expr);
@@ -1329,7 +1329,7 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
   Card_Constraint* p_constraint = new Card_Constraint;
 
   i8 i_Expr = 1;
-  Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
+  Card_Expr* p_expr = pPop_expr2(p_rpnExpr, false, i_Expr);
 
   p_constraint->vAppendChild(p_expr);
 
@@ -1612,6 +1612,8 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
     Card_Expr* p_expr;
 /**Z_KEY_DIRECTION dissect*/
     p_expr = pPop_expr2(p_rpnExpr, true, i_Expr);
+
+    // [ ASC | DESC ]
     Card_Direction* p_direction = pPop_direction2(p_rpnExpr);
     p_direction->vAppendChild(p_expr);
     p_key->vAppendChild(p_direction);
@@ -1631,7 +1633,6 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
       p_expr->vApplyCast_x(xCast);
       p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
     }
-
 
     if (1 == p_key->nChildCards())
       p_key->vApplyCast_x(p_expr->xCast());
@@ -1671,7 +1672,7 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
     }
 
     // TYPE <type> [ AS <as> ] <rpnCalc>
-    Card_Expr* p_expr = pPop_expr(p_rpnExpr, false, i_Expr, false);
+    Card_Expr* p_expr = pPop_expr2(p_rpnExpr, false, i_Expr);
     p_expr->v_Child(++iCardNo);
     //vAsEnsure(p_expr);
 
