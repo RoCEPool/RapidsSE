@@ -80,6 +80,9 @@ namespace STORE
     Card_Expr*       pPop_expr2      (Card_RpnExpr* p_rpnExpr,
                                       bool bIsKeyExpr,
                                       i8& ri_Expr);
+    Card_Expr*       pPop_expr3      (Card_RpnExpr* p_rpnExpr,
+                                      bool bIsKeyExpr,
+                                      i8& ri_Expr);
     Card_HshCol*     pPop_hshCol    (Card_RpnExpr* p_rpnExpr);
     Card_HshColList* pPop_hshColList(Card_RpnExpr* p_rpnExpr);
     Card_Key*        pPop_key       (Card_RpnExpr* p_rpnExpr);

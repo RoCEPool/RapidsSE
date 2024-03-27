@@ -40,7 +40,22 @@ Card_RpnExpr::~Card_RpnExpr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/*                                                                           */
+/*----------------------------------------------------------------------------*/
+Facet Card_RpnExpr::xPop_facet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(nChildCards());
+
+  Card_Term* p_term = pPop_term();
+  Facet xFacet = *p_term->pSymbol()->aFacet(0);
+  delete p_term;
+  return xFacet;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                           */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_RpnExpr::pPop_term(void)
 {
@@ -49,6 +64,31 @@ Card_Term* Card_RpnExpr::pPop_term(void)
   return _pCard_Term(pPopChild());
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                           */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_RpnExpr::pPop_term_If(eSF eFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bHeadSame(eFacet))
+    return _pCard_Term(pPopChild());
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_RpnExpr::pPop_term_If(eSF eFacet, Stz* szFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bHeadSame(eFacet,szFacet))
+    return _pCard_Term(pPopChild());
+
+  return nullptr;
+}
 
 /*============================================================================*/
 /* end                                                                        */

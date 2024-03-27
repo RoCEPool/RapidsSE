@@ -50,6 +50,7 @@ namespace STORE
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reChild);
 
+    bool  bHeadSame(eSF eFacet);
     bool  bHeadSame(eSF eFacet, Stz* szFacet);
 
     void  vInsertChildAfter(Card* pChild, Card* pAfter);

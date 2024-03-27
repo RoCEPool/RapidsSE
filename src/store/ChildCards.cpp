@@ -370,10 +370,25 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reChild)
 /*----------------------------------------------------------------------------*/
 /* is the head card same as given arg                                         */
 /*----------------------------------------------------------------------------*/
+bool ChildCards::bHeadSame(eSF eFacet)
+{
+  Card* pHeadCard = pHead();
+  if (! pHeadCard)
+    return false;
+
+  Symbol* pSym_head = pHeadCard->pSymbol();
+
+  if (pSym_head->bHasFacet(eFacet))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the head card same as given arg                                         */
+/*----------------------------------------------------------------------------*/
 bool ChildCards::bHeadSame(eSF eFacet, Stz* szFacet)
 {
-  UNUSED(eFacet);
-
   Card* pHeadCard = pHead();
   if (! pHeadCard)
     return false;
