@@ -1170,13 +1170,13 @@ Card_As* Dissector::pPop_as(Card_RpnExpr* p_rpnExpr)
     return nullptr;
 
   // AS
-  Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
+  Card_Term* p_term = p_rpnExpr->pPop_term();
   RASSERT(p_term->pSymbol()->bHasFacet("AS"_Stz));
   delete p_term;
   p_term = nullptr;
 
   // <name>
-  p_term = _pCard_Term(p_rpnExpr->pPopChild());
+  p_term = p_rpnExpr->pPop_term();
   Stz* szAsNm = p_term->szFacet(SF_NMD_COL);
 
   Card_As* p_as = (new Card_As) ->SYM(SF_NMD_COL,szAsNm);
@@ -1261,7 +1261,7 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   // TYPE
 
   if (p_rpnExpr->bHeadSame(SF_TYPE,"TYPE"_Stz)) {
-    Card_Term *p_term = _pCard_Term(p_rpnExpr->pPopChild());
+    Card_Term *p_term = p_rpnExpr->pPop_term();
     Stz *szTerm = p_term->szFacet(SF_TYPE);
     RASSERT(szTerm->bSame("TYPE"_Stz));
     delete p_term;
@@ -1271,7 +1271,7 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column type (e.g. BOOLEAN)
 
-  Card_Term* p_term_type = _pCard_Term(p_rpnExpr->pPopChild());
+  Card_Term* p_term_type = p_rpnExpr->pPop_term();
   TypeId xTypeId;
   if (p_term_type->pSymbol()->bHasFacet(SF_COL_TYPE))
     xTypeId = Symbol::xTo_TypeId(p_term_type->szFacet(SF_COL_TYPE));
@@ -1301,13 +1301,13 @@ Cast Dissector::xPop_cast(Card_RpnExpr* p_rpnExpr)
   if (p_rpnExpr->bHeadSame(SF_PARENTHESIS,"("_Stz)) {
     p_rpnExpr->vDiscardHead();
 
-    Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
+    Card_Term* p_term = p_rpnExpr->pPop_term();
     xCast.m_nTypeLength = p_term->szFacet(SF_INT_LIT)->iToI8();
     delete p_term;
 
     if (! p_rpnExpr->bHeadSame(SF_PARENTHESIS,")"_Stz)) {
 
-      p_term = _pCard_Term(p_rpnExpr->pPopChild());
+      p_term = p_rpnExpr->pPop_term();
       xCast.m_nTypeScale = p_term->szFacet(SF_INT_LIT)->iToI8();
       delete p_term;
     }
@@ -1351,7 +1351,7 @@ Card_Direction* Dissector::pPop_direction2(Card_RpnExpr* p_rpnExpr)
           p_term_head->pSymbol()->bHasFacet(C_DESC))) {
 
     // ASC | DESC
-    Card_Term *p_term = _pCard_Term(p_rpnExpr->pPopChild());
+    Card_Term *p_term = p_rpnExpr->pPop_term();
     Stz *szDirn = p_term->szFacet(SF_DIRECTION);
     RASSERT(szDirn->bSame(C_ASC) || szDirn->bSame(C_DESC));
     p_direction = (new Card_Direction)->SYM(SF_DIRECTION, szDirn);
@@ -1456,7 +1456,7 @@ Card_HshCol* Dissector::pPop_hshCol(Card_RpnExpr* p_rpnExpr)
 
   Cast xCast = xPop_cast(p_rpnExpr);
 
-  Card_Term* p_term_hsh = _pCard_Term(p_rpnExpr->pPopChild());
+  Card_Term* p_term_hsh = p_rpnExpr->pPop_term();
   p_term_hsh->vApplyCast_x(xCast);
   p_hshCol->vAppendChild(p_term_hsh);
 
@@ -1492,7 +1492,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
   Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pHead());
   if (p_term_head->pSymbol()->bHasFacet("GROUPBY"_Stz) ||
       p_term_head->pSymbol()->bHasFacet("ORDGROUPBY"_Stz) ) {
-    p_term_head = _pCard_Term(p_rpnExpr->pPopChild());
+    p_term_head = p_rpnExpr->pPop_term();
     delete p_term_head;
     p_term_head = nullptr;
   }
