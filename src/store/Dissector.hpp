@@ -71,15 +71,10 @@ namespace STORE
     Card_IndexList*  pForm_indexList(Stz* szIndexNm);
     Card_Table*      pForm_table    (Stz* szTableNm);
 
-    Card_As*         pPop_as        (Card_RpnExpr* p_rpnExpr);
     Card_Bounds*     pPop_bounds    (Card_RpnExpr* p_rpnExpr);
     Card_Bound*      pPop_bound     (Card_RpnExpr* p_rpnExpr);
     Cast             xPop_cast       (Card_RpnExpr* p_rpnExpr);
     Card_Constraint* pPop_constraint(Card_RpnExpr* p_rpnExpr);
-    Card_Direction*  pPop_direction2(Card_RpnExpr* p_rpnExpr);
-    Card_Expr*       pPop_expr2      (Card_RpnExpr* p_rpnExpr,
-                                      bool bIsKeyExpr,
-                                      i8& ri_Expr);
     Card_Expr*       pPop_expr3      (Card_RpnExpr* p_rpnExpr,
                                       bool bIsKeyExpr,
                                       i8& ri_Expr);
@@ -88,7 +83,7 @@ namespace STORE
     Card_Key*        pPop_key       (Card_RpnExpr* p_rpnExpr);
     Card_Emit*       pPop_emit      (Card_RpnExpr* p_rpnExpr);
     Card_RpnCalc*    pPop_rpnCalc   (Card_RpnExpr* p_rpnExpr);
-    Card_On*         pPop_on  (Card_RpnExpr* p_rpnExpr);
+    Card_On*         pPop_on        (Card_RpnExpr* p_rpnExpr);
 
     void             vCheckArgs     (i8 nArgs);
 

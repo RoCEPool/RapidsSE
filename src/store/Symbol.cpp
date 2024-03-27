@@ -2698,7 +2698,7 @@ void Symbol::vFacet_As(Stz* szAs)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vFacetSet(SF_AS, szAs);
 
@@ -2880,7 +2880,7 @@ void Symbol::vFacet_Direction(Stz* szDirection)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vFacetSet(SF_DIRECTION, szDirection);
 
@@ -2922,14 +2922,14 @@ void Symbol::vFacet_Exp_Col(i8 iExpCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (m_nFacets) {
-    eSF eFacet = this->eFacet(0);
-    RASSERT(SF_SQY_RSL == eFacet ||
-            SF_EXP_COL == eFacet ||
-            SF_NMD_COL == eFacet ||
-            SF_TBL_COL == eFacet ||
-            SF_KEY_COL == eFacet);
-  }
+//  if (m_nFacets) {
+//    eSF eFacet = this->eFacet(0);
+//    RASSERT(SF_SQY_RSL == eFacet ||
+//            SF_EXP_COL == eFacet ||
+//            SF_NMD_COL == eFacet ||
+//            SF_TBL_COL == eFacet ||
+//            SF_KEY_COL == eFacet);
+//  }
 
   vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
 
