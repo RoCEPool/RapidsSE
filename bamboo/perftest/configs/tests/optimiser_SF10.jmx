@@ -2842,13 +2842,17 @@ begin
 
   stage S02 on all partitions : 
     indexJoin Supplier IxS_SUPPKEY &quot; BOUND $I1 &quot;
-    | filter    &quot; type BOOLEAN $8 $1 == &quot;
-    | project   &quot; type VARCHAR ( 25 ) as C0_N_NAME $2
-                , type INTEGER ( 19 ) as C1_S_SUPPKEY $5 &quot;
-    | dynamic
-    | next
+    | project   &quot; type INTEGER ( 19 ) as C0_N_NATIONKEY $1
+                , type INTEGER ( 19 ) as C1_S_NATIONKEY $8
+                , type VARCHAR ( 25 ) as C0_N_NAME $2
+                , type INTEGER ( 19 ) as C1_S_SUPPKEY $5&quot;
+    | filter    &quot; type BOOLEAN $1 $2 == &quot;
+    | project   &quot; type VARCHAR ( 25 ) as C0_N_NAME $3
+                , type INTEGER ( 19 ) as C1_S_SUPPKEY $4 &quot;
+  | dynamic
+  | next broadcast
 
-  stage S04 on all partitions : 
+  stage S03 on all partitions :
     indexJoin Lineitem IxL_SUPPKEY &quot; BOUND $I1 $2 == &quot;
     | project   &quot; type VARCHAR ( 25 ) as C0_N_NAME $1
                 , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8
@@ -2858,12 +2862,20 @@ begin
                 , type INTEGER ( 19 ) as C5_L_PARTKEY $4
                 , type INTEGER ( 19 ) as C6_L_SUPPKEY $5 &quot;
     | hash      &quot;type INTEGER $6&quot;
-    |  dynamic
+    | dynamic
     | next      hashcast
 
-  stage S06 on all partitions : 
+  stage S04 on all partitions :
     indexJoin Part IxP_PARTKEY &quot; BOUND $I1 $6 == &quot;
-    | filter    &quot; type BOOLEAN } $9 &apos;%green%&apos; 5 matchMiddle &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
+                    , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                    , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                    , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $4
+                    , type INTEGER ( 19 ) as C4_L_ORDERKEY $5
+                    , type INTEGER ( 19 ) as C5_L_PARTKEY $6
+                    , type INTEGER ( 19 ) as C6_L_SUPPKEY $7
+                    , type VARCHAR ( 55 ) as C7_P_NAME $9 &quot;
+    | filter    &quot; type BOOLEAN } $8 &apos;%green%&apos; 5 matchMiddle &quot;
     | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
                 , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
                 , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
@@ -2872,22 +2884,31 @@ begin
                 , type INTEGER ( 19 ) as C5_L_PARTKEY $6
                 , type INTEGER ( 19 ) as C6_L_SUPPKEY $7 &quot;
     | hash      &quot;type INTEGER $6&quot;
-    |  dynamic
+    | dynamic
     | next      hashcast
 
-  stage S08 on all partitions : 
+  stage S05 on all partitions :
     indexJoin PartSupp IxPS_PARTKEY &quot; BOUND $I1 $6 == &quot;
-    | filter    &quot; type BOOLEAN $9 $7 == &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
+                    , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                    , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                    , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $11
+                    , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $4
+                    , type INTEGER ( 19 ) as C5_L_ORDERKEY $5
+                    , type INTEGER ( 19 ) as C6_L_SUPPKEY $7
+                    , type INTEGER ( 19 ) as C7_PS_SUPPKEY $9 &quot;
+    | filter    &quot; type BOOLEAN $7 $8 == &quot;
     | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
                 , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
                 , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
-                , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $11
-                , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $4
-                , type INTEGER ( 19 ) as C5_L_ORDERKEY $5 &quot;
+                , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $4
+                , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $5
+                , type INTEGER ( 19 ) as C5_L_ORDERKEY $6 &quot;
+
     |  dynamic
     | next      broadcast
 
-  stage S10 on all partitions : 
+  stage S06 on all partitions :
     indexJoin Orders IxO_ORDERKEY &quot; BOUND $I1 $6 == &quot;
     | project   &quot;   type VARCHAR as C0_N_NAME $1
                 , type INTEGER ( 19 ) as C1_o_year $11 extract_year
@@ -2902,7 +2923,7 @@ begin
     |  dynamic
     | next      
 
-  stage S13 on all nodes : 
+  stage S07 on all nodes :
     gbyAgg    &quot; groupBy
                   type VARCHAR $1
                 , type INTEGER ( 19 ) $2
@@ -2913,7 +2934,7 @@ begin
     |  dynamic
     | next      
 
-  stage S14 on origin : 
+  stage S08 on origin :
     gbyAgg    &quot; groupBy
                   type VARCHAR $1
                 , type INTEGER ( 19 ) $2
@@ -2924,12 +2945,12 @@ begin
     |  dynamic
     | next      
 
-  stage S15 on origin : 
+  stage S09 on origin :
     sort      &quot; type VARCHAR $1 ASC , type INTEGER ( 19 ) $2 DESC &quot;
     |  dynamic
     | next      
 
-  stage S16 on origin :
+  stage S10 on origin :
       output
     | sink
     | first

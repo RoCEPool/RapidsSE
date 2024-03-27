@@ -602,6 +602,8 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+	return;
+
   if (0 == iDepth) {
     if (szTitle)
       vTrace("^^%s [%s] %p /P %p\n"_Stz,szTitle,azFunc,this,m_pParent);
@@ -649,6 +651,8 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 void Card::vDumpShort(const char* azFunc, Stz* szTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+	return;
 
   vTrace("--%s [%s] %p %s\n"_Stz,
          szTitle,
