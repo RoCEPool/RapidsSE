@@ -32,8 +32,8 @@ DARWIN_FRAGMENT_IGNORE_WARNINGS :=
 # the ANTLR-generated tokeniser/parser files.
 DARWIN_ANTLR_IGNORE_WARNINGS :=
 
-DARWIN_CPPFLAGS := -mmacosx-version-min=10.12 -D__APPLE__
-DARWIN_CPPFLAGS_DEBUG := -mmacosx-version-min=10.12 -D__APPLE__
+DARWIN_CPPFLAGS := -mmacosx-version-min=10.13 -D__APPLE__
+DARWIN_CPPFLAGS_DEBUG := -mmacosx-version-min=10.13 -D__APPLE__
 
 DARWIN_LDFLAGS :=
 DARWIN_LDFLAGS_DEBUG :=
