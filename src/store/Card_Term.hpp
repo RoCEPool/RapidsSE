@@ -20,7 +20,6 @@ namespace STORE
     Card_Term(void);
    ~Card_Term(void) noexcept(false);
 
-    static void vItemise_colNm(CardIter* pCI);
 
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_last);
     void vBump_ordCol(eSF eFacet, i8 nBy= 1);
