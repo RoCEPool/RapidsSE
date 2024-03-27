@@ -410,6 +410,8 @@ Card* Dissector::pOp_filter(void)
 
   i8 i_Expr = 1;
   Card_Expr* p_expr = pPop_expr3(p_rpnExpr, false, i_Expr);
+  Symbol xSymbol_expCol(SF_EXP_COL, i_Expr);
+  p_expr->pSymbol()->vApplyFacets(&xSymbol_expCol);
 
   RASSERT(1 == p_expr->nChildCards());
   //Card_BoolPred::vTo_boolPred(p_expr);
@@ -1302,6 +1304,8 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 
   i8 i_Expr = 1;
   Card_Expr* p_expr = pPop_expr3(p_rpnExpr, false, i_Expr);
+  Symbol xSymbol_expCol(SF_EXP_COL, i_Expr);
+  p_expr->pSymbol()->vApplyFacets(&xSymbol_expCol);
 
   p_constraint->vAppendChild(p_expr);
 
@@ -1319,15 +1323,15 @@ Card_Expr* Dissector::pPop_expr3(Card_RpnExpr* p_rpnExpr,
 
   Card_Expr* p_expr = new Card_Expr;
 
-  Symbol oSymbol_nmdCol;
-  if (bIsKeyExpr) {
-    Symbol xSymbol_expCol(SF_KEY_COL, ri_Expr);
-    p_expr->pSymbol()->vApplyCastFacets(&xSymbol_expCol);
-  }
-  else {
-    Symbol xSymbol_expCol(SF_EXP_COL, ri_Expr);
-    p_expr->pSymbol()->vApplyCastFacets(&xSymbol_expCol);
-  }
+//  Symbol oSymbol_nmdCol;
+//  if (bIsKeyExpr) {
+//    Symbol xSymbol_expCol(SF_KEY_COL, ri_Expr);
+//    p_expr->pSymbol()->vApplyCastFacets(&xSymbol_expCol);
+//  }
+//  else {
+//    Symbol xSymbol_expCol(SF_EXP_COL, ri_Expr);
+//    p_expr->pSymbol()->vApplyCastFacets(&xSymbol_expCol);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // <type>
@@ -1357,7 +1361,8 @@ Card_Expr* Dissector::pPop_expr3(Card_RpnExpr* p_rpnExpr,
   p_rpnCalc->vApplyCast_x(xCast);
   p_expr->vApplyCast_x(xCast);
 
-  if (bIsKeyExpr && p_expr->pSub_rpnCalc(C_NOT_NULL)->nChildCards() == 1) {
+  if (//bIsKeyExpr &&
+      p_expr->pSub_rpnCalc(C_NOT_NULL)->nChildCards() == 1) {
     Card_Term* p_term_0 = p_expr->pGet_term0();
     p_term_0->vApplyCast_x(xCast);
   }
@@ -1390,6 +1395,7 @@ Card_Expr* Dissector::pPop_expr3(Card_RpnExpr* p_rpnExpr,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ri_Expr++;
+  ri_Expr--;
   return p_expr;
 }
 
@@ -1474,6 +1480,8 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
     Card_Expr* p_expr;
 /**Z_KEY_DIRECTION dissect*/
     p_expr = pPop_expr3(p_rpnExpr, true, i_Expr);
+    Symbol xSymbol_keyCol(SF_KEY_COL, i_Expr++);
+    p_expr->pSymbol()->vApplyFacets(&xSymbol_keyCol);
 
     // [ ASC | DESC ]
     Card_Direction* p_direction = new Card_Direction;
@@ -1536,6 +1544,8 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
 
     // TYPE <type> [ AS <as> ] <rpnCalc>
     Card_Expr* p_expr = pPop_expr3(p_rpnExpr, false, i_Expr);
+    Symbol xSymbol_expCol(SF_EXP_COL, i_Expr++);
+    p_expr->pSymbol()->vApplyFacets(&xSymbol_expCol);
     p_expr->v_Child(++iCardNo);
     //vAsEnsure(p_expr);
 
