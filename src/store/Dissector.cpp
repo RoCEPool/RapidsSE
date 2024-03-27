@@ -11,6 +11,8 @@
 #include "Table.hpp"
 #include "CardIter.hpp"
 
+#define Z_EXPR_DIRECTION
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1373,6 +1375,9 @@ Card_Expr* Dissector::pPop_expr2(Card_RpnExpr* p_rpnExpr,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
+#ifdef Z_EXPR_DIRECTION
+  return pPop_expr3(p_rpnExpr,bIsKeyExpr,ri_Expr);
+#else
   Card_Expr* p_expr = new Card_Expr;
 
   Symbol oSymbol_nmdCol;
@@ -1433,6 +1438,7 @@ Card_Expr* Dissector::pPop_expr2(Card_RpnExpr* p_rpnExpr,
 
   ri_Expr++;
   return p_expr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1499,6 +1505,13 @@ Card_Expr* Dissector::pPop_expr3(Card_RpnExpr* p_rpnExpr,
     delete p_as;
     p_as = nullptr;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // [ ASC | DESC ]
+  if (p_rpnExpr->bHeadSame(SF_DIRECTION)) {
+    vDebugPoint();
+  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
