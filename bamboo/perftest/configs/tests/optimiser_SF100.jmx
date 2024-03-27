@@ -514,7 +514,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_PARTKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_PARTKEY ON lineitem (L_PARTKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -540,7 +540,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_SUPPKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_SUPPKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_SUPPKEY ON lineitem (L_SUPPKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -553,7 +553,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_RECEIPTDATE" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxL_RECEIPTDATE" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxL_RECEIPTDATE ON lineitem (L_RECEIPTDATE);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -605,7 +605,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_SUPPKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_SUPPKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxPS_SUPPKEY ON partsupp(ps_suppkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -618,7 +618,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_PARTKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxPS_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxPS_PARTKEY ON partsupp(ps_partkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -631,7 +631,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxP_PARTKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxP_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxP_PARTKEY ON part(p_partkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -670,7 +670,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_SUPPKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_SUPPKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxS_SUPPKEY ON supplier(S_SUPPKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -683,7 +683,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_NATIONKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxS_NATIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxS_NATIONKEY ON supplier(S_NATIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -696,7 +696,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_NATIONKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_NATIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -709,7 +709,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_REGIONKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxN_REGIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -722,7 +722,7 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxR_REGIONKEY" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_IxR_REGIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">CREATE INDEX IxR_REGIONKEY ON region(R_REGIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2874,6 +2874,148 @@ group by
 order by 
   nation, 
   o_year desc;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_p" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions : 
+      scan      nation
+    | next      
+
+  stage S02 on all partitions : 
+    indexJoin Supplier IxS_SUPPKEY &quot; BOUND $I1 &quot;
+    | project   &quot; type INTEGER ( 19 ) as C0_N_NATIONKEY $1
+                , type INTEGER ( 19 ) as C1_S_NATIONKEY $8
+                , type VARCHAR ( 25 ) as C0_N_NAME $2
+                , type INTEGER ( 19 ) as C1_S_SUPPKEY $5&quot;
+    | filter    &quot; type BOOLEAN $1 $2 == &quot;
+    | project   &quot; type VARCHAR ( 25 ) as C0_N_NAME $3
+                , type INTEGER ( 19 ) as C1_S_SUPPKEY $4 &quot;
+  | dynamic
+  | next broadcast
+
+  stage S03 on all partitions :
+    indexJoin Lineitem IxL_SUPPKEY &quot; BOUND $I1 $2 == &quot;
+    | project   &quot; type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $9
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $7
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $3
+                , type INTEGER ( 19 ) as C5_L_PARTKEY $4
+                , type INTEGER ( 19 ) as C6_L_SUPPKEY $5 &quot;
+    | hash      &quot;type INTEGER $6&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S04 on all partitions :
+    indexJoin Part IxP_PARTKEY &quot; BOUND $I1 $6 == &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
+                    , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                    , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                    , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $4
+                    , type INTEGER ( 19 ) as C4_L_ORDERKEY $5
+                    , type INTEGER ( 19 ) as C5_L_PARTKEY $6
+                    , type INTEGER ( 19 ) as C6_L_SUPPKEY $7
+                    , type VARCHAR ( 55 ) as C7_P_NAME $9 &quot;
+    | filter    &quot; type BOOLEAN } $8 &apos;%green%&apos; 5 matchMiddle &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $4
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $5
+                , type INTEGER ( 19 ) as C5_L_PARTKEY $6
+                , type INTEGER ( 19 ) as C6_L_SUPPKEY $7 &quot;
+    | hash      &quot;type INTEGER $6&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S05 on all partitions :
+    indexJoin PartSupp IxPS_PARTKEY &quot; BOUND $I1 $6 == &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
+                    , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                    , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                    , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $11
+                    , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $4
+                    , type INTEGER ( 19 ) as C5_L_ORDERKEY $5
+                    , type INTEGER ( 19 ) as C6_L_SUPPKEY $7
+                    , type INTEGER ( 19 ) as C7_PS_SUPPKEY $9 &quot;
+    | filter    &quot; type BOOLEAN $7 $8 == &quot;
+    | project   &quot;   type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $4
+                , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $5
+                , type INTEGER ( 19 ) as C5_L_ORDERKEY $6 &quot;
+
+    |  dynamic
+    | next      broadcast
+
+  stage S06 on all partitions :
+    indexJoin Orders IxO_ORDERKEY &quot; BOUND $I1 $6 == &quot;
+    | project   &quot;   type VARCHAR as C0_N_NAME $1
+                , type INTEGER ( 19 ) as C1_o_year $11 extract_year
+                , type DECIMAL ( 19 2 ) as C2_amount $2 1.00 $3 - * $4 $5 * - &quot;
+    | gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_COL2 ) $3 sum &quot;
+    |  dynamic
+    | next      
+
+  stage S07 on all nodes :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_COL2 ) $3 sum &quot;
+    |  dynamic
+    | next      
+
+  stage S08 on origin :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_sum_profit ) $3 sum &quot;
+    |  dynamic
+    | next      
+
+  stage S09 on origin :
+    sort      &quot; type VARCHAR $1 ASC , type INTEGER ( 19 ) $2 DESC &quot;
+    |  dynamic
+    | next      
+
+  stage S10 on origin :
+      output
+    | sink
+    | first
+
+end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
