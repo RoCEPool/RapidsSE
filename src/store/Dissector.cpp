@@ -409,8 +409,7 @@ Card* Dissector::pOp_filter(void)
   // filter expression
 
   Card_Expr* p_expr = pPop_expr4(p_rpnExpr);
-  Symbol xSymbol_expCol(SF_EXP_COL, 1);
-  p_expr->pSymbol()->vApplyFacets(&xSymbol_expCol);
+  p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8)1);
 
   RASSERT(1 == p_expr->nChildCards());
   //Card_BoolPred::vTo_boolPred(p_expr);
@@ -1302,8 +1301,7 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
   Card_Constraint* p_constraint = new Card_Constraint;
 
   Card_Expr* p_expr = pPop_expr4(p_rpnExpr);
-  Symbol xSymbol_expCol(SF_EXP_COL, 1);
-  p_expr->pSymbol()->vApplyFacets(&xSymbol_expCol);
+  p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,(i8)1);
 
   p_constraint->vAppendChild(p_expr);
 
@@ -1456,8 +1454,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
     Card_Expr* p_expr;
 /**Z_KEY_DIRECTION dissect*/
     p_expr = pPop_expr4(p_rpnExpr);
-    Symbol xSymbol_keyCol(SF_KEY_COL, i_Expr++);
-    p_expr->pSymbol()->vApplyFacets(&xSymbol_keyCol);
+    p_expr->pSymbol()->vApplyFacet(SF_KEY_COL, i_Expr++);
 
     if (! p_expr->pSymbol()->bHasFacet(SF_DIRECTION)) {
       Facet xFacet_direction;
@@ -1527,10 +1524,8 @@ Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
 
     // TYPE <type> [ AS <as> ] <rpnCalc>
     Card_Expr* p_expr = pPop_expr4(p_rpnExpr);
-    Symbol xSymbol_expCol(SF_EXP_COL, i_Expr++);
-    p_expr->pSymbol()->vApplyFacets(&xSymbol_expCol);
+    p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, i_Expr++);
     p_expr->v_Child(++iCardNo);
-    //vAsEnsure(p_expr);
 
     if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
       Cast xCast;
