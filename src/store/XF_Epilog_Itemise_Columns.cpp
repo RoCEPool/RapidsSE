@@ -70,15 +70,6 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
   {
     //pCI->vAncestorDump(pCard);
 
-//    if (! pCard->bIsCard(CK_AS))
-//      return C_CONTINUE_RECURSION;
-
-    //Card_As* p_as = _pCard_As(pCard);
-
-//    Card_Expr* p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR));
-//    if (! p_expr)
-//      return C_CONTINUE_RECURSION;
-
     if (! pCard->bIsCard(CK_EXPR))
       return C_CONTINUE_RECURSION;
 

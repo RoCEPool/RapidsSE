@@ -59,7 +59,6 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
   /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
-  /* */ "CK_AS"_Stz,           // CK_AS
 
   /* */ "CK_BOOLPRED"_Stz,     // CK_BOOLPRED
   /* */ "CK_BOUND"_Stz,        // CK_BOUND
@@ -204,7 +203,6 @@ Stz* aCK_short[CK_ENUMS]
 
   /* */ "address"_Stz,         // CK_ADDRESS
   /* */ "andConj"_Stz,         // CK_ANDCONJ
-  /* */ "as"_Stz,              // CK_AS
 
   /* */ "boolPred"_Stz,        // CK_BOOLPRED
   /* */ "bound"_Stz,           // CK_BOUND

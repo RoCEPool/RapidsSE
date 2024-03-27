@@ -4,7 +4,6 @@
 
 #include "Card_Key.hpp"
 
-#include "Card_As.hpp"
 #include "Card_Direction.hpp"
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"

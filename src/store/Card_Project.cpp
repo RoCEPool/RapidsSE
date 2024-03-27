@@ -4,7 +4,6 @@
 
 #include "Card_Project.hpp"
 
-#include "Card_As.hpp"
 #include "Card_Level.hpp"
 #include "Card_Emit.hpp"
 #include "Card_RpnCalc.hpp"

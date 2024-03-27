@@ -4,7 +4,6 @@
 
 #include "Card_Expr.hpp"
 
-#include "Card_As.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolPred.hpp"
 #include "CardIter.hpp"

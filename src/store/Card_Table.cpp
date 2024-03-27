@@ -4,7 +4,6 @@
 
 #include "Card_Table.hpp"
 
-#include "Card_As.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 #include "Card_Filter.hpp"
