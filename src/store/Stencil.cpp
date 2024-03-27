@@ -368,6 +368,24 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 		if (pOpDef->szOpNm()->bSame("project"_Stz)) {
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#ifdef _PROJECT_INTO_TUB
+			// last op in the stage ?
+			if (i_Op == pStageDef->nItems() - 1) {
+				pOpSketch = pSketchPrjPotTub(pStageDef, pOpDef, bGeneratePot, pHashOpDef, sLimitExpr);
+				vAppend(pOpSketch);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// sketch EOS handler function
+				m_eHandlerKind = HK_EOS;
+				OpSketch* pEosOpSketch = pSketchEos(pStageDef);
+				vAppend(pEosOpSketch);
+
+				bGeneratePotTub = false;
+				continue;
+			}
+#endif
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			pOpSketch = pSketchProject(pStageDef, pOpDef);
 			vAppend(pOpSketch);
 
@@ -1085,6 +1103,62 @@ OpSketch* Stencil::pSketchProject(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vGenerateExprStacks(sProjectExpr);
 
   return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch project expressions directly into TUB                               */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+	s4K sLabel;
+	s4K sLabelNext;
+	OpSketch* pOpSketch;
+
+	i8 i_Op = pOpDef->i_Op();
+
+	// get project expr from OpDef
+	Stz* sProjectExpr = pOpDef->pArgDef_expr()->szArgVal();
+
+	// get the streamDefs
+	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+
+	// create a new opSketch
+	if (bGeneratePot) {
+		RASSERT(0);
+		pOpSketch = new OpSketch(pStageDef, i_Op, sProjectExpr, m_eHandlerKind, SK_PRJPOT, m_ePreviousStencil, SR_PO,  II_NONE);
+		pOpSketch->vLimitExpr(sLimitExpr);
+	}
+	else {
+		pOpSketch = new OpSketch(pStageDef, i_Op, sProjectExpr, m_eHandlerKind, SK_PRJTUB, m_ePreviousStencil, SR_TO,  II_NONE);
+		pOpSketch->vLimitExpr(sLimitExpr);
+	}
+
+	// set the streamDef's
+	pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
+
+	// generate the expressißon stacks
+	pOpSketch->vGenerateExprStacks(sProjectExpr);
+
+	if (bGeneratePot) {
+
+		// copy the colHsh
+		RASSERT(pHashOpDef);
+		pOpSketch->vCopyColHsh(pHashOpDef->m_pColHsh);
+	}
+
+	sLabel.vSprint("L_AddRowToTubPot"_Stz, pOpDef->szOpNm(), i_Op);
+	sLabelNext = ""_Stz;
+
+	// set the labels in the opSketch
+	pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
+
+	// generate the expressißon stacks
+	//pOpSketch->vGenerateExprStacks(sProjectExpr);
+
+	return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/

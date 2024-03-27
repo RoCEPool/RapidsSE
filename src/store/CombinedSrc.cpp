@@ -360,6 +360,32 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         break;
 
+			case SK_PRJTUB:
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// open the project code fragments file
+				bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/Project.cpp"_Stz);
+				RASSERT ( bOpened );
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// operator stub
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				vAppendStencilTo(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
+				vAppendCodePixCols(pOpSketch);
+				vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
+
+				vAppendCodeFragment(pOpSketch, "iPotTubContinue"_Stz);
+
+				vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// close the project code fragments file
+				pOperatorFile->vClose();
+
+				break;
+
       case SK_INDEXSCAN:
 
         bHasIndexInflate = true;

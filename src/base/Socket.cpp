@@ -628,6 +628,10 @@ Object* Socket::pObjectRecv(eCN eClass)
       DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
       i8 iPoolBufferNo = pDataBuffer->iBufferNo();
       pDataBuffer->vSetBufferNo(iPoolBufferNo);
+			if (eClass == CN_PDS) {
+				Pds* pPds = _pPds(pDataBuffer);
+				pPds->m_fpCompare = Pds::iIntCompare;
+			}
 #ifdef WITHOUT_BUFFERIDHASHMAP
       // TODO: Hack for performance test
       pDataBuffer->vSetBufferId((void*) pDataBuffer);

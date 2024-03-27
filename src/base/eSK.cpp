@@ -20,6 +20,8 @@ Stz* aSK[SK_ENUMS]
   /*   */ "LIMIT"_Stz,
 	/*   */ "ORDAGG"_Stz,
   /*   */ "POT"_Stz,
+	/*   */ "PRJPOT"_Stz,
+	/*   */ "PRJPOT"_Stz,
   /*   */ "PROJECT"_Stz,
   /*   */ "SEMIJOIN"_Stz,
   /*   */ "SORT"_Stz,
