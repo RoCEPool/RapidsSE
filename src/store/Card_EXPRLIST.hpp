@@ -39,7 +39,7 @@ namespace STORE
 
     Card_Expr* pGet_expr(i8 i_Expr);
 
-    void vRenumberAll_expr(void);
+    void vRenumberAll_expr(eSF eFacet=SF_EXP_COL);
 
     bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);
 

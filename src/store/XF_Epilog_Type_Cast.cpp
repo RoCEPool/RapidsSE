@@ -115,7 +115,7 @@ void XF_Epilog_Type_Cast::vCast(void)
 
     if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
       m_pCI->E.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Flux.m_pArriving);
-      m_pCI->E.p_key->vRenumberAll_expr();
+      m_pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
       m_pCI->E.p_key = nullptr;
     }
 

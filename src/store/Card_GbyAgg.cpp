@@ -164,7 +164,7 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
   Card_Fold::vPush_foldExpr_Into_emit(pCI, pCI->Flat.m_pExpr_fold);
   Card_Fold::vPush_foldExpr_Into_key(pCI, pCI->Flat.m_pExpr_fold);
 
-  pCI->E.p_key->vRenumberAll_expr();
+  pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
   pCI->E.p_emit->vRenumberAll_expr();
 }
 

@@ -256,22 +256,28 @@ Card_Expr* Card_EXPRLIST::pGet_expr(i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vRenumberAll_expr(void)
+void Card_EXPRLIST::vRenumberAll_expr(eSF eFacet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   bool bIsKeyExpr = bIsCard(CK_s_KEY);
+  if (bIsKeyExpr) {
+    RASSERT(SF_KEY_COL == eFacet);
+  }
+  else {
+    RASSERT(SF_EXP_COL == eFacet);
+  }
 
 /**Z_KEY_DIRECTION renumber*/
   if (bIsKeyExpr) {
     for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/)
       //xKey.p_expr(C_SUB)->vRenumberForm_keyCol(xKey.i_Child()+1);
-      xKey.p_expr(C_SUB)->pSymbol()->vApplyFacet(SF_KEY_COL,xKey.i_Child()+1);
+      xKey.p_expr(C_SUB)->pSymbol()->vApplyFacet(eFacet,xKey.i_Child()+1);
   }
   else {
     for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
     //xEXPRLIST.p_expr()->vRenumberForm_expCol(xEXPRLIST.i_Child()+1);
-    xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(SF_EXP_COL,xEXPRLIST.i_Child()+1);
+    xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(eFacet,xEXPRLIST.i_Child()+1);
   }
 
 }
