@@ -1474,21 +1474,24 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
 
   Card_Key* p_key = new Card_Key;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // GROUPBY
   Card_Term* p_term_head = p_rpnExpr->pHead_term();
   if (p_term_head->pSymbol()->bHasFacet("GROUPBY"_Stz) ||
       p_term_head->pSymbol()->bHasFacet("ORDGROUPBY"_Stz) ) {
-    p_rpnExpr->vDiscardHead();
     p_term_head = nullptr;
+    p_rpnExpr->vDiscardHead();
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 i_Expr = 1;
   while ( (p_term_head = p_rpnExpr->pHead_term()) ) {
 
     // AGGREGATES
-    if (p_term_head->pSymbol()->bHasFacet("AGGREGATES"_Stz)) {
+    if (p_term_head->pSymbol()->bHasFacet("AGGREGATES"_Stz))
       break;
-    }
 
     // SEPARATOR
     if (p_term_head->pSymbol()->bHasFacet(SF_COMMA)) {
@@ -1496,26 +1499,25 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
       continue;
     }
 
-    // TYPE <type> <calcExpr> [ AS <as> ]
-    Card_Expr* p_expr;
-    p_expr = pPop_expr4(p_rpnExpr);
-    p_expr->pSymbol()->vApplyFacet(SF_KEY_COL, i_Expr++);
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // expr proper
 
-    if (! p_expr->pSymbol()->bHasFacet(SF_DIRECTION)) {
-      Facet xFacet_direction;
-      xFacet_direction.m_eFacet = SF_DIRECTION;
-      xFacet_direction.m_sFacet = C_ASC;
-      p_expr->pSymbol()->vApplyFacet(&xFacet_direction);
-    }
+    // TYPE <type> <calcExpr> [ AS <as> ] [ ASC | DESC ]
+    Card_Expr* p_expr = pPop_expr4(p_rpnExpr);
+    p_expr->pSymbol()->vApplyFacet(SF_KEY_COL, i_Expr);
 
 /**Z_KEY_DIRECTION dissect*/
-    // [ ASC | DESC ]
+    // ensure expr has SF_DIRECTION
+    if (! p_expr->pSymbol()->bHasFacet(SF_DIRECTION))
+      p_expr->pSymbol()->vApplyFacet(SF_DIRECTION,C_ASC);
+
+    // direction
     Card_Direction* p_direction = new Card_Direction;
     p_direction->pSymbol()->vApplyFacet(p_expr->pSymbol()->aFacet(SF_DIRECTION));
     p_direction->vAppendChild(p_expr);
     p_key->vAppendChild(p_direction);
 
-    // implied cast of decimal
+    // implicit cast of decimal
     if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
       Cast xCast;
       xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
@@ -1524,7 +1526,11 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
       p_expr->vApplyCast_x(xCast);
       p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
     }
+
+    i_Expr++;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return p_key;
 }
