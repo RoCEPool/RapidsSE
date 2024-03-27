@@ -16,6 +16,8 @@ namespace STORE
     Card_RpnExpr(void);
    ~Card_RpnExpr(void) noexcept(false);
 
+   Card_Term* pPop_term(void);
+
   };
 
   Card_RpnExpr* _pCard_RpnExpr(void* aAddr);

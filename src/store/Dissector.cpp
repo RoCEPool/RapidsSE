@@ -1339,26 +1339,6 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 /*----------------------------------------------------------------------------*/
 /* pop direction                                                              */
 /*----------------------------------------------------------------------------*/
-Card_Direction* Dissector::pPop_direction(Card_RpnExpr* p_rpnExpr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  // ASC | DESC
-  Card_Term* p_term = _pCard_Term(p_rpnExpr->pPopChild());
-  Stz* szDirn = p_term->szFacet(SF_DIRECTION);
-  RASSERT(szDirn->bSame(C_ASC) || szDirn->bSame(C_DESC));
-
-  Card_Direction* p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, szDirn);
-
-  delete p_term;
-  p_term = nullptr;
-
-  return p_direction;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop direction                                                              */
-/*----------------------------------------------------------------------------*/
 Card_Direction* Dissector::pPop_direction2(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
@@ -1382,82 +1362,6 @@ Card_Direction* Dissector::pPop_direction2(Card_RpnExpr* p_rpnExpr)
   }
 
   return p_direction;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* pop expr                                                                   */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
-                                bool bIsKeyExpr, i8& ri_Expr,
-                                bool bEnsureDirection)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-  UNUSED(bEnsureDirection);
-
-  Card_Expr* p_expr = new Card_Expr;
-
-  Symbol oSymbol_nmdCol;
-  if (bIsKeyExpr) {
-    Symbol xSymbol_expCol(SF_KEY_COL, ri_Expr);
-    p_expr->pSymbol()->vApplyCastFacets(&xSymbol_expCol);
-  }
-  else {
-    Symbol xSymbol_expCol(SF_EXP_COL, ri_Expr);
-    p_expr->pSymbol()->vApplyCastFacets(&xSymbol_expCol);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // <type>
-
-  Cast xCast = this->xPop_cast(p_rpnExpr);
-
-  if (xCast.m_xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
-    xCast.m_nTypeLength = 19;
-    xCast.m_nTypeScale = 2;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // [ AS <as> ]
-
-  if (Card_As* p_as = pPop_as(p_rpnExpr)) {
-    oSymbol_nmdCol.vApplyCastFacets(p_as->pSymbol());
-    p_expr->pSymbol()->vApplyFacets(&oSymbol_nmdCol);
-    delete p_as;
-    p_as = nullptr;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // <rpnCalc>
-
-  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_rpnExpr);
-  p_expr->vAppendChild(p_rpnCalc);
-
-  p_rpnCalc->vApplyCast_x(xCast);
-  p_expr->vApplyCast_x(xCast);
-
-  if (bIsKeyExpr && p_expr->pSub_rpnCalc(C_NOT_NULL)->nChildCards() == 1) {
-    Card_Term* p_term_0 = p_expr->pGet_term0();
-    p_term_0->vApplyCast_x(xCast);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // [ AS <as> ]
-
-  if (Card_As* p_as = pPop_as(p_rpnExpr)) {
-    oSymbol_nmdCol.vApplyCastFacets(p_as->pSymbol());
-    p_expr->pSymbol()->vApplyFacets(&oSymbol_nmdCol);
-    delete p_as;
-    p_as = nullptr;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // [ ASC | DESC ]
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  ri_Expr++;
-  return p_expr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1617,6 +1521,8 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
     Card_Direction* p_direction = pPop_direction2(p_rpnExpr);
     p_direction->vAppendChild(p_expr);
     p_key->vAppendChild(p_direction);
+
+    p_expr->pSymbol()->Y_vSet(P_Direction,p_direction->szFacet(SF_DIRECTION));
 
     p_expr->v_Child(++i_CardNo);
 
