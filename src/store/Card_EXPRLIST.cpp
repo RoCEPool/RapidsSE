@@ -263,15 +263,15 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
   bool bIsKeyExpr = bIsCard(CK_s_KEY);
 
 /**Z_KEY_DIRECTION renumber*/
-  i8 i_Expr = 1;
-
   if (bIsKeyExpr) {
     for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/)
-      xKey.p_expr(C_SUB)->vRenumberForm_keyCol(i_Expr++);
+      //xKey.p_expr(C_SUB)->vRenumberForm_keyCol(xKey.i_Child()+1);
+      xKey.p_expr(C_SUB)->pSymbol()->vApplyFacet(SF_KEY_COL,xKey.i_Child()+1);
   }
   else {
     for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
-      xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
+    //xEXPRLIST.p_expr()->vRenumberForm_expCol(xEXPRLIST.i_Child()+1);
+    xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(SF_EXP_COL,xEXPRLIST.i_Child()+1);
   }
 
 }

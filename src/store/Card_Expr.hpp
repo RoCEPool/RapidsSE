@@ -56,9 +56,6 @@ namespace STORE
     bool bNeedsBrace(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
-    void vRenumberForm_keyCol(i8 i_Expr);
-    void vRenumberForm_expCol(i8 i_Expr);
-
     bool bSameAs(Card_Expr* pExpr_arg);
 
     void vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit);

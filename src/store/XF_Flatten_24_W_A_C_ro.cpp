@@ -261,7 +261,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
 //Z_KEY_DIRECTION
     for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-      pCI->E.p_expr->vRenumberForm_keyCol(pCI->i_Target()+1);
+      pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,pCI->i_Target()+1);
     }
 
     pCI->E.p_emit->vRenumberAll_expr();

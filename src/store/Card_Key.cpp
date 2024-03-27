@@ -82,7 +82,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   vAppendChild(p_direction_new);
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumberForm_keyCol(i_Key);
+  p_expr_new->pSymbol()->vApplyFacet(SF_KEY_COL,i_Key);
   p_direction_new->vAppendChild(p_expr_new);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
