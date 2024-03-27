@@ -4,72 +4,10 @@
 # This is a cloud-init script used for configuring a Ubuntu 16.04 machine for running (not building) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
+# We wrap everything in a subshell to redirect all output through the tee command
+# and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
-CLOUD_INIT_STATUS="/cloud-init-status.log"
-CLOUD_INIT_COMPLETE="/cloud-init-complete.log"
-CLOUD_INIT_COMPLETE_DEPRECATED="/tmp/cloud-init-complete.log"
-
-MAX_NETWORK_RETRIES=10
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
-RC_LOCAL="/etc/rc.local"
-
-##
-# Functions
-##
-
-function status() {
-  echo "$@" > "${CLOUD_INIT_STATUS}"
-
-  echo
-  echo "$@"
-  echo
-}
-
-##
-
-function error() {
-  echo "$@" > "${CLOUD_INIT_STATUS}"
-
-  echo >&2 "****** Cloud init error *******"
-  echo >&2 "$@"
-  echo >&2 "****** Cloud init error *******"
-}
-
-##
-
-function retryCommand() {
-  local maxRetries="$1"
-  shift
-  local cmd=("$@")
-  local retries=1
-
-  # check that maxRetries has been provided
-  local re='^[0-9]+$'
-  if ! [[ "${maxRetries}" =~ $re ]] ; then
-     error "ERROR: First parameter to function retryCommand() is not a number"
-     exit 1
-  fi
-
-  while [ "${retries}" -le "${maxRetries}" ]; do
-    if [ "${retries}" -gt 1 ]; then
-      status "...retry attempt #${retries} of command: ${cmd[*]}"
-    fi
-
-    ((retries++))
-
-    if "${cmd[@]}"; then
-      true
-      return
-    fi
-
-    sleep 1
-  done
-
-  false
-  return
-}
-
-##
 
 {
   if which tee &>/dev/null; then
@@ -82,7 +20,10 @@ function retryCommand() {
 chmod a+r "${CLOUD_INIT_OUTPUT}"
 
 {
-status "Starting the cloud-init setup script for Ubuntu 16.04."
+echo
+echo ""
+echo "Starting the cloud-init setup script for Ubuntu 16.04."
+echo ""
 
 readonly UBUNTU16="ubuntu16"
 readonly UBUNTU16_USER="ec2-user"
@@ -104,7 +45,10 @@ if [ -f /etc/issue ]; then
 fi
 
 if [ -z "${OS_DIST}" ]; then
-  error "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY. OS_VER = ${OS_VER}"
+  echo >&2 "****** Cloud init error *******"
+  echo >&2 "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
+  echo >&2 "OS_VER = ${OS_VER}"
+  echo >&2 "****** Cloud init error *******"
   exit 1
 fi
 
@@ -114,11 +58,15 @@ echo "OS_HOME_DIR = ${OS_HOME_DIR}"
 
 
 # Create an ec2-user on Ubuntu 16
-status "Creating a new user: ec2-user"
+echo
+echo "*** Creating an new user: ec2-user ***"
+echo
+
 useradd -s /bin/bash -m "${OS_USER}"
 usermod -a -G admin "${OS_USER}"
 
 # Setup passwordless sudo for user ec2-user
+# Wheel group already has this, but not passwordless
 SUDO_FILE="/etc/sudoers.d/ec2-user"
 {
   echo "# Let ec2-user use sudo without a password"
@@ -128,8 +76,10 @@ SUDO_FILE="/etc/sudoers.d/ec2-user"
 chmod 0400 "${SUDO_FILE}"
 
 
-# Set up SSH.
-status "Installing a common internal SSH key"
+# Set up SSH. We do this early so that we can still login if something goes wrong later on.
+echo
+echo "*** Installing a common internal SSH key ***"
+echo
 
 # All machines have the same public/private key
 SSH_DIR="${OS_HOME_DIR}/.ssh"
@@ -193,25 +143,22 @@ chmod 644 "${SSH_DIR}/known_hosts"
 
 chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 
-status "Setting up the rc.local file"
-if [ -f "${RC_LOCAL}" ]; then
-  # Delete the exit 0 at the end of the file
-  sed -i '/exit 0/d' "${RC_LOCAL}"
-else
-  {
-    echo "#!/bin/bash"
-    echo
-    echo
-  } > "${RC_LOCAL}"
-  systemctl enable rc-local.service
-fi
-chmod +x "${RC_LOCAL}"
 
 
 # Partition, format and mount the instance stores if they are not already mounted.
-status "Installing the SSD mount script"
+# This needs to be done whenever the instance is stopped, but not when it is rebooted.
+
+echo
+echo "*** Installing the SSD mount script ***"
+echo
+
+RC_LOCAL="/etc/rc.local"
+
+# Delete the exit 0 at the end of the file
+[ -f "${RC_LOCAL}" ] && sed -i '/exit 0/d' "${RC_LOCAL}"
 
 cat <<'EOF' >>"${RC_LOCAL}"
+
 
 # Setup the SSDs on each boot
 
@@ -219,13 +166,19 @@ LOCAL_USER="ec2-user"
 
 if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
+# Get the name of any device (sans "/dev/") that is mounted under /
+# including the root filesystem, as we don't want to format this device.
+# e.g. /dev/nvme0n1 --> nvme0n1
 ignore_devices=($(df -h | grep -E "^/dev/" | awk '{if($6 ~ "^/") print $1;}' | cut -c 6-))
 
+# Get the list of block devices in the system.
 ssds=($(lsblk -d -n -o NAME))
 counter=0
 
 for device in "${ssds[@]}"
 do
+  # Ignore devices that are already mounted and devices that are a subset of
+  # the device the root filesystem is mounted on.
   ignore_device=0
   for ignore_device_name in ${ignore_devices[@]}; do
     if [[ "${ignore_device_name}" =~ ^"${device}".* ]]; then
@@ -236,8 +189,11 @@ do
 
   [ "${ignore_device}" -eq 1 ] && echo "Ignoring device ${device}" && continue
 
+  # ignore non-nvme devices
   if ! [[ "${device}" =~ ^nvme.* ]]
   then
+    # ignore this device
+    echo "Ignoring device ${device}"
     continue
   fi
 
@@ -246,13 +202,13 @@ do
   echo "Partitioning device ${device}"
 
   (
-    echo "o"
-    echo "n"
-    echo "p"
-    echo "1"
-    echo ""
-    echo ""
-    echo "w"
+    echo "o"  # Create DOS partition table
+    echo "n"  # Create a new partition
+    echo "p"  # New partition is a primary partition
+    echo "1"  # Partition #1
+    echo ""   # Start the new partition at the first sector
+    echo ""   # Make the new partition as big as possible
+    echo "w"  # write the changes and exit
   ) | fdisk "${device}" || exit
 
   sleep 2
@@ -276,20 +232,24 @@ do
   MOUNTS+=("${mount_point}")
 done
 fi
+exit 0
 EOF
 
 # Run the above script
-status "Running the SSD mount script"
+echo
+echo "*** Running the SSD mount script ***"
+echo
+chmod +x "${RC_LOCAL}"
 bash "${RC_LOCAL}"
 
 
-# Give more memory to /dev/shm.
+# Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
 SHM_DEVICE="/dev/shm"
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi
-status "Updating size of ${SHM_DEVICE} to 95% of system memory (${SHM_SIZE} GB)"
+echo "Updating size of ${SHM_DEVICE} to 95% of system memory (${SHM_SIZE} GB)"
 {
   echo ""
   echo "# Set ${SHM_DEVICE} to 95% of system memory"
@@ -301,18 +261,25 @@ mount -o remount "${SHM_DEVICE}"
 # DNS (Route 53) resolution
 # This will force unqualified names to tried with the .local domain name and
 # then be looked up in DNS.
-# status "Setting DNS domain name search qualifier"
+# echo
+# echo "*** Setting DNS domain name search qualifier ***"
+# echo
 # echo "search local" >> /etc/resolv.conf
 
 
 # /etc/hosts shortcuts
-status "Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts"
+echo
+echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+echo
 echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
 # Otherwise it costs us money when we transfer data via the elastic IP associated with
 # this URL.
 
 # Setting IGMP to v2 instead of v3 (for multicast) for all network devices
-status "Setting IGMP to v2"
+echo
+echo "*** Setting IGMP to v2 ***"
+echo
+
 {
   echo
   echo "# Enable Multicast on AWS"
@@ -330,37 +297,37 @@ echo "" >>/etc/sysctl.conf
 
 
 # Change permissions to allow for writing to /opt
-status "Setting /opt permissions"
+echo
+echo "*** Setting /opt permissions ***"
+echo
 chown root:admin /opt
 chmod g+w /opt
 
 
 # Apply any package updates
-status "Installing system updates (update)"
+echo
+echo "*** Installing updates and necessary packages ***"
+echo
 apt-get update -y
-status "Installing system updates (upgrade)"
 apt-get upgrade -y
 
 # Need to have
-status "Installing gcc, git, et al"
-apt-get install -y gcc g++ git libatomic1 netcat iproute bc ncurses-bin vim unzip
+apt-get install -y gcc g++ git libatomic1 netcat iproute bc ncurses-bin
 
-status "Installing git-lfs"
-cmd=("curl" "-s" "https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh" "|" "sudo" "bash")
-if ! retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
-  error "ERROR: Could not download and install curl - the network resource may be "\
-        "unavailable or a network error could be preventing access."
-  exit 1
-fi
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 apt-get install -y git-lfs
 
+# Good to have
+apt-get install -y vim unzip
+
 # Nice to have
-status "Installing useful utilities"
 apt-get install -y default-jre iperf3 iotop telnet nload nethogs bmon iftop jq
 
 
 # Vim annoyances
-status "Setting vim preferences"
+echo
+echo "*** Setting vim preferences ***"
+echo
 
 vimrc="${OS_HOME_DIR}/.vimrc"
 cat <<EOF >"${vimrc}"
@@ -381,10 +348,14 @@ chown "${OS_USER}:${OS_USER}" "${vimrc}"
 
 
 # Bash prompt
-status "Setting bash preferences"
+echo
+echo "*** Setting bash preferences ***"
+echo
+
 bash_profile="${OS_HOME_DIR}/.bash_profile"
 {
   echo ""
+  echo '#export PS1="[\u@\h \W]\$ '
   echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
   echo ""
 } >>"${bash_profile}"
@@ -393,33 +364,22 @@ chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 
 
 # Git setup
-status "git setup"
 sudo -H -u "${OS_USER}" git lfs install
 
 
 # Disable firewall
-status "Disabling firewall"
+echo
+echo "*** Disabling firewall ***"
+echo
 ufw disable
 
 
-# Install a script that will indicate that the cloud-init is complete after rebooting
-cat <<EOF >>"${RC_LOCAL}"
+# Indicate cloud-init has completed by dropping a file in /tmp
+echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete
 
-echo "Completed the cloud-init setup script!" > "${CLOUD_INIT_STATUS}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE_DEPRECATED}"
-echo "\$(date) Rebooted" >> "${CLOUD_INIT_OUTPUT}"
-EOF
-
-{
-  echo
-  echo "Completed the cloud-init setup script!"
-  echo "System needs to be rebooted to apply changes."
-  echo
-  echo
-} >> "${CLOUD_INIT_OUTPUT}"
-
-# Reboot
-status "*** Rebooting now ***"
-reboot
+echo
+echo ""
+echo "Completed the cloud-init setup script!"
+echo ""
+echo
 } 2>&1 | "${TEE_CMD[@]}"

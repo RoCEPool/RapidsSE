@@ -5,65 +5,10 @@
 # The base64-encoded version of this file must be less than 16kB.
 # OpenEuler is based on CentOS, despite the version number being similar to Ubuntu.
 
+# We wrap everything in a subshell to redirect all output through the tee command
+# and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
-CLOUD_INIT_STATUS="/cloud-init-status.log"
-CLOUD_INIT_COMPLETE="/cloud-init-complete.log"
-CLOUD_INIT_COMPLETE_DEPRECATED="/tmp/cloud-init-complete.log"
-
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
-RC_LOCAL="/etc/rc.d/rc.local"
-
-# Functions
-
-function status() {
-  echo "$@" > "${CLOUD_INIT_STATUS}"
-
-  echo
-  echo "$@"
-  echo
-}
-
-function error() {
-  echo "$@" > "${CLOUD_INIT_STATUS}"
-
-  echo >&2 "****** Cloud init error *******"
-  echo >&2 "$@"
-  echo >&2 "****** Cloud init error *******"
-}
-
-function retryCommand() {
-local maxRetries="$1"
-shift
-local cmd=("$@")
-local retries=1
-
-# check that maxRetries has been provided
-local re='^[0-9]+$'
-if ! [[ "${maxRetries}" =~ $re ]] ; then
-   error "ERROR: First parameter to function retryCommand() is not a number"
-   exit 1
-fi
-
-while [ "${retries}" -le "${maxRetries}" ]; do
-  if [ "${retries}" -gt 1 ]; then
-    status "...retry attempt #${retries} of command: ${cmd[*]}"
-  fi
-
-  ((retries++))
-
-  if "${cmd[@]}"; then
-    true
-    return
-  fi
-
-  sleep 1
-done
-
-false
-return
-}
-
-##
 
 {
   if which tee &>/dev/null; then
@@ -76,7 +21,10 @@ return
 chmod a+r "${CLOUD_INIT_OUTPUT}"
 
 {
-status "Starting the cloud-init setup script for OpenEuler 22.03."
+echo
+echo ""
+echo "Starting the cloud-init setup script for OpenEuler 22.03."
+echo ""
 
 readonly OPENEULER22="openEuler22.03"
 readonly OPENEULER22_USER="ec2-user"
@@ -90,7 +38,7 @@ OS_HOME_DIR="unknown"
 if [ -f /etc/system-release ]; then
   OS_VER=$(cat /etc/system-release)
 
-  if [[ "${OS_VER}" =~ openEuler\ release\ 22.03 ]]; then
+  if [[ "${OS_VER}" =~ 'openEuler release 22.03' ]]; then
     OS_DIST="${OPENEULER22}"
     OS_USER="${OPENEULER22_USER}"
     OS_HOME_DIR="${OPENEULER22_HOME_DIR}"
@@ -98,7 +46,10 @@ if [ -f /etc/system-release ]; then
 fi
 
 if [ -z "${OS_DIST}" ]; then
-  error "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY. OS_VER = ${OS_VER}"
+  echo >&2 "****** Cloud init error *******"
+  echo >&2 "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
+  echo >&2 "OS_VER = ${OS_VER}"
+  echo >&2 "****** Cloud init error *******"
   exit 1
 fi
 
@@ -107,12 +58,16 @@ echo "OS_USER = ${OS_USER}"
 echo "OS_HOME_DIR = ${OS_HOME_DIR}"
 
 
-# Create an ec2-user
-status "Creating an new user: ec2-user"
+# Create an ec2-user on OpenEuler 22.03
+echo
+echo "*** Creating an new user: ec2-user ***"
+echo
+
 useradd "${OS_USER}"
 usermod -a -G wheel "${OS_USER}"
 
 # Setup passwordless sudo for user ec2-user
+# Wheel group already has this, but not passwordless
 SUDO_FILE="/etc/sudoers.d/ec2-user"
 {
   echo "# Let ec2-user use sudo without a password"
@@ -122,8 +77,10 @@ SUDO_FILE="/etc/sudoers.d/ec2-user"
 chmod 0400 "${SUDO_FILE}"
 
 
-# Set up SSH
-status "Installing a common internal SSH key"
+# Set up SSH. We do this early so that we can still login if something goes wrong later on.
+echo
+echo "*** Installing a common internal SSH key ***"
+echo
 
 # All machines have the same public/private key
 SSH_DIR="${OS_HOME_DIR}/.ssh"
@@ -197,19 +154,15 @@ chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 cat /etc/ssh/ssh_config.d/06-hanweie.conf >> /etc/ssh/sshd_config
 mv /etc/ssh/ssh_config.d/06-hanweie.conf /etc/ssh/ssh_config.d/06-hanweie.conf.orig
 
-status "Setting up the rc.local file"
-if [ ! -f "${RC_LOCAL}" ]; then
-  {
-    echo "#!/bin/sh -e"
-    echo
-    echo
-  } > "${RC_LOCAL}"
-fi
-chmod +x "${RC_LOCAL}"
 
 # Partition, format and mount the instance stores if they are not already mounted.
-status "Installing the SSD mount script"
-cat <<'EOF' >>"${RC_LOCAL}"
+# This needs to be done whenever the instance is stopped, but not when it is rebooted.
+
+echo
+echo "*** Installing the SSD mount script ***"
+echo
+cat <<'EOF' >>"/etc/rc.d/rc.local"
+
 
 # Setup the SSDs on each boot
 
@@ -217,13 +170,19 @@ LOCAL_USER="ec2-user"
 
 if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
+# Get the name of any device (sans "/dev/") that is mounted under /
+# including the root filesystem, as we don't want to format this device.
+# e.g. /dev/nvme0n1 --> nvme0n1
 ignore_devices=($(df -h | grep -E "^/dev/" | awk '{if($6 ~ "^/") print $1;}' | cut -c 6-))
 
+# Get the list of block devices in the system.
 ssds=($(lsblk -d -n -o NAME))
 counter=0
 
 for device in "${ssds[@]}"
 do
+  # Ignore devices that are already mounted and devices that are a subset of
+  # the device the root filesystem is mounted on.
   ignore_device=0
   for ignore_device_name in ${ignore_devices[@]}; do
     if [[ "${ignore_device_name}" =~ ^"${device}".* ]]; then
@@ -234,8 +193,11 @@ do
 
   [ "${ignore_device}" -eq 1 ] && echo "Ignoring device ${device}" && continue
 
+  # ignore non-nvme devices
   if ! [[ "${device}" =~ ^nvme.* ]]
   then
+    # ignore this device
+    echo "Ignoring device ${device}"
     continue
   fi
 
@@ -244,17 +206,18 @@ do
   echo "Partitioning device ${device}"
 
   (
-    echo "o"
-    echo "n"
-    echo "p"
-    echo "1"
-    echo ""
-    echo ""
-    echo "w"
+    echo "o"  # Create DOS partition table
+    echo "n"  # Create a new partition
+    echo "p"  # New partition is a primary partition
+    echo "1"  # Partition #1
+    echo ""   # Start the new partition at the first sector
+    echo ""   # Make the new partition as big as possible
+    echo "w"  # write the changes and exit
   ) | fdisk "${device}" || exit
 
   sleep 2
 
+  # Get the partition name
   partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
 
   echo "Formatting partition ${partition}"
@@ -276,16 +239,19 @@ fi
 EOF
 
 # Run the above script
-status "Running the SSD mount script"
-bash "${RC_LOCAL}"
+echo
+echo "*** Running the SSD mount script ***"
+echo
+chmod +x /etc/rc.d/rc.local
+bash /etc/rc.d/rc.local
 
 
-# Give more memory to /dev/shm
+# Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi
-status "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
+echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
 {
   echo ""
   echo "# Set /dev/shm to 95% of system memory"
@@ -295,16 +261,27 @@ mount -o remount /dev/shm
 
 
 # DNS (Route 53) resolution
-status "Setting DNS domain name search qualifier"
+# This will force unqualified names to tried with the .local domain name and
+# then be looked up in DNS.
+echo
+echo "*** Setting DNS domain name search qualifier ***"
+echo
 echo "search local" >>/etc/resolv.conf
 
 
 # /etc/hosts shortcuts
-status "Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts"
+echo
+echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+echo
 echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
+# Otherwise it costs us money when we transfer data via the elastic IP associated with
+# this URL.
 
-# Setting IGMP to v2
-status "Setting IGMP to v2"
+# Setting IGMP to v2 instead of v3 (for multicast) for all network devices
+echo
+echo "*** Setting IGMP to v2 ***"
+echo
+
 {
   echo
   echo "# Enable Multicast on AWS"
@@ -321,35 +298,43 @@ done
 echo "" >>/etc/sysctl.conf
 
 
-# /opt permissions
-status "Setting /opt permissions"
+# Change permissions to allow for writing to /opt
+echo
+echo "*** Setting /opt permissions ***"
+echo
 chown root:wheel /opt
 chmod g+w /opt
 
 
 # Apply any package updates
-status "Installing system updates"
+echo
+echo "*** Installing updates and necessary packages ***"
+echo
 yum update -y
 
 # epel not supported on OpenEuler
 # NOTE: removed git, git-lfs
 
 # Need to have
-status "Installing gcc et al"
-yum install -y gcc-c++ libatomic nmap-ncat iproute bc ncurses tar vim unzip
+yum install -y gcc-c++ libatomic nmap-ncat iproute bc ncurses tar
+
+# Good to have
+yum install -y vim unzip
 
 # Nice to have
 # NOTE: no bmon, nload
-status "Installing useful utilities"
 yum install -y java-11-openjdk-headless iperf3 iotop telnet nethogs iftop jq
 
-status "Installing GNU parallel"
+# Manual installation of GNU parallel
 wget https://linuxsoft.cern.ch/cern/centos/7/cern/x86_64/Packages/parallel-20150522-1.el7.cern.noarch.rpm
 yum install parallel-20150522-1.el7.cern.noarch.rpm
 
 
 # Vim annoyances
-status "Setting vim preferences"
+echo
+echo "*** Setting vim preferences ***"
+echo
+
 vimrc="${OS_HOME_DIR}/.vimrc"
 cat <<EOF >"${vimrc}"
 set ts=2
@@ -369,10 +354,14 @@ chown "${OS_USER}:${OS_USER}" "${vimrc}"
 
 
 # Bash prompt
-status "Setting bash preferences"
+echo
+echo "*** Setting bash preferences ***"
+echo
+
 bash_profile="${OS_HOME_DIR}/.bash_profile"
 {
   echo ""
+  echo '#export PS1="[\u@\h \W]\$ '
   echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
   echo ""
 } >>"${bash_profile}"
@@ -380,24 +369,12 @@ bash_profile="${OS_HOME_DIR}/.bash_profile"
 chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 
 
-# Install a script that will indicate that the cloud-init is complete after rebooting
-cat <<EOF >>"${RC_LOCAL}"
+# Indicate cloud-init has completed by dropping a file in /tmp
+echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete
 
-echo "Completed the cloud-init setup script!" > "${CLOUD_INIT_STATUS}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE_DEPRECATED}"
-echo "\$(date) Rebooted" >> "${CLOUD_INIT_OUTPUT}"
-EOF
-
-{
-  echo
-  echo "Completed the cloud-init setup script!"
-  echo "System needs to be rebooted to apply changes."
-  echo
-  echo
-} >> "${CLOUD_INIT_OUTPUT}"
-
-# Reboot
-status "*** Rebooting now ***"
-reboot
+echo
+echo ""
+echo "Completed the cloud-init setup script!"
+echo ""
+echo
 } 2>&1 | "${TEE_CMD[@]}"

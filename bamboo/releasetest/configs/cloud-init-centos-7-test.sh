@@ -4,34 +4,10 @@
 # This is a cloud-init script used for configuring a CentOS 7 machine for running (not building) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
+# We wrap everything in a subshell to redirect all output through the tee command
+# and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
-CLOUD_INIT_STATUS="/cloud-init-status.log"
-CLOUD_INIT_COMPLETE="/cloud-init-complete.log"
-CLOUD_INIT_COMPLETE_DEPRECATED="/tmp/cloud-init-complete.log"
-
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
-RC_LOCAL="/etc/rc.d/rc.local"
-
-# ----------------------------------------------------------------------
-# Functions
-# ----------------------------------------------------------------------
-
-# Writes a status message to the console as well as to a defined status file
-# so that the bamboo log can inspect this file periodically as the machine boots.
-function status() {
-echo "$@" > "${CLOUD_INIT_STATUS}"
-echo -e "\n$*\n"
-}
-
-# Writes an error message to stderr as well as to a defined status file
-# so that the bamboo log can inspect this file periodically as the machine boots.
-function error() {
-echo "$@" > "${CLOUD_INIT_STATUS}"
-local hdr="***Cloud init error****"
-echo >&2 -e "${hdr}\n$*\n${hdr}"
-}
-
-##
 
 {
   if which tee &>/dev/null; then
@@ -44,7 +20,10 @@ echo >&2 -e "${hdr}\n$*\n${hdr}"
 chmod a+r "${CLOUD_INIT_OUTPUT}"
 
 {
-status "Starting the cloud-init setup script for CentOS 7."
+echo
+echo ""
+echo "Starting the cloud-init setup script for CentOS 7."
+echo ""
 
 readonly CENTOS7="centos7"
 readonly CENTOS7_USER="ec2-user"
@@ -66,7 +45,10 @@ if [ -f /etc/system-release ]; then
 fi
 
 if [ -z "${OS_DIST}" ]; then
-  error "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY. OS_VER = ${OS_VER}"
+  echo >&2 "****** Cloud init error *******"
+  echo >&2 "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
+  echo >&2 "OS_VER = ${OS_VER}"
+  echo >&2 "****** Cloud init error *******"
   exit 1
 fi
 
@@ -76,7 +58,10 @@ echo "OS_HOME_DIR = ${OS_HOME_DIR}"
 
 
 # Create an ec2-user on CentOS 7
-status "Creating an new user: ec2-user"
+echo
+echo "*** Creating an new user: ec2-user ***"
+echo
+
 useradd "${OS_USER}"
 usermod -a -G wheel "${OS_USER}"
 
@@ -92,10 +77,13 @@ chmod 0400 "${SUDO_FILE}"
 
 
 # Set up SSH. We do this early so that we can still login if something goes wrong later on.
-status "Installing a common internal SSH key"
+echo
+echo "*** Installing a common internal SSH key ***"
+echo
 
 # All machines have the same public/private key
 SSH_DIR="${OS_HOME_DIR}/.ssh"
+
 mkdir -p "${SSH_DIR}" || exit
 
 cat <<EOF >>"${SSH_DIR}/authorized_keys"
@@ -155,19 +143,16 @@ chmod 644 "${SSH_DIR}/known_hosts"
 
 chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 
-status "Setting up the rc.local file"
-if [ ! -f "${RC_LOCAL}" ]; then
-  {
-    echo "#!/bin/sh -e"
-    echo
-    echo
-  } > "${RC_LOCAL}"
-fi
-chmod +x "${RC_LOCAL}"
+
 
 # Partition, format and mount the instance stores if they are not already mounted.
-status "Installing the SSD mount script"
-cat <<'EOF' >>"${RC_LOCAL}"
+# This needs to be done whenever the instance is stopped, but not when it is rebooted.
+
+echo
+echo "*** Installing the SSD mount script ***"
+echo
+cat <<'EOF' >>"/etc/rc.d/rc.local"
+
 
 # Setup the SSDs on each boot
 
@@ -244,8 +229,11 @@ fi
 EOF
 
 # Run the above script
-status "Running the SSD mount script"
-bash "${RC_LOCAL}"
+echo
+echo "*** Running the SSD mount script ***"
+echo
+chmod +x /etc/rc.d/rc.local
+bash /etc/rc.d/rc.local
 
 
 # Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
@@ -253,7 +241,7 @@ SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi
-status "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
+echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
 {
   echo ""
   echo "# Set /dev/shm to 95% of system memory"
@@ -263,16 +251,26 @@ mount -o remount /dev/shm
 
 
 # DNS (Route 53) resolution
-status "Setting DNS domain name search qualifier"
+# This will force unqualified names to tried with the .local domain name and
+# then be looked up in DNS.
+echo
+echo "*** Setting DNS domain name search qualifier ***"
+echo
 echo "search local" >>/etc/resolv.conf
 
 
 # /etc/hosts shortcuts
-status "Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts"
+echo
+echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+echo
 echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
+# Otherwise it costs us money when we transfer data via the elastic IP associated with
+# this URL.
 
 # Setting IGMP to v2 instead of v3 (for multicast) for all network devices
-status "Setting IGMP to v2"
+echo
+echo "*** Setting IGMP to v2 ***"
+echo
 
 {
   echo
@@ -291,33 +289,39 @@ echo "" >>/etc/sysctl.conf
 
 
 # Change permissions to allow for writing to /opt
-status "Setting /opt permissions"
+echo
+echo "*** Setting /opt permissions ***"
+echo
 chown root:wheel /opt
 chmod g+w /opt
 
 
 # Apply any package updates
-status "Doing a yum update"
+echo
+echo "*** Installing updates and necessary packages ***"
+echo
 yum update -y
 
-status "Installing epel"
-yum install -y epel-release
-
-status "Installing endpoint repo"
-echo "exclude=mirror.es.its.nyu.edu" >> /etc/yum/pluginconf.d/fastestmirror.conf  # mirror doesn't respond
-yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
+if [ "${OS_DIST}" = "${CENTOS7}" ]; then
+  yum install -y epel-release
+  echo "exclude=mirror.es.its.nyu.edu" >> /etc/yum/pluginconf.d/fastestmirror.conf  # mirror doesn't respond
+  yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
+fi
 
 # Need to have
-status "Installing gcc, git, et al"
-yum install -y gcc-c++ git git-lfs libatomic nmap-ncat iproute bc ncurses vim unzip
+yum install -y gcc-c++ git git-lfs libatomic nmap-ncat iproute bc ncurses
+
+# Good to have
+yum install -y vim unzip
 
 # Nice to have
-status "Installing other useful utilities"
 yum install -y java-11-openjdk-headless iperf3 iotop telnet nload nethogs bmon iftop jq
 
 
 # Vim annoyances
-status "Setting vim preferences"
+echo
+echo "*** Setting vim preferences ***"
+echo
 
 vimrc="${OS_HOME_DIR}/.vimrc"
 cat <<EOF >"${vimrc}"
@@ -338,11 +342,14 @@ chown "${OS_USER}:${OS_USER}" "${vimrc}"
 
 
 # Bash prompt
-status "Setting bash preferences"
+echo
+echo "*** Setting bash preferences ***"
+echo
 
 bash_profile="${OS_HOME_DIR}/.bash_profile"
 {
   echo ""
+  echo '#export PS1="[\u@\h \W]\$ '
   echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
   echo ""
 } >>"${bash_profile}"
@@ -351,27 +358,15 @@ chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 
 
 # Git setup
-status "Git LFS initialisation"
 sudo -H -u "${OS_USER}" git lfs install
 
 
-# Install a script that will indicate that the cloud-init is complete after rebooting
-cat <<EOF >>"${RC_LOCAL}"
+# Indicate cloud-init has completed by dropping a file in /tmp
+echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete
 
-echo "Completed the cloud-init setup script!" > "${CLOUD_INIT_STATUS}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE_DEPRECATED}"
-echo "\$(date) Rebooted" >> "${CLOUD_INIT_OUTPUT}"
-EOF
-
-{
-  echo "Completed the cloud-init setup script!"
-  echo "System needs to be rebooted to apply changes."
-  echo
-} >> "${CLOUD_INIT_OUTPUT}"
-
-# ----------------------------------------------------------------------------------------
-# Reboot to ensure all these changes take effect
-status "Rebooting now"
-reboot
+echo
+echo ""
+echo "Completed the cloud-init setup script!"
+echo ""
+echo
 } 2>&1 | "${TEE_CMD[@]}"

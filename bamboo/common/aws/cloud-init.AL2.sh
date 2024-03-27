@@ -1,90 +1,14 @@
 #!/bin/bash
 # shellcheck disable=SC2164
 
-# This is a cloud-init script that can be used when starting a new EC2 instance with AmazonLinux2
-
-CLOUD_INIT_OUTPUT="/cloud-init-output.log"
-CLOUD_INIT_STATUS="/cloud-init-status.log"
-CLOUD_INIT_COMPLETE="/cloud-init-complete.log"
-CLOUD_INIT_COMPLETE_DEPRECATED="/tmp/cloud-init-complete.log"
-
-TEXLIVE_OUTPUT="/cloud-init-texlive.log"
-TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
-MAX_NETWORK_RETRIES=10
-MAX_YUM_RETRIES=3
-RC_LOCAL="/etc/rc.d/rc.local"
-
-
-# ----------------------------------------------------------------------
-# Functions
-# ----------------------------------------------------------------------
-
-# Writes a status message to the console as well as to a defined status file
-# so that the bamboo log can inspect this file periodically as the machine boots.
-function status() {
-  # Write it to the status file
-  echo "$@" > "${CLOUD_INIT_STATUS}"
-
-  # Also print it to the std output
-  echo
-  echo "$@"
-  echo
-}
-
-# Writes an error message to stderr as well as to a defined status file
-# so that the bamboo log can inspect this file periodically as the machine boots.
-function error() {
-    # Write it to the status file
-  echo "$@" > "${CLOUD_INIT_STATUS}"
-
-  # Also print it to the std error
-  echo >&2 "****** Cloud init error *******"
-  echo >&2 "$@"
-  echo >&2 "****** Cloud init error *******"
-}
-
-
-# A function that retries a command until it returns a successful exit code.
-# Each subsequent attempt is separated by a 1 second delay.
-# Params:
-#  $1 : maximum number of retries
-#  $@ : The command to execute, as an array
-#
-function retryCommand() {
-  local maxRetries="$1"
-  shift
-  local cmd=("$@")
-  local retries=1
-
-  # check that maxRetries has been provided
-  local re='^[0-9]+$'
-  if ! [[ "${maxRetries}" =~ $re ]] ; then
-     error "ERROR: First parameter to function retryCommand() is not a number"
-     exit 1
-  fi
-
-  while [ "${retries}" -le "${maxRetries}" ]; do
-    if [ "${retries}" -gt 1 ]; then
-      status "...retry attempt #${retries} of command: ${cmd[*]}"
-    fi
-
-    ((retries++))
-
-    if "${cmd[@]}"; then
-      true
-      return
-    fi
-
-    sleep 1
-  done
-
-  false
-  return
-}
-# ----------------------------------------------------------------------
+# This is a generic cloud-init script that can be used when starting a new EC2 instance.
 
 # We wrap everything in a subshell to redirect all output through the tee command
 # and to a file of our choosing.
+CLOUD_INIT_OUTPUT="/cloud-init-output.log"
+TEXLIVE_OUTPUT="/cloud-init-texlive.log"
+TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
+
 {
   if which tee &>/dev/null; then
     echo "Cloud init output being written out to file: ${CLOUD_INIT_OUTPUT}"
@@ -99,23 +23,21 @@ touch "${TEXLIVE_OUTPUT}"
 chmod a+r "${TEXLIVE_OUTPUT}"
 
 {
-  status "Starting the cloud-init setup script."
+  echo
+  echo
+  echo
+  echo "*************************************"
+  echo "Starting the cloud-init setup script."
+  echo "*************************************"
 
-  CENTOS7="centos7"
-  AL2="amazon2"
+  readonly CENTOS7="centos7"
+  readonly AL2="amazon2"
 
-  AL2_USER="ec2-user"
-  CENTOS7_USER="centos"
+  readonly AL2_USER="ec2-user"
+  readonly CENTOS7_USER="centos"
 
-  AL2_HOME_DIR="/home/${AL2_USER}"
-  CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
-
-  readonly CENTOS7
-  readonly AL2
-  readonly AL2_USER
-  readonly CENTOS7_USER
-  readonly AL2_HOME_DIR
-  readonly CENTOS7_HOME_DIR
+  readonly AL2_HOME_DIR="/home/${AL2_USER}"
+  readonly CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
 
   OS_DIST="unknown"
   OS_USER="unknown"
@@ -144,13 +66,16 @@ chmod a+r "${TEXLIVE_OUTPUT}"
     fi
 
   else
-    error "ERROR: COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
-    exit 1
+    echo >&2 "****** Cloud init error *******"
+    echo >&2 "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
+    echo >&2 "****** Cloud init error *******"
   fi
 
   # ----------------------------------------------------------------------------------------
   # Set up SSH. We do this early so that we can still login if something goes wrong later on.
-  status "*** Installing a common internal SSH key ***"
+  echo
+  echo "*** Installing a common internal SSH key ***"
+  echo
 
   # All machines have the same public/private key
   SSH_DIR="${OS_HOME_DIR}/.ssh"
@@ -222,7 +147,9 @@ EOF
 
   if [ "${OS_DIST}" = "${CENTOS7}" ]; then
 
-    status "*** Installing a root SSH key for Memsql ***"
+    echo
+    echo "*** Installing a root SSH key for Memsql ***"
+    echo
 
     # All machines have the same public/private key
     SSH_DIR="/root/.ssh"
@@ -289,23 +216,14 @@ EOF
   fi
 
   # ----------------------------------------------------------------------------------------
-  status "*** Setting up the rc.local file ***"
-  if [ ! -f "${RC_LOCAL}" ]; then
-    {
-      echo "#!/bin/sh -e"
-      echo
-      echo
-    } > "${RC_LOCAL}"
-  fi
-  chmod +x "${RC_LOCAL}"
-
-  # ----------------------------------------------------------------------------------------
 
   # Partition, format and mount the instance stores if they are not already mounted.
   # This needs to be done whenever the instance is stopped, but not when it is rebooted.
 
-  status "*** Installing the SSD mount script ***"
-  cat <<'EOF' >>"${RC_LOCAL}"
+  echo
+  echo "*** Installing the SSD mount script ***"
+  echo
+  cat <<'EOF' >>"/etc/rc.d/rc.local"
 
 # ----------------------------------------------------------------------------------------
 # Setup the SSDs on each boot
@@ -386,18 +304,19 @@ fi
 EOF
 
   # Run the above script
-  status "*** Running the SSD mount script ***"
-  bash "${RC_LOCAL}"
+  echo
+  echo "*** Running the SSD mount script ***"
+  echo
+  chmod +x /etc/rc.d/rc.local
+  bash /etc/rc.d/rc.local
 
   # ----------------------------------------------------------------------------------------
   # Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
-
-  SHM_SIZE=$(grep "MemTotal:" < /proc/meminfo | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
+  SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
   if [ "${SHM_SIZE}" -eq 0 ]; then
     SHM_SIZE=1
   fi
-
-  status "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
+  echo "Updating size of /dev/shm to 95% of system memory"
   {
     echo ""
     echo "# Set /dev/shm to 95% of system memory"
@@ -409,19 +328,25 @@ EOF
   # DNS (Route 53) resolution
   # This will force unqualified names to tried with the .local domain name and
   # then be looked up in DNS.
-  status "*** Setting DNS domain name search qualifier ***"
+  echo
+  echo "*** Setting DNS domain name search qualifier ***"
+  echo
   echo "search local" >>/etc/resolv.conf
 
   # ----------------------------------------------------------------------------------------
   # /etc/hosts shortcuts
-  status "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+  echo
+  echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+  echo
   echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
   # Otherwise it costs us money when we transfer data via the elastic IP associated with
   # this URL.
 
   # ----------------------------------------------------------------------------------------
   # Setting IGMP to v2 instead of v3 (for multicast)
-  status "*** Setting IGMP to v2 ***"
+  echo
+  echo "*** Setting IGMP to v2 ***"
+  echo
   sysctl net.ipv4.conf.eth0.force_igmp_version=2
   {
     echo
@@ -432,7 +357,9 @@ EOF
 
   # ----------------------------------------------------------------------------------------
   # Change permissions to allow for writing to /opt
-  status "*** Setting /opt permissions ***"
+  echo
+  echo "*** Setting /opt permissions ***"
+  echo
   chown root:wheel /opt
   chmod g+w /opt
 
@@ -442,122 +369,101 @@ EOF
   # Note that we retry any network operations as these can fail or timeout for
   # various reasons. A timeout means that we ultimately cannot connect to this
   # machine.
-  status "*** Installing AWS CLI ***"
-
+  echo
+  echo "*** Installing AWS CLI ***"
+  echo
   if ! which aws; then
     # AWS CLI needs curl and unzip
-    declare -a cmd
-    cmd=("yum" "install" "-y" "curl" "wget" "unzip")
-    if ! retryCommand "${MAX_YUM_RETRIES}" "${cmd[@]}"; then
-      error "ERROR: Could not download and install curl, wget and unzip - the yum repository may be "\
-            "unavailable or a network error could be preventing access."
-      exit 1
-    fi
+    while ! yum install -y curl wget unzip; do
+      sleep 1
+    done
 
-    cmd=("curl" "-L" "--fail" "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" "-o" "awscliv2.zip")
-    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
-      unzip awscliv2.zip
-      ./aws/install
-    else
-      error "ERROR: Could not download AWS CLIv2 - the version might be old and may need to be updated "\
-            "or a network error could be preventing access."
-      exit 1
-    fi
+    while ! curl -L "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
+      sleep 1
+    done
+
+    unzip awscliv2.zip
+    ./aws/install
   fi
 
   # ----------------------------------------------------------------------------------------
   # Install Tex Live in parallel in the background to /usr/local/texlive.
   # This is for generating PDF documentation.
-  status "*** Installing TexLive ***"
   (
-
+    echo
+    echo "*** Installing TexLive ***"
+    echo
     cd /usr/local
     aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
     chown -R root:root /usr/local/texlive
     chmod -R g-w /usr/local/texlive
 
-    status "Setting up TexLive environment variables"
+    echo
+    echo "Setting up TexLive environment variables"
     {
       echo
       echo 'TEXLIVEDIR="/usr/local/texlive"'
-      # shellcheck disable=SC2016
       echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux:${TEXLIVEDIR}/bin/aarch64-linux"'
-      # shellcheck disable=SC2016
       echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
-      # shellcheck disable=SC2016
       echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
       echo
       echo 'export PATH MANPATH INFOPATH'
       echo
     } >>/etc/profile.d/sh.local
 
-    status "TexLive installation complete"
+    echo
+    echo "TexLive installation complete"
   ) > "${TEXLIVE_OUTPUT}" &
 
   # ----------------------------------------------------------------------------------------
   # Apply any package updates
-  status "*** Installing epel ***"
+  echo
+  echo "*** Installing updates and necessary packages ***"
+  echo
   amazon-linux-extras install -y epel
-
-  status "*** Doing a yum update ***"
   yum update -y
-
-  status "*** Installing gcc, git, et al ***"
   yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses openssl-devel parallel python3 perl-Digest-MD5 perl-Env zip
-
-  status "*** Installing other useful utilities ***"
   yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
 
   if [ "${OS_DIST}" = "${CENTOS7}" ]; then
-    status "*** Installing epel-release ***"
     yum install -y epel-release
-
-    status "*** Installing java et al ***"
     yum install -y java vim mysql jq
   fi
 
   # ShellCheck
-  status "*** Shellcheck ***"
+  echo
+  echo "*** Shellcheck ***"
   (
     cd /usr/local/bin
-    declare -a cmd
-    cmd=("curl" "-L" "--fail" "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" "-o" "shellcheck-stable.linux.x86_64.tar.xz")
-
-    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
-      tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
-      chown root:root shellcheck
-      rm -f shellcheck-stable.linux.x86_64.tar.xz
-    else
-      error "ERROR: Could not download ShellCheck - the version might be old and may need to be updated "\
-            "or a network error could be preventing access."
-      exit 1
-    fi
+    while ! curl -L "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" -o "shellcheck-stable.linux.x86_64.tar.xz"; do
+      sleep 1
+    done
+    tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
+    chown root:root shellcheck
+    rm -f shellcheck-stable.linux.x86_64.tar.xz
   )
 
   # ----------------------------------------------------------------------------------------
   # Install JMeter to /opt/jmeter
-  status "*** Installing jmeter ***"
-  (
-    cd /opt
-    JMETER_VER="5.6"
-    JMETER_NAME="apache-jmeter-${JMETER_VER}"
-    JMETER_FILE="${JMETER_NAME}.tgz"
+  echo
+  echo "*** Installing jmeter ***"
+  echo
+  pushd "$(pwd)"
+  cd /opt
+  JMETER_VER="5.6"
+  JMETER_NAME="apache-jmeter-${JMETER_VER}"
+  JMETER_FILE="${JMETER_NAME}.tgz"
+  if ! curl --fail "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" -o "${JMETER_FILE}"; then
+    echo "ERROR: Could not download JMeter - the version might be old and may need to be updated."
+  else
+    tar xvzf "${JMETER_FILE}"
+    rm -f "$JMETER_FILE"
+    ln -s "${JMETER_NAME}" jmeter
+    chown -R ec2-user:ec2-user "${JMETER_NAME}"
+    chown ec2-user:ec2-user jmeter
+  fi
 
-    declare -a cmd
-    cmd=("curl" "-L" "--fail" "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" "-o" "${JMETER_FILE}")
-
-    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
-      tar xvzf "${JMETER_FILE}"
-      rm -f "$JMETER_FILE"
-      ln -s "${JMETER_NAME}" jmeter
-      chown -R ec2-user:ec2-user "${JMETER_NAME}"
-      chown ec2-user:ec2-user jmeter
-    else
-      error "ERROR: Could not download JMeter - the version might be old and may need to be updated "\
-            "or a network error could be preventing access."
-      exit 1
-    fi
-  )
+  popd
 
   # Add this JMeter installation to the PATH for the ec2-user
   bash_profile="${OS_HOME_DIR}/.bash_profile"
@@ -571,7 +477,9 @@ EOF
 
   # ----------------------------------------------------------------------------------------
   # Installing Sphinx for documentation generation
-  status "*** Installing Sphinx ***"
+  echo
+  echo "*** Installing Sphinx ***"
+  echo
   # Sphinx dependency, urllib3, has issues on AmazonLinux2 when it's version is >= 2.0.
   # So install an older version.
   sudo -H -u "${OS_USER}" python3 -m pip install --user -U 'urllib3<2.0'
@@ -579,7 +487,9 @@ EOF
 
   # ----------------------------------------------------------------------------------------
   # Setting JAVA_HOME
-  status "*** Setting JAVA_HOME ***"
+  echo
+  echo "*** Setting JAVA_HOME ***"
+  echo
   cat <<EOF >/etc/profile.d/java_home.sh
 #!/bin/bash
 export JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/bin/java::")"
@@ -587,15 +497,17 @@ EOF
 
   # ----------------------------------------------------------------------------------------
   # Spot instance interruption notification
-  status "*** Spawning spot instance interruption notification ***"
+  echo
+  echo "*** Spawning spot instance interruption notification ***"
+  echo
 
   # References:
   #  https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html#spot-instance-termination-notices
   #  https://aws.amazon.com/blogs/compute/best-practices-for-handling-ec2-spot-instance-interruptions/
   #  https://stackoverflow.com/questions/25282661/how-do-i-broadcast-messages-to-all-bash-terminal-in-python-using-wall-command-wi
 
-  SPOT_NOTIFIER="/spotInterruptionNotifier.sh"
-  SPOT_NOTIFIER_OUTPUT="/spotInterruptionNotifier.nohup"
+  SPOT_NOTIFIER="/tmp/spotInterruptionNotifier.sh"
+  SPOT_NOTIFIER_OUTPUT="/tmp/spotInterruptionNotifier.nohup"
 
   cat <<-'EOF' >>"${SPOT_NOTIFIER}"
 #!/bin/bash
@@ -657,15 +569,13 @@ EOF
   touch "${SPOT_NOTIFIER_OUTPUT}"
   chown "${OS_USER}:${OS_USER}" "${SPOT_NOTIFIER_OUTPUT}"
 
-  # Add this spot notifier to run on every reboot
-  echo "sudo -H -u ${OS_USER} nohup ${SPOT_NOTIFIER} 2>&1 | sudo -H -u ${OS_USER} tee ${SPOT_NOTIFIER_OUTPUT} > /dev/null &" >> "${RC_LOCAL}"
-
-  # Now run it
-  sudo -H -u ${OS_USER} nohup "${SPOT_NOTIFIER}" 2>&1 | sudo -H -u ${OS_USER} tee "${SPOT_NOTIFIER_OUTPUT}" > /dev/null &
+  sudo -H -u ${OS_USER} nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
 
   # ----------------------------------------------------------------------------------------
   # Vim annoyances
-  status "*** Setting vim preferences ***"
+  echo
+  echo "*** Setting vim preferences ***"
+  echo
 
   vimrc="${OS_HOME_DIR}/.vimrc"
   cat <<EOF >"${vimrc}"
@@ -686,51 +596,42 @@ EOF
 
   # ----------------------------------------------------------------------------------------
   # Bash prompt
-  status "*** Setting bash preferences ***"
+  echo
+  echo "*** Setting bash preferences ***"
+  echo
 
   bash_profile="${OS_HOME_DIR}/.bash_profile"
   {
     echo "";
     echo '#export PS1="[\u@\h \W]\$ ';
-    # shellcheck disable=SC2028
     echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "';
     echo "";
   } >> "${bash_profile}"
 
   # ----------------------------------------------------------------------------------------
   # Git setup
-  status "*** Git LFS initialisation ***"
+  echo
+  echo "*** Git LFS initialisation ***"
+  echo
   sudo -H -u "${OS_USER}" git lfs install
 
   # ----------------------------------------------------------------------------------------
   # Remove annoying GNU Parallel citation message
-  status "*** GNU Parallel citation ***"
+  echo
+  echo "*** GNU Parallel citation ***"
+  echo
   if which parallel &>/dev/null; then
     echo -e "will cite\n" | parallel --citation
   fi
 
   # ----------------------------------------------------------------------------------------
-  # Install a script that will indicate that the cloud-init is complete after rebooting
-  cat <<EOF >>"${RC_LOCAL}"
+  # Indicate cloud-init has completed by dropping a file in /tmp
+  echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete
 
-echo "Completed the cloud-init setup script!" > "${CLOUD_INIT_STATUS}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE_DEPRECATED}"
-echo "\$(date) Rebooted" >> "${CLOUD_INIT_OUTPUT}"
-EOF
-
-  {
-    echo "*********************************************"
-    echo "Completed the cloud-init setup script!"
-    echo "System needs to be rebooted to apply changes."
-    echo "*********************************************"
-    echo
-  } >> "${CLOUD_INIT_OUTPUT}"
-
-  # ----------------------------------------------------------------------------------------
-  # Reboot to ensure all these changes take effect
-  status "*** Rebooting now ***"
-  reboot
-
-
+  echo "**************************************"
+  echo "Completed the cloud-init setup script!"
+  echo "**************************************"
+  echo
+  echo
+  echo
 } 2>&1 | "${TEE_CMD[@]}"

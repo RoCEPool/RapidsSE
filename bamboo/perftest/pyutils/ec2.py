@@ -79,10 +79,9 @@ C_KEYPAIR_NAME = "aws_rapidsse"
 #
 
 # ---------- Other Constants -------------
-C_CLOUD_INIT_COMPLETE = "/cloud-init-complete.log"
-C_CLOUD_INIT_STATUS = "/cloud-init-status.log"
+C_CLOUD_INIT_COMPLETE = "/tmp/cloud-init-complete"
 C_SSH_CONNECT_TIMEOUT = 5  # seconds
-C_MSG_PERIOD = 10  # Print updates every 10 seconds
+C_MSG_PERIOD = 20  # Print updates every 20 seconds
 C_RETRY_INTERVAL = 10  # seconds
 C_MAX_RETRIES = 20     # before giving up
 
@@ -93,8 +92,7 @@ LOG = logging.getLogger(__name__)
 
 def describe_instances():
     session, client = __get_session_client()
-    client.describe_instances()
-    # response = client.describe_instances()
+    response = client.describe_instances()
     # pprint.pprint(response)
 
 
@@ -168,7 +166,7 @@ def start_instances(instance_type: str,
         "SubnetId": C_SUBNET_F,
         "UserData": __get_boot_script(cloudinit_path, ctx),
         "DisableApiTermination": False,
-        "IamInstanceProfile": {},
+        "IamInstanceProfile": { },
         "TagSpecifications": [{
             "ResourceType": "instance",
             "Tags": [
@@ -511,7 +509,6 @@ def __wait_for_instances_to_be_ready(instance_ids: [str], ip_addresses: [str], t
              current_time - op_start)
 
     # Now we need to wait for the machines to have completed the cloud-init script.
-    # This involves a reboot when the machine will be uncontactable for a short while.
     time_left = end_time - current_time
     op_start = current_time
     __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left, timeout_sec, ctx,
@@ -615,10 +612,14 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [str], ip_addresses: [str],
     current_time = time.time()
     end_time = current_time + time_left
 
-    ssh_opts: [] = ["-o", f"ConnectTimeout={C_SSH_CONNECT_TIMEOUT}"]
-    cmd: str = f"cat {C_CLOUD_INIT_STATUS}"
-
     for ip_addr in ip_addresses:
+        cmd = ["ssh", "-q",
+               "-o", "BatchMode=yes",
+               "-o", "StrictHostKeyChecking=no",
+               "-o", f"ConnectTimeout={C_SSH_CONNECT_TIMEOUT}",
+               ip_addr,
+               "echo \"Connected!\""]
+
         last_error = None
         attempts = 0
 
@@ -630,15 +631,18 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [str], ip_addresses: [str],
                 LOG.debug(f"{ctx}Time remaining (accept SSH): %.1f seconds", end_time - current_time)
 
             try:
-                result: subprocess.CompletedProcess = ssh.run_ssh(ip_addr, cmd, ssh_opts=ssh_opts, ctx=ctx)
+                # subprocess.run(cmd,
+                subprocess.run(cmd,
+                               capture_output=True,
+                               check=True,
+                               text=True)
                 LOG.info(f"{ctx}Instance at {ip_addr} is now accepting SSH connections")
-                LOG.info(f"{ctx}Status of instance at {ip_addr}: {result.stdout.strip()}")
                 break
 
-            except errors.SshError as e:
+            except subprocess.CalledProcessError as e:
                 if attempts % C_MSG_PERIOD == 0:
                     LOG.info(f"{ctx}Instance at {ip_addr} not yet accepting SSH connections: "
-                             f"Exit code = {e.exit_code}, stdout = \"{e.stdout}\", stderr = \"{e.stderr}\"")
+                              f"Exit code = {e.returncode}, stdout = \"{e.stdout}\", stderr = \"{e.stderr}\"")
                 last_error = e.stderr
                 time.sleep(1.0)
                 current_time = time.time()
@@ -683,11 +687,14 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
     current_time = time.time()
     end_time = current_time + time_left
 
-    ssh_opts: [] = ["-o", f"ConnectTimeout={C_SSH_CONNECT_TIMEOUT}"]
-    completed_cmd: str = f"cat {C_CLOUD_INIT_COMPLETE}"
-    status_cmd: str = f"cat {C_CLOUD_INIT_STATUS}"
-
     for (instance_id, ip_addr) in zip(instance_ids, ip_addresses):
+
+        cmd = ["ssh", "-q",
+               "-o", "BatchMode=yes",
+               "-o", "StrictHostKeyChecking=no",
+               "-o", f"ConnectTimeout={C_SSH_CONNECT_TIMEOUT}",
+               ip_addr,
+               f"cat {C_CLOUD_INIT_COMPLETE}"]
 
         last_error = None
         attempts = 0
@@ -700,23 +707,18 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
                 LOG.info(f"{ctx}Time remaining (cloud-init): %.1f seconds", end_time - current_time)
 
             try:
-                result: subprocess.CompletedProcess = ssh.run_ssh(ip_addr, completed_cmd, ssh_opts=ssh_opts, ctx=ctx)
+                result = subprocess.run(cmd,
+                                        capture_output=True,
+                                        check=True,
+                                        text=True)
 
                 LOG.info(f"{ctx}Instance {instance_id} at {ip_addr} has completed it's cloud-init script:"
                          f"\n{result.stdout}")
                 break
 
-            except errors.SshError as e:
+            except subprocess.CalledProcessError as e:
                 if attempts % C_MSG_PERIOD == 0:
                     LOG.info(f"{ctx}Instance at {ip_addr} has not yet completed its cloud-init script")
-
-                    # Try to print the status of what the cloud-init is up to
-                    try:
-                        result = ssh.run_ssh(ip_addr, status_cmd, ssh_opts=ssh_opts, ctx=ctx)
-                        LOG.info(f"{ctx}Status of instance at {ip_addr}: {result.stdout.strip()}")
-                    except errors.SshError:
-                        pass  # ignore
-
                 last_error = e.stderr
                 time.sleep(1.0)
                 current_time = time.time()
@@ -777,8 +779,6 @@ def __copy_cloudinit_logs(ip_addresses: [str], cloudinit_src: pathlib.Path, clou
         except errors.SshError as e:
             LOG.error(e)
             # Keep trying other instances in this test
-            pass
-
 
 def record_started_instances(instance_ids: [str], instance_file: pathlib.Path):
     """
@@ -798,7 +798,6 @@ def record_started_instances(instance_ids: [str], instance_file: pathlib.Path):
             f.write('\n')
 
     LOG.info(f"Recorded {len(instance_ids)} instance IDs to file for later cleanup: {str(instance_file)}")
-
 
 def terminate_instances_from_file(instance_file: pathlib.Path):
     """
