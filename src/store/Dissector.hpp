@@ -71,25 +71,25 @@ namespace STORE
     Card_IndexList*  pForm_indexList(Stz* szIndexNm);
     Card_Table*      pForm_table    (Stz* szTableNm);
 
-    Card_Bounds*     pPop_bounds    (Card_TermSeq* p_rpnExpr);
-    Card_Bound*      pPop_bound     (Card_TermSeq* p_rpnExpr);
-    Cast             xPop_cast      (Card_TermSeq* p_rpnExpr);
-    Card_Constraint* pPop_constraint(Card_TermSeq* p_rpnExpr);
-    Card_Emit*       pPop_emit      (Card_TermSeq* p_rpnExpr);
-    Card_Expr*       pPop_expr4     (Card_TermSeq* p_rpnExpr);
-    Card_HshCol*     pPop_hshCol    (Card_TermSeq* p_rpnExpr);
-    Card_HshColList* pPop_hshColList(Card_TermSeq* p_rpnExpr);
-    Card_Key*        pPop_key       (Card_TermSeq* p_rpnExpr);
-    Card_RpnCalc*    pPop_rpnCalc   (Card_TermSeq* p_rpnExpr);
-    Card_On*         pPop_on        (Card_TermSeq* p_rpnExpr);
+    Card_Bounds*     pPop_bounds    (Card_TermSeq* p_termSeq);
+    Card_Bound*      pPop_bound     (Card_TermSeq* p_termSeq);
+    Cast             xPop_cast      (Card_TermSeq* p_termSeq);
+    Card_Constraint* pPop_constraint(Card_TermSeq* p_termSeq);
+    Card_Emit*       pPop_emit      (Card_TermSeq* p_termSeq);
+    Card_Expr*       pPop_expr4     (Card_TermSeq* p_termSeq);
+    Card_HshCol*     pPop_hshCol    (Card_TermSeq* p_termSeq);
+    Card_HshColList* pPop_hshColList(Card_TermSeq* p_termSeq);
+    Card_Key*        pPop_key       (Card_TermSeq* p_termSeq);
+    Card_RpnCalc*    pPop_rpnCalc   (Card_TermSeq* p_termSeq);
+    Card_On*         pPop_on        (Card_TermSeq* p_termSeq);
 
     void             vCheckArgs     (i8 nArgs);
 
-    Card_TermSeq*    pArg_rpnExpr   (i8 i_Arg);
-    i8               iArgValue      (i8 i_Arg);
-    Stz*             szArgValue     (i8 i_Arg);
+    Card_TermSeq*    pArg_termSeq   (i8 i_Arg);
+    i8               iArg_value      (i8 i_Arg);
+    Stz*             szArg_value     (i8 i_Arg);
 
-    Card_TermSeq*    pTo_rpnExpr    (Stz* szRpnExpr);
+    Card_TermSeq*    pTo_termSeq    (Stz* szTermSeq);
 
   private:
     Footer* aFooter(void);
