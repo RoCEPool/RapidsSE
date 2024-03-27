@@ -118,7 +118,6 @@ enum eCK : i8 // card kind
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
   /* */ CK_RPNCALC,
-  /* */ CK_RPNEXPR,
 
   /* */ CK_SECTION,
   /* */ CK_SENDKIND,
@@ -141,6 +140,7 @@ enum eCK : i8 // card kind
   /* */ CK_TABLESIZE,
   /* */ CK_TBLSYN,
   /* */ CK_TERM,
+  /* */ CK_TERMSEQ,
   /* */ CK_TOPOLOGY,
 
   /* */ CK_UNIQUE,

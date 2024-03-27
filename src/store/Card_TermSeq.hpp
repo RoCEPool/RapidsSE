@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_RpnExpr.hpp -- RPN Sequence of Terms                                 */
+/* Card_TermSeq.hpp -- RPN Sequence of Terms                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,14 +7,14 @@
 
 namespace STORE
 {
-  class Card_RpnExpr : public Card_symbol<Card_RpnExpr>
+  class Card_TermSeq : public Card_symbol<Card_TermSeq>
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_RpnExpr(void);
-   ~Card_RpnExpr(void) noexcept(false);
+    Card_TermSeq(void);
+   ~Card_TermSeq(void) noexcept(false);
 
    Card_Term* pHead_term(void);
    Facet      xPop_facet(void);
@@ -23,7 +23,7 @@ namespace STORE
    Card_Term* pPop_term_If(eSF eFacet, Stz* szFacet);
   };
 
-  Card_RpnExpr* _pCard_RpnExpr(void* aAddr);
+  Card_TermSeq* _pCard_TermSeq(void* aAddr);
 }
 
 /*============================================================================*/

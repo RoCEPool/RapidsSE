@@ -116,7 +116,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
-  /* */ "CK_RPNEXPR"_Stz,      // CK_RPNEXPR
 
   /* */ "CK_SECTION"_Stz,      // CK_SECTION
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
@@ -139,6 +138,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_TABLESIZE"_Stz,    // CK_TABLESIZE
   /* */ "CK_TBLSYN"_Stz,       // CK_TBLSYN
   /* */ "CK_TERM"_Stz,         // CK_TERM
+  /* */ "CK_TERMSEQ"_Stz,      // CK_TERMSEQ
   /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
 
   /* */ "CK_UNIQUE"_Stz,       // CK_UNIQUE
@@ -260,7 +260,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "rowCount"_Stz,        // CK_ROWCOUNT
   /* */ "rowSize"_Stz,         // CK_ROWSIZE
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
-  /* */ "rpnTerms"_Stz,        // CK_RPNEXPR
 
   /* */ "section"_Stz,         // CK_SECTION
   /* */ "sendKind"_Stz,        // CK_SENDKIND
@@ -283,6 +282,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "tableSize"_Stz,       // CK_TABLESIZE
   /* */ "tblSyn"_Stz,          // CK_TBLSYN
   /* */ "term"_Stz,            // CK_TERM
+  /* */ "termSeq"_Stz,         // CK_TERMSEQ
   /* */ "topology"_Stz,        // CK_TOPOLOGY
 
   /* */ "unique"_Stz,          // CK_UNIQUE

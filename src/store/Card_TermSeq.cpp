@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_RpnExpr.cpp -- RPN Expression                                         */
+/* Card_TermSeq.cpp -- RPN Expression                                         */
 /*============================================================================*/
 
-#include "Card_RpnExpr.hpp"
+#include "Card_TermSeq.hpp"
 #include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_RpnExpr, CK_RPNEXPR)
-__aNewFunction(Card_RpnExpr, CN_CARD)
-__vDeleteFunction(Card_RpnExpr, CN_CARD)
+__pCastFunction_Card(STORE, Card_TermSeq, CK_TERMSEQ)
+__aNewFunction(Card_TermSeq, CN_CARD)
+__vDeleteFunction(Card_TermSeq, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_RpnExpr::Card_RpnExpr(void)
-: Card_symbol(CK_RPNEXPR, C_UNKNOWN)
+Card_TermSeq::Card_TermSeq(void)
+: Card_symbol(CK_TERMSEQ, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_RpnExpr::Card_RpnExpr(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_RpnExpr::~Card_RpnExpr(void) noexcept(false)
+Card_TermSeq::~Card_TermSeq(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -42,7 +42,7 @@ Card_RpnExpr::~Card_RpnExpr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                           */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnExpr::pHead_term(void)
+Card_Term* Card_TermSeq::pHead_term(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -52,7 +52,7 @@ Card_Term* Card_RpnExpr::pHead_term(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                           */
 /*----------------------------------------------------------------------------*/
-Facet Card_RpnExpr::xPop_facet(void)
+Facet Card_TermSeq::xPop_facet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -68,7 +68,7 @@ Facet Card_RpnExpr::xPop_facet(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                           */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnExpr::pPop_term(void)
+Card_Term* Card_TermSeq::pPop_term(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -78,7 +78,7 @@ Card_Term* Card_RpnExpr::pPop_term(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                           */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnExpr::pPop_term_If(eSF eFacet)
+Card_Term* Card_TermSeq::pPop_term_If(eSF eFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -91,7 +91,7 @@ Card_Term* Card_RpnExpr::pPop_term_If(eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnExpr::pPop_term_If(eSF eFacet, Stz* szFacet)
+Card_Term* Card_TermSeq::pPop_term_If(eSF eFacet, Stz* szFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

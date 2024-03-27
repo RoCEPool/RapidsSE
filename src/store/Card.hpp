@@ -119,7 +119,7 @@ namespace STORE
   class Card_RowCount;
   class Card_RowSize;
   class Card_RpnCalc;
-  class Card_RpnExpr;
+  class Card_TermSeq;
 
   class Card_Scan;
   class Card_Section;

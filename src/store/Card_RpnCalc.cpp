@@ -6,7 +6,7 @@
 #include "Card_Term.hpp"
 #include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
-#include "Card_RpnExpr.hpp"
+#include "Card_TermSeq.hpp"
 #include "Card_AndConj.hpp"
 #include "Card_OrConj.hpp"
 #include "Card_RlnConj.hpp"
