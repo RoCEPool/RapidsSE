@@ -16,6 +16,7 @@ namespace STORE
     Card_RpnExpr(void);
    ~Card_RpnExpr(void) noexcept(false);
 
+   Card_Term* pHead_term(void);
    Facet      xPop_facet(void);
    Card_Term* pPop_term(void);
    Card_Term* pPop_term_If(eSF eFacet);

@@ -42,6 +42,16 @@ Card_RpnExpr::~Card_RpnExpr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                           */
 /*----------------------------------------------------------------------------*/
+Card_Term* Card_RpnExpr::pHead_term(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return _pCard_Term(pHead());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                           */
+/*----------------------------------------------------------------------------*/
 Facet Card_RpnExpr::xPop_facet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -51,6 +61,7 @@ Facet Card_RpnExpr::xPop_facet(void)
   Card_Term* p_term = pPop_term();
   Facet xFacet = *p_term->pSymbol()->aFacet(0);
   delete p_term;
+
   return xFacet;
 }
 

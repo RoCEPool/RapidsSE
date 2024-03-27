@@ -221,7 +221,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
     }
     // TODO: hack...
-    pCI->E.p_expr->v_Child(0);
+    //pCI->E.p_expr->v_Child(0);
 
     pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
