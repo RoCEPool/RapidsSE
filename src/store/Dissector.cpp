@@ -1309,6 +1309,57 @@ Card_Constraint* Dissector::pPop_constraint(Card_RpnExpr* p_rpnExpr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop emit                                                                   */
+/*----------------------------------------------------------------------------*/
+Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_Emit* p_emit = new Card_Emit;
+
+  i8 iCardNo = 0;
+
+  if (p_rpnExpr->bHeadSame(SF_RW_AGGREGATES,"AGGREGATES"_Stz))
+    p_rpnExpr->vDiscardHead();
+
+  i8 i_Expr = 1;
+
+  while (Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pHead())) {
+
+    // GROUPBY or ORDGROUPBY
+    if (p_term_head->pSymbol()->bHasFacet("GROUPBY"_Stz) ||
+        p_term_head->pSymbol()->bHasFacet("ORDGROUPBY"_Stz)) {
+      break;
+    }
+
+    // SEPARATOR
+    if (p_term_head->pSymbol()->bHasFacet(SF_COMMA)) {
+      delete p_rpnExpr->pPopChild();
+      continue;
+    }
+
+    // TYPE <type> [ AS <as> ] <rpnCalc>
+    Card_Expr* p_expr = pPop_expr4(p_rpnExpr);
+    p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, i_Expr++);
+    p_expr->v_Child(++iCardNo);
+
+    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
+      Cast xCast;
+      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
+      xCast.m_nTypeLength = 19;
+      xCast.m_nTypeScale = 2;
+      p_expr->vApplyCast_x(xCast);
+      p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
+    }
+
+
+    p_emit->vAppendChild(p_expr);
+  }
+
+  return p_emit;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop expr                                                                   */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Dissector::pPop_expr4(Card_RpnExpr* p_rpnExpr)
@@ -1490,57 +1541,6 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
   }
 
   return p_key;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop projection                                                             */
-/*----------------------------------------------------------------------------*/
-Card_Emit* Dissector::pPop_emit(Card_RpnExpr* p_rpnExpr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Card_Emit* p_emit = new Card_Emit;
-
-  i8 iCardNo = 0;
-
-  if (p_rpnExpr->bHeadSame(SF_RW_AGGREGATES,"AGGREGATES"_Stz))
-    p_rpnExpr->vDiscardHead();
-
-  i8 i_Expr = 1;
-
-  while (Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pHead())) {
-
-    // GROUPBY or ORDGROUPBY
-    if (p_term_head->pSymbol()->bHasFacet("GROUPBY"_Stz) ||
-				p_term_head->pSymbol()->bHasFacet("ORDGROUPBY"_Stz)) {
-      break;
-    }
-
-    // SEPARATOR
-    if (p_term_head->pSymbol()->bHasFacet(SF_COMMA)) {
-      delete p_rpnExpr->pPopChild();
-      continue;
-    }
-
-    // TYPE <type> [ AS <as> ] <rpnCalc>
-    Card_Expr* p_expr = pPop_expr4(p_rpnExpr);
-    p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, i_Expr++);
-    p_expr->v_Child(++iCardNo);
-
-    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
-      Cast xCast;
-      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
-      xCast.m_nTypeLength = 19;
-      xCast.m_nTypeScale = 2;
-      p_expr->vApplyCast_x(xCast);
-      p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
-    }
-
-
-    p_emit->vAppendChild(p_expr);
-  }
-
-  return p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
