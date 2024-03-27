@@ -1079,20 +1079,17 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         }
 
         if (m_pCI->E.p_key) {
-/**Z_KEY_DIRECTION*/
           if (Card_Expr* p_expr_f = m_pCI->E.p_key->pFind_expr_key_Matches(m_pCI->E.p_term->pSymbol())) {
-
             if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol())) {
               continue;
             }
-            else {
-              // todo: query 18 $K2 type is wrong [
-//              m_pCI->G.p_expr->vDump(__func__);
-//              m_pCI->G.p_key->vDump(__func__);
-//              m_pCI->G.p_term->vDump(__func__);
-              vDebugPoint();
-              continue;
-            }
+
+            // todo: query 18 $K2 type is wrong [
+//          m_pCI->G.p_expr->vDump(__func__);
+//          m_pCI->G.p_key->vDump(__func__);
+//          m_pCI->G.p_term->vDump(__func__);
+            vDebugPoint();
+            continue;
           }
         }
 

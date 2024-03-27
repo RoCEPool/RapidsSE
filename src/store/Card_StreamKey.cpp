@@ -104,7 +104,7 @@ void Card_StreamKey::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   RASSERT(pParent->bIsCard(CK_t_EMIT));
 
-/**Z_KEY_DIRECTION*/
+/**Z_KEY_DIRECTION validate*/
   vValidate_mustHave(CK_DIRECTION,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);

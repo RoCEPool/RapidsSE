@@ -882,7 +882,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     }
   }
 
-/**Z_KEY_DIRECTION*/
+/**Z_KEY_DIRECTION validation*/
   (void)Card::eValidate_parentEither(pCI,
                                      CK_s_CONSTRAINT,
                                      CK_DIRECTION,

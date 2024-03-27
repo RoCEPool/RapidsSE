@@ -154,23 +154,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         RASSERT(pCI->E.p_key);
 
         i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
-/**Z_KEY_DIRECTION*/
+/**Z_KEY_DIRECTION craft root*/
         Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
-
-//        if (p_expr_key->bIsScalarCol()) {
-//          p_expr_key->pSymbol()->vDump();
-//          p_expr_key->pSymbol()->vApplyFacets(pSym_term);
-//          p_expr_key->pSymbol()->vDump();
-//          vDebugPoint();
-//        }
-
-//        pSym_term->vDump();
-//        p_expr_key->vDump(__func__);
-
-//        RASSERT(p_expr_key->pSymbol()->bHasFacet(SF_NMD_COL) ||
-//                p_expr_key->pSymbol()->bHasFacet(SF_TBL_COL));
-
-
         Symbol *pSym_tblCol = p_expr_key->pFirst_tblCol();
         //p_needed->vDump(__func__);
         if (p_needed->pFind_expr_Matches(pSym_tblCol))
@@ -267,15 +252,9 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
         }
         else {
           RASSERT(pSym_term->bSingleFaceted(SF_KEY_COL));
-/**Z_KEY_DIRECTION*/
           RASSERT(pCI->E.p_key->pFind_expr_key_Matches(pSym_term));
-
-          vDebugPoint();
         }
-/**Z_KEY_DIRECTION*/
         RASSERT(pCI->E.p_key->pFind_expr_key_Matches(SF_KEY_COL, pSym_term));
-
-        vDebugPoint();
       }
       else
       if (pSym_term->bHasFacet(SF_EXP_COL)) {

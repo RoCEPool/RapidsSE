@@ -1610,7 +1610,7 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr)
 
     // TYPE <type> <calcExpr> [ AS <as> ]
     Card_Expr* p_expr;
-/**Z_KEY_DIRECTION*/
+/**Z_KEY_DIRECTION dissect*/
     p_expr = pPop_expr2(p_rpnExpr, true, i_Expr);
     Card_Direction* p_direction = pPop_direction2(p_rpnExpr);
     p_direction->vAppendChild(p_expr);

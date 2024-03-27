@@ -66,7 +66,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-/**Z_KEY_DIRECTION*/
+/**Z_KEY_DIRECTION add key*/
   i8 i_Key = nChildCards() + 1;
 
   Card_Direction *p_direction_new;
@@ -374,7 +374,7 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_o_SORT,
                                      CK_NONE);
 
-/**Z_KEY_DIRECTION*/
+/**Z_KEY_DIRECTION validation*/
   vValidate_mustHave(CK_DIRECTION,CK_NONE);
 
 
