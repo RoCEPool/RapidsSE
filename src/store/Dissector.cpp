@@ -496,7 +496,7 @@ Card* Dissector::pOp_gbyAgg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : hash <szTermSeq : 0) calcExpr>                                   */
+/* dissect : hash <szTermSeq : 0) <hshColList>                                */
 /*----------------------------------------------------------------------------*/
 Card* Dissector::pOp_hash(void)
 {
@@ -1288,6 +1288,14 @@ Cast Dissector::xPop_cast(Card_TermSeq* p_termSeq)
     p_termSeq->vDiscardHead();
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (xCast.m_xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
+    xCast.m_nTypeLength = 19;
+    xCast.m_nTypeScale = 2;
+  }
+
+
   return xCast;
 }
 
@@ -1357,7 +1365,7 @@ Card_Emit* Dissector::pPop_emit(Card_TermSeq* p_termSeq)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop expr                                                                   */
+/* pop <expr>                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
 {
@@ -1366,22 +1374,18 @@ Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
   Card_Expr* p_expr = new Card_Expr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // <type>
+  // <cast>
 
-  Cast xCast = this->xPop_cast(p_termSeq);
-
-  if (xCast.m_xTypeId == TypeId::xIdOf(CT_DECIMAL)) {
-    xCast.m_nTypeLength = 19;
-    xCast.m_nTypeScale = 2;
-  }
+  Cast xCast = xPop_cast(p_termSeq);
+  p_expr->vApplyCast_x(xCast);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // [ AS <as> ]
+  // [ AS nmdCol ]
 
   if (p_termSeq->bHeadSame(SF_AS)) {
     p_termSeq->vDiscardHead();
-    Facet xFacet_as = p_termSeq->xPop_facet();
-    p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,xFacet_as.m_sFacet);
+    Facet xFacet_nmdCol = p_termSeq->xPop_facet();
+    p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, xFacet_nmdCol.m_sFacet);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1389,9 +1393,8 @@ Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
 
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_termSeq);
   p_rpnCalc->vApplyCast_x(xCast);
-  p_expr->vAppendChild(p_rpnCalc);
 
-  p_expr->vApplyCast_x(xCast);
+  p_expr->vAppendChild(p_rpnCalc);
 
   if (p_expr->pSub_rpnCalc(C_NOT_NULL)->nChildCards() == 1) {
     Card_Term* p_term_0 = p_expr->pGet_term0();
@@ -1399,20 +1402,20 @@ Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // [ AS <as> ]
+  // [ AS nmdCol ]
 
   if (p_termSeq->bHeadSame(SF_AS)) {
     p_termSeq->vDiscardHead();
-    Facet xFacet_as = p_termSeq->xPop_facet();
-    p_expr->pSymbol()->vApplyFacet(SF_NMD_COL,xFacet_as.m_sFacet);
+    Facet xFacet_nmdCol = p_termSeq->xPop_facet();
+    p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, xFacet_nmdCol.m_sFacet);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [ ASC | DESC ]
+
   if (p_termSeq->bHeadSame(SF_DIRECTION)) {
     Facet xFacet_direction = p_termSeq->xPop_facet();
     p_expr->pSymbol()->vApplyFacet(&xFacet_direction);
-    vDebugPoint();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1466,7 +1469,7 @@ Card_HshColList* Dissector::pPop_hshColList(Card_TermSeq* p_termSeq)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop key                                                                    */
+/* pop <key>                                                                  */
 /*----------------------------------------------------------------------------*/
 Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
 {
@@ -1475,8 +1478,8 @@ Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
   Card_Key* p_key = new Card_Key;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // discard GROUPBY | ORDGROUPBY
 
-  // GROUPBY
   Card_Term* p_term_head = p_termSeq->pHead_term();
   if (p_term_head->pSymbol()->bHasFacet("GROUPBY"_Stz) ||
       p_term_head->pSymbol()->bHasFacet("ORDGROUPBY"_Stz) ) {
@@ -1485,6 +1488,7 @@ Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // <expr> [, <expr> ... ]
 
   i8 i_Expr = 1;
   while ( (p_term_head = p_termSeq->pHead_term()) ) {
@@ -1500,11 +1504,11 @@ Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
     }
 
     // -- -- -- -- -- -- -- -- -- -- -- --
-    // expr proper
+    // <expr> : <type> [ AS nmdCol ] <rpnCalc> [ AS nmdCol ] [ ASC | DESC ]
 
-    // TYPE <type> <calcExpr> [ AS <as> ] [ ASC | DESC ]
     Card_Expr* p_expr = pPop_expr4(p_termSeq);
     p_expr->pSymbol()->vApplyFacet(SF_KEY_COL, i_Expr);
+
 
 /**Z_KEY_DIRECTION dissect*/
     // ensure expr has SF_DIRECTION
@@ -1516,16 +1520,6 @@ Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
     p_direction->pSymbol()->vApplyFacet(p_expr->pSymbol()->aFacet(SF_DIRECTION));
     p_direction->vAppendChild(p_expr);
     p_key->vAppendChild(p_direction);
-
-    // implicit cast of decimal
-    if (p_expr->xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
-      Cast xCast;
-      xCast.m_xTypeId = TypeId::xIdOf(CT_DECIMAL);
-      xCast.m_nTypeLength = 19;
-      xCast.m_nTypeScale = 2;
-      p_expr->vApplyCast_x(xCast);
-      p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
-    }
 
     i_Expr++;
   }
@@ -1622,7 +1616,7 @@ void Dissector::vCheckArgs(i8 nArgs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rpnExpr arg                                                            */
+/* get termSeq arg                                                            */
 /*----------------------------------------------------------------------------*/
 Card_TermSeq* Dissector::pArg_termSeq(i8 i_Arg)
 {
