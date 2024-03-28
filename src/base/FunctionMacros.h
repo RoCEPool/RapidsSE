@@ -99,26 +99,26 @@
   }                                             \
 }
 
-#define _ALLOC_VCH_TUB(azStringDyn)               \
+#define _ALLOC_VCH_TUB(azStringDyn)             \
 {                                               \
   szArg1 = (char*)*(--paW);                     \
   if ((i8)szArg1 == C_DATUM_NULL) {             \
     *paW++ = C_DATUM_NULL;                      \
   }                                             \
   else {                                        \
-    nSrcSize = strlen(szArg1) + 1;                  \
-    char *d = azStringDyn;                        \
+    nSrcSize = strlen(szArg1) + 1;              \
+    char *d = azStringDyn;                      \
     const char *s = szArg1;                     \
                                                 \
-	 i8 iBytesToCopy = nSrcSize - 1;                  \
+	 i8 iBytesToCopy = nSrcSize - 1;              \
    while (iBytesToCopy--)                       \
      *d++ = *s++;                               \
                                                 \
     *d = '\0';                                  \
-                                                  \
-   aDynamicT->m_fp_vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize); \
-	 azStringDyn = azStringDyn + nSrcSize; \
-                                                  \
+		                                            \
+   *paW++ = (i8)azStringDyn;                    \
+	 aDynamicT->m_fp_vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize); \
+	 azStringDyn = azStringDyn + nSrcSize;        \
   }                                             \
 }
 
@@ -138,9 +138,10 @@
     --paW;                                                                  \
  }
 
-#define _ASSIGN_TO_TUB(iArgTo) \
-  amCellAddress = (m8*) &iArgTo; \
-	iOffset = - nDifference(azStringDyn, amCellAddress); \
+#define _ASSIGN_TO_TUB(iArgTo)                                              \
+  char* szDstArea = *(--paW);                                               \
+	amCellAddress = (m8*) &iArgTo;                                            \
+	iOffset = - nDifference(szDstArea, amCellAddress);                        \
 	iArgTo = iOffset;
 
 
