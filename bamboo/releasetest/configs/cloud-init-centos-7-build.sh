@@ -4,26 +4,27 @@
 # Cloud-init script for configuring CentOS 7 for building (not running) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
-CLOUD_INIT_OUTPUT="/cloud-init-output.log"
-CLOUD_INIT_STATUS="/cloud-init-status.log"
-CLOUD_INIT_COMPLETE="/cloud-init-complete.log"
-CLOUD_INIT_COMPLETE_DEPRECATED="/tmp/cloud-init-complete.log"
+CI="cloud-init"
+CI_OUTPUT="/${CI}-output.log"
+CI_STATUS="/${CI}-status.log"
+CI_COMPLETE="/${CI}-complete.log"
+CI_COMPLETE_DEP="/tmp/${CI_COMPLETE}"
 
-TEXLIVE_OUTPUT="/cloud-init-texlive.log"
-TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
-MAX_NETWORK_RETRIES=10
+TEXLIVE_OUT="/${CI}-texlive.log"
+TEE_CMD=("tee" "-ia" "${CI_OUTPUT}")
+MAX_NET_RETRIES=10
 MAX_YUM_RETRIES=3
 RC_LOCAL="/etc/rc.d/rc.local"
 
 function status() {
-echo "$@" > "${CLOUD_INIT_STATUS}"
+echo "$@" > "${CI_STATUS}"
 echo -e "\n$*\n"
 }
 
 function error() {
-echo "$@" > "${CLOUD_INIT_STATUS}"
-local hdr="***Cloud init error****"
-echo >&2 -e "${hdr}\n$*\n${hdr}"
+echo "$@" > "${CI_STATUS}"
+local hdr="CLOUD INIT ERROR"
+echo >&2 -e "${hdr}\nERROR: $*\n${hdr}"
 }
 
 function retryCommand() {
@@ -34,8 +35,7 @@ local retries=1
 
 local re='^[0-9]+$'
 if ! [[ "${maxRetries}" =~ $re ]] ; then
-   error "ERROR: First parameter to function retryCommand() is not a number"
-   exit 1
+   error "First parameter to function retryCommand() is not a number" && exit 1
 fi
 
 while [ "${retries}" -le "${maxRetries}" ]; do
@@ -59,54 +59,49 @@ return
 
 {
 if which tee &>/dev/null; then
-  echo "Cloud init output being written out to file: ${CLOUD_INIT_OUTPUT}"
+  echo "Cloud init output being written out to file: ${CI_OUTPUT}"
 else
-  echo "ERROR: no tee utility available"
+  error "no tee utility available"
   TEE_CMD=("echo")
 fi
-} > "${CLOUD_INIT_OUTPUT}"
-chmod a+r "${CLOUD_INIT_OUTPUT}"
+} > "${CI_OUTPUT}"
+chmod a+r "${CI_OUTPUT}"
 
-touch "${TEXLIVE_OUTPUT}"
-chmod a+r "${TEXLIVE_OUTPUT}"
+touch "${TEXLIVE_OUT}"
+chmod a+r "${TEXLIVE_OUT}"
 
 {
-status "Starting the cloud-init setup script for CentOS 7."
-
-readonly CENTOS7="centos7"
-readonly CENTOS7_USER="ec2-user"
-readonly CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
+status "Starting cloud-init for CentOS 7."
 
 if [ -f /etc/system-release ]; then
   OS_VER=$(cat /etc/system-release)
 
   if [[ "${OS_VER}" =~ 'CentOS Linux release 7' ]]; then
-    OS_DIST="${CENTOS7}"
-    OS_USER="${CENTOS7_USER}"
-    OS_HOME_DIR="${CENTOS7_HOME_DIR}"
+    OS_DIST="centos7"
+    OS_USER="ec2-user"
+    OS_HOME="/home/ec2-user"
   fi
 fi
 
 if [ -z "${OS_DIST}" ]; then
-  error "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY. OS_VER = ${OS_VER}"
-  exit 1
+  error "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY. OS_VER = ${OS_VER}" && exit 1
 fi
 
-status "Creating user: ec2-user"
-useradd "${OS_USER}" || true
+status "Creating user: ${OS_USER}"
+useradd "${OS_USER}" || exit 1
 usermod -a -G wheel "${OS_USER}"
 
-SUDO_FILE="/etc/sudoers.d/ec2-user"
+SUDO_FILE="/etc/sudoers.d/${OS_USER}"
 {
   echo "# Let ${OS_USER} use sudo without a password"
-  echo "ec2-user  ALL=(ALL) NOPASSWD: ALL"
+  echo "${OS_USER}  ALL=(ALL) NOPASSWD: ALL"
 } >"${SUDO_FILE}"
 
 chmod 0400 "${SUDO_FILE}"
 
-status "Installing a common internal SSH key"
-SSH_DIR="${OS_HOME_DIR}/.ssh"
-mkdir -p "${SSH_DIR}" || exit
+status "Installing a SSH key"
+SSH_DIR="${OS_HOME}/.ssh"
+mkdir -p "${SSH_DIR}" || exit 1
 
 cat <<EOF >>"${SSH_DIR}/authorized_keys"
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ${OS_USER}@localhost
@@ -162,18 +157,16 @@ chmod 644 "${SSH_DIR}/id_rsa.pub" "${SSH_DIR}/known_hosts"
 
 chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 
-status "Setting up the rc.local file"
+status "Setting up rc.local file"
 if [ ! -f "${RC_LOCAL}" ]; then
-  {
-    echo -e "#!/bin/sh -e\n\n"
-  } > "${RC_LOCAL}"
+  echo -e "#!/bin/sh -e\n\n" > "${RC_LOCAL}"
 fi
 chmod +x "${RC_LOCAL}"
 
-status "Installing the SSD mount script"
+status "Installing SSD mount script"
 cat <<'EOF' >>"${RC_LOCAL}"
 
-# Setup the SSDs on each boot
+# Setup the SSDs
 LOCAL_USER="ec2-user"
 
 if ! mount | grep "/mnt/disk1" &>/dev/null; then
@@ -230,7 +223,7 @@ done
 fi
 EOF
 
-status "Running the SSD mount script"
+status "Running SSD mount script"
 bash "${RC_LOCAL}"
 
 
@@ -238,24 +231,21 @@ SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi
-status "Updating size of /dev/shm"
+status "Updating /dev/shm"
 {
-  echo -e "\n# Set /dev/shm to 95% of system memory"
+  echo -e "\n# Set /dev/shm to 95% of memory"
   echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
 } >>/etc/fstab
 mount -o remount /dev/shm
 
-status "Setting DNS domain name search qualifier"
+status "DNS search qualifier"
 echo "search local" >>/etc/resolv.conf
 
-status "Adding 192.168.0.5 to /etc/hosts"
+status "Updating /etc/hosts"
 echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
 
 status "Setting IGMP to v2"
-{
-  echo
-  echo "# Enable Multicast on AWS"
-} >>/etc/sysctl.conf
+echo -e "\n# Enable Multicast on AWS" >>/etc/sysctl.conf
 
 mapfile -t netDevices < <(ip -o -4 addr | awk '{print $2}')
 for device in "${netDevices[@]}"; do
@@ -265,7 +255,7 @@ done
 
 echo "" >>/etc/sysctl.conf
 
-status "Setting /opt permissions"
+status "/opt permissions"
 chown root:wheel /opt
 chmod g+w /opt
 
@@ -274,16 +264,16 @@ if ! which aws; then
   declare -a cmd
   cmd=("yum" "install" "-y" "curl" "wget" "unzip")
   if ! retryCommand "${MAX_YUM_RETRIES}" "${cmd[@]}"; then
-    error "ERROR: Could not download and install curl, wget and unzip"
+    error "Could not download and install curl, wget and unzip"
     exit 1
   fi
 
   cmd=("curl" "-L" "--fail" "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" "-o" "awscliv2.zip")
-  if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
+  if retryCommand "${MAX_NET_RETRIES}" "${cmd[@]}"; then
     unzip awscliv2.zip
     ./aws/install
   else
-    error "ERROR: Could not download AWS CLIv2"
+    error "Could not download AWS CLIv2"
     exit 1
   fi
 fi
@@ -291,22 +281,22 @@ fi
 status "Installing perl"
 yum install -y perl
 
-status "*** Installing TexLive ***"
+status "Installing TexLive"
 (
-  cd /usr/local
-  aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
-  chown -R root:root /usr/local/texlive
-  chmod -R g-w /usr/local/texlive
+cd /usr/local
+aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
+chown -R root:root /usr/local/texlive
+chmod -R g-w /usr/local/texlive
 
-  {
-    echo -e '\nTEXLIVEDIR="/usr/local/texlive"'
-    echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
-    echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
-    echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
-    echo -e '\nexport PATH MANPATH INFOPATH\n'
-  } >>/etc/profile.d/sh.local
+{
+  echo -e '\nTEXLIVEDIR="/usr/local/texlive"'
+  echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
+  echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
+  echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
+  echo -e '\nexport PATH MANPATH INFOPATH\n'
+} >>/etc/profile.d/sh.local
 
-) &> "${TEXLIVE_OUTPUT}" &
+) &> "${TEXLIVE_OUT}" &
 
 status "Installing system updates"
 yum update -y
@@ -316,34 +306,60 @@ status "Installing endpoint repo"
 echo "exclude=mirror.es.its.nyu.edu" >> /etc/yum/pluginconf.d/fastestmirror.conf  # mirror doesn't respond
 yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
 status "Installing gcc, git, et al"
-yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip openssl-devel python3 perl-Digest-MD5 gawk vim-enhanced perl-Digest-MD5 perl-Env java-11-openjdk zip
+yum install -y gcc-c++ git git-lfs libuuid-devel unzip openssl-devel python3 perl-Digest-MD5 gawk vim-enhanced perl-Digest-MD5 perl-Env java-11-openjdk zip
 yum install -y centos-release-scl
 yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
 
+status "Installing cmake"
+(
+CMAKE_VER="3.29.0"
+CMAKE_PLATFORM="linux-x86_64"
+CMAKE_FILE="cmake-${CMAKE_VER}-${CMAKE_PLATFORM}.sh"
+CMAKE_URL="https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/${CMAKE_FILE}"
+CMAKE_INSTALL_DIR="/opt/cmake"
+
+cd /opt
+mkdir -p "${CMAKE_INSTALL_DIR}"
+
+cmd=("curl" "-L" "--fail" "${CMAKE_URL}" "-o" "${CMAKE_FILE}")
+
+if retryCommand "${MAX_NET_RETRIES}" "${cmd[@]}"; then
+  sh "${CMAKE_FILE}" --prefix="${CMAKE_INSTALL_DIR}" --skip-license --exclude-subdir
+  chown -R "${OS_USER}:${OS_USER}" "${CMAKE_INSTALL_DIR}"
+  rm -f "${CMAKE_FILE}"
+
+  # shellcheck disable=SC2016
+  echo -e 'export PATH="${PATH}:/opt/cmake/bin"\n' >>/etc/profile.d/sh.local
+
+else
+  error "Could not download CMake" && exit 1
+fi
+)
+
 status "Shellcheck"
 (
-  cd /usr/local/bin
-  declare -a cmd
-  cmd=("curl" "-L" "--fail" "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" "-o" "shellcheck-stable.linux.x86_64.tar.xz")
+cd /usr/local/bin
+declare -a cmd
+SHCHK_FILE="shellcheck-stable.linux.x86_64.tar.xz"
+cmd=("curl" "-L" "--fail" "https://github.com/koalaman/shellcheck/releases/download/stable/${SHCHK_FILE}" "-o" "${SHCHK_FILE}")
 
-  if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
-    tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
-    chown root:root shellcheck
-    rm -f shellcheck-stable.linux.x86_64.tar.xz
-  else
-    error "ERROR: Could not download ShellCheck"
-    exit 1
-  fi
+if retryCommand "${MAX_NET_RETRIES}" "${cmd[@]}"; then
+  tar "${SHCHK_FILE}" --strip-components=1 shellcheck-stable/shellcheck
+  chown root:root shellcheck
+  rm -f "${SHCHK_FILE}"
+else
+  error "Could not download ShellCheck" && exit 1
+fi
 )
 
 status "Installing Sphinx"
 sudo -H -u "${OS_USER}" python3 -m pip install -U --user sphinx
 
-status "Git LFS initialisation"
+status "Git LFS init"
 sudo -H -u "${OS_USER}" git lfs install
 
-status "Setting vim preferences"
-vimrc="${OS_HOME_DIR}/.vimrc"
+status "Vim preferences"
+vimrc="${OS_HOME}/.vimrc"
 cat <<EOF >"${vimrc}"
 set ts=2
 set sw=2
@@ -360,27 +376,21 @@ EOF
 
 chown "${OS_USER}:${OS_USER}" "${vimrc}"
 
-status "Setting bash preferences"
-bash_profile="${OS_HOME_DIR}/.bash_profile"
-{
-  echo -e '\nexport PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "\n'
-} >>"${bash_profile}"
-
+status "Bash preferences"
+bash_profile="${OS_HOME}/.bash_profile"
+echo -e '\nexport PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "\n' >>"${bash_profile}"
 chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 
 cat <<EOF >>"${RC_LOCAL}"
 
-echo "Completed the cloud-init setup script!" > "${CLOUD_INIT_STATUS}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE}"
-echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE_DEPRECATED}"
-echo "\$(date) Rebooted" >> "${CLOUD_INIT_OUTPUT}"
+echo "Completed the cloud-init setup!" > "${CI_STATUS}"
+echo "\$(date) Completed the cloud-init setup!" > "${CI_COMPLETE}"
+echo "\$(date) Completed the cloud-init setup!" > "${CI_COMPLETE_DEP}"
+echo "\$(date) Rebooted" >> "${CI_OUTPUT}"
 EOF
 
-{
-  echo "Completed the cloud-init setup script!"
-  echo "System needs to be rebooted to apply changes."
-} >> "${CLOUD_INIT_OUTPUT}"
+echo "System needs to be rebooted to apply changes." >> "${CI_OUTPUT}"
 
-status "*** Rebooting now ***"
+status "Rebooting now"
 reboot
 } 2>&1 | "${TEE_CMD[@]}"

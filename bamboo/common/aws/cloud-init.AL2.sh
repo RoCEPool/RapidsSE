@@ -503,7 +503,7 @@ EOF
   yum update -y
 
   status "*** Installing gcc, git, et al ***"
-  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses openssl-devel parallel python3 perl-Digest-MD5 perl-Env zip
+  yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless libuuid-devel unzip nmap-ncat ncurses openssl-devel parallel python3 perl-Digest-MD5 perl-Env zip
 
   status "*** Installing other useful utilities ***"
   yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
@@ -568,6 +568,37 @@ EOF
     echo 'export PATH=/opt/jmeter/bin:${PATH}'
     echo ""
   } >>"${bash_profile}"
+
+  # ----------------------------------------------------------------------------------------
+  # Install latest cmake to /opt/cmake
+  status "*** Installing cmake ***"
+  (
+    CMAKE_VER="3.29.0"
+    CMAKE_PLATFORM="linux-x86_64"
+    CMAKE_FILE="cmake-${CMAKE_VER}-${CMAKE_PLATFORM}.sh"
+    CMAKE_URL="https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/${CMAKE_FILE}"
+    CMAKE_INSTALL_DIR="/opt/cmake"
+
+    cd /opt
+    mkdir -p "${CMAKE_INSTALL_DIR}"
+
+    declare -a cmd
+    cmd=("curl" "-L" "--fail" "${CMAKE_URL}" "-o" "${CMAKE_FILE}")
+
+    if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
+      sh "${CMAKE_FILE}" --prefix="${CMAKE_INSTALL_DIR}" --skip-license --exclude-subdir
+      chown -R "${OS_USER}:${OS_USER}" "${CMAKE_INSTALL_DIR}"
+      rm -f "${CMAKE_FILE}"
+
+      # shellcheck disable=SC2016
+      echo -e 'export PATH="${PATH}:/opt/cmake/bin"\n' >>/etc/profile.d/sh.local
+
+    else
+      error "ERROR: Could not download CMake - the version might be old and may need to be updated "\
+            "or a network error could be preventing access."
+      exit 1
+    fi
+  )
 
   # ----------------------------------------------------------------------------------------
   # Installing Sphinx for documentation generation
