@@ -345,7 +345,7 @@ yum install -y java-11-openjdk-headless iperf3 iotop telnet nethogs iftop jq
 
 status "Installing GNU parallel"
 wget https://linuxsoft.cern.ch/cern/centos/7/cern/x86_64/Packages/parallel-20150522-1.el7.cern.noarch.rpm
-yum install parallel-20150522-1.el7.cern.noarch.rpm
+yum install -y parallel-20150522-1.el7.cern.noarch.rpm
 
 
 # Vim annoyances
