@@ -265,6 +265,7 @@ Card_Expr* Card_Key::pGet_expr(i8 i_Element)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+/**Z_KEY_DIRECTION get expr*/
   Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Element));
   Card_Expr* p_expr = p_direction->pSub_expr();
 

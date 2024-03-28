@@ -696,10 +696,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
           continue;
 
         i8 i_Key = pSym_term_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
-/**Z_KEY_DIRECTION restate emit*/
-        pCI->E.p_direction = pCI->E.p_key->pGet_direction(i_Key);
-        Card_Expr *p_expr_key = pCI->E.p_direction->pSub_expr(C_NOT_NULL);
-
+        Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
         if (p_expr_key->bIsScalarCol()) {
           //p_expr_key->pSymbol()->vDump();
           p_expr_key->pSymbol()->vApplyFacets(pSym_term_keyCol);
