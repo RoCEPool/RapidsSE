@@ -18,6 +18,8 @@ namespace STORE
     Card_Key(eCK eCard, i8 iMaxDepth);
    ~Card_Key(void) noexcept(false);
 
+    static void vAssemble_injCrlKey(CardIter* pCI);
+
     void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);
     void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
     Card_Expr* pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol);

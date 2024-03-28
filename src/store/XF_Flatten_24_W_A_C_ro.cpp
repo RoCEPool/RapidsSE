@@ -179,8 +179,9 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     pCI->E.p_stream = pCI->E.p_gbyAgg->pSub_stream();
     pCI->E.p_emit = pCI->E.p_stream->pSub_emit();
 
-    pCI->E.p_key = new Card_Key;
-    pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
+//    pCI->E.p_key = new Card_Key;
+//    pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
+    Card_Key::vAssemble_injCrlKey(pCI);
     pCI->E.p_gbyAgg->vInsertChildBefore(pCI->E.p_key, pCI->E.p_stream);
 
 
@@ -188,8 +189,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
     if (AL_PARTITION == e_Level) {
 /**Z_KEY_DIRECTION promote*/
-      pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
-      pCI->E.p_key->vAppendChild(pCI->E.p_direction);
+      //pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
+      //pCI->E.p_key->vAppendChild(pCI->E.p_direction);
       pCI->E.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
       //pCI->Flat.m_p_expr_crlKey->vDump(__func__);
       //pCI->E.p_expr->vDump(__func__);
@@ -203,14 +204,14 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     }
     else {
 /**Z_KEY_DIRECTION promote*/
+      //pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
+      //pCI->E.p_key->vAppendChild(pCI->E.p_direction);
       pCI->vNewMember(CK_EXPR);
       pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
       pCI->E.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
       pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
       pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-      pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
       pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
-      pCI->E.p_key->vAppendChild(pCI->E.p_direction);
       if (1 == pCI->E.p_key->nChildCards()) {
         pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
         pCI->E.p_direction->vApplyCast_x(pCI->E.p_expr->xCast());
