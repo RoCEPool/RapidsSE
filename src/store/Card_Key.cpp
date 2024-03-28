@@ -76,6 +76,8 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 
   }
   else {
+    pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
+
     pCI->vNewMember(CK_EXPR);
     pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
     pCI->E.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());

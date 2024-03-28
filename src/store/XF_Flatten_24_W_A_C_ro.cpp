@@ -189,13 +189,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
     if (AL_PARTITION == e_Level) {
       pCI->E.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI, pCI->E.p_expr);
-      //pCI->G.p_expr->vDump(__func__);
-      vDebugPoint();
     }
     else {
-      pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
-
-
       Symbol xSymbol_KeyCol(SF_KEY_COL,1);
 
       pCI->vNewMember(CK_EXPR);
@@ -212,22 +207,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
     pCI->E.p_emit->vPushChild(pCI->E.p_expr);
 
-
     if (AL_PARTITION != e_Level) {
       pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
-      //pCI->G.p_key->Y_vCut(P_ProjBump);
       pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
-    }
-
-//Z_KEY_DIRECTION
-    for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-      pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,pCI->i_Target()+1);
     }
 
     pCI->E.p_emit->vRenumberAll_expr();
 
-    //pCI->G.p_key->vDump(__func__);
-    vDebugPoint();
+
+    // -- -- -- -- -- -- -- -- -- -- --
 
     if (pCI->bEachOp()) {
       if (! pCI->E.p_Op->bIsCard(CK_o_AGGREG)) {
