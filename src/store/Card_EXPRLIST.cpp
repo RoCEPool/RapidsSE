@@ -271,13 +271,11 @@ void Card_EXPRLIST::vRenumberAll_expr(eSF eFacet)
 /**Z_KEY_DIRECTION renumber*/
   if (bIsKeyExpr) {
     for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/)
-      //xKey.p_expr(C_SUB)->vRenumberForm_keyCol(xKey.i_Child()+1);
       xKey.p_expr(C_SUB)->pSymbol()->vApplyFacet(eFacet,xKey.i_Child()+1);
   }
   else {
     for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
-    //xEXPRLIST.p_expr()->vRenumberForm_expCol(xEXPRLIST.i_Child()+1);
-    xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(eFacet,xEXPRLIST.i_Child()+1);
+      xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(eFacet,xEXPRLIST.i_Child()+1);
   }
 
 }
