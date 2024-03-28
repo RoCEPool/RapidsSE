@@ -162,19 +162,18 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  // promote IQ <aggreg>... to <gbyAgg>...
+  // promote IQ aggreg... to gbyAgg...
 
   pCI->vClearRegisters();
+
   pCI->vBeginEach();
   RASSERT(pCI->bEachOp_break(CK_o_AGGREG));
-
   for (i8 i_agg = 0; i_agg < 3; i_agg++) {
 
     pCI->E.p_Op->vCard(CK_o_GBYAGG);
-    pCI->E.p_gbyAgg = _pCard_GbyAgg(pCI->E.p_Op);
 
+    pCI->E.p_gbyAgg = _pCard_GbyAgg(pCI->E.p_Op);
     pCI->E.p_level  = pCI->E.p_gbyAgg->pSub_level();
-    eAL e_Level     = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
     pCI->E.p_stream = pCI->E.p_gbyAgg->pSub_stream();
     pCI->E.p_emit   = pCI->E.p_stream->pSub_emit();
 
@@ -185,35 +184,11 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
     pCI->E.p_gbyAgg->vInsertChildBefore(pCI->E.p_key, pCI->E.p_stream);
 
     // -- -- -- -- -- -- -- -- -- -- --
-    // projection
+    // emit
 
-    if (AL_PARTITION == e_Level) {
-      pCI->E.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI, pCI->E.p_expr);
-    }
-    else {
-      Symbol xSymbol_KeyCol(SF_KEY_COL,1);
-
-      pCI->vNewMember(CK_EXPR);
-      i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
-      pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
-      pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
-      pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
-
-      pCI->E.p_rpnCalc->vApplyCast_x(pCI->E.p_key->xCast());
-      pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
-      pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
-    }
-
-    pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
+    Card_Expr::vAssemble_injCrlRsl(pCI);
     pCI->E.p_emit->vPushChild(pCI->E.p_expr);
-
-    if (AL_PARTITION != e_Level) {
-      pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
-      pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
-    }
-
     pCI->E.p_emit->vRenumberAll_expr();
-
 
     // -- -- -- -- -- -- -- -- -- -- --
 
@@ -224,9 +199,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
         break;
       }
     }
-
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
