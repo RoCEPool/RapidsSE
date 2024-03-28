@@ -63,9 +63,6 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 
 /**Z_KEY_DIRECTION promote*/
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // key
-
   pCI->E.p_key = new Card_Key;
   pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
 
@@ -85,6 +82,8 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
     pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
     pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
 
+    pCI->E.p_rpnCalc->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
+    pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
   }
 
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
@@ -95,10 +94,6 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
   }
 
   pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
 
 }
 
