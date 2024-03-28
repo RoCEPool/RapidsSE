@@ -95,6 +95,11 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 
   pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
 
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
+    pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,pCI->i_Target()+1);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
