@@ -67,6 +67,16 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
   pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
   pCI->E.p_key->vAppendChild(pCI->E.p_direction);
 
+  eAL e_Level = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
+
+  if (AL_PARTITION == e_Level) {
+    pCI->E.p_expr = Card_Expr::pCraft_expr_gby_From_expr_crlKey(pCI->Flat.m_p_expr_crlKey);
+
+  }
+  else {
+    pCI->vNewMember(CK_EXPR);
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
