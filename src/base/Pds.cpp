@@ -1598,27 +1598,6 @@ void Pds::vPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* compare two items                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Pds::iIntCompare(void* aItem_l, void* aItem_r)
-{
-  _static_
-  i8 iKey_l = *(i8*) aItem_l;
-  i8 iKey_r = *(i8*) aItem_r;
-
-  // do the node keys match?
-  if (iKey_l == iKey_r)
-    return 0;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (iKey_l >= iKey_r)
-    return 1;
-  else
-    return -1;
-}
-
 /*--------------------------------------------------------------------------*/
 /* Row helper                                                               */
 /*--------------------------------------------------------------------------*/
