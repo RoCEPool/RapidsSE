@@ -2,15 +2,15 @@
 /* __Q9_OPT2                                                                  */
 /*============================================================================*/
 
-// splitting project after filter into 2 projects
-// project-filter-project
+//splitting project after filter into 2 projects
+//project-filter-project
 
-// Alka's iMAC:
+//Alka's iMAC:
 // SF10-1N4P
 
 /keepCodeFile
-/pipeline_def
 /optimise_passthru
+/pipeline_def
 pipeline unamed
 begin
 
