@@ -360,6 +360,34 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         break;
 
+			case SK_PRJPOT:
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// open the project code fragments file
+				bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/Project.cpp"_Stz);
+				RASSERT ( bOpened );
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// operator stub
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				vAppendStencilTo(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
+				vAppendCodePixCols(pOpSketch);
+				vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
+
+				vAppendCodeHashCols2(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
+
+				vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// close the project code fragments file
+				pOperatorFile->vClose();
+
+				break;
+
 			case SK_PRJTUB:
 
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -376,7 +404,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 				vAppendCodePixCols(pOpSketch);
 				vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
 
-				vAppendCodeFragment(pOpSketch, "iPotTubContinue"_Stz);
+				vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
 
 				vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
 
@@ -1655,6 +1683,37 @@ void CombinedSrc::vAppendCodeHashCols(OpSketch* pOpSketch)
 		i8 i_StreamCol = pOpSketch->m_pColHsh->m_axCols[i_Col].m_i_Col;
 
 		Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_StreamCol);
+
+		switch (pColumn->eColumnType()) {
+
+			case CT_VARCHAR:
+				vAppendCodeFragment(pOpSketch, "vAssignVchHash"_Stz, pColumn);
+				break;
+
+			default:
+				vAppendCodeFragment(pOpSketch, "vAssignHash"_Stz, pColumn);
+				break;
+		}
+	}
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment for hash columns                                      */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeHashCols2(OpSketch* pOpSketch)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+	vAppendCodeFragment(pOpSketch, "vHashBegin"_Stz);
+
+	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColHsh->m_nCols; i_Col++) {
+
+		m_pCommonCode->vSeekStart();
+
+		i8 i_StreamCol = pOpSketch->m_pColHsh->m_axCols[i_Col].m_i_Col;
+
+		Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_StreamCol);
 
 		switch (pColumn->eColumnType()) {
 

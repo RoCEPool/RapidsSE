@@ -373,7 +373,9 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 #ifdef _PROJECT_INTO_TUB
 			// last op in the stage ?
-			if (i_Op == pStageDef->nItems() - 1) {
+			if ( (i_Op == pStageDef->nItems() - 1) ||
+			     (bGeneratePot && i_Op == pStageDef->nItems() - 2)
+				 ) {
 				pOpSketch = pSketchPrjPotTub(pStageDef, pOpDef, bGeneratePot, pHashOpDef, sLimitExpr);
 				vAppend(pOpSketch);
 
@@ -1129,7 +1131,6 @@ OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGe
 
 	// create a new opSketch
 	if (bGeneratePot) {
-		RASSERT(0);
 		pOpSketch = new OpSketch(pStageDef, i_Op, sProjectExpr, m_eHandlerKind, SK_PRJPOT, m_ePreviousStencil, SR_PO,  II_NONE);
 		pOpSketch->vLimitExpr(sLimitExpr);
 	}
