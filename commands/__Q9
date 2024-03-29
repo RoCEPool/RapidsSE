@@ -6,6 +6,7 @@
 //   SF10-1N4P : 193.96s
 
 /weaved
+/pipelineName = "Q9"
 select
          Nation,
          o_year,
