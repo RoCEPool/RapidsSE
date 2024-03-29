@@ -534,13 +534,19 @@ SkipListBlock* Pds::pAppend(void* pKey)
   // insert the key based on a random number
 //  u8 uSkipLevels = (RndLib::uInteger() % C_MAX_LVL_LEVELS) + 1;
 
+	i8 iRMod = (i8) (RndLib::uInteger() % (C_MAX_LVL_LEVELS));
+
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
 
 //    i8 iRMod = rand() % (i_Level+1);
-    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
-    if(iRMod != 0) {
-      break;
-    }
+
+//    i8 iRMod2 = (i8) (RndLib::uInteger() % (i_Level+1));
+//    if(iRMod != 0) {
+//      break;
+//    }
+
+    if (i_Level > iRMod)
+	    break;
 
     u2 uTailOffset = m_auTailOffsets[i_Level];
     SkipListBlock* pCurrTail = (SkipListBlock*) pGetAddrFromOffset(uTailOffset);
@@ -941,13 +947,19 @@ SkipListBlock* Pds::pInsert(void* pKey)
   // insert the key based on a random number
 //  u8 uSkipLevels = (RndLib::uInteger() % C_MAX_LVL_LEVELS) + 1;
 
+	i8 iRMod = (i8) (RndLib::uInteger() % (C_MAX_LVL_LEVELS));
+
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
 
 //    i8 iRMod = rand() % (i_Level+1);
-    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
-    if(iRMod != 0) {
-      break;
-    }
+
+//    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
+//    if(iRMod != 0) {
+//      break;
+//    }
+
+		if (i_Level > iRMod)
+			break;
 
     SkipListBlock* pCursor = xPriorVec[i_Level];
 
