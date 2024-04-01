@@ -22,7 +22,6 @@ namespace STORE
 
     static void vMorph_to_flat(CardIter* pCI);
 
-    static void vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold);
     static void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);
 
     void vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost);

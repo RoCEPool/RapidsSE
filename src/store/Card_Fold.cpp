@@ -99,30 +99,6 @@ void Card_Fold::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
   pCI->E.p_emit->vPushChild(p_expr_new);
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Fold::vPush_foldExpr_Into_key(CardIter* pCI, Card_Expr* p_expr_fold)
-{
-  _static_
-
-/**Z_KEY_DIRECTION push fold*/
-  pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
-
-  pCI->E.p_expr = new Card_Expr;
-  pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
-
-  pCI->E.p_expr->pSymbol()->Y_vSet(P_Injected);
-
-  pCI->E.p_expr->vAppendChild(p_expr_fold->pSub_rpnCalc(C_NOT_NULL)->pDupCardRecursive());
-  pCI->E.p_expr->vApplyCast_p(p_expr_fold->pSub_rpnCalc(C_NOT_NULL));
-
-  pCI->E.p_key->vPushChild(pCI->E.p_direction);
-
-  //pCI->G.p_key->vDump(__func__);
-  vDebugPoint();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
