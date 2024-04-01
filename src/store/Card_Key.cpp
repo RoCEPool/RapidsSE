@@ -116,8 +116,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 /**Z_KEY_DIRECTION add key*/
-  i8 i_Key = nChildCards() + 1;
-
   if (bAsc)
     pCI->E.p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
   else
@@ -125,17 +123,16 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
 
   pCI->E.p_expr = p_expr->pClone();
   pCI->E.p_expr->pSymbol()->vResetFacets();
-  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,i_Key);
+  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,C_UNKNOWN);
   pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
 
-  if (0 == i_Key)
+  if (0 == nChildCards())
     vApplyCast_x(p_expr->xCast());
-
 
   if (bAppend)
     vAppendChild(pCI->E.p_direction);
   else
-    Card::vPushChild(pCI->E.p_direction);
+    vPushChild(pCI->E.p_direction);
 
   vRenumberAll_expr(SF_KEY_COL);
 }
