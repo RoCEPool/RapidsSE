@@ -330,7 +330,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
          p_expr_prjCol->vAppendChild(p_expr_runkey->pSub_direction()->pDupCardRecursive());
        }
 
-       pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol, true, true);
+       pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI, p_expr_prjCol, true, true);
      }
    }
 

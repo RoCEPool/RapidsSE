@@ -111,48 +111,42 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add a key expr to this key based on given projection expr                  */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc, bool bAppend)
+void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool bAsc, bool bAppend)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 /**Z_KEY_DIRECTION add key*/
   i8 i_Key = nChildCards() + 1;
 
-  Card_Direction *p_direction_new;
-  if (p_expr->pSub_direction()) {
-    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_DIRECTION));
-  }
+  if (bAsc)
+    pCI->E.p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
   else
-  if (bAsc) {
-    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
-  }
-  else {
-    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, C_DESC);
-  }
+    pCI->E.p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_DESC);
 
-  Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->pSymbol()->vApplyFacet(SF_KEY_COL,i_Key);
-  p_direction_new->vAppendChild(p_expr_new);
+  pCI->E.p_expr = new Card_Expr;
+  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,i_Key);
+  pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   if (p_expr->pSub_rpnCalc(C_NOT_NULL))
     p_rpnCalc->vAppendChild(p_expr->pGet_term(0)->pDupCardRecursive());
   else
     NEVER_REACH
-  p_expr_new->vAppendChild(p_rpnCalc);
+  pCI->E.p_expr->vAppendChild(p_rpnCalc);
 
   p_rpnCalc->vApplyCast_x(p_expr->xCast());
-  p_expr_new->vApplyCast_x(p_expr->xCast());
+  pCI->E.p_expr->vApplyCast_x(p_expr->xCast());
 
   if (0 == i_Key)
     vApplyCast_x(p_expr->xCast());
 
 
   if (bAppend)
-    vAppendChild(p_direction_new);
+    vAppendChild(pCI->E.p_direction);
   else
-    Card::vPushChild(p_direction_new);
+    Card::vPushChild(pCI->E.p_direction);
 
+  //vRenumberAll_expr(SF_KEY_COL);
 }
 
 /*----------------------------------------------------------------------------*/
