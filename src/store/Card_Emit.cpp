@@ -154,7 +154,6 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         RASSERT(pCI->E.p_key);
 
         i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
-/**Z_KEY_DIRECTION craft root*/
         Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
         Symbol *pSym_tblCol = p_expr_key->pFirst_tblCol();
         //p_needed->vDump(__func__);
@@ -331,7 +330,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
          p_expr_prjCol->vAppendChild(p_expr_runkey->pSub_direction()->pDupCardRecursive());
        }
 
-       pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol, true);
+       pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol, true, true);
      }
    }
 

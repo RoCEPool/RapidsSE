@@ -59,7 +59,7 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
     if (!pCI->E.p_expr)
       continue;
 
-     pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI->E.p_expr, true);
+     pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI->E.p_expr, true, true);
   }
   //pCI->G.p_key->vDump();
 }

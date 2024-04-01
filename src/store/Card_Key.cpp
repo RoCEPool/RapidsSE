@@ -111,7 +111,7 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add a key expr to this key based on given projection expr                  */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
+void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc, bool bAppend)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -129,7 +129,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   else {
     p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, C_DESC);
   }
-  vAppendChild(p_direction_new);
 
   Card_Expr* p_expr_new = new Card_Expr;
   p_expr_new->pSymbol()->vApplyFacet(SF_KEY_COL,i_Key);
@@ -147,6 +146,12 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 
   if (0 == i_Key)
     vApplyCast_x(p_expr->xCast());
+
+
+  if (bAppend)
+    vAppendChild(p_direction_new);
+  else
+    Card::vPushChild(p_direction_new);
 
 }
 
