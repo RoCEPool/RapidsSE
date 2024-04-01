@@ -22,7 +22,7 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vFacetReset();
+  vResetFacets();
   vCastReset();
 
   m_pProperties = nullptr;
@@ -42,7 +42,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vFacetReset();
+  vResetFacets();
   vCastReset();
   m_pProperties = nullptr;
 
@@ -63,7 +63,7 @@ Symbol::Symbol(eSF eFacet, Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vFacetReset();
+  vResetFacets();
 	//m_xTypeId;
   m_pProperties = nullptr;
 
@@ -3555,7 +3555,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
   char cTableSyn_actual = cTblSyn();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
-  vFacetReset();
+  vResetFacets();
   vFacetSprint(SF_TBL_SYN_rep,"$T%c"_Stz, cTableSyn_actual);
 
   RASSERT(bHasFacet(SF_TBL_SYN_rep));
@@ -3665,7 +3665,7 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
 /*----------------------------------------------------------------------------*/
 /* rotate facet to top                                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacetReset(void)
+void Symbol::vResetFacets(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

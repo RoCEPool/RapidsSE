@@ -136,6 +136,9 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
 
   p_rpnCalc->vApplyCast_x(p_expr->xCast());
   pCI->E.p_expr->vApplyCast_x(p_expr->xCast());
+  //pCI->E.p_expr->vDump(__func__);
+
+  //p_expr->pClone()->vDump(__func__);
 
   if (0 == i_Key)
     vApplyCast_x(p_expr->xCast());

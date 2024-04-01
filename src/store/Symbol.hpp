@@ -179,6 +179,7 @@ namespace STORE
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
+    void vResetFacets(void);
     eRO  eRlnOp(void);
 
     bool bSameCast(Symbol* pSymbol_arg);
@@ -295,7 +296,6 @@ namespace STORE
     void vFacet_Rw_Aggregates(Stz* szAggregates);
 
     void vFacetCut(i8 i_Facet_cut);
-    void vFacetReset(void);
     void vFacetSet(eSF eFacet, Stz* szFacet);
     void vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);
