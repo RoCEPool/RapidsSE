@@ -123,21 +123,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
   else
     pCI->E.p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_DESC);
 
-//  pCI->E.p_expr = new Card_Expr;
-//  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,i_Key);
-//  pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
-//
-//  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-//  if (p_expr->pSub_rpnCalc(C_NOT_NULL))
-//    p_rpnCalc->vAppendChild(p_expr->pGet_term(0)->pDupCardRecursive());
-//  else
-//    NEVER_REACH
-//  pCI->E.p_expr->vAppendChild(p_rpnCalc);
-//
-//  p_rpnCalc->vApplyCast_x(p_expr->xCast());
-//  pCI->E.p_expr->vApplyCast_x(p_expr->xCast());
-//  pCI->E.p_expr->vDump(__func__);
-
   pCI->E.p_expr = p_expr->pClone();
   pCI->E.p_expr->pSymbol()->vResetFacets();
   pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,i_Key);
@@ -152,7 +137,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
   else
     Card::vPushChild(pCI->E.p_direction);
 
-  //vRenumberAll_expr(SF_KEY_COL);
+  vRenumberAll_expr(SF_KEY_COL);
 }
 
 /*----------------------------------------------------------------------------*/

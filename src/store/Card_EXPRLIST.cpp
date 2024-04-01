@@ -260,16 +260,8 @@ void Card_EXPRLIST::vRenumberAll_expr(eSF eFacet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bIsKeyExpr = bIsCard(CK_s_KEY);
-  if (bIsKeyExpr) {
-    RASSERT(SF_KEY_COL == eFacet);
-  }
-  else {
-    RASSERT(SF_EXP_COL == eFacet);
-  }
-
 /**Z_KEY_DIRECTION renumber*/
-  if (bIsKeyExpr) {
+  if (SF_KEY_COL == eFacet) {
     for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/)
       xKey.p_expr(C_SUB)->pSymbol()->vApplyFacet(eFacet,xKey.i_Child()+1);
   }
