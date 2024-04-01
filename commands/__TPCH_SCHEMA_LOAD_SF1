@@ -86,6 +86,7 @@ file _supplier;
 
 // Customer (partitioned on c_custkey)
 create        index IxC_CUSTKEY     on Customer (C_CUSTKEY);
+create        index IxC_NATIONKEY   on Customer (C_NATIONKEY);
 
 // Lineitem (partitioned on l_orderkey)
 create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
