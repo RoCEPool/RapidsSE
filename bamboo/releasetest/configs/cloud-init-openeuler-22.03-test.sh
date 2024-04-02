@@ -336,7 +336,7 @@ yum update -y
 
 # Need to have
 status "Installing gcc et al"
-yum install -y gcc-c++ libatomic nmap-ncat iproute bc ncurses tar vim unzip
+yum install -y gcc-c++ libatomic nmap-ncat iproute bc ncurses tar vim unzip rsync
 
 # Nice to have
 # NOTE: no bmon, nload
