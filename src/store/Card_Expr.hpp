@@ -21,7 +21,7 @@ namespace STORE
     static void vAssemble_injCrlRsl(CardIter* pCI);
 
     static Card_Expr* pCraft_expr_Of_expr(Card_Expr* p_expr, i8 i_Col);
-    static Card_Expr* pCraft_expr_Of_symbol(Symbol* pSymbol, Cast xCast);
+    static Card_Expr* pCraft_expr_Of_symbol(Symbol* pSymbol);
     static Card_Expr* pCraft_expr_Of_term(Card_Term* p_term);
     static Card_Expr* pCraft_expr_keyCol_Of_term(Card_Term *p_term);
     static Card_Expr* pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,

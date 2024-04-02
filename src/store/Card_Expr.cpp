@@ -107,8 +107,8 @@ Card_Expr* Card_Expr::pCraft_expr_Of_expr(Card_Expr* p_expr, i8 i_Col)
 
   RASSERT(CT_NONE != p_expr->eCTVal());
 
-  Symbol xSymbol_ExpCol(SF_EXP_COL, i_Col);
-  Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSymbol_ExpCol, p_expr->xCast());
+  Symbol xSymbol_ExpCol(SF_EXP_COL, i_Col, p_expr->xCast());
+  Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSymbol_ExpCol);
 
   return p_expr_new;
 }
@@ -116,19 +116,19 @@ Card_Expr* Card_Expr::pCraft_expr_Of_expr(Card_Expr* p_expr, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol, Cast xCast)
+Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
 {
   _static_
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vApplyCast_x(xCast);
+  p_expr_new->vApplyCast_x(pSymbol->xCast());
 
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
-  p_rpnCalc_new->vApplyCast_x(xCast);
+  p_rpnCalc_new->vApplyCast_x(pSymbol->xCast());
   p_expr_new->vAppendChild(p_rpnCalc_new);
 
   Card_Term* p_term_new = (new Card_Term) ->SYM(pSymbol);
-  p_term_new->vApplyCast_x(xCast);
+  p_term_new->vApplyCast_x(pSymbol->xCast());
   p_rpnCalc_new->vAppendChild(p_term_new);
 
   return p_expr_new;

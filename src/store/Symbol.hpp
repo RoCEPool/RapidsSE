@@ -44,7 +44,9 @@ namespace STORE
   public:
     Symbol(void);
     Symbol(eSF eFacet, i8 iInt);
+    Symbol(eSF eFacet, i8 iInt, Cast xCast);
     Symbol(eSF eFacet, Stz* szArg);
+    Symbol(eSF eFacet, Stz* szArg, Cast xCast);
 
     ~Symbol(void);
 

@@ -77,8 +77,8 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
   else {
     pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
 
-    Symbol xSymbol(SF_EXP_COL, "$1"_Stz);
-    pCI->E.p_expr = Card_Expr::pCraft_expr_Of_symbol(&xSymbol, pCI->Flat.m_p_expr_crlKey->xCast());
+    Symbol xSymbol(SF_EXP_COL, "$1"_Stz, pCI->Flat.m_p_expr_crlKey->xCast());
+    pCI->E.p_expr = Card_Expr::pCraft_expr_Of_symbol(&xSymbol);
   }
 
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);

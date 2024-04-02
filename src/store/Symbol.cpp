@@ -58,6 +58,30 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Symbol::Symbol(eSF eFacet, i8 iInt, Cast xCast)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vResetFacets();
+  vCastReset();
+  m_pProperties = nullptr;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  vApplyFacet(eFacet, iInt);
+
+  vApplyCast(xCast);
+
+  RASSERT(bHasFacets());
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Symbol::Symbol(eSF eFacet, Stz* szArg)
     : Object(CN_SYMBOL)
 {
@@ -75,6 +99,30 @@ Symbol::Symbol(eSF eFacet, Stz* szArg)
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Symbol::Symbol(eSF eFacet, Stz* szArg, Cast xCast)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vResetFacets();
+  //m_xTypeId;
+  m_pProperties = nullptr;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  vApplyFacet(eFacet, szArg);
+
+  vApplyCast(xCast);
+
+  RASSERT(bHasFacets());
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

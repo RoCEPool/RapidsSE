@@ -91,6 +91,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   }
 
   p_emitted_unproject->vRenumberAll_expr();
+  p_emitted_unproject->vDump(__func__);
 }
 
 
