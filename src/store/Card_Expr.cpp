@@ -105,33 +105,14 @@ Card_Expr* Card_Expr::pCraft_expr_Of_expr(Card_Expr* p_expr, i8 i_Col)
 {
   _static_
 
-  //p_expr->vDump();
-
   RASSERT(CT_NONE != p_expr->eCTVal());
 
-  Symbol xSymbol_Dn(SF_EXP_COL, i_Col);
+  Symbol xSymbol_ExpCol(SF_EXP_COL, i_Col);
+  Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSymbol_ExpCol, p_expr->xCast());
 
-  Card_Expr* p_expr_simple = new Card_Expr;
-
-  p_expr_simple->pSymbol()->vApplyCastFacets(p_expr->pSymbol());
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->vApplyCast_x(p_expr->xCast());
-
-  //Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
-  //p_term->vApplyCast(p_expr->xCast());
-  //p_term->vDump();
-
-  Card_Term* p_term = (new Card_Term) -> SYM(SF_EXP_COL,i_Col);
-
-  p_rpnCalc->vAppendChild(p_term);
-
-
-  p_expr_simple->vAppendChild(p_rpnCalc);
-  p_expr_simple->vApplyCast_p(p_rpnCalc);
-
-  return p_expr_simple;
+  return p_expr_new;
 }
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
