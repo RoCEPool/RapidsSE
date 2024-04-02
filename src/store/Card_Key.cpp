@@ -61,7 +61,7 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 {
   _static_
 
-/**Z_KEY_DIRECTION promote*/
+/**Z_KEY_DIRECTION assemble*/
 
   pCI->E.p_key = new Card_Key;
   pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
@@ -70,31 +70,20 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
   pCI->E.p_key->vAppendChild(pCI->E.p_direction);
 
   eAL e_Level = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
-
   if (AL_PARTITION == e_Level) {
      pCI->E.p_expr = Card_Expr::pCraft_expr_Of_term(pCI->Flat.m_p_expr_crlKey->pGet_term0());
   }
   else {
-    pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
-
     Symbol xSymbol(SF_EXP_COL, "$1"_Stz, pCI->Flat.m_p_expr_crlKey->xCast());
     pCI->E.p_expr = Card_Expr::pCraft_expr_Of_symbol(&xSymbol);
   }
-
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
-
-  if (1 == pCI->E.p_key->nChildCards()) {
-    pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
-    pCI->E.p_direction->vApplyCast_x(pCI->E.p_expr->xCast());
-  }
-
   pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
 
-  //Z_KEY_DIRECTION
-  for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-    pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,pCI->i_Target()+1);
-  }
+  pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
+  pCI->E.p_direction->vApplyCast_x(pCI->E.p_expr->xCast());
 
+  pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
 }
 
 /*----------------------------------------------------------------------------*/
