@@ -19,12 +19,13 @@ namespace STORE
 
     //-----------------------------------------------------------
     static void vAssemble_injCrlRsl(CardIter* pCI);
+    static Card_Expr* pCraft_expr_Of_symbol(Symbol* pSymbol, Cast xCast);
     static Card_Expr* pCraft_expr_gby_From_expr_crlKey(Card_Expr* pExpr_crlKey);
     static Card_Expr* pCraft_expr_project_From_expr_gbyAgg(CardIter* pCI, Card_Expr* p_expr_gbyAgg);
-    static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
-
     static Card_Expr* pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
                                          char cTblSyn, i8 iTblCol);
+    static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
+
     static Card_Expr* pCast_expr_term_expCol(Card_Term* p_term);
 
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);

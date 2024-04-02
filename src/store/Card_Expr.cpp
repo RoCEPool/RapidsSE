@@ -64,6 +64,10 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
 {
   _static_
@@ -92,6 +96,27 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
 
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol, Cast xCast)
+{
+  _static_
+
+  Card_Expr* p_expr_new = new Card_Expr;
+  p_expr_new->vApplyCast_x(xCast);
+
+  Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
+  p_rpnCalc_new->vApplyCast_x(xCast);
+  p_expr_new->vAppendChild(p_rpnCalc_new);
+
+  Card_Term* p_term_new = (new Card_Term) ->SYM(pSymbol);
+  p_term_new->vApplyCast_x(xCast);
+  p_rpnCalc_new->vAppendChild(p_term_new);
+
+  return p_expr_new;
 }
 
 /*----------------------------------------------------------------------------*/
