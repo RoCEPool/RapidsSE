@@ -177,26 +177,6 @@ Card_Expr* Card_Expr::pCraft_expr_keyCol_Of_term(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* craft a casted expr for given column                                       */
 /*----------------------------------------------------------------------------*/
-//Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
-//                                            char cTblSyn, i8 iTblCol)
-//{
-//  _static_
-//
-//  Cast xCast;
-//  xCast.m_xTypeId       = pColumn->xColumnTypeId();
-//  xCast.m_nTypeLength   = pColumn->iColumnLength();
-//  xCast.m_nTypeScale    = pColumn->iColumnScale();
-//  xCast.m_bTypeNullable = pColumn->bIsNullable();
-//
-//  Stz* szNmdCol = pColumn->szColNm();
-//
-//  Symbol xSym(SF_TBL_COL, cTblSyn, iTblCol);
-//
-//  Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSym);
-//
-//  return p_expr_new;
-//}
-/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
                                             char cTblSyn, i8 iTblCol)
 {
@@ -208,22 +188,16 @@ Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
   xCast.m_nTypeScale    = pColumn->iColumnScale();
   xCast.m_bTypeNullable = pColumn->bIsNullable();
 
-  Stz* szNmdCol = pColumn->szColNm();
+  Symbol xSym(SF_TBL_COL, cTblSyn, iTblCol);
+  xSym.vApplyCast(xCast);
 
-  Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vApplyCast_x(xCast);
+  Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSym);
+
+  Stz* szNmdCol = pColumn->szColNm();
   p_expr_new->pSymbol()->vApplyFacet(SF_NMD_COL, szNmdCol);
   p_expr_new->pSymbol()->vApplyFacet(SF_EXP_COL, iExpCol);
-
-  Card_RpnCalc *p_rpnCalc_new = (new Card_RpnCalc);
-  p_rpnCalc_new->vApplyCast_x(xCast);
-  p_expr_new->vAppendChild(p_rpnCalc_new);
-
-  Card_Term *p_term_new = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iTblCol);
-  p_term_new->vApplyCast_x(xCast);
-  p_rpnCalc_new->vAppendChild(p_term_new);
-
-  p_expr_new->pSymbol()->vApplyFacets(p_term_new->pSymbol());
+  p_expr_new->pSymbol()->vApplyFacet(SF_TBL_COL, cTblSyn, iTblCol);
+  p_expr_new->pSymbol()->vApplyCast(xCast);
 
   return p_expr_new;
 }

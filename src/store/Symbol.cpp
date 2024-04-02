@@ -3551,7 +3551,7 @@ void Symbol::vFacet_Tbl_Col(char cTblSyn, i8 iTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vFacetSprint(SF_TBL_COL, "$$%c.%lld"_Stz, cTblSyn, iTblCol);
 
