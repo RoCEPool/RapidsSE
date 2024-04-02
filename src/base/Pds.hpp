@@ -55,7 +55,7 @@ namespace BASE
 
     Pds(RowPix* pRowPix, eBT eBufferType = BT_DATA);                          // When Pds is used to store rows
     Pds(StreamDef* pStreamDef, bool bAddKeyHash = false, eBT eBufferType = BT_DATA);  // When Pds is used to store rows
-    Pds(i8 nBytes, CompareFunc fpCompare);                                    // When Pds is used to track BufferIds
+    Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap=true);                   // When Pds is used to track BufferIds
     ~Pds(void) noexcept(false);
 
     static void* aGetCellArray(Pds* pPdsRowBuffer, i8 iRow);
@@ -98,6 +98,7 @@ namespace BASE
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);
     void            vValidate(void);
+    bool            bValidPdsBuffer(void);
     bool            bVerify(void);
 
     // private:
@@ -109,8 +110,6 @@ namespace BASE
     void            vPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[]);
     bool            bSetNextSLBlock(SkipListBlock* pStartBlk, SkipListBlock* pEndBlock, i8 iLevel);
     bool            bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);
-
-    static i8     iIntCompare(void* aItem_l, void* aItem_r);
 
     // Row helper
     void      vAdvanceCursor(void);

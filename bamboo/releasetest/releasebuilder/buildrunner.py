@@ -274,7 +274,7 @@ class BuildRunner:
         LOG.debug(f"About to copy the cloud-init-log from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+            ssh.run_scp(src, dest, timeout=command_timeout, ctx=OP_CTX)
 
         except errors.SshError:
             LOG.error(f"Error while copying the cloud-init-log from {src} to {dest}.")
@@ -297,7 +297,7 @@ class BuildRunner:
         LOG.debug(f"About to copy the texlive log from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+            ssh.run_scp(src, dest, timeout=command_timeout, ctx=OP_CTX)
 
         except errors.SshError:
             LOG.error(f"Error while copying the texlive log from {src} to {dest}.")

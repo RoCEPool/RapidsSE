@@ -68,7 +68,7 @@ void vAssignVchHash(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
 	vExtern_RunningHash(&iKeyHash, (byte*)szMixVal, strlen(szMixVal));
-	printf("Running hash of %s %lld: %lld\n", szMixVal, strlen(szMixVal), iKeyHash);
+	//printf("Running hash of %s %lld: %lld\n", szMixVal, strlen(szMixVal), iKeyHash);
 #endif
 	// marker-end
 }

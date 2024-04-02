@@ -27,17 +27,17 @@ CHECK_GCC_VER := $(or $(IS_TGT_CLEAN), $(IS_TGT_CENTOS7DEBUG), $(IS_TGT_CENTOS7R
 # $(info $$CHECK_GCC_VER is [${CHECK_GCC_VER}])
 
 ifeq ($(CHECK_GCC_VER),checkGccVer)
-  # First check for gcc version 5 or later. This is needed by ANTLR.
-  GCC_VERSION_GTE5 := $(shell echo `gcc -dumpversion | cut -f1-2 -d.` \>= 5 | bc)
-  ifeq ($(GCC_VERSION_GTE5), 0)
+  # First check for gcc version 7 or later. This is needed by ANTLR.
+  GCC_VERSION_GTE7 := $(shell echo `gcc -dumpversion | cut -f1-2 -d.` \>= 7 | bc)
+  ifeq ($(GCC_VERSION_GTE7), 0)
     define ERR
-gcc version 5 or later is required. You have v$(shell gcc -dumpversion).
+gcc version 7 or later is required. You have v$(shell gcc -dumpversion).
 
-To install gcc >5 on Centos7 run the following commands:
-  sudo yum install libuuid-devel centos-release-scl devtoolset-8-gcc*
+To install gcc >7 on Centos7 run the following commands:
+  sudo yum install libuuid-devel centos-release-scl devtoolset-11-gcc*
 
 Then from the Source directory run the following command to build rapidsse:
-  scl enable devtoolset-8 'make -j 8'
+  scl enable devtoolset-11 'make -j 8'
 
 
     endef

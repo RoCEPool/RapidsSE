@@ -46,7 +46,10 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 #else
   m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 #endif
-  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+  HashMap* pHashMap = AM::pHashMap();
+  eBI eBufferEntry = pHashMap->eClassToBI(eClassNo);
+  pHashMap->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, eBufferEntry);
+  m_bHashMap = true;
 
   m_tLglPtn     = C_UNKNOWN;
   
@@ -57,11 +60,50 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   m_pTable_dbuff = nullptr;
   m_pStreamDef_dbuff = nullptr;
 
-  m_bOutputQueue = false;
-
   m_tTxnNo = C_UNKNOWN;
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+DataBuffer::DataBuffer(bool bAddToHashMap, eCN eClassNo, bool bIsPermanent)
+    : Operand(eClassNo)
+    , m_okLock(this)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+
+  //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
+
+  m_iBufferNo  = iBufferNo();
+
+#ifdef WITHOUT_BUFFERIDHASHMAP
+  // TODO: Hack for performance test
+  m_oBufferId.m_pvAsAddress = this;
+#else
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
+#endif
+  if(bAddToHashMap) {
+    HashMap* pHashMap = AM::pHashMap();
+    eBI eBufferEntry = pHashMap->eClassToBI(eClassNo);
+    pHashMap->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this, eBufferEntry);
+  }
+
+  m_bHashMap = bAddToHashMap;
+
+  m_tLglPtn     = C_UNKNOWN;
+
+  m_iBufferHeight = 0;
+  m_oWhenNewed.vNow();
+  m_bIsPermanent = bIsPermanent;
+
+  m_pTable_dbuff = nullptr;
+  m_pStreamDef_dbuff = nullptr;
+
+  m_tTxnNo = C_UNKNOWN;
+
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,10 +113,8 @@ DataBuffer::~DataBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 #ifdef WITHOUT_BUFFERIDHASHMAP
-// TODO: Hack for performance test
-  AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
 #else
-  if(m_oBufferId.m_iAsI8 != 0)
+  if(m_oBufferId.m_iAsI8 != 0 && m_bHashMap)
     AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
 #endif
 
@@ -297,6 +337,26 @@ void DataBuffer::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vHashMap(bool bInHashMap)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bHashMap = bInHashMap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+bool DataBuffer::bHashMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bHashMap;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set logical partition                                                      */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vLglPtn(LglPtn tLglPtn)
@@ -339,26 +399,6 @@ i8 DataBuffer::iBufferNo(void)
   i8 i_PoolBuffer = pPoolBuffer->iBufferNo();
 
   return i_PoolBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get output queue flag                                                      */
-/*----------------------------------------------------------------------------*/
-bool DataBuffer::bOutputQueued(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  return m_bOutputQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set output queue flag                                                      */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vOutputQueued(bool bOutputQueued)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_bOutputQueue = bOutputQueued;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -635,9 +635,32 @@ Object* Socket::pObjectRecv(eCN eClass)
       pDataBuffer->vSetBufferId(
           AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
 #endif
-      AM::pHashMap()->vInsertKeyValue(
-          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-          (Object *) pReceivedObject);
+      if(eClass == BASE::CN_CRWBUFFER) {
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject,
+            BI_CRW);
+      } else if(eClass == BASE::CN_CSVBUFFER){
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject,
+            BI_CSV);
+      } else if(eClass == BASE::CN_ENTBUFFER){
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject,
+            BI_ENT);
+      } else if(eClass == BASE::CN_PDS){
+        ASSERT(eClass == BASE::CN_PDS);
+        Pds* pPds = _pPds(pDataBuffer);
+        pPds->m_fpCompare = PdsUtils::iIntCompare;
+        AM::pHashMap()->vInsertKeyValue(
+            (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+            (Object *) pReceivedObject,
+            BI_ROW);
+      } else {
+        ASSERT(0);
+      }
     }
 
   m_pTotup->vAdd(eClass, nSize);

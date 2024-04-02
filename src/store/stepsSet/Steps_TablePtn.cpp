@@ -44,7 +44,6 @@ void Step::vAddSteps_TablePtn(void)
   vAddStep("TablePtn[].extractBufferId"_Stz,  &Step::vTablePtnExtractBufferId);
   vAddStep("TablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
   vAddStep("TablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
-  vAddStep("TablePtn[].rootBufferId"_Stz ,    &Step::vTablePtnRootBufferId);
   vAddStep("TablePtn[].rootPdsCursor"_Stz ,   &Step::vTablePtnRootPdsCursor);
   vAddStep("TablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
   vAddStep("TablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
@@ -90,7 +89,10 @@ void Step::vTablePtnAttemptGrabRead(void)
   // Save the pds address for each table partition in the thread TLS here
 
   if(bSuccess) {
-    MY::vPdsCrwTablePtn(pTablePtn->pPdsCrwTablePtn());
+    // Increments the atomic counter for this buffer in the hash map
+    Pds* pRootPds = _pPds(AM::pHashMap()->pValueAt(pTablePtn->oRootBufferId().m_pvAsAddress));
+
+    MY::vPdsCrwTablePtn(pRootPds);
   }
   
   m_pDataStack->vPushInt(bSuccess);
@@ -111,7 +113,10 @@ void Step::vTablePtnAttemptGrabWrite(void)
   // attempt to grab the write lock
   bool bSuccess = pTablePtn->bGrabWrite();
   if(bSuccess) {
-    MY::vPdsCrwTablePtn(pTablePtn->pPdsCrwTablePtn());
+    // Increments the atomic counter for this buffer in the hash map
+    Pds* pRootPds = _pPds(AM::pHashMap()->pValueAt(pTablePtn->oRootBufferId().m_pvAsAddress));
+
+    MY::vPdsCrwTablePtn(pRootPds);
   }
   
   m_pDataStack->vPushInt(bSuccess);
@@ -144,6 +149,12 @@ void Step::vTablePtnDropRead(void)
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
+  Pds* pPds = _pPds(MY::pPdsCrwTablePtn());
+
+  // Decrement the atomic counter for this buffer in the hash map
+  AM::pHashMap()->vDropKeyLock(pPds->oGetBufferId().m_pvAsAddress);
+
+  // Set the root pds address to null in the thread tls
   MY::vPdsCrwTablePtn(nullptr);
     
   // drop the read lock
@@ -162,6 +173,12 @@ void Step::vTablePtnDropWrite(void)
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
+  Pds* pPds = _pPds(MY::pPdsCrwTablePtn());
+
+  // Decrement the atomic counter for this buffer in the hash map
+  AM::pHashMap()->vDropKeyLock(pPds->oGetBufferId().m_pvAsAddress);
+
+  // Set the root pds address to null in the thread tls
   MY::vPdsCrwTablePtn(nullptr);
 
   // drop the write lock
@@ -240,27 +257,17 @@ void Step::vTablePtnRoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* TablePtn[].rootBufferId -- get the tablePtn root buffer id                 */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnRootBufferId(void)
-{
-  ENTRY();
-
-  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
-  m_pDataStack->vPushPtr((Object*)pTablePtn->oRootBufferId().m_pvAsAddress);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* TablePtn[].rootPdsCursor -- get the root block of the BufferId pds of the CrwTablePtn*/
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnRootPdsCursor(void)
 {
   ENTRY();
+  // Get the Pds addr from the Thread TLS
+  // NOTE: Only use this step after a grabRead or grabWrite on this tableptn
+  Pds* pPds = _pPds(MY::pPdsCrwTablePtn());
 
-  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
-  Pds* pPds = (Pds*)pTablePtn->pPdsCrwTablePtn();
+//  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
+//  Pds* pPds = _pPds(AM::pHashMap()->pValueAt(pTablePtn->oRootBufferId().m_pvAsAddress));
   PdsCursor* pCursor = new PdsCursor(pPds);
 
   m_pDataStack->vPushPtr((Object*)pCursor);

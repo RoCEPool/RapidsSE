@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/json5.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/json5.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -17,27 +17,27 @@ namespace Parser {
 class  json5BaseVisitor : public json5Visitor {
 public:
 
-  virtual antlrcpp::Any visitJson5(json5Parser::Json5Context *ctx) override {
+  virtual std::any visitJson5(json5Parser::Json5Context *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitObj(json5Parser::ObjContext *ctx) override {
+  virtual std::any visitObj(json5Parser::ObjContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPair(json5Parser::PairContext *ctx) override {
+  virtual std::any visitPair(json5Parser::PairContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitKey(json5Parser::KeyContext *ctx) override {
+  virtual std::any visitKey(json5Parser::KeyContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitValue(json5Parser::ValueContext *ctx) override {
+  virtual std::any visitValue(json5Parser::ValueContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitArr(json5Parser::ArrContext *ctx) override {
+  virtual std::any visitArr(json5Parser::ArrContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : antbl_action
 
+  0 locals| iLglPtn |
+
   <tableNm> op__table not if
     false
     exit
@@ -29,12 +31,21 @@
   // add a row for each table ptn
   [grid].ptnsPerNode 0
   do
+    // get the LglPtn
+    I Table[].toLglPtn to iLglPtn
+
+    // Get the TablePtn
+    I Table[].tablePtnGet to TablePtn[]
+    TablePtn[].grabRead_yieldLoop
+
     // analyze table
-    I Table[] Pds[].addAnalyzeTable  not if
+    iLglPtn TablePtn[] Pds[].addAnalyzeTable not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
-      I Table[] Pds[].addAnalyzeTable assert
+      iLglPtn TablePtn[] Table[] Pds[].addAnalyzeTable assert
     then
+
+    TablePtn[].dropRead
 
   loop
 

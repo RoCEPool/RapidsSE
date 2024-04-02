@@ -371,7 +371,7 @@ antlrcpp::Any SqlPlanner::visitExplainCmd(Parser::sqlParser::ExplainCmdContext* 
         pFormat = nullptr;
       }
 
-      pFormat = pOptionsCtx->explainFormat()->accept(this).as<Text*>();
+      pFormat =  std::any_cast<Text *>(pOptionsCtx->explainFormat()->accept(this));
 
     } else if (pOptionsCtx->explainStageList()) {
 
@@ -380,7 +380,7 @@ antlrcpp::Any SqlPlanner::visitExplainCmd(Parser::sqlParser::ExplainCmdContext* 
         pStageList = nullptr;
       }
 
-      pStageList = pOptionsCtx->explainStageList()->accept(this).as<QueryNode *>();
+      pStageList = std::any_cast<QueryNode *>(pOptionsCtx->explainStageList()->accept(this));
       ASSERT(StageRangeList::bIsOfType(pStageList));
 
     } else if (pOptionsCtx->WITH_NAMES()) {
@@ -472,7 +472,7 @@ antlrcpp::Any SqlPlanner::visitExplainStageList(sqlParser::ExplainStageListConte
 
   for (sqlParser::ExplainRangeContext* pRangeCtx : pCtx->explainRange()) {
     // Visit each explain range and add it to the list
-    QueryNode* pRange = pRangeCtx->accept(this).as<QueryNode*>();
+    QueryNode* pRange = std::any_cast<QueryNode *>(pRangeCtx->accept(this));
     ASSERT(StageRange::bIsOfType(pRange));
 
     pStageList->vAppendChild(pRange);
@@ -491,11 +491,11 @@ antlrcpp::Any SqlPlanner::visitExplainRange(sqlParser::ExplainRangeContext *pCtx
   QueryNode* pBegin;
   QueryNode* pEnd = nullptr;
 
-  pBegin = pCtx->begin->accept(this).as<QueryNode*>();
+  pBegin =  std::any_cast<QueryNode *>(pCtx->begin->accept(this));
   ASSERT(ValueObject::bIsOfType(pBegin));
 
   if (pCtx->end) {
-    pEnd = pCtx->end->accept(this).as<QueryNode*>();
+    pEnd = std::any_cast<QueryNode *>(pCtx->end->accept(this));
     ASSERT(ValueObject::bIsOfType(pEnd));
   }
 

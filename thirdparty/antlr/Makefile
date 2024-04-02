@@ -9,7 +9,7 @@ SRCDIR := $(CURRENT_PATH)/src
 INCDIR := $(CURRENT_PATH)/include
 
 LIBANTLR := libantlr4-runtime.a
-SRCZIP := $(CURRENT_PATH)/antlr4-cpp-runtime-4.8-source.zip
+SRCZIP := $(CURRENT_PATH)/antlr4-cpp-runtime-4.13.1-source.zip
 
 # Let's work out what OS we are on 
 UNAME_S := $(shell uname -s)

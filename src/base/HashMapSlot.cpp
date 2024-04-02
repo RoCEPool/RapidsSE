@@ -45,18 +45,11 @@ void HashMapSlot::operator delete(void* pHashMapSlotAddress)
 /*----------------------------------------------------------------------------*/
 HashMapSlot::HashMapSlot(void)
 : Object(CN_HASHMAPSLOT)
+, m_okSlotLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
 
-  m_uNoOfSlots = C_INIT_HASHMAP_SIZE;
-
-  for(u8 i =0; i < m_uNoOfSlots; i++)
-  {
-    HashMapEntry* pDummyEntry = new HashMapEntry(nullptr, nullptr);
-    pDummyEntry->m_pNext = nullptr;
-    m_pEntry[i] = pDummyEntry;
-    m_okSlotLock[i].vInit(m_pEntry[i]);
-  }
+  m_pPdsOfEntries = new Pds_t<HashMapEntry>(PdsUtils::iHashMapEntryKeyCompare, false);
 
   _checkInitialised_(CN_HASHMAPSLOT);
 
@@ -69,28 +62,7 @@ HashMapSlot::HashMapSlot(void)
 HashMapSlot::~HashMapSlot(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
-  for(u8 i = 0; i < m_uNoOfSlots; i++)
-  {
-    if(m_pEntry[i] != nullptr)
-    {
-      HashMapEntry* uIter1 = m_pEntry[i];
-      HashMapEntry* uIter2;
-      while(uIter1 != nullptr)
-      {
-        uIter2 = uIter1->m_pNext;
-        delete uIter1;
-        uIter1 = uIter2;
-      }
-    }
-  }
-}
 
-/*----------------------------------------------------------------------------*/
-/* Get number of slots                                                        */
-/*----------------------------------------------------------------------------*/
-u8 HashMapSlot::uGetNoSlots(void)
-{
-  return m_uNoOfSlots;
 }
 
 /*----------------------------------------------------------------------------*/
