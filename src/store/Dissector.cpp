@@ -1511,7 +1511,14 @@ Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
 
 
 /**Z_KEY_DIRECTION dissect*/
+
     // ensure expr has SF_DIRECTION
+#ifdef Z_NO_DIRECTION
+    if (! p_expr->pSymbol()->bHasFacet(SF_DIRECTION))
+      p_expr->pSymbol()->vApplyFacet(SF_DIRECTION,C_ASC);
+
+     p_key->vAppendChild(p_expr);
+#else
     if (! p_expr->pSymbol()->bHasFacet(SF_DIRECTION))
       p_expr->pSymbol()->vApplyFacet(SF_DIRECTION,C_ASC);
 
@@ -1520,6 +1527,7 @@ Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
     p_direction->pSymbol()->vApplyFacet(p_expr->pSymbol()->aFacet(SF_DIRECTION));
     p_direction->vAppendChild(p_expr);
     p_key->vAppendChild(p_direction);
+#endif
 
     i_Expr++;
   }

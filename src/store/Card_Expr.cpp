@@ -863,6 +863,20 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
 /**Z_KEY_DIRECTION validation*/
+#ifdef Z_NO_DIRECTION
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_s_CONSTRAINT,
+                                     CK_t_EMIT,
+                                     CK_o_FILTER,
+                                     CK_s_KEY,
+
+                                     CK_c_FLAT,
+                                     CK_c_FOLD,
+                                     CK_s_INJECTABLE,
+                                     CK_s_NEEDED,
+                                     CK_STREAMKEY,
+                                     CK_NONE);
+#else
   (void)Card::eValidate_parentEither(pCI,
                                      CK_s_CONSTRAINT,
                                      CK_DIRECTION,
@@ -876,6 +890,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_s_NEEDED,
                                      CK_STREAMKEY,
                                      CK_NONE);
+#endif
 
   eValidate_mustEither(CK_BOOLPRED, CK_RPNCALC, CK_NONE);
 
