@@ -41,20 +41,6 @@ Card_GbyAgg::~Card_GbyAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* bump key & projection of this gbyAgg rightwards by given amount            */
-/*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_Key* p_key = pSub_key())
-    p_key->vBump_Rightwards(nBumpBy);
-
-  if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vBump_Rightwards(nBumpBy);
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new <gbyAgg>/<projection>/<key> by copying <gbyAgg>/<key>         */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)

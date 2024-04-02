@@ -80,19 +80,6 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
   }
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Kid xEXPRLIST(this);
-  while (xEXPRLIST.bEach(CK_EXPR))
-    xEXPRLIST.p_expr()->vBump_expCol(nBumpBy);
-}
-
 /*----------------------------------------------------------------------------*/
 /* does this expression list contain given term?                              */
 /*----------------------------------------------------------------------------*/

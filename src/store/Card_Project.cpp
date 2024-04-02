@@ -100,17 +100,6 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vBump_Rightwards(nBumpBy);
-}
-
-/*----------------------------------------------------------------------------*/
 /* craft emit for early project                                               */
 /*----------------------------------------------------------------------------*/
 Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
