@@ -101,13 +101,13 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCraft_expr_Of_expr(Card_Expr* p_expr, i8 i_Col)
+Card_Expr* Card_Expr::pCraft_expr_Of_expr(Card_Expr* p_expr, i8 iExpCol)
 {
   _static_
 
   RASSERT(CT_NONE != p_expr->eCTVal());
 
-  Symbol xSymbol_ExpCol(SF_EXP_COL, i_Col, p_expr->xCast());
+  Symbol xSymbol_ExpCol(SF_EXP_COL, iExpCol, p_expr->xCast());
   Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSymbol_ExpCol);
 
   return p_expr_new;
@@ -177,8 +177,8 @@ Card_Expr* Card_Expr::pCraft_expr_keyCol_Of_term(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* craft a casted expr for given column                                       */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
-                                          char cTblSyn, i8 iTblCol)
+Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
+                                            char cTblSyn, i8 iTblCol)
 {
   _static_
 

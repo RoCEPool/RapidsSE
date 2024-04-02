@@ -408,7 +408,7 @@ void Card_Emit::vInject_expr_nmdCol_table(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr_nmdCol =
-        Card_Expr::pCraft_expr_nmdCol(pColumn, iExpCol++, cTblSyn, i_Col + 1);
+        Card_Expr::pCraft_expr_of_nmdCol(pColumn, iExpCol++, cTblSyn, i_Col + 1);
 
     pCI->E.p_emit->vAppendChild(p_expr_nmdCol);
   }
