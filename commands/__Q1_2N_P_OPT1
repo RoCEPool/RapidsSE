@@ -19,7 +19,7 @@ begin
                 , type DECIMAL as L_QUANTITY L_QUANTITY
                 , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE
                 , type DECIMAL as L_DISCOUNT L_DISCOUNT
-                , type DECIMAL as L_QUANTITY L_QUANTITY
+                , type DECIMAL as L_TAX L_TAX
                 , type DATE $11"
   | filter    " type BOOLEAN $7 DATE '1998-09-01' <="
   |  gbyAgg    " groupBy

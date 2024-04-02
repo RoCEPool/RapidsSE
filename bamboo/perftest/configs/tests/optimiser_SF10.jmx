@@ -1747,7 +1747,7 @@ begin
                 , type DECIMAL as L_QUANTITY L_QUANTITY
                 , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE
                 , type DECIMAL as L_DISCOUNT L_DISCOUNT
-                , type DECIMAL as L_QUANTITY L_QUANTITY
+                , type DECIMAL as L_TAX L_TAX
                 , type DATE $11&quot;
   | filter    &quot; type BOOLEAN $7 DATE &apos;1998-09-01&apos; &lt;=&quot;
   |  gbyAgg    &quot; groupBy
@@ -1825,8 +1825,7 @@ stage S07 on origin :
     | sink
     | first
 
-end ;
-</stringProp>
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>

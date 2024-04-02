@@ -45,3 +45,25 @@ end ;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+pipeline unamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      tables
+    | scanStepOp "step::xyz"
+    | dynamic
+    | next
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
