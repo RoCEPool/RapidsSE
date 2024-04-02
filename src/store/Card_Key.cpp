@@ -174,7 +174,9 @@ Stz* Card_Key::szDirection(i8 i_Element)
 
   Card_Direction* p_direction = pGet_direction(i_Element);
 
-  return p_direction->szFacet(SF_DIRECTION);
+  Card_Expr* p_expr = p_direction->pSub_expr();
+
+  return p_expr->szFacet(SF_DIRECTION);
 }
 
 /*----------------------------------------------------------------------------*/
