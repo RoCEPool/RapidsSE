@@ -531,6 +531,25 @@ void Card_Emit::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Emit::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
+{
+  _static_
+
+  RASSERT(CT_NONE != p_expr_fold->eCTVal());
+
+  pCI->E.p_expr = Card_Expr::pCraft_expr_Of_term(p_expr_fold->pSub_term());
+  pCI->E.p_expr->pSymbol()->vApplyFacet(p_expr_fold->pSymbol()->aFacet(SF_SQY_RSL));
+  pCI->E.p_expr->pSymbol()->Y_vSet(P_Injected);
+
+  Symbol xSymbol_KeyCol(SF_KEY_COL,1);
+  pCI->E.p_expr->pGet_term0()->pSymbol()->vApplyFacets(&xSymbol_KeyCol);
+
+  vPushChild(pCI->E.p_expr);
+}
+
+/*----------------------------------------------------------------------------*/
 /* resolve prior expr of given term (find right-to-left)                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)

@@ -34,6 +34,8 @@ namespace STORE
     bool bIsLiterals(void);
     void vMapColumns(CardIter* pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
+    void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);
+
     Card_Expr* pResolve_expr(Card_Term* p_term);
     void vUpdate_expCol(Card_Emit* p_arriving, bool bAlt=false);
 
