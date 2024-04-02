@@ -80,7 +80,7 @@ create        index IxC_NATIONKEY   on Customer (C_NATIONKEY);
 
 // Lineitem (partitioned on l_orderkey)
 create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
-//create        index IxL_SHIPDATE    on Lineitem (L_SHIPDATE);
+create        index IxL_SHIPDATE    on Lineitem (L_SHIPDATE);
 create        index IxL_SUPPKEY     on Lineitem (L_SUPPKEY);
 create        index IxL_PARTKEY     on Lineitem (L_PARTKEY);
 create        index IxL_RECEIPTDATE on Lineitem (L_RECEIPTDATE);
