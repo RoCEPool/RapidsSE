@@ -75,7 +75,7 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
   eAL e_Level     = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
 
   if (AL_PARTITION == e_Level) {
-    pCI->E.p_expr = Card_Expr::pCraft_expr_project_From_expr_gbyAgg(pCI, pCI->E.p_expr);
+    pCI->E.p_expr = Card_Expr::pCraft_expr_keyCol_Of_term(pCI->E.p_expr->pGet_term0());
   }
   else {
     Symbol xSymbol_KeyCol(SF_KEY_COL,1);
@@ -145,27 +145,14 @@ Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* form project expression from gby key expression                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCraft_expr_project_From_expr_gbyAgg(CardIter* pCI, Card_Expr* p_expr_gbyAgg)
+Card_Expr* Card_Expr::pCraft_expr_keyCol_Of_term(Card_Term* p_term)
 {
   _static_
 
-  RASSERT(CT_NONE != p_expr_gbyAgg->eCTVal());
+  Card_Expr* p_expr = pCraft_expr_Of_term(p_term);
 
-  //Symbol xSymbol_Kn(SF_KEY_COL, p_expr_gbyAgg->i_Child() + 1);
-  Symbol xSymbol_Kn(SF_KEY_COL, 1);
-
-  Card_Expr*    p_expr    = new Card_Expr;
-  i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
-  p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = p_expr_gbyAgg->pSub_term()->pClone(&xSymbol_Kn);
-
-  p_expr->vAppendChild(p_rpnCalc);
-  p_rpnCalc->vAppendChild(p_term);
-
-  p_rpnCalc->vApplyCast_x(p_expr_gbyAgg->xCast());
-  p_term->vApplyCast_x(p_expr_gbyAgg->xCast());
-  p_expr->vApplyCast_x(p_expr_gbyAgg->xCast());
+  Symbol xSymbol_Kn(SF_KEY_COL, C_UNKNOWN);
+  p_expr->pGet_term0()->pSymbol()->vApplyFacets(&xSymbol_Kn);
 
   return p_expr;
 }
