@@ -226,17 +226,15 @@ i8 Card_Key::nElements(void)
 /*----------------------------------------------------------------------------*/
 /* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pFind_expr_key_Matches(Symbol *pSymbol_arg)
+Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
-
-    if (p_expr->pSymbol()->bMatches(pSymbol_arg))
-      return p_expr;
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+    if (pCI->E.p_expr->pSymbol()->bMatches(pSymbol_arg))
+      return _pCard_Expr(pCI->pEndTarget());
   }
 
   return nullptr;
@@ -245,15 +243,14 @@ Card_Expr* Card_Key::pFind_expr_key_Matches(Symbol *pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg)
+Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
-    if (p_expr->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
-      return p_expr;
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+    if (pCI->E.p_expr->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
+      return _pCard_Expr(pCI->pEndTarget());
   }
 
   return nullptr;

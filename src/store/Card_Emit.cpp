@@ -251,9 +251,9 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
         }
         else {
           RASSERT(pSym_term->bSingleFaceted(SF_KEY_COL));
-          RASSERT(pCI->E.p_key->pFind_expr_key_Matches(pSym_term));
+          RASSERT(pCI->E.p_key->pFind_expr_key_Matches(pCI,pSym_term));
         }
-        RASSERT(pCI->E.p_key->pFind_expr_key_Matches(SF_KEY_COL, pSym_term));
+        RASSERT(pCI->E.p_key->pFind_expr_key_Matches(pCI,SF_KEY_COL, pSym_term));
       }
       else
       if (pSym_term->bHasFacet(SF_EXP_COL)) {

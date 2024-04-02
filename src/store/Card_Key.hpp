@@ -25,8 +25,8 @@ namespace STORE
     Card_Expr* pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol);
     Stz* szDirection(i8 i_Element);
     i8 nElements(void);
-    Card_Expr* pFind_expr_key_Matches(Symbol *pSymbol_arg);
-    Card_Expr* pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg);
+    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg);
+    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg);
 
     Card_Direction* pGet_direction(i8 i_Element);
     Card_Expr* pGet_expr(i8 i_Element);

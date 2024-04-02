@@ -1079,7 +1079,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         }
 
         if (m_pCI->E.p_key) {
-          if (Card_Expr* p_expr_f = m_pCI->E.p_key->pFind_expr_key_Matches(m_pCI->E.p_term->pSymbol())) {
+          if (Card_Expr* p_expr_f = m_pCI->E.p_key->pFind_expr_key_Matches(m_pCI,m_pCI->E.p_term->pSymbol())) {
             if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol())) {
               continue;
             }
