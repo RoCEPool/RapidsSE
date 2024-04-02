@@ -142,7 +142,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->E.p_term->pSymbol())) {
 
     if (pCI->E.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
-      Card_Expr* p_expr_expCol = Card_Expr::pCast_expr_term_expCol(pCI->E.p_term);
+      Card_Expr* p_expr_expCol = Card_Expr::pCraft_expr_Of_term(pCI->E.p_term);
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_expCol);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
