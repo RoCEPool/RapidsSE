@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* __Q9_OPT2                                                                  */
+/* __Q9_2N_P_OPT1                                                             */
 /*============================================================================*/
 
 // PIPELINE FROM AWS SF100-2N
+
 /optimise_passthru
-/keepCodeFile
-pipeline unamed
+pipeline Query9
 begin
 
   stage S00 on origin :

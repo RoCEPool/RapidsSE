@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* __Q4_OPT1                                                                  */
+/* __Q4_2N_P_OPT1                                                             */
 /*============================================================================*/
 
 /optimise_passthru
-pipeline unamed
+pipeline Query4
 begin
 
   stage S00 on origin : 
@@ -13,17 +13,17 @@ begin
 
   stage S01 on all partitions : 
     scan      orders
-    | project   "   type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE
-                    , type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY
-                    , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY "
+    | project   " type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE
+                , type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY
+                , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY "
     | filter    " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >= O_ORDERDATE DATE '1993-10-01'< and "
-    | project   "   type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $2
+    | project   " type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $2
                 , type INTEGER ( 19 ) as C1_O_ORDERKEY $3 "
     | hash      "type INTEGER $2"
     | dynamic
     | next      hashcast
 
-  stage S03 on all partitions : 
+  stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY " BOUND $I1 $2 == " " type BOOLEAN L_COMMITDATE L_RECEIPTDATE < "
     | project   " type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $1 "
     | gbyAgg    " groupBy
@@ -34,7 +34,7 @@ begin
     | dynamic
     | next      
 
-  stage S06 on all nodes : 
+  stage S03 on all nodes :
     gbyAgg    " groupBy
                   type VARCHAR $1
                 aggregates
@@ -43,7 +43,7 @@ begin
     | dynamic
     | next      
 
-  stage S07 on origin : 
+  stage S04 on origin :
     gbyAgg    " groupBy
                   type VARCHAR $1
                 aggregates
@@ -52,7 +52,7 @@ begin
     | dynamic
     | next      
 
-  stage S08 on origin :
+  stage S05 on origin :
       output
     | sink
     | first

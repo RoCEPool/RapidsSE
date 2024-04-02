@@ -8,10 +8,9 @@
 //Alka's iMAC:
 // SF10-1N4P
 
-/keepCodeFile
 /optimise_passthru
 /pipeline_def
-pipeline unamed
+pipeline Query9
 begin
 
   stage S00 on origin : 

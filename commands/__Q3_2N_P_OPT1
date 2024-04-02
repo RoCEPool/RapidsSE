@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __Q3                                                                       */
+/* __Q3_2N_P_OPT1                                                             */
 /*============================================================================*/
 
 /optimise_passthru
@@ -20,7 +20,7 @@ begin
     | dynamic
     | next
 
-  stage S03 on all partitions :
+  stage S02 on all partitions :
     indexJoin orders IxO_CUSTKEY " BOUND $I1 $1 == "
     | project   " type DATE as O_ORDERDATE $6
                   , type INTEGER ( 19 ) as O_SHIPPRIORITY $9
@@ -30,7 +30,7 @@ begin
     | dynamic
     | next      hashcast
 
-  stage S05 on all partitions :
+  stage S03 on all partitions :
     indexJoin lineitem IxL_ORDERKEY " BOUND $I1 $3 == "
     | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
                 , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
@@ -51,7 +51,7 @@ begin
     | dynamic
     | next
 
-  stage S08 on all nodes :
+  stage S04 on all nodes :
     gbyAgg    " groupBy
                   type INTEGER ( 19 ) $1
                 , type DATE $3
@@ -64,7 +64,7 @@ begin
     | dynamic
     | next
 
-  stage S09 on origin :
+  stage S05 on origin :
     gbyAgg    " groupBy
                   type INTEGER ( 19 ) $1
                 , type DATE $3
@@ -77,13 +77,13 @@ begin
     | dynamic
     | next
 
-  stage S10 on origin :
+  stage S6 on origin :
     sort      " type DECIMAL ( 19 2 ) $2 DESC , type DATE $3 ASC "
-  | limit      10
+    | limit      10
     | dynamic
     | next
 
-  stage S11 on origin :
+  stage S7 on origin :
       output
     | sink
     | first

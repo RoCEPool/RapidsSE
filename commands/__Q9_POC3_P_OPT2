@@ -1,11 +1,10 @@
 /*============================================================================*/
-/* __Q9_OPT2                                                                  */
+/* __Q9_POC3_P_OPT2                                                           */
 /*============================================================================*/
 
 // OPTIMISED PIPELINE FROM POC3
+
 /optimise_passthru
-/keepCodeFile
-/pipeline_def
 pipeline Query9
   begin
   stage S00 on origin :
