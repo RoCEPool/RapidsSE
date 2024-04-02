@@ -78,14 +78,8 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
   else {
     pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
 
-    pCI->vNewMember(CK_EXPR);
-    pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
-    pCI->E.p_expr->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-    pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-    pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-
-    pCI->E.p_rpnCalc->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
-    pCI->E.p_term->vApplyCast_x(pCI->Flat.m_p_expr_crlKey->xCast());
+    Symbol xSymbol(SF_EXP_COL, "$1"_Stz);
+    pCI->E.p_expr = Card_Expr::pCraft_expr_Of_symbol(&xSymbol, pCI->Flat.m_p_expr_crlKey->xCast());
   }
 
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
