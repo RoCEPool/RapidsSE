@@ -409,7 +409,7 @@ IndexDef* Card_Key::pTo_IndexDef(CardIter* pCI)
       continue;
 
     bool bAscending = true;
-    if (pGet_direction(pCI->E.xTarget.i_Child())->pSymbol()->bHasFacet(C_DESC)) {
+    if (pGet_expr(pCI->E.xTarget.i_Child())->pSymbol()->bHasFacet(C_DESC)) {
       bAscending = false;
       bHasDescending = true;
     }
