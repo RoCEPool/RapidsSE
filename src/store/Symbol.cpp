@@ -37,6 +37,27 @@ Symbol::Symbol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Symbol::Symbol(eSF eFacet, char cChar, i8 iInt)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vResetFacets();
+  vCastReset();
+  m_pProperties = nullptr;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  vApplyFacet(eFacet, cChar, iInt);
+
+  RASSERT(bHasFacets());
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Symbol::Symbol(eSF eFacet, i8 iInt)
     : Object(CN_SYMBOL)
 {

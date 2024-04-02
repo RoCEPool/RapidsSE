@@ -177,6 +177,26 @@ Card_Expr* Card_Expr::pCraft_expr_keyCol_Of_term(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* craft a casted expr for given column                                       */
 /*----------------------------------------------------------------------------*/
+//Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
+//                                            char cTblSyn, i8 iTblCol)
+//{
+//  _static_
+//
+//  Cast xCast;
+//  xCast.m_xTypeId       = pColumn->xColumnTypeId();
+//  xCast.m_nTypeLength   = pColumn->iColumnLength();
+//  xCast.m_nTypeScale    = pColumn->iColumnScale();
+//  xCast.m_bTypeNullable = pColumn->bIsNullable();
+//
+//  Stz* szNmdCol = pColumn->szColNm();
+//
+//  Symbol xSym(SF_TBL_COL, cTblSyn, iTblCol);
+//
+//  Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSym);
+//
+//  return p_expr_new;
+//}
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
                                             char cTblSyn, i8 iTblCol)
 {

@@ -43,6 +43,7 @@ namespace STORE
 
   public:
     Symbol(void);
+    Symbol(eSF eFacet, char cChar, i8 iInt);
     Symbol(eSF eFacet, i8 iInt);
     Symbol(eSF eFacet, i8 iInt, Cast xCast);
     Symbol(eSF eFacet, Stz* szArg);
