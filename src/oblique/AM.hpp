@@ -175,6 +175,7 @@ namespace STORE {
 
   class Marker;
   class MarkerMgr;
+  class MetaDataTables;
 
   class Node;
 

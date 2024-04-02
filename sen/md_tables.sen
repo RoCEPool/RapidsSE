@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* md_tables.sen -- Define md__tables table                                   */
+/*============================================================================*/
+
+" md_tables.sen" .verbose
+
+: start::md_tables
+
+  // C_TDEF_TABLES
+
+  STD_BOOTFORK_TAG
+  "
+  define table md__tables (
+    catalogName       VARCHAR NOT NULL ,
+    schemaName        VARCHAR NOT NULL ,
+    tableName         VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

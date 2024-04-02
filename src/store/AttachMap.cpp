@@ -15,6 +15,7 @@
 #include "Numbering.hpp"
 #include "Jobs.hpp"
 #include "InternalTables.hpp"
+#include "MetaDataTables.hpp"
 #include "Step.hpp"
 
 #include "Resources.hpp" //?
@@ -89,6 +90,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
   m_pMarkerMgr      = new MarkerMgr;
+  m_pMetaDataTables = new MetaDataTables;
   m_pNumbering      = new Numbering;
   m_pLglPtnMap      = nullptr;
   m_pSnapshotAtTrackingMemory = nullptr;

@@ -45,6 +45,7 @@
 #include "TagConstants.h"
 
 #include "InternalTables.hpp"
+#include "MetaDataTables.hpp"
 #include "Parcel.hpp"
 
 #include "Api.hpp"
@@ -1008,6 +1009,17 @@ void Engine::vLowMemoryDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find and set stream def for metadata tables                                */
+/*----------------------------------------------------------------------------*/
+void Engine::vMetaDataTables(void)
+{
+  StreamDef* pStreamDef;
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_TABLES);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* munge check                                                                */
 /*----------------------------------------------------------------------------*/
 void Engine::vMungeCheck(void)
@@ -1908,6 +1920,13 @@ void Engine::vStartSystem(void)
   vInternalTables();
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // metadata tables
+
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("  MetaData Tables\n"_Stz);
+  vMetaDataTables();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());

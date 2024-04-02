@@ -215,6 +215,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
     /* */ "MEMTEST"_Stz,              // CN_MEMTEST
     /* */ "METADATA"_Stz,             // CN_METADATA
+    /* */ "METADATATABLES"_Stz,       // CN_METADATATABLES
     /* */ "METAGET"_Stz,              // CN_METAGET
     /* */ "METRICSWSP"_Stz,           // CN_METRICSWSP
     /* */ "MUTEX"_Stz,                // CN_MUTEX

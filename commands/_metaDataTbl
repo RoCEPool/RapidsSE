@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* _metaDataTbl                                                               */
+/*============================================================================*/
+
+create table catalog (
+  catalogName VARCHAR(32)
+);
+
+create table schema (
+  catalogName VARCHAR(32),
+  schemaName  VARCHAR(32)
+);
+
+create table tables (
+  catalogName VARCHAR(32),
+  schemaName  VARCHAR(32),
+  tableName   VARCHAR(32),
+);
+
+create table columns (
+  catalogName VARCHAR(32),
+  schemaName  VARCHAR(32),
+  tableName   VARCHAR(32),
+  type        INTEGER,
+  scale       INTEGER,
+  precision   INTEGER,
+  nullable    BOOLEAN
+);
+
+create table indexes (
+  catalogName VARCHAR(32),
+  schemaName  VARCHAR(32),
+  tableName   VARCHAR(32),
+  indexName   VARCHAR(32)
+);
+
+create table indexColumns (
+  catalogName VARCHAR(32),
+  schemaName  VARCHAR(32),
+  tableName   VARCHAR(32),
+  indexName   VARCHAR(32),
+  columnName  VARCHAR(32)
+);
+
+create table cluster (
+  clusterId   INTEGER NOT NULL
+);
+
+create table nodes (
+  nodeId            INTEGER NOT NULL,
+  address           VARCHAR(12),
+  port              INTEGER,
+  connectTimeStamp  TIMESTAMP
+);
+
+create table sessions (
+  sessionId   INTEGER NOT NULL,
+  connect     BOOLEAN,
+  status      VARCHAR(32)
+);
+
+create table queries (
+  queryId         INTEGER NOT NULL,
+  timestamp       TIMESTAMP,
+  sqyText         VARCHAR(32),
+  submitTimeStamp TIMESTAMP,
+  status          VARCHAR(32)
+);
+
+
+
+

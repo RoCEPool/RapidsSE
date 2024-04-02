@@ -196,6 +196,7 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMVIRTUAL,
   /* */ CN_MEMTEST,
   /* */ CN_METADATA,
+  /* */ CN_METADATATABLES,
   /* */ CN_METAGET,
   /* */ CN_METRICSWSP,
   /* */ CN_MUTEX,

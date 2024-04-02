@@ -109,6 +109,7 @@
 
 #include "TraceLock.hpp"
 #include "InternalTables.hpp"
+#include "MetaDataTables.hpp"
 
 #include "Version.h"
 

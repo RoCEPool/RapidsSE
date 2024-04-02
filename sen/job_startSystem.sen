@@ -102,6 +102,10 @@
   start::it_verifyTable
   start::it_warnings
 
+  // define the system tables
+  "define the metadata tables" .verbose
+  start::md_tables
+
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //
   // This point onwards the SE execution model has been fully booted

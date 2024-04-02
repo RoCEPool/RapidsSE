@@ -14,7 +14,7 @@
 #include "eAC.h"
 #include "eTC.h"
 
-namespace STORE { class InternalTables; class Jobs; class Numbering; }
+namespace STORE { class InternalTables; class MetaDataTables; class Jobs; class Numbering; }
 
 namespace STORE
 {
@@ -67,6 +67,7 @@ namespace STORE
     LglPtnMap*    m_pLglPtnMap;
     Locks         m_oLocks;
     MarkerMgr*    m_pMarkerMgr;
+    MetaDataTables* m_pMetaDataTables;
     Numbering*    m_pNumbering;
     ObjectSnapshot* m_pSnapshotAtTrackingMemory;  // object delta reporting
     ObjectSnapshot* m_pSnapshotAtMemoryLeaks;     // object delta reporting

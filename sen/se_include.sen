@@ -183,6 +183,7 @@ cmd::fillOut_allCmds
   "it_verifyTable.sen"      include
   "it_warnings.sen"         include
 
+  "md_tables.sen"           include
 
   "job_startSystem.sen"     include // last last
 

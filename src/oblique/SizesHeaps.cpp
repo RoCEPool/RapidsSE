@@ -105,6 +105,7 @@
 
 #include "CommandParser.hpp"
 #include "InternalTables.hpp"
+#include "MetaDataTables.hpp"
 
 #include "Job.hpp"
 #include "JobList.hpp"
@@ -545,6 +546,7 @@ SizeHeap gxaSizeHeap[]
   {CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
   {CN_MEMTEST,                  sizeof(MemTest),            HT_T_TINY    , FILL },
   {CN_METADATA,                 sizeof(Metadata),           HT_T_TINY    , FILL },
+  {CN_METADATATABLES,           sizeof(MetaDataTables),     HT_T_TINY    , FILL },
   {CN_METAGET,                  sizeof(MetaGet),            HT_T_TINY    , FILL },
   {CN_METRICSWSP,               sizeof(MetricsWsp),         HT_INVALID   , FILL },
   {CN_MUTEX,                    sizeof(Mutex),              HT_T_TINY    , FILL },

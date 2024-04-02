@@ -245,6 +245,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_SIZETABLE"_Stz,     C_TDEF_SIZETABLE);
   vAddConstant("C_TDEF_SPACE"_Stz,         C_TDEF_SPACE);
   vAddConstant("C_TDEF_STATUS"_Stz,        C_TDEF_STATUS);
+  vAddConstant("C_TDEF_TABLES"_Stz,        C_TDEF_TABLES);
   vAddConstant("C_TDEF_TABLESIZES"_Stz,    C_TDEF_TABLESIZES);
   vAddConstant("C_TDEF_TOTALUNITS"_Stz,    C_TDEF_TOTALUNITS);
   vAddConstant("C_TDEF_VERIFYINDEX"_Stz,   C_TDEF_VERIFYINDEX);
