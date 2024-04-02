@@ -26,7 +26,6 @@ namespace STORE
   class Card_Address;
   class Card_Aggreg;
   class Card_AndConj;
-  class Card_As;
 
   class Card_BoolPred;
   class Card_Bound;
