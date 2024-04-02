@@ -289,21 +289,6 @@ Card_Expr* Card_Key::pGet_expr(i8 i_Element)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is key element ascending?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Card_Key::bIsAsc(i8 i_Element)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Direction* p_direction = pGet_direction(i_Element);
-
-  if (p_direction->szFacet(SF_DIRECTION)->bSame(C_ASC))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Key::bIsEqual(Card_Key* p_key_arg)

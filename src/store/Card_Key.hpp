@@ -31,7 +31,6 @@ namespace STORE
     Card_Direction* pGet_direction(i8 i_Element);
     Card_Expr* pGet_expr(i8 i_Element);
 
-    bool bIsAsc(i8 i_Element);
     bool bIsEqual(Card_Key* p_key_arg);
 
     void vMapColumns(CardIter *pCI);
