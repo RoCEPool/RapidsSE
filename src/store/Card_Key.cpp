@@ -295,37 +295,61 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(CT_NONE != this->eCTVal());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (! pSub_expr()->bSameAs(p_key_arg->pSub_expr())) {
+  i8 nExpr = this->nChildCards();
+  if (nExpr != p_key_arg->nChildCards())
     return false;
-  }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  for (Kid xStreamKey(this); xStreamKey.bEach(CK_DIRECTION); /**/) {
+    Card_Direction *p_direction_this = xStreamKey.p_direction();
+    Card_Expr *p_expr_this = p_direction_this->pSub_expr();
+    Card_Direction *p_direction_arg = p_key_arg->pGet_direction_z(xStreamKey.i_Child());
+    Card_Expr *p_expr_arg = p_direction_arg->pSub_expr();
 
-  Card_Direction* p_direction_this = pSub_direction();
-  Card_Direction* p_direction_arg  = p_key_arg->pSub_direction();
-
-  if (p_direction_this) {
-    if (p_direction_arg) {
-      if (! p_direction_this->bIsEqual(p_direction_arg))
-        return false;
-    }
-    else {
+    if (!p_expr_this->bSameAs(p_expr_arg))
       return false;
-    }
-  }
-  else
-  if (p_direction_arg) {
-    return false;
-  }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
+      return false;
+  }
 
   return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool Card_Key::bIsEqual(Card_Key* p_key_arg)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  //RASSERT(CT_NONE != this->eCTVal());
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  if (! pSub_expr()->bSameAs(p_key_arg->pSub_expr())) {
+//    return false;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  Card_Direction* p_direction_this = pSub_direction();
+//  Card_Direction* p_direction_arg  = p_key_arg->pSub_direction();
+//
+//  if (p_direction_this) {
+//    if (p_direction_arg) {
+//      if (! p_direction_this->bIsEqual(p_direction_arg))
+//        return false;
+//    }
+//    else {
+//      return false;
+//    }
+//  }
+//  else
+//  if (p_direction_arg) {
+//    return false;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* map the columns of this key                                                */
