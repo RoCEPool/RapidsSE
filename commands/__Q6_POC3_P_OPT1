@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* __Q6_POC3_P                                                                */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query6
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
+     |  project   "type DECIMAL ( 15 2 ) as L_QUANTITY L_QUANTITY
+                      , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                      , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT"
+     | filter " type BOOLEAN  }  0.05 0.07 L_DISCOUNT between L_QUANTITY 24. < and"
+     | aggreg " type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
+     | combined 0
+     | next
+
+   stage S02 on all nodes :
+     aggreg " type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S03 on origin :
+     aggreg " type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     output
+     | sink
+     | first
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
