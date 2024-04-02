@@ -78,21 +78,12 @@ void Card_Fold::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
 
   RASSERT(CT_NONE != p_expr_fold->eCTVal());
 
-  pCI->E.p_expr = new Card_Expr;
-
+  pCI->E.p_expr = Card_Expr::pCraft_expr_Of_term(p_expr_fold->pSub_term());
   pCI->E.p_expr->pSymbol()->vApplyFacet(p_expr_fold->pSymbol()->aFacet(SF_SQY_RSL));
   pCI->E.p_expr->pSymbol()->Y_vSet(P_Injected);
 
-  Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
-  pCI->E.p_expr->vAppendChild(p_rpnCalc_new);
-
   Symbol xSymbol_KeyCol(SF_KEY_COL,1);
-
-  Card_Term* p_term_new = p_expr_fold->pSub_term()->pClone(&xSymbol_KeyCol);
-  p_rpnCalc_new->vApplyCast_x(p_expr_fold->xCast());
-
-  p_rpnCalc_new->vAppendChild(p_term_new);
-  pCI->E.p_expr->vApplyCast_p(p_rpnCalc_new);
+  pCI->E.p_expr->pGet_term0()->pSymbol()->vApplyFacets(&xSymbol_KeyCol);
 
   pCI->E.p_emit->vPushChild(pCI->E.p_expr);
 }
