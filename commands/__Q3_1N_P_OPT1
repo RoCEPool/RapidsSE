@@ -15,24 +15,24 @@ begin
   stage S01 on all partitions :
       scan      Orders
     | filter    " type BOOLEAN $5 DATE '1995-03-15' < "
-    | project   "   type DATE as C0_O_ORDERDATE $5
-              , type INTEGER ( 19 ) as C1_O_SHIPPRIORITY $8
-              , type INTEGER ( 19 ) as C2_O_CUSTKEY $2
+    | project   " type DATE as C0_O_ORDERDATE $5
+                , type INTEGER ( 19 ) as C1_O_SHIPPRIORITY $8
+                , type INTEGER ( 19 ) as C2_O_CUSTKEY $2
                 , type INTEGER ( 19 ) as C3_O_ORDERKEY $1 "
-    | hash      "type DATE $1"
+    | hash      "type INTEGER C3_O_ORDERKEY"
     | dynamic
     | next      hashcast
 
   stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY " BOUND $I1 $4 == "
     | filter    " type BOOLEAN $15 DATE '1995-03-15' > "
-    | project   "   type INTEGER ( 19 ) as C0_L_ORDERKEY $5
+    | project   " type INTEGER ( 19 ) as C0_L_ORDERKEY $5
                 , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $10
                 , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $11
                 , type DATE as C3_O_ORDERDATE $1
                 , type INTEGER ( 19 ) as C4_O_SHIPPRIORITY $2
                 , type INTEGER ( 19 ) as C5_O_CUSTKEY $3 "
-    | hash      "type INTEGER $1"
+    | hash      "type INTEGER C5_O_CUSTKEY"
     | dynamic
     | next      hashcast
 
