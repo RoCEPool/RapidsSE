@@ -46,7 +46,6 @@ namespace STORE
     bool bHasTerm(Symbol* pSymbol);
 
     Card_Expr *pInduct(i8 iExp);
-    bool bIsDescending(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);

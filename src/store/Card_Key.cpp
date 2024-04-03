@@ -262,42 +262,6 @@ bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
 
   return true;
 }
-/*----------------------------------------------------------------------------*/
-//bool Card_Key::bIsEqual(Card_Key* p_key_arg)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  //RASSERT(CT_NONE != this->eCTVal());
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  if (! pSub_expr()->bSameAs(p_key_arg->pSub_expr())) {
-//    return false;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  Card_Direction* p_direction_this = pSub_direction();
-//  Card_Direction* p_direction_arg  = p_key_arg->pSub_direction();
-//
-//  if (p_direction_this) {
-//    if (p_direction_arg) {
-//      if (! p_direction_this->bIsEqual(p_direction_arg))
-//        return false;
-//    }
-//    else {
-//      return false;
-//    }
-//  }
-//  else
-//  if (p_direction_arg) {
-//    return false;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  return true;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* map the columns of this key                                                */

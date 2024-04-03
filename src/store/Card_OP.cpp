@@ -1315,17 +1315,9 @@ void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAg
 
   psRpnExpr->vConcat(" ordGroupBy"_Stz);
 
-//  nSubCards = pCard_Key->nItems();
-//  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-//    Card* pCard_SUB = pCard_Key->pGet(i_Child);
-//    if (! pCard_SUB->bIsCard(CK_EXPR))
-//      return;
+  for (pCI->vBeginTarget(pCard_Key,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-  for (Kid xKey(pCard_Key); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
-
-    if (xKey.i_Child()) {
+    if (pCI->E.xTarget.i_Child()) {
       psRpnExpr->vConcat("\n                 "_Stz);
       psRpnExpr->vConcat(" ,"_Stz);
     }
@@ -1334,7 +1326,7 @@ void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAg
       psRpnExpr->vConcat("  "_Stz);
     }
 
-    vRpn_expr(pCI, psRpnExpr, p_expr);
+    vRpn_expr(pCI, psRpnExpr, pCI->E.p_expr);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

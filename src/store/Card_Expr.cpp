@@ -558,20 +558,6 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsDescending(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (Card_Direction* p_direction = pSub_direction())
-    if (p_direction->pSymbol()->bHasFacet(C_DESC))
-      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this an expression of a key                                             */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsKeyCol(void) {
