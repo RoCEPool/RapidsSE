@@ -291,13 +291,32 @@ Card_Expr* Card_Key::pGet_expr(i8 i_Element)
 /*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
-bool Card_Key::bIsEqual(Card_Key* p_key_arg)
+bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  UNUSED(pCI);
   i8 nExpr = this->nChildCards();
   if (nExpr != p_key_arg->nChildCards())
     return false;
+
+#ifdef Z_NO_DIRECTION
+  for (Kid xStreamKey(this); xStreamKey.bEach(CK_DIRECTION); /**/) {
+    Card_Direction *p_direction_this = xStreamKey.p_direction();
+    Card_Expr *p_expr_this = p_direction_this->pSub_expr();
+    Card_Direction *p_direction_arg = p_key_arg->pGet_direction_z(xStreamKey.i_Child());
+    Card_Expr *p_expr_arg = p_direction_arg->pSub_expr();
+
+    if (!p_expr_this->bSameAs(p_expr_arg))
+      return false;
+
+    if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
+      return false;
+  }
+
+  return true;
+
+#else
 
   for (Kid xStreamKey(this); xStreamKey.bEach(CK_DIRECTION); /**/) {
     Card_Direction *p_direction_this = xStreamKey.p_direction();
@@ -313,6 +332,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
   }
 
   return true;
+#endif
 }
 /*----------------------------------------------------------------------------*/
 //bool Card_Key::bIsEqual(Card_Key* p_key_arg)
