@@ -227,8 +227,6 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   TypeId xTypeId_save = xCast().m_xTypeId;
 
-  //pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/p_Dic_expr);
-
   {
     Cast xCast_last;
     xCast_last.m_xTypeId = TypeId();
@@ -264,15 +262,6 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
     RASSERT(xTypeId_save == xCast().m_xTypeId);
   }
 
-//  if (pSymbol()->xCast().m_xTypeId != pCI->G.p_rpnCalc->xCast().m_xTypeId) {
-//    vDump(__func__);
-//    pCI->G.p_rpnCalc->vApplyCast(pCI);
-//    vDebugPoint();
-//  }
-
-//  if (! pSymbol_expr->xCast().m_xTypeId.bIsValid())
-//    vApplyCast(pCI->G.p_rpnCalc->xCast());
-//  else
   if (pSymbol_expr->xCast().m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId &&
       (pSymbol_expr->xCast().m_nTypeLength   != pCI->E.p_rpnCalc->xCast().m_nTypeLength ||
        pSymbol_expr->xCast().m_nTypeScale    != pCI->E.p_rpnCalc->xCast().m_nTypeScale ||
@@ -280,9 +269,6 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
     vApplyCast_x(pCI->E.p_rpnCalc->xCast());
 
   //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
-
-//  if (pCI->G.p_rpnCalc->xCast().m_xTypeId.bIsValid())
-//    vApplyCast(pCI->G.p_rpnCalc->xCast());
 
   RASSERT(xTypeId_save == xCast().m_xTypeId);
 

@@ -117,7 +117,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   if (CK_BOUNDS == eCard)
     vDebugPoint();
-  
+
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
