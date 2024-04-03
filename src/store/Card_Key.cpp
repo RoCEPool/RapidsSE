@@ -301,17 +301,21 @@ bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
     return false;
 
 #ifdef Z_NO_DIRECTION
-  for (Kid xStreamKey(this); xStreamKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction *p_direction_this = xStreamKey.p_direction();
-    Card_Expr *p_expr_this = p_direction_this->pSub_expr();
-    Card_Direction *p_direction_arg = p_key_arg->pGet_direction_z(xStreamKey.i_Child());
-    Card_Expr *p_expr_arg = p_direction_arg->pSub_expr();
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    if (!p_expr_this->bSameAs(p_expr_arg))
-      return false;
+    Card_Expr *p_expr_arg = p_key_arg->pGet_expr(pCI->E.xTarget.i_Child());
 
-    if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
+    if (! pCI->E.p_expr->bSameAs(p_expr_arg)) {
+      pCI->vEndTarget();
       return false;
+    }
+
+    if (! Symbol::bSame(pCI->E.p_expr->pSymbol()->aFacet(SF_DIRECTION),
+                        p_expr_arg->pSymbol()->aFacet(SF_DIRECTION))) {
+      pCI->vEndTarget();
+      return false;
+    }
   }
 
   return true;

@@ -458,8 +458,6 @@ void Card_Emit::vMapColumns(CardIter* pCI)
   i8 i_EmittedCol = 0;
   i8 nExpr_key = 0;
 
-  pCI->PRINTBOARD_dbg();
-
   for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_emit = xEmit.p_expr();
 
