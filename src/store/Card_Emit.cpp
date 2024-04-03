@@ -140,8 +140,8 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // 1) append the referenced col's in rpnCalc of this projection into needed projection
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
-    for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
-      Card_Term *p_term = xRpnCalc.p_term();
+    for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+      Card_Term *p_term = pCI->E.xTarget.p_term();
       Symbol *pSym_term = p_term->pSymbol();
 
       // only interested in columns

@@ -495,10 +495,23 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
 
   if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
     Iter.m_eSecondary = CK_NONE;
+    E.xTarget.vBegin();
+    E.xTarget.vParent(pPrimary);
+
   }
   else
   if (CK_STREAMKEY == ePrimary && CK_EXPR == eTarget) {
     Iter.m_eSecondary = CK_NONE;
+    E.xTarget.vBegin();
+    E.xTarget.vParent(pPrimary);
+
+  }
+  else
+  if (CK_EXPR == ePrimary && CK_TERM == eTarget) {
+    Iter.m_eSecondary = CK_RPNCALC;
+    E.xTarget.vBegin();
+    E.xTarget.vParent(pPrimary->pSub_rpnCalc());
+
   }
   else {
     NEVER_REACH
@@ -506,8 +519,6 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
 
   //vMember(Iter.m_ePrimary, pPrimary);
 
-  E.xTarget.vBegin();
-  E.xTarget.vParent(pPrimary);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1303,6 +1314,16 @@ bool CardIter::bEachTarget(void)
   RASSERT(E.xTarget.bBegun());
   RASSERT(! E.xTarget.bEnded());
 
+  if (CK_EXPR    == Iter.m_ePrimary   &&
+      CK_RPNCALC == Iter.m_eSecondary &&
+      CK_TERM    == Iter.m_eTarget) {
+    while (E.xTarget.bEach(Iter.m_eTarget)) {
+      Card *pTarget = E.xTarget.pChild();
+      vMember(Iter.m_eTarget, pTarget);
+      return true;
+    }
+  }
+  else
   if (CK_NONE != Iter.m_eSecondary) {
 
     while (E.xTarget.bEach(Iter.m_eSecondary)) {
