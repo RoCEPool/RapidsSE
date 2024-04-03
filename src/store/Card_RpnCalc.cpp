@@ -101,9 +101,10 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_NONE);
 
   vValidate_mustHave(CK_TERM, CK_NONE);
-
-  Card::vValidate_hasType();
   Card::vValidate_hasChildren();
+
+#ifdef Z_RPNCALC_CAST
+  Card::vValidate_hasType();
 
   if (xCast().m_xTypeId != pCI->pAncestor(CK_EXPR)->xCast().m_xTypeId) {
     pCI->PRINTBOARD_dbg();
@@ -111,16 +112,20 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     NEVER_REACH;
   }
 
-  vValidate_mustHave(CK_TERM, CK_NONE);
-
-  (void)Card::eValidate_parentEither(pCI,CK_EXPR,CK_NONE);
-
   if (pCI->bAncestor(CK_s_INJECTABLE)) {
     if (!m_xSymbol.bValidType()) {
       vDump(__func__);
       vValidationFailed("Type Missing : %p"_Stz,this);
     }
   }
+#else
+  RASSERT(!m_xSymbol.bValidType());
+#endif
+
+  vValidate_mustHave(CK_TERM, CK_NONE);
+
+  (void)Card::eValidate_parentEither(pCI,CK_EXPR,CK_NONE);
+
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
