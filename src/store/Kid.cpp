@@ -174,7 +174,9 @@ bool Kid::bEach(void)
   RASSERT(m_bBegun);
   RASSERT(m_bForwards);
 
-  //RASSERT(CK_RPNCALC != m_pParent->eCard());
+#ifdef Z_NO_RPNCALC
+  RASSERT(CK_RPNCALC != m_pParent->eCard());
+#endif
 
   m_i_Child++;
   vChildUpdate();
