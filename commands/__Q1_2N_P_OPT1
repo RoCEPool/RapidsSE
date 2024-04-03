@@ -3,6 +3,10 @@
 /*============================================================================*/
 
 // optimizer generates L_TAX instead of L_QUANTITY
+
+/keepCodeFile
+/weaved
+/pipeline_def
 /optimise_passthru
 pipeline Query1
 begin
@@ -40,7 +44,7 @@ begin
     |  dynamic
     | next
 
-  stage S04 on all nodes :
+  stage S02 on all nodes :
     gbyAgg    " groupBy
                   type VARCHAR ( 0 ) $1
                 , type VARCHAR ( 0 ) $2
@@ -59,7 +63,7 @@ begin
     |  dynamic
     | next
 
-  stage S05 on origin :
+  stage S03 on origin :
     gbyAgg    " groupBy
                   type VARCHAR ( 0 ) $1
                 , type VARCHAR ( 0 ) $2
@@ -78,7 +82,7 @@ begin
     |  dynamic
     | next
 
-  stage S06 on origin :
+  stage S04 on origin :
     project   "   type VARCHAR ( 0 ) as C0_l_returnflag $1
                 , type VARCHAR ( 0 ) as C1_l_linestatus $2
                 , type DECIMAL as C2_sum_qty $3

@@ -161,11 +161,13 @@
     --paW;                                                                  \
  }
 
-#define _ASSIGN_TO_TUB(iArgTo)                                              \
-  char* szDstArea = *(--paW);                                               \
-	amCellAddress = (m8*) &iArgTo;                                            \
-	iOffset = - nDifference(szDstArea, amCellAddress);                        \
-	iArgTo = iOffset;
+#define _ASSIGN_TO_TUB(iArgTo) \
+  {                            \
+	  char* szDstArea = *(--paW);                                               \
+	  amCellAddress = (m8*) &iArgTo;                                            \
+	  iOffset = - nDifference(szDstArea, amCellAddress);                        \
+	  iArgTo = iOffset;                                                         \
+  }
 
 
 #define _ASSIGN_TO_ENTINT(iArgTo)                                           \
