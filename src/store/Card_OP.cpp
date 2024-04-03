@@ -1485,7 +1485,7 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Symbol* pSymbol = p_rpnCalc->pSymbol();
+  Symbol* pSymbol = p_expr->pSymbol();
   Cast xCast = pSymbol->xCast();
 
   psRpnExpr->vCatSprint(" type %s"_Stz, aCT[xCast.m_xTypeId.eCTVal()]);
