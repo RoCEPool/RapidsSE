@@ -3004,24 +3004,6 @@ Card_Decision* Card::pSub_decision(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Direction.hpp"
-Card_Direction* Card::pSub_direction(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Direction* p_direction =
-      _pCard_Direction(pFindSubCard(CK_DIRECTION));
-
-  if (bNotNull && !p_direction) {
-    NEVER_REACH
-  }
-
-  return p_direction;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Emit.hpp"
 Card_Emit* Card::pSub_emit(bool bNotNull)
 {

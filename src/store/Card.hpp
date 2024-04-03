@@ -485,7 +485,6 @@ namespace STORE
     Card_Count*         pSub_count(bool bNotNull=false);
     Card_CrossJoin*     pSub_crossJoin(bool bNotNull=false);
     Card_Decision*      pSub_decision(bool bNotNull=false);
-    Card_Direction*     pSub_direction(bool bNotNull=false);
     Card_Emit*          pSub_emit(bool bNotNull=false);
     Card_Expr*          pSub_expr(bool bNotNull=false);
     Card_FiltPred*      pSub_filtPred(bool bNotNull=false);

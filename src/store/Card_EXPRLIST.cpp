@@ -253,43 +253,6 @@ void Card_EXPRLIST::vRenumberAll_expr(eSF eFacet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* same ?                                                                     */
-/*----------------------------------------------------------------------------*/
-bool Card_EXPRLIST::bSame(Card_EXPRLIST* p_EXPRLIST_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nExpr = this->nChildCards();
-  if (nExpr != p_EXPRLIST_arg->nChildCards())
-    return false;
-
-  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
-    Card_Expr* p_expr_this = pGet_expr(i_Expr);
-    Card_Expr* p_expr_arg  = p_EXPRLIST_arg->pGet_expr(i_Expr);
-
-    if (! p_expr_this->bSameAs(p_expr_arg))
-      return false;
-
-    if (Card_Direction* p_direction_this = p_expr_this->pSub_direction()) {
-      if (Card_Direction *p_direction_arg = p_expr_arg->pSub_direction()) {
-        if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
-          return false;
-      }
-      else {
-        return false;
-      }
-    }
-    else
-    if (p_expr_arg->pSub_direction()) {
-      return false;
-    }
-
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
 StreamDef* Card_EXPRLIST::pTo_StreamDef(ColMap* pColMap,

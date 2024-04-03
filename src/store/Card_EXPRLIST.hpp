@@ -40,8 +40,6 @@ namespace STORE
 
     void vRenumberAll_expr(eSF eFacet=SF_EXP_COL);
 
-    bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);
-
     StreamDef* pTo_StreamDef(ColMap* pColMap,
                              Card_Key* p_key,
                              Card* p_OP);
