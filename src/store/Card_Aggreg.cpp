@@ -42,17 +42,6 @@ Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vBump_Rightwards(nBumpBy);
-}
-
-/*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vDerive_streamKey(CardIter* pCI)

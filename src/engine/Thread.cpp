@@ -10,7 +10,9 @@
 Atomic gixThread;
 
 extern pthread_key_t giTLS_ThreadKey;
-
+#ifdef WITH_THREADSTACKSIZE
+extern pthread_key_t giTLS_ThreadStackAddr;
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -271,7 +273,9 @@ Thread* Thread::pThisTLSThread(void)
 void Thread::vLoop_dedicated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
+#ifdef WITH_THREADSTACKSIZE
+  PsxThd::vTlsSet(giTLS_ThreadStackAddr, (void*)C_UNKNOWN);
+#endif
   Scheduler::vThread_BeginThreadLoop(this);
 
   Scheduler::vTaskApi_BeginExecutingDedicated(this);
@@ -299,7 +303,11 @@ void Thread::vLoop_dedicated(void)
 void Thread::vLoop_general(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
+
+#ifdef WITH_THREADSTACKSIZE
+  i8 iStackBase = 0;
+  PsxThd::vTlsSet(giTLS_ThreadStackAddr, &iStackBase);
+#endif
         RASSERT(HS_IDLE == m_eThreadState);
         RASSERT(! m_pTask);
   Scheduler::vThread_BeginThreadLoop(this);

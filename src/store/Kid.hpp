@@ -81,7 +81,6 @@ namespace STORE
     Card_AndConj*     p_andConj(void);
     Card_Bound*       p_bound(bool bSub=false);
     Card_Correlation* p_correlation(bool bSub=false);
-    Card_Direction*   p_direction(bool bSub=false);
     Card_Expr*        p_expr(bool bSub=false);
     Card_Fold*        p_fold(bool bSub=false);
     Card_HshCol*      p_hshCol(bool bSub=false);

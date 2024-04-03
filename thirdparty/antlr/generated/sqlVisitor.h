@@ -1,5 +1,5 @@
 
-// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -20,391 +20,391 @@ public:
   /**
    * Visit parse trees produced by sqlParser.
    */
-    virtual antlrcpp::Any visitStatements(sqlParser::StatementsContext *context) = 0;
+    virtual std::any visitStatements(sqlParser::StatementsContext *context) = 0;
 
-    virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *context) = 0;
+    virtual std::any visitStatement(sqlParser::StatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitStatementChoice(sqlParser::StatementChoiceContext *context) = 0;
+    virtual std::any visitStatementChoice(sqlParser::StatementChoiceContext *context) = 0;
 
-    virtual antlrcpp::Any visitTags(sqlParser::TagsContext *context) = 0;
+    virtual std::any visitTags(sqlParser::TagsContext *context) = 0;
 
-    virtual antlrcpp::Any visitKeyValueTag(sqlParser::KeyValueTagContext *context) = 0;
+    virtual std::any visitKeyValueTag(sqlParser::KeyValueTagContext *context) = 0;
 
-    virtual antlrcpp::Any visitKeyOnlyTag(sqlParser::KeyOnlyTagContext *context) = 0;
+    virtual std::any visitKeyOnlyTag(sqlParser::KeyOnlyTagContext *context) = 0;
 
-    virtual antlrcpp::Any visitTagName(sqlParser::TagNameContext *context) = 0;
+    virtual std::any visitTagName(sqlParser::TagNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitQueryCmd(sqlParser::QueryCmdContext *context) = 0;
+    virtual std::any visitQueryCmd(sqlParser::QueryCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *context) = 0;
+    virtual std::any visitQuery(sqlParser::QueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitQueryHint(sqlParser::QueryHintContext *context) = 0;
+    virtual std::any visitQueryHint(sqlParser::QueryHintContext *context) = 0;
 
-    virtual antlrcpp::Any visitHint(sqlParser::HintContext *context) = 0;
+    virtual std::any visitHint(sqlParser::HintContext *context) = 0;
 
-    virtual antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *context) = 0;
+    virtual std::any visitSelectQuery(sqlParser::SelectQueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *context) = 0;
+    virtual std::any visitSelectExpr(sqlParser::SelectExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *context) = 0;
+    virtual std::any visitSetQuery(sqlParser::SetQueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitSetExpr(sqlParser::SetExprContext *context) = 0;
+    virtual std::any visitSetExpr(sqlParser::SetExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitCorrClause(sqlParser::CorrClauseContext *context) = 0;
+    virtual std::any visitCorrClause(sqlParser::CorrClauseContext *context) = 0;
 
-    virtual antlrcpp::Any visitWithQuery(sqlParser::WithQueryContext *context) = 0;
+    virtual std::any visitWithQuery(sqlParser::WithQueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *context) = 0;
+    virtual std::any visitSubquery(sqlParser::SubqueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitNaturalJoin(sqlParser::NaturalJoinContext *context) = 0;
+    virtual std::any visitNaturalJoin(sqlParser::NaturalJoinContext *context) = 0;
 
-    virtual antlrcpp::Any visitJoinUsing(sqlParser::JoinUsingContext *context) = 0;
+    virtual std::any visitJoinUsing(sqlParser::JoinUsingContext *context) = 0;
 
-    virtual antlrcpp::Any visitJoinOn(sqlParser::JoinOnContext *context) = 0;
+    virtual std::any visitJoinOn(sqlParser::JoinOnContext *context) = 0;
 
-    virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *context) = 0;
+    virtual std::any visitFetch(sqlParser::FetchContext *context) = 0;
 
-    virtual antlrcpp::Any visitValuesSubquery(sqlParser::ValuesSubqueryContext *context) = 0;
+    virtual std::any visitValuesSubquery(sqlParser::ValuesSubqueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitCrossJoin(sqlParser::CrossJoinContext *context) = 0;
+    virtual std::any visitCrossJoin(sqlParser::CrossJoinContext *context) = 0;
 
-    virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *context) = 0;
+    virtual std::any visitTableReference(sqlParser::TableReferenceContext *context) = 0;
 
-    virtual antlrcpp::Any visitJoinType(sqlParser::JoinTypeContext *context) = 0;
+    virtual std::any visitJoinType(sqlParser::JoinTypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitExtendedJoinType(sqlParser::ExtendedJoinTypeContext *context) = 0;
+    virtual std::any visitExtendedJoinType(sqlParser::ExtendedJoinTypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitValuesExpr(sqlParser::ValuesExprContext *context) = 0;
+    virtual std::any visitValuesExpr(sqlParser::ValuesExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitAnidxCmd(sqlParser::AnidxCmdContext *context) = 0;
+    virtual std::any visitAnidxCmd(sqlParser::AnidxCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitAntblCmd(sqlParser::AntblCmdContext *context) = 0;
+    virtual std::any visitAntblCmd(sqlParser::AntblCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitBpaCmd(sqlParser::BpaCmdContext *context) = 0;
+    virtual std::any visitBpaCmd(sqlParser::BpaCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitCompactIdxCmd(sqlParser::CompactIdxCmdContext *context) = 0;
+    virtual std::any visitCompactIdxCmd(sqlParser::CompactIdxCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitCountCmd(sqlParser::CountCmdContext *context) = 0;
+    virtual std::any visitCountCmd(sqlParser::CountCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitCreateCmd(sqlParser::CreateCmdContext *context) = 0;
+    virtual std::any visitCreateCmd(sqlParser::CreateCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitCreateTableCmd(sqlParser::CreateTableCmdContext *context) = 0;
+    virtual std::any visitCreateTableCmd(sqlParser::CreateTableCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitCreateIndexCmd(sqlParser::CreateIndexCmdContext *context) = 0;
+    virtual std::any visitCreateIndexCmd(sqlParser::CreateIndexCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDeleteCmd(sqlParser::DeleteCmdContext *context) = 0;
+    virtual std::any visitDeleteCmd(sqlParser::DeleteCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDisconnectCmd(sqlParser::DisconnectCmdContext *context) = 0;
+    virtual std::any visitDisconnectCmd(sqlParser::DisconnectCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDloadCmd(sqlParser::DloadCmdContext *context) = 0;
+    virtual std::any visitDloadCmd(sqlParser::DloadCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDocolCmd(sqlParser::DocolCmdContext *context) = 0;
+    virtual std::any visitDocolCmd(sqlParser::DocolCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDropCmd(sqlParser::DropCmdContext *context) = 0;
+    virtual std::any visitDropCmd(sqlParser::DropCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDropTableCmd(sqlParser::DropTableCmdContext *context) = 0;
+    virtual std::any visitDropTableCmd(sqlParser::DropTableCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDropIndexCmd(sqlParser::DropIndexCmdContext *context) = 0;
+    virtual std::any visitDropIndexCmd(sqlParser::DropIndexCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitEmptyCmd(sqlParser::EmptyCmdContext *context) = 0;
+    virtual std::any visitEmptyCmd(sqlParser::EmptyCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplainCmd(sqlParser::ExplainCmdContext *context) = 0;
+    virtual std::any visitExplainCmd(sqlParser::ExplainCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplainOptions(sqlParser::ExplainOptionsContext *context) = 0;
+    virtual std::any visitExplainOptions(sqlParser::ExplainOptionsContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *context) = 0;
+    virtual std::any visitExplainStageList(sqlParser::ExplainStageListContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *context) = 0;
+    virtual std::any visitExplainRange(sqlParser::ExplainRangeContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *context) = 0;
+    virtual std::any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *context) = 0;
+    virtual std::any visitExplainFormat(sqlParser::ExplainFormatContext *context) = 0;
 
-    virtual antlrcpp::Any visitExportCmd(sqlParser::ExportCmdContext *context) = 0;
+    virtual std::any visitExportCmd(sqlParser::ExportCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitFileCmd(sqlParser::FileCmdContext *context) = 0;
+    virtual std::any visitFileCmd(sqlParser::FileCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitInsertCmd(sqlParser::InsertCmdContext *context) = 0;
+    virtual std::any visitInsertCmd(sqlParser::InsertCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLoadCmd(sqlParser::LoadCmdContext *context) = 0;
+    virtual std::any visitLoadCmd(sqlParser::LoadCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLoadReplicatedCmd(sqlParser::LoadReplicatedCmdContext *context) = 0;
+    virtual std::any visitLoadReplicatedCmd(sqlParser::LoadReplicatedCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLoadOption(sqlParser::LoadOptionContext *context) = 0;
+    virtual std::any visitLoadOption(sqlParser::LoadOptionContext *context) = 0;
 
-    virtual antlrcpp::Any visitLoadOptionKeys(sqlParser::LoadOptionKeysContext *context) = 0;
+    virtual std::any visitLoadOptionKeys(sqlParser::LoadOptionKeysContext *context) = 0;
 
-    virtual antlrcpp::Any visitLogCmd(sqlParser::LogCmdContext *context) = 0;
+    virtual std::any visitLogCmd(sqlParser::LogCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLscolCmd(sqlParser::LscolCmdContext *context) = 0;
+    virtual std::any visitLscolCmd(sqlParser::LscolCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLsidxCmd(sqlParser::LsidxCmdContext *context) = 0;
+    virtual std::any visitLsidxCmd(sqlParser::LsidxCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *context) = 0;
+    virtual std::any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLsptncolCmd(sqlParser::LsptncolCmdContext *context) = 0;
+    virtual std::any visitLsptncolCmd(sqlParser::LsptncolCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLstblCmd(sqlParser::LstblCmdContext *context) = 0;
+    virtual std::any visitLstblCmd(sqlParser::LstblCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *context) = 0;
+    virtual std::any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitNoopCmd(sqlParser::NoopCmdContext *context) = 0;
+    virtual std::any visitNoopCmd(sqlParser::NoopCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitPipelineCmd(sqlParser::PipelineCmdContext *context) = 0;
+    virtual std::any visitPipelineCmd(sqlParser::PipelineCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitPipelineStage(sqlParser::PipelineStageContext *context) = 0;
+    virtual std::any visitPipelineStage(sqlParser::PipelineStageContext *context) = 0;
 
-    virtual antlrcpp::Any visitPipelineOpSeq(sqlParser::PipelineOpSeqContext *context) = 0;
+    virtual std::any visitPipelineOpSeq(sqlParser::PipelineOpSeqContext *context) = 0;
 
-    virtual antlrcpp::Any visitPipelineOperator(sqlParser::PipelineOperatorContext *context) = 0;
+    virtual std::any visitPipelineOperator(sqlParser::PipelineOperatorContext *context) = 0;
 
-    virtual antlrcpp::Any visitPipelineOpParam(sqlParser::PipelineOpParamContext *context) = 0;
+    virtual std::any visitPipelineOpParam(sqlParser::PipelineOpParamContext *context) = 0;
 
-    virtual antlrcpp::Any visitPipelineTypeNames(sqlParser::PipelineTypeNamesContext *context) = 0;
+    virtual std::any visitPipelineTypeNames(sqlParser::PipelineTypeNamesContext *context) = 0;
 
-    virtual antlrcpp::Any visitSetTraceCmd(sqlParser::SetTraceCmdContext *context) = 0;
+    virtual std::any visitSetTraceCmd(sqlParser::SetTraceCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitSleepCmd(sqlParser::SleepCmdContext *context) = 0;
+    virtual std::any visitSleepCmd(sqlParser::SleepCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitSleepUnits(sqlParser::SleepUnitsContext *context) = 0;
+    virtual std::any visitSleepUnits(sqlParser::SleepUnitsContext *context) = 0;
 
-    virtual antlrcpp::Any visitSpaceCmd(sqlParser::SpaceCmdContext *context) = 0;
+    virtual std::any visitSpaceCmd(sqlParser::SpaceCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitStatusCmd(sqlParser::StatusCmdContext *context) = 0;
+    virtual std::any visitStatusCmd(sqlParser::StatusCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitSzidxCmd(sqlParser::SzidxCmdContext *context) = 0;
+    virtual std::any visitSzidxCmd(sqlParser::SzidxCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitSztblCmd(sqlParser::SztblCmdContext *context) = 0;
+    virtual std::any visitSztblCmd(sqlParser::SztblCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitTableSizesCmd(sqlParser::TableSizesCmdContext *context) = 0;
+    virtual std::any visitTableSizesCmd(sqlParser::TableSizesCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitTraceOption(sqlParser::TraceOptionContext *context) = 0;
+    virtual std::any visitTraceOption(sqlParser::TraceOptionContext *context) = 0;
 
-    virtual antlrcpp::Any visitTruncateCmd(sqlParser::TruncateCmdContext *context) = 0;
+    virtual std::any visitTruncateCmd(sqlParser::TruncateCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitTrackmemoryCmd(sqlParser::TrackmemoryCmdContext *context) = 0;
+    virtual std::any visitTrackmemoryCmd(sqlParser::TrackmemoryCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitUpdateCmd(sqlParser::UpdateCmdContext *context) = 0;
+    virtual std::any visitUpdateCmd(sqlParser::UpdateCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitUnloadCmd(sqlParser::UnloadCmdContext *context) = 0;
+    virtual std::any visitUnloadCmd(sqlParser::UnloadCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *context) = 0;
+    virtual std::any visitTableDefinition(sqlParser::TableDefinitionContext *context) = 0;
 
-    virtual antlrcpp::Any visitTablePartitioning(sqlParser::TablePartitioningContext *context) = 0;
+    virtual std::any visitTablePartitioning(sqlParser::TablePartitioningContext *context) = 0;
 
-    virtual antlrcpp::Any visitColumnDefinition(sqlParser::ColumnDefinitionContext *context) = 0;
+    virtual std::any visitColumnDefinition(sqlParser::ColumnDefinitionContext *context) = 0;
 
-    virtual antlrcpp::Any visitColumnNameList(sqlParser::ColumnNameListContext *context) = 0;
+    virtual std::any visitColumnNameList(sqlParser::ColumnNameListContext *context) = 0;
 
-    virtual antlrcpp::Any visitIndexDefinition(sqlParser::IndexDefinitionContext *context) = 0;
+    virtual std::any visitIndexDefinition(sqlParser::IndexDefinitionContext *context) = 0;
 
-    virtual antlrcpp::Any visitIndexMethod(sqlParser::IndexMethodContext *context) = 0;
+    virtual std::any visitIndexMethod(sqlParser::IndexMethodContext *context) = 0;
 
-    virtual antlrcpp::Any visitDataType(sqlParser::DataTypeContext *context) = 0;
+    virtual std::any visitDataType(sqlParser::DataTypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitSqlDataType(sqlParser::SqlDataTypeContext *context) = 0;
+    virtual std::any visitSqlDataType(sqlParser::SqlDataTypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitIntervalType(sqlParser::IntervalTypeContext *context) = 0;
+    virtual std::any visitIntervalType(sqlParser::IntervalTypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitYearMonthIntervalType(sqlParser::YearMonthIntervalTypeContext *context) = 0;
+    virtual std::any visitYearMonthIntervalType(sqlParser::YearMonthIntervalTypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitDayTimeIntervalType(sqlParser::DayTimeIntervalTypeContext *context) = 0;
+    virtual std::any visitDayTimeIntervalType(sqlParser::DayTimeIntervalTypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitFixedLenChar(sqlParser::FixedLenCharContext *context) = 0;
+    virtual std::any visitFixedLenChar(sqlParser::FixedLenCharContext *context) = 0;
 
-    virtual antlrcpp::Any visitVaryingLenChar(sqlParser::VaryingLenCharContext *context) = 0;
+    virtual std::any visitVaryingLenChar(sqlParser::VaryingLenCharContext *context) = 0;
 
-    virtual antlrcpp::Any visitAsSubquery(sqlParser::AsSubqueryContext *context) = 0;
+    virtual std::any visitAsSubquery(sqlParser::AsSubqueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitSelectOrValues(sqlParser::SelectOrValuesContext *context) = 0;
+    virtual std::any visitSelectOrValues(sqlParser::SelectOrValuesContext *context) = 0;
 
-    virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *context) = 0;
+    virtual std::any visitSelectList(sqlParser::SelectListContext *context) = 0;
 
-    virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext *context) = 0;
+    virtual std::any visitSelectListItem(sqlParser::SelectListItemContext *context) = 0;
 
-    virtual antlrcpp::Any visitGroupByList(sqlParser::GroupByListContext *context) = 0;
+    virtual std::any visitGroupByList(sqlParser::GroupByListContext *context) = 0;
 
-    virtual antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *context) = 0;
+    virtual std::any visitGroupByListItem(sqlParser::GroupByListItemContext *context) = 0;
 
-    virtual antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *context) = 0;
+    virtual std::any visitOrderByList(sqlParser::OrderByListContext *context) = 0;
 
-    virtual antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *context) = 0;
+    virtual std::any visitOrderByListItem(sqlParser::OrderByListItemContext *context) = 0;
 
-    virtual antlrcpp::Any visitJoinUsingList(sqlParser::JoinUsingListContext *context) = 0;
+    virtual std::any visitJoinUsingList(sqlParser::JoinUsingListContext *context) = 0;
 
-    virtual antlrcpp::Any visitJoinUsingListItem(sqlParser::JoinUsingListItemContext *context) = 0;
+    virtual std::any visitJoinUsingListItem(sqlParser::JoinUsingListItemContext *context) = 0;
 
-    virtual antlrcpp::Any visitCorrList(sqlParser::CorrListContext *context) = 0;
+    virtual std::any visitCorrList(sqlParser::CorrListContext *context) = 0;
 
-    virtual antlrcpp::Any visitCorrListItem(sqlParser::CorrListItemContext *context) = 0;
+    virtual std::any visitCorrListItem(sqlParser::CorrListItemContext *context) = 0;
 
-    virtual antlrcpp::Any visitColAliases(sqlParser::ColAliasesContext *context) = 0;
+    virtual std::any visitColAliases(sqlParser::ColAliasesContext *context) = 0;
 
-    virtual antlrcpp::Any visitColAliasList(sqlParser::ColAliasListContext *context) = 0;
+    virtual std::any visitColAliasList(sqlParser::ColAliasListContext *context) = 0;
 
-    virtual antlrcpp::Any visitColAliasListItem(sqlParser::ColAliasListItemContext *context) = 0;
+    virtual std::any visitColAliasListItem(sqlParser::ColAliasListItemContext *context) = 0;
 
-    virtual antlrcpp::Any visitPropertyList(sqlParser::PropertyListContext *context) = 0;
+    virtual std::any visitPropertyList(sqlParser::PropertyListContext *context) = 0;
 
-    virtual antlrcpp::Any visitProperty(sqlParser::PropertyContext *context) = 0;
+    virtual std::any visitProperty(sqlParser::PropertyContext *context) = 0;
 
-    virtual antlrcpp::Any visitValueList(sqlParser::ValueListContext *context) = 0;
+    virtual std::any visitValueList(sqlParser::ValueListContext *context) = 0;
 
-    virtual antlrcpp::Any visitPredicate(sqlParser::PredicateContext *context) = 0;
+    virtual std::any visitPredicate(sqlParser::PredicateContext *context) = 0;
 
-    virtual antlrcpp::Any visitJoinPredicate(sqlParser::JoinPredicateContext *context) = 0;
+    virtual std::any visitJoinPredicate(sqlParser::JoinPredicateContext *context) = 0;
 
-    virtual antlrcpp::Any visitCasePredicate(sqlParser::CasePredicateContext *context) = 0;
+    virtual std::any visitCasePredicate(sqlParser::CasePredicateContext *context) = 0;
 
-    virtual antlrcpp::Any visitCountAll(sqlParser::CountAllContext *context) = 0;
+    virtual std::any visitCountAll(sqlParser::CountAllContext *context) = 0;
 
-    virtual antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *context) = 0;
+    virtual std::any visitExtractFunc(sqlParser::ExtractFuncContext *context) = 0;
 
-    virtual antlrcpp::Any visitScalarFunc(sqlParser::ScalarFuncContext *context) = 0;
+    virtual std::any visitScalarFunc(sqlParser::ScalarFuncContext *context) = 0;
 
-    virtual antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *context) = 0;
+    virtual std::any visitUnaryOp(sqlParser::UnaryOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitCoalesceOp(sqlParser::CoalesceOpContext *context) = 0;
+    virtual std::any visitCoalesceOp(sqlParser::CoalesceOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitVarRef(sqlParser::VarRefContext *context) = 0;
+    virtual std::any visitVarRef(sqlParser::VarRefContext *context) = 0;
 
-    virtual antlrcpp::Any visitPositionFunc(sqlParser::PositionFuncContext *context) = 0;
+    virtual std::any visitPositionFunc(sqlParser::PositionFuncContext *context) = 0;
 
-    virtual antlrcpp::Any visitColRef(sqlParser::ColRefContext *context) = 0;
+    virtual std::any visitColRef(sqlParser::ColRefContext *context) = 0;
 
-    virtual antlrcpp::Any visitCaseOp(sqlParser::CaseOpContext *context) = 0;
+    virtual std::any visitCaseOp(sqlParser::CaseOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitLiteralVal(sqlParser::LiteralValContext *context) = 0;
+    virtual std::any visitLiteralVal(sqlParser::LiteralValContext *context) = 0;
 
-    virtual antlrcpp::Any visitOverlayFunc(sqlParser::OverlayFuncContext *context) = 0;
+    virtual std::any visitOverlayFunc(sqlParser::OverlayFuncContext *context) = 0;
 
-    virtual antlrcpp::Any visitIfNullOp(sqlParser::IfNullOpContext *context) = 0;
+    virtual std::any visitIfNullOp(sqlParser::IfNullOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *context) = 0;
+    virtual std::any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *context) = 0;
+    virtual std::any visitIsNullOp(sqlParser::IsNullOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitInOp(sqlParser::InOpContext *context) = 0;
+    virtual std::any visitInOp(sqlParser::InOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitTrimFunc(sqlParser::TrimFuncContext *context) = 0;
+    virtual std::any visitTrimFunc(sqlParser::TrimFuncContext *context) = 0;
 
-    virtual antlrcpp::Any visitLikeOp(sqlParser::LikeOpContext *context) = 0;
+    virtual std::any visitLikeOp(sqlParser::LikeOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitTypeOfOp(sqlParser::TypeOfOpContext *context) = 0;
+    virtual std::any visitTypeOfOp(sqlParser::TypeOfOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitNullIfOp(sqlParser::NullIfOpContext *context) = 0;
+    virtual std::any visitNullIfOp(sqlParser::NullIfOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitInlineCast(sqlParser::InlineCastContext *context) = 0;
+    virtual std::any visitInlineCast(sqlParser::InlineCastContext *context) = 0;
 
-    virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *context) = 0;
+    virtual std::any visitBinaryOp(sqlParser::BinaryOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *context) = 0;
+    virtual std::any visitBetweenOp(sqlParser::BetweenOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *context) = 0;
+    virtual std::any visitAggFunc(sqlParser::AggFuncContext *context) = 0;
 
-    virtual antlrcpp::Any visitDecodeOp(sqlParser::DecodeOpContext *context) = 0;
+    virtual std::any visitDecodeOp(sqlParser::DecodeOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitConcatOp(sqlParser::ConcatOpContext *context) = 0;
+    virtual std::any visitConcatOp(sqlParser::ConcatOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitSubqueryExpr(sqlParser::SubqueryExprContext *context) = 0;
+    virtual std::any visitSubqueryExpr(sqlParser::SubqueryExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitIfOp(sqlParser::IfOpContext *context) = 0;
+    virtual std::any visitIfOp(sqlParser::IfOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *context) = 0;
+    virtual std::any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *context) = 0;
+    virtual std::any visitSubStringFunc(sqlParser::SubStringFuncContext *context) = 0;
 
-    virtual antlrcpp::Any visitSubqueryInOp(sqlParser::SubqueryInOpContext *context) = 0;
+    virtual std::any visitSubqueryInOp(sqlParser::SubqueryInOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *context) = 0;
+    virtual std::any visitLogicOp(sqlParser::LogicOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitCastOp(sqlParser::CastOpContext *context) = 0;
+    virtual std::any visitCastOp(sqlParser::CastOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitParenthetic(sqlParser::ParentheticContext *context) = 0;
+    virtual std::any visitParenthetic(sqlParser::ParentheticContext *context) = 0;
 
-    virtual antlrcpp::Any visitMethodCall(sqlParser::MethodCallContext *context) = 0;
+    virtual std::any visitMethodCall(sqlParser::MethodCallContext *context) = 0;
 
-    virtual antlrcpp::Any visitVariableName(sqlParser::VariableNameContext *context) = 0;
+    virtual std::any visitVariableName(sqlParser::VariableNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext *context) = 0;
+    virtual std::any visitColumnRef(sqlParser::ColumnRefContext *context) = 0;
 
-    virtual antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext *context) = 0;
+    virtual std::any visitColumnWildcard(sqlParser::ColumnWildcardContext *context) = 0;
 
-    virtual antlrcpp::Any visitClassName(sqlParser::ClassNameContext *context) = 0;
+    virtual std::any visitClassName(sqlParser::ClassNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitFunctionName(sqlParser::FunctionNameContext *context) = 0;
+    virtual std::any visitFunctionName(sqlParser::FunctionNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitMethodName(sqlParser::MethodNameContext *context) = 0;
+    virtual std::any visitMethodName(sqlParser::MethodNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitCatalogName(sqlParser::CatalogNameContext *context) = 0;
+    virtual std::any visitCatalogName(sqlParser::CatalogNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitSchemaName(sqlParser::SchemaNameContext *context) = 0;
+    virtual std::any visitSchemaName(sqlParser::SchemaNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitTableName(sqlParser::TableNameContext *context) = 0;
+    virtual std::any visitTableName(sqlParser::TableNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitTableAlias(sqlParser::TableAliasContext *context) = 0;
+    virtual std::any visitTableAlias(sqlParser::TableAliasContext *context) = 0;
 
-    virtual antlrcpp::Any visitColumnName(sqlParser::ColumnNameContext *context) = 0;
+    virtual std::any visitColumnName(sqlParser::ColumnNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitColumnAlias(sqlParser::ColumnAliasContext *context) = 0;
+    virtual std::any visitColumnAlias(sqlParser::ColumnAliasContext *context) = 0;
 
-    virtual antlrcpp::Any visitCollationName(sqlParser::CollationNameContext *context) = 0;
+    virtual std::any visitCollationName(sqlParser::CollationNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitIndexName(sqlParser::IndexNameContext *context) = 0;
+    virtual std::any visitIndexName(sqlParser::IndexNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitPropertyName(sqlParser::PropertyNameContext *context) = 0;
+    virtual std::any visitPropertyName(sqlParser::PropertyNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitHintName(sqlParser::HintNameContext *context) = 0;
+    virtual std::any visitHintName(sqlParser::HintNameContext *context) = 0;
 
-    virtual antlrcpp::Any visitExprHint(sqlParser::ExprHintContext *context) = 0;
+    virtual std::any visitExprHint(sqlParser::ExprHintContext *context) = 0;
 
-    virtual antlrcpp::Any visitPropertyValue(sqlParser::PropertyValueContext *context) = 0;
+    virtual std::any visitPropertyValue(sqlParser::PropertyValueContext *context) = 0;
 
-    virtual antlrcpp::Any visitHintValue(sqlParser::HintValueContext *context) = 0;
+    virtual std::any visitHintValue(sqlParser::HintValueContext *context) = 0;
 
-    virtual antlrcpp::Any visitIdentifier(sqlParser::IdentifierContext *context) = 0;
+    virtual std::any visitIdentifier(sqlParser::IdentifierContext *context) = 0;
 
-    virtual antlrcpp::Any visitQualifier(sqlParser::QualifierContext *context) = 0;
+    virtual std::any visitQualifier(sqlParser::QualifierContext *context) = 0;
 
-    virtual antlrcpp::Any visitPrecision(sqlParser::PrecisionContext *context) = 0;
+    virtual std::any visitPrecision(sqlParser::PrecisionContext *context) = 0;
 
-    virtual antlrcpp::Any visitScale(sqlParser::ScaleContext *context) = 0;
+    virtual std::any visitScale(sqlParser::ScaleContext *context) = 0;
 
-    virtual antlrcpp::Any visitSize(sqlParser::SizeContext *context) = 0;
+    virtual std::any visitSize(sqlParser::SizeContext *context) = 0;
 
-    virtual antlrcpp::Any visitLiteral(sqlParser::LiteralContext *context) = 0;
+    virtual std::any visitLiteral(sqlParser::LiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitSimpleLiteral(sqlParser::SimpleLiteralContext *context) = 0;
+    virtual std::any visitSimpleLiteral(sqlParser::SimpleLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitBooleanLiteral(sqlParser::BooleanLiteralContext *context) = 0;
+    virtual std::any visitBooleanLiteral(sqlParser::BooleanLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitIntegerLiteral(sqlParser::IntegerLiteralContext *context) = 0;
+    virtual std::any visitIntegerLiteral(sqlParser::IntegerLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitSignedIntegerLiteral(sqlParser::SignedIntegerLiteralContext *context) = 0;
+    virtual std::any visitSignedIntegerLiteral(sqlParser::SignedIntegerLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitDecimalLiteral(sqlParser::DecimalLiteralContext *context) = 0;
+    virtual std::any visitDecimalLiteral(sqlParser::DecimalLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitSignedDecimalLiteral(sqlParser::SignedDecimalLiteralContext *context) = 0;
+    virtual std::any visitSignedDecimalLiteral(sqlParser::SignedDecimalLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitFloatLiteral(sqlParser::FloatLiteralContext *context) = 0;
+    virtual std::any visitFloatLiteral(sqlParser::FloatLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitSignedFloatLiteral(sqlParser::SignedFloatLiteralContext *context) = 0;
+    virtual std::any visitSignedFloatLiteral(sqlParser::SignedFloatLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitDateLiteral(sqlParser::DateLiteralContext *context) = 0;
+    virtual std::any visitDateLiteral(sqlParser::DateLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitTimeLiteral(sqlParser::TimeLiteralContext *context) = 0;
+    virtual std::any visitTimeLiteral(sqlParser::TimeLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitTimestampLiteral(sqlParser::TimestampLiteralContext *context) = 0;
+    virtual std::any visitTimestampLiteral(sqlParser::TimestampLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitStringLiteral(sqlParser::StringLiteralContext *context) = 0;
+    virtual std::any visitStringLiteral(sqlParser::StringLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitIntervalLiteral(sqlParser::IntervalLiteralContext *context) = 0;
+    virtual std::any visitIntervalLiteral(sqlParser::IntervalLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *context) = 0;
+    virtual std::any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *context) = 0;
 
-    virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *context) = 0;
+    virtual std::any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *context) = 0;
 
-    virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *context) = 0;
+    virtual std::any visitNonReservedWord(sqlParser::NonReservedWordContext *context) = 0;
 
 
 };

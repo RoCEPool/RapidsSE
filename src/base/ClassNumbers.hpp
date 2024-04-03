@@ -238,7 +238,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PAYSTR,
   /* */ CN_PAYSTRBUFFER,
   /* */ CN_PDS,
-  /* */ CN_PDSBUFFERIDQUEUE,
+  /* */ CN_PDSBUFFERQUEUE,
   /* */ CN_PDSCURSOR,
   /* */ CN_PDSCONVERGENTHEAP_t,
   /* */ CN_PERMGEN,

@@ -41,20 +41,6 @@ Card_GbyAgg::~Card_GbyAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* bump key & projection of this gbyAgg rightwards by given amount            */
-/*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_Key* p_key = pSub_key())
-    p_key->vBump_Rightwards(nBumpBy);
-
-  if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vBump_Rightwards(nBumpBy);
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new <gbyAgg>/<projection>/<key> by copying <gbyAgg>/<key>         */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
@@ -146,29 +132,25 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->E.p_key = pCI->E.p_gbyAgg->pSub_key();
-#ifdef Z_KEY_DIRECTION
-  for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
-    for (Kid xRpnCalc(p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
+//Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
+    for (Kid xRpnCalc(pCI->E.p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
       if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
         xRpnCalc.p_term()->vBump_ordCol(SF_EXP_COL);
         xRpnCalc.p_term()->vMark1(MARK_CHANGED);
        }
     }
   }
-#else
-  pCI->G.p_key->vBump_expCol_In_rpnCalc(pCI);
-#endif
+
 
   pCI->E.p_emit = pCI->E.p_gbyAgg->pSub_emit();
   pCI->E.p_emit->vBump_KeyCol_In_rpnCalc(pCI);
   pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
 
-  Card_Fold::vPush_foldExpr_Into_emit(pCI, pCI->Flat.m_pExpr_fold);
-  Card_Fold::vPush_foldExpr_Into_key(pCI, pCI->Flat.m_pExpr_fold);
+  pCI->E.p_emit->vPush_foldExpr_Into_emit(pCI, pCI->Flat.m_pExpr_fold);
+  pCI->E.p_key->vAdd_key_expr_BasedOn_expr(pCI,pCI->Flat.m_pExpr_fold,true,false);
 
-  pCI->E.p_key->vRenumberAll_expr();
+  pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
   pCI->E.p_emit->vRenumberAll_expr();
 }
 
@@ -190,7 +172,7 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
 
   pCI->E.p_key = pSub_key();
 
-  if (! pCI->E.p_key->bIsEqual(pCI->StreamOrder.m_pStreamKey))
+  if (! pCI->E.p_key->bIsEqual(pCI,pCI->StreamOrder.m_pStreamKey))
     return false;
 
   vCard(CK_o_ORDAGG);

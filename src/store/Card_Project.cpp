@@ -4,7 +4,6 @@
 
 #include "Card_Project.hpp"
 
-#include "Card_As.hpp"
 #include "Card_Level.hpp"
 #include "Card_Emit.hpp"
 #include "Card_RpnCalc.hpp"
@@ -83,7 +82,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     if (pCI->E.p_expr->pSymbol()->bMatches(SF_EXP_COL, "$1"_Stz))
       continue;
 
-    Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->E.p_expr, i_Col);
+    Card_Expr* p_expr_simple = Card_Expr::pCraft_expr_Of_expr(pCI->E.p_expr, i_Col);
     p_expr_simple->vDeleteFacetRecursive(SF_KEY_COL);
 
     p_emitted_unproject->vAppendChild(p_expr_simple);
@@ -92,23 +91,13 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   }
 
   p_emitted_unproject->vRenumberAll_expr();
+  //p_emitted_unproject->vDump(__func__);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vBump_Rightwards(nBumpBy);
-}
 
 /*----------------------------------------------------------------------------*/
 /* craft emit for early project                                               */

@@ -19,7 +19,6 @@
 #include "Card_AGGREGATE.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AndConj.hpp"
-#include "Card_As.hpp"
 
 #include "Card_BoolPred.hpp"
 #include "Card_Bound.hpp"
@@ -46,7 +45,6 @@
 #include "Card_Debug.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Decision.hpp"
-#include "Card_Direction.hpp"
 
 #include "Card_Emit.hpp"
 #include "Card_Expr.hpp"         //
@@ -114,7 +112,7 @@
 #include "Card_RowCount.hpp"
 #include "Card_RowSize.hpp"
 #include "Card_RpnCalc.hpp"
-#include "Card_RpnExpr.hpp"
+#include "Card_TermSeq.hpp"
 
 #include "Card_Scan.hpp"
 #include "Card_Section.hpp"

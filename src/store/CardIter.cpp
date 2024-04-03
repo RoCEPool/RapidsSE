@@ -474,20 +474,37 @@ void CardIter::vBeginTarget(eCK ePrimary, eCK eTarget)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
+  Card* pPrimary = E.p_Op->pFindSubCard(ePrimary);
+
+  vBeginTarget(pPrimary, eTarget);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
   vPushEach();
+
+  eCK ePrimary = pPrimary->eCard();
 
   Iter.m_ePrimary = ePrimary;
   Iter.m_eTarget  = eTarget;
 
   if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
-    Iter.m_eSecondary = CK_DIRECTION;
+    Iter.m_eSecondary = CK_NONE;
+  }
+  else
+  if (CK_STREAMKEY == ePrimary && CK_EXPR == eTarget) {
+    Iter.m_eSecondary = CK_NONE;
   }
   else {
     NEVER_REACH
   }
 
-  Card* pPrimary = E.p_Op->pFindSubCard(Iter.m_ePrimary);
-  vMember(Iter.m_ePrimary, pPrimary);
+  //vMember(Iter.m_ePrimary, pPrimary);
 
   E.xTarget.vBegin();
   E.xTarget.vParent(pPrimary);
@@ -1269,6 +1286,16 @@ bool CardIter::bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
+i8 CardIter::i_Target(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  return E.xTarget.i_Child();
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::bEachTarget(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -1276,13 +1303,24 @@ bool CardIter::bEachTarget(void)
   RASSERT(E.xTarget.bBegun());
   RASSERT(! E.xTarget.bEnded());
 
-  while (E.xTarget.bEach(Iter.m_eSecondary)) {
-    vMember(E.xTarget.eChild(), E.xTarget.pChild());
+  if (CK_NONE != Iter.m_eSecondary) {
 
-    Card* pTarget = E.xTarget.pChild()->pFindSubCard(Iter.m_eTarget);
-    vMember(Iter.m_eTarget, pTarget);
+    while (E.xTarget.bEach(Iter.m_eSecondary)) {
+      vMember(E.xTarget.eChild(), E.xTarget.pChild());
 
-    return true;
+      Card *pTarget = E.xTarget.pChild()->pFindSubCard(Iter.m_eTarget);
+      vMember(Iter.m_eTarget, pTarget);
+
+      return true;
+    }
+  }
+  else {
+    while (E.xTarget.bEach(Iter.m_eTarget)) {
+      Card *pTarget = E.xTarget.pChild();
+      vMember(Iter.m_eTarget, pTarget);
+
+      return true;
+    }
   }
 
   E.xTarget.vEnded();
@@ -1530,7 +1568,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_CROSSJOIN:    return E.p_crossJoin;
 
     case CK_DECISION:       return E.p_decision;
-    case CK_DIRECTION:      return E.p_direction;
     case CK_DISPOSITION:    return E.p_disposition;
 
     case CK_t_EMIT:         return E.p_emit;
@@ -1680,7 +1717,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
 
     case CK_DECK: E.p_deck               = _pCard_Deck(pCard); break;
     case CK_DECISION: E.p_decision          = _pCard_Decision(pCard); break;
-    case CK_DIRECTION: E.p_direction         = _pCard_Direction(pCard); break;
     case CK_DISPOSITION: E.p_disposition       = _pCard_Disposition(pCard); break;
 
     case CK_t_EMIT: E.p_emit              = _pCard_Emit(pCard); break;
@@ -2184,7 +2220,6 @@ void CardIter::vResetMembers(void)
   E.p_crossJoin        = nullptr;
 
   E.p_decision         = nullptr;
-  E.p_direction        = nullptr;
   E.p_disposition      = nullptr;
 
   E.p_emit             = nullptr;
@@ -2475,7 +2510,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_CROSSJOIN:    E.p_crossJoin->vValidate(this, iDepth, pCard);  break;
 
       case CK_DECISION:       E.p_decision->vValidate(this, iDepth, pCard);  break;
-      case CK_DIRECTION:      E.p_direction->vValidate(this, iDepth, pCard);  break;
       case CK_DISPOSITION:    E.p_disposition->vValidate(this, iDepth, pCard);  break;
 
       case CK_t_EMIT:         E.p_emit->vValidate(this, iDepth, pCard);  break;

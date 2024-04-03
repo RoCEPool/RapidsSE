@@ -740,7 +740,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get asc / desc
-    if (pTkn->bSame("asc"_Stz) || pTkn->bSame("desc"_Stz)) {
+    if (pTkn->bSame(C_ASC) || pTkn->bSame(C_DESC)) {
       continue;
     }
 

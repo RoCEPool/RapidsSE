@@ -64,8 +64,89 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_ITEMISE_COLUMNS);
 
-  Card_As::vItemise_colNm(m_pCI);
-  Card_Term::vItemise_colNm(m_pCI);
+  //Card_As::vItemise_colNm(m_pCI);
+  CardIter* pCI = m_pCI;
+  auto bfItemise_colNm = [pCI](Card* pCard)
+  {
+    //pCI->vAncestorDump(pCard);
+
+    if (! pCard->bIsCard(CK_EXPR))
+      return C_CONTINUE_RECURSION;
+
+    Card_Expr* p_expr = _pCard_Expr(pCard);
+    if (! p_expr->pSymbol()->bHasFacet(SF_NMD_COL))
+      return C_CONTINUE_RECURSION;
+
+    i8 i_Item;
+    i_Item = pCI->pAncestorParent()->iCounter();
+    Symbol oSymbol_itemise;
+    oSymbol_itemise.vApplyFacet(SF_ITM_COL, i_Item, p_expr->pSymbol());
+
+    p_expr->pSymbol()->vApplyFacet(oSymbol_itemise.aFacet(SF_ITM_COL));
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm);
+
+
+
+
+
+
+
+
+
+//  Card_Term::vItemise_colNm(m_pCI);
+
+  auto bfItemise_colNm2 = [pCI](Card* pCard)
+  {
+    UNUSED(pCI);
+
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+      vDebugPoint();
+
+    if (!pCard->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    if (pCI->bAncestor(CK_o_KEYEXISTS) || pCI->bAncestor(CK_o_KEYNOTEXISTS))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term *p_term = _pCard_Term(pCard);
+    Symbol *pSymbol_term = p_term->pSymbol();
+
+    if ((pCI->E.p_indexJoin = _pCard_IndexJoin(pCI->pAncestor(CK_o_INDEXJOIN))) &&
+        (pCI->E.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_s_CONSTRAINT)))) {
+
+      if (!pSymbol_term->bHasFacet(SF_NMD_COL))
+        return C_CONTINUE_RECURSION;
+
+      pCI->E.p_emit = pCI->E.p_indexJoin->pSub_emit();
+      pCI->E.p_expr = pCI->E.p_emit->pFind_expr_Matches(pSymbol_term);
+      pSymbol_term->vApplyFacet(SF_ITM_COL, pCI->E.p_expr->szFacet(SF_ITM_COL));
+      return C_CONTINUE_RECURSION;
+    }
+
+    if (pSymbol_term->bHasFacet(SF_EXP_COL))
+      return C_CONTINUE_RECURSION;
+    if (! pSymbol_term->bHasFacet(SF_NMD_COL))
+      return C_CONTINUE_RECURSION;
+
+    if (! (pCI->E.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR))))
+      return C_CONTINUE_RECURSION;
+
+    i8 i_Item;
+    i_Item = pCI->pAncestorParent()->iCounter();
+    pSymbol_term->vApplyFacet(SF_ITM_COL, i_Item);
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm2);
+
 
   m_pCI->vEndTransform(__LINE__);
 }

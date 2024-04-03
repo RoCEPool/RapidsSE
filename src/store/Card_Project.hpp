@@ -21,8 +21,6 @@ namespace STORE
     static void vUnproject_foldExpr(CardIter* pCI,
                                     CarryForward* pCarryForward);
 
-    void vBump_Rightwards(i8 nBumpBy);
-
    Card_Emit* pCraft_emit_early(CardIter* pCI);
 
     void vDerive_streamKey(CardIter* pCI);

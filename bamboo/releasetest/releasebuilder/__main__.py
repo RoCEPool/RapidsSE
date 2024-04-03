@@ -13,7 +13,7 @@ from releasebuilder.buildrunner import BuildRunner
 from releasebuilder.buildrunner import C_INSTALLER_FILESPEC
 from releasebuilder.testrunner import TestRunner
 from releasebuilder.testrunner import terminate_instances_from_file
-import releasebuilder.repo as repo
+import pyutils.repo as repo
 import releasebuilder.results as results
 
 

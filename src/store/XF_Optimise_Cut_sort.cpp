@@ -84,7 +84,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
          break;
 
         m_pCI->E.p_key = m_pCI->E.p_sort->pSub_key();
-        if (! m_pCI->StreamOrder.m_pStreamKey->bIsEquivalentTo(m_pCI->E.p_key))
+        if (! m_pCI->StreamOrder.m_pStreamKey->bIsEqual(m_pCI,m_pCI->E.p_key))
           break;
 
         m_pCI->vRemoveDeleteMain(CK_o_SORT);

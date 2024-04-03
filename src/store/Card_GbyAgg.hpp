@@ -18,8 +18,6 @@ namespace STORE
     Card_GbyAgg(void);
    ~Card_GbyAgg(void) noexcept(false);
 
-    void vBump_Rightwards(i8 nBumpBy);
-
     void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_root(CardIter* pCI);

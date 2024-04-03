@@ -51,6 +51,7 @@ class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
 
     def __init__(self,
+                 repo_root: pathlib.Path,
                  job_path: str,
                  bamboo_plan_key: str,
                  bamboo_build_num: int,
@@ -62,6 +63,8 @@ class JobRunner:
                  result_path: str,
                  tags: dict,
                  build_se: bool = True):
+
+        self.repo_root: pathlib.Path = repo_root
 
         # Parse the job file and the hardware and cluster configs that it references
         self.all_configs = AllConfigs(job_path)
@@ -245,10 +248,41 @@ class JobRunner:
         self.test_tuples = test_tuples
 
         # Compile RapidsSE and build the installer
-        if self.build_se:
-            installer_path = clusterops.build_installer()
+
+        if self.all_configs.job_config.get_compile_on_target():
+            # Start the nodes then compile on the target machine
+            self.__build_se_remotely_and_install(job_result_id, job_id)
         else:
-            installer_path = clusterops.find_installer()
+            # Compile on the local machine then start the nodes
+            self.__build_se_locally_and_install(job_result_id, job_id)
+
+        # Start the cluster on the remote nodes
+        clusterops.start_rapidsse(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Run a dummy command on the prompt to help validate the cluster
+        clusterops.run_dummy_statement(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Copy the JDBC driver to the installation dir of the first host
+        testops.copy_jdbc_driver(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Write/Copy a jmeter property file to the installation dir of the first host to
+        # set the classpath to find the above JDBC driver.
+        testops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Make the common perftests directory, to hold all tests, support files and their metrics
+        testops.make_perftests_dir(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Copy the supportFiles directory to the first host
+        testops.copy_support_files(self.ip_addresses[0],
+                                   self.all_configs.cluster_config,
+                                   str(C_SUPPORT_FILES_SRC))
+
+    def __build_se_remotely_and_install(self, job_result_id, job_id):
+        """
+            Start the remote machines first and then build and install SE
+            on them remotely.
+        """
+        assert self.build_se
 
         # Start up the necessary AWS hosts
         tags = {"jobResultId": str(job_result_id), "jobId": str(job_id)}
@@ -280,33 +314,71 @@ class JobRunner:
 
         # Copy and modify the cluster config file for the AWS hosts that were started.
         orig_cluster_cfg = pathlib.Path(self.all_configs.get_job().get_resolved_cluster_config_path())
-        self.custom_cluster_config = clusterops.customise_cluster_cfg_hostnames(orig_cluster_cfg,
-                                                                                self.ip_addresses)
+        self.custom_cluster_config: tempfile.NamedTemporaryFile = \
+            clusterops.customise_cluster_cfg_hostnames(orig_cluster_cfg, self.ip_addresses)
+
+        # Copy repo to the first node in the cluster
+        remote_repo_path: pathlib.Path = pathlib.Path("/tmp/rapidsse")
+        clusterops.copy_repo(self.repo_root, self.ip_addresses[0], remote_repo_path)
+
+        # Build the installer on the first node in the cluster
+        remote_installer_path = clusterops.build_installer_remotely(self.ip_addresses[0],
+                                                                    remote_repo_path,
+                                                                    self.result_path)
+
+        # Install the cluster using the cluster config
+        clusterops.install_rapidsse_remotely(self.ip_addresses[0],
+                                             remote_installer_path,
+                                             pathlib.Path(self.custom_cluster_config.name))
+        self.se_installed = True
+
+    def __build_se_locally_and_install(self, job_result_id, job_id):
+        """
+            Build SE locally first, then start the remote machines and copy
+            SE to them.
+        """
+
+        if self.build_se:
+            installer_path = clusterops.build_installer_locally()
+        else:
+            installer_path = clusterops.find_installer_locally()
+
+        # Start up the necessary AWS hosts
+        tags = {"jobResultId": str(job_result_id), "jobId": str(job_id)}
+
+        # Where to copy cloud-init logs if a machine doesn't start.
+        suffix = C_CLOUD_INIT_LOG_PATH.suffix
+        cloudinit_dest_filename = f"{C_CLOUD_INIT_LOG_PATH.name.removesuffix(suffix)}.txt"
+        cloudinit_dest = pathlib.Path(self.result_path) / cloudinit_dest_filename
+
+        (self.instance_ids, self.ip_addresses) = \
+            ec2.start_instances(self.all_configs.get_hardware().get_instance_type(),
+                                self.all_configs.get_hardware().get_image_id(),
+                                C_CLOUD_INIT_SCRIPT,
+                                self.all_configs.get_hardware().get_iam_role_name(),
+                                self.all_configs.get_hardware().get_num_machines(),
+                                C_INSTANCE_NAME_PREFIX,
+                                C_EC2_BOOT_TIMEOUT_SEC,
+                                self.all_configs.get_hardware().get_use_spot_instances(),
+                                tags,
+                                cloudinit_src=C_CLOUD_INIT_LOG_PATH,
+                                cloudinit_dest=cloudinit_dest)
+
+        assert len(self.instance_ids) > 0
+        assert len(self.ip_addresses) > 0
+
+        # Record the started instances to file so that they can always be terminated by
+        # a cleanup script
+        ec2.record_started_instances(self.instance_ids, C_EC2_INSTANCE_FILE)
+
+        # Copy and modify the cluster config file for the AWS hosts that were started.
+        orig_cluster_cfg = pathlib.Path(self.all_configs.get_job().get_resolved_cluster_config_path())
+        self.custom_cluster_config: tempfile.NamedTemporaryFile = \
+            clusterops.customise_cluster_cfg_hostnames(orig_cluster_cfg, self.ip_addresses)
 
         # Install the cluster using the cluster config
         clusterops.install_rapidsse(installer_path, pathlib.Path(self.custom_cluster_config.name))
         self.se_installed = True
-
-        # Start the cluster on the remote nodes
-        clusterops.start_rapidsse(self.ip_addresses[0], self.all_configs.cluster_config)
-
-        # Run a dummy command on the prompt to help validate the cluster
-        clusterops.run_dummy_statement(self.ip_addresses[0], self.all_configs.cluster_config)
-
-        # Copy the JDBC driver to the installation dir of the first host
-        testops.copy_jdbc_driver(self.ip_addresses[0], self.all_configs.cluster_config)
-
-        # Write/Copy a jmeter property file to the installation dir of the first host to
-        # set the classpath to find the above JDBC driver.
-        testops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
-
-        # Make the common perftests directory, to hold all tests, support files and their metrics
-        testops.make_perftests_dir(self.ip_addresses[0], self.all_configs.cluster_config)
-
-        # Copy the supportFiles directory to the first host
-        testops.copy_support_files(self.ip_addresses[0],
-                                   self.all_configs.cluster_config,
-                                   str(C_SUPPORT_FILES_SRC))
 
     def __run_tests(self):
         """Run each of the tests specified in this job file

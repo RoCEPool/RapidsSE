@@ -41,65 +41,6 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vItemise_colNm(CardIter* pCI)
-{
-  _static_
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bfItemise_colNm = [pCI](Card* pCard)
-  {
-    UNUSED(pCI);
-
-    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-      vDebugPoint();
-
-    if (!pCard->bIsCard(CK_TERM))
-      return C_CONTINUE_RECURSION;
-
-    if (pCI->bAncestor(CK_o_KEYEXISTS) || pCI->bAncestor(CK_o_KEYNOTEXISTS))
-      return C_CONTINUE_RECURSION;
-
-    Card_Term *p_term = _pCard_Term(pCard);
-    Symbol *pSymbol_term = p_term->pSymbol();
-
-    if ((pCI->E.p_indexJoin = _pCard_IndexJoin(pCI->pAncestor(CK_o_INDEXJOIN))) &&
-        (pCI->E.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_s_CONSTRAINT)))) {
-
-      if (!pSymbol_term->bHasFacet(SF_NMD_COL))
-        return C_CONTINUE_RECURSION;
-
-      pCI->E.p_emit = pCI->E.p_indexJoin->pSub_emit();
-      pCI->E.p_expr = pCI->E.p_emit->pFind_expr_Matches(pSymbol_term);
-      pSymbol_term->vApplyFacet(SF_ITM_COL, pCI->E.p_expr->szFacet(SF_ITM_COL));
-      return C_CONTINUE_RECURSION;
-    }
-
-    if (pSymbol_term->bHasFacet(SF_EXP_COL))
-      return C_CONTINUE_RECURSION;
-    if (! pSymbol_term->bHasFacet(SF_NMD_COL))
-      return C_CONTINUE_RECURSION;
-
-    if (! (pCI->E.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR))))
-      return C_CONTINUE_RECURSION;
-
-    i8 i_Item;
-    if (pCI->pAncestorParent()->bIsCard(CK_DIRECTION))
-      i_Item = pCI->pAncestor(-1)->iCounter();
-    else
-      i_Item = pCI->pAncestorParent()->iCounter();
-    pSymbol_term->vApplyFacet(SF_ITM_COL, i_Item);
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm);
-
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -204,11 +145,8 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
 
     Card_Expr* p_expr_matching = pCI->Dic.m_p_expr->pFind_expr_Matches(pSym_term);
     if (! p_expr_matching)
-#ifdef Z_KEY_DIRECTION
-      p_expr_matching = pCI->E.p_key->pFind_expr_key_Matches(pSym_term);
-#else
-    p_expr_matching = pCI->G.p_key->pFind_expr_Matches(pSym_term);
-#endif
+      p_expr_matching = pCI->E.p_key->pFind_expr_key_Matches(pCI,pSym_term);
+
     if (! p_expr_matching)
       return;
 
@@ -566,33 +504,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL]) ) {
-//    i8 i_Ancestor;
-//    if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR, &i_Ancestor)))) {
-//      Card* p_ANCESTOR = pCI->pAncestor(i_Ancestor - 1);
-//      eCK eAncestor = p_ANCESTOR->eCard();
-//      RASSERT(CK_t_EMIT == eAncestor ||
-//              CK_BOOLPRED == eAncestor  ||
-//              CK_o_FILTER == eAncestor  ||
-//              CK_s_KEY == eAncestor  ||
-//              CK_s_NEEDED == eAncestor  ||
-//              CK_STREAMKEY == eAncestor  ||
-//              CK_s_INJECTABLE == eAncestor);
-//      Symbol* pSymbol_this = pSymbol();
-//      if (CK_s_KEY != eAncestor && CK_STREAMKEY != eAncestor && pCI->G.p_expr->bIsScalarCol()
-//           && (pSymbol_this->nFacets() > 1 || ! pSymbol_this->bHasFacet(SF_EXP_COL))
-//           ) {
-//        Card_EXPRLIST* p_EXPRLIST = (Card_EXPRLIST*)p_ANCESTOR;
-//        if (! p_EXPRLIST->bTestFind_expr_Matching(pCI->G.p_expr,this->pSymbol(),SF_EXP_COL)) {
-//          pCI->PRINTBOARD_dbg();
-//          p_EXPRLIST->vDump(__func__ );
-//          pCI->G.p_expr->vDump(__func__ );
-//          NEVER_REACH
-//        }
-//      }
-//    }
-//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

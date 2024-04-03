@@ -39,6 +39,7 @@ Stz* P_CrlKeyDefn   = "bCrlKeyDefn"_Stz;
 Stz* P_CrlKeyTerm   = "bCrlKeyTerm"_Stz;
 Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
 Stz* P_DebugOption  = "szDebugOption"_Stz;
+Stz* P_Direction    = "szDirection"_Stz;
 Stz* P_Early        = "bEarly"_Stz;
 Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
 Stz* P_FixedPos     = "bFixedPos"_Stz;
@@ -101,6 +102,9 @@ Stz* MARK_VALID      = "Y"_Stz;
 Stz* C_CRLKEY      = "_CRLKEY_Q%lld_"_Stz;
 Stz* C_SQYRSL      = "_SQYRSL_Q%lld_"_Stz;
 
+Stz* C_ASC         = "ASC"_Stz;
+Stz* C_DESC        = "DESC"_Stz;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -109,14 +113,11 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (CK_ANDCONJ == eCard)
-    vDebugPoint();
-
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
   if (CK_BOUNDS == eCard)
     vDebugPoint();
-
+  
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
@@ -2618,30 +2619,17 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Direction.hpp"
-Card_Direction* Card::pGet_direction_z(i8 i_Get)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Direction* p_direction =
-      _pCard_Direction(pGetChild(i_Get));
-
-  return p_direction;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Expr.hpp"
-Card_Expr* Card::pGet_expr_z(i8 i_Get)
+Card_Expr* Card::pGet_expr_z(i8 i_Element)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Expr* p_expr =
-      _pCard_Expr(pGetChild(i_Get));
+      _pCard_Expr(pGetChild(i_Element));
 
   return p_expr;
 }
@@ -2650,12 +2638,12 @@ Card_Expr* Card::pGet_expr_z(i8 i_Get)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Term.hpp"
-Card_Term* Card::pGet_term_z(i8 i_Get)
+Card_Term* Card::pGet_term_z(i8 i_Element)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term =
-      _pCard_Term(pGetChild(i_Get));
+      _pCard_Term(pGetChild(i_Element));
 
   return p_term;
 }
@@ -3000,24 +2988,6 @@ Card_Decision* Card::pSub_decision(bool bNotNull)
   }
 
   return p_decision;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Direction.hpp"
-Card_Direction* Card::pSub_direction(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Direction* p_direction =
-      _pCard_Direction(pFindSubCard(CK_DIRECTION));
-
-  if (bNotNull && !p_direction) {
-    NEVER_REACH
-  }
-
-  return p_direction;
 }
 
 /*----------------------------------------------------------------------------*/

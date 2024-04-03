@@ -342,22 +342,6 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
-void* TablePtn::pPdsCrwTablePtn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      return m_pCrwTablePtn->pPds();
-    default:
-      NEVER_REACH;
-      return nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert entries into given index for all rows in this partition             */
-/*----------------------------------------------------------------------------*/
 bool TablePtn::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
@@ -405,19 +389,6 @@ void TablePtn::vRemoveIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove index                                                               */
-/*----------------------------------------------------------------------------*/
-DataBuffer* TablePtn::pRootBuffer(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      return m_pCrwTablePtn->pRootCrwBuffer();
-    default: NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* Root BufferID                                                              */
 /*----------------------------------------------------------------------------*/
 BufferId TablePtn::oRootBufferId(void)
@@ -428,16 +399,6 @@ BufferId TablePtn::oRootBufferId(void)
       return m_pCrwTablePtn->oRootCrwBufferId();
     default: NEVER_REACH;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get root crw buffer                                                        */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* TablePtn::pRootCrwBuffer(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
-  return m_pCrwTablePtn->pRootCrwBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -535,21 +496,6 @@ void TablePtn::vVisualizeTable(void)
       m_pCrwTablePtn->vVisualizeTable();
       break;
     default: NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the table data of this partition                                      */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vDumpContents(String* pStr)
-{
-  i8 nBuffers = m_pCrwTablePtn->nBuffers();
-  if (nBuffers > 0) {
-    pStr->vCatSprint("  PtnId:%lld   nBuffers:%lld\n"_Stz, m_tLglPtn.iAsI8(), nBuffers);
-    for (i8 i_PoolBuffer = 0; i_PoolBuffer < nBuffers; i_PoolBuffer++) {
-      i8 nRows = m_pCrwTablePtn->pRootCrwBuffer()->nRows();
-      pStr->vCatSprint("     Buffer:%lld   PtnId:%lld   nRows:%lld\n"_Stz, i_PoolBuffer, m_tLglPtn.iAsI8(), nRows);
-    }
   }
 }
 

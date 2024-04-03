@@ -19,7 +19,6 @@ namespace STORE
 
     void vBump_KeyCol_In_rpnCalc(CardIter* pCI);
     void vBump_expCol_In_rpnCalc(CardIter* pCI);
-    void vBump_Rightwards(i8 nBumpBy);
 
     Card_Expr* pContains(Symbol* pSymbol_arg);
     Card_Expr* pContains(Card_Expr* p_expr_arg);
@@ -39,11 +38,8 @@ namespace STORE
 
     Card_Expr* pGet_expr(i8 i_Expr);
 
-    void vRenumberAll_expr(void);
+    void vRenumberAll_expr(eSF eFacet=SF_EXP_COL);
 
-    bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);
-
-    bool bTestFind_expr_Matching(Card_Expr* p_expr_arg, Symbol* pSymbol_arg, eSF eFacet_ignore);
     StreamDef* pTo_StreamDef(ColMap* pColMap,
                              Card_Key* p_key,
                              Card* p_OP);

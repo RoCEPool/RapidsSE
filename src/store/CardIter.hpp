@@ -129,6 +129,7 @@ namespace STORE
     void vBeginEach_reverse(void);
     void vBeginMember(eCK eSub_Of_Op);
     void vBeginTarget(eCK ePrimary, eCK eTarget);
+    void vBeginTarget(Card* pPrimary, eCK eTarget);
     Board* pBoard(void);
     void vBurst(Card* pCard);
 
@@ -216,8 +217,9 @@ namespace STORE
     void vResynchOp(Card* pCard);
     bool bRewindOp(void);
 
-   void vSnapArriving(void);
+    void vSnapArriving(void);
 
+    i8   i_Target(void);
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
 
     void vUseBoard(Board* pBoard);

@@ -154,7 +154,8 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 	return 1;
 }
 
-typedef char i1;
+typedef signed char i1;
+
 typedef unsigned short u2;
 typedef long long i8;
 typedef unsigned char byte;

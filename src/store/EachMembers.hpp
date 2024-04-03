@@ -6,6 +6,7 @@
 #include "Board.hpp"
 
 #include "Kid.hpp"
+#include "Elem.hpp"
 
 namespace STORE
 {
@@ -17,7 +18,6 @@ namespace STORE
     Board*      pBoard;
 
   // - - - - - - - - - - - - -
-  private:
     Kid xEachOp;
     Kid xTarget;
 
@@ -66,7 +66,6 @@ namespace STORE
 
     Card_Decision *      p_decision;
     Card_Deck*           p_deck;
-    Card_Direction *     p_direction;
     Card_Disposition *   p_disposition;
 
     Card_Emit *          p_emit;

@@ -4,8 +4,6 @@
 
 #include "Card_Key.hpp"
 
-#include "Card_As.hpp"
-#include "Card_Direction.hpp"
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_HshCol.hpp"
@@ -56,82 +54,61 @@ Card_Key::~Card_Key(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
+{
+  _static_
+
+/**Z_KEY_DIRECTION assemble*/
+
+  pCI->E.p_key = new Card_Key;
+  pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
+
+  eAL e_Level = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
+  if (AL_PARTITION == e_Level) {
+    pCI->E.p_expr = Card_Expr::pCraft_expr_Of_term(pCI->Flat.m_p_expr_crlKey->pGet_term0());
+  }
+  else {
+    Symbol xSymbol(SF_EXP_COL, "$1"_Stz, pCI->Flat.m_p_expr_crlKey->xCast());
+    pCI->E.p_expr = Card_Expr::pCraft_expr_Of_symbol(&xSymbol);
+  }
+  pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
+  pCI->E.p_key->vAppendChild(pCI->E.p_expr);
+
+  pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
+
+  pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add a key expr to this key based on given projection expr                  */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
+void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool bAsc, bool bAppend)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-#ifdef Z_KEY_DIRECTION
-  i8 i_Key = nChildCards() + 1;
+/**Z_KEY_DIRECTION add key*/
 
-  Card_Direction *p_direction_new;
-  if (p_expr->pSub_direction()) {
-    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_DIRECTION));
-  }
-  else
-  if (bAsc) {
-    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
-  }
-  else {
-    p_direction_new = (new Card_Direction) ->SYM(SF_DIRECTION, "DESC"_Stz);
-  }
-  vAppendChild(p_direction_new);
+  pCI->E.p_expr = p_expr->pClone();
+  pCI->E.p_expr->pSymbol()->vResetFacets();
+  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,C_UNKNOWN);
+  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_DIRECTION,bAsc?C_ASC:C_DESC);
 
-  Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumberForm_keyCol(i_Key);
-  p_direction_new->vAppendChild(p_expr_new);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  if (p_expr->pSub_rpnCalc(C_NOT_NULL))
-    p_rpnCalc->vAppendChild(p_expr->pGet_term(0)->pDupCardRecursive());
-  else
-    NEVER_REACH
-  p_expr_new->vAppendChild(p_rpnCalc);
-
-  p_rpnCalc->vApplyCast_x(p_expr->xCast());
-  p_expr_new->vApplyCast_x(p_expr->xCast());
-
-  if (0 == i_Key)
+  if (0 == nChildCards())
     vApplyCast_x(p_expr->xCast());
 
-#else
-
-  i8 i_Key = nChildCards() + 1;
-
-  Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumberForm_keyCol(i_Key);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  if (p_expr->pSub_rpnCalc(C_NOT_NULL))
-    p_rpnCalc->vAppendChild(p_expr->pGet_term(0)->pDupCardRecursive());
+  if (bAppend)
+    vAppendChild(pCI->E.p_expr);
   else
-    NEVER_REACH
+    vPushChild(pCI->E.p_expr);
 
-  p_expr_new->vAppendChild(p_rpnCalc);
-
-  p_rpnCalc->vApplyCast_x(p_expr->xCast());
-  p_expr_new->vApplyCast_x(p_expr->xCast());
-
-  if (p_expr->pSub_direction()) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_DIRECTION));
-    p_expr_new->vAppendChild(p_direction);
-  }
-  else
-  if (bAsc) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
-    p_expr_new->vAppendChild(p_direction);
-  }
-
-  if (0 == i_Key)
-    vApplyCast_x(p_expr->xCast());
-
-  vAppendChild(p_expr_new);
-#endif
+  vRenumberAll_expr(SF_KEY_COL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,22 +118,12 @@ void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-#ifdef Z_KEY_DIRECTION
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    pCI->E.p_direction = xKey.p_direction();
-    pCI->E.p_expr = pCI->E.p_direction->pSub_expr();
+//Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
     pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
   }
-#else
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    pCI->G.p_expr = xKey.p_expr();
-    pCI->G.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
-  }
-#endif
 
   pCI->E.p_expr = nullptr;
-  pCI->E.p_direction = nullptr;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,98 +134,83 @@ Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymb
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(pCI);
 
-#ifdef Z_KEY_DIRECTION
-  vDump(__func__);
-// for (pCI->vBeginMember(CK_s_KEY); pCI->bEachMember(CK_DIRECTION,CK_EXPR); /**/) {
+//Z_KEY_DIRECTION
   for (pCI->vBeginTarget(CK_s_KEY,CK_EXPR); pCI->bEachTarget(); /**/) {
-
-    pCI->E.p_key->vDump(__func__);
-    pCI->E.p_direction->vDump(__func__);
-    pCI->E.p_expr->vDump(__func__);
     Symbol* pSym_term0 = pCI->E.p_expr->pGet_Symbol(0);
-
     if (pSym_term0->bMatches(pSymbol))
       return _pCard_Expr(pCI->pEndTarget());
   }
-//  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-//    Card_Direction* p_direction = xKey.p_direction();
-//    Card_Expr* p_expr = p_direction->pSub_expr();
-//
-//    Symbol* pSymbol_term0 = p_expr->pGet_Symbol(0);
-//
-//    if (pSymbol_term0->bMatches(pSymbol))
-//      return p_expr;
-//  }
-#else
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    Symbol* pSymbol_term0 = xKey.p_expr()->pGet_Symbol(0);
-
-    if (pSymbol_term0->bMatches(pSymbol))
-      return xKey.p_expr();
-  }
-#endif
 
   return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* find <expr> which has same symbol as given $n stream-column                */
+/* return direction string of key element                                     */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pFind_expr_key_Matches(Symbol *pSymbol_arg)
-
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
-
-    if (p_expr->pSymbol()->bMatches(pSymbol_arg))
-      return p_expr;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find <expr> which has same symbol as given $n stream-column                */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pFind_expr_key_Matches(eSF eFacet_arg, Symbol* pSymbol_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
-    if (p_expr->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
-      return p_expr;
-  }
-
-  return nullptr;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get a particular direction                                                 */
-/*----------------------------------------------------------------------------*/
-Card_Direction* Card_Key::pGet_direction(i8 i_Direction)
+Stz* Card_Key::szDirection(i8 i_Element)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Direction));
+  Card_Expr* p_expr = pGet_expr(i_Element);
 
-  return p_direction;
+  return p_expr->szFacet(SF_DIRECTION);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return number of key elements                                              */
+/*----------------------------------------------------------------------------*/
+i8 Card_Key::nElements(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nElements = nChildCards();
+
+  return nElements;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg)
+
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+    if (pCI->E.p_expr->pSymbol()->bMatches(pSymbol_arg))
+      return _pCard_Expr(pCI->pEndTarget());
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+    if (pCI->E.p_expr->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
+      return _pCard_Expr(pCI->pEndTarget());
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get a particular direction/expr                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pGet_expr_Of_direction(i8 i_Direction)
+Card_Expr* Card_Key::pGet_expr(i8 i_Element)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Direction));
-  Card_Expr* p_expr = p_direction->pSub_expr();
+/**Z_KEY_DIRECTION get expr*/
+
+  Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Element));
 
   return p_expr;
 }
@@ -266,38 +218,31 @@ Card_Expr* Card_Key::pGet_expr_Of_direction(i8 i_Direction)
 /*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
-bool Card_Key::bIsEqual(Card_Key* p_key_arg)
+bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(CT_NONE != this->eCTVal());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (! pSub_expr()->bSameAs(p_key_arg->pSub_expr())) {
+  UNUSED(pCI);
+  i8 nExpr = this->nChildCards();
+  if (nExpr != p_key_arg->nChildCards())
     return false;
-  }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-  Card_Direction* p_direction_this = pSub_direction();
-  Card_Direction* p_direction_arg  = p_key_arg->pSub_direction();
+    Card_Expr *p_expr_arg = p_key_arg->pGet_expr(pCI->E.xTarget.i_Child());
 
-  if (p_direction_this) {
-    if (p_direction_arg) {
-      if (! p_direction_this->bIsEqual(p_direction_arg))
-        return false;
+    if (! pCI->E.p_expr->bSameAs(p_expr_arg)) {
+      pCI->vEndTarget();
+      return false;
     }
-    else {
+
+    if (! Symbol::bSame(pCI->E.p_expr->pSymbol()->aFacet(SF_DIRECTION),
+                        p_expr_arg->pSymbol()->aFacet(SF_DIRECTION))) {
+      pCI->vEndTarget();
       return false;
     }
   }
-  else
-  if (p_direction_arg) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return true;
 }
@@ -311,24 +256,11 @@ void Card_Key::vMapColumns(CardIter *pCI)
 
   i8 i_Cell = 0;
 
-#ifdef Z_KEY_DIRECTION
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction *p_direction_key = xKey.p_direction();
-    Card_Expr *p_expr_key = p_direction_key->pSub_expr();
-
-    i_Cell++;
-    pCI->vAppendNewChild(pCI->E.p_keyCells, CK_MAP, p_expr_key->pSymbol());
-    pCI->E.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
+//Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+    pCI->vAppendNewChild(pCI->E.p_keyCells, CK_MAP, pCI->E.p_expr->pSymbol());
+    pCI->E.p_map->pSymbol()->Y_vSet(P_Cell, ++i_Cell);
   }
-#else
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    Card_Expr *p_expr_key = xKey.p_expr();
-
-    i_Cell++;
-    pCI->vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
-    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
-  }
-#endif
 
 }
 
@@ -361,7 +293,7 @@ void Card_Key::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* convert key to indexDef                                                    */
 /*----------------------------------------------------------------------------*/
-IndexDef* Card_Key::pTo_IndexDef(void)
+IndexDef* Card_Key::pTo_IndexDef(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -369,13 +301,9 @@ IndexDef* Card_Key::pTo_IndexDef(void)
 
   IndexDef* pIndexDef = new IndexDef;
 
-#ifdef Z_KEY_DIRECTION
-  for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/) {
-
-    Card_Direction* p_direction = xKey.p_direction();
-    Card_Expr* p_expr = p_direction->pSub_expr();
-
-    Card_Term* p_term = p_expr->pGet_term(0);
+//Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+    Card_Term* p_term = pCI->E.p_expr->pGet_term(0);
     if (! p_term)
       continue;
 
@@ -386,35 +314,13 @@ IndexDef* Card_Key::pTo_IndexDef(void)
       continue;
 
     bool bAscending = true;
-    if (p_direction->pSymbol()->bHasFacet("DESC"_Stz)) {
+    if (pGet_expr(pCI->E.xTarget.i_Child())->pSymbol()->bHasFacet(C_DESC)) {
       bAscending = false;
       bHasDescending = true;
     }
     pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
   }
 
-#else
-  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
-    Card_Expr* p_expr = xKey.p_expr();
-
-    Card_Term* p_term = p_expr->pGet_term(0);
-    if (! p_term)
-      continue;
-
-    Stz* szColNm  = p_term->szFacet(SF_EXP_COL);
-    TypeId xTypeId = p_term->xTypeId();
-
-    if (! szColNm || CT_NONE == xTypeId.eCTVal())
-      continue;
-
-    bool bAscending = true;
-    if (p_expr->bIsDescending()) {
-      bAscending = false;
-      bHasDescending = true;
-    }
-    pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
-  }
-#endif
 
   if (bHasDescending)
     pIndexDef->vHasDescending(true);
@@ -439,11 +345,8 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_o_SORT,
                                      CK_NONE);
 
-#ifdef Z_KEY_DIRECTION
-  vValidate_mustHave(CK_DIRECTION,CK_NONE);
-#else
+/**Z_KEY_DIRECTION validation*/
   vValidate_mustHave(CK_EXPR,CK_NONE);
-#endif
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

@@ -73,8 +73,8 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_RpnExpr* pStack_conj   = new Card_RpnExpr;
-  Card_RpnExpr* pStack_term   = new Card_RpnExpr;
+  Card_TermSeq* pStack_conj   = new Card_TermSeq;
+  Card_TermSeq* pStack_term   = new Card_TermSeq;
 
   Card* p_child_0 = nullptr;
   Card_AndConj* p_andConj = nullptr;

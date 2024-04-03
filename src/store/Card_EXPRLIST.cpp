@@ -80,19 +80,6 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
   }
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Kid xEXPRLIST(this);
-  while (xEXPRLIST.bEach(CK_EXPR))
-    xEXPRLIST.p_expr()->vBump_expCol(nBumpBy);
-}
-
 /*----------------------------------------------------------------------------*/
 /* does this expression list contain given term?                              */
 /*----------------------------------------------------------------------------*/
@@ -256,87 +243,13 @@ Card_Expr* Card_EXPRLIST::pGet_expr(i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vRenumberAll_expr(void)
+void Card_EXPRLIST::vRenumberAll_expr(eSF eFacet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bIsKeyExpr = bIsCard(CK_s_KEY);
-
-#ifdef Z_KEY_DIRECTION
-  i8 i_Expr = 1;
-
-  if (bIsKeyExpr) {
-    for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/)
-      xKey.p_expr(C_SUB)->vRenumberForm_keyCol(i_Expr++);
-  }
-  else {
-    for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
-      xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
-  }
-
-#else
-  i8 i_Expr = 1;
-  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
-    if (bIsKeyExpr)
-      xEXPRLIST.p_expr()->vRenumberForm_keyCol(i_Expr++);
-    else
-      xEXPRLIST.p_expr()->vRenumberForm_expCol(i_Expr++);
-  }
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* same ?                                                                     */
-/*----------------------------------------------------------------------------*/
-bool Card_EXPRLIST::bSame(Card_EXPRLIST* p_EXPRLIST_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nExpr = this->nChildCards();
-  if (nExpr != p_EXPRLIST_arg->nChildCards())
-    return false;
-
-  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
-    Card_Expr* p_expr_this = pGet_expr(i_Expr);
-    Card_Expr* p_expr_arg  = p_EXPRLIST_arg->pGet_expr(i_Expr);
-
-    if (! p_expr_this->bSameAs(p_expr_arg))
-      return false;
-
-    if (Card_Direction* p_direction_this = p_expr_this->pSub_direction()) {
-      if (Card_Direction *p_direction_arg = p_expr_arg->pSub_direction()) {
-        if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
-          return false;
-      }
-      else {
-        return false;
-      }
-    }
-    else
-    if (p_expr_arg->pSub_direction()) {
-      return false;
-    }
-
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find <expr> which has same symbol as given $n stream-column                */
-/*----------------------------------------------------------------------------*/
-bool Card_EXPRLIST::bTestFind_expr_Matching(Card_Expr* p_expr_arg,
-                                            Symbol *pSymbol_arg, eSF eFacet_ignore)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/) {
-    if (xEXPRLIST.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore) &&
-        xEXPRLIST.p_expr() == p_expr_arg)
-      return true;
-  }
-
-  return false;
+/**Z_KEY_DIRECTION renumber*/
+  for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
+    xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(eFacet,xEXPRLIST.i_Child()+1);
 }
 
 /*----------------------------------------------------------------------------*/

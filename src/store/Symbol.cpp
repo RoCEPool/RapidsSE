@@ -22,7 +22,7 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vFacetReset();
+  vResetFacets();
   vCastReset();
 
   m_pProperties = nullptr;
@@ -37,12 +37,33 @@ Symbol::Symbol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Symbol::Symbol(eSF eFacet, char cChar, i8 iInt)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vResetFacets();
+  vCastReset();
+  m_pProperties = nullptr;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  vApplyFacet(eFacet, cChar, iInt);
+
+  RASSERT(bHasFacets());
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Symbol::Symbol(eSF eFacet, i8 iInt)
     : Object(CN_SYMBOL)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vFacetReset();
+  vResetFacets();
   vCastReset();
   m_pProperties = nullptr;
 
@@ -58,12 +79,36 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Symbol::Symbol(eSF eFacet, i8 iInt, Cast xCast)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vResetFacets();
+  vCastReset();
+  m_pProperties = nullptr;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  vApplyFacet(eFacet, iInt);
+
+  vApplyCast(xCast);
+
+  RASSERT(bHasFacets());
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Symbol::Symbol(eSF eFacet, Stz* szArg)
     : Object(CN_SYMBOL)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vFacetReset();
+  vResetFacets();
 	//m_xTypeId;
   m_pProperties = nullptr;
 
@@ -75,6 +120,30 @@ Symbol::Symbol(eSF eFacet, Stz* szArg)
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Symbol::Symbol(eSF eFacet, Stz* szArg, Cast xCast)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vResetFacets();
+  //m_xTypeId;
+  m_pProperties = nullptr;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  vApplyFacet(eFacet, szArg);
+
+  vApplyCast(xCast);
+
+  RASSERT(bHasFacets());
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -399,8 +468,8 @@ bool Symbol::bIs_Direction(Stz* szArg)
 {
   _static_
 
-       if (szArg->bSame("ASC"_Stz))   return true;
-  else if (szArg->bSame("DESC"_Stz))  return true;
+       if (szArg->bSame(C_ASC))   return true;
+  else if (szArg->bSame(C_DESC))  return true;
 
   return false;
 }
@@ -2698,7 +2767,7 @@ void Symbol::vFacet_As(Stz* szAs)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vFacetSet(SF_AS, szAs);
 
@@ -2880,7 +2949,7 @@ void Symbol::vFacet_Direction(Stz* szDirection)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vFacetSet(SF_DIRECTION, szDirection);
 
@@ -2922,14 +2991,14 @@ void Symbol::vFacet_Exp_Col(i8 iExpCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (m_nFacets) {
-    eSF eFacet = this->eFacet(0);
-    RASSERT(SF_SQY_RSL == eFacet ||
-            SF_EXP_COL == eFacet ||
-            SF_NMD_COL == eFacet ||
-            SF_TBL_COL == eFacet ||
-            SF_KEY_COL == eFacet);
-  }
+//  if (m_nFacets) {
+//    eSF eFacet = this->eFacet(0);
+//    RASSERT(SF_SQY_RSL == eFacet ||
+//            SF_EXP_COL == eFacet ||
+//            SF_NMD_COL == eFacet ||
+//            SF_TBL_COL == eFacet ||
+//            SF_KEY_COL == eFacet);
+//  }
 
   vFacetSprint(SF_EXP_COL, "$%lld"_Stz, iExpCol);
 
@@ -3482,7 +3551,7 @@ void Symbol::vFacet_Tbl_Col(char cTblSyn, i8 iTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! bHasFacets());
+  //RASSERT(! bHasFacets());
 
   vFacetSprint(SF_TBL_COL, "$$%c.%lld"_Stz, cTblSyn, iTblCol);
 
@@ -3555,7 +3624,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
   char cTableSyn_actual = cTblSyn();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
-  vFacetReset();
+  vResetFacets();
   vFacetSprint(SF_TBL_SYN_rep,"$T%c"_Stz, cTableSyn_actual);
 
   RASSERT(bHasFacet(SF_TBL_SYN_rep));
@@ -3665,7 +3734,7 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
 /*----------------------------------------------------------------------------*/
 /* rotate facet to top                                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacetReset(void)
+void Symbol::vResetFacets(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

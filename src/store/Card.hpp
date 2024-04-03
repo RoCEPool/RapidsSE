@@ -18,15 +18,12 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_KEY_DIRECTION
-
 namespace STORE
 {
   class Card_AbsJoin;
   class Card_Address;
   class Card_Aggreg;
   class Card_AndConj;
-  class Card_As;
 
   class Card_BoolPred;
   class Card_Bound;
@@ -51,7 +48,6 @@ namespace STORE
   class Card_Debug;
   class Card_Deck;
   class Card_Decision;
-  class Card_Direction;
 
   class Card_Emit;
   class Card_EXPRLIST;
@@ -121,7 +117,7 @@ namespace STORE
   class Card_RowCount;
   class Card_RowSize;
   class Card_RpnCalc;
-  class Card_RpnExpr;
+  class Card_TermSeq;
 
   class Card_Scan;
   class Card_Section;
@@ -177,6 +173,7 @@ extern Stz* P_CrlKeyDefn;
 extern Stz* P_CrlKeyTerm;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_DebugOption;
+extern Stz* P_Direction;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedPos;
@@ -238,6 +235,9 @@ extern Stz* MARK_VALID;
 
 extern Stz* C_CRLKEY;
 extern Stz* C_SQYRSL;
+
+extern Stz* C_ASC;
+extern Stz* C_DESC;
 
 namespace STORE
 {
@@ -460,9 +460,8 @@ namespace STORE
 
   public:
 
-    Card_Direction*     pGet_direction_z(i8 i_Get);
-    Card_Expr*          pGet_expr_z(i8 i_Get);
-    Card_Term*          pGet_term_z(i8 i_Get);
+    Card_Expr*          pGet_expr_z(i8 i_Element);
+    Card_Term*          pGet_term_z(i8 i_Element);
 
     Card_Address*       pSub_address(bool bNotNull=false);
     Card_Aggreg*        pSub_aggreg(bool bNotNull=false);
@@ -484,7 +483,6 @@ namespace STORE
     Card_Count*         pSub_count(bool bNotNull=false);
     Card_CrossJoin*     pSub_crossJoin(bool bNotNull=false);
     Card_Decision*      pSub_decision(bool bNotNull=false);
-    Card_Direction*     pSub_direction(bool bNotNull=false);
     Card_Emit*          pSub_emit(bool bNotNull=false);
     Card_Expr*          pSub_expr(bool bNotNull=false);
     Card_FiltPred*      pSub_filtPred(bool bNotNull=false);

@@ -54,7 +54,9 @@ endif
 # Variables
 CPP = g++
 
-WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
+# Note: We use -Wno-deprecated-declarations because of 3rd party library thrift
+#       uses deprecated methods in the std library
+WARNINGS = -Wall -Wextra -Wno-unused-function -Wno-deprecated-declarations $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
 
 # Warnings that are treated as errors.
 # We first add the gcc/clang-specific warnings, then we add the warnings
@@ -97,8 +99,8 @@ FRAGMENT_IGNORE_WARNINGS += -Wno-unused-value
 ANTLR_IGNORE_WARNINGS  = $(strip $(LINUX_ANTLR_IGNORE_WARNINGS) $(DARWIN_ANTLR_IGNORE_WARNINGS))
 ANTLR_IGNORE_WARNINGS += -Wno-unused-parameter
 
-CPPFLAGS = -std=c++14 $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
-CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
+CPPFLAGS = -std=c++17 $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
+CPPFLAGS_DEBUG = -std=c++17 -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 
 CFLAGS = $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CFLAGS) $(DARWIN_CFLAGS))
 CFLAGS_DEBUG = -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -Wno-unused -O0 -g3 $(strip $(LINUX_CFLAGS_DEBUG) $(DARWIN_CFLAGS_DEBUG))
@@ -233,7 +235,7 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	@echo ""
 	@echo "Linking the rapidsse executable..."
 	@echo ""
-	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) -o $(TARGET_EXE) $(OBJECTS) $(LIBS) 
+	@$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) -o $(TARGET_EXE) $(OBJECTS) $(LIBS)
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
 #-------------------------------------------------------
@@ -245,30 +247,31 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 $(OBJ_DIR)/$(SRC_DIR)/store/Fragments/%.o: $(SRC_DIR)/store/Fragments/%.cpp $(OBJ_DIR)/$(SRC_DIR)/store/Fragments/%.d
 	$(DIR_GUARD)
 	@echo "Compiling fragment file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(FRAGMENT_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(FRAGMENT_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
 
 $(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.o: $(SRC_DIR)/../thirdparty/antlr/generated/%.cpp $(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.d
 	$(DIR_GUARD)
 	@echo "Compiling ANTLR-generated file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(ANTLR_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(ANTLR_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
+
 
 # Compile general source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile source .c files into object files
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile assembly files into objects
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s 
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
+	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
 
 #-------------------------------------------------------
 

@@ -67,56 +67,14 @@ Card_StreamKey* Card_StreamKey::pTo_streamKey(Card_Key* p_key)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_StreamKey::bIsEquivalentTo(Card_Key* p_key_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vDump(__func__ ,"this streamKey"_Stz);
-  //p_key_arg->vDump(__func__ ,"p_key_arg"_Stz);
-
-#ifndef Z_KEY_DIRECTION
-  if (! bSame(p_key_arg))
-    return false;
-
-  return true;
-
-#endif
-
-
-  i8 nExpr = this->nChildCards();
-  if (nExpr != p_key_arg->nChildCards())
-    return false;
-
-  for (Kid xStreamKey(this); xStreamKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction *p_direction_this = xStreamKey.p_direction();
-    Card_Expr *p_expr_this = p_direction_this->pSub_expr();
-    Card_Direction *p_direction_arg = p_key_arg->pGet_direction_z(xStreamKey.i_Child());
-    Card_Expr *p_expr_arg = p_direction_arg->pSub_expr();
-
-    if (!p_expr_this->bSameAs(p_expr_arg))
-      return false;
-
-    if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
-      return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_StreamKey::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pParent->bIsCard(CK_t_EMIT));
 
-#ifdef Z_KEY_DIRECTION
-  vValidate_mustHave(CK_DIRECTION,CK_NONE);
-#else
+/**Z_KEY_DIRECTION validate*/
   vValidate_mustHave(CK_EXPR,CK_NONE);
-#endif
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

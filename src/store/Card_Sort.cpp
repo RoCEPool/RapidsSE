@@ -69,12 +69,10 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_key = pCI->E.p_sort->pSub_key();
 
-#ifdef Z_KEY_DIRECTION
+//Z_KEY_DIRECTION
   if (pCarryForward->Sort.m_bCorrect_After_Inject) {
-    for (Kid xKey(pCI->E.p_key); xKey.bEach(CK_DIRECTION); /**/) {
-      Card_Direction *p_direction = xKey.p_direction();
-      Card_Expr *p_expr = p_direction->pSub_expr();
-      for (Kid xRpnCalc(p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
+    for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
+      for (Kid xRpnCalc(pCI->E.p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
         if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
           xRpnCalc.p_term()->vBump_ordCol(SF_EXP_COL);
           xRpnCalc.p_term()->vMark1(MARK_CHANGED);
@@ -82,11 +80,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
       }
     }
   }
-#else
 
-  if (pCarryForward->Sort.m_bCorrect_After_Inject)
-    pCI->G.p_key->vBump_expCol_In_rpnCalc(pCI);
-#endif
 
   vEnsure_stream(pCI);
 

@@ -17,7 +17,9 @@ extern pthread_key_t gbTLS_FaultInjection;
 extern pthread_key_t giTLS_FaultPoint;
 extern pthread_key_t giTLS_CurrentPoint;
 extern pthread_key_t giTLS_PDSCrwTablePtn;
-
+#ifdef WITH_THREADSTACKSIZE
+extern pthread_key_t giTLS_ThreadStackAddr;
+#endif
 /*----------------------------------------------------------------------------*/
 /* initialise tls                                                             */
 /*----------------------------------------------------------------------------*/
@@ -52,6 +54,10 @@ void TlsKeys::vInit(void)
 
   b = PsxThd::bTlsCreate(&giTLS_PDSCrwTablePtn);
   RASSERT(b);
+#ifdef WITH_THREADSTACKSIZE
+  b = PsxThd::bTlsCreate(&giTLS_ThreadStackAddr);
+  RASSERT(b);
+#endif
 }
 
 /*============================================================================*/

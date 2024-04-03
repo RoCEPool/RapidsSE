@@ -18,13 +18,14 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------
-    static Card_Expr* pCraft_expr_gby_From_expr_crlKey(Card_Expr* pExpr_crlKey);
-    static Card_Expr* pCraft_expr_project_From_expr_gbyAgg(CardIter* pCI, Card_Expr* p_expr_gbyAgg);
-    static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
+    static void vAssemble_injCrlRsl(CardIter* pCI);
 
-    static Card_Expr* pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
-                                         char cTblSyn, i8 iTblCol);
-    static Card_Expr* pCast_expr_term_expCol(Card_Term* p_term);
+    static Card_Expr* pCraft_expr_Of_expr(Card_Expr* p_expr, i8 iExpCol);
+    static Card_Expr* pCraft_expr_Of_symbol(Symbol* pSymbol);
+    static Card_Expr* pCraft_expr_Of_term(Card_Term* p_term);
+    static Card_Expr* pCraft_expr_keyCol_Of_term(Card_Term *p_term);
+    static Card_Expr* pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
+                                            char cTblSyn, i8 iTblCol);
 
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vBump_expCol(i8 nBumpBy);
@@ -45,7 +46,6 @@ namespace STORE
     bool bHasTerm(Symbol* pSymbol);
 
     Card_Expr *pInduct(i8 iExp);
-    bool bIsDescending(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
@@ -55,9 +55,6 @@ namespace STORE
 
     bool bNeedsBrace(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-
-    void vRenumberForm_keyCol(i8 i_Expr);
-    void vRenumberForm_expCol(i8 i_Expr);
 
     bool bSameAs(Card_Expr* pExpr_arg);
 

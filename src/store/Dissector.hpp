@@ -13,6 +13,8 @@ namespace STORE
   {
   protected:
 
+    CardIter*    m_pCI;
+
     VertexSpec*  m_pPipeSpec;
     DeckSpec*    m_pDeckSpec;
     StageSpec*   m_pStageSpec;
@@ -31,7 +33,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dissector(Bench* pBench);
+    Dissector(CardIter* pCI, Bench* pBench);
    ~Dissector(void) noexcept(false);
   
     void vDissectSpec(VertexSpec* pPipeSpec);
@@ -69,33 +71,25 @@ namespace STORE
     Card_IndexList*  pForm_indexList(Stz* szIndexNm);
     Card_Table*      pForm_table    (Stz* szTableNm);
 
-    Card_As*         pPop_as        (Card_RpnExpr* p_rpnExpr);
-    Card_Bounds*     pPop_bounds    (Card_RpnExpr* p_rpnExpr);
-    Card_Bound*      pPop_bound     (Card_RpnExpr* p_rpnExpr);
-    Cast             xPop_cast       (Card_RpnExpr* p_rpnExpr);
-    Card_Constraint* pPop_constraint(Card_RpnExpr* p_rpnExpr);
-    Card_Direction*  pPop_direction (Card_RpnExpr* p_rpnExpr);
-    Card_Direction*  pPop_direction2(Card_RpnExpr* p_rpnExpr);
-    Card_Expr*       pPop_expr      (Card_RpnExpr* p_rpnExpr,
-                                     bool bIsKeyExpr, i8& ri_Expr,
-                                     bool bEnsureDirection);
-    Card_Expr*       pPop_expr2      (Card_RpnExpr* p_rpnExpr,
-                                      bool bIsKeyExpr,
-                                      i8& ri_Expr);
-    Card_HshCol*     pPop_hshCol    (Card_RpnExpr* p_rpnExpr);
-    Card_HshColList* pPop_hshColList(Card_RpnExpr* p_rpnExpr);
-    Card_Key*        pPop_key       (Card_RpnExpr* p_rpnExpr);
-    Card_Emit*       pPop_emit      (Card_RpnExpr* p_rpnExpr);
-    Card_RpnCalc*    pPop_rpnCalc   (Card_RpnExpr* p_rpnExpr);
-    Card_On*         pPop_on  (Card_RpnExpr* p_rpnExpr);
+    Card_Bounds*     pPop_bounds    (Card_TermSeq* p_termSeq);
+    Card_Bound*      pPop_bound     (Card_TermSeq* p_termSeq);
+    Cast             xPop_cast      (Card_TermSeq* p_termSeq);
+    Card_Constraint* pPop_constraint(Card_TermSeq* p_termSeq);
+    Card_Emit*       pPop_emit      (Card_TermSeq* p_termSeq);
+    Card_Expr*       pPop_expr4     (Card_TermSeq* p_termSeq);
+    Card_HshCol*     pPop_hshCol    (Card_TermSeq* p_termSeq);
+    Card_HshColList* pPop_hshColList(Card_TermSeq* p_termSeq);
+    Card_Key*        pPop_key       (Card_TermSeq* p_termSeq);
+    Card_RpnCalc*    pPop_rpnCalc   (Card_TermSeq* p_termSeq);
+    Card_On*         pPop_on        (Card_TermSeq* p_termSeq);
 
     void             vCheckArgs     (i8 nArgs);
 
-    Card_RpnExpr*    pArg_rpnExpr   (i8 i_Arg);
-    i8               iArgValue      (i8 i_Arg);
-    Stz*             szArgValue     (i8 i_Arg);
+    Card_TermSeq*    pArg_termSeq   (i8 i_Arg);
+    i8               iArg_value      (i8 i_Arg);
+    Stz*             szArg_value     (i8 i_Arg);
 
-    Card_RpnExpr*    pTo_rpnExpr    (Stz* szRpnExpr);
+    Card_TermSeq*    pTo_termSeq    (Stz* szTermSeq);
 
   private:
     Footer* aFooter(void);

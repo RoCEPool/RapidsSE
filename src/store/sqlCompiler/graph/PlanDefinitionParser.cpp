@@ -145,7 +145,8 @@ PlanNode* PlanDefinitionParser::pParse()
   }
 
   // Read the json5 definition file from disk
-  antlr4::ANTLRFileStream stream(sFilePath.azChar());
+  antlr4::ANTLRFileStream stream;
+  stream.loadFromFile(sFilePath.azChar());
 
   // Create the lexer and get the stream of tokens representing the input command.
   json5Lexer lexer(&stream);
@@ -267,12 +268,12 @@ antlrcpp::Any PlanDefinitionParser::visitPair(json5Parser::PairContext *ctx)
     // Use the visit function on this child
     ASSERT(valueCtx->arr() != nullptr);
     ASSERT(pNodeBuilder->m_pProperties == nullptr);
-    pNodeBuilder->m_pProperties = visitArr(valueCtx->arr());
+    pNodeBuilder->m_pProperties = std::any_cast<PlanNodeBuilderList *>(visitArr(valueCtx->arr()));
 
   } else if (keyName.bEqual("children"_Stz)) {
     ASSERT(valueCtx->arr() != nullptr);
     ASSERT(pNodeBuilder->m_pChildren == nullptr);
-    pNodeBuilder->m_pChildren = visitArr(valueCtx->arr());
+    pNodeBuilder->m_pChildren = std::any_cast<PlanNodeBuilderList *>(visitArr(valueCtx->arr()));
 
   } else {
     // Got a key name that we didn't recognise.
