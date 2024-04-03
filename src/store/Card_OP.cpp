@@ -1441,8 +1441,9 @@ void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
 
   Card_Key *pCard_key = p_top->pSub_key();
   Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc(C_NOT_NULL);
+  Card_Expr *pCard_Expr = pCard_key->pSub_expr(C_NOT_NULL);
+  TypeId xTypeId = pCard_Expr->xTypeId();
 
-  TypeId xTypeId = pCard_Calc->xTypeId();
 
 	psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
   vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
