@@ -318,8 +318,6 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_COUNT:        pCI->E.p_count->vValidate(pCI, 1, this); break;
       case CK_o_CROSSJOIN:    pCI->E.p_crossJoin->vValidate(pCI, 1, this); break;
 
-      case CK_DIRECTION:    pCI->E.p_direction->vValidate(pCI, 1, this); break;
-
       case CK_t_EMIT:         pCI->E.p_emit->vValidate(pCI, 1, this); break;
       case CK_EXPR:         pCI->E.p_expr->vValidate(pCI, 1, this); break;
 

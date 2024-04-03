@@ -4,7 +4,6 @@
 
 #include "Card_Key.hpp"
 
-#include "Card_Direction.hpp"
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_HshCol.hpp"
@@ -125,8 +124,6 @@ void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
   }
 
   pCI->E.p_expr = nullptr;
-  pCI->E.p_direction = nullptr;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,19 +199,6 @@ Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbo
   }
 
   return nullptr;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get a particular direction                                                 */
-/*----------------------------------------------------------------------------*/
-Card_Direction* Card_Key::pGet_direction(i8 i_Element)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Element));
-
-  return p_direction;
 }
 
 /*----------------------------------------------------------------------------*/

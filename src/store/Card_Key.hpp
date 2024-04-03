@@ -28,7 +28,6 @@ namespace STORE
     Card_Expr* pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg);
     Card_Expr* pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg);
 
-    Card_Direction* pGet_direction(i8 i_Element);
     Card_Expr* pGet_expr(i8 i_Element);
 
     bool bIsEqual(CardIter *pCI, Card_Key* p_key_arg);

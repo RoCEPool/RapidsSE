@@ -45,7 +45,6 @@
 #include "Card_Debug.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Decision.hpp"
-#include "Card_Direction.hpp"
 
 #include "Card_Emit.hpp"
 #include "Card_Expr.hpp"         //

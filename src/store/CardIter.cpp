@@ -1568,7 +1568,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_CROSSJOIN:    return E.p_crossJoin;
 
     case CK_DECISION:       return E.p_decision;
-    case CK_DIRECTION:      return E.p_direction;
     case CK_DISPOSITION:    return E.p_disposition;
 
     case CK_t_EMIT:         return E.p_emit;
@@ -1718,7 +1717,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
 
     case CK_DECK: E.p_deck               = _pCard_Deck(pCard); break;
     case CK_DECISION: E.p_decision          = _pCard_Decision(pCard); break;
-    case CK_DIRECTION: E.p_direction         = _pCard_Direction(pCard); break;
     case CK_DISPOSITION: E.p_disposition       = _pCard_Disposition(pCard); break;
 
     case CK_t_EMIT: E.p_emit              = _pCard_Emit(pCard); break;
@@ -2222,7 +2220,6 @@ void CardIter::vResetMembers(void)
   E.p_crossJoin        = nullptr;
 
   E.p_decision         = nullptr;
-  E.p_direction        = nullptr;
   E.p_disposition      = nullptr;
 
   E.p_emit             = nullptr;
@@ -2513,7 +2510,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_CROSSJOIN:    E.p_crossJoin->vValidate(this, iDepth, pCard);  break;
 
       case CK_DECISION:       E.p_decision->vValidate(this, iDepth, pCard);  break;
-      case CK_DIRECTION:      E.p_direction->vValidate(this, iDepth, pCard);  break;
       case CK_DISPOSITION:    E.p_disposition->vValidate(this, iDepth, pCard);  break;
 
       case CK_t_EMIT:         E.p_emit->vValidate(this, iDepth, pCard);  break;

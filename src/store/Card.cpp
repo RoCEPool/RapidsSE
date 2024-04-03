@@ -117,9 +117,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   if (CK_BOUNDS == eCard)
     vDebugPoint();
-
-  RASSERT(CK_DIRECTION != eCard);
-
+  
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
@@ -2617,19 +2615,6 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Direction.hpp"
-Card_Direction* Card::pGet_direction_z(i8 i_Element)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Direction* p_direction =
-      _pCard_Direction(pGetChild(i_Element));
-
-  return p_direction;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

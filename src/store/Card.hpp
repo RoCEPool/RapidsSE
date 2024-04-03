@@ -48,7 +48,6 @@ namespace STORE
   class Card_Debug;
   class Card_Deck;
   class Card_Decision;
-  class Card_Direction;
 
   class Card_Emit;
   class Card_EXPRLIST;
@@ -461,7 +460,6 @@ namespace STORE
 
   public:
 
-    Card_Direction*     pGet_direction_z(i8 i_Element);
     Card_Expr*          pGet_expr_z(i8 i_Element);
     Card_Term*          pGet_term_z(i8 i_Element);
 
