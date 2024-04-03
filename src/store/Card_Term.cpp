@@ -505,33 +505,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_EXPCOL]) ) {
-//    i8 i_Ancestor;
-//    if ((pCI->G.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR, &i_Ancestor)))) {
-//      Card* p_ANCESTOR = pCI->pAncestor(i_Ancestor - 1);
-//      eCK eAncestor = p_ANCESTOR->eCard();
-//      RASSERT(CK_t_EMIT == eAncestor ||
-//              CK_BOOLPRED == eAncestor  ||
-//              CK_o_FILTER == eAncestor  ||
-//              CK_s_KEY == eAncestor  ||
-//              CK_s_NEEDED == eAncestor  ||
-//              CK_STREAMKEY == eAncestor  ||
-//              CK_s_INJECTABLE == eAncestor);
-//      Symbol* pSymbol_this = pSymbol();
-//      if (CK_s_KEY != eAncestor && CK_STREAMKEY != eAncestor && pCI->G.p_expr->bIsScalarCol()
-//           && (pSymbol_this->nFacets() > 1 || ! pSymbol_this->bHasFacet(SF_EXP_COL))
-//           ) {
-//        Card_EXPRLIST* p_EXPRLIST = (Card_EXPRLIST*)p_ANCESTOR;
-//        if (! p_EXPRLIST->bTestFind_expr_Matching(pCI->G.p_expr,this->pSymbol(),SF_EXP_COL)) {
-//          pCI->PRINTBOARD_dbg();
-//          p_EXPRLIST->vDump(__func__ );
-//          pCI->G.p_expr->vDump(__func__ );
-//          NEVER_REACH
-//        }
-//      }
-//    }
-//  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vValidationPassed();

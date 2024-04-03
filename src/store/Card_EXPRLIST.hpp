@@ -42,7 +42,6 @@ namespace STORE
 
     bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);
 
-    bool bTestFind_expr_Matching(Card_Expr* p_expr_arg, Symbol* pSymbol_arg, eSF eFacet_ignore);
     StreamDef* pTo_StreamDef(ColMap* pColMap,
                              Card_Key* p_key,
                              Card* p_OP);
