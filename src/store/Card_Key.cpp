@@ -82,28 +82,6 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 
   pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
 
-#else
-  pCI->E.p_key = new Card_Key;
-  pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
-
-  pCI->E.p_direction = (new Card_Direction) -> SYM(SF_DIRECTION, C_ASC);
-  pCI->E.p_key->vAppendChild(pCI->E.p_direction);
-
-  eAL e_Level = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
-  if (AL_PARTITION == e_Level) {
-     pCI->E.p_expr = Card_Expr::pCraft_expr_Of_term(pCI->Flat.m_p_expr_crlKey->pGet_term0());
-  }
-  else {
-    Symbol xSymbol(SF_EXP_COL, "$1"_Stz, pCI->Flat.m_p_expr_crlKey->xCast());
-    pCI->E.p_expr = Card_Expr::pCraft_expr_Of_symbol(&xSymbol);
-  }
-  pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
-  pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
-
-  pCI->E.p_key->vApplyCast_x(pCI->E.p_expr->xCast());
-  pCI->E.p_direction->vApplyCast_x(pCI->E.p_expr->xCast());
-
-  pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
 #endif
 }
 
@@ -136,26 +114,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
 
   vRenumberAll_expr(SF_KEY_COL);
 
-#else
-  if (bAsc)
-    pCI->E.p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_ASC);
-  else
-    pCI->E.p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, C_DESC);
-
-  pCI->E.p_expr = p_expr->pClone();
-  pCI->E.p_expr->pSymbol()->vResetFacets();
-  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,C_UNKNOWN);
-  pCI->E.p_direction->vAppendChild(pCI->E.p_expr);
-
-  if (0 == nChildCards())
-    vApplyCast_x(p_expr->xCast());
-
-  if (bAppend)
-    vAppendChild(pCI->E.p_direction);
-  else
-    vPushChild(pCI->E.p_direction);
-
-  vRenumberAll_expr(SF_KEY_COL);
 #endif
 }
 
@@ -203,9 +161,6 @@ Stz* Card_Key::szDirection(i8 i_Element)
 
 #ifdef Z_NO_DIRECTION
   Card_Expr* p_expr = pGet_expr(i_Element);
-#else
-  Card_Direction* p_direction = pGet_direction(i_Element);
-  Card_Expr* p_expr = p_direction->pSub_expr();
 #endif
 
   return p_expr->szFacet(SF_DIRECTION);
@@ -280,9 +235,6 @@ Card_Expr* Card_Key::pGet_expr(i8 i_Element)
 
 #ifdef Z_NO_DIRECTION
   Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Element));
-#else
-  Card_Direction* p_direction = _pCard_Direction(pGetChild(i_Element));
-  Card_Expr* p_expr = p_direction->pSub_expr();
 #endif
 
   return p_expr;
@@ -320,22 +272,6 @@ bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
 
   return true;
 
-#else
-
-  for (Kid xStreamKey(this); xStreamKey.bEach(CK_DIRECTION); /**/) {
-    Card_Direction *p_direction_this = xStreamKey.p_direction();
-    Card_Expr *p_expr_this = p_direction_this->pSub_expr();
-    Card_Direction *p_direction_arg = p_key_arg->pGet_direction_z(xStreamKey.i_Child());
-    Card_Expr *p_expr_arg = p_direction_arg->pSub_expr();
-
-    if (!p_expr_this->bSameAs(p_expr_arg))
-      return false;
-
-    if (!p_direction_this->pSymbol()->bMatches(p_direction_arg->pSymbol()))
-      return false;
-  }
-
-  return true;
 #endif
 }
 /*----------------------------------------------------------------------------*/
@@ -476,8 +412,6 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 /**Z_KEY_DIRECTION validation*/
 #ifdef Z_NO_DIRECTION
   vValidate_mustHave(CK_EXPR,CK_NONE);
-#else
-  vValidate_mustHave(CK_DIRECTION,CK_NONE);
 #endif
 
   Card::vValidate(pCI,iDepth,pParent);

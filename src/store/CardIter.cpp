@@ -504,17 +504,6 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
   else {
     NEVER_REACH
   }
-#else
-  if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
-    Iter.m_eSecondary = CK_DIRECTION;
-  }
-  else
-  if (CK_STREAMKEY == ePrimary && CK_EXPR == eTarget) {
-    Iter.m_eSecondary = CK_DIRECTION;
-  }
-  else {
-    NEVER_REACH
-  }
 #endif
 
   //vMember(Iter.m_ePrimary, pPrimary);

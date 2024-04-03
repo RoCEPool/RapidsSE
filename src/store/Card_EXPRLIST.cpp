@@ -251,15 +251,6 @@ void Card_EXPRLIST::vRenumberAll_expr(eSF eFacet)
 #ifdef Z_NO_DIRECTION
   for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
     xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(eFacet,xEXPRLIST.i_Child()+1);
-#else
-  if (SF_KEY_COL == eFacet) {
-    for (Kid xKey(this); xKey.bEach(CK_DIRECTION); /**/)
-      xKey.p_expr(C_SUB)->pSymbol()->vApplyFacet(eFacet,xKey.i_Child()+1);
-  }
-  else {
-    for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
-      xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(eFacet,xEXPRLIST.i_Child()+1);
-  }
 #endif
 
 }
