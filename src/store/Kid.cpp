@@ -174,6 +174,8 @@ bool Kid::bEach(void)
   RASSERT(m_bBegun);
   RASSERT(m_bForwards);
 
+  //RASSERT(CK_RPNCALC != m_pParent->eCard());
+
   m_i_Child++;
   vChildUpdate();
 
@@ -187,7 +189,7 @@ bool Kid::bEach(void)
 /*----------------------------------------------------------------------------*/
 /* next child                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Kid::bEach_validation(void)
+bool Kid::bEach_opaque(void)
 {
   _nonProper_
 

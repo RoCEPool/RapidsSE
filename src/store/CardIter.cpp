@@ -117,7 +117,7 @@ bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
 
   vAncestorPush(pCard);
   Kid xCard(pCard);
-  while (xCard.bEach()) {
+  while (xCard.bEach_opaque()) {
     bool bContinue = bLambdaWalk(xCard.pChild(), eToSubs, bfLambdaFn);
     if (! bContinue) {
       vAncestorPop();
@@ -2495,7 +2495,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
   i8 nAncestors_plusOne = nAncestors();
   RASSERT(nAncestors_start + 1 == nAncestors_plusOne);
 
-  for (Kid xCard(pCard); xCard.bEach(); /**/) {
+  for (Kid xCard(pCard); xCard.bEach_opaque(); /**/) {
 
     Card* pChild = xCard.pChild();
 
