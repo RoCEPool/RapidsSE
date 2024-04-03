@@ -216,7 +216,7 @@ bool Kid::bEach(eCK eChild)
 {
   _nonProper_
 
-  while (bEach()) {
+  while (bEach_opaque()) {
     if (this->eChild() == eChild)
       return true;
   }

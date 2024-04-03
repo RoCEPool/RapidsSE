@@ -635,7 +635,7 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
         , m_xSymbol.xCast().m_nTypeScale
   );
 
-  for (Kid xCard(this); xCard.bEach(); /**/)
+  for (Kid xCard(this); xCard.bEach_opaque(); /**/)
     xCard.pChild()->vDump(azFunc, nullptr, iDepth + 1);
 
   if (0 == iDepth)

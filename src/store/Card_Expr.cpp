@@ -223,6 +223,7 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   // rpnCalc is a set of terms
   for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
+//for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
     pCI->E.p_term = xRpnCalc.p_term();
     pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
