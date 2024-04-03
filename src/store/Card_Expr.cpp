@@ -220,66 +220,129 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->E.p_rpnCalc = pSub_rpnCalc();
-
-  Symbol* pSymbol_expr = pSymbol();
   if (! xCast().m_xTypeId.bIsValid()) {
     pCI->PRINTBOARD_dbg();
     vDump(__func__ );
     NEVER_REACH
   }
+  TypeId xTypeId_save = xCast().m_xTypeId;
+  if (!xTypeId_save.bIsValid()) {
+    pCI->PRINTBOARD_dbg();
+    vDump(__func__);
+    NEVER_REACH
+  }
+
+  pCI->E.p_rpnCalc = pSub_rpnCalc();
   RASSERT(xCast().m_xTypeId.bIsValid());
   RASSERT(xCast().m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId);
 
-  TypeId xTypeId_save = xCast().m_xTypeId;
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(!xCast_last.m_xTypeId.bIsValid());
 
-  {
-    Cast xCast_last;
-    xCast_last.m_xTypeId = TypeId();
-    xCast_last.m_nTypeLength = 0;
-    xCast_last.m_nTypeScale = 0;
-    RASSERT(!xCast_last.m_xTypeId.bIsValid());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    TypeId xTypeId_save = xCast().m_xTypeId;
-    if (!xTypeId_save.bIsValid()) {
-      pCI->PRINTBOARD_dbg();
-      vDump(__func__);
-      NEVER_REACH
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // rpnCalc is a set of terms
-    for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
-      pCI->E.p_term = xRpnCalc.p_term();
-      pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
-    }
-    pCI->E.p_term = nullptr;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    if (xCast_last.m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId) {
-      if (xCast_last.m_nTypeLength != pCI->E.p_rpnCalc->xCast().m_nTypeLength ||
-          xCast_last.m_nTypeScale != pCI->E.p_rpnCalc->xCast().m_nTypeScale ||
-          xCast_last.m_bTypeNullable != pCI->E.p_rpnCalc->xCast().m_bTypeNullable)
-        vApplyCast_x(pCI->E.p_rpnCalc->xCast());
-    }
-
-    RASSERT(xTypeId_save == xCast().m_xTypeId);
+  // rpnCalc is a set of terms
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
+    pCI->E.p_term = xRpnCalc.p_term();
+    pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
+  pCI->E.p_term = nullptr;
 
-  if (pSymbol_expr->xCast().m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId &&
-      (pSymbol_expr->xCast().m_nTypeLength   != pCI->E.p_rpnCalc->xCast().m_nTypeLength ||
-       pSymbol_expr->xCast().m_nTypeScale    != pCI->E.p_rpnCalc->xCast().m_nTypeScale ||
-       pSymbol_expr->xCast().m_bTypeNullable != pCI->E.p_rpnCalc->xCast().m_bTypeNullable))
-    vApplyCast_x(pCI->E.p_rpnCalc->xCast());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
+  if (xCast_last.m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId) {
+    if (xCast_last.m_nTypeLength != pCI->E.p_rpnCalc->xCast().m_nTypeLength ||
+        xCast_last.m_nTypeScale != pCI->E.p_rpnCalc->xCast().m_nTypeScale ||
+        xCast_last.m_bTypeNullable != pCI->E.p_rpnCalc->xCast().m_bTypeNullable)
+      vApplyCast_x(pCI->E.p_rpnCalc->xCast());
+  }
 
   RASSERT(xTypeId_save == xCast().m_xTypeId);
 
   pCI->E.p_rpnCalc = nullptr;
 }
+/*----------------------------------------------------------------------------*/
+//void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  pCI->E.p_rpnCalc = pSub_rpnCalc();
+//
+//  Symbol* pSymbol_expr = pSymbol();
+//  if (! xCast().m_xTypeId.bIsValid()) {
+//    pCI->PRINTBOARD_dbg();
+//    vDump(__func__ );
+//    NEVER_REACH
+//  }
+//  RASSERT(xCast().m_xTypeId.bIsValid());
+//  RASSERT(xCast().m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId);
+//
+//  TypeId xTypeId_save = xCast().m_xTypeId;
+//
+//  {
+//    Cast xCast_last;
+//    xCast_last.m_xTypeId = TypeId();
+//    xCast_last.m_nTypeLength = 0;
+//    xCast_last.m_nTypeScale = 0;
+//    RASSERT(!xCast_last.m_xTypeId.bIsValid());
+//
+//    TypeId xTypeId_save = xCast().m_xTypeId;
+//    if (!xTypeId_save.bIsValid()) {
+//      pCI->PRINTBOARD_dbg();
+//      vDump(__func__);
+//      NEVER_REACH
+//    }
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//    // rpnCalc is a set of terms
+//    for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
+//      pCI->E.p_term = xRpnCalc.p_term();
+//      pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
+//    }
+//    pCI->E.p_term = nullptr;
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//    if (xCast_last.m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId) {
+//      if (xCast_last.m_nTypeLength != pCI->E.p_rpnCalc->xCast().m_nTypeLength ||
+//          xCast_last.m_nTypeScale != pCI->E.p_rpnCalc->xCast().m_nTypeScale ||
+//          xCast_last.m_bTypeNullable != pCI->E.p_rpnCalc->xCast().m_bTypeNullable)
+//        vApplyCast_x(pCI->E.p_rpnCalc->xCast());
+//    }
+//
+//    RASSERT(xTypeId_save == xCast().m_xTypeId);
+//  }
+//
+//  if (pSymbol_expr->xCast().m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId &&
+//      (pSymbol_expr->xCast().m_nTypeLength   != pCI->E.p_rpnCalc->xCast().m_nTypeLength ||
+//       pSymbol_expr->xCast().m_nTypeScale    != pCI->E.p_rpnCalc->xCast().m_nTypeScale ||
+//       pSymbol_expr->xCast().m_bTypeNullable != pCI->E.p_rpnCalc->xCast().m_bTypeNullable))
+//    vApplyCast_x(pCI->E.p_rpnCalc->xCast());
+//
+//  //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
+//
+//  RASSERT(xTypeId_save == xCast().m_xTypeId);
+//
+//  pCI->E.p_rpnCalc = nullptr;
+//}
+
+
+
+
+
+//if (xCast_last.m_xTypeId == xCast_save.m_xTypeId) {
+//if (xCast_last.m_nTypeLength != xCast_save.m_nTypeLength ||
+//xCast_last.m_nTypeScale != xCast_save.m_nTypeScale ||
+//xCast_last.m_bTypeNullable != xCast_save.m_bTypeNullable)
+//vApplyCast_x(xCast_last);
+//}
+//
+//RASSERT(xTypeId_save == xCast().m_xTypeId);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
