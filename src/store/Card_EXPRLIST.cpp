@@ -248,11 +248,8 @@ void Card_EXPRLIST::vRenumberAll_expr(eSF eFacet)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 /**Z_KEY_DIRECTION renumber*/
-#ifdef Z_NO_DIRECTION
   for (Kid xEXPRLIST(this); xEXPRLIST.bEach(CK_EXPR); /**/)
     xEXPRLIST.p_expr()->pSymbol()->vApplyFacet(eFacet,xEXPRLIST.i_Child()+1);
-#endif
-
 }
 
 /*----------------------------------------------------------------------------*/

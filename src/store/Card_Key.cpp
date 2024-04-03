@@ -63,7 +63,6 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 
 /**Z_KEY_DIRECTION assemble*/
 
-#ifdef Z_NO_DIRECTION
   pCI->E.p_key = new Card_Key;
   pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
 
@@ -82,7 +81,6 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 
   pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
 
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +96,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
 
 /**Z_KEY_DIRECTION add key*/
 
-#ifdef Z_NO_DIRECTION
   pCI->E.p_expr = p_expr->pClone();
   pCI->E.p_expr->pSymbol()->vResetFacets();
   pCI->E.p_expr->pSymbol()->vApplyFacet(SF_KEY_COL,C_UNKNOWN);
@@ -113,8 +110,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
     vPushChild(pCI->E.p_expr);
 
   vRenumberAll_expr(SF_KEY_COL);
-
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,9 +154,7 @@ Stz* Card_Key::szDirection(i8 i_Element)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-#ifdef Z_NO_DIRECTION
   Card_Expr* p_expr = pGet_expr(i_Element);
-#endif
 
   return p_expr->szFacet(SF_DIRECTION);
 }
@@ -233,9 +226,7 @@ Card_Expr* Card_Key::pGet_expr(i8 i_Element)
 
 /**Z_KEY_DIRECTION get expr*/
 
-#ifdef Z_NO_DIRECTION
   Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Element));
-#endif
 
   return p_expr;
 }
@@ -252,7 +243,6 @@ bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
   if (nExpr != p_key_arg->nChildCards())
     return false;
 
-#ifdef Z_NO_DIRECTION
   //Z_KEY_DIRECTION
   for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
 
@@ -271,8 +261,6 @@ bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
   }
 
   return true;
-
-#endif
 }
 /*----------------------------------------------------------------------------*/
 //bool Card_Key::bIsEqual(Card_Key* p_key_arg)
@@ -410,9 +398,7 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_NONE);
 
 /**Z_KEY_DIRECTION validation*/
-#ifdef Z_NO_DIRECTION
   vValidate_mustHave(CK_EXPR,CK_NONE);
-#endif
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

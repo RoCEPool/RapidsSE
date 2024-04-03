@@ -118,9 +118,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   if (CK_BOUNDS == eCard)
     vDebugPoint();
 
-#ifdef Z_NO_DIRECTION
   RASSERT(CK_DIRECTION != eCard);
-#endif
 
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;

@@ -1513,12 +1513,10 @@ Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
 /**Z_KEY_DIRECTION dissect*/
 
     // ensure expr has SF_DIRECTION
-#ifdef Z_NO_DIRECTION
     if (! p_expr->pSymbol()->bHasFacet(SF_DIRECTION))
       p_expr->pSymbol()->vApplyFacet(SF_DIRECTION,C_ASC);
 
      p_key->vAppendChild(p_expr);
-#endif
 
     i_Expr++;
   }
