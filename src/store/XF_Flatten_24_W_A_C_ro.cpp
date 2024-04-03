@@ -234,9 +234,6 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
   pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
   Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
 
-#ifdef Z_RPNCALC_CAST
-  pCI->E.p_rpnCalc->vApplyCast_x(pCI->E.p_key->xCast());
-#endif
   pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
   pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
