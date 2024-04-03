@@ -185,6 +185,27 @@ bool Kid::bEach(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* next child                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Kid::bEach_validation(void)
+{
+  _nonProper_
+
+  RASSERT(m_bBegun);
+  RASSERT(m_bForwards);
+
+  m_i_Child++;
+  vChildUpdate();
+
+  if (bWithinRange()) {
+    return true;
+  }
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* next child of given card                                                   */
 /*----------------------------------------------------------------------------*/
 bool Kid::bEach(eCK eChild)

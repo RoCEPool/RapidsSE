@@ -497,7 +497,7 @@ void Card::vCheckCorrectness(void)
 
   RASSERT(CK_DECK == eCard() || m_bAddedCorrectly);
 
-  for (Kid xCard(this); xCard.bEach(); /**/) {
+  for (Kid xCard(this); xCard.bEach_validation(); /**/) {
     xCard.pChild()->vCheckCorrectness();
   }
 }
