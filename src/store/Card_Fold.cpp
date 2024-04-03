@@ -107,7 +107,9 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
 
   pCI->E.p_term->vApplyCast_x(p_expr_result->xCast());
 
+#ifdef Z_RPNCALC_CAST
   pCI->E.p_rpnCalc->vApplyCast_x(p_expr_result->xCast());
+#endif
 
   pCI->E.p_expr->pSymbol()->vApplyFacet(SF_SQY_RSL, pSubQuery_leftmost->pBoard()->i_Board());
   pCI->E.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8) 1);

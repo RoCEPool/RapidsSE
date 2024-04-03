@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_NO_RPNCALC_CAST
+#define Z_RPNCALC_CAST
 
 namespace STORE
 {

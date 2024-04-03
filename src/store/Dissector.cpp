@@ -1354,7 +1354,9 @@ Card_Emit* Dissector::pPop_emit(Card_TermSeq* p_termSeq)
       xCast.m_nTypeLength = 19;
       xCast.m_nTypeScale = 2;
       p_expr->vApplyCast_x(xCast);
+#ifdef Z_RPNCALC_CAST
       p_expr->pSub_rpnCalc(C_NOT_NULL)->vApplyCast_x(xCast);
+#endif
     }
 
 
@@ -1392,7 +1394,9 @@ Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
   // <rpnCalc>
 
   Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_termSeq);
+#ifdef Z_RPNCALC_CAST
   p_rpnCalc->vApplyCast_x(xCast);
+#endif
 
   p_expr->vAppendChild(p_rpnCalc);
 

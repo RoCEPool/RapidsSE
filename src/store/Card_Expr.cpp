@@ -86,7 +86,9 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
     pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
     pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
+#ifdef Z_RPNCALC_CAST
     pCI->E.p_rpnCalc->vApplyCast_x(pCI->E.p_key->xCast());
+#endif
     pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
     pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
@@ -124,7 +126,9 @@ Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
   p_expr_new->vApplyCast_x(pSymbol->xCast());
 
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
+#ifdef Z_RPNCALC_CAST
   p_rpnCalc_new->vApplyCast_x(pSymbol->xCast());
+#endif
   p_expr_new->vAppendChild(p_rpnCalc_new);
 
   Card_Term* p_term_new = (new Card_Term) ->SYM(pSymbol);
@@ -147,7 +151,9 @@ Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
   p_expr_new->vApplyCast_x(xCast);
 
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
+#ifdef Z_RPNCALC_CAST
   p_rpnCalc_new->vApplyCast_x(xCast);
+#endif
   p_expr_new->vAppendChild(p_rpnCalc_new);
 
   Card_Term* p_term_new = p_term->pClone();
@@ -521,7 +527,9 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
 
   Card_RpnCalc* p_rpnCalc_inducted = new Card_RpnCalc;
 
+#ifdef Z_RPNCALC_CAST
   p_rpnCalc_inducted->vApplyCast_p(this);
+#endif
 
   Card_Term* p_term_inducted = new Card_Term;
   p_term_inducted->vApplyCast_p(this);
