@@ -31,6 +31,8 @@ namespace STORE
     i8   m_i_SpecificNode;  // run on specific node
     LglPtn m_tSpecificPtnNo; // run for specific ptn
 
+		i8   m_iThreadsPerPtn;   // no of threads per partition for this stage
+
     // must be last
     Footer m_xFooter;
 
@@ -75,6 +77,8 @@ namespace STORE
     void vStageTopology(eYG eStageTopology);
     eYS  eStreamTopology(void);
     void vStreamTopology(eYS eStreamTopology);
+		void vThreadsPerPtn(i8 iThreads);
+		i8   iThreadsPerPtn(void);
     void vToPipeStr(String* psPipeStr);
   
     Footer* aFooter(void);

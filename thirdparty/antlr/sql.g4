@@ -235,7 +235,7 @@ pipelineCmd       : PIPELINE pipelineName=identifier
                     END
                   ;
 pipelineStage     : STAGE stageName=identifier
-                    ON (ORIGIN | ALL NODES | ALL PARTITIONS) ':'
+                    ON (ORIGIN | ALL NODES | ALL PARTITIONS | ALL PARTITIONS MULTIPLE THREADS integerLiteral ) ':'
                     pipelineOpSeq
                   ;
 pipelineOpSeq     : pipelineOperator ( '|' pipelineOperator)* ;
@@ -622,7 +622,7 @@ nonReservedWord   :
                   | KEY
                   | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSIDX | LSPTNCOL | LSTBL
                   | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
-                  | MONOTONIC | MONTHS | MS
+                  | MONOTONIC | MONTHS | MS | MULTIPLE
                   | NODE | NODES | NOOP | NOP | NOW
                   | OBJECTS | OFF | OFFSET | ORIGIN
                   | PARTITIONS | PATHS | PIPELINE | PLACING | PRETTY
@@ -630,7 +630,7 @@ nonReservedWord   :
                   | RECORD_ENDS | RECORD_TERMINATOR | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
-                  | TABLESIZE | TEXT | TOP | TRACE | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
+                  | TABLESIZE | TEXT | THREADS | TOP | TRACE | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
                   | UNLOAD
                   | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
@@ -771,6 +771,7 @@ MONOTONIC             : M O N O T O N I C;
 MONTH                 : M O N T H;
 MONTHS                : M O N T H S;
 MS                    : M S;
+MULTIPLE              : M U L T I P L E;
 NATURAL               : N A T U R A L;
 NO                    : N O;
 NODES                 : N O D E S;
@@ -835,6 +836,7 @@ TABLESIZES            : T A B L E S I Z E S;
 TABLESIZE             : T A B L E S I Z E;
 TEXT                  : T E X T;
 THEN                  : T H E N;
+THREADS               : T H R E A D S;
 TIME                  : T I M E;
 TIMESTAMP             : T I M E S T A M P;
 TO                    : T O;
