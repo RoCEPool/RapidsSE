@@ -117,6 +117,7 @@ namespace STORE
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
+    void vBackstepTarget(void);
     void vBeginBoard(void);
     void vBeginEach(eCK eOp=CK_NONE);
     void vBeginEach_reverse(void);

@@ -417,6 +417,16 @@ Card_Expr* CardIter::pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBackstepTarget(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  E.xTarget.vBackstep();
+}
+
+/*----------------------------------------------------------------------------*/
 /* setup board iteration                                                      */
 /*----------------------------------------------------------------------------*/
 void CardIter::vBeginBoard(void)
