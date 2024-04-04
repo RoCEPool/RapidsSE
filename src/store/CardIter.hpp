@@ -185,6 +185,7 @@ namespace STORE
     Card* pMember(eCK eCard);
     void vMember(eCK eCard, Card* pCard);
     bool bMore(void);
+    bool bMoreTarget(void);
 
     void  vNewMember(eCK eCard);
     void  vNewMember(eCK eCard, Symbol xSymbol);

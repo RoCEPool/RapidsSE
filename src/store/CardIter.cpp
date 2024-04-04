@@ -1871,6 +1871,21 @@ bool CardIter::bMore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bMoreTarget(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xTarget.bWithinRange());
+
+  if (E.xTarget.bMore())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new card and optionally set member                                */
 /*----------------------------------------------------------------------------*/
 void CardIter::vNewMember(eCK eCard)
