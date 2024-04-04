@@ -221,27 +221,9 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // rpnCalc is a set of terms
-//  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
-//    pCI->E.p_term = xRpnCalc.p_term();
-//    pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
-//  }
-//  pSub_rpnCalc()->vDump(__func__,"before"_Stz);
-
-  if (pSub_rpnCalc()->nChildCards() > 1)
-    vDebugPoint();
-
-  Kid xRpnCalc(pSub_rpnCalc());
   for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
-    RASSERT(xRpnCalc.bEach(CK_TERM));
-    RASSERT(pCI->E.xTarget.p_term() == xRpnCalc.p_term());
     pCI->E.p_term = pCI->E.xTarget.p_term();
-//    pCI->E.p_term->vDump(__func__);
     pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
-  }
-  if (xRpnCalc.bEach(CK_TERM)) {
-    pSub_rpnCalc()->vDump(__func__);
-    NEVER_REACH
   }
   pCI->E.p_term = nullptr;
 
