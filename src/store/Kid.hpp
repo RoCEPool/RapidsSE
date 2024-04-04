@@ -47,6 +47,7 @@ namespace STORE
     bool bEach(void);
     bool bEach_opaque(void);
     bool bEach(eCK eChild);
+    bool bEach_opaque(eCK eChild);
     bool bEach(eCK eChild, eCK eSub1);
     bool bEach(eCK eChild, eCK eSub1, eCK eSub2);
     bool bEach(eCK eChild, eCK eSub1, eCK eSub2, eCK eSub3);

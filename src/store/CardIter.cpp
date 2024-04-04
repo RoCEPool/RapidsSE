@@ -1317,7 +1317,7 @@ bool CardIter::bEachTarget(void)
   if (CK_EXPR    == E.Iter.ePrimary &&
       CK_RPNCALC == E.Iter.eSecondary &&
       CK_TERM    == E.Iter.eTarget) {
-    while (E.xTarget.bEach(E.Iter.eTarget)) {
+    while (E.xTarget.bEach_opaque(E.Iter.eTarget)) {
       Card *pTarget = E.xTarget.pChild();
       vMember(E.Iter.eTarget, pTarget);
       return true;

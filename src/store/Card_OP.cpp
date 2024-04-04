@@ -687,9 +687,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     pCI->E.p_emit->vApplyFacets(pCI,pCI->E.p_key);
 
     for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
-      for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
+      for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
 
-        Card_Term *p_term_keyCol = xRpnCalc.p_term();
+        Card_Term *p_term_keyCol = pCI->E.xTarget.p_term();
         Symbol *pSym_term_keyCol = p_term_keyCol->pSymbol();
         if (! pSym_term_keyCol->bHasFacet(SF_KEY_COL))
           continue;
