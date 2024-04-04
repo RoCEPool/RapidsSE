@@ -718,12 +718,6 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->E.p_boolPred = nullptr;
-  pCI->E.p_rpnCalc  = nullptr;
-
-  if ((pCI->E.p_boolPred = pSub_boolPred()))
-    pCI->E.p_boolPred->vX_expCol_To_tblCol(pCI);
-  else
   if ((pCI->E.p_rpnCalc = pSub_rpnCalc())) {
     //vDump(__func__);
     Kid xRpnCalc(pSub_rpnCalc());
@@ -750,19 +744,12 @@ void Card_Expr::vX_tblCol_To_expCol(CardIter* pCI)
   i8 nAncestors = pCI->nAncestors();
   pCI->vAncestorPush(this);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    p_boolPred->vX_tblCol_To_expCol(pCI);
-    p_boolPred = nullptr;
+  for (Kid xRpnCalc(pSub_rpnCalc());xRpnCalc.bEach(CK_TERM); /**/) {
+    pCI->E.p_term = xRpnCalc.p_term();
+    pCI->E.p_term->vX_tblCol_To_expCol(pCI);
   }
-  else {
-    for (Kid xRpnCalc(pSub_rpnCalc());xRpnCalc.bEach(CK_TERM); /**/) {
-      pCI->E.p_term = xRpnCalc.p_term();
-      pCI->E.p_term->vX_tblCol_To_expCol(pCI);
-    }
 
-    pCI->E.p_term = nullptr;
-
-  }
+  pCI->E.p_term = nullptr;
 
   pCI->vAncestorPop();
   RASSERT(pCI->nAncestors() == nAncestors);
