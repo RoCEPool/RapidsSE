@@ -221,8 +221,8 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
-    pCI->E.p_term = pCI->E.xTarget.p_term();
+    for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+      pCI->E.p_term = pCI->E.xTarget.p_term();
     pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
   pCI->E.p_term = nullptr;
