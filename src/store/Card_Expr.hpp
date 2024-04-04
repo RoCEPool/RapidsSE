@@ -47,13 +47,13 @@ namespace STORE
 
     Card_Expr *pInduct(CardIter* pCI, i8 iExp);
     bool bIsCompound(void);
-    bool bIsLiterals(void);
+    bool bIsLiterals(CardIter* pCI);
     bool bIsScalarCol(void);
     bool bIsKeyCol(void);
 
     bool bMatches(Card_Expr* p_expr_arg);
 
-    bool bNeedsBrace(void);
+    bool bNeedsBrace(CardIter* pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     bool bSameAs(Card_Expr* pExpr_arg);

@@ -1502,7 +1502,7 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
     psRpnExpr->vCatSprint(" as %s"_Stz, p_expr->szFacet(SF_ITM_COL));
   }
 
-  if (p_expr->bNeedsBrace())
+  if (p_expr->bNeedsBrace(pCI))
     psRpnExpr->vConcat(" }"_Stz);
 
   vRpn_rpnCalc(pCI, psRpnExpr, p_rpnCalc);

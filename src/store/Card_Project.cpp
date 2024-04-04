@@ -260,11 +260,11 @@ bool Card_Project::bIsCompound(void)
 /*----------------------------------------------------------------------------*/
 /* is this a compound project?                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_Project::bIsLiterals(void)
+bool Card_Project::bIsLiterals(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSub_emit()->bIsLiterals())
+  if (pSub_emit()->bIsLiterals(pCI))
     return true;
 
   return false;

@@ -519,15 +519,16 @@ bool Card_Expr::bIsCompound(void)
 /*----------------------------------------------------------------------------*/
 /* is this a literals expr?                                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsLiterals(void)
+bool Card_Expr::bIsLiterals(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xRpnCalc(pSub_rpnCalc());
-  while (xRpnCalc.bEach(CK_TERM)) {
-    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) ||
-        xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) ||
+        pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_TBL_COL)) {
+      pCI->vEndTarget();
       return false;
+    }
   }
 
   return true;
@@ -568,14 +569,15 @@ bool Card_Expr::bMatches(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bNeedsBrace(void)
+bool Card_Expr::bNeedsBrace(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xRpnCalc(pSub_rpnCalc());
-  while (xRpnCalc.bEach(CK_TERM)) {
-    if (xRpnCalc.p_term()->pSymbol()->bNeedsBrace())
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (pCI->E.xTarget.p_term()->pSymbol()->bNeedsBrace()) {
+      pCI->vEndTarget();
       return true;
+    }
   }
 
   return false;
@@ -713,17 +715,15 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 
   if ((pCI->E.p_rpnCalc = pSub_rpnCalc())) {
     //vDump(__func__);
-    Kid xRpnCalc(pSub_rpnCalc());
-    while (xRpnCalc.bEach(CK_TERM)) {
-      if (!xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+    for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+      if (! pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
         continue;
 
-      pCI->E.p_term = xRpnCalc.p_term();
+      pCI->E.p_term = pCI->E.xTarget.p_term();
       pCI->E.p_term->vX_expCol_To_tblCol(pCI);
     }
 
     pCI->E.p_term = nullptr;
-
   }
 }
 
@@ -737,8 +737,8 @@ void Card_Expr::vX_tblCol_To_expCol(CardIter* pCI)
   i8 nAncestors = pCI->nAncestors();
   pCI->vAncestorPush(this);
 
-  for (Kid xRpnCalc(pSub_rpnCalc());xRpnCalc.bEach(CK_TERM); /**/) {
-    pCI->E.p_term = xRpnCalc.p_term();
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    pCI->E.p_term = pCI->E.xTarget.p_term();
     pCI->E.p_term->vX_tblCol_To_expCol(pCI);
   }
 

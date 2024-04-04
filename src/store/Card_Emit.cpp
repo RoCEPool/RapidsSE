@@ -424,14 +424,14 @@ bool Card_Emit::bIsCompound(void)
 /*----------------------------------------------------------------------------*/
 /* is this a literals projection?                                             */
 /*----------------------------------------------------------------------------*/
-bool Card_Emit::bIsLiterals(void)
+bool Card_Emit::bIsLiterals(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   bool bLiterals = true;
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/)
-    if (! xEmit.p_expr()->bIsLiterals()) {
+    if (! xEmit.p_expr()->bIsLiterals(pCI)) {
       bLiterals = false;
       break;
     }
