@@ -86,7 +86,6 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
     pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
     pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
-    pCI->E.p_rpnCalc->vApplyCast_x(pCI->E.p_key->xCast());
     pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
     pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
@@ -124,7 +123,6 @@ Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
   p_expr_new->vApplyCast_x(pSymbol->xCast());
 
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
-  p_rpnCalc_new->vApplyCast_x(pSymbol->xCast());
   p_expr_new->vAppendChild(p_rpnCalc_new);
 
   Card_Term* p_term_new = (new Card_Term) ->SYM(pSymbol);
@@ -147,7 +145,6 @@ Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
   p_expr_new->vApplyCast_x(xCast);
 
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
-  p_rpnCalc_new->vApplyCast_x(xCast);
   p_expr_new->vAppendChild(p_rpnCalc_new);
 
   Card_Term* p_term_new = p_term->pClone();
@@ -216,75 +213,21 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   pCI->E.p_rpnCalc = pSub_rpnCalc();
 
-  Symbol* pSymbol_expr = pSymbol();
-  if (! xCast().m_xTypeId.bIsValid()) {
-    pCI->PRINTBOARD_dbg();
-    vDump(__func__ );
-    NEVER_REACH
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(!xCast_last.m_xTypeId.bIsValid());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    pCI->E.p_term = pCI->E.xTarget.p_term();
+    pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
-  RASSERT(xCast().m_xTypeId.bIsValid());
-  RASSERT(xCast().m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId);
+  pCI->E.p_term = nullptr;
 
-  TypeId xTypeId_save = xCast().m_xTypeId;
-
-  //pCI->G.p_rpnCalc->vApplyCast(pCI,/*??*/p_Dic_expr);
-
-  {
-    Cast xCast_last;
-    xCast_last.m_xTypeId = TypeId();
-    xCast_last.m_nTypeLength = 0;
-    xCast_last.m_nTypeScale = 0;
-    RASSERT(!xCast_last.m_xTypeId.bIsValid());
-
-    TypeId xTypeId_save = xCast().m_xTypeId;
-    if (!xTypeId_save.bIsValid()) {
-      pCI->PRINTBOARD_dbg();
-      vDump(__func__);
-      NEVER_REACH
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // rpnCalc is a set of terms
-    for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
-      pCI->E.p_term = xRpnCalc.p_term();
-      pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
-    }
-    pCI->E.p_term = nullptr;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    if (xCast_last.m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId) {
-      if (xCast_last.m_nTypeLength != pCI->E.p_rpnCalc->xCast().m_nTypeLength ||
-          xCast_last.m_nTypeScale != pCI->E.p_rpnCalc->xCast().m_nTypeScale ||
-          xCast_last.m_bTypeNullable != pCI->E.p_rpnCalc->xCast().m_bTypeNullable)
-        vApplyCast_x(pCI->E.p_rpnCalc->xCast());
-    }
-
-    RASSERT(xTypeId_save == xCast().m_xTypeId);
-  }
-
-//  if (pSymbol()->xCast().m_xTypeId != pCI->G.p_rpnCalc->xCast().m_xTypeId) {
-//    vDump(__func__);
-//    pCI->G.p_rpnCalc->vApplyCast(pCI);
-//    vDebugPoint();
-//  }
-
-//  if (! pSymbol_expr->xCast().m_xTypeId.bIsValid())
-//    vApplyCast(pCI->G.p_rpnCalc->xCast());
-//  else
-  if (pSymbol_expr->xCast().m_xTypeId == pCI->E.p_rpnCalc->xCast().m_xTypeId &&
-      (pSymbol_expr->xCast().m_nTypeLength   != pCI->E.p_rpnCalc->xCast().m_nTypeLength ||
-       pSymbol_expr->xCast().m_nTypeScale    != pCI->E.p_rpnCalc->xCast().m_nTypeScale ||
-       pSymbol_expr->xCast().m_bTypeNullable != pCI->E.p_rpnCalc->xCast().m_bTypeNullable))
-    vApplyCast_x(pCI->E.p_rpnCalc->xCast());
-
-  //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
-
-//  if (pCI->G.p_rpnCalc->xCast().m_xTypeId.bIsValid())
-//    vApplyCast(pCI->G.p_rpnCalc->xCast());
-
-  RASSERT(xTypeId_save == xCast().m_xTypeId);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->E.p_rpnCalc = nullptr;
 }
@@ -473,26 +416,18 @@ Card_Term* Card_Expr::pGet_term0(void)
 /*----------------------------------------------------------------------------*/
 /* does expression have term ?                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasTerm(Symbol* pSymbol)
+bool Card_Expr::bHasTerm(CardIter* pCI, Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bHas = false;
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    bHas = p_boolPred->bHas_term(pSymbol);
-  else {
-    Kid xRpnCalc(pSub_rpnCalc());
-    while (xRpnCalc.bEach(CK_TERM)) {
-      if (xRpnCalc.p_term()->pSymbol()->bMatches(pSymbol))
-        return true;
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSymbol)) {
+      pCI->vEndTarget();
+      return true;
     }
-
-    return false;
-
   }
 
-  return bHas;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,11 +466,7 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
 //  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
 
 
-
-
   Card_RpnCalc* p_rpnCalc_inducted = new Card_RpnCalc;
-
-  p_rpnCalc_inducted->vApplyCast_p(this);
 
   Card_Term* p_term_inducted = new Card_Term;
   p_term_inducted->vApplyCast_p(this);
@@ -764,12 +695,12 @@ void Card_Expr::vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vUpdate_expCol(Card_Emit* p_arriving)
+void Card_Expr::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
-    xRpnCalc.p_term()->vUpdate_expCol(p_arriving);
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
+    pCI->E.xTarget.p_term()->vUpdate_expCol(pCI,p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -779,12 +710,6 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->E.p_boolPred = nullptr;
-  pCI->E.p_rpnCalc  = nullptr;
-
-  if ((pCI->E.p_boolPred = pSub_boolPred()))
-    pCI->E.p_boolPred->vX_expCol_To_tblCol(pCI);
-  else
   if ((pCI->E.p_rpnCalc = pSub_rpnCalc())) {
     //vDump(__func__);
     Kid xRpnCalc(pSub_rpnCalc());
@@ -811,19 +736,12 @@ void Card_Expr::vX_tblCol_To_expCol(CardIter* pCI)
   i8 nAncestors = pCI->nAncestors();
   pCI->vAncestorPush(this);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    p_boolPred->vX_tblCol_To_expCol(pCI);
-    p_boolPred = nullptr;
+  for (Kid xRpnCalc(pSub_rpnCalc());xRpnCalc.bEach(CK_TERM); /**/) {
+    pCI->E.p_term = xRpnCalc.p_term();
+    pCI->E.p_term->vX_tblCol_To_expCol(pCI);
   }
-  else {
-    for (Kid xRpnCalc(pSub_rpnCalc());xRpnCalc.bEach(CK_TERM); /**/) {
-      pCI->E.p_term = xRpnCalc.p_term();
-      pCI->E.p_term->vX_tblCol_To_expCol(pCI);
-    }
 
-    pCI->E.p_term = nullptr;
-
-  }
+  pCI->E.p_term = nullptr;
 
   pCI->vAncestorPop();
   RASSERT(pCI->nAncestors() == nAncestors);

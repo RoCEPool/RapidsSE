@@ -20,6 +20,13 @@ namespace STORE
   // - - - - - - - - - - - - -
     Kid xEachOp;
     Kid xTarget;
+    struct {
+      eCK ePrimary;
+      eCK eTarget;
+      // --
+      eCK eSecondary;
+      eCK eTertiary;
+    } Iter;
 
   // - - - - - - - - - - - - -
   public:
@@ -169,6 +176,7 @@ namespace STORE
     Card_Where *         p_where;
 
     Card_XCard *         p_xcard;
+
 
   private:
     // must be last

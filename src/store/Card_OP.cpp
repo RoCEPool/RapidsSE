@@ -106,7 +106,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)
+void Card_OP::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving, bool bAlt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -114,10 +114,10 @@ void Card_OP::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)
     return;
 
   if (Card_Filter* p_filter = pSub_filter())
-    p_filter->vUpdate_expCol(p_arriving);
+    p_filter->vUpdate_expCol(pCI,p_arriving);
 
   if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vUpdate_expCol(p_arriving,bAlt);
+    p_emit->vUpdate_expCol(pCI,p_arriving,bAlt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -663,7 +663,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       if (pCI->Flux.m_pArriving) {
         pCI->Dic.m_p_expr = _pCard_Emit(pCI->E.p_Op->pSub_injectable());
         //pCI->Dic.m_p_expr->vDump(__func__);
-        pCI->E.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr, true);
+        pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
       }
     }
     else {
@@ -671,9 +671,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
         //pCI->Dic.m_p_expr->vDump(__func__);
         if (pCI->E.p_Op->bIsCard(CK_o_HAVING))
-          pCI->E.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr, true);
+          pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
         else
-          pCI->E.p_filter->vUpdate_expCol(pCI->Dic.m_p_expr, false);
+          pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, false);
       }
     }
   }
@@ -687,9 +687,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     pCI->E.p_emit->vApplyFacets(pCI,pCI->E.p_key);
 
     for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
-      for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
+      for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
 
-        Card_Term *p_term_keyCol = xRpnCalc.p_term();
+        Card_Term *p_term_keyCol = pCI->E.xTarget.p_term();
         Symbol *pSym_term_keyCol = p_term_keyCol->pSymbol();
         if (! pSym_term_keyCol->bHasFacet(SF_KEY_COL))
           continue;
@@ -717,11 +717,11 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       CK_o_KEYNOTEXISTS == eCard_OP) {
     pCI->Dic.m_p_expr = pCI->E.p_emit;
     //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
-    vUpdate_expCol(pCI->Dic.m_p_expr);
+    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
   }
   if (CK_o_WHERE        == eCard_OP) {
     pCI->Dic.m_p_expr = pCI->E.p_emit;
-    vUpdate_expCol(pCI->Dic.m_p_expr);
+    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
   }
 
   if (CK_o_SORT== eCard_OP) {
@@ -1441,8 +1441,9 @@ void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
 
   Card_Key *pCard_key = p_top->pSub_key();
   Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc(C_NOT_NULL);
+  Card_Expr *pCard_Expr = pCard_key->pSub_expr(C_NOT_NULL);
+  TypeId xTypeId = pCard_Expr->xTypeId();
 
-  TypeId xTypeId = pCard_Calc->xTypeId();
 
 	psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
   vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
@@ -1484,7 +1485,7 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Symbol* pSymbol = p_rpnCalc->pSymbol();
+  Symbol* pSymbol = p_expr->pSymbol();
   Cast xCast = pSymbol->xCast();
 
   psRpnExpr->vCatSprint(" type %s"_Stz, aCT[xCast.m_xTypeId.eCTVal()]);

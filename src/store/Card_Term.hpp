@@ -28,7 +28,7 @@ namespace STORE
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     eTE  eEvalTerm(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    void vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt=false);
+    void vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt=false);
 
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);

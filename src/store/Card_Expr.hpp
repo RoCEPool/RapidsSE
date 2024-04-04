@@ -43,7 +43,7 @@ namespace STORE
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
 
-    bool bHasTerm(Symbol* pSymbol);
+    bool bHasTerm(CardIter* pCI, Symbol* pSymbol);
 
     Card_Expr *pInduct(i8 iExp);
     bool bIsCompound(void);
@@ -61,7 +61,7 @@ namespace STORE
     void vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit);
 
 
-    void vUpdate_expCol(Card_Emit* p_arriving);
+    void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving);
 
     void vX_tblCol_To_expCol(CardIter* pCI);
     void vX_expCol_To_tblCol(CardIter* pCI);

@@ -26,7 +26,7 @@ namespace STORE
     Card_Needed* pCraft_needed_root(CardIter* pCI);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
-    Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
+    Card_Expr* pFindExprOfSymbol(CardIter* pCI, Symbol* pSymbol);
     Card_Expr* pGet_expr(i8 i_Element);
     Card_Emit* pInduct(CardIter* pCI);
     void vInject_expr_nmdCol_table(CardIter* pCI);
@@ -37,7 +37,7 @@ namespace STORE
     void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);
 
     Card_Expr* pResolve_expr(Card_Term* p_term);
-    void vUpdate_expCol(Card_Emit* p_arriving, bool bAlt=false);
+    void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving, bool bAlt=false);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
