@@ -61,7 +61,7 @@ namespace STORE
     void vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit);
 
 
-    void vUpdate_expCol(Card_Emit* p_arriving);
+    void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving);
 
     void vX_tblCol_To_expCol(CardIter* pCI);
     void vX_expCol_To_tblCol(CardIter* pCI);

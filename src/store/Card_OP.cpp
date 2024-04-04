@@ -106,7 +106,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)
+void Card_OP::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving, bool bAlt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -117,7 +117,7 @@ void Card_OP::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)
     p_filter->vUpdate_expCol(p_arriving);
 
   if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vUpdate_expCol(p_arriving,bAlt);
+    p_emit->vUpdate_expCol(pCI,p_arriving,bAlt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -717,11 +717,11 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       CK_o_KEYNOTEXISTS == eCard_OP) {
     pCI->Dic.m_p_expr = pCI->E.p_emit;
     //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
-    vUpdate_expCol(pCI->Dic.m_p_expr);
+    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
   }
   if (CK_o_WHERE        == eCard_OP) {
     pCI->Dic.m_p_expr = pCI->E.p_emit;
-    vUpdate_expCol(pCI->Dic.m_p_expr);
+    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
   }
 
   if (CK_o_SORT== eCard_OP) {

@@ -703,12 +703,12 @@ void Card_Expr::vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vUpdate_expCol(Card_Emit* p_arriving)
+void Card_Expr::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
-    xRpnCalc.p_term()->vUpdate_expCol(p_arriving);
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
+    pCI->E.xTarget.p_term()->vUpdate_expCol(p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/

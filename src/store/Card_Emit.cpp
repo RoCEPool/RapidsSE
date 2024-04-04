@@ -560,14 +560,14 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vUpdate_expCol(Card_Emit* p_arriving, bool bAlt)
+void Card_Emit::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(bAlt);
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr = xEmit.p_expr();
-    p_expr->vUpdate_expCol(p_arriving);
+    p_expr->vUpdate_expCol(pCI, p_arriving);
   }
 }
 

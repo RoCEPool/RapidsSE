@@ -37,7 +37,7 @@ namespace STORE
     void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);
 
     Card_Expr* pResolve_expr(Card_Term* p_term);
-    void vUpdate_expCol(Card_Emit* p_arriving, bool bAlt=false);
+    void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving, bool bAlt=false);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
