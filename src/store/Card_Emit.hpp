@@ -26,7 +26,7 @@ namespace STORE
     Card_Needed* pCraft_needed_root(CardIter* pCI);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
-    Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
+    Card_Expr* pFindExprOfSymbol(CardIter* pCI, Symbol* pSymbol);
     Card_Expr* pGet_expr(i8 i_Element);
     Card_Emit* pInduct(CardIter* pCI);
     void vInject_expr_nmdCol_table(CardIter* pCI);

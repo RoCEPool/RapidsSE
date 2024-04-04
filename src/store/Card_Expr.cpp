@@ -416,26 +416,18 @@ Card_Term* Card_Expr::pGet_term0(void)
 /*----------------------------------------------------------------------------*/
 /* does expression have term ?                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasTerm(Symbol* pSymbol)
+bool Card_Expr::bHasTerm(CardIter* pCI, Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bHas = false;
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    bHas = p_boolPred->bHas_term(pSymbol);
-  else {
-    Kid xRpnCalc(pSub_rpnCalc());
-    while (xRpnCalc.bEach(CK_TERM)) {
-      if (xRpnCalc.p_term()->pSymbol()->bMatches(pSymbol))
-        return true;
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSymbol)) {
+      pCI->vEndTarget();
+      return true;
     }
-
-    return false;
-
   }
 
-  return bHas;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -708,7 +700,7 @@ void Card_Expr::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
-    pCI->E.xTarget.p_term()->vUpdate_expCol(p_arriving);
+    pCI->E.xTarget.p_term()->vUpdate_expCol(pCI,p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/

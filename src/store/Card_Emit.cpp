@@ -333,12 +333,12 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
+Card_Expr* Card_Emit::pFindExprOfSymbol(CardIter* pCI, Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/)
-    if (xEmit.p_expr()->bHasTerm(pSymbol))
+    if (xEmit.p_expr()->bHasTerm(pCI,pSymbol))
       return xEmit.p_expr();
 
   return nullptr;

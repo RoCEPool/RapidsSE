@@ -287,7 +287,7 @@ void Card_Term::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)
+void Card_Term::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -302,7 +302,7 @@ void Card_Term::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)
   if (bAlt)
     p_expr_dic = p_Dic_expr->pFind_expr_Matches(pSym_term);
   else
-    p_expr_dic = p_Dic_expr->pFindExprOfSymbol(pSym_term);
+    p_expr_dic = p_Dic_expr->pFindExprOfSymbol(pCI,pSym_term);
 
   if (p_expr_dic) {
     pSym_term->vApplyCastFacets(p_expr_dic->pSymbol());

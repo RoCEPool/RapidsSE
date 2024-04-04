@@ -88,56 +88,20 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* create new <where>/<filter>/<expr>/<rpnCalc>                               */
-/*----------------------------------------------------------------------------*/
-Card_Filter* Card_Filter::pNewAssembly(CardIter* pCI)
-{
-  _static_
-
-  Card_Filter* p_filter = new Card_Filter;
-
-  Card_Expr* p_expr = new Card_Expr;
-  p_filter->vAppendChild(p_expr);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_expr->vAppendChild(p_rpnCalc);
-
-  if (pCI) {
-    pCI->E.p_filter  = p_filter;
-    pCI->E.p_expr    = p_expr;
-    pCI->E.p_rpnCalc = p_rpnCalc;
-  }
-
-  return p_filter;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* burst <filter>/<expr>/<rpnCalc>                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vBurstAssembly(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->E.p_filter  = this;
-  pCI->E.p_expr    = pCI->E.p_filter->pSub_expr(C_NOT_NULL);
-  pCI->E.p_rpnCalc = pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)
+void Card_Filter::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vUpdate_expCol(p_Dic_expr,bAlt);
+    p_boolPred->vUpdate_expCol(pCI, p_Dic_expr,bAlt);
 }
 
 /*----------------------------------------------------------------------------*/
