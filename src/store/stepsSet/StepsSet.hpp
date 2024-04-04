@@ -2143,6 +2143,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);
+  void vTableIsMetaData(void);
   void vTableIsReplicated(void);
   void vTableIsUserCreated(void);
   void vTableListPartition(void);

@@ -90,7 +90,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //        added after the cluster has started
   //        This must be fixed properly. Ray 14 Nov 2020
   //if (AM::pGrid()->bHasStarted()) {
-  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind || TT_METADATA == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
       LglPtn tLglPtn = Table::tTablePtnToLglPtn(i_TablePtn);
@@ -496,6 +496,16 @@ bool Table::bIsInternallyDefined(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return (TT_INTERNAL == m_eKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if table is a definition only                                          */
+/*----------------------------------------------------------------------------*/
+bool Table::bIsMetaDataTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  return (TT_METADATA == m_eKind);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -52,9 +52,7 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
       NEVER_REACH;
       break;
     case TT_INTERNAL:
-      m_eKind = CN_CRWTABLEPTN;
-      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn);
-      break;
+    case TT_METADATA:
     case TT_NORMAL:
       m_eKind = CN_CRWTABLEPTN;
       m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn);

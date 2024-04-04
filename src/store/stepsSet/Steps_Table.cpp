@@ -58,6 +58,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table.getName"_Stz,            &Step::vTableGetName);
   vAddStep("Table[].isInternallyDefined"_Stz,   &Step::vTableIsInternallyDefined);
+  vAddStep("Table[].isMetaData"_Stz,   &Step::vTableIsMetaData);
   vAddStep("Table[].isReplicated"_Stz,     &Step::vTableIsReplicated);
   vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
@@ -515,6 +516,20 @@ void Step::vTableIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* table.isInternallyDefines -- is the table for metadata?                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIsMetaData(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+
+  m_pDataStack->vPushInt(pTable->bIsMetaDataTable());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* table.isReplicated -- is the table a replicated table?                     */
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsReplicated(void)
@@ -645,6 +660,8 @@ void Step::vTableNew(void) {
   else if ((pJobTags && pJobTags->bHasName(C_TAG_INTERNAL)) ||
            (pOpTags && pOpTags->bHasName(C_TAG_INTERNAL)))
     eTableKind = TT_INTERNAL;
+  else if (pJobTags && pJobTags->bHasName(C_TAG_METADATA))
+    eTableKind = TT_METADATA;
   else if (pJobTags && pJobTags->bHasName(C_TAG_REPLICATED))
     eTableKind = TT_REPLICATED;
 

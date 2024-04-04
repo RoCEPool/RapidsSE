@@ -14,7 +14,7 @@
     catalogName       VARCHAR NOT NULL ,
     schemaName        VARCHAR NOT NULL ,
     tableName         VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

@@ -9,9 +9,10 @@ Stz* aTT[TT_ENUMS]
   /* 0 */ "NONE"_Stz,
   /* 1 */ "TT_INFOSET"_Stz,
   /* 2 */ "TT_INTERNAL"_Stz,
-  /* 3 */ "TT_NORMAL"_Stz,
-  /* 4 */ "TT_REPLICATED"_Stz
-//  /* 5 */ "TT_ENUMS"_Stz
+  /* 3 */ "TT_METADATA"_Stz,
+  /* 4 */ "TT_NORMAL"_Stz,
+  /* 5 */ "TT_REPLICATED"_Stz
+//  /* 6 */ "TT_ENUMS"_Stz
 };
 
 /*============================================================================*/

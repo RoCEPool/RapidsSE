@@ -5986,7 +5986,7 @@ void Task::vAddMunged(Task* )
     "    catalogName       VARCHAR NOT NULL ,\n"
     "    schemaName        VARCHAR NOT NULL ,\n"
     "    tableName         VARCHAR NOT NULL\n"
-    "  ) < infoSet > = 1 ;\n"
+    "  ) < metaData > = 1 ;\n"
     "  \"\n"
     "  nullptr api::forkChild  api:executeCheck\n"
     "\n"
