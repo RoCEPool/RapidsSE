@@ -64,21 +64,6 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_X_RPNCALC_TO_BOOLPRED);
 
-#ifndef Z_CONSTRAINT_BOOLPRED
-  m_pCI->vClearRegisters();
-  m_pCI->vBeginEach();
-  while (m_pCI->bEachOp(CK_o_FROM, CK_s_CONSTRAINT)) {
-    m_pCI->E.p_expr = m_pCI->E.p_constraint->pSub_expr();
-    if (m_pCI->E.p_expr->pSub_rpnCalc()) {
-      m_pCI->E.p_expr->vDump(__func__);
-      m_pCI->E.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,m_pCI->E.p_expr);
-      m_pCI->E.p_constraint->vReplaceSubDelete(m_pCI->E.p_expr, m_pCI->E.p_boolPred);
-      m_pCI->E.p_constraint->vDump(__func__);
-      vDebugPoint();
-    }
-  }
-#endif
-
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_WHERE, CK_RPNCALC)) {

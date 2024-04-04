@@ -56,40 +56,6 @@ Card_Constraint::~Card_Constraint(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create new <constraint>/<expr $1>/<rpnCalc>                                */
-/*----------------------------------------------------------------------------*/
-Card_Constraint* Card_Constraint::pNewAssembly(CardIter* pCI)
-{
-  _static_
-
-#ifdef Z_CONSTRAINT_BOOLPRED
-  Card_Constraint* p_constraint = new Card_Constraint;
-
-  if (pCI) {
-    pCI->E.p_constraint = p_constraint;
-  }
-
-  return p_constraint;
-#else
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-
-  Card_Expr* p_expr = new Card_Expr;
-  p_expr->vAppendChild(p_rpnCalc);
-
-  Card_Constraint* p_constraint = new Card_Constraint;
-  p_constraint->vAppendChild(p_expr);
-
-  if (pCI) {
-    pCI->E.p_constraint = p_constraint;
-    pCI->E.p_expr       = p_expr;
-    pCI->E.p_rpnCalc    = p_rpnCalc;
-  }
-
-  return p_constraint;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -115,18 +81,6 @@ void Card_Constraint::vBump_expCol(i8 nBumpBy)
   if (Card_Expr* p_expr = pSub_expr())
     p_expr->vBump_expCol(nBumpBy);
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* burst <constraint>/<expr $1>/<rpnCalc>                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vBurstAssembly(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->E.p_constraint = this;
-  pCI->E.p_expr       = pCI->E.p_constraint->pSub_expr(C_NOT_NULL);
-  pCI->E.p_rpnCalc    = pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
 }
 
 /*----------------------------------------------------------------------------*/

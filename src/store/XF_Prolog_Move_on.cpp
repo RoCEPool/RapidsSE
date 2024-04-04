@@ -109,10 +109,9 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     m_pCI->E.p_expr->vTransfer(m_pCI->E.p_on, SF_RLN_OP);
     m_pCI->E.p_expr->vApplyCast_x(m_pCI->E.p_on->xCast());
 
-#ifdef Z_CONSTRAINT_BOOLPRED
     if (m_pCI->E.p_on->nChildCards()) {
       delete m_pCI->E.p_on->pPopChild_tail();
-      m_pCI->E.p_constraint = Card_Constraint::pNewAssembly(m_pCI);
+      m_pCI->E.p_constraint = new Card_Constraint;
 
       Card_RpnCalc* p_rpnCalc_tmp = new Card_RpnCalc;
       Card_Expr* p_expr_tmp = new Card_Expr;
@@ -129,15 +128,6 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       m_pCI->E.p_constraint->vDump(__func__);
       DELETE_CARD(p_expr_tmp);
     }
-#else
-    if (m_pCI->E.p_on->nChildCards()) {
-      delete m_pCI->E.p_on->pPopChild_tail();
-      m_pCI->E.p_constraint = Card_Constraint::pNewAssembly(m_pCI);
-      p_scan_over->vAppendChild(m_pCI->E.p_constraint);
-      m_pCI->E.p_expr->vApplyCast_x(m_pCI->E.p_on->xCast());
-      m_pCI->E.p_rpnCalc->vTransferChildren(m_pCI->E.p_on);
-    }
-#endif
 
     // remove and delete <absJoin>/<on>
     m_pCI->E.p_absJoin->vRemoveChild(m_pCI->E.p_on);

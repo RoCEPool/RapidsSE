@@ -20,8 +20,6 @@
 
 #define Z_NO_RPNCALC
 
-#define Z_CONSTRAINT_BOOLPRED
-
 namespace STORE
 {
   class Card_AbsJoin;
