@@ -22,6 +22,7 @@ extern void* aExtern_GetIndexTree(void* aTable, void* aIndex) __attribute__((wea
 
 extern void* aExtern_IndexDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
 
+extern void* vExtern_IndexFind(void* aIndexInfo,char*,char*) __attribute__((weak_import));
 extern void* vExtern_IndexNew(void* aDynamicT, i8 nNumCols, void* pColumnInfo, bool bPayload) __attribute__((weak_import));
 
 extern void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamicT, i8 nPayloadBytes, bool* pbInsertedEntry) __attribute__((weak_import));
@@ -36,22 +37,32 @@ extern void* aExtern_IndexTreeInsertEnt(void* aIndexDef, void* aEnt, i8* piError
 extern void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode)
   __attribute__((weak_import));
 
-extern void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) __attribute__((weak_import));
-extern void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) __attribute__((weak_import));
-extern void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) __attribute__((weak_import));
-extern void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey) __attribute__((weak_import));
-extern void *aExtern_IndexTreePositionLT(void* aIndexTree, void* aKey) __attribute__((weak_import));
+extern void  vExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) __attribute__((weak_import));
+
+extern void  vExtern_IndexTreePositionGE_gen(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionGT_gen(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionLE_gen(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionLT_gen(void* aIndexInfo) __attribute__((weak_import));
+
+extern void  vExtern_IndexTreePositionGE_int(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionGT_int(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionLE_int(void* aIndexInfo) __attribute__((weak_import));
+extern void  vExtern_IndexTreePositionLT_int(void* aIndexInfo) __attribute__((weak_import));
 
 extern void vExtern_RunningHash(i8* piKeyHash, byte* aMixVal, i8 iSize) __attribute__((weak_import));
 
 extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
-extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 
 extern void* aExtern_PdsRowBufferCellArray(void* aPdsRowBuffer, i8 iRow) __attribute__((weak_import));
 
+extern void* aExtern_PdsFirstRowCellArray(void* aPdsRowBuffer, void** aCurrentRow) __attribute__((weak_import));
+extern void* aExtern_PdsNextRowCellArray(void* aPdsRowBuffer, void** aCurrentRow) __attribute__((weak_import));
+
 extern void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) __attribute__((weak_import));
-extern void  vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) __attribute__((weak_import));
-extern void  vExtern_PotRowPix(void* pPot, void* pRowPix) __attribute__((weak_import));
+
+extern void  vExtern_PotAllotRowPds(void* aDynamic, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) __attribute__((weak_import));
+extern void  vExtern_PotRowStrSize(void* pPot, i8 nRowStrSize) __attribute__((weak_import));
+extern void  vExtern_PotRowPix(void* pPot, i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 
 extern void* aExtern_StreamDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
 
@@ -62,9 +73,9 @@ extern i8    iExtern_StrLibWordFlipSize(char* psSrc) __attribute__((weak_import)
 
 extern void vExtern_TubCreate(void* pDynamic, i8 nCols, void* pColumnInfo);
 
-extern void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) __attribute__((weak_import));
+extern void  vExtern_TubAllotRowPds(void* aDynamic, char** aazStrArea, i8* pnMaxStrAreaLen) __attribute__((weak_import));
 extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) __attribute__((weak_import));
-extern void  vExtern_TubRowPix(void* pTub, void* pRowPix) __attribute__((weak_import));
+extern void  vExtern_TubRowPix(void* pTub, i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 
 /*============================================================================*/
 /* end                                                                        */

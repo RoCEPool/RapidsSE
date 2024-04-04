@@ -1869,11 +1869,17 @@ void OpSketch::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token*
     case DM_VCH:
       sOperation.vSprintCat("(\"%s\")"_Stz, pTkn->szChars());
       pExprStack->vPushStz(sOperation);
-      if (ePreExp == PE_EXP &&
+			if (ePreExp == PE_EXP) {
+				if (m_eSketchKind == SK_PRJTUB)
+				  pExprStack->vPushStz("_ALLOC_VCH_TUB(azStringDyn)"_Stz);
+				else if (m_eSketchKind == SK_PRJPOT)
+					pExprStack->vPushStz("_ALLOC_VCH_POT(azStringDyn)"_Stz);
+        else if (ePreExp == PE_EXP &&
           m_eSketchKind != SK_FILTER &&
           m_eSketchKind != SK_SEMIJOIN &&
           m_eSketchKind != SK_ANTIJOIN)
         pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
+			}
       break;
     default:
       NEVER_REACH;
@@ -2031,15 +2037,20 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
 
 //  }
 
-
-  if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
-      m_eSketchKind != SK_FILTER &&
-      m_eSketchKind != SK_SORT   &&
-      m_eSketchKind != SK_AGGREG &&
-      m_eSketchKind != SK_SEMIJOIN &&
-      m_eSketchKind != SK_ANTIJOIN
-      )
-    pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
+  if ( pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP) {
+		if (m_eSketchKind == SK_PRJTUB)
+			pExprStack->vPushStz("_ALLOC_VCH_TUB(azStringDyn)"_Stz);
+		else if (m_eSketchKind == SK_PRJPOT)
+			pExprStack->vPushStz("_ALLOC_VCH_POT(azStringDyn)"_Stz);
+		else if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
+						 (m_eSketchKind != SK_FILTER &&
+							m_eSketchKind != SK_SORT &&
+							m_eSketchKind != SK_AGGREG &&
+							m_eSketchKind != SK_SEMIJOIN &&
+							m_eSketchKind != SK_ANTIJOIN
+						 ))
+			pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
+	}
 
   // push the type
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
@@ -2286,12 +2297,23 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 			RASSERT(0);
       break;
 
-    case SK_PROJECT:
+		case SK_PROJECT:
       // make the column name
       sPush.vSprint("_ASSIGN(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
 
       pExprStack->vPushStz(sPush);
       break;
+
+		case SK_PRJTUB:
+		case SK_PRJPOT:
+			// make the column name
+			if (pColumn->eColumnType() == CT_VARCHAR)
+			  sPush.vSprint("_ASSIGN_TO_TUB(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
+			else
+				sPush.vSprint("_ASSIGN(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
+
+			pExprStack->vPushStz(sPush);
+			break;
 
     case SK_SORT:
       if (m_pIndexDef->eKeyKind()) {
@@ -2571,6 +2593,8 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
     case SK_PROJECT:
     case SK_SORT:
     case SK_TOP:
+		case SK_PRJTUB:
+		case SK_PRJPOT:
       return m_pExprStack;
 
     case SK_ANTIJOIN:

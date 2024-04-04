@@ -1,19 +1,23 @@
 /*============================================================================*/
-/* __Q6_OPT3                                                                  */
+/* __Q6_1N_P_OPT23                                                                 */
 /*============================================================================*/
 
-// OPT3 at :
+// Modified pipeline yet again
+//   -- moved project before filter
+//      his reduced the columns being inflated to the required columns
+//      optimiser needs to see which columns are required in the entire stage to do early projections.
+
+// OPT2 at :
 // on iMac:
-//  SF10-1N-1P : 2.43
-//  SF10-1N-4P : 1.06s
+//  SF10-1N-1P : 2.30s
+//  SF10-1N-4P : 0.95s
 
-//file _lineitem;
-//create index IxL_SHIPDATE on lineitem (L_SHIPDATE);
-//load lineitem "../TPCH/SF10/lineitem.tbl";
+// If we use knowledge of NOT-NULL and invoke different set of macros
+//  SF10-1N-1P : 2.04s
+//  SF10-1N-4P : 1.1s to 0.95s
 
-/keepCodeFile
 /optimise_passthru
-pipeline unamed
+pipeline Query6
 begin
 
   stage S00 on origin :
@@ -22,34 +26,32 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >=
-                                     UBOUND $I1 DATE '1995-01-01' <"
+    scan      Lineitem
     |  project   "type DECIMAL ( 15 2 ) as C0_L_QUANTITY $5
                  , type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $6
                  , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $7
                  , type DATE as C2_L_SHIPDATE $11"
-    | filter    " type BOOLEAN } 0.05 0.07 $3 between $1 24.00 < and "
+    | filter    " type BOOLEAN } $4 DATE '1994-01-01' >= $4 DATE '1995-01-01' < and 0.05 0.07 $3 between and $1 24.00 < and "
     | aggreg    "   type DECIMAL ( 19 2 ) as C0_COL0 ) $2 $3 * sum "
     | dynamic
     | next
 
-  stage S04 on all nodes :
+  stage S02 on all nodes :
     aggreg    "   type DECIMAL ( 19 2 ) as C0_COL0 ) $1 sum "
     | dynamic
     | next
 
-  stage S05 on origin :
+  stage S03 on origin :
     aggreg    "   type DECIMAL ( 19 2 ) as C0_Revenue ) $1 sum "
     | dynamic
     | next
 
-  stage S06 on origin :
+  stage S04 on origin :
       output
     | sink
     | first
 
 end ;
-
 
 /*============================================================================*/
 /* end                                                                        */

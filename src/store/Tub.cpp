@@ -29,8 +29,42 @@ __aFooterFunction(Tub)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_TubAllotRowPds(void* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) {
-  return Tub::aAllotRowPds((Tub*)pTub, aazStrArea, pnMaxStrAreaLen, piErrorCode);
+extern "C" void vExtern_TubAllotRowPds(void* aDynamic, char** aazStrArea, i8* pnMaxStrAreaLen) {
+
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+	Tub* pTub = (Tub*)pDynamicT->m_pTub;
+
+	try {
+		RASSERT(CN_TUB == pTub->eGetClassNo());
+
+		RowPix* pRowPix = pTub->pRowPix();
+
+		Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
+
+		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
+			pPdsRowBuffer = new Pds(pRowPix);
+			pTub->vAddBuffer(pPdsRowBuffer);
+		}
+
+		Row* pRowDst = pPdsRowBuffer->pAllotRow();
+
+		if (pRowDst == nullptr) {
+			pPdsRowBuffer = new Pds(pRowPix);
+			pTub->vAddBuffer(pPdsRowBuffer);
+			pRowDst = pPdsRowBuffer->pAllotRow();
+			RASSERT(pRowDst);
+		}
+
+		*aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+		*pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
+		pDynamicT->m_xRowInfoPO.m_aPdsRowBuffer = pPdsRowBuffer;
+		pDynamicT->m_xRowInfoTO.m_aRowCellArray = pRowDst->aCellArray();
+	}
+	catch (LowMemory xLowMemory) {
+		pDynamicT->m_iErrorCode = EC_LOW_MEMORY;
+		pDynamicT->m_xRowInfoPO.m_aPdsRowBuffer = nullptr;
+		pDynamicT->m_xRowInfoTO.m_aRowCellArray = nullptr;
+	}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,8 +84,10 @@ extern "C" void vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) {
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_TubRowPix(void* pTub, void* pRowPix) {
-  Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
+extern "C" void vExtern_TubRowPix(void* aTub, i8 nColumns, void* pColumnInfo) {
+  Tub* pTub = (Tub*)aTub;
+	RowPix* pRowPix = RowPix::pRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
+	pTub->vRowPix(pRowPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,8 +232,8 @@ void Tub::vTubCreate(Dynamic_T* pDynamicT, i8 nCols, ColumnInfo* pColumnInfo)
 
 	Tub* pTub = (Tub*)pDynamicT->m_pTub;
 	Row* pRow;
-	void* aRowPix = RowPix::aRowPixNew(nCols, pColumnInfo);
-	Tub::vSetRowPix(pTub, (RowPix*)aRowPix);
+	RowPix* pRowPix = RowPix::pRowPixNew(nCols, pColumnInfo);
+	Tub::vSetRowPix(pTub, pRowPix);
 
 	//struct SR_TO* pSR_TO;
 	//struct SR_PL* pSR_PL;

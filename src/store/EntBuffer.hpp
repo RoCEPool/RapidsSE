@@ -136,9 +136,8 @@ namespace STORE
     void       vBufferCount(i8& nBufferCount);
     EntBuffer* pHigherEntBuffer(void);
     void       vHigherEntBuffer(EntBuffer* pHigherBuffer);
-    EntBuffer* pNextEntBuffer(void);
-    void       vNextEntBuffer(EntBuffer* pNextBuffer);
-    EntBuffer* pPrevEntBuffer(void);
+		void       vNextEntBuffer(EntBuffer* pNextBuffer);
+		EntBuffer* pPrevEntBuffer(void);
     void       vPrevEntBuffer(EntBuffer* pPrevBuffer);
 
     //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
@@ -147,11 +146,9 @@ namespace STORE
     // entry functions
   
     Ent* aEntArray(void);
-    Ent* aLeadEntry(void);
     Ent* aLastEntry(void);
     Ent* aNextEntry(Ent* aPrevEntry);
     void vShowEntry(Ent* pEntry);
-    SkipRoots* aSkipRoots(void);
 
     tET  tToTicket(Ent* pEntry);
   
@@ -192,10 +189,11 @@ namespace STORE
     EntBuffer* pFindLeafBufferAscDsc(Key* aForKey);
 
     EntBuffer* pFindLeafBuffer_gen(Key* aForKey);
-    EntBuffer* pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior);
+    EntBuffer* pFindLeafBuffer_ascGen(Key* aForKey);
     EntBuffer* pFindLeafBuffer_ascDscGen(Key* aForKey);
 
     EntBuffer* pFindLeafBuffer_int(Key* aForKey);
+		EntBuffer* pFindLeafBuffer_intO(Key* aForKey);
     EntBuffer* pFindLeafBuffer_ascInt(Key* aForKey);
     EntBuffer* pFindLeafBuffer_ascDscInt(Key* aForKey);
 
@@ -206,6 +204,7 @@ namespace STORE
     Ent*       aFindEntryBefore_ascDscGen(Key* aGivenKey);
 
     Ent*       aFindEntryBefore_int(Key* aGivenKey);
+		Ent*       aFindEntryBefore_MoveGE_int(Key* aGivenKey, EntBuffer** ppEntBuffer);
 
     Ent*       pFindEntryPrevTo_gen(Ent* aGivenEnt, Key* aWithKey);
     Ent*       pFindEntryPrevTo_ascGen(Ent* aGivenEnt, Key* aWithKey);
@@ -254,7 +253,6 @@ namespace STORE
     void        vLazyBuild(void);
     i8          iLengthList(void);
     i8          iLengthSubList(void);
-    Ent*        aNextEntry(Ent* aEnt, i8 i_Offset);
     Ent*        aNextEntry_flat(Ent* aEnt, i8 i_Offset);
     void        vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
     void        vReset(void);
@@ -339,10 +337,89 @@ namespace STORE
 
     public:
     Footer* aFooter(void);
-  };
-  
-  EntBuffer* _pEntBuffer(void* aAddr);
-  void* aGetNextEntry(void** ppEntBuffer, void* aPrevEntry);
+
+	/*----------------------------------------------------------------------------*/
+	/* get next entry                                                             */
+	/*----------------------------------------------------------------------------*/
+	#if 0
+
+	inline Ent* aNextEntry(Ent* aCurrent, i8 iLevel)
+	{
+		_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+		ASSERT(aCurrent);
+		ASSERT(iLevel <= 5);
+
+		ASSERT(aCurrent->bValidEnt());
+
+		tET tNextEntry = aCurrent->tNextEntry(iLevel);
+
+		if (C_ENT_END_TICKET == tNextEntry)
+			return nullptr;
+
+		//RASSERT(tNextEntry < m_nItems);
+
+		//vTrace("DIFF: %lldB\n"_Stz,nDifference(this,aGetItem(0)));
+
+		i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
+		Ent* aNextEnt = aGetItem(iNextEntryOffset);
+
+		ASSERT(! aNextEnt || aNextEnt->bValidEnt());
+
+		return aNextEnt;
+	}
+
+	/*----------------------------------------------------------------------------*/
+
+	#else
+
+		inline Ent* aNextEntry(Ent* aCurrent, i8 iLevel)
+		{
+			_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+			return aNextEntry_flat(aCurrent,iLevel);
+		}
+
+	#endif
+
+	/*----------------------------------------------------------------------------*/
+  /* get next buffer                                                            */
+  /*----------------------------------------------------------------------------*/
+	inline EntBuffer* pNextEntBuffer(void)
+	{
+		_precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+		return reinterpret_cast<EntBuffer*>(m_tNextBuffer.pGetDataBuffer());
+	}
+
+	/*----------------------------------------------------------------------------*/
+	/* get lead entry (the entry after head entry                                 */
+  /*----------------------------------------------------------------------------*/
+	inline Ent* aLeadEntry(void)
+	{
+		_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+
+		Ent* aFirst = aNextEntry(aSkipRoots(),0);
+
+		ASSERT(! aFirst || aFirst->bValidEnt());
+
+		return aFirst;
+	}
+
+	/*----------------------------------------------------------------------------*/
+	/* get skip roots                                                             */
+	/*----------------------------------------------------------------------------*/
+	inline SkipRoots* aSkipRoots(void)
+	{
+		_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+		return & m_xSkipRoots;
+	}
+
+
+	};
+	EntBuffer* _pEntBuffer(void* aAddr);
 }
 
 /*============================================================================*/

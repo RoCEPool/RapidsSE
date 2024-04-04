@@ -15,20 +15,6 @@ __aNewFunction(RowPix,CN_ROWPIX)
 __vDeleteFunction(RowPix,CN_ROWPIX)
 
 /*----------------------------------------------------------------------------*/
-/* new row pix                                                                */
-/*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) {
-  return RowPix::aRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* new row pix                                                                */
-/*----------------------------------------------------------------------------*/
-void* aRowPix_new(i8 nColumns, void* pColumnInfo) {
-  return RowPix::aRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* RowPix::operator new(size_t, RowPix* aInfoPix)
@@ -180,7 +166,9 @@ RowPix::~RowPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
+RowPix* RowPix::pRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
+
+	_static_
 
   i8 nNameSize;
   i8 nStzOfs;
@@ -238,7 +226,7 @@ void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
   pRowPix->m_nTotalChars++;
   * azColNmDst = '\0';
 
-  return (void*)pRowPix;
+  return pRowPix;
 }
 
 /*----------------------------------------------------------------------------*/

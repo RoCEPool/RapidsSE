@@ -287,16 +287,6 @@ void DataBuffer::vBufferHeight(i8 iBufferHeight)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the buffer height                                                      */
-/*----------------------------------------------------------------------------*/
-i8 DataBuffer::iBufferHeight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iBufferHeight;
-}
-
-/*----------------------------------------------------------------------------*/
 /* drop lock for read                                                         */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vDropRead(void)

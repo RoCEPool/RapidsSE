@@ -283,7 +283,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
+EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
@@ -302,112 +302,70 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascGen(Key* aForKey, Ent** ppEntPrior)
 
 
 	EntBuffer* pEntBuffer = this;
-	Ent *aNextEntry_sl;
-	tET tNextEntry;
 
-	i8 nKeyBytes_r = aForKey->nElmSeqSize();
-	const i8 * iWord_r = (const i8*)aAdd<Dtm*>(aForKey,sizeof(nKeyBytes_r));
+	i8 iBufferHeight;
+	Ent* aEnt;
 
 	while (true) {
 
 #ifdef EB_TRACE_INSERT
-		vTrace("?? pFindLeafBuffer_gen"_Stz);
+		vTrace("?? pFindLeafBuffer_ascGen"_Stz);
         pEntBuffer->vTraceWhere();
         vTrace("\n"_Stz);
         m_nTabs++;
 #endif
 
-		//*ppEntPrior = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
-
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-		if (nItems() == 0) {
-			*ppEntPrior = aSkipRoots();
-			if (pEntBuffer->m_iBufferHeight == 0) {
-				break;
-			}
-			// get the index buffer of the entry
-			pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
-			ASSERT(pEntBuffer);
-			ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
-			continue;
-		}
-
-		Ent *aScanEntry_sl = aSkipRoots();
-
-
-		for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-			tNextEntry = aScanEntry_sl->m_taNextEntry[i_ScanLevel];
-
-			if (C_ENT_END_TICKET == tNextEntry) {
-				//aNextEntry_sl = nullptr;
-				continue;
-			}
-
-			i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
-
-			aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-
-
-			while (aNextEntry_sl) {
-
-				//eKC eCmp = Key::eCompareAsc(aNextEntry_sl->aKey(), aForKey);
-				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
-				Key* aKey_l = aNextEntry_sl->aKey();
-				i8 nKeyBytes_l = aKey_l->nElmSeqSize();
-
-				const i8 * iWord1 = (const i8*)aAdd<Dtm*>(aKey_l,sizeof(nKeyBytes_l));
-				const i8 * iWord2 = iWord_r;
-
-				i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
-
-				//i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
-
-				i8 iCmp = 0;
-
-				while (nCmpBytes > 0) {
-					if (*iWord1++ != *iWord2++) {
-						iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
-						break;
-					}
-					nCmpBytes -=8;
-				}
-
-				if ( iCmp > 0 || (iCmp == 0 && nKeyBytes_l >= nKeyBytes_r))
-					break;
-
-
-				aScanEntry_sl = aNextEntry_sl;
-
-
-				tNextEntry = aNextEntry_sl->m_taNextEntry[i_ScanLevel];
-
-				if (C_ENT_END_TICKET == tNextEntry)
-					aNextEntry_sl = nullptr;
-				else {
-					i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
-
-					aNextEntry_sl = (Ent *) ((char *) this + 624 + iNextEntryOffset);
-				}
-
-			}
-
-		}
-
-		*ppEntPrior = aScanEntry_sl;
-
-		if (pEntBuffer->m_iBufferHeight == 0) {
+		iBufferHeight = pEntBuffer->iBufferHeight();
+		if (iBufferHeight == 0)
 			break;
+
+		//
+		//aEnt = pEntBuffer->aFindEntryBefore_ascGen(aForKey);
+		//
+		if (nItems() == 0)
+			aEnt = aSkipRoots();
+    else {
+			Ent *aScanEntry_sl = aSkipRoots();
+
+			bool bNextKeyIsGE;
+
+			for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+
+				Ent *aNextEntry_sl = aNextEntry(aScanEntry_sl, i_ScanLevel);
+				while (aNextEntry_sl) {
+
+					bNextKeyIsGE = Key::bGreaterEqualAsc(aNextEntry_sl->aKey(), aForKey);
+					if (bNextKeyIsGE)
+						break;
+
+					aScanEntry_sl = aNextEntry_sl;
+					aNextEntry_sl = aNextEntry(aNextEntry_sl, i_ScanLevel);
+				}
+
+			}
+
+			aEnt = aScanEntry_sl;
+
 		}
 
-		ASSERT(*ppEntPrior);
+
+		ASSERT(aEnt);
+		Ent* aEntPrev = aEnt;
+
+		aEnt = pEntBuffer->pFindEntryPrevTo_ascGen(aEnt,aForKey);
+		if (! aEnt) {
+			aForKey->vShow(pIndexDef());
+			vTrace("\n"_Stz);
+
+			aEntPrev->aKey()->vShow(pIndexDef());
+			vTrace("\n"_Stz);
+
+			pEntBuffer->vDump();
+		}
+		ASSERT(aEnt);
 
 		// get the index buffer of the entry
-		pEntBuffer = EntBuffer::pRefdEntBuffer(*ppEntPrior);
+		pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
 		ASSERT(pEntBuffer);
 		ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
 	}
@@ -496,8 +454,6 @@ Ent* EntBuffer::aFindEntryBefore_gen(Key* aGivenKey)
 
   IndexDef* pIndexDef = this->pIndexDef();
 
-  i8 nLvlLevels = AM::nLvlLevels();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (nItems() == 0)
@@ -507,7 +463,7 @@ Ent* EntBuffer::aFindEntryBefore_gen(Key* aGivenKey)
   
   bool bNextKeyIsGE;
   
-  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+  for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
@@ -534,8 +490,6 @@ Ent* EntBuffer::aFindEntryBefore_ascGen(Key* aGivenKey)
 
   RASSERT(KE_GENERAL == m_eEntKind);
 
-  i8 nLvlLevels = AM::nLvlLevels();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (nItems() == 0)
@@ -545,7 +499,7 @@ Ent* EntBuffer::aFindEntryBefore_ascGen(Key* aGivenKey)
 
   bool bNextKeyIsGE;
 
-  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+  for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
 
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
@@ -574,8 +528,6 @@ Ent* EntBuffer::aFindEntryBefore_ascDscGen(Key* aGivenKey)
 
   IndexDef* pIndexDef = this->pIndexDef();
 
-  i8 nLvlLevels = AM::nLvlLevels();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (nItems() == 0)
@@ -585,7 +537,7 @@ Ent* EntBuffer::aFindEntryBefore_ascDscGen(Key* aGivenKey)
 
   bool bNextKeyIsGE;
 
-  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+  for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
 
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
@@ -749,12 +701,11 @@ void EntBuffer::vPosVecPriorToBuffer_gen(EntBuffer* pToRefdBuffer,
    */
 
   IndexDef* pIndexDef = this->pIndexDef();
-  i8 nLvlLevels = AM::nLvlLevels();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+  for (i8 i_Level = 0; i_Level < m_nLevels; i_Level++)
     aPriorVec[i_Level] = aSkipRoots();
 
   // first entry
@@ -763,7 +714,7 @@ void EntBuffer::vPosVecPriorToBuffer_gen(EntBuffer* pToRefdBuffer,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 i_ScanLevel = nLvlLevels - 1;
+  i8 i_ScanLevel = m_nLevels - 1;
   Ent* aPriorEntry_sl = aSkipRoots();
 
   for (; i_ScanLevel >= 0; i_ScanLevel--) {
@@ -834,11 +785,9 @@ void EntBuffer::vPosVecPriorToEntry_gen(Ent* aToEntry,
 
   //ASSERT(0 == m_iBufferHeight);
   
-  i8 nLvlLevels = AM::nLvlLevels();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++)
+  for (i8 i_Level = 0; i_Level < m_nLevels; i_Level++)
     aPriorVec[i_Level] = aSkipRoots();
   
   if (nItems() == 0)
@@ -847,13 +796,13 @@ void EntBuffer::vPosVecPriorToEntry_gen(Ent* aToEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 iFindLevels = aToEntry ? (aToEntry->nSkipLevels() - 1)
-                              : (nLvlLevels - 1);
+                              : (m_nLevels - 1);
   
   bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots();
   IndexDef* pIndexDef = this->pIndexDef();
 
-  for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
+  for (i8 i_ScanLevel = m_nLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
 //    i8 iItemAtScanLevel = 0;
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);

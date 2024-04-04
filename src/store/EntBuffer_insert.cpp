@@ -94,14 +94,12 @@ void EntBuffer::vBuildSkipListSorted(void)
    }
    vShow();
    */
-  
-  i8 nLvlLevels = AM::nLvlLevels();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Ent* xPrevVec[C_MAX_LVL_LEVELS];
   
-  for (i8 i_Offset = 0; i_Offset < nLvlLevels; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < m_nLevels; i_Offset++)
     xPrevVec[i_Offset] = aSkipRoots();
   
   
@@ -148,9 +146,6 @@ void EntBuffer::vCompact(void)
 //  if (999 == nItems()) {
 //    vDumpItems();
 //  }
-  
-  
-  i8 nLvlLevels = AM::nLvlLevels();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -266,7 +261,7 @@ void EntBuffer::vCompact(void)
     // get the prior vector to the entry being moved
     
     //vDumpPriorVec(xPriorVec);
-    for (i8 i_Level = 0; i_Level < nLvlLevels; i_Level++) {
+    for (i8 i_Level = 0; i_Level < m_nLevels; i_Level++) {
       Ent* aPriorEntry = xPriorVec[i_Level];
       tET tPriorTicket = aPriorEntry->tNextEntry(i_Level);
       if (tWasTicket == tPriorTicket)

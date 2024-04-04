@@ -45,7 +45,7 @@ namespace BASE
     RowPix(RowPix* pRowPix, bool bAddPtnHash);
    ~RowPix(void) noexcept(false);
 
-    static void* aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo);
+    static RowPix* pRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo);
 
     ColPix* axColPix(i8 i_Col);
     ColPix* axaColPixArray(void);
@@ -69,8 +69,6 @@ namespace BASE
 
   RowPix* _pRowPix(void* aAddr);
 }
-
-void* aRowPix_new(i8 nNumCols, void* pColumnInfo);
 
 /*============================================================================*/
 /* end                                                                        */

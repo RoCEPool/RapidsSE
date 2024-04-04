@@ -14,7 +14,7 @@ L_ProcessRow:
 
   //aDynamicT->m_xRowInfoT.m_aRowCellArray = ayDstByte;
   acStrArea = (char*)aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
-  racStrArea = (char*)aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
+  racStrArea = acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
 
   if (aDynamicT->m_bTrace) {

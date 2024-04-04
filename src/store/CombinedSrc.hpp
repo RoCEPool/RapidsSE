@@ -62,6 +62,7 @@ namespace STORE {
 		void vAppendCodePLToHashCols(OpSketch* pOpSketch);
 		void vAppendCodePpgCols(OpSketch* pOpSketch, Stz* szFunction);
 		void vAppendCodeHashCols(OpSketch* pOpSketch);
+		void vAppendCodeHashCols2(OpSketch* pOpSketch);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
     void vAppendCodeInflateInjCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
 		void vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);

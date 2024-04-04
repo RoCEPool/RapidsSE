@@ -18,6 +18,8 @@ enum eSK // sketch kind
   /*   */ SK_LIMIT,       // limit
   /*   */ SK_ORDAGG,      // ordered aggregate with group by
   /*   */ SK_POT,         // pot
+	/*   */ SK_PRJPOT,      // project directly into POT
+	/*   */ SK_PRJTUB,      // project directly into TUB
   /*   */ SK_PROJECT,     // projection
   /*   */ SK_SEMIJOIN,    // semi-join
   /*   */ SK_SORT,        // sort

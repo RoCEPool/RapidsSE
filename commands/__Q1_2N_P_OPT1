@@ -1,18 +1,14 @@
 /*============================================================================*/
-/* __Q1_OPT2                                                                  */
+/* __Q1_2N_P_OPT1                                                             */
 /*============================================================================*/
 
-// FINAL result on iMac:
-//   SF10-1N-1P  : 7.0s
-//   SF10-1N-4P  : 2.7s
-
-// Performance runs on AWS:
-//   SF10-2N-32P  : 1.6s
-//   SF100-2N-32P : 2.2s
+// optimizer generates L_TAX instead of L_QUANTITY
 
 /keepCodeFile
+/weaved
+/pipeline_def
 /optimise_passthru
-pipeline _unnamed_
+pipeline Query1
 begin
 
   stage S00 on origin :
@@ -21,21 +17,21 @@ begin
     | next
 
   stage S01 on all partitions :
-      scan      Lineitem
-  | project   "   type VARCHAR ( 0 ) as C0_L_RETURNFLAG $9
-                , type VARCHAR ( 0 ) as C1_L_LINESTATUS $10
-                , type DECIMAL as C2_L_QUANTITY $5
-                , type DECIMAL as C3_L_EXTENDEDPRICE $6
-                , type DECIMAL as C4_L_DISCOUNT $7
-                , type DECIMAL as C5_L_TAX $8
+    scan      Lineitem
+  | project   "   type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
+                , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
+                , type DECIMAL as L_QUANTITY L_QUANTITY
+                , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL as L_DISCOUNT L_DISCOUNT
+                , type DECIMAL as L_TAX L_TAX
                 , type DATE $11"
   | filter    " type BOOLEAN $7 DATE '1998-09-01' <="
   |  gbyAgg    " groupBy
-                  type VARCHAR ( 0 ) as C0_L_RETURNFLAG $1
-                , type VARCHAR ( 0 ) as C1_L_LINESTATUS $2
+                  type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
+                , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
                 aggregates
-                  type VARCHAR ( 0 ) as C0_COL0 $K1
-                , type VARCHAR ( 0 ) as C1_COL1 $K2
+                  type VARCHAR ( 0 ) as COL0 $K1
+                , type VARCHAR ( 0 ) as COL1 $K2
                 , type DECIMAL as C2_COL2 ) $3 sum
                 , type DECIMAL as C3_COL3 ) $4 sum
                 , type DECIMAL as C4_COL4 ) $4 1.00 $5 - * sum
@@ -48,7 +44,7 @@ begin
     |  dynamic
     | next
 
-  stage S04 on all nodes :
+  stage S02 on all nodes :
     gbyAgg    " groupBy
                   type VARCHAR ( 0 ) $1
                 , type VARCHAR ( 0 ) $2
@@ -67,7 +63,7 @@ begin
     |  dynamic
     | next
 
-  stage S05 on origin :
+  stage S03 on origin :
     gbyAgg    " groupBy
                   type VARCHAR ( 0 ) $1
                 , type VARCHAR ( 0 ) $2
@@ -86,7 +82,7 @@ begin
     |  dynamic
     | next
 
-  stage S06 on origin :
+  stage S04 on origin :
     project   "   type VARCHAR ( 0 ) as C0_l_returnflag $1
                 , type VARCHAR ( 0 ) as C1_l_linestatus $2
                 , type DECIMAL as C2_sum_qty $3
@@ -106,6 +102,8 @@ stage S07 on origin :
     | first
 
 end ;
+
+
 
 /*============================================================================*/
 /* end                                                                        */
