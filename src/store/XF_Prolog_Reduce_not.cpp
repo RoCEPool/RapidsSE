@@ -66,9 +66,9 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp_bySub(CK_RPNCALC)) {
+  while (m_pCI->bEachOp_by2Sub(CK_EXPR,CK_RPNCALC)) {
 
-    Kid xRpnCalc(m_pCI->E.p_rpnCalc);
+    Kid xRpnCalc(m_pCI->E.p_expr->pSub_rpnCalc());
     while (xRpnCalc.bEach(CK_TERM)) {
 
       Card_Term* p_term = xRpnCalc.p_term();
