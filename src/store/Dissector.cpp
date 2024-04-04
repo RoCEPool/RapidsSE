@@ -1311,7 +1311,9 @@ Card_Constraint* Dissector::pPop_constraint(Card_TermSeq* p_termSeq)
   Card_Expr* p_expr = pPop_expr4(p_termSeq);
   p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,(i8)1);
 
-  p_constraint->vAppendChild(p_expr);
+  Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,p_expr);
+  DELETE_CARD(p_expr);
+  p_constraint->vAppendChild(p_boolPred);
 
   return p_constraint;
 }

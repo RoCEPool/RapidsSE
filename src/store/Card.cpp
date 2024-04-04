@@ -115,7 +115,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
-  if (CK_BOUNDS == eCard)
+  if (CK_s_CONSTRAINT == eCard)
     vDebugPoint();
 
   m_eCard   = eCard;
@@ -602,8 +602,6 @@ void Card::vDeleteFacetRecursive(eSF eFacet)
 void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-	return;
 
   if (0 == iDepth) {
     if (szTitle)

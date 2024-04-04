@@ -62,6 +62,15 @@ Card_Constraint* Card_Constraint::pNewAssembly(CardIter* pCI)
 {
   _static_
 
+#ifdef Z_CONSTRAINT_BOOLPRED
+  Card_Constraint* p_constraint = new Card_Constraint;
+
+  if (pCI) {
+    pCI->E.p_constraint = p_constraint;
+  }
+
+  return p_constraint;
+#else
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
 
   Card_Expr* p_expr = new Card_Expr;
@@ -77,6 +86,7 @@ Card_Constraint* Card_Constraint::pNewAssembly(CardIter* pCI)
   }
 
   return p_constraint;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
