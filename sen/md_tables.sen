@@ -10,11 +10,11 @@
 
   STD_BOOTFORK_TAG
   "
-  define table md__tables (
+  define table tables (
     catalogName       VARCHAR NOT NULL ,
     schemaName        VARCHAR NOT NULL ,
     tableName         VARCHAR NOT NULL
-  ) < metaData > = 1 ;
+  ) < metaData > = MetaDataTable[].print ;
   "
   nullptr api::forkChild  api:executeCheck
 

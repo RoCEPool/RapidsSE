@@ -20,6 +20,7 @@ namespace STORE
   private:
     s256 m_sTableNm; // table name (leave for the moment)
     eTT  m_eKind;    // table kind
+    s256 m_sTableStep; // table metadata step function
   
     Location   m_oLocation;   // logical location of table
     StreamDef* m_pStreamDef;  // table stream def
@@ -80,6 +81,8 @@ namespace STORE
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
+    void       vMetaDataStep(Stz* szStepNm);
+    Stz*       szMetaDataStep(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);

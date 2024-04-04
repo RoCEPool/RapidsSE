@@ -1191,6 +1191,9 @@ void vJobIdLastJobIdFetch(void);
   void vBytesMagnitude(void);
   void vNumberMagnitude(void);
 
+  // metaDataTable
+  void vMetaDataTablePrint(void);
+
   // ErrorMarker[]
   void vErrorMarkerDelete(void);
   void vErrorMarkerGet(void);
@@ -2140,6 +2143,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableFindColumn(void);
   void vTableGet(void);
   void vTableGetName(void);
+  void vTableGetStep(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);

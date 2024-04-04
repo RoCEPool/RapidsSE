@@ -52,6 +52,10 @@
 
   // get the root BufferId pds cursor from this TablePtn
 
+  Table[].isMetaData if
+    Table[].getStep find execute
+  then
+
   TablePtn[].rootPdsCursor to PdsCursor[]
   begin
     PdsCursor[].currIsNotNull

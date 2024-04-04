@@ -73,6 +73,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   
   m_sTableNm = szTableNm;
   m_eKind    = eKind;
+  m_sTableStep = "";
   
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
@@ -527,7 +528,7 @@ bool Table::bIsUserCreated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return (TT_NORMAL == m_eKind);
+  return (TT_NORMAL == m_eKind || TT_METADATA == m_eKind);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -640,6 +641,28 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
   EntBuffer* pRootBuffer = pIdxTree->pRootBuffer();
   
   return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root buffer of given index                                             */
+/*----------------------------------------------------------------------------*/
+void Table::vMetaDataStep(Stz* szStepNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  m_sTableStep = szStepNm;
+  return;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get root buffer of given index                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Table::szMetaDataStep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  return m_sTableStep;
 }
 
 /*----------------------------------------------------------------------------*/
