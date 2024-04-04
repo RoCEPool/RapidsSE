@@ -490,25 +490,25 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
 
   eCK ePrimary = pPrimary->eCard();
 
-  Iter.m_ePrimary = ePrimary;
-  Iter.m_eTarget  = eTarget;
+  E.Iter.ePrimary = ePrimary;
+  E.Iter.eTarget  = eTarget;
 
   if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
-    Iter.m_eSecondary = CK_NONE;
+    E.Iter.eSecondary = CK_NONE;
     E.xTarget.vBegin();
     E.xTarget.vParent(pPrimary);
 
   }
   else
   if (CK_STREAMKEY == ePrimary && CK_EXPR == eTarget) {
-    Iter.m_eSecondary = CK_NONE;
+    E.Iter.eSecondary = CK_NONE;
     E.xTarget.vBegin();
     E.xTarget.vParent(pPrimary);
 
   }
   else
   if (CK_EXPR == ePrimary && CK_TERM == eTarget) {
-    Iter.m_eSecondary = CK_RPNCALC;
+    E.Iter.eSecondary = CK_RPNCALC;
     E.xTarget.vBegin();
     E.xTarget.vParent(pPrimary->pSub_rpnCalc());
 
@@ -517,7 +517,7 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
     NEVER_REACH
   }
 
-  //vMember(Iter.m_ePrimary, pPrimary);
+  //vMember(E.Iter.ePrimary, pPrimary);
 
 }
 
@@ -612,10 +612,10 @@ void CardIter::vClearRegisters(void)
 
   Flat.m_i_fold = C_UNKNOWN;
 
-  Iter.m_ePrimary   = CK_NONE;
-  Iter.m_eTarget    = CK_NONE;
-  Iter.m_eSecondary = CK_NONE;
-  Iter.m_eTertiary  = CK_NONE;
+  E.Iter.ePrimary   = CK_NONE;
+  E.Iter.eTarget    = CK_NONE;
+  E.Iter.eSecondary = CK_NONE;
+  E.Iter.eTertiary  = CK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1314,31 +1314,31 @@ bool CardIter::bEachTarget(void)
   RASSERT(E.xTarget.bBegun());
   RASSERT(! E.xTarget.bEnded());
 
-  if (CK_EXPR    == Iter.m_ePrimary   &&
-      CK_RPNCALC == Iter.m_eSecondary &&
-      CK_TERM    == Iter.m_eTarget) {
-    while (E.xTarget.bEach(Iter.m_eTarget)) {
+  if (CK_EXPR    == E.Iter.ePrimary &&
+      CK_RPNCALC == E.Iter.eSecondary &&
+      CK_TERM    == E.Iter.eTarget) {
+    while (E.xTarget.bEach(E.Iter.eTarget)) {
       Card *pTarget = E.xTarget.pChild();
-      vMember(Iter.m_eTarget, pTarget);
+      vMember(E.Iter.eTarget, pTarget);
       return true;
     }
   }
   else
-  if (CK_NONE != Iter.m_eSecondary) {
+  if (CK_NONE != E.Iter.eSecondary) {
 
-    while (E.xTarget.bEach(Iter.m_eSecondary)) {
+    while (E.xTarget.bEach(E.Iter.eSecondary)) {
       vMember(E.xTarget.eChild(), E.xTarget.pChild());
 
-      Card *pTarget = E.xTarget.pChild()->pFindSubCard(Iter.m_eTarget);
-      vMember(Iter.m_eTarget, pTarget);
+      Card *pTarget = E.xTarget.pChild()->pFindSubCard(E.Iter.eTarget);
+      vMember(E.Iter.eTarget, pTarget);
 
       return true;
     }
   }
   else {
-    while (E.xTarget.bEach(Iter.m_eTarget)) {
+    while (E.xTarget.bEach(E.Iter.eTarget)) {
       Card *pTarget = E.xTarget.pChild();
-      vMember(Iter.m_eTarget, pTarget);
+      vMember(E.Iter.eTarget, pTarget);
 
       return true;
     }
@@ -1406,7 +1406,7 @@ Card* CardIter::pEndTarget(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card* pTarget_end = pMember(Iter.m_eTarget);
+  Card* pTarget_end = pMember(E.Iter.eTarget);
 
   vEndTarget();
 

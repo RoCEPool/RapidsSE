@@ -81,13 +81,6 @@ namespace STORE
       Card_EXPRLIST * m_pExprList_k;
     } X;
 
-    struct {
-      eCK m_ePrimary;
-      eCK m_eTarget;
-      // --
-      eCK m_eSecondary;
-      eCK m_eTertiary;
-    } Iter;
 
 
     i8 m_nAncestors;
