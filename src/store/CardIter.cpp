@@ -504,7 +504,6 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
     E.Iter.eSecondary = CK_NONE;
     E.xTarget.vBegin();
     E.xTarget.vParent(pPrimary);
-
   }
   else
   if (CK_EXPR == ePrimary && CK_TERM == eTarget) {
