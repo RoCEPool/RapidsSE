@@ -30,8 +30,8 @@ namespace STORE
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vBump_expCol(i8 nBumpBy);
     Card_Expr* pClone(void);
-    bool bContains(Symbol* pSymbol_arg);
-    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
+    bool bContains(CardIter* pCI, Symbol* pSymbol_arg);
+    void vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsure_expr_Has_nmdCol(i8 iExpCol);
 
     Symbol* pFirst_colSym(CardIter* pCI);

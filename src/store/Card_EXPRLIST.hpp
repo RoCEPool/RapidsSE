@@ -20,12 +20,12 @@ namespace STORE
     void vBump_KeyCol_In_rpnCalc(CardIter* pCI);
     void vBump_expCol_In_rpnCalc(CardIter* pCI);
 
-    Card_Expr* pContains(Symbol* pSymbol_arg);
+    Card_Expr* pContains(CardIter* pCI, Symbol* pSymbol_arg);
     Card_Expr* pContains(Card_Expr* p_expr_arg);
 
     Card_Term* pDecode_expr_term0(Symbol* pSymbol_expCol);
 
-    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
+    void vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
     void vEnsure_expr_Has_nmdCol(void);
 

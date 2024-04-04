@@ -83,13 +83,13 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
 /*----------------------------------------------------------------------------*/
 /* does this expression list contain given term?                              */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pContains(Symbol* pSymbol_arg)
+Card_Expr* Card_EXPRLIST::pContains(CardIter* pCI,Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xCI_this(this);
   while (xCI_this.bEach(CK_EXPR))
-    if (xCI_this.p_expr()->bContains(pSymbol_arg))
+    if (xCI_this.p_expr()->bContains(pCI,pSymbol_arg))
       return xCI_this.p_expr();
 
   return nullptr;
@@ -134,13 +134,13 @@ Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_expCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+void Card_EXPRLIST::vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR))
-    xEXPRLIST.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+    xEXPRLIST.p_expr()->vDeleteFacetIf(pCI, eFacet, eAlsoFacet, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/

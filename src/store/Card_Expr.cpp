@@ -266,27 +266,28 @@ Card_Expr* Card_Expr::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bContains(Symbol* pSymbol_arg)
+bool Card_Expr::bContains(CardIter* pCI, Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
-    if (xRpnCalc.p_term()->pSymbol()->bMatches(pSymbol_arg))
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSymbol_arg)) {
+      pCI->vEndTarget();
       return true;
-
+    }
+  }
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+void Card_Expr::vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xTerm(pSub_rpnCalc()); xTerm.bEach(CK_TERM); /**/) {
-    xTerm.p_term()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
-  }
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
+    pCI->E.xTarget.p_term()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/
