@@ -81,7 +81,7 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 
       if (p_term->pSymbol()->bHasFacet("exists"_Stz)) {
 
-        RASSERT(m_pCI->E.xTarget.bEach(CK_TERM));
+        RASSERT(m_pCI->bEachTarget());
         Card_Term* p_term_next = m_pCI->E.xTarget.p_term();
         if (p_term_next->pSymbol()->bHasFacet("not"_Stz)) {
           m_pCI->E.xTarget.vBackstep();
@@ -94,7 +94,7 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 
       if (m_pCI->E.xTarget.p_term()->pSymbol()->bHasFacet("in"_Stz)) {
 
-        RASSERT(m_pCI->E.xTarget.bEach(CK_TERM));
+        RASSERT(m_pCI->bEachTarget());
         Card_Term* p_term_next = m_pCI->E.xTarget.p_term();
         if (p_term_next->pSymbol()->bHasFacet("not"_Stz)) {
           m_pCI->E.xTarget.vBackstep();

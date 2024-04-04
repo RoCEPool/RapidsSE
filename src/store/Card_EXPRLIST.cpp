@@ -60,20 +60,18 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
+void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xEXPRLIST.p_expr()->pSub_rpnCalc(C_NOT_NULL);
-
-    Kid xCI2(p_rpnCalc);
-    while (xCI2.bEach(CK_TERM)) {
-      if (xCI2.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-        xCI2.p_term()->vBump_ordCol(SF_EXP_COL);
-        xCI2.p_term()->vMark1(MARK_CHANGED);
+    for (pCI->vBeginTarget(xEXPRLIST.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+      if (pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
+        pCI->E.p_term = pCI->E.xTarget.p_term();
+        pCI->E.p_term->vBump_ordCol(SF_EXP_COL);
+        pCI->E.p_term->vMark1(MARK_CHANGED);
         continue;
       }
     }

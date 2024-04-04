@@ -228,8 +228,8 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
   Card_Needed *p_needed = new Card_Needed;
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
-    for (Kid xRpnCalc(xEmit.pSub1()); xRpnCalc.bEach(CK_TERM); /**/) {
-      Card_Term *p_term = xRpnCalc.p_term();
+    for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+      Card_Term *p_term = pCI->E.xTarget.p_term();
       Symbol *pSym_term = p_term->pSymbol();
 
       if (! pSym_term->bIs_Col())
