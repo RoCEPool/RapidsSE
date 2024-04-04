@@ -52,7 +52,7 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert <expr>/<rpnCalc> to <boolPred>                                     */
 /*----------------------------------------------------------------------------*/
-Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
+Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
 {
   _static_
 
@@ -66,7 +66,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_Expr* p_expr_arg)
   // does the expression have a WHEN in it?
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
-  if (p_expr_arg->bHasTerm(&xWhen)) {
+  if (p_expr_arg->bHasTerm(pCI,&xWhen)) {
     p_boolPred_new->vTransferChildren(p_rpnCalc_arg);
     return p_boolPred_new;
   }
@@ -323,16 +323,16 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt)
+void Card_BoolPred::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfCorrect = [bAlt,p_Dic_expr](Card* p_card)
+  auto bfCorrect = [pCI,bAlt,p_Dic_expr](Card* p_card)
   {
     if (p_card->pSymbol()->bHasFacet(SF_EXP_COL))
-      _pCard_Term(p_card)->vUpdate_expCol(p_Dic_expr,bAlt);
+      _pCard_Term(p_card)->vUpdate_expCol(pCI,p_Dic_expr,bAlt);
 
     return C_CONTINUE_RECURSION;
   };

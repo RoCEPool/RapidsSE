@@ -17,14 +17,14 @@ namespace STORE
     Card_BoolPred(void);
    ~Card_BoolPred(void) noexcept(false);
 
-    static Card_BoolPred* pTo_boolPred(Card_Expr* p_expr_arg);
+    static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg);
 
     void vAppend_and_rlnConj(Card_RlnConj *p_rlnConj);
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
     void vBump_expCol(i8 p_conj);
     bool bContains(Symbol* pGivenSymbol);
     void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
-    void vUpdate_expCol(Card_Emit* p_Dic_expr, bool bAlt=false);
+    void vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt=false);
     i8   nCullMarked_rlnConj(Stz* szWithMark);
     bool bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn);
