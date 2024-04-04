@@ -155,7 +155,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
         i8 i_Key = pSym_term->iTo_ordinal(SF_KEY_COL) - 1;
         Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
-        Symbol *pSym_tblCol = p_expr_key->pFirst_tblCol();
+        Symbol *pSym_tblCol = p_expr_key->pFirst_tblCol(pCI);
         //p_needed->vDump(__func__);
         if (p_needed->pFind_expr_Matches(pSym_tblCol))
           continue;
@@ -372,7 +372,7 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
       if (! pCI->E.p_needed->bNeeded_expr(p_expr_arriving))
         continue;
 
-    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct(xEmit.i_Child()+1);
+    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct(pCI,xEmit.i_Child()+1);
     p_emit_inducted->vAppendChild(p_expr_inducted);
   }
 
@@ -461,7 +461,7 @@ void Card_Emit::vMapColumns(CardIter* pCI)
 
       nExpr_key++;
 
-      Symbol *pSymbol_keyCol = p_expr_emit->pFirst_keyCol();
+      Symbol *pSymbol_keyCol = p_expr_emit->pFirst_keyCol(pCI);
       Card_Map* p_map_keyCell = pCI->E.p_keyCells->pGet_map(pSymbol_keyCol);
       p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
@@ -479,7 +479,7 @@ void Card_Emit::vMapColumns(CardIter* pCI)
     pCI->E.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
     pCI->E.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
-    if (Symbol* pSymbol_expCol_projection = p_expr_emit->pFirst_expCol()) {
+    if (Symbol* pSymbol_expCol_projection = p_expr_emit->pFirst_expCol(pCI)) {
       i_Cell_payload = pSymbol_expCol_projection->iTo_ordinal(SF_EXP_COL) - nExpr_key;
       p_expr_emit->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
       p_expr_emit->pSymbol()->Y_vSet(P_Payload);

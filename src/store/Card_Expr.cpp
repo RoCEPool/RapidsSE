@@ -316,13 +316,14 @@ void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 /*----------------------------------------------------------------------------*/
 /* return first key col in this rpn sequence                                  */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirst_colSym(void)
+Symbol* Card_Expr::pFirst_colSym(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
-    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xRpnCalc.p_term()->pSymbol();
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
+    if (pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) ||
+        pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return pCI->pEndTarget()->pSymbol();
 
   return nullptr;
 }
@@ -330,13 +331,13 @@ Symbol* Card_Expr::pFirst_colSym(void)
 /*----------------------------------------------------------------------------*/
 /* get first stm col                                                          */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirst_expCol(void)
+Symbol* Card_Expr::pFirst_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
-    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
-      return xRpnCalc.p_term()->pSymbol();
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
+    if (pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+      return pCI->pEndTarget()->pSymbol();
 
   return nullptr;
 }
@@ -344,13 +345,13 @@ Symbol* Card_Expr::pFirst_expCol(void)
 /*----------------------------------------------------------------------------*/
 /* get first key col                                                          */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirst_keyCol(void)
+Symbol* Card_Expr::pFirst_keyCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
-    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
-      return xRpnCalc.p_term()->pSymbol();
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
+    if (pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
+      return pCI->pEndTarget()->pSymbol();
 
   return nullptr;
 }
@@ -358,13 +359,13 @@ Symbol* Card_Expr::pFirst_keyCol(void)
 /*----------------------------------------------------------------------------*/
 /* get first tbl col                                                          */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirst_tblCol(void)
+Symbol* Card_Expr::pFirst_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
-    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
-      return xRpnCalc.p_term()->pSymbol();
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
+    if (pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return pCI->pEndTarget()->pSymbol();
 
   return nullptr;
 }
@@ -433,7 +434,7 @@ bool Card_Expr::bHasTerm(CardIter* pCI, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* induct this arriving expr                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Expr * Card_Expr::pInduct(i8 iExp)
+Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -472,8 +473,8 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
   p_term_inducted->vApplyCast_p(this);
   p_rpnCalc_inducted->vAppendChild(p_term_inducted);
 
-  if (bIsScalarCol() && pFirst_colSym()->bHasFacet(SF_TBL_COL)) {
-    p_term_inducted ->SYM(SF_TBL_COL, pFirst_colSym()->szFacet(SF_TBL_COL));
+  if (bIsScalarCol() && pFirst_colSym(pCI)->bHasFacet(SF_TBL_COL)) {
+    p_term_inducted ->SYM(SF_TBL_COL, pFirst_colSym(pCI)->szFacet(SF_TBL_COL));
   }
   if (pSymbol()->bHasFacet(SF_EXP_COL)) {
     p_term_inducted ->SYM(SF_EXP_COL, szFacet(SF_EXP_COL));

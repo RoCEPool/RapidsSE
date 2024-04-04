@@ -553,13 +553,14 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colInj descriptor(s) for given injected expr_i
 
-  auto bfAddDescriptors = [pColInj, p_emit] (Card* pCard_expr_i) {
+  CardIter* pCI = m_pCI;
+  auto bfAddDescriptors = [pCI, pColInj, p_emit] (Card* pCard_expr_i) {
 
     // get details of column injected (e.g. $b.1)
     Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
     i8    i_CrwCol_expr_i = StrLib::iGleanInt(p_expr_i->szFacet(SF_ITM_COL)->azChar());
 
-    Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol();
+    Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol(pCI);
     Stz*       szTblCol_i = pSym_tblCol_i->szFacet(SF_TBL_COL);
     //pSym_tblCol_i->vDump();
 

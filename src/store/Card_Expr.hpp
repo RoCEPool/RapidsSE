@@ -34,10 +34,10 @@ namespace STORE
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsure_expr_Has_nmdCol(i8 iExpCol);
 
-    Symbol* pFirst_colSym(void);
-    Symbol* pFirst_expCol(void);
-    Symbol* pFirst_keyCol(void);
-    Symbol* pFirst_tblCol(void);
+    Symbol* pFirst_colSym(CardIter* pCI);
+    Symbol* pFirst_expCol(CardIter* pCI);
+    Symbol* pFirst_keyCol(CardIter* pCI);
+    Symbol* pFirst_tblCol(CardIter* pCI);
 
     Symbol*    pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
@@ -45,7 +45,7 @@ namespace STORE
 
     bool bHasTerm(CardIter* pCI, Symbol* pSymbol);
 
-    Card_Expr *pInduct(i8 iExp);
+    Card_Expr *pInduct(CardIter* pCI, i8 iExp);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
