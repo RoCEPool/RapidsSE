@@ -68,22 +68,30 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_WHERE, CK_RPNCALC)) {
     m_pCI->E.p_filter = m_pCI->E.p_where->pSub_filter();
+#ifdef Z_FILTER_BOOLPRED
+    RASSERT(! m_pCI->E.p_filter->pSub_expr());
+#else
     m_pCI->E.p_expr = m_pCI->E.p_filter->pSub_expr();
     if (m_pCI->E.p_expr->pSub_rpnCalc()) {
       m_pCI->E.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,m_pCI->E.p_expr);
       m_pCI->E.p_filter->vReplaceSubDelete(m_pCI->E.p_expr, m_pCI->E.p_boolPred);
     }
+#endif
   }
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_HAVING, CK_RPNCALC)) {
     m_pCI->E.p_filter = m_pCI->E.p_having->pSub_filter();
+#ifdef Z_FILTER_BOOLPRED
+    RASSERT(! m_pCI->E.p_filter->pSub_expr());
+#else
     m_pCI->E.p_expr = m_pCI->E.p_filter->pSub_expr();
     if (m_pCI->E.p_expr->pSub_rpnCalc()) {
       m_pCI->E.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,m_pCI->E.p_expr);
       m_pCI->E.p_filter->vReplaceSubDelete(m_pCI->E.p_expr, m_pCI->E.p_boolPred);
     }
+#endif
   }
 
   m_pCI->vEndTransform(__LINE__);

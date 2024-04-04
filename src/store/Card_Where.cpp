@@ -48,6 +48,20 @@ Card_Where* Card_Where::pNewAssembly(CardIter* pCI)
 {
   _static_
 
+#ifdef Z_FILTER_BOOLPRED
+  Card_Where* p_where = new Card_Where;
+
+  Card_Filter* p_filter = new Card_Filter;
+  p_where->vAppendChild(p_filter);
+
+  if (pCI) {
+    pCI->E.p_where   = p_where;
+    pCI->E.p_filter  = p_filter;
+  }
+
+  return p_where;
+
+#else
   Card_Where* p_where = new Card_Where;
 
   Card_Filter* p_filter = new Card_Filter;
@@ -67,6 +81,7 @@ Card_Where* Card_Where::pNewAssembly(CardIter* pCI)
   }
 
   return p_where;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

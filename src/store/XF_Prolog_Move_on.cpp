@@ -99,15 +99,28 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     if (! m_pCI->E.p_where) {
       // create a new <where>/...
-      m_pCI->E.p_where = Card_Where::pNewAssembly();
+      m_pCI->E.p_where = Card_Where::pNewAssembly(m_pCI);
       m_pCI->E.p_deck->vInsertChildAfter(m_pCI->E.p_where, m_pCI->E.p_absJoin);
     }
+
+#ifdef Z_FILTER_BOOLPRED
+    Card_RpnCalc* p_rpnCalc_tmp = new Card_RpnCalc;
+    Card_Expr* p_expr_tmp = new Card_Expr;
+    p_expr_tmp->vAppendChild(p_rpnCalc_tmp);
+
+    p_rpnCalc_tmp->vTransferChildren(m_pCI->E.p_on);
+    m_pCI->E.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI, p_expr_tmp);
+    m_pCI->E.p_filter->vAppendChild(m_pCI->E.p_boolPred);
+
+    DELETE_CARD(p_expr_tmp);
+#else
     m_pCI->E.p_expr = m_pCI->E.p_where->pSub_expr();
     m_pCI->E.p_rpnCalc = m_pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
     m_pCI->E.p_expr->vTransfer(m_pCI->E.p_on, SF_RLN_OP);
     m_pCI->E.p_expr->vApplyCast_x(m_pCI->E.p_on->xCast());
+#endif
 
     if (m_pCI->E.p_on->nChildCards()) {
       delete m_pCI->E.p_on->pPopChild_tail();
@@ -119,7 +132,6 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
       p_expr_tmp->vApplyCast_x(m_pCI->E.p_on->xCast());
       p_rpnCalc_tmp->vTransferChildren(m_pCI->E.p_on);
-      p_expr_tmp->vDump(__func__);
 
       m_pCI->E.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI, p_expr_tmp);
       m_pCI->E.p_constraint->vAppendChild(m_pCI->E.p_boolPred);
