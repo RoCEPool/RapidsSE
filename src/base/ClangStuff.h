@@ -17,7 +17,6 @@ extern void* vExtern_IndexNew(void* aDynamicT, i8 nNumCols, void* pColumnInfo, b
 // IndexTree
 extern void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) __attribute__((weak_import));
 extern void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) __attribute__((weak_import));
-extern void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindEntryAsc(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindEntryAscDsc(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamicT, i8 nPayloadBytes, bool* pbInsertedEntry) __attribute__((weak_import));
@@ -33,11 +32,10 @@ extern void  vExtern_IndexTreePositionGT_int(void* aIndexInfo) __attribute__((we
 extern void  vExtern_IndexTreePositionLE_int(void* aIndexInfo) __attribute__((weak_import));
 extern void  vExtern_IndexTreePositionLT_int(void* aIndexInfo) __attribute__((weak_import));
 
-extern void* aExtern_PdsRowBufferCellArray(void* aPdsRowBuffer, i8 iRow) __attribute__((weak_import));
+extern void  vExtern_PotAllotRowPds(void* aDynamic, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) __attribute__((weak_import));
 extern void* aExtern_PdsFirstRowCellArray(void* aPdsRowBuffer, void** aCurrentRow) __attribute__((weak_import));
 extern void* aExtern_PdsNextRowCellArray(void* aPdsRowBuffer, void** aCurrentRow) __attribute__((weak_import));
 
-extern void  vExtern_PotAllotRowPds(void* aDynamic, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) __attribute__((weak_import));
 extern void  vExtern_PotRowStrSize(void* pPot, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_PotRowPix(void* pPot, i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 
@@ -61,6 +59,7 @@ extern void* aExtern_FindIndex(void* aTable, void* aIndexName) __attribute__((we
 extern void* aExtern_GetIndexDef(void* aIndex) __attribute__((weak_import));
 
 extern void* aExtern_GetIndexTree(void* aTable, void* aIndex) __attribute__((weak_import));
+extern void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey) __attribute__((weak_import));
 
 extern void* aExtern_IndexDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
 
@@ -72,6 +71,8 @@ __attribute__((weak_import));
 extern void  vExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) __attribute__((weak_import));
 
 extern void vExtern_RunningHash(i8* piKeyHash, byte* aMixVal, i8 iSize) __attribute__((weak_import));
+
+extern void* aExtern_PdsRowBufferCellArray(void* aPdsRowBuffer, i8 iRow) __attribute__((weak_import));
 
 extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
 extern void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) __attribute__((weak_import));

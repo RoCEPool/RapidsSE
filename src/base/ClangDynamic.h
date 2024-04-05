@@ -127,6 +127,7 @@ struct Dynamic_T
 	void* (*m_fp_aExtern_IndexTreeAllotPayStr)(void*,char*);
 	void* (*m_fp_aExtern_IndexTreeBegin)(void*,void**);
 	void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
+	void* (*m_fp_aExtern_IndexTreeFindEntryAscDsc)(void*,void*);
 	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
 	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
 
@@ -141,7 +142,8 @@ struct Dynamic_T
 	void  (*m_fp_vExtern_IndexTreePositionLT_int)(void*);
 
   // Pds
-	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);
+	void* (*m_fp_aExtern_PdsFirstRowCellArray)(void*,void**);
+	void* (*m_fp_aExtern_PdsNextRowCellArray)(void*,void**);
 	void  (*m_fp_vExtern_PotAllotRowPds)(void*,byte*,i8,char**,i8*);
 	void  (*m_fp_vExtern_PotRowStrSize)(void*,i8);
 	void  (*m_fp_vExtern_PotRowPix)(void*,i8,void*);

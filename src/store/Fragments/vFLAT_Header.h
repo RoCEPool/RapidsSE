@@ -129,6 +129,7 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 
 	aDynamicT->m_fp_aExtern_IndexTreeBegin            = &aExtern_IndexTreeBegin;
 	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc     = &aExtern_IndexTreeFindEntryAsc;
+	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAscDsc  = &aExtern_IndexTreeFindEntryAscDsc;
 	aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc = &aExtern_IndexTreeFindInsertGenAsc;
 	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt        = &aExtern_IndexTreeInsertEnt;
 
@@ -142,9 +143,11 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
   aDynamicT->m_fp_vExtern_IndexTreePositionLE_int = &vExtern_IndexTreePositionLE_int;
   aDynamicT->m_fp_vExtern_IndexTreePositionLT_int = &vExtern_IndexTreePositionLT_int;
 
-	aDynamicT->m_fp_vExtern_PotRowPix = &vExtern_PotRowPix;
-	aDynamicT->m_fp_vExtern_PotAllotRowPds = &vExtern_PotAllotRowPds;
-	aDynamicT->m_fp_aExtern_PdsRowBufferCellArray = &aExtern_PdsRowBufferCellArray;
+	aDynamicT->m_fp_vExtern_PotAllotRowPds       = &vExtern_PotAllotRowPds;
+	aDynamicT->m_fp_aExtern_PdsFirstRowCellArray = &aExtern_PdsFirstRowCellArray;
+	aDynamicT->m_fp_aExtern_PdsNextRowCellArray  = &aExtern_PdsNextRowCellArray;
+
+	aDynamicT->m_fp_vExtern_PotRowPix     = &vExtern_PotRowPix;
 	aDynamicT->m_fp_vExtern_PotRowStrSize = &vExtern_PotRowStrSize;
 
 	aDynamicT->m_fp_aExtern_StreamDefNew = &aExtern_StreamDefNew;
