@@ -626,6 +626,7 @@ bool Dynamo::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
 			if (pTkn()->bIsInteger()) {
 				// set no of threads per partition for this stage
 				p_StageSpec->vThreadsPerPtn(pTkn()->iToI8());
+				vTokenAccept();
 			}
 		} else {
 			return false;

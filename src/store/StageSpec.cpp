@@ -41,7 +41,7 @@ StageSpec::StageSpec(VertexSpec* pVertextSpec,
   m_i_SpecificNode  = C_UNKNOWN;
   m_tSpecificPtnNo  = C_UNKNOWN;
 
-	m_iThreadsPerPtn  = C_UNKNOWN;
+	m_iThreadsPerPtn  = 1;
 
   _checkInitialised_(CN_STAGESPEC);
   
