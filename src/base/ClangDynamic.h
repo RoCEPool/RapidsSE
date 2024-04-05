@@ -130,6 +130,7 @@ struct Dynamic_T
 	void* (*m_fp_aExtern_IndexTreeFindEntryAscDsc)(void*,void*);
 	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
 	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
+	void* (*m_fp_aExtern_IndexTreeInsertEntTop)(void*,void*,void**,i8,i8*);
 
 	void  (*m_fp_vExtern_IndexTreePositionGE_gen)(void*);
 	void  (*m_fp_vExtern_IndexTreePositionGT_gen)(void*);
