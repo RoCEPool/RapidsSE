@@ -631,17 +631,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
   } // switch(pCI->G.e_Op)
 
-  if (   CK_o_HAVING == eCard_OP
-      || CK_o_WHERE  == eCard_OP) {
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
-    if ((pCI->E.p_boolPred = pCI->E.p_Op->pSub_boolPred())) {
-      //pCI->E.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
-    }
-    else {
-      pCI->E.p_expr = pCI->E.p_Op->pSub_expr();
-      pCI->E.p_expr->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
-    }
-  }
 
 //  pCI->G.p_Op->vDump(__func__);
 //  vDebugPoint();
