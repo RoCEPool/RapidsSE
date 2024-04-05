@@ -189,7 +189,7 @@ void XF::vTransform(void)
     XF_Prolog_Analyse_index::vAnalyse(m_pCI);      //
                                                    //
     // preliminary conversions                     //
-    XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI); //
+    //XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI); //
     XF_Optimise_Factor_boolPred::vOptimise(m_pCI); //
   }                                                //
                                                    //
