@@ -245,10 +245,17 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
   
   //vTabOp();  vConcat_cmd("next"_Stz);  vEolOp();
 
+	i8 iThreads = pCard_Stage->pSymbol()->Y_iGet(P_Threads);
+
   vPreStage();
   vTabStage();
-  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_STG_NM), aYG_weave[eStageTopo]);
-  vEolStage();
+
+	if (iThreads > 1)
+		vConcat_cmd("stage %s on %s multiple threads %lld : "_Stz, pCard_Stage->szFacet(SF_STG_NM), aYG_weave[eStageTopo], iThreads);
+	else
+    vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_STG_NM), aYG_weave[eStageTopo]);
+
+	vEolStage();
 
   m_i_Stage++;
   

@@ -197,6 +197,7 @@ extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
 extern Stz* P_SqyCall;
 extern Stz* P_SqyRslTest;
+extern Stz* P_Threads;
 extern Stz* P_Unproject;
 
 extern Stz* C_CARD_HISTORY;
