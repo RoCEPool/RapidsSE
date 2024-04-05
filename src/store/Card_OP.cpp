@@ -19,7 +19,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OP::Card_OP(eCK eCard, i8 iFixedDepth)
-: Card_MAIN(eCard, iFixedDepth)
+: Card_symbol<Card_OP>(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -87,9 +87,9 @@ void Card_OP::vAnalyse_injectable(CardIter* pCI)
 
   UNUSED(pCI);
 
-  pCI->G.p_injectable = Card_Injectable::pNew_injectable(pCI);
+  pCI->E.p_injectable = Card_Injectable::pNew_injectable(pCI);
 
-  vAppendChild(pCI->G.p_injectable);
+  vAppendChild(pCI->E.p_injectable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,13 +100,13 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_OP->bApplyRecursive(CK_TERM, bfLambdaFn);
+  pCI->E.p_Op->bLambdaWalk(CK_TERM, bfLambdaFn);
 }
 
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
+void Card_OP::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving, bool bAlt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -114,16 +114,16 @@ void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
     return;
 
   if (Card_Filter* p_filter = pSub_filter())
-    p_filter->vCorrect_expCol(p_arriving);
+    p_filter->vUpdate_expCol(pCI,p_arriving);
 
   if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vCorrect_expCol(p_arriving);
+    p_emit->vUpdate_expCol(pCI,p_arriving,bAlt);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove and delete filter if it's empty                                     */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCullIfEmpty_filter(Card_Filter* p_filter)
+void Card_OP::vCull_filter_IfEmpty(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -141,28 +141,28 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  switch (pCI->G.e_MainCard) {
+  switch (pCI->E.e_Op) {
 
     // -- -- -- -- -- -- --
     case CK_o_AGGREG:
-      pCI->G.p_aggreg->vEarlyProject_root(pCI);
+      pCI->E.p_aggreg->vEarlyProject_root(pCI);
       break;
 
     case CK_o_GBYAGG:
-      pCI->G.p_gbyAgg->vEarlyProject_root(pCI);
+      pCI->E.p_gbyAgg->vEarlyProject_root(pCI);
       break;
 
     case CK_o_ORDAGG:
-      pCI->G.p_ordAgg->vEarlyProject_root(pCI);
+      pCI->E.p_ordAgg->vEarlyProject_root(pCI);
       break;
 
     // -- -- -- -- -- -- --
     case CK_o_PROJECT:
-      pCI->G.p_project->vEarlyProject_root(pCI);
+      pCI->E.p_project->vEarlyProject_root(pCI);
       break;
 
     case CK_o_INDEXJOIN:
-      pCI->G.p_indexJoin->vEarlyProject_root(pCI);
+      pCI->E.p_indexJoin->vEarlyProject_root(pCI);
       break;
 
     // -- -- -- -- -- -- --
@@ -187,92 +187,92 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pNeeded_later);
 
-  //Card_OP* p_OP_leaf_maybe = pCI->G.p_OP;
+  //Card_OP* p_OP_leaf_maybe = pCI->G.p_Op;
 
-  if (! pCI->G_bEachMain_reverse_NONE())
+  if (!pCI->bEachOp_reverse())
     return;
 
   // which card did we arrive at?
-  switch (pCI->G.e_MainCard) {
+  switch (pCI->E.e_Op) {
 
     // -- -- -- -- -- -- --
     // don't go any further
 
     case CK_o_GBYAGG:
-      pCI->Early.m_pOP_leaf = pCI->G.p_OP;
+      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->E.p_Op;
       break;
 
     case CK_o_ORDAGG:
-      pCI->Early.m_pOP_leaf = pCI->G.p_OP;
+      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->E.p_Op;
       break;
 
     // -- -- -- -- -- -- --
     // recurse into...
 
     case CK_o_CROSSJOIN:
-      pCI->vSave();
-      pCI->G.p_crossJoin->vEarlyProject_recurse_update(pCI);
-      pCI->vRestore();
+      pCI->vPushEach();
+      pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
       break;
 
     case CK_o_FILTER:
-      pCI->vSave();
-      pCI->G.p_filter->vEarlyProject_recurse_update(pCI);
-      pCI->vRestore();
+      pCI->vPushEach();
+      pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
       break;
 
     case CK_o_INDEXJOIN:
-      pCI->vSave();
-      pCI->G.p_indexJoin->vEarlyProject_recurse_add(pCI);
-      pCI->vRestore();
+      pCI->vPushEach();
+      pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
       break;
 
     case CK_o_INDEXSCAN:
-      pCI->vSave();
-      pCI->G.p_indexScan->vEarlyProject_leaf(pCI);
-      pCI->vRestore();
+      pCI->vPushEach();
+      pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
+      pCI->vPopEach();
       break;
 
     case CK_o_KEYEXISTS:
-      pCI->vSave();
-      pCI->G.p_keyExists->vEarlyProject_recurse_add(pCI);
-      pCI->vRestore();
+      pCI->vPushEach();
+      pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
       break;
 
     case CK_o_KEYNOTEXISTS:
-      pCI->vSave();
-      pCI->G.p_keyNotExists->vEarlyProject_recurse_add(pCI);
-      pCI->vRestore();
+      pCI->vPushEach();
+      pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
       break;
 
     case CK_o_PROJECT:
-      if (pCI->G.p_project->pSub_needed()) {
-        pCI->vSave();
-        pCI->G.p_project->vEarlyProject_recurse_needed(pCI);
-        pCI->vRestore();
+      if (pCI->E.p_project->pSub_needed()) {
+        pCI->vPushEach();
+        pCI->E.p_project->vEarlyProject_recurse_needed(pCI);
+        pCI->vPopEach();
       }
       else {
-        pCI->G.p_project->vEarlyProject_given_leaf(pCI);
+        pCI->E.p_project->vEarlyProject_given_leaf(pCI);
       }
       break;
 
     case CK_o_SCAN:
-      pCI->vSave();
-      pCI->G.p_scan->vEarlyProject_leaf(pCI);
-      pCI->vRestore();
+      pCI->vPushEach();
+      pCI->E.p_scan->vEarlyProject_leaf(pCI);
+      pCI->vPopEach();
       break;
 
     case CK_o_WHERE:
-      pCI->vSave();
-      pCI->G.p_where->vEarlyProject_recurse_update(pCI);
-      pCI->vRestore();
+      pCI->vPushEach();
+      pCI->E.p_where->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
       break;
 
     // -- -- -- -- -- -- --
     // missing??
 
     default:
-      pCI->G.p_MainCard->vDump(__func__);
+      pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
   }
 
@@ -304,11 +304,11 @@ void Card_OP::vEnsure_stream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! (pCI->G.p_stream = pSub_stream()) ) {
-    pCI->G_vAppendNewChild(this, CK_s_STREAM);
+  if (! (pCI->E.p_stream = pSub_stream()) ) {
+    pCI->vAppendNewChild(this, CK_s_STREAM);
   }
 
-  RASSERT(pCI->G.p_stream);
+  RASSERT(pCI->E.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,7 +320,7 @@ bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
 
 //  eCK eCard = this->eCard();
 
-  Card* pChild_prev = pCI->pPrevChild();
+  Card* pChild_prev = pCI->pPeekPrev();
   eCK   eChild_prev = pChild_prev ? pChild_prev->eCard() : CK_NONE;
 
   if (CK_NONE      == eChild_prev ||
@@ -424,22 +424,23 @@ void Card_OP::vMapColumns(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_key = pSub_key();
-  pCI->G.p_emit = pSub_emit();
+  pCI->E.p_key = pSub_key();
+  pCI->E.p_emit = pSub_emit();
 
-  pCI->G_vAppendNewChild(CK_SYNTHESIS, CK_s_MAPPING);
-  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
-  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
+  pCI->vAppendNewChild(CK_SYNTHESIS, CK_s_MAPPING);
+  pCI->vAppendNewChild(pCI->E.p_mapping, CK_KEYCELLS);
+  pCI->vAppendNewChild(pCI->E.p_mapping, CK_PAYLOADCELLS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the key
 
-  pCI->G.p_key->vMapColumns(pCI);
+  pCI->E.p_key->vMapColumns(pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the projection
 
-  pCI->G.p_emit->vMapColumns(pCI);
+  pCI->E.p_emit->vMapColumns(pCI);
+  //pCI->G.p_payloadCells->vDump(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -463,13 +464,13 @@ bool Card_OP::bPeg_Chosen_index(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_indexList = nullptr;
-  pCI->G.p_index = nullptr;
+  pCI->E.p_indexList = nullptr;
+  pCI->E.p_index = nullptr;
 
-  if (! (pCI->G.p_indexList = pSub_indexList()))
+  if (! (pCI->E.p_indexList = pSub_indexList()))
     return false;
 
-  if (! (pCI->G.p_index = pCI->G.p_indexList->pFindChosenIndex()))
+  if (! (pCI->E.p_index = pCI->E.p_indexList->pFindChosenIndex()))
     return false;
 
   return true;
@@ -482,7 +483,7 @@ bool Card_OP::bPeg_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (pCI->G.p_key = pSub_key()))
+  if (! (pCI->E.p_key = pSub_key()))
     return false;
 
   return true;
@@ -495,7 +496,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (pCI->G.p_emit = pSub_emit()))
+  if (! (pCI->E.p_emit = pSub_emit()))
     return false;
 
   return true;
@@ -504,16 +505,16 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* create/recreate emit                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
+void Card_OP::vRestate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_injectable = pCI->G.p_OP->pSub_injectable();
-  pCI->G.p_key        = pCI->G.p_OP->pSub_key();
-  pCI->G.p_needed     = pCI->G.p_OP->pSub_needed();
-  pCI->G.p_stream     = pCI->G.p_OP->pSub_stream();
+  pCI->E.p_injectable = pCI->E.p_Op->pSub_injectable();
+  pCI->E.p_key        = pCI->E.p_Op->pSub_key();
+  pCI->E.p_needed     = pCI->E.p_Op->pSub_needed();
+  pCI->E.p_stream     = pCI->E.p_Op->pSub_stream();
 
-  eCK eCard_OP = pCI->G.p_OP->eCard();
+  eCK eCard_OP = pCI->E.p_Op->eCard();
   switch (eCard_OP) {
 
     case CK_c_COMBINED:
@@ -521,7 +522,7 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
     case CK_c_STAGE:
     case CK_o_CALL:
     case CK_o_CORRELATION:
-      RASSERT(! pCI->G.p_OP->pSub_emit());
+      RASSERT(! pCI->E.p_Op->pSub_emit());
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -529,14 +530,17 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
     case CK_o_CROSSJOIN:
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
-      pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
-      pCI->G.p_emit->vEnsure_nmdCol();
+      pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
+      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
       if (pCI->Flux.m_pArriving) {
-        pCI->G.p_key = pCI->G.p_OP->pSub_key();
-        pCI->G.p_emit->vEnsure_Cast(pCI);
-        pCI->G.p_key = nullptr;
+        pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+        pCI->E.p_key = pCI->E.p_Op->pSub_key();
+        pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+        pCI->E.p_key = nullptr;
       }
-      pCI->G.p_emit->vIncFunctionCount();
+      pCI->E.p_emit->vIncFunctionCount();
+      if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+        vDebugPoint();
       break;
 
     case CK_o_PROJECT:
@@ -544,52 +548,54 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
         vDebugPoint();
       }
 
-      pCI->G.p_emit = pCI->G.p_OP->pSub_emit(C_NOT_NULL);
-      if (pCI->G.p_OP->i_Child() == 14 && pCI->G.p_emit->nFunctionCount() == 1) {
-//        if (pCI->Flux.m_pArriving)
-//          pCI->Flux.m_pArriving->vDump(__func__);
-//        pCI->G.p_OP->vDump(__func__);
-        vDebugPoint();
+      pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
+      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
+      if (pCI->Flux.m_pArriving) {
+        pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+        pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
-      pCI->G.p_emit->vEnsure_nmdCol();
-      if (pCI->Flux.m_pArriving)
-        pCI->G.p_emit->vEnsure_Cast(pCI);
-      pCI->G.p_emit->vIncFunctionCount();
+      pCI->E.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_FROM:
-      if (pCI->G.p_OP->pSub_keyExists() || pCI->G.p_OP->pSub_keyNotExists() )
+      if (pCI->E.p_Op->pSub_keyExists() || pCI->E.p_Op->pSub_keyNotExists() )
         goto L_o_KEYEXISTS;
       [[clang::fallthrough]];
     case CK_o_INDEXJOIN:
     case CK_o_INDEXSCAN:
     case CK_o_SCAN:
-      if ((pCI->G.p_emit = pCI->G.p_OP->pSub_emit()))
-        pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+      if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+        pCI->E.p_stream->vDeleteChild(pCI->E.p_emit);
 
-      if (pCI->Flux.m_pArriving)
-        pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
+      if (pCI->Flux.m_pArriving) {
+        pCI->E.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
+      }
       else
-        pCI->G.p_emit = new Card_Emit;
+        pCI->E.p_emit = new Card_Emit;
 
-      pCI->G.p_table = pCI->G.p_OP->pSub_table(C_NOT_NULL);
-      pCI->G.p_emit->vInject_expr_nmdCol_table(pCI);
+      pCI->E.p_table = pCI->E.p_Op->pSub_table(C_NOT_NULL);
+      pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
 
 
-      pCI->G.p_OP->vEnsure_stream(pCI);
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+      ((Card_OP*)pCI->E.p_Op)->vEnsure_stream(pCI);
+      pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
 
-      if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()) &&
-          (pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred()))
-        pCI->G.p_boolPred->vEnsure_Cast(pCI);
+      if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()) &&
+          (pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred())) {
+        pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+        pCI->E.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+      }
 
-      pCI->G.p_emit->vIncFunctionCount();
+      pCI->E.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_o_HASH:
     case CK_o_HAVING:
+      vDebugPoint();
+      [[clang::fallthrough]];
+
+    case CK_o_HASH:
     case CK_o_KEYEXISTS:
     case CK_o_KEYNOTEXISTS:
     case CK_o_LIMIT:
@@ -597,74 +603,141 @@ void Card_OP::vRecreate_emit(CardIter* pCI, bool bRecreate)
     case CK_o_TOP:
     case CK_o_WHERE:
     L_o_KEYEXISTS:
-      if ((pCI->G.p_emit = pCI->G.p_OP->pSub_emit()))
-        pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+      if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+        pCI->E.p_stream->vDeleteChild(pCI->E.p_emit);
 
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
-      pCI->G.p_OP->vEnsure_stream(pCI);
-      pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
-      pCI->G.p_emit->vIncFunctionCount();
+      pCI->E.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
+      ((Card_OP*)pCI->E.p_Op)->vEnsure_stream(pCI);
+      pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
+      pCI->E.p_emit->vIncFunctionCount();
+
+//      pCI->G.p_Op->vDump(__func__);
+//      vDebugPoint();
+
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CAST:
     case CK_o_FILTER:
     case CK_o_INFLATE:
-      pCI->G.p_OP->vDump(__func__);
+      //pCI->G.p_Op->vDump(__func__);
       NEVER_REACH
       break;
 
     default:
-      pCI->G.p_OP->vDump(__func__);
+      pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
       break;
 
-  } // switch(pCI->G.e_MainCard)
+  } // switch(pCI->G.e_Op)
 
   if (   CK_o_HAVING == eCard_OP
       || CK_o_WHERE  == eCard_OP) {
-    if ((pCI->G.p_boolPred = pCI->G.p_OP->pSub_boolPred()))
-      pCI->G.p_boolPred->vEnsure_Cast(pCI);
-    else
-    if ((pCI->G.p_rpnCalc = pCI->G.p_OP->pSub_rpnCalc()))
-      pCI->G.p_rpnCalc->vEnsure_Cast(pCI);
+    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+    if ((pCI->E.p_boolPred = pCI->E.p_Op->pSub_boolPred())) {
+      pCI->E.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+    }
+    else {
+      pCI->E.p_expr = pCI->E.p_Op->pSub_expr();
+      pCI->E.p_expr->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+    }
+  }
+
+//  pCI->G.p_Op->vDump(__func__);
+//  vDebugPoint();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter())) {
+    RASSERT(pCI->E.p_Op->bEither(CK_o_CROSSJOIN,
+                                 CK_o_FROM,
+                                 CK_o_HAVING,
+                                 CK_o_INDEXJOIN,
+                                 CK_o_INDEXSCAN,
+                                 CK_o_KEYEXISTS,
+                                 CK_o_KEYNOTEXISTS,
+                                 CK_o_SCAN,
+                                 CK_o_WHERE,
+                                 CK_NONE));
+    if (pCI->E.p_Op->bEither(CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_NONE)) {
+      if (pCI->Flux.m_pArriving) {
+        pCI->Dic.m_p_expr = _pCard_Emit(pCI->E.p_Op->pSub_injectable());
+        //pCI->Dic.m_p_expr->vDump(__func__);
+        pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
+      }
+    }
+    else {
+      if (pCI->Flux.m_pArriving) {
+        pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+        //pCI->Dic.m_p_expr->vDump(__func__);
+        if (pCI->E.p_Op->bIsCard(CK_o_HAVING))
+          pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
+        else
+          pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, false);
+      }
+    }
+  }
+//  pCI->G.p_Op->vDump(__func__);
+//  vDebugPoint();
+
+  if (pCI->E.p_emit && pCI->E.p_Op->pSub_key()) {
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+      vDebugPoint();
+    pCI->E.p_key = pCI->E.p_Op->pSub_key();
+    pCI->E.p_emit->vApplyFacets(pCI,pCI->E.p_key);
+
+    for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
+      for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+
+        Card_Term *p_term_keyCol = pCI->E.xTarget.p_term();
+        Symbol *pSym_term_keyCol = p_term_keyCol->pSymbol();
+        if (! pSym_term_keyCol->bHasFacet(SF_KEY_COL))
+          continue;
+
+        i8 i_Key = pSym_term_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
+        Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
+        if (p_expr_key->bIsScalarCol()) {
+          //p_expr_key->pSymbol()->vDump();
+          p_expr_key->pSymbol()->vApplyFacets(pSym_term_keyCol);
+          //p_expr_key->pSymbol()->vDump();
+          vDebugPoint();
+        }
+      }
+    }
+//    pCI->G.p_Op->vDump(__func__);
+//    vDebugPoint();
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((pCI->G.p_filter = pCI->G.p_OP->pSub_filter()))
-    if (pCI->Flux.m_pArriving)
-      pCI->G.p_filter->vCorrect_expCol(pCI->Flux.m_pArriving);
-
-  if (! bRecreate && pCI->G.p_emit && pCI->G.p_key)
-    pCI->G.p_emit->vConcatFacets_From_key(pCI->G.p_key);
-
-  if (bRecreate &&
-       (   CK_o_AGGREG    == eCard_OP
-        || CK_o_CROSSJOIN == eCard_OP
-        || CK_o_GBYAGG    == eCard_OP
-        || CK_o_ORDAGG    == eCard_OP
-        || CK_o_PROJECT   == eCard_OP))
-    vCorrect_expCol(pCI->Flux.m_pArriving);
-
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
+ //pCI->Flux.m_pArriving = pCI->G.p_emit;
 
   if (CK_o_KEYEXISTS    == eCard_OP ||
-      CK_o_KEYNOTEXISTS == eCard_OP ||
-      CK_o_WHERE        == eCard_OP)
-    vCorrect_expCol(pCI->Flux.m_pArriving);
+      CK_o_KEYNOTEXISTS == eCard_OP) {
+    pCI->Dic.m_p_expr = pCI->E.p_emit;
+    //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
+    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
+  }
+  if (CK_o_WHERE        == eCard_OP) {
+    pCI->Dic.m_p_expr = pCI->E.p_emit;
+    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
+  }
 
   if (CK_o_SORT== eCard_OP) {
-    pCI->G.p_key->vEnsure_Cast(pCI);
+    pCI->Dic.m_p_expr = pCI->E.p_emit;
+    pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
   }
+  pCI->Flux.m_pArriving = pCI->E.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for aggreg op                                               */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_aggreg(String* psRpnExpr, Card_Aggreg* p_aggreg)
+void Card_OP::vRpn_aggreg(CardIter* pCI, String* psRpnExpr, Card_Aggreg* p_aggreg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   i8 nSubCards;
 
@@ -691,7 +764,7 @@ void Card_OP::vRpn_aggreg(String* psRpnExpr, Card_Aggreg* p_aggreg)
     }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vRpn_expr(psRpnExpr, pCard_Expr);
+    vRpn_expr(pCI, psRpnExpr, pCard_Expr);
   }
 
 
@@ -700,9 +773,10 @@ void Card_OP::vRpn_aggreg(String* psRpnExpr, Card_Aggreg* p_aggreg)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for crossJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_crossJoin(String* psRpnExpr, Card_CrossJoin* p_crossJoin)
+void Card_OP::vRpn_crossJoin(CardIter* pCI, String* psRpnExpr, Card_CrossJoin* p_crossJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_Bounds* pCard_bounds = p_crossJoin->pSub_bounds();
   RASSERT(pCard_bounds);
@@ -720,26 +794,26 @@ void Card_OP::vRpn_crossJoin(String* psRpnExpr, Card_CrossJoin* p_crossJoin)
 
     Card_Term* p_term = _pCard_Term(pChildCard);
 
-    if (p_term->pSymbol()->bIs_Exp_Col() ||
-        p_term->pSymbol()->bIs_Tbl_Col()) {
+    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+        p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-      if (!p_term->pSymbol()->bHasType()) {
+      if (!p_term->pSymbol()->bValidType()) {
         p_term->vDump(__func__);
         pChildCard->vDump(__func__);
-        RASSERT(p_term->pSymbol()->bHasType());
+        RASSERT(p_term->pSymbol()->bValidType());
       }
     }
-
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_IDX_COL));
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for filter op                                               */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_filter(String* psRpnExpr, Card_Filter* p_filter)
+void Card_OP::vRpn_filter(CardIter* pCI, String* psRpnExpr, Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
@@ -749,35 +823,31 @@ void Card_OP::vRpn_filter(String* psRpnExpr, Card_Filter* p_filter)
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = p_filter->pSub_rpnCalc();
-    vRpn_rpnCalc(psRpnExpr, pCard_Calc);
+    Card_RpnCalc *pCard_Calc = p_filter->pSub_rpnCalc(C_NOT_NULL);
+    vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for aggGby op                                               */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_gbyAgg(String* psRpnExpr, Card_GbyAgg* p_gbyAgg)
+void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   i8 nSubCards;
 
-  Card_Key* pCard_Key =
-      _pCard_Key(p_gbyAgg->pFindSubCard(CK_s_KEY));
-
-  if (! pCard_Key)
+  Card_Key* p_key = p_gbyAgg->pSub_key();
+  if (! p_key)
     return;
 
   psRpnExpr->vConcat(" groupBy"_Stz);
 
-  nSubCards = pCard_Key->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_Key->pGet(i_Child);
-    if (! pCard_SUB->bIsCard(CK_EXPR))
-      return;
+//Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    if (i_Child) {
+    if (pCI->i_Target()) {
       psRpnExpr->vConcat("\n                 "_Stz);
       psRpnExpr->vConcat(" ,"_Stz);
     }
@@ -786,8 +856,7 @@ void Card_OP::vRpn_gbyAgg(String* psRpnExpr, Card_GbyAgg* p_gbyAgg)
       psRpnExpr->vConcat("  "_Stz);
     }
 
-    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vRpn_expr(psRpnExpr, pCard_Expr);
+    vRpn_expr(pCI, psRpnExpr, pCI->E.p_expr);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -818,7 +887,7 @@ void Card_OP::vRpn_gbyAgg(String* psRpnExpr, Card_GbyAgg* p_gbyAgg)
     }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vRpn_expr(psRpnExpr, pCard_Expr);
+    vRpn_expr(pCI, psRpnExpr, pCard_Expr);
   }
 
 //  vTrace("%s\n"_Stz,szRpnExpr);
@@ -828,24 +897,25 @@ void Card_OP::vRpn_gbyAgg(String* psRpnExpr, Card_GbyAgg* p_gbyAgg)
 /*----------------------------------------------------------------------------*/
 /* weave : hash  <expr>                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_hash(String* psRpnExpr, Card_Hash* p_hash)
+void Card_OP::vRpn_hash(CardIter* pCI, String* psRpnExpr, Card_Hash* p_hash)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
-//  Card_HshCol* p_hshCol = p_hash->pSub_hshCol();
   Card_Term* p_term = p_hash->pSub_term();
 
   psRpnExpr->vCatSprint("type %s %s"_Stz,
                         aCT[p_term->eCTVal()],
-                        p_term->szFacet(SF_NONE));
+                        p_term->szFacet(SF_EXP_COL));
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for having op                                               */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_having(String* psRpnExpr, Card_Having* p_having)
+void Card_OP::vRpn_having(CardIter* pCI, String* psRpnExpr, Card_Having* p_having)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
@@ -855,17 +925,18 @@ void Card_OP::vRpn_having(String* psRpnExpr, Card_Having* p_having)
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = p_having->pSub_rpnCalc();
-    vRpn_rpnCalc(psRpnExpr, pCard_Calc);
+    Card_RpnCalc *pCard_Calc = p_having->pSub_rpnCalc(C_NOT_NULL);
+    vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
+void Card_OP::vRpn_indexJoin(CardIter* pCI, String* psRpnExpr, Card_IndexJoin* p_indexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_IndexList* pCard_IndexList = p_indexJoin->pSub_indexList();
 
@@ -876,19 +947,19 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
   if (! pCard_bounds)
     return;
 
-  //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pGetChild(0);
+  //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pChild(0);
 
   Card_Bound* p_bound = nullptr;
-  for (Kid xKid(pCard_bounds); xKid.bEach(CK_BOUND); /**/) {
+  for (Kid xBound(pCard_bounds); xBound.bEach(CK_BOUND); /**/) {
 
-    if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
-      p_bound = _pCard_Bound(xKid.pChild());
+    if (xBound.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
+      p_bound = _pCard_Bound(xBound.pChild());
       break;
     }
   }
 
   if (p_indexJoin->pSub_outerJoin()) {
-    if (p_indexJoin->pSub_outerJoin()->pSymbol()->bSame("LEFT_OUTER"_Stz)) {
+    if (p_indexJoin->pSub_outerJoin()->pSymbol()->Symbol::bHasFacet("LEFT_OUTER"_Stz)) {
       psRpnExpr->vCatSprint(" %s"_Stz, "LEFT_OUTER"_Stz);
     }
   }
@@ -904,28 +975,29 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
 
     Card_Term* p_term = _pCard_Term(pSubCard);
 
-    if (p_term->pSymbol()->bIs_Exp_Col() ||
-        p_term->pSymbol()->bIs_Tbl_Col()) {
+    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+        p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-      if (!p_term->pSymbol()->bHasType()) {
+      if (!p_term->pSymbol()->bValidType()) {
         p_term->vDump(__func__);
         pSubCard->vDump(__func__);
-        RASSERT(p_term->pSymbol()->bHasType());
+        RASSERT(p_term->pSymbol()->bValidType());
       }
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_term());
   }
 
-  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet_bound());
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_indexJoin_constraint(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
+void Card_OP::vRpn_indexJoin_constraint(CardIter* pCI, String* psRpnExpr, Card_IndexJoin* p_indexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_Index* pCard_Index = _pCard_Index(p_indexJoin->pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
   if (! pCard_Index) {
@@ -948,8 +1020,8 @@ void Card_OP::vRpn_indexJoin_constraint(String* psRpnExpr, Card_IndexJoin* p_ind
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
-    vRpn_rpnCalc(psRpnExpr, pCard_Calc);
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc(C_NOT_NULL);
+    vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
   }
 
 }
@@ -957,9 +1029,10 @@ void Card_OP::vRpn_indexJoin_constraint(String* psRpnExpr, Card_IndexJoin* p_ind
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexScan op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_indexScan(String* psRpnExpr, Card_IndexScan* p_indexScan)
+void Card_OP::vRpn_indexScan(CardIter* pCI, String* psRpnExpr, Card_IndexScan* p_indexScan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_IndexList* pCard_IndexList = p_indexScan->pSub_indexList();
 
@@ -974,10 +1047,10 @@ void Card_OP::vRpn_indexScan(String* psRpnExpr, Card_IndexScan* p_indexScan)
       return;
   }
 
-  Kid xKid(pCard_bounds);
-  while (xKid.bEach(CK_BOUND)) {
+  Kid xBound(pCard_bounds);
+  while (xBound.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xKid.p_bound();
+    Card_Bound* p_bound = xBound.p_bound();
 
     if (p_bound->bIsLBound() || p_bound->bIsUBound()) {
 
@@ -998,31 +1071,32 @@ void Card_OP::vRpn_indexScan(String* psRpnExpr, Card_IndexScan* p_indexScan)
 
         Card_Term* p_term = _pCard_Term(pSubCard);
 
-        if (p_term->pSymbol()->bIs_Exp_Col() ||
-            p_term->pSymbol()->bIs_Tbl_Col()) {
+        if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+            p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-          if (!p_term->pSymbol()->bHasType()) {
+          if (!p_term->pSymbol()->bValidType()) {
             p_term->vDump(__func__);
             pSubCard->vDump(__func__);
-            RASSERT(p_term->pSymbol()->bHasType());
+            RASSERT(p_term->pSymbol()->bValidType());
           }
         }
 
-        psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+        psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_term());
       }
 
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet_bound());
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for inflate op                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_inflate(String* psRpnExpr, Card_Inflate* p_inflate)
+void Card_OP::vRpn_inflate(CardIter* pCI, String* psRpnExpr, Card_Inflate* p_inflate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
   UNUSED(psRpnExpr);
   UNUSED(p_inflate);
 }
@@ -1030,9 +1104,10 @@ void Card_OP::vRpn_inflate(String* psRpnExpr, Card_Inflate* p_inflate)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
+void Card_OP::vRpn_keyExists(CardIter* pCI, String* psRpnExpr, Card_KeyExists* p_keyExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_Index* pCard_Index = _pCard_Index(p_keyExists->pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
   if (! pCard_Index) {
@@ -1047,10 +1122,10 @@ void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
       return;
   }
 
-  Kid xKid(pCard_bounds);
-  while (xKid.bEach(CK_BOUND)) {
+  Kid xBound(pCard_bounds);
+  while (xBound.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xKid.p_bound();
+    Card_Bound* p_bound = xBound.p_bound();
 
     if (! p_bound->bIsEBound())
       continue;
@@ -1066,20 +1141,20 @@ void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIs_Exp_Col() ||
-          p_term->pSymbol()->bIs_Tbl_Col()) {
+      if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+          p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-        if (!p_term->pSymbol()->bHasType()) {
+        if (!p_term->pSymbol()->bValidType()) {
           p_term->vDump(__func__);
           pSubCard->vDump(__func__);
-          RASSERT(p_term->pSymbol()->bHasType());
+          RASSERT(p_term->pSymbol()->bValidType());
         }
       }
 
-      psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+      psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_term());
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet_bound());
 
   }
 }
@@ -1087,7 +1162,7 @@ void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_keyExists_constraint(String* psRpnExpr, Card_KeyExists* p_keyExists)
+void Card_OP::vRpn_keyExists_constraint(CardIter* pCI, String* psRpnExpr, Card_KeyExists* p_keyExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1112,8 +1187,8 @@ void Card_OP::vRpn_keyExists_constraint(String* psRpnExpr, Card_KeyExists* p_key
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
-    vRpn_rpnCalc(psRpnExpr, pCard_Calc);
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc(C_NOT_NULL);
+    vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
   }
 
 }
@@ -1121,9 +1196,10 @@ void Card_OP::vRpn_keyExists_constraint(String* psRpnExpr, Card_KeyExists* p_key
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotExists)
+void Card_OP::vRpn_keyNotExists(CardIter* pCI, String* psRpnExpr, Card_KeyNotExists* p_keyNotExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_Index* pCard_Index = _pCard_Index(p_keyNotExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
   if (! pCard_Index) {
@@ -1138,10 +1214,10 @@ void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotEx
       return;
   }
 
-  Kid xKid(pCard_bounds);
-  while (xKid.bEach(CK_BOUND)) {
+  Kid xBound(pCard_bounds);
+  while (xBound.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xKid.p_bound();
+    Card_Bound* p_bound = xBound.p_bound();
 
     if (! p_bound->bIsEBound())
       continue;
@@ -1157,20 +1233,20 @@ void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotEx
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIs_Exp_Col() ||
-          p_term->pSymbol()->bIs_Tbl_Col()) {
+      if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+          p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-        if (!p_term->pSymbol()->bHasType()) {
+        if (!p_term->pSymbol()->bValidType()) {
           p_term->vDump(__func__);
           pSubCard->vDump(__func__);
-          RASSERT(p_term->pSymbol()->bHasType());
+          RASSERT(p_term->pSymbol()->bValidType());
         }
       }
 
-      psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+      psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_term());
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet_bound());
   }
 
 }
@@ -1178,9 +1254,10 @@ void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotEx
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for keyNotExists op                                         */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_keyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists* p_keyNotExists)
+void Card_OP::vRpn_keyNotExists_constraint(CardIter* pCI, String* psRpnExpr, Card_KeyNotExists* p_keyNotExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_Index* pCard_Index = _pCard_Index(p_keyNotExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
   if (! pCard_Index) {
@@ -1203,8 +1280,8 @@ void Card_OP::vRpn_keyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists*
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
-    vRpn_rpnCalc(psRpnExpr, pCard_Calc);
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc(C_NOT_NULL);
+    vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
   }
 
 }
@@ -1212,19 +1289,21 @@ void Card_OP::vRpn_keyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists*
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for limit op                                                */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_limit(String* psRpnExpr, Card_Limit*  p_limit)
+void Card_OP::vRpn_limit(CardIter* pCI, String* psRpnExpr, Card_Limit*  p_limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
-  psRpnExpr->vCatSprint(" %s"_Stz, p_limit->szFacet(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, p_limit->szFacet(SF_INT_LIT));
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for ordagg op                                               */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_ordAgg(String* psRpnExpr, Card_OrdAgg* p_ordAgg)
+void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   i8 nSubCards;
 
@@ -1236,13 +1315,9 @@ void Card_OP::vRpn_ordAgg(String* psRpnExpr, Card_OrdAgg* p_ordAgg)
 
   psRpnExpr->vConcat(" ordGroupBy"_Stz);
 
-  nSubCards = pCard_Key->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_Key->pGet(i_Child);
-    if (! pCard_SUB->bIsCard(CK_EXPR))
-      return;
+  for (pCI->vBeginTarget(pCard_Key,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    if (i_Child) {
+    if (pCI->E.xTarget.i_Child()) {
       psRpnExpr->vConcat("\n                 "_Stz);
       psRpnExpr->vConcat(" ,"_Stz);
     }
@@ -1251,25 +1326,24 @@ void Card_OP::vRpn_ordAgg(String* psRpnExpr, Card_OrdAgg* p_ordAgg)
       psRpnExpr->vConcat("  "_Stz);
     }
 
-    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vRpn_expr(psRpnExpr, pCard_Expr);
+    vRpn_expr(pCI, psRpnExpr, pCI->E.p_expr);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  Card_Emit* pCard_Projection =
+  Card_Emit* pCard_Emit =
       _pCard_Emit(p_ordAgg->pFindSubCard(CK_t_EMIT));
 
-  if (! pCard_Projection)
+  if (! pCard_Emit)
     return;
 
   psRpnExpr->vConcat("\n                 "_Stz);
   psRpnExpr->vConcat(" aggregates"_Stz);
 
-  nSubCards = pCard_Projection->nItems();
+  nSubCards = pCard_Emit->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard_SUB = pCard_Projection->pGet(i_Child);
+    Card* pCard_SUB = pCard_Emit->pGet(i_Child);
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
 
@@ -1283,16 +1357,17 @@ void Card_OP::vRpn_ordAgg(String* psRpnExpr, Card_OrdAgg* p_ordAgg)
     }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vRpn_expr(psRpnExpr, pCard_Expr);
+    vRpn_expr(pCI, psRpnExpr, pCard_Expr);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for project op                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_project(String* psRpnExpr, Card_Project* p_project)
+void Card_OP::vRpn_project(CardIter* pCI, String* psRpnExpr, Card_Project* p_project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_Emit* pCard_Emit =
       _pCard_Emit(p_project->pFindSubCard(CK_t_EMIT));
@@ -1317,7 +1392,7 @@ void Card_OP::vRpn_project(String* psRpnExpr, Card_Project* p_project)
       psRpnExpr->vConcat("  "_Stz);
     }
 
-    vRpn_expr(psRpnExpr, pCard_Expr);
+    vRpn_expr(pCI, psRpnExpr, pCard_Expr);
   }
 
 }
@@ -1325,9 +1400,11 @@ void Card_OP::vRpn_project(String* psRpnExpr, Card_Project* p_project)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for scan op                                                 */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_scan(String* psRpnExpr, Card_Scan* p_scan)
+void Card_OP::vRpn_scan(CardIter* pCI, String* psRpnExpr, Card_Scan* p_scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+
   UNUSED(psRpnExpr);
   UNUSED(p_scan);
 }
@@ -1335,33 +1412,21 @@ void Card_OP::vRpn_scan(String* psRpnExpr, Card_Scan* p_scan)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for sort op                                                 */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_sort(String* psRpnExpr, Card_Sort* p_sort)
+void Card_OP::vRpn_sort(CardIter* pCI, String* psRpnExpr, Card_Sort* p_sort)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
-  Card_Key* pCard_Key =
-      _pCard_Key(p_sort->pFindSubCard(CK_s_KEY));
+  Card_Key* p_key = p_sort->pSub_key();
 
-  i8 nSubCards = pCard_Key->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+//Z_KEY_DIRECTION
+   for (pCI->vBeginTarget(p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    Card* pSubCard = pCard_Key->pGet(i_Child);
-    eCK eSubCard = pSubCard->eCard();
-
-    if (CK_EXPR != eSubCard)
-      continue;
-
-    Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
-
-    if (i_Child)
+    if (pCI->i_Target())
       psRpnExpr->vConcat(" ,"_Stz);
+    vRpn_expr(pCI, psRpnExpr, pCI->E.p_expr);
 
-    vRpn_expr(psRpnExpr, pCard_Expr);
-
-    Card* p_direction = pCard_Expr->pSub_direction();
-
-    psRpnExpr->vCatSprint(" %s"_Stz, p_direction->szFacet(SF_NONE));
-
+    psRpnExpr->vCatSprint(" %s"_Stz, p_key->szDirection(pCI->i_Target()));
   }
 
 }
@@ -1369,25 +1434,28 @@ void Card_OP::vRpn_sort(String* psRpnExpr, Card_Sort* p_sort)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for top op                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_top(String* psRpnExpr, Card_Top* p_top)
+void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   Card_Key *pCard_key = p_top->pSub_key();
-  Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc();
+  Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc(C_NOT_NULL);
+  Card_Expr *pCard_Expr = pCard_key->pSub_expr(C_NOT_NULL);
+  TypeId xTypeId = pCard_Expr->xTypeId();
 
-  TypeId xTypeId = pCard_Calc->xTypeId();
 
 	psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
-  vRpn_rpnCalc(psRpnExpr, pCard_Calc);
+  vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for filter op                                               */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_where(String* psRpnExpr, Card_Where* p_where)
+void Card_OP::vRpn_where(CardIter* pCI, String* psRpnExpr, Card_Where* p_where)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
@@ -1397,8 +1465,8 @@ void Card_OP::vRpn_where(String* psRpnExpr, Card_Where* p_where)
     pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
-    Card_RpnCalc *pCard_Calc = p_where->pSub_rpnCalc();
-    vRpn_rpnCalc(psRpnExpr, pCard_Calc);
+    Card_RpnCalc *pCard_Calc = p_where->pSub_rpnCalc(C_NOT_NULL);
+    vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
   }
 }
 
@@ -1408,66 +1476,44 @@ void Card_OP::vRpn_where(String* psRpnExpr, Card_Where* p_where)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for p_expr                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
+void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
-  Card_RpnCalc* p_rpnCalc = nullptr;
-
-  i8 nSubCards = p_expr->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pCard = p_expr->pGet(i_Child);
-
-    eCK eCard = pCard->eCard();
-
-    switch (eCard) {
-      case CK_RPNCALC:
-        p_rpnCalc = _pCard_RpnCalc(pCard);
-        break;
-
-      default:
-        break;
-    }
-  }
+  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc(C_NOT_NULL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Symbol* pSymbol = p_rpnCalc->pSymbol();
+  Symbol* pSymbol = p_expr->pSymbol();
   Cast xCast = pSymbol->xCast();
 
   psRpnExpr->vCatSprint(" type %s"_Stz, aCT[xCast.m_xTypeId.eCTVal()]);
 
-//#ifdef TYPE_DETAILED
   if (xCast.m_nTypeLength || xCast.m_nTypeScale) {
     psRpnExpr->vCatSprint(" ( %lld"_Stz, xCast.m_nTypeLength);
     if (xCast.m_nTypeScale)
       psRpnExpr->vCatSprint(" %lld"_Stz, xCast.m_nTypeScale);
     psRpnExpr->vCatSprint(" )"_Stz);
   }
-//#endif
 
   if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
     RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
     psRpnExpr->vCatSprint(" as %s"_Stz, p_expr->szFacet(SF_ITM_COL));
   }
 
-  if (p_rpnCalc->bNeedsBrace())
+  if (p_expr->bNeedsBrace())
     psRpnExpr->vConcat(" }"_Stz);
 
-  vRpn_rpnCalc(psRpnExpr, p_rpnCalc);
+  vRpn_rpnCalc(pCI, psRpnExpr, p_rpnCalc);
 }
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for p_rpnCalc                                               */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_rpnCalc(String* psRpnExpr, Card_RpnCalc* p_rpnCalc)
+void Card_OP::vRpn_rpnCalc(CardIter* pCI, String* psRpnExpr, Card_RpnCalc* p_rpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (!p_rpnCalc->pSymbol()->bHasType()) {
-    p_rpnCalc->vDump(__func__);
-    RASSERT(p_rpnCalc->pSymbol()->bHasType());
-  }
 
   i8 nSubCards = p_rpnCalc->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1478,7 +1524,7 @@ void Card_OP::vRpn_rpnCalc(String* psRpnExpr, Card_RpnCalc* p_rpnCalc)
     switch (eCard) {
 
       case CK_TERM:
-        vRpn_term(psRpnExpr, _pCard_Term(pCard));
+        vRpn_term(pCI, psRpnExpr, _pCard_Term(pCard));
         break;
 
       default:
@@ -1494,26 +1540,21 @@ void Card_OP::vRpn_rpnCalc(String* psRpnExpr, Card_RpnCalc* p_rpnCalc)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for p_term                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_term(String* psRpnExpr, Card_Term* p_term)
+void Card_OP::vRpn_term(CardIter* pCI, String* psRpnExpr, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
-  if (p_term->pSymbol()->bIs_Exp_Col() ||
-      p_term->pSymbol()->bIs_Tbl_Col()) {
+  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
+      p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
-    if (!p_term->pSymbol()->bHasType()) {
+    if (!p_term->pSymbol()->bValidType()) {
       p_term->vDump(__func__);
-      RASSERT(p_term->pSymbol()->bHasType());
+      RASSERT(p_term->pSymbol()->bValidType());
     }
   }
 
-  if (p_term->pSymbol()->bHasFacet(SF_ITM_COL))
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_ITM_COL));
-  else
-//  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
-//    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_EXP_COL));
-//  else
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_term());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1546,7 +1587,7 @@ Index* Card_OP::pGetIndex_chosenIndex(void)
 /*----------------------------------------------------------------------------*/
 /* craft indexDef for key                                                     */
 /*----------------------------------------------------------------------------*/
-IndexDef* Card_OP::pCraftIndexDef_key(void)
+IndexDef* Card_OP::pCraftIndexDef_key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1554,7 +1595,7 @@ IndexDef* Card_OP::pCraftIndexDef_key(void)
   if (! p_key)
     return nullptr;
 
-  IndexDef* pIndexDef = p_key->pToIndexDef();
+  IndexDef* pIndexDef = p_key->pTo_IndexDef(pCI);
 
   return pIndexDef;
 }
@@ -1571,7 +1612,7 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
     return nullptr;
 
   Card_Key* p_key = nullptr;
-  if (bIsOne(CK_o_GBYAGG, CK_o_SORT, CK_o_TOP, CK_NONE)) {
+  if (bEither(CK_o_GBYAGG, CK_o_SORT, CK_o_TOP, CK_NONE)) {
     *ppColMap = new ColMap;
     p_key = pSub_key();
     RASSERT(p_key);
@@ -1582,23 +1623,34 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
 
   ColMap* pColMap = ppColMap? *ppColMap : nullptr;
 
-  StreamDef* pStreamDef_emitted =
-      p_emit->pToStreamDef(pColMap, p_key, this);
+  if (CK_o_GBYAGG == eCard()) {
+//    pColMap->vDump();
+//    p_key->vDump(__func__);
+    vDebugPoint();
+  }
 
+  StreamDef* pStreamDef_emitted =
+      p_emit->pTo_StreamDef(pColMap, p_key, this);
+
+  if (CK_o_GBYAGG == eCard()) {
+//    pColMap->vDump();
+//    pStreamDef_emitted->vDump();
+    vDebugPoint();
+  }
 
   if (CK_o_GBYAGG == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    p_mapping->vToColMap(pColMap);
+    p_mapping->vTo_ColMap(pColMap);
   }
   else
   if (CK_o_SORT == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    p_mapping->vToColMap(pColMap);
+    p_mapping->vTo_ColMap(pColMap);
   }
   else
   if (CK_o_TOP == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    p_mapping->vToColMap(pColMap);
+    p_mapping->vTo_ColMap(pColMap);
   }
 
   if (pColMap)
@@ -1617,7 +1669,7 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
-  Card_MAIN::vValidate(pCI, iDepth, pParent);
+  RASSERT(1 == iDepth);
 
   if (eCard() == CK_o_INFLATE)
     return;

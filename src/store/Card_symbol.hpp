@@ -21,7 +21,6 @@ namespace STORE
     CARD* SYM(Symbol* pSymbol);
     CARD* SYMPPY(Symbol* pSymbol);
 
-    CARD* SYM(eSF eSymbol);
     CARD* SYM(eSF eSymbol, char cChr);
     CARD* SYM(eSF eSymbol, char cChr, i8 iInt);
     CARD* SYM(eSF eSymbol, i8 iInt);
@@ -61,7 +60,7 @@ CARD* Card_symbol<CARD>::SYM(Symbol xSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vCastFacets(&xSymbol);
+  m_xSymbol.vApplyCastFacets(&xSymbol);
 
   return (CARD*)this;
 }
@@ -74,7 +73,7 @@ CARD* Card_symbol<CARD>::SYM(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vCastFacets(pSymbol);
+  m_xSymbol.vApplyCastFacets(pSymbol);
 
   return (CARD*)this;
 }
@@ -87,20 +86,7 @@ CARD* Card_symbol<CARD>::SYMPPY(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vCastFacetsPpy(pSymbol);
-
-  return (CARD*)this;
-}
-
-/*----------------------------------------------------------------------------*/
-/*  SYM                                                                       */
-/*----------------------------------------------------------------------------*/
-template <class CARD>
-CARD* Card_symbol<CARD>::SYM(eSF eSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  m_xSymbol.vFacet(eSymbol);
+  m_xSymbol.vApplyCastFacetsPpy(pSymbol);
 
   return (CARD*)this;
 }
@@ -113,7 +99,7 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, char cChr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vFacet(eSymbol, cChr);
+  m_xSymbol.vApplyFacet(eSymbol, cChr);
 
   return (CARD*)this;
 }
@@ -126,7 +112,7 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, char cChr, i8 iInt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vFacet(eSymbol, cChr, iInt);
+  m_xSymbol.vApplyFacet(eSymbol, cChr, iInt);
 
   return (CARD*)this;
 }
@@ -139,7 +125,7 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, i8 iInt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vFacet(eSymbol, iInt);
+  m_xSymbol.vApplyFacet(eSymbol, iInt);
 
   return (CARD*)this;
 }
@@ -152,7 +138,10 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vFacet(eSymbol, szStz);
+  if (SF_TBL_COL == eSymbol)
+    vDebugPoint();
+
+  m_xSymbol.vApplyFacet(eSymbol, szStz);
 
   return (CARD*)this;
 }
@@ -165,7 +154,7 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, i8 iInt, Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vFacet(eSymbol, iInt, pSymbol);
+  m_xSymbol.vApplyFacet(eSymbol, iInt, pSymbol);
 
   return (CARD*)this;
 }

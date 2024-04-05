@@ -67,19 +67,19 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 
   Card_FiltPredList* p_filtPredList = new Card_FiltPredList;
 
-  Kid xKid(p_deck);
-  while (xKid.bEach(CK_s_TABLE, CK_o_FILTER)) {
+  Kid xDeck(p_deck);
+  while (xDeck.bEach(CK_s_TABLE, CK_o_FILTER)) {
 
-    Card_Filter* p_filter = _pCard_Filter(xKid.pSub1());
+    Card_Filter* p_filter = _pCard_Filter(xDeck.pSub1());
 
     Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
 
     nFilters = 0;
-    p_boolPred->bApplyRecursive(CK_RLNCONJ, bLambda);
+    p_boolPred->bLambdaWalk(CK_RLNCONJ, bLambda);
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;
-      p_filtPred->SYM(SF_TBL_SYN, xKid.p_table()->szFacet(SF_NONE));
+      p_filtPred->SYM(SF_TBL_SYN, xDeck.p_table()->szFacet(SF_TBL_NM));
       p_filtPred->pSymbol()->Y_vSet(P_Count,nFilters);
       p_filtPredList->vAppendChild(p_filtPred);
     }
@@ -105,7 +105,7 @@ i8 Card_FiltPredList::nFiltersFor(char cTblSyn)
   while (xCI_filtPred.bEach()) {
     Card_FiltPred* p_filtPred = _pCard_FiltPred(xCI_filtPred.pChild());
 
-    if (p_filtPred->pSymbol()->cSF_char() == cTblSyn) {
+    if (p_filtPred->pSymbol()->cTblSyn() == cTblSyn) {
       i8 nFilter = p_filtPred->pSymbol()->Y_iGet(P_Count);
       return nFilter;
     }

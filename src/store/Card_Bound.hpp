@@ -24,7 +24,7 @@ namespace STORE
 
     void vX_tblCol_To_expCol(CardIter* pCI);
 
-    void vEnsure_Cast(CardIter *pCI);
+    void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
     bool bEquivalent(Card_RlnConj* p_rlnConj);
 
     Card_Term* pGetTerm(i8 i_Term);
@@ -40,8 +40,6 @@ namespace STORE
 
     Card_Term* pGet_IfNot_idxCol(void);
     Card_Term* pGet_tblCol(void);
-
-    void vShortForm(String* pString_b, Stz* szSep);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

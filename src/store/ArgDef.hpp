@@ -13,9 +13,9 @@ namespace STORE
                , public ListExo2_t<SketchTkn>
   {
   public:
-    i8  m_i_Arg;
-    s32 m_sArgNm;
-    s2K m_sArgVal;
+    i8   m_i_Arg;
+    s32  m_sArgNm;
+    s2K  m_sArgVal;
 
   protected:
     // must be last
@@ -25,7 +25,6 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ArgDef(void);
     ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal);
     ~ArgDef(void) noexcept(false);
 

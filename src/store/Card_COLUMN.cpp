@@ -40,10 +40,10 @@ bool Card_COLUMN::bIsReplicated(Symbol* aCol)
   if (! aCol)
     return false;
 
-  if (!aCol->bIs_Tbl_Col())
+  if (!aCol->bHasFacet(SF_TBL_COL))
     return false;
 
-  char cTblSyn = aCol->cSF_tblSyn();
+  char cTblSyn = aCol->cTblSyn();
   if (cTblSyn >= 'A' && cTblSyn <= 'Z')
     return true;
 
@@ -58,7 +58,7 @@ bool Card_COLUMN::bMatchingTblSyn(Symbol *pArg_a, Symbol *pArg_b)
 {
   _static_
 
-  if (pArg_a->cSF_tblSyn() == pArg_b->cSF_tblSyn())
+  if (pArg_a->cTblSyn() == pArg_b->cTblSyn())
     return true;
 
   return false;

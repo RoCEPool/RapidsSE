@@ -53,10 +53,10 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   i8 nStages = 0;
 
   Card_Stage* p_stage = new Card_Stage;
-  p_stage->SYM(SF_STG_NO,++nStages);
+  p_stage->SYM(SF_STG_NM,++nStages);
   Card_Topology* p_topology = new Card_Topology(YG_ALL_PARTITIONS);
   p_stage->vAppendChild(p_topology);
-  pCI->G.pDeck->vPushChild(p_stage);
+  pCI->E.p_deck->vPushChild(p_stage);
 
   eAL e_level_running = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 
@@ -67,24 +67,26 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   bool bSawScanOp = false;
   bool bSawSortOp = false;
 
-  pCI->vClearRestart();
-  while (pCI->G_bEachMain(CK_c_FOLD))
-    pCI->G_vRemoveDeleteMain(CK_c_FOLD);
-  pCI->vClearRestart();
-  while (pCI->G_bEachMain(CK_c_FLAT))
-    pCI->G_vRemoveDeleteMain(CK_c_FLAT);
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
+  while (pCI->bEachOp(CK_c_FOLD))
+    pCI->vRemoveDeleteMain(CK_c_FOLD);
+  pCI->vClearRegisters();
+  pCI->vBeginEach();
+  while (pCI->bEachOp(CK_c_FLAT))
+    pCI->vRemoveDeleteMain(CK_c_FLAT);
 
 //  Card* p_prev = nullptr;
   eCK   e_prev = CK_NONE;
   Card* p_main = p_stage;
   eCK   e_main = p_main->eCard();
 
-  for (i8 i_Main = 1; i_Main < pCI->G.pDeck->nChildCards(); i_Main++) {
+  for (i8 i_Main = 1; i_Main < pCI->E.p_deck->nChildCards(); i_Main++) {
 
 //    p_prev = p_main;
     e_prev = e_main;
 
-    p_main = pCI->G.pDeck->pGetChild(i_Main);
+    p_main = pCI->E.p_deck->pGetChild(i_Main);
     e_main = p_main->eCard();
 
 
@@ -277,9 +279,9 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
   //SawOpCards* pSawOpCards = new SawOpCards;
   eAL e_level_running = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 
-  for (i8 i_Main = 1; i_Main < pCI->G.pDeck->nChildCards(); i_Main++) {
+  for (i8 i_Main = 1; i_Main < pCI->E.p_deck->nChildCards(); i_Main++) {
 
-    Card_OP* p_card_OP = (Card_OP*)(pCI->G.pDeck->pGetChild(i_Main));
+    Card_OP* p_card_OP = (Card_OP*)(pCI->E.p_deck->pGetChild(i_Main));
 
     RASSERT(Card_OP::bIsOp(p_card_OP));
 
@@ -312,12 +314,12 @@ void Card_Stage::vAddCombined(CardIter* pCI, Card* p_main, i8& ri_main)
   _static_
   Card_Combined* p_combined = new Card_Combined;
   if (C_UNKNOWN == ri_main) {
-    pCI->G.pDeck->vAppendChild(p_combined);
+    pCI->E.p_deck->vAppendChild(p_combined);
     return;
   }
-  pCI->G.pDeck->vInsertChildBefore(p_combined, p_main);
+  pCI->E.p_deck->vInsertChildBefore(p_combined, p_main);
   ri_main++;
-  RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
+  RASSERT(pCI->E.p_deck->pGetChild(ri_main) == p_main);
 
 }
 
@@ -330,17 +332,17 @@ void Card_Stage::vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextV
 
   Card_Cast* p_next = new Card_Cast;
   if (*szNextValue->azChar()) {
-    eSF eSymbol = Symbol::eEvalSymbol(szNextValue);
+    eSF eSymbol = Symbol::eEval_facet(szNextValue);
     RASSERT(SF_STG_CAST == eSymbol);
     p_next->SYM(SF_STG_CAST, szNextValue);
   }
   if (C_UNKNOWN == ri_main) {
-    pCI->G.pDeck->vAppendChild(p_next);
+    pCI->E.p_deck->vAppendChild(p_next);
     return;
   }
-  pCI->G.pDeck->vInsertChildBefore(p_next, p_main);
+  pCI->E.p_deck->vInsertChildBefore(p_next, p_main);
   ri_main++;
-  RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
+  RASSERT(pCI->E.p_deck->pGetChild(ri_main) == p_main);
 
 }
 
@@ -352,13 +354,13 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
   _static_
 
   Card_Stage *p_stage = new Card_Stage;
-  p_stage->SYM(SF_STG_NO,++nStages);
+  p_stage->SYM(SF_STG_NM,++nStages);
   eYG eStageTopo = Card::e_aggLevel_To_stageTopo(e_level_running);
   Card_Topology *p_topology = new Card_Topology(eStageTopo);
   p_stage->vAppendChild(p_topology);
-  pCI->G.pDeck->vInsertChildBefore(p_stage, p_main);
+  pCI->E.p_deck->vInsertChildBefore(p_stage, p_main);
   ri_main++;
-  RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
+  RASSERT(pCI->E.p_deck->pGetChild(ri_main) == p_main);
 
 }
 
@@ -375,7 +377,8 @@ void Card_Stage::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_notHave(CK_s_LEVEL, CK_NONE);
 
-  UNUSED(pParent);
+  RASSERT(m_xSymbol.bSingleFaceted() && m_xSymbol.bHasFacet(SF_STG_NM));
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

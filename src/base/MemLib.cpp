@@ -770,6 +770,32 @@ void MemLib::vWordFlip(w8* aWord)
 }
 
 /*----------------------------------------------------------------------------*/
+/* flip the bytes in given word                                               */
+/*----------------------------------------------------------------------------*/
+void MemLib::vWordFlip(w8* aWord, w8* aWordSrc)
+{
+  _WordAsBytes* aAsBytes = (_WordAsBytes*)aWord;
+  _WordAsBytes* aAsBytesSrc = (_WordAsBytes*)aWordSrc;
+
+  byte yByte;
+
+  yByte = aAsBytesSrc->m_yaByte[0];
+  aAsBytes->m_yaByte[0] = aAsBytesSrc->m_yaByte[7];
+  aAsBytes->m_yaByte[7] = yByte;
+
+  yByte = aAsBytesSrc->m_yaByte[1];
+  aAsBytes->m_yaByte[1] = aAsBytesSrc->m_yaByte[6];
+  aAsBytes->m_yaByte[6] = yByte;
+
+  yByte = aAsBytesSrc->m_yaByte[2];
+  aAsBytes->m_yaByte[2] = aAsBytesSrc->m_yaByte[5];
+  aAsBytes->m_yaByte[5] = yByte;
+
+  yByte = aAsBytesSrc->m_yaByte[3];
+  aAsBytes->m_yaByte[3] = aAsBytesSrc->m_yaByte[4];
+  aAsBytes->m_yaByte[4] = yByte;
+}
+/*----------------------------------------------------------------------------*/
 /* zero dst                                                                   */
 /*----------------------------------------------------------------------------*/
 void MemLib::vZero(void* pDst, i8 nBytes, eCN eClassNo)

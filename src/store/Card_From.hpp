@@ -18,9 +18,6 @@ namespace STORE
     Card_From(void);
    ~Card_From(void) noexcept(false);
 
-    Stz* szColNm(i8 i_Col_base0);
-    void vSmooth(CardIter* pCI);
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

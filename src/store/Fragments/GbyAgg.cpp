@@ -63,6 +63,108 @@ void vGbyAggFindKey(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vGbyAggFindKeyAsc -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vGbyAggFindKeyAsc
+void vGbyAggFindKeyAsc(Dynamic_T* aDynamicT) {
+
+  void *aEntFound;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find key in payload index
+#ifdef WITH_CLANG
+  aEntFound = aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
+#endif
+  if (!aEntFound) {
+    // marker-end
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vGbyAggFindKeyAscDsc ------------------------------------------------------*/
+/*------------------------------------------------------------------------------*/
+// function-vGbyAggFindKeyAscDsc
+  void vGbyAggFindKeyAscDsc(Dynamic_T* aDynamicT) {
+
+    void *aEntFound;
+
+    // marker-start
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // find key in payload index
+#ifdef WITH_CLANG
+    aEntFound = aExtern_IndexTreeFindEntryAscDsc(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
+#endif
+    if (!aEntFound) {
+      // marker-end
+    }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggFindInsertGenAsc -------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggFindInsertGenAsc
+i8 iGbyAggFindInsertGenAsc(Dynamic_T* aDynamicT) {
+
+	void *aEntFound;
+
+	// marker-start
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// find key in payload index
+#ifdef WITH_CLANG
+  bool bInsertedEntry = false;
+	aEntFound = aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc(aDynamicT, 72, &bInsertedEntry);
+#endif
+	if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+		return 0;
+	}
+	// marker-end
+
+	return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggGenAscBegin --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggGenAscBegin
+i8 iGbyAggGenAscBegin(Dynamic_T* aDynamicT) {
+
+	void *aEntFound;
+	bool bInsertedEntry;
+
+	// marker-start
+
+	if (bInsertedEntry) {
+
+		aDynamicT->m_iRowsProcessed++;
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// initialize the payload
+		// marker-end
+
+	}
+
+	return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggGenAscEnd --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggGenAscEnd
+i8 iGbyAggGenAscEnd(Dynamic_T* aDynamicT) {
+
+	{
+		// marker-start
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// aggregate the payload
+		// marker-end
+
+		return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- iGbyAggInsertIntKey -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iGbyAggInsertIntKey
@@ -113,10 +215,6 @@ i8 iGbyAggIntKeyEnd(Dynamic_T* aDynamicT) {
   {
   // marker-start
 
-    // check for error
-    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
-      return 0;
-    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

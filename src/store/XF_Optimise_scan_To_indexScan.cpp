@@ -68,18 +68,19 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_SCAN_TO_INDEXSCAN, "morph scan to indexScan"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_SCAN_TO_INDEXSCAN);
 
-  m_pCI->vClearRestart();
-  if (m_pCI->G_bEachMainWith2Sub(CK_o_SCAN, CK_t_INDEXLIST, CK_BOUNDS)) {
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
+  if (m_pCI->bEachOp(CK_o_SCAN, CK_t_INDEXLIST, CK_BOUNDS)) {
 
-    if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
-        m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {
+    if (m_pCI->E.p_bounds->pSub_bound()->bIsLBound() ||
+        m_pCI->E.p_bounds->pSub_bound()->bIsUBound()) {
 
-      m_pCI->G.p_scan->vCard(CK_o_INDEXSCAN);
+      m_pCI->E.p_scan->vCard(CK_o_INDEXSCAN);
       bOptRun = true;
 
-      m_pCI->G.p_indexList->vChoose_index_For_indexScan();
+      m_pCI->E.p_indexList->vChoose_index_For_indexScan();
     }
   }
 

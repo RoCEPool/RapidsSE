@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_MAIN.hpp"
+#include "Card_OP.hpp"
 
 namespace STORE
 {
-  class Card_ANCILLARY : public Card_MAIN
+  class Card_ANCILLARY : public Card_OP
   {  
   public:
     Card_ANCILLARY(eCK eCard, i8 iFixedDepth);

@@ -18,7 +18,7 @@ success;
 // select * from customer inner join orders on customer.c_custkey = orders.o_custkey;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest1
 begin
   stage stageA on origin :
     start
@@ -49,7 +49,7 @@ rows: 1500
 // select * from orders join customer on orders.o_custkey = customer.c_custkey;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest2
 begin
   stage stageA on origin :
     start
@@ -78,7 +78,7 @@ rows: 1500
 // LEFT OUTER INDEX JOIN
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey;
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest3
 begin
   stage stageA on origin :
     start
@@ -108,7 +108,7 @@ rows: 1501
 // select * from orders left_outer join customer on customer.c_custkey = orders.o_custkey;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest4
 begin
   stage stageA on origin :
     start
@@ -139,7 +139,7 @@ rows: 1500
 //   where c_nationkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest5
 begin
   stage stageA on origin :
     start
@@ -171,7 +171,7 @@ rows: 1220
 //   where o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest6
 begin
   stage stageA on origin :
     start
@@ -203,7 +203,7 @@ rows: 1497
 //   where c_nationkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest7
 begin
   stage stageA on origin :
     start
@@ -236,7 +236,7 @@ rows: 1221
 //   where o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest8
 begin
   stage stageA on origin :
     start
@@ -268,7 +268,7 @@ rows: 1497
 //   where orders.o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest9
 begin
   stage stageA on origin :
     start
@@ -299,7 +299,7 @@ rows: 1497
 //   where c_nationkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest10
 begin
   stage stageA on origin :
     start
@@ -330,7 +330,7 @@ rows: 1220
 //   where orders.o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest11
 begin
   stage stageA on origin :
     start
@@ -361,7 +361,7 @@ rows: 1497
 //   where c_nationkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest12
 begin
   stage stageA on origin :
     start
@@ -392,7 +392,7 @@ rows: 1220
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest13
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -423,7 +423,7 @@ rows: 1218
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest14
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -454,7 +454,7 @@ rows: 1218
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest15
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -485,7 +485,7 @@ rows: 1218
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest16
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -516,7 +516,7 @@ rows: 1218
 //   where c_nationkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest17
 begin
   stage stageA on origin :
     start
@@ -559,7 +559,7 @@ contains rows :
 //   where o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest18
 begin
   stage stageA on origin :
     start
@@ -592,7 +592,7 @@ rows : 1497
 //   where c_nationkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest19
 begin
   stage stageA on origin :
     start
@@ -625,7 +625,7 @@ rows : 1221
 //   where o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest20
 begin
   stage stageA on origin :
     start
@@ -658,7 +658,7 @@ rows : 1497
 //   where c_nationkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest21
 begin
   stage stageA on origin :
     start
@@ -693,7 +693,7 @@ contains rows :
 // select o_custkey, c_custkey, c_nationkey from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest22
 begin
   stage stageA on origin :
     start
@@ -728,7 +728,7 @@ contains rows :
 // select c_custkey, c_nationkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest23
 begin
   stage stageA on origin :
     start
@@ -761,7 +761,7 @@ rows : 1221
 // select o_custkey, c_custkey, c_nationkey from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest24
 begin
   stage stageA on origin :
     start
@@ -797,7 +797,7 @@ contains rows :
 //   where o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest25
 begin
   stage stageA on origin :
     start
@@ -839,7 +839,7 @@ contains rows:
 //   where o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest26
 begin
   stage stageA on origin :
     start
@@ -871,7 +871,7 @@ rows: 1497
 //      where c_nationkey >= 4 and o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest27
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -904,7 +904,7 @@ rows: 1218
 //      where c_nationkey >= 4 and o_orderkey >= 4;
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest28
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -932,7 +932,7 @@ end ;
 rows: 1218
 
 /optimise_passthru 
-pipeline indexJoinTest
+pipeline indexJoinTest29
 begin
   stage stageA on origin :
     start | pulse once | stageB

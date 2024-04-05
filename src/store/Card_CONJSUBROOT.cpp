@@ -47,51 +47,51 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr, Card_CONJSUBROOT* p_conj)
 
   UNUSED(psRpnExpr);
 
-  Kid xKid(p_conj);
+  Kid xConj(p_conj);
 
   eCK eConj = p_conj->eCard();
   switch (eConj) {
 
     case CK_ANDCONJ:
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
       psRpnExpr->vCatSprint(" and"_Stz);
 
-      while (xKid.bEach()) {
-        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      while (xConj.bEach()) {
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
         psRpnExpr->vCatSprint(" and"_Stz);
       }
       break;
 
     case CK_NOTCONJ:
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
       psRpnExpr->vCatSprint(" not"_Stz);
       break;
 
     case CK_ORCONJ:
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
-      RASSERT(xKid.bEach());
-      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
+      RASSERT(xConj.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
       psRpnExpr->vCatSprint(" or"_Stz);
 
-      while (xKid.bEach()) {
-        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      while (xConj.bEach()) {
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
         psRpnExpr->vCatSprint(" or"_Stz);
       }
       break;
 
     case CK_RLNCONJ:
-      while (xKid.bEach())
-        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
-      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->szFacet(SF_NONE));
+      while (xConj.bEach())
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xConj.pChild());
+      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet_rlnConj());
       break;
 
     case CK_TERM:
-      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->szFacet(SF_NONE));
+      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet_term());
       break;
 
     default:
@@ -161,8 +161,8 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pChild = xKid.pChild();
+  for (Kid xCONJSUBROOT(this); xCONJSUBROOT.bEach(); /**/) {
+    Card *pChild = xCONJSUBROOT.pChild();
 
     eCK eChild = pChild->eCard();
     switch (eChild) {
@@ -180,20 +180,20 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr)
         break;
       case CK_RLNCONJ:
         _pCard_RlnConj(pChild)->vOntoRpnExpr(psRpnExpr);
-        psRpnExpr->vCatSprint(" %s"_Stz, pChild->szFacet(SF_NONE));
+        psRpnExpr->vCatSprint(" %s"_Stz, pChild->pSymbol()->szFacet_rlnConj());
         break;
       case CK_TERM:
-        if (pChild->pSymbol()->bIs_Exp_Col() ||
-            pChild->pSymbol()->bIs_Tbl_Col()) {
+        if (pChild->pSymbol()->bHasFacet(SF_EXP_COL) ||
+            pChild->pSymbol()->bHasFacet(SF_TBL_COL)) {
 
           // TODO: this rule should be in validate?
-          if (!pChild->pSymbol()->bHasType()) {
+          if (!pChild->pSymbol()->bValidType()) {
             //p_part->vDump();
             //pChild->vDump();
-            RASSERT(pChild->pSymbol()->bHasType());
+            RASSERT(pChild->pSymbol()->bValidType());
           }
         }
-        psRpnExpr->vCatSprint(" %s"_Stz, pChild->szFacet(SF_NONE));
+        psRpnExpr->vCatSprint(" %s"_Stz, pChild->pSymbol()->szFacet_term());
         break;
       default:
         NEVER_REACH

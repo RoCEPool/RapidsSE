@@ -60,8 +60,6 @@ namespace BASE
 
     i8 iAgeSec(void);
 
-    i8 iBufferHeight(void);
-
     void vBufferHeight(i8 iBufferHeight);
 
     void vDropRead(void);
@@ -97,7 +95,18 @@ namespace BASE
     // For Paging
     BufferId oGetBufferId(void);
     void vSetBufferId(void* pIdAsAddr);
-  };
+
+		/*----------------------------------------------------------------------------*/
+		/* get the buffer height                                                      */
+		/*----------------------------------------------------------------------------*/
+		inline i8 iBufferHeight(void)
+		{
+			_precondition_(_ADDRESS_,_MAGIC_);
+
+			return m_iBufferHeight;
+		}
+
+		};
   
   DataBuffer* _pDataBuffer(void* aAddr);
 }

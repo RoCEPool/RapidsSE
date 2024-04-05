@@ -246,90 +246,90 @@ void OpDef::vDump(i8 i_Tab)
 
   i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {
-    vTrace("%s%s : StreamDef_arriving %p\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pStreamDef_arriving);
+    vTrace("%s%s : StreamDef_arriving\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
     m_pStreamDef_arriving->vDump(i_Tab + 4);
   }
 
   if (m_pStreamDef_emitted) {
-    vTrace("%s%s : StreamDef_emitted %p\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pStreamDef_emitted);
+    vTrace("%s%s : StreamDef_emitted\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
     m_pStreamDef_emitted->vDump(i_Tab + 4);
   }
 
   if (m_pIndex_indexScan) {
-    vTrace("%s%s : Index_indexScan %p\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pIndex_indexScan);
+    vTrace("%s%s : Index_indexScan\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
     m_pIndex_indexScan->pIndexDef()->vDump(i_Tab + nTab_plus);
   }
   if (m_pIndex_indexJoin) {
-    vTrace("%s%s : Index_indexJoin %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndex_indexJoin);
+    vTrace("%s%s : Index_indexJoin\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
     m_pIndex_indexJoin->pIndexDef()->vDump(i_Tab + nTab_plus);
   }
   if (m_pIndex_indexSemi) {
-    vTrace("%s%s : Index_indexSemi %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndex_indexSemi);
+    vTrace("%s%s : Index_indexSemi\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
     m_pIndex_indexSemi->pIndexDef()->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pIndexDef_gbyAgg) {
-    vTrace("%s%s : IndexDef_gbyAgg %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_gbyAgg);
+    vTrace("%s%s : IndexDef_gbyAgg\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
     m_pIndexDef_gbyAgg->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pColMap_gbyAgg) {
-    vTrace("%s%s : ColMap_gbyAgg %p\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_gbyAgg);
+    vTrace("%s%s : ColMap_gbyAgg\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
     m_pColMap_gbyAgg->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pIndexDef_sort) {
-    vTrace("%s%s : IndexDef_sort %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_sort);
+    vTrace("%s%s : IndexDef_sort\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
     m_pIndexDef_sort->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pColMap_sort) {
-    vTrace("%s%s : ColMap_sort %p\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_sort);
+    vTrace("%s%s : ColMap_sort\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
     m_pColMap_sort->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pIndexDef_top) {
-    vTrace("%s%s : IndexDef_top %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_top);
+    vTrace("%s%s : IndexDef_top\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
     m_pIndexDef_top->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pColMap_top) {
-    vTrace("%s%s : ColMap_top %p\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_top);
+    vTrace("%s%s : ColMap_top\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
     m_pColMap_top->vDump(i_Tab + 1);
   }
 
   if (m_pColPpg) {
-    vTrace("%s%s : ColPpg %p\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColPpg);
+    vTrace("%s%s : ColPpg\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
     m_pColPpg->vDump(i_Tab + 1);
   }
 
   if (m_pColInj) {
-    vTrace("%s%s : ColInj %p\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColInj);
+    vTrace("%s%s : ColInj\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
     m_pColInj->vDump(i_Tab + 1);
   }
 
   if (m_pColHsh) {
-    vTrace("%s%s : ColHsh %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColHsh);
+    vTrace("%s%s : ColHsh\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
     m_pColHsh->vDump(i_Tab + 1);
   }
 
   if (m_pKeyMap) {
-    vTrace("%s%s : KeyMap %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColHsh);
+    vTrace("%s%s : KeyMap\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
     m_pKeyMap->vDump(i_Tab + 1);
   }
 

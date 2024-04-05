@@ -231,15 +231,11 @@
 #include "ParamSpec.hpp"
 #include "ParamsSpec.hpp"
 #include "Scope.hpp"
-#include "XF_Fold.hpp"
-#include "XF_Flatten_Smooth.hpp"
-#include "XF_Flatten.hpp"
+#include "XF_Flatten_subquery.hpp"
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
-#include "XF_Flatten_Smoosh.hpp"
 #include "XF_Flatten_Join_Ordering.hpp"
 #include "SawOpCards.hpp"
-#include "CorrelatedJoin.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
 #include "ArgDef.hpp"
@@ -256,6 +252,7 @@
 #include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_Add_inflate.hpp"
 #include "XF_Epilog_Append_synthesis.hpp"
+#include "XF_Epilog_Cull_facet.hpp"
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
@@ -316,6 +313,7 @@
 #include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
+#include "XF_Utility_Verify_dic.hpp"
 
 #include "XC.hpp"
 
@@ -326,7 +324,6 @@
 #include "SketchTkn.hpp"
 #include "ColHsh.hpp"
 #include "ColInj.hpp"
-#include "ShortForm.hpp"
 #include "ColPpg.hpp"
 #include "MatrixPrint.hpp"
 
@@ -387,34 +384,32 @@ SizeHeap gxaSizeHeap[]
   { CN_BOARD,                    sizeof(Board),              HT_T_SMALL   ,FILL },
   { CN_BOLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_BUFFERMAP,                sizeof(BufferMap),          HT_INVALID   ,FILL },
-  { CN_BUFFERPOOL,               sizeof(BufferPool),         HT_INVALID   ,FILL },
-  { CN_BYTERATE,                 sizeof(ByteRate),           HT_T_TINY    ,FILL },
-  { CN_BYTES_T,                  sizeof(s32),                HT_INVALID   ,FILL },
+  {CN_BUFFERPOOL,               sizeof(BufferPool),       HT_INVALID   , FILL },
+  {CN_BYTERATE,                 sizeof(ByteRate),         HT_T_TINY    , FILL },
+  {CN_BYTES_T,                  sizeof(s32),              HT_INVALID   , FILL },
 
-  { CN__C__,                     'C' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_CARD,                     sizeof(Card),               HT_T_SMALL   ,FILL },
-  { CN_CARDCTL,                  sizeof(CardCtl),            HT_T_LARGE   ,FILL },
-  { CN_CARDHISTORY,              sizeof(CardHistory),        HT_T_SMALL   , FILL },
-  { CN_CARDIMAGE,                sizeof(CardImage),          HT_T_SMALL   , FILL },
-  { CN_CARDITER,                 sizeof(CardIter),           HT_T_MEDIUM  , FILL },
-  { CN_CARDITERMEMBERS,          sizeof(CardIterMembers),    HT_T_SMALL   , FILL },
-  {CN_CARDUSAGE,                sizeof(CardUsage),                HT_T_SMALL   , FILL },
-  {CN_CARRYFORWARD,             sizeof(CarryForward),             HT_T_TINY    , FILL },
-  {CN_CATALOG,                  sizeof(Catalog),                  HT_INVALID   , FILL },
-  {CN_CHARSER,                  sizeof(Charser),                  HT_T_LARGE   , FILL },
-  {CN_CHILDEXIT,                sizeof(ChildExit),                HT_T_TINY    , FILL },
-  {CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),         HT_T_LARGE   , FILL },
-  {CN_CMDLINEARGS,              sizeof(CmdLineArgs),              HT_INVALID   , FILL },
-  {CN_CODEBLOCK,                sizeof(CodeBlock),                HT_T_MEDIUM  , FILL },
-  {CN_COLHSH,                   sizeof(ColHsh),                   HT_T_MEDIUM  , FILL },
-  {CN_COLINJ,                   sizeof(ColInj),                   HT_T_MEDIUM  , FILL },
+  {CN__C__,                     'C' - ('A' - 1),          HT_INVALID   , FILL },
+  {CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
+  {CN_CARDCTL,                  sizeof(CardCtl),          HT_T_LARGE   , FILL },
+  {CN_CARDHISTORY,              sizeof(CardHistory),      HT_T_SMALL   , FILL },
+  {CN_CARDIMAGE,                sizeof(CardImage),        HT_T_SMALL   , FILL },
+  {CN_CARDITER,                 sizeof(CardIter),         HT_T_MEDIUM  , FILL },
+  {CN_CARDUSAGE,                sizeof(CardUsage),        HT_T_SMALL   , FILL },
+  {CN_CARRYFORWARD,             sizeof(CarryForward),     HT_T_TINY    , FILL },
+  {CN_CATALOG,                  sizeof(Catalog),          HT_INVALID   , FILL },
+  {CN_CHARSER,                  sizeof(Charser),          HT_T_LARGE   , FILL },
+  {CN_CHILDEXIT,                sizeof(ChildExit),        HT_T_TINY    , FILL },
+  {CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder), HT_T_LARGE   , FILL },
+  {CN_CMDLINEARGS,              sizeof(CmdLineArgs),      HT_INVALID   , FILL },
+  {CN_CODEBLOCK,                sizeof(CodeBlock),        HT_T_MEDIUM  , FILL },
+  {CN_COLHSH,                   sizeof(ColHsh),           HT_T_MEDIUM  , FILL },
+  {CN_COLINJ,                   sizeof(ColInj),           HT_T_MEDIUM  , FILL },
   {CN_COLMAP,                   sizeof(ColMap),                   HT_T_MEDIUM  , FILL },
   {CN_COLPPG,                   sizeof(ColPpg),                   HT_T_MEDIUM  , FILL },
   {CN_COLUMN,                   sizeof(Column),                   HT_T_TINY    , FILL },
   {CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
   {CN_COMMANDPARSER,            sizeof(CommandParser),            HT_V_LARGE   , FILL },
   {CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,     FILL },
-  {CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
   {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
   {CN_CRWBUFFER,                sizeof(CrwBuffer),                HT_T_LARGE   , FILL },
   {CN_CRWTABLEPTN,              sizeof(CrwTablePtn),              HT_T_TINY    , FILL },
@@ -440,6 +435,7 @@ SizeHeap gxaSizeHeap[]
   { CN_DYNAMO,                   sizeof(Dynamo),             HT_T_LARGE    ,FILL },
 
   { CN__E__,                     'E' - ('A' - 1),            HT_INVALID   ,FILL },
+  { CN_EACHMEMBERS,              sizeof(EachMembers),        HT_T_SMALL   , FILL },
   { CN_EDTVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_ENCODING,                 sizeof(Encoding),           HT_T_MEDIUM  ,FILL },
   { CN_ENT,                      sizeof(Ent),                HT_INVALID   ,FILL },
@@ -676,8 +672,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SEPROMPT,        sizeof(SePrompt),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUT,        sizeof(ShortCut),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUTVEC,     sizeof(ShortCutVec),        HT_T_MEDIUM  , FILL },
-  { CN_SHORTFORM,       sizeof(ShortForm),          HT_T_LARGE  , FILL },
-  {CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
+   {CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
   {CN_SKETCHTKN,       sizeof(SketchTkn),          HT_T_TINY    , FILL },
   {CN_SKIPLIST,        sizeof(SkipListNL),         HT_T_TINY    , FILL },
   {CN_SKIPLISTNODE,    sizeof(SkipListNode),       HT_INVALID   , FILL },
@@ -800,7 +795,8 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_ADD_HASH_CAST,           sizeof(XF_Epilog_Add_hash_cast),           HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ADD_INFLATE,             sizeof(XF_Epilog_Add_inflate),             HT_T_TINY    , FILL },
   {CN_XF_EPILOG_APPEND_SYNTHESIS,        sizeof(XF_Epilog_Append_synthesis),        HT_T_TINY    , FILL },
-   {CN_XF_EPILOG_DETERMINE_COLUMNS,    sizeof(XF_Epilog_Determine_Columns),    HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_CULL_FACET,           sizeof(XF_Epilog_Cull_facet),           HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_DETERMINE_COLUMNS,    sizeof(XF_Epilog_Determine_Columns),    HT_T_TINY    , FILL },
   {CN_XF_EPILOG_FUSE_PROJECT,         sizeof(XF_Epilog_Fuse_project),         HT_T_TINY    , FILL },
   {CN_XF_EPILOG_HASH_COLUMNS,         sizeof(XF_Epilog_Hash_Columns),         HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMISE_COLUMNS,      sizeof(XF_Epilog_Itemise_Columns),      HT_T_TINY    , FILL },
@@ -810,7 +806,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_TYPE_CAST,            sizeof(XF_Epilog_Type_Cast),            HT_T_TINY    , FILL },
   {CN_XF_EPILOG_X_STMCOL_TO_COLNM,    sizeof(XF_Epilog_X_stmCol_To_colNm),    HT_T_TINY    , FILL },
   {CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,   sizeof(XF_Epilog_X_tblCol_To_expCol),   HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN,                     sizeof(XF_Flatten),                     HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_SUBQUERY,            sizeof(XF_Flatten_subquery),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_10_F),                HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_24_W_A_C_RO,         sizeof(XF_Flatten_24_W_A_C_ro),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_32_W_A_NC_I,         sizeof(XF_Flatten_32_W_A_NC_I),         HT_T_TINY    , FILL },
@@ -820,7 +816,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_52_W_L_NC_I_JOIN,    sizeof(XF_Flatten_52_W_L_NC_I_join),    HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, sizeof(XF_Flatten_53_W_L_NC_NI_exists), HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,   sizeof(XF_Flatten_53_W_L_NC_NI_join),   HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_74_H_A_NC_RO,           sizeof(XF_Flatten_74_H_A_NC_ro),           HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_74_H_A_NC_RO,        sizeof(XF_Flatten_74_H_A_NC_ro),        HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PURGE_WHERE,            sizeof(XF_Flatten_Purge_where),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DELETE_FLAT,            sizeof(XF_Flatten_Delete_flat),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DERIVE_BOUNDS,          sizeof(XF_Flatten_Derive_bounds),          HT_T_TINY    , FILL },
@@ -829,10 +825,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_LEFT_SUBQUERY,          sizeof(XF_Flatten_Left_subQuery),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PREDICATE_REPOSITION,   sizeof(XF_Flatten_Predicate_Reposition),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PULLUP_RLNCONJ,         sizeof(XF_Flatten_Pullup_rlnConj),         HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_SMOOSH,                 sizeof(XF_Flatten_Smoosh),                 HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_SMOOTH,                 sizeof(XF_Flatten_Smooth),                 HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL,     sizeof(XF_Flatten_X_expCol_To_tblCol),     HT_T_TINY    , FILL },
-  {CN_XF_FOLD,                           sizeof(XF_Fold),                           HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, sizeof(XF_Optimise_aggreg_To_sort_ordAgg), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_CULL_BOUND,            sizeof(XF_Optimise_Cull_bound),            HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_CUT_SORT,              sizeof(XF_Optimise_Cut_sort),              HT_T_TINY    , FILL },
@@ -866,6 +859,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),              HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_PIPELINEDEF,       sizeof(XF_Synthesise_pipelineDef),       HT_T_TINY    , FILL },
+  {CN_XF_UTILITY_VERIFY_DIC,           sizeof(XF_Utility_Verify_dic),           HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),                                 HT_INVALID   , FILL },
 

@@ -55,17 +55,16 @@ enum eSF // symbol facet
   /* */ SF_NULL,        // Null                : NULL
 
   /* */ SF_PARENTHESIS, // Parenthesis         : (, )
-  /* */ SF_PAY_COL,     // Key Column no       : $Pn
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
   /* */ SF_SQY_NM,      // Subquery name       : bIsName
   /* */ SF_SQY_NO,      // SubQuery No         : $Qn
   /* */ SF_SQY_OP,      // SubQuery Op         :
-  /* */ SF_SQY_PRM,     // Parameter Column    : %n
-  /* */ SF_SQY_RSL,     // SubQuery Result     :
+  /* */ SF_SQY_PRM,     // Subquery Parameter  : %n
+  /* */ SF_SQY_RSL,     // SubQuery Result     : $SRn
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
-  /* */ SF_STG_NO,      // Stage No            : Sn
+  /* */ SF_STG_NM,      // Stage No            : Sn
   /* */ SF_STR_FN,      // String Function     : SUBSTRING2 ... SUBSTRING3
   /* */ SF_STR_LIT,     // String              : 'abc'
 
@@ -79,6 +78,8 @@ enum eSF // symbol facet
   /* */ SF_WHEN,        // When                : WHEN
 
   /* */ SF_XK_CAST,     // XK_                 : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
+
+  /* */ SF_RW_AGGREGATES, // Aggregates        : AGGREGATES
 
   /* */ SF_ENUMS
 };

@@ -17,6 +17,7 @@ namespace STORE
    ~Card_OrdAgg(void) noexcept(false);
 
     void vEarlyProject_root(CardIter* pCI);
+    void vCraft_needed_root(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

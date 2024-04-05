@@ -13,20 +13,6 @@ __aNewFunction(ArgDef, CN_ARGDEF)
 __vDeleteFunction(ArgDef, CN_ARGDEF)
 __aFooterFunction(ArgDef)
 
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-ArgDef::ArgDef(void)
-    : Object(CN_ARGDEF)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
-
-  m_i_Arg = C_UNKNOWN;
-
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
-}
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

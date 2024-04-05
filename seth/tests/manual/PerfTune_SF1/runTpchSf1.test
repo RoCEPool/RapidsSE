@@ -1,0 +1,10 @@
+--------------------------------------------------------------------------------
+-- Run TPC-H SF1
+--------------------------------------------------------------------------------
+
+INCLUDE FILE 'setup.test';
+
+//SET OPTION decimalrounding=2;
+INCLUDE FILE 'pipelines.test';
+//INCLUDE FILE 'queries.test';
+//UNSET OPTION decimalrounding;

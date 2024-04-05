@@ -50,7 +50,8 @@ void Card_Limit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_s_LEVEL, CK_NONE);
 
-  UNUSED(pParent);
+  RASSERT(pSymbol()->bHasFacet(SF_INT_LIT));
+
   Card::vValidate(pCI,iDepth,pParent);
   Card_OP::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

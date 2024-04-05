@@ -329,7 +329,7 @@ i8 ListExo2_t<ITEM>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at nth item of list                                                   */
+/* peek at nth item of list                                            */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ListExoIter2_t<ITEM>* ListExo2_t<ITEM>::pNewIter(void)

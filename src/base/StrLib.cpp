@@ -6142,12 +6142,13 @@ i8 StrLib::iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResul
   }
   
   MemLib::vZero(psDst, iReqDstSize, CN_KEY);
-  MemLib::vCopy(psDst, psSrc, iReqDstSize, CN_KEY);
+  //MemLib::vCopy(psDst, psSrc, iReqDstSize, CN_KEY);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   w8* aWrd = (w8*)psDst;
+  w8* aWrdSrc = (w8*)psSrc;
   for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--)
-    MemLib::vWordFlip(aWrd++);
+    MemLib::vWordFlip(aWrd++, aWrdSrc++);
   
   
   //vTrace("\nAFTER BACK : %s\n"_Stz, aDst);

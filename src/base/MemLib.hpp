@@ -59,6 +59,7 @@ namespace BASE
     static void* aToBoundary(void* aAddress, i8 nByteBoundary);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
     static void  vWordFlip(w8* aWord);
+    static void  vWordFlip(w8* aWord, w8* aWordDst);
     static void  vZero(void* pDst, i8 iBytes, eCN eClassNo);
   
     static void  vMemoryMap(void);

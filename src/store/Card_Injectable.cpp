@@ -49,10 +49,10 @@ Card_Injectable* Card_Injectable::pNew_injectable(CardIter* pCI)
 {
   _static_;
 
-  Table* pTable = pCI->G.p_table->pGet_Table();
+  Table* pTable = pCI->E.p_table->pGet_Table();
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
+  char cTblSyn = pCI->E.p_table->pSymbol()->cTblSyn();
 
   Card_Injectable* p_injectable = new Card_Injectable;
 
@@ -61,7 +61,7 @@ Card_Injectable* Card_Injectable::pNew_injectable(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr_Column =
-        Card_Expr::pCraft_expr_nmdCol(pColumn, i_Col + 1, cTblSyn, i_Col + 1);
+        Card_Expr::pCraft_expr_of_nmdCol(pColumn, i_Col + 1, cTblSyn, i_Col + 1);
 
     p_injectable->vAppendChild(p_expr_Column);
   }
@@ -74,27 +74,24 @@ Card_Injectable* Card_Injectable::pNew_injectable(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* short form                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_Injectable::vShortForm(String* pString)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pString->vCopy("i:"_Stz);
-  Card_EXPRLIST::vShortForm(pString);
-  //pString->vConcat("}"_Stz);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Injectable::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //RASSERT(CK_s_STREAM == pParent->eCard());
-  
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_o_CROSSJOIN,
+                                     CK_o_FROM,
+                                     CK_o_INFLATE,
+                                     CK_o_INDEXJOIN,
+                                     CK_o_INDEXSCAN,
+                                     CK_o_KEYEXISTS,
+                                     CK_o_KEYNOTEXISTS,
+                                     CK_o_SCAN,
+                                     CK_NONE);
+  vValidate_mustHave(CK_EXPR,CK_NONE);
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

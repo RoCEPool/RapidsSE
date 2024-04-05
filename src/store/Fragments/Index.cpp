@@ -56,14 +56,14 @@ void vIndexDereferenceLB(Dynamic_T* aDynamicT) {
   // dereference the entry
   iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
   iIndexItem   = __INDEX_INFO__.m_aEntInt->Rrf.m_uItem;
-  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
+  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
   ayDstByte = (byte*)__ROW_INFO_TO__.m_aRowCellArray + 8*__COLUMNS_INFLATED__;
   acStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
-  racStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+	racStrArea = acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataX = C_1B  + C_8B  + __COLUMNS_TO_INFLATE_;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataX);
@@ -116,14 +116,14 @@ void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
   // dereference the entry
   iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
   iIndexItem   = __INDEX_INFO__.m_aEntInt->Rrf.m_uItem;
-  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
+  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
   ayDstByte = (byte*)__ROW_INFO_TO__.m_aRowCellArray + 8*__COLUMNS_INFLATED__;
   acStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
-  racStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  racStrArea = acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataX = C_1B  + C_8B  + __COLUMNS_TO_INFLATE_;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataX);
@@ -149,7 +149,7 @@ void vIndexPositionBegin(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at beginning of the index
-  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aExtern_IndexTreeBegin(
+  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aDynamicT->m_fp_aExtern_IndexTreeBegin(
         __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
 #endif
 
@@ -175,8 +175,9 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at lower bound
-  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
+	__INDEX_POSITION_LOWER__(&__INDEX_INFO__);
+  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+  //    &__INDEX_INFO__);
 #endif
 
   // marker-end
@@ -218,8 +219,7 @@ void vIndexPositionUpper(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at upper bound
-  __INDEX_INFO__.m_aEntUpper =  (struct Ent_int *)__INDEX_POSITION_UPPER__(
-      __INDEX_INFO__.m_aIndexTree, __INDEX_INFO__.m_aEntKey);
+  __INDEX_POSITION_UPPER__(&__INDEX_INFO__);
 #endif
 
   // marker-end
@@ -286,7 +286,7 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
   //printf("moving to next index scan\n");
 
 #ifdef WITH_CLANG
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
       &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
 #endif
 

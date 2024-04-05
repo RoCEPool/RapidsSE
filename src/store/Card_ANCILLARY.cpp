@@ -15,7 +15,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ANCILLARY::Card_ANCILLARY(eCK eCard, i8 iFixedDepth)
-: Card_MAIN(eCard, iFixedDepth)
+: Card_OP(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

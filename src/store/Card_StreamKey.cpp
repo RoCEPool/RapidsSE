@@ -67,87 +67,13 @@ Card_StreamKey* Card_StreamKey::pTo_streamKey(Card_Key* p_key)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_StreamKey::bIsEquivalentTo(Card_Key* p_key_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vDump(__func__ ,"this streamKey"_Stz);
-  //p_key_arg->vDump(__func__ ,"p_key_arg"_Stz);
-
-  if (! bSame(p_key_arg))
-    return false;
-
-  return true;
-}
-/*----------------------------------------------------------------------------*/
-//bool Card_StreamKey::bIsEquivalentTo(Card_Key* p_key_arg)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  RASSERT(CT_NONE != this->eColType());
-//
-//  vDump(__func__ ,"this streamKey"_Stz);
-//  p_key_arg->vDump(__func__ ,"p_key_arg"_Stz);
-//
-//  if (eColType() != p_key_arg->eColType())
-//    return false;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  Card_RpnCalc* p_rpnCalc_this = pSub_rpnCalc();
-//  Card_RpnCalc* p_rpnCalc_arg  = p_key_arg->pSub_rpnCalc();
-//
-//  if (p_rpnCalc_this) {
-//    if (p_rpnCalc_arg) {
-//      if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
-//        return false;
-//    }
-//    else {
-//      return false;
-//    }
-//  }
-//  else
-//  if (p_rpnCalc_arg) {
-//    return false;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  Card_Direction* p_direction_this = pSub_direction();
-//  Card_Direction* p_direction_arg  = p_key_arg->pSub_direction();
-//
-//  p_direction_this->vDump(__func__ ,"p_direction_this"_Stz);
-//  p_direction_arg->vDump(__func__ ,"p_direction_arg"_Stz);
-//
-//  if (p_direction_this) {
-//    if (p_direction_arg) {
-//      if (! p_direction_this->bIsEqual(p_direction_arg))
-//        return false;
-//    }
-//    else {
-//      return false;
-//    }
-//  }
-//  else
-//  if (p_direction_arg) {
-//    return false;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  return true;
-//}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_StreamKey::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pParent->bIsCard(CK_t_EMIT));
 
+/**Z_KEY_DIRECTION validate*/
   vValidate_mustHave(CK_EXPR,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);

@@ -201,12 +201,12 @@ namespace STORE
     bool m_bRcvdChildExit;
     bool m_bRcvdEnd;
 
-    bool (*m_afFun0)(void*);
-    bool (*m_afFun1)(void*);
-    bool (*m_afFun1_)(void*);
-    bool (*m_afFun2)(void*);
-    bool (*m_afFun3)(void*);
-    bool (*m_afFun4)(void*);
+    bool (*m_afCrwHandler)(void*);
+    bool (*m_afPdsHandler)(void*);
+    bool (*m_afIndexHandler)(void*);
+    bool (*m_afEosHandler)(void*);
+		bool (*m_afStartHandler)(void*);
+    bool (*m_afStreamDefHandler)(void*);
 
     s4K  m_sStringA;    // string
     s256 m_sString0;    // string

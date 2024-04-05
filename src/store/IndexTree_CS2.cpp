@@ -77,6 +77,90 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* find an entry in the indexTree                                             */
 /*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntryAsc(IndexTree* pIndexTree, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  eKC eCmp;
+
+  //pIndexTree->vDump(false);
+
+  Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  Key* aEntKey = aEnt->aKey();
+
+  if (KE_GENERAL == aEnt->eKind()) {
+    eCmp = Key::eCompareAsc(aEntKey,aKey);
+  }
+  else {
+    i8 iEntVal = *(i8 *) aEntKey;
+    i8 iWrkVal = *(i8 *) aKey;
+
+    if (iEntVal < iWrkVal)
+      eCmp = KC_BEFORE;
+    else if (iEntVal == iWrkVal)
+      eCmp = KC_SAME;
+    else
+      eCmp = KC_AFTER;
+  }
+
+  if (eCmp == KC_SAME)
+    return aEnt;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find an entry in the indexTree                                             */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntryAscDsc(IndexTree* pIndexTree, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  eKC eCmp;
+
+  //pIndexTree->vDump(false);
+
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+
+  Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  Key* aEntKey = aEnt->aKey();
+
+  if (KE_GENERAL == aEnt->eKind()) {
+    eCmp = Key::eCompare(pIndexDef, aEntKey,aKey);
+  }
+  else {
+    i8 iEntVal = *(i8 *) aEntKey;
+    i8 iWrkVal = *(i8 *) aKey;
+
+    if (iEntVal < iWrkVal)
+      eCmp = KC_BEFORE;
+    else if (iEntVal == iWrkVal)
+      eCmp = KC_SAME;
+    else
+      eCmp = KC_AFTER;
+  }
+
+  if (eCmp == KC_SAME)
+    return aEnt;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find an entry in the indexTree                                             */
+/*----------------------------------------------------------------------------*/
 Ent* IndexTree::aFindEntry_hint(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_recent)
 {
   UNUSED(aEnt_recent);
@@ -1265,7 +1349,11 @@ Ent* IndexTree::aFindEntry_CS2_v14(IndexTree* pIndexTree, Key* aKey)
   EntBuffer* pEntBuffer;
 
 #if 0
-  pEntBuffer = pIndexTree->m_pRootEntBuffer->pFindLeafBuffer_int(aKey);
+	iBufferHeight = pIndexTree->m_pRootEntBuffer->iBufferHeight();
+  if (iBufferHeight == 0)
+    pEntBuffer = pIndexTree->m_pRootEntBuffer;
+	else
+    pEntBuffer = pIndexTree->m_pRootEntBuffer->pFindLeafBuffer_int(aKey);
 
   /*-----------------------------------------------------------------------*/
 #else
@@ -3177,6 +3265,190 @@ Ent* IndexTree::aFindEntry_CS2_v27(IndexTree* pIndexTree,
     return aEnt_H0;
   else
     return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* find an entry in the indexTree                                             */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindInsertEntryAscGen(Key* aKey, Ent* pEntInt, i8 nPayloadBytes, bool* pbInserted, i8* piErrorCode) {
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* pEntFound = nullptr;
+	Ent* aEnt;
+	Key *aEntKey;
+
+	i8 iCmp;
+	i8 nKeyBytes_l;
+	i8 nKeyBytes_r;
+	i8 nCmpBytes;
+
+	Dtm* ayKeyBytes_l;
+	Dtm* ayKeyBytes_r;
+
+	const i8 *iWord1;
+	const i8 *iWord2;
+
+	//
+	//Ent* aEnt = aPositionPriorEntryAsc(aKey, &pEntBuffer);
+	//if ( !aEnt )
+	//	goto L_NOTFOUND;
+  //
+
+	// root buffer ?
+	if ( ! m_pRootEntBuffer )
+		goto L_NOTFOUND;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// position at H0 buffer
+	pEntBuffer = m_pRootEntBuffer->pFindLeafBuffer_ascGen(aKey);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
+	// position at prior entry
+	aEnt = pEntBuffer->aFindEntryBefore(aKey);
+
+	// entry ?
+	if ( ! aEnt )
+		goto L_NOTFOUND;
+
+	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+	if (!aEnt)
+		goto L_NOTFOUND;
+
+	aEntKey = aEnt->aKey();
+
+//	eCmp = Key::eCompare(m_pIndexDef, aEntKey, aKey);
+//
+//	if (eCmp == KC_SAME) {
+//		pEntFound = aEnt;
+//		goto L_RETURN;
+//	}
+
+	nKeyBytes_l = aEntKey->nElmSeqSize();
+	nKeyBytes_r = aKey->nElmSeqSize();
+
+	ayKeyBytes_l = aEntKey->aElmSeq_dtm();
+	ayKeyBytes_r = aKey->aElmSeq_dtm();
+
+	nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+	//
+	// i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+	//
+
+	iWord1 = (const i8*)ayKeyBytes_l;
+	iWord2 = (const i8*)ayKeyBytes_r;
+
+	while (nCmpBytes > 0) {
+		if (*iWord1++ != *iWord2++) {
+			iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
+			break;
+		}
+		nCmpBytes -=8;
+	}
+	if (nCmpBytes == 0)
+		iCmp = 0;
+
+	if ( !(iCmp == 0 && nKeyBytes_l == nKeyBytes_r))
+		pEntFound = nullptr;
+	else {
+		pEntFound = aEnt;
+		goto L_RETURN;
+	}
+
+	/*
+	EntBuffer* pEntBuffer = nullptr;
+
+	//
+	// aPositionPriorEntryAsc(aKey, &pEntBuffer);
+	//
+	Ent* pEntFound;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// root buffer ?
+	if ( ! m_pRootEntBuffer )
+		pEntFound = nullptr;
+	else {
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+		// position at H0 buffer
+		pEntBuffer = m_pRootEntBuffer->pFindLeafBuffer_ascGen(aKey, &pEntFound);
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// found entry ?
+	if ( pEntFound ) {
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+		// move to next entry
+		pEntFound = EntBuffer::pMoveToNextEntry(pEntFound, &pEntBuffer);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+		// found next entry ?
+		if (pEntFound) {
+
+			Key *aEntKey = pEntFound->aKey();
+
+			//
+			// eCmp = Key::eCompareAsc(aEntKey, aKey);
+			//
+
+			i8 nKeyBytes_l = aEntKey->nElmSeqSize();
+			i8 nKeyBytes_r = aKey->nElmSeqSize();
+
+			Dtm* ayKeyBytes_l = aEntKey->aElmSeq_dtm();
+			Dtm* ayKeyBytes_r = aKey->aElmSeq_dtm();
+
+			i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
+
+			//
+			// i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+      //
+
+			i8 iCmp;
+			const i8 *iWord1 = (const i8*)ayKeyBytes_l;
+			const i8 *iWord2 = (const i8*)ayKeyBytes_r;
+
+			while (nCmpBytes > 0) {
+				if (*iWord1++ != *iWord2++) {
+					iCmp = iWord1[-1] < iWord2[-1] ? -1 : 1;
+					break;
+				}
+				nCmpBytes -=8;
+			}
+      if (nCmpBytes == 0)
+			  iCmp = 0;
+
+			if ( !(iCmp == 0 && nKeyBytes_l == nKeyBytes_r))
+				pEntFound = nullptr;
+		}
+	}
+*/
+
+
+	L_NOTFOUND:
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// not found entry ?
+	ASSERT(!pEntFound);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// create payload
+	Ent::vPayloadCreate(pEntInt, nPayloadBytes);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+	// insert entry
+	try {
+		pEntFound = aInsertEntry(pEntInt);
+		*pbInserted = true;
+	}
+	catch (LowMemory xLowMemory) {
+		*piErrorCode = EC_LOW_MEMORY;
+		return nullptr;
+	}
+
+	L_RETURN:
+	return pEntFound;
 }
 
 /*============================================================================*/

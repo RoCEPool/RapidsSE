@@ -70,10 +70,6 @@ i8 iAggregInitEnd(Dynamic_T* aDynamicT) {
   {
   // marker-start
 
-    if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
-      return 0;
-    }
-
     aDynamicT->m_xRowInfoAT.m_bInitialize = false;
   }
 

@@ -14,11 +14,57 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get address of cell array of first row                                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_PdsFirstRowCellArray(void* aPdsRowBuffer, void** aaCurrentRow)
+{
+	//return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+
+	void* aCellArray = nullptr;
+	Pds* pPdsRowBuffer = (Pds*)aPdsRowBuffer;
+	Row* pRow = pPdsRowBuffer->pFirstRow();
+  *aaCurrentRow = pRow;
+	if (pRow)
+		aCellArray =  (void*)pRow->aCellArray();
+
+	return aCellArray;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of cell array of first row                                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_PdsNextRowCellArray(void* aPdsRowBuffer, void** aaCurrentRow)
+{
+	//return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+
+	void* aCellArray = nullptr;
+	Pds* pPdsRowBuffer = (Pds*)aPdsRowBuffer;
+	Row* pRow = pPdsRowBuffer->pNextRow((Row*)*aaCurrentRow);
+	*aaCurrentRow = pRow;
+	if (pRow)
+	  aCellArray =  (void*)pRow->aCellArray();
+
+	return aCellArray;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of cell array of row                                           */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_PdsRowBufferCellArray(void* pPdsRowBuffer, i8 iRow)
+extern "C" void* aExtern_PdsRowBufferCellArray(void* aPdsRowBuffer, i8 iRow)
 {
-  return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+  //return Pds::aGetCellArray((Pds*)pPdsRowBuffer, iRow);
+
+	Pds* pPdsRowBuffer = (Pds*)aPdsRowBuffer;
+	SkipListBlock* pSkipListBlock = pPdsRowBuffer->pFind(&iRow);
+	if (pSkipListBlock == nullptr) {
+		return nullptr;
+	}
+
+	// Calculate the address of the Row
+	// <(i8)key><Row>
+	Row* pRow = pSkipListBlock->aRow();
+
+	return (void*)pRow->aCellArray();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,13 +535,19 @@ SkipListBlock* Pds::pAppend(void* pKey)
   // insert the key based on a random number
 //  u8 uSkipLevels = (RndLib::uInteger() % C_MAX_LVL_LEVELS) + 1;
 
+	i8 iRMod = (i8) (RndLib::uInteger() % (C_MAX_LVL_LEVELS));
+
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
 
 //    i8 iRMod = rand() % (i_Level+1);
-    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
-    if(iRMod != 0) {
-      break;
-    }
+
+//    i8 iRMod2 = (i8) (RndLib::uInteger() % (i_Level+1));
+//    if(iRMod != 0) {
+//      break;
+//    }
+
+    if (i_Level > iRMod)
+	    break;
 
     u2 uTailOffset = m_auTailOffsets[i_Level];
     SkipListBlock* pCurrTail = (SkipListBlock*) pGetAddrFromOffset(uTailOffset);
@@ -896,13 +948,19 @@ SkipListBlock* Pds::pInsert(void* pKey)
   // insert the key based on a random number
 //  u8 uSkipLevels = (RndLib::uInteger() % C_MAX_LVL_LEVELS) + 1;
 
+	i8 iRMod = (i8) (RndLib::uInteger() % (C_MAX_LVL_LEVELS));
+
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
 
 //    i8 iRMod = rand() % (i_Level+1);
-    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
-    if(iRMod != 0) {
-      break;
-    }
+
+//    i8 iRMod = (i8) (RndLib::uInteger() % (i_Level+1));
+//    if(iRMod != 0) {
+//      break;
+//    }
+
+		if (i_Level > iRMod)
+			break;
 
     SkipListBlock* pCursor = xPriorVec[i_Level];
 

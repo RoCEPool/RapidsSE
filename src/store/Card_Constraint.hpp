@@ -16,16 +16,16 @@ namespace STORE
     Card_Constraint(void);
    ~Card_Constraint(void) noexcept(false);
 
+    static Card_Constraint* pNewAssembly(CardIter* pCI=nullptr);
+
     void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
-    void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
-    i8 nCullMarked_rlnConj(Stz* szWithMark);
-
-    void vEnsure_Cast(CardIter *pCI);
-
+    void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
+    void vBump_expCol(i8 nBumpBy);
+    void vBurstAssembly(CardIter* pCI);
+    i8   nCullMarked_rlnConj(Stz* szWithMark);
     void vResolve_colNm_From_colSym(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
-
   };
 
   Card_Constraint* _pCard_Constraint(void* aAddr);

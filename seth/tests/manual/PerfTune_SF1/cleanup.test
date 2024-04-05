@@ -1,0 +1,35 @@
+--------------------------------------------------------------------------------
+-- Drop Tables
+--------------------------------------------------------------------------------
+
+drop table lineitem;
+mute
+
+drop table orders;
+mute
+
+drop table partsupp;
+mute
+
+drop table part;
+mute
+
+drop table customer;
+mute
+
+drop table supplier;
+mute
+
+drop table nation;
+mute
+
+drop table region;
+mute
+
+--------------------------------------------------------------------------------
+-- CLEANUP
+--------------------------------------------------------------------------------
+
+CLEANUP {
+}
+

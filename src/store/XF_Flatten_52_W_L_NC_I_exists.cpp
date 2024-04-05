@@ -6,8 +6,6 @@
 
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 
-#include "XF_Fold.hpp"
-#include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -23,7 +21,7 @@ __aFooterFunction(XF_Flatten_52_W_L_NC_I_exists)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_52_W_L_NC_I_exists::XF_Flatten_52_W_L_NC_I_exists(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, _FOOTER_);
 
@@ -43,11 +41,11 @@ XF_Flatten_52_W_L_NC_I_exists::~XF_Flatten_52_W_L_NC_I_exists(void) noexcept(fal
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_52_W_L_NC_I_exists::vXF_Flatten_52_W_L_NC_I_exists(CardIter* pCI)
+void XF_Flatten_52_W_L_NC_I_exists::vFlatten(CardIter* pCI)
 {
   _static_
 
-  XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(pCI);
+  XF_Flatten_53_W_L_NC_NI_exists::vFlatten(pCI);
 }
 
 
