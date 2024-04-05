@@ -128,8 +128,8 @@ def write_jmeter_property_file(host: str, cluster_cfg: ClusterConfig):
     jdbc_url = C_JDBC_URL_FMT.format(cluster_cfg.get_external_port())
 
     lines = [
-        "# Classpath to find the RapidsSE JDBC driver",
-        f"user.classpath={cluster_cfg.get_dir()}",
+        "# Classpath to find the RapidsSE JDBC driver & JMeter plugins",
+        f"user.classpath={cluster_cfg.get_dir()}:{cluster_cfg.get_dir()}/{C_SUPPORT_FILES_DIR}",
         "",
         "# JDBC driver URL to use",
         f'JDBC_URL={jdbc_url}',
