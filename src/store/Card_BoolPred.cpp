@@ -670,8 +670,8 @@ void Card_BoolPred::vReduce_not(CardIter* pCI)
     if (! p_conj->bIsCard(CK_NOTCONJ))
       return C_CONTINUE_RECURSION;
 
+    //p_conj->vDump(__func__);
     Card* pChild_hmm_sqyOp = p_conj->pPeekChild();
-    p_conj->vDump(__func__);
 
     if (pChild_hmm_sqyOp->bHasFacet(SF_SQY_OP, "exists"_Stz)) {
       p_conj->vRemoveChild(pChild_hmm_sqyOp);
@@ -680,7 +680,7 @@ void Card_BoolPred::vReduce_not(CardIter* pCI)
       p_conj->vCard(CK_RLNCONJ);
       p_conj->vTransferChildren(pChild_hmm_sqyOp);
       DELETE_CARD(pChild_hmm_sqyOp);
-      p_conj->vDump(__func__);
+      //p_conj->vDump(__func__);
       return C_CONTINUE_RECURSION;
     }
 
@@ -691,7 +691,7 @@ void Card_BoolPred::vReduce_not(CardIter* pCI)
       p_conj->vCard(CK_RLNCONJ);
       p_conj->vTransferChildren(pChild_hmm_sqyOp);
       DELETE_CARD(pChild_hmm_sqyOp);
-      p_conj->vDump(__func__);
+      //p_conj->vDump(__func__);
       return C_CONTINUE_RECURSION;
     }
 

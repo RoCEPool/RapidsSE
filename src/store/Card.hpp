@@ -20,7 +20,7 @@
 
 #define Z_NO_RPNCALC
 
-//#define Z_FILTER_BOOLPRED
+#define Z_FILTER_BOOLPRED
 
 namespace STORE
 {

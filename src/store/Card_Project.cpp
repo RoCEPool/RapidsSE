@@ -106,6 +106,13 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (8 == pCI->m_pBench->iBenchNo() && 57 == pCI->m_pBench->nPrintBoard()) {
+    //pCI->E.p_Op->vDump(__func__);
+    //this->vDump(__func__);
+    //pCI->Early.m_pNeeded_later->vDump(__func__);
+    vDebugPoint();
+  }
+
   Card_Emit* p_emit_early = new Card_Emit;
 
 //  pCI->Early.m_pNeeded_later->vDump(__func__);
@@ -113,11 +120,19 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
+    if (8 == pCI->m_pBench->iBenchNo() && 57 == pCI->m_pBench->nPrintBoard()) {
+      //p_expr_needed->vDump(__func__);
+      vDebugPoint();
+    }
 
-    //RASSERT(pCI->Dic.m_p_expr == pCI->Flux.m_pArriving);
+      //RASSERT(pCI->Dic.m_p_expr == pCI->Flux.m_pArriving);
     Card_Expr* p_expr_arriving = pCI->Flux.m_pArriving->pContains(p_expr_needed);
-    if (! p_expr_arriving)
+    if (! p_expr_arriving) {
+      //vTrace("NOT MATCHING\n"_Stz);
       continue;
+    }
+
+    //vTrace("MATCHING\n"_Stz);
 
     Card_Expr* p_expr_clone = p_expr_arriving->pClone();
 
@@ -131,6 +146,11 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 
 
   p_emit_early->vRenumberAll_expr();
+
+  if (8 == pCI->m_pBench->iBenchNo() && 57 == pCI->m_pBench->nPrintBoard()) {
+    //p_emit_early->vDump(__func__);
+    vDebugPoint();
+  }
 
   return p_emit_early;
 }
