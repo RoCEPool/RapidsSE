@@ -77,17 +77,6 @@ void Card_CONDITION::vX_expCol_To_tblCol(CardIter* pCI)
 
   if ((pCI->E.p_boolPred = pSub_boolPred()))
     pCI->E.p_boolPred->vX_expCol_To_tblCol(pCI);
-  else {
-    for (pCI->vBeginTarget(pSub_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
-      if (! pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
-        continue;
-
-      pCI->E.p_term = pCI->E.xTarget.p_term();
-      pCI->E.p_term->vX_expCol_To_tblCol(pCI);
-    }
-
-    pCI->E.p_term = nullptr;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,11 +90,6 @@ void Card_CONDITION::vX_tblCol_To_expCol(CardIter* pCI)
   pCI->E.p_rpnCalc  = nullptr;
   if ((pCI->E.p_boolPred = pSub_boolPred()))
     pCI->E.p_boolPred->vX_tblCol_To_expCol(pCI);
-  else if ((pCI->E.p_expr = pSub_expr())) {
-    //vDump(__func__);
-    pCI->E.p_expr->vX_tblCol_To_expCol(pCI);
-  }
-
   pCI->E.p_boolPred = nullptr;
   pCI->E.p_rpnCalc  = nullptr;
 }
