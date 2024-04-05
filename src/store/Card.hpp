@@ -358,6 +358,8 @@ namespace STORE
     i8    nFunctionCount(void);
 
     bool bHasChildFacet(eSF eFacet);
+    bool bHasFacet(eSF eFacet);
+    bool bHasFacet(eSF eFacet, Stz* szFacet);
     bool bHasSub(Card* pSubCard);
     bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
 

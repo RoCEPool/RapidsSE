@@ -1007,6 +1007,30 @@ bool Card::bHasChildFacet(eSF eFacet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* has given facet?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasFacet(eSF eFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = m_xSymbol.bHasFacet(eFacet);
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has given facet?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasFacet(eSF eFacet, Stz* szFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = m_xSymbol.bHasFacet(eFacet, szFacet);
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasSub(Card* pSubCard)

@@ -655,6 +655,58 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reduce not                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_BoolPred::vReduce_not(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  auto bfReduce_not = [pCI](Card_CONJ* p_conj, bool bUpwards)
+  {
+    UNUSED(pCI);
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_conj->bIsCard(CK_NOTCONJ))
+      return C_CONTINUE_RECURSION;
+
+    Card* pChild_hmm_sqyOp = p_conj->pPeekChild();
+    p_conj->vDump(__func__);
+
+    if (pChild_hmm_sqyOp->bHasFacet(SF_SQY_OP, "exists"_Stz)) {
+      p_conj->vRemoveChild(pChild_hmm_sqyOp);
+      p_conj->pSymbol()->vResetFacets();
+      p_conj->SYM(SF_SQY_OP,"notExists"_Stz);
+      p_conj->vCard(CK_RLNCONJ);
+      p_conj->vTransferChildren(pChild_hmm_sqyOp);
+      DELETE_CARD(pChild_hmm_sqyOp);
+      p_conj->vDump(__func__);
+      return C_CONTINUE_RECURSION;
+    }
+
+    if (pChild_hmm_sqyOp->bHasFacet(SF_SQY_OP, "in"_Stz)) {
+      p_conj->vRemoveChild(pChild_hmm_sqyOp);
+      p_conj->pSymbol()->vResetFacets();
+      p_conj->SYM(SF_SQY_OP,"notIn"_Stz);
+      p_conj->vCard(CK_RLNCONJ);
+      p_conj->vTransferChildren(pChild_hmm_sqyOp);
+      DELETE_CARD(pChild_hmm_sqyOp);
+      p_conj->vDump(__func__);
+      return C_CONTINUE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_CONJ* p_conj_root = this->pRoot_conj();
+
+  bool bIgnore = p_conj_root->bLambdaWalk_conj(bfReduce_not);
+  UNUSED(bIgnore);
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given rlnConj from this boolPred                                    */
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
