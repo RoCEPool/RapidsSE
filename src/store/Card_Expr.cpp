@@ -772,7 +772,6 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   (void)Card::eValidate_parentEither(pCI,
                                      CK_s_CONSTRAINT,
                                      CK_t_EMIT,
-                                     CK_o_FILTER,
                                      CK_s_KEY,
 
                                      CK_c_FLAT,

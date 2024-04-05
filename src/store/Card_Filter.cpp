@@ -205,7 +205,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eValidate_mustEither(CK_BOOLPRED, CK_EXPR, CK_NONE);
+  vValidate_mustHave(CK_BOOLPRED, CK_NONE);
 
   if (iDepth > 2) {
    // pCI->PRINTBOARD_dbg();
