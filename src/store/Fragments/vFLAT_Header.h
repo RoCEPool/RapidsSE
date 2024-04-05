@@ -119,15 +119,18 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
 	aDynamicT->m_fp_vExtern_EntWrkAppendElementStz = &vExtern_EntWrkAppendElementStz;
-	aDynamicT->m_fp_aExtern_EntBufferNextEntry = &aExtern_EntBufferNextEntry;
-	aDynamicT->m_fp_vExtern_EntPayloadCreate = &vExtern_EntPayloadCreate;
+	aDynamicT->m_fp_aExtern_EntBufferNextEntry     = &aExtern_EntBufferNextEntry;
+	aDynamicT->m_fp_vExtern_EntPayloadCreate       = &vExtern_EntPayloadCreate;
+	aDynamicT->m_fp_vExtern_EntWrkReset            = &vExtern_EntWrkReset;
 
-	aDynamicT->m_fp_vExtern_IndexFind = &vExtern_IndexFind;
-	aDynamicT->m_fp_vExtern_IndexNew = &vExtern_IndexNew;
-	aDynamicT->m_fp_aExtern_IndexTreeBegin = &aExtern_IndexTreeBegin;
-	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc = &aExtern_IndexTreeFindEntryAsc;
+	aDynamicT->m_fp_aExtern_IndexTreeAllotPayStr = &aExtern_IndexTreeAllotPayStr;
+	aDynamicT->m_fp_vExtern_IndexFind            = &vExtern_IndexFind;
+	aDynamicT->m_fp_vExtern_IndexNew             = &vExtern_IndexNew;
+
+	aDynamicT->m_fp_aExtern_IndexTreeBegin            = &aExtern_IndexTreeBegin;
+	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc     = &aExtern_IndexTreeFindEntryAsc;
 	aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc = &aExtern_IndexTreeFindInsertGenAsc;
-	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt = &aExtern_IndexTreeInsertEnt;
+	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt        = &aExtern_IndexTreeInsertEnt;
 
 	aDynamicT->m_fp_vExtern_IndexTreePositionGE_gen = &vExtern_IndexTreePositionGE_gen;
 	aDynamicT->m_fp_vExtern_IndexTreePositionGT_gen = &vExtern_IndexTreePositionGT_gen;
@@ -147,8 +150,8 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 	aDynamicT->m_fp_aExtern_StreamDefNew = &aExtern_StreamDefNew;
 
 	aDynamicT->m_fp_vExtern_TubAllotRowPds = &vExtern_TubAllotRowPds;
-	aDynamicT->m_fp_vExtern_TubRowPix = &vExtern_TubRowPix;
-	aDynamicT->m_fp_vExtern_TubRowStrSize = &vExtern_TubRowStrSize;
+	aDynamicT->m_fp_vExtern_TubRowPix      = &vExtern_TubRowPix;
+	aDynamicT->m_fp_vExtern_TubRowStrSize  = &vExtern_TubRowStrSize;
 #endif
 
 	return 1;

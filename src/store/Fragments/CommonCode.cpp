@@ -1483,7 +1483,7 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
   else {
     nSrcSize = strlen(szSrcStz) + 1;
 #ifdef WITH_CLANG
-    aDynamicT->m_aiPayload[__INDEX_COLUMN__] = (i8)aExtern_IndexTreeAllotPayStr(
+    aDynamicT->m_aiPayload[__INDEX_COLUMN__] = (i8)aDynamicT->m_fp_aExtern_IndexTreeAllotPayStr(
         aDynamicT->m_xIndexInfoPL.m_aIndexTree, szSrcStz);
 #endif
 
