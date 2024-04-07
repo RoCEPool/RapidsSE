@@ -70,13 +70,13 @@ void XF_Epilog_X_tblCol_To_expCol::vX_tblCol_To_expCol(void)
     if (CK_o_GBYAGG == m_pCI->E.e_Op)
       vDebugPoint();
     if (CK_o_SORT == m_pCI->E.e_Op) {
-      //m_pCI->G.p_Op->vDump(__func__);
+      //m_pCI->E.p_Op->vDump(__func__);
       vDebugPoint();
     }
 
     vTo_expCol();
     //m_pCI->PRINTBOARD_dbg();
-    //m_pCI->G.p_Op->vDump(__func__);
+    //m_pCI->E.p_Op->vDump(__func__);
     vDebugPoint();
   }
 
@@ -100,8 +100,8 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
     vDebugPoint();
   }
 
-  if (m_pCI->E.p_Op->bIsCard(CK_o_GBYAGG) /*&& m_pCI->G.p_Op->i_Child() == 6*/) {
-    //m_pCI->G.p_Op->vDump(__func__);
+  if (m_pCI->E.p_Op->bIsCard(CK_o_GBYAGG) /*&& m_pCI->E.p_Op->i_Child() == 6*/) {
+    //m_pCI->E.p_Op->vDump(__func__);
     vDebugPoint();
   }
 

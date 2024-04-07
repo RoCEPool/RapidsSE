@@ -625,7 +625,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //i8 nArriving = m_pCI->G.p_arriving->nChildCards();
+  //i8 nArriving = m_pCI->E.p_arriving->nChildCards();
   i8 nArriving = m_pCI->Flux.m_pArriving->nChildCards();
   ColPpg* pColPpg = new ColPpg(nArriving);
   m_pOpDef->vColPpg(pColPpg);

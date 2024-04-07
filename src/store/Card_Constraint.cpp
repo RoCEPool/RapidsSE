@@ -114,7 +114,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //i8 i_Main = pCI->G.p_deck->iFindChild(pCI->G.p_Op);
+  //i8 i_Main = pCI->E.p_deck->iFindChild(pCI->E.p_Op);
 
   Card_BoolPred* p_boolPred = pCI->E.p_constraint->pSub_boolPred();
 

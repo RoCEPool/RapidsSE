@@ -125,7 +125,7 @@ void Card_Fold::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
 //#ifdef WITH_DEBUG_VERSION
-//  if ((pCI->G.p_expr = pSub_expr())) {
+//  if ((pCI->E.p_expr = pSub_expr())) {
 //    pCI->PRINTBOARD_dbg();
 //    vDump(__func__);
 //    vDebugPoint();

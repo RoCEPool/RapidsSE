@@ -64,7 +64,7 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   //pCI->vPushEach();
 
-  //pCI->vUseCard(pCI->G.p_indexList);
+  //pCI->vUseCard(pCI->E.p_indexList);
 
   Kid xIndexList(pCI->E.p_indexList);
   while (xIndexList.bEach(CK_INDEX)) {

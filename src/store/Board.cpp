@@ -96,7 +96,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find and mark possible call to subquery referenced in pCI->G.p_boolPred    */
+/* find and mark possible call to subquery referenced in pCI->E.p_boolPred    */
 /*----------------------------------------------------------------------------*/
 bool Board::bMark_sqyCall(CardIter* pCI)
 {

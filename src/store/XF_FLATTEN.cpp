@@ -402,11 +402,11 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   //RASSERT(pCI->bEachOp(CK_o_WHERE));
   RASSERT(pCI->bEachOp_break(CK_o_PROJECT));
 
-//  pCI->G.p_constraint = pCI->G.p_where->pSub_constraint();
-//  pCI->G.p_where->vRemoveSub(pCI->G.p_constraint);
+//  pCI->E.p_constraint = pCI->E.p_where->pSub_constraint();
+//  pCI->E.p_where->vRemoveSub(pCI->E.p_constraint);
 //
-//  //pCI->G.p_filter = Card_Filter::pNew(p_constraint);
-//  pCI->G.p_table->vAppendChild(pCI->G.p_constraint);
+//  //pCI->E.p_filter = Card_Filter::pNew(p_constraint);
+//  pCI->E.p_table->vAppendChild(pCI->E.p_constraint);
 
   Card_From* p_from_exists = pCI->E.p_from;
   pCI->E.p_deck->vRemoveChild(p_from_exists);
@@ -417,7 +417,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  pCI->G.p_deck->vDeleteChild(pCI->G.p_where);
+//  pCI->E.p_deck->vDeleteChild(pCI->E.p_where);
   pCI->E.p_deck->vDeleteChild(pCI->E.p_project);
 
   // pCI->PRINTBOARD_dbg();

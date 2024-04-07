@@ -226,7 +226,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
 
-  //vInsertChildBefore(pCI->G.p_emit,pCI->G.p_needed);
+  //vInsertChildBefore(pCI->E.p_emit,pCI->E.p_needed);
 
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_emit;
 

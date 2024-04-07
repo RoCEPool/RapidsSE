@@ -596,14 +596,14 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //           +                   //           $Q1
 
   //pCI->PRINTBOARD_dbg();
-  //pCI->G.p_boolPred->vDump(__func__);
+  //pCI->E.p_boolPred->vDump(__func__);
   vConvert_OQ_sqyPrm_Into_expCol(pCI, pCI->E.p_boolPred);
 
-  //pCI->G.p_boolPred->vDump(__func__);
+  //pCI->E.p_boolPred->vDump(__func__);
   vConvert_OQ_sqyNo_Into_expCol(pCI, pCI->E.p_boolPred);
 
   //pCI->PRINTBOARD_dbg();
-  //pCI->G.p_boolPred->vDump(__func__);
+  //pCI->E.p_boolPred->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds

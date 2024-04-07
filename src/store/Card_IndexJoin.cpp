@@ -132,11 +132,11 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   pCI->E.p_index     = pCI->E.p_indexList->pFindChosenIndex();
   pCI->E.p_bounds    = pCI->E.p_index->pSub_bounds();
   pCI->E.p_bound     = pCI->E.p_bounds->pFindChosenBound();
-  //pCI->G.p_bound->vDump();
+  //pCI->E.p_bound->vDump();
   pCI->E.p_term      = pCI->E.p_bound->pGet_IfNot_idxCol();
 
   RASSERT(pCI->E.p_term);
-  //pCI->G.p_term->vDump();
+  //pCI->E.p_term->vDump();
 
 
   if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->E.p_term->pSymbol())) {
@@ -266,7 +266,7 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
   }
 
 //  pCI->vNewMember(CK_o_INDEXJOIN);
-//  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_indexJoin);
+//  pCI->E.p_table->vRelegate_table(pCI, pCI->E.p_indexJoin);
   pCI->E.p_indexJoin = _pCard_IndexJoin(pCI->E.p_from->pCard(CK_o_INDEXJOIN));
 
   pCI->E.p_indexList->vChoose_index_For_indexJoin();

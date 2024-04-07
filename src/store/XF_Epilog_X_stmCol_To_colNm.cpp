@@ -68,8 +68,8 @@ void XF_Epilog_X_stmCol_To_colNm::vX_stmCol_to_colNm(void)
 
   while (m_pCI->bEachOp()) {
 
-//    if (! (   CK_o_KEYEXISTS    == m_pCI->G.e_Op
-//              || CK_o_KEYNOTEXISTS == m_pCI->G.e_Op))
+//    if (! (   CK_o_KEYEXISTS    == m_pCI->E.e_Op
+//              || CK_o_KEYNOTEXISTS == m_pCI->E.e_Op))
 //      continue;
 
     if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint()))

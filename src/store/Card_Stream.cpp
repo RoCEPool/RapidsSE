@@ -82,7 +82,7 @@ void Card_Stream::vFuse_project_NoViable(CardIter *pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->E.p_Op->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_SCAN, CK_NONE));
-  //RASSERT(! pCI->G.p_emit);
+  //RASSERT(! pCI->E.p_emit);
 
 }
 

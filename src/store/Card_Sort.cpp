@@ -90,7 +90,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   Card_Emit* p_emit_sort =  pCI->Flux.m_pArriving->pInduct(pCI);
   //p_emit_sort->vDump(__func__);
-  //pCI->G.p_key->vDump(__func__);
+  //pCI->E.p_key->vDump(__func__);
 //  for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
 //    Card_Expr* p_expr_key = xKey_sort.p_expr();
 //

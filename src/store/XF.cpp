@@ -588,7 +588,7 @@ bool MakeOptimal::bOptimise_RplAggregByOrdAgg(void)
   // When we have an aggreg grouped on a column on which their is an index available,
   // we can change the scan to an indexScan (hence data will come in ascending order
   // of the group by key)
-  // and then we can change the aggreg to an ordAgm_pCI->G.
+  // and then we can change the aggreg to an ordAgm_pCI->E.
   //
   // Also Note: when the ordAgg replaces the aggreg at an all partitions level,
   //  we can delete the aggregates on all nodes and on origin.
@@ -650,8 +650,8 @@ bool MakeOptimal::bOptimise_RplScanByIndexScan(void) {
 
 //  m_pCI->G_vRestart();
 //  if (m_pCI->bEachOp(CK_o_SCAN,CK_BOUNDS)) {
-//    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
-//      m_pCI->G.p_scan->vCard(CK_o_INDEXSCAN);
+//    if (m_pCI->E.p_bounds->pSub_lBound() || m_pCI->E.p_bounds->pSub_uBound()) {
+//      m_pCI->E.p_scan->vCard(CK_o_INDEXSCAN);
 //
 //
 //      vDerive_Projection_Keys();

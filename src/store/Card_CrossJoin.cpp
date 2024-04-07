@@ -51,7 +51,7 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
   pCI->E.p_indexList = pCI->E.p_table->pSub_indexList();
 
 //  pCI->vNewMember(CK_o_CROSSJOIN);
-//  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
+//  pCI->E.p_table->vRelegate_table(pCI, pCI->E.p_crossJoin);
 
 
   pCI->E.p_crossJoin = _pCard_CrossJoin(pCI->E.p_from->pCard(CK_o_CROSSJOIN));

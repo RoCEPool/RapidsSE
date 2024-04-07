@@ -121,11 +121,11 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
   pCI->E.p_index     = pCI->E.p_indexList->pFindChosenIndex();
   pCI->E.p_bounds    = pCI->E.p_index->pSub_bounds();
   pCI->E.p_bound     = pCI->E.p_bounds->pFindChosenBound();
-  //pCI->G.p_bound->vDump();
+  //pCI->E.p_bound->vDump();
   pCI->E.p_term      = pCI->E.p_bound->pGet_tblCol();
 
   RASSERT(pCI->E.p_term);
-  //pCI->G.p_term->vDump();
+  //pCI->E.p_term->vDump();
 
   /*
    * todo:

@@ -78,7 +78,7 @@ void XF_Prolog_Validate_Board::vValidate(void)
   while (m_pCI->bEachOp()) {
     switch (m_pCI->E.e_Op) {
 
-      //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;
+      //case CK_o_SCAN: p_scan = m_pCI->E.p_scan; break;
 
       case CK_c_COMBINED:
       case CK_c_SEND:
