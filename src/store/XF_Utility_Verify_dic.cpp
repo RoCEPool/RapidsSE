@@ -188,7 +188,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_injectable = m_pCI->E.p_Op->pSub_injectable())) {
     for (Kid xInject(m_pCI->E.p_injectable); xInject.bEach(CK_EXPR); /**/) {
       m_pCI->E.p_expr = xInject.p_expr();
-      //m_pCI->E.p_expr->vDump(__func__);
+      //m_pCI->G.p_expr->vDump(__func__);
       RASSERT(m_pCI->E.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
                                                      SF_NMD_COL,
                                                      SF_TBL_COL,
@@ -208,7 +208,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
     for (Kid xKey(m_pCI->E.p_key); xKey.bEach(CK_EXPR); /**/) {
       m_pCI->E.p_expr = xKey.p_expr();
-      //m_pCI->E.p_expr->vDump(__func__);
+      //m_pCI->G.p_expr->vDump(__func__);
       RASSERT(m_pCI->E.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
                                                      SF_NMD_COL,
                                                      SF_TBL_COL,
@@ -246,7 +246,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_indexList = m_pCI->E.p_Op->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->E.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
       m_pCI->E.p_index = xIndexList.p_index();
-      //m_pCI->E.p_index->vDump(__func__);
+      //m_pCI->G.p_index->vDump(__func__);
 
       // indexList/idxColList
       m_pCI->E.p_idxColList = m_pCI->E.p_index->pSub_idxColList(C_NOT_NULL);
@@ -262,7 +262,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         continue;
       for (Kid xBound(m_pCI->E.p_bounds); xBound.bEach(CK_BOUND); /**/) {
         m_pCI->E.p_bound = xBound.p_bound();
-        //m_pCI->E.p_bound->vDump(__func__);
+        //m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->E.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->E.p_term = xBound.p_term();
@@ -288,7 +288,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // facets 2 constraint
 
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-    //m_pCI->E.p_constraint->vDump(__func__);
+    //m_pCI->G.p_constraint->vDump(__func__);
     m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred(C_NOT_NULL);
 
     auto bLambdaFn = [](Card_Term* p_term)
@@ -341,7 +341,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
     m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    m_pCI->E.p_boolPred->vDump(__func__);
+    //m_pCI->G.p_boolPred->vDump(__func__);
 
     //CardIter* pCI = m_pCI;
     auto bLambdaFn = [](Card_Term* p_term)
@@ -349,7 +349,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
        if (! p_term->pSymbol()->bIs_Col())
          return C_CONTINUE_RECURSION;
 
-      p_term->vDump(__func__);
+      //p_term->vDump(__func__);
       RASSERT(
                p_term->pSymbol()->bHasFacets(SF_EXP_COL,
                                              SF_NMD_COL,
@@ -381,7 +381,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit())) {
     for (Kid xEmit(m_pCI->E.p_emit); xEmit.bEach(CK_EXPR); /**/) {
       m_pCI->E.p_expr = xEmit.p_expr();
-      //m_pCI->E.p_expr->vDump(__func__);
+      //m_pCI->G.p_expr->vDump(__func__);
 
       RASSERT(
               m_pCI->E.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
@@ -447,7 +447,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
     for (Kid xKey(m_pCI->E.p_key); xKey.bEach(CK_EXPR); /**/) {
       m_pCI->E.p_expr = xKey.p_expr();
-      //m_pCI->E.p_expr->vDump(__func__);
+      //m_pCI->G.p_expr->vDump(__func__);
       m_pCI->E.p_rpnCalc = m_pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
@@ -468,7 +468,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
 
     m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    //m_pCI->E.p_boolPred->vDump(__func__);
+    //m_pCI->G.p_boolPred->vDump(__func__);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -502,7 +502,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // dictionaries 3 constraint
 
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-    //m_pCI->E.p_constraint->vDump(__func__);
+    //m_pCI->G.p_constraint->vDump(__func__);
     RASSERT(m_pCI->E.p_injectable);
     m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred(C_NOT_NULL);
 
@@ -531,7 +531,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_indexList = m_pCI->E.p_Op->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->E.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
       m_pCI->E.p_index = xIndexList.p_index();
-      //m_pCI->E.p_index->vDump(__func__);
+      //m_pCI->G.p_index->vDump(__func__);
 
       // indexList/colList
       m_pCI->E.p_idxColList = m_pCI->E.p_index->pSub_idxColList(C_NOT_NULL);
@@ -551,7 +551,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         continue;
       for (Kid xBounds(m_pCI->E.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
         m_pCI->E.p_bound = xBounds.p_bound();
-        //m_pCI->E.p_bound->vDump(__func__);
+        //m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->E.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->E.p_term = xBound.p_term();
@@ -564,8 +564,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
           // todo: seems the bound is invalid [298]
 //          m_pCI->PRINTBOARD_dbg();
-//          m_pCI->E.p_bound->vDump(__func__);
-//          m_pCI->E.p_term->vDump(__func__);
+//          m_pCI->G.p_bound->vDump(__func__);
+//          m_pCI->G.p_term->vDump(__func__);
 //          NEVER_REACH
 
         }
@@ -657,7 +657,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
     for (Kid xKey(m_pCI->E.p_key); xKey.bEach(CK_EXPR); /**/) {
       m_pCI->E.p_expr = xKey.p_expr();
-      //m_pCI->E.p_expr->vDump(__func__);
+      //m_pCI->G.p_expr->vDump(__func__);
       m_pCI->E.p_rpnCalc = m_pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
@@ -678,7 +678,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
 
     m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    //m_pCI->E.p_boolPred->vDump(__func __);
+    //m_pCI->G.p_boolPred->vDump(__func __);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -716,7 +716,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // cast 4 constraint
 
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-    //m_pCI->E.p_constraint->vDump(__func__);
+    //m_pCI->G.p_constraint->vDump(__func__);
     RASSERT(m_pCI->E.p_injectable);
     m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred(C_NOT_NULL);
 
@@ -759,19 +759,19 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_indexList = m_pCI->E.p_Op->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->E.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
       m_pCI->E.p_index = xIndexList.p_index();
-      //m_pCI->E.p_index->vDump(__func__);
+      //m_pCI->G.p_index->vDump(__func__);
 
       // indexList/colList
       // todo: should idxCols be cast? 302]
-//      m_pCI->E.p_idxColList = m_pCI->E.p_index->pSub_idxColList(C_NOT_NULL);
-//      for (Kid xIdxColList(m_pCI->E.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
-//        m_pCI->E.p_idxCol = xIdxColList.p_idxCol();
+//      m_pCI->G.p_idxColList = m_pCI->G.p_index->pSub_idxColList(C_NOT_NULL);
+//      for (Kid xIdxColList(m_pCI->G.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
+//        m_pCI->G.p_idxCol = xIdxColList.p_idxCol();
 //
-//        if (m_pCI->E.p_idxCol->pSymbol()->bValidCast())
+//        if (m_pCI->G.p_idxCol->pSymbol()->bValidCast())
 //          continue;
 //
-//        m_pCI->E.p_index->vDump(__func__);
-//        m_pCI->E.p_idxCol->vDump(__func__);
+//        m_pCI->G.p_index->vDump(__func__);
+//        m_pCI->G.p_idxCol->vDump(__func__);
 //        NEVER_REACH
 //      }
 
@@ -780,7 +780,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         continue;
       for (Kid xBounds(m_pCI->E.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
         m_pCI->E.p_bound = xBounds.p_bound();
-        // m_pCI->E.p_bound->vDump(__func__);
+        // m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->E.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->E.p_term = xBound.p_term();
@@ -794,7 +794,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           else
           if (m_pCI->E.p_term->pSymbol()->bIs_Lit()) {
             // todo: bound literals to be cast [303]
-//            if (m_pCI->E.p_term->pSymbol()->bValidCast())
+//            if (m_pCI->G.p_term->pSymbol()->bValidCast())
 //              continue;
 //            else
 //             vDebugPoint();
@@ -892,7 +892,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
     for (Kid xKey(m_pCI->E.p_key); xKey.bEach(CK_EXPR); /**/) {
       m_pCI->E.p_expr = xKey.p_expr();
-      //m_pCI->E.p_expr->vDump(__func__);
+      //m_pCI->G.p_expr->vDump(__func__);
       m_pCI->E.p_rpnCalc = m_pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
@@ -915,7 +915,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
 
     m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    //m_pCI->E.p_boolPred->vDump(__func__);
+    //m_pCI->G.p_boolPred->vDump(__func__);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -938,7 +938,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       }
 
       // todo: regLoop : having.test fails [306]
-//      pCI->E.p_boolPred->vDump(__func__);
+//      pCI->G.p_boolPred->vDump(__func__);
 //      p_term->vDump(__func__);
 //      NEVER_REACH
       return C_CONTINUE_RECURSION;
@@ -953,7 +953,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // cross-cast 5 constraint
 
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-    //m_pCI->E.p_constraint->vDump(__func__);
+    //m_pCI->G.p_constraint->vDump(__func__);
     RASSERT(m_pCI->E.p_injectable);
     m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred(C_NOT_NULL);
 
@@ -983,7 +983,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_indexList = m_pCI->E.p_Op->pSub_indexList())) {
     for (Kid xIndexList(m_pCI->E.p_indexList); xIndexList.bEach(CK_INDEX); /**/) {
       m_pCI->E.p_index = xIndexList.p_index();
-      //m_pCI->E.p_index->vDump(__func__);
+      //m_pCI->G.p_index->vDump(__func__);
 
       // indexList/colList
       m_pCI->E.p_idxColList = m_pCI->E.p_index->pSub_idxColList(C_NOT_NULL);
@@ -993,8 +993,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (m_pCI->E.p_injectable->pFind_expr_Matches(m_pCI->E.p_idxCol->pSymbol()))
           continue;
 //          todo: idxCol should be cast [304]
-//      if (Card_Expr* p_expr_f = m_pCI->E.p_injectable->pFind_expr_Matches(m_pCI->E.p_idxCol->pSymbol()))
-//          if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_idxCol->pSymbol()))
+//      if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol()))
+//          if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_idxCol->pSymbol()))
 //            continue;
 
         m_pCI->E.p_index->vDump(__func__);
@@ -1007,7 +1007,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         continue;
       for (Kid xBounds(m_pCI->E.p_bounds); xBounds.bEach(CK_BOUND); /**/) {
         m_pCI->E.p_bound = xBounds.p_bound();
-        //m_pCI->E.p_bound->vDump(__func__);
+        //m_pCI->G.p_bound->vDump(__func__);
         vDebugPoint();
         for (Kid xBound(m_pCI->E.p_bound); xBound.bEach(CK_TERM); /**/) {
           m_pCI->E.p_term = xBound.p_term();
@@ -1022,8 +1022,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
           // todo: seems the bound is invalid [298]
 //          m_pCI->PRINTBOARD_dbg();
-//          m_pCI->E.p_bound->vDump(__func__);
-//          m_pCI->E.p_term->vDump(__func__);
+//          m_pCI->G.p_bound->vDump(__func__);
+//          m_pCI->G.p_term->vDump(__func__);
 //          NEVER_REACH
 
         }
@@ -1072,7 +1072,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
               continue;
             }
             else {
-              //m_pCI->E.p_injectable->vDump(__func__);
+              //m_pCI->G.p_injectable->vDump(__func__);
               vDebugPoint();
             }
           }
@@ -1085,9 +1085,9 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
             }
 
             // todo: query 18 $K2 type is wrong [
-//          m_pCI->E.p_expr->vDump(__func__);
-//          m_pCI->E.p_key->vDump(__func__);
-//          m_pCI->E.p_term->vDump(__func__);
+//          m_pCI->G.p_expr->vDump(__func__);
+//          m_pCI->G.p_key->vDump(__func__);
+//          m_pCI->G.p_term->vDump(__func__);
             vDebugPoint();
             continue;
           }

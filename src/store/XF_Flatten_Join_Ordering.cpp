@@ -194,14 +194,14 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   // 1) Extract tableList from pipeline
 
   m_pCI->E.p_tableList = Card_TableList::pExtractList(pPipeline);
-  //m_pCI->E.p_tableList->vDump(__func__);
+  //m_pCI->G.p_tableList->vDump(__func__);
 
   m_pCI->E.p_deck->vAppendChild(m_pCI->E.p_tableList);
 
   // 2) Extract joinPredList from pipeline
 
   m_pCI->E.p_joinPredList = Card_JoinPredList::pExtractList(pPipeline);
-  //m_pCI->E.p_joinPredList->vDump(__func__);
+  //m_pCI->G.p_joinPredList->vDump(__func__);
   m_pCI->E.p_deck->vAppendChild(m_pCI->E.p_joinPredList);
 
   if (! m_pCI->E.p_joinPredList->nChildCards()) {
@@ -215,7 +215,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   // 3) Extract filtPredList from pipeline
 
   m_pCI->E.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
-  //m_pCI->E.p_filtPredList->vDump(__func__);
+  //m_pCI->G.p_filtPredList->vDump(__func__);
   m_pCI->E.p_deck->vAppendChild(m_pCI->E.p_filtPredList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -360,7 +360,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   //m_pCI->PRINTBOARD_dbg();
 
-  //m_pCI->E.p_deck->vProjectionUpdate(m_pCI);
+  //m_pCI->G.p_deck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 

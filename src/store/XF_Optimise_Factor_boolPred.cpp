@@ -163,7 +163,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
     }
   }
 
-  //m_pCI->E.p_deck->vMarksClearRecursive();
+  //m_pCI->G.p_deck->vMarksClearRecursive();
 
   m_pCI->vEndTransform(__LINE__);
 

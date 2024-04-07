@@ -187,7 +187,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pNeeded_later);
 
-  //Card_OP* p_OP_leaf_maybe = pCI->E.p_Op;
+  //Card_OP* p_OP_leaf_maybe = pCI->G.p_Op;
 
   if (!pCI->bEachOp_reverse())
     return;
@@ -440,7 +440,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
   // map the columns of the projection
 
   pCI->E.p_emit->vMapColumns(pCI);
-  //pCI->E.p_payloadCells->vDump(__func__);
+  //pCI->G.p_payloadCells->vDump(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -611,7 +611,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
       pCI->E.p_emit->vIncFunctionCount();
 
-//      pCI->E.p_Op->vDump(__func__);
+//      pCI->G.p_Op->vDump(__func__);
 //      vDebugPoint();
 
       break;
@@ -620,7 +620,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_CAST:
     case CK_o_FILTER:
     case CK_o_INFLATE:
-      //pCI->E.p_Op->vDump(__func__);
+      //pCI->G.p_Op->vDump(__func__);
       NEVER_REACH
       break;
 
@@ -629,10 +629,10 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       NEVER_REACH
       break;
 
-  } // switch(pCI->E.e_Op)
+  } // switch(pCI->G.e_Op)
 
 
-//  pCI->E.p_Op->vDump(__func__);
+//  pCI->G.p_Op->vDump(__func__);
 //  vDebugPoint();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -666,7 +666,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       }
     }
   }
-//  pCI->E.p_Op->vDump(__func__);
+//  pCI->G.p_Op->vDump(__func__);
 //  vDebugPoint();
 
   if (pCI->E.p_emit && pCI->E.p_Op->pSub_key()) {
@@ -693,19 +693,19 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         }
       }
     }
-//    pCI->E.p_Op->vDump(__func__);
+//    pCI->G.p_Op->vDump(__func__);
 //    vDebugPoint();
 
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
- //pCI->Flux.m_pArriving = pCI->E.p_emit;
+ //pCI->Flux.m_pArriving = pCI->G.p_emit;
 
   if (CK_o_KEYEXISTS    == eCard_OP ||
       CK_o_KEYNOTEXISTS == eCard_OP) {
     pCI->Dic.m_p_expr = pCI->E.p_emit;
-    //pCI->Dic.m_p_expr = _pCard_Emit(pCI->E.p_Op->pSub_injectable());
+    //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
     vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
   }
   if (CK_o_WHERE        == eCard_OP) {
