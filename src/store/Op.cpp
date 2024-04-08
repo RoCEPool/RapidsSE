@@ -385,18 +385,22 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* create task for op                                                         */
 /*----------------------------------------------------------------------------*/
-void Op::vCreateTaskForOp(void)
+void Op::vCreateTaskForOp(bool bIsSecondary)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   Task* pTask = this->pTask();
-  RASSERT(! pTask);
+  RASSERT( ! pTask ||
+	         ( pTask->bIsSecondary() && ! bIsSecondary ) ||
+					 ! pTask->bIsSecondary() && bIsSecondary
+				 );
 
   Word* pEntryWord = this->pEntryWord();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pTask = new Task(this->szOpNm(),this);
+	pTask->vIsSecondary(bIsSecondary);
 
   vTask(pTask);
 
@@ -1841,13 +1845,13 @@ void Op::vSetTags(void)
 /*----------------------------------------------------------------------------*/
 /* spawn task for this operator                                               */
 /*----------------------------------------------------------------------------*/
-void Op::vSpawnTask(void)
+void Op::vSpawnTask(bool bIsSecondary)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
   Job* pJob = this->pOuterJobOfOp();
   
-  vCreateTaskForOp();
+  vCreateTaskForOp(bIsSecondary);
   pJob->vActiveOpsInc();
 
   Task* pTask = this->pTask();

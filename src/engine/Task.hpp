@@ -44,6 +44,7 @@ namespace ENGINE
     s32 m_sTaskNm;  // name of this task
     eTS m_eState;   // task state (running, sleeping, ...)
     b8  m_bDedicatedThread;
+		b8  m_bSecondaryTask;
   
     SMA<Job,CN_JOB> m_pJob; // which job this task is executing
     SMA<Op,CN_OP>   m_pOp;  // ... or which op this task is executing
@@ -158,6 +159,8 @@ namespace ENGINE
     Task* pJobTask(void);
     void vJobTask(Task* pJobTask);
     bool bIsLocked(void);
+		bool bIsSecondary(void);
+		void vIsSecondary(bool bIsSecondary);
     bool bIsTaskLocked(void);
   
     Job* pJob(void);
