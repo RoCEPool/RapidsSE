@@ -312,6 +312,8 @@ void Stream::vSpawnOpTasks(void)
 				else
 					pOp->vSpawnTask();
 			}
+			else
+				pOp->vSpawnTask();
 
 //      if (AM::SYSTEM::bReady() && i_Op == 3)
 //        THROW_LOWMEMORY();

@@ -392,7 +392,7 @@ void Op::vCreateTaskForOp(bool bIsSecondary)
   Task* pTask = this->pTask();
   RASSERT( ! pTask ||
 	         ( pTask->bIsSecondary() && ! bIsSecondary ) ||
-					 ! pTask->bIsSecondary() && bIsSecondary
+					 ( ! pTask->bIsSecondary() && bIsSecondary )
 				 );
 
   Word* pEntryWord = this->pEntryWord();
