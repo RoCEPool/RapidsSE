@@ -394,12 +394,21 @@ Card_Term* Card_Expr::pGet_term(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+#ifdef Z_NO_RPNCALC
+  if (i_Term >= nChildCards())
+    return nullptr;
+
+  Card_Term* p_term = _pCard_Term(pGetChild(i_Term));
+
+  return p_term;
+#else
   if (i_Term >= pSub_rpnCalc()->nChildCards())
     return nullptr;
 
   Card_Term* p_term = _pCard_Term(pSub_rpnCalc()->pGetChild(i_Term));
 
   return p_term;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,7 +418,12 @@ Card_Term* Card_Expr::pGet_term0(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+#ifdef Z_NO_RPNCALC
+  RASSERT(1 == nChildCards());
+#else
   RASSERT(1 == pSub_rpnCalc()->nChildCards());
+#endif
+
   Card_Term* p_term0 = pGet_term(0);
 
   return p_term0;

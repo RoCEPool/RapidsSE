@@ -1394,14 +1394,25 @@ Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // <rpnCalc>
 
-  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_termSeq);
-
-  p_expr->vAppendChild(p_rpnCalc);
-
-  if (p_expr->pSub_rpnCalc(C_NOT_NULL)->nChildCards() == 1) {
+#ifdef Z_NO_RPNCALC
+  Card_TermSeq* p_exprSeq = pPop_exprSeq(p_termSeq);
+  p_expr->vTransferChildren(p_exprSeq);
+  DELETE_CARD(p_exprSeq);
+  if (p_expr->nChildCards() == 1) {
     Card_Term* p_term_0 = p_expr->pGet_term0();
     p_term_0->vApplyCast_x(xCast);
   }
+#else
+  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_termSeq);
+  p_expr->vAppendChild(p_rpnCalc);
+    if (p_expr->pSub_rpnCalc(C_NOT_NULL)->nChildCards() == 1) {
+    Card_Term* p_term_0 = p_expr->pGet_term0();
+    p_term_0->vApplyCast_x(xCast);
+  }
+
+#endif
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [ AS nmdCol ]
