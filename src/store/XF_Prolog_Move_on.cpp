@@ -104,7 +104,14 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     p_rpnCalc_tmp->vTransferChildren(m_pCI->E.p_on, SF_RLN_OP);
     m_pCI->E.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI, p_expr_tmp);
-    m_pCI->E.p_filter->vAppendChild(m_pCI->E.p_boolPred);
+
+    if (m_pCI->E.p_filter->pSub_boolPred() && m_pCI->E.p_filter->pSub_boolPred()->nChildCards()) {
+      m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->E.p_boolPred->pPopChild());
+      m_pCI->E.p_filter->pSub_boolPred()->vAppend_and_rlnConj(m_pCI->E.p_rlnConj);
+      DELETE_CARD(m_pCI->E.p_boolPred);
+    }
+    else
+      m_pCI->E.p_filter->vAppendChild(m_pCI->E.p_boolPred);
 
     DELETE_CARD(p_expr_tmp);
 
