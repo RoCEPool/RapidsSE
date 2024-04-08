@@ -40,7 +40,7 @@ begin
                 , type DECIMAL as C8_COL8 ) $5 sum
                 , type INTEGER as C9_COL9 ) $5 count
                 , type INTEGER as C10_COL10 ) countAll "
-    |  dynamic
+    | dynamic
     | next
 
   stage S02 on all nodes :

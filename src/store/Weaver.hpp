@@ -49,6 +49,8 @@ namespace STORE
   private:
   
     void vPipeline    (void);
+		void vPtnConsume  (void);
+		void vPtnSend     (void);
     void vTags        (void);
     void vBegin       (void);
     void vEnd         (void);

@@ -107,6 +107,30 @@ void Weaver::vCodeBlock(ExtendedText* pCodeBlock)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* weave : dynamic :                                                          */
+/*----------------------------------------------------------------------------*/
+void Weaver::vPtnSend(void)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+	vTabOp();
+	vConcat_cmd("ptnSend"_Stz);      vEolOp();
+	//vTabOp();
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : dynamic :                                                          */
+/*----------------------------------------------------------------------------*/
+void Weaver::vPtnConsume(void)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+	vTabOp();
+	vConcat_cmd("ptnConsume"_Stz);      vEolOp();
+	//vTabOp();
+}
+
+/*----------------------------------------------------------------------------*/
 /* weave : pipeline <name>                                                    */
 /*----------------------------------------------------------------------------*/
 void Weaver::vPipeline(void)
@@ -974,7 +998,14 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
       vOp(xDeck.pChild(), bCommented);
     }
 
+		i8 iThreads = p_stage->pSymbol()->Y_iGet(P_Threads);
+		if (iThreads > 1)
+			vPtnSend();
+
     vDynamic(pStageDef);
+
+		if (iThreads > 1)
+			vPtnConsume();
 
     if (CK_o_CAST == xDeck.eChild())
       vOp(xDeck.pChild());
