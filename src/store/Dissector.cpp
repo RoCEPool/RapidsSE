@@ -1553,9 +1553,6 @@ Card_RpnCalc* Dissector::pPop_rpnCalc(Card_TermSeq* p_termSeq)
       break;
     }
 
-    if (p_term_popped->pSymbol()->bHasFacet(SF_AGG_FN))
-      p_rpnCalc->pSymbol()->Y_vSet(P_AggOp);
-
     p_rpnCalc->vAppendChild(p_term_popped);
   }
 
@@ -1586,8 +1583,6 @@ Card_On * Dissector::pPop_on(Card_TermSeq* p_termSeq)
       break;
     }
 
-    if (p_term_popped->pSymbol()->bHasFacet(SF_AGG_FN))
-      p_On->pSymbol()->Y_vSet(P_AggOp);
 
     p_On->vAppendChild(p_term_popped);
   }
